@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Placeholder", "Placeholder\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Placeholder.Utilities", "Placeholder.Utilities\Placeholder.Utilities.csproj", "{A737B197-6BAB-452E-8DEC-533CF6FD2F58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Placeholder.Implementation", "Placeholder.Implementation\Placeholder.Implementation.csproj", "{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A737B197-6BAB-452E-8DEC-533CF6FD2F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A737B197-6BAB-452E-8DEC-533CF6FD2F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A737B197-6BAB-452E-8DEC-533CF6FD2F58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

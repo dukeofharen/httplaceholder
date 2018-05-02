@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Placeholder.Implementation;
+using Placeholder.Implementation.Implementations;
 using Placeholder.Middleware;
 using Placeholder.Utilities;
 using YamlDotNet.Serialization;
@@ -37,11 +39,13 @@ namespace Placeholder
          // Load and parse the input YAML file here.
          string inputFile = File.ReadAllText(inputFileLocation);
          var yaml = YamlHelper.Parse(inputFile);
-         if (!(yaml is IList<object> stubList))
+         if (!(yaml is IList<object>))
          {
             Console.WriteLine($"Input file '{inputFileLocation}' is not a valid Placeholder YAML file.");
+            Environment.Exit(-1);
          }
 
+         services.AddSingleton<IStubContainer>(s => new StubContainer((IList<object>)yaml));
          services.AddMvc();
       }
 

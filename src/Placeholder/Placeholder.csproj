@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Placeholder.Implementation\Placeholder.Implementation.csproj" />
     <ProjectReference Include="..\Placeholder.Utilities\Placeholder.Utilities.csproj" />
   </ItemGroup>
 
