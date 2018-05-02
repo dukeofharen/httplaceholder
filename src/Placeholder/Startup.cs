@@ -47,6 +47,7 @@ namespace Placeholder
 
          services.AddSingleton<IStubContainer>(s => new StubContainer((IList<object>)yaml));
          services.AddMvc();
+         Implementation.DependencyRegistration.RegisterDependencies(services);
       }
 
       public void Configure(IApplicationBuilder app, IHostingEnvironment env)
