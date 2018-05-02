@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Placeholder.Middleware;
 
 namespace Placeholder
 {
@@ -13,6 +14,7 @@ namespace Placeholder
 
       public void Configure(IApplicationBuilder app, IHostingEnvironment env)
       {
+         app.UseMiddleware<StubHandlingMiddleware>();
          app.UseMvc();
       }
    }
