@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace Placeholder
 {
@@ -13,6 +14,7 @@ namespace Placeholder
       public static IWebHost BuildWebHost(string[] args) =>
          WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()
+            .ConfigureAppConfiguration((hostingContext, config) => config.AddCommandLine(args))
             .UseKestrel(options => options.AddServerHeader = false)
             .Build();
    }
