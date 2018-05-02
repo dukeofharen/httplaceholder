@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Placeholder.Implementation;
 using Placeholder.Implementation.Implementations;
 using Placeholder.Middleware;
@@ -47,7 +49,8 @@ namespace Placeholder
 
          services.AddSingleton<IStubContainer>(s => new StubContainer((IList<object>)yaml));
          services.AddMvc();
-         Implementation.DependencyRegistration.RegisterDependencies(services);
+         services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+         DependencyRegistration.RegisterDependencies(services);
       }
 
       public void Configure(IApplicationBuilder app, IHostingEnvironment env)

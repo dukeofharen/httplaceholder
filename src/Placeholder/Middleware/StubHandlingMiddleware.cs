@@ -20,7 +20,7 @@ namespace Placeholder.Middleware
       {
          context.Response.Clear();
          var response = await _stubRequestExecutor.ExecuteRequestAsync();
-         context.Response.StatusCode = (int)response.StatusCode;
+         context.Response.StatusCode = response.StatusCode;
          foreach (var header in response.Headers)
          {
             context.Response.Headers.Add(header.Key, header.Value);
