@@ -1,12 +1,18 @@
-﻿using System;
+﻿using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Placeholder
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
-    }
+   class Program
+   {
+      public static void Main(string[] args)
+      {
+         BuildWebHost(args).Run();
+      }
+
+      public static IWebHost BuildWebHost(string[] args) =>
+         WebHost.CreateDefaultBuilder(args)
+            .UseStartup<Startup>()
+            .Build();
+   }
 }
