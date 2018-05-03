@@ -42,7 +42,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             }
          }
 
-         return Task.FromResult(result.AsEnumerable());
+         return Task.FromResult(result?.AsEnumerable());
       }
    }
 }
