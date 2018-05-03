@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Placeholder.Implementation.Services;
 
 namespace Placeholder.Implementation.Implementations.ConditionCheckers
 {
    internal class MethodConditionChecker : IConditionChecker
    {
-      private readonly IHttpContextAccessor _httpContextAccessor;
+      private readonly IHttpContextService _httpContextService;
       private readonly IStubContainer _stubContainer;
 
       public MethodConditionChecker(
-         IHttpContextAccessor httpContextAccessor,
+         IHttpContextService httpContextService,
          IStubContainer stubContainer)
       {
-         _httpContextAccessor = httpContextAccessor;
+         _httpContextService = httpContextService;
          _stubContainer = stubContainer;
       }
 
@@ -33,7 +33,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
                   result = new List<string>();
                }
 
-               string method = _httpContextAccessor.HttpContext.Request.Method;
+               string method = _httpContextService.Method;
                if (string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase))
                {
                   // The path matches the provided regex. Add the stub ID to the resulting list.
