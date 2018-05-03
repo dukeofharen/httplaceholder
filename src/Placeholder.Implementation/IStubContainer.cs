@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using Placeholder.Models;
 
 namespace Placeholder.Implementation
 {
    public interface IStubContainer
    {
-       IList<object> Stubs { get; }
+      IEnumerable<StubModel> Stubs { get; }
+
+      StubModel GetStubById(string id);
    }
 }

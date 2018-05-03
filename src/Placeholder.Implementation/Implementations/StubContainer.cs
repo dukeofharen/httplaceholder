@@ -1,14 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Placeholder.Models;
 
 namespace Placeholder.Implementation.Implementations
 {
    public class StubContainer : IStubContainer
    {
-      public StubContainer(IList<object> stubs)
+      public StubContainer(IEnumerable<StubModel> stubs)
       {
          Stubs = stubs;
       }
 
-      public IList<object> Stubs { get; }
+      public IEnumerable<StubModel> Stubs { get; }
+
+      public StubModel GetStubById(string id)
+      {
+         return Stubs.FirstOrDefault(s => s.Id == id);
+      }
    }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Placeholder.Models;
@@ -47,11 +46,7 @@ namespace Placeholder.Implementation.Implementations
          }
 
          // Retrieve stub and parse response.
-         // TODO move this code to separate class.
-         var stub = _stubContainer
-            .Stubs
-            .Select(s => s as IDictionary<object, object>)
-            .Single(s => s?.Keys.Any(k => k.ToString() == "id") == true && s["id"].ToString() == finalStubId);
+         var stub = _stubContainer.GetStubById(finalStubId);
          if (stub != null)
          {
             var response = new ResponseModel
@@ -59,26 +54,15 @@ namespace Placeholder.Implementation.Implementations
                StatusCode = 200
             };
 
-            var stubResponse = stub.FirstOrDefault(e => e.Key.ToString() == "response").Value as IDictionary<object, object>;
+            response.StatusCode = stub.Response?.StatusCode ?? 200;
+            response.Body = stub.Response?.Text;
 
-            var stubStatusCode = stubResponse.FirstOrDefault(s => s.Key.ToString() == "statusCode").Value;
-            if (stubStatusCode != null)
-            {
-               response.StatusCode = int.Parse(stubStatusCode.ToString());
-            }
-
-            var stubResponseText = stubResponse.FirstOrDefault(s => s.Key.ToString() == "text").Value;
-            if (stubResponseText != null)
-            {
-               response.Body = stubResponseText.ToString();
-            }
-
-            var stubResponseHeaders = stubResponse.FirstOrDefault(s => s.Key.ToString() == "headers").Value as IDictionary<object, object>;
+            var stubResponseHeaders = stub.Response?.Headers;
             if (stubResponseHeaders != null)
             {
                foreach (var header in stubResponseHeaders)
                {
-                  response.Headers.Add(header.Key.ToString(), header.Value.ToString());
+                  response.Headers.Add(header.Key, header.Value);
                }
             }
 

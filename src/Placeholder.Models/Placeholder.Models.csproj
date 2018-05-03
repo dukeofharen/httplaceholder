@@ -14,4 +14,8 @@
     <WarningsAsErrors />
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="YamlDotNet" Version="4.3.1" />
+  </ItemGroup>
+
 </Project>

@@ -5,11 +5,11 @@ namespace Placeholder.Utilities
 {
    public static class YamlHelper
    {
-      public static object Parse(string input)
+      public static TObject Parse<TObject>(string input)
       {
          var reader = new StringReader(input);
          var deserializer = new Deserializer();
-         var yamlObject = deserializer.Deserialize(reader);
+         var yamlObject = deserializer.Deserialize<TObject>(reader);
          return yamlObject;
       }
    }

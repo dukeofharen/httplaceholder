@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Placeholder.Implementation;
 using Placeholder.Implementation.Implementations;
 using Placeholder.Middleware;
+using Placeholder.Models;
 using Placeholder.Utilities;
 using YamlDotNet.Serialization;
 
@@ -40,14 +41,8 @@ namespace Placeholder
 
          // Load and parse the input YAML file here.
          string inputFile = File.ReadAllText(inputFileLocation);
-         var yaml = YamlHelper.Parse(inputFile);
-         if (!(yaml is IList<object>))
-         {
-            Console.WriteLine($"Input file '{inputFileLocation}' is not a valid Placeholder YAML file.");
-            Environment.Exit(-1);
-         }
-
-         services.AddSingleton<IStubContainer>(s => new StubContainer((IList<object>)yaml));
+         var stubs = YamlHelper.Parse<List<StubModel>>(inputFile);
+         services.AddSingleton<IStubContainer>(s => new StubContainer(stubs));
          services.AddMvc();
          services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
          DependencyRegistration.RegisterDependencies(services);
