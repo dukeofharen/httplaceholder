@@ -20,7 +20,7 @@ namespace Placeholder.Implementation.Implementations
 
       public IEnumerable<StubModel> GetStubsByIds(IEnumerable<string> ids)
       {
-         return Stubs.Where(s => ids.Contains(s.Id));
+         return ids == null ? Stubs : Stubs.Where(s => ids.Contains(s.Id));
       }
    }
 }

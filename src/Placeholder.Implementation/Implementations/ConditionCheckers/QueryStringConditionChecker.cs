@@ -22,7 +22,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
       public Task<IEnumerable<string>> ValidateAsync(IEnumerable<string> stubIds)
       {
          List<string> result = null;
-         var stubs = stubIds == null ? _stubContainer.Stubs : _stubContainer.GetStubsByIds(stubIds);
+         var stubs = _stubContainer.GetStubsByIds(stubIds);
          foreach (var stub in stubs)
          {
             var queryStringConditions = stub.Conditions?.Url?.Query;
@@ -52,6 +52,8 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
                   }
                }
 
+               // If the number of succeeded conditions is equal to the actual number of conditions,
+               // the query string condition is passed and the stub ID is passed to the result.
                if (validQueryStrings == queryStringConditions.Count)
                {
                   result.Add(stub.Id);

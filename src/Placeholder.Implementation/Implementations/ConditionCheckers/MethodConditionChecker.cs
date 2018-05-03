@@ -22,7 +22,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
       public Task<IEnumerable<string>> ValidateAsync(IEnumerable<string> stubIds)
       {
          List<string> result = null;
-         var stubs = stubIds == null ? _stubContainer.Stubs : _stubContainer.GetStubsByIds(stubIds);
+         var stubs = _stubContainer.GetStubsByIds(stubIds);
          foreach (var stub in stubs)
          {
             string methodCondition = stub.Conditions?.Method;
