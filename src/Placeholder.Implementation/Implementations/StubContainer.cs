@@ -17,5 +17,10 @@ namespace Placeholder.Implementation.Implementations
       {
          return Stubs.FirstOrDefault(s => s.Id == id);
       }
+
+      public IEnumerable<StubModel> GetStubsByIds(IEnumerable<string> ids)
+      {
+         return Stubs.Where(s => ids.Contains(s.Id));
+      }
    }
 }

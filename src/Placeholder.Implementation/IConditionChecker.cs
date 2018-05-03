@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using Placeholder.Models.Enums;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Placeholder.Implementation
 {
    public interface IConditionChecker
    {
-      Task<(ConditionCheckResultType, string)> ValidateAsync();
+      Task<IEnumerable<string>> ValidateAsync(IEnumerable<string> stubIds);
    }
 }

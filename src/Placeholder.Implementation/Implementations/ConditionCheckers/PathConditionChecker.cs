@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Placeholder.Models.Enums;
 using Placeholder.Utilities;
@@ -18,42 +20,30 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          _stubContainer = stubContainer;
       }
 
-      public Task<(ConditionCheckResultType, string)> ValidateAsync()
+      public Task<IEnumerable<string>> ValidateAsync(IEnumerable<string> stubIds)
       {
-         var result = ConditionCheckResultType.NotExecuted;
-         string id = null;
-
-         // First, find the correct stub entry.
-         var stubs = _stubContainer.Stubs;
+         List<string> result = null;
+         var stubs = stubIds == null ? _stubContainer.Stubs : _stubContainer.GetStubsByIds(stubIds);
          foreach (var stub in stubs)
          {
             string pathCondition = stub.Conditions?.Url?.Path;
-            if (string.IsNullOrEmpty(pathCondition))
+            if (!string.IsNullOrEmpty(pathCondition))
             {
-               // The condition is not found for this stub. Continue looking in the next stub.
-            }
-            else
-            {
-               if (!string.IsNullOrEmpty(pathCondition))
+               if (result == null)
                {
-                  string path = _httpContextAccessor.HttpContext.Request.Path.ToString();
-                  if (!StringHelper.IsRegexMatchOrSubstring(path, pathCondition))
-                  {
-                     // The path doesn't match the provided regex. Continue looking in the next stub.
-                     result = ConditionCheckResultType.Invalid;
-                  }
-                  else
-                  {
-                     // The path matches the provided regex. Break the loop and return the result.
-                     id = stub.Id;
-                     result = ConditionCheckResultType.Valid;
-                     break;
-                  }
+                  result = new List<string>();
+               }
+
+               string path = _httpContextAccessor.HttpContext.Request.Path.ToString();
+               if (StringHelper.IsRegexMatchOrSubstring(path, pathCondition))
+               {
+                  // The path matches the provided regex. Add the stub ID to the resulting list.
+                  result.Add(stub.Id);
                }
             }
          }
 
-         return Task.FromResult((result, id));
+         return Task.FromResult(result.AsEnumerable());
       }
    }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Placeholder.Models;
-using Placeholder.Models.Enums;
 
 namespace Placeholder.Implementation.Implementations
 {
@@ -23,27 +22,40 @@ namespace Placeholder.Implementation.Implementations
 
       public async Task<ResponseModel> ExecuteRequestAsync()
       {
-         string finalStubId = null;
          var conditionCheckers = (IEnumerable<IConditionChecker>)_serviceProvider.GetServices(typeof(IConditionChecker));
+         string[] stubIds = null;
          foreach (var checker in conditionCheckers)
          {
-            (ConditionCheckResultType result, string stubId) = await checker.ValidateAsync();
-            if (result == ConditionCheckResultType.Invalid)
+            stubIds = (await checker.ValidateAsync(stubIds)).ToArray();
+            if (stubIds == null)
             {
-               // TODO return response prematurely
-            }
-            else if (result == ConditionCheckResultType.Valid && string.IsNullOrEmpty(stubId))
-            {
-               // TODO throw exception here; this isn't right.
+               // If the resulting list is null, it means the check wasn't executed because it wasn't configured. Continue with the next condition.
+               continue;
             }
 
-            if (finalStubId != null && stubId != null && finalStubId != stubId)
+            if (!stubIds.Any())
             {
-               // TODO throw exception here; this isn't right.
+               // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
+               // TODO sensible exception error
+               throw new Exception();
             }
-
-            finalStubId = stubId;
          }
+
+         if (stubIds == null)
+         {
+            // No conditions passed or no conditions configured. Throw an exception.
+            // TODO sensible exception error
+            throw new Exception();
+         }
+
+         if (stubIds.Length > 1)
+         {
+            // Multiple conditions found; don't know which one to choose. Throw an exception.
+            // TODO sensible exception error
+            throw new Exception();
+         }
+
+         string finalStubId = stubIds.Single();
 
          // Retrieve stub and parse response.
          var stub = _stubContainer.GetStubById(finalStubId);

@@ -8,5 +8,7 @@ namespace Placeholder.Implementation
       IEnumerable<StubModel> Stubs { get; }
 
       StubModel GetStubById(string id);
+
+      IEnumerable<StubModel> GetStubsByIds(IEnumerable<string> ids);
    }
 }
