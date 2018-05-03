@@ -11,7 +11,7 @@ namespace Placeholder.Utilities
          result = regex.IsMatch(fullString);
          if (!result)
          {
-            result = fullString.Contains(subString);
+            result = fullString == subString;
          }
 
          return result;
