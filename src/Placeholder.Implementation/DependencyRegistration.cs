@@ -11,6 +11,7 @@ namespace Placeholder.Implementation
          services.AddTransient<IStubRequestExecutor, StubRequestExecutor>();
 
          // Condition checkers
+         services.AddTransient<IConditionChecker, MethodConditionChecker>();
          services.AddTransient<IConditionChecker, PathConditionChecker>();
       }
    }

@@ -1,17 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Placeholder.Utilities;
 
 namespace Placeholder.Implementation.Implementations.ConditionCheckers
 {
-   internal class PathConditionChecker : IConditionChecker
+   internal class MethodConditionChecker : IConditionChecker
    {
       private readonly IHttpContextAccessor _httpContextAccessor;
       private readonly IStubContainer _stubContainer;
 
-      public PathConditionChecker(
+      public MethodConditionChecker(
          IHttpContextAccessor httpContextAccessor,
          IStubContainer stubContainer)
       {
@@ -25,16 +25,16 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          var stubs = stubIds == null ? _stubContainer.Stubs : _stubContainer.GetStubsByIds(stubIds);
          foreach (var stub in stubs)
          {
-            string pathCondition = stub.Conditions?.Url?.Path;
-            if (!string.IsNullOrEmpty(pathCondition))
+            string methodCondition = stub.Conditions?.Method;
+            if (!string.IsNullOrEmpty(methodCondition))
             {
                if (result == null)
                {
                   result = new List<string>();
                }
 
-               string path = _httpContextAccessor.HttpContext.Request.Path.ToString();
-               if (StringHelper.IsRegexMatchOrSubstring(path, pathCondition))
+               string method = _httpContextAccessor.HttpContext.Request.Method;
+               if (string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase))
                {
                   // The path matches the provided regex. Add the stub ID to the resulting list.
                   result.Add(stub.Id);
@@ -42,7 +42,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             }
          }
 
-         return Task.FromResult(result?.AsEnumerable());
+         return Task.FromResult(result.AsEnumerable());
       }
    }
 }
