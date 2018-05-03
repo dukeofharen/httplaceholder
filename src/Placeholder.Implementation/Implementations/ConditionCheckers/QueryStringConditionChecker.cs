@@ -42,7 +42,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
                   {
                      // Check whether the condition query value is available in the actual query string.
                      string value = condition.Value ?? string.Empty;
-                     if (!StringHelper.IsRegexMatchOrSubstring(value, queryValue))
+                     if (!StringHelper.IsRegexMatchOrSubstring(queryValue, value))
                      {
                         // If the check failed, it means the query string is incorrect and the condition should fail.
                         break;
