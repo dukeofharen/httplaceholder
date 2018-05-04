@@ -2,19 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Placeholder.Implementation.Services;
 
 namespace Placeholder.Implementation.Implementations.ConditionCheckers
 {
    internal class MethodConditionChecker : IConditionChecker
    {
+      private readonly ILogger<MethodConditionChecker> _logger;
       private readonly IHttpContextService _httpContextService;
       private readonly IStubManager _stubContainer;
 
       public MethodConditionChecker(
+         ILogger<MethodConditionChecker> logger,
          IHttpContextService httpContextService,
          IStubManager stubContainer)
       {
+         _logger = logger;
          _httpContextService = httpContextService;
          _stubContainer = stubContainer;
       }
@@ -28,6 +32,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             string methodCondition = stub.Conditions?.Method;
             if (!string.IsNullOrEmpty(methodCondition))
             {
+               _logger.LogInformation($"Method condition found for stub '{stub.Id}': '{methodCondition}'");
                if (result == null)
                {
                   result = new List<string>();
@@ -37,7 +42,12 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
                if (string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase))
                {
                   // The path matches the provided regex. Add the stub ID to the resulting list.
+                  _logger.LogInformation($"Condition '{methodCondition}' passed for request.");
                   result.Add(stub.Id);
+               }
+               else
+               {
+                  _logger.LogInformation($"Condition '{methodCondition}' did not pass for request.");
                }
             }
          }
