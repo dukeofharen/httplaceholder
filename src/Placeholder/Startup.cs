@@ -14,6 +14,7 @@ namespace Placeholder
       public void ConfigureServices(IServiceCollection services)
       {
          services.AddMvc();
+         services.AddLogging();
          services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
          DependencyRegistration.RegisterDependencies(services);
       }
