@@ -10,10 +10,14 @@ namespace Placeholder.Implementation
    {
       public static void RegisterDependencies(IServiceCollection services)
       {
+         services.AddSingleton<IStubContainer, StubContainer>();
+         services.AddTransient<IStubManager, StubManager>();
          services.AddTransient<IStubRequestExecutor, StubRequestExecutor>();
 
          // Services
+         services.AddTransient<IFileService, FileService>();
          services.AddTransient<IHttpContextService, HttpContextService>();
+         services.AddTransient<IYamlService, YamlService>();
 
          // Condition checkers
          services.AddTransient<IConditionChecker, MethodConditionChecker>();

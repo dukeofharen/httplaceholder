@@ -6,12 +6,14 @@ namespace Placeholder.Implementation.Implementations
 {
    public class StubManager : IStubManager
    {
-      public StubManager(IEnumerable<StubModel> stubs)
+      private readonly IStubContainer _stubContainer;
+
+      public StubManager(IStubContainer stubContainer)
       {
-         Stubs = stubs;
+         _stubContainer = stubContainer;
       }
 
-      public IEnumerable<StubModel> Stubs { get; }
+      public IEnumerable<StubModel> Stubs => _stubContainer.GetStubs();
 
       public StubModel GetStubById(string id)
       {
