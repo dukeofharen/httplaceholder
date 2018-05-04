@@ -4,9 +4,9 @@ using Placeholder.Models;
 
 namespace Placeholder.Implementation.Implementations
 {
-   public class StubContainer : IStubContainer
+   public class StubManager : IStubManager
    {
-      public StubContainer(IEnumerable<StubModel> stubs)
+      public StubManager(IEnumerable<StubModel> stubs)
       {
          Stubs = stubs;
       }

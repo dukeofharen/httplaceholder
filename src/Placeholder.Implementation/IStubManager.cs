@@ -3,7 +3,7 @@ using Placeholder.Models;
 
 namespace Placeholder.Implementation
 {
-   public interface IStubContainer
+   public interface IStubManager
    {
       IEnumerable<StubModel> Stubs { get; }
 

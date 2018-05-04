@@ -13,14 +13,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
    public class QueryStringConditionCheckerFacts
    {
       private Mock<IHttpContextService> _httpContextServiceMock;
-      private Mock<IStubContainer> _stubContainerMock;
+      private Mock<IStubManager> _stubContainerMock;
       private QueryStringConditionChecker _checker;
 
       [TestInitialize]
       public void Initialize()
       {
          _httpContextServiceMock = new Mock<IHttpContextService>();
-         _stubContainerMock = new Mock<IStubContainer>();
+         _stubContainerMock = new Mock<IStubManager>();
          _checker = new QueryStringConditionChecker(
             _httpContextServiceMock.Object,
             _stubContainerMock.Object);

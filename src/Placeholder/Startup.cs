@@ -42,7 +42,7 @@ namespace Placeholder
          // Load and parse the input YAML file here.
          string inputFile = File.ReadAllText(inputFileLocation);
          var stubs = YamlHelper.Parse<List<StubModel>>(inputFile);
-         services.AddSingleton<IStubContainer>(s => new StubContainer(stubs));
+         services.AddSingleton<IStubManager>(s => new StubManager(stubs));
          services.AddMvc();
          services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
          DependencyRegistration.RegisterDependencies(services);

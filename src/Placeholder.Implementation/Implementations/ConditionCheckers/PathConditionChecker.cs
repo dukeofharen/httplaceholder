@@ -9,11 +9,11 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
    internal class PathConditionChecker : IConditionChecker
    {
       private readonly IHttpContextService _httpContextService;
-      private readonly IStubContainer _stubContainer;
+      private readonly IStubManager _stubContainer;
 
       public PathConditionChecker(
          IHttpContextService httpContextService,
-         IStubContainer stubContainer)
+         IStubManager stubContainer)
       {
          _httpContextService = httpContextService;
          _stubContainer = stubContainer;

@@ -9,11 +9,11 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
    internal class QueryStringConditionChecker : IConditionChecker
    {
       private readonly IHttpContextService _httpContextService;
-      private readonly IStubContainer _stubContainer;
+      private readonly IStubManager _stubContainer;
 
       public QueryStringConditionChecker(
          IHttpContextService httpContextService,
-         IStubContainer stubContainer)
+         IStubManager stubContainer)
       {
          _httpContextService = httpContextService;
          _stubContainer = stubContainer;

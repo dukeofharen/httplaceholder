@@ -10,11 +10,11 @@ namespace Placeholder.Implementation.Implementations
    internal class StubRequestExecutor : IStubRequestExecutor
    {
       private readonly IServiceProvider _serviceProvider;
-      private readonly IStubContainer _stubContainer;
+      private readonly IStubManager _stubContainer;
 
       public StubRequestExecutor(
          IServiceProvider serviceProvider,
-         IStubContainer stubContainer)
+         IStubManager stubContainer)
       {
          _serviceProvider = serviceProvider;
          _stubContainer = stubContainer;
