@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.Implementation.Implementations.ConditionCheckers;
@@ -11,6 +12,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
    [TestClass]
    public class MethodConditionCheckerFacts
    {
+      private Mock<ILogger<MethodConditionChecker>> _loggerMock;
       private Mock<IHttpContextService> _httpContextServiceMock;
       private Mock<IStubManager> _stubContainerMock;
       private MethodConditionChecker _checker;
@@ -18,9 +20,11 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       [TestInitialize]
       public void Initialize()
       {
+         _loggerMock = new Mock<ILogger<MethodConditionChecker>>();
          _httpContextServiceMock = new Mock<IHttpContextService>();
          _stubContainerMock = new Mock<IStubManager>();
          _checker = new MethodConditionChecker(
+            _loggerMock.Object,
             _httpContextServiceMock.Object,
             _stubContainerMock.Object);
       }

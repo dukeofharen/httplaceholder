@@ -7,7 +7,7 @@ using Placeholder.Utilities;
 
 namespace Placeholder.Implementation.Implementations.ConditionCheckers
 {
-   internal class QueryStringConditionChecker : IConditionChecker
+   public class QueryStringConditionChecker : IConditionChecker
    {
       private readonly ILogger<QueryStringConditionChecker> _logger;
       private readonly IHttpContextService _httpContextService;

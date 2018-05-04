@@ -7,7 +7,7 @@ using Placeholder.Implementation.Services;
 
 namespace Placeholder.Implementation.Implementations.ConditionCheckers
 {
-   internal class MethodConditionChecker : IConditionChecker
+   public class MethodConditionChecker : IConditionChecker
    {
       private readonly ILogger<MethodConditionChecker> _logger;
       private readonly IHttpContextService _httpContextService;
