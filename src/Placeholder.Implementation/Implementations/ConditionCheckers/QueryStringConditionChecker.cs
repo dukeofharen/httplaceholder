@@ -23,7 +23,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          _stubContainer = stubContainer;
       }
 
-      public Task<IEnumerable<string>> ValidateAsync(IEnumerable<string> stubIds)
+      public IEnumerable<string> Validate(IEnumerable<string> stubIds)
       {
          List<string> result = null;
          var stubs = _stubContainer.GetStubsByIds(stubIds);
@@ -69,7 +69,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             }
          }
 
-         return Task.FromResult(result?.AsEnumerable());
+         return result;
       }
    }
 }

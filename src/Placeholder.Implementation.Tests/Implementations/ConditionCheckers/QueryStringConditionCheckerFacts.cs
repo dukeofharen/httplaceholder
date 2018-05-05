@@ -47,7 +47,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(new StubModel[0]);
 
          // act
-         var result = await _checker.ValidateAsync(stubIds);
+         var result = await _checker.Validate(stubIds);
 
          // assert
          Assert.IsNull(result);
@@ -75,7 +75,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             });
 
          // act
-         var result = await _checker.ValidateAsync(stubIds);
+         var result = await _checker.Validate(stubIds);
 
          // assert
          Assert.IsNull(result);
@@ -116,7 +116,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = await _checker.ValidateAsync(stubIds);
+         var result = await _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(0, result.Count());
@@ -156,7 +156,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = await _checker.ValidateAsync(stubIds);
+         var result = await _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(0, result.Count());
@@ -197,7 +197,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = await _checker.ValidateAsync(stubIds);
+         var result = await _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(0, result.Count());
@@ -238,7 +238,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = await _checker.ValidateAsync(stubIds);
+         var result = await _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(1, result.Count());
@@ -279,7 +279,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = await _checker.ValidateAsync(stubIds);
+         var result = await _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(1, result.Count());

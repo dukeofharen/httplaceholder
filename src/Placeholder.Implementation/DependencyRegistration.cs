@@ -20,6 +20,7 @@ namespace Placeholder.Implementation
          services.AddTransient<IYamlService, YamlService>();
 
          // Condition checkers
+         services.AddTransient<IConditionChecker, BodyConditionChecker>();
          services.AddTransient<IConditionChecker, MethodConditionChecker>();
          services.AddTransient<IConditionChecker, PathConditionChecker>();
          services.AddTransient<IConditionChecker, QueryStringConditionChecker>();

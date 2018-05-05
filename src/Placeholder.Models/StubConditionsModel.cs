@@ -1,4 +1,5 @@
-﻿using YamlDotNet.Serialization;
+﻿using System.Collections.Generic;
+using YamlDotNet.Serialization;
 
 namespace Placeholder.Models
 {
@@ -9,5 +10,8 @@ namespace Placeholder.Models
 
       [YamlMember(Alias = "url")]
       public StubUrlConditionModel Url { get; set; }
+
+      [YamlMember(Alias = "body")]
+      public IEnumerable<string> Body { get; set; }
    }
 }

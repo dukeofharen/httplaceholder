@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Placeholder.Models;
@@ -24,7 +23,7 @@ namespace Placeholder.Implementation.Implementations
          _stubContainer = stubContainer;
       }
 
-      public async Task<ResponseModel> ExecuteRequestAsync()
+      public ResponseModel ExecuteRequest()
       {
          var conditionCheckers = ((IEnumerable<IConditionChecker>)_serviceProvider.GetServices(typeof(IConditionChecker))).ToArray();
          _logger.LogInformation($"Following conditions found: {string.Join(", ", conditionCheckers.Select(c => c.GetType().ToString()))}");
@@ -33,14 +32,15 @@ namespace Placeholder.Implementation.Implementations
          foreach (var checker in conditionCheckers)
          {
             _logger.LogInformation($"Checking request with condition '{checker.GetType()}'.");
-            stubIds = (await checker.ValidateAsync(stubIds)).ToArray();
-            if (stubIds == null)
+            var validationResult = checker.Validate(stubIds)?.ToArray();
+            if (validationResult == null)
             {
                // If the resulting list is null, it means the check wasn't executed because it wasn't configured. Continue with the next condition.
                _logger.LogInformation($"'{nameof(stubIds)}' array for condition '{checker.GetType()}' was null, which means the condition was not executed and not configured.");
                continue;
             }
 
+            stubIds = validationResult;
             if (!stubIds.Any())
             {
                // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
