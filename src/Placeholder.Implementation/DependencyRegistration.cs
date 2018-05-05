@@ -21,6 +21,7 @@ namespace Placeholder.Implementation
 
          // Condition checkers
          services.AddTransient<IConditionChecker, BodyConditionChecker>();
+         services.AddTransient<IConditionChecker, HeaderConditionChecker>();
          services.AddTransient<IConditionChecker, MethodConditionChecker>();
          services.AddTransient<IConditionChecker, PathConditionChecker>();
          services.AddTransient<IConditionChecker, QueryStringConditionChecker>();

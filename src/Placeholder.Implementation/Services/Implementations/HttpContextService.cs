@@ -36,5 +36,11 @@ namespace Placeholder.Implementation.Services.Implementations
          return _httpContext.Request.Query
             .ToDictionary(q => q.Key, q => q.Value.ToString());
       }
+
+      public IDictionary<string, string> GetHeaders()
+      {
+         return _httpContext.Request.Headers
+            .ToDictionary(h => h.Key, h => h.Value.ToString());
+      }
    }
 }

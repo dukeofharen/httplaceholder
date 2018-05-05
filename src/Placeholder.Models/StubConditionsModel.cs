@@ -13,5 +13,8 @@ namespace Placeholder.Models
 
       [YamlMember(Alias = "body")]
       public IEnumerable<string> Body { get; set; }
+
+      [YamlMember(Alias = "headers")]
+      public IDictionary<string, string> Headers { get; set; }
    }
 }

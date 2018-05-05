@@ -11,5 +11,7 @@ namespace Placeholder.Implementation.Services
       string GetBody();
 
       IDictionary<string, string> GetQueryStringDictionary();
+
+      IDictionary<string, string> GetHeaders();
    }
 }
