@@ -37,7 +37,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public async Task MethodConditionChecker_ValidateAsync_NoStubsFound_ShouldReturnNull()
+      public void MethodConditionChecker_ValidateAsync_NoStubsFound_ShouldReturnNull()
       {
          // arrange
          var stubIds = new string[0];
@@ -46,14 +46,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(new StubModel[0]);
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.IsNull(result);
       }
 
       [TestMethod]
-      public async Task MethodConditionChecker_ValidateAsync_StubsFound_ButNoMethodConditions_ShouldReturnNull()
+      public void MethodConditionChecker_ValidateAsync_StubsFound_ButNoMethodConditions_ShouldReturnNull()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -78,14 +78,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             });
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.IsNull(result);
       }
 
       [TestMethod]
-      public async Task MethodConditionChecker_ValidateAsync_StubsFound_WrongMethod_ShouldReturnEmptyList()
+      public void MethodConditionChecker_ValidateAsync_StubsFound_WrongMethod_ShouldReturnEmptyList()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -107,14 +107,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns("GET");
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(0, result.Count());
       }
 
       [TestMethod]
-      public async Task MethodConditionChecker_ValidateAsync_StubsFound_HappyFlow()
+      public void MethodConditionChecker_ValidateAsync_StubsFound_HappyFlow()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -137,7 +137,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns("GET");
 
          // act
-         var result = (await _checker.Validate(stubIds)).ToArray();
+         var result = (_checker.Validate(stubIds)).ToArray();
 
          // assert
          Assert.AreEqual(1, result.Length);

@@ -37,7 +37,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public async Task PathConditionChecker_ValidateAsync_NoStubsFound_ShouldReturnNull()
+      public void PathConditionChecker_ValidateAsync_NoStubsFound_ShouldReturnNull()
       {
          // arrange
          var stubIds = new string[0];
@@ -46,14 +46,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(new StubModel[0]);
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.IsNull(result);
       }
 
       [TestMethod]
-      public async Task PathConditionChecker_ValidateAsync_StubsFound_ButNoPathConditions_ShouldReturnNull()
+      public void PathConditionChecker_ValidateAsync_StubsFound_ButNoPathConditions_ShouldReturnNull()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -74,14 +74,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             });
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.IsNull(result);
       }
 
       [TestMethod]
-      public async Task PathConditionChecker_ValidateAsync_StubsFound_WrongPath_ShouldReturnEmptyList()
+      public void PathConditionChecker_ValidateAsync_StubsFound_WrongPath_ShouldReturnEmptyList()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -107,14 +107,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(path);
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(0, result.Count());
       }
 
       [TestMethod]
-      public async Task PathConditionChecker_ValidateAsync_StubsFound_HappyFlow_CompleteUrl()
+      public void PathConditionChecker_ValidateAsync_StubsFound_HappyFlow_CompleteUrl()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -141,7 +141,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(path);
 
          // act
-         var result = (await _checker.Validate(stubIds)).ToArray();
+         var result = (_checker.Validate(stubIds)).ToArray();
 
          // assert
          Assert.AreEqual(1, result.Length);
@@ -149,7 +149,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public async Task PathConditionChecker_ValidateAsync_StubsFound_HappyFlow_Regex()
+      public void PathConditionChecker_ValidateAsync_StubsFound_HappyFlow_Regex()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -176,7 +176,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(path);
 
          // act
-         var result = (await _checker.Validate(stubIds)).ToArray();
+         var result = (_checker.Validate(stubIds)).ToArray();
 
          // assert
          Assert.AreEqual(1, result.Length);

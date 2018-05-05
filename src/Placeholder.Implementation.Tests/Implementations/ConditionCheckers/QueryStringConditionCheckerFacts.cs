@@ -38,7 +38,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public async Task QueryStringConditionChecker_ValidateAsync_NoStubsFound_ShouldReturnNull()
+      public void QueryStringConditionChecker_ValidateAsync_NoStubsFound_ShouldReturnNull()
       {
          // arrange
          var stubIds = new string[0];
@@ -47,14 +47,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(new StubModel[0]);
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.IsNull(result);
       }
 
       [TestMethod]
-      public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_ButNoQueryStringConditions_ShouldReturnNull()
+      public void QueryStringConditionChecker_ValidateAsync_StubsFound_ButNoQueryStringConditions_ShouldReturnNull()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -75,14 +75,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             });
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.IsNull(result);
       }
 
       [TestMethod]
-      public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_AllQueryStringsIncorrect_ShouldReturnEmptyList()
+      public void QueryStringConditionChecker_ValidateAsync_StubsFound_AllQueryStringsIncorrect_ShouldReturnEmptyList()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -116,14 +116,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(0, result.Count());
       }
 
       [TestMethod]
-      public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_OneQueryStringValueMissing_ShouldReturnEmptyList()
+      public void QueryStringConditionChecker_ValidateAsync_StubsFound_OneQueryStringValueMissing_ShouldReturnEmptyList()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -156,14 +156,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(0, result.Count());
       }
 
       [TestMethod]
-      public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_OnlyOneQueryStringCorrect_ShouldReturnEmptyList()
+      public void QueryStringConditionChecker_ValidateAsync_StubsFound_OnlyOneQueryStringCorrect_ShouldReturnEmptyList()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -197,14 +197,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(0, result.Count());
       }
 
       [TestMethod]
-      public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_HappyFlow_FullText()
+      public void QueryStringConditionChecker_ValidateAsync_StubsFound_HappyFlow_FullText()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -238,14 +238,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(1, result.Count());
       }
 
       [TestMethod]
-      public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_HappyFlow_Regex()
+      public void QueryStringConditionChecker_ValidateAsync_StubsFound_HappyFlow_Regex()
       {
          // arrange
          var stubIds = new[] { "1", "2" };
@@ -279,7 +279,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = await _checker.Validate(stubIds);
+         var result = _checker.Validate(stubIds);
 
          // assert
          Assert.AreEqual(1, result.Count());
