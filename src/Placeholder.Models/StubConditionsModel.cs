@@ -16,5 +16,8 @@ namespace Placeholder.Models
 
       [YamlMember(Alias = "headers")]
       public IDictionary<string, string> Headers { get; set; }
+
+      [YamlMember(Alias = "xpath")]
+      public IEnumerable<StubXpathModel> Xpath { get; set; }
    }
 }

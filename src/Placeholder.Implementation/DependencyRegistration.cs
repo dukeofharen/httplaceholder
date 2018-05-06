@@ -25,6 +25,7 @@ namespace Placeholder.Implementation
          services.AddTransient<IConditionChecker, MethodConditionChecker>();
          services.AddTransient<IConditionChecker, PathConditionChecker>();
          services.AddTransient<IConditionChecker, QueryStringConditionChecker>();
+         services.AddTransient<IConditionChecker, XPathConditionChecker>();
       }
    }
 }
