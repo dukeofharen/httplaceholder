@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.Implementation.Implementations.ConditionCheckers;
 using Placeholder.Implementation.Services;
 using Placeholder.Models;
+using Placeholder.Models.Enums;
 
 namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
 {
@@ -14,7 +13,6 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
    {
       private Mock<ILogger<MethodConditionChecker>> _loggerMock;
       private Mock<IHttpContextService> _httpContextServiceMock;
-      private Mock<IStubManager> _stubContainerMock;
       private MethodConditionChecker _checker;
 
       [TestInitialize]
@@ -22,126 +20,81 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       {
          _loggerMock = new Mock<ILogger<MethodConditionChecker>>();
          _httpContextServiceMock = new Mock<IHttpContextService>();
-         _stubContainerMock = new Mock<IStubManager>();
          _checker = new MethodConditionChecker(
             _loggerMock.Object,
-            _httpContextServiceMock.Object,
-            _stubContainerMock.Object);
+            _httpContextServiceMock.Object);
       }
 
       [TestCleanup]
       public void Cleanup()
       {
          _httpContextServiceMock.VerifyAll();
-         _stubContainerMock.VerifyAll();
       }
 
       [TestMethod]
-      public void MethodConditionChecker_ValidateAsync_NoStubsFound_ShouldReturnNull()
+      public void MethodConditionChecker_ValidateAsync_StubsFound_ButNoMethodConditions_ShouldReturnNotExecuted()
       {
          // arrange
-         var stubIds = new string[0];
-         _stubContainerMock
-            .Setup(m => m.GetStubsByIds(stubIds))
-            .Returns(new StubModel[0]);
+         var stub = new StubModel
+         {
+            Conditions = new StubConditionsModel
+            {
+               Method = null
+            }
+         };
 
          // act
-         var result = _checker.Validate(stubIds);
+         var result = _checker.Validate(stub);
 
          // assert
-         Assert.IsNull(result);
+         Assert.AreEqual(ConditionValidationType.NotExecuted, result);
       }
 
       [TestMethod]
-      public void MethodConditionChecker_ValidateAsync_StubsFound_ButNoMethodConditions_ShouldReturnNull()
+      public void MethodConditionChecker_ValidateAsync_StubsFound_WrongMethod_ShouldReturnInvalid()
       {
          // arrange
-         var stubIds = new[] { "1", "2" };
-         _stubContainerMock
-            .Setup(m => m.GetStubsByIds(stubIds))
-            .Returns(new[]
+         var stub = new StubModel
+         {
+            Conditions = new StubConditionsModel
             {
-               new StubModel
-               {
-                  Conditions = new StubConditionsModel
-                  {
-                     Method = null
-                  }
-               },
-               new StubModel
-               {
-                  Conditions = new StubConditionsModel
-                  {
-                     Method = null
-                  }
-               }
-            });
-
-         // act
-         var result = _checker.Validate(stubIds);
-
-         // assert
-         Assert.IsNull(result);
-      }
-
-      [TestMethod]
-      public void MethodConditionChecker_ValidateAsync_StubsFound_WrongMethod_ShouldReturnEmptyList()
-      {
-         // arrange
-         var stubIds = new[] { "1", "2" };
-         _stubContainerMock
-            .Setup(m => m.GetStubsByIds(stubIds))
-            .Returns(new[]
-            {
-               new StubModel
-               {
-                  Conditions = new StubConditionsModel
-                  {
-                     Method = "POST"
-                  }
-               }
-            });
+               Method = "POST"
+            }
+         };
 
          _httpContextServiceMock
             .Setup(m => m.Method)
             .Returns("GET");
 
          // act
-         var result = _checker.Validate(stubIds);
+         var result = _checker.Validate(stub);
 
          // assert
-         Assert.AreEqual(0, result.Count());
+         Assert.AreEqual(ConditionValidationType.Invalid, result);
       }
 
       [TestMethod]
       public void MethodConditionChecker_ValidateAsync_StubsFound_HappyFlow()
       {
          // arrange
-         var stubIds = new[] { "1", "2" };
-         _stubContainerMock
-            .Setup(m => m.GetStubsByIds(stubIds))
-            .Returns(new[]
+         var stub = new StubModel
+         {
+            Id = "2",
+            Conditions = new StubConditionsModel
             {
-               new StubModel
-               {
-                  Id = "2",
-                  Conditions = new StubConditionsModel
-                  {
-                     Method = "GET"
-                  }
-               }
-            });
+               Method = "GET"
+            }
+         };
 
          _httpContextServiceMock
             .Setup(m => m.Method)
             .Returns("GET");
 
          // act
-         var result = (_checker.Validate(stubIds)).ToArray();
+         var result = _checker.Validate(stub);
 
          // assert
-         Assert.AreEqual(1, result.Length);
-         Assert.AreEqual("2", result.Single());
+         Assert.AreEqual(ConditionValidationType.Valid, result);
       }
    }
 }

@@ -6,6 +6,7 @@ using Moq;
 using Placeholder.Implementation.Implementations.ConditionCheckers;
 using Placeholder.Implementation.Services;
 using Placeholder.Models;
+using Placeholder.Models.Enums;
 
 namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
 {
@@ -14,7 +15,6 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
    {
       private Mock<ILogger<HeaderConditionChecker>> _loggerMock;
       private Mock<IHttpContextService> _httpContextServiceMock;
-      private Mock<IStubManager> _stubContainerMock;
       private HeaderConditionChecker _checker;
 
       [TestInitialize]
@@ -22,210 +22,161 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       {
          _loggerMock = new Mock<ILogger<HeaderConditionChecker>>();
          _httpContextServiceMock = new Mock<IHttpContextService>();
-         _stubContainerMock = new Mock<IStubManager>();
          _checker = new HeaderConditionChecker(
             _loggerMock.Object,
-            _httpContextServiceMock.Object,
-            _stubContainerMock.Object);
+            _httpContextServiceMock.Object);
       }
 
       [TestCleanup]
       public void Cleanup()
       {
          _httpContextServiceMock.VerifyAll();
-         _stubContainerMock.VerifyAll();
       }
 
       [TestMethod]
-      public void HeaderConditionCheckerValidateAsync_NoStubsFound_ShouldReturnNull()
+      public void HeaderConditionCheckerValidateAsync_StubsFound_ButNoQueryStringConditions_ShouldReturnNotExecuted()
       {
          // arrange
-         var stubIds = new string[0];
-         _stubContainerMock
-            .Setup(m => m.GetStubsByIds(stubIds))
-            .Returns(new StubModel[0]);
-
-         // act
-         var result = _checker.Validate(stubIds);
-
-         // assert
-         Assert.IsNull(result);
-      }
-
-      [TestMethod]
-      public void HeaderConditionCheckerValidateAsync_StubsFound_ButNoQueryStringConditions_ShouldReturnNull()
-      {
-         // arrange
-         var stubIds = new[] { "1", "2" };
-         _stubContainerMock
-            .Setup(m => m.GetStubsByIds(stubIds))
-            .Returns(new[]
+         var stub = new StubModel
+         {
+            Conditions = new StubConditionsModel
             {
-               new StubModel
-               {
-                  Conditions = new StubConditionsModel
-                  {
-                     Headers = null
-                  }
-               }
-            });
+               Headers = null
+            }
+         };
 
          // act
-         var result = _checker.Validate(stubIds);
+         var result = _checker.Validate(stub);
 
          // assert
-         Assert.IsNull(result);
+         Assert.AreEqual(ConditionValidationType.NotExecuted, result);
       }
 
       [TestMethod]
-      public void HeaderConditionCheckerValidateAsync_StubsFound_AllHeadersIncorrect_ShouldReturnEmptyList()
+      public void HeaderConditionCheckerValidateAsync_StubsFound_AllHeadersIncorrect_ShouldReturnInvalid()
       {
          // arrange
-         var stubIds = new[] { "1", "2" };
          var headers = new Dictionary<string, string>
          {
             { "X-Api-Key", "1" },
             { "X-Another-Secret", "2" }
          };
-         _stubContainerMock
-            .Setup(m => m.GetStubsByIds(stubIds))
-            .Returns(new[]
+         var stub = new StubModel
+         {
+            Conditions = new StubConditionsModel
             {
-               new StubModel
+               Headers = new Dictionary<string, string>
                {
-                  Conditions = new StubConditionsModel
-                  {
-                     Headers = new Dictionary<string, string>
-                     {
-                        { "X-Api-Key", "2" },
-                        { "X-Another-Secret", "3" }
-                     }
-                  }
+                  {"X-Api-Key", "2"},
+                  {"X-Another-Secret", "3"}
                }
-            });
+            }
+         };
 
          _httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stubIds);
+         var result = _checker.Validate(stub);
 
          // assert
-         Assert.AreEqual(0, result.Count());
+         Assert.AreEqual(ConditionValidationType.Invalid, result);
       }
 
       [TestMethod]
-      public void HeaderConditionCheckerValidateAsync_StubsFound_OneHeaderValueMissing_ShouldReturnEmptyList()
+      public void HeaderConditionCheckerValidateAsync_StubsFound_OneHeaderValueMissing_ShouldReturnInvalid()
       {
          // arrange
-         var stubIds = new[] { "1", "2" };
          var headers = new Dictionary<string, string>
          {
             { "X-Api-Key", "1" },
             { "X-Another-Secret", "2" }
          };
-         _stubContainerMock
-            .Setup(m => m.GetStubsByIds(stubIds))
-            .Returns(new[]
+         var stub = new StubModel
+         {
+            Conditions = new StubConditionsModel
             {
-               new StubModel
+               Headers = new Dictionary<string, string>
                {
-                  Conditions = new StubConditionsModel
-                  {
-                     Headers = new Dictionary<string, string>
-                     {
-                        { "X-Api-Key", "2" }
-                     }
-                  }
+                  {"X-Api-Key", "2"}
                }
-            });
+            }
+         };
 
          _httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stubIds);
+         var result = _checker.Validate(stub);
 
          // assert
-         Assert.AreEqual(0, result.Count());
+         Assert.AreEqual(ConditionValidationType.Invalid, result);
       }
 
       [TestMethod]
-      public void HeaderConditionCheckerValidateAsync_StubsFound_OnlyOneHeaderCorrect_ShouldReturnEmptyList()
+      public void HeaderConditionCheckerValidateAsync_StubsFound_OnlyOneHeaderCorrect_ShouldReturnInvalid()
       {
          // arrange
-         var stubIds = new[] { "1", "2" };
          var headers = new Dictionary<string, string>
          {
             { "X-Api-Key", "1" },
             { "X-Another-Secret", "2" }
          };
-         _stubContainerMock
-            .Setup(m => m.GetStubsByIds(stubIds))
-            .Returns(new[]
+         var stub = new StubModel
+         {
+            Conditions = new StubConditionsModel
             {
-               new StubModel
+               Headers = new Dictionary<string, string>
                {
-                  Conditions = new StubConditionsModel
-                  {
-                     Headers = new Dictionary<string, string>
-                     {
-                        { "X-Api-Key", "1" },
-                        { "X-Another-Secret", "3" }
-                     }
-                  }
+                  {"X-Api-Key", "1"},
+                  {"X-Another-Secret", "3"}
                }
-            });
+            }
+         };
 
          _httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stubIds);
+         var result = _checker.Validate(stub);
 
          // assert
-         Assert.AreEqual(0, result.Count());
+         Assert.AreEqual(ConditionValidationType.Invalid, result);
       }
 
       [TestMethod]
       public void HeaderConditionCheckerValidateAsync_StubsFound_HappyFlow()
       {
          // arrange
-         var stubIds = new[] { "1", "2" };
          var headers = new Dictionary<string, string>
          {
             { "X-Api-Key", "123abc" },
             { "X-Another-Secret", "blaaaaah 123" }
          };
-         _stubContainerMock
-            .Setup(m => m.GetStubsByIds(stubIds))
-            .Returns(new[]
+         var stub = new StubModel
+         {
+            Conditions = new StubConditionsModel
             {
-               new StubModel
+               Headers = new Dictionary<string, string>
                {
-                  Conditions = new StubConditionsModel
-                  {
-                    Headers = new Dictionary<string, string>
-                    {
-                       { "X-Api-Key", "123abc" },
-                       { "X-Another-Secret", @"\bblaaaaah\b" }
-                    }
-                  }
+                  {"X-Api-Key", "123abc"},
+                  {"X-Another-Secret", @"\bblaaaaah\b"}
                }
-            });
+            }
+         };
 
          _httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stubIds);
+         var result = _checker.Validate(stub);
 
          // assert
-         Assert.AreEqual(1, result.Count());
+         Assert.AreEqual(ConditionValidationType.Valid, result);
       }
    }
 }
