@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Placeholder.Implementation.Services;
+using Placeholder.Models;
+using Placeholder.Models.Enums;
 
 namespace Placeholder.Implementation.Implementations.ConditionCheckers
 {
@@ -9,44 +11,34 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
    {
       private readonly ILogger<MethodConditionChecker> _logger;
       private readonly IHttpContextService _httpContextService;
-      private readonly IStubManager _stubContainer;
 
       public MethodConditionChecker(
          ILogger<MethodConditionChecker> logger,
-         IHttpContextService httpContextService,
-         IStubManager stubContainer)
+         IHttpContextService httpContextService)
       {
          _logger = logger;
          _httpContextService = httpContextService;
-         _stubContainer = stubContainer;
       }
 
-      public IEnumerable<string> Validate(IEnumerable<string> stubIds)
+      public ConditionValidationType Validate(StubModel stub)
       {
-         List<string> result = null;
-         var stubs = _stubContainer.GetStubsByIds(stubIds);
-         foreach (var stub in stubs)
+         var result = ConditionValidationType.NotExecuted;
+         string methodCondition = stub.Conditions?.Method;
+         if (!string.IsNullOrEmpty(methodCondition))
          {
-            string methodCondition = stub.Conditions?.Method;
-            if (!string.IsNullOrEmpty(methodCondition))
-            {
-               _logger.LogInformation($"Method condition found for stub '{stub.Id}': '{methodCondition}'");
-               if (result == null)
-               {
-                  result = new List<string>();
-               }
+            _logger.LogInformation($"Method condition found for stub '{stub.Id}': '{methodCondition}'");
 
-               string method = _httpContextService.Method;
-               if (string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase))
-               {
-                  // The path matches the provided regex. Add the stub ID to the resulting list.
-                  _logger.LogInformation($"Condition '{methodCondition}' passed for request.");
-                  result.Add(stub.Id);
-               }
-               else
-               {
-                  _logger.LogInformation($"Condition '{methodCondition}' did not pass for request.");
-               }
+            string method = _httpContextService.Method;
+            if (string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase))
+            {
+               // The path matches the provided regex. Add the stub ID to the resulting list.
+               _logger.LogInformation($"Condition '{methodCondition}' passed for request.");
+               result = ConditionValidationType.Valid;
+            }
+            else
+            {
+               _logger.LogInformation($"Condition '{methodCondition}' did not pass for request.");
+               result = ConditionValidationType.Invalid;
             }
          }
 

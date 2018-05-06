@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Placeholder.Models;
+using Placeholder.Models.Enums;
 
 namespace Placeholder.Implementation
 {
    public interface IConditionChecker
    {
-      IEnumerable<string> Validate(IEnumerable<string> stubIds);
+     ConditionValidationType Validate(StubModel stub);
    }
 }

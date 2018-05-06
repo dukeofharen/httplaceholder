@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Placeholder.Models;
+using Placeholder.Models.Enums;
 
 namespace Placeholder.Implementation.Implementations
 {
@@ -28,24 +29,47 @@ namespace Placeholder.Implementation.Implementations
          var conditionCheckers = ((IEnumerable<IConditionChecker>)_serviceProvider.GetServices(typeof(IConditionChecker))).ToArray();
          _logger.LogInformation($"Following conditions found: {string.Join(", ", conditionCheckers.Select(c => c.GetType().ToString()))}");
 
-         string[] stubIds = null;
-         foreach (var checker in conditionCheckers)
+         // TODO
+         // - Loop through all stubs instead of all checkers.
+         // - Pass stub to checker class.
+         // - Checker class can return Valid, Invalid or NotExecuted.
+         // - Valid; continue. Invalid; break and check next stub. NotExecuted; continue with next checker.
+
+         var stubIds = new List<string>();
+         var stubs = _stubContainer.Stubs;
+         foreach (var stub in stubs)
          {
-            _logger.LogInformation($"Checking request with condition '{checker.GetType()}'.");
-            var validationResult = checker.Validate(stubIds)?.ToArray();
-            if (validationResult == null)
+            var validationResults = new List<ConditionValidationType>();
+            _logger.LogInformation($"Validating conditions for stub '{stub.Id}'.");
+            foreach (var checker in conditionCheckers)
             {
-               // If the resulting list is null, it means the check wasn't executed because it wasn't configured. Continue with the next condition.
-               _logger.LogInformation($"'{nameof(stubIds)}' array for condition '{checker.GetType()}' was null, which means the condition was not executed and not configured.");
-               continue;
+               _logger.LogInformation($"Executing condition '{checker.GetType()}'.");
+               var validationResult = checker.Validate(stub);
+               validationResults.Add(validationResult);
+               if (validationResult == ConditionValidationType.NotExecuted)
+               {
+                  // If the resulting list is null, it means the check wasn't executed because it wasn't configured. Continue with the next condition.
+                  _logger.LogInformation("The condition was not executed and not configured.");
+                  continue;
+               }
+
+               if (validationResult == ConditionValidationType.Invalid)
+               {
+                  _logger.LogInformation("The condition did not pass.");
+               }
             }
 
-            stubIds = validationResult;
-            if (!stubIds.Any())
+            if (validationResults.All(r => r != ConditionValidationType.Invalid))
             {
-               // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
-               throw new Exception($"The '{nameof(stubIds)}' array for condition was empty, which means the condition was configured but the request did not pass.");
+               _logger.LogInformation($"All conditions passed for stub '{stub.Id}'.");
+               stubIds.Add(stub.Id);
             }
+         }
+
+         if (!stubIds.Any())
+         {
+            // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
+            throw new Exception($"The '{nameof(stubIds)}' array for condition was empty, which means the condition was configured but the request did not pass.");
          }
 
          if (stubIds == null)
@@ -54,17 +78,17 @@ namespace Placeholder.Implementation.Implementations
             throw new Exception($"'{nameof(stubIds)}' was null, which means no condition was passed or no conditions are configured.");
          }
 
-         if (stubIds.Length > 1)
+         if (stubIds.Count > 1)
          {
             // Multiple conditions found; don't know which one to choose. Throw an exception.
-            throw new Exception($"'{nameof(stubIds)}' contains '{stubIds.Length}' stub IDs, which means no choice can be made.");
+            throw new Exception($"'{nameof(stubIds)}' contains '{stubIds.Count}' stub IDs, which means no choice can be made.");
          }
 
          string finalStubId = stubIds.Single();
 
          // Retrieve stub and parse response.
-         var stub = _stubContainer.GetStubById(finalStubId);
-         if (stub != null)
+         var finalStub = _stubContainer.GetStubById(finalStubId);
+         if (finalStub != null)
          {
             _logger.LogInformation($"Stub with ID '{finalStubId}' found; returning response.");
             var response = new ResponseModel
@@ -72,13 +96,13 @@ namespace Placeholder.Implementation.Implementations
                StatusCode = 200
             };
 
-            response.StatusCode = stub.Response?.StatusCode ?? 200;
+            response.StatusCode = finalStub.Response?.StatusCode ?? 200;
             _logger.LogInformation($"Found HTTP status code '{response.StatusCode}'.");
 
-            response.Body = stub.Response?.Text;
+            response.Body = finalStub.Response?.Text;
             _logger.LogInformation($"Found body '{response.Body}'");
 
-            var stubResponseHeaders = stub.Response?.Headers;
+            var stubResponseHeaders = finalStub.Response?.Headers;
             if (stubResponseHeaders != null)
             {
                foreach (var header in stubResponseHeaders)
