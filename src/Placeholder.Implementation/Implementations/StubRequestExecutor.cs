@@ -29,40 +29,41 @@ namespace Placeholder.Implementation.Implementations
          var conditionCheckers = ((IEnumerable<IConditionChecker>)_serviceProvider.GetServices(typeof(IConditionChecker))).ToArray();
          _logger.LogInformation($"Following conditions found: {string.Join(", ", conditionCheckers.Select(c => c.GetType().ToString()))}");
 
-         // TODO
-         // - Loop through all stubs instead of all checkers.
-         // - Pass stub to checker class.
-         // - Checker class can return Valid, Invalid or NotExecuted.
-         // - Valid; continue. Invalid; break and check next stub. NotExecuted; continue with next checker.
-
          var stubIds = new List<string>();
          var stubs = _stubContainer.Stubs;
          foreach (var stub in stubs)
          {
-            var validationResults = new List<ConditionValidationType>();
-            _logger.LogInformation($"Validating conditions for stub '{stub.Id}'.");
-            foreach (var checker in conditionCheckers)
+            try
             {
-               _logger.LogInformation($"Executing condition '{checker.GetType()}'.");
-               var validationResult = checker.Validate(stub);
-               validationResults.Add(validationResult);
-               if (validationResult == ConditionValidationType.NotExecuted)
+               var validationResults = new List<ConditionValidationType>();
+               _logger.LogInformation($"Validating conditions for stub '{stub.Id}'.");
+               foreach (var checker in conditionCheckers)
                {
-                  // If the resulting list is null, it means the check wasn't executed because it wasn't configured. Continue with the next condition.
-                  _logger.LogInformation("The condition was not executed and not configured.");
-                  continue;
+                  _logger.LogInformation($"Executing condition '{checker.GetType()}'.");
+                  var validationResult = checker.Validate(stub);
+                  validationResults.Add(validationResult);
+                  if (validationResult == ConditionValidationType.NotExecuted)
+                  {
+                     // If the resulting list is null, it means the check wasn't executed because it wasn't configured. Continue with the next condition.
+                     _logger.LogInformation("The condition was not executed and not configured.");
+                     continue;
+                  }
+
+                  if (validationResult == ConditionValidationType.Invalid)
+                  {
+                     _logger.LogInformation("The condition did not pass.");
+                  }
                }
 
-               if (validationResult == ConditionValidationType.Invalid)
+               if (validationResults.All(r => r != ConditionValidationType.Invalid))
                {
-                  _logger.LogInformation("The condition did not pass.");
+                  _logger.LogInformation($"All conditions passed for stub '{stub.Id}'.");
+                  stubIds.Add(stub.Id);
                }
             }
-
-            if (validationResults.All(r => r != ConditionValidationType.Invalid))
+            catch (Exception e)
             {
-               _logger.LogInformation($"All conditions passed for stub '{stub.Id}'.");
-               stubIds.Add(stub.Id);
+               _logger.LogInformation($"Exception thrown while executing condition checks for stub '{stub.Id}': {e}");
             }
          }
 

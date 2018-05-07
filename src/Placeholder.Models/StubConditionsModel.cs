@@ -19,5 +19,8 @@ namespace Placeholder.Models
 
       [YamlMember(Alias = "xpath")]
       public IEnumerable<StubXpathModel> Xpath { get; set; }
+
+      [YamlMember(Alias = "jsonPath")]
+      public IEnumerable<string> JsonPath { get; set; }
    }
 }

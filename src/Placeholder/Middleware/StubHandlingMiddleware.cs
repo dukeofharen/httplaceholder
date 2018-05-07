@@ -29,7 +29,10 @@ namespace Placeholder.Middleware
             context.Response.Headers.Add(header.Key, header.Value);
          }
 
-         await context.Response.WriteAsync(response.Body);
+         if (response.Body != null)
+         {
+            await context.Response.WriteAsync(response.Body);
+         }
       }
    }
 }

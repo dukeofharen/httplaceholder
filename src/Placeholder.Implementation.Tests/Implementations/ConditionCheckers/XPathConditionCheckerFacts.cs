@@ -214,7 +214,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void XPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithoutRegex()
+      public void XPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithoutNamespaces()
       {
          // arrange
          string body = @"<?xml version=""1.0""?>
