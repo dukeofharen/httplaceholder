@@ -1,11 +1,13 @@
 ﻿namespace Placeholder.Models.Enums
 {
-    public enum ConditionValidationType
-    {
-       Valid,
+   public enum ConditionValidationType
+   {
+      NotSet,
 
-       Invalid,
+      Valid,
 
-       NotExecuted
-    }
+      Invalid,
+
+      NotExecuted
+   }
 }

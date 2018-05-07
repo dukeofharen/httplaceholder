@@ -8,20 +8,20 @@ using Placeholder.Models.Enums;
 
 namespace Placeholder.Implementation.Implementations
 {
-   internal class StubRequestExecutor : IStubRequestExecutor
+   public class StubRequestExecutor : IStubRequestExecutor
    {
       private readonly ILogger<StubRequestExecutor> _logger;
       private readonly IServiceProvider _serviceProvider;
-      private readonly IStubManager _stubContainer;
+      private readonly IStubManager _stubManager;
 
       public StubRequestExecutor(
          ILogger<StubRequestExecutor> logger,
          IServiceProvider serviceProvider,
-         IStubManager stubContainer)
+         IStubManager stubManager)
       {
          _logger = logger;
          _serviceProvider = serviceProvider;
-         _stubContainer = stubContainer;
+         _stubManager = stubManager;
       }
 
       public ResponseModel ExecuteRequest()
@@ -30,7 +30,7 @@ namespace Placeholder.Implementation.Implementations
          _logger.LogInformation($"Following conditions found: {string.Join(", ", conditionCheckers.Select(c => c.GetType().ToString()))}");
 
          var stubIds = new List<string>();
-         var stubs = _stubContainer.Stubs;
+         var stubs = _stubManager.Stubs;
          foreach (var stub in stubs)
          {
             try
@@ -55,7 +55,7 @@ namespace Placeholder.Implementation.Implementations
                   }
                }
 
-               if (validationResults.All(r => r != ConditionValidationType.Invalid))
+               if (validationResults.All(r => r != ConditionValidationType.Invalid) && validationResults.Any(r => r != ConditionValidationType.NotExecuted && r != ConditionValidationType.NotSet))
                {
                   _logger.LogInformation($"All conditions passed for stub '{stub.Id}'.");
                   stubIds.Add(stub.Id);
@@ -70,13 +70,7 @@ namespace Placeholder.Implementation.Implementations
          if (!stubIds.Any())
          {
             // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
-            throw new Exception($"The '{nameof(stubIds)}' array for condition was empty, which means the condition was configured but the request did not pass.");
-         }
-
-         if (stubIds == null)
-         {
-            // No conditions passed or no conditions configured. Throw an exception.
-            throw new Exception($"'{nameof(stubIds)}' was null, which means no condition was passed or no conditions are configured.");
+            throw new Exception($"The '{nameof(stubIds)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
          }
 
          if (stubIds.Count > 1)
@@ -88,7 +82,7 @@ namespace Placeholder.Implementation.Implementations
          string finalStubId = stubIds.Single();
 
          // Retrieve stub and parse response.
-         var finalStub = _stubContainer.GetStubById(finalStubId);
+         var finalStub = _stubManager.GetStubById(finalStubId);
          if (finalStub != null)
          {
             _logger.LogInformation($"Stub with ID '{finalStubId}' found; returning response.");
