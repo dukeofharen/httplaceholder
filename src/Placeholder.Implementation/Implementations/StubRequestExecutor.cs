@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Placeholder.Exceptions;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
 
@@ -70,13 +71,13 @@ namespace Placeholder.Implementation.Implementations
          if (!stubIds.Any())
          {
             // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
-            throw new Exception($"The '{nameof(stubIds)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
+            throw new RequestValidationException($"The '{nameof(stubIds)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
          }
 
          if (stubIds.Count > 1)
          {
             // Multiple conditions found; don't know which one to choose. Throw an exception.
-            throw new Exception($"'{nameof(stubIds)}' contains '{stubIds.Count}' stub IDs, which means no choice can be made.");
+            throw new RequestValidationException($"'{nameof(stubIds)}' contains '{stubIds.Count}' stub IDs, which means no choice can be made.");
          }
 
          string finalStubId = stubIds.Single();
@@ -110,7 +111,7 @@ namespace Placeholder.Implementation.Implementations
             return response;
          }
 
-         throw new Exception($"Stub with ID '{finalStubId}' unexpectedly not found.");
+         throw new RequestValidationException($"Stub with ID '{finalStubId}' unexpectedly not found.");
       }
    }
 }

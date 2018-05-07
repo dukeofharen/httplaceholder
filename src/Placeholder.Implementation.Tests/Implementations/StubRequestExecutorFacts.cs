@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Placeholder.Exceptions;
 using Placeholder.Implementation.Implementations;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
@@ -72,7 +73,7 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Returns(ConditionValidationType.Invalid);
 
          // act
-         var exception = Assert.ThrowsException<Exception>(() => _executor.ExecuteRequest());
+         var exception = Assert.ThrowsException<RequestValidationException>(() => _executor.ExecuteRequest());
 
          // assert
          Assert.IsTrue(exception.Message.Contains("and the request did not pass"));
@@ -90,7 +91,7 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Returns(ConditionValidationType.NotExecuted);
 
          // act
-         var exception = Assert.ThrowsException<Exception>(() => _executor.ExecuteRequest());
+         var exception = Assert.ThrowsException<RequestValidationException>(() => _executor.ExecuteRequest());
 
          // assert
          Assert.IsTrue(exception.Message.Contains("and the request did not pass"));
@@ -108,7 +109,7 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Returns(ConditionValidationType.Valid);
 
          // act
-         var exception = Assert.ThrowsException<Exception>(() => _executor.ExecuteRequest());
+         var exception = Assert.ThrowsException<RequestValidationException>(() => _executor.ExecuteRequest());
 
          // assert
          Assert.IsTrue(exception.Message.Contains("which means no choice can be made"));
@@ -135,7 +136,7 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Returns((StubModel)null);
 
          // act
-         var exception = Assert.ThrowsException<Exception>(() => _executor.ExecuteRequest());
+         var exception = Assert.ThrowsException<RequestValidationException>(() => _executor.ExecuteRequest());
 
          // assert
          Assert.IsTrue(exception.Message.Contains("unexpectedly not found"));
