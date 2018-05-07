@@ -1,0 +1,31 @@
+before_build:
+  - cmd: dotnet --version
+  - ps: Get-ChildItem -Path "C:\Program Files\dotnet\sdk"
+  - ps: scripts\patch_versions.ps1
+
+environment:
+  access_token:
+    secure: Zcoti9GsS4Y1t12qVcWhfDXMJLW8QLt4SdeQi8VKUFBtd/gVyWsZlLXDOHLP8i5U
+
+branches:
+  only:
+    - master
+    - dev
+
+build_script:
+  - ps: scripts\build.ps1
+
+test: off
+
+artifacts:
+  - path: src\Placeholder\bin\release\netcoreapp2.0\win10-x64\publish\placeholder_*.exe
+    name: armyknife-windows
+    type: zip
+
+deploy:
+  release: $(versionString)
+  provider: GitHub
+  auth_token: $(access_token)
+  draft: true
+  on:
+    branch: master
