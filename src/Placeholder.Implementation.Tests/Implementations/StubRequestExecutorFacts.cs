@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -179,7 +179,47 @@ namespace Placeholder.Implementation.Tests.Implementations
          Assert.IsNotNull(response);
          Assert.AreEqual(_stub2.Response.StatusCode, response.StatusCode);
          Assert.AreEqual("value", response.Headers["X-Header"]);
-         Assert.AreEqual(_stub2.Response.Text, response.Body);
+         Assert.AreEqual(_stub2.Response.Text, Encoding.UTF8.GetString(response.Body));
+      }
+
+      [TestMethod]
+      public void StubRequestExecutor_ExecuteRequest_HappyFlow_Base64Content()
+      {
+         // arrange
+         _conditionCheckerMock1
+            .Setup(m => m.Validate(_stub1))
+            .Returns(ConditionValidationType.Invalid);
+         _conditionCheckerMock2
+            .Setup(m => m.Validate(_stub1))
+            .Returns(ConditionValidationType.Invalid);
+         _conditionCheckerMock1
+            .Setup(m => m.Validate(_stub2))
+            .Returns(ConditionValidationType.Valid);
+         _conditionCheckerMock2
+            .Setup(m => m.Validate(_stub2))
+            .Returns(ConditionValidationType.Valid);
+         _stubManagerMock
+            .Setup(m => m.GetStubById(_stub2.Id))
+            .Returns(_stub2);
+
+         _stub2.Response = new StubResponseModel
+         {
+            Headers = new Dictionary<string, string>
+            {
+               {"X-Header", "value"}
+            },
+            StatusCode = 201,
+            Base64 = "VGhpcyBpcyB0aGUgY29udGVudCE="
+         };
+
+         // act
+         var response = _executor.ExecuteRequest();
+
+         // assert
+         Assert.IsNotNull(response);
+         Assert.AreEqual(_stub2.Response.StatusCode, response.StatusCode);
+         Assert.AreEqual("value", response.Headers["X-Header"]);
+         Assert.AreEqual("This is the content!", Encoding.UTF8.GetString(response.Body));
       }
    }
 }

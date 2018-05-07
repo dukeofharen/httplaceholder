@@ -48,7 +48,7 @@ namespace Placeholder.Middleware
 
          if (response.Body != null)
          {
-            await context.Response.WriteAsync(response.Body);
+            await context.Response.Body.WriteAsync(response.Body, 0, response.Body.Length);
          }
       }
    }

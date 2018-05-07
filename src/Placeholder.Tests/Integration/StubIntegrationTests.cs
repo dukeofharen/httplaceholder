@@ -351,5 +351,20 @@ namespace Placeholder.Tests.Integration
             Assert.IsTrue(string.IsNullOrEmpty(content));
          }
       }
+
+      [TestMethod]
+      public async Task StubIntegration_RegularGet_Base64Content_HappyFlow()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}image.jpg";
+
+         // act / assert
+         using (var response = await Client.GetAsync(url))
+         {
+            var content = await response.Content.ReadAsByteArrayAsync();
+            Assert.AreEqual(75583, content.Length);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+         }
+      }
    }
 }
