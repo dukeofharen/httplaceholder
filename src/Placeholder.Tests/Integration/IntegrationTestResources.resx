@@ -150,7 +150,7 @@
       path: \busers\b
     body:
       - \busername\b
-      - \bducowinterwerp\b
+      - \bjohn\b
     headers:
       X-Api-Key: 123abc
       X-Another-Secret: \bsjaaaaaak\b
@@ -186,7 +186,7 @@
     headers:
       Content-Type: application/soap+xml; charset=utf-8
     xpath:
-      - queryString: /a[text() = 'TEST']
+      - queryString: /object/a[text() = 'TEST']
   response:
     statusCode: 200
     text: &lt;result&gt;OK&lt;/result&gt;
