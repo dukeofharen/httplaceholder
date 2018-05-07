@@ -8,6 +8,8 @@ namespace Placeholder.Implementation.Services
 
       string Path { get; }
 
+      string DisplayUrl { get; }
+
       string GetBody();
 
       IDictionary<string, string> GetQueryStringDictionary();
