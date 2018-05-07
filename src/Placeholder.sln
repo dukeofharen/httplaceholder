@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Placeholder.Models", "Place
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{287482AF-3481-44F5-B4D3-F17589B9261C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Placeholder.Implementation.Tests", "Placeholder.Implementation.Tests\Placeholder.Implementation.Tests.csproj", "{4E944D08-C74B-4373-A247-55F9C7887552}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Placeholder.Implementation.Tests", "Placeholder.Implementation.Tests\Placeholder.Implementation.Tests.csproj", "{4E944D08-C74B-4373-A247-55F9C7887552}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Placeholder.Tests", "Placeholder.Tests\Placeholder.Tests.csproj", "{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,12 +43,17 @@ Global
 		{4E944D08-C74B-4373-A247-55F9C7887552}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E944D08-C74B-4373-A247-55F9C7887552}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E944D08-C74B-4373-A247-55F9C7887552}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4E944D08-C74B-4373-A247-55F9C7887552} = {287482AF-3481-44F5-B4D3-F17589B9261C}
+		{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E} = {287482AF-3481-44F5-B4D3-F17589B9261C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B07D99A8-ABA7-4A66-9BA2-37E64043B834}

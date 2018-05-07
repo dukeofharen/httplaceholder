@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="TestYamlFile" xml:space="preserve">
+    <value>- id: postcode-eelde
+  conditions:
+    method: GET
+    url:
+      path: \blocatieserver\/v3\/suggest\b
+      query:
+        q: 9761BP
+  response:
+    text: '{"response":{"numFound":23,"start":0,"maxScore":18.281225,"docs":[{"type":"postcode","weergavenaam":"Kluivingskampenweg, 9761BP Eelde","id":"pcd-bdae7c76ab31b82843622995d7fc6dc0","score":18.281225},{"type":"adres","weergavenaam":"Kluivingskampenweg 2, 9761BP Eelde","id":"adr-2cc23fc54b239a2950d51d5ebd53cc01","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 4, 9761BP Eelde","id":"adr-944da34116f6e8581fbd45bdd17b14e0","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 6, 9761BP Eelde","id":"adr-47ceeb1363d64573c99e2d4ad84d48c2","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 8, 9761BP Eelde","id":"adr-afc3f5b08ec70f826b96a6d7d6830d46","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 10, 9761BP Eelde","id":"adr-040f22edf264c14927e7f19cc25fc6e1","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 12, 9761BP Eelde","id":"adr-f2852527a3c4bcb42d94e54b8c6f9edb","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 14, 9761BP Eelde","id":"adr-fedda4e2e57cc1b5811bb144fe100b7b","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 16, 9761BP Eelde","id":"adr-98f0172560c106af255db0f184647b0a","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 18, 9761BP Eelde","id":"adr-7db80c25c0ba276bbc91809da561b25d","score":13.532177}]},"highlighting":{"pcd-bdae7c76ab31b82843622995d7fc6dc0":{"suggest":["Kluivingskampenweg, &lt;b&gt;9761BP&lt;/b&gt; Eelde"]},"adr-2cc23fc54b239a2950d51d5ebd53cc01":{"suggest":["Kluivingskampenweg 2, &lt;b&gt;9761BP&lt;/b&gt; Eelde"]},"adr-944da34116f6e8581fbd45bdd17b14e0":{"suggest":["Kluivingskampenweg 4, &lt;b&gt;9761BP&lt;/b&gt; Eelde"]},"adr-47ceeb1363d64573c99e2d4ad84d48c2":{"suggest":["Kluivingskampenweg 6, &lt;b&gt;9761BP&lt;/b&gt; Eelde"]},"adr-afc3f5b08ec70f826b96a6d7d6830d46":{"suggest":["Kluivingskampenweg 8, &lt;b&gt;9761BP&lt;/b&gt; Eelde"]},"adr-040f22edf264c14927e7f19cc25fc6e1":{"suggest":["Kluivingskampenweg 10, &lt;b&gt;9761BP&lt;/b&gt; Eelde"]},"adr-f2852527a3c4bcb42d94e54b8c6f9edb":{"suggest":["Kluivingskampenweg 12, &lt;b&gt;9761BP&lt;/b&gt; Eelde"]},"adr-fedda4e2e57cc1b5811bb144fe100b7b":{"suggest":["Kluivingskampenweg 14, &lt;b&gt;9761BP&lt;/b&gt; Eelde"]},"adr-98f0172560c106af255db0f184647b0a":{"suggest":["Kluivingskampenweg 16, &lt;b&gt;9761BP&lt;/b&gt; Eelde"]},"adr-7db80c25c0ba276bbc91809da561b25d":{"suggest":["Kluivingskampenweg 18, &lt;b&gt;9761BP&lt;/b&gt; Eelde"]}},"spellcheck":{"suggestions":[],"collations":[]}}'
+    headers:
+      Content-Type: application/json
+
+- id: postcode-haren
+  conditions:
+    method: GET
+    url:
+      path: \blocatieserver\/v3\/suggest\b
+      query:
+        q: 9752EM
+  response:
+    statusCode: 200
+    text: '{"response":{"numFound":18,"start":0,"maxScore":18.590792,"docs":[{"type":"postcode","weergavenaam":"Bilderdijklaan, 9752EM Haren Gn","id":"pcd-2c0f87a02efb7cae11067a7f25c19434","score":18.590792},{"type":"adres","weergavenaam":"Bilderdijklaan 1, 9752EM Haren Gn","id":"adr-f9c0d3f418f20e7f36a81c404b8a73ea","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 1-G01, 9752EM Haren Gn","id":"adr-7cdc662784bedebf4a7f8939a98958f0","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 1-G02, 9752EM Haren Gn","id":"adr-9de7f11bae558af42840b6787ece9408","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 3, 9752EM Haren Gn","id":"adr-131cb5feced7a09226c6f361c34897a8","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 5, 9752EM Haren Gn","id":"adr-31115f2857b203b9b4610cb9133071c2","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 7, 9752EM Haren Gn","id":"adr-0021ac3bbfc8191cdb6465cce446537e","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 9, 9752EM Haren Gn","id":"adr-6608d1ddbda149fcff9656ea6ebbe32c","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 11, 9752EM Haren Gn","id":"adr-0e1b780d12c8f950c374975dfd5cf981","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 13, 9752EM Haren Gn","id":"adr-b747faf3a7b15f8af48fc6d4b298a1e6","score":12.104727}]},"highlighting":{"pcd-2c0f87a02efb7cae11067a7f25c19434":{"suggest":["Bilderdijklaan, &lt;b&gt;9752EM&lt;/b&gt; Haren Gn"]},"adr-f9c0d3f418f20e7f36a81c404b8a73ea":{"suggest":["Bilderdijklaan 1, &lt;b&gt;9752EM&lt;/b&gt; Haren Gn"]},"adr-7cdc662784bedebf4a7f8939a98958f0":{"suggest":["Bilderdijklaan 1-G01, &lt;b&gt;9752EM&lt;/b&gt; Haren Gn"]},"adr-9de7f11bae558af42840b6787ece9408":{"suggest":["Bilderdijklaan 1-G02, &lt;b&gt;9752EM&lt;/b&gt; Haren Gn"]},"adr-131cb5feced7a09226c6f361c34897a8":{"suggest":["Bilderdijklaan 3, &lt;b&gt;9752EM&lt;/b&gt; Haren Gn"]},"adr-31115f2857b203b9b4610cb9133071c2":{"suggest":["Bilderdijklaan 5, &lt;b&gt;9752EM&lt;/b&gt; Haren Gn"]},"adr-0021ac3bbfc8191cdb6465cce446537e":{"suggest":["Bilderdijklaan 7, &lt;b&gt;9752EM&lt;/b&gt; Haren Gn"]},"adr-6608d1ddbda149fcff9656ea6ebbe32c":{"suggest":["Bilderdijklaan 9, &lt;b&gt;9752EM&lt;/b&gt; Haren Gn"]},"adr-0e1b780d12c8f950c374975dfd5cf981":{"suggest":["Bilderdijklaan 11, &lt;b&gt;9752EM&lt;/b&gt; Haren Gn"]},"adr-b747faf3a7b15f8af48fc6d4b298a1e6":{"suggest":["Bilderdijklaan 13, &lt;b&gt;9752EM&lt;/b&gt; Haren Gn"]}},"spellcheck":{"suggestions":[],"collations":[]}}'
+    headers:
+      Content-Type: application/json
+
+- id: add-user
+  conditions:
+    method: POST
+    url:
+      path: \busers\b
+    body:
+      - \busername\b
+      - \bducowinterwerp\b
+    headers:
+      X-Api-Key: 123abc
+      X-Another-Secret: \bsjaaaaaak\b
+  response:
+    statusCode: 200
+    text: '{"result": true}'
+    headers:
+      Content-Type: application/json
+
+- id: soap-xml
+  conditions:
+    method: POST
+    url:
+      path: /InStock
+    headers:
+      Content-Type: application/soap+xml; charset=utf-8
+    xpath:
+      - queryString: /soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'GOOG']
+        namespaces:
+          soap: http://www.w3.org/2003/05/soap-envelope
+          m: http://www.example.org/stock/Reddy
+  response:
+    statusCode: 200
+    text: &lt;result&gt;OK&lt;/result&gt;
+    headers:
+      Content-Type: text/xml
+
+- id: regular-xml
+  conditions:
+    method: POST
+    url:
+      path: /InStock
+    headers:
+      Content-Type: application/soap+xml; charset=utf-8
+    xpath:
+      - queryString: /a[text() = 'TEST']
+  response:
+    statusCode: 200
+    text: &lt;result&gt;OK&lt;/result&gt;
+    headers:
+      Content-Type: text/xml
+
+- id: jpath-test
+  conditions:
+    method: PUT
+    url:
+      path: /users
+    headers:
+      Content-Type: application/json
+    jsonPath:
+      - "$.phoneNumbers[?(@.type=='iPhone')]"
+  response:
+    statusCode: 204</value>
+  </data>
+</root>
