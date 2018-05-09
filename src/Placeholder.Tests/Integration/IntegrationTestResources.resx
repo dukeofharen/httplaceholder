@@ -205,6 +205,17 @@
   response:
     statusCode: 204
 
+- id: file
+  conditions:
+    method: GET
+    url:
+      path: /text.txt
+  response:
+    statusCode: 200
+    headers:
+      Content-Type: text/plain
+    file: text.txt
+
 - id: base64-image
   conditions:
     method: GET

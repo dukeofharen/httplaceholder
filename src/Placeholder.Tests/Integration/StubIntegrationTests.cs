@@ -385,5 +385,28 @@ namespace Placeholder.Tests.Integration
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
          }
       }
+
+      [TestMethod]
+      public async Task StubIntegration_RegularGet_File_HappyFlow()
+      {
+         // arrange
+         string fileContents = "File contents yo!";
+         string url = $"{TestServer.BaseAddress}text.txt";
+
+         _fileServiceMock
+            .Setup(m => m.FileExists("text.txt"))
+            .Returns(true);
+         _fileServiceMock
+            .Setup(m => m.ReadAllBytes("text.txt"))
+            .Returns(Encoding.UTF8.GetBytes(fileContents));
+
+         // act / assert
+         using (var response = await Client.GetAsync(url))
+         {
+            string content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(fileContents, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+         }
+      }
    }
 }

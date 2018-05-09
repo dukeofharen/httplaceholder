@@ -14,6 +14,9 @@ namespace Placeholder.Models
       [YamlMember(Alias = "base64")]
       public string Base64 { get; set; }
 
+      [YamlMember(Alias = "file")]
+      public string File { get; set; }
+
       [YamlMember(Alias = "headers")]
       public IDictionary<string, string> Headers { get; set; }
    }

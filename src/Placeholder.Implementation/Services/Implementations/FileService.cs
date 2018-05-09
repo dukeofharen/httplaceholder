@@ -10,6 +10,11 @@ namespace Placeholder.Implementation.Services.Implementations
           return File.ReadAllText(path);
        }
 
+       public byte[] ReadAllBytes(string path)
+       {
+          return File.ReadAllBytes(path);
+       }
+
        public bool FileExists(string path)
        {
           return File.Exists(path);
@@ -28,6 +33,11 @@ namespace Placeholder.Implementation.Services.Implementations
        public string[] GetFiles(string path, string searchPattern)
        {
           return Directory.GetFiles(path, searchPattern);
+       }
+
+       public string GetDirectoryPath(string filePath)
+       {
+          return Path.GetDirectoryName(filePath);
        }
     }
 }

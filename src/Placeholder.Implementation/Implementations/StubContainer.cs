@@ -73,5 +73,12 @@ namespace Placeholder.Implementation.Implementations
 
          return _stubs;
       }
+
+      public string GetStubFileDirectory()
+      {
+         string inputFileLocation = _configuration["inputFile"];
+         string directory = _fileService.GetDirectoryPath(inputFileLocation);
+         return directory;
+      }
    }
 }
