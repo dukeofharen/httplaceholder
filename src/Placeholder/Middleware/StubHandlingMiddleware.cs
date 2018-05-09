@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -51,7 +52,7 @@ namespace Placeholder.Middleware
             requestLogger.Log($"Request headers: {headerString}");
 
             context.Response.Clear();
-            context.Response.Headers.Add(correlationHeaderKey, correlation);
+            context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
             var response = _stubRequestExecutor.ExecuteRequest();
             context.Response.StatusCode = response.StatusCode;
             foreach (var header in response.Headers)
@@ -67,13 +68,13 @@ namespace Placeholder.Middleware
          catch (RequestValidationException e)
          {
             context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
-            context.Response.Headers.Add(correlationHeaderKey, correlation);
+            context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
             requestLogger.Log($"Request validation exception thrown: {e.Message}");
          }
          catch (Exception e)
          {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-            context.Response.Headers.Add(correlationHeaderKey, correlation);
+            context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
             requestLogger.Log($"Unexpected exception thrown: {e}");
          }
 
