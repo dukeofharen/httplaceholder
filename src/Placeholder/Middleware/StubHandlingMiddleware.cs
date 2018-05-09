@@ -33,9 +33,9 @@ namespace Placeholder.Middleware
 
       public async Task Invoke(HttpContext context)
       {
+         const string correlationHeaderKey = "X-Placeholder-Correlation";
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          string correlation = Guid.NewGuid().ToString();
-         context.Response.Headers.Add("X-Placeholder-Correlation", correlation);
          requestLogger.Log($"========== BEGINNING REQUEST {correlation} ==========");
          try
          {
@@ -51,6 +51,7 @@ namespace Placeholder.Middleware
             requestLogger.Log($"Request headers: {headerString}");
 
             context.Response.Clear();
+            context.Response.Headers.Add(correlationHeaderKey, correlation);
             var response = _stubRequestExecutor.ExecuteRequest();
             context.Response.StatusCode = response.StatusCode;
             foreach (var header in response.Headers)
@@ -66,11 +67,13 @@ namespace Placeholder.Middleware
          catch (RequestValidationException e)
          {
             context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+            context.Response.Headers.Add(correlationHeaderKey, correlation);
             requestLogger.Log($"Request validation exception thrown: {e.Message}");
          }
          catch (Exception e)
          {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            context.Response.Headers.Add(correlationHeaderKey, correlation);
             requestLogger.Log($"Unexpected exception thrown: {e}");
          }
 
