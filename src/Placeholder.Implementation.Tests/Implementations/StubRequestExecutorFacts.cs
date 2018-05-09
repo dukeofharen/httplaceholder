@@ -95,7 +95,7 @@ namespace Placeholder.Implementation.Tests.Implementations
       }
 
       [TestMethod]
-      public void StubRequestExecutor_ExecuteRequest_MultipleValidStubs_ShouldThrowException()
+      public void StubRequestExecutor_ExecuteRequest_MultipleValidStubs_ShouldPickFirstOne()
       {
          // arrange
          _conditionCheckerMock1
@@ -105,11 +105,20 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Setup(m => m.Validate(It.IsAny<StubModel>()))
             .Returns(ConditionValidationType.Valid);
 
+         _stub1.Response = new StubResponseModel
+         {
+            StatusCode = 409
+         };
+
+         _stubManagerMock
+            .Setup(m => m.GetStubById(_stub1.Id))
+            .Returns(_stub1);
+
          // act
-         var exception = Assert.ThrowsException<RequestValidationException>(() => _executor.ExecuteRequest());
+         var response = _executor.ExecuteRequest();
 
          // assert
-         Assert.IsTrue(exception.Message.Contains("which means no choice can be made"));
+         Assert.AreEqual(409, response.StatusCode);
       }
 
       [TestMethod]

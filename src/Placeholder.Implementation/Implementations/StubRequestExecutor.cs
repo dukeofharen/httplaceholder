@@ -82,11 +82,10 @@ namespace Placeholder.Implementation.Implementations
 
          if (stubIds.Count > 1)
          {
-            // Multiple conditions found; don't know which one to choose. Throw an exception.
-            throw new RequestValidationException($"'{nameof(stubIds)}' contains '{stubIds.Count}' stub IDs, which means no choice can be made.");
+            requestLogger.Log($"Multiple stubs are found ({string.Join(", ", stubIds)}), picking the first one.");
          }
 
-         string finalStubId = stubIds.Single();
+         string finalStubId = stubIds.First();
 
          // Retrieve stub and parse response.
          var finalStub = _stubManager.GetStubById(finalStubId);
