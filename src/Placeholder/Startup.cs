@@ -20,7 +20,6 @@ namespace Placeholder
 
       public void Configure(IApplicationBuilder app, IHostingEnvironment env)
       {
-         app.UseMiddleware<ExceptionHandlingMiddleware>();
          app.UseMiddleware<StubHandlingMiddleware>();
          app.UseMvc();
 

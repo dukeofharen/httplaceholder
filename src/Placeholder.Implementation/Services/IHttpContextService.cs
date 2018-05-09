@@ -15,5 +15,9 @@ namespace Placeholder.Implementation.Services
       IDictionary<string, string> GetQueryStringDictionary();
 
       IDictionary<string, string> GetHeaders();
+
+      TObject GetItem<TObject>(string key);
+
+      void SetItem(string key, object item);
    }
 }

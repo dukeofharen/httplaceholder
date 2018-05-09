@@ -45,5 +45,16 @@ namespace Placeholder.Implementation.Services.Implementations
          return _httpContextAccessor.HttpContext.Request.Headers
             .ToDictionary(h => h.Key, h => h.Value.ToString());
       }
+
+      public TObject GetItem<TObject>(string key)
+      {
+         var item = _httpContextAccessor.HttpContext?.Items[key];
+         return (TObject)item;
+      }
+
+      public void SetItem(string key, object item)
+      {
+         _httpContextAccessor.HttpContext?.Items.Add(key, item);
+      }
    }
 }

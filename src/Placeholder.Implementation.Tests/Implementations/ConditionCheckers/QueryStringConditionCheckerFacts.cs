@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.Implementation.Implementations.ConditionCheckers;
 using Placeholder.Implementation.Services;
+using Placeholder.Implementation.Tests.Utilities;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
 
@@ -12,17 +12,15 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
    [TestClass]
    public class QueryStringConditionCheckerFacts
    {
-      private Mock<ILogger<QueryStringConditionChecker>> _loggerMock;
       private Mock<IHttpContextService> _httpContextServiceMock;
       private QueryStringConditionChecker _checker;
 
       [TestInitialize]
       public void Initialize()
       {
-         _loggerMock = new Mock<ILogger<QueryStringConditionChecker>>();
          _httpContextServiceMock = new Mock<IHttpContextService>();
          _checker = new QueryStringConditionChecker(
-            _loggerMock.Object,
+            TestObjectFactory.GetRequestLoggerFactory(),
             _httpContextServiceMock.Object);
       }
 

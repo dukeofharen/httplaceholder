@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.Implementation.Implementations.ConditionCheckers;
 using Placeholder.Implementation.Services;
+using Placeholder.Implementation.Tests.Utilities;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
 
@@ -12,17 +11,15 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
    [TestClass]
    public class JsonPathConditionCheckerFacts
    {
-      private Mock<ILogger<JsonPathConditionChecker>> _loggerMock;
       private Mock<IHttpContextService> _httpContextServiceMock;
       private JsonPathConditionChecker _checker;
 
       [TestInitialize]
       public void Initialize()
       {
-         _loggerMock = new Mock<ILogger<JsonPathConditionChecker>>();
          _httpContextServiceMock = new Mock<IHttpContextService>();
          _checker = new JsonPathConditionChecker(
-            _loggerMock.Object,
+            TestObjectFactory.GetRequestLoggerFactory(),
             _httpContextServiceMock.Object);
       }
 

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Placeholder.Exceptions;
+using Placeholder.Implementation.Services;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
 
@@ -12,61 +12,66 @@ namespace Placeholder.Implementation.Implementations
 {
    public class StubRequestExecutor : IStubRequestExecutor
    {
-      private readonly ILogger<StubRequestExecutor> _logger;
+      private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IServiceProvider _serviceProvider;
       private readonly IStubManager _stubManager;
 
       public StubRequestExecutor(
-         ILogger<StubRequestExecutor> logger,
+         IRequestLoggerFactory requestLoggerFactory,
          IServiceProvider serviceProvider,
          IStubManager stubManager)
       {
-         _logger = logger;
+         _requestLoggerFactory = requestLoggerFactory;
          _serviceProvider = serviceProvider;
          _stubManager = stubManager;
       }
 
       public ResponseModel ExecuteRequest()
       {
+         var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var conditionCheckers = ((IEnumerable<IConditionChecker>)_serviceProvider.GetServices(typeof(IConditionChecker))).ToArray();
-         _logger.LogInformation($"Following conditions found: {string.Join(", ", conditionCheckers.Select(c => c.GetType().ToString()))}");
+         requestLogger.Log($"Following conditions found: {string.Join(", ", conditionCheckers.Select(c => c.GetType().ToString()))}");
 
          var stubIds = new List<string>();
          var stubs = _stubManager.Stubs;
          foreach (var stub in stubs)
          {
+            requestLogger.Log($"-------- CHECKING {stub.Id} --------");
             try
             {
                var validationResults = new List<ConditionValidationType>();
-               _logger.LogInformation($"Validating conditions for stub '{stub.Id}'.");
                foreach (var checker in conditionCheckers)
                {
-                  _logger.LogInformation($"Executing condition '{checker.GetType()}'.");
+                  requestLogger.Log($"----- EXECUTING CONDITION {checker.GetType().Name} -----");
                   var validationResult = checker.Validate(stub);
                   validationResults.Add(validationResult);
                   if (validationResult == ConditionValidationType.NotExecuted)
                   {
                      // If the resulting list is null, it means the check wasn't executed because it wasn't configured. Continue with the next condition.
-                     _logger.LogInformation("The condition was not executed and not configured.");
+                     requestLogger.Log("The condition was not executed and not configured.");
                      continue;
                   }
 
                   if (validationResult == ConditionValidationType.Invalid)
                   {
-                     _logger.LogInformation("The condition did not pass.");
+                     requestLogger.Log("The condition did not pass.");
                   }
+
+                  requestLogger.Log($"----- DONE EXECUTING CONDITION {checker.GetType().Name} -----");
                }
 
                if (validationResults.All(r => r != ConditionValidationType.Invalid) && validationResults.Any(r => r != ConditionValidationType.NotExecuted && r != ConditionValidationType.NotSet))
                {
-                  _logger.LogInformation($"All conditions passed for stub '{stub.Id}'.");
+                  requestLogger.Log($"All conditions passed for stub '{stub.Id}'.");
                   stubIds.Add(stub.Id);
                }
             }
             catch (Exception e)
             {
-               _logger.LogInformation($"Exception thrown while executing condition checks for stub '{stub.Id}': {e}");
+               requestLogger.Log($"Exception thrown while executing condition checks for stub '{stub.Id}': {e}");
             }
+
+            requestLogger.Log($"-------- DONE CHECKING {stub.Id} --------");
          }
 
          if (!stubIds.Any())
@@ -87,26 +92,26 @@ namespace Placeholder.Implementation.Implementations
          var finalStub = _stubManager.GetStubById(finalStubId);
          if (finalStub != null)
          {
-            _logger.LogInformation($"Stub with ID '{finalStubId}' found; returning response.");
+            requestLogger.Log($"Stub with ID '{finalStubId}' found; returning response.");
             var response = new ResponseModel
             {
                StatusCode = 200
             };
 
             response.StatusCode = finalStub.Response?.StatusCode ?? 200;
-            _logger.LogInformation($"Found HTTP status code '{response.StatusCode}'.");
+            requestLogger.Log($"Found HTTP status code '{response.StatusCode}'.");
 
             if (finalStub.Response?.Text != null)
             {
                response.Body = Encoding.UTF8.GetBytes(finalStub.Response.Text);
-               _logger.LogInformation($"Found body '{finalStub.Response?.Text}'");
+               requestLogger.Log($"Found body '{finalStub.Response?.Text}'");
             }
             else if (finalStub.Response?.Base64 != null)
             {
                string base64Body = finalStub.Response.Base64;
                response.Body = Convert.FromBase64String(base64Body);
                string bodyForLogging = base64Body.Length > 10 ? base64Body.Substring(0, 10) : base64Body;
-               _logger.LogInformation($"Found base64 body: {bodyForLogging}");
+               requestLogger.Log($"Found base64 body: {bodyForLogging}");
             }
 
             var stubResponseHeaders = finalStub.Response?.Headers;
@@ -114,7 +119,7 @@ namespace Placeholder.Implementation.Implementations
             {
                foreach (var header in stubResponseHeaders)
                {
-                  _logger.LogInformation($"Found header '{header.Key}' with value '{header.Value}'.");
+                  requestLogger.Log($"Found header '{header.Key}' with value '{header.Value}'.");
                   response.Headers.Add(header.Key, header.Value);
                }
             }

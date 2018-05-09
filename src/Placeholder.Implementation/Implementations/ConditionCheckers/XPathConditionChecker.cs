@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Xml;
-using Microsoft.Extensions.Logging;
 using Placeholder.Implementation.Services;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
@@ -9,38 +8,39 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
 {
    public class XPathConditionChecker : IConditionChecker
    {
-      private readonly ILogger<XPathConditionChecker> _logger;
+      private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IHttpContextService _httpContextService;
 
       public XPathConditionChecker(
-         ILogger<XPathConditionChecker> logger,
+         IRequestLoggerFactory requestLoggerFactory,
          IHttpContextService httpContextService)
       {
-         _logger = logger;
+         _requestLoggerFactory = requestLoggerFactory;
          _httpContextService = httpContextService;
       }
 
       public ConditionValidationType Validate(StubModel stub)
       {
+         var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
          var xpathConditions = stub.Conditions?.Xpath?.ToArray();
          if (xpathConditions != null)
          {
-            _logger.LogInformation($"XPath condition found for stub '{stub.Id}': '{string.Join(", ", xpathConditions.Select(x => x.QueryString))}'");
+            requestLogger.Log($"XPath condition found for stub '{stub.Id}': '{string.Join(", ", xpathConditions.Select(x => x.QueryString))}'");
             int validXpaths = 0;
             string body = _httpContextService.GetBody();
             var doc = new XmlDocument();
             doc.LoadXml(body);
             foreach (var condition in xpathConditions)
             {
-               _logger.LogInformation($"Checking posted content with XPath '{condition.QueryString}'.");
+               requestLogger.Log($"Checking posted content with XPath '{condition.QueryString}'.");
                var nsManager = new XmlNamespaceManager(doc.NameTable);
                var namespaces = condition.Namespaces;
                if (namespaces != null)
                {
                   foreach (var ns in namespaces)
                   {
-                     _logger.LogInformation($"Adding namespace '{ns.Key}' with value '{ns.Value}' to the namespace manager.");
+                     requestLogger.Log($"Adding namespace '{ns.Key}' with value '{ns.Value}' to the namespace manager.");
                      nsManager.AddNamespace(ns.Key, ns.Value);
                   }
                }
@@ -49,7 +49,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
                if (elements.Count == 0)
                {
                   // No suitable XML results found.
-                  _logger.LogInformation("No suitable XML results found with XPath query.");
+                  requestLogger.Log("No suitable XML results found with XPath query.");
                   break;
                }
 
@@ -60,7 +60,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             // the header condition is passed and the stub ID is passed to the result.
             if (validXpaths == xpathConditions.Length)
             {
-               _logger.LogInformation($"XPath condition check succeeded for stub '{stub.Id}'.");
+               requestLogger.Log($"XPath condition check succeeded for stub '{stub.Id}'.");
                result = ConditionValidationType.Valid;
             }
             else

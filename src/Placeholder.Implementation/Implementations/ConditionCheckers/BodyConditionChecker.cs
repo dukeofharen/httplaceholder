@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Microsoft.Extensions.Logging;
 using Placeholder.Implementation.Services;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
@@ -9,25 +8,26 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
 {
    public class BodyConditionChecker : IConditionChecker
    {
-      private readonly ILogger<BodyConditionChecker> _logger;
+      private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IHttpContextService _httpContextService;
 
       public BodyConditionChecker(
-         ILogger<BodyConditionChecker> logger,
+         IRequestLoggerFactory requestLoggerFactory,
          IHttpContextService httpContextService)
       {
-         _logger = logger;
+         _requestLoggerFactory = requestLoggerFactory;
          _httpContextService = httpContextService;
       }
 
       public ConditionValidationType Validate(StubModel stub)
       {
+         var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
          var bodyConditions = stub.Conditions?.Body?.ToArray();
          if (bodyConditions != null)
          {
             var body = _httpContextService.GetBody();
-            _logger.LogInformation($"Body condition found for stub '{stub.Id}': '{string.Join(", ", bodyConditions)}'");
+            requestLogger.Log($"Body condition found for stub '{stub.Id}': '{string.Join(", ", bodyConditions)}'");
 
             int validBodyConditions = 0;
             foreach (var condition in bodyConditions)
@@ -35,7 +35,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
                if (!StringHelper.IsRegexMatchOrSubstring(body, condition))
                {
                   // If the check failed, it means the query string is incorrect and the condition should fail.
-                  _logger.LogInformation($"Body condition '{condition}' failed.");
+                  requestLogger.Log($"Body condition '{condition}' failed.");
                   break;
                }
 
@@ -46,7 +46,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             // the body condition is passed and the stub ID is passed to the result.
             if (validBodyConditions == bodyConditions.Length)
             {
-               _logger.LogInformation($"Body condition check succeeded for stub '{stub.Id}'.");
+               requestLogger.Log($"Body condition check succeeded for stub '{stub.Id}'.");
                result = ConditionValidationType.Valid;
             }
             else

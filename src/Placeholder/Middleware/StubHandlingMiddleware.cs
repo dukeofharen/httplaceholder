@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
+using Placeholder.Exceptions;
 using Placeholder.Implementation;
 using Placeholder.Implementation.Services;
 
@@ -12,44 +15,67 @@ namespace Placeholder.Middleware
    {
       private readonly IHttpContextService _httpContextService;
       private readonly ILogger<StubHandlingMiddleware> _logger;
+      private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IStubRequestExecutor _stubRequestExecutor;
 
       public StubHandlingMiddleware(
          RequestDelegate next,
          IHttpContextService httpContextService,
          ILogger<StubHandlingMiddleware> logger,
+         IRequestLoggerFactory requestLoggerFactory,
          IStubRequestExecutor stubRequestExecutor)
       {
          _httpContextService = httpContextService;
          _logger = logger;
+         _requestLoggerFactory = requestLoggerFactory;
          _stubRequestExecutor = stubRequestExecutor;
       }
 
       public async Task Invoke(HttpContext context)
       {
-         // Enable rewind here to be able to read the posted body multiple times.
-         context.Request.EnableRewind();
-
-         // Log the request here
-         _logger.LogInformation($"Request URL ({_httpContextService.Method}): {_httpContextService.DisplayUrl}");
-         _logger.LogInformation($"Request body: {_httpContextService.GetBody()}");
-         string headerString = string.Join(", ", _httpContextService
-            .GetHeaders()
-            .Select(h => $"{h.Key} = {h.Value}"));
-         _logger.LogInformation($"Request headers: {headerString}");
-
-         context.Response.Clear();
-         var response = _stubRequestExecutor.ExecuteRequest();
-         context.Response.StatusCode = response.StatusCode;
-         foreach (var header in response.Headers)
+         var requestLogger = _requestLoggerFactory.GetRequestLogger();
+         string correlation = Guid.NewGuid().ToString();
+         context.Response.Headers.Add("X-Placeholder-Correlation", correlation);
+         requestLogger.Log($"========== BEGINNING REQUEST {correlation} ==========");
+         try
          {
-            context.Response.Headers.Add(header.Key, header.Value);
+            // Enable rewind here to be able to read the posted body multiple times.
+            context.Request.EnableRewind();
+
+            // Log the request here
+            requestLogger.Log($"Request URL ({_httpContextService.Method}): {_httpContextService.DisplayUrl}");
+            requestLogger.Log($"Request body: {_httpContextService.GetBody()}");
+            string headerString = string.Join(", ", _httpContextService
+               .GetHeaders()
+               .Select(h => $"{h.Key} = {h.Value}"));
+            requestLogger.Log($"Request headers: {headerString}");
+
+            context.Response.Clear();
+            var response = _stubRequestExecutor.ExecuteRequest();
+            context.Response.StatusCode = response.StatusCode;
+            foreach (var header in response.Headers)
+            {
+               context.Response.Headers.Add(header.Key, header.Value);
+            }
+
+            if (response.Body != null)
+            {
+               await context.Response.Body.WriteAsync(response.Body, 0, response.Body.Length);
+            }
+         }
+         catch (RequestValidationException e)
+         {
+            context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+            requestLogger.Log($"Request validation exception thrown: {e.Message}");
+         }
+         catch (Exception e)
+         {
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            requestLogger.Log($"Unexpected exception thrown: {e}");
          }
 
-         if (response.Body != null)
-         {
-            await context.Response.Body.WriteAsync(response.Body, 0, response.Body.Length);
-         }
+         requestLogger.Log($"========== FINISHING REQUEST {correlation} ==========");
+         _logger.LogInformation(requestLogger.FullMessage);
       }
    }
 }

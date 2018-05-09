@@ -17,6 +17,7 @@ namespace Placeholder.Implementation
          // Services
          services.AddTransient<IFileService, FileService>();
          services.AddTransient<IHttpContextService, HttpContextService>();
+         services.AddTransient<IRequestLoggerFactory, RequestLoggerFactory>();
          services.AddTransient<IYamlService, YamlService>();
 
          // Condition checkers

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.Exceptions;
 using Placeholder.Implementation.Implementations;
+using Placeholder.Implementation.Tests.Utilities;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
 
@@ -14,7 +14,6 @@ namespace Placeholder.Implementation.Tests.Implementations
    [TestClass]
    public class StubRequestExecutorFacts
    {
-      private Mock<ILogger<StubRequestExecutor>> _loggerMock;
       private Mock<IServiceProvider> _serviceProviderMock;
       private Mock<IStubManager> _stubManagerMock;
       private Mock<IConditionChecker> _conditionCheckerMock1;
@@ -26,11 +25,10 @@ namespace Placeholder.Implementation.Tests.Implementations
       [TestInitialize]
       public void Initialize()
       {
-         _loggerMock = new Mock<ILogger<StubRequestExecutor>>();
          _serviceProviderMock = new Mock<IServiceProvider>();
          _stubManagerMock = new Mock<IStubManager>();
          _executor = new StubRequestExecutor(
-            _loggerMock.Object,
+            TestObjectFactory.GetRequestLoggerFactory(),
             _serviceProviderMock.Object,
             _stubManagerMock.Object);
 
@@ -56,7 +54,6 @@ namespace Placeholder.Implementation.Tests.Implementations
       [TestCleanup]
       public void Cleanup()
       {
-         _loggerMock.VerifyAll();
          _serviceProviderMock.VerifyAll();
          _stubManagerMock.VerifyAll();
       }

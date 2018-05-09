@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.Implementation.Implementations.ConditionCheckers;
 using Placeholder.Implementation.Services;
+using Placeholder.Implementation.Tests.Utilities;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
 
@@ -11,17 +11,15 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
    [TestClass]
    public class PathConditionCheckerFacts
    {
-      private Mock<ILogger<PathConditionChecker>> _loggerMock;
       private Mock<IHttpContextService> _httpContextServiceMock;
       private PathConditionChecker _checker;
 
       [TestInitialize]
       public void Initialize()
       {
-         _loggerMock = new Mock<ILogger<PathConditionChecker>>();
          _httpContextServiceMock = new Mock<IHttpContextService>();
          _checker = new PathConditionChecker(
-            _loggerMock.Object,
+            TestObjectFactory.GetRequestLoggerFactory(),
             _httpContextServiceMock.Object);
       }
 

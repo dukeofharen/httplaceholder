@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Microsoft.Extensions.Logging;
 using Placeholder.Implementation.Services;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
@@ -9,30 +8,31 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
 {
    public class HeaderConditionChecker : IConditionChecker
    {
-      private readonly ILogger<HeaderConditionChecker> _logger;
+      private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IHttpContextService _httpContextService;
 
       public HeaderConditionChecker(
-         ILogger<HeaderConditionChecker> logger,
+         IRequestLoggerFactory requestLoggerFactory,
          IHttpContextService httpContextService)
       {
-         _logger = logger;
+         _requestLoggerFactory = requestLoggerFactory;
          _httpContextService = httpContextService;
       }
 
       public ConditionValidationType Validate(StubModel stub)
       {
+         var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
          var headerConditions = stub.Conditions?.Headers;
          if (headerConditions != null)
          {
-            _logger.LogInformation($"Headers condition found for stub '{stub.Id}': '{string.Join(", ", headerConditions.Select(c => $"{c.Key}: {c.Value}"))}'");
+            requestLogger.Log($"Headers condition found for stub '{stub.Id}': '{string.Join(", ", headerConditions.Select(c => $"{c.Key}: {c.Value}"))}'");
             int validHeaders = 0;
             var headers = _httpContextService.GetHeaders();
             foreach (var condition in headerConditions)
             {
                // Check whether the condition header is available in the actual headers.
-               _logger.LogInformation($"Checking request headers against headers condition '{condition.Key}: {condition.Value}'");
+               requestLogger.Log($"Checking request headers against headers condition '{condition.Key}: {condition.Value}'");
                if (headers.TryGetValue(condition.Key, out string headerValue))
                {
                   // Check whether the condition header value is available in the actual headers.
@@ -40,7 +40,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
                   if (!StringHelper.IsRegexMatchOrSubstring(headerValue, value))
                   {
                      // If the check failed, it means the header is incorrect and the condition should fail.
-                     _logger.LogInformation($"Header condition '{condition.Key}: {condition.Value}' failed.");
+                     requestLogger.Log($"Header condition '{condition.Key}: {condition.Value}' failed.");
                      break;
                   }
 
@@ -52,7 +52,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             // the header condition is passed and the stub ID is passed to the result.
             if (validHeaders == headerConditions.Count)
             {
-               _logger.LogInformation($"Header condition check succeeded for stub '{stub.Id}'.");
+               requestLogger.Log($"Header condition check succeeded for stub '{stub.Id}'.");
                result = ConditionValidationType.Valid;
             }
             else
