@@ -13,6 +13,7 @@ namespace Placeholder.Implementation
          services.AddSingleton<IStubContainer, StubContainer>();
          services.AddTransient<IStubManager, StubManager>();
          services.AddTransient<IStubRequestExecutor, StubRequestExecutor>();
+         services.AddTransient<IStubResponseGenerator, StubResponseGenerator>();
 
          // Services
          services.AddTransient<IFileService, FileService>();

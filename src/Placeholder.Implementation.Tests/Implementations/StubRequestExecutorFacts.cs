@@ -16,6 +16,7 @@ namespace Placeholder.Implementation.Tests.Implementations
    {
       private Mock<IServiceProvider> _serviceProviderMock;
       private Mock<IStubManager> _stubManagerMock;
+      private Mock<IStubResponseGenerator> _stubResponseGeneratorMock;
       private Mock<IConditionChecker> _conditionCheckerMock1;
       private Mock<IConditionChecker> _conditionCheckerMock2;
       private StubModel _stub1;
@@ -27,10 +28,12 @@ namespace Placeholder.Implementation.Tests.Implementations
       {
          _serviceProviderMock = new Mock<IServiceProvider>();
          _stubManagerMock = new Mock<IStubManager>();
+         _stubResponseGeneratorMock = new Mock<IStubResponseGenerator>();
          _executor = new StubRequestExecutor(
             TestObjectFactory.GetRequestLoggerFactory(),
             _serviceProviderMock.Object,
-            _stubManagerMock.Object);
+            _stubManagerMock.Object,
+            _stubResponseGeneratorMock.Object);
 
          _conditionCheckerMock1 = new Mock<IConditionChecker>();
          _conditionCheckerMock2 = new Mock<IConditionChecker>();
@@ -56,6 +59,7 @@ namespace Placeholder.Implementation.Tests.Implementations
       {
          _serviceProviderMock.VerifyAll();
          _stubManagerMock.VerifyAll();
+         _stubResponseGeneratorMock.VerifyAll();
       }
 
       [TestMethod]
@@ -98,6 +102,7 @@ namespace Placeholder.Implementation.Tests.Implementations
       public void StubRequestExecutor_ExecuteRequest_MultipleValidStubs_ShouldPickFirstOne()
       {
          // arrange
+         var expectedResponseModel = new ResponseModel();
          _conditionCheckerMock1
             .Setup(m => m.Validate(It.IsAny<StubModel>()))
             .Returns(ConditionValidationType.Valid);
@@ -105,20 +110,19 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Setup(m => m.Validate(It.IsAny<StubModel>()))
             .Returns(ConditionValidationType.Valid);
 
-         _stub1.Response = new StubResponseModel
-         {
-            StatusCode = 409
-         };
-
          _stubManagerMock
             .Setup(m => m.GetStubById(_stub1.Id))
             .Returns(_stub1);
+
+         _stubResponseGeneratorMock
+            .Setup(m => m.GenerateResponse(_stub1))
+            .Returns(expectedResponseModel);
 
          // act
          var response = _executor.ExecuteRequest();
 
          // assert
-         Assert.AreEqual(409, response.StatusCode);
+         Assert.AreEqual(expectedResponseModel, response);
       }
 
       [TestMethod]
@@ -152,6 +156,7 @@ namespace Placeholder.Implementation.Tests.Implementations
       public void StubRequestExecutor_ExecuteRequest_HappyFlow()
       {
          // arrange
+         var expectedResponseModel = new ResponseModel();
          _conditionCheckerMock1
             .Setup(m => m.Validate(_stub1))
             .Returns(ConditionValidationType.Invalid);
@@ -167,65 +172,15 @@ namespace Placeholder.Implementation.Tests.Implementations
          _stubManagerMock
             .Setup(m => m.GetStubById(_stub2.Id))
             .Returns(_stub2);
-
-         _stub2.Response = new StubResponseModel
-         {
-            Headers = new Dictionary<string, string>
-            {
-               {"X-Header", "value"}
-            },
-            StatusCode = 201,
-            Text = "response"
-         };
+         _stubResponseGeneratorMock
+            .Setup(m => m.GenerateResponse(_stub2))
+            .Returns(expectedResponseModel);
 
          // act
          var response = _executor.ExecuteRequest();
 
          // assert
-         Assert.IsNotNull(response);
-         Assert.AreEqual(_stub2.Response.StatusCode, response.StatusCode);
-         Assert.AreEqual("value", response.Headers["X-Header"]);
-         Assert.AreEqual(_stub2.Response.Text, Encoding.UTF8.GetString(response.Body));
-      }
-
-      [TestMethod]
-      public void StubRequestExecutor_ExecuteRequest_HappyFlow_Base64Content()
-      {
-         // arrange
-         _conditionCheckerMock1
-            .Setup(m => m.Validate(_stub1))
-            .Returns(ConditionValidationType.Invalid);
-         _conditionCheckerMock2
-            .Setup(m => m.Validate(_stub1))
-            .Returns(ConditionValidationType.Invalid);
-         _conditionCheckerMock1
-            .Setup(m => m.Validate(_stub2))
-            .Returns(ConditionValidationType.Valid);
-         _conditionCheckerMock2
-            .Setup(m => m.Validate(_stub2))
-            .Returns(ConditionValidationType.Valid);
-         _stubManagerMock
-            .Setup(m => m.GetStubById(_stub2.Id))
-            .Returns(_stub2);
-
-         _stub2.Response = new StubResponseModel
-         {
-            Headers = new Dictionary<string, string>
-            {
-               {"X-Header", "value"}
-            },
-            StatusCode = 201,
-            Base64 = "VGhpcyBpcyB0aGUgY29udGVudCE="
-         };
-
-         // act
-         var response = _executor.ExecuteRequest();
-
-         // assert
-         Assert.IsNotNull(response);
-         Assert.AreEqual(_stub2.Response.StatusCode, response.StatusCode);
-         Assert.AreEqual("value", response.Headers["X-Header"]);
-         Assert.AreEqual("This is the content!", Encoding.UTF8.GetString(response.Body));
+         Assert.AreEqual(expectedResponseModel, response);
       }
    }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Placeholder.Exceptions;
 using Placeholder.Implementation.Services;
@@ -15,15 +14,18 @@ namespace Placeholder.Implementation.Implementations
       private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IServiceProvider _serviceProvider;
       private readonly IStubManager _stubManager;
+      private readonly IStubResponseGenerator _stubResponseGenerator;
 
       public StubRequestExecutor(
          IRequestLoggerFactory requestLoggerFactory,
          IServiceProvider serviceProvider,
-         IStubManager stubManager)
+         IStubManager stubManager,
+         IStubResponseGenerator stubResponseGenerator)
       {
          _requestLoggerFactory = requestLoggerFactory;
          _serviceProvider = serviceProvider;
          _stubManager = stubManager;
+         _stubResponseGenerator = stubResponseGenerator;
       }
 
       public ResponseModel ExecuteRequest()
@@ -91,38 +93,7 @@ namespace Placeholder.Implementation.Implementations
          var finalStub = _stubManager.GetStubById(finalStubId);
          if (finalStub != null)
          {
-            requestLogger.Log($"Stub with ID '{finalStubId}' found; returning response.");
-            var response = new ResponseModel
-            {
-               StatusCode = 200
-            };
-
-            response.StatusCode = finalStub.Response?.StatusCode ?? 200;
-            requestLogger.Log($"Found HTTP status code '{response.StatusCode}'.");
-
-            if (finalStub.Response?.Text != null)
-            {
-               response.Body = Encoding.UTF8.GetBytes(finalStub.Response.Text);
-               requestLogger.Log($"Found body '{finalStub.Response?.Text}'");
-            }
-            else if (finalStub.Response?.Base64 != null)
-            {
-               string base64Body = finalStub.Response.Base64;
-               response.Body = Convert.FromBase64String(base64Body);
-               string bodyForLogging = base64Body.Length > 10 ? base64Body.Substring(0, 10) : base64Body;
-               requestLogger.Log($"Found base64 body: {bodyForLogging}");
-            }
-
-            var stubResponseHeaders = finalStub.Response?.Headers;
-            if (stubResponseHeaders != null)
-            {
-               foreach (var header in stubResponseHeaders)
-               {
-                  requestLogger.Log($"Found header '{header.Key}' with value '{header.Value}'.");
-                  response.Headers.Add(header.Key, header.Value);
-               }
-            }
-
+            var response = _stubResponseGenerator.GenerateResponse(finalStub);
             return response;
          }
 
