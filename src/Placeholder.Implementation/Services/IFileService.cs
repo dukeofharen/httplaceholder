@@ -9,5 +9,9 @@ namespace Placeholder.Implementation.Services
       bool FileExists(string path);
 
       DateTime GetModicationDateTime(string path);
+
+      string GetCurrentDirectory();
+
+      string[] GetFiles(string path, string searchPattern);
    }
 }

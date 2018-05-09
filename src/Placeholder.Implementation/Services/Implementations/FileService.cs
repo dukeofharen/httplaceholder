@@ -19,5 +19,15 @@ namespace Placeholder.Implementation.Services.Implementations
        {
           return File.GetLastWriteTimeUtc(path);
        }
+
+       public string GetCurrentDirectory()
+       {
+          return Directory.GetCurrentDirectory();
+       }
+
+       public string[] GetFiles(string path, string searchPattern)
+       {
+          return Directory.GetFiles(path, searchPattern);
+       }
     }
 }

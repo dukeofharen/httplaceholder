@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Placeholder.Implementation.Services;
@@ -31,14 +33,26 @@ namespace Placeholder.Implementation.Implementations
       public IEnumerable<StubModel> GetStubs()
       {
          string inputFileLocation = _configuration["inputFile"];
+         string currentDirectory = _fileService.GetCurrentDirectory();
          if (string.IsNullOrEmpty(inputFileLocation))
          {
-            throw new Exception(@"'inputFile' parameter not passed to tool. Start the application like this: placeholder --inputFile C:\tmp\stub.yml");
+            // If the input file location is not set, try looking in the current directory for .yml files.
+            var yamlFiles = _fileService.GetFiles(currentDirectory, "*.yml");
+            if (yamlFiles.Length > 1)
+            {
+               throw new Exception($"Multiple .yml files found in '{currentDirectory}'; no idea which to pick.");
+            }
+
+            inputFileLocation = yamlFiles.Single();
          }
 
          if (!_fileService.FileExists(inputFileLocation))
          {
-            throw new Exception($"Input file '{inputFileLocation}' not found.");
+            inputFileLocation = Path.Combine(currentDirectory, inputFileLocation);
+            if (!_fileService.FileExists(inputFileLocation))
+            {
+               throw new Exception($"Input file '{inputFileLocation}' not found.");
+            }
          }
 
          var stubFileModifidationDateTime = _fileService.GetModicationDateTime(inputFileLocation);
