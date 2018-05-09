@@ -1,0 +1,17 @@
+# Simple POST situation with required request headers. Execute 02-post.sh to execute the requests.
+- id: situation-01
+  conditions:
+    method: POST
+    url:
+      path: \busers\b
+    body:
+      - \busername\b
+      - \bjohn\b
+    headers:
+      X-Api-Key: 123abc
+      X-Another-Secret: \b72354deg\b
+  response:
+    statusCode: 200
+    text: '{"result": true}'
+    headers:
+      Content-Type: application/json

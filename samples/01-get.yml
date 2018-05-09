@@ -1,0 +1,47 @@
+# Simple GET situations. Execute 01-get.sh to execute the requests.
+- id: situation-01
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: 12
+        filter: first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "John"
+      }
+    headers:
+      Content-Type: application/json
+
+- id: situation-02
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: 14
+        filter: last_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "last_name": "Jackson"
+      }
+    headers:
+      Content-Type: application/json
+
+# This is essentially the "fallback" scenario of the /users endpoint.
+- id: situation-fallback
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: ^[0-9]+$
+  response:
+    statusCode: 404
+    headers:
+      Content-Type: application/json

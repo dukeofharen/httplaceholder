@@ -1,0 +1,12 @@
+# A simple JSON path setup. Execute 04-json.sh to execute the requests.
+- id: jpath-test
+  conditions:
+    method: PUT
+    url:
+      path: /users
+    headers:
+      Content-Type: application/json
+    jsonPath:
+      - "$.phoneNumbers[?(@.type=='iPhone')]"
+  response:
+    statusCode: 204
