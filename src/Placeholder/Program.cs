@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 
@@ -8,7 +9,15 @@ namespace Placeholder
    {
       public static void Main(string[] args)
       {
-         BuildWebHost(args).Run();
+         try
+         {
+            BuildWebHost(args).Run();
+         }
+         catch (Exception e)
+         {
+            Console.WriteLine($"Unexpected exception thrown: {e}");
+            Environment.Exit(-1);
+         }
       }
 
       public static IWebHost BuildWebHost(string[] args) =>
