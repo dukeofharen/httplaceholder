@@ -34,8 +34,9 @@ namespace Placeholder.Implementation.Implementations
          var conditionCheckers = ((IEnumerable<IConditionChecker>)_serviceProvider.GetServices(typeof(IConditionChecker))).ToArray();
          requestLogger.Log($"Following conditions found: {string.Join(", ", conditionCheckers.Select(c => c.GetType().ToString()))}");
 
-         var stubIds = new List<string>();
+         var foundStubs = new List<StubModel>();
          var stubs = _stubManager.Stubs;
+
          foreach (var stub in stubs)
          {
             requestLogger.Log($"-------- CHECKING {stub.Id} --------");
@@ -65,7 +66,7 @@ namespace Placeholder.Implementation.Implementations
                if (validationResults.All(r => r != ConditionValidationType.Invalid) && validationResults.Any(r => r != ConditionValidationType.NotExecuted && r != ConditionValidationType.NotSet))
                {
                   requestLogger.Log($"All conditions passed for stub '{stub.Id}'.");
-                  stubIds.Add(stub.Id);
+                  foundStubs.Add(stub);
                }
             }
             catch (Exception e)
@@ -76,28 +77,24 @@ namespace Placeholder.Implementation.Implementations
             requestLogger.Log($"-------- DONE CHECKING {stub.Id} --------");
          }
 
-         if (!stubIds.Any())
+         if (!foundStubs.Any())
          {
             // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
-            throw new RequestValidationException($"The '{nameof(stubIds)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
+            throw new RequestValidationException($"The '{nameof(foundStubs)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
          }
 
          if (stubIds.Count > 1)
          {
             requestLogger.Log($"Multiple stubs are found ({string.Join(", ", stubIds)}), picking the first one.");
          }
-
-         string finalStubId = stubIds.First();
-
-         // Retrieve stub and parse response.
-         var finalStub = _stubManager.GetStubById(finalStubId);
-         if (finalStub != null)
+         if (foundStubs.Count > 1)
          {
-            var response = _stubResponseGenerator.GenerateResponse(finalStub);
-            return response;
+            requestLogger.Log($"Multiple stubs are found ({string.Join(", ", foundStubs)}), picking the first one.");
          }
 
-         throw new RequestValidationException($"Stub with ID '{finalStubId}' unexpectedly not found.");
+         var finalStub = foundStubs.First();
+         var response = _stubResponseGenerator.GenerateResponse(finalStub);
+         return response;
       }
    }
 }

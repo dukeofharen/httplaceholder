@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.Exceptions;
@@ -110,10 +109,6 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Setup(m => m.Validate(It.IsAny<StubModel>()))
             .Returns(ConditionValidationType.Valid);
 
-         _stubManagerMock
-            .Setup(m => m.GetStubById(_stub1.Id))
-            .Returns(_stub1);
-
          _stubResponseGeneratorMock
             .Setup(m => m.GenerateResponse(_stub1))
             .Returns(expectedResponseModel);
@@ -123,33 +118,6 @@ namespace Placeholder.Implementation.Tests.Implementations
 
          // assert
          Assert.AreEqual(expectedResponseModel, response);
-      }
-
-      [TestMethod]
-      public void StubRequestExecutor_ExecuteRequest_StubUnexpectedlyNotFound_ShouldThrowException()
-      {
-         // arrange
-         _conditionCheckerMock1
-            .Setup(m => m.Validate(_stub1))
-            .Returns(ConditionValidationType.Invalid);
-         _conditionCheckerMock2
-            .Setup(m => m.Validate(_stub1))
-            .Returns(ConditionValidationType.Invalid);
-         _conditionCheckerMock1
-            .Setup(m => m.Validate(_stub2))
-            .Returns(ConditionValidationType.Valid);
-         _conditionCheckerMock2
-            .Setup(m => m.Validate(_stub2))
-            .Returns(ConditionValidationType.Valid);
-         _stubManagerMock
-            .Setup(m => m.GetStubById(_stub2.Id))
-            .Returns((StubModel)null);
-
-         // act
-         var exception = Assert.ThrowsException<RequestValidationException>(() => _executor.ExecuteRequest());
-
-         // assert
-         Assert.IsTrue(exception.Message.Contains("unexpectedly not found"));
       }
 
       [TestMethod]
@@ -169,9 +137,6 @@ namespace Placeholder.Implementation.Tests.Implementations
          _conditionCheckerMock2
             .Setup(m => m.Validate(_stub2))
             .Returns(ConditionValidationType.Valid);
-         _stubManagerMock
-            .Setup(m => m.GetStubById(_stub2.Id))
-            .Returns(_stub2);
          _stubResponseGeneratorMock
             .Setup(m => m.GenerateResponse(_stub2))
             .Returns(expectedResponseModel);

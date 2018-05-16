@@ -12,5 +12,10 @@ namespace Placeholder.Models
 
       [YamlMember(Alias = "response")]
       public StubResponseModel Response { get; set; }
+
+      public override string ToString()
+      {
+         return Id;
+      }
    }
 }
