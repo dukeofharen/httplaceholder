@@ -83,10 +83,6 @@ namespace Placeholder.Implementation.Implementations
             throw new RequestValidationException($"The '{nameof(foundStubs)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
          }
 
-         if (stubIds.Count > 1)
-         {
-            requestLogger.Log($"Multiple stubs are found ({string.Join(", ", stubIds)}), picking the first one.");
-         }
          if (foundStubs.Count > 1)
          {
             requestLogger.Log($"Multiple stubs are found ({string.Join(", ", foundStubs)}), picking the first one.");
