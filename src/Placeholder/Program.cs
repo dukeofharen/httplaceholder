@@ -26,6 +26,9 @@ namespace Placeholder
       {
          var argsDictionary = args.Parse();
          int port = argsDictionary.GetValue("port", 5000);
+         string pfxPath = argsDictionary.GetValue("pfxPath", "key.pfx");
+         string pfxPassword = argsDictionary.GetValue("pfxPassword", "1234");
+         int httpsPort = argsDictionary.GetValue("httpsPort", 5050);
          return WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()
             .ConfigureAppConfiguration((hostingContext, config) => config.AddCommandLine(args))
@@ -33,6 +36,10 @@ namespace Placeholder
             {
                options.AddServerHeader = false;
                options.Listen(IPAddress.Any, port);
+               if (!string.IsNullOrWhiteSpace(pfxPath) && !string.IsNullOrWhiteSpace(pfxPassword))
+               {
+                  options.Listen(IPAddress.Any, httpsPort, listenOptions => listenOptions.UseHttps(pfxPath, pfxPassword));
+               }
             })
             .Build();
       }

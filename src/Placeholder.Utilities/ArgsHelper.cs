@@ -37,6 +37,12 @@ namespace Placeholder.Utilities
          return value;
       }
 
+      public static string GetValue(this IDictionary<string, string> args, string key, string defaultValue)
+      {
+         args.TryGetValue(key, out string value);
+         return value ?? defaultValue;
+      }
+
       public static int GetValue(this IDictionary<string, string> args, string key, int defaultValue)
       {
          if (!args.TryGetValue(key, out string value))
