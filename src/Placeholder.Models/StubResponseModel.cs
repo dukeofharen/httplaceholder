@@ -19,5 +19,8 @@ namespace Placeholder.Models
 
       [YamlMember(Alias = "headers")]
       public IDictionary<string, string> Headers { get; set; }
+
+      [YamlMember(Alias = "extraDuration")]
+      public int? ExtraDuration { get; set; }
    }
 }

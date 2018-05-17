@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Placeholder.Implementation.Services;
 using Placeholder.Models;
 
@@ -8,21 +9,24 @@ namespace Placeholder.Implementation.Implementations
 {
    internal class StubResponseGenerator : IStubResponseGenerator
    {
+      private readonly IAsyncService _asyncService;
       private readonly IFileService _fileService;
       private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IStubContainer _stubContainer;
 
       public StubResponseGenerator(
+         IAsyncService asyncService,
          IFileService fileService,
          IRequestLoggerFactory requestLoggerFactory,
          IStubContainer stubContainer)
       {
+         _asyncService = asyncService;
          _fileService = fileService;
          _requestLoggerFactory = requestLoggerFactory;
          _stubContainer = stubContainer;
       }
 
-      public ResponseModel GenerateResponse(StubModel stub)
+      public async Task<ResponseModel> GenerateResponseAsync(StubModel stub)
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          requestLogger.Log($"Stub with ID '{stub.Id}' found; returning response.");
@@ -83,6 +87,14 @@ namespace Placeholder.Implementation.Implementations
                requestLogger.Log($"Found header '{header.Key}' with value '{header.Value}'.");
                response.Headers.Add(header.Key, header.Value);
             }
+         }
+
+         // Simulate sluggish response here, if configured.
+         if (stub.Response?.ExtraDuration.HasValue == true)
+         {
+            int duration = stub.Response.ExtraDuration.Value;
+            requestLogger.Log($"Waiting '{duration}' extra milliseconds.");
+            await _asyncService.DelayAsync(duration);
          }
 
          return response;

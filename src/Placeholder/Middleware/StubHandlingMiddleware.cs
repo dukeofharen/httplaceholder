@@ -53,7 +53,7 @@ namespace Placeholder.Middleware
 
             context.Response.Clear();
             context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
-            var response = _stubRequestExecutor.ExecuteRequest();
+            var response = await _stubRequestExecutor.ExecuteRequestAsync();
             context.Response.StatusCode = response.StatusCode;
             foreach (var header in response.Headers)
             {

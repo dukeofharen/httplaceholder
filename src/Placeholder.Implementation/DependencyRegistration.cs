@@ -16,6 +16,7 @@ namespace Placeholder.Implementation
          services.AddTransient<IStubResponseGenerator, StubResponseGenerator>();
 
          // Services
+         services.AddTransient<IAsyncService, AsyncService>();
          services.AddTransient<IFileService, FileService>();
          services.AddTransient<IHttpContextService, HttpContextService>();
          services.AddTransient<IRequestLoggerFactory, RequestLoggerFactory>();

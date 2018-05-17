@@ -1,0 +1,18 @@
+# Simple GET situation, but with a very slow response. Handy for testing the timeout settings of an application.
+- id: slow
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: 12
+        filter: first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "John"
+      }
+    extraDuration: 10000
+    headers:
+      Content-Type: application/json

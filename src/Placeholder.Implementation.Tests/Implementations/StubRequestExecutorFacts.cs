@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.Exceptions;
@@ -62,7 +63,7 @@ namespace Placeholder.Implementation.Tests.Implementations
       }
 
       [TestMethod]
-      public void StubRequestExecutor_ExecuteRequest_NoConditionPassed_ShouldThrowException()
+      public async Task StubRequestExecutor_ExecuteRequestAsync_NoConditionPassed_ShouldThrowException()
       {
          // arrange
          _conditionCheckerMock1
@@ -73,14 +74,14 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Returns(ConditionValidationType.Invalid);
 
          // act
-         var exception = Assert.ThrowsException<RequestValidationException>(() => _executor.ExecuteRequest());
+         var exception = await Assert.ThrowsExceptionAsync<RequestValidationException>(() => _executor.ExecuteRequestAsync());
 
          // assert
          Assert.IsTrue(exception.Message.Contains("and the request did not pass"));
       }
 
       [TestMethod]
-      public void StubRequestExecutor_ExecuteRequest_NoConditionExecuted_ShouldThrowException()
+      public async Task StubRequestExecutor_ExecuteRequestAsync_NoConditionExecuted_ShouldThrowException()
       {
          // arrange
          _conditionCheckerMock1
@@ -91,14 +92,14 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Returns(ConditionValidationType.NotExecuted);
 
          // act
-         var exception = Assert.ThrowsException<RequestValidationException>(() => _executor.ExecuteRequest());
+         var exception = await Assert.ThrowsExceptionAsync<RequestValidationException>(() => _executor.ExecuteRequestAsync());
 
          // assert
          Assert.IsTrue(exception.Message.Contains("and the request did not pass"));
       }
 
       [TestMethod]
-      public void StubRequestExecutor_ExecuteRequest_MultipleValidStubs_ShouldPickFirstOne()
+      public async Task StubRequestExecutor_ExecuteRequestAsync_MultipleValidStubs_ShouldPickFirstOne()
       {
          // arrange
          var expectedResponseModel = new ResponseModel();
@@ -110,18 +111,18 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Returns(ConditionValidationType.Valid);
 
          _stubResponseGeneratorMock
-            .Setup(m => m.GenerateResponse(_stub1))
-            .Returns(expectedResponseModel);
+            .Setup(m => m.GenerateResponseAsync(_stub1))
+            .ReturnsAsync(expectedResponseModel);
 
          // act
-         var response = _executor.ExecuteRequest();
+         var response = await _executor.ExecuteRequestAsync();
 
          // assert
          Assert.AreEqual(expectedResponseModel, response);
       }
 
       [TestMethod]
-      public void StubRequestExecutor_ExecuteRequest_HappyFlow()
+      public async Task StubRequestExecutor_ExecuteRequestAsync_HappyFlow()
       {
          // arrange
          var expectedResponseModel = new ResponseModel();
@@ -138,11 +139,11 @@ namespace Placeholder.Implementation.Tests.Implementations
             .Setup(m => m.Validate(_stub2))
             .Returns(ConditionValidationType.Valid);
          _stubResponseGeneratorMock
-            .Setup(m => m.GenerateResponse(_stub2))
-            .Returns(expectedResponseModel);
+            .Setup(m => m.GenerateResponseAsync(_stub2))
+            .ReturnsAsync(expectedResponseModel);
 
          // act
-         var response = _executor.ExecuteRequest();
+         var response = await _executor.ExecuteRequestAsync();
 
          // assert
          Assert.AreEqual(expectedResponseModel, response);

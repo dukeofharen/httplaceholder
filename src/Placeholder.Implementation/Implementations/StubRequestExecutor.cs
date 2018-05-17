@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Placeholder.Exceptions;
 using Placeholder.Implementation.Services;
@@ -28,7 +29,7 @@ namespace Placeholder.Implementation.Implementations
          _stubResponseGenerator = stubResponseGenerator;
       }
 
-      public ResponseModel ExecuteRequest()
+      public async Task<ResponseModel> ExecuteRequestAsync()
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var conditionCheckers = ((IEnumerable<IConditionChecker>)_serviceProvider.GetServices(typeof(IConditionChecker))).ToArray();
@@ -89,7 +90,7 @@ namespace Placeholder.Implementation.Implementations
          }
 
          var finalStub = foundStubs.First();
-         var response = _stubResponseGenerator.GenerateResponse(finalStub);
+         var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub);
          return response;
       }
    }

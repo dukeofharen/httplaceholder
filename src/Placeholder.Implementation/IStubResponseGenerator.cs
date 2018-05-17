@@ -1,9 +1,10 @@
-﻿using Placeholder.Models;
+﻿using System.Threading.Tasks;
+using Placeholder.Models;
 
 namespace Placeholder.Implementation
 {
    public interface IStubResponseGenerator
    {
-      ResponseModel GenerateResponse(StubModel stub);
+      Task<ResponseModel> GenerateResponseAsync(StubModel stub);
    }
 }

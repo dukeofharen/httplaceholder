@@ -1,9 +1,10 @@
-﻿using Placeholder.Models;
+﻿using System.Threading.Tasks;
+using Placeholder.Models;
 
 namespace Placeholder.Implementation
 {
    public interface IStubRequestExecutor
    {
-      ResponseModel ExecuteRequest();
+      Task<ResponseModel> ExecuteRequestAsync();
    }
 }
