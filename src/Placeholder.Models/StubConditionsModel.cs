@@ -22,5 +22,8 @@ namespace Placeholder.Models
 
       [YamlMember(Alias = "jsonPath")]
       public IEnumerable<string> JsonPath { get; set; }
+
+      [YamlMember(Alias = "basicAuthentication")]
+      public StubBasicAuthenticationModel BasicAuthentication { get; set; }
    }
 }
