@@ -143,6 +143,17 @@
     headers:
       Content-Type: application/json
 
+- id: full-path-check
+  conditions:
+    method: GET
+    url:
+      fullPath: /index.php?success=true
+  response:
+    statusCode: 200
+    text: DONE!
+    headers:
+      Content-Type: text/plain
+
 - id: auth-check
   conditions:
     method: GET

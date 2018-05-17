@@ -24,6 +24,7 @@ namespace Placeholder.Implementation
          // Condition checkers
          services.AddTransient<IConditionChecker, BasicAuthenticationConditionChecker>();
          services.AddTransient<IConditionChecker, BodyConditionChecker>();
+         services.AddTransient<IConditionChecker, FullPathConditionChecker>();
          services.AddTransient<IConditionChecker, HeaderConditionChecker>();
          services.AddTransient<IConditionChecker, JsonPathConditionChecker>();
          services.AddTransient<IConditionChecker, MethodConditionChecker>();

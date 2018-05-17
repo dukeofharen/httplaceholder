@@ -7,3 +7,6 @@ echo "=========="
 
 curl -v "http://localhost:5000/users?id=18"
 echo "=========="
+
+curl -v "http://localhost:5000/users?filter=first_name"
+echo "=========="

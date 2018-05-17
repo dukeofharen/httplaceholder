@@ -10,5 +10,8 @@ namespace Placeholder.Models
 
        [YamlMember(Alias = "query")]
        public IDictionary<string, string> Query { get; set; }
+
+       [YamlMember(Alias = "fullPath")]
+       public string FullPath { get; set; }
     }
 }

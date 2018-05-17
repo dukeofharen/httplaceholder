@@ -19,6 +19,8 @@ namespace Placeholder.Implementation.Services.Implementations
 
       public string Path => _httpContextAccessor.HttpContext.Request.Path;
 
+      public string FullPath => $"{_httpContextAccessor.HttpContext.Request.Path}{_httpContextAccessor.HttpContext.Request.QueryString}";
+
       public string DisplayUrl => _httpContextAccessor.HttpContext.Request.GetDisplayUrl();
 
       public string GetBody()

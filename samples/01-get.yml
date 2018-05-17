@@ -33,6 +33,21 @@
     headers:
       Content-Type: application/json
 
+# Use fullPath instead of path to set a condition on the complete path including query string.
+- id: situation-03
+  conditions:
+    method: GET
+    url:
+      fullPath: /users?filter=first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "Sjaak"
+      }
+    headers:
+      Content-Type: application/json
+
 # This is essentially the "fallback" scenario of the /users endpoint.
 - id: situation-fallback
   conditions:
