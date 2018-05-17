@@ -30,7 +30,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void JsonPathConditionChecker_ValidateAsync_StubsFound_ButNoJsonPathConditions_ShouldReturnNotExecuted()
+      public void JsonPathConditionChecker_Validate_StubsFound_ButNoJsonPathConditions_ShouldReturnNotExecuted()
       {
          // arrange
          var stub = new StubModel
@@ -49,7 +49,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void JsonPathConditionChecker_ValidateAsync_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
+      public void JsonPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
       {
          // arrange
          string body = @"{
@@ -96,7 +96,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void JsonPathConditionChecker_ValidateAsync_StubsFound_OnlyOneJsonPathConditionCorrect_ShouldReturnInvalid()
+      public void JsonPathConditionChecker_Validate_StubsFound_OnlyOneJsonPathConditionCorrect_ShouldReturnInvalid()
       {
          // arrange
          string body = @"{
@@ -143,7 +143,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void JsonPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithNamespaces()
+      public void JsonPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
       {
          // arrange
          string body = @"{

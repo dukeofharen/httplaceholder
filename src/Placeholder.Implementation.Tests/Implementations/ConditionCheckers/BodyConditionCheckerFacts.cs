@@ -30,7 +30,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void BodyConditionChecker_ValidateAsync_StubsFound_ButNoBodyConditions_ShouldReturnNotExecuted()
+      public void BodyConditionChecker_Validate_StubsFound_ButNoBodyConditions_ShouldReturnNotExecuted()
       {
          // arrange
          var stub = new StubModel
@@ -49,7 +49,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void BodyConditionChecker_ValidateAsync_StubsFound_AllBodyConditionsIncorrect_ShouldReturnInvalid()
+      public void BodyConditionChecker_Validate_StubsFound_AllBodyConditionsIncorrect_ShouldReturnInvalid()
       {
          // arrange
          string body = "this is a test";
@@ -77,7 +77,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void BodyConditionChecker_ValidateAsync_StubsFound_OnlyOneBodyConditionCorrect_ShouldReturnInvalid()
+      public void BodyConditionChecker_Validate_StubsFound_OnlyOneBodyConditionCorrect_ShouldReturnInvalid()
       {
          // arrange
          string body = "this is a test";
@@ -105,7 +105,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void BodyConditionChecker_ValidateAsync_StubsFound_HappyFlow_FullText()
+      public void BodyConditionChecker_Validate_StubsFound_HappyFlow_FullText()
       {
          // arrange
          string body = "this is a test";
@@ -132,7 +132,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void BodyConditionChecker_ValidateAsync_StubsFound_HappyFlow_Regex()
+      public void BodyConditionChecker_Validate_StubsFound_HappyFlow_Regex()
       {
          // arrange
          string body = "this is a test";

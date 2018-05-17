@@ -31,7 +31,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void QueryStringConditionChecker_ValidateAsync_StubsFound_ButNoQueryStringConditions_ShouldReturnNotExecuted()
+      public void QueryStringConditionChecker_Validate_StubsFound_ButNoQueryStringConditions_ShouldReturnNotExecuted()
       {
          // arrange
          var stub = new StubModel
@@ -53,7 +53,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void QueryStringConditionChecker_ValidateAsync_StubsFound_AllQueryStringsIncorrect_ShouldReturnInvalid()
+      public void QueryStringConditionChecker_Validate_StubsFound_AllQueryStringsIncorrect_ShouldReturnInvalid()
       {
          // arrange
          var stub = new StubModel
@@ -88,7 +88,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void QueryStringConditionChecker_ValidateAsync_StubsFound_OneQueryStringValueMissing_ShouldReturnInvalid()
+      public void QueryStringConditionChecker_Validate_StubsFound_OneQueryStringValueMissing_ShouldReturnInvalid()
       {
          // arrange
          var query = new Dictionary<string, string>
@@ -122,7 +122,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void QueryStringConditionChecker_ValidateAsync_StubsFound_OnlyOneQueryStringCorrect_ShouldReturnInvalid()
+      public void QueryStringConditionChecker_Validate_StubsFound_OnlyOneQueryStringCorrect_ShouldReturnInvalid()
       {
          // arrange
          var query = new Dictionary<string, string>
@@ -157,7 +157,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void QueryStringConditionChecker_ValidateAsync_StubsFound_HappyFlow_FullText()
+      public void QueryStringConditionChecker_Validate_StubsFound_HappyFlow_FullText()
       {
          // arrange
          var stub = new StubModel
@@ -192,7 +192,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void QueryStringConditionChecker_ValidateAsync_StubsFound_HappyFlow_Regex()
+      public void QueryStringConditionChecker_Validate_StubsFound_HappyFlow_Regex()
       {
          // arrange
          var query = new Dictionary<string, string>

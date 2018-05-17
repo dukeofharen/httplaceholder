@@ -31,7 +31,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void XPathConditionChecker_ValidateAsync_StubsFound_ButNoXPathConditions_ShouldReturnNotExecuted()
+      public void XPathConditionChecker_Validate_StubsFound_ButNoXPathConditions_ShouldReturnNotExecuted()
       {
          // arrange
          var stub = new StubModel
@@ -50,7 +50,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void XPathConditionChecker_ValidateAsync_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
+      public void XPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
       {
          // arrange
          string body = @"<?xml version=""1.0""?>
@@ -104,7 +104,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void XPathConditionChecker_ValidateAsync_StubsFound_OnlyOneXPathConditionCorrect_ShouldReturnInvalid()
+      public void XPathConditionChecker_Validate_StubsFound_OnlyOneXPathConditionCorrect_ShouldReturnInvalid()
       {
          // arrange
          string body = @"<?xml version=""1.0""?>
@@ -158,7 +158,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void XPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithNamespaces()
+      public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
       {
          // arrange
          string body = @"<?xml version=""1.0""?>
@@ -212,7 +212,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void XPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithoutNamespaces()
+      public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithoutNamespaces()
       {
          // arrange
          string body = @"<?xml version=""1.0""?>

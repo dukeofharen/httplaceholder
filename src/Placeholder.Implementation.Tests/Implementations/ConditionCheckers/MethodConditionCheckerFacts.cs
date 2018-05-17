@@ -30,7 +30,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void MethodConditionChecker_ValidateAsync_StubsFound_ButNoMethodConditions_ShouldReturnNotExecuted()
+      public void MethodConditionChecker_Validate_StubsFound_ButNoMethodConditions_ShouldReturnNotExecuted()
       {
          // arrange
          var stub = new StubModel
@@ -49,7 +49,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void MethodConditionChecker_ValidateAsync_StubsFound_WrongMethod_ShouldReturnInvalid()
+      public void MethodConditionChecker_Validate_StubsFound_WrongMethod_ShouldReturnInvalid()
       {
          // arrange
          var stub = new StubModel
@@ -72,7 +72,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void MethodConditionChecker_ValidateAsync_StubsFound_HappyFlow()
+      public void MethodConditionChecker_Validate_StubsFound_HappyFlow()
       {
          // arrange
          var stub = new StubModel

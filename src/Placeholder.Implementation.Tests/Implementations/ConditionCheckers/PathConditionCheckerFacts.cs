@@ -30,7 +30,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void PathConditionChecker_ValidateAsync_StubsFound_ButNoPathConditions_ShouldReturnNotExecuted()
+      public void PathConditionChecker_Validate_StubsFound_ButNoPathConditions_ShouldReturnNotExecuted()
       {
          // arrange
          var stub = new StubModel
@@ -52,7 +52,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void PathConditionChecker_ValidateAsync_StubsFound_WrongPath_ShouldReturnInvalid()
+      public void PathConditionChecker_Validate_StubsFound_WrongPath_ShouldReturnInvalid()
       {
          // arrange
          string path = "/login";
@@ -79,7 +79,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void PathConditionChecker_ValidateAsync_StubsFound_HappyFlow_CompleteUrl()
+      public void PathConditionChecker_Validate_StubsFound_HappyFlow_CompleteUrl()
       {
          // arrange
          string path = "/locatieserver/v3/suggest";
@@ -107,7 +107,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
-      public void PathConditionChecker_ValidateAsync_StubsFound_HappyFlow_Regex()
+      public void PathConditionChecker_Validate_StubsFound_HappyFlow_Regex()
       {
          // arrange
          string path = "/locatieserver/v3/suggest";
