@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Net;
+using System.Reflection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,7 +28,8 @@ namespace Placeholder
       {
          var argsDictionary = args.Parse();
          int port = argsDictionary.GetValue("port", 5000);
-         string pfxPath = argsDictionary.GetValue("pfxPath", "key.pfx");
+         string defaultPfxPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx");
+         string pfxPath = argsDictionary.GetValue("pfxPath", defaultPfxPath);
          string pfxPassword = argsDictionary.GetValue("pfxPassword", "1234");
          int httpsPort = argsDictionary.GetValue("httpsPort", 5050);
          return WebHost.CreateDefaultBuilder(args)
