@@ -32,7 +32,7 @@ namespace Placeholder
             .UseKestrel(options =>
             {
                options.AddServerHeader = false;
-               options.Listen(IPAddress.Loopback, port);
+               options.Listen(IPAddress.Any, port);
             })
             .Build();
       }
