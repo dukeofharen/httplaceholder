@@ -117,6 +117,49 @@ namespace Placeholder.Tests.Integration
       }
 
       [TestMethod]
+      public async Task StubIntegration_RegularGet_BasicAuthentication()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}User.svc";
+         var request = new HttpRequestMessage
+         {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(url),
+            Headers = { { "Authorization", "Basic ZHVjbzpnZWhlaW0=" } }
+         };
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            string content = await response.Content.ReadAsStringAsync();
+            Assert.IsFalse(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("application/xml", response.Content.Headers.ContentType.ToString());
+         }
+      }
+
+      [TestMethod]
+      public async Task StubIntegration_RegularGet_BasicAuthentication_StubNotFound()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}User.svc";
+         var request = new HttpRequestMessage
+         {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(url),
+            Headers = { { "Authorization", "Basic ZHVjbzpnZWhlaW0x" } }
+         };
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            string content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+         }
+      }
+
+      [TestMethod]
       public async Task StubIntegration_RegularPost_ValidatePostBody_HappyFlow()
       {
          // arrange

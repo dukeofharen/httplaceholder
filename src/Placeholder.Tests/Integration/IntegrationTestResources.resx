@@ -143,6 +143,20 @@
     headers:
       Content-Type: application/json
 
+- id: auth-check
+  conditions:
+    method: GET
+    url:
+      path: /User.svc
+    basicAuthentication:
+      username: duco
+      password: geheim
+  response:
+    statusCode: 200
+    text: '&lt;result&gt;true&lt;/result&gt;'
+    headers:
+      Content-Type: application/xml
+
 - id: add-user
   conditions:
     method: POST
