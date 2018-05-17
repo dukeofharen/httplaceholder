@@ -1,0 +1,20 @@
+# A pretty straightforward basic authentication example. Execute 06-basic-auth.sh to execute the requests.
+- id: basic-auth
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: 12
+        filter: first_name
+    basicAuthentication:
+      username: user
+      password: pass
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "John"
+      }
+    headers:
+      Content-Type: application/json
