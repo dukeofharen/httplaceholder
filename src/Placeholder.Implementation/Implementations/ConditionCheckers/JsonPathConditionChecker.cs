@@ -34,9 +34,9 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             {
                requestLogger.Log($"Checking posted content with JSONPath '{condition}'.");
                var elements = jsonObject.SelectToken(condition);
-               if (elements == null || !elements.Any())
+               if (elements == null)
                {
-                  // No suitable XML results found.
+                  // No suitable JSON results found.
                   requestLogger.Log("No suitable JSON results found with JSONPath query.");
                   break;
                }
