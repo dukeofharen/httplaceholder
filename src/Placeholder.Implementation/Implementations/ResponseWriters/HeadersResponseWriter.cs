@@ -4,11 +4,11 @@ using Placeholder.Models;
 
 namespace Placeholder.Implementation.Implementations.ResponseWriters
 {
-   public class StatusCodeResponseWriter : IResponseWriter
-   {
+    public class HeadersResponseWriter : IResponseWriter
+    {
       private readonly IRequestLoggerFactory _requestLoggerFactory;
 
-      public StatusCodeResponseWriter(IRequestLoggerFactory requestLoggerFactory)
+      public HeadersResponseWriter(IRequestLoggerFactory requestLoggerFactory)
       {
          _requestLoggerFactory = requestLoggerFactory;
       }
@@ -16,8 +16,15 @@ namespace Placeholder.Implementation.Implementations.ResponseWriters
       public Task WriteToResponseAsync(StubModel stub, ResponseModel response)
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
-         response.StatusCode = stub.Response?.StatusCode ?? 200;
-         requestLogger.Log($"Found HTTP status code '{response.StatusCode}'.");
+         var stubResponseHeaders = stub.Response?.Headers;
+         if (stubResponseHeaders != null)
+         {
+            foreach (var header in stubResponseHeaders)
+            {
+               requestLogger.Log($"Found header '{header.Key}' with value '{header.Value}'.");
+               response.Headers.Add(header.Key, header.Value);
+            }
+         }
 
          return Task.CompletedTask;
       }

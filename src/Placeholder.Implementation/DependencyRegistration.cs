@@ -38,6 +38,7 @@ namespace Placeholder.Implementation
          services.AddTransient<IResponseWriter, Base64ResponseWriter>();
          services.AddTransient<IResponseWriter, ExtraDurationResponseWriter>();
          services.AddTransient<IResponseWriter, FileResponseWriter>();
+         services.AddTransient<IResponseWriter, HeadersResponseWriter>();
          services.AddTransient<IResponseWriter, StatusCodeResponseWriter>();
          services.AddTransient<IResponseWriter, TextResponseWriter>();
       }
