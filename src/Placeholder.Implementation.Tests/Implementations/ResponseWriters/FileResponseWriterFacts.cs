@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.Implementation.Implementations.ResponseWriters;
@@ -88,23 +89,34 @@ namespace Placeholder.Implementation.Tests.Implementations.ResponseWriters
       public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileNotFoundDirectly_ButFoundInStubFolder()
       {
          // arrange
+         string yamlFilePath = @"C:\stubs";
+         string file = "image.png";
+         string expectedFolder = Path.Combine(yamlFilePath, file);
          var body = new byte[] { 1, 2, 3 };
          var stub = new StubModel
          {
             Response = new StubResponseModel
             {
-               File = @"C:\tmp\image.png"
+               File = file
             }
          };
 
          var response = new ResponseModel();
+
+         _stubContainerMock
+            .Setup(m => m.GetStubFileDirectory())
+            .Returns(yamlFilePath);
 
          _fileServiceMock
             .Setup(m => m.FileExists(stub.Response.File))
             .Returns(false);
 
          _fileServiceMock
-            .Setup(m => m.ReadAllBytes(stub.Response.File))
+            .Setup(m => m.FileExists(expectedFolder))
+            .Returns(true);
+
+         _fileServiceMock
+            .Setup(m => m.ReadAllBytes(expectedFolder))
             .Returns(body);
 
          // act
@@ -112,6 +124,42 @@ namespace Placeholder.Implementation.Tests.Implementations.ResponseWriters
 
          // assert
          Assert.AreEqual(body, response.Body);
+      }
+
+      [TestMethod]
+      public async Task FileResponseWriter_WriteToResponseAsync_FileNotFoundDirectly_AlsoNotFoundInStubFolder_ShouldReturnNoBody()
+      {
+         // arrange
+         string yamlFilePath = @"C:\stubs";
+         string file = "image.png";
+         string expectedFolder = Path.Combine(yamlFilePath, file);
+         var stub = new StubModel
+         {
+            Response = new StubResponseModel
+            {
+               File = file
+            }
+         };
+
+         var response = new ResponseModel();
+
+         _stubContainerMock
+            .Setup(m => m.GetStubFileDirectory())
+            .Returns(yamlFilePath);
+
+         _fileServiceMock
+            .Setup(m => m.FileExists(stub.Response.File))
+            .Returns(false);
+
+         _fileServiceMock
+            .Setup(m => m.FileExists(expectedFolder))
+            .Returns(false);
+
+         // act
+         await _writer.WriteToResponseAsync(stub, response);
+
+         // assert
+         Assert.IsNull(response.Body);
       }
    }
 }

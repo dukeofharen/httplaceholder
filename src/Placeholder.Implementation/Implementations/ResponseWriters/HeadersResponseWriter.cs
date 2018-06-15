@@ -15,10 +15,10 @@ namespace Placeholder.Implementation.Implementations.ResponseWriters
 
       public Task WriteToResponseAsync(StubModel stub, ResponseModel response)
       {
-         var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var stubResponseHeaders = stub.Response?.Headers;
          if (stubResponseHeaders != null)
          {
+            var requestLogger = _requestLoggerFactory.GetRequestLogger();
             foreach (var header in stubResponseHeaders)
             {
                requestLogger.Log($"Found header '{header.Key}' with value '{header.Value}'.");
