@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,24 +10,15 @@ namespace Placeholder.Implementation.Implementations
 {
    internal class StubResponseGenerator : IStubResponseGenerator
    {
-      private readonly IAsyncService _asyncService;
-      private readonly IFileService _fileService;
       private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IServiceProvider _serviceProvider;
-      private readonly IStubContainer _stubContainer;
 
       public StubResponseGenerator(
-         IAsyncService asyncService,
-         IFileService fileService,
          IRequestLoggerFactory requestLoggerFactory,
-         IServiceProvider serviceProvider,
-         IStubContainer stubContainer)
+         IServiceProvider serviceProvider)
       {
-         _asyncService = asyncService;
-         _fileService = fileService;
          _requestLoggerFactory = requestLoggerFactory;
          _serviceProvider = serviceProvider;
-         _stubContainer = stubContainer;
       }
 
       public async Task<ResponseModel> GenerateResponseAsync(StubModel stub)

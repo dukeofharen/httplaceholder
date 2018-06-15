@@ -22,7 +22,6 @@ namespace Placeholder.Implementation.Implementations.ResponseWriters
          // Simulate sluggish response here, if configured.
          if (stub.Response?.ExtraDuration.HasValue == true)
          {
-
             var requestLogger = _requestLoggerFactory.GetRequestLogger();
             int duration = stub.Response.ExtraDuration.Value;
             requestLogger.Log($"Waiting '{duration}' extra milliseconds.");
