@@ -10,6 +10,9 @@ namespace Placeholder.Models
       [YamlMember(Alias = "conditions")]
       public StubConditionsModel Conditions { get; set; }
 
+      [YamlMember(Alias = "negativeConditions")]
+      public StubConditionsModel NegativeConditions { get; set; }
+
       [YamlMember(Alias = "response")]
       public StubResponseModel Response { get; set; }
 

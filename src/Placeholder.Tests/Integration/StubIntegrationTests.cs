@@ -117,6 +117,21 @@ namespace Placeholder.Tests.Integration
       }
 
       [TestMethod]
+      public async Task StubIntegration_RegularGet_ReturnsJson_ConflictingNegativeCondition_ShouldReturnHttp500()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9761BP&filter=postcode";
+
+         // act / assert
+         using (var response = await Client.GetAsync(url))
+         {
+            string content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+         }
+      }
+
+      [TestMethod]
       public async Task StubIntegration_RegularGet_BasicAuthentication()
       {
          // arrange

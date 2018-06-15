@@ -68,8 +68,12 @@ namespace Placeholder.Tests.Integration {
         ///      path: \blocatieserver\/v3\/suggest\b
         ///      query:
         ///        q: 9761BP
+        ///  negativeConditions:
+        ///    url:
+        ///      query:
+        ///        filter: postcode
         ///  response:
-        ///    text: &apos;{&quot;response&quot;:{&quot;numFound&quot;:23,&quot;start&quot;:0,&quot;maxScore&quot;:18.281225,&quot;docs&quot;:[{&quot;type&quot;:&quot;postcode&quot;,&quot;weergavenaam&quot;:&quot;Kluivingskampenweg, 9761BP Eelde&quot;,&quot;id&quot;:&quot;pcd-bdae7c76ab31b82843622995d7fc6dc0&quot;,&quot;score&quot;:18.281225},{&quot;type&quot;:&quot;adres&quot;,&quot;weergavenaam&quot;:&quot;Kluivingskampenweg 2, 9761BP Eelde&quot;,&quot;id&quot;:&quot;adr-2cc23fc54b239a2950d51d5ebd53cc01&quot;,&quot;score&quot;:13.532177},{&quot;type&quot;:&quot;adres&quot;,&quot;w [rest of string was truncated]&quot;;.
+        ///    text: &apos;{&quot;response&quot;:{&quot;numFound&quot;:23,&quot;start&quot;:0,&quot;maxScore&quot;:18.281225,&quot;docs&quot;:[{&quot;type&quot;:&quot;postcode&quot;,&quot;weergavenaam&quot;:&quot;Kluivingskampenweg, 9761BP Eelde&quot;,&quot;id&quot;:&quot;pcd-bdae7c76ab31b82843622995d7fc6dc0&quot;,&quot;score&quot;:18.281225},{&quot;type&quot;:&quot;adres&quot;,&quot;weergavenaam&quot;:&quot;Kluivingskampenweg 2, 9761BP Eelde&quot;,&quot;id&quot;:&quot;ad [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestYamlFile {
             get {
