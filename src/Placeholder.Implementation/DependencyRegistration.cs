@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Placeholder.Implementation.Implementations;
 using Placeholder.Implementation.Implementations.ConditionCheckers;
+using Placeholder.Implementation.Implementations.ResponseWriters;
 using Placeholder.Implementation.Services;
 using Placeholder.Implementation.Services.Implementations;
 
@@ -32,6 +33,13 @@ namespace Placeholder.Implementation
          services.AddTransient<IConditionChecker, PathConditionChecker>();
          services.AddTransient<IConditionChecker, QueryStringConditionChecker>();
          services.AddTransient<IConditionChecker, XPathConditionChecker>();
+
+         // Response writers
+         services.AddTransient<IResponseWriter, Base64ResponseWriter>();
+         services.AddTransient<IResponseWriter, ExtraDurationResponseWriter>();
+         services.AddTransient<IResponseWriter, FileResponseWriter>();
+         services.AddTransient<IResponseWriter, StatusCodeResponseWriter>();
+         services.AddTransient<IResponseWriter, TextResponseWriter>();
       }
    }
 }
