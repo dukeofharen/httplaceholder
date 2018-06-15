@@ -19,15 +19,15 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          _httpContextService = httpContextService;
       }
 
-      public ConditionValidationType Validate(StubModel stub)
+      public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
-         var bodyConditions = stub.Conditions?.Body?.ToArray();
+         var bodyConditions = conditions?.Body?.ToArray();
          if (bodyConditions != null)
          {
             var body = _httpContextService.GetBody();
-            requestLogger.Log($"Body condition found for stub '{stub.Id}': '{string.Join(", ", bodyConditions)}'");
+            requestLogger.Log($"Body condition found for stub '{stubId}': '{string.Join(", ", bodyConditions)}'");
 
             int validBodyConditions = 0;
             foreach (var condition in bodyConditions)
@@ -46,7 +46,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             // the body condition is passed and the stub ID is passed to the result.
             if (validBodyConditions == bodyConditions.Length)
             {
-               requestLogger.Log($"Body condition check succeeded for stub '{stub.Id}'.");
+               requestLogger.Log($"Body condition check succeeded for stub '{stubId}'.");
                result = ConditionValidationType.Valid;
             }
             else

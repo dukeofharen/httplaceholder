@@ -33,16 +33,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void MethodConditionChecker_Validate_StubsFound_ButNoMethodConditions_ShouldReturnNotExecuted()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Method = null
-            }
+            Method = null
          };
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.NotExecuted, result);
@@ -52,12 +49,9 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void MethodConditionChecker_Validate_StubsFound_WrongMethod_ShouldReturnInvalid()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Method = "POST"
-            }
+            Method = "POST"
          };
 
          _httpContextServiceMock
@@ -65,7 +59,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns("GET");
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -75,13 +69,9 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void MethodConditionChecker_Validate_StubsFound_HappyFlow()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Id = "2",
-            Conditions = new StubConditionsModel
-            {
-               Method = "GET"
-            }
+            Method = "GET"
          };
 
          _httpContextServiceMock
@@ -89,7 +79,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns("GET");
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);

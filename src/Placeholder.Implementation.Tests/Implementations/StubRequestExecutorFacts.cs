@@ -43,11 +43,13 @@ namespace Placeholder.Implementation.Tests.Implementations
 
          _stub1 = new StubModel
          {
-            Id = Guid.NewGuid().ToString()
+            Id = Guid.NewGuid().ToString(),
+            Conditions = new StubConditionsModel()
          };
          _stub2 = new StubModel
          {
-            Id = Guid.NewGuid().ToString()
+            Id = Guid.NewGuid().ToString(),
+            Conditions = new StubConditionsModel()
          };
          _stubManagerMock
             .Setup(m => m.Stubs)
@@ -67,10 +69,10 @@ namespace Placeholder.Implementation.Tests.Implementations
       {
          // arrange
          _conditionCheckerMock1
-            .Setup(m => m.Validate(It.IsAny<StubModel>()))
+            .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
             .Returns(ConditionValidationType.Invalid);
          _conditionCheckerMock2
-            .Setup(m => m.Validate(It.IsAny<StubModel>()))
+            .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
             .Returns(ConditionValidationType.Invalid);
 
          // act
@@ -85,10 +87,10 @@ namespace Placeholder.Implementation.Tests.Implementations
       {
          // arrange
          _conditionCheckerMock1
-            .Setup(m => m.Validate(It.IsAny<StubModel>()))
+            .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
             .Returns(ConditionValidationType.NotExecuted);
          _conditionCheckerMock2
-            .Setup(m => m.Validate(It.IsAny<StubModel>()))
+            .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
             .Returns(ConditionValidationType.NotExecuted);
 
          // act
@@ -104,10 +106,10 @@ namespace Placeholder.Implementation.Tests.Implementations
          // arrange
          var expectedResponseModel = new ResponseModel();
          _conditionCheckerMock1
-            .Setup(m => m.Validate(It.IsAny<StubModel>()))
+            .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
             .Returns(ConditionValidationType.Valid);
          _conditionCheckerMock2
-            .Setup(m => m.Validate(It.IsAny<StubModel>()))
+            .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
             .Returns(ConditionValidationType.Valid);
 
          _stubResponseGeneratorMock
@@ -127,16 +129,16 @@ namespace Placeholder.Implementation.Tests.Implementations
          // arrange
          var expectedResponseModel = new ResponseModel();
          _conditionCheckerMock1
-            .Setup(m => m.Validate(_stub1))
+            .Setup(m => m.Validate(_stub1.Id, _stub1.Conditions))
             .Returns(ConditionValidationType.Invalid);
          _conditionCheckerMock2
-            .Setup(m => m.Validate(_stub1))
+            .Setup(m => m.Validate(_stub1.Id, _stub1.Conditions))
             .Returns(ConditionValidationType.Invalid);
          _conditionCheckerMock1
-            .Setup(m => m.Validate(_stub2))
+            .Setup(m => m.Validate(_stub2.Id, _stub2.Conditions))
             .Returns(ConditionValidationType.Valid);
          _conditionCheckerMock2
-            .Setup(m => m.Validate(_stub2))
+            .Setup(m => m.Validate(_stub2.Id, _stub2.Conditions))
             .Returns(ConditionValidationType.Valid);
          _stubResponseGeneratorMock
             .Setup(m => m.GenerateResponseAsync(_stub2))

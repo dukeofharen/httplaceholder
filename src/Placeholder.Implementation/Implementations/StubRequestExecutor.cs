@@ -47,7 +47,7 @@ namespace Placeholder.Implementation.Implementations
                foreach (var checker in conditionCheckers)
                {
                   requestLogger.Log($"----- EXECUTING CONDITION {checker.GetType().Name} -----");
-                  var validationResult = checker.Validate(stub);
+                  var validationResult = checker.Validate(stub.Id, stub.Conditions);
                   validationResults.Add(validationResult);
                   if (validationResult == ConditionValidationType.NotExecuted)
                   {

@@ -18,14 +18,14 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          _httpContextService = httpContextService;
       }
 
-      public ConditionValidationType Validate(StubModel stub)
+      public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
-         string pathCondition = stub.Conditions?.Url?.Path;
+         string pathCondition = conditions?.Url?.Path;
          if (!string.IsNullOrEmpty(pathCondition))
          {
-            requestLogger.Log($"Path condition found for stub '{stub.Id}': '{pathCondition}'");
+            requestLogger.Log($"Path condition found for stub '{stubId}': '{pathCondition}'");
             string path = _httpContextService.Path;
             if (StringHelper.IsRegexMatchOrSubstring(path, pathCondition))
             {

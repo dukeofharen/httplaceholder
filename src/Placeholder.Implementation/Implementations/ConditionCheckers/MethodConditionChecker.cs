@@ -18,14 +18,14 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          _httpContextService = httpContextService;
       }
 
-      public ConditionValidationType Validate(StubModel stub)
+      public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
-         string methodCondition = stub.Conditions?.Method;
+         string methodCondition = conditions?.Method;
          if (!string.IsNullOrEmpty(methodCondition))
          {
-            requestLogger.Log($"Method condition found for stub '{stub.Id}': '{methodCondition}'");
+            requestLogger.Log($"Method condition found for stub '{stubId}': '{methodCondition}'");
             string method = _httpContextService.Method;
             if (string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase))
             {

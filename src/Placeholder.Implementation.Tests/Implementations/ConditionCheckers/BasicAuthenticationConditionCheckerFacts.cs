@@ -34,16 +34,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void BasicAuthenticationConditionChecker_Validate_StubsFound_ButNoBasicAuthenticationCondition_ShouldReturnNotExecuted()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               BasicAuthentication = null
-            }
+            BasicAuthentication = null
          };
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.NotExecuted, result);
@@ -53,15 +50,12 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void BasicAuthenticationConditionChecker_Validate_NoAuthorizationHeader_ShouldReturnInvalid()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            BasicAuthentication = new StubBasicAuthenticationModel
             {
-               BasicAuthentication = new StubBasicAuthenticationModel
-               {
-                  Username = "username",
-                  Password = "password"
-               }
+               Username = "username",
+               Password = "password"
             }
          };
 
@@ -75,7 +69,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -85,15 +79,12 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void BasicAuthenticationConditionChecker_Validate_BasicAuthenticationIncorrect_ShouldReturnInvalid()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            BasicAuthentication = new StubBasicAuthenticationModel
             {
-               BasicAuthentication = new StubBasicAuthenticationModel
-               {
-                  Username = "username",
-                  Password = "password"
-               }
+               Username = "username",
+               Password = "password"
             }
          };
 
@@ -107,7 +98,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -117,15 +108,12 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void BasicAuthenticationConditionChecker_Validate_HappyFlow()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            BasicAuthentication = new StubBasicAuthenticationModel
             {
-               BasicAuthentication = new StubBasicAuthenticationModel
-               {
-                  Username = "username",
-                  Password = "password"
-               }
+               Username = "username",
+               Password = "password"
             }
          };
 
@@ -139,7 +127,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);

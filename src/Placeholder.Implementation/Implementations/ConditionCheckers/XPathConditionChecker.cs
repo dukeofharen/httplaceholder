@@ -19,14 +19,14 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          _httpContextService = httpContextService;
       }
 
-      public ConditionValidationType Validate(StubModel stub)
+      public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
-         var xpathConditions = stub.Conditions?.Xpath?.ToArray();
+         var xpathConditions = conditions?.Xpath?.ToArray();
          if (xpathConditions != null)
          {
-            requestLogger.Log($"XPath condition found for stub '{stub.Id}': '{string.Join(", ", xpathConditions.Select(x => x.QueryString))}'");
+            requestLogger.Log($"XPath condition found for stub '{stubId}': '{string.Join(", ", xpathConditions.Select(x => x.QueryString))}'");
             int validXpaths = 0;
             string body = _httpContextService.GetBody();
             var doc = new XmlDocument();
@@ -60,7 +60,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             // the header condition is passed and the stub ID is passed to the result.
             if (validXpaths == xpathConditions.Length)
             {
-               requestLogger.Log($"XPath condition check succeeded for stub '{stub.Id}'.");
+               requestLogger.Log($"XPath condition check succeeded for stub '{stubId}'.");
                result = ConditionValidationType.Valid;
             }
             else

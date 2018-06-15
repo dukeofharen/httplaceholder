@@ -19,14 +19,14 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          _httpContextService = httpContextService;
       }
 
-      public ConditionValidationType Validate(StubModel stub)
+      public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
-         var basicAuthenticationCondition = stub.Conditions?.BasicAuthentication;
+         var basicAuthenticationCondition = conditions?.BasicAuthentication;
          if (basicAuthenticationCondition != null)
          {
-            requestLogger.Log($"Basic authentication condition found for stub '{stub.Id}': '{basicAuthenticationCondition}'");
+            requestLogger.Log($"Basic authentication condition found for stub '{stubId}': '{basicAuthenticationCondition}'");
             var headers = _httpContextService.GetHeaders();
 
             // Try to retrieve the Authorization header.
@@ -41,12 +41,12 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
                string expectedAuthorizationHeader = $"Basic {expectedBase64UsernamePassword}";
                if (expectedAuthorizationHeader == authorization)
                {
-                  requestLogger.Log($"Basic authentication condition passed for stub '{stub.Id}'.");
+                  requestLogger.Log($"Basic authentication condition passed for stub '{stubId}'.");
                   result = ConditionValidationType.Valid;
                }
                else
                {
-                  requestLogger.Log($"Basic authentication condition failed for stub '{stub.Id}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.");
+                  requestLogger.Log($"Basic authentication condition failed for stub '{stubId}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.");
                   result = ConditionValidationType.Invalid;
                }
             }

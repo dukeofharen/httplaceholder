@@ -33,19 +33,16 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void FullPathConditionChecker_Validate_StubsFound_ButNoPathConditions_ShouldReturnNotExecuted()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            Url = new StubUrlConditionModel
             {
-               Url = new StubUrlConditionModel
-               {
-                  FullPath = null
-               }
+               FullPath = null
             }
          };
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.NotExecuted, result);
@@ -56,14 +53,11 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       {
          // arrange
          string path = "/login?success=true";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            Url = new StubUrlConditionModel
             {
-               Url = new StubUrlConditionModel
-               {
-                  FullPath = "/login?success=false"
-               }
+               FullPath = "/login?success=false"
             }
          };
 
@@ -72,7 +66,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(path);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -83,15 +77,11 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       {
          // arrange
          string path = "/login?success=true";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Id = "2",
-            Conditions = new StubConditionsModel
+            Url = new StubUrlConditionModel
             {
-               Url = new StubUrlConditionModel
-               {
-                  FullPath = "/login?success=true"
-               }
+               FullPath = "/login?success=true"
             }
          };
 
@@ -100,7 +90,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(path);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);
@@ -111,15 +101,11 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       {
          // arrange
          string path = "/locatieserver/v3/suggest";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Id = "2",
-            Conditions = new StubConditionsModel
+            Url = new StubUrlConditionModel
             {
-               Url = new StubUrlConditionModel
-               {
-                  FullPath = @"\blocatieserver\/v3\/suggest\b"
-               }
+               FullPath = @"\blocatieserver\/v3\/suggest\b"
             }
          };
 
@@ -128,7 +114,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(path);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);

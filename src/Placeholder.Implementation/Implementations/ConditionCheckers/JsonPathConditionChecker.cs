@@ -19,14 +19,14 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          _httpContextService = httpContextService;
       }
 
-      public ConditionValidationType Validate(StubModel stub)
+      public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
-         var jsonPathConditions = stub.Conditions?.JsonPath?.ToArray();
+         var jsonPathConditions = conditions?.JsonPath?.ToArray();
          if (jsonPathConditions != null)
          {
-            requestLogger.Log($"JSONPath condition found for stub '{stub.Id}': '{string.Join(", ", jsonPathConditions)}'");
+            requestLogger.Log($"JSONPath condition found for stub '{stubId}': '{string.Join(", ", jsonPathConditions)}'");
             int validJsonPaths = 0;
             string body = _httpContextService.GetBody();
             var jsonObject = JObject.Parse(body);
@@ -48,7 +48,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             // the header condition is passed and the stub ID is passed to the result.
             if (validJsonPaths == jsonPathConditions.Length)
             {
-               requestLogger.Log($"JSONPath condition check succeeded for stub '{stub.Id}'.");
+               requestLogger.Log($"JSONPath condition check succeeded for stub '{stubId}'.");
                result = ConditionValidationType.Valid;
             }
             else

@@ -19,14 +19,14 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          _httpContextService = httpContextService;
       }
 
-      public ConditionValidationType Validate(StubModel stub)
+      public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
-         var queryStringConditions = stub.Conditions?.Url?.Query;
+         var queryStringConditions = conditions?.Url?.Query;
          if (queryStringConditions != null)
          {
-            requestLogger.Log($"Method condition found for stub '{stub.Id}': '{string.Join(", ", queryStringConditions.Select(c => $"{c.Key}: {c.Value}"))}'");
+            requestLogger.Log($"Method condition found for stub '{stubId}': '{string.Join(", ", queryStringConditions.Select(c => $"{c.Key}: {c.Value}"))}'");
             int validQueryStrings = 0;
             var queryString = _httpContextService.GetQueryStringDictionary();
             foreach (var condition in queryStringConditions)
@@ -52,7 +52,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             // the query string condition is passed and the stub ID is passed to the result.
             if (validQueryStrings == queryStringConditions.Count)
             {
-               requestLogger.Log($"Query string condition check succeeded for stub '{stub.Id}'.");
+               requestLogger.Log($"Query string condition check succeeded for stub '{stubId}'.");
                result = ConditionValidationType.Valid;
             }
             else

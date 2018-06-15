@@ -33,16 +33,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void BodyConditionChecker_Validate_StubsFound_ButNoBodyConditions_ShouldReturnNotExecuted()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Body = null
-            }
+            Body = null
          };
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.NotExecuted, result);
@@ -53,16 +50,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       {
          // arrange
          string body = "this is a test";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Body = new[]
+            Body = new[]
                {
                   @"\bthat\b",
                   @"\btree\b"
                }
-            }
          };
 
          _httpContextServiceMock
@@ -70,7 +64,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -81,16 +75,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       {
          // arrange
          string body = "this is a test";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Body = new[]
+            Body = new[]
                {
                   @"\bthis\b",
                   @"\btree\b"
                }
-            }
          };
 
          _httpContextServiceMock
@@ -98,7 +89,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -109,15 +100,12 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       {
          // arrange
          string body = "this is a test";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Body = new[]
+            Body = new[]
                {
                   "this is a test"
                }
-            }
          };
 
          _httpContextServiceMock
@@ -125,7 +113,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);
@@ -136,16 +124,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       {
          // arrange
          string body = "this is a test";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Body = new[]
+            Body = new[]
                {
                   @"\bthis\b",
                   @"\btest\b"
                }
-            }
          };
 
          _httpContextServiceMock
@@ -153,7 +138,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);

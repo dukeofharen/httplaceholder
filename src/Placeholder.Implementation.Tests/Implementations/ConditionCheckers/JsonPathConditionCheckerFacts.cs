@@ -33,16 +33,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void JsonPathConditionChecker_Validate_StubsFound_ButNoJsonPathConditions_ShouldReturnNotExecuted()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               JsonPath = null
-            }
+            JsonPath = null
          };
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.NotExecuted, result);
@@ -72,16 +69,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
     }
   ]
 }";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               JsonPath = new[]
+            JsonPath = new[]
                {
                   "$.phoneNumbers[?(@.type=='Android')]",
                   "$.phoneNumbers[?(@.type=='Office')]"
                }
-            }
          };
 
          _httpContextServiceMock
@@ -89,7 +83,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -119,16 +113,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
     }
   ]
 }";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               JsonPath = new[]
+            JsonPath = new[]
                {
                   "$.phoneNumbers[?(@.type=='iPhone')]",
                   "$.phoneNumbers[?(@.type=='Office')]"
                }
-            }
          };
 
          _httpContextServiceMock
@@ -136,7 +127,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -166,16 +157,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
     }
   ]
 }";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               JsonPath = new[]
+            JsonPath = new[]
                {
                   "$.phoneNumbers[?(@.type=='iPhone')]",
                   "$.phoneNumbers[?(@.type=='home')]"
                }
-            }
          };
 
          _httpContextServiceMock
@@ -183,7 +171,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);

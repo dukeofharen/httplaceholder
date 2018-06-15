@@ -34,16 +34,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void HeaderConditionCheckerValidateAsync_StubsFound_ButNoQueryStringConditions_ShouldReturnNotExecuted()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Headers = null
-            }
+            Headers = null
          };
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.NotExecuted, result);
@@ -58,16 +55,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             { "X-Api-Key", "1" },
             { "X-Another-Secret", "2" }
          };
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Headers = new Dictionary<string, string>
+            Headers = new Dictionary<string, string>
                {
                   {"X-Api-Key", "2"},
                   {"X-Another-Secret", "3"}
                }
-            }
          };
 
          _httpContextServiceMock
@@ -75,7 +69,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -90,15 +84,12 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             { "X-Api-Key", "1" },
             { "X-Another-Secret", "2" }
          };
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Headers = new Dictionary<string, string>
+            Headers = new Dictionary<string, string>
                {
                   {"X-Api-Key", "2"}
                }
-            }
          };
 
          _httpContextServiceMock
@@ -106,7 +97,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -121,16 +112,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             { "X-Api-Key", "1" },
             { "X-Another-Secret", "2" }
          };
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Headers = new Dictionary<string, string>
+            Headers = new Dictionary<string, string>
                {
                   {"X-Api-Key", "1"},
                   {"X-Another-Secret", "3"}
                }
-            }
          };
 
          _httpContextServiceMock
@@ -138,7 +126,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -153,16 +141,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             { "X-Api-Key", "123abc" },
             { "X-Another-Secret", "blaaaaah 123" }
          };
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Headers = new Dictionary<string, string>
+            Headers = new Dictionary<string, string>
                {
                   {"X-Api-Key", "123abc"},
                   {"X-Another-Secret", @"\bblaaaaah\b"}
                }
-            }
          };
 
          _httpContextServiceMock
@@ -170,7 +155,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(headers);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);

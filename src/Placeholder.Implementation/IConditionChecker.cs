@@ -5,6 +5,6 @@ namespace Placeholder.Implementation
 {
    public interface IConditionChecker
    {
-     ConditionValidationType Validate(StubModel stub);
+     ConditionValidationType Validate(string stubId, StubConditionsModel conditions);
    }
 }

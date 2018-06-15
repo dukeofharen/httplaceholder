@@ -34,16 +34,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void XPathConditionChecker_Validate_StubsFound_ButNoXPathConditions_ShouldReturnNotExecuted()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Xpath = null
-            }
+            Xpath = null
          };
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.NotExecuted, result);
@@ -64,11 +61,9 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
     </m:GetStockPrice>
   </soap:Body>
 </soap:Envelope>";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Xpath = new[]
+            Xpath = new[]
                {
                   new StubXpathModel
                   {
@@ -89,7 +84,6 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
                      }
                   }
                }
-            }
          };
 
          _httpContextServiceMock
@@ -97,7 +91,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -118,11 +112,9 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
     </m:GetStockPrice>
   </soap:Body>
 </soap:Envelope>";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Xpath = new[]
+            Xpath = new[]
                {
                   new StubXpathModel
                   {
@@ -143,7 +135,6 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
                      }
                   }
                }
-            }
          };
 
          _httpContextServiceMock
@@ -151,7 +142,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -172,11 +163,9 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
     </m:GetStockPrice>
   </soap:Body>
 </soap:Envelope>";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Xpath = new[]
+            Xpath = new[]
                {
                   new StubXpathModel
                   {
@@ -197,7 +186,6 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
                      }
                   }
                }
-            }
          };
 
          _httpContextServiceMock
@@ -205,7 +193,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);
@@ -220,11 +208,9 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
 	<a>TEST</a>
 	<b>TEST2</b>
 </object>";
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
-            {
-               Xpath = new[]
+            Xpath = new[]
                {
                   new StubXpathModel
                   {
@@ -235,7 +221,6 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
                      QueryString = "/object/b[text() = 'TEST2']"
                   }
                }
-            }
          };
 
          _httpContextServiceMock
@@ -243,7 +228,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(body);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);

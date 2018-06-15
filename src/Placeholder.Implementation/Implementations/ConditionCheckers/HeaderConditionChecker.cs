@@ -19,14 +19,14 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
          _httpContextService = httpContextService;
       }
 
-      public ConditionValidationType Validate(StubModel stub)
+      public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var result = ConditionValidationType.NotExecuted;
-         var headerConditions = stub.Conditions?.Headers;
+         var headerConditions = conditions?.Headers;
          if (headerConditions != null)
          {
-            requestLogger.Log($"Headers condition found for stub '{stub.Id}': '{string.Join(", ", headerConditions.Select(c => $"{c.Key}: {c.Value}"))}'");
+            requestLogger.Log($"Headers condition found for stub '{stubId}': '{string.Join(", ", headerConditions.Select(c => $"{c.Key}: {c.Value}"))}'");
             int validHeaders = 0;
             var headers = _httpContextService.GetHeaders();
             foreach (var condition in headerConditions)
@@ -52,7 +52,7 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
             // the header condition is passed and the stub ID is passed to the result.
             if (validHeaders == headerConditions.Count)
             {
-               requestLogger.Log($"Header condition check succeeded for stub '{stub.Id}'.");
+               requestLogger.Log($"Header condition check succeeded for stub '{stubId}'.");
                result = ConditionValidationType.Valid;
             }
             else

@@ -34,19 +34,16 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void QueryStringConditionChecker_Validate_StubsFound_ButNoQueryStringConditions_ShouldReturnNotExecuted()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            Url = new StubUrlConditionModel
             {
-               Url = new StubUrlConditionModel
-               {
-                  Query = null
-               }
+               Query = null
             }
          };
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.NotExecuted, result);
@@ -56,18 +53,15 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void QueryStringConditionChecker_Validate_StubsFound_AllQueryStringsIncorrect_ShouldReturnInvalid()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            Url = new StubUrlConditionModel
             {
-               Url = new StubUrlConditionModel
-               {
-                  Query = new Dictionary<string, string>
+               Query = new Dictionary<string, string>
                   {
                      {"q", "2"},
                      {"y", "3"}
                   }
-               }
             }
          };
          var query = new Dictionary<string, string>
@@ -81,7 +75,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -96,16 +90,13 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             { "q", "1" },
             { "y", "2" }
          };
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            Url = new StubUrlConditionModel
             {
-               Url = new StubUrlConditionModel
+               Query = new Dictionary<string, string>
                {
-                  Query = new Dictionary<string, string>
-                  {
-                     {"q", "2"}
-                  }
+                  {"q", "2"}
                }
             }
          };
@@ -115,7 +106,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -130,17 +121,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             { "q", "1" },
             { "y", "2" }
          };
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            Url = new StubUrlConditionModel
             {
-               Url = new StubUrlConditionModel
+               Query = new Dictionary<string, string>
                {
-                  Query = new Dictionary<string, string>
-                  {
-                     {"q", "1"},
-                     {"y", "3"}
-                  }
+                  {"q", "1"},
+                  {"y", "3"}
                }
             }
          };
@@ -150,7 +138,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Invalid, result);
@@ -160,17 +148,14 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
       public void QueryStringConditionChecker_Validate_StubsFound_HappyFlow_FullText()
       {
          // arrange
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            Url = new StubUrlConditionModel
             {
-               Url = new StubUrlConditionModel
+               Query = new Dictionary<string, string>
                {
-                  Query = new Dictionary<string, string>
-                  {
-                     {"q", "1"},
-                     {"y", "2"}
-                  }
+                  {"q", "1"},
+                  {"y", "2"}
                }
             }
          };
@@ -185,7 +170,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);
@@ -200,18 +185,15 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             { "q", "1" },
             { "y", "2" }
          };
-         var stub = new StubModel
+         var conditions = new StubConditionsModel
          {
-            Conditions = new StubConditionsModel
+            Url = new StubUrlConditionModel
             {
-               Url = new StubUrlConditionModel
-               {
-                  Query = new Dictionary<string, string>
+               Query = new Dictionary<string, string>
                   {
                      {"q", "1"},
                      {"y", "2"}
                   }
-               }
             }
          };
 
@@ -220,7 +202,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ConditionCheckers
             .Returns(query);
 
          // act
-         var result = _checker.Validate(stub);
+         var result = _checker.Validate("id", conditions);
 
          // assert
          Assert.AreEqual(ConditionValidationType.Valid, result);

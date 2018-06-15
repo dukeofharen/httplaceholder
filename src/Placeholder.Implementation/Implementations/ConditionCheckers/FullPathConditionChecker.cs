@@ -19,14 +19,14 @@ namespace Placeholder.Implementation.Implementations.ConditionCheckers
           _httpContextService = httpContextService;
        }
 
-       public ConditionValidationType Validate(StubModel stub)
+       public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
        {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
           var result = ConditionValidationType.NotExecuted;
-          string fullPathCondition = stub.Conditions?.Url?.FullPath;
+          string fullPathCondition = conditions?.Url?.FullPath;
           if (!string.IsNullOrEmpty(fullPathCondition))
           {
-             requestLogger.Log($"Full path condition found for stub '{stub.Id}': '{fullPathCondition}'");
+             requestLogger.Log($"Full path condition found for stub '{stubId}': '{fullPathCondition}'");
              string path = _httpContextService.FullPath;
              if (StringHelper.IsRegexMatchOrSubstring(path, fullPathCondition))
              {
