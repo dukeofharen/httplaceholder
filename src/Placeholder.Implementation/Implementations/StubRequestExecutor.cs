@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Budgetkar.Services;
+using Placeholder.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Placeholder.DataLogic;
 using Placeholder.Exceptions;
 using Placeholder.Models;
 using Placeholder.Models.Enums;
@@ -14,18 +15,18 @@ namespace Placeholder.Implementation.Implementations
    {
       private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IServiceProvider _serviceProvider;
-      private readonly IStubManager _stubManager;
+      private readonly IStubContainer _stubContainer;
       private readonly IStubResponseGenerator _stubResponseGenerator;
 
       public StubRequestExecutor(
          IRequestLoggerFactory requestLoggerFactory,
          IServiceProvider serviceProvider,
-         IStubManager stubManager,
+         IStubContainer stubContainer,
          IStubResponseGenerator stubResponseGenerator)
       {
          _requestLoggerFactory = requestLoggerFactory;
          _serviceProvider = serviceProvider;
-         _stubManager = stubManager;
+         _stubContainer = stubContainer;
          _stubResponseGenerator = stubResponseGenerator;
       }
 
@@ -36,7 +37,7 @@ namespace Placeholder.Implementation.Implementations
          requestLogger.Log($"Following conditions found: {string.Join(", ", conditionCheckers.Select(c => c.GetType().ToString()))}");
 
          var foundStubs = new List<StubModel>();
-         var stubs = _stubManager.Stubs;
+         var stubs = await _stubContainer.GetStubsAsync();
 
          foreach (var stub in stubs)
          {

@@ -1,4 +1,4 @@
-﻿using Budgetkar.Services;
+﻿using Placeholder.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.Implementation.Implementations.ConditionCheckers;

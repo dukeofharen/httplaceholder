@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Budgetkar.Services
+namespace Placeholder.Services
 {
    public interface IFileService
    {

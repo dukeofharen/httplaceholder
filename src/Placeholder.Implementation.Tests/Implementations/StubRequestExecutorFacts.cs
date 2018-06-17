@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Placeholder.DataLogic;
 using Placeholder.Exceptions;
 using Placeholder.Implementation.Implementations;
 using Placeholder.Implementation.Tests.Utilities;
@@ -15,7 +16,7 @@ namespace Placeholder.Implementation.Tests.Implementations
    public class StubRequestExecutorFacts
    {
       private Mock<IServiceProvider> _serviceProviderMock;
-      private Mock<IStubManager> _stubManagerMock;
+      private Mock<IStubContainer> _stubContainerMock;
       private Mock<IStubResponseGenerator> _stubResponseGeneratorMock;
       private Mock<IConditionChecker> _conditionCheckerMock1;
       private Mock<IConditionChecker> _conditionCheckerMock2;
@@ -27,12 +28,12 @@ namespace Placeholder.Implementation.Tests.Implementations
       public void Initialize()
       {
          _serviceProviderMock = new Mock<IServiceProvider>();
-         _stubManagerMock = new Mock<IStubManager>();
+         _stubContainerMock = new Mock<IStubContainer>();
          _stubResponseGeneratorMock = new Mock<IStubResponseGenerator>();
          _executor = new StubRequestExecutor(
             TestObjectFactory.GetRequestLoggerFactory(),
             _serviceProviderMock.Object,
-            _stubManagerMock.Object,
+            _stubContainerMock.Object,
             _stubResponseGeneratorMock.Object);
 
          _conditionCheckerMock1 = new Mock<IConditionChecker>();
@@ -53,16 +54,16 @@ namespace Placeholder.Implementation.Tests.Implementations
             Conditions = new StubConditionsModel(),
             NegativeConditions = new StubConditionsModel()
          };
-         _stubManagerMock
-            .Setup(m => m.Stubs)
-            .Returns(new[] { _stub1, _stub2 });
+         _stubContainerMock
+            .Setup(m => m.GetStubsAsync())
+            .ReturnsAsync(new[] { _stub1, _stub2 });
       }
 
       [TestCleanup]
       public void Cleanup()
       {
          _serviceProviderMock.VerifyAll();
-         _stubManagerMock.VerifyAll();
+         _stubContainerMock.VerifyAll();
          _stubResponseGeneratorMock.VerifyAll();
       }
 

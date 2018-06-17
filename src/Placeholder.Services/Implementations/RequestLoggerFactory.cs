@@ -1,4 +1,4 @@
-﻿namespace Budgetkar.Services.Implementations
+﻿namespace Placeholder.Services.Implementations
 {
    internal class RequestLoggerFactory : IRequestLoggerFactory
    {

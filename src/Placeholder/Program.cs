@@ -5,6 +5,7 @@ using System.Reflection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Placeholder.Services.Implementations;
 using Placeholder.Utilities;
 
 namespace Placeholder
@@ -27,6 +28,8 @@ namespace Placeholder
       public static IWebHost BuildWebHost(string[] args)
       {
          var argsDictionary = args.Parse();
+         ConfigurationService.SetConfiguration(argsDictionary);
+
          int port = argsDictionary.GetValue("port", 5000);
          string defaultPfxPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx");
          string pfxPath = argsDictionary.GetValue("pfxPath", defaultPfxPath);
@@ -35,7 +38,6 @@ namespace Placeholder
          bool useHttps = argsDictionary.GetValue("useHttps", false);
          return WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()
-            .ConfigureAppConfiguration((hostingContext, config) => config.AddCommandLine(args))
             .UseKestrel(options =>
             {
                options.AddServerHeader = false;

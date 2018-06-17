@@ -1,4 +1,4 @@
-﻿using Budgetkar.Services;
+﻿using Placeholder.Services;
 using Moq;
 
 namespace Placeholder.Implementation.Tests.Utilities

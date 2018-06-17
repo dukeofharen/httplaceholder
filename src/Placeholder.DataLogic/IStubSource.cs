@@ -4,7 +4,7 @@ using Placeholder.Models;
 
 namespace Placeholder.DataLogic
 {
-   public interface IStubContainer
+   public interface IStubSource
    {
       Task<IEnumerable<StubModel>> GetStubsAsync();
    }

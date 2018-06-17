@@ -1,4 +1,4 @@
-﻿namespace Budgetkar.Services
+﻿namespace Placeholder.Services
 {
    public interface IRequestLoggerFactory
    {

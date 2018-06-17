@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Budgetkar.Services;
+using Placeholder.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -17,7 +17,7 @@ namespace Placeholder.Tests.Integration
    public class StubIntegrationTests : IntegrationTestBase
    {
       private const string InputFilePath = @"D:\tmp\input.yml";
-      private Mock<IConfiguration> _configurationMock;
+      private Mock<IConfigurationService> _configurationServiceMock;
       private Mock<IFileService> _fileServiceMock;
 
       [TestInitialize]
@@ -31,14 +31,18 @@ namespace Placeholder.Tests.Integration
             .Setup(m => m.FileExists(InputFilePath))
             .Returns(true);
 
-         _configurationMock = new Mock<IConfiguration>();
-         _configurationMock
-            .Setup(m => m["inputFile"])
-            .Returns(InputFilePath);
+         _configurationServiceMock = new Mock<IConfigurationService>();
+         var config = new Dictionary<string, string>
+         {
+            { "inputFile", InputFilePath }
+         };
+         _configurationServiceMock
+            .Setup(m => m.GetConfiguration())
+            .Returns(config);
 
          InitializeIntegrationTest(new Dictionary<Type, object>
          {
-            { typeof(IConfiguration), _configurationMock.Object },
+            { typeof(IConfigurationService), _configurationServiceMock.Object },
             { typeof(IFileService), _fileServiceMock.Object }
          });
       }

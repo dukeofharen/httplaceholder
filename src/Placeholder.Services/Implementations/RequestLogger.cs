@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Budgetkar.Services.Implementations
+namespace Placeholder.Services.Implementations
 {
    internal class RequestLogger : IRequestLogger
    {

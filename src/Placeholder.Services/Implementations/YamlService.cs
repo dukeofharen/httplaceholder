@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using YamlDotNet.Serialization;
 
-namespace Budgetkar.Services.Implementations
+namespace Placeholder.Services.Implementations
 {
     internal class YamlService : IYamlService
     {

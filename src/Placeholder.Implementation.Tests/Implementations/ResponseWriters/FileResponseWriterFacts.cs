@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using Budgetkar.Services;
+using Placeholder.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Placeholder.DataLogic;
@@ -15,6 +15,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ResponseWriters
    {
       private Mock<IFileService> _fileServiceMock;
       private Mock<IStubContainer> _stubContainerMock;
+      private Mock<IStubRootPathResolver> _stubRootPathResolverMock;
       private FileResponseWriter _writer;
 
       [TestInitialize]
@@ -22,10 +23,12 @@ namespace Placeholder.Implementation.Tests.Implementations.ResponseWriters
       {
          _fileServiceMock = new Mock<IFileService>();
          _stubContainerMock = new Mock<IStubContainer>();
+         _stubRootPathResolverMock = new Mock<IStubRootPathResolver>();
          _writer = new FileResponseWriter(
             _fileServiceMock.Object,
             TestObjectFactory.GetRequestLoggerFactory(),
-            _stubContainerMock.Object);
+            _stubContainerMock.Object,
+            _stubRootPathResolverMock.Object);
       }
 
       [TestCleanup]
@@ -33,6 +36,7 @@ namespace Placeholder.Implementation.Tests.Implementations.ResponseWriters
       {
          _fileServiceMock.VerifyAll();
          _stubContainerMock.VerifyAll();
+         _stubRootPathResolverMock.VerifyAll();
       }
 
       [TestMethod]
@@ -104,8 +108,8 @@ namespace Placeholder.Implementation.Tests.Implementations.ResponseWriters
 
          var response = new ResponseModel();
 
-         _stubContainerMock
-            .Setup(m => m.GetStubFileDirectory())
+         _stubRootPathResolverMock
+            .Setup(m => m.GetStubRootPath())
             .Returns(yamlFilePath);
 
          _fileServiceMock
@@ -144,8 +148,8 @@ namespace Placeholder.Implementation.Tests.Implementations.ResponseWriters
 
          var response = new ResponseModel();
 
-         _stubContainerMock
-            .Setup(m => m.GetStubFileDirectory())
+         _stubRootPathResolverMock
+            .Setup(m => m.GetStubRootPath())
             .Returns(yamlFilePath);
 
          _fileServiceMock

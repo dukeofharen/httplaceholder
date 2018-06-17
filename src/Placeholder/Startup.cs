@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +27,7 @@ namespace Placeholder
 
          // Check if the stubs can be loaded.
          var stubContainer = app.ApplicationServices.GetService<IStubContainer>();
-         stubContainer.GetStubs();
+         Task.Run(() => stubContainer.GetStubsAsync()).Wait();
       }
    }
 }

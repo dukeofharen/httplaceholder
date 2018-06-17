@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using Budgetkar.Services;
+using Placeholder.Services;
 using Placeholder.DataLogic;
 using Placeholder.Models;
 
@@ -11,15 +11,18 @@ namespace Placeholder.Implementation.Implementations.ResponseWriters
       private readonly IFileService _fileService;
       private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IStubContainer _stubContainer;
+      private readonly IStubRootPathResolver _stubRootPathResolver;
 
       public FileResponseWriter(
          IFileService fileService,
          IRequestLoggerFactory requestLoggerFactory,
-         IStubContainer stubContainer)
+         IStubContainer stubContainer,
+         IStubRootPathResolver stubRootPathResolver)
       {
          _fileService = fileService;
          _requestLoggerFactory = requestLoggerFactory;
          _stubContainer = stubContainer;
+         _stubRootPathResolver = stubRootPathResolver;
       }
 
       public Task WriteToResponseAsync(StubModel stub, ResponseModel response)
@@ -34,8 +37,8 @@ namespace Placeholder.Implementation.Implementations.ResponseWriters
             }
             else
             {
-               // File doesn't exist, but might exist in the .yml file folder.
-               string yamlFilePath = _stubContainer.GetStubFileDirectory();
+               // File doesn't exist, but might exist in the file root folder.
+               string yamlFilePath = _stubRootPathResolver.GetStubRootPath();
                string tempPath = Path.Combine(yamlFilePath, stub.Response.File);
                if (_fileService.FileExists(tempPath))
                {
