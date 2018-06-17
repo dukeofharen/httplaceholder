@@ -24,6 +24,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Placeholder.Exceptions\Placeholder.Exceptions.csproj" />
     <ProjectReference Include="..\Placeholder.Models\Placeholder.Models.csproj" />
+    <ProjectReference Include="..\Placeholder.Services\Placeholder.Services.csproj" />
     <ProjectReference Include="..\Placeholder.Utilities\Placeholder.Utilities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
   </ItemGroup>
 </Project>

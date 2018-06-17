@@ -1,4 +1,4 @@
-﻿namespace Placeholder.Implementation.Services
+﻿namespace Budgetkar.Services
 {
    public interface IYamlService
    {

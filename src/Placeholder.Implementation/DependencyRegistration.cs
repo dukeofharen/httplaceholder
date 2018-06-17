@@ -2,8 +2,6 @@
 using Placeholder.Implementation.Implementations;
 using Placeholder.Implementation.Implementations.ConditionCheckers;
 using Placeholder.Implementation.Implementations.ResponseWriters;
-using Placeholder.Implementation.Services;
-using Placeholder.Implementation.Services.Implementations;
 
 namespace Placeholder.Implementation
 {
@@ -15,13 +13,6 @@ namespace Placeholder.Implementation
          services.AddTransient<IStubManager, StubManager>();
          services.AddTransient<IStubRequestExecutor, StubRequestExecutor>();
          services.AddTransient<IStubResponseGenerator, StubResponseGenerator>();
-
-         // Services
-         services.AddTransient<IAsyncService, AsyncService>();
-         services.AddTransient<IFileService, FileService>();
-         services.AddTransient<IHttpContextService, HttpContextService>();
-         services.AddTransient<IRequestLoggerFactory, RequestLoggerFactory>();
-         services.AddTransient<IYamlService, YamlService>();
 
          // Condition checkers
          services.AddTransient<IConditionChecker, BasicAuthenticationConditionChecker>();

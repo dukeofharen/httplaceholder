@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 
-namespace Placeholder.Implementation.Services.Implementations
+namespace Budgetkar.Services.Implementations
 {
    internal class HttpContextService : IHttpContextService
    {

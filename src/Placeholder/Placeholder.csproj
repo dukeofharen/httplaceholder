@@ -26,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Placeholder.Implementation\Placeholder.Implementation.csproj" />
+    <ProjectReference Include="..\Placeholder.Services\Placeholder.Services.csproj" />
     <ProjectReference Include="..\Placeholder.Utilities\Placeholder.Utilities.csproj" />
   </ItemGroup>
   <ItemGroup>

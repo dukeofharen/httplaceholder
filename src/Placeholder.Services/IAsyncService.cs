@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Placeholder.Implementation.Services
+namespace Budgetkar.Services
 {
    public interface IAsyncService
    {

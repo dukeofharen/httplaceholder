@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Placeholder.Implementation.Services
+namespace Budgetkar.Services
 {
    public interface IHttpContextService
    {

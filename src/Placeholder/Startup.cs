@@ -15,7 +15,8 @@ namespace Placeholder
          services.AddMvc();
          services.AddLogging();
          services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-         DependencyRegistration.RegisterDependencies(services);
+         Implementation.DependencyRegistration.RegisterDependencies(services);
+         Services.DependencyRegistration.RegisterDependencies(services);
       }
 
       public void Configure(IApplicationBuilder app, IHostingEnvironment env)
