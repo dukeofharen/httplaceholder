@@ -17,5 +17,7 @@ namespace Placeholder.Services
       string[] GetFiles(string path, string searchPattern);
 
       string GetDirectoryPath(string filePath);
+
+      bool IsDirectory(string path);
    }
 }

@@ -7,13 +7,16 @@ namespace Placeholder.DataLogic.Implementations
    {
       private readonly IAssemblyService _assemblyService;
       private readonly IConfigurationService _configurationService;
+      private readonly IFileService _fileService;
 
       public StubRootPathResolver(
          IAssemblyService assemblyService,
-         IConfigurationService configurationService)
+         IConfigurationService configurationService,
+         IFileService fileService)
       {
          _assemblyService = assemblyService;
          _configurationService = configurationService;
+         _fileService = fileService;
       }
 
       public string GetStubRootPath()
@@ -22,7 +25,10 @@ namespace Placeholder.DataLogic.Implementations
          var config = _configurationService.GetConfiguration();
          if (config.TryGetValue("inputFile", out string inputFile))
          {
-            return Path.GetDirectoryName(inputFile);
+            return 
+               _fileService.IsDirectory(inputFile) ? 
+               inputFile :
+               Path.GetDirectoryName(inputFile);
          }
          else
          {

@@ -39,5 +39,10 @@ namespace Placeholder.Services.Implementations
        {
           return Path.GetDirectoryName(filePath);
        }
-    }
+
+      public bool IsDirectory(string path)
+      {
+         return (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
+      }
+   }
 }

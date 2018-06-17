@@ -12,11 +12,13 @@ namespace Placeholder.DataLogic.Implementations.StubSources
    internal class YamlFileStubSource : IStubSource
    {
       private IEnumerable<StubModel> _stubs;
-      private DateTime _stubFileModifidationDateTime;
+      private DateTime _stubLoadDateTime;
       private readonly IConfigurationService _configurationService;
       private readonly ILogger<StubContainer> _logger;
       private readonly IFileService _fileService;
       private readonly IYamlService _yamlService;
+
+      public bool ReadOnly => true;
 
       public YamlFileStubSource(
          IConfigurationService configurationService,
@@ -33,46 +35,59 @@ namespace Placeholder.DataLogic.Implementations.StubSources
       public Task<IEnumerable<StubModel>> GetStubsAsync()
       {
          var config = _configurationService.GetConfiguration();
-         string inputFileLocation = config["inputFile"];
-         string currentDirectory = _fileService.GetCurrentDirectory();
+         config.TryGetValue("inputFile", out string inputFileLocation);
+         var fileLocations = new List<string>();
          if (string.IsNullOrEmpty(inputFileLocation))
          {
             // If the input file location is not set, try looking in the current directory for .yml files.
+            string currentDirectory = _fileService.GetCurrentDirectory();
             var yamlFiles = _fileService.GetFiles(currentDirectory, "*.yml");
-            if (yamlFiles.Length > 1)
-            {
-               throw new Exception($"Multiple .yml files found in '{currentDirectory}'; no idea which to pick.");
-            }
-
-            inputFileLocation = yamlFiles.Single();
+            fileLocations.AddRange(yamlFiles);
          }
-
-         if (!_fileService.FileExists(inputFileLocation))
+         else if (_fileService.IsDirectory(inputFileLocation))
          {
-            inputFileLocation = Path.Combine(currentDirectory, inputFileLocation);
-            if (!_fileService.FileExists(inputFileLocation))
-            {
-               throw new Exception($"Input file '{inputFileLocation}' not found.");
-            }
-         }
-
-         var stubFileModifidationDateTime = _fileService.GetModicationDateTime(inputFileLocation);
-         _logger.LogInformation($"Last modification date time of '{inputFileLocation}': '{stubFileModifidationDateTime}'");
-         if (_stubs == null || stubFileModifidationDateTime > _stubFileModifidationDateTime)
-         {
-            // Load the stubs.
-            string input = _fileService.ReadAllText(inputFileLocation);
-            _logger.LogInformation($"File contents of '{inputFileLocation}': '{input}'");
-
-            _stubs = _yamlService.Parse<List<StubModel>>(input);
-            _stubFileModifidationDateTime = stubFileModifidationDateTime;
+            var yamlFiles = _fileService.GetFiles(inputFileLocation, "*.yml");
+            fileLocations.AddRange(yamlFiles);
          }
          else
          {
-            _logger.LogInformation($"File contents of '{inputFileLocation}' not changed in the meanwhile.");
+            fileLocations.Add(inputFileLocation);
+         }
+
+         if (fileLocations.Count == 0)
+         {
+            _logger.LogInformation($"No .yml input files found.");
+            return Task.FromResult(new StubModel[0].AsEnumerable());
+         }
+
+
+         if (_stubs == null || GetLastStubFileModificationDateTime(fileLocations) > _stubLoadDateTime)
+         {
+            var result = new List<StubModel>();
+            foreach (string file in fileLocations)
+            {
+               // Load the stubs.
+               string input = _fileService.ReadAllText(file);
+               _logger.LogInformation($"File contents of '{file}': '{input}'");
+
+               result.AddRange(_yamlService.Parse<List<StubModel>>(input));
+               _stubLoadDateTime = DateTime.UtcNow;
+            }
+
+            _stubs = result;
+         }
+         else
+         {
+            _logger.LogInformation($"No stub file contents changed in the meanwhile.");
          }
 
          return Task.FromResult(_stubs);
+      }
+
+      private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files)
+      {
+         var result = files.Max(f => _fileService.GetModicationDateTime(f));
+         return result;
       }
    }
 }
