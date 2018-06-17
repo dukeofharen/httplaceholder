@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Placeholder.Tests", "Placeh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Placeholder.Exceptions", "Placeholder.Exceptions\Placeholder.Exceptions.csproj", "{071EA1AA-484A-4FDF-9CBD-0F28F2A8D30C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Placeholder.Services", "Placeholder.Services\Placeholder.Services.csproj", "{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Placeholder.Services", "Placeholder.Services\Placeholder.Services.csproj", "{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Placeholder.DataLogic", "Placeholder.DataLogic\Placeholder.DataLogic.csproj", "{2CA478C3-9204-466F-8B85-43DCBFE6E195}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CA478C3-9204-466F-8B85-43DCBFE6E195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CA478C3-9204-466F-8B85-43DCBFE6E195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CA478C3-9204-466F-8B85-43DCBFE6E195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CA478C3-9204-466F-8B85-43DCBFE6E195}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

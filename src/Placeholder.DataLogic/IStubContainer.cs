@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Placeholder.Models;
 
-namespace Placeholder.Implementation
+namespace Placeholder.DataLogic
 {
    public interface IStubContainer
    {

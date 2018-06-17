@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Placeholder.Models;
 
-namespace Placeholder.Implementation.Implementations
+namespace Placeholder.DataLogic.Implementations
 {
    internal class StubContainer : IStubContainer
    {

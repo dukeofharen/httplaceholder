@@ -9,7 +9,8 @@ namespace Placeholder.Implementation
    {
       public static void RegisterDependencies(IServiceCollection services)
       {
-         services.AddSingleton<IStubContainer, StubContainer>();
+         DataLogic.DependencyRegistration.RegisterDependencies(services);
+
          services.AddTransient<IStubManager, StubManager>();
          services.AddTransient<IStubRequestExecutor, StubRequestExecutor>();
          services.AddTransient<IStubResponseGenerator, StubResponseGenerator>();
