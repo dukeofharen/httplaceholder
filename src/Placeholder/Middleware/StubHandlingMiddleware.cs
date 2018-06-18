@@ -14,6 +14,7 @@ namespace Placeholder.Middleware
 {
    public class StubHandlingMiddleware
    {
+      private readonly RequestDelegate _next;
       private readonly IHttpContextService _httpContextService;
       private readonly ILogger<StubHandlingMiddleware> _logger;
       private readonly IRequestLoggerFactory _requestLoggerFactory;
@@ -26,6 +27,7 @@ namespace Placeholder.Middleware
          IRequestLoggerFactory requestLoggerFactory,
          IStubRequestExecutor stubRequestExecutor)
       {
+         _next = next;
          _httpContextService = httpContextService;
          _logger = logger;
          _requestLoggerFactory = requestLoggerFactory;
@@ -34,6 +36,12 @@ namespace Placeholder.Middleware
 
       public async Task Invoke(HttpContext context)
       {
+         if (context.Request.Path.StartsWithSegments("/ph-api"))
+         {
+            await _next(context);
+            return;
+         }
+
          const string correlationHeaderKey = "X-Placeholder-Correlation";
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          string correlation = Guid.NewGuid().ToString();
@@ -67,7 +75,7 @@ namespace Placeholder.Middleware
          }
          catch (RequestValidationException e)
          {
-            context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
             requestLogger.Log($"Request validation exception thrown: {e.Message}");
          }
