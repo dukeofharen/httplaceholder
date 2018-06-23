@@ -27,7 +27,7 @@ namespace Placeholder.Controllers
 
       [HttpGet]
       [Route("{stubId}")]
-      public async Task<IEnumerable<RequestResultModel>> GetByStubId(string stubId)
+      public async Task<IEnumerable<RequestResultModel>> GetByStubId([FromRoute]string stubId)
       {
          var requests = await _stubContainer.GetRequestResultsByStubIdAsync(stubId);
          return requests;

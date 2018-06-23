@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Placeholder.Filters;
 using Placeholder.Implementation;
 using Placeholder.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Placeholder.Controllers
 {
@@ -19,6 +21,7 @@ namespace Placeholder.Controllers
       }
 
       [HttpPost]
+      [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "OK, but no content returned")]
       public async Task<IActionResult> Add([FromBody]StubModel stubModel)
       {
          // Delete stub with same ID.
@@ -37,7 +40,9 @@ namespace Placeholder.Controllers
 
       [HttpGet]
       [Route("{stubId}")]
-      public async Task<object> Get(string stubId)
+      [SwaggerResponse((int)HttpStatusCode.OK, Description = "OK")]
+      [SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Stub not found")]
+      public async Task<object> Get([FromRoute]string stubId)
       {
          var result = await _stubContainer.GetStubAsync(stubId);
          if (result == null)
@@ -50,7 +55,9 @@ namespace Placeholder.Controllers
 
       [HttpDelete]
       [Route("{stubId}")]
-      public async Task<IActionResult> Delete(string stubId)
+      [SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Stub not found")]
+      [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "OK, but no content returned")]
+      public async Task<IActionResult> Delete([FromRoute]string stubId)
       {
          bool result = await _stubContainer.DeleteStubAsync(stubId);
          return result ? (IActionResult)NoContent() : NotFound();

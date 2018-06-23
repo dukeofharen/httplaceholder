@@ -522,5 +522,43 @@ response:
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
          }
       }
+
+      [TestMethod]
+      public async Task RestApiIntegration_SwaggerUi_IsApproachable()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}swagger/index.html";
+
+         var request = new HttpRequestMessage
+         {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(url)
+         };
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            Assert.IsTrue(response.IsSuccessStatusCode);
+         }
+      }
+
+      [TestMethod]
+      public async Task RestApiIntegration_SwaggerJson_IsApproachable()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}swagger/v1/swagger.json";
+
+         var request = new HttpRequestMessage
+         {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(url)
+         };
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            Assert.IsTrue(response.IsSuccessStatusCode);
+         }
+      }
    }
 }
