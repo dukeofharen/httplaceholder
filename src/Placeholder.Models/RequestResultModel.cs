@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Placeholder.Models
 {
@@ -11,5 +12,11 @@ namespace Placeholder.Models
       public IList<string> LogLines { get; set; } = new List<string>();
 
       public IList<object> StubExecutionResult { get; set; } = new List<object>();
+
+      public string ExecutingStubId { get; set; }
+
+      public DateTime RequestBeginTime { get; set; }
+
+      public DateTime RequestEndTime { get; set; }
    }
 }

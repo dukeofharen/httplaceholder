@@ -7,6 +7,7 @@ using YamlDotNet.Serialization;
 
 namespace Placeholder.Formatters
 {
+   // Source: https://github.com/fiyazbinhasan/CoreFormatters
    public class YamlOutputFormatter : TextOutputFormatter
    {
       private readonly Serializer _serializer;

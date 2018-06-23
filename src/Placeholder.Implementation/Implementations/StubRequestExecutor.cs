@@ -87,6 +87,7 @@ namespace Placeholder.Implementation.Implementations
          }
 
          var finalStub = foundStubs.First();
+         requestLogger.SetExecutingStubId(finalStub.Id);
          var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub);
          return response;
       }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Placeholder.Models;
 
@@ -10,7 +11,10 @@ namespace Placeholder.Services.Implementations
 
       public RequestLogger()
       {
-         _result = new RequestResultModel();
+         _result = new RequestResultModel
+         {
+            RequestBeginTime = DateTime.Now
+         };
       }
 
       public void Log(string message)
@@ -20,6 +24,7 @@ namespace Placeholder.Services.Implementations
 
       public RequestResultModel GetResult()
       {
+         _result.RequestEndTime = DateTime.Now;
          return _result;
       }
 
@@ -47,6 +52,11 @@ namespace Placeholder.Services.Implementations
             stubId,
             passed
          });
+      }
+
+      public void SetExecutingStubId(string stubId)
+      {
+         _result.ExecutingStubId = stubId;
       }
    }
 }

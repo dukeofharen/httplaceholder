@@ -53,6 +53,20 @@ namespace Placeholder.Implementation.Implementations
          await source.AddRequestResultAsync(requestResult);
       }
 
+      public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
+      {
+         var source = GetWritableStubSource();
+         return await source.GetRequestResultsAsync();
+      }
+
+      public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId)
+      {
+         var source = GetWritableStubSource();
+         var results = await source.GetRequestResultsAsync();
+         results = results.Where(r => r.ExecutingStubId == stubId);
+         return results;
+      }
+
       private IWritableStubSource GetWritableStubSource()
       {
          var sources = GetStubSources();

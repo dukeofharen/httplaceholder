@@ -14,5 +14,7 @@ namespace Placeholder.Services
       RequestResultModel GetResult();
 
       void SetStubExecutionResult(string stubId, bool passed);
+
+      void SetExecutingStubId(string stubId);
    }
 }

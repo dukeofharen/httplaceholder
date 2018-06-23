@@ -2,16 +2,26 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Placeholder.Models;
+using Placeholder.Services;
+using Placeholder.Utilities;
 
 namespace Placeholder.DataLogic.Implementations.StubSources
 {
    internal class InMemoryStubSource : IWritableStubSource
    {
+      private readonly IConfigurationService _configurationService;
+
       private readonly IList<RequestResultModel> _requestResultModels = new List<RequestResultModel>();
       private readonly IList<StubModel> _stubModels = new List<StubModel>();
 
+      public InMemoryStubSource(IConfigurationService configurationService)
+      {
+         _configurationService = configurationService;
+      }
+
       public Task AddRequestResultAsync(RequestResultModel requestResult)
       {
+         CleanOldRequestResults();
          _requestResultModels.Add(requestResult);
          return Task.CompletedTask;
       }
@@ -34,9 +44,28 @@ namespace Placeholder.DataLogic.Implementations.StubSources
          return Task.FromResult(true);
       }
 
+      public Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
+      {
+         return Task.FromResult(_requestResultModels.AsEnumerable());
+      }
+
       public Task<IEnumerable<StubModel>> GetStubsAsync()
       {
          return Task.FromResult(_stubModels.AsEnumerable());
+      }
+
+      private void CleanOldRequestResults()
+      {
+         var config = _configurationService.GetConfiguration();
+         int maxLength = config.GetValue("oldRequestsQueueLength", 40);
+
+         var requests = _requestResultModels
+            .OrderByDescending(r => r.RequestEndTime)
+            .Skip(maxLength);
+         foreach (var request in requests)
+         {
+            _requestResultModels.Remove(request);
+         }
       }
    }
 }

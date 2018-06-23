@@ -15,5 +15,9 @@ namespace Placeholder.Implementation
       Task<StubModel> GetStubAsync(string stubId);
 
       Task AddRequestResultAsync(RequestResultModel requestResult);
+
+      Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
+
+      Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId);
    }
 }
