@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Placeholder.Filters;
 using Placeholder.Implementation;
 using Placeholder.Models;
 
 namespace Placeholder.Controllers
 {
    [Route("ph-api/stubs")]
+   [ApiAuthorization]
    public class StubController : Controller
    {
       private readonly IStubContainer _stubContainer;
