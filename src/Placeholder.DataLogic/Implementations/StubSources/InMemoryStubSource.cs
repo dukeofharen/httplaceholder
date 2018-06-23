@@ -15,6 +15,18 @@ namespace Placeholder.DataLogic.Implementations.StubSources
          return Task.CompletedTask;
       }
 
+      public Task<bool> DeleteStubAsync(string stubId)
+      {
+         var stub = _stubModels.FirstOrDefault(s => s.Id == stubId);
+         if (stub == null)
+         {
+            return Task.FromResult(false);
+         }
+
+         _stubModels.Remove(stub);
+         return Task.FromResult(true);
+      }
+
       public Task<IEnumerable<StubModel>> GetStubsAsync()
       {
          return Task.FromResult(_stubModels.AsEnumerable());

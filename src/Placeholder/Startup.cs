@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Placeholder.Formatters;
 using Placeholder.Implementation;
 using Placeholder.Middleware;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace Placeholder
 {
@@ -13,10 +16,15 @@ namespace Placeholder
    {
       public void ConfigureServices(IServiceCollection services)
       {
-         services.AddMvc();
+         services.AddMvc(options =>
+         {
+            options.InputFormatters.Add(new YamlInputFormatter(new DeserializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
+            options.OutputFormatters.Add(new YamlOutputFormatter(new SerializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
+            options.FormatterMappings.SetMediaTypeMappingForFormat("yaml", MediaTypeHeaderValues.ApplicationYaml);
+         });
          services.AddLogging();
          services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-         Implementation.DependencyRegistration.RegisterDependencies(services);
+         DependencyRegistration.RegisterDependencies(services);
          Services.DependencyRegistration.RegisterDependencies(services);
       }
 
