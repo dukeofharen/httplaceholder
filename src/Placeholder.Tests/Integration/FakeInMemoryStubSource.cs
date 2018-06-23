@@ -49,5 +49,11 @@ namespace Placeholder.Tests.Integration
       {
          return Task.FromResult(StubModels.AsEnumerable());
       }
+
+      public Task DeleteAllRequestResultsAsync()
+      {
+         _requestResultModels.Clear();
+         return Task.CompletedTask;
+      }
    }
 }

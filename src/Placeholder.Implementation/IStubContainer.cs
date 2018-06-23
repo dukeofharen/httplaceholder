@@ -19,5 +19,7 @@ namespace Placeholder.Implementation
       Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
 
       Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId);
+
+      Task DeleteAllRequestResultsAsync();
    }
 }

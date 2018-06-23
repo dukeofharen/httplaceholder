@@ -13,5 +13,7 @@ namespace Placeholder.DataLogic
       Task AddRequestResultAsync(RequestResultModel requestResult);
 
       Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
+
+      Task DeleteAllRequestResultsAsync();
    }
 }

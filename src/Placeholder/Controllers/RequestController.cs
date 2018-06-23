@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Placeholder.Filters;
 using Placeholder.Implementation;
 using Placeholder.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Placeholder.Controllers
 {
@@ -31,6 +33,14 @@ namespace Placeholder.Controllers
       {
          var requests = await _stubContainer.GetRequestResultsByStubIdAsync(stubId);
          return requests;
+      }
+
+      [HttpDelete]
+      [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "OK, but no content returned")]
+      public async Task<IActionResult> DeleteAll()
+      {
+         await _stubContainer.DeleteAllRequestResultsAsync();
+         return NoContent();
       }
    }
 }

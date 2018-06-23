@@ -32,6 +32,12 @@ namespace Placeholder.DataLogic.Implementations.StubSources
          return Task.CompletedTask;
       }
 
+      public Task DeleteAllRequestResultsAsync()
+      {
+         _requestResultModels.Clear();
+         return Task.CompletedTask;
+      }
+
       public Task<bool> DeleteStubAsync(string stubId)
       {
          var stub = _stubModels.FirstOrDefault(s => s.Id == stubId);

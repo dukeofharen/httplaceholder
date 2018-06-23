@@ -67,6 +67,12 @@ namespace Placeholder.Implementation.Implementations
          return results;
       }
 
+      public async Task DeleteAllRequestResultsAsync()
+      {
+         var source = GetWritableStubSource();
+         await source.DeleteAllRequestResultsAsync();
+      }
+
       private IWritableStubSource GetWritableStubSource()
       {
          var sources = GetStubSources();
