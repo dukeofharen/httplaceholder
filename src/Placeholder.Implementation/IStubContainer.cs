@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Placeholder.Models;
 
-namespace Placeholder.DataLogic
+namespace Placeholder.Implementation
 {
    public interface IStubContainer
    {

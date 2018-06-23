@@ -6,8 +6,6 @@ namespace Placeholder.DataLogic
 {
    public interface IStubSource
    {
-      bool ReadOnly { get; }
-
       Task<IEnumerable<StubModel>> GetStubsAsync();
    }
 }

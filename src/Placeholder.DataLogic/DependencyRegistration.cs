@@ -8,10 +8,10 @@ namespace Placeholder.DataLogic
    {
       public static void RegisterDependencies(IServiceCollection services)
       {
-         services.AddSingleton<IStubContainer, StubContainer>();
          services.AddSingleton<IStubRootPathResolver, StubRootPathResolver>();
 
          // Stub sources
+         services.AddSingleton<IStubSource, InMemoryStubSource>();
          services.AddSingleton<IStubSource, YamlFileStubSource>();
       }
    }

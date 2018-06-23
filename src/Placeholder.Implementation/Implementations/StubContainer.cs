@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Placeholder.DataLogic;
 using Placeholder.Models;
 
-namespace Placeholder.DataLogic.Implementations
+namespace Placeholder.Implementation.Implementations
 {
    internal class StubContainer : IStubContainer
    {
@@ -15,13 +16,6 @@ namespace Placeholder.DataLogic.Implementations
       {
          _serviceProvider = serviceProvider;
       }
-
-      //public string GetStubFileDirectory()
-      //{
-      //   string inputFileLocation = _configuration["inputFile"];
-      //   string directory = _fileService.GetDirectoryPath(inputFileLocation);
-      //   return directory;
-      //}
 
       public async Task<IEnumerable<StubModel>> GetStubsAsync()
       {

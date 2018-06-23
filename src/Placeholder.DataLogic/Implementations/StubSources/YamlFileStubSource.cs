@@ -14,16 +14,14 @@ namespace Placeholder.DataLogic.Implementations.StubSources
       private IEnumerable<StubModel> _stubs;
       private DateTime _stubLoadDateTime;
       private readonly IConfigurationService _configurationService;
-      private readonly ILogger<StubContainer> _logger;
+      private readonly ILogger<YamlFileStubSource> _logger;
       private readonly IFileService _fileService;
       private readonly IYamlService _yamlService;
-
-      public bool ReadOnly => true;
 
       public YamlFileStubSource(
          IConfigurationService configurationService,
          IFileService fileService,
-         ILogger<StubContainer> logger,
+         ILogger<YamlFileStubSource> logger,
          IYamlService yamlService)
       {
          _configurationService = configurationService;
