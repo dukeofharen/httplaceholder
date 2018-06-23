@@ -41,6 +41,7 @@ namespace Placeholder.Implementation.Implementations
 
          foreach (var stub in stubs)
          {
+            bool passed = false;
             requestLogger.Log($"-------- CHECKING {stub.Id} --------");
             try
             {
@@ -60,6 +61,7 @@ namespace Placeholder.Implementation.Implementations
 
                if (validationResults.All(r => r != ConditionValidationType.Invalid) && validationResults.Any(r => r != ConditionValidationType.NotExecuted && r != ConditionValidationType.NotSet))
                {
+                  passed = true;
                   requestLogger.Log($"All conditions passed for stub '{stub.Id}'.");
                   foundStubs.Add(stub);
                }
@@ -70,6 +72,7 @@ namespace Placeholder.Implementation.Implementations
             }
 
             requestLogger.Log($"-------- DONE CHECKING {stub.Id} --------");
+            requestLogger.SetStubExecutionResult(stub.Id, passed);
          }
 
          if (!foundStubs.Any())

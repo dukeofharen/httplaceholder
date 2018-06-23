@@ -7,7 +7,14 @@ namespace Placeholder.DataLogic.Implementations.StubSources
 {
    internal class InMemoryStubSource : IWritableStubSource
    {
+      private readonly IList<RequestResultModel> _requestResultModels = new List<RequestResultModel>();
       private readonly IList<StubModel> _stubModels = new List<StubModel>();
+
+      public Task AddRequestResultAsync(RequestResultModel requestResult)
+      {
+         _requestResultModels.Add(requestResult);
+         return Task.CompletedTask;
+      }
 
       public Task AddStubAsync(StubModel stub)
       {

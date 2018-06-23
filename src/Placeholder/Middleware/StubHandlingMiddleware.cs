@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using Placeholder.Exceptions;
 using Placeholder.Implementation;
+using Newtonsoft.Json.Linq;
 
 namespace Placeholder.Middleware
 {
@@ -18,6 +19,7 @@ namespace Placeholder.Middleware
       private readonly IHttpContextService _httpContextService;
       private readonly ILogger<StubHandlingMiddleware> _logger;
       private readonly IRequestLoggerFactory _requestLoggerFactory;
+      private readonly IStubContainer _stubContainer;
       private readonly IStubRequestExecutor _stubRequestExecutor;
 
       public StubHandlingMiddleware(
@@ -25,12 +27,14 @@ namespace Placeholder.Middleware
          IHttpContextService httpContextService,
          ILogger<StubHandlingMiddleware> logger,
          IRequestLoggerFactory requestLoggerFactory,
+         IStubContainer stubContainer,
          IStubRequestExecutor stubRequestExecutor)
       {
          _next = next;
          _httpContextService = httpContextService;
          _logger = logger;
          _requestLoggerFactory = requestLoggerFactory;
+         _stubContainer = stubContainer;
          _stubRequestExecutor = stubRequestExecutor;
       }
 
@@ -43,21 +47,20 @@ namespace Placeholder.Middleware
          }
 
          const string correlationHeaderKey = "X-Placeholder-Correlation";
-         var requestLogger = _requestLoggerFactory.GetRequestLogger();
          string correlation = Guid.NewGuid().ToString();
-         requestLogger.Log($"========== BEGINNING REQUEST {correlation} ==========");
+         var requestLogger = _requestLoggerFactory.GetRequestLogger();
+         requestLogger.SetCorrelationId(correlation);
          try
          {
             // Enable rewind here to be able to read the posted body multiple times.
             context.Request.EnableRewind();
 
             // Log the request here
-            requestLogger.Log($"Request URL ({_httpContextService.Method}): {_httpContextService.DisplayUrl}");
-            requestLogger.Log($"Request body: {_httpContextService.GetBody()}");
-            string headerString = string.Join(", ", _httpContextService
-               .GetHeaders()
-               .Select(h => $"{h.Key} = {h.Value}"));
-            requestLogger.Log($"Request headers: {headerString}");
+            requestLogger.LogRequestParameters(
+               _httpContextService.Method,
+               _httpContextService.DisplayUrl,
+               _httpContextService.GetBody(),
+               _httpContextService.GetHeaders());
 
             context.Response.Clear();
             context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
@@ -86,8 +89,10 @@ namespace Placeholder.Middleware
             requestLogger.Log($"Unexpected exception thrown: {e}");
          }
 
-         requestLogger.Log($"========== FINISHING REQUEST {correlation} ==========");
-         _logger.LogInformation(requestLogger.FullMessage);
+         var loggingResult = requestLogger.GetResult();
+         var jsonLoggingResult = JObject.FromObject(loggingResult);
+         _logger.LogInformation(jsonLoggingResult.ToString());
+         await _stubContainer.AddRequestResultAsync(loggingResult);
       }
    }
 }

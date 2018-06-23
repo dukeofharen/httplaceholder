@@ -8,5 +8,7 @@ namespace Placeholder.DataLogic
       Task AddStubAsync(StubModel stub);
 
       Task<bool> DeleteStubAsync(string stubId);
+
+      Task AddRequestResultAsync(RequestResultModel requestResult);
    }
 }

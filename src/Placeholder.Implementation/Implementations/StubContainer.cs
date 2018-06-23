@@ -47,6 +47,12 @@ namespace Placeholder.Implementation.Implementations
          return stub;
       }
 
+      public async Task AddRequestResultAsync(RequestResultModel requestResult)
+      {
+         var source = GetWritableStubSource();
+         await source.AddRequestResultAsync(requestResult);
+      }
+
       private IWritableStubSource GetWritableStubSource()
       {
          var sources = GetStubSources();

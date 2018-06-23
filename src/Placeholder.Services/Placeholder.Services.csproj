@@ -15,4 +15,8 @@
     <PackageReference Include="YamlDotNet" Version="4.3.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Placeholder.Models\Placeholder.Models.csproj" />
+  </ItemGroup>
+
 </Project>

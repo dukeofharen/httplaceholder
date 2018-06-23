@@ -13,5 +13,7 @@ namespace Placeholder.Implementation
       Task<bool> DeleteStubAsync(string stubId);
 
       Task<StubModel> GetStubAsync(string stubId);
+
+      Task AddRequestResultAsync(RequestResultModel requestResult);
    }
 }
