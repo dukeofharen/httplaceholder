@@ -11,6 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using Placeholder.DataLogic;
+using Placeholder.DataLogic.Implementations.StubSources;
 using Placeholder.Models;
 using Placeholder.Services;
 using YamlDotNet.Serialization;
@@ -21,14 +22,14 @@ namespace Placeholder.Tests.Integration
    public class RestApiIntegrationTests : IntegrationTestBase
    {
       private Dictionary<string, string> _config;
-      private FakeInMemoryStubSource _stubSource;
+      private InMemoryStubSource _stubSource;
       private Mock<IConfigurationService> _configurationServiceMock;
 
       [TestInitialize]
       public void Initialize()
       {
-         _stubSource = new FakeInMemoryStubSource();
          _configurationServiceMock = new Mock<IConfigurationService>();
+         _stubSource = new InMemoryStubSource(_configurationServiceMock.Object);
          _config = new Dictionary<string, string>();
          _configurationServiceMock
             .Setup(m => m.GetConfiguration())
@@ -80,8 +81,8 @@ response:
          using (var response = await Client.SendAsync(request))
          {
             Assert.IsTrue(response.IsSuccessStatusCode);
-            Assert.AreEqual(1, _stubSource.StubModels.Count);
-            Assert.AreEqual("situation-01", _stubSource.StubModels.First().Id);
+            Assert.AreEqual(1, _stubSource._stubModels.Count);
+            Assert.AreEqual("situation-01", _stubSource._stubModels.First().Id);
          }
       }
 
@@ -121,8 +122,8 @@ response:
          using (var response = await Client.SendAsync(request))
          {
             Assert.IsTrue(response.IsSuccessStatusCode);
-            Assert.AreEqual(1, _stubSource.StubModels.Count);
-            Assert.AreEqual("situation-01", _stubSource.StubModels.First().Id);
+            Assert.AreEqual(1, _stubSource._stubModels.Count);
+            Assert.AreEqual("situation-01", _stubSource._stubModels.First().Id);
          }
       }
 
@@ -131,7 +132,7 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/stubs";
-         _stubSource.StubModels.Add(new StubModel
+         _stubSource._stubModels.Add(new StubModel
          {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
@@ -165,7 +166,7 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/stubs";
-         _stubSource.StubModels.Add(new StubModel
+         _stubSource._stubModels.Add(new StubModel
          {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
@@ -197,7 +198,7 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
-         _stubSource.StubModels.Add(new StubModel
+         _stubSource._stubModels.Add(new StubModel
          {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
@@ -230,7 +231,7 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
-         _stubSource.StubModels.Add(new StubModel
+         _stubSource._stubModels.Add(new StubModel
          {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
@@ -261,7 +262,7 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
-         _stubSource.StubModels.Add(new StubModel
+         _stubSource._stubModels.Add(new StubModel
          {
             Id = "test-124",
             Conditions = new StubConditionsModel(),
@@ -288,7 +289,7 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
-         _stubSource.StubModels.Add(new StubModel
+         _stubSource._stubModels.Add(new StubModel
          {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
@@ -306,7 +307,7 @@ response:
          using (var response = await Client.SendAsync(request))
          {
             Assert.IsTrue(response.IsSuccessStatusCode);
-            Assert.AreEqual(0, _stubSource.StubModels.Count);
+            Assert.AreEqual(0, _stubSource._stubModels.Count);
          }
       }
 
@@ -315,7 +316,7 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
-         _stubSource.StubModels.Add(new StubModel
+         _stubSource._stubModels.Add(new StubModel
          {
             Id = "test-124",
             Conditions = new StubConditionsModel(),
@@ -341,7 +342,7 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/stubs";
-         _stubSource.StubModels.Add(new StubModel
+         _stubSource._stubModels.Add(new StubModel
          {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
@@ -372,7 +373,7 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/stubs";
-         _stubSource.StubModels.Add(new StubModel
+         _stubSource._stubModels.Add(new StubModel
          {
             Id = "test-123",
             Conditions = new StubConditionsModel(),
@@ -404,7 +405,7 @@ response:
          // arrange
          string correlation = Guid.NewGuid().ToString();
          string url = $"{TestServer.BaseAddress}ph-api/requests";
-         _stubSource.RequestResultModels.Add(new RequestResultModel
+         _stubSource._requestResultModels.Add(new RequestResultModel
          {
             CorrelationId = correlation
          });
@@ -432,11 +433,11 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/requests/stub1";
-         _stubSource.RequestResultModels.Add(new RequestResultModel
+         _stubSource._requestResultModels.Add(new RequestResultModel
          {
             ExecutingStubId = "stub2"
          });
-         _stubSource.RequestResultModels.Add(new RequestResultModel
+         _stubSource._requestResultModels.Add(new RequestResultModel
          {
             ExecutingStubId = "stub1"
          });
@@ -464,11 +465,11 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/requests/stub1";
-         _stubSource.RequestResultModels.Add(new RequestResultModel
+         _stubSource._requestResultModels.Add(new RequestResultModel
          {
             ExecutingStubId = "stub2"
          });
-         _stubSource.RequestResultModels.Add(new RequestResultModel
+         _stubSource._requestResultModels.Add(new RequestResultModel
          {
             ExecutingStubId = "stub1"
          });
@@ -496,11 +497,11 @@ response:
       {
          // arrange
          string url = $"{TestServer.BaseAddress}ph-api/requests/stub1";
-         _stubSource.RequestResultModels.Add(new RequestResultModel
+         _stubSource._requestResultModels.Add(new RequestResultModel
          {
             ExecutingStubId = "stub2"
          });
-         _stubSource.RequestResultModels.Add(new RequestResultModel
+         _stubSource._requestResultModels.Add(new RequestResultModel
          {
             ExecutingStubId = "stub1"
          });

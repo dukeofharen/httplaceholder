@@ -11,8 +11,8 @@ namespace Placeholder.DataLogic.Implementations.StubSources
    {
       private readonly IConfigurationService _configurationService;
 
-      private readonly IList<RequestResultModel> _requestResultModels = new List<RequestResultModel>();
-      private readonly IList<StubModel> _stubModels = new List<StubModel>();
+      internal readonly IList<RequestResultModel> _requestResultModels = new List<RequestResultModel>();
+      internal readonly IList<StubModel> _stubModels = new List<StubModel>();
 
       public InMemoryStubSource(IConfigurationService configurationService)
       {
