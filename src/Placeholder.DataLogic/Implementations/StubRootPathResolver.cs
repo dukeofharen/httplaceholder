@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Placeholder.Models;
 using Placeholder.Services;
 
 namespace Placeholder.DataLogic.Implementations
@@ -23,7 +24,7 @@ namespace Placeholder.DataLogic.Implementations
       {
          // First, check the "inputFile" configuration property and extract the directory of this folder.
          var config = _configurationService.GetConfiguration();
-         if (config.TryGetValue("inputFile", out string inputFile))
+         if (config.TryGetValue(Constants.ConfigKeys.InputFileKey, out string inputFile))
          {
             return 
                _fileService.IsDirectory(inputFile) ? 

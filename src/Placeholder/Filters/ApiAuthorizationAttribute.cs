@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using Placeholder.Models;
 using Placeholder.Services;
 using Placeholder.Utilities;
 
@@ -16,8 +17,8 @@ namespace Placeholder.Filters
          bool result;
          var configurationService = context.HttpContext.RequestServices.GetService<IConfigurationService>();
          var config = configurationService.GetConfiguration();
-         string username = config.GetValue("apiUsername", string.Empty);
-         string password = config.GetValue("apiPassword", string.Empty);
+         string username = config.GetValue(Constants.ConfigKeys.ApiUsernameKey, string.Empty);
+         string password = config.GetValue(Constants.ConfigKeys.ApiPasswordKey, string.Empty);
          if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
          {
             // Try to retrieve basic auth header here.

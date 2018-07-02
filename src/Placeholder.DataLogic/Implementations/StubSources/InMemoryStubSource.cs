@@ -63,7 +63,7 @@ namespace Placeholder.DataLogic.Implementations.StubSources
       private void CleanOldRequestResults()
       {
          var config = _configurationService.GetConfiguration();
-         int maxLength = config.GetValue("oldRequestsQueueLength", 40);
+         int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, 40);
 
          var requests = _requestResultModels
             .OrderByDescending(r => r.RequestEndTime)

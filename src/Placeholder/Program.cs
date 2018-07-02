@@ -5,6 +5,7 @@ using System.Reflection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Placeholder.Models;
 using Placeholder.Services.Implementations;
 using Placeholder.Utilities;
 
@@ -30,12 +31,12 @@ namespace Placeholder
          var argsDictionary = args.Parse();
          ConfigurationService.SetConfiguration(argsDictionary);
 
-         int port = argsDictionary.GetValue("port", 5000);
+         int port = argsDictionary.GetValue(Constants.ConfigKeys.PortKey, 5000);
          string defaultPfxPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx");
-         string pfxPath = argsDictionary.GetValue("pfxPath", defaultPfxPath);
-         string pfxPassword = argsDictionary.GetValue("pfxPassword", "1234");
-         int httpsPort = argsDictionary.GetValue("httpsPort", 5050);
-         bool useHttps = argsDictionary.GetValue("useHttps", false);
+         string pfxPath = argsDictionary.GetValue(Constants.ConfigKeys.PfxPathKey, defaultPfxPath);
+         string pfxPassword = argsDictionary.GetValue(Constants.ConfigKeys.PfxPasswordKey, "1234");
+         int httpsPort = argsDictionary.GetValue(Constants.ConfigKeys.HttpsPortKey, 5050);
+         bool useHttps = argsDictionary.GetValue(Constants.ConfigKeys.UseHttpsKey, false);
          return WebHost.CreateDefaultBuilder(args)
             .UseStartup<Startup>()
             .UseKestrel(options =>

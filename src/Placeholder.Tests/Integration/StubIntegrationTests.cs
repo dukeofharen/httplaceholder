@@ -6,10 +6,10 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Placeholder.Services;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
+using Placeholder.Models;
 
 namespace Placeholder.Tests.Integration
 {
@@ -34,7 +34,7 @@ namespace Placeholder.Tests.Integration
          _configurationServiceMock = new Mock<IConfigurationService>();
          var config = new Dictionary<string, string>
          {
-            { "inputFile", InputFilePath }
+            { Constants.ConfigKeys.InputFileKey, InputFilePath }
          };
          _configurationServiceMock
             .Setup(m => m.GetConfiguration())

@@ -33,7 +33,7 @@ namespace Placeholder.DataLogic.Implementations.StubSources
       public Task<IEnumerable<StubModel>> GetStubsAsync()
       {
          var config = _configurationService.GetConfiguration();
-         config.TryGetValue("inputFile", out string inputFileLocation);
+         config.TryGetValue(Constants.ConfigKeys.InputFileKey, out string inputFileLocation);
          var fileLocations = new List<string>();
          if (string.IsNullOrEmpty(inputFileLocation))
          {

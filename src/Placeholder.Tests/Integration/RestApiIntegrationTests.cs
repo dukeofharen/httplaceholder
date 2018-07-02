@@ -358,8 +358,8 @@ response:
          request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
          request.Headers.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes("wrong:wrong"))}");
 
-         _config.Add("apiUsername", "correct");
-         _config.Add("apiPassword", "correct");
+         _config.Add(Constants.ConfigKeys.ApiUsernameKey, "correct");
+         _config.Add(Constants.ConfigKeys.ApiPasswordKey, "correct");
 
          // act / assert
          using (var response = await Client.SendAsync(request))
@@ -389,8 +389,8 @@ response:
          request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
          request.Headers.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes("correct:correct"))}");
 
-         _config.Add("apiUsername", "correct");
-         _config.Add("apiPassword", "correct");
+         _config.Add(Constants.ConfigKeys.ApiUsernameKey, "correct");
+         _config.Add(Constants.ConfigKeys.ApiPasswordKey, "correct");
 
          // act / assert
          using (var response = await Client.SendAsync(request))
@@ -482,8 +482,8 @@ response:
 
          request.Headers.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes("wrong:wrong"))}");
 
-         _config.Add("apiUsername", "correct");
-         _config.Add("apiPassword", "correct");
+         _config.Add(Constants.ConfigKeys.ApiUsernameKey, "correct");
+         _config.Add(Constants.ConfigKeys.ApiPasswordKey, "correct");
 
          // act / assert
          using (var response = await Client.SendAsync(request))
@@ -514,8 +514,8 @@ response:
 
          request.Headers.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes("correct:correct"))}");
 
-         _config.Add("apiUsername", "correct");
-         _config.Add("apiPassword", "correct");
+         _config.Add(Constants.ConfigKeys.ApiUsernameKey, "correct");
+         _config.Add(Constants.ConfigKeys.ApiPasswordKey, "correct");
 
          // act / assert
          using (var response = await Client.SendAsync(request))
