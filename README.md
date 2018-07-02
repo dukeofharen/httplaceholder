@@ -16,7 +16,7 @@ At my current job, we develop and maintain a lot of web applications. These web 
 So a few bullet points in a row:
 1. Define all the needed requests in a YAML file, which can also be checked in for all your team members to use.
 1. Many request conditions take regular expressions, to make your stub even more flexible.
-1. (In the near future) use the Placeholder REST API to prepare all the requests you need for automated tests.
+1. Use the Placeholder REST API to prepare all the requests you need for automated tests.
 
 # How?
 You have an input YAML file (which contains 1 or more requests):
@@ -55,11 +55,15 @@ The `response` element defines the response of the request. In this case, HTTP 2
 - Add Base64 and file references to your response, so returning files is also possible.
 - Artificially make your responses slower, to simulate slow web servers and test the timeout settings of your application.
 - Placeholder can be run under HTTPS.
+- REST API to automate the creation of stubs (useful in test scenarios).
 
 # Documentation
-TODO
+
+* [Getting started]()
+* [Stub samples](docs/SAMPLES.md)
+* [Placeholder REST API]()
+* [Command line arguments]()
 
 # Todo
 - Make application "really" cross platform (Ubuntu and other Linux distributions, Mac etc.)
-- Add REST API to add request definitions; useful in automated test scenario's.
 - Let Placeholder run on IIS (already possible as reverse proxy, but IIS has native .NET Core support).
