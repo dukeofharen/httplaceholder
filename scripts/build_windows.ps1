@@ -7,8 +7,8 @@ $ErrorActionPreference = 'Stop'
 
 . "$PSScriptRoot\functions.ps1"
 
-$nsiPath = Join-Path $PSScriptRoot "placeholder.nsi"
-$binDir = Join-Path $srcFolder "Placeholder\bin\release\netcoreapp2.0\win10-x64\publish"
+$nsiPath = Join-Path $PSScriptRoot "httplaceholder.nsi"
+$binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp2.0\win10-x64\publish"
 $installScriptsPath = Join-Path -Path $PSScriptRoot "installscripts\windows"
 
 # Create Windows package

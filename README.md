@@ -1,14 +1,14 @@
-# Placeholder
+# HttPlaceholder
 
 | | |
 | --- | --- |
-| **Build** | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/49hfasb3vg1r8l8e?svg=true)](https://ci.appveyor.com/project/dukeofharen/placeholder) |
+| **Build** | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/49hfasb3vg1r8l8e?svg=true)](https://ci.appveyor.com/project/dukeofharen/httplaceholder) |
 | **License** | [![MIT License](https://img.shields.io/:license-mit-green.svg)](https://opensource.org/licenses/MIT) |
 
-Quickly mock away any webservice using Placeholder. Placeholder lets you specify what the request should look like and what response needs to be returned.
+Quickly mock away any webservice using HttPlaceholder. HttPlaceholder lets you specify what the request should look like and what response needs to be returned.
 
 # Where?
-[Download the latest release](https://github.com/dukeofharen/placeholder/releases/latest)
+[Download the latest release](https://github.com/dukeofharen/httplaceholder/releases/latest)
 
 # Why?
 At my current job, we develop and maintain a lot of web applications. These web applications have a lot of dependencies on other web services. So I thought: instead of running all these dependent web services on the local dev machine, why not use a stub to make development easier? That's exactly what I did.
@@ -16,7 +16,7 @@ At my current job, we develop and maintain a lot of web applications. These web 
 So a few bullet points in a row:
 1. Define all the needed requests in a YAML file, which can also be checked in for all your team members to use.
 1. Many request conditions take regular expressions, to make your stub even more flexible.
-1. Use the Placeholder REST API to prepare all the requests you need for automated tests.
+1. Use the HttPlaceholder REST API to prepare all the requests you need for automated tests.
 
 # How?
 You have an input YAML file (which contains 1 or more requests):
@@ -54,16 +54,18 @@ The `response` element defines the response of the request. In this case, HTTP 2
 - Basic authentication conditions.
 - Add Base64 and file references to your response, so returning files is also possible.
 - Artificially make your responses slower, to simulate slow web servers and test the timeout settings of your application.
-- Placeholder can be run under HTTPS.
+- HttPlaceholder can be run under HTTPS.
 - REST API to automate the creation of stubs (useful in test scenarios).
 
 # Documentation
 
 * [Getting started]()
 * [Stub samples](docs/SAMPLES.md)
-* [Placeholder REST API]()
+* [HttPlaceholder REST API]()
 * [Command line arguments]()
+* [Request conditions explained]()
+* [Response definitions explained]()
 
 # Todo
 - Make application "really" cross platform (Ubuntu and other Linux distributions, Mac etc.)
-- Let Placeholder run on IIS (already possible as reverse proxy, but IIS has native .NET Core support).
+- Let HttPlaceholder run on IIS (already possible as reverse proxy, but IIS has native .NET Core support).

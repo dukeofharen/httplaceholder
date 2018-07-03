@@ -2,8 +2,8 @@ $ErrorActionPreference = 'Stop'
 
 $rootFolder = Join-Path -Path $PSScriptRoot ".."
 $srcFolder = Join-Path -Path $rootFolder "src"
-$mainProjectFile = Join-Path $srcFolder "Placeholder\Placeholder.csproj"
-$solutionFile = Join-Path -Path $srcFolder "Placeholder.sln"
+$mainProjectFile = Join-Path $srcFolder "HttPlaceholder\HttPlaceholder.csproj"
+$solutionFile = Join-Path -Path $srcFolder "HttPlaceholder.sln"
 
 $nsisPath = "C:\Program Files (x86)\NSIS\Bin"
 

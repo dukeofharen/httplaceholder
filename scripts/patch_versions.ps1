@@ -4,7 +4,7 @@ $ErrorActionPreference = 'Stop'
 
 $rootFolder = Join-Path -Path $PSScriptRoot ".."
 $srcFolder = Join-Path -Path $rootFolder "src"
-$csprojPath = Join-Path -Path $srcFolder "Placeholder\Placeholder.csproj"
+$csprojPath = Join-Path -Path $srcFolder "HttPlaceholder\HttPlaceholder.csproj"
 
 Write-Host "Reading file '$csprojPath'"
 [xml]$mainCsproj = Get-Content $csprojPath

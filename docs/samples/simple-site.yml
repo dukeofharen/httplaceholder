@@ -1,4 +1,4 @@
-# Of course, this is just a silly proof of concept, but it's possible to create and host a whole static site in Placeholder. Just run this script and go to http://localhost:{port}/index.html (or just http://localhost:{port}).
+# Of course, this is just a silly proof of concept, but it's possible to create and host a whole static site in HttPlaceholder. Just run this script and go to http://localhost:{port}/index.html (or just http://localhost:{port}).
 
 - id: style-css
   conditions:
@@ -43,14 +43,14 @@
     text: |
       <html>
         <head>
-          <title>Test page in Placeholder</title>
+          <title>Test page in HttPlaceholder</title>
           <link href="/style.css" rel="stylesheet" />
         </head>
         <body>
           <img src="/image.png" />
-          <h1>Example in Placeholder</h1>
+          <h1>Example in HttPlaceholder</h1>
           <p>
-            Hey, this is just a proof of concept of a site created and hosted in Placeholder. Works pretty good huh?
+            Hey, this is just a proof of concept of a site created and hosted in HttPlaceholder. Works pretty good huh?
           </p>
         </body>
       </html>
