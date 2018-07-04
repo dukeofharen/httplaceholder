@@ -9,6 +9,7 @@ $ErrorActionPreference = 'Stop'
 
 $nsiPath = Join-Path $PSScriptRoot "httplaceholder.nsi"
 $binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp2.0\win10-x64\publish"
+$docsFolder = Join-Path $srcFolder "..\docs"
 $installScriptsPath = Join-Path -Path $PSScriptRoot "installscripts\windows"
 
 # Create Windows package
@@ -18,6 +19,9 @@ Assert-Cmd-Ok
 
 # Moving install scripts for Windows
 Copy-Item (Join-Path $installScriptsPath "**") $binDir -Recurse
+
+# Moving docs folder to bin path
+Copy-Item $docsFolder (Join-Path $binDir "docs") -Recurse -Container
 
 # Making installer
 $env:VersionMajor = $version.Major
