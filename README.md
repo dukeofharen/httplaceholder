@@ -63,7 +63,7 @@ The `response` element defines the response of the request. In this case, HTTP 2
 * [Stub samples](docs/SAMPLES.md)
 * [HttPlaceholder REST API](docs/API.md)
 * [Command line arguments](docs/CMD.md)
-* [Request conditions explained]()
+* [Request conditions explained](docs/CONDITIONS.md)
 * [Response definitions explained]()
 
 # Todo
