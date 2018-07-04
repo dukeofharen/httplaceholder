@@ -44,7 +44,7 @@ In the `conditions` element, you specify which conditions the request should app
 - The method should be `GET`.
 - The query parameters `id` and `filter` should be there with the values `12` and `first_name` respectively.
 
-The `response` element defines the response of the request. In this case, HTTP 200 is returned, the literal JSON string defined and `application/json` as Content-Type header. For more examples, see the `samples` folder in this repository.
+The `response` element defines the response of the request. In this case, HTTP 200 is returned, the literal JSON string defined and `application/json` as Content-Type header. Also take a look at the [samples](docs/SAMPLES.md).
 
 # Batteries included
 - XPath conditions.
@@ -56,9 +56,9 @@ The `response` element defines the response of the request. In this case, HTTP 2
 - Artificially make your responses slower, to simulate slow web servers and test the timeout settings of your application.
 - HttPlaceholder can be run under HTTPS.
 - REST API to automate the creation of stubs (useful in test scenarios).
+- And more.
 
 # Documentation
-
 * [Getting started](docs/GETTING-STARTED.md)
 * [Stub samples](docs/SAMPLES.md)
 * [HttPlaceholder REST API](docs/API.md)
@@ -69,3 +69,5 @@ The `response` element defines the response of the request. In this case, HTTP 2
 # Todo
 - Make application "really" cross platform (Ubuntu and other Linux distributions, Mac etc.)
 - Let HttPlaceholder run on IIS (already possible as reverse proxy, but IIS has native .NET Core support).
+- The REST API doesn't persist stubs right now; everything is in memory at the moment. Persistency on disk or in a database should be added.
+- There's no way to add custom condition checkers or response writers yet.
