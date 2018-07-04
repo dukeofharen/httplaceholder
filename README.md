@@ -64,7 +64,7 @@ The `response` element defines the response of the request. In this case, HTTP 2
 * [HttPlaceholder REST API](docs/API.md)
 * [Command line arguments](docs/CMD.md)
 * [Request conditions explained](docs/CONDITIONS.md)
-* [Response definitions explained]()
+* [Response definitions explained](docs/RESPONSE.md)
 
 # Todo
 - Make application "really" cross platform (Ubuntu and other Linux distributions, Mac etc.)
