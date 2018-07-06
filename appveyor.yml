@@ -10,7 +10,6 @@ environment:
 branches:
   only:
     - master
-    - dev
 
 build_script:
   - ps: scripts\build.ps1
