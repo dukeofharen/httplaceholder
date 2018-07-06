@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using HttPlaceholder.Implementation.Implementations;
-using HttPlaceholder.Implementation.Implementations.ConditionCheckers;
-using HttPlaceholder.Implementation.Implementations.ResponseWriters;
+using HttPlaceholder.Utilities;
 
 namespace HttPlaceholder.Implementation
 {
@@ -16,23 +15,18 @@ namespace HttPlaceholder.Implementation
          services.AddTransient<IStubResponseGenerator, StubResponseGenerator>();
 
          // Condition checkers
-         services.AddTransient<IConditionChecker, BasicAuthenticationConditionChecker>();
-         services.AddTransient<IConditionChecker, BodyConditionChecker>();
-         services.AddTransient<IConditionChecker, FullPathConditionChecker>();
-         services.AddTransient<IConditionChecker, HeaderConditionChecker>();
-         services.AddTransient<IConditionChecker, JsonPathConditionChecker>();
-         services.AddTransient<IConditionChecker, MethodConditionChecker>();
-         services.AddTransient<IConditionChecker, PathConditionChecker>();
-         services.AddTransient<IConditionChecker, QueryStringConditionChecker>();
-         services.AddTransient<IConditionChecker, XPathConditionChecker>();
+         var conditionCheckerTypes = AssemblyHelper.GetImplementations<IConditionChecker>();
+         foreach(var type in conditionCheckerTypes)
+         {
+            services.AddTransient(typeof(IConditionChecker), type);
+         }
 
          // Response writers
-         services.AddTransient<IResponseWriter, Base64ResponseWriter>();
-         services.AddTransient<IResponseWriter, ExtraDurationResponseWriter>();
-         services.AddTransient<IResponseWriter, FileResponseWriter>();
-         services.AddTransient<IResponseWriter, HeadersResponseWriter>();
-         services.AddTransient<IResponseWriter, StatusCodeResponseWriter>();
-         services.AddTransient<IResponseWriter, TextResponseWriter>();
+         var responseWriterTypes = AssemblyHelper.GetImplementations<IResponseWriter>();
+         foreach (var type in responseWriterTypes)
+         {
+            services.AddTransient(typeof(IResponseWriter), type);
+         }
       }
    }
 }
