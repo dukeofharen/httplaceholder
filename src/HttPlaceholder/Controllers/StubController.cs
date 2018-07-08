@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HttPlaceholder.Filters;
-using HttPlaceholder.Implementation;
+using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 

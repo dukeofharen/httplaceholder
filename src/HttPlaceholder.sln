@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder", "HttPlaceh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Utilities", "HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj", "{A737B197-6BAB-452E-8DEC-533CF6FD2F58}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Implementation", "HttPlaceholder.Implementation\HttPlaceholder.Implementation.csproj", "{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.BusinessLogic", "HttPlaceholder.BusinessLogic\HttPlaceholder.BusinessLogic.csproj", "{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Models", "HttPlaceholder.Models\HttPlaceholder.Models.csproj", "{CB4600D4-1B2C-4FFE-92C9-8AFC2E460AA6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{287482AF-3481-44F5-B4D3-F17589B9261C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Implementation.Tests", "HttPlaceholder.Implementation.Tests\HttPlaceholder.Implementation.Tests.csproj", "{4E944D08-C74B-4373-A247-55F9C7887552}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.BusinessLogic.Tests", "HttPlaceholder.BusinessLogic.Tests\HttPlaceholder.BusinessLogic.Tests.csproj", "{4E944D08-C74B-4373-A247-55F9C7887552}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Tests", "HttPlaceholder.Tests\HttPlaceholder.Tests.csproj", "{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E}"
 EndProject

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using HttPlaceholder.Exceptions;
-using HttPlaceholder.Implementation;
+using HttPlaceholder.BusinessLogic;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware

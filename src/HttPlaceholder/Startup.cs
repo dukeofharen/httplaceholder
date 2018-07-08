@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using HttPlaceholder.Formatters;
-using HttPlaceholder.Implementation;
+using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Swagger;
 using Swashbuckle.AspNetCore.Swagger;
