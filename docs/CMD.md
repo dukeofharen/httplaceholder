@@ -55,3 +55,11 @@ httplaceholder --apiUsername user --apiPassword pass
 ```
 
 The username and password that should be sent (using basic authentication) when communicating with the REST API. If these values are not set, the API is available for everyone.
+
+### Enable / disable request logging on the terminal (optional)
+
+```
+httplaceholder --enableRequestLogging false
+```
+
+If this property is set to false, no detailed request logging will be written to the terminal anymore. Default: true.

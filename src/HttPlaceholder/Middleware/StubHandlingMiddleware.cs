@@ -10,12 +10,15 @@ using Microsoft.Extensions.Logging;
 using HttPlaceholder.Exceptions;
 using HttPlaceholder.BusinessLogic;
 using Newtonsoft.Json.Linq;
+using HttPlaceholder.Models;
+using HttPlaceholder.Utilities;
 
 namespace HttPlaceholder.Middleware
 {
    public class StubHandlingMiddleware
    {
       private readonly RequestDelegate _next;
+      private readonly IConfigurationService _configurationService;
       private readonly IHttpContextService _httpContextService;
       private readonly ILogger<StubHandlingMiddleware> _logger;
       private readonly IRequestLoggerFactory _requestLoggerFactory;
@@ -24,6 +27,7 @@ namespace HttPlaceholder.Middleware
 
       public StubHandlingMiddleware(
          RequestDelegate next,
+         IConfigurationService configurationService,
          IHttpContextService httpContextService,
          ILogger<StubHandlingMiddleware> logger,
          IRequestLoggerFactory requestLoggerFactory,
@@ -31,6 +35,7 @@ namespace HttPlaceholder.Middleware
          IStubRequestExecutor stubRequestExecutor)
       {
          _next = next;
+         _configurationService = configurationService;
          _httpContextService = httpContextService;
          _logger = logger;
          _requestLoggerFactory = requestLoggerFactory;
@@ -91,7 +96,13 @@ namespace HttPlaceholder.Middleware
 
          var loggingResult = requestLogger.GetResult();
          var jsonLoggingResult = JObject.FromObject(loggingResult);
-         _logger.LogInformation(jsonLoggingResult.ToString());
+         var config = _configurationService.GetConfiguration();
+         bool enableRequestLogging = config.GetValue(Constants.ConfigKeys.EnableRequestLogging, true);
+         if (enableRequestLogging)
+         {
+            _logger.LogInformation(jsonLoggingResult.ToString());
+         }
+         
          await _stubContainer.AddRequestResultAsync(loggingResult);
       }
    }

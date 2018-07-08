@@ -21,6 +21,8 @@
          public const string PortKey = "port";
 
          public const string UseHttpsKey = "useHttps";
+
+         public const string EnableRequestLogging = "enableRequestLogging";
       }
    }
 }

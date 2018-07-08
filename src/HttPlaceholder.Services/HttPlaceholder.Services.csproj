@@ -16,5 +16,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttPlaceholder.Models\HttPlaceholder.Models.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />
   </ItemGroup>
 </Project>
