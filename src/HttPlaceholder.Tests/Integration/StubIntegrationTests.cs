@@ -136,6 +136,23 @@ namespace HttPlaceholder.Tests.Integration
       }
 
       [TestMethod]
+      public async Task StubIntegration_RegularGet_ReturnsJson_Scenario3_JsonResponseTag()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9468BA";
+
+         // act / assert
+         using (var response = await Client.GetAsync(url))
+         {
+            string content = await response.Content.ReadAsStringAsync();
+            Assert.IsFalse(string.IsNullOrEmpty(content));
+            JObject.Parse(content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
+         }
+      }
+
+      [TestMethod]
       public async Task StubIntegration_RegularGet_BasicAuthentication()
       {
          // arrange

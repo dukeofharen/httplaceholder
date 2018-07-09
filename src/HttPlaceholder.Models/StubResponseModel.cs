@@ -22,5 +22,8 @@ namespace HttPlaceholder.Models
 
       [YamlMember(Alias = "extraDuration")]
       public int? ExtraDuration { get; set; }
+
+      [YamlMember(Alias = "json")]
+      public string Json { get; set; }
    }
 }

@@ -19,6 +19,21 @@ To return a plain text respone, use the "text" response writer.
       Content-Type: text/plain
 ```
 
+## JSON
+
+This is a shortcut for returning a JSON string. This response writer sets the "Content-Type" header to "application/json".
+
+```
+- id: situation-json
+  conditions:
+    method: GET
+    url:
+      path: /text.json
+  response:
+    statusCode: 200
+    json: {"msg": "All OK!"}
+```
+
 ## Status code
 
 To set the HTTP status code of a response, use the "statusCode" response writer. If this is not set, the default will be used (which is 200 OK).
