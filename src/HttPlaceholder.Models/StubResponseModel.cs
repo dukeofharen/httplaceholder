@@ -25,5 +25,8 @@ namespace HttPlaceholder.Models
 
       [YamlMember(Alias = "json")]
       public string Json { get; set; }
+
+      [YamlMember(Alias = "xml")]
+      public string Xml { get; set; }
    }
 }

@@ -34,6 +34,21 @@ This is a shortcut for returning a JSON string. This response writer sets the "C
     json: {"msg": "All OK!"}
 ```
 
+## XML
+
+This is a shortcut for returning an XML string. This response writer sets the "Content-Type" header to "text/xml".
+
+```
+- id: situation-json
+  conditions:
+    method: GET
+    url:
+      path: /text.json
+  response:
+    statusCode: 200
+    xml: <xml></xml>
+```
+
 ## Status code
 
 To set the HTTP status code of a response, use the "statusCode" response writer. If this is not set, the default will be used (which is 200 OK).

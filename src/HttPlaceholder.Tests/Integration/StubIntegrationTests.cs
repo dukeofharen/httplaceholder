@@ -357,10 +357,10 @@ namespace HttPlaceholder.Tests.Integration
       }
 
       [TestMethod]
-      public async Task StubIntegration_RegularPost_RegularXml_ValidateXPath_HappyFlow()
+      public async Task StubIntegration_RegularPost_RegularXml_ValidateXPath_HappyFlow_XmlResponseWriter()
       {
          // arrange
-         string url = $"{TestServer.BaseAddress}InStock";
+         string url = $"{TestServer.BaseAddress}xml";
          string body = @"<?xml version=""1.0""?>
 <object>
 	<a>TEST</a>

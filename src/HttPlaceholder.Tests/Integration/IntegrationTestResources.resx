@@ -233,6 +233,19 @@
     headers:
       Content-Type: text/xml
 
+- id: regular-xml-2
+  conditions:
+    method: POST
+    url:
+      path: /xml
+    headers:
+      Content-Type: application/soap+xml; charset=utf-8
+    xpath:
+      - queryString: /object/a[text() = 'TEST']
+  response:
+    statusCode: 200
+    xml: &lt;result&gt;OK&lt;/result&gt;
+
 - id: jpath-test
   conditions:
     method: PUT
