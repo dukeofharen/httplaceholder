@@ -4,7 +4,7 @@ If a request succeeds and a stub is found, the configured response will be retur
 
 ## Text
 
-To return a plain text respone, use the "text" response writer.
+To return a plain text respone, use the "text" response writer. If no Content-Type header is set, the header will be set to "text/plain";
 
 ```
 - id: situation-03

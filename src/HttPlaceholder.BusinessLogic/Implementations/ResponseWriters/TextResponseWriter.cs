@@ -21,6 +21,10 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
          {
             response.Body = Encoding.UTF8.GetBytes(stub.Response.Text);
             requestLogger.Log($"Found body '{stub.Response?.Text}'");
+            if (!response.Headers.TryGetValue("Content-Type", out string contentType))
+            {
+               response.Headers.Add("Content-Type", "text/plain");
+            }
          }
 
          return Task.CompletedTask;
