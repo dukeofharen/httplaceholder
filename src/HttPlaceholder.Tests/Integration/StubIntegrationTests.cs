@@ -10,6 +10,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
 using HttPlaceholder.Models;
+using HttPlaceholder.Utilities;
+using System.IO;
 
 namespace HttPlaceholder.Tests.Integration
 {
@@ -23,10 +25,14 @@ namespace HttPlaceholder.Tests.Integration
       [TestInitialize]
       public void Initialize()
       {
+         // Load the integration YAML file here.
+         string path = Path.Combine(AssemblyHelper.GetExecutingAssemblyRootPath(), "integration.yml");
+         string integrationYml = File.ReadAllText(path);
+
          _fileServiceMock = new Mock<IFileService>();
          _fileServiceMock
             .Setup(m => m.ReadAllText(InputFilePath))
-            .Returns(IntegrationTestResources.TestYamlFile);
+            .Returns(integrationYml);
          _fileServiceMock
             .Setup(m => m.FileExists(InputFilePath))
             .Returns(true);

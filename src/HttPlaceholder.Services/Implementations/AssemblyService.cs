@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Reflection;
+﻿using HttPlaceholder.Utilities;
 
 namespace HttPlaceholder.Services.Implementations
 {
@@ -7,9 +6,7 @@ namespace HttPlaceholder.Services.Implementations
    {
       public string GetAssemblyRootPath()
       {
-         var assembly = Assembly.GetEntryAssembly();
-         string path = assembly.Location;
-         return Path.GetDirectoryName(path);
+         return AssemblyHelper.GetAssemblyRootPath();
       }
    }
 }

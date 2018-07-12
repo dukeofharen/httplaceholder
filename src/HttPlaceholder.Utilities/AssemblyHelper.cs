@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace HttPlaceholder.Utilities
 {
@@ -15,6 +17,20 @@ namespace HttPlaceholder.Utilities
              .ToArray();
 
          return types;
+      }
+
+      public static string GetAssemblyRootPath()
+      {
+         var assembly = Assembly.GetEntryAssembly();
+         string path = assembly.Location;
+         return Path.GetDirectoryName(path);
+      }
+
+      public static string GetExecutingAssemblyRootPath()
+      {
+         var assembly = Assembly.GetExecutingAssembly();
+         string path = assembly.Location;
+         return Path.GetDirectoryName(path);
       }
    }
 }

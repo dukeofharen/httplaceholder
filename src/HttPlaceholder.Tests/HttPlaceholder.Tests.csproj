@@ -28,16 +28,8 @@
     <ProjectReference Include="..\HttPlaceholder\HttPlaceholder.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Integration\IntegrationTestResources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>IntegrationTestResources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Integration\IntegrationTestResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>IntegrationTestResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <None Update="integration.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
