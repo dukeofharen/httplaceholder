@@ -1,31 +1,32 @@
-﻿using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using HttPlaceholder.BusinessLogic.Implementations.ResponseWriters;
+﻿using HttPlaceholder.BusinessLogic.Implementations.ResponseWriters;
 using HttPlaceholder.BusinessLogic.Tests.Utilities;
 using HttPlaceholder.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
 
 namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
 {
    [TestClass]
-   public class StatusCodeResponseWriterFacts
+   public class RedirectResponseWriterFacts
    {
-      private StatusCodeResponseWriter _writer;
+      private RedirectResponseWriter _writer;
 
       [TestInitialize]
       public void Initialize()
       {
-         _writer = new StatusCodeResponseWriter(TestObjectFactory.GetRequestLoggerFactory());
+         _writer = new RedirectResponseWriter(TestObjectFactory.GetRequestLoggerFactory());
       }
 
       [TestMethod]
-      public async Task StatusCodeResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
+      public async Task RedirectResponseWriter_WriteToResponseAsync_NoRedirectSet_ShouldContinue()
       {
          // arrange
          var stub = new StubModel
          {
             Response = new StubResponseModel
             {
-               StatusCode = null
+               PermanentRedirect = null,
+               TemporaryRedirect = null
             }
          };
 
@@ -35,18 +36,18 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
          await _writer.WriteToResponseAsync(stub, response);
 
          // assert
-         Assert.AreEqual(200, response.StatusCode);
+         Assert.AreEqual(0, response.StatusCode);
       }
 
       [TestMethod]
-      public async Task StatusCodeResponseWriter_WriteToResponseAsync_HappyFlow()
+      public async Task RedirectResponseWriter_WriteToResponseAsync_TempRedirect()
       {
          // arrange
          var stub = new StubModel
          {
             Response = new StubResponseModel
             {
-               StatusCode = 409
+               TemporaryRedirect = "https://google.com"
             }
          };
 
@@ -56,31 +57,30 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
          await _writer.WriteToResponseAsync(stub, response);
 
          // assert
-         Assert.AreEqual(409, response.StatusCode);
+         Assert.AreEqual(307, response.StatusCode);
+         Assert.AreEqual("https://google.com", response.Headers["Location"]);
       }
 
       [TestMethod]
-      public async Task StatusCodeResponseWriter_WriteToResponseAsync_HappyFlow_NoStatusCodeSetInStub_StatusCodeAlreadySetOnResponse_ShouldNotBeOverwritten()
+      public async Task RedirectResponseWriter_WriteToResponseAsync_PermanentRedirect()
       {
          // arrange
          var stub = new StubModel
          {
             Response = new StubResponseModel
             {
-               StatusCode = null
+               PermanentRedirect = "https://google.com"
             }
          };
 
-         var response = new ResponseModel
-         {
-            StatusCode = 409
-         };
+         var response = new ResponseModel();
 
          // act
          await _writer.WriteToResponseAsync(stub, response);
 
          // assert
-         Assert.AreEqual(409, response.StatusCode);
+         Assert.AreEqual(301, response.StatusCode);
+         Assert.AreEqual("https://google.com", response.Headers["Location"]);
       }
    }
 }

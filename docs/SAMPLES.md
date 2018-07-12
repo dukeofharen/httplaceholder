@@ -26,3 +26,4 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Basic authentication examples: [.yml](samples/06-basic-auth.yml) | [.sh](samples/06-basic-auth.sh) | [.ps1](samples/06-basic-auth.ps1)
 * Slow response examples: [.yml](samples/07-slow-response.yml) | [.sh](samples/07-slow-response.sh) | [.ps1](samples/07-slow-response.ps1)
 * Simple website examle: [.yml](samples/simple-site.yml)
+* Temporary and permanent redirects: [.yml](samples/08-redirect.yml)

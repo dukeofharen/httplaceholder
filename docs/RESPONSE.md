@@ -163,3 +163,27 @@ Whenever you want to simulate a busy web service, you can use the "extraDuration
     headers:
       Content-Type: application/json
 ```
+
+## Permanent and temporary redirects
+
+The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the "temporaryRedirect" property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the "permanentRedirect" an HTTP 301.
+
+```
+- id: temp-redirect
+  conditions:
+    method: GET
+    url:
+      path: /temp-redirect
+  response:
+    temporaryRedirect: https://google.com
+```
+
+```
+- id: permanent-redirect
+  conditions:
+    method: GET
+    url:
+      path: /permanent-redirect
+  response:
+    permanentRedirect: https://reddit.com
+```

@@ -258,6 +258,22 @@
   response:
     statusCode: 204
 
+- id: temp-redirect
+  conditions:
+    method: GET
+    url:
+      path: /temp-redirect
+  response:
+    temporaryRedirect: https://google.com
+
+- id: permanent-redirect
+  conditions:
+    method: GET
+    url:
+      path: /permanent-redirect
+  response:
+    permanentRedirect: https://reddit.com
+
 - id: file
   conditions:
     method: GET

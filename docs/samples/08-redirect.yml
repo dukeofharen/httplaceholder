@@ -1,0 +1,19 @@
+# Simple redirect situations.
+
+# This will perform a temporary redirect.
+- id: temp-redirect
+  conditions:
+    method: GET
+    url:
+      path: /temp-redirect
+  response:
+    temporaryRedirect: https://google.com
+
+# This will perform a permanent redirect.
+- id: permanent-redirect
+  conditions:
+    method: GET
+    url:
+      path: /permanent-redirect
+  response:
+    permanentRedirect: https://reddit.com

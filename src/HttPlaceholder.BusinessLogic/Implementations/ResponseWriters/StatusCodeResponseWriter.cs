@@ -15,9 +15,12 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
 
       public Task WriteToResponseAsync(StubModel stub, ResponseModel response)
       {
-         var requestLogger = _requestLoggerFactory.GetRequestLogger();
-         response.StatusCode = stub.Response?.StatusCode ?? 200;
-         requestLogger.Log($"Found HTTP status code '{response.StatusCode}'.");
+         if (response.StatusCode == 0)
+         {
+            var requestLogger = _requestLoggerFactory.GetRequestLogger();
+            response.StatusCode = stub.Response?.StatusCode ?? 200;
+            requestLogger.Log($"Found HTTP status code '{response.StatusCode}'.");
+         }
 
          return Task.CompletedTask;
       }
