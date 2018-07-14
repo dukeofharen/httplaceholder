@@ -14,7 +14,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
       [TestInitialize]
       public void Initialize()
       {
-         _writer = new RedirectResponseWriter(TestObjectFactory.GetRequestLoggerFactory());
+         _writer = new RedirectResponseWriter();
       }
 
       [TestMethod]

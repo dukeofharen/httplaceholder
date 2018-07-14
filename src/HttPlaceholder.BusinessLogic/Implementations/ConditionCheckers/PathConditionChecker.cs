@@ -7,36 +7,29 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers
 {
    public class PathConditionChecker : IConditionChecker
    {
-      private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IHttpContextService _httpContextService;
 
-      public PathConditionChecker(
-         IRequestLoggerFactory requestLoggerFactory,
-         IHttpContextService httpContextService)
+      public PathConditionChecker(IHttpContextService httpContextService)
       {
-         _requestLoggerFactory = requestLoggerFactory;
          _httpContextService = httpContextService;
       }
 
-      public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
+      public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
       {
-         var requestLogger = _requestLoggerFactory.GetRequestLogger();
-         var result = ConditionValidationType.NotExecuted;
+         var result = new ConditionCheckResultModel();
          string pathCondition = conditions?.Url?.Path;
          if (!string.IsNullOrEmpty(pathCondition))
          {
-            requestLogger.Log($"Path condition found for stub '{stubId}': '{pathCondition}'");
             string path = _httpContextService.Path;
             if (StringHelper.IsRegexMatchOrSubstring(path, pathCondition))
             {
                // The path matches the provided regex. Add the stub ID to the resulting list.
-               requestLogger.Log($"Condition '{pathCondition}' passed for request.");
-               result = ConditionValidationType.Valid;
+               result.ConditionValidation = ConditionValidationType.Valid;
             }
             else
             {
-               requestLogger.Log($"Condition '{pathCondition}' did not pass for request.");
-               result = ConditionValidationType.Invalid;
+               result.Log = $"Condition '{pathCondition}' did not pass for request.";
+               result.ConditionValidation = ConditionValidationType.Invalid;
             }
          }
 

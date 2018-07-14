@@ -20,7 +20,6 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
       {
          _httpContextServiceMock = new Mock<IHttpContextService>();
          _checker = new BasicAuthenticationConditionChecker(
-            TestObjectFactory.GetRequestLoggerFactory(),
             _httpContextServiceMock.Object);
       }
 
@@ -43,7 +42,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
          var result = _checker.Validate("id", conditions);
 
          // assert
-         Assert.AreEqual(ConditionValidationType.NotExecuted, result);
+         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
       }
 
       [TestMethod]
@@ -72,7 +71,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
          var result = _checker.Validate("id", conditions);
 
          // assert
-         Assert.AreEqual(ConditionValidationType.Invalid, result);
+         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
       }
 
       [TestMethod]
@@ -101,7 +100,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
          var result = _checker.Validate("id", conditions);
 
          // assert
-         Assert.AreEqual(ConditionValidationType.Invalid, result);
+         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
       }
 
       [TestMethod]
@@ -130,7 +129,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
          var result = _checker.Validate("id", conditions);
 
          // assert
-         Assert.AreEqual(ConditionValidationType.Valid, result);
+         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
       }
    }
 }

@@ -9,9 +9,7 @@ namespace HttPlaceholder.Models
 
       public object RequestParameters { get; set; }
 
-      public IList<string> LogLines { get; set; } = new List<string>();
-
-      public IList<object> StubExecutionResult { get; set; } = new List<object>();
+      public IList<StubExecutionResultModel> StubExecutionResults { get; set; } = new List<StubExecutionResultModel>();
 
       public string ExecutingStubId { get; set; }
 

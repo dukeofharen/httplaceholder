@@ -8,31 +8,24 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers
 {
    public class QueryStringConditionChecker : IConditionChecker
    {
-      private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IHttpContextService _httpContextService;
 
-      public QueryStringConditionChecker(
-         IRequestLoggerFactory requestLoggerFactory,
-         IHttpContextService httpContextService)
+      public QueryStringConditionChecker(IHttpContextService httpContextService)
       {
-         _requestLoggerFactory = requestLoggerFactory;
          _httpContextService = httpContextService;
       }
 
-      public ConditionValidationType Validate(string stubId, StubConditionsModel conditions)
+      public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
       {
-         var requestLogger = _requestLoggerFactory.GetRequestLogger();
-         var result = ConditionValidationType.NotExecuted;
+         var result = new ConditionCheckResultModel();
          var queryStringConditions = conditions?.Url?.Query;
          if (queryStringConditions != null)
          {
-            requestLogger.Log($"Method condition found for stub '{stubId}': '{string.Join(", ", queryStringConditions.Select(c => $"{c.Key}: {c.Value}"))}'");
             int validQueryStrings = 0;
             var queryString = _httpContextService.GetQueryStringDictionary();
             foreach (var condition in queryStringConditions)
             {
                // Check whether the condition query is available in the actual query string.
-               requestLogger.Log($"Checking request query string against query string condition '{condition.Key}: {condition.Value}'");
                if (queryString.TryGetValue(condition.Key, out string queryValue))
                {
                   // Check whether the condition query value is available in the actual query string.
@@ -40,7 +33,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers
                   if (!StringHelper.IsRegexMatchOrSubstring(queryValue, value))
                   {
                      // If the check failed, it means the query string is incorrect and the condition should fail.
-                     requestLogger.Log($"Query string condition '{condition.Key}: {condition.Value}' failed.");
+                     result.Log = $"Query string condition '{condition.Key}: {condition.Value}' failed.";
                      break;
                   }
 
@@ -52,12 +45,11 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers
             // the query string condition is passed and the stub ID is passed to the result.
             if (validQueryStrings == queryStringConditions.Count)
             {
-               requestLogger.Log($"Query string condition check succeeded for stub '{stubId}'.");
-               result = ConditionValidationType.Valid;
+               result.ConditionValidation = ConditionValidationType.Valid;
             }
             else
             {
-               result = ConditionValidationType.Invalid;
+               result.ConditionValidation = ConditionValidationType.Invalid;
             }
          }
 

@@ -20,7 +20,6 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
       {
          _serviceProviderMock = new Mock<IServiceProvider>();
          _generator = new StubResponseGenerator(
-            TestObjectFactory.GetRequestLoggerFactory(),
             _serviceProviderMock.Object);
       }
 

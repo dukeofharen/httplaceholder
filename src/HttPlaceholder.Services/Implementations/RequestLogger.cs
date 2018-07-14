@@ -17,11 +17,6 @@ namespace HttPlaceholder.Services.Implementations
          };
       }
 
-      public void Log(string message)
-      {
-         _result.LogLines.Add(message);
-      }
-
       public RequestResultModel GetResult()
       {
          _result.RequestEndTime = DateTime.Now;
@@ -45,12 +40,14 @@ namespace HttPlaceholder.Services.Implementations
          _result.CorrelationId = correlationId;
       }
 
-      public void SetStubExecutionResult(string stubId, bool passed)
+      public void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions, IEnumerable<ConditionCheckResultModel> negativeConditions)
       {
-         _result.StubExecutionResult.Add(new
+         _result.StubExecutionResults.Add(new StubExecutionResultModel
          {
-            stubId,
-            passed
+            Passed = passed,
+            StubId = stubId,
+            Conditions = conditions,
+            NegativeConditions = negativeConditions
          });
       }
 

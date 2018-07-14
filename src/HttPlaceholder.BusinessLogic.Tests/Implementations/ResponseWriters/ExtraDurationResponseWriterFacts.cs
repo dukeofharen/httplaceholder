@@ -19,8 +19,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
       {
          _asyncServiceMock = new Mock<IAsyncService>();
          _writer = new ExtraDurationResponseWriter(
-            _asyncServiceMock.Object,
-            TestObjectFactory.GetRequestLoggerFactory());
+            _asyncServiceMock.Object);
       }
 
       [TestCleanup]

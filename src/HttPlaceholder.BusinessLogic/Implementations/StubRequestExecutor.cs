@@ -8,22 +8,26 @@ using HttPlaceholder.DataLogic;
 using HttPlaceholder.Exceptions;
 using HttPlaceholder.Models;
 using HttPlaceholder.Models.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.BusinessLogic.Implementations
 {
    public class StubRequestExecutor : IStubRequestExecutor
    {
+      private readonly ILogger<StubRequestExecutor> _logger;
       private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IServiceProvider _serviceProvider;
       private readonly IStubContainer _stubContainer;
       private readonly IStubResponseGenerator _stubResponseGenerator;
 
       public StubRequestExecutor(
+         ILogger<StubRequestExecutor> logger,
          IRequestLoggerFactory requestLoggerFactory,
          IServiceProvider serviceProvider,
          IStubContainer stubContainer,
          IStubResponseGenerator stubResponseGenerator)
       {
+         _logger = logger;
          _requestLoggerFactory = requestLoggerFactory;
          _serviceProvider = serviceProvider;
          _stubContainer = stubContainer;
@@ -34,21 +38,20 @@ namespace HttPlaceholder.BusinessLogic.Implementations
       {
          var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var conditionCheckers = ((IEnumerable<IConditionChecker>)_serviceProvider.GetServices(typeof(IConditionChecker))).ToArray();
-         requestLogger.Log($"Following conditions found: {string.Join(", ", conditionCheckers.Select(c => c.GetType().ToString()))}");
 
          var foundStubs = new List<StubModel>();
          var stubs = await _stubContainer.GetStubsAsync();
 
          foreach (var stub in stubs)
          {
-            bool passed = false;
-            requestLogger.Log($"-------- CHECKING {stub.Id} --------");
             try
             {
-               var validationResults = new List<ConditionValidationType>();
+               bool passed = false;
+               var validationResults = new List<ConditionCheckResultModel>();
+               var negativeValidationResults = new List<ConditionCheckResultModel>();
                foreach (var checker in conditionCheckers)
                {
-                  ConditionValidationType result;
+                  ConditionCheckResultModel result;
 
                   // First, check the regular conditions.
                   result = CheckConditions(stub.Id, checker, stub.Conditions, false);
@@ -56,23 +59,22 @@ namespace HttPlaceholder.BusinessLogic.Implementations
 
                   // Then check the "negative" conditions. These conditions are the "not" scenarios.
                   result = CheckConditions(stub.Id, checker, stub.NegativeConditions, true);
-                  validationResults.Add(result);
+                  negativeValidationResults.Add(result);
                }
 
-               if (validationResults.All(r => r != ConditionValidationType.Invalid) && validationResults.Any(r => r != ConditionValidationType.NotExecuted && r != ConditionValidationType.NotSet))
+               var allValidationResults = validationResults.Concat(negativeValidationResults);
+               if (allValidationResults.All(r => r.ConditionValidation != ConditionValidationType.Invalid) && validationResults.Any(r => r.ConditionValidation != ConditionValidationType.NotExecuted && r.ConditionValidation != ConditionValidationType.NotSet))
                {
                   passed = true;
-                  requestLogger.Log($"All conditions passed for stub '{stub.Id}'.");
                   foundStubs.Add(stub);
                }
+
+               requestLogger.SetStubExecutionResult(stub.Id, passed, validationResults, negativeValidationResults);
             }
             catch (Exception e)
             {
-               requestLogger.Log($"Exception thrown while executing condition checks for stub '{stub.Id}': {e}");
+               _logger.LogWarning($"Exception thrown while executing checks for stub '{stub.Id}': {e}");
             }
-
-            requestLogger.Log($"-------- DONE CHECKING {stub.Id} --------");
-            requestLogger.SetStubExecutionResult(stub.Id, passed);
          }
 
          if (!foundStubs.Any())
@@ -81,43 +83,23 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             throw new RequestValidationException($"The '{nameof(foundStubs)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
          }
 
-         if (foundStubs.Count > 1)
-         {
-            requestLogger.Log($"Multiple stubs are found ({string.Join(", ", foundStubs)}), picking the first one.");
-         }
-
          var finalStub = foundStubs.First();
          requestLogger.SetExecutingStubId(finalStub.Id);
          var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub);
          return response;
       }
 
-      private ConditionValidationType CheckConditions(string stubId, IConditionChecker checker, StubConditionsModel conditions, bool negative)
+      private ConditionCheckResultModel CheckConditions(string stubId, IConditionChecker checker, StubConditionsModel conditions, bool negative)
       {
-         var requestLogger = _requestLoggerFactory.GetRequestLogger();
-         requestLogger.Log($"----- EXECUTING{(negative ? " NEGATIVE " : " ")}CONDITION {checker.GetType().Name} -----");
          var validationResult = checker.Validate(stubId, conditions);
-         if (validationResult == ConditionValidationType.NotExecuted)
-         {
-            // If the resulting list is null, it means the check wasn't executed because it wasn't configured. Continue with the next condition.
-            requestLogger.Log("The condition was not executed and not configured.");
-         }
-
-         if (validationResult == ConditionValidationType.Invalid)
-         {
-            requestLogger.Log("The condition did not pass.");
-         }
-
-         requestLogger.Log($"----- DONE EXECUTING{(negative ? " NEGATIVE " : " ")}CONDITION {checker.GetType().Name} -----");
-
+         validationResult.CheckerName = checker.GetType().Name;
+         var conditionValidation = validationResult.ConditionValidation;
          if (negative)
          {
-            if (validationResult == ConditionValidationType.NotExecuted)
+            if (conditionValidation != ConditionValidationType.NotExecuted)
             {
-               return ConditionValidationType.NotExecuted;
+               validationResult.ConditionValidation = conditionValidation == ConditionValidationType.Invalid ? ConditionValidationType.Valid : ConditionValidationType.Invalid;
             }
-
-            return validationResult == ConditionValidationType.Invalid ? ConditionValidationType.Valid : ConditionValidationType.Invalid;
          }
 
          return validationResult;

@@ -18,7 +18,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
       [TestInitialize]
       public void Initialize()
       {
-         _writer = new JsonResponseWriter(TestObjectFactory.GetRequestLoggerFactory());
+         _writer = new JsonResponseWriter();
       }
 
       [TestMethod]

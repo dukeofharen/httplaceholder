@@ -16,7 +16,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
       [TestInitialize]
       public void Initialize()
       {
-         _writer = new Base64ResponseWriter(TestObjectFactory.GetRequestLoggerFactory());
+         _writer = new Base64ResponseWriter();
       }
 
       [TestMethod]

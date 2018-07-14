@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using HttPlaceholder.Services;
@@ -85,13 +84,13 @@ namespace HttPlaceholder.Middleware
          {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
-            requestLogger.Log($"Request validation exception thrown: {e.Message}");
+            _logger.LogWarning($"Request validation exception thrown: {e.Message}");
          }
          catch (Exception e)
          {
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
-            requestLogger.Log($"Unexpected exception thrown: {e}");
+            _logger.LogWarning($"Unexpected exception thrown: {e}");
          }
 
          var loggingResult = requestLogger.GetResult();

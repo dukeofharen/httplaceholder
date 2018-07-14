@@ -7,13 +7,11 @@ namespace HttPlaceholder.Services
    {
       void SetCorrelationId(string correlationId);
 
-      void Log(string message);
-
       void LogRequestParameters(string method, string url, string body, IDictionary<string, string> headers);
 
       RequestResultModel GetResult();
 
-      void SetStubExecutionResult(string stubId, bool passed);
+      void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions, IEnumerable<ConditionCheckResultModel> negativeConditions);
 
       void SetExecutingStubId(string stubId);
    }

@@ -26,7 +26,6 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
          _stubRootPathResolverMock = new Mock<IStubRootPathResolver>();
          _writer = new FileResponseWriter(
             _fileServiceMock.Object,
-            TestObjectFactory.GetRequestLoggerFactory(),
             _stubContainerMock.Object,
             _stubRootPathResolverMock.Object);
       }

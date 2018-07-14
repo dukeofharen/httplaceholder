@@ -15,7 +15,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
       [TestInitialize]
       public void Initialize()
       {
-         _writer = new HeadersResponseWriter(TestObjectFactory.GetRequestLoggerFactory());
+         _writer = new HeadersResponseWriter();
       }
 
       [TestMethod]

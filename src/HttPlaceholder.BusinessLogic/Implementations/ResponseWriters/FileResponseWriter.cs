@@ -9,18 +9,15 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
    public class FileResponseWriter : IResponseWriter
    {
       private readonly IFileService _fileService;
-      private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IStubContainer _stubContainer;
       private readonly IStubRootPathResolver _stubRootPathResolver;
 
       public FileResponseWriter(
          IFileService fileService,
-         IRequestLoggerFactory requestLoggerFactory,
          IStubContainer stubContainer,
          IStubRootPathResolver stubRootPathResolver)
       {
          _fileService = fileService;
-         _requestLoggerFactory = requestLoggerFactory;
          _stubContainer = stubContainer;
          _stubRootPathResolver = stubRootPathResolver;
       }
@@ -29,7 +26,6 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
       {
          if (stub.Response?.File != null)
          {
-            var requestLogger = _requestLoggerFactory.GetRequestLogger();
             string finalFilePath = null;
             if (_fileService.FileExists(stub.Response.File))
             {
@@ -44,15 +40,10 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
                {
                   finalFilePath = tempPath;
                }
-               else
-               {
-                  requestLogger.Log($"File '{stub.Response.File}' not found.");
-               }
             }
 
             if (finalFilePath != null)
             {
-               requestLogger.Log($"File '{finalFilePath}' found, returning it.");
                response.Body = _fileService.ReadAllBytes(finalFilePath);
             }
          }

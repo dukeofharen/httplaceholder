@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using HttPlaceholder.DataLogic;
 using HttPlaceholder.Exceptions;
 using HttPlaceholder.BusinessLogic.Implementations;
 using HttPlaceholder.BusinessLogic.Tests.Utilities;
 using HttPlaceholder.Models;
 using HttPlaceholder.Models.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.BusinessLogic.Tests.Implementations
 {
    [TestClass]
    public class StubRequestExecutorFacts
    {
+      private Mock<ILogger<StubRequestExecutor>> _loggerMock;
       private Mock<IServiceProvider> _serviceProviderMock;
       private Mock<IStubContainer> _stubContainerMock;
       private Mock<IStubResponseGenerator> _stubResponseGeneratorMock;
@@ -27,10 +28,12 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
       [TestInitialize]
       public void Initialize()
       {
+         _loggerMock = new Mock<ILogger<StubRequestExecutor>>();
          _serviceProviderMock = new Mock<IServiceProvider>();
          _stubContainerMock = new Mock<IStubContainer>();
          _stubResponseGeneratorMock = new Mock<IStubResponseGenerator>();
          _executor = new StubRequestExecutor(
+            _loggerMock.Object,
             TestObjectFactory.GetRequestLoggerFactory(),
             _serviceProviderMock.Object,
             _stubContainerMock.Object,
@@ -73,10 +76,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
          // arrange
          _conditionCheckerMock1
             .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
          _conditionCheckerMock2
             .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
          // act
          var exception = await Assert.ThrowsExceptionAsync<RequestValidationException>(() => _executor.ExecuteRequestAsync());
@@ -91,10 +94,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
          // arrange
          _conditionCheckerMock1
             .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
-            .Returns(ConditionValidationType.NotExecuted);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.NotExecuted });
          _conditionCheckerMock2
             .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
-            .Returns(ConditionValidationType.NotExecuted);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.NotExecuted });
 
          // act
          var exception = await Assert.ThrowsExceptionAsync<RequestValidationException>(() => _executor.ExecuteRequestAsync());
@@ -111,29 +114,29 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
 
          _conditionCheckerMock1
             .Setup(m => m.Validate(_stub1.Id, _stub1.Conditions))
-            .Returns(ConditionValidationType.Valid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
          _conditionCheckerMock2
             .Setup(m => m.Validate(_stub1.Id, _stub1.Conditions))
-            .Returns(ConditionValidationType.Valid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
          _conditionCheckerMock1
             .Setup(m => m.Validate(_stub1.Id, _stub1.NegativeConditions))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
          _conditionCheckerMock2
             .Setup(m => m.Validate(_stub1.Id, _stub1.NegativeConditions))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
          _conditionCheckerMock1
             .Setup(m => m.Validate(_stub2.Id, _stub2.Conditions))
-            .Returns(ConditionValidationType.Valid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
          _conditionCheckerMock2
             .Setup(m => m.Validate(_stub2.Id, _stub2.Conditions))
-            .Returns(ConditionValidationType.Valid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
          _conditionCheckerMock1
             .Setup(m => m.Validate(_stub2.Id, _stub2.NegativeConditions))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
          _conditionCheckerMock2
             .Setup(m => m.Validate(_stub2.Id, _stub2.NegativeConditions))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
          _stubResponseGeneratorMock
             .Setup(m => m.GenerateResponseAsync(_stub1))
@@ -153,29 +156,29 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
          var expectedResponseModel = new ResponseModel();
          _conditionCheckerMock1
             .Setup(m => m.Validate(_stub1.Id, _stub1.Conditions))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
          _conditionCheckerMock2
             .Setup(m => m.Validate(_stub1.Id, _stub1.Conditions))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
          _conditionCheckerMock1
             .Setup(m => m.Validate(_stub1.Id, _stub1.NegativeConditions))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
          _conditionCheckerMock2
             .Setup(m => m.Validate(_stub1.Id, _stub1.NegativeConditions))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
          _conditionCheckerMock1
             .Setup(m => m.Validate(_stub2.Id, _stub2.Conditions))
-            .Returns(ConditionValidationType.Valid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
          _conditionCheckerMock2
             .Setup(m => m.Validate(_stub2.Id, _stub2.Conditions))
-            .Returns(ConditionValidationType.Valid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
          _conditionCheckerMock1
             .Setup(m => m.Validate(_stub2.Id, _stub2.NegativeConditions))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
          _conditionCheckerMock2
             .Setup(m => m.Validate(_stub2.Id, _stub2.NegativeConditions))
-            .Returns(ConditionValidationType.Invalid);
+            .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
          _stubResponseGeneratorMock
             .Setup(m => m.GenerateResponseAsync(_stub2))
