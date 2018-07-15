@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ namespace HttPlaceholder.Services.Implementations
 {
    internal class HttpContextService : IHttpContextService
    {
+      private const string ForwardedHeaderKey = "X-Forwarded-For";
       private readonly IHttpContextAccessor _httpContextAccessor;
 
       public HttpContextService(IHttpContextAccessor httpContextAccessor)
@@ -57,6 +59,22 @@ namespace HttPlaceholder.Services.Implementations
       public void SetItem(string key, object item)
       {
          _httpContextAccessor.HttpContext?.Items.Add(key, item);
+      }
+
+      public string GetClientIp()
+      {
+         var request = _httpContextAccessor.HttpContext.Request;
+         if (request.Headers.ContainsKey(ForwardedHeaderKey))
+         {
+            // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
+            string forwardedFor = request.Headers[ForwardedHeaderKey].First();
+            var parts = forwardedFor.Split(new[] { ", " }, StringSplitOptions.None);
+            return parts.First();
+         }
+         else
+         {
+            return _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+         }
       }
    }
 }

@@ -64,6 +64,7 @@ namespace HttPlaceholder.Middleware
                _httpContextService.Method,
                _httpContextService.DisplayUrl,
                _httpContextService.GetBody(),
+               _httpContextService.GetClientIp(),
                _httpContextService.GetHeaders());
 
             context.Response.Clear();

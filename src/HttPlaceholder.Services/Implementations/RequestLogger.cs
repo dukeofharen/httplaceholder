@@ -23,15 +23,16 @@ namespace HttPlaceholder.Services.Implementations
          return _result;
       }
 
-      public void LogRequestParameters(string method, string url, string body, IDictionary<string, string> headers)
+      public void LogRequestParameters(string method, string url, string body, string clientIp, IDictionary<string, string> headers)
       {
          string headerString = string.Join(", ", headers.Select(h => $"{h.Key} = {h.Value}"));
-         _result.RequestParameters = new
+         _result.RequestParameters = new RequestParametersModel
          {
-            method,
-            url,
-            body,
-            headers = headerString
+            Body = body,
+            ClientIp = clientIp,
+            HeaderString = headerString,
+            Method = method,
+            Url = url
          };
       }
 

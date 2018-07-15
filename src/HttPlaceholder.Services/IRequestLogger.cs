@@ -7,7 +7,7 @@ namespace HttPlaceholder.Services
    {
       void SetCorrelationId(string correlationId);
 
-      void LogRequestParameters(string method, string url, string body, IDictionary<string, string> headers);
+      void LogRequestParameters(string method, string url, string body, string clientIp, IDictionary<string, string> headers);
 
       RequestResultModel GetResult();
 

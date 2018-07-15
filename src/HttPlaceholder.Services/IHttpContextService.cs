@@ -21,5 +21,7 @@ namespace HttPlaceholder.Services
       TObject GetItem<TObject>(string key);
 
       void SetItem(string key, object item);
+
+      string GetClientIp();
    }
 }

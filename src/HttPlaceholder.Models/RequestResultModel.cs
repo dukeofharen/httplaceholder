@@ -7,7 +7,7 @@ namespace HttPlaceholder.Models
    {
       public string CorrelationId { get; set; }
 
-      public object RequestParameters { get; set; }
+      public RequestParametersModel RequestParameters { get; set; }
 
       public IList<StubExecutionResultModel> StubExecutionResults { get; set; } = new List<StubExecutionResultModel>();
 
