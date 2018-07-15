@@ -332,6 +332,38 @@ namespace HttPlaceholder.Tests.Integration
       }
 
       [TestMethod]
+      public async Task StubIntegration_RegularPost_SoapXml_ValidateXPath_NoNamespacesDefined_HappyFlow()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}InStock";
+         string body = @"<?xml version=""1.0""?>
+<soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
+  <soap:Header>
+  </soap:Header>
+  <soap:Body>
+    <m:GetStockPrice>
+      <m:StockName>SJAAK</m:StockName>
+    </m:GetStockPrice>
+  </soap:Body>
+</soap:Envelope>";
+         var request = new HttpRequestMessage
+         {
+            Content = new StringContent(body, Encoding.UTF8, "application/soap+xml"),
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(url)
+         };
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            string content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("<result>OK</result>", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
+         }
+      }
+
+      [TestMethod]
       public async Task StubIntegration_RegularPost_SoapXml_ValidateXPath_StubNotFound()
       {
          // arrange

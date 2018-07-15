@@ -3,16 +3,20 @@ using System.Xml;
 using HttPlaceholder.Services;
 using HttPlaceholder.Models;
 using HttPlaceholder.Models.Enums;
+using System.Text.RegularExpressions;
 
 namespace HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers
 {
    public class XPathConditionChecker : IConditionChecker
    {
+      private const string NamespacesRegexPattern = "xmlns:(.*?)=\"(.*?)\"";
       private readonly IHttpContextService _httpContextService;
+      private readonly Regex _namespaceRegex;
 
       public XPathConditionChecker(IHttpContextService httpContextService)
       {
          _httpContextService = httpContextService;
+         _namespaceRegex = new Regex(NamespacesRegexPattern);
       }
 
       public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
@@ -34,6 +38,23 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers
                   foreach (var ns in namespaces)
                   {
                      nsManager.AddNamespace(ns.Key, ns.Value);
+                  }
+               }
+               else
+               {
+                  // If no namespaces are defined, check the XML namespaces with a regex.
+                  var matches = _namespaceRegex.Matches(body);
+                  for (int i = 0; i < matches.Count; i++)
+                  {
+                     var match = matches[i];
+
+                     // If there is a match, the regex should contain three groups: the full match, the prefix and the namespace
+                     if (match.Groups.Count == 3)
+                     {
+                        var prefix = match.Groups[1].Value;
+                        var uri = match.Groups[2].Value;
+                        nsManager.AddNamespace(prefix, uri);
+                     }
                   }
                }
 

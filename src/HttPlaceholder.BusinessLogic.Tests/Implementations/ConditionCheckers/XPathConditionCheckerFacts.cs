@@ -199,6 +199,47 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
       }
 
       [TestMethod]
+      public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces_FilteredByRegex()
+      {
+         // arrange
+         string body = @"<?xml version=""1.0""?>
+<soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
+  <soap:Header>
+  </soap:Header>
+  <soap:Body>
+    <m:GetStockPrice>
+      <m:StockName>Umbrella</m:StockName>
+      <m:Description>An umbrella</m:Description>
+    </m:GetStockPrice>
+  </soap:Body>
+</soap:Envelope>";
+         var conditions = new StubConditionsModel
+         {
+            Xpath = new[]
+               {
+                  new StubXpathModel
+                  {
+                     QueryString = "/soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'Umbrella']"
+                  },
+                  new StubXpathModel
+                  {
+                     QueryString = "/soap:Envelope/soap:Body/m:GetStockPrice/m:Description[text() = 'An umbrella']"
+                  }
+               }
+         };
+
+         _httpContextServiceMock
+            .Setup(m => m.GetBody())
+            .Returns(body);
+
+         // act
+         var result = _checker.Validate("id", conditions);
+
+         // assert
+         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+      }
+
+      [TestMethod]
       public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithoutNamespaces()
       {
          // arrange

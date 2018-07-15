@@ -238,6 +238,8 @@ Using the JSONPath condition checker, you can check the posted JSON body to see 
 
 Using the XPath condition checker, you can check the posted XML body to see if it contains the correct elements. It is possible to add multiple conditions.
 
+It is also possible to (pre)-set the XML namespaces of a posted XML body. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.
+
 ```
 - id: regular-xml
   conditions:
@@ -248,6 +250,26 @@ Using the XPath condition checker, you can check the posted XML body to see if i
       Content-Type: application/soap+xml; charset=utf-8
     xpath:
       - queryString: /object/a[text() = 'TEST']
+  response:
+    statusCode: 200
+    text: <result>OK</result>
+    headers:
+      Content-Type: text/xml
+```
+
+```
+- id: regular-xml
+  conditions:
+    method: POST
+    url:
+      path: /thingy
+    headers:
+      Content-Type: application/soap+xml; charset=utf-8
+    xpath:
+      - queryString: /object/a[text() = 'TEST']
+        namespaces:
+          soap: http://www.w3.org/2003/05/soap-envelope
+          m: http://www.example.org/stock/Reddy
   response:
     statusCode: 200
     text: <result>OK</result>
