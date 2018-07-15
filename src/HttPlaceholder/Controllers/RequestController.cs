@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using HttPlaceholder.Filters;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace HttPlaceholder.Controllers
 {
