@@ -5,14 +5,16 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
 {
    public class StatusCodeResponseWriter : IResponseWriter
    {
-      public Task WriteToResponseAsync(StubModel stub, ResponseModel response)
+      public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
       {
+         bool executed = false;
          if (response.StatusCode == 0)
          {
             response.StatusCode = stub.Response?.StatusCode ?? 200;
+            executed = true;
          }
 
-         return Task.CompletedTask;
+         return Task.FromResult(executed);
       }
    }
 }

@@ -4,25 +4,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using HttPlaceholder.Models;
+using HttPlaceholder.Services;
 
 namespace HttPlaceholder.BusinessLogic.Implementations
 {
    internal class StubResponseGenerator : IStubResponseGenerator
    {
+      private readonly IRequestLoggerFactory _requestLoggerFactory;
       private readonly IServiceProvider _serviceProvider;
 
-      public StubResponseGenerator(IServiceProvider serviceProvider)
+      public StubResponseGenerator(
+         IRequestLoggerFactory requestLoggerFactory,
+         IServiceProvider serviceProvider)
       {
+         _requestLoggerFactory = requestLoggerFactory;
          _serviceProvider = serviceProvider;
       }
 
       public async Task<ResponseModel> GenerateResponseAsync(StubModel stub)
       {
+         var requestLogger = _requestLoggerFactory.GetRequestLogger();
          var response = new ResponseModel();
-         var conditionCheckers = ((IEnumerable<IResponseWriter>)_serviceProvider.GetServices(typeof(IResponseWriter))).ToArray();
-         foreach(var checker in conditionCheckers)
+         var responseWriters = ((IEnumerable<IResponseWriter>)_serviceProvider.GetServices(typeof(IResponseWriter))).ToArray();
+         foreach(var writer in responseWriters)
          {
-            await checker.WriteToResponseAsync(stub, response);
+            bool executed = await writer.WriteToResponseAsync(stub, response);
+            requestLogger.SetResponseWriterResult(writer.GetType().Name, executed);
          }
 
          return response;

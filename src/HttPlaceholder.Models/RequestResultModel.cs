@@ -11,6 +11,8 @@ namespace HttPlaceholder.Models
 
       public IList<StubExecutionResultModel> StubExecutionResults { get; set; } = new List<StubExecutionResultModel>();
 
+      public IList<StubResponseWriterResultModel> StubResponseWriterResults { get; set; } = new List<StubResponseWriterResultModel>();
+
       public string ExecutingStubId { get; set; }
 
       public DateTime RequestBeginTime { get; set; }

@@ -5,6 +5,6 @@ namespace HttPlaceholder.BusinessLogic
 {
    public interface IResponseWriter
    {
-      Task WriteToResponseAsync(StubModel stub, ResponseModel response);
+      Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response);
    }
 }

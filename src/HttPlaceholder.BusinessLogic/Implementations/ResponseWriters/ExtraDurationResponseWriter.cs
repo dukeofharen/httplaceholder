@@ -14,14 +14,19 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
          _asyncService = asyncService;
       }
 
-      public async Task WriteToResponseAsync(StubModel stub, ResponseModel response)
+      public async Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
       {
+         bool executed = false;
+
          // Simulate sluggish response here, if configured.
          if (stub.Response?.ExtraDuration.HasValue == true)
          {
             int duration = stub.Response.ExtraDuration.Value;
             await _asyncService.DelayAsync(duration);
+            executed = true;
          }
+
+         return executed;
       }
    }
 }

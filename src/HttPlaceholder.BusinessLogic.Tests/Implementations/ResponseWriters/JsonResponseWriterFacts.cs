@@ -36,9 +36,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
          var response = new ResponseModel();
 
          // act
-         await _writer.WriteToResponseAsync(stub, response);
+         bool result = await _writer.WriteToResponseAsync(stub, response);
 
          // assert
+         Assert.IsFalse(result);
          Assert.IsNull(response.Body);
       }
 
@@ -59,9 +60,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
          var response = new ResponseModel();
 
          // act
-         await _writer.WriteToResponseAsync(stub, response);
+         bool result = await _writer.WriteToResponseAsync(stub, response);
 
          // assert
+         Assert.IsTrue(result);
          Assert.IsTrue(expectedResponseBytes.SequenceEqual(expectedResponseBytes));
          Assert.AreEqual("application/json", response.Headers["Content-Type"]);
       }
@@ -84,9 +86,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
          response.Headers.Add("Content-Type", "text/plain");
 
          // act
-         await _writer.WriteToResponseAsync(stub, response);
+         bool result = await _writer.WriteToResponseAsync(stub, response);
 
          // assert
+         Assert.IsTrue(result);
          Assert.IsTrue(expectedResponseBytes.SequenceEqual(expectedResponseBytes));
          Assert.AreEqual("text/plain", response.Headers["Content-Type"]);
       }

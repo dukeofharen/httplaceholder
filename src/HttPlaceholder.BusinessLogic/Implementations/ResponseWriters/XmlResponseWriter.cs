@@ -6,8 +6,9 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
 {
    internal class XmlResponseWriter : IResponseWriter
    {
-      public Task WriteToResponseAsync(StubModel stub, ResponseModel response)
+      public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
       {
+         bool executed = false;
          if (stub.Response?.Xml != null)
          {
             string jsonBody = stub.Response.Xml;
@@ -17,9 +18,11 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
             {
                response.Headers.Add("Content-Type", "text/xml");
             }
+
+            executed = true;
          }
 
-         return Task.CompletedTask;
+         return Task.FromResult(executed);
       }
    }
 }

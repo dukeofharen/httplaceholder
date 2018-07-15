@@ -6,8 +6,9 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
 {
    public class TextResponseWriter : IResponseWriter
    {
-      public Task WriteToResponseAsync(StubModel stub, ResponseModel response)
+      public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
       {
+         bool executed = false;
          if(stub.Response.Text != null)
          {
             response.Body = Encoding.UTF8.GetBytes(stub.Response.Text);
@@ -15,9 +16,11 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
             {
                response.Headers.Add("Content-Type", "text/plain");
             }
+
+            executed = true;
          }
 
-         return Task.CompletedTask;
+         return Task.FromResult(executed);
       }
    }
 }

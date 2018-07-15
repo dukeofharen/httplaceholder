@@ -33,9 +33,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
          var response = new ResponseModel();
 
          // act
-         await _writer.WriteToResponseAsync(stub, response);
+         bool result = await _writer.WriteToResponseAsync(stub, response);
 
          // assert
+         Assert.IsFalse(result);
          Assert.AreEqual(0, response.Headers.Count);
       }
 
@@ -58,9 +59,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
          var response = new ResponseModel();
 
          // act
-         await _writer.WriteToResponseAsync(stub, response);
+         bool result = await _writer.WriteToResponseAsync(stub, response);
 
          // assert
+         Assert.IsTrue(result);
          Assert.AreEqual(2, response.Headers.Count);
          Assert.AreEqual("1223", response.Headers["X-Api-Key"]);
          Assert.AreEqual("abc", response.Headers["X-User-Secret"]);

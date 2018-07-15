@@ -13,6 +13,8 @@ namespace HttPlaceholder.Services
 
       void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions, IEnumerable<ConditionCheckResultModel> negativeConditions);
 
+      void SetResponseWriterResult(string writerName, bool executed);
+
       void SetExecutingStubId(string stubId);
    }
 }

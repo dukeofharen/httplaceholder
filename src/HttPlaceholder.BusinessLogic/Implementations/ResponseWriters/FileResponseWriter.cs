@@ -22,8 +22,9 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
          _stubRootPathResolver = stubRootPathResolver;
       }
 
-      public Task WriteToResponseAsync(StubModel stub, ResponseModel response)
+      public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
       {
+         bool executed = false;
          if (stub.Response?.File != null)
          {
             string finalFilePath = null;
@@ -45,10 +46,11 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
             if (finalFilePath != null)
             {
                response.Body = _fileService.ReadAllBytes(finalFilePath);
+               executed = true;
             }
          }
 
-         return Task.CompletedTask;
+         return Task.FromResult(executed);
       }
    }
 }

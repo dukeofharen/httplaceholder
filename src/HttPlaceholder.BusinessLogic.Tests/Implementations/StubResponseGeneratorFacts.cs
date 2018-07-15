@@ -20,6 +20,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
       {
          _serviceProviderMock = new Mock<IServiceProvider>();
          _generator = new StubResponseGenerator(
+            TestObjectFactory.GetRequestLoggerFactory(),
             _serviceProviderMock.Object);
       }
 
@@ -40,12 +41,12 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
          responseWriterMock1
             .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
             .Callback<StubModel, ResponseModel>((s, r) => r.StatusCode = 401)
-            .Returns(Task.CompletedTask);
+            .ReturnsAsync(true);
 
          responseWriterMock2
             .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
             .Callback<StubModel, ResponseModel>((s, r) => r.Headers.Add("X-Api-Key", "12345"))
-            .Returns(Task.CompletedTask);
+            .ReturnsAsync(false);
 
          _serviceProviderMock
             .Setup(m => m.GetService(typeof(IEnumerable<IResponseWriter>)))

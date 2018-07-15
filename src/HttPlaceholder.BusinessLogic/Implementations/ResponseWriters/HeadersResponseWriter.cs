@@ -5,8 +5,9 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
 {
    public class HeadersResponseWriter : IResponseWriter
    {
-      public Task WriteToResponseAsync(StubModel stub, ResponseModel response)
+      public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
       {
+         bool executed = false;
          var stubResponseHeaders = stub.Response?.Headers;
          if (stubResponseHeaders != null)
          {
@@ -14,9 +15,11 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
             {
                response.Headers.Add(header.Key, header.Value);
             }
+
+            executed = true;
          }
 
-         return Task.CompletedTask;
+         return Task.FromResult(executed);
       }
    }
 }

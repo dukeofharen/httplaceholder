@@ -53,9 +53,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
          var response = new ResponseModel();
 
          // act
-         await _writer.WriteToResponseAsync(stub, response);
+         bool result = await _writer.WriteToResponseAsync(stub, response);
 
          // assert
+         Assert.IsFalse(result);
          Assert.IsNull(response.Body);
       }
 
@@ -83,9 +84,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
             .Returns(body);
 
          // act
-         await _writer.WriteToResponseAsync(stub, response);
+         bool result = await _writer.WriteToResponseAsync(stub, response);
 
          // assert
+         Assert.IsTrue(result);
          Assert.AreEqual(body, response.Body);
       }
 
@@ -124,9 +126,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
             .Returns(body);
 
          // act
-         await _writer.WriteToResponseAsync(stub, response);
+         bool result = await _writer.WriteToResponseAsync(stub, response);
 
          // assert
+         Assert.IsTrue(result);
          Assert.AreEqual(body, response.Body);
       }
 
@@ -160,9 +163,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ResponseWriters
             .Returns(false);
 
          // act
-         await _writer.WriteToResponseAsync(stub, response);
+         bool result = await _writer.WriteToResponseAsync(stub, response);
 
          // assert
+         Assert.IsFalse(result);
          Assert.IsNull(response.Body);
       }
    }
