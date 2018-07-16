@@ -73,7 +73,7 @@ namespace HttPlaceholder.Services.Implementations
          }
          else
          {
-            return _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+            return _httpContextAccessor.HttpContext.Connection.RemoteIpAddress?.ToString();
          }
       }
    }

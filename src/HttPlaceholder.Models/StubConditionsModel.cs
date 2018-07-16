@@ -25,5 +25,8 @@ namespace HttPlaceholder.Models
 
       [YamlMember(Alias = "basicAuthentication")]
       public StubBasicAuthenticationModel BasicAuthentication { get; set; }
+
+      [YamlMember(Alias = "clientIp")]
+      public string ClientIp { get; set; }
    }
 }

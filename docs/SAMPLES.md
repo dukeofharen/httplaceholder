@@ -27,3 +27,4 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Slow response examples: [.yml](samples/07-slow-response.yml) | [.sh](samples/07-slow-response.sh) | [.ps1](samples/07-slow-response.ps1)
 * Simple website examle: [.yml](samples/simple-site.yml)
 * Temporary and permanent redirects: [.yml](samples/08-redirect.yml)
+* Validation on client IP: [.yml](samples/09-client-ip.yml)

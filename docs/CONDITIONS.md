@@ -202,6 +202,36 @@ This condition checker can check whether the posted body corresponds to the give
 {"username": "john"}
 ```
 
+## Client IP validation
+
+It is also possible to set a condition to check the the client IP. A condition can be set for a single IP address or a whole IP range.
+
+```
+# Client IP address validation on a single IP address
+- id: client-ip-1
+  conditions:
+    method: GET
+    url:
+      path: /client-ip-1
+    clientIp: 127.0.0.1
+  response:
+    statusCode: 200
+    text: OK
+```
+
+```
+# Client IP address validation on an IP range
+- id: client-ip-2
+  conditions:
+    method: GET
+    url:
+      path: /client-ip-2
+    clientIp: '127.0.0.0/29'
+  response:
+    statusCode: 200
+    text: OK
+```
+
 ## JSONPath
 
 Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions.
