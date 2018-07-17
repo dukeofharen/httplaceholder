@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services.Implementations;
 using HttPlaceholder.Utilities;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace HttPlaceholder
 {
@@ -28,7 +30,21 @@ namespace HttPlaceholder
 
       public static IWebHost BuildWebHost(string[] args)
       {
-         var argsDictionary = args.Parse();
+         IDictionary<string, string> argsDictionary;
+         string configPath = Path.Join(AssemblyHelper.GetExecutingAssemblyRootPath(), "config.json");
+         if (args.Length == 0 && File.Exists(configPath))
+         {
+            // If a config file is found, try to load and parse it instead of the arguments.
+            Console.WriteLine($"Config file found at '{configPath}', so trying to parse that configuration.");
+            string config = File.ReadAllText(configPath);
+            argsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
+         }
+         else
+         {
+            Console.WriteLine("Trying to parse arguments from command line.");
+            argsDictionary = args.Parse();
+         }
+
          ConfigurationService.SetConfiguration(argsDictionary);
 
          int port = argsDictionary.GetValue(Constants.ConfigKeys.PortKey, 5000);
