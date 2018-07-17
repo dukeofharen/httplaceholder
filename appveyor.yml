@@ -9,6 +9,7 @@ environment:
 
 branches:
   only:
+    - dev
     - master
 
 build_script:
