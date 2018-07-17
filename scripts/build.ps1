@@ -34,6 +34,12 @@ foreach($unitTest in $unitTestProjects)
     Assert-Cmd-Ok
 }
 
+# Generating swagger.json file
+Write-Host "Generating swagger.json file"
+$swaggerGenBinFile = Join-Path -Path $srcFolder "HttPlaceholder.SwaggerGenerator\bin\Debug\netcoreapp2.1\HttPlaceholder.SwaggerGenerator.dll"
+& dotnet $swaggerGenBinFile
+Assert-Cmd-Ok
+
 # Release package build
 Write-Host "Building a release package"
 

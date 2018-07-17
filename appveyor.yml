@@ -20,6 +20,9 @@ artifacts:
   - path: src\HttPlaceholder\bin\release\netcoreapp2.1\win10-x64\publish\httplaceholder_*.exe
     name: armyknife-windows
     type: zip
+  - path: '**\swagger.json'
+    name: swagger
+    type: zip
 
 deploy:
   release: $(versionString)
