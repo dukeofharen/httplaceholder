@@ -62,7 +62,7 @@ The `response` element defines the response of the request. In this case, HTTP 2
 * [Getting started](docs/GETTING-STARTED.md)
 * [Stub samples](docs/SAMPLES.md)
 * [HttPlaceholder REST API](docs/API.md)
-* [Command line arguments](docs/CMD.md)
+* [Configuration](docs/CONFIG.md)
 * [Request conditions explained](docs/CONDITIONS.md)
 * [Response definitions explained](docs/RESPONSE.md)
 

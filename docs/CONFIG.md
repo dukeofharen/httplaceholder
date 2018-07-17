@@ -1,8 +1,8 @@
-# Command line arguments
+# Configuration
 
-This page contains all command line arguments supported by HttPlaceholder.
+This page contains all command line arguments supported by HttPlaceholder. Configuration can be set using command line arguments and a configuration file.
 
-## Arguments and supported values
+## Command line arguments
 
 ### Input file (optional)
 
@@ -63,3 +63,22 @@ httplaceholder --enableRequestLogging false
 ```
 
 If this property is set to false, no detailed request logging will be written to the terminal anymore. Default: true.
+
+## Configuration file
+
+If you just installed HttPlaceholder, a file called `_config.json` is available in the installation folder. If you rename this file to `config.json`, and you don't pass any comand line arguments to HttPlaceholder, the application will try to read and parse this file. The file uses the same configuration names as the names you use when passing the values on the command line. An example of a configuration file:
+
+```
+{
+    "apiUsername": null,
+    "apiPassword": null,
+    "httpsPort": 5050,
+    "inputFile": null,
+    "oldRequestsQueueLength": 40,
+    "pfxPassword": null,
+    "pfxPath": null,
+    "port": 5000,
+    "useHttps": false,
+    "enableRequestLogging": true
+}
+```

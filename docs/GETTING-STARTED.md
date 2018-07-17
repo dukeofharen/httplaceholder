@@ -39,4 +39,4 @@ httplaceholder
 
 Both commands will start HttPlaceholder with the .yml file loaded.
 
-If you then go to http://localhost:5000/users?id=12&filter=first_name, you'll get the response as defined in the .yml file. The HTTP port defined in the URL can be configured using command line arguments (for more information about the command line arguments, [read more here](CMD.md)).
+If you then go to http://localhost:5000/users?id=12&filter=first_name, you'll get the response as defined in the .yml file. The HTTP port defined in the URL can be configured using command line arguments (for more information about the command line arguments, [read more here](CONFIG.md)).
