@@ -67,6 +67,13 @@ namespace HttPlaceholder.TestUtilities
             .Returns(IPAddress.Parse(ip));
       }
 
+      public void SetHost(string host)
+      {
+         _httpRequestMock
+            .Setup(m => m.Host)
+            .Returns(new HostString(host));
+      }
+
       public void InitializeUserWithId(long id)
       {
          InitializeUserWithId(id.ToString());

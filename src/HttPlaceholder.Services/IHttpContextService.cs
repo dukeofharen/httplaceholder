@@ -23,5 +23,7 @@ namespace HttPlaceholder.Services
       void SetItem(string key, object item);
 
       string GetClientIp();
+
+      string GetHost();
    }
 }
