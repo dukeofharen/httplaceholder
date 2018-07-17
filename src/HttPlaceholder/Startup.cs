@@ -16,6 +16,34 @@ namespace HttPlaceholder
    {
       public void ConfigureServices(IServiceCollection services)
       {
+         ConfigureServicesStatic(services);
+      }
+
+      public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+      {
+         ConfigureStatic(app, env, true);
+      }
+
+      public static void ConfigureStatic(IApplicationBuilder app, IHostingEnvironment env, bool preloadStubs)
+      {
+         app.UseMiddleware<StubHandlingMiddleware>();
+         app.UseMvc();
+         app.UseSwagger();
+         app.UseSwaggerUI(c =>
+         {
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "HttPlaceholder API V1");
+         });
+
+         if (preloadStubs)
+         {
+            // Check if the stubs can be loaded.
+            var stubContainer = app.ApplicationServices.GetService<IStubContainer>();
+            Task.Run(() => stubContainer.GetStubsAsync()).Wait();
+         }
+      }
+
+      public static void ConfigureServicesStatic(IServiceCollection services)
+      {
          services.AddMvc(options =>
          {
             options.InputFormatters.Add(new YamlInputFormatter(new DeserializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
@@ -33,21 +61,6 @@ namespace HttPlaceholder
 
          DependencyRegistration.RegisterDependencies(services);
          Services.DependencyRegistration.RegisterDependencies(services);
-      }
-
-      public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-      {
-         app.UseMiddleware<StubHandlingMiddleware>();
-         app.UseMvc();
-         app.UseSwagger();
-         app.UseSwaggerUI(c =>
-         {
-            c.SwaggerEndpoint("/swagger/v1/swagger.json", "HttPlaceholder API V1");
-         });
-
-         // Check if the stubs can be loaded.
-         var stubContainer = app.ApplicationServices.GetService<IStubContainer>();
-         Task.Run(() => stubContainer.GetStubsAsync()).Wait();
       }
    }
 }
