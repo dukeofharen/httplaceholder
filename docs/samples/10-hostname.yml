@@ -1,0 +1,23 @@
+# You can also check if the hostname is correct.
+
+# Check the hostname on full name.
+- id: host-1
+  conditions:
+    url:
+      path: /host-1
+    method: GET
+    host: httplaceholder.com
+  response:
+    statusCode: 200
+    text: OK
+
+# This condition can also be used with regular expressions.
+- id: host-2
+  conditions:
+    url:
+      path: /host-1
+    method: GET
+    host: http(.*)
+  response:
+    statusCode: 200
+    text: OK

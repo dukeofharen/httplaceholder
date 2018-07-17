@@ -189,6 +189,14 @@
     statusCode: 200
     text: OK
 
+- id: host
+  conditions:
+    method: GET
+    host: httplaceholder.com
+  response:
+    statusCode: 200
+    text: OK
+
 - id: file
   conditions:
     method: GET

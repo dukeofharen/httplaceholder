@@ -28,3 +28,4 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Simple website examle: [.yml](samples/simple-site.yml)
 * Temporary and permanent redirects: [.yml](samples/08-redirect.yml)
 * Validation on client IP: [.yml](samples/09-client-ip.yml)
+* Check on hostname: [.yml](samples/10-hostname.yml)

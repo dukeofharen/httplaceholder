@@ -598,6 +598,26 @@ namespace HttPlaceholder.Tests.Integration
       }
 
       [TestMethod]
+      public async Task StubIntegration_RegularGet_Host()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}client-ip-1";
+         var request = new HttpRequestMessage
+         {
+            RequestUri = new Uri(url)
+         };
+         request.Headers.Add("X-Forwarded-Host", "httplaceholder.com");
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            string content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("OK", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+         }
+      }
+
+      [TestMethod]
       public async Task StubIntegration_RegularGet_Base64Content_HappyFlow()
       {
          // arrange

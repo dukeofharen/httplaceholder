@@ -28,5 +28,8 @@ namespace HttPlaceholder.Models
 
       [YamlMember(Alias = "clientIp")]
       public string ClientIp { get; set; }
+
+      [YamlMember(Alias = "host")]
+      public string Host { get; set; }
    }
 }

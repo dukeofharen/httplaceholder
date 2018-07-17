@@ -232,6 +232,31 @@ It is also possible to set a condition to check the the client IP. A condition c
     text: OK
 ```
 
+## Hostname
+
+It is possible to check if a hostname in a request is correct. This condition can be used with regular expressions if needed.
+
+```
+# Check the hostname on full name.
+- id: host-1
+  conditions:
+    method: GET
+    host: httplaceholder.com
+  response:
+    statusCode: 200
+    text: OK
+```
+
+```
+- id: host-2
+  conditions:
+    method: GET
+    host: http(.*)
+  response:
+    statusCode: 200
+    text: OK
+```
+
 ## JSONPath
 
 Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions.
