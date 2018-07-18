@@ -40,7 +40,7 @@ namespace HttPlaceholder.Controllers
 
       [HttpGet]
       [Route("{stubId}")]
-      [SwaggerResponse((int)HttpStatusCode.OK, Description = "OK")]
+      [SwaggerResponse((int)HttpStatusCode.OK, Description = "OK", Type = typeof(StubModel))]
       [SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Stub not found")]
       public async Task<object> Get([FromRoute]string stubId)
       {

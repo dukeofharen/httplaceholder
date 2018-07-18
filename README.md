@@ -42,7 +42,10 @@ You have an input YAML file (which contains 1 or more requests):
 
 In the `conditions` element, you specify which conditions the request should apply to.
 - The method should be `GET`.
+- The path of your URL should be '/users'.
 - The query parameters `id` and `filter` should be there with the values `12` and `first_name` respectively.
+
+In this case, if you go to the URL http://localhost:5000/users?id=12&filter=first_name, you get the response as defined.
 
 The `response` element defines the response of the request. In this case, HTTP 200 is returned, the literal JSON string defined and `application/json` as Content-Type header. Also take a look at the [samples](docs/SAMPLES.md).
 
