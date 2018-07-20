@@ -49,6 +49,32 @@ This is a shortcut for returning an XML string. This response writer sets the "C
     xml: <xml></xml>
 ```
 
+## HTML
+
+This is a shortcut for returning an HTML string. This response writer sets the "Content-Type" header to "text/html".
+
+```
+- id: situation-json
+  conditions:
+    method: GET
+    url:
+      path: /index.html
+  response:
+    statusCode: 200
+    xml: |
+      <html>
+        <head>
+          <title>Test page in HttPlaceholder</title>
+        </head>
+        <body>
+          <h1>Example in HttPlaceholder</h1>
+          <p>
+            Hey, this is just a proof of concept of a site created and hosted in HttPlaceholder. Works pretty good huh?
+          </p>
+        </body>
+      </html>
+```
+
 ## Status code
 
 To set the HTTP status code of a response, use the "statusCode" response writer. If this is not set, the default will be used (which is 200 OK).

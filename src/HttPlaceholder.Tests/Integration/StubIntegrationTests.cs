@@ -654,5 +654,21 @@ namespace HttPlaceholder.Tests.Integration
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
          }
       }
+
+      [TestMethod]
+      public async Task StubIntegration_RegularGet_Html()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}index.html";
+
+         // act / assert
+         using (var response = await Client.GetAsync(url))
+         {
+            string content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(content.Contains("Test page in HttPlaceholder"));
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/html", response.Content.Headers.ContentType.ToString());
+         }
+      }
    }
 }

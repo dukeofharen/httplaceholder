@@ -29,6 +29,9 @@ namespace HttPlaceholder.Models
       [YamlMember(Alias = "xml")]
       public string Xml { get; set; }
 
+      [YamlMember(Alias = "html")]
+      public string Html { get; set; }
+
       [YamlMember(Alias = "temporaryRedirect")]
       public string TemporaryRedirect { get; set; }
 

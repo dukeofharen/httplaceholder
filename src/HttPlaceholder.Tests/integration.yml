@@ -197,6 +197,26 @@
     statusCode: 200
     text: OK
 
+- id: html
+  conditions:
+    method: GET
+    url:
+      path: /index.html
+  response:
+    statusCode: 200
+    html: |
+      <html>
+        <head>
+          <title>Test page in HttPlaceholder</title>
+        </head>
+        <body>
+          <h1>Example in HttPlaceholder</h1>
+          <p>
+            Hey, this is just a proof of concept of a site created and hosted in HttPlaceholder. Works pretty good huh?
+          </p>
+        </body>
+      </html>
+
 - id: file
   conditions:
     method: GET
