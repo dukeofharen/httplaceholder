@@ -128,5 +128,63 @@ namespace HttPlaceholder.Services.Tests.Implementations
          // assert
          Assert.AreEqual(forwardedHost, result);
       }
+
+      [TestMethod]
+      public void HttpContextService_IsHttps_NoXForwardedProtoHeaderSet_ShouldReturnRegularIsHttps()
+      {
+         // arrange
+         _mockHttpContext.SetHttps(true);
+
+         // act
+         bool result = _service.IsHttps();
+
+         // assert
+         Assert.AreEqual(result, result);
+      }
+
+      [TestMethod]
+      public void HttpContextService_IsHttps_XForwardedProtoHeaderSet_ShouldReturnIsHttpsFromHeader_IsHttps()
+      {
+         // arrange
+         string proto = "https";
+
+         _mockHttpContext.Request.Headers.Add("X-Forwarded-Proto", proto);
+
+         // act
+         bool result = _service.IsHttps();
+
+         // assert
+         Assert.IsTrue(result);
+      }
+
+      [TestMethod]
+      public void HttpContextService_IsHttps_XForwardedProtoHeaderSet_ShouldReturnIsHttpsFromHeader_IsHttp()
+      {
+         // arrange
+         string proto = "http";
+
+         _mockHttpContext.Request.Headers.Add("X-Forwarded-Proto", proto);
+
+         // act
+         bool result = _service.IsHttps();
+
+         // assert
+         Assert.IsFalse(result);
+      }
+
+      [TestMethod]
+      public void HttpContextService_IsHttps_XForwardedProtoHeaderSet_ShouldReturnIsHttpsFromHeader_IsHttps_CaseInsensitive()
+      {
+         // arrange
+         string proto = "https";
+
+         _mockHttpContext.Request.Headers.Add("X-FORWARDED-PROTO", proto);
+
+         // act
+         bool result = _service.IsHttps();
+
+         // assert
+         Assert.IsTrue(result);
+      }
    }
 }

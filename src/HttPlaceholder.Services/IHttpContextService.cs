@@ -25,5 +25,7 @@ namespace HttPlaceholder.Services
       string GetClientIp();
 
       string GetHost();
+
+      bool IsHttps();
    }
 }

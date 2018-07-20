@@ -74,6 +74,13 @@ namespace HttPlaceholder.TestUtilities
             .Returns(new HostString(host));
       }
 
+      public void SetHttps(bool isHttps)
+      {
+         _httpRequestMock
+            .Setup(m => m.IsHttps)
+            .Returns(isHttps);
+      }
+
       public void InitializeUserWithId(long id)
       {
          InitializeUserWithId(id.ToString());

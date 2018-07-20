@@ -11,6 +11,7 @@ namespace HttPlaceholder.Services.Implementations
    {
       private const string ForwardedHeaderKey = "X-Forwarded-For";
       private const string ForwardedHostKey = "X-Forwarded-Host";
+      private const string ForwardedProtoKey = "X-Forwarded-Proto";
       private readonly IHttpContextAccessor _httpContextAccessor;
 
       public HttpContextService(IHttpContextAccessor httpContextAccessor)
@@ -91,6 +92,21 @@ namespace HttPlaceholder.Services.Implementations
          else
          {
             return request.Host.ToString();
+         }
+      }
+
+      public bool IsHttps()
+      {
+         var request = _httpContextAccessor.HttpContext.Request;
+         var header = request.Headers.FirstOrDefault(h => h.Key?.Equals(ForwardedProtoKey, StringComparison.OrdinalIgnoreCase) == true);
+         if (header.Key != null)
+         {
+            // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
+            return header.Value.ToString().Equals("https", StringComparison.OrdinalIgnoreCase);
+         }
+         else
+         {
+            return request.IsHttps;
          }
       }
    }
