@@ -20,7 +20,7 @@ Adds a new stub.
 `http://httplaceholder/ph-api/stubs`
 
 **Request body**
-```
+```yml
 id: situation-01
 conditions:
   method: GET
@@ -57,7 +57,7 @@ Returns a list with all configured stubs.
 
 **Response**<br />
 `200 OK`
-```
+```yml
 - id: situation-01
   conditions:
     method: GET
@@ -107,7 +107,7 @@ Returns a specific stub by its ID.
 
 **Response**<br />
 `200 OK`
-```
+```yml
 id: situation-01
 conditions:
   method: GET
@@ -159,7 +159,7 @@ Returns a list with all performed HTTP requests to HttPlaceholder.
 
 **Response**<br />
 `200 OK`
-```
+```json
 [{
 	"correlationId": "20421e53-dde2-4dbb-8565-afb0b34ebd83",
 	"requestParameters": null,
@@ -185,7 +185,7 @@ Returns a list with all performed HTTP requests to HttPlaceholder by a specific 
 
 **Response**<br />
 `200 OK`
-```
+```json
 [{
 	"correlationId": null,
 	"requestParameters": null,

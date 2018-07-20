@@ -6,13 +6,13 @@ This page contains links to several example .yml, .ps1 and .sh (curl) files to t
 
 To load all stubs, just run this command:
 
-```
+```bash
 httplaceholder --inputFile C:\path\to\samples\dir
 ```
 
 To load just one stub, just run this command:
 
-```
+```bash
 httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 ```
 

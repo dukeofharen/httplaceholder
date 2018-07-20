@@ -6,11 +6,11 @@ This page contains all command line arguments supported by HttPlaceholder. Confi
 
 ### Input file (optional)
 
-```
+```bash
 httplaceholder --inputFile C:\path\to\file.yml
 ```
 
-```
+```bash
 httplaceholder --inputFile C:\path\to\stubsfolder
 ```
 
@@ -18,7 +18,7 @@ For input file, you can both provide a path to a .yml file (to load only that fi
 
 ### Use HTTPS (optional)
 
-```
+```bash
 httplaceholder --useHttps true
 ```
 
@@ -26,7 +26,7 @@ Whether to also use HTTPS. Possible values: `true` or `false`. Default: `false`
 
 ### HTTPS certificates (optional)
 
-```
+```bash
 httplaceholder --pfxPath C:\path\to\privatekey.pfx --pfxPassword 11223344
 ```
 
@@ -34,7 +34,7 @@ Define the private key used for hosting the stub with HTTPS. If no pfx path and 
 
 ### HTTP(S) port (optional)
 
-```
+```bash
 httplaceholder --port 80 --httpsPort 443 --useHttps true
 ```
 
@@ -42,7 +42,7 @@ Defines which ports the stub should be available at. Default value of `port` (th
 
 ### Request logging (optional)
 
-```
+```bash
 httplaceholder --oldRequestsQueueLength 100
 ```
 
@@ -50,7 +50,7 @@ The maximum number of HTTP requests that the in memory stub source (used for the
 
 ### REST API Authentication (optional)
 
-```
+```bash
 httplaceholder --apiUsername user --apiPassword pass
 ```
 
@@ -58,7 +58,7 @@ The username and password that should be sent (using basic authentication) when 
 
 ### Enable / disable request logging on the terminal (optional)
 
-```
+```bash
 httplaceholder --enableRequestLogging false
 ```
 
@@ -68,7 +68,7 @@ If this property is set to false, no detailed request logging will be written to
 
 If you just installed HttPlaceholder, a file called `_config.json` is available in the installation folder. If you rename this file to `config.json`, and you don't pass any comand line arguments to HttPlaceholder, the application will try to read and parse this file. The file uses the same configuration names as the names you use when passing the values on the command line. An example of a configuration file:
 
-```
+```json
 {
     "apiUsername": null,
     "apiPassword": null,

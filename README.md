@@ -21,7 +21,7 @@ So a few bullet points in a row:
 # How?
 You have an input YAML file (which contains 1 or more requests):
 
-```
+```yml
 - id: situation-01
   conditions:
     method: GET

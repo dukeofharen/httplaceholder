@@ -6,7 +6,7 @@ Whenever HttPlaceholder receives a request, all the conditions of all stubs are 
 
 HttPlaceholder uses two different conditions: "regular conditions" and "negative conditions". Let's say we have the following stub .yml file:
 
-```
+```yml
 - id: situation-03
   conditions:
     method: GET
@@ -43,7 +43,7 @@ For both the conditions and negativeConditions, all condition checkers as explai
 
 The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions.
 
-```
+```yml
 - id: situation-01
   conditions:
     method: GET
@@ -58,7 +58,7 @@ The path condition is used to check a part of the URL path (so the part after ht
 - Method: GET
 - URL: http://localhost:5000/users/1
 
-```
+```yml
 - id: situation-01
   conditions:
     method: GET
@@ -78,7 +78,7 @@ The path condition is used to check a part of the URL path (so the part after ht
 
 This condition checker looks a lot like the path checker, but this checker also checks extra URL parameters, like the query string. The condition can both check on substring and regular expressions.
 
-```
+```yml
 - id: situation-01
   conditions:
     method: GET
@@ -97,7 +97,7 @@ This condition checker looks a lot like the path checker, but this checker also 
 
 This condition checker can check the query string in a name-value collection like way. The condition can both check on substring and regular expressions.
 
-```
+```yml
 - id: situation-01
   conditions:
     method: GET
@@ -118,7 +118,7 @@ This condition checker can check the query string in a name-value collection lik
 
 This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.).
 
-```
+```yml
 - id: situation-01
   conditions:
     method: GET
@@ -135,7 +135,7 @@ This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE et
 
 This condition checker can check whether the sent basic authentication matches with the data in the stub.
 
-```
+```yml
 - id: basic-auth
   conditions:
     method: GET
@@ -157,7 +157,7 @@ This condition checker can check whether the sent basic authentication matches w
 
 This condition checker can check whether the sent headers match with the headers in the stub. The condition can both check on substring and regular expressions.
 
-```
+```yml
 - id: basic-auth
   conditions:
     method: GET
@@ -178,7 +178,7 @@ This condition checker can check whether the sent headers match with the headers
 
 This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions.
 
-```
+```yml
 - id: situation-01
   conditions:
     method: POST
@@ -198,7 +198,7 @@ This condition checker can check whether the posted body corresponds to the give
 - Method: POST
 - URL: http://localhost:5000/users
 - Body:
-```
+```json
 {"username": "john"}
 ```
 
@@ -206,7 +206,7 @@ This condition checker can check whether the posted body corresponds to the give
 
 It is also possible to set a condition to check the the client IP. A condition can be set for a single IP address or a whole IP range.
 
-```
+```yml
 # Client IP address validation on a single IP address
 - id: client-ip-1
   conditions:
@@ -219,7 +219,7 @@ It is also possible to set a condition to check the the client IP. A condition c
     text: OK
 ```
 
-```
+```yml
 # Client IP address validation on an IP range
 - id: client-ip-2
   conditions:
@@ -236,7 +236,7 @@ It is also possible to set a condition to check the the client IP. A condition c
 
 It is possible to check if a hostname in a request is correct. This condition can be used with regular expressions if needed.
 
-```
+```yml
 # Check the hostname on full name.
 - id: host-1
   conditions:
@@ -247,7 +247,7 @@ It is possible to check if a hostname in a request is correct. This condition ca
     text: OK
 ```
 
-```
+```yml
 - id: host-2
   conditions:
     method: GET
@@ -261,7 +261,7 @@ It is possible to check if a hostname in a request is correct. This condition ca
 
 Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions.
 
-```
+```yml
 - id: jpath-test
   conditions:
     method: PUT
@@ -277,7 +277,7 @@ Using the JSONPath condition checker, you can check the posted JSON body to see 
 - Method: PUT
 - URL: http://localhost:5000/users
 - Body:
-```
+```json
 {
 	"phoneNumbers": [{
 		"type": "iPhone",
@@ -295,7 +295,7 @@ Using the XPath condition checker, you can check the posted XML body to see if i
 
 It is also possible to (pre)-set the XML namespaces of a posted XML body. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.
 
-```
+```yml
 - id: regular-xml
   conditions:
     method: POST
@@ -312,7 +312,7 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
       Content-Type: text/xml
 ```
 
-```
+```yml
 - id: regular-xml
   conditions:
     method: POST
@@ -338,6 +338,6 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
 - Headers:
     - Content-Type: application/soap+xml; charset=utf-8
 - Body:
-```
+```xml
 <?xml version="1.0"?><object><a>TEST</a><b>TEST2</b></object>
 ```

@@ -6,7 +6,7 @@ On this page, a very simple sample of HttPlaceholder is shown. If you want to tr
 
 Create a new file, called `stubs.yml` and add the following contents:
 
-```
+```yml
 - id: situation-01
   conditions:
     method: GET
@@ -27,13 +27,13 @@ Create a new file, called `stubs.yml` and add the following contents:
 
 Start HttPlaceholder with the following arguments from the terminal:
 
-```
+```bash
 httplaceholder --inputFile C:\path\to\stubs.yml
 ```
 
 Otherwise, run the following command if you're already in the correct folder in your terminal:
 
-```
+```bash
 httplaceholder
 ```
 

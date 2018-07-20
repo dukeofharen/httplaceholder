@@ -6,7 +6,7 @@ If a request succeeds and a stub is found, the configured response will be retur
 
 To return a plain text respone, use the "text" response writer. If no Content-Type header is set, the header will be set to "text/plain";
 
-```
+```yml
 - id: situation-03
   conditions:
     method: GET
@@ -23,7 +23,7 @@ To return a plain text respone, use the "text" response writer. If no Content-Ty
 
 This is a shortcut for returning a JSON string. This response writer sets the "Content-Type" header to "application/json".
 
-```
+```yml
 - id: situation-json
   conditions:
     method: GET
@@ -38,7 +38,7 @@ This is a shortcut for returning a JSON string. This response writer sets the "C
 
 This is a shortcut for returning an XML string. This response writer sets the "Content-Type" header to "text/xml".
 
-```
+```yml
 - id: situation-json
   conditions:
     method: GET
@@ -53,7 +53,7 @@ This is a shortcut for returning an XML string. This response writer sets the "C
 
 This is a shortcut for returning an HTML string. This response writer sets the "Content-Type" header to "text/html".
 
-```
+```yml
 - id: situation-json
   conditions:
     method: GET
@@ -79,7 +79,7 @@ This is a shortcut for returning an HTML string. This response writer sets the "
 
 To set the HTTP status code of a response, use the "statusCode" response writer. If this is not set, the default will be used (which is 200 OK).
 
-```
+```yml
 - id: situation-03
   conditions:
     method: GET
@@ -96,7 +96,7 @@ To set the HTTP status code of a response, use the "statusCode" response writer.
 
 To return a set of HTTP headers with your response, use the "headers" response writer.
 
-```
+```yml
 - id: situation-03
   conditions:
     method: GET
@@ -118,7 +118,7 @@ To return a file from disk, use the "file" response writer. There are two ways i
 
 If you don't specify the full path, HttPlaceholder will look in the same folder where your .yml file resides.
 
-```
+```yml
 - id: image-file
   conditions:
     method: GET
@@ -135,7 +135,7 @@ If you don't specify the full path, HttPlaceholder will look in the same folder 
 
 You can also use the full path to a file.
 
-```
+```yml
 - id: image-file
   conditions:
     method: GET
@@ -152,7 +152,7 @@ You can also use the full path to a file.
 
 You can also specify a base64 string which should be decoded and returned by HttPlaceholder. You can use this if you want to encode a binary and paste it in your script.
 
-```
+```yml
 - id: base64-example
   conditions:
     method: GET
@@ -170,7 +170,7 @@ You can also specify a base64 string which should be decoded and returned by Htt
 
 Whenever you want to simulate a busy web service, you can use the "extraDuration" response writer. You can set the number of extra milliseconds HttPlaceholder should wait and the request will actually take that much time to complete.
 
-```
+```yml
 - id: slow
   conditions:
     method: GET
@@ -194,7 +194,7 @@ Whenever you want to simulate a busy web service, you can use the "extraDuration
 
 The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the "temporaryRedirect" property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the "permanentRedirect" an HTTP 301.
 
-```
+```yml
 - id: temp-redirect
   conditions:
     method: GET
@@ -204,7 +204,7 @@ The permanent and temporary redirect response writers are short hands for defini
     temporaryRedirect: https://google.com
 ```
 
-```
+```yml
 - id: permanent-redirect
   conditions:
     method: GET
