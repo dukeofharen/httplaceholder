@@ -72,6 +72,7 @@ The `response` element defines the response of the request. In this case, HTTP 2
 
 # Tools
 * [HttPlaceholder REST API client for .NET](https://github.com/dukeofharen/httplaceholder_net)
+* [HttPlaceholder REST API client for Python](https://github.com/dukeofharen/httplaceholder_python)
 
 # Todo
 - Make application "really" cross platform (Ubuntu and other Linux distributions, Mac etc.)
