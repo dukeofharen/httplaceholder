@@ -1,0 +1,10 @@
+# Check if the stub is called using HTTPS.
+- id: ishttps-ok
+  conditions:
+    method: GET
+    url:
+      path: /ishttps-ok
+      isHttps: true
+  response:
+    statusCode: 200
+    text: OK

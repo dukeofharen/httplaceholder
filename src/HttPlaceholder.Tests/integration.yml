@@ -197,6 +197,16 @@
     statusCode: 200
     text: OK
 
+- id: ishttps-ok
+  conditions:
+    method: GET
+    url:
+      path: /ishttps-ok
+      isHttps: true
+  response:
+    statusCode: 200
+    text: OK
+
 - id: html
   conditions:
     method: GET

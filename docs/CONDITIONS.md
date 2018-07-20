@@ -131,6 +131,26 @@ This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE et
 - Method: GET
 - URL: http://localhost:5000/anyPath
 
+## Is HTTPS
+
+This condition checker can be used to verify if a request uses HTTPS or not. To configure HttPlaceholder with HTTPS, read [configuration](CONFIG.md) (hint: it's not hard at all).
+
+```yml
+- id: ishttps-ok
+  conditions:
+    method: GET
+    url:
+      path: /ishttps-ok
+      isHttps: true
+  response:
+    statusCode: 200
+    text: OK
+```
+
+**Correct request**
+- Method: GET
+- URL: https://localhost:5050/anyPath
+
 ## Basic authentication
 
 This condition checker can check whether the sent basic authentication matches with the data in the stub.
