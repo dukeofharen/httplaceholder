@@ -61,7 +61,7 @@ This is a shortcut for returning an HTML string. This response writer sets the "
       path: /index.html
   response:
     statusCode: 200
-    xml: |
+    html: |
       <html>
         <head>
           <title>Test page in HttPlaceholder</title>
