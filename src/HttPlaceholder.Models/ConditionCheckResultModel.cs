@@ -1,6 +1,6 @@
 ﻿using HttPlaceholder.Models.Enums;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System;
 
 namespace HttPlaceholder.Models
 {
@@ -8,8 +8,15 @@ namespace HttPlaceholder.Models
    {
       public string CheckerName { get; set; }
 
-      [JsonConverter(typeof(StringEnumConverter))]
+      [JsonIgnore]
       public ConditionValidationType ConditionValidation { get; set; } = ConditionValidationType.NotExecuted;
+
+      [JsonProperty("ConditionValidation")]
+      public string ConditionValidationText
+      {
+         get => ConditionValidation.ToString();
+         set => ConditionValidation = (ConditionValidationType)Enum.Parse(typeof(ConditionValidationType), value);
+      }
 
       public string Log { get; set; }
    }
