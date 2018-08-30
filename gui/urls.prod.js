@@ -1,5 +1,5 @@
 const urls = {
-    rootUrl: ''
+    rootUrl: '/'
 }
 
 export default urls
