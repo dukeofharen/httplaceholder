@@ -27,6 +27,7 @@ namespace HttPlaceholder
       public static void ConfigureStatic(IApplicationBuilder app, IHostingEnvironment env, bool preloadStubs)
       {
          app.UseMiddleware<StubHandlingMiddleware>();
+         app.UseMiddleware<CorsHeadersMiddleware>();
          app.UseMvc();
          app.UseSwagger();
          app.UseSwaggerUI(c =>
