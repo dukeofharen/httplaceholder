@@ -44,7 +44,7 @@ namespace HttPlaceholder.Middleware
 
       public async Task Invoke(HttpContext context)
       {
-         if (context.Request.Path.StartsWithSegments("/ph-api") || context.Request.Path.Value.Contains("swagger"))
+         if (context.Request.Path.StartsWithSegments("/ph-api") || context.Request.Path.StartsWithSegments("/ph-ui") || context.Request.Path.Value.Contains("swagger"))
          {
             await _next(context);
             return;

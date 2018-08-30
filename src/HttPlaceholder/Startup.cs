@@ -9,6 +9,10 @@ using HttPlaceholder.Swagger;
 using Swashbuckle.AspNetCore.Swagger;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using HttPlaceholder.Utilities;
+using System.IO;
+using Microsoft.Extensions.FileProviders;
+using System.Collections.Generic;
 
 namespace HttPlaceholder
 {
@@ -21,10 +25,10 @@ namespace HttPlaceholder
 
       public void Configure(IApplicationBuilder app, IHostingEnvironment env)
       {
-         ConfigureStatic(app, env, true);
+         ConfigureStatic(app, env, true, true);
       }
 
-      public static void ConfigureStatic(IApplicationBuilder app, IHostingEnvironment env, bool preloadStubs)
+      public static void ConfigureStatic(IApplicationBuilder app, IHostingEnvironment env, bool preloadStubs, bool loadStaticFiles)
       {
          app.UseMiddleware<StubHandlingMiddleware>();
          app.UseMiddleware<CorsHeadersMiddleware>();
@@ -40,6 +44,20 @@ namespace HttPlaceholder
             // Check if the stubs can be loaded.
             var stubContainer = app.ApplicationServices.GetService<IStubContainer>();
             Task.Run(() => stubContainer.GetStubsAsync()).Wait();
+         }
+
+         if (loadStaticFiles)
+         {
+            string path = $"{AssemblyHelper.GetExecutingAssemblyRootPath()}/dist";
+            if (Directory.Exists(path))
+            {
+               app.UseFileServer(new FileServerOptions
+               {
+                  EnableDefaultFiles = true,
+                  FileProvider = new PhysicalFileProvider(path),
+                  RequestPath = "/ph-ui"
+               });
+            }
          }
       }
 
