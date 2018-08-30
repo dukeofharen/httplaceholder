@@ -1,4 +1,6 @@
-﻿namespace HttPlaceholder.Models
+﻿using System.Collections.Generic;
+
+namespace HttPlaceholder.Models
 {
    public class RequestParametersModel
    {
@@ -8,7 +10,7 @@
 
       public string Body { get; set; }
 
-      public string HeaderString { get; set; }
+      public IDictionary<string, string> Headers { get; set; }
 
       public string ClientIp { get; set; }
    }

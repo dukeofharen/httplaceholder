@@ -25,12 +25,11 @@ namespace HttPlaceholder.Services.Implementations
 
       public void LogRequestParameters(string method, string url, string body, string clientIp, IDictionary<string, string> headers)
       {
-         string headerString = string.Join(", ", headers.Select(h => $"{h.Key} = {h.Value}"));
          _result.RequestParameters = new RequestParametersModel
          {
             Body = body,
             ClientIp = clientIp,
-            HeaderString = headerString,
+            Headers = headers,
             Method = method,
             Url = url
          };
