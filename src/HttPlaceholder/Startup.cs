@@ -13,6 +13,7 @@ using HttPlaceholder.Utilities;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace HttPlaceholder
 {
@@ -68,7 +69,8 @@ namespace HttPlaceholder
             options.InputFormatters.Add(new YamlInputFormatter(new DeserializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
             options.OutputFormatters.Add(new YamlOutputFormatter(new SerializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
             options.FormatterMappings.SetMediaTypeMappingForFormat("yaml", MediaTypeHeaderValues.ApplicationYaml);
-         });
+         })
+         .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
          services.AddLogging();
          services.AddHttpContextAccessor();
 
