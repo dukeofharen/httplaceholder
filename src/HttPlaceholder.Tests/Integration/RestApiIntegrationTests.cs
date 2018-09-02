@@ -561,5 +561,50 @@ response:
             Assert.IsTrue(response.IsSuccessStatusCode);
          }
       }
+
+      [TestMethod]
+      public async Task RestApiIntegration_Stub_Get_CorsHeadersAreSet()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}ph-api/stubs";
+         var request = new HttpRequestMessage
+         {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(url)
+         };
+         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            Assert.IsTrue(response.IsSuccessStatusCode);
+            Assert.AreEqual("*", response.Headers.Single(h => h.Key == "Access-Control-Allow-Origin").Value.Single());
+            Assert.AreEqual("Authorization, Content-Type", response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
+            Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS", response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
+         }
+      }
+
+      [TestMethod]
+      public async Task RestApiIntegration_Stub_Options_CorsHeadersAreSet()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}ph-api/stubs";
+         var request = new HttpRequestMessage
+         {
+            Method = HttpMethod.Options,
+            RequestUri = new Uri(url)
+         };
+         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+         request.Headers.Add("Origin", "http://localhost:8080");
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            Assert.IsTrue(response.IsSuccessStatusCode);
+            Assert.AreEqual("*", response.Headers.Single(h => h.Key == "Access-Control-Allow-Origin").Value.Single());
+            Assert.AreEqual("Authorization, Content-Type", response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
+            Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS", response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
+         }
+      }
    }
 }
