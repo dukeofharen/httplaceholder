@@ -1,5 +1,5 @@
 # Simple POST situation with required request headers. Execute 02-post.sh to execute the requests.
-- id: situation-01
+- id: situation-post-01
   conditions:
     method: POST
     url:
