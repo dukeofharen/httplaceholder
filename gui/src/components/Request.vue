@@ -23,7 +23,7 @@
               <div class="col-10">{{request.correlationId}}</div>
 
               <div class="col-2">Executed stub</div>
-              <div class="col-10">{{request.executingStubId}}</div>
+              <div class="col-10"><router-link :to="{ name: 'stubs', query: { searchTerm: request.executingStubId }}">{{request.executingStubId}}</router-link></div>
 
               <!-- TODO format with Moment.js -->
               <div class="col-2">Request begin time</div>
