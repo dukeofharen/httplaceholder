@@ -11,11 +11,19 @@ using HttPlaceholder.BusinessLogic;
 using Newtonsoft.Json.Linq;
 using HttPlaceholder.Models;
 using HttPlaceholder.Utilities;
+using System.Linq;
 
 namespace HttPlaceholder.Middleware
 {
    public class StubHandlingMiddleware
    {
+      private static string[] _segmentsToIgnore = new[]
+      {
+         "/ph-api",
+         "/ph-ui",
+         "swagger"
+      };
+
       private readonly RequestDelegate _next;
       private readonly IConfigurationService _configurationService;
       private readonly IHttpContextService _httpContextService;
@@ -44,7 +52,8 @@ namespace HttPlaceholder.Middleware
 
       public async Task Invoke(HttpContext context)
       {
-         if (context.Request.Path.StartsWithSegments("/ph-api") || context.Request.Path.StartsWithSegments("/ph-ui") || context.Request.Path.Value.Contains("swagger"))
+         string path = context.Request.Path;
+         if (_segmentsToIgnore.Any(s => path.Contains(s, StringComparison.OrdinalIgnoreCase)))
          {
             await _next(context);
             return;
