@@ -3,7 +3,7 @@ Param(
     [string]$srcFolder
 )
 
-$ErrorActionPreference = 'Stop'
+#$ErrorActionPreference = 'Stop'
 
 . "$PSScriptRoot\functions.ps1"
 

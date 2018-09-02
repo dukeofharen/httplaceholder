@@ -1,6 +1,6 @@
 . "$PSScriptRoot\functions.ps1"
 
-$ErrorActionPreference = 'Stop'
+#$ErrorActionPreference = 'Stop'
 
 $rootFolder = "$PSScriptRoot\..\gui"
 $distFolder = "$rootFolder\dist"

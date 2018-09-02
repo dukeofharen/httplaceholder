@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+#$ErrorActionPreference = 'Stop'
 
 $rootFolder = Join-Path -Path $PSScriptRoot ".."
 $srcFolder = Join-Path -Path $rootFolder "src"
