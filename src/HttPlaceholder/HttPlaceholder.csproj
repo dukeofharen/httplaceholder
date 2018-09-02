@@ -3,9 +3,9 @@
     <OutputType>Exe</OutputType>
     <PackageId>HttPlaceholder</PackageId>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>0.2.0.0</Version>
-    <AssemblyVersion>0.2.0.0</AssemblyVersion>
-    <FileVersion>0.2.0.0</FileVersion>
+    <Version>0.3.0.0</Version>
+    <AssemblyVersion>0.3.0.0</AssemblyVersion>
+    <FileVersion>0.3.0.0</FileVersion>
     <RuntimeIdentifiers>win81-x64;win10-x64;ubuntu.14.04-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
