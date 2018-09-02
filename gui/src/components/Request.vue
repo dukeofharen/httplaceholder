@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12 request" :key="request.correlationId">
-        <strong class="url" v-on:click="showDetails">{{request.requestParameters.url}} ({{request.executingStubId ? "executed" : "not executed"}})</strong>
+        <strong class="url" v-on:click="showDetails">{{request.requestParameters.url}} (<Bool bool="request.executingStubId" trueText="executed" falseText="not executed" />)</strong>
           <div class="row" v-if="detailsVisible">
               <div class="col-2">Method</div>
               <div class="col-10">{{request.requestParameters.method}}</div>
@@ -58,13 +58,15 @@
 </template>
 
 <script>
-import RequestStubExecutionResult from "./RequestStubExecutionResult"
+import RequestStubExecutionResult from "./RequestStubExecutionResult";
+import Bool from "./Bool";
 
 export default {
   name: "request",
   props: ["request"],
   components: {
-    RequestStubExecutionResult
+    RequestStubExecutionResult,
+    Bool
   },
   data() {
     return {
@@ -76,13 +78,13 @@ export default {
   created() {},
   methods: {
     showDetails() {
-      this.detailsVisible = !this.detailsVisible
+      this.detailsVisible = !this.detailsVisible;
     },
     showExecutionResults() {
-      this.executionResultsVisible = !this.executionResultsVisible
+      this.executionResultsVisible = !this.executionResultsVisible;
     },
     showResponseWriterResults() {
-        this.responseWriterResultsVisible = !this.responseWriterResultsVisible
+      this.responseWriterResultsVisible = !this.responseWriterResultsVisible;
     }
   }
 };

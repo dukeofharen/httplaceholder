@@ -4,7 +4,7 @@
         <div class="col-10">{{executionResult.stubId}}</div>
 
         <div class="col-2">Passed</div>
-        <div class="col-10">{{executionResult.passed}}</div>
+        <div class="col-10"><Bool bool="executionResult.passed" /></div>
 
         <div class="col-12">
             <strong class="url" v-on:click="showConditions">Conditions</strong>
@@ -23,35 +23,37 @@
 </template>
 
 <script>
-import RequestStubExecutionResultCondition from './RequestStubExecutionResultCondition'
+import RequestStubExecutionResultCondition from "./RequestStubExecutionResultCondition";
+import Bool from "./Bool";
 
 export default {
   name: "requestStubExecutionResult",
   props: ["executionResult"],
   components: {
-      RequestStubExecutionResultCondition
+    RequestStubExecutionResultCondition,
+    Bool
   },
   data() {
-      return {
-          conditionsVisible: false,
-          negativeConditionsVisible: false
-      }
+    return {
+      conditionsVisible: false,
+      negativeConditionsVisible: false
+    };
   },
   created() {},
   methods: {
-      showConditions() {
-          this.conditionsVisible = !this.conditionsVisible
-      },
-      showNegativeConditions() {
-          this.negativeConditionsVisible = !this.negativeConditionsVisible
-      }
+    showConditions() {
+      this.conditionsVisible = !this.conditionsVisible;
+    },
+    showNegativeConditions() {
+      this.negativeConditionsVisible = !this.negativeConditionsVisible;
+    }
   }
 };
 </script>
 
 <style scoped>
 .result {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 .url {
   cursor: pointer;
