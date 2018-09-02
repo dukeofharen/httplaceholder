@@ -1,40 +1,64 @@
 <template>
   <div class="stubs">
-    <Stub v-bind:stub="stub" v-for="stub in stubs" :key="stub.id"></Stub>
+    <h1>Stubs</h1>
+    <input type="text" class="form-control" placeholder="Filter on stub ID..." v-model="searchTerm" />
+    <Stub v-bind:stub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
   </div>
 </template>
 
 <script>
 import { getStubs } from "@/data/serviceAgent";
-import Stub from '@/components/Stub'
+import Stub from "@/components/Stub";
 
 export default {
   name: "stubs",
   data() {
     return {
-      stubs: []
+      stubs: [],
+      filteredStubs: [],
+      searchTerm: ""
     };
   },
   components: {
-      Stub
+    Stub
   },
   created() {
     getStubs()
       .then(response => {
         this.stubs = response.data;
+        this.filteredStubs = response.data;
+        this.handleUrlSearch();
       })
       .catch(error => {
         // TODO show error message
         console.log(error);
       });
+  },
+  methods: {
+    search(newValue) {
+      if (!newValue) {
+        this.filteredStubs = this.stubs;
+      } else {
+        this.filteredStubs = this.stubs.filter(r => r.id.includes(newValue));
+      }
+    },
+    handleUrlSearch() {
+      let term = this.$route.query.searchTerm;
+      if (term) {
+        this.searchTerm = term;
+      }
+    }
+  },
+  watch: {
+    searchTerm(newValue, oldValue) {
+      this.search(newValue);
+    },
+    $route(from, to) {
+      this.handleUrlSearch();
+    }
   }
 };
 </script>
 
 <style scoped>
-.request {
-    background-color: #f8f9fa;
-    margin: 10px;
-    padding:10px;
-}
 </style>
