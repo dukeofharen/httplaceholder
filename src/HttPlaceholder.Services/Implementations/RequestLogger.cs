@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Models;
+using HttPlaceholder.Models.Enums;
 
 namespace HttPlaceholder.Services.Implementations
 {
@@ -42,6 +43,9 @@ namespace HttPlaceholder.Services.Implementations
 
       public void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions, IEnumerable<ConditionCheckResultModel> negativeConditions)
       {
+         // Do not log the conditions with validation type "NotExecuted". They severely pollute the logging and API.
+         conditions = conditions.Where(m => m.ConditionValidation != ConditionValidationType.NotExecuted);
+         negativeConditions = negativeConditions.Where(m => m.ConditionValidation != ConditionValidationType.NotExecuted);
          _result.StubExecutionResults.Add(new StubExecutionResultModel
          {
             Passed = passed,
