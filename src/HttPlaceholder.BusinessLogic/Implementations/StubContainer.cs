@@ -56,14 +56,17 @@ namespace HttPlaceholder.BusinessLogic.Implementations
       public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
       {
          var source = GetWritableStubSource();
-         return await source.GetRequestResultsAsync();
+         return (await source.GetRequestResultsAsync())
+            .OrderByDescending(s => s.RequestBeginTime);
       }
 
       public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId)
       {
          var source = GetWritableStubSource();
          var results = await source.GetRequestResultsAsync();
-         results = results.Where(r => r.ExecutingStubId == stubId);
+         results = results
+            .Where(r => r.ExecutingStubId == stubId)
+            .OrderByDescending(s => s.RequestBeginTime);
          return results;
       }
 

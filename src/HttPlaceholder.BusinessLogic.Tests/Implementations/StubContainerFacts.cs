@@ -160,7 +160,15 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
       public async Task StubContainer_GetRequestResultsAsync_HappyFlow()
       {
          // arrange
-         var requests = new[] { new RequestResultModel(), new RequestResultModel() };
+         var request1 = new RequestResultModel
+         {
+            RequestBeginTime = DateTime.Now.AddSeconds(-2)
+         };
+         var request2 = new RequestResultModel
+         {
+            RequestBeginTime = DateTime.Now.AddSeconds(-1)
+         };
+         var requests = new[] { request1, request2 };
          var stubSource = new Mock<IWritableStubSource>();
          stubSource
             .Setup(m => m.GetRequestResultsAsync())
@@ -171,20 +179,36 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
             .Returns(new[] { stubSource.Object });
 
          // act
-         var result = await _container.GetRequestResultsAsync();
+         var result = (await _container.GetRequestResultsAsync()).ToArray();
 
          // assert
-         Assert.AreEqual(requests, result);
+         Assert.AreEqual(request2, result[0]);
+         Assert.AreEqual(request1, result[1]);
       }
 
       [TestMethod]
       public async Task StubContainer_GetRequestResultsByStubIdAsync_HappyFlow()
       {
          // arrange
+         var request1 = new RequestResultModel
+         {
+            ExecutingStubId = "stub1",
+            RequestBeginTime = DateTime.Now.AddSeconds(-2)
+         };
+         var request2 = new RequestResultModel
+         {
+            ExecutingStubId = "stub2",
+            RequestBeginTime = DateTime.Now.AddSeconds(-2)
+         };
+         var request3 = new RequestResultModel
+         {
+            ExecutingStubId = "stub1",
+            RequestBeginTime = DateTime.Now.AddSeconds(-1)
+         };
          var requests = new[] {
-            new RequestResultModel { ExecutingStubId = "stub1" },
-            new RequestResultModel { ExecutingStubId = "stub2" },
-            new RequestResultModel { ExecutingStubId = "stub1" }
+            request1,
+            request2,
+            request3
          };
          var stubSource = new Mock<IWritableStubSource>();
          stubSource
@@ -200,8 +224,8 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
 
          // assert
          Assert.AreEqual(2, result.Length);
-         Assert.AreEqual(requests[0], result[0]);
-         Assert.AreEqual(requests[2], result[1]);
+         Assert.AreEqual(requests[0], result[1]);
+         Assert.AreEqual(requests[2], result[0]);
       }
 
       [TestMethod]
