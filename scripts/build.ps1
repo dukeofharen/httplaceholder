@@ -53,4 +53,5 @@ $propertyGroupNode = $csproj.SelectSingleNode("/Project/PropertyGroup[1]")
 $version = [version]$propertyGroupNode.Version
 Write-Host "Found version $version"
 
+. "$PSScriptRoot\build_gui.ps1"
 . "$PSScriptRoot\build_windows.ps1" -srcFolder $srcFolder
