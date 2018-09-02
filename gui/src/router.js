@@ -13,7 +13,12 @@ export default new Router({
     {
       path: '/requests',
       name: 'requests',
-      component: () => import(/* webpackChunkName: "about" */ './views/Requests.vue')
+      component: () => import(/* webpackChunkName: "requests" */ './views/Requests.vue')
+    },
+    {
+      path: '/stubs',
+      name: 'stubs',
+      component: () => import(/* webpackChunkName: "stubs" */ './views/Stubs.vue')
     }
   ]
 })

@@ -8,6 +8,8 @@ import 'bootstrap/dist/css/bootstrap-grid.css'
 import 'bootstrap/dist/css/bootstrap-reboot.css'
 import 'font-awesome/css/font-awesome.css'
 
+import './filters/yaml'
+
 Vue.config.productionTip = false
 
 new Vue({
