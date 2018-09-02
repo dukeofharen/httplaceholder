@@ -4,14 +4,14 @@
         <div class="col-10">{{executionResult.stubId}}</div>
 
         <div class="col-2">Passed</div>
-        <div class="col-10"><Bool bool="executionResult.passed" /></div>
+        <div class="col-10"><Bool v-bind:bool="executionResult.passed" /></div>
 
-        <div class="col-12">
+        <div class="col-12" v-if="executionResult.conditions.length > 0">
             <strong class="url" v-on:click="showConditions">Conditions</strong>
         </div>
         <RequestStubExecutionResultCondition v-if="conditionsVisible" v-for="(condition, key) in executionResult.conditions" v-bind:condition="condition" :key="key"></RequestStubExecutionResultCondition>
 
-        <div class="col-12">
+        <div class="col-12" v-if="executionResult.negativeConditions.length > 0">
             <strong class="url" v-on:click="showNegativeConditions">Negative conditions</strong>
         </div>
         <RequestStubExecutionResultCondition v-if="negativeConditionsVisible" v-for="(condition, key) in executionResult.negativeConditions" v-bind:condition="condition" :key="key"></RequestStubExecutionResultCondition>
