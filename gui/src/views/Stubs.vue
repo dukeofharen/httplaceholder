@@ -9,6 +9,8 @@
 <script>
 import { getStubs } from "@/data/serviceAgent";
 import Stub from "@/components/Stub";
+import resources from "@/resources";
+import toastr from "toastr";
 
 export default {
   name: "stubs",
@@ -30,8 +32,7 @@ export default {
         this.handleUrlSearch();
       })
       .catch(error => {
-        // TODO show error message
-        console.log(error);
+        toastr.error(resources.somethingWentWrongServer);
       });
   },
   methods: {

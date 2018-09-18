@@ -25,13 +25,11 @@
               <div class="col-2">Executed stub</div>
               <div class="col-10"><router-link :to="{ name: 'stubs', query: { searchTerm: request.executingStubId }}">{{request.executingStubId}}</router-link></div>
 
-              <!-- TODO format with Moment.js -->
               <div class="col-2">Request begin time</div>
-              <div class="col-10">{{request.requestBeginTime}}</div>
+              <div class="col-10">{{request.requestBeginTime | datetime}}</div>
 
-              <!-- TODO format with Moment.js -->
               <div class="col-2">Request end time</div>
-              <div class="col-10">{{request.requestEndTime}}</div>
+              <div class="col-10">{{request.requestEndTime | datetime}}</div>
               
               <div class="col-12">
                 <strong class="url" v-on:click="showExecutionResults">Stub execution results</strong>

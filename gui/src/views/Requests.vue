@@ -9,6 +9,8 @@
 <script>
 import { getRequests } from "@/data/serviceAgent";
 import Request from "@/components/Request";
+import resources from "@/resources";
+import toastr from "toastr";
 
 export default {
   name: "requests",
@@ -30,8 +32,7 @@ export default {
         this.handleUrlSearch();
       })
       .catch(error => {
-        // TODO show error message
-        console.log(error);
+        toastr.error(resources.somethingWentWrongServer);
       });
   },
   methods: {
@@ -46,9 +47,9 @@ export default {
         );
       }
     },
-    handleUrlSearch(){
+    handleUrlSearch() {
       let term = this.$route.query.searchTerm;
-      if(term) {
+      if (term) {
         this.searchTerm = term;
       }
     }
