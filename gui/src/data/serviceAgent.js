@@ -13,7 +13,14 @@ const getStubs = () => {
     return axios.get(url)
 }
 
+const deleteAllRequests = () => {
+    let rootUrl = urls.rootUrl
+    let url = `${rootUrl}ph-api/requests`
+    return axios.delete(url)
+}
+
 export {
     getRequests,
-    getStubs
+    getStubs,
+    deleteAllRequests
 }

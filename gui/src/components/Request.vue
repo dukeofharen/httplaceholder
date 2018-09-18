@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <!-- <div class="row"> -->
     <div class="col-12 request" :key="request.correlationId">
         <strong class="url" v-on:click="showDetails">{{request.requestParameters.url}} (<Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed" />)</strong>
           <div class="row" v-if="detailsVisible">
@@ -51,7 +51,7 @@
                 </div>
               </div>
           </div>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 
@@ -90,7 +90,6 @@ export default {
 
 <style scoped>
 .request {
-  background-color: #f8f9fa;
   margin: 10px;
   padding: 10px;
   text-align: left;

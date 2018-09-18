@@ -1,13 +1,20 @@
 <template>
   <div class="requests">
     <h1>Requests</h1>
-    <input type="text" class="form-control" placeholder="Filter on stub ID or URL..." v-model="searchTerm" />
+    <div class="row">
+      <div class="col-10">
+        <input type="text" class="form-control" placeholder="Filter on stub ID or URL..." v-model="searchTerm" />
+      </div>
+      <div class="col-2">
+        <a class="btn btn-primary" v-on:click="deleteAllRequests">Clear all requests</a>
+      </div>
+    </div>
     <Request v-bind:request="request" v-for="request in filteredRequests" :key="request.correlationId"></Request>
   </div>
 </template>
 
 <script>
-import { getRequests } from "@/data/serviceAgent";
+import { getRequests, deleteAllRequests } from "@/data/serviceAgent";
 import Request from "@/components/Request";
 import resources from "@/resources";
 import toastr from "toastr";
@@ -25,15 +32,7 @@ export default {
     Request
   },
   created() {
-    getRequests()
-      .then(response => {
-        this.requests = response.data;
-        this.filteredRequests = response.data;
-        this.handleUrlSearch();
-      })
-      .catch(error => {
-        toastr.error(resources.somethingWentWrongServer);
-      });
+    this.getRequests()
   },
   methods: {
     search(newValue) {
@@ -52,6 +51,27 @@ export default {
       if (term) {
         this.searchTerm = term;
       }
+    },
+    deleteAllRequests() {
+      deleteAllRequests()
+        .then(response => {
+          toastr.success(resources.requestsDeletedSuccessfully)
+          this.getRequests()
+        })
+        .catch(error => {
+          toastr.error(resources.somethingWentWrongServer)
+        })
+    },
+    getRequests() {
+      getRequests()
+      .then(response => {
+        this.requests = response.data;
+        this.filteredRequests = response.data;
+        this.handleUrlSearch();
+      })
+      .catch(error => {
+        toastr.error(resources.somethingWentWrongServer);
+      });
     }
   },
   watch: {
@@ -66,9 +86,4 @@ export default {
 </script>
 
 <style scoped>
-.request {
-  background-color: #f8f9fa;
-  margin: 10px;
-  padding: 10px;
-}
 </style>
