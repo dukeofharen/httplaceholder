@@ -2,11 +2,14 @@
   <div class="requests">
     <h1>Requests</h1>
     <div class="row">
-      <div class="col-10">
+      <div class="col-md-9">
         <input type="text" class="form-control" placeholder="Filter on stub ID or URL..." v-model="searchTerm" />
       </div>
-      <div class="col-2">
+      <div class="col-md-2">
         <a class="btn btn-primary" v-on:click="deleteAllRequests">Clear all requests</a>
+      </div>
+      <div class="col-md-1">
+        <a class="btn btn-success" v-on:click="getRequests"><span class="fa fa-refresh">&nbsp;</span></a>
       </div>
     </div>
     <Request v-bind:request="request" v-for="request in filteredRequests" :key="request.correlationId"></Request>
