@@ -3,10 +3,15 @@
     <h1>Stubs</h1>
     <div class="row">
       <div class="col-md-11">
-        <input type="text" class="form-control" placeholder="Filter on stub ID..." v-model="searchTerm" />
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Filter on stub ID..." v-model="searchTerm" />
+          <span class="input-group-append">
+            <a class="btn btn-outline-secondary" type="button" title="Clear input" v-on:click="clearInput"><span class="fa fa-eraser">&nbsp;</span></a>
+          </span>
+        </div>
       </div>
       <div class="col-md-1">
-        <a class="btn btn-success" v-on:click="getStubs"><span class="fa fa-refresh">&nbsp;</span></a>
+        <a class="btn btn-success" v-on:click="getStubs" title="Refresh"><span class="fa fa-refresh">&nbsp;</span></a>
       </div>
     </div>
     <Stub v-bind:stub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
@@ -58,6 +63,9 @@ export default {
       .catch(error => {
         toastr.error(resources.somethingWentWrongServer);
       });
+    },
+    clearInput() {
+      this.searchTerm = "";
     }
   },
   watch: {

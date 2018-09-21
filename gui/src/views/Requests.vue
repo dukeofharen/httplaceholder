@@ -2,14 +2,19 @@
   <div class="requests">
     <h1>Requests</h1>
     <div class="row">
-      <div class="col-md-9">
-        <input type="text" class="form-control" placeholder="Filter on stub ID or URL..." v-model="searchTerm" />
-      </div>
-      <div class="col-md-2">
-        <a class="btn btn-primary" v-on:click="deleteAllRequests">Clear all requests</a>
+      <div class="col-md-10">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Filter on stub ID or URL..." v-model="searchTerm" />
+          <span class="input-group-append">
+            <a class="btn btn-outline-secondary" type="button" title="Clear input" v-on:click="clearInput"><span class="fa fa-eraser">&nbsp;</span></a>
+          </span>
+        </div>
       </div>
       <div class="col-md-1">
-        <a class="btn btn-success" v-on:click="getRequests"><span class="fa fa-refresh">&nbsp;</span></a>
+        <a class="btn btn-primary" v-on:click="deleteAllRequests" title="Delete all requests"><span class="fa fa-trash">&nbsp;</span></a>
+      </div>
+      <div class="col-md-1">
+        <a class="btn btn-success" v-on:click="getRequests" title="Refresh"><span class="fa fa-refresh">&nbsp;</span></a>
       </div>
     </div>
     <Request v-bind:request="request" v-for="request in filteredRequests" :key="request.correlationId"></Request>
@@ -35,7 +40,7 @@ export default {
     Request
   },
   created() {
-    this.getRequests()
+    this.getRequests();
   },
   methods: {
     search(newValue) {
@@ -58,23 +63,26 @@ export default {
     deleteAllRequests() {
       deleteAllRequests()
         .then(response => {
-          toastr.success(resources.requestsDeletedSuccessfully)
-          this.getRequests()
+          toastr.success(resources.requestsDeletedSuccessfully);
+          this.getRequests();
         })
         .catch(error => {
-          toastr.error(resources.somethingWentWrongServer)
-        })
+          toastr.error(resources.somethingWentWrongServer);
+        });
     },
     getRequests() {
       getRequests()
-      .then(response => {
-        this.requests = response.data;
-        this.filteredRequests = response.data;
-        this.handleUrlSearch();
-      })
-      .catch(error => {
-        toastr.error(resources.somethingWentWrongServer);
-      });
+        .then(response => {
+          this.requests = response.data;
+          this.filteredRequests = response.data;
+          this.handleUrlSearch();
+        })
+        .catch(error => {
+          toastr.error(resources.somethingWentWrongServer);
+        });
+    },
+    clearInput() {
+      this.searchTerm = "";
     }
   },
   watch: {
