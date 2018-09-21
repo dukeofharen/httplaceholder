@@ -48,7 +48,7 @@ export default {
       if (!result) {
         this.getRequests();
       } else {
-        // TODO redirect to login page
+        this.$router.push({ name: "login" });
       }
     });
   },

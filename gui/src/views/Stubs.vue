@@ -44,7 +44,7 @@ export default {
       if (!result) {
         this.getStubs();
       } else {
-        // TODO redirect to login page
+        this.$router.push({ name: "login" });
       }
     });
   },

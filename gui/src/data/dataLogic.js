@@ -13,6 +13,18 @@ const shouldAuthenticate = callback => {
         })
 }
 
+const authenticate = (username, password, successCallback, errorCallback) => {
+    getUser(username, password)
+        .then(response => {
+            setItem("username", username);
+            setItem("password", password);
+            successCallback(response);
+        })
+        .catch(error => {
+            errorCallback(error);
+        })
+}
+
 const logicGetRequests = () => {
     let username = getItem("username");
     let password = getItem("password");
@@ -35,5 +47,6 @@ export {
     shouldAuthenticate,
     logicGetRequests,
     logicDeleteAllRequests,
-    logicGetStubs
+    logicGetStubs,
+    authenticate
 }
