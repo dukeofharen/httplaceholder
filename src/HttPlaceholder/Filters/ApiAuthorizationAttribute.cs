@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using HttPlaceholder.Utilities;
+using System.Security.Claims;
 
 namespace HttPlaceholder.Filters
 {
@@ -51,6 +52,14 @@ namespace HttPlaceholder.Filters
          if (!result)
          {
             context.Result = new UnauthorizedResult();
+         }
+         else
+         {
+            // Everything went OK, so put let's add the username to the claims.
+            context.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+               new Claim(ClaimTypes.Name, username)
+            }));
          }
       }
    }

@@ -196,3 +196,27 @@ Returns a list with all performed HTTP requests to HttPlaceholder by a specific 
 	"requestEndTime": "0001-01-01T00:00:00"
 }]
 ```
+
+### (GET) Logged in user
+
+Returns the given username.
+
+Note: while this method might look unnecessary at first sight, it can be used to check if an instance of HttPlaceholder has basic authentication configured.
+
+**Request URL**<br />
+`http://httplaceholder/ph-api/users/{username}`
+
+- `username`: the username to check
+
+**Request headers**
+- `Accept`: `application/json`
+
+**Response**<br />
+`200 OK`
+```json
+{
+    "username": "username"
+}
+```
+
+`403 Forbidden` (if username in basic authentication and URL don't match)
