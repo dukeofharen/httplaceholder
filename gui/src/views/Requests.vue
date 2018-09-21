@@ -22,7 +22,11 @@
 </template>
 
 <script>
-import { getRequests, deleteAllRequests } from "@/data/serviceAgent";
+import {
+  shouldAuthenticate,
+  logicGetRequests,
+  logicDeleteAllRequests
+} from "@/data/dataLogic";
 import Request from "@/components/Request";
 import resources from "@/resources";
 import toastr from "toastr";
@@ -40,7 +44,13 @@ export default {
     Request
   },
   created() {
-    this.getRequests();
+    shouldAuthenticate(result => {
+      if (!result) {
+        this.getRequests();
+      } else {
+        // TODO redirect to login page
+      }
+    });
   },
   methods: {
     search(newValue) {
@@ -61,7 +71,7 @@ export default {
       }
     },
     deleteAllRequests() {
-      deleteAllRequests()
+      logicDeleteAllRequests()
         .then(response => {
           toastr.success(resources.requestsDeletedSuccessfully);
           this.getRequests();
@@ -71,7 +81,7 @@ export default {
         });
     },
     getRequests() {
-      getRequests()
+      logicGetRequests()
         .then(response => {
           this.requests = response.data;
           this.filteredRequests = response.data;

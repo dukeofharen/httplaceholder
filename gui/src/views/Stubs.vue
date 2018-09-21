@@ -19,7 +19,10 @@
 </template>
 
 <script>
-import { getStubs } from "@/data/serviceAgent";
+import {
+  shouldAuthenticate,
+  logicGetStubs
+} from "@/data/dataLogic";
 import Stub from "@/components/Stub";
 import resources from "@/resources";
 import toastr from "toastr";
@@ -37,7 +40,13 @@ export default {
     Stub
   },
   created() {
-    this.getStubs()
+     shouldAuthenticate(result => {
+      if (!result) {
+        this.getStubs();
+      } else {
+        // TODO redirect to login page
+      }
+    });
   },
   methods: {
     search(newValue) {
@@ -54,7 +63,7 @@ export default {
       }
     },
     getStubs() {
-      getStubs()
+      logicGetStubs()
       .then(response => {
         this.stubs = response.data;
         this.filteredStubs = response.data;
