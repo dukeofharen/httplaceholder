@@ -59,6 +59,7 @@ The `response` element defines the response of the request. In this case, HTTP 2
 - Artificially make your responses slower, to simulate slow web servers and test the timeout settings of your application.
 - HttPlaceholder can be run under HTTPS.
 - REST API to automate the creation of stubs (useful in test scenarios).
+- User interface to view stubs and executed requests.
 - And more.
 
 # Documentation
@@ -69,6 +70,7 @@ The `response` element defines the response of the request. In this case, HTTP 2
 * [Configuration](docs/CONFIG.md)
 * [Request conditions explained](docs/CONDITIONS.md)
 * [Response definitions explained](docs/RESPONSE.md)
+* [Management interface](docs/UI.md)
 
 # Tools
 * [HttPlaceholder REST API client for .NET](https://github.com/dukeofharen/httplaceholder_net)
