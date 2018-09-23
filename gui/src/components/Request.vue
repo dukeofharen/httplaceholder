@@ -1,7 +1,7 @@
 <template>
   <!-- <div class="row"> -->
     <div class="col-12 request" :key="request.correlationId">
-        <strong class="url" v-on:click="showDetails">{{request.requestParameters.url}} (<Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed" />)</strong>
+        <strong class="url" v-on:click="showDetails">(<HttpMethod v-bind:method="request.requestParameters.method" />) {{request.requestParameters.url}} (<Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed" />)</strong>
           <div class="row" v-if="detailsVisible">
               <div class="col-2">Method</div>
               <div class="col-10">{{request.requestParameters.method}}</div>
@@ -58,13 +58,15 @@
 <script>
 import RequestStubExecutionResult from "./RequestStubExecutionResult";
 import Bool from "./Bool";
+import HttpMethod from "./HttpMethod";
 
 export default {
   name: "request",
   props: ["request"],
   components: {
     RequestStubExecutionResult,
-    Bool
+    Bool,
+    HttpMethod
   },
   data() {
     return {
