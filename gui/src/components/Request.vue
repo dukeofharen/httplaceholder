@@ -7,7 +7,7 @@
               <div class="col-10">{{request.requestParameters.method}}</div>
 
               <div class="col-2">Body</div>
-              <div class="col-10">{{request.requestParameters.body}}</div>
+              <div class="col-10"><RequestBody v-bind:requestParameters="request.requestParameters" /></div>
 
               <div class="col-2">Client IP</div>
               <div class="col-10">{{request.requestParameters.clientIp}}</div>
@@ -59,6 +59,7 @@
 import RequestStubExecutionResult from "./RequestStubExecutionResult";
 import Bool from "./Bool";
 import HttpMethod from "./HttpMethod";
+import RequestBody from "./RequestBody";
 
 export default {
   name: "request",
@@ -66,7 +67,8 @@ export default {
   components: {
     RequestStubExecutionResult,
     Bool,
-    HttpMethod
+    HttpMethod,
+    RequestBody
   },
   data() {
     return {
