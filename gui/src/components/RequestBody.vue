@@ -8,7 +8,7 @@
         <pre><code>{{renderedBody}}</code></pre>
       </span>
       <span v-if="!showRenderedBody">
-        <pre><code>{{rawBody}}</code></pre>
+        {{rawBody}}
       </span>
     </div>
   </div>
@@ -16,6 +16,7 @@
 
 <script>
 const xmlType = "XML";
+const jsonType = "JSON";
 
 import xmlFormatter from "xml-formatter";
 
@@ -51,6 +52,8 @@ export default {
         contentType.includes("application/xml")
       ) {
         return xmlType;
+      } else if(contentType.includes("application/json")) {
+        return jsonType;
       }
 
       return "";
@@ -64,6 +67,13 @@ export default {
     renderBody() {
       if (this.renderedBodyTypeText === xmlType) {
         return xmlFormatter(this.requestParameters.body);
+      } else if (this.renderedBodyTypeText === jsonType) {
+        try {
+          let json = JSON.parse(this.requestParameters.body);
+          return JSON.stringify(json, null, 2);
+        } catch(err) {
+          return "";
+        }
       }
 
       return "";
