@@ -29,6 +29,14 @@ const getUser = (username, password) => {
     return axios.get(url, config)
 }
 
+const addStub = (stub, username, password) => {
+    let rootUrl = urls.rootUrl
+    let url = `${rootUrl}ph-api/stubs`
+    let config = getConfig(username, password)
+    config.headers["Content-Type"] = 'application/json'
+    return axios.post(url, stub, config)
+}
+
 const getConfig = (username, password) => {
     let basicAuthString = btoa(`${username}:${password}`)
     return {
@@ -42,5 +50,6 @@ export {
     getRequests,
     getStubs,
     deleteAllRequests,
-    getUser
+    getUser,
+    addStub
 }

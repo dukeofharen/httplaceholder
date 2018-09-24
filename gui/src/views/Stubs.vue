@@ -2,7 +2,7 @@
   <div class="stubs">
     <h1>Stubs</h1>
     <div class="row">
-      <div class="col-md-11">
+      <div class="col-md-10">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Filter on stub ID..." v-model="searchTerm" />
           <span class="input-group-append">
@@ -12,6 +12,9 @@
       </div>
       <div class="col-md-1">
         <a class="btn btn-success" v-on:click="getStubs" title="Refresh"><span class="fa fa-refresh">&nbsp;</span></a>
+      </div>
+      <div class="col-md-1">
+        <a class="btn btn-success" v-on:click="addStub" title="Add new stub(s)"><span class="fa fa-plus-circle">&nbsp;</span></a>
       </div>
     </div>
     <Stub v-bind:stub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
@@ -72,6 +75,9 @@ export default {
       .catch(error => {
         toastr.error(resources.somethingWentWrongServer);
       });
+    },
+    addStub() {
+      this.$router.push({ name: "addStub" });
     },
     clearInput() {
       this.searchTerm = "";

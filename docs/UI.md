@@ -28,3 +28,9 @@ The top bar has some options:
 
 - You can fill in the stub ID to filter the stubs. The eraser empties the search bar.
 - The green button refreshes the requests.
+
+## Add stub(s)
+
+When you're on the Stubs page and you click on the "+" icon, you will go to the Add Stub(s) page. On this page, you can fill in a piece of YAML which represents the stub (see the [samples](SAMPLES.md)).
+
+![](img/stubs_add.png)

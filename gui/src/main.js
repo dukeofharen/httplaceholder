@@ -11,6 +11,8 @@ import 'toastr/build/toastr.css'
 import './filters/yaml'
 import './filters/datetime'
 
+import './functions/stringFormat'
+
 Vue.config.productionTip = false
 
 new Vue({
