@@ -83,7 +83,10 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             throw new RequestValidationException($"The '{nameof(foundStubs)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
          }
 
-         var finalStub = foundStubs.First();
+         // Make sure the stub with the highest priority gets selected.
+         var finalStub = foundStubs
+            .OrderByDescending(s => s.Priority)
+            .First();
          requestLogger.SetExecutingStubId(finalStub.Id);
          var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub);
          return response;

@@ -39,6 +39,31 @@ If all these (negative) conditions match, the response as defined under the "res
 
 For both the conditions and negativeConditions, all condition checkers as explained on this page are available.
 
+## Priority
+
+There are cases when a request matches multiple stub. If this is the case, you can use the "priority" element. With the priority element, you can specify which stub should be used if multiple stubs are found. The stub with the highest priority will be used. If you don't set the priority on the stub, it will be 0 by default.
+
+```yml
+- id: fallback
+  priority: -1
+  conditions: 
+    method: GET
+  response:
+    statusCode: 200
+    text: OK-Fallback
+
+- id: situation-01
+  conditions:
+    method: GET
+    url:
+      path: /users
+  response:
+    statusCode: 200
+    text: OK
+```
+
+In the scenario above, if you got to url `http://httplaceholder/users`, both stubs will be matched. Because the priority of the fallback stub is -1, the other stub will be used instead.
+
 ## Path
 
 The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions.

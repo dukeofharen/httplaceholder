@@ -1,0 +1,16 @@
+- id: fallback
+  priority: -1
+  conditions: 
+    method: GET
+  response:
+    statusCode: 200
+    text: OK-Fallback
+
+- id: situation-01
+  conditions:
+    method: GET
+    url:
+      path: /users
+  response:
+    statusCode: 200
+    text: OK

@@ -16,6 +16,9 @@ namespace HttPlaceholder.Models
       [YamlMember(Alias = "response")]
       public StubResponseModel Response { get; set; }
 
+      [YamlMember(Alias = "priority")]
+      public int Priority { get; set; } = 1;
+
       public override string ToString()
       {
          return Id;

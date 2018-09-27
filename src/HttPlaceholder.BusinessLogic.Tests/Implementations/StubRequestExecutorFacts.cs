@@ -49,13 +49,15 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
          {
             Id = Guid.NewGuid().ToString(),
             Conditions = new StubConditionsModel(),
-            NegativeConditions = new StubConditionsModel()
+            NegativeConditions = new StubConditionsModel(),
+            Priority = -1
          };
          _stub2 = new StubModel
          {
             Id = Guid.NewGuid().ToString(),
             Conditions = new StubConditionsModel(),
-            NegativeConditions = new StubConditionsModel()
+            NegativeConditions = new StubConditionsModel(),
+            Priority = 0
          };
          _stubContainerMock
             .Setup(m => m.GetStubsAsync())
@@ -107,7 +109,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
       }
 
       [TestMethod]
-      public async Task StubRequestExecutor_ExecuteRequestAsync_MultipleValidStubs_ShouldPickFirstOne()
+      public async Task StubRequestExecutor_ExecuteRequestAsync_MultipleValidStubs_ShouldPickStubWithLowestPriority()
       {
          // arrange
          var expectedResponseModel = new ResponseModel();
@@ -139,7 +141,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
             .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
          _stubResponseGeneratorMock
-            .Setup(m => m.GenerateResponseAsync(_stub1))
+            .Setup(m => m.GenerateResponseAsync(_stub2))
             .ReturnsAsync(expectedResponseModel);
 
          // act
