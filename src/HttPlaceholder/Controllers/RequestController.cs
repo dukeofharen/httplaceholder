@@ -6,6 +6,7 @@ using HttPlaceholder.Filters;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Models;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Controllers
 {
@@ -13,16 +14,21 @@ namespace HttPlaceholder.Controllers
    [ApiAuthorization]
    public class RequestController : Controller
    {
+      private readonly ILogger<RequestController> _logger;
       private readonly IStubContainer _stubContainer;
 
-      public RequestController(IStubContainer stubContaner)
+      public RequestController(
+         ILogger<RequestController> logger,
+         IStubContainer stubContaner)
       {
+         _logger = logger;
          _stubContainer = stubContaner;
       }
 
       [HttpGet]
       public async Task<IEnumerable<RequestResultModel>> GetAll()
       {
+         _logger.LogInformation($"Retrieving all requests.");
          var requests = await _stubContainer.GetRequestResultsAsync();
          return requests;
       }
@@ -31,6 +37,7 @@ namespace HttPlaceholder.Controllers
       [Route("{stubId}")]
       public async Task<IEnumerable<RequestResultModel>> GetByStubId([FromRoute]string stubId)
       {
+         _logger.LogInformation($"Retrieving requests for stub ID '{stubId}'");
          var requests = await _stubContainer.GetRequestResultsByStubIdAsync(stubId);
          return requests;
       }
@@ -39,6 +46,7 @@ namespace HttPlaceholder.Controllers
       [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "OK, but no content returned")]
       public async Task<IActionResult> DeleteAll()
       {
+         _logger.LogInformation($"Deleting all requests.");
          await _stubContainer.DeleteAllRequestResultsAsync();
          return NoContent();
       }

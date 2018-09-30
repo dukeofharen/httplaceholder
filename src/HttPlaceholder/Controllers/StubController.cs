@@ -6,6 +6,7 @@ using HttPlaceholder.Filters;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Models;
 using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Controllers
 {
@@ -13,10 +14,14 @@ namespace HttPlaceholder.Controllers
    [ApiAuthorization]
    public class StubController : Controller
    {
+      private readonly ILogger<StubController> _logger;
       private readonly IStubContainer _stubContainer;
 
-      public StubController(IStubContainer stubContaner)
+      public StubController(
+         ILogger<StubController> logger,
+         IStubContainer stubContaner)
       {
+         _logger = logger;
          _stubContainer = stubContaner;
       }
 
@@ -24,6 +29,8 @@ namespace HttPlaceholder.Controllers
       [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "OK, but no content returned")]
       public async Task<IActionResult> Add([FromBody]StubModel stubModel)
       {
+         _logger.LogInformation($"Adding new stub '{stubModel}'");
+
          // Delete stub with same ID.
          await _stubContainer.DeleteStubAsync(stubModel.Id);
 
@@ -34,6 +41,7 @@ namespace HttPlaceholder.Controllers
       [HttpGet]
       public async Task<IEnumerable<StubModel>> GetAll()
       {
+         _logger.LogInformation("Retrieving all stubs.");
          var stubs = await _stubContainer.GetStubsAsync();
          return stubs;
       }
@@ -44,6 +52,7 @@ namespace HttPlaceholder.Controllers
       [SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Stub not found")]
       public async Task<object> Get([FromRoute]string stubId)
       {
+         _logger.LogInformation($"Retrieving stub with ID '{stubId}'.");
          var result = await _stubContainer.GetStubAsync(stubId);
          if (result == null)
          {
@@ -59,6 +68,7 @@ namespace HttPlaceholder.Controllers
       [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "OK, but no content returned")]
       public async Task<IActionResult> Delete([FromRoute]string stubId)
       {
+         _logger.LogInformation($"Deleting stub with ID '{stubId}'");
          bool result = await _stubContainer.DeleteStubAsync(stubId);
          return result ? (IActionResult)NoContent() : NotFound();
       }
