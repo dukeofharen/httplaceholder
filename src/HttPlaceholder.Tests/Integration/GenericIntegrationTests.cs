@@ -28,10 +28,10 @@ namespace HttPlaceholder.Tests.Integration
             .Setup(m => m.GetConfiguration())
             .Returns(_config);
 
-         InitializeIntegrationTest(new Dictionary<Type, object>
+         InitializeIntegrationTest(new (Type, object)[]
          {
-            { typeof(IConfigurationService), _configurationServiceMock.Object },
-            { typeof(IStubSource), _stubSource }
+            ( typeof(IConfigurationService), _configurationServiceMock.Object ),
+            ( typeof(IStubSource), _stubSource )
          });
       }
 

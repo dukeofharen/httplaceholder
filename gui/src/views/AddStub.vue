@@ -60,7 +60,11 @@ export default {
             toastr.success(resources.stubAddedSuccessfully.format(stub.id));
           })
           .catch(error => {
-            toastr.error(resources.stubNotAdded.format(stub.id));
+            if(error.response.status === 409) {
+              toastr.error(resources.stubAlreadyAdded.format(stub.id))
+            } else {
+              toastr.error(resources.stubNotAdded.format(stub.id));
+            }
           });
       }
     }

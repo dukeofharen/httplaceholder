@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using HttPlaceholder.DataLogic;
 using HttPlaceholder.Models;
+using HttPlaceholder.Exceptions;
 
 namespace HttPlaceholder.BusinessLogic.Implementations
 {
@@ -19,18 +20,18 @@ namespace HttPlaceholder.BusinessLogic.Implementations
 
       public async Task<IEnumerable<StubModel>> GetStubsAsync()
       {
-         var result = new List<StubModel>();
-         var sources = GetStubSources();
-         foreach(var source in sources)
-         {
-            result.AddRange(await source.GetStubsAsync());
-         }
-
-         return result;
+         return await GetStubsAsync(false);
       }
 
       public async Task AddStubAsync(StubModel stub)
       {
+         // Check that a stub with the new ID isn't already added to a readonly stub source.
+         var stubs = await GetStubsAsync(true);
+         if (stubs.Any(s => string.Equals(stub.Id, s.Id, StringComparison.OrdinalIgnoreCase)))
+         {
+            throw new ConflictException($"Stub with ID '{stub.Id}'.");
+         }
+
          var source = GetWritableStubSource();
          await source.AddStubAsync(stub);
       }
@@ -83,10 +84,29 @@ namespace HttPlaceholder.BusinessLogic.Implementations
          return writableStubSource;
       }
 
+      private IEnumerable<IStubSource> GetReadOnlyStubSources()
+      {
+         var sources = GetStubSources();
+         var readOnlyStubSources = sources.Where(s => !(s is IWritableStubSource));
+         return readOnlyStubSources;
+      }
+
       private IEnumerable<IStubSource> GetStubSources()
       {
          var sources = ((IEnumerable<IStubSource>)_serviceProvider.GetServices(typeof(IStubSource))).ToArray();
          return sources;
+      }
+
+      private async Task<IEnumerable<StubModel>> GetStubsAsync(bool readOnly)
+      {
+         var result = new List<StubModel>();
+         var sources = readOnly ? GetReadOnlyStubSources() : GetStubSources();
+         foreach (var source in sources)
+         {
+            result.AddRange(await source.GetStubsAsync());
+         }
+
+         return result;
       }
    }
 }

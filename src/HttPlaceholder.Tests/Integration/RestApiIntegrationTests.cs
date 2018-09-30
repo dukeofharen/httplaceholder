@@ -23,6 +23,7 @@ namespace HttPlaceholder.Tests.Integration
    {
       private Dictionary<string, string> _config;
       private InMemoryStubSource _stubSource;
+      private Mock<IStubSource> _readOnlyStubSource;
       private Mock<IConfigurationService> _configurationServiceMock;
 
       [TestInitialize]
@@ -34,11 +35,13 @@ namespace HttPlaceholder.Tests.Integration
          _configurationServiceMock
             .Setup(m => m.GetConfiguration())
             .Returns(_config);
+         _readOnlyStubSource = new Mock<IStubSource>();
 
-         InitializeIntegrationTest(new Dictionary<Type, object>
+         InitializeIntegrationTest(new (Type, object)[]
          {
-            { typeof(IConfigurationService), _configurationServiceMock.Object },
-            { typeof(IStubSource), _stubSource }
+            ( typeof(IConfigurationService), _configurationServiceMock.Object ),
+            ( typeof(IStubSource), _stubSource ),
+            ( typeof(IStubSource), _readOnlyStubSource.Object )
          });
       }
 
@@ -124,6 +127,53 @@ response:
             Assert.IsTrue(response.IsSuccessStatusCode);
             Assert.AreEqual(1, _stubSource._stubModels.Count);
             Assert.AreEqual("situation-01", _stubSource._stubModels.First().Id);
+         }
+      }
+
+      [TestMethod]
+      public async Task RestApiIntegration_Stub_Add_Json_StubIdAlreadyExistsInReadOnlySource_ShouldReturn409()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}ph-api/stubs";
+         string body = @"{
+  ""id"": ""situation-01"",
+  ""conditions"": {
+    ""method"": ""GET"",
+    ""url"": {
+      ""path"": ""/users"",
+      ""query"": {
+        ""id"": 12,
+        ""filter"": ""first_name""
+      }
+    }
+  },
+  ""response"": {
+    ""statusCode"": 200,
+    ""text"": ""{\n  \""\""first_name\""\"": \""\""John\""\""\n}\n"",
+    ""headers"": {
+      ""Content-Type"": ""application/json""
+    }
+  }
+}";
+         var request = new HttpRequestMessage
+         {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(url),
+            Content = new StringContent(body, Encoding.UTF8, "application/json")
+         };
+
+         var existingStub = new StubModel
+         {
+            Id = "situation-01"
+         };
+         _readOnlyStubSource
+            .Setup(m => m.GetStubsAsync())
+            .ReturnsAsync(new[] { existingStub });
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
          }
       }
 

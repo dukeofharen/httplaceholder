@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,13 +11,13 @@ namespace HttPlaceholder.Tests.Integration
 {
    public static class TestStartup
    {
-      public static void ConfigureServices(Startup startup, IServiceCollection services, IDictionary<Type, object> servicesToReplace)
+      public static void ConfigureServices(Startup startup, IServiceCollection services, (Type, object)[] servicesToReplace)
       {
          startup.ConfigureServices(services);
 
          // Delete old services
          var servicesToDelete = servicesToReplace
-            .Select(str => str.Key)
+            .Select(str => str.Item1)
             .ToArray();
          var serviceDescriptors = services
             .Where(s => servicesToDelete.Contains(s.ServiceType))
@@ -31,7 +30,7 @@ namespace HttPlaceholder.Tests.Integration
          // Add mock services
          foreach (var service in servicesToReplace)
          {
-            services.AddTransient(service.Key, serviceProvider => service.Value);
+            services.AddTransient(service.Item1, serviceProvider => service.Item2);
          }
 
          var loggerFactoryMock = new Mock<ILoggerFactory>();

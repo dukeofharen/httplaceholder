@@ -1,5 +1,6 @@
 ﻿using HttPlaceholder.BusinessLogic.Implementations;
 using HttPlaceholder.DataLogic;
+using HttPlaceholder.Exceptions;
 using HttPlaceholder.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -64,24 +65,68 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
       }
 
       [TestMethod]
-      public async Task StubContainer_AddStubAsync_HappyFlow()
+      public async Task StubContainer_AddStubAsync_StubIdAlreadyAddedToReadOnlyStubSource_ShouldThrowConflictException()
       {
          // arrange
-         var stub = new StubModel();
-         var stubSource = new Mock<IWritableStubSource>();
-         stubSource
-            .Setup(m => m.AddStubAsync(stub))
-            .Returns(Task.CompletedTask);
+         var stubToBeAdded = new StubModel
+         {
+            Id = "conflicted"
+         };
+         var stub = new StubModel
+         {
+            Id = "COnflicted"
+         };
+         var writableStubSource = new Mock<IWritableStubSource>();
+         var readOnlyStubSource = new Mock<IStubSource>();
+         readOnlyStubSource
+            .Setup(m => m.GetStubsAsync())
+            .ReturnsAsync(new[]
+            {
+               stub
+            });
 
          _serviceProviderMock
             .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-            .Returns(new[] { stubSource.Object });
+            .Returns(new[] { writableStubSource.Object, readOnlyStubSource.Object });
+
+         // act / assert
+         await Assert.ThrowsExceptionAsync<ConflictException>(() => _container.AddStubAsync(stubToBeAdded));
+      }
+
+      [TestMethod]
+      public async Task StubContainer_AddStubAsync_HappyFlow()
+      {
+         // arrange
+         var stubToBeAdded = new StubModel
+         {
+            Id = "new-stub-02"
+         };
+         var stubSource = new Mock<IWritableStubSource>();
+         stubSource
+            .Setup(m => m.AddStubAsync(stubToBeAdded))
+            .Returns(Task.CompletedTask);
+
+         var stub = new StubModel
+         {
+            Id = "new-stub-01"
+         };
+         var readOnlyStubSource = new Mock<IStubSource>();
+         readOnlyStubSource
+            .Setup(m => m.GetStubsAsync())
+            .ReturnsAsync(new[]
+            {
+               stub
+            });
+
+         _serviceProviderMock
+            .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
+            .Returns(new[] { stubSource.Object, readOnlyStubSource.Object });
 
          // act
-         await _container.AddStubAsync(stub);
+         await _container.AddStubAsync(stubToBeAdded);
 
          // assert
-         stubSource.Verify(m => m.AddStubAsync(stub), Times.Once);
+         stubSource.Verify(m => m.AddStubAsync(stubToBeAdded), Times.Once);
       }
 
       [TestMethod]

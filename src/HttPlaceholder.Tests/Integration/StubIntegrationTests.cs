@@ -46,10 +46,10 @@ namespace HttPlaceholder.Tests.Integration
             .Setup(m => m.GetConfiguration())
             .Returns(config);
 
-         InitializeIntegrationTest(new Dictionary<Type, object>
+         InitializeIntegrationTest(new (Type, object)[]
          {
-            { typeof(IConfigurationService), _configurationServiceMock.Object },
-            { typeof(IFileService), _fileServiceMock.Object }
+            ( typeof(IConfigurationService), _configurationServiceMock.Object ),
+            ( typeof(IFileService), _fileServiceMock.Object )
          });
       }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -12,17 +11,9 @@ namespace HttPlaceholder.Tests.Integration
 
       protected TestServer TestServer;
 
-      protected void InitializeIntegrationTest(Dictionary<Type, object> extraServicesToReplace = null)
+      protected void InitializeIntegrationTest((Type, object)[] servicesToReplace = null)
       {
-         var servicesToReplace = new Dictionary<Type, object>();
-         if (extraServicesToReplace != null)
-         {
-            foreach (var extraService in extraServicesToReplace)
-            {
-               servicesToReplace.Add(extraService.Key, extraService.Value);
-            }
-         }
-
+         servicesToReplace = servicesToReplace ?? new (Type, object)[0];
          var startup = new Startup();
          TestServer = new TestServer(new WebHostBuilder()
             .ConfigureServices(services => TestStartup.ConfigureServices(startup, services, servicesToReplace))

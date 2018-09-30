@@ -27,6 +27,7 @@ namespace HttPlaceholder.Controllers
 
       [HttpPost]
       [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "OK, but no content returned")]
+      [SwaggerResponse((int)HttpStatusCode.Conflict, Description = "The stub is already available in another stub source.")]
       public async Task<IActionResult> Add([FromBody]StubModel stubModel)
       {
          _logger.LogInformation($"Adding new stub '{stubModel}'");

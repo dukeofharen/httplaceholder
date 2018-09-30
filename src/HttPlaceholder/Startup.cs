@@ -12,7 +12,6 @@ using YamlDotNet.Serialization.NamingConventions;
 using HttPlaceholder.Utilities;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
-using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder
@@ -31,8 +30,9 @@ namespace HttPlaceholder
 
       public static void ConfigureStatic(IApplicationBuilder app, IHostingEnvironment env, bool preloadStubs, bool loadStaticFiles)
       {
-         app.UseMiddleware<StubHandlingMiddleware>();
          app.UseMiddleware<CorsHeadersMiddleware>();
+         app.UseMiddleware<ApiExceptionHandlingMiddleware>();
+         app.UseMiddleware<StubHandlingMiddleware>();
          app.UseMvc();
          app.UseSwagger();
          app.UseSwaggerUI(c =>
