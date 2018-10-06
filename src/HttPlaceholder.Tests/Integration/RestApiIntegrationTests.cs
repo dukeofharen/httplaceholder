@@ -39,9 +39,11 @@ namespace HttPlaceholder.Tests.Integration
 
          InitializeIntegrationTest(new (Type, object)[]
          {
-            ( typeof(IConfigurationService), _configurationServiceMock.Object ),
-            ( typeof(IStubSource), _stubSource ),
-            ( typeof(IStubSource), _readOnlyStubSource.Object )
+            ( typeof(IConfigurationService), _configurationServiceMock.Object )
+         }, new[]
+         {
+            _stubSource,
+            _readOnlyStubSource.Object
          });
       }
 

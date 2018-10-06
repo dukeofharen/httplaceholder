@@ -88,7 +88,7 @@ namespace HttPlaceholder
             .AddHttpContextAccessor()
             .AddLogging()
             .AddDataLogic()
-            .AddStubSources(ConfigurationService.StaticGetConfiguration());
+            .AddStubSources();
       }
    }
 }

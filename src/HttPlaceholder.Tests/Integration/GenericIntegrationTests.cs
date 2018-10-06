@@ -1,6 +1,7 @@
 ﻿using HttPlaceholder.DataLogic;
 using HttPlaceholder.DataLogic.Implementations.StubSources;
 using HttPlaceholder.Services;
+using HttPlaceholder.Services.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;

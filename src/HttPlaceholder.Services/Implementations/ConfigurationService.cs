@@ -21,10 +21,5 @@ namespace HttPlaceholder.Services.Implementations
 
          _configuration = configuration;
       }
-
-      public static IDictionary<string, string> StaticGetConfiguration()
-      {
-         return _configuration;
-      }
    }
 }

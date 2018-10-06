@@ -1,5 +1,5 @@
 - id: fallback
-  priority: -1
+  priority: -10
   conditions: 
     method: GET
   response:

@@ -12,6 +12,10 @@ using Newtonsoft.Json.Linq;
 using HttPlaceholder.Models;
 using HttPlaceholder.Utilities;
 using System.IO;
+using HttPlaceholder.DataLogic.Implementations.StubSources;
+using Microsoft.Extensions.Logging;
+using HttPlaceholder.Services.Implementations;
+using HttPlaceholder.DataLogic;
 
 namespace HttPlaceholder.Tests.Integration
 {
@@ -21,6 +25,8 @@ namespace HttPlaceholder.Tests.Integration
       private const string InputFilePath = @"D:\tmp\input.yml";
       private Mock<IConfigurationService> _configurationServiceMock;
       private Mock<IFileService> _fileServiceMock;
+      private YamlFileStubSource _stubSource;
+      private Mock<IWritableStubSource> _writableStubSourceMock;
 
       [TestInitialize]
       public void Initialize()
@@ -46,10 +52,21 @@ namespace HttPlaceholder.Tests.Integration
             .Setup(m => m.GetConfiguration())
             .Returns(config);
 
+         _stubSource = new YamlFileStubSource(
+            _configurationServiceMock.Object,
+            _fileServiceMock.Object,
+            new Mock<ILogger<YamlFileStubSource>>().Object,
+            new YamlService());
+         _writableStubSourceMock = new Mock<IWritableStubSource>();
+
          InitializeIntegrationTest(new (Type, object)[]
          {
             ( typeof(IConfigurationService), _configurationServiceMock.Object ),
             ( typeof(IFileService), _fileServiceMock.Object )
+         }, new IStubSource[]
+         {
+            _stubSource,
+            _writableStubSourceMock.Object
          });
       }
 
