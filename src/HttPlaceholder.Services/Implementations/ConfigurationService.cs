@@ -12,7 +12,7 @@ namespace HttPlaceholder.Services.Implementations
          return _configuration;
       }
 
-      public static void SetConfiguration(IDictionary<string, string> configuration)
+      public static void StaticSetConfiguration(IDictionary<string, string> configuration)
       {
          if (_configuration != null)
          {
@@ -20,6 +20,11 @@ namespace HttPlaceholder.Services.Implementations
          }
 
          _configuration = configuration;
+      }
+
+      public static IDictionary<string, string> StaticGetConfiguration()
+      {
+         return _configuration;
       }
    }
 }

@@ -8,5 +8,6 @@
     "pfxPath": null,
     "port": 5000,
     "useHttps": false,
-    "enableRequestLogging": true
+    "enableRequestLogging": true,
+    "fileStorageLocation": "C:\\tmp\\storage"
 }

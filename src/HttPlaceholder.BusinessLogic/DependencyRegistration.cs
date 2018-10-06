@@ -6,10 +6,8 @@ namespace HttPlaceholder.BusinessLogic
 {
    public static class DependencyRegistration
    {
-      public static void RegisterDependencies(IServiceCollection services)
+      public static IServiceCollection AddBusinessLogic(this IServiceCollection services)
       {
-         DataLogic.DependencyRegistration.RegisterDependencies(services);
-
          services.AddSingleton<IStubContainer, StubContainer>();
          services.AddTransient<IStubRequestExecutor, StubRequestExecutor>();
          services.AddTransient<IStubResponseGenerator, StubResponseGenerator>();
@@ -27,6 +25,8 @@ namespace HttPlaceholder.BusinessLogic
          {
             services.AddTransient(typeof(IResponseWriter), type);
          }
+
+         return services;
       }
    }
 }

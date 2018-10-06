@@ -5,7 +5,7 @@ namespace HttPlaceholder.Services
 {
    public static class DependencyRegistration
    {
-      public static void RegisterDependencies(IServiceCollection services)
+      public static IServiceCollection AddUtilities(this IServiceCollection services)
       {
          services.AddTransient<IAssemblyService, AssemblyService>();
          services.AddTransient<IAsyncService, AsyncService>();
@@ -14,6 +14,7 @@ namespace HttPlaceholder.Services
          services.AddTransient<IHttpContextService, HttpContextService>();
          services.AddTransient<IRequestLoggerFactory, RequestLoggerFactory>();
          services.AddTransient<IYamlService, YamlService>();
+         return services;
       }
    }
 }

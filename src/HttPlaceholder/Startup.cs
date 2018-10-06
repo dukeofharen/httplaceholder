@@ -13,6 +13,9 @@ using HttPlaceholder.Utilities;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
+using HttPlaceholder.Services;
+using HttPlaceholder.DataLogic;
+using HttPlaceholder.Services.Implementations;
 
 namespace HttPlaceholder
 {
@@ -30,12 +33,13 @@ namespace HttPlaceholder
 
       public static void ConfigureStatic(IApplicationBuilder app, IHostingEnvironment env, bool preloadStubs, bool loadStaticFiles)
       {
-         app.UseMiddleware<CorsHeadersMiddleware>();
-         app.UseMiddleware<ApiExceptionHandlingMiddleware>();
-         app.UseMiddleware<StubHandlingMiddleware>();
-         app.UseMvc();
-         app.UseSwagger();
-         app.UseSwaggerUI(c =>
+         app
+            .UseMiddleware<CorsHeadersMiddleware>()
+            .UseMiddleware<ApiExceptionHandlingMiddleware>()
+            .UseMiddleware<StubHandlingMiddleware>()
+            .UseMvc()
+            .UseSwagger()
+            .UseSwaggerUI(c =>
          {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "HttPlaceholder API V1");
          });
@@ -64,24 +68,27 @@ namespace HttPlaceholder
 
       public static void ConfigureServicesStatic(IServiceCollection services)
       {
-         services.AddMvc(options =>
-         {
-            options.InputFormatters.Add(new YamlInputFormatter(new DeserializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
-            options.OutputFormatters.Add(new YamlOutputFormatter(new SerializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
-            options.FormatterMappings.SetMediaTypeMappingForFormat("yaml", MediaTypeHeaderValues.ApplicationYaml);
-         })
-         .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
-         services.AddLogging();
-         services.AddHttpContextAccessor();
+         services
+            .AddMvc(options =>
+            {
+               options.InputFormatters.Add(new YamlInputFormatter(new DeserializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
+               options.OutputFormatters.Add(new YamlOutputFormatter(new SerializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
+               options.FormatterMappings.SetMediaTypeMappingForFormat("yaml", MediaTypeHeaderValues.ApplicationYaml);
+            })
+            .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
 
-         services.AddSwaggerGen(c =>
-         {
-            c.SwaggerDoc("v1", new Info { Title = "HttPlaceholder API", Version = "v1" });
-            c.OperationFilter<StatusCodeOperationFilter>();
-         });
-
-         DependencyRegistration.RegisterDependencies(services);
-         Services.DependencyRegistration.RegisterDependencies(services);
+         services
+            .AddSwaggerGen(c =>
+            {
+               c.SwaggerDoc("v1", new Info { Title = "HttPlaceholder API", Version = "v1" });
+               c.OperationFilter<StatusCodeOperationFilter>();
+            })
+            .AddBusinessLogic()
+            .AddUtilities()
+            .AddHttpContextAccessor()
+            .AddLogging()
+            .AddDataLogic()
+            .AddStubSources(ConfigurationService.StaticGetConfiguration());
       }
    }
 }

@@ -14,7 +14,7 @@ namespace HttPlaceholder.SwaggerGenerator
       static async Task Main(string[] args)
       {
          // Set dummy configuration.
-         ConfigurationService.SetConfiguration(new Dictionary<string, string>());
+         ConfigurationService.StaticSetConfiguration(new Dictionary<string, string>());
 
          // This program hosts HttPlaceholder in memory, retrieves the contents of the swagger.json file and saves it.
          var startup = new Startup();

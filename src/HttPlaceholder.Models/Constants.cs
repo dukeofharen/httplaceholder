@@ -23,6 +23,8 @@
          public const string UseHttpsKey = "useHttps";
 
          public const string EnableRequestLogging = "enableRequestLogging";
+
+         public const string FileStorageLocation = "fileStorageLocation";
       }
    }
 }

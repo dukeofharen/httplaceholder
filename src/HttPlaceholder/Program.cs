@@ -45,7 +45,7 @@ namespace HttPlaceholder
             argsDictionary = args.Parse();
          }
 
-         ConfigurationService.SetConfiguration(argsDictionary);
+         ConfigurationService.StaticSetConfiguration(argsDictionary);
 
          int port = argsDictionary.GetValue(Constants.ConfigKeys.PortKey, 5000);
          string defaultPfxPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx");
