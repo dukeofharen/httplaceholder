@@ -16,6 +16,6 @@ namespace HttPlaceholder.DataLogic
 
       Task DeleteAllRequestResultsAsync();
 
-      Task CleanOldRequestResults();
+      Task CleanOldRequestResultsAsync();
    }
 }

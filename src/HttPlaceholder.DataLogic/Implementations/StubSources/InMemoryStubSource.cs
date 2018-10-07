@@ -59,7 +59,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
          return Task.FromResult(_stubModels.AsEnumerable());
       }
 
-      public Task CleanOldRequestResults()
+      public Task CleanOldRequestResultsAsync()
       {
          var config = _configurationService.GetConfiguration();
          int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);

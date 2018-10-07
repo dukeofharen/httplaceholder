@@ -61,7 +61,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             return Task.FromResult(false);
          }
 
-         _fileService.DeleteFile(stubId);
+         _fileService.DeleteFile(filePath);
          return Task.FromResult(true);
       }
 
@@ -95,6 +95,21 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
          return Task.FromResult(result.AsEnumerable());
       }
 
+      public async Task CleanOldRequestResultsAsync()
+      {
+         string path = EnsureAndGetRequestsFolder();
+         var config = _configurationService.GetConfiguration();
+         int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
+         var requests = (await GetRequestResultsAsync())
+            .OrderByDescending(r => r.RequestEndTime)
+            .Skip(maxLength);
+         foreach (var request in requests)
+         {
+            string filePath = Path.Combine(path, $"{request.CorrelationId}.json");
+            _fileService.DeleteFile(filePath);
+         }
+      }
+
       private string EnsureAndGetStubsFolder()
       {
          var config = _configurationService.GetConfiguration();
@@ -119,21 +134,6 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
          }
 
          return path;
-      }
-
-      public async Task CleanOldRequestResults()
-      {
-         string path = EnsureAndGetRequestsFolder();
-         var config = _configurationService.GetConfiguration();
-         int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
-         var requests = (await GetRequestResultsAsync())
-            .OrderByDescending(r => r.RequestEndTime)
-            .Skip(maxLength);
-         foreach(var request in requests)
-         {
-            string filePath = Path.Combine(path, $"{request.CorrelationId}.json");
-            _fileService.DeleteFile(filePath);
-         }
       }
    }
 }

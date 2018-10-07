@@ -199,7 +199,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
 
          // assert
          stubSource.Verify(m => m.AddRequestResultAsync(request), Times.Once);
-         stubSource.Verify(m => m.CleanOldRequestResults(), Times.Once);
+         stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Once);
       }
 
       [TestMethod]

@@ -53,7 +53,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations
          var source = GetWritableStubSource();
 
          // Clean up old requests here.
-         await source.CleanOldRequestResults();
+         await source.CleanOldRequestResultsAsync();
 
          await source.AddRequestResultAsync(requestResult);
       }
