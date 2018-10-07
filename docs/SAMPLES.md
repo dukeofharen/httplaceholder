@@ -31,3 +31,4 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Check on hostname: [.yml](samples/10-hostname.yml)
 * Check HTTP(S): [.yml](samples/11-ishttps.yml)
 * Priority: [.yml](samples/12-priority.yml)
+* Form values: [.yml](samples/13-form.yml) | [PostMan](samples/13-form.json)

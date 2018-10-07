@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Services
 {
@@ -27,5 +28,7 @@ namespace HttPlaceholder.Services
         string GetHost();
 
         bool IsHttps();
+
+        (string, StringValues)[] GetFormValues();
     }
 }

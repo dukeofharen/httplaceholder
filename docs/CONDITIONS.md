@@ -242,9 +242,40 @@ This condition checker can check whether the posted body corresponds to the give
 **Correct request**
 - Method: POST
 - URL: http://localhost:5000/users
+- Headers:
+    - Content-Type: application/x-www-form-urlencoded
 - Body:
 ```json
 {"username": "john"}
+```
+
+## Form
+
+The form value condition checker can check whether the posted form values correspodn to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions.
+
+```yml
+- id: form-ok
+  conditions:
+    method: POST
+    url:
+      path: /form
+    form:
+      - key: key1
+        value: sjaak
+      - key: key2
+        value: bob
+      - key: key2
+        value: ducoo
+  response:
+    text: OK
+```
+
+**Correct request**
+- Method: POST
+- URL: http://localhost:5000/form
+- Body:
+```
+key1=sjaak&key2=bob&key2=ducoo
 ```
 
 ## Client IP validation

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Services.Implementations
 {
@@ -108,6 +109,14 @@ namespace HttPlaceholder.Services.Implementations
             {
                 return request.IsHttps;
             }
+        }
+
+        public (string, StringValues)[] GetFormValues()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            return httpContext.Request.Form
+                .Select(f => (f.Key, f.Value))
+                .ToArray();
         }
     }
 }

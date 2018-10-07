@@ -726,5 +726,55 @@ namespace HttPlaceholder.Tests.Integration
             Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
          }
       }
+
+      [TestMethod]
+      public async Task StubIntegration_RegularPost_Form_Ok()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}form";
+         var request = new HttpRequestMessage
+         {
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Post,
+            Content = new FormUrlEncodedContent(new[]
+            {
+               new KeyValuePair<string, string>("key1", "sjaak"),
+               new KeyValuePair<string, string>("key2", "bob"),
+               new KeyValuePair<string, string>("key2", "ducoo")
+            })
+         };
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            string content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("OK", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+         }
+      }
+
+      [TestMethod]
+      public async Task StubIntegration_RegularPost_Form_Nok()
+      {
+         // arrange
+         string url = $"{TestServer.BaseAddress}form";
+         var request = new HttpRequestMessage
+         {
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Post,
+            Content = new FormUrlEncodedContent(new[]
+            {
+               new KeyValuePair<string, string>("key1", "sjaak"),
+               new KeyValuePair<string, string>("key2", "bob")
+            })
+         };
+
+         // act / assert
+         using (var response = await Client.SendAsync(request))
+         {
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+         }
+      }
    }
 }

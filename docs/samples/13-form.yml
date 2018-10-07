@@ -1,0 +1,15 @@
+# Example of a stub for checking posted form values.
+- id: form-ok
+  conditions:
+    method: POST
+    url:
+      path: /form
+    form:
+      - key: key1
+        value: sjaak
+      - key: key2
+        value: bob
+      - key: key2
+        value: ducoo
+  response:
+    text: OK
