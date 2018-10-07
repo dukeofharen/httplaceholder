@@ -16,6 +16,14 @@ httplaceholder --inputFile C:\path\to\stubsfolder
 
 For input file, you can both provide a path to a .yml file (to load only that file) or provide a path to a folder containing .yml files (which will all be loaded in that case).
 
+### File store (optional)
+
+```bash
+httplaceholder --fileStorageLocation C:\tmp\storage
+```
+
+By default, if you run the application without command line arguments, all stubs that are added through the [REST API](API.md) and all requests are stored in memory, which means that whenever you restart HttPlaceholder, everything is gone. For this reason, a file storage source was developed, so that all requests and stubs are stored on disk. You just have to specify the "fileStorageLocation" parameter so HttPlaceholder knows where to write its files.
+
 ### Use HTTPS (optional)
 
 ```bash
@@ -79,6 +87,7 @@ If you just installed HttPlaceholder, a file called `_config.json` is available 
     "pfxPath": null,
     "port": 5000,
     "useHttps": false,
-    "enableRequestLogging": true
+    "enableRequestLogging": true,
+    "fileStorageLocation": "C:\\tmp\\storage"
 }
 ```
