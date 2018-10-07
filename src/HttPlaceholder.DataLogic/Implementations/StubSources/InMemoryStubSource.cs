@@ -9,6 +9,8 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 {
    internal class InMemoryStubSource : IWritableStubSource
    {
+      private static object _lock = new object();
+
       private readonly IConfigurationService _configurationService;
 
       internal readonly IList<RequestResultModel> _requestResultModels = new List<RequestResultModel>();
@@ -21,58 +23,79 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
       public Task AddRequestResultAsync(RequestResultModel requestResult)
       {
-         _requestResultModels.Add(requestResult);
-         return Task.CompletedTask;
+         lock (_lock)
+         {
+            _requestResultModels.Add(requestResult);
+            return Task.CompletedTask;
+         }
       }
 
       public Task AddStubAsync(StubModel stub)
       {
-         _stubModels.Add(stub);
-         return Task.CompletedTask;
+         lock (_lock)
+         {
+            _stubModels.Add(stub);
+            return Task.CompletedTask;
+         }
       }
 
       public Task DeleteAllRequestResultsAsync()
       {
-         _requestResultModels.Clear();
-         return Task.CompletedTask;
+         lock (_lock)
+         {
+            _requestResultModels.Clear();
+            return Task.CompletedTask;
+         }
       }
 
       public Task<bool> DeleteStubAsync(string stubId)
       {
-         var stub = _stubModels.FirstOrDefault(s => s.Id == stubId);
-         if (stub == null)
+         lock (_lock)
          {
-            return Task.FromResult(false);
-         }
+            var stub = _stubModels.FirstOrDefault(s => s.Id == stubId);
+            if (stub == null)
+            {
+               return Task.FromResult(false);
+            }
 
-         _stubModels.Remove(stub);
-         return Task.FromResult(true);
+            _stubModels.Remove(stub);
+            return Task.FromResult(true);
+         }
       }
 
       public Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
       {
-         return Task.FromResult(_requestResultModels.AsEnumerable());
+         lock (_lock)
+         {
+            return Task.FromResult(_requestResultModels.AsEnumerable());
+         }
       }
 
       public Task<IEnumerable<StubModel>> GetStubsAsync()
       {
-         return Task.FromResult(_stubModels.AsEnumerable());
+         lock (_lock)
+         {
+            return Task.FromResult(_stubModels.AsEnumerable());
+         }
       }
 
       public Task CleanOldRequestResultsAsync()
       {
-         var config = _configurationService.GetConfiguration();
-         int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
-
-         var requests = _requestResultModels
-            .OrderByDescending(r => r.RequestEndTime)
-            .Skip(maxLength);
-         foreach (var request in requests)
+         lock (_lock)
          {
-            _requestResultModels.Remove(request);
-         }
+            var config = _configurationService.GetConfiguration();
+            int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
 
-         return Task.CompletedTask;
+            var requests = _requestResultModels
+               .OrderByDescending(r => r.RequestEndTime)
+               .Skip(maxLength);
+            foreach (var request in requests)
+            {
+               _requestResultModels.Remove(request);
+            }
+
+            return Task.CompletedTask;
+         }
       }
    }
 }
