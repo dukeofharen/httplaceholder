@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using HttPlaceholder.DataLogic;
+using HttPlaceholder.Tests.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
-using HttPlaceholder.Tests.Utilities;
-using HttPlaceholder.DataLogic;
-using System.Collections.Generic;
 
 namespace HttPlaceholder.Tests.Integration
 {
@@ -52,7 +52,7 @@ namespace HttPlaceholder.Tests.Integration
             services.Remove(descriptor);
          }
 
-         foreach(var service in stubSources)
+         foreach (var service in stubSources)
          {
             services.AddTransient(provider => service);
          }

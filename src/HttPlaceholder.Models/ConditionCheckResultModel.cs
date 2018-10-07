@@ -1,6 +1,6 @@
-﻿using HttPlaceholder.Models.Enums;
+﻿using System;
+using HttPlaceholder.Models.Enums;
 using Newtonsoft.Json;
-using System;
 
 namespace HttPlaceholder.Models
 {

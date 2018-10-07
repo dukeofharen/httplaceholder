@@ -1,7 +1,7 @@
 ﻿namespace HttPlaceholder.Services
 {
-   public interface IRequestLoggerFactory
-   {
-      IRequestLogger GetRequestLogger();
-   }
+    public interface IRequestLoggerFactory
+    {
+        IRequestLogger GetRequestLogger();
+    }
 }

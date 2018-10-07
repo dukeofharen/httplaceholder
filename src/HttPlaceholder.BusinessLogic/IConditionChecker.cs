@@ -2,8 +2,8 @@
 
 namespace HttPlaceholder.BusinessLogic
 {
-   public interface IConditionChecker
-   {
-      ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions);
-   }
+    public interface IConditionChecker
+    {
+        ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions);
+    }
 }

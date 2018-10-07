@@ -1,14 +1,13 @@
-﻿using HttPlaceholder.DataLogic;
-using HttPlaceholder.DataLogic.Implementations.StubSources;
-using HttPlaceholder.Services;
-using HttPlaceholder.Services.Implementations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HttPlaceholder.DataLogic;
+using HttPlaceholder.DataLogic.Implementations.StubSources;
+using HttPlaceholder.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace HttPlaceholder.Tests.Integration
 {

@@ -4,8 +4,8 @@ using HttPlaceholder.Models;
 
 namespace HttPlaceholder.DataLogic
 {
-   public interface IStubSource
-   {
-      Task<IEnumerable<StubModel>> GetStubsAsync();
-   }
+    public interface IStubSource
+    {
+        Task<IEnumerable<StubModel>> GetStubsAsync();
+    }
 }

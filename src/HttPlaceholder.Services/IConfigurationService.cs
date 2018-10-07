@@ -2,8 +2,8 @@
 
 namespace HttPlaceholder.Services
 {
-   public interface IConfigurationService
-   {
-      IDictionary<string, string> GetConfiguration();
-   }
+    public interface IConfigurationService
+    {
+        IDictionary<string, string> GetConfiguration();
+    }
 }

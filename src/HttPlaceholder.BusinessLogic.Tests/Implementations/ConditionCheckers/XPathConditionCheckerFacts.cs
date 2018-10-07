@@ -1,55 +1,54 @@
 ﻿using System.Collections.Generic;
+using HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers;
+using HttPlaceholder.Models;
+using HttPlaceholder.Models.Enums;
 using HttPlaceholder.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers;
-using HttPlaceholder.BusinessLogic.Tests.Utilities;
-using HttPlaceholder.Models;
-using HttPlaceholder.Models.Enums;
 
 namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
 {
-   [TestClass]
-   public class XPathConditionCheckerFacts
-   {
-      private Mock<IHttpContextService> _httpContextServiceMock;
-      private XPathConditionChecker _checker;
+    [TestClass]
+    public class XPathConditionCheckerFacts
+    {
+        private Mock<IHttpContextService> _httpContextServiceMock;
+        private XPathConditionChecker _checker;
 
-      [TestInitialize]
-      public void Initialize()
-      {
-         _httpContextServiceMock = new Mock<IHttpContextService>();
-         _checker = new XPathConditionChecker(
-            _httpContextServiceMock.Object);
-      }
+        [TestInitialize]
+        public void Initialize()
+        {
+            _httpContextServiceMock = new Mock<IHttpContextService>();
+            _checker = new XPathConditionChecker(
+               _httpContextServiceMock.Object);
+        }
 
-      [TestCleanup]
-      public void Cleanup()
-      {
-         _httpContextServiceMock.VerifyAll();
-      }
+        [TestCleanup]
+        public void Cleanup()
+        {
+            _httpContextServiceMock.VerifyAll();
+        }
 
-      [TestMethod]
-      public void XPathConditionChecker_Validate_StubsFound_ButNoXPathConditions_ShouldReturnNotExecuted()
-      {
-         // arrange
-         var conditions = new StubConditionsModel
-         {
-            Xpath = null
-         };
+        [TestMethod]
+        public void XPathConditionChecker_Validate_StubsFound_ButNoXPathConditions_ShouldReturnNotExecuted()
+        {
+            // arrange
+            var conditions = new StubConditionsModel
+            {
+                Xpath = null
+            };
 
-         // act
-         var result = _checker.Validate("id", conditions);
+            // act
+            var result = _checker.Validate("id", conditions);
 
-         // assert
-         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
-      }
+            // assert
+            Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+        }
 
-      [TestMethod]
-      public void XPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
-      {
-         // arrange
-         string body = @"<?xml version=""1.0""?>
+        [TestMethod]
+        public void XPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
+        {
+            // arrange
+            string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -60,10 +59,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
     </m:GetStockPrice>
   </soap:Body>
 </soap:Envelope>";
-         var conditions = new StubConditionsModel
-         {
-            Xpath = new[]
-               {
+            var conditions = new StubConditionsModel
+            {
+                Xpath = new[]
+                  {
                   new StubXpathModel
                   {
                      QueryString = "/soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'Shades']",
@@ -83,24 +82,24 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
                      }
                   }
                }
-         };
+            };
 
-         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            _httpContextServiceMock
+               .Setup(m => m.GetBody())
+               .Returns(body);
 
-         // act
-         var result = _checker.Validate("id", conditions);
+            // act
+            var result = _checker.Validate("id", conditions);
 
-         // assert
-         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-      }
+            // assert
+            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+        }
 
-      [TestMethod]
-      public void XPathConditionChecker_Validate_StubsFound_OnlyOneXPathConditionCorrect_ShouldReturnInvalid()
-      {
-         // arrange
-         string body = @"<?xml version=""1.0""?>
+        [TestMethod]
+        public void XPathConditionChecker_Validate_StubsFound_OnlyOneXPathConditionCorrect_ShouldReturnInvalid()
+        {
+            // arrange
+            string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -111,10 +110,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
     </m:GetStockPrice>
   </soap:Body>
 </soap:Envelope>";
-         var conditions = new StubConditionsModel
-         {
-            Xpath = new[]
-               {
+            var conditions = new StubConditionsModel
+            {
+                Xpath = new[]
+                  {
                   new StubXpathModel
                   {
                      QueryString = "/soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'Umbrella']",
@@ -134,24 +133,24 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
                      }
                   }
                }
-         };
+            };
 
-         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            _httpContextServiceMock
+               .Setup(m => m.GetBody())
+               .Returns(body);
 
-         // act
-         var result = _checker.Validate("id", conditions);
+            // act
+            var result = _checker.Validate("id", conditions);
 
-         // assert
-         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-      }
+            // assert
+            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+        }
 
-      [TestMethod]
-      public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
-      {
-         // arrange
-         string body = @"<?xml version=""1.0""?>
+        [TestMethod]
+        public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
+        {
+            // arrange
+            string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -162,10 +161,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
     </m:GetStockPrice>
   </soap:Body>
 </soap:Envelope>";
-         var conditions = new StubConditionsModel
-         {
-            Xpath = new[]
-               {
+            var conditions = new StubConditionsModel
+            {
+                Xpath = new[]
+                  {
                   new StubXpathModel
                   {
                      QueryString = "/soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'Umbrella']",
@@ -185,24 +184,24 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
                      }
                   }
                }
-         };
+            };
 
-         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            _httpContextServiceMock
+               .Setup(m => m.GetBody())
+               .Returns(body);
 
-         // act
-         var result = _checker.Validate("id", conditions);
+            // act
+            var result = _checker.Validate("id", conditions);
 
-         // assert
-         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-      }
+            // assert
+            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+        }
 
-      [TestMethod]
-      public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces_FilteredByRegex()
-      {
-         // arrange
-         string body = @"<?xml version=""1.0""?>
+        [TestMethod]
+        public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces_FilteredByRegex()
+        {
+            // arrange
+            string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -213,10 +212,10 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
     </m:GetStockPrice>
   </soap:Body>
 </soap:Envelope>";
-         var conditions = new StubConditionsModel
-         {
-            Xpath = new[]
-               {
+            var conditions = new StubConditionsModel
+            {
+                Xpath = new[]
+                  {
                   new StubXpathModel
                   {
                      QueryString = "/soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'Umbrella']"
@@ -226,32 +225,32 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
                      QueryString = "/soap:Envelope/soap:Body/m:GetStockPrice/m:Description[text() = 'An umbrella']"
                   }
                }
-         };
+            };
 
-         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            _httpContextServiceMock
+               .Setup(m => m.GetBody())
+               .Returns(body);
 
-         // act
-         var result = _checker.Validate("id", conditions);
+            // act
+            var result = _checker.Validate("id", conditions);
 
-         // assert
-         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-      }
+            // assert
+            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+        }
 
-      [TestMethod]
-      public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithoutNamespaces()
-      {
-         // arrange
-         string body = @"<?xml version=""1.0""?>
+        [TestMethod]
+        public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithoutNamespaces()
+        {
+            // arrange
+            string body = @"<?xml version=""1.0""?>
 <object>
 	<a>TEST</a>
 	<b>TEST2</b>
 </object>";
-         var conditions = new StubConditionsModel
-         {
-            Xpath = new[]
-               {
+            var conditions = new StubConditionsModel
+            {
+                Xpath = new[]
+                  {
                   new StubXpathModel
                   {
                      QueryString = "/object/a[text() = 'TEST']"
@@ -261,17 +260,17 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
                      QueryString = "/object/b[text() = 'TEST2']"
                   }
                }
-         };
+            };
 
-         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            _httpContextServiceMock
+               .Setup(m => m.GetBody())
+               .Returns(body);
 
-         // act
-         var result = _checker.Validate("id", conditions);
+            // act
+            var result = _checker.Validate("id", conditions);
 
-         // assert
-         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-      }
-   }
+            // assert
+            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+        }
+    }
 }

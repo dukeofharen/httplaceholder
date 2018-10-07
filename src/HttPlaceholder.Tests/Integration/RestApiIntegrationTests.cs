@@ -7,13 +7,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Newtonsoft.Json;
 using HttPlaceholder.DataLogic;
 using HttPlaceholder.DataLogic.Implementations.StubSources;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Tests.Integration

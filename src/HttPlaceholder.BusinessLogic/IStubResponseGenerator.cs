@@ -3,8 +3,8 @@ using HttPlaceholder.Models;
 
 namespace HttPlaceholder.BusinessLogic
 {
-   public interface IStubResponseGenerator
-   {
-      Task<ResponseModel> GenerateResponseAsync(StubModel stub);
-   }
+    public interface IStubResponseGenerator
+    {
+        Task<ResponseModel> GenerateResponseAsync(StubModel stub);
+    }
 }

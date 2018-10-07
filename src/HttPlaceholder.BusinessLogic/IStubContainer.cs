@@ -4,22 +4,22 @@ using HttPlaceholder.Models;
 
 namespace HttPlaceholder.BusinessLogic
 {
-   public interface IStubContainer
-   {
-      Task<IEnumerable<StubModel>> GetStubsAsync();
+    public interface IStubContainer
+    {
+        Task<IEnumerable<StubModel>> GetStubsAsync();
 
-      Task AddStubAsync(StubModel stub);
+        Task AddStubAsync(StubModel stub);
 
-      Task<bool> DeleteStubAsync(string stubId);
+        Task<bool> DeleteStubAsync(string stubId);
 
-      Task<StubModel> GetStubAsync(string stubId);
+        Task<StubModel> GetStubAsync(string stubId);
 
-      Task AddRequestResultAsync(RequestResultModel requestResult);
+        Task AddRequestResultAsync(RequestResultModel requestResult);
 
-      Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
+        Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
 
-      Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId);
+        Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId);
 
-      Task DeleteAllRequestResultsAsync();
-   }
+        Task DeleteAllRequestResultsAsync();
+    }
 }

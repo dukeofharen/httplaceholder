@@ -1,7 +1,7 @@
 ﻿namespace HttPlaceholder.Services
 {
-   public interface IYamlService
-   {
-      TObject Parse<TObject>(string input);
-   }
+    public interface IYamlService
+    {
+        TObject Parse<TObject>(string input);
+    }
 }

@@ -4,23 +4,23 @@ using HttPlaceholder.Models;
 
 namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
 {
-   public class TextResponseWriter : IResponseWriter
-   {
-      public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
-      {
-         bool executed = false;
-         if(stub.Response.Text != null)
-         {
-            response.Body = Encoding.UTF8.GetBytes(stub.Response.Text);
-            if (!response.Headers.TryGetValue("Content-Type", out string contentType))
+    public class TextResponseWriter : IResponseWriter
+    {
+        public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
+        {
+            bool executed = false;
+            if (stub.Response.Text != null)
             {
-               response.Headers.Add("Content-Type", "text/plain");
+                response.Body = Encoding.UTF8.GetBytes(stub.Response.Text);
+                if (!response.Headers.TryGetValue("Content-Type", out string contentType))
+                {
+                    response.Headers.Add("Content-Type", "text/plain");
+                }
+
+                executed = true;
             }
 
-            executed = true;
-         }
-
-         return Task.FromResult(executed);
-      }
-   }
+            return Task.FromResult(executed);
+        }
+    }
 }

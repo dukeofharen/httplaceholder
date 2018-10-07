@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.DataLogic;
+using HttPlaceholder.DataLogic.Implementations.StubSources;
+using HttPlaceholder.Models;
 using HttPlaceholder.Services;
+using HttPlaceholder.Services.Implementations;
+using HttPlaceholder.Utilities;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
-using HttPlaceholder.Models;
-using HttPlaceholder.Utilities;
-using System.IO;
-using HttPlaceholder.DataLogic.Implementations.StubSources;
-using Microsoft.Extensions.Logging;
-using HttPlaceholder.Services.Implementations;
-using HttPlaceholder.DataLogic;
 
 namespace HttPlaceholder.Tests.Integration
 {

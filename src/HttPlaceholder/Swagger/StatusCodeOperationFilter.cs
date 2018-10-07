@@ -3,14 +3,14 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace HttPlaceholder.Swagger
 {
-   public class StatusCodeOperationFilter : IOperationFilter
-   {
-      public void Apply(Operation operation, OperationFilterContext context)
-      {
-         operation.Responses.Add("401", new Response
-         {
-            Description = "User is not authorized (if authorization is configured)"
-         });
-      }
-   }
+    public class StatusCodeOperationFilter : IOperationFilter
+    {
+        public void Apply(Operation operation, OperationFilterContext context)
+        {
+            operation.Responses.Add("401", new Response
+            {
+                Description = "User is not authorized (if authorization is configured)"
+            });
+        }
+    }
 }

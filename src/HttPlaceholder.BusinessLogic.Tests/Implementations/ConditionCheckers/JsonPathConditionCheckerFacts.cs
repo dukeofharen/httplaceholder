@@ -1,54 +1,53 @@
-﻿using HttPlaceholder.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers;
-using HttPlaceholder.BusinessLogic.Tests.Utilities;
+﻿using HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers;
 using HttPlaceholder.Models;
 using HttPlaceholder.Models.Enums;
+using HttPlaceholder.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
 {
-   [TestClass]
-   public class JsonPathConditionCheckerFacts
-   {
-      private Mock<IHttpContextService> _httpContextServiceMock;
-      private JsonPathConditionChecker _checker;
+    [TestClass]
+    public class JsonPathConditionCheckerFacts
+    {
+        private Mock<IHttpContextService> _httpContextServiceMock;
+        private JsonPathConditionChecker _checker;
 
-      [TestInitialize]
-      public void Initialize()
-      {
-         _httpContextServiceMock = new Mock<IHttpContextService>();
-         _checker = new JsonPathConditionChecker(
-            _httpContextServiceMock.Object);
-      }
+        [TestInitialize]
+        public void Initialize()
+        {
+            _httpContextServiceMock = new Mock<IHttpContextService>();
+            _checker = new JsonPathConditionChecker(
+               _httpContextServiceMock.Object);
+        }
 
-      [TestCleanup]
-      public void Cleanup()
-      {
-         _httpContextServiceMock.VerifyAll();
-      }
+        [TestCleanup]
+        public void Cleanup()
+        {
+            _httpContextServiceMock.VerifyAll();
+        }
 
-      [TestMethod]
-      public void JsonPathConditionChecker_Validate_StubsFound_ButNoJsonPathConditions_ShouldReturnNotExecuted()
-      {
-         // arrange
-         var conditions = new StubConditionsModel
-         {
-            JsonPath = null
-         };
+        [TestMethod]
+        public void JsonPathConditionChecker_Validate_StubsFound_ButNoJsonPathConditions_ShouldReturnNotExecuted()
+        {
+            // arrange
+            var conditions = new StubConditionsModel
+            {
+                JsonPath = null
+            };
 
-         // act
-         var result = _checker.Validate("id", conditions);
+            // act
+            var result = _checker.Validate("id", conditions);
 
-         // assert
-         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
-      }
+            // assert
+            Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+        }
 
-      [TestMethod]
-      public void JsonPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
-      {
-         // arrange
-         string body = @"{
+        [TestMethod]
+        public void JsonPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
+        {
+            // arrange
+            string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -68,31 +67,31 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
     }
   ]
 }";
-         var conditions = new StubConditionsModel
-         {
-            JsonPath = new[]
-               {
+            var conditions = new StubConditionsModel
+            {
+                JsonPath = new[]
+                  {
                   "$.phoneNumbers[?(@.type=='Android')]",
                   "$.phoneNumbers[?(@.type=='Office')]"
                }
-         };
+            };
 
-         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            _httpContextServiceMock
+               .Setup(m => m.GetBody())
+               .Returns(body);
 
-         // act
-         var result = _checker.Validate("id", conditions);
+            // act
+            var result = _checker.Validate("id", conditions);
 
-         // assert
-         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-      }
+            // assert
+            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+        }
 
-      [TestMethod]
-      public void JsonPathConditionChecker_Validate_StubsFound_OnlyOneJsonPathConditionCorrect_ShouldReturnInvalid()
-      {
-         // arrange
-         string body = @"{
+        [TestMethod]
+        public void JsonPathConditionChecker_Validate_StubsFound_OnlyOneJsonPathConditionCorrect_ShouldReturnInvalid()
+        {
+            // arrange
+            string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -112,31 +111,31 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
     }
   ]
 }";
-         var conditions = new StubConditionsModel
-         {
-            JsonPath = new[]
-               {
+            var conditions = new StubConditionsModel
+            {
+                JsonPath = new[]
+                  {
                   "$.phoneNumbers[?(@.type=='iPhone')]",
                   "$.phoneNumbers[?(@.type=='Office')]"
                }
-         };
+            };
 
-         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            _httpContextServiceMock
+               .Setup(m => m.GetBody())
+               .Returns(body);
 
-         // act
-         var result = _checker.Validate("id", conditions);
+            // act
+            var result = _checker.Validate("id", conditions);
 
-         // assert
-         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-      }
+            // assert
+            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+        }
 
-      [TestMethod]
-      public void JsonPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
-      {
-         // arrange
-         string body = @"{
+        [TestMethod]
+        public void JsonPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
+        {
+            // arrange
+            string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -156,24 +155,24 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
     }
   ]
 }";
-         var conditions = new StubConditionsModel
-         {
-            JsonPath = new[]
-               {
+            var conditions = new StubConditionsModel
+            {
+                JsonPath = new[]
+                  {
                   "$.phoneNumbers[?(@.type=='iPhone')]",
                   "$.phoneNumbers[?(@.type=='home')]"
                }
-         };
+            };
 
-         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            _httpContextServiceMock
+               .Setup(m => m.GetBody())
+               .Returns(body);
 
-         // act
-         var result = _checker.Validate("id", conditions);
+            // act
+            var result = _checker.Validate("id", conditions);
 
-         // assert
-         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-      }
-   }
+            // assert
+            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+        }
+    }
 }

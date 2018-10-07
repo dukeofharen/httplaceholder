@@ -1,7 +1,7 @@
 ﻿namespace HttPlaceholder.Services
 {
-   public interface IAssemblyService
-   {
-      string GetAssemblyRootPath();
-   }
+    public interface IAssemblyService
+    {
+        string GetAssemblyRootPath();
+    }
 }

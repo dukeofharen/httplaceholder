@@ -6,185 +6,185 @@ using Moq;
 
 namespace HttPlaceholder.Services.Tests.Implementations
 {
-   [TestClass]
-   public class HttpContextServiceFacts
-   {
-      private Mock<IHttpContextAccessor> _httpContextAccessorMock;
-      private HttpContextService _service;
-      private MockHttpContext _mockHttpContext;
+    [TestClass]
+    public class HttpContextServiceFacts
+    {
+        private Mock<IHttpContextAccessor> _httpContextAccessorMock;
+        private HttpContextService _service;
+        private MockHttpContext _mockHttpContext;
 
-      [TestInitialize]
-      public void Initialize()
-      {
-         _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-         _service = new HttpContextService(_httpContextAccessorMock.Object);
+        [TestInitialize]
+        public void Initialize()
+        {
+            _httpContextAccessorMock = new Mock<IHttpContextAccessor>();
+            _service = new HttpContextService(_httpContextAccessorMock.Object);
 
-         _mockHttpContext = new MockHttpContext();
-         _httpContextAccessorMock
-            .Setup(m => m.HttpContext)
-            .Returns(_mockHttpContext);
-      }
+            _mockHttpContext = new MockHttpContext();
+            _httpContextAccessorMock
+               .Setup(m => m.HttpContext)
+               .Returns(_mockHttpContext);
+        }
 
-      [TestCleanup]
-      public void Cleanup()
-      {
-         _httpContextAccessorMock.VerifyAll();
-      }
+        [TestCleanup]
+        public void Cleanup()
+        {
+            _httpContextAccessorMock.VerifyAll();
+        }
 
-      [TestMethod]
-      public void HttpContextService_GetClientIp_NoXForwardedHeaderSet_ShouldReturnRegularClientIp()
-      {
-         // arrange
-         string ip = "1.2.3.4";
+        [TestMethod]
+        public void HttpContextService_GetClientIp_NoXForwardedHeaderSet_ShouldReturnRegularClientIp()
+        {
+            // arrange
+            string ip = "1.2.3.4";
 
-         _mockHttpContext.SetIp(ip);
+            _mockHttpContext.SetIp(ip);
 
-         // act
-         string result = _service.GetClientIp();
+            // act
+            string result = _service.GetClientIp();
 
-         // assert
-         Assert.AreEqual(ip, result);
-      }
+            // assert
+            Assert.AreEqual(ip, result);
+        }
 
-      [TestMethod]
-      public void HttpContextService_GetClientIp_XForwardedHeaderSet_ShouldReturnIpFromXForwardedHeader()
-      {
-         // arrange
-         string ip = "1.2.3.4";
-         string xForwardedIp = "11.22.33.44";
+        [TestMethod]
+        public void HttpContextService_GetClientIp_XForwardedHeaderSet_ShouldReturnIpFromXForwardedHeader()
+        {
+            // arrange
+            string ip = "1.2.3.4";
+            string xForwardedIp = "11.22.33.44";
 
-         _mockHttpContext.SetIp(ip);
-         _mockHttpContext.Request.Headers.Add("X-Forwarded-For", $"{xForwardedIp}, 3.3.3.3, 4.4.4.4");
+            _mockHttpContext.SetIp(ip);
+            _mockHttpContext.Request.Headers.Add("X-Forwarded-For", $"{xForwardedIp}, 3.3.3.3, 4.4.4.4");
 
-         // act
-         string result = _service.GetClientIp();
+            // act
+            string result = _service.GetClientIp();
 
-         // assert
-         Assert.AreEqual(xForwardedIp, result);
-      }
+            // assert
+            Assert.AreEqual(xForwardedIp, result);
+        }
 
-      [TestMethod]
-      public void HttpContextService_GetClientIp_XForwardedHeaderSet_ShouldReturnIpFromXForwardedHeader_CaseInsensitive()
-      {
-         // arrange
-         string ip = "1.2.3.4";
-         string xForwardedIp = "11.22.33.44";
+        [TestMethod]
+        public void HttpContextService_GetClientIp_XForwardedHeaderSet_ShouldReturnIpFromXForwardedHeader_CaseInsensitive()
+        {
+            // arrange
+            string ip = "1.2.3.4";
+            string xForwardedIp = "11.22.33.44";
 
-         _mockHttpContext.SetIp(ip);
-         _mockHttpContext.Request.Headers.Add("X-FORWARDED-FOR", $"{xForwardedIp}, 3.3.3.3, 4.4.4.4");
+            _mockHttpContext.SetIp(ip);
+            _mockHttpContext.Request.Headers.Add("X-FORWARDED-FOR", $"{xForwardedIp}, 3.3.3.3, 4.4.4.4");
 
-         // act
-         string result = _service.GetClientIp();
+            // act
+            string result = _service.GetClientIp();
 
-         // assert
-         Assert.AreEqual(xForwardedIp, result);
-      }
+            // assert
+            Assert.AreEqual(xForwardedIp, result);
+        }
 
-      [TestMethod]
-      public void HttpContextService_GetHost_NoXForwardedHostHeaderSet_ShouldReturnRegularHostName()
-      {
-         // arrange
-         string host = "placeholder.local:44385";
+        [TestMethod]
+        public void HttpContextService_GetHost_NoXForwardedHostHeaderSet_ShouldReturnRegularHostName()
+        {
+            // arrange
+            string host = "placeholder.local:44385";
 
-         _mockHttpContext.SetHost(host);
+            _mockHttpContext.SetHost(host);
 
-         // act
-         string result = _service.GetHost();
+            // act
+            string result = _service.GetHost();
 
-         // assert
-         Assert.AreEqual(host, result);
-      }
+            // assert
+            Assert.AreEqual(host, result);
+        }
 
-      [TestMethod]
-      public void HttpContextService_GetHost_XForwardedHostHeaderSet_ShouldReturnHostFromHeader()
-      {
-         // arrange
-         string host = "placeholder.local:44385";
-         string forwardedHost = "httplaceholder.com";
+        [TestMethod]
+        public void HttpContextService_GetHost_XForwardedHostHeaderSet_ShouldReturnHostFromHeader()
+        {
+            // arrange
+            string host = "placeholder.local:44385";
+            string forwardedHost = "httplaceholder.com";
 
-         _mockHttpContext.SetHost(host);
-         _mockHttpContext.Request.Headers.Add("X-Forwarded-Host", forwardedHost);
+            _mockHttpContext.SetHost(host);
+            _mockHttpContext.Request.Headers.Add("X-Forwarded-Host", forwardedHost);
 
-         // act
-         string result = _service.GetHost();
+            // act
+            string result = _service.GetHost();
 
-         // assert
-         Assert.AreEqual(forwardedHost, result);
-      }
+            // assert
+            Assert.AreEqual(forwardedHost, result);
+        }
 
-      [TestMethod]
-      public void HttpContextService_GetHost_XForwardedHostHeaderSet_ShouldReturnHostFromHeader_CaseInsensitive()
-      {
-         // arrange
-         string host = "placeholder.local:44385";
-         string forwardedHost = "httplaceholder.com";
+        [TestMethod]
+        public void HttpContextService_GetHost_XForwardedHostHeaderSet_ShouldReturnHostFromHeader_CaseInsensitive()
+        {
+            // arrange
+            string host = "placeholder.local:44385";
+            string forwardedHost = "httplaceholder.com";
 
-         _mockHttpContext.SetHost(host);
-         _mockHttpContext.Request.Headers.Add("X-FORWARDED-HOST", forwardedHost);
+            _mockHttpContext.SetHost(host);
+            _mockHttpContext.Request.Headers.Add("X-FORWARDED-HOST", forwardedHost);
 
-         // act
-         string result = _service.GetHost();
+            // act
+            string result = _service.GetHost();
 
-         // assert
-         Assert.AreEqual(forwardedHost, result);
-      }
+            // assert
+            Assert.AreEqual(forwardedHost, result);
+        }
 
-      [TestMethod]
-      public void HttpContextService_IsHttps_NoXForwardedProtoHeaderSet_ShouldReturnRegularIsHttps()
-      {
-         // arrange
-         _mockHttpContext.SetHttps(true);
+        [TestMethod]
+        public void HttpContextService_IsHttps_NoXForwardedProtoHeaderSet_ShouldReturnRegularIsHttps()
+        {
+            // arrange
+            _mockHttpContext.SetHttps(true);
 
-         // act
-         bool result = _service.IsHttps();
+            // act
+            bool result = _service.IsHttps();
 
-         // assert
-         Assert.AreEqual(result, result);
-      }
+            // assert
+            Assert.AreEqual(result, result);
+        }
 
-      [TestMethod]
-      public void HttpContextService_IsHttps_XForwardedProtoHeaderSet_ShouldReturnIsHttpsFromHeader_IsHttps()
-      {
-         // arrange
-         string proto = "https";
+        [TestMethod]
+        public void HttpContextService_IsHttps_XForwardedProtoHeaderSet_ShouldReturnIsHttpsFromHeader_IsHttps()
+        {
+            // arrange
+            string proto = "https";
 
-         _mockHttpContext.Request.Headers.Add("X-Forwarded-Proto", proto);
+            _mockHttpContext.Request.Headers.Add("X-Forwarded-Proto", proto);
 
-         // act
-         bool result = _service.IsHttps();
+            // act
+            bool result = _service.IsHttps();
 
-         // assert
-         Assert.IsTrue(result);
-      }
+            // assert
+            Assert.IsTrue(result);
+        }
 
-      [TestMethod]
-      public void HttpContextService_IsHttps_XForwardedProtoHeaderSet_ShouldReturnIsHttpsFromHeader_IsHttp()
-      {
-         // arrange
-         string proto = "http";
+        [TestMethod]
+        public void HttpContextService_IsHttps_XForwardedProtoHeaderSet_ShouldReturnIsHttpsFromHeader_IsHttp()
+        {
+            // arrange
+            string proto = "http";
 
-         _mockHttpContext.Request.Headers.Add("X-Forwarded-Proto", proto);
+            _mockHttpContext.Request.Headers.Add("X-Forwarded-Proto", proto);
 
-         // act
-         bool result = _service.IsHttps();
+            // act
+            bool result = _service.IsHttps();
 
-         // assert
-         Assert.IsFalse(result);
-      }
+            // assert
+            Assert.IsFalse(result);
+        }
 
-      [TestMethod]
-      public void HttpContextService_IsHttps_XForwardedProtoHeaderSet_ShouldReturnIsHttpsFromHeader_IsHttps_CaseInsensitive()
-      {
-         // arrange
-         string proto = "https";
+        [TestMethod]
+        public void HttpContextService_IsHttps_XForwardedProtoHeaderSet_ShouldReturnIsHttpsFromHeader_IsHttps_CaseInsensitive()
+        {
+            // arrange
+            string proto = "https";
 
-         _mockHttpContext.Request.Headers.Add("X-FORWARDED-PROTO", proto);
+            _mockHttpContext.Request.Headers.Add("X-FORWARDED-PROTO", proto);
 
-         // act
-         bool result = _service.IsHttps();
+            // act
+            bool result = _service.IsHttps();
 
-         // assert
-         Assert.IsTrue(result);
-      }
-   }
+            // assert
+            Assert.IsTrue(result);
+        }
+    }
 }

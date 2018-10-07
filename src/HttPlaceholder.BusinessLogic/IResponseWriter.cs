@@ -3,8 +3,8 @@ using HttPlaceholder.Models;
 
 namespace HttPlaceholder.BusinessLogic
 {
-   public interface IResponseWriter
-   {
-      Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response);
-   }
+    public interface IResponseWriter
+    {
+        Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response);
+    }
 }

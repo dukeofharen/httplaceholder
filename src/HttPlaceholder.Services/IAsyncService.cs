@@ -2,8 +2,8 @@
 
 namespace HttPlaceholder.Services
 {
-   public interface IAsyncService
-   {
-      Task DelayAsync(int millis);
-   }
+    public interface IAsyncService
+    {
+        Task DelayAsync(int millis);
+    }
 }
