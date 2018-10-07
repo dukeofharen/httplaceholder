@@ -44,5 +44,25 @@ namespace HttPlaceholder.Services.Implementations
       {
          return (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
       }
+
+      public bool DirectoryExists(string path)
+      {
+         return Directory.Exists(path);
+      }
+
+      public void CreateDirectory(string path)
+      {
+         Directory.CreateDirectory(path);
+      }
+
+      public void DeleteFile(string path)
+      {
+         File.Delete(path);
+      }
+
+      public void WriteAllText(string path, string text)
+      {
+         File.WriteAllText(path, text);
+      }
    }
 }

@@ -4,7 +4,6 @@ using HttPlaceholder.DataLogic.Implementations.StubSources;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using HttPlaceholder.Utilities;
-using System.Linq;
 
 namespace HttPlaceholder.DataLogic
 {
