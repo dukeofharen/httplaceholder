@@ -48,11 +48,21 @@ namespace HttPlaceholder
             ConfigurationService.StaticSetConfiguration(argsDictionary);
 
             int port = argsDictionary.GetValue(Constants.ConfigKeys.PortKey, 5000);
+            Console.WriteLine($"HTTP port: {port}");
+
             string defaultPfxPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx");
             string pfxPath = argsDictionary.GetValue(Constants.ConfigKeys.PfxPathKey, defaultPfxPath);
+            Console.WriteLine($"PFX path: {pfxPath}");
+
             string pfxPassword = argsDictionary.GetValue(Constants.ConfigKeys.PfxPasswordKey, "1234");
+            Console.WriteLine($"PFX password: {pfxPassword}");
+
             int httpsPort = argsDictionary.GetValue(Constants.ConfigKeys.HttpsPortKey, 5050);
+            Console.WriteLine($"HTTPS port: {httpsPort}");
+
             bool useHttps = argsDictionary.GetValue(Constants.ConfigKeys.UseHttpsKey, false);
+            Console.WriteLine($"Use HTTPS: {useHttps}");
+
             return WebHost.CreateDefaultBuilder(args)
                .UseStartup<Startup>()
                .UseKestrel(options =>
