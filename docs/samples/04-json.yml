@@ -1,4 +1,4 @@
-# A simple JSON path setup. Execute 04-json.sh to execute the requests.
+# A simple JSON path setup.
 - id: jpath-test
   conditions:
     method: PUT

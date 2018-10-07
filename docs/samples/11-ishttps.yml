@@ -7,4 +7,4 @@
       isHttps: true
   response:
     statusCode: 200
-    text: OK
+    text: HTTPS OK

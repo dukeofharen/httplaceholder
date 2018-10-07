@@ -1,0 +1,690 @@
+{
+	"info": {
+		"_postman_id": "b4921b20-c851-4abd-8c27-61564c052785",
+		"name": "HttPlaceholder Examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 Get",
+			"item": [
+				{
+					"name": "Regular 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/users?id=12&filter=first_name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "12"
+								},
+								{
+									"key": "filter",
+									"value": "first_name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regular 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/users?id=14&filter=last_name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "14"
+								},
+								{
+									"key": "filter",
+									"value": "last_name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "With negative conditions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/users?id=15&filter=last_name&last_name=Jackson",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "15"
+								},
+								{
+									"key": "filter",
+									"value": "last_name"
+								},
+								{
+									"key": "last_name",
+									"value": "Jackson"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Use fullPath",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/users?filter=first_name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "first_name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fallback scenario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02 Post",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "X-Api-Key",
+								"value": "123abc"
+							},
+							{
+								"key": "X-Another-Secret",
+								"value": "72354deg"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "john",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03 XML",
+			"item": [
+				{
+					"name": "SOAP XML",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/soap+xml; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\"?>\r\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" \r\n    xmlns:m=\"http://www.example.org/stock/Reddy\">\r\n    <soap:Header></soap:Header>\r\n    <soap:Body>\r\n        <m:GetStockPrice>\r\n            <m:StockName>GOOG</m:StockName>\r\n        </m:GetStockPrice>\r\n    </soap:Body>\r\n</soap:Envelope>"
+						},
+						"url": {
+							"raw": "http://localhost:5000/InStock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"InStock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regular XML",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/soap+xml; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\"?><object><a>TEST</a><b>TEST2</b></object>"
+						},
+						"url": {
+							"raw": "http://localhost:5000/thingy",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"thingy"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04 JSON",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"iPhone\",\r\n            \"number\": \"0123-4567-8888\"\r\n        },\r\n        {\r\n            \"type\": \"home\",\r\n            \"number\": \"0123-4567-8910\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "05 Base64 - File",
+			"item": [
+				{
+					"name": "Read file from disk",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"iPhone\",\r\n            \"number\": \"0123-4567-8888\"\r\n        },\r\n        {\r\n            \"type\": \"home\",\r\n            \"number\": \"0123-4567-8910\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/cat_file.jpg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"cat_file.jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read file from stub",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"iPhone\",\r\n            \"number\": \"0123-4567-8888\"\r\n        },\r\n        {\r\n            \"type\": \"home\",\r\n            \"number\": \"0123-4567-8910\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/cat.jpg",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"cat.jpg"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "06 Basic authentication",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/auth?id=12&filter=first_name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"auth"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "12"
+								},
+								{
+									"key": "filter",
+									"value": "first_name"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "07 Slow response",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/slooooow?id=12&filter=first_name",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"slooooow"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "12"
+								},
+								{
+									"key": "filter",
+									"value": "first_name"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "08 Redirect",
+			"item": [
+				{
+					"name": "Temporary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/temp-redirect",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"temp-redirect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Permanent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/permanent-redirect",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"permanent-redirect"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "09 Client IP",
+			"item": [
+				{
+					"name": "Exact IP",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/client-ip-1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"client-ip-1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IP range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/client-ip-2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"client-ip-2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "10 Hostname",
+			"item": [
+				{
+					"name": "Regex",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://httplaceholder2.local:5000/host-2",
+							"protocol": "http",
+							"host": [
+								"httplaceholder2",
+								"local"
+							],
+							"port": "5000",
+							"path": [
+								"host-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Full",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://httplaceholder.local:5000/host-1",
+							"protocol": "http",
+							"host": [
+								"httplaceholder",
+								"local"
+							],
+							"port": "5000",
+							"path": [
+								"host-1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "11 Is HTTPS",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "https://localhost:5050/ishttps-ok",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5050",
+							"path": [
+								"ishttps-ok"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "12 Priority",
+			"item": [
+				{
+					"name": "Fallback scenario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/adsfasdfgas",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"adsfasdfgas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "\"Not\" fallback scenario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "http://localhost:5000/not-fallback",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"not-fallback"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "13 Form",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "key1",
+									"value": "sjaak",
+									"type": "text"
+								},
+								{
+									"key": "key2",
+									"value": "bob",
+									"type": "text"
+								},
+								{
+									"key": "key2",
+									"value": "ducoo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:5000/form",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"form"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -7,11 +7,11 @@
     statusCode: 200
     text: OK-Fallback
 
-- id: situation-01
+- id: not-fallback
   conditions:
     method: GET
     url:
-      path: /users
+      path: /not-fallback
   response:
     statusCode: 200
     text: OK

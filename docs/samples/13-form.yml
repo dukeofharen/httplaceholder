@@ -12,4 +12,4 @@
       - key: key2
         value: ducoo
   response:
-    text: OK
+    text: Form OK

@@ -1,9 +1,9 @@
-# A pretty straightforward basic authentication example. Execute 06-basic-auth.sh to execute the requests.
+# A pretty straightforward basic authentication example.
 - id: basic-auth
   conditions:
     method: GET
     url:
-      path: /users
+      path: /auth
       query:
         id: 12
         filter: first_name

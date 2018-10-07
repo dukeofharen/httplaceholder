@@ -1,4 +1,4 @@
-# Several XML situations. Execute 03-xml.sh to execute the requests.
+# Several XML situations.
 # Since .NET only supports XPath 1.0 (:S) we need to provide namespaces.
 - id: soap-xml
   conditions:

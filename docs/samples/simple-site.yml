@@ -36,7 +36,7 @@
   conditions:
     method: GET
     url:
-      path: (\/index.html|\/)
+      path: index.html
   response:
     statusCode: 200
     html: |

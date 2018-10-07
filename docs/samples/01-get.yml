@@ -1,4 +1,4 @@
-# Simple GET situations. Execute 01-get.sh to execute the requests.
+# Simple GET situations.
 - id: situation-01
   conditions:
     method: GET

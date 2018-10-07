@@ -6,18 +6,18 @@
     url:
       path: /host-1
     method: GET
-    host: httplaceholder.com
+    host: httplaceholder.local
   response:
     statusCode: 200
-    text: OK
+    text: host-1 OK
 
 # This condition can also be used with regular expressions.
 - id: host-2
   conditions:
     url:
-      path: /host-1
+      path: /host-2
     method: GET
     host: http(.*)
   response:
     statusCode: 200
-    text: OK
+    text: host-2 OK

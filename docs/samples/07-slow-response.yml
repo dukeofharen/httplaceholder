@@ -3,7 +3,7 @@
   conditions:
     method: GET
     url:
-      path: /users
+      path: /slooooow
       query:
         id: 12
         filter: first_name
