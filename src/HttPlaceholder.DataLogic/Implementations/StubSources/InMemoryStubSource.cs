@@ -21,7 +21,6 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
       public Task AddRequestResultAsync(RequestResultModel requestResult)
       {
-         CleanOldRequestResults();
          _requestResultModels.Add(requestResult);
          return Task.CompletedTask;
       }
@@ -60,10 +59,10 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
          return Task.FromResult(_stubModels.AsEnumerable());
       }
 
-      private void CleanOldRequestResults()
+      public Task CleanOldRequestResults()
       {
          var config = _configurationService.GetConfiguration();
-         int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, 40);
+         int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
 
          var requests = _requestResultModels
             .OrderByDescending(r => r.RequestEndTime)
@@ -72,6 +71,8 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
          {
             _requestResultModels.Remove(request);
          }
+
+         return Task.CompletedTask;
       }
    }
 }

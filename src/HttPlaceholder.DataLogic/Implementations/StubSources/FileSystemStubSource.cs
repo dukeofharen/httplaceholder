@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
+using HttPlaceholder.Utilities;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.DataLogic.Implementations.StubSources
@@ -118,6 +119,21 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
          }
 
          return path;
+      }
+
+      public async Task CleanOldRequestResults()
+      {
+         string path = EnsureAndGetRequestsFolder();
+         var config = _configurationService.GetConfiguration();
+         int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
+         var requests = (await GetRequestResultsAsync())
+            .OrderByDescending(r => r.RequestEndTime)
+            .Skip(maxLength);
+         foreach(var request in requests)
+         {
+            string filePath = Path.Combine(path, $"{request.CorrelationId}.json");
+            _fileService.DeleteFile(filePath);
+         }
       }
    }
 }

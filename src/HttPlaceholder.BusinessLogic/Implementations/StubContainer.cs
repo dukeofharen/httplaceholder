@@ -51,6 +51,10 @@ namespace HttPlaceholder.BusinessLogic.Implementations
       public async Task AddRequestResultAsync(RequestResultModel requestResult)
       {
          var source = GetWritableStubSource();
+
+         // Clean up old requests here.
+         await source.CleanOldRequestResults();
+
          await source.AddRequestResultAsync(requestResult);
       }
 

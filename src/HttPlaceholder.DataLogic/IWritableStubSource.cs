@@ -15,5 +15,7 @@ namespace HttPlaceholder.DataLogic
       Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
 
       Task DeleteAllRequestResultsAsync();
+
+      Task CleanOldRequestResults();
    }
 }

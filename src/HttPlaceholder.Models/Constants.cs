@@ -26,5 +26,10 @@
 
          public const string FileStorageLocation = "fileStorageLocation";
       }
+
+      public static class DefaultValues
+      {
+         public const int MaxRequestsQueueLength = 40;
+      }
    }
 }
