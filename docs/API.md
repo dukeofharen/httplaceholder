@@ -2,7 +2,7 @@
 
 Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs are stored in memory and are thereby cleared when HttPlaceholder restarts (in the future, multiple stub sources, like file system or database persistency, may be added). The REST API gives you access to two collections: the stubs collection and the requests collection (to see all requests that are made to HttPlaceholder).
 
-The complete API (so all request and response objects) can be found on [SwaggerHub](https://app.swaggerhub.com/apis/dukeofharen/httplaceholder_api/v1). This page contains all endpoints, but only a few samples. Click [here](https://github.com/dukeofharen/httplaceholder/releases/latest) if you only want the swagger.json file. Using this swagger.json file, you can easily create a REST client for your favourite programming language (e.g. using a tool like [autorest](https://github.com/Azure/autorest))
+Click [here](https://github.com/dukeofharen/httplaceholder/releases/latest) if you want the swagger.json file. Using this swagger.json file, you can easily create a REST client for your favourite programming language (e.g. using a tool like [autorest](https://github.com/Azure/autorest))
 
 ## General
 
