@@ -33,7 +33,7 @@ namespace HttPlaceholder
         public static void ConfigureStatic(IApplicationBuilder app, IHostingEnvironment env, bool preloadStubs, bool loadStaticFiles)
         {
             app
-               .UseMiddleware<CorsHeadersMiddleware>()
+               .UseMiddleware<ApiHeadersMiddleware>()
                .UseMiddleware<ApiExceptionHandlingMiddleware>()
                .UseMiddleware<StubHandlingMiddleware>()
                .UseMvc()

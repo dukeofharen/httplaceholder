@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Middleware
 {
-    public class CorsHeadersMiddleware
+    public class ApiHeadersMiddleware
     {
         private readonly RequestDelegate _next;
 
-        public CorsHeadersMiddleware(RequestDelegate next)
+        public ApiHeadersMiddleware(RequestDelegate next)
         {
             _next = next;
         }
@@ -20,6 +20,8 @@ namespace HttPlaceholder.Middleware
                 context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 context.Response.Headers.Add("Access-Control-Allow-Headers", "Authorization, Content-Type");
                 context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+                context.Response.Headers.Add("Cache-Control", "no-store, no-cache");
+                context.Response.Headers.Add("Expires", "-1");
                 if (context.Request.Headers.ContainsKey("Origin") && context.Request.Method.Equals("OPTIONS"))
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.OK;
