@@ -14,7 +14,6 @@ namespace HttPlaceholder.Services
             services.TryAddTransient<IFileService, FileService>();
             services.TryAddTransient<IHttpContextService, HttpContextService>();
             services.TryAddTransient<IRequestLoggerFactory, RequestLoggerFactory>();
-            services.TryAddTransient<IWebService, WebService>();
             services.TryAddTransient<IYamlService, YamlService>();
             return services;
         }

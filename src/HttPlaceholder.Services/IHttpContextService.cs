@@ -15,8 +15,6 @@ namespace HttPlaceholder.Services
 
         string GetBody();
 
-        byte[] GetBodyAsBytes();
-
         IDictionary<string, string> GetQueryStringDictionary();
 
         IDictionary<string, string> GetHeaders();

@@ -41,21 +41,6 @@ namespace HttPlaceholder.Services.Implementations
             }
         }
 
-        public byte[] GetBodyAsBytes()
-        {
-            byte[] buffer = new byte[16 * 1024];
-            using (MemoryStream ms = new MemoryStream())
-            {
-                int read;
-                while ((read = _httpContextAccessor.HttpContext.Request.Body.Read(buffer, 0, buffer.Length)) > 0)
-                {
-                    ms.Write(buffer, 0, read);
-                }
-
-                return ms.ToArray();
-            }
-        }
-
         public IDictionary<string, string> GetQueryStringDictionary()
         {
             return _httpContextAccessor.HttpContext.Request.Query
