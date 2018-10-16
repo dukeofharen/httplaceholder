@@ -52,7 +52,7 @@ namespace HttPlaceholder.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            string path = context.Request.Path;
+            string path = _httpContextService.Path;
             if (_segmentsToIgnore.Any(s => path.Contains(s, StringComparison.OrdinalIgnoreCase)))
             {
                 await _next(context);
@@ -66,7 +66,7 @@ namespace HttPlaceholder.Middleware
             try
             {
                 // Enable rewind here to be able to read the posted body multiple times.
-                context.Request.EnableRewind();
+                _httpContextService.EnableRewind();
 
                 // Log the request here
                 requestLogger.LogRequestParameters(
@@ -76,30 +76,30 @@ namespace HttPlaceholder.Middleware
                    _httpContextService.GetClientIp(),
                    _httpContextService.GetHeaders());
 
-                context.Response.Clear();
-                context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
+                _httpContextService.ClearResponse();
+                _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
                 var response = await _stubRequestExecutor.ExecuteRequestAsync();
-                context.Response.StatusCode = response.StatusCode;
+                _httpContextService.SetStatusCode(response.StatusCode);
                 foreach (var header in response.Headers)
                 {
-                    context.Response.Headers.Add(header.Key, header.Value);
+                    _httpContextService.AddHeader(header.Key, header.Value);
                 }
 
                 if (response.Body != null)
                 {
-                    await context.Response.Body.WriteAsync(response.Body, 0, response.Body.Length);
+                    await _httpContextService.WriteAsync(response.Body);
                 }
             }
             catch (RequestValidationException e)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
+                _httpContextService.SetStatusCode((int)HttpStatusCode.InternalServerError);
+                _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
                 _logger.LogWarning($"Request validation exception thrown: {e.Message}");
             }
             catch (Exception e)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                context.Response.Headers.TryAdd(correlationHeaderKey, correlation);
+                _httpContextService.SetStatusCode((int)HttpStatusCode.InternalServerError);
+                _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
                 _logger.LogWarning($"Unexpected exception thrown: {e}");
             }
 

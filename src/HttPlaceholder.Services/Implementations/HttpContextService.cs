@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Services.Implementations
@@ -117,6 +119,48 @@ namespace HttPlaceholder.Services.Implementations
             return httpContext.Request.Form
                 .Select(f => (f.Key, f.Value))
                 .ToArray();
+        }
+
+        public void SetStatusCode(int statusCode)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            httpContext.Response.StatusCode = statusCode;
+        }
+
+        public void AddHeader(string key, StringValues values)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            httpContext.Response.Headers.Add(key, values);
+        }
+
+        public bool TryAddHeader(string key, StringValues values)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            if (!httpContext.Response.Headers.ContainsKey(key))
+            {
+                httpContext.Response.Headers.Add(key, values);
+                return true;
+            }
+
+            return false;
+        }
+
+        public void EnableRewind()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            httpContext.Request.EnableRewind();
+        }
+
+        public void ClearResponse()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            httpContext.Response.Clear();
+        }
+
+        public async Task WriteAsync(byte[] body)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            await httpContext.Response.Body.WriteAsync(body, 0, body.Length);
         }
     }
 }
