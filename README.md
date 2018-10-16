@@ -8,7 +8,8 @@
 Quickly mock away any webservice using HttPlaceholder. HttPlaceholder lets you specify what the request should look like and what response needs to be returned.
 
 # Where?
-[Download the latest release](https://github.com/dukeofharen/httplaceholder/releases/latest)
+* [Download the latest release](https://github.com/dukeofharen/httplaceholder/releases/latest)
+* [Issue tracking on Trello](https://trello.com/b/PCZ6K9Hd/httplaceholder)
 
 # Why?
 At my current job, we develop and maintain a lot of web applications. These web applications have a lot of dependencies on other web services. So I thought: instead of running all these dependent web services on the local dev machine, why not use a stub to make development easier? That's exactly what I did.
