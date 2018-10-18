@@ -23,6 +23,14 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             return await GetStubsAsync(false);
         }
 
+        public async Task<IEnumerable<StubModel>> GetStubsAsync(string tenant)
+        {
+            var stubs = await GetStubsAsync(false);
+            var stubsForTenant = stubs
+                .Where(s => string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
+            return stubsForTenant;
+        }
+
         public async Task AddStubAsync(StubModel stub)
         {
             // Check that a stub with the new ID isn't already added to a readonly stub source.

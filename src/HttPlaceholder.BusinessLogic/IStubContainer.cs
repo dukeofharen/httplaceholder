@@ -8,6 +8,8 @@ namespace HttPlaceholder.BusinessLogic
     {
         Task<IEnumerable<StubModel>> GetStubsAsync();
 
+        Task<IEnumerable<StubModel>> GetStubsAsync(string tenant);
+
         Task AddStubAsync(StubModel stub);
 
         Task<bool> DeleteStubAsync(string stubId);

@@ -64,6 +64,47 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
         }
 
         [TestMethod]
+        public async Task StubContainer_GetStubsAsync_ByTenant_HappyFlow()
+        {
+            // arrange
+            var stubSource1 = new Mock<IStubSource>();
+            var stubSource2 = new Mock<IStubSource>();
+
+            var stub1 = new StubModel
+            {
+                Tenant = "tenant1"
+            };
+            var stub2 = new StubModel
+            {
+                Tenant = "tenant2"
+            };
+            var stub3 = new StubModel
+            {
+                Tenant = "TENaNT1"
+            };
+
+            stubSource1
+               .Setup(m => m.GetStubsAsync())
+               .ReturnsAsync(new[] { stub1, stub2 });
+
+            stubSource2
+               .Setup(m => m.GetStubsAsync())
+               .ReturnsAsync(new[] { stub3 });
+
+            _serviceProviderMock
+               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
+               .Returns(new[] { stubSource1.Object, stubSource2.Object });
+
+            // act
+            var result = (await _container.GetStubsAsync("tenant1")).ToArray();
+
+            // assert
+            Assert.AreEqual(2, result.Length);
+            Assert.AreEqual(stub1, result[0]);
+            Assert.AreEqual(stub3, result[1]);
+        }
+
+        [TestMethod]
         public async Task StubContainer_AddStubAsync_StubIdAlreadyAddedToReadOnlyStubSource_ShouldThrowConflictException()
         {
             // arrange
