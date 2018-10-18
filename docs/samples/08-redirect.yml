@@ -2,6 +2,7 @@
 
 # This will perform a temporary redirect.
 - id: temp-redirect
+  tenant: 08-redirect
   conditions:
     method: GET
     url:
@@ -11,6 +12,7 @@
 
 # This will perform a permanent redirect.
 - id: permanent-redirect
+  tenant: 08-redirect
   conditions:
     method: GET
     url:

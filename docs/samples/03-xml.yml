@@ -1,6 +1,7 @@
 # Several XML situations.
 # Since .NET only supports XPath 1.0 (:S) we need to provide namespaces.
 - id: soap-xml
+  tenant: 03-xml
   conditions:
     method: POST
     url:
@@ -19,6 +20,7 @@
       Content-Type: text/xml
 
 - id: regular-xml
+  tenant: 03-xml
   conditions:
     method: POST
     url:

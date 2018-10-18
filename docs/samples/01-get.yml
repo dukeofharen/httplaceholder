@@ -1,5 +1,6 @@
 # Simple GET situations.
 - id: situation-01
+  tenant: 01-get
   conditions:
     method: GET
     url:
@@ -17,6 +18,7 @@
       Content-Type: application/json
 
 - id: situation-02
+  tenant: 01-get
   conditions:
     method: GET
     url:
@@ -35,6 +37,7 @@
 
 # Same as the scenario above, but this configuration uses the "negativeConditions". In this case, if a query parameter last_name: Johnson is added, the configuration will NOT be executed.
 - id: situation-03
+  tenant: 01-get
   conditions:
     method: GET
     url:
@@ -57,6 +60,7 @@
 
 # Use fullPath instead of path to set a condition on the complete path including query string.
 - id: situation-04
+  tenant: 01-get
   conditions:
     method: GET
     url:
@@ -72,6 +76,7 @@
 
 # This is essentially the "fallback" scenario of the /users endpoint.
 - id: situation-fallback
+  tenant: 01-get
   conditions:
     method: GET
     url:

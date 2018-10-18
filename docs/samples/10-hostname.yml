@@ -2,6 +2,7 @@
 
 # Check the hostname on full name.
 - id: host-1
+  tenant: 10-hostname
   conditions:
     url:
       path: /host-1
@@ -13,6 +14,7 @@
 
 # This condition can also be used with regular expressions.
 - id: host-2
+  tenant: 10-hostname
   conditions:
     url:
       path: /host-2

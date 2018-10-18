@@ -2,6 +2,7 @@
 
 # Client IP address validation on a single IP address
 - id: client-ip-1
+  tenant: 09-client-ip
   conditions:
     method: GET
     url:
@@ -13,6 +14,7 @@
 
 # Client IP address validation on an IP range
 - id: client-ip-2
+  tenant: 09-client-ip
   conditions:
     method: GET
     url:

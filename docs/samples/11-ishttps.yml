@@ -1,5 +1,6 @@
 # Check if the stub is called using HTTPS.
 - id: ishttps-ok
+  tenant: 11-ishttps
   conditions:
     method: GET
     url:

@@ -1,5 +1,6 @@
 # Example for setting a priority on a stub.
 - id: fallback
+  tenant: 12-fallback
   priority: -10
   conditions: 
     method: GET
@@ -8,6 +9,7 @@
     text: OK-Fallback
 
 - id: not-fallback
+  tenant: 12-fallback
   conditions:
     method: GET
     url:

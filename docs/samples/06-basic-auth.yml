@@ -1,5 +1,6 @@
 # A pretty straightforward basic authentication example.
 - id: basic-auth
+  tenant: 06-basic-auth
   conditions:
     method: GET
     url:

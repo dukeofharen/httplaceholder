@@ -1,6 +1,7 @@
 # A simple GET request script that contains a link to a file (in this case it will look in the same folder as the .yml file; you can also fill in a full path).
 # In this case, just go to http://localhost:{port}/cat_file.jpg
 - id: image-file
+  tenant: 05-base64-file
   conditions:
     method: GET
     url:
@@ -13,6 +14,7 @@
 
 # A simple GET request script that contains a base64 encoded string (this can for example be a binary). In this case, just go to http://localhost:{port}/cat.jpg
 - id: image-base64
+  tenant: 05-base64-file
   conditions:
     method: GET
     url:

@@ -1,5 +1,6 @@
 # A simple JSON path setup.
 - id: jpath-test
+  tenant: 04-json
   conditions:
     method: PUT
     url:

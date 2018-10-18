@@ -1,5 +1,6 @@
 # Simple GET situation, but with a very slow response. Handy for testing the timeout settings of an application.
 - id: slow
+  tenant: 07-slow-response
   conditions:
     method: GET
     url:
