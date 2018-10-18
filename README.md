@@ -79,5 +79,4 @@ The `response` element defines the response of the request. In this case, HTTP 2
 
 # Todo
 - Make application "really" cross platform (Ubuntu and other Linux distributions, Mac etc.)
-- The REST API doesn't persist stubs right now; everything is in memory at the moment. Persistency on disk or in a database should be added.
 - There's no way to add custom condition checkers or response writers yet.
