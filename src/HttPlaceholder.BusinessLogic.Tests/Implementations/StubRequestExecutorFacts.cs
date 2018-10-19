@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.BusinessLogic.Implementations;
 using HttPlaceholder.BusinessLogic.Tests.Utilities;
@@ -15,6 +16,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
     [TestClass]
     public class StubRequestExecutorFacts
     {
+        private Mock<IFinalStubDeterminer> _finalStubDeterminerMock;
         private Mock<ILogger<StubRequestExecutor>> _loggerMock;
         private Mock<IServiceProvider> _serviceProviderMock;
         private Mock<IStubContainer> _stubContainerMock;
@@ -28,11 +30,13 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
         [TestInitialize]
         public void Initialize()
         {
+            _finalStubDeterminerMock = new Mock<IFinalStubDeterminer>();
             _loggerMock = new Mock<ILogger<StubRequestExecutor>>();
             _serviceProviderMock = new Mock<IServiceProvider>();
             _stubContainerMock = new Mock<IStubContainer>();
             _stubResponseGeneratorMock = new Mock<IStubResponseGenerator>();
             _executor = new StubRequestExecutor(
+                _finalStubDeterminerMock.Object,
                _loggerMock.Object,
                TestObjectFactory.GetRequestLoggerFactory(),
                _serviceProviderMock.Object,
@@ -67,6 +71,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
         [TestCleanup]
         public void Cleanup()
         {
+            _finalStubDeterminerMock.VerifyAll();
             _serviceProviderMock.VerifyAll();
             _stubContainerMock.VerifyAll();
             _stubResponseGeneratorMock.VerifyAll();
@@ -140,6 +145,9 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
                .Setup(m => m.Validate(_stub2.Id, _stub2.NegativeConditions))
                .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
+            _finalStubDeterminerMock
+                .Setup(m => m.DetermineFinalStub(It.Is<List<(StubModel, IEnumerable<ConditionCheckResultModel>)>>(s => s.Any(fs => fs.Item1 == _stub2))))
+                .Returns(_stub2);
             _stubResponseGeneratorMock
                .Setup(m => m.GenerateResponseAsync(_stub2))
                .ReturnsAsync(expectedResponseModel);
@@ -182,6 +190,9 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
                .Setup(m => m.Validate(_stub2.Id, _stub2.NegativeConditions))
                .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
+            _finalStubDeterminerMock
+                .Setup(m => m.DetermineFinalStub(It.Is<List<(StubModel, IEnumerable<ConditionCheckResultModel>)>>(s => s.Any(fs => fs.Item1 == _stub2))))
+                .Returns(_stub2);
             _stubResponseGeneratorMock
                .Setup(m => m.GenerateResponseAsync(_stub2))
                .ReturnsAsync(expectedResponseModel);

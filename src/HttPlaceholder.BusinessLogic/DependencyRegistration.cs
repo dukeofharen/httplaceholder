@@ -8,6 +8,7 @@ namespace HttPlaceholder.BusinessLogic
     {
         public static IServiceCollection AddBusinessLogic(this IServiceCollection services)
         {
+            services.AddSingleton<IFinalStubDeterminer, FinalStubDeterminer>();
             services.AddSingleton<IStubContainer, StubContainer>();
             services.AddTransient<IStubRequestExecutor, StubRequestExecutor>();
             services.AddTransient<IStubResponseGenerator, StubResponseGenerator>();

@@ -13,6 +13,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations
 {
     public class StubRequestExecutor : IStubRequestExecutor
     {
+        private readonly IFinalStubDeterminer _finalStubDeterminer;
         private readonly ILogger<StubRequestExecutor> _logger;
         private readonly IRequestLoggerFactory _requestLoggerFactory;
         private readonly IServiceProvider _serviceProvider;
@@ -20,12 +21,14 @@ namespace HttPlaceholder.BusinessLogic.Implementations
         private readonly IStubResponseGenerator _stubResponseGenerator;
 
         public StubRequestExecutor(
+            IFinalStubDeterminer finalStubDeterminer,
            ILogger<StubRequestExecutor> logger,
            IRequestLoggerFactory requestLoggerFactory,
            IServiceProvider serviceProvider,
            IStubContainer stubContainer,
            IStubResponseGenerator stubResponseGenerator)
         {
+            _finalStubDeterminer = finalStubDeterminer;
             _logger = logger;
             _requestLoggerFactory = requestLoggerFactory;
             _serviceProvider = serviceProvider;
@@ -38,7 +41,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             var requestLogger = _requestLoggerFactory.GetRequestLogger();
             var conditionCheckers = ((IEnumerable<IConditionChecker>)_serviceProvider.GetServices(typeof(IConditionChecker))).ToArray();
 
-            var foundStubs = new List<StubModel>();
+            var foundStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>();
             var stubs = await _stubContainer.GetStubsAsync();
 
             foreach (var stub in stubs)
@@ -65,7 +68,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations
                     if (allValidationResults.All(r => r.ConditionValidation != ConditionValidationType.Invalid) && validationResults.Any(r => r.ConditionValidation != ConditionValidationType.NotExecuted && r.ConditionValidation != ConditionValidationType.NotSet))
                     {
                         passed = true;
-                        foundStubs.Add(stub);
+                        foundStubs.Add((stub, allValidationResults));
                     }
 
                     requestLogger.SetStubExecutionResult(stub.Id, passed, validationResults, negativeValidationResults);
@@ -82,10 +85,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations
                 throw new RequestValidationException($"The '{nameof(foundStubs)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
             }
 
-            // Make sure the stub with the highest priority gets selected.
-            var finalStub = foundStubs
-               .OrderByDescending(s => s.Priority)
-               .First();
+            var finalStub = _finalStubDeterminer.DetermineFinalStub(foundStubs);
             requestLogger.SetExecutingStubId(finalStub.Id);
             var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub);
             return response;
