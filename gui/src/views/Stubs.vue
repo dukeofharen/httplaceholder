@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-md-10">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Filter on stub ID..." v-model="searchTerm" />
+          <input type="text" class="form-control" placeholder="Filter on stub ID or tenant..." v-model="searchTerm" />
           <span class="input-group-append">
             <a class="btn btn-outline-secondary" type="button" title="Clear input" v-on:click="clearInput"><span class="fa fa-eraser">&nbsp;</span></a>
           </span>
@@ -22,10 +22,7 @@
 </template>
 
 <script>
-import {
-  shouldAuthenticate,
-  logicGetStubs
-} from "@/data/dataLogic";
+import { shouldAuthenticate, logicGetStubs } from "@/data/dataLogic";
 import Stub from "@/components/Stub";
 import resources from "@/resources";
 import toastr from "toastr";
@@ -43,7 +40,7 @@ export default {
     Stub
   },
   created() {
-     shouldAuthenticate(result => {
+    shouldAuthenticate(result => {
       if (!result) {
         this.getStubs();
       } else {
@@ -56,7 +53,10 @@ export default {
       if (!newValue) {
         this.filteredStubs = this.stubs;
       } else {
-        this.filteredStubs = this.stubs.filter(r => r.id.includes(newValue));
+        this.filteredStubs = this.stubs.filter(r => {
+          return r.id.includes(newValue) ||
+                 r.tenant && r.tenant.includes(newValue);
+        });
       }
     },
     handleUrlSearch() {
@@ -67,14 +67,14 @@ export default {
     },
     getStubs() {
       logicGetStubs()
-      .then(response => {
-        this.stubs = response.data;
-        this.filteredStubs = response.data;
-        this.handleUrlSearch();
-      })
-      .catch(error => {
-        toastr.error(resources.somethingWentWrongServer);
-      });
+        .then(response => {
+          this.stubs = response.data;
+          this.filteredStubs = response.data;
+          this.handleUrlSearch();
+        })
+        .catch(error => {
+          toastr.error(resources.somethingWentWrongServer);
+        });
     },
     addStub() {
       this.$router.push({ name: "addStub" });
