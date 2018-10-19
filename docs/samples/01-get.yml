@@ -87,3 +87,13 @@
     statusCode: 404
     headers:
       Content-Type: application/json
+
+# If you want to return UTF8 characters, make sure you send the correct Content-Type header to the client.
+- id: utf8test
+  conditions:
+    url:
+      path: utf8
+  response:
+    text: 😻
+    headers:
+      Content-Type: text/plain; charset=utf8
