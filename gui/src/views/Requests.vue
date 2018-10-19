@@ -59,7 +59,7 @@ export default {
       } else {
         this.filteredRequests = this.requests.filter(
           r =>
-            r.executingStubId.includes(newValue) ||
+            r.executingStubId && r.executingStubId.includes(newValue) ||
             r.requestParameters.url.includes(newValue)
         );
       }
