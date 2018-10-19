@@ -10,8 +10,8 @@ namespace HttPlaceholder.BusinessLogic
         {
             services.AddSingleton<IFinalStubDeterminer, FinalStubDeterminer>();
             services.AddSingleton<IStubContainer, StubContainer>();
-            services.AddTransient<IStubRequestExecutor, StubRequestExecutor>();
-            services.AddTransient<IStubResponseGenerator, StubResponseGenerator>();
+            services.AddSingleton<IStubRequestExecutor, StubRequestExecutor>();
+            services.AddSingleton<IStubResponseGenerator, StubResponseGenerator>();
 
             // Condition checkers
             var conditionCheckerTypes = AssemblyHelper.GetImplementations<IConditionChecker>();

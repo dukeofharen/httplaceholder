@@ -8,13 +8,13 @@ namespace HttPlaceholder.Services
     {
         public static IServiceCollection AddUtilities(this IServiceCollection services)
         {
-            services.TryAddTransient<IAssemblyService, AssemblyService>();
-            services.TryAddTransient<IAsyncService, AsyncService>();
-            services.TryAddTransient<IConfigurationService, ConfigurationService>();
-            services.TryAddTransient<IFileService, FileService>();
-            services.TryAddTransient<IHttpContextService, HttpContextService>();
-            services.TryAddTransient<IRequestLoggerFactory, RequestLoggerFactory>();
-            services.TryAddTransient<IYamlService, YamlService>();
+            services.TryAddSingleton<IAssemblyService, AssemblyService>();
+            services.TryAddSingleton<IAsyncService, AsyncService>();
+            services.TryAddSingleton<IConfigurationService, ConfigurationService>();
+            services.TryAddSingleton<IFileService, FileService>();
+            services.TryAddSingleton<IHttpContextService, HttpContextService>();
+            services.TryAddSingleton<IRequestLoggerFactory, RequestLoggerFactory>();
+            services.TryAddSingleton<IYamlService, YamlService>();
             return services;
         }
     }
