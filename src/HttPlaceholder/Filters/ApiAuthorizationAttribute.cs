@@ -58,8 +58,8 @@ namespace HttPlaceholder.Filters
                 // Everything went OK, so put let's add the username to the claims.
                 context.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
                 {
-               new Claim(ClaimTypes.Name, username)
-            }));
+                   new Claim(ClaimTypes.Name, username)
+                }));
             }
         }
     }

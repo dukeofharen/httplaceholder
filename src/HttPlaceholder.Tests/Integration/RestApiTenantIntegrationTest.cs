@@ -196,5 +196,43 @@ namespace HttPlaceholder.Tests.Integration
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
         }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Tenant_DeleteAll_HappyFlow()
+        {
+            // arrange
+            string tenant = "tenant1";
+            string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
+            _stubSource._stubModels.Add(new StubModel
+            {
+                Id = "test-123",
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Response = new StubResponseModel(),
+                Tenant = "otherTenant"
+            });
+            _stubSource._stubModels.Add(new StubModel
+            {
+                Id = "test-456",
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Response = new StubResponseModel(),
+                Tenant = tenant
+            });
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri(url)
+            };
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+                Assert.AreEqual(1, _stubSource._stubModels.Count);
+                Assert.AreEqual("test-123", _stubSource._stubModels.Single().Id);
+            }
+        }
     }
 }

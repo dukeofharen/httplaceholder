@@ -333,5 +333,50 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
             // assert
             stubSource.Verify(m => m.DeleteAllRequestResultsAsync(), Times.Once);
         }
+
+        [TestMethod]
+        public async Task StubContainer_DeleteAllStubsAsync_HappyFlow()
+        {
+            // arrange
+            string tenant = "tenant1";
+            var stubSource = new Mock<IWritableStubSource>();
+
+            var stub1 = new StubModel
+            {
+                Id = "stub1",
+                Tenant = tenant
+            };
+            var stub2 = new StubModel
+            {
+                Id = "stub2",
+                Tenant = $"{tenant}bla"
+            };
+            var stub3 = new StubModel
+            {
+                Id = "stub3",
+                Tenant = tenant.ToUpper()
+            };
+
+            stubSource
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[]
+                {
+                    stub1,
+                    stub2,
+                    stub3
+                });
+
+            _serviceProviderMock
+               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
+               .Returns(new[] { stubSource.Object });
+
+            // act
+            await _container.DeleteAllStubsAsync(tenant);
+
+            // assert
+            stubSource.Verify(m => m.DeleteStubAsync(stub1.Id), Times.Once);
+            stubSource.Verify(m => m.DeleteStubAsync(stub2.Id), Times.Never);
+            stubSource.Verify(m => m.DeleteStubAsync(stub3.Id), Times.Once);
+        }
     }
 }

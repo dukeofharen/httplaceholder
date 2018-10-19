@@ -14,6 +14,8 @@ namespace HttPlaceholder.BusinessLogic
 
         Task<bool> DeleteStubAsync(string stubId);
 
+        Task DeleteAllStubsAsync(string tenant);
+
         Task<StubModel> GetStubAsync(string stubId);
 
         Task AddRequestResultAsync(RequestResultModel requestResult);

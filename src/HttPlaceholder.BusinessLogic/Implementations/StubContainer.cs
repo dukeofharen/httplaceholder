@@ -50,6 +50,18 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             return await source.DeleteStubAsync(stubId);
         }
 
+        public async Task DeleteAllStubsAsync(string tenant)
+        {
+            var source = GetWritableStubSource();
+            var stubs = (await source.GetStubsAsync())
+                .Where(s => string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+            foreach (var stub in stubs)
+            {
+                await source.DeleteStubAsync(stub.Id);
+            }
+        }
+
         public async Task<StubModel> GetStubAsync(string stubId)
         {
             var stub = (await GetStubsAsync()).FirstOrDefault(s => s.Id == stubId);
