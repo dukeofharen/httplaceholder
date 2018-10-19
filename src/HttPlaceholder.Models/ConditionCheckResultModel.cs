@@ -4,20 +4,25 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Models
 {
-   public class ConditionCheckResultModel
-   {
-      public string CheckerName { get; set; }
+    public class ConditionCheckResultModel
+    {
+        public string CheckerName { get; set; }
 
-      [JsonIgnore]
-      public ConditionValidationType ConditionValidation { get; set; } = ConditionValidationType.NotExecuted;
+        [JsonIgnore]
+        public ConditionValidationType ConditionValidation { get; set; } = ConditionValidationType.NotExecuted;
 
-      [JsonProperty("ConditionValidation")]
-      public string ConditionValidationText
-      {
-         get => ConditionValidation.ToString();
-         set => ConditionValidation = (ConditionValidationType)Enum.Parse(typeof(ConditionValidationType), value);
-      }
+        [JsonProperty("ConditionValidation")]
+        public string ConditionValidationText
+        {
+            get => ConditionValidation.ToString();
+            set => ConditionValidation = (ConditionValidationType)Enum.Parse(typeof(ConditionValidationType), value);
+        }
 
-      public string Log { get; set; }
-   }
+        public string Log { get; set; }
+
+        public override string ToString()
+        {
+            return $"{CheckerName}: {ConditionValidation}";
+        }
+    }
 }

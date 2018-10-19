@@ -13,7 +13,7 @@ using Moq;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 
-namespace HttPlaceholder.Tests.Integration
+namespace HttPlaceholder.Tests.Integration.RestApi
 {
     [TestClass]
     public class RestApiStubIntegrationTests : RestApiIntegrationTestBase

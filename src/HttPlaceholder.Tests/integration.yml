@@ -1,4 +1,8 @@
-﻿- id: postcode-eelde
+﻿# - id: no-conditions
+#   response:
+#     text: No conditions; also OK!
+
+- id: postcode-eelde
   conditions:
     method: GET
     url:

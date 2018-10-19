@@ -96,9 +96,11 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubRequestExecutor_ExecuteRequestAsync_NoConditionExecuted_ShouldThrowException()
+        public async Task StubRequestExecutor_ExecuteRequestAsync_NoConditionExecuted_ShouldPickFirstStub()
         {
             // arrange
+            var expectedResponseModel = new ResponseModel();
+
             _conditionCheckerMock1
                .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
                .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.NotExecuted });
@@ -106,11 +108,18 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
                .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
                .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.NotExecuted });
 
+            _finalStubDeterminerMock
+                .Setup(m => m.DetermineFinalStub(It.Is<List<(StubModel, IEnumerable<ConditionCheckResultModel>)>>(s => s.Any(fs => fs.Item1 == _stub1))))
+                .Returns(_stub1);
+            _stubResponseGeneratorMock
+               .Setup(m => m.GenerateResponseAsync(_stub1))
+               .ReturnsAsync(expectedResponseModel);
+
             // act
-            var exception = await Assert.ThrowsExceptionAsync<RequestValidationException>(() => _executor.ExecuteRequestAsync());
+            var result = await _executor.ExecuteRequestAsync();
 
             // assert
-            Assert.IsTrue(exception.Message.Contains("and the request did not pass"));
+            Assert.AreEqual(expectedResponseModel, result);
         }
 
         [TestMethod]

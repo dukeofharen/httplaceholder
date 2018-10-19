@@ -65,7 +65,8 @@ namespace HttPlaceholder.BusinessLogic.Implementations
                     }
 
                     var allValidationResults = validationResults.Concat(negativeValidationResults);
-                    if (allValidationResults.All(r => r.ConditionValidation != ConditionValidationType.Invalid) && validationResults.Any(r => r.ConditionValidation != ConditionValidationType.NotExecuted && r.ConditionValidation != ConditionValidationType.NotSet))
+                    if (allValidationResults.All(r => r.ConditionValidation != ConditionValidationType.Invalid) && validationResults.Any(r => r.ConditionValidation != ConditionValidationType.NotExecuted && r.ConditionValidation != ConditionValidationType.NotSet) ||
+                        allValidationResults.All(r => r.ConditionValidation == ConditionValidationType.NotExecuted))
                     {
                         passed = true;
                         foundStubs.Add((stub, allValidationResults));

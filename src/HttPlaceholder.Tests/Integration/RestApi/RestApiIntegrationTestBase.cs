@@ -6,7 +6,7 @@ using HttPlaceholder.DataLogic.Implementations.StubSources;
 using HttPlaceholder.Services;
 using Moq;
 
-namespace HttPlaceholder.Tests.Integration
+namespace HttPlaceholder.Tests.Integration.RestApi
 {
     public abstract class RestApiIntegrationTestBase : IntegrationTestBase
     {

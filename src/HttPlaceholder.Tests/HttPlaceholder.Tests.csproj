@@ -29,6 +29,9 @@
     <ProjectReference Include="..\HttPlaceholder\HttPlaceholder.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="fallback.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="integration.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -7,7 +7,7 @@ using HttPlaceholder.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Tests.Integration
+namespace HttPlaceholder.Tests.Integration.RestApi
 {
     [TestClass]
     public class RestApiUserIntegrationTest : RestApiIntegrationTestBase

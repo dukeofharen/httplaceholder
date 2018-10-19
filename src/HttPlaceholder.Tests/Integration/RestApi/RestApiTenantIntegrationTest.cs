@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 
-namespace HttPlaceholder.Tests.Integration
+namespace HttPlaceholder.Tests.Integration.RestApi
 {
     [TestClass]
     public class RestApiTenantIntegrationTest : RestApiIntegrationTestBase
