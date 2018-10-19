@@ -8,9 +8,6 @@
       <FileVersion>0.4.0.0</FileVersion>
       <RuntimeIdentifiers>win81-x64;win10-x64;ubuntu.14.04-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
       <LangVersion>latest</LangVersion>
-      <PackAsTool>true</PackAsTool>
-      <ToolCommandName>httplaceholder1</ToolCommandName>
-      <PackageOutputPath>./nupkg</PackageOutputPath>
       <Authors>Duco Winterwerp</Authors>
       <Company>Ducode</Company>
       <RepositoryUrl>https://github.com/dukeofharen/httplaceholder</RepositoryUrl>
@@ -39,9 +36,22 @@
       <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />
    </ItemGroup>
    <ItemGroup>
+     <Compile Update="Resources\ConsoleAppResources.Designer.cs">
+       <DesignTime>True</DesignTime>
+       <AutoGen>True</AutoGen>
+       <DependentUpon>ConsoleAppResources.resx</DependentUpon>
+     </Compile>
+   </ItemGroup>
+   <ItemGroup>
       <Content Update="config.json">
          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+   </ItemGroup>
+   <ItemGroup>
+     <EmbeddedResource Update="Resources\ConsoleAppResources.resx">
+       <Generator>ResXFileCodeGenerator</Generator>
+       <LastGenOutput>ConsoleAppResources.Designer.cs</LastGenOutput>
+     </EmbeddedResource>
    </ItemGroup>
    <ItemGroup>
       <None Update="key.pfx">

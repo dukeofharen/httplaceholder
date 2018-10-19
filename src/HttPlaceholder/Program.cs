@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using HttPlaceholder.Models;
+using HttPlaceholder.Resources;
 using HttPlaceholder.Services.Implementations;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore;
@@ -13,12 +15,20 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder
 {
-    internal class Program
+    internal static class Program
     {
         public static void Main(string[] args)
         {
+            var arg = args.FirstOrDefault();
+            if (string.Equals(arg, "-h", StringComparison.OrdinalIgnoreCase) || string.Equals(arg, "--help", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine(ConsoleAppResources.ManPage);
+                Environment.Exit(0);
+            }
+
             try
             {
+                Console.WriteLine("Run this application with argument '-h' or '--help' to get more info about the command line arguments.");
                 BuildWebHost(args).Run();
             }
             catch (Exception e)
