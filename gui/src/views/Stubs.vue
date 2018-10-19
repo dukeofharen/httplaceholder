@@ -10,11 +10,10 @@
           </span>
         </div>
       </div>
-      <div class="col-md-1">
+      <div class="col-md-2 buttons">
         <a class="btn btn-success" v-on:click="getStubs" title="Refresh"><span class="fa fa-refresh">&nbsp;</span></a>
-      </div>
-      <div class="col-md-1">
         <a class="btn btn-success" v-on:click="addStub" title="Add new stub(s)"><span class="fa fa-plus-circle">&nbsp;</span></a>
+        <a class="btn btn-success" v-on:click="downloadStubs" title="Download all stubs"><span class="fa fa-cloud-download">&nbsp;</span></a>
       </div>
     </div>
     <Stub v-bind:stub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
@@ -79,6 +78,9 @@ export default {
     addStub() {
       this.$router.push({ name: "addStub" });
     },
+    downloadStubs() {
+      this.$router.push({ name: "downloadStubs" });
+    },
     clearInput() {
       this.searchTerm = "";
     }
@@ -95,4 +97,7 @@ export default {
 </script>
 
 <style scoped>
+.buttons > a {
+  margin-right: 5px;
+}
 </style>

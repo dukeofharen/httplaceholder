@@ -37,10 +37,14 @@ const logicDeleteAllRequests = () => {
     return deleteAllRequests(username, password);
 }
 
-const logicGetStubs = () => {
+const logicGetStubs = asYaml => {
+    if(!asYaml) {
+        asYaml = false;
+    }
+
     let username = getItem("username");
     let password = getItem("password");
-    return getStubs(username, password);
+    return getStubs(username, password, asYaml);
 }
 
 const logicAddStub = stub => {

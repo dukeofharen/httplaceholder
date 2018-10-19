@@ -28,7 +28,12 @@ export default new Router({
     {
       path: '/addStub',
       name: 'addStub',
-      component: () => import(/* webpackChunkName: "login" */ './views/AddStub.vue')
+      component: () => import(/* webpackChunkName: "addStub" */ './views/AddStub.vue')
+    },
+    {
+      path: '/downloadStubs',
+      name: 'downloadStubs',
+      component: () => import(/* webpackChunkName: "downloadStubs" */ './views/DownloadStubs.vue')
     }
   ]
 })

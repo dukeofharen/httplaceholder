@@ -8,10 +8,10 @@ const getRequests = (username, password) => {
     return axios.get(url, config)
 }
 
-const getStubs = (username, password) => {
+const getStubs = (username, password, asYaml) => {
     let rootUrl = urls.rootUrl
     let url = `${rootUrl}ph-api/stubs`
-    let config = getConfig(username, password)
+    let config = getConfig(username, password, asYaml)
     return axios.get(url, config)
 }
 
@@ -37,12 +37,21 @@ const addStub = (stub, username, password) => {
     return axios.post(url, stub, config)
 }
 
-const getConfig = (username, password) => {
+const getConfig = (username, password, asYaml) => {
+    if(!asYaml) {
+        asYaml = false;
+    }
+
     let basicAuthString = btoa(`${username}:${password}`)
+    let headers = {
+        Authorization: `Basic ${basicAuthString}`
+    };
+    if (asYaml) {
+        headers['Accept'] = 'text/yaml'
+    }
+
     return {
-        headers: {
-            Authorization: `Basic ${basicAuthString}`
-        }
+        headers: headers
     }
 }
 
