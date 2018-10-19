@@ -62,6 +62,31 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             }
         }
 
+        public async Task UpdateAllStubs(string tenant, IEnumerable<StubModel> stubs)
+        {
+            var source = GetWritableStubSource();
+            var stubIds = stubs
+                .Select(s => s.Id)
+                .Distinct();
+            var existingStubs = (await source.GetStubsAsync())
+                .Where(s => stubIds.Any(sid => string.Equals(sid, s.Id, StringComparison.OrdinalIgnoreCase)) ||
+                            string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+
+            // First, delete the existing stubs.
+            foreach (var stub in existingStubs)
+            {
+                await source.DeleteStubAsync(stub.Id);
+            }
+
+            // Make sure the new selection of stubs all have the new tenant and add them to the stub source.
+            foreach (var stub in stubs)
+            {
+                stub.Tenant = tenant;
+                await source.AddStubAsync(stub);
+            }
+        }
+
         public async Task<StubModel> GetStubAsync(string stubId)
         {
             var stub = (await GetStubsAsync()).FirstOrDefault(s => s.Id == stubId);

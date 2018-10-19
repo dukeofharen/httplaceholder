@@ -43,5 +43,15 @@ namespace HttPlaceholder.Controllers
             await _stubContainer.DeleteAllStubsAsync(tenant);
             return NoContent();
         }
+
+        [HttpPut]
+        [Route("{tenant}/stubs")]
+        [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "No content")]
+        public async Task<IActionResult> UpdateAll(string tenant, [FromBody]IEnumerable<StubModel> stubs)
+        {
+            _logger.LogInformation($"Updating all stubs for tenant '{tenant}'.");
+            await _stubContainer.UpdateAllStubs(tenant, stubs);
+            return NoContent();
+        }
     }
 }

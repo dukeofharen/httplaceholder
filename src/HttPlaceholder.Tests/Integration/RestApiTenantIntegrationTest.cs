@@ -234,5 +234,58 @@ namespace HttPlaceholder.Tests.Integration
                 Assert.AreEqual("test-123", _stubSource._stubModels.Single().Id);
             }
         }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Tenant_UpdateAll_HappyFlow()
+        {
+            // arrange
+            string tenant = "tenant1";
+            string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
+            _stubSource._stubModels.Add(new StubModel
+            {
+                Id = "test-123",
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Response = new StubResponseModel(),
+                Tenant = tenant
+            });
+            _stubSource._stubModels.Add(new StubModel
+            {
+                Id = "test-456",
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Response = new StubResponseModel(),
+                Tenant = tenant
+            });
+
+            string body = @"
+- id: test-123
+  conditions:
+    method: GET
+  response:
+    text: OK
+- id: test-789
+  conditions:
+    method: POST
+  response:
+    text: OK
+";
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri(url),
+                Content = new StringContent(body, Encoding.UTF8, "text/yaml")
+            };
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+                Assert.AreEqual(2, _stubSource._stubModels.Count);
+                Assert.AreEqual("test-123", _stubSource._stubModels[0].Id);
+                Assert.AreEqual("test-789", _stubSource._stubModels[1].Id);
+            }
+        }
     }
 }

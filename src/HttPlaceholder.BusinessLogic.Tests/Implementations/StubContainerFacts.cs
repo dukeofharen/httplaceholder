@@ -378,5 +378,69 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
             stubSource.Verify(m => m.DeleteStubAsync(stub2.Id), Times.Never);
             stubSource.Verify(m => m.DeleteStubAsync(stub3.Id), Times.Once);
         }
+
+        [TestMethod]
+        public async Task StubContainer_UpdateAllStubsAsync_HappyFlow()
+        {
+            // arrange
+            string tenant1 = "tenant1";
+            string tenant2 = "tenant1";
+            var stubSource = new Mock<IWritableStubSource>();
+
+            var stub1 = new StubModel
+            {
+                Id = "stub1",
+                Tenant = tenant1
+            };
+            var stub2 = new StubModel
+            {
+                Id = "stub2",
+                Tenant = tenant2
+            };
+            var stub3 = new StubModel
+            {
+                Id = "stub3",
+                Tenant = tenant1.ToUpper()
+            };
+
+            var newStubs = new[]
+            {
+                new StubModel
+                {
+                    Id = stub2.Id
+                },
+                new StubModel
+                {
+                    Id = stub3.Id
+                }
+            };
+
+            stubSource
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[]
+                {
+                    stub1,
+                    stub2,
+                    stub3
+                });
+
+            _serviceProviderMock
+               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
+               .Returns(new[] { stubSource.Object });
+
+            // act
+            await _container.UpdateAllStubs(tenant1, newStubs);
+
+            // assert
+            stubSource.Verify(m => m.DeleteStubAsync(stub1.Id), Times.Once);
+            stubSource.Verify(m => m.DeleteStubAsync(stub2.Id), Times.Once);
+            stubSource.Verify(m => m.DeleteStubAsync(stub3.Id), Times.Once);
+
+            stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub1.Id)), Times.Never);
+            stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub2.Id)), Times.Once);
+            stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub3.Id)), Times.Once);
+
+            Assert.IsTrue(newStubs.All(s => s.Tenant == tenant1));
+        }
     }
 }
