@@ -50,6 +50,10 @@ In this case, if you go to the URL http://localhost:5000/users?id=12&filter=firs
 
 The `response` element defines the response of the request. In this case, HTTP 200 is returned, the literal JSON string defined and `application/json` as Content-Type header. Also take a look at the [samples](docs/SAMPLES.md).
 
+Go to `http://localhost:5000/ph-ui`, you will get to the management interface to see all made requests and all stubs.
+
+![Management UI](docs/img/ui_screenshot.png)
+
 # Batteries included
 - XPath conditions.
 - JSONPath conditions.
