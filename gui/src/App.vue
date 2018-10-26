@@ -11,8 +11,15 @@
           <li class="nav-item">
             <router-link to="/requests" class="nav-link">Requests</router-link>
           </li>
-          <li class="nav-item">
-            <router-link to="/stubs" class="nav-link">Stubs</router-link>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="stubsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Stubs
+            </a>
+            <div class="dropdown-menu" aria-labelledby="stubsDropdown">
+              <router-link to="/stubs" class="dropdown-item">Stubs</router-link>
+              <router-link to="/addStub" class="dropdown-item">Add stub</router-link>
+              <router-link to="/downloadStubs" class="dropdown-item">Download stubs</router-link>
+            </div>
           </li>
         </ul>
       </div>

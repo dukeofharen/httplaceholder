@@ -3,11 +3,16 @@ import App from './App.vue'
 import router from './router'
 import VueCodemirror from 'vue-codemirror'
 import './registerServiceWorker'
+
+// FontAwesome
+import 'font-awesome/css/font-awesome.css'
+import 'toastr/build/toastr.css'
+
+// Bootstrap
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/css/bootstrap-grid.css'
 import 'bootstrap/dist/css/bootstrap-reboot.css'
-import 'font-awesome/css/font-awesome.css'
-import 'toastr/build/toastr.css'
+import 'bootstrap/dist/js/bootstrap.bundle'
 
 // CodeMirror
 import 'codemirror/lib/codemirror.css'
