@@ -20,7 +20,7 @@ namespace HttPlaceholder.SwaggerGenerator
             var startup = new Startup();
             var testServer = new TestServer(
               new WebHostBuilder()
-               .ConfigureServices(services => Startup.ConfigureServicesStatic(services))
+               .ConfigureServices(Startup.ConfigureServicesStatic)
                .Configure(appBuilder => Startup.ConfigureStatic(appBuilder, null, false, false)));
             var client = testServer.CreateClient();
 

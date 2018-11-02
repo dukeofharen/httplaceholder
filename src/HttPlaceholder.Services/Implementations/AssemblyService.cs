@@ -8,5 +8,10 @@ namespace HttPlaceholder.Services.Implementations
         {
             return AssemblyHelper.GetAssemblyRootPath();
         }
+
+        public string GetAssemblyVersion()
+        {
+            return AssemblyHelper.GetAssemblyVersion();
+        }
     }
 }

@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace HttPlaceholder.Tests.Integration.RestApi
 {
     [TestClass]
-    public class RestApiRequestIntegrationTest : RestApiIntegrationTestBase
+    public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         [TestInitialize]
         public void Initialize()

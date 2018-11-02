@@ -1,4 +1,4 @@
-import { getUser, getRequests, deleteAllRequests, getStubs, addStub } from "./serviceAgent"
+import { getUser, getRequests, deleteAllRequests, getStubs, addStub, getMetadata } from "./serviceAgent"
 import { getItem, setItem } from "./session"
 
 const shouldAuthenticate = callback => {
@@ -53,11 +53,16 @@ const logicAddStub = stub => {
     return addStub(stub, username, password);
 }
 
+const getMetadataLogic = () => {
+    return getMetadata();
+}
+
 export {
     shouldAuthenticate,
     logicGetRequests,
     logicDeleteAllRequests,
     logicGetStubs,
     authenticate,
-    logicAddStub
+    logicAddStub,
+    getMetadataLogic
 }

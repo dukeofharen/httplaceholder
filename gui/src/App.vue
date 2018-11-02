@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">HttPlaceholder</a>
+      <a class="navbar-brand" href="#">HttPlaceholder {{metadata.version}}</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -29,6 +29,27 @@
     </div>
   </div>
 </template>
+
+<script>
+import { getMetadataLogic } from "@/data/dataLogic";
+
+export default {
+  name: "app",
+  data() {
+    return {
+      metadata: {
+        version: ""
+      }
+    };
+  },
+  created() {
+    getMetadataLogic().then(response => {
+      console.log(response);
+      this.metadata = response.data;
+    });
+  }
+};
+</script>
 
 <style>
 #app {

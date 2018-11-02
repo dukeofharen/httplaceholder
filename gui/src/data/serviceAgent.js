@@ -37,6 +37,12 @@ const addStub = (stub, username, password) => {
     return axios.post(url, stub, config)
 }
 
+const getMetadata = () => {
+    let rootUrl = urls.rootUrl
+    let url = `${rootUrl}ph-api/metadata`
+    return axios.get(url)
+}
+
 const getConfig = (username, password, asYaml) => {
     if(!asYaml) {
         asYaml = false;
@@ -60,5 +66,6 @@ export {
     getStubs,
     deleteAllRequests,
     getUser,
-    addStub
+    addStub,
+    getMetadata
 }

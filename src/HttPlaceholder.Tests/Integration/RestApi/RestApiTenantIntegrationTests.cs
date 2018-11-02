@@ -15,7 +15,7 @@ using YamlDotNet.Serialization;
 namespace HttPlaceholder.Tests.Integration.RestApi
 {
     [TestClass]
-    public class RestApiTenantIntegrationTest : RestApiIntegrationTestBase
+    public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
     {
         [TestInitialize]
         public void Initialize()
