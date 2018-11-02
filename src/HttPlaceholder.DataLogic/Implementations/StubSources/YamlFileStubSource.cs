@@ -41,19 +41,28 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
                 var yamlFiles = _fileService.GetFiles(currentDirectory, "*.yml");
                 fileLocations.AddRange(yamlFiles);
             }
-            else if (_fileService.IsDirectory(inputFileLocation))
-            {
-                var yamlFiles = _fileService.GetFiles(inputFileLocation, "*.yml");
-                fileLocations.AddRange(yamlFiles);
-            }
             else
             {
-                fileLocations.Add(inputFileLocation);
+                // Split on ";": it is possible to supply multiple locations.
+                var parts = inputFileLocation.Split(';');
+                foreach (string part in parts)
+                {
+                    string location = part.Trim();
+                    if (_fileService.IsDirectory(location))
+                    {
+                        var yamlFiles = _fileService.GetFiles(location, "*.yml");
+                        fileLocations.AddRange(yamlFiles);
+                    }
+                    else
+                    {
+                        fileLocations.Add(location);
+                    }
+                }
             }
 
             if (fileLocations.Count == 0)
             {
-                _logger.LogInformation($"No .yml input files found.");
+                _logger.LogInformation("No .yml input files found.");
                 return Task.FromResult(new StubModel[0].AsEnumerable());
             }
 
@@ -74,7 +83,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             }
             else
             {
-                _logger.LogInformation($"No stub file contents changed in the meanwhile.");
+                _logger.LogInformation("No stub file contents changed in the meanwhile.");
             }
 
             return Task.FromResult(_stubs);

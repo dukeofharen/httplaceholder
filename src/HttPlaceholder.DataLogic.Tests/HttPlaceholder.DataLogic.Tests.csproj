@@ -24,4 +24,17 @@
     <ProjectReference Include="..\HttPlaceholder.DataLogic\HttPlaceholder.DataLogic.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Implementations\StubSources\TestResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TestResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Implementations\StubSources\TestResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>
