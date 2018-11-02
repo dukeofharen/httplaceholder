@@ -1,7 +1,7 @@
 before_build:
   - cmd: dotnet --version
   - ps: Get-ChildItem -Path "C:\Program Files\dotnet\sdk"
-  - ps: scripts\Patch-Versions.ps1
+  - ps: scripts\Determine-And-Patch-Versions.ps1
 
 environment:
   access_token:
