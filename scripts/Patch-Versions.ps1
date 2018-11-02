@@ -2,6 +2,8 @@ $ErrorActionPreference = 'Stop'
 
 . "$PSScriptRoot\functions.ps1"
 
+Write-Host "Found version number $($env:versionString)"
+
 $rootFolder = Join-Path -Path $PSScriptRoot ".."
 $srcFolder = Join-Path -Path $rootFolder "src"
 
