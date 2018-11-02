@@ -75,7 +75,17 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
                     string input = _fileService.ReadAllText(file);
                     _logger.LogInformation($"File contents of '{file}': '{input}'");
 
-                    result.AddRange(_yamlService.Parse<List<StubModel>>(input));
+                    var stubs = _yamlService.Parse<List<StubModel>>(input);
+                    foreach (var stub in stubs)
+                    {
+                        // The "metadata" property on the StubModel is set by the application, so reset any preset values here.
+                        stub.Metadata = new StubMetadataModel
+                        {
+                            ReadOnly = true
+                        };
+                    }
+
+                    result.AddRange(stubs);
                     _stubLoadDateTime = DateTime.UtcNow;
                 }
 

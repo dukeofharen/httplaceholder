@@ -33,6 +33,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
         public Task AddStubAsync(StubModel stub)
         {
+            ReplaceMetadata(stub);
             string path = EnsureAndGetStubsFolder();
             string filePath = Path.Combine(path, $"{stub.Id}.json");
             string contents = JsonConvert.SerializeObject(stub);
@@ -89,6 +90,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             {
                 string contents = _fileService.ReadAllText(filePath);
                 var stub = JsonConvert.DeserializeObject<StubModel>(contents);
+                ReplaceMetadata(stub);
                 result.Add(stub);
             }
 
@@ -134,6 +136,14 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             }
 
             return path;
+        }
+
+        private void ReplaceMetadata(StubModel stub)
+        {
+            stub.Metadata = new StubMetadataModel
+            {
+                ReadOnly = false
+            };
         }
     }
 }

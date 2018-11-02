@@ -34,6 +34,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         {
             lock (_lock)
             {
+                ReplaceMetadata(stub);
                 _stubModels.Add(stub);
                 return Task.CompletedTask;
             }
@@ -96,6 +97,14 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
                 return Task.CompletedTask;
             }
+        }
+
+        private void ReplaceMetadata(StubModel stub)
+        {
+            stub.Metadata = new StubMetadataModel
+            {
+                ReadOnly = false
+            };
         }
     }
 }
