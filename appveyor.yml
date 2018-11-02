@@ -18,6 +18,8 @@ build_script:
 
 test: off
 
+skip_tags: true
+
 artifacts:
   - path: src\HttPlaceholder\bin\release\netcoreapp2.1\win10-x64\publish\httplaceholder_*.exe
     name: armyknife-windows
