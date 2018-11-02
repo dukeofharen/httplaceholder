@@ -19,6 +19,8 @@ namespace HttPlaceholder
     {
         public static void Main(string[] args)
         {
+            Console.WriteLine($"HttPlaceholder {AssemblyHelper.GetAssemblyVersion()} - (c) 2018 Ducode");
+
             var arg = args.FirstOrDefault();
             if (string.Equals(arg, "-h", StringComparison.OrdinalIgnoreCase) || string.Equals(arg, "--help", StringComparison.OrdinalIgnoreCase))
             {

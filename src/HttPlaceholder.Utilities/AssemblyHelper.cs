@@ -32,5 +32,10 @@ namespace HttPlaceholder.Utilities
             string path = assembly.Location;
             return Path.GetDirectoryName(path);
         }
+
+        public static string GetAssemblyVersion()
+        {
+            return Assembly.GetEntryAssembly().GetName().Version.ToString();
+        }
     }
 }
