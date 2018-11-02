@@ -37,6 +37,13 @@ const addStub = (stub, username, password) => {
     return axios.post(url, stub, config)
 }
 
+const deleteStub = (stubId, username, password) => {
+    let rootUrl = urls.rootUrl
+    let url = `${rootUrl}ph-api/stubs/${stubId}`
+    let config = getConfig(username, password)
+    return axios.delete(url, config)
+}
+
 const getMetadata = () => {
     let rootUrl = urls.rootUrl
     let url = `${rootUrl}ph-api/metadata`
@@ -67,5 +74,6 @@ export {
     deleteAllRequests,
     getUser,
     addStub,
-    getMetadata
+    getMetadata,
+    deleteStub
 }

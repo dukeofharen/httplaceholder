@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { getMetadataLogic } from "@/data/dataLogic";
+import { logicGetMetadata } from "@/data/dataLogic";
 
 export default {
   name: "app",
@@ -43,8 +43,7 @@ export default {
     };
   },
   created() {
-    getMetadataLogic().then(response => {
-      console.log(response);
+    logicGetMetadata().then(response => {
       this.metadata = response.data;
     });
   }
