@@ -4,21 +4,14 @@ $ErrorActionPreference = 'Stop'
 
 $rootFolder = Join-Path -Path $PSScriptRoot ".."
 $srcFolder = Join-Path -Path $rootFolder "src"
-$date = Get-Date
-
-$versionString = "{0}.{1}.{2}.{3}" -f $date.Year, $date.Month, $date.Day, $env:APPVEYOR_BUILD_NUMBER
-
-Write-Host "New version number: '$versionString'"
-
-$env:versionString = $versionString
 
 $csprojFiles = Get-ChildItem -Path $srcFolder -Filter *.csproj -Recurse
 foreach ($csprojFile in $csprojFiles) {
     Write-Host "Parsing .csproj file $($csprojFile.FullName)"
     [xml]$csprojContents = Get-Content $csprojFile.FullName
     $propertyGroupNode = $csprojContents.SelectSingleNode("/Project/PropertyGroup[1]")
-    $propertyGroupNode.Version = $versionString
-    $propertyGroupNode.AssemblyVersion = $versionString
-    $propertyGroupNode.FileVersion = $versionString
+    $propertyGroupNode.Version = $env:versionString
+    $propertyGroupNode.AssemblyVersion = $env:versionString
+    $propertyGroupNode.FileVersion = $env:versionString
     $csprojContents.Save($csprojFile.FullName)
 }

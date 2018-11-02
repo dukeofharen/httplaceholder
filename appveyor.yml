@@ -1,7 +1,8 @@
 before_build:
   - cmd: dotnet --version
   - ps: Get-ChildItem -Path "C:\Program Files\dotnet\sdk"
-  - ps: scripts\Determine-And-Patch-Versions.ps1
+  - ps: scripts\Determine-Variables.ps1
+  - ps: scripts\Patch-Versions.ps1
 
 environment:
   access_token:
@@ -27,6 +28,8 @@ artifacts:
 
 deploy:
   release: v$(versionString)
+  description: $(APPVEYOR_REPO_COMMIT_MESSAGE)
   provider: GitHub
   auth_token: $(access_token)
   draft: true
+  prerelease: false
