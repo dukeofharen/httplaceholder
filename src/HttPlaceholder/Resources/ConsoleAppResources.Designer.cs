@@ -69,13 +69,15 @@ namespace HttPlaceholder.Resources {
         ///
         ///### Input file (optional)
         ///
-        /// 
-        ///    httplaceholder --inputFile C:\path\to\file.yml
+        ///```bash
+        ///httplaceholder --inputFile C:\path\to\file.yml
+        ///```
         ///
-        ///    httplaceholder --inputFile C:\path\to\stubsfolder
+        ///```bash
+        ///httplaceholder --inputFile C:\path\to\stubsfolder
+        ///```
         ///
-        ///
-        ///For input file, you can both provide a path to a .yml file (to load only that file) or provide a path to a folder containing .yml files (which will all be loaded [rest of string was truncated]&quot;;.
+        ///For input file, you can both provide a path to a .yml file (to load only that file) or provide a path to a folder containing .yml files (which wil [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ManPage {
             get {

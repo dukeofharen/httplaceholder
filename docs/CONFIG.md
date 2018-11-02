@@ -16,6 +16,12 @@ httplaceholder --inputFile C:\path\to\stubsfolder
 
 For input file, you can both provide a path to a .yml file (to load only that file) or provide a path to a folder containing .yml files (which will all be loaded in that case).
 
+If you want to provide multiple paths (be it folders or files), that's also possible. You can do it like this:
+
+```bash
+httplaceholder --inputFile C:\path\to\stubsfolder;C:\path\to\file.yml
+```
+
 ### File store (optional)
 
 ```bash
