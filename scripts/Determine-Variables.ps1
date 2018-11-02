@@ -5,3 +5,6 @@ Write-Host "New version: $versionString"
 $env:versionString = $versionString
 
 # Determine deployment variables
+$description = $env:APPVEYOR_REPO_COMMIT_MESSAGE
+Write-Host "Deployment description: $description"
+$env:description = $description

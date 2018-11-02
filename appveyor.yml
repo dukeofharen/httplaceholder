@@ -28,7 +28,7 @@ artifacts:
 
 deploy:
   release: v$(versionString)
-  description: $(APPVEYOR_REPO_COMMIT_MESSAGE)
+  description: $(description)
   provider: GitHub
   auth_token: $(access_token)
   draft: true
