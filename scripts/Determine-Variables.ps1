@@ -7,7 +7,7 @@ $branch = $env:APPVEYOR_REPO_BRANCH
 Write-Host "Branch: $branch"
 
 $beta = $false
-if ($branch -eq "dev" -And $description.Contains("[beta]")) {
+if ($branch -eq "dev") {
     Write-Host "This build is a beta build."
     $beta = $true
 }
