@@ -17,7 +17,7 @@ InstallDir "$PROGRAMFILES\${COMPANYNAME}\${APPNAME}"
 
 LicenseData "..\LICENSE.txt"
 Name "${COMPANYNAME} - ${APPNAME}"
-outFile "$%BuildOutputDirectory%\httplaceholder_install.exe"
+outFile "$%BuildOutputDirectory%\httplaceholder_install-$%versionString%.exe"
  
 !include LogicLib.nsh
 

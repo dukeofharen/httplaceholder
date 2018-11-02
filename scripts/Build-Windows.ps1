@@ -32,6 +32,7 @@ Rename-Item -Path "$binDir\config.json" "_config.json"
 Rename-Item -Path "$binDir\web.config" "_web.config"
 
 # Making installer
+[version]$version = $env:versionString
 $env:VersionMajor = $version.Major
 $env:VersionMinor = $version.Minor
 $env:VersionBuild = $version.Build
