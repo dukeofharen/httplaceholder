@@ -1,7 +1,7 @@
 before_build:
   - cmd: dotnet --version
   - ps: Get-ChildItem -Path "C:\Program Files\dotnet\sdk"
-  - ps: scripts\patch_versions.ps1
+  - ps: scripts\Patch-Versions.ps1
 
 environment:
   access_token:
@@ -13,7 +13,7 @@ branches:
     - master
 
 build_script:
-  - ps: scripts\build.ps1
+  - ps: scripts\Build.ps1
 
 test: off
 

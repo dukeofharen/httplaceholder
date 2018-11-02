@@ -5,7 +5,7 @@ Param(
 
 #$ErrorActionPreference = 'Stop'
 
-. "$PSScriptRoot\functions.ps1"
+. "$PSScriptRoot\Functions.ps1"
 
 $nsiPath = Join-Path $PSScriptRoot "httplaceholder.nsi"
 $binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp2.1\win10-x64\publish"

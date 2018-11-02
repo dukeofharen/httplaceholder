@@ -1,4 +1,4 @@
-. "$PSScriptRoot\functions.ps1"
+. "$PSScriptRoot\Functions.ps1"
 
 #$ErrorActionPreference = 'Stop'
 

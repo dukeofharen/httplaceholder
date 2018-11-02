@@ -7,7 +7,7 @@ $solutionFile = Join-Path -Path $srcFolder "HttPlaceholder.sln"
 
 $nsisPath = "C:\Program Files (x86)\NSIS\Bin"
 
-. "$PSScriptRoot\functions.ps1"
+. "$PSScriptRoot\Functions.ps1"
 
 # Updating path variable
 Write-Host "Updating path variable"
@@ -53,5 +53,5 @@ $propertyGroupNode = $csproj.SelectSingleNode("/Project/PropertyGroup[1]")
 $version = [version]$propertyGroupNode.Version
 Write-Host "Found version $version"
 
-. "$PSScriptRoot\build_gui.ps1"
-. "$PSScriptRoot\build_windows.ps1" -srcFolder $srcFolder
+. "$PSScriptRoot\Build-Gui.ps1"
+. "$PSScriptRoot\Build-Windows.ps1" -srcFolder $srcFolder
