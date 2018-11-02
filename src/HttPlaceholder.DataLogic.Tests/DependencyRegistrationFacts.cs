@@ -45,18 +45,6 @@ namespace HttPlaceholder.DataLogic.Tests
         }
 
         [TestMethod]
-        public void DependencyRegistration_AddStubSources_InputFileKeyNotSet_ShouldOnlyRegisterInMemoryStubSource()
-        {
-            // act
-            _services.AddStubSources();
-
-            // assert
-            Assert.AreEqual(2, _services.Count);
-            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(InMemoryStubSource)));
-            Assert.IsTrue(_services.Any(s => s.ServiceType == typeof(IConfigurationService)));
-        }
-
-        [TestMethod]
         public void DependencyRegistration_AddStubSources_FileStorageLocationKeySet_ShouldRegisterFileSystemStubSource()
         {
             // arrange
@@ -66,7 +54,8 @@ namespace HttPlaceholder.DataLogic.Tests
             _services.AddStubSources();
 
             // assert
-            Assert.AreEqual(2, _services.Count);
+            Assert.AreEqual(3, _services.Count);
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileSystemStubSource)));
             Assert.IsTrue(_services.Any(s => s.ServiceType == typeof(IConfigurationService)));
         }
