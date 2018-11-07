@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ducode.Essentials.Mvc", "..
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ducode.Essentials.Files", "..\Ducode.Essentials\src\Ducode.Essentials.Files\Ducode.Essentials.Files.csproj", "{708DFA77-6F23-4163-AEE2-D4C247F86651}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ducode.Essentials.Async", "..\Ducode.Essentials\src\Ducode.Essentials.Async\Ducode.Essentials.Async.csproj", "{66F52BB8-A147-42C6-9CF1-BB3BEC3F856E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{708DFA77-6F23-4163-AEE2-D4C247F86651}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{708DFA77-6F23-4163-AEE2-D4C247F86651}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{708DFA77-6F23-4163-AEE2-D4C247F86651}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66F52BB8-A147-42C6-9CF1-BB3BEC3F856E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66F52BB8-A147-42C6-9CF1-BB3BEC3F856E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66F52BB8-A147-42C6-9CF1-BB3BEC3F856E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66F52BB8-A147-42C6-9CF1-BB3BEC3F856E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +128,7 @@ Global
 		{B5B6485B-5008-48FB-B183-A543416C10D8} = {69378498-7A3B-4840-9B28-EF2E47F9B6CD}
 		{16301C8E-461B-4480-81D1-B56682D3AF5B} = {69378498-7A3B-4840-9B28-EF2E47F9B6CD}
 		{708DFA77-6F23-4163-AEE2-D4C247F86651} = {69378498-7A3B-4840-9B28-EF2E47F9B6CD}
+		{66F52BB8-A147-42C6-9CF1-BB3BEC3F856E} = {69378498-7A3B-4840-9B28-EF2E47F9B6CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B07D99A8-ABA7-4A66-9BA2-37E64043B834}

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Ducode.Essentials.Async.Interfaces;
 using HttPlaceholder.BusinessLogic.Implementations.ResponseWriters;
 using HttPlaceholder.Models;
-using HttPlaceholder.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

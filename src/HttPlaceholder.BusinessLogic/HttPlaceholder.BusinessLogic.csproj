@@ -19,6 +19,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Ducode.Essentials\src\Ducode.Essentials.Assembly\Ducode.Essentials.Assembly.csproj" />
+    <ProjectReference Include="..\..\Ducode.Essentials\src\Ducode.Essentials.Async\Ducode.Essentials.Async.csproj" />
     <ProjectReference Include="..\HttPlaceholder.DataLogic\HttPlaceholder.DataLogic.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Exceptions\HttPlaceholder.Exceptions.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Models\HttPlaceholder.Models.csproj" />

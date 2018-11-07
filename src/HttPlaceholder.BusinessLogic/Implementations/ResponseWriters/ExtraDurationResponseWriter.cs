@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Ducode.Essentials.Async.Interfaces;
 using HttPlaceholder.Models;
-using HttPlaceholder.Services;
 
 namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
 {

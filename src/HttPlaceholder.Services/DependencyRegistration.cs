@@ -8,7 +8,6 @@ namespace HttPlaceholder.Services
     {
         public static IServiceCollection AddUtilities(this IServiceCollection services)
         {
-            services.TryAddSingleton<IAsyncService, AsyncService>();
             services.TryAddSingleton<IConfigurationService, ConfigurationService>();
             services.TryAddSingleton<IRequestLoggerFactory, RequestLoggerFactory>();
             services.TryAddSingleton<IYamlService, YamlService>();
