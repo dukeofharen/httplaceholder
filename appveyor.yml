@@ -14,6 +14,7 @@ branches:
     - master
 
 build_script:
+  - git submodule update --init --recursive
   - ps: scripts\Build.ps1
 
 test: off

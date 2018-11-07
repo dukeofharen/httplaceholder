@@ -9,9 +9,9 @@ namespace HttPlaceholder.Formatters
     // Source: https://github.com/fiyazbinhasan/CoreFormatters
     public class YamlInputFormatter : TextInputFormatter
     {
-        private readonly Deserializer _deserializer;
+        private readonly IDeserializer _deserializer;
 
-        public YamlInputFormatter(Deserializer deserializer)
+        public YamlInputFormatter(IDeserializer deserializer)
         {
             _deserializer = deserializer;
 

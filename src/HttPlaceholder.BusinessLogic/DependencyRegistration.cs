@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.BusinessLogic.Implementations;
+﻿using Ducode.Essentials.Assembly;
+using HttPlaceholder.BusinessLogic.Implementations;
 using HttPlaceholder.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 

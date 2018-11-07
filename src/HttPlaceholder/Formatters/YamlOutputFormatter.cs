@@ -10,9 +10,9 @@ namespace HttPlaceholder.Formatters
     // Source: https://github.com/fiyazbinhasan/CoreFormatters
     public class YamlOutputFormatter : TextOutputFormatter
     {
-        private readonly Serializer _serializer;
+        private readonly ISerializer _serializer;
 
-        public YamlOutputFormatter(Serializer serializer)
+        public YamlOutputFormatter(ISerializer serializer)
         {
             _serializer = serializer;
 

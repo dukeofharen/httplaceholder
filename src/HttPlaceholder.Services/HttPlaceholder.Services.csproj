@@ -10,11 +10,12 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
-    <PackageReference Include="YamlDotNet" Version="5.0.1" />
+    <PackageReference Include="YamlDotNet" Version="5.2.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Ducode.Essentials\src\Ducode.Essentials.Mvc\Ducode.Essentials.Mvc.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Models\HttPlaceholder.Models.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />
   </ItemGroup>

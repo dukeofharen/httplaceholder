@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Ducode.Essentials.Mvc.Interfaces;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Exceptions;
 using HttPlaceholder.Models;
@@ -11,6 +12,7 @@ using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
+using Moq;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware
@@ -25,15 +27,25 @@ namespace HttPlaceholder.Middleware
       };
 
         private readonly RequestDelegate _next;
+        private readonly IClientIpResolver _clientIpResolver;
         private readonly IConfigurationService _configurationService;
         private readonly IHttpContextService _httpContextService;
         private readonly ILogger<StubHandlingMiddleware> _logger;
         private readonly IRequestLoggerFactory _requestLoggerFactory;
         private readonly IStubContainer _stubContainer;
         private readonly IStubRequestExecutor _stubRequestExecutor;
+        private RequestDelegate _requestDelegate;
+        private Mock<IClientIpResolver> _clientIpResolver1;
+        private IConfigurationService object1;
+        private IHttpContextService object2;
+        private ILogger<StubHandlingMiddleware> object3;
+        private IRequestLoggerFactory object4;
+        private IStubContainer object5;
+        private IStubRequestExecutor object6;
 
         public StubHandlingMiddleware(
            RequestDelegate next,
+           IClientIpResolver clientIpResolver,
            IConfigurationService configurationService,
            IHttpContextService httpContextService,
            ILogger<StubHandlingMiddleware> logger,
@@ -42,12 +54,25 @@ namespace HttPlaceholder.Middleware
            IStubRequestExecutor stubRequestExecutor)
         {
             _next = next;
+            _clientIpResolver = clientIpResolver;
             _configurationService = configurationService;
             _httpContextService = httpContextService;
             _logger = logger;
             _requestLoggerFactory = requestLoggerFactory;
             _stubContainer = stubContainer;
             _stubRequestExecutor = stubRequestExecutor;
+        }
+
+        public StubHandlingMiddleware(RequestDelegate requestDelegate, Mock<IClientIpResolver> clientIpResolver1, IConfigurationService object1, IHttpContextService object2, ILogger<StubHandlingMiddleware> object3, IRequestLoggerFactory object4, IStubContainer object5, IStubRequestExecutor object6)
+        {
+            _requestDelegate = requestDelegate;
+            _clientIpResolver1 = clientIpResolver1;
+            this.object1 = object1;
+            this.object2 = object2;
+            this.object3 = object3;
+            this.object4 = object4;
+            this.object5 = object5;
+            this.object6 = object6;
         }
 
         public async Task Invoke(HttpContext context)
@@ -73,7 +98,7 @@ namespace HttPlaceholder.Middleware
                    _httpContextService.Method,
                    _httpContextService.DisplayUrl,
                    _httpContextService.GetBody(),
-                   _httpContextService.GetClientIp(),
+                   _clientIpResolver.GetClientIp(),
                    _httpContextService.GetHeaders());
 
                 _httpContextService.ClearResponse();

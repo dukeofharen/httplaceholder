@@ -1,4 +1,6 @@
-﻿namespace HttPlaceholder.Services.Implementations
+﻿using Ducode.Essentials.Mvc.Interfaces;
+
+namespace HttPlaceholder.Services.Implementations
 {
     internal class RequestLoggerFactory : IRequestLoggerFactory
     {

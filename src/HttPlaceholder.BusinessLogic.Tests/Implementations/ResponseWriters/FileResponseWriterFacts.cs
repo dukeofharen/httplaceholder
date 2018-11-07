@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.BusinessLogic.Implementations.ResponseWriters;
 using HttPlaceholder.DataLogic;
 using HttPlaceholder.Models;

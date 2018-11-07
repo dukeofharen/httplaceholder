@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Ducode.Essentials.Assembly.Interfaces;
+using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.DataLogic.Implementations;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
@@ -85,7 +87,7 @@ namespace HttPlaceholder.DataLogic.Tests.Implementations
             string assemblyPath = @"C:\stubs\bin";
 
             _assemblyServiceMock
-               .Setup(m => m.GetAssemblyRootPath())
+               .Setup(m => m.GetEntryAssemblyRootPath())
                .Returns(assemblyPath);
 
             // act

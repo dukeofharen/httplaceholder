@@ -1,20 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using HttPlaceholder.DataLogic;
-using HttPlaceholder.DataLogic.Implementations.StubSources;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services;
-using HttPlaceholder.Services.Implementations;
-using HttPlaceholder.Utilities;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Tests.Integration.Stubs
@@ -541,7 +532,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             {
                 RequestUri = new Uri(url)
             };
-            request.Headers.Add("X-Forwarded-For", "127.0.0.1");
+
+            _clientIpResolverMock
+                .Setup(m => m.GetClientIp())
+                .Returns("127.0.0.1");
 
             // act / assert
             using (var response = await Client.SendAsync(request))
@@ -561,7 +555,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             {
                 RequestUri = new Uri(url)
             };
-            request.Headers.Add("X-Forwarded-For", "127.0.0.5");
+
+            _clientIpResolverMock
+                .Setup(m => m.GetClientIp())
+                .Returns("127.0.0.5");
 
             // act / assert
             using (var response = await Client.SendAsync(request))
@@ -582,6 +579,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 RequestUri = new Uri(url)
             };
             request.Headers.Add("X-Forwarded-Host", "httplaceholder.com");
+            _clientIpResolverMock
+                .Setup(m => m.GetClientIp())
+                .Returns("127.0.0.1");
 
             // act / assert
             using (var response = await Client.SendAsync(request))
@@ -656,6 +656,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 RequestUri = new Uri(url)
             };
             request.Headers.Add("X-Forwarded-Proto", "https");
+            _clientIpResolverMock
+                .Setup(m => m.GetClientIp())
+                .Returns("127.0.0.1");
 
             // act / assert
             using (var response = await Client.SendAsync(request))

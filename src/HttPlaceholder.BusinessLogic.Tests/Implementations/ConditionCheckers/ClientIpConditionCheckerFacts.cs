@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers;
+﻿using Ducode.Essentials.Mvc.Interfaces;
+using HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers;
 using HttPlaceholder.Models;
 using HttPlaceholder.Models.Enums;
 using HttPlaceholder.Services;
@@ -10,14 +11,18 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
     [TestClass]
     public class ClientIpConditionCheckerFacts
     {
+        private Mock<IClientIpResolver> _clientIpResolverMock;
         private Mock<IHttpContextService> _httpContextServiceMock;
         private ClientIpConditionChecker _checker;
 
         [TestInitialize]
         public void Initialize()
         {
+            _clientIpResolverMock = new Mock<IClientIpResolver>();
             _httpContextServiceMock = new Mock<IHttpContextService>();
-            _checker = new ClientIpConditionChecker(_httpContextServiceMock.Object);
+            _checker = new ClientIpConditionChecker(
+                _clientIpResolverMock.Object,
+                _httpContextServiceMock.Object);
         }
 
         [TestCleanup]
@@ -54,7 +59,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
                 ClientIp = "127.0.0.2"
             };
 
-            _httpContextServiceMock
+            _clientIpResolverMock
                .Setup(m => m.GetClientIp())
                .Returns(clientIp);
 
@@ -76,7 +81,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
                 ClientIp = "127.0.0.1"
             };
 
-            _httpContextServiceMock
+            _clientIpResolverMock
                .Setup(m => m.GetClientIp())
                .Returns(clientIp);
 
@@ -98,7 +103,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
                 ClientIp = "127.0.0.0/29"
             };
 
-            _httpContextServiceMock
+            _clientIpResolverMock
                .Setup(m => m.GetClientIp())
                .Returns(clientIp);
 
@@ -120,7 +125,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations.ConditionCheckers
                 ClientIp = "127.0.0.0/29"
             };
 
-            _httpContextServiceMock
+            _clientIpResolverMock
                .Setup(m => m.GetClientIp())
                .Returns(clientIp);
 

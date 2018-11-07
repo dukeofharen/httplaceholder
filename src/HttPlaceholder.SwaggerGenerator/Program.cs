@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using Ducode.Essentials.Assembly;
 using HttPlaceholder.Services.Implementations;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Hosting;

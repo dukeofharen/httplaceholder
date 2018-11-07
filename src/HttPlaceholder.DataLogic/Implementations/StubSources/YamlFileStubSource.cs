@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using Microsoft.Extensions.Logging;

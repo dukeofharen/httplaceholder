@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Ducode.Essentials.Mvc.Interfaces;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Models;
@@ -21,6 +22,7 @@ namespace HttPlaceholder.Tests.Middleware
         private MockHttpContext _httpContext;
         private bool _nextCalled;
         private RequestDelegate _requestDelegate;
+        private Mock<IClientIpResolver> _clientIpResolver;
         private Mock<IConfigurationService> _configurationServiceMock;
         private Mock<IHttpContextService> _httpContextServiceMock;
         private Mock<ILogger<StubHandlingMiddleware>> _loggerMock;
@@ -39,6 +41,7 @@ namespace HttPlaceholder.Tests.Middleware
                 await Task.CompletedTask;
                 _nextCalled = true;
             };
+            _clientIpResolver = new Mock<IClientIpResolver>();
             _configurationServiceMock = new Mock<IConfigurationService>();
             _httpContextServiceMock = new Mock<IHttpContextService>();
             _loggerMock = new Mock<ILogger<StubHandlingMiddleware>>();
@@ -49,6 +52,7 @@ namespace HttPlaceholder.Tests.Middleware
 
             _middleware = new StubHandlingMiddleware(
                 _requestDelegate,
+                _clientIpResolver.Object,
                 _configurationServiceMock.Object,
                 _httpContextServiceMock.Object,
                 _loggerMock.Object,
@@ -60,6 +64,7 @@ namespace HttPlaceholder.Tests.Middleware
         [TestCleanup]
         public void Cleanup()
         {
+            _clientIpResolver.VerifyAll();
             _configurationServiceMock.VerifyAll();
             _httpContextServiceMock.VerifyAll();
             _loggerMock.VerifyAll();
@@ -135,7 +140,7 @@ namespace HttPlaceholder.Tests.Middleware
             _httpContextServiceMock
                 .Setup(m => m.GetBody())
                 .Returns(body);
-            _httpContextServiceMock
+            _clientIpResolver
                 .Setup(m => m.GetClientIp())
                 .Returns(ip);
             _httpContextServiceMock

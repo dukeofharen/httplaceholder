@@ -14,6 +14,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Ducode.Essentials\src\Ducode.Essentials.Assembly\Ducode.Essentials.Assembly.csproj" />
+    <ProjectReference Include="..\..\Ducode.Essentials\src\Ducode.Essentials.Files\Ducode.Essentials.Files.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Models\HttPlaceholder.Models.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />

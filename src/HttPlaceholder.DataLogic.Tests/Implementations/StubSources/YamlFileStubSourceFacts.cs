@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.DataLogic.Implementations.StubSources;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;

@@ -1,4 +1,6 @@
 ﻿using System.IO;
+using Ducode.Essentials.Assembly.Interfaces;
+using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 
@@ -34,7 +36,7 @@ namespace HttPlaceholder.DataLogic.Implementations
             else
             {
                 // If no input file was provided, return the assembly path instead.
-                return _assemblyService.GetAssemblyRootPath();
+                return _assemblyService.GetEntryAssemblyRootPath();
             }
         }
     }
