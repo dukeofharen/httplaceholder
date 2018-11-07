@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using Ducode.Essentials.Assembly;
+using Ducode.Essentials.Files;
 using Ducode.Essentials.Mvc;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.DataLogic;
@@ -91,7 +92,8 @@ namespace HttPlaceholder
                .AddDataLogic()
                .AddStubSources()
                .AddAssemblyServices()
-               .AddCustomMvcServices();
+               .AddCustomMvcServices()
+               .AddFileServices();
         }
     }
 }
