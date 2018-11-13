@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using Ducode.Essentials.Assembly;
+using Ducode.Essentials.Console;
 using HttPlaceholder.Models;
 using HttPlaceholder.Resources;
 using HttPlaceholder.Services.Implementations;
