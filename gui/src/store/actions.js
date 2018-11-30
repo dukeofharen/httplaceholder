@@ -48,11 +48,10 @@ export default {
             })
     },
     ensureAuthenticated({ commit }) {
-
         let username = "testUser";
         let password = "testPassword";
         getUser(username, password)
-            .then(response => commit(mutation, true))
+            .then(response => commit(storeAuthMutation, true))
             .catch(error => {
                 if (error.response.status === 401) {
                     commit(storeAuthMutation, false)
@@ -65,6 +64,7 @@ export default {
             .then(response => {
                 commit(storeLastAuthResultMutation, authenticateResults.OK)
                 commit(userTokenMutation, token)
+                commit(storeAuthMutation, true)
             })
             .catch(error => {
                 if (error.response.status === 401) {
