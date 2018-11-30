@@ -10,5 +10,12 @@ export default {
     },
     storeUserToken: (state, token) => {
         state.userToken = token
+    },
+    storeRequests: (state, requests) => {
+        state.requests = requests
+    },
+    storeToast: (state, toast) => {
+        toast.timestamp = new Date().getTime()
+        state.toast = toast
     }
 };

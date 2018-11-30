@@ -12,9 +12,15 @@ export default new Vuex.Store({
         metadata: {
             version: ''
         },
-        authenticated: false,
+        authenticated: null,
         lastAuthenticateResult: authenticateResults.NOT_SET,
-        userToken: ""
+        userToken: "",
+        requests: [],
+        toast: {
+            message: "",
+            type: "",
+            timestamp: new Date().getTime()
+        }
     },
     mutations,
     getters,

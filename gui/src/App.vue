@@ -31,6 +31,9 @@
 </template>
 
 <script>
+import { messageTypes } from '@/constants';
+import toastr from "toastr";
+
 export default {
   name: "app",
   created() {
@@ -39,10 +42,13 @@ export default {
   },
   computed: {
     metadata () {
-      return this.$store.getters.getMetadata;
+      return this.$store.getters.getMetadata
     },
     authenticated () {
       return this.$store.getters.getAuthenticated
+    },
+    toast () {
+      return this.$store.getters.getToast
     }
   },
   watch: {
@@ -51,6 +57,23 @@ export default {
         this.$router.push({ name: "requests" });
       } else {
         this.$router.push({ name: "login" });
+      }
+    },
+    toast (newToast) {
+      switch(newToast.type) {
+        case messageTypes.SUCCESS:
+          toastr.success(newToast.message)
+          break
+        case messageTypes.WARNING:
+          toastr.warning(newToast.message)
+          break
+        case messageTypes.ERROR:
+          toastr.error(newToast.message)
+          break
+        default:
+        case messageTypes.INFO:
+          toastr.info(newToast.message)
+          break
       }
     }
   }

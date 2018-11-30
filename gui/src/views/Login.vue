@@ -23,7 +23,6 @@
 import { authenticate } from "@/data/dataLogic";
 import Request from "@/components/Request";
 import resources from "@/resources";
-import toastr from "toastr";
 import { authenticateResults } from "@/constants";
 
 export default {
@@ -37,9 +36,6 @@ export default {
   computed: {
     lastAuthenticateResult() {
       return this.$store.getters.getLastAuthenticateResult;
-    },
-    userToken () {
-      return this.$store.getters.getUserToken;
     }
   },
   methods: {
@@ -51,14 +47,8 @@ export default {
     }
   },
   watch: {
-    userToken(token) {
-      console.log(token)
-      console.log(this.lastAuthenticateResult)
-      if (this.lastAuthenticateResult == authenticateResults.INVALID_CREDENTIALS) {
-        toastr.error(resources.credentialsIncorrect);
-      } else if (this.lastAuthenticateResult == authenticateResults.INTERNAL_SERVER_ERROR) {
-        toastr.error(resources.somethingWentWrongServer);
-      } else if (this.lastAuthenticateResult == authenticateResults.OK) {
+    lastAuthenticateResult(result) {
+      if (result == authenticateResults.OK) {
         this.$router.push({ name: "requests" });
       }
     }

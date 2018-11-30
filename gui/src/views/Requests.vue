@@ -22,11 +22,6 @@
 </template>
 
 <script>
-import {
-  shouldAuthenticate,
-  logicGetRequests,
-  logicDeleteAllRequests
-} from "@/data/dataLogic";
 import Request from "@/components/Request";
 import resources from "@/resources";
 import toastr from "toastr";
@@ -35,7 +30,6 @@ export default {
   name: "requests",
   data() {
     return {
-      requests: [],
       filteredRequests: [],
       searchTerm: ""
     };
@@ -43,14 +37,13 @@ export default {
   components: {
     Request
   },
-  created() {
-    shouldAuthenticate(result => {
-      if (!result) {
-        this.getRequests();
-      } else {
-        this.$router.push({ name: "login" });
-      }
-    });
+  created () {
+    this.getRequests()
+  },
+  computed: {
+    requests() {
+      return this.$store.getters.getRequests
+    }
   },
   methods: {
     search(newValue) {
@@ -71,25 +64,10 @@ export default {
       }
     },
     deleteAllRequests() {
-      logicDeleteAllRequests()
-        .then(response => {
-          toastr.success(resources.requestsDeletedSuccessfully);
-          this.getRequests();
-        })
-        .catch(error => {
-          toastr.error(resources.somethingWentWrongServer);
-        });
+      this.$store.dispatch('clearRequests')
     },
     getRequests() {
-      logicGetRequests()
-        .then(response => {
-          this.requests = response.data;
-          this.filteredRequests = response.data;
-          this.handleUrlSearch();
-        })
-        .catch(error => {
-          toastr.error(resources.somethingWentWrongServer);
-        });
+      this.$store.dispatch('getRequests')
     },
     clearInput() {
       this.searchTerm = "";
@@ -101,6 +79,10 @@ export default {
     },
     $route(from, to) {
       this.handleUrlSearch();
+    },
+    requests (newRequests) {
+      this.filteredRequests = newRequests
+      this.handleUrlSearch()
     }
   }
 };
