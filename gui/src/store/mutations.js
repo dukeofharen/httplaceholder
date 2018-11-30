@@ -20,5 +20,8 @@ export default {
     storeToast: (state, toast) => {
         toast.timestamp = new Date().getTime()
         state.toast = toast
+    },
+    storeStubsDownloadString: (state, download) => {
+        state.stubsDownloadString = download
     }
 };

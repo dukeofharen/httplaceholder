@@ -103,16 +103,27 @@ export default {
                 commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
             });
     },
-    getStubs({ commit, state }, payload) {
-        payload = payload || {}
-        let asYaml = payload.asYaml || false
+    getStubs({ commit, state }) {
         let rootUrl = urls.rootUrl
         let url = `${rootUrl}ph-api/stubs`
         let token = state.userToken
-        let config = getConfig(token, asYaml)
+        let config = getConfig(token)
         axios.get(url, config)
             .then(response => {
                 commit('storeStubs', response.data)
+            })
+            .catch(error => {
+                commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
+            });
+    },
+    getStubsAsYaml({ commit, state }) {
+        let rootUrl = urls.rootUrl
+        let url = `${rootUrl}ph-api/stubs`
+        let token = state.userToken
+        let config = getConfig(token, true)
+        axios.get(url, config)
+            .then(response => {
+                commit('storeStubsDownloadString', response.data)
             })
             .catch(error => {
                 commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })

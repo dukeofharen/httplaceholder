@@ -5,5 +5,6 @@ export default {
     getUserToken: state => state.userToken,
     getRequests: state => state.requests,
     getStubs: state => state.stubs,
-    getToast: state => state.toast
+    getToast: state => state.toast,
+    stubsDownloadString: state => state.stubsDownloadString
 };

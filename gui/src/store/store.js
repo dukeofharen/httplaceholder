@@ -17,6 +17,7 @@ export default new Vuex.Store({
         userToken: "",
         requests: [],
         stubs: [],
+        stubsDownloadString: '',
         toast: {
             message: "",
             type: "",

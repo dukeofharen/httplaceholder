@@ -5,7 +5,7 @@
         This page displays all stubs currently present in HttPlaceholder. You can copy this string and put it in a .yml file on your PC for local development.
     </p>
     <div class="input-group">
-      <textarea class="form-control" v-model="stubs"></textarea>
+      <textarea class="form-control">{{storeStubsDownloadString}}</textarea>
     </div>
   </div>
 </template>
@@ -18,32 +18,14 @@ import yaml from "js-yaml";
 
 export default {
   name: "addStub",
-  data() {
-    return {
-        "stubs": ""
-    };
-  },
   created() {
-    shouldAuthenticate(result => {
-      if (!result) {
-        this.getStubs();
-      } else {
-        this.$router.push({ name: "login" });
-      }
-    });
+    this.$store.dispatch('getStubsAsYaml')
   },
-  methods: {
-    getStubs() {
-      logicGetStubs(true)
-        .then(response => {
-          this.stubs = response.data;
-        })
-        .catch(error => {
-          toastr.error(resources.somethingWentWrongServer);
-        });
+  computed: {
+    storeStubsDownloadString() {
+      return this.$store.getters.stubsDownloadString
     }
-  },
-  watch: {}
+  }
 };
 </script>
 
