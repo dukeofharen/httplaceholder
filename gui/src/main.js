@@ -24,11 +24,14 @@ import './filters/datetime'
 
 import './functions/stringFormat'
 
+import store from './store.js'
+
 Vue.config.productionTip = false
 
 Vue.use(VueCodemirror)
 
 new Vue({
+  store,
   router,
   render: h => h(App)
 }).$mount('#app')
