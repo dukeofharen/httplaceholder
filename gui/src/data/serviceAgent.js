@@ -22,13 +22,6 @@ const deleteAllRequests = (username, password) => {
     return axios.delete(url, config)
 }
 
-const getUser = (username, password) => {
-    let rootUrl = urls.rootUrl
-    let url = `${rootUrl}ph-api/users/${username}`
-    let config = getConfig(username, password)
-    return axios.get(url, config)
-}
-
 const addStub = (stub, username, password) => {
     let rootUrl = urls.rootUrl
     let url = `${rootUrl}ph-api/stubs`
@@ -44,29 +37,10 @@ const deleteStub = (stubId, username, password) => {
     return axios.delete(url, config)
 }
 
-const getConfig = (username, password, asYaml) => {
-    if(!asYaml) {
-        asYaml = false;
-    }
-
-    let basicAuthString = btoa(`${username}:${password}`)
-    let headers = {
-        Authorization: `Basic ${basicAuthString}`
-    };
-    if (asYaml) {
-        headers['Accept'] = 'text/yaml'
-    }
-
-    return {
-        headers: headers
-    }
-}
-
 export {
     getRequests,
     getStubs,
     deleteAllRequests,
-    getUser,
     addStub,
     deleteStub
 }

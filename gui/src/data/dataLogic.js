@@ -1,28 +1,7 @@
-import { getUser, getRequests, deleteAllRequests, getStubs, addStub, deleteStub, getMetadata } from "./serviceAgent"
-import { getItem, setItem } from "./session"
-
-const shouldAuthenticate = callback => {
-    let username = getItem("username") || "testUser";
-    let password = getItem("password") || "testPassword";
-    getUser(username, password)
-        .then(response => callback(false))
-        .catch(error => {
-            if (error.response.status === 401) {
-                callback(true)
-            }
-        })
-}
+import { getUser, getRequests, deleteAllRequests, getStubs, addStub, deleteStub } from "./serviceAgent"
 
 const authenticate = (username, password, successCallback, errorCallback) => {
-    getUser(username, password)
-        .then(response => {
-            setItem("username", username);
-            setItem("password", password);
-            successCallback(response);
-        })
-        .catch(error => {
-            errorCallback(error);
-        })
+    
 }
 
 const logicGetRequests = () => {
@@ -60,7 +39,6 @@ const logicDeleteStub = stubId => {
 }
 
 export {
-    shouldAuthenticate,
     logicGetRequests,
     logicDeleteAllRequests,
     logicGetStubs,

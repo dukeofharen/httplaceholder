@@ -31,23 +31,27 @@
 </template>
 
 <script>
-import { logicGetMetadata } from "@/data/dataLogic";
-
 export default {
   name: "app",
-  data() {
-    return {
-    };
-  },
   created() {
     this.$store.dispatch('refreshMetadata');
-    // logicGetMetadata().then(response => {
-    //   this.metadata = response.data;
-    // });
+    this.$store.dispatch('ensureAuthenticated');
   },
   computed: {
     metadata () {
       return this.$store.getters.getMetadata;
+    },
+    authenticated () {
+      return this.$store.getters.getAuthenticated
+    }
+  },
+  watch: {
+    authenticated (isAuthenticated) {
+      if(isAuthenticated) {
+        this.$router.push({ name: "requests" });
+      } else {
+        this.$router.push({ name: "login" });
+      }
     }
   }
 };
