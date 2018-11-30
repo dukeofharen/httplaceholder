@@ -117,7 +117,7 @@ namespace HttPlaceholder.DataLogic.Tests.Implementations.StubSources
                 @"C:\stubs\file1.yml",
                 @"C:\stubs\file2.yml"
             };
-            string inputFile = string.Join(";", files);
+            string inputFile = string.Join("%%", files);
             _config.Add(Constants.ConfigKeys.InputFileKey, inputFile);
 
             _fileServiceMock

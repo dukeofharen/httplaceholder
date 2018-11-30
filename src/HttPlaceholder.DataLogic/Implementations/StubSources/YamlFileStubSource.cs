@@ -45,10 +45,11 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             else
             {
                 // Split on ";": it is possible to supply multiple locations.
-                var parts = inputFileLocation.Split(';');
+                var parts = inputFileLocation.Split(new[] { "%%" }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string part in parts)
                 {
                     string location = part.Trim();
+                    _logger.LogInformation($"Reading location '{location}'.");
                     if (_fileService.IsDirectory(location))
                     {
                         var yamlFiles = _fileService.GetFiles(location, "*.yml");
