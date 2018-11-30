@@ -16,6 +16,7 @@ export default new Vuex.Store({
         lastAuthenticateResult: authenticateResults.NOT_SET,
         userToken: "",
         requests: [],
+        stubs: [],
         toast: {
             message: "",
             type: "",

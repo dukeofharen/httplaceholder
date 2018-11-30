@@ -1,13 +1,6 @@
 import axios from 'axios'
 import urls from 'urls'
 
-const getStubs = (username, password, asYaml) => {
-    let rootUrl = urls.rootUrl
-    let url = `${rootUrl}ph-api/stubs`
-    let config = getConfig(username, password, asYaml)
-    return axios.get(url, config)
-}
-
 const addStub = (stub, username, password) => {
     let rootUrl = urls.rootUrl
     let url = `${rootUrl}ph-api/stubs`
@@ -16,15 +9,6 @@ const addStub = (stub, username, password) => {
     return axios.post(url, stub, config)
 }
 
-const deleteStub = (stubId, username, password) => {
-    let rootUrl = urls.rootUrl
-    let url = `${rootUrl}ph-api/stubs/${stubId}`
-    let config = getConfig(username, password)
-    return axios.delete(url, config)
-}
-
 export {
-    getStubs,
-    addStub,
-    deleteStub
+    addStub
 }

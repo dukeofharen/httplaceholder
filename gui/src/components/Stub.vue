@@ -34,16 +34,7 @@ export default {
     },
     deleteStub() {
       if (confirm(resources.areYouSure)) {
-        logicDeleteStub(this.stub.id)
-          .then(response => {
-            toastr.success(
-              resources.stubDeletedSuccessfully.format(this.stub.id)
-            );
-            this.$parent.getStubs();
-          })
-          .catch(error => {
-            toastr.error(resources.somethingWentWrongServer);
-          });
+        this.$store.dispatch('deleteStub', { stubId: this.stub.id})
       }
     }
   }

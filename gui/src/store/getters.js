@@ -4,5 +4,6 @@ export default {
     getLastAuthenticateResult: state => state.lastAuthenticateResult,
     getUserToken: state => state.userToken,
     getRequests: state => state.requests,
+    getStubs: state => state.stubs,
     getToast: state => state.toast
 };

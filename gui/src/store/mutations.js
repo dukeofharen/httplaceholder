@@ -14,6 +14,9 @@ export default {
     storeRequests: (state, requests) => {
         state.requests = requests
     },
+    storeStubs: (state, stubs) => {
+        state.stubs = stubs
+    },
     storeToast: (state, toast) => {
         toast.timestamp = new Date().getTime()
         state.toast = toast

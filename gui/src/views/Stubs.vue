@@ -23,14 +23,11 @@
 <script>
 import { shouldAuthenticate, logicGetStubs } from "@/data/dataLogic";
 import Stub from "@/components/Stub";
-import resources from "@/resources";
-import toastr from "toastr";
 
 export default {
   name: "stubs",
   data() {
     return {
-      stubs: [],
       filteredStubs: [],
       searchTerm: ""
     };
@@ -39,13 +36,7 @@ export default {
     Stub
   },
   created() {
-    shouldAuthenticate(result => {
-      if (!result) {
-        this.getStubs();
-      } else {
-        this.$router.push({ name: "login" });
-      }
-    });
+    this.getStubs();
   },
   methods: {
     search(newValue) {
@@ -65,15 +56,7 @@ export default {
       }
     },
     getStubs() {
-      logicGetStubs()
-        .then(response => {
-          this.stubs = response.data;
-          this.filteredStubs = response.data;
-          this.handleUrlSearch();
-        })
-        .catch(error => {
-          toastr.error(resources.somethingWentWrongServer);
-        });
+      this.$store.dispatch('getStubs')
     },
     addStub() {
       this.$router.push({ name: "addStub" });
@@ -85,12 +68,21 @@ export default {
       this.searchTerm = "";
     }
   },
+  computed: {
+    stubs () {
+      return this.$store.getters.getStubs
+    }
+  },
   watch: {
     searchTerm(newValue, oldValue) {
       this.search(newValue);
     },
     $route(from, to) {
       this.handleUrlSearch();
+    },
+    stubs (newStubs) {
+      this.filteredStubs = newStubs
+      this.handleUrlSearch()
     }
   }
 };
