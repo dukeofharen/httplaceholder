@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import { shouldAuthenticate, logicGetStubs } from "@/data/dataLogic";
 import Stub from "@/components/Stub";
 
 export default {
@@ -77,7 +76,7 @@ export default {
     searchTerm(newValue, oldValue) {
       this.search(newValue);
     },
-    $route(from, to) {
+    $route() {
       this.handleUrlSearch();
     },
     stubs (newStubs) {

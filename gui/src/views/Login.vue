@@ -20,9 +20,7 @@
 </template>
 
 <script>
-import { authenticate } from "@/data/dataLogic";
 import Request from "@/components/Request";
-import resources from "@/resources";
 import { authenticateResults } from "@/constants";
 
 export default {

@@ -15,10 +15,6 @@
 </template>
 
 <script>
-import { logicDeleteStub } from "@/data/dataLogic";
-import resources from "@/resources";
-import toastr from "toastr";
-
 export default {
   name: "stub",
   props: ["stub"],

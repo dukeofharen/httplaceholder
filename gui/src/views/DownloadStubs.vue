@@ -11,11 +11,6 @@
 </template>
 
 <script>
-import { shouldAuthenticate, logicGetStubs } from "@/data/dataLogic";
-import resources from "@/resources";
-import toastr from "toastr";
-import yaml from "js-yaml";
-
 export default {
   name: "addStub",
   created() {

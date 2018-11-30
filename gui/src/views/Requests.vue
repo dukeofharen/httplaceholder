@@ -23,8 +23,6 @@
 
 <script>
 import Request from "@/components/Request";
-import resources from "@/resources";
-import toastr from "toastr";
 
 export default {
   name: "requests",

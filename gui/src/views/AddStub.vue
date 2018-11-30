@@ -20,9 +20,8 @@
 </template>
 
 <script>
-import resources from "@/resources";
-import toastr from "toastr";
 import { codemirror } from "vue-codemirror";
+import resources from "@/resources";
 
 export default {
   name: "addStub",
