@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">HttPlaceholder {{metadata.version}} {{bla}}</a>
+      <a class="navbar-brand" href="#">HttPlaceholder {{metadata.version}}</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -37,19 +37,17 @@ export default {
   name: "app",
   data() {
     return {
-      metadata: {
-        version: ""
-      }
     };
   },
   created() {
-    logicGetMetadata().then(response => {
-      this.metadata = response.data;
-    });
+    this.$store.dispatch('refreshMetadata');
+    // logicGetMetadata().then(response => {
+    //   this.metadata = response.data;
+    // });
   },
   computed: {
-    bla () {
-      return this.$store.getters.getBla;
+    metadata () {
+      return this.$store.getters.getMetadata;
     }
   }
 };

@@ -24,7 +24,7 @@ import './filters/datetime'
 
 import './functions/stringFormat'
 
-import store from './store.js'
+import store from './store/store.js'
 
 Vue.config.productionTip = false
 

@@ -59,10 +59,6 @@ const logicDeleteStub = stubId => {
     return deleteStub(stubId, username, password);
 }
 
-const logicGetMetadata = () => {
-    return getMetadata();
-}
-
 export {
     shouldAuthenticate,
     logicGetRequests,
@@ -70,6 +66,5 @@ export {
     logicGetStubs,
     authenticate,
     logicAddStub,
-    logicDeleteStub,
-    logicGetMetadata
+    logicDeleteStub
 }

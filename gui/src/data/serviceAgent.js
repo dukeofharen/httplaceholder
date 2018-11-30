@@ -44,12 +44,6 @@ const deleteStub = (stubId, username, password) => {
     return axios.delete(url, config)
 }
 
-const getMetadata = () => {
-    let rootUrl = urls.rootUrl
-    let url = `${rootUrl}ph-api/metadata`
-    return axios.get(url)
-}
-
 const getConfig = (username, password, asYaml) => {
     if(!asYaml) {
         asYaml = false;
@@ -74,6 +68,5 @@ export {
     deleteAllRequests,
     getUser,
     addStub,
-    getMetadata,
     deleteStub
 }
