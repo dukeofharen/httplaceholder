@@ -16,16 +16,16 @@
     "register-service-worker": "^1.0.0",
     "toastr": "^2.1.4",
     "vue": "^2.5.17",
-    "vue-codemirror": "^4.0.5",
-    "vue-router": "^3.0.1",
+    "vue-codemirror": "^4.0.6",
+    "vue-router": "^3.0.2",
     "vuex": "^3.0.1",
     "xml-formatter": "^1.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.1",
-    "@vue/cli-plugin-eslint": "^3.0.1",
-    "@vue/cli-plugin-pwa": "^3.0.1",
-    "@vue/cli-service": "^3.0.1",
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-eslint": "^3.2.1",
+    "@vue/cli-plugin-pwa": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
     "vue-template-compiler": "^2.5.17"
   }
 }
