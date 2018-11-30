@@ -1,4 +1,5 @@
 import axios from 'axios'
+import yaml from 'js-yaml'
 import urls from 'urls'
 import { authenticateResults, messageTypes } from '@/constants';
 import resources from '@/resources';
@@ -143,5 +144,35 @@ export default {
             .catch(error => {
                 commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
             });
+    },
+    addStubs({ commit, state }, payload) {
+        let rootUrl = urls.rootUrl
+        let url = `${rootUrl}ph-api/stubs`
+        let token = state.userToken
+        let config = getConfig(token)
+        config.headers["Content-Type"] = 'application/json'
+
+        let stubsArray;
+        let parsedObject = yaml.safeLoad(payload.input);
+        if (!Array.isArray(parsedObject)) {
+            stubsArray = [parsedObject];
+        } else {
+            stubsArray = parsedObject;
+        }
+
+        for (let index in stubsArray) {
+            let stub = stubsArray[index];
+            axios.post(url, stub, config)
+                .then(response => {
+                    commit(storeToastMutation, { type: messageTypes.SUCCESS, message: resources.stubAddedSuccessfully.format(stub.id) })
+                })
+                .catch(error => {
+                    if (error.response.status === 409) {
+                        commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.stubAlreadyAdded.format(stub.id) })
+                    } else {
+                        commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.stubNotAdded.format(stub.id) })
+                    }
+                });
+        }
     }
 }
