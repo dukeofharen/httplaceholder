@@ -13,6 +13,7 @@ export default new Vuex.Store({
             version: ''
         },
         authenticated: null,
+        authenticationRequired: true,
         lastAuthenticateResult: authenticateResults.NOT_SET,
         userToken: "",
         requests: [],

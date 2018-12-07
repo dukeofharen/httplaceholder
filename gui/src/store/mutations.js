@@ -5,6 +5,9 @@ export default {
     storeAuthenticated: (state, authenticated) => {
         state.authenticated = authenticated
     },
+    storeAuthenticationRequired: (state, authenticationRequired) => {
+        state.authenticationRequired = authenticationRequired
+    },
     storeLastAuthenticateResult: (state, result) => {
         state.lastAuthenticateResult = result
     },

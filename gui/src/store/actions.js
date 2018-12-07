@@ -6,6 +6,7 @@ import resources from '@/resources';
 
 const storeToastMutation = 'storeToast'
 const storeAuthMutation = 'storeAuthenticated'
+const storeAuthRequired = 'storeAuthenticationRequired'
 const storeLastAuthResultMutation = 'storeLastAuthenticateResult'
 const userTokenMutation = 'storeUserToken'
 const storeRequestsMutation = 'storeRequests'
@@ -51,10 +52,14 @@ export default {
         let username = "testUser";
         let password = "testPassword";
         getUser(username, password)
-            .then(response => commit(storeAuthMutation, true))
+            .then(response => {
+                commit(storeAuthMutation, true)
+                commit(storeAuthRequired, false)
+            })
             .catch(error => {
                 if (error.response.status === 401) {
                     commit(storeAuthMutation, false)
+                    commit(storeAuthRequired, true)
                 }
             })
     },

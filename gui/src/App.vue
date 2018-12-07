@@ -34,7 +34,7 @@
               <router-link to="/downloadStubs" class="dropdown-item">Download stubs</router-link>
             </div>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="authenticationRequired">
             <a href="#" v-on:click="logout()" class="nav-link">Log out</a>
           </li>
         </ul>
@@ -75,6 +75,9 @@ export default {
     },
     userToken() {
       return this.$store.getters.getUserToken;
+    },
+    authenticationRequired() {
+      return this.$store.getters.getAuthenticationRequired;
     }
   },
   methods: {
