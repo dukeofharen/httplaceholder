@@ -9,7 +9,6 @@ using HttPlaceholder.DataLogic.Implementations.StubSources;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using HttPlaceholder.Services.Implementations;
-using HttPlaceholder.Utilities;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -27,7 +26,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public void InitializeStubIntegrationTest(string yamlFileName)
         {
             // Load the integration YAML file here.
-            string path = Path.Combine(AssemblyHelper.GetExecutingAssemblyRootPath(), yamlFileName);
+            string path = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), yamlFileName);
             string integrationYml = File.ReadAllText(path);
 
             _fileServiceMock = new Mock<IFileService>();

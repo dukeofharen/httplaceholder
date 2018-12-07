@@ -31,7 +31,6 @@
       <PackageReference Include="YamlDotNet" Version="5.3.0" />
    </ItemGroup>
    <ItemGroup>
-      <ProjectReference Include="..\..\Ducode.Essentials\src\Ducode.Essentials.Console\Ducode.Essentials.Console.csproj" />
       <ProjectReference Include="..\HttPlaceholder.BusinessLogic\HttPlaceholder.BusinessLogic.csproj" />
       <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
       <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />
