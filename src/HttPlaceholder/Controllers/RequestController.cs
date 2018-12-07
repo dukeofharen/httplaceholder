@@ -46,7 +46,7 @@ namespace HttPlaceholder.Controllers
         [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "OK, but no content returned")]
         public async Task<IActionResult> DeleteAll()
         {
-            _logger.LogInformation($"Deleting all requests.");
+            _logger.LogInformation("Deleting all requests.");
             await _stubContainer.DeleteAllRequestResultsAsync();
             return NoContent();
         }

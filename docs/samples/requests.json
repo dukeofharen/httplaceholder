@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "b4921b20-c851-4abd-8c27-61564c052785",
+		"_postman_id": "afdccae3-5bfc-453b-b2b5-b42cb67146aa",
 		"name": "HttPlaceholder Examples",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13,7 +13,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/users?id=12&filter=first_name",
 							"protocol": "http",
@@ -43,7 +46,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/users?id=14&filter=last_name",
 							"protocol": "http",
@@ -73,7 +79,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/users?id=15&filter=last_name&last_name=Jackson",
 							"protocol": "http",
@@ -107,7 +116,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/users?filter=first_name",
 							"protocol": "http",
@@ -133,7 +145,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/users",
 							"protocol": "http",
@@ -301,7 +316,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"iPhone\",\r\n            \"number\": \"0123-4567-8888\"\r\n        },\r\n        {\r\n            \"type\": \"home\",\r\n            \"number\": \"0123-4567-8910\"\r\n        }\r\n    ]\r\n}"
+							"raw": ""
 						},
 						"url": {
 							"raw": "http://localhost:5000/cat_file.jpg",
@@ -324,7 +339,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"iPhone\",\r\n            \"number\": \"0123-4567-8888\"\r\n        },\r\n        {\r\n            \"type\": \"home\",\r\n            \"number\": \"0123-4567-8910\"\r\n        }\r\n    ]\r\n}"
+							"raw": ""
 						},
 						"url": {
 							"raw": "http://localhost:5000/cat.jpg",
@@ -365,7 +380,10 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/auth?id=12&filter=first_name",
 							"protocol": "http",
@@ -403,7 +421,10 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/slooooow?id=12&filter=first_name",
 							"protocol": "http",
@@ -438,7 +459,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/temp-redirect",
 							"protocol": "http",
@@ -458,7 +482,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/permanent-redirect",
 							"protocol": "http",
@@ -483,7 +510,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/client-ip-1",
 							"protocol": "http",
@@ -503,7 +533,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/client-ip-2",
 							"protocol": "http",
@@ -528,7 +561,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://httplaceholder2.local:5000/host-2",
 							"protocol": "http",
@@ -549,7 +585,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://httplaceholder.local:5000/host-1",
 							"protocol": "http",
@@ -575,7 +614,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "https://localhost:5050/ishttps-ok",
 							"protocol": "https",
@@ -600,7 +642,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/adsfasdfgas",
 							"protocol": "http",
@@ -620,7 +665,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "http://localhost:5000/not-fallback",
 							"protocol": "http",
@@ -683,6 +731,550 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "REST API",
+			"item": [
+				{
+					"name": "Requests",
+					"item": [
+						{
+							"name": "GET all",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/requests/fallback",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"requests",
+										"fallback"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET by stub ID",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/requests/fallback",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"requests",
+										"fallback"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE all",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/requests",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"requests"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Stubs",
+					"item": [
+						{
+							"name": "POST new stub (YAML)",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/yaml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "id: test-situation\r\ntenant: 01-get\r\nconditions:\r\n  method: GET\r\n  url:\r\n    path: /testtesttest\r\n    query:\r\n      id: 12\r\nresponse:\r\n  statusCode: 200\r\n  text: OK my dude!"
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/stubs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST new stub (JSON)",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"id\": \"test-situation\",\r\n\t\"tenant\": \"01-get\",\r\n\t\"conditions\": {\r\n\t\t\"method\": \"GET\",\r\n\t\t\"url\": {\r\n\t\t\t\"path\": \"/testtesttest\",\r\n\t\t\t\"query\": {\r\n\t\t\t\t\"id\": \"13\"\r\n\t\t\t}\r\n\t\t}\r\n\t},\r\n\t\"response\": {\r\n\t\t\"statusCode\": 200,\r\n\t\t\"text\": \"OK my dude!\"\r\n\t}\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/stubs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET stub by ID",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"id\": \"test-situation\",\r\n\t\"tenant\": \"01-get\",\r\n\t\"conditions\": {\r\n\t\t\"method\": \"GET\",\r\n\t\t\"url\": {\r\n\t\t\t\"path\": \"/testtesttest\",\r\n\t\t\t\"query\": {\r\n\t\t\t\t\"id\": \"13\"\r\n\t\t\t}\r\n\t\t}\r\n\t},\r\n\t\"response\": {\r\n\t\t\"statusCode\": 200,\r\n\t\t\"text\": \"OK my dude!\"\r\n\t}\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/stubs/test-situation",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"stubs",
+										"test-situation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE stub by ID",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/stubs/test-situation",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"stubs",
+										"test-situation"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Metadata",
+					"item": [
+						{
+							"name": "GET metadata",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/metadata",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"metadata"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Tenants",
+					"item": [
+						{
+							"name": "PUT tenant",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/yaml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "- id: test-situation-01\r\n  conditions:\r\n    method: GET\r\n    url:\r\n      path: /testtesttest\r\n      query:\r\n        id: 12\r\n  response:\r\n    statusCode: 200\r\n    text: OK my dude 12!\r\n\r\n- id: test-situation-02\r\n  conditions:\r\n    method: GET\r\n    url:\r\n      path: /testtesttest\r\n      query:\r\n        id: 13\r\n  response:\r\n    statusCode: 200\r\n    text: OK my dude 13!"
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/tenants/test-tenant/stubs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"tenants",
+										"test-tenant",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE all stubs in tenant",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/yaml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/tenants/test-tenant/stubs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"tenants",
+										"test-tenant",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all stubs in tenant",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/yaml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "- id: test-situation-01\r\n  conditions:\r\n    method: GET\r\n    url:\r\n      path: /testtesttest\r\n      query:\r\n        id: 12\r\n  response:\r\n    statusCode: 200\r\n    text: OK my dude 12!\r\n\r\n- id: test-situation-02\r\n  conditions:\r\n    method: GET\r\n    url:\r\n      path: /testtesttest\r\n      query:\r\n        id: 13\r\n  response:\r\n    statusCode: 200\r\n    text: OK my dude 13!"
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/tenants/test-tenant/stubs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"tenants",
+										"test-tenant",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "GET user data",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/users/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"users",
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
 				}
 			]
 		}
