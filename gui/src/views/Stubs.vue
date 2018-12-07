@@ -10,10 +10,11 @@
           </span>
         </div>
       </div>
-      <div class="col-md-2 buttons">
+      <div class="col-md-1">
+        <a class="btn btn-danger" v-on:click="deleteAllStubs" title="Delete all stubs"><span class="fa fa-trash">&nbsp;</span></a>
+      </div>
+      <div class="col-md-1">
         <a class="btn btn-success" v-on:click="getStubs" title="Refresh"><span class="fa fa-refresh">&nbsp;</span></a>
-        <a class="btn btn-success" v-on:click="addStub" title="Add new stub(s)"><span class="fa fa-plus-circle">&nbsp;</span></a>
-        <a class="btn btn-success" v-on:click="downloadStubs" title="Download all stubs"><span class="fa fa-cloud-download">&nbsp;</span></a>
       </div>
     </div>
     <Stub v-bind:stub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
@@ -22,6 +23,7 @@
 
 <script>
 import Stub from "@/components/Stub";
+import resources from "@/resources";
 
 export default {
   name: "stubs",
@@ -43,8 +45,9 @@ export default {
         this.filteredStubs = this.stubs;
       } else {
         this.filteredStubs = this.stubs.filter(r => {
-          return r.id.includes(newValue) ||
-                 r.tenant && r.tenant.includes(newValue);
+          return (
+            r.id.includes(newValue) || (r.tenant && r.tenant.includes(newValue))
+          );
         });
       }
     },
@@ -55,7 +58,7 @@ export default {
       }
     },
     getStubs() {
-      this.$store.dispatch('getStubs')
+      this.$store.dispatch("getStubs");
     },
     addStub() {
       this.$router.push({ name: "addStub" });
@@ -65,11 +68,19 @@ export default {
     },
     clearInput() {
       this.searchTerm = "";
+    },
+    deleteAllStubs() {
+      if(confirm(resources.areYouSure)) {
+        let writableStubs = this.stubs.filter(s => !s.metadata.readOnly)
+        for(let stub of writableStubs) {
+          this.$store.dispatch('deleteStub', { stubId: stub.id})
+        }
+      }
     }
   },
   computed: {
-    stubs () {
-      return this.$store.getters.getStubs
+    stubs() {
+      return this.$store.getters.getStubs;
     }
   },
   watch: {
@@ -79,9 +90,9 @@ export default {
     $route() {
       this.handleUrlSearch();
     },
-    stubs (newStubs) {
-      this.filteredStubs = newStubs
-      this.handleUrlSearch()
+    stubs(newStubs) {
+      this.filteredStubs = newStubs;
+      this.handleUrlSearch();
     }
   }
 };
