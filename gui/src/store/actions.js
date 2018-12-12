@@ -53,10 +53,12 @@ export default {
         let password = "testPassword";
         getUser(username, password)
             .then(response => {
+                // No authentication on endpoint, so no login required.
                 commit(storeAuthMutation, true)
                 commit(storeAuthRequired, false)
             })
             .catch(error => {
+                // Authentication required, so show login screen.
                 if (error.response.status === 401) {
                     commit(storeAuthMutation, false)
                     commit(storeAuthRequired, true)

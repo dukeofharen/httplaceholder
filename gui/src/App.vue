@@ -81,16 +81,15 @@ export default {
     }
   },
   methods: {
-    logout () {
+    logout() {
+      sessionStorage.removeItem("userToken");
       this.$store.commit("storeAuthenticated", false);
       this.$router.push({ name: "login" });
     }
   },
   watch: {
     authenticated(isAuthenticated) {
-      if (isAuthenticated) {
-        this.$router.push({ name: "requests" });
-      } else {
+      if (!isAuthenticated) {
         this.$router.push({ name: "login" });
       }
     },
@@ -112,7 +111,11 @@ export default {
       }
     },
     userToken(newToken) {
-      sessionStorage.userToken = newToken;
+      if (!newToken) {
+        sessionStorage.removeItem("userToken");
+      } else {
+        sessionStorage.userToken = newToken;
+      }
     }
   }
 };

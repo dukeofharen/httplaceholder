@@ -4,6 +4,9 @@ export default {
     },
     storeAuthenticated: (state, authenticated) => {
         state.authenticated = authenticated
+        if(!authenticated) {
+            state.userToken = null
+        }
     },
     storeAuthenticationRequired: (state, authenticationRequired) => {
         state.authenticationRequired = authenticationRequired
