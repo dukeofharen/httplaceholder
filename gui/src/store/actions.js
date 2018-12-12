@@ -135,6 +135,23 @@ export default {
                 commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
             });
     },
+    getStubAsYaml({ commit, state }, payload) {
+        let stubId = payload.stubId
+        let rootUrl = urls.rootUrl
+        let url = `${rootUrl}ph-api/stubs/${stubId}`
+        let token = state.userToken
+        let config = getConfig(token, true)
+        axios.get(url, config)
+            .then(response => {
+                commit('storeLastSelectedStub', {
+                    id: stubId,
+                    yaml: response.data
+                })
+            })
+            .catch(error => {
+                commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
+            });
+    },
     deleteStub({ commit, state, dispatch }, payload) {
         let stubId = payload.stubId
         let rootUrl = urls.rootUrl
@@ -169,7 +186,12 @@ export default {
             let stub = stubsArray[index];
             axios.post(url, stub, config)
                 .then(response => {
-                    commit(storeToastMutation, { type: messageTypes.SUCCESS, message: resources.stubAddedSuccessfully.format(stub.id) })
+                    let message = resources.stubAddedSuccessfully
+                    if(payload.updated){
+                        message = resources.stubUpdatedSuccessfully
+                    }
+
+                    commit(storeToastMutation, { type: messageTypes.SUCCESS, message: message.format(stub.id) })
                 })
                 .catch(error => {
                     if (error.response.status === 409) {

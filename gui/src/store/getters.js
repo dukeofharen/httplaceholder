@@ -7,5 +7,6 @@ export default {
     getRequests: state => state.requests,
     getStubs: state => state.stubs,
     getToast: state => state.toast,
-    stubsDownloadString: state => state.stubsDownloadString
+    stubsDownloadString: state => state.stubsDownloadString,
+    getLastSelectedStub: state => state.lastSelectedStub
 };

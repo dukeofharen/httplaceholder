@@ -1,7 +1,9 @@
 <template>
   <div class="row stub">
       <div class="col-12">
-        <strong class="url" v-on:click="showOrHide">{{stub.id}}</strong> <a class="btn btn-primary pull-right" v-on:click="deleteStub" title="Delete stub" v-if="!stub.metadata.readOnly"><span class="fa fa-trash">&nbsp;</span></a>
+        <strong class="url" v-on:click="showOrHide">{{stub.id}}</strong>
+        <a class="btn btn-danger pull-right" v-on:click="deleteStub" title="Delete stub" v-if="!stub.metadata.readOnly"><span class="fa fa-trash">&nbsp;</span></a>
+        <a class="btn btn-primary pull-right" v-on:click="updateStub" title="Update stub" v-if="!stub.metadata.readOnly"><span class="fa fa-pencil">&nbsp;</span></a>
         <div class="row" v-if="visible">
             <div class="col-12">
               <router-link :to="{ name: 'requests', query: { searchTerm: stub.id }}">View requests made for this stub</router-link>
@@ -32,6 +34,9 @@ export default {
       if (confirm(resources.areYouSure)) {
         this.$store.dispatch('deleteStub', { stubId: this.stub.id})
       }
+    },
+    updateStub() {
+      this.$router.push({ name: "updateStub", params: { stubId: this.stub.id } });
     }
   }
 };
@@ -45,5 +50,8 @@ export default {
 }
 .url {
   cursor: pointer;
+}
+.btn {
+  margin-left: 5px;
 }
 </style>

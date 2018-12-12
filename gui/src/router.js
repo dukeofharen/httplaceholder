@@ -31,6 +31,11 @@ export default new Router({
       component: () => import(/* webpackChunkName: "addStub" */ './views/AddStub.vue')
     },
     {
+      path: '/updateStub/:stubId',
+      name: 'updateStub',
+      component: () => import(/* webpackChunkName: "updateStub" */ './views/UpdateStub.vue')
+    },
+    {
       path: '/downloadStubs',
       name: 'downloadStubs',
       component: () => import(/* webpackChunkName: "downloadStubs" */ './views/DownloadStubs.vue')

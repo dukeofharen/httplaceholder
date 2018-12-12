@@ -26,5 +26,8 @@ export default {
     },
     storeStubsDownloadString: (state, download) => {
         state.stubsDownloadString = download
+    },
+    storeLastSelectedStub: (state, stub) => {
+        state.lastSelectedStub = stub
     }
 };

@@ -23,6 +23,10 @@ export default new Vuex.Store({
             message: "",
             type: "",
             timestamp: new Date().getTime()
+        },
+        lastSelectedStub: {
+            id: "",
+            yaml: ""
         }
     },
     mutations,
