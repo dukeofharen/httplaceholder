@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" v-on:keyup.enter="logIn">
     <h1>Log in</h1>
     <div class="input-group mb-3">
       <div class="input-group-prepend">
