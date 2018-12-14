@@ -17,7 +17,7 @@
         <a class="btn btn-success" v-on:click="getStubs" title="Refresh"><span class="fa fa-refresh">&nbsp;</span></a>
       </div>
     </div>
-    <Stub v-bind:stub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
+    <Stub v-bind:fullStub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
   </div>
 </template>
 
