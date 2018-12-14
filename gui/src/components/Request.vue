@@ -44,7 +44,7 @@
                 <div class="col-9">{{result.responseWriterName}}</div>
 
                 <div class="col-3">Executed</div>
-                <div class="col-9">{{result.executed}}</div>
+                <div class="col-9"><Bool v-bind:bool="result.executed" /></div>
 
                 <div class="col-12">
                     <hr />
