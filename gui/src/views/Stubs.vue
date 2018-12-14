@@ -72,8 +72,8 @@ export default {
     deleteAllStubs() {
       if(confirm(resources.areYouSure)) {
         let writableStubs = this.stubs.filter(s => !s.metadata.readOnly)
-        for(let stub of writableStubs) {
-          this.$store.dispatch('deleteStub', { stubId: stub.id})
+        for(let fullStub of writableStubs) {
+          this.$store.dispatch('deleteStub', { stubId: fullStub.stub.id})
         }
       }
     }
