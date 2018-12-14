@@ -145,4 +145,7 @@ export default {
 .btn {
   color: #FFFFFF !important;
 }
+.btn-outline-secondary {
+  color: #000000 !important;
+}
 </style>
