@@ -184,9 +184,9 @@ response:
                 string content = await response.Content.ReadAsStringAsync();
                 var reader = new StringReader(content);
                 var deserializer = new Deserializer();
-                var stubs = deserializer.Deserialize<IEnumerable<StubModel>>(reader);
+                var stubs = deserializer.Deserialize<IEnumerable<FullStubModel>>(reader);
                 Assert.AreEqual(1, stubs.Count());
-                Assert.AreEqual("test-123", stubs.First().Id);
+                Assert.AreEqual("test-123", stubs.First().Stub.Id);
             }
         }
 
@@ -216,9 +216,9 @@ response:
                 Assert.IsTrue(response.IsSuccessStatusCode);
 
                 string content = await response.Content.ReadAsStringAsync();
-                var stubs = JsonConvert.DeserializeObject<IEnumerable<StubModel>>(content);
+                var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubModel>>(content);
                 Assert.AreEqual(1, stubs.Count());
-                Assert.AreEqual("test-123", stubs.First().Id);
+                Assert.AreEqual("test-123", stubs.First().Stub.Id);
             }
         }
 
@@ -250,8 +250,8 @@ response:
                 string content = await response.Content.ReadAsStringAsync();
                 var reader = new StringReader(content);
                 var deserializer = new Deserializer();
-                var stub = deserializer.Deserialize<StubModel>(reader);
-                Assert.AreEqual("test-123", stub.Id);
+                var stub = deserializer.Deserialize<FullStubModel>(reader);
+                Assert.AreEqual("test-123", stub.Stub.Id);
             }
         }
 
@@ -281,8 +281,8 @@ response:
                 Assert.IsTrue(response.IsSuccessStatusCode);
 
                 string content = await response.Content.ReadAsStringAsync();
-                var stub = JsonConvert.DeserializeObject<StubModel>(content);
-                Assert.AreEqual("test-123", stub.Id);
+                var stub = JsonConvert.DeserializeObject<FullStubModel>(content);
+                Assert.AreEqual("test-123", stub.Stub.Id);
             }
         }
 
