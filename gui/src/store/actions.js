@@ -124,19 +124,6 @@ export default {
                 commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
             });
     },
-    getStubsAsYaml({ commit, state }) {
-        let rootUrl = urls.rootUrl
-        let url = `${rootUrl}ph-api/stubs`
-        let token = state.userToken
-        let config = getConfig(token, true)
-        axios.get(url, config)
-            .then(response => {
-                commit('storeStubsDownloadString', response.data)
-            })
-            .catch(error => {
-                commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
-            });
-    },
     getStub({ commit, state }, payload) {
         let stubId = payload.stubId
         let rootUrl = urls.rootUrl
