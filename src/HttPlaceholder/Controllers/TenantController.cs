@@ -27,7 +27,7 @@ namespace HttPlaceholder.Controllers
 
         [HttpGet]
         [Route("{tenant}/stubs")]
-        public async Task<IEnumerable<StubModel>> GetAll(string tenant)
+        public async Task<IEnumerable<FullStubModel>> GetAll(string tenant)
         {
             _logger.LogInformation($"Retrieving all stubs for tenant '{tenant}'.");
             var stubs = await _stubContainer.GetStubsAsync(tenant);

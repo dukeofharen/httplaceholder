@@ -40,7 +40,7 @@ namespace HttPlaceholder.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<StubModel>> GetAll()
+        public async Task<IEnumerable<FullStubModel>> GetAll()
         {
             _logger.LogInformation("Retrieving all stubs.");
             var stubs = await _stubContainer.GetStubsAsync();

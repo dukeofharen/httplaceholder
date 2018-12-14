@@ -6,9 +6,9 @@ namespace HttPlaceholder.BusinessLogic
 {
     public interface IStubContainer
     {
-        Task<IEnumerable<StubModel>> GetStubsAsync();
+        Task<IEnumerable<FullStubModel>> GetStubsAsync();
 
-        Task<IEnumerable<StubModel>> GetStubsAsync(string tenant);
+        Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant);
 
         Task AddStubAsync(StubModel stub);
 
@@ -18,7 +18,7 @@ namespace HttPlaceholder.BusinessLogic
 
         Task UpdateAllStubs(string tenant, IEnumerable<StubModel> stubs);
 
-        Task<StubModel> GetStubAsync(string stubId);
+        Task<FullStubModel> GetStubAsync(string stubId);
 
         Task AddRequestResultAsync(RequestResultModel requestResult);
 

@@ -18,16 +18,16 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             _serviceProvider = serviceProvider;
         }
 
-        public async Task<IEnumerable<StubModel>> GetStubsAsync()
+        public async Task<IEnumerable<FullStubModel>> GetStubsAsync()
         {
             return await GetStubsAsync(false);
         }
 
-        public async Task<IEnumerable<StubModel>> GetStubsAsync(string tenant)
+        public async Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant)
         {
             var stubs = await GetStubsAsync(false);
             var stubsForTenant = stubs
-                .Where(s => string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
+                .Where(s => string.Equals(s.Stub.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
             return stubsForTenant;
         }
 
@@ -35,7 +35,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations
         {
             // Check that a stub with the new ID isn't already added to a readonly stub source.
             var stubs = await GetStubsAsync(true);
-            if (stubs.Any(s => string.Equals(stub.Id, s.Id, StringComparison.OrdinalIgnoreCase)))
+            if (stubs.Any(s => string.Equals(stub.Id, s.Stub.Id, StringComparison.OrdinalIgnoreCase)))
             {
                 throw new ConflictException($"Stub with ID '{stub.Id}'.");
             }
@@ -87,9 +87,9 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             }
         }
 
-        public async Task<StubModel> GetStubAsync(string stubId)
+        public async Task<FullStubModel> GetStubAsync(string stubId)
         {
-            var stub = (await GetStubsAsync()).FirstOrDefault(s => s.Id == stubId);
+            var stub = (await GetStubsAsync()).FirstOrDefault(s => s.Stub.Id == stubId);
             return stub;
         }
 
@@ -146,13 +146,23 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             return sources;
         }
 
-        private async Task<IEnumerable<StubModel>> GetStubsAsync(bool readOnly)
+        private async Task<IEnumerable<FullStubModel>> GetStubsAsync(bool readOnly)
         {
-            var result = new List<StubModel>();
+            var result = new List<FullStubModel>();
             var sources = readOnly ? GetReadOnlyStubSources() : GetStubSources();
             foreach (var source in sources)
             {
-                result.AddRange(await source.GetStubsAsync());
+                bool stubSourceIsReadOnly = !(source is IWritableStubSource);
+                var stubs = await source.GetStubsAsync();
+                var fullStubModels = stubs.Select(s => new FullStubModel
+                {
+                    Stub = s,
+                    Metadata = new StubMetadataModel
+                    {
+                        ReadOnly = stubSourceIsReadOnly
+                    }
+                });
+                result.AddRange(fullStubModels);
             }
 
             return result;
