@@ -22,7 +22,7 @@
 
 <script>
 import { codemirror } from "vue-codemirror";
-// import resources from "@/resources";
+import yaml from 'js-yaml'
 
 export default {
   name: "updateStub",
@@ -38,7 +38,7 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("getStubAsYaml", { stubId: this.$route.params.stubId });
+    this.$store.dispatch("getStub", { stubId: this.$route.params.stubId });
   },
   components: {
     codemirror
@@ -55,7 +55,7 @@ export default {
   },
   watch: {
     lastSelectedStub (newInput) {
-      this.input = newInput.yaml
+      this.input = yaml.dump(newInput.fullStub.stub)
     }
   }
 };
