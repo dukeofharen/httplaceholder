@@ -23,8 +23,6 @@ namespace HttPlaceholder.Models
         [YamlMember(Alias = "tenant")]
         public string Tenant { get; set; }
 
-        public StubMetadataModel Metadata { get; set; }
-
         public override string ToString()
         {
             return Id;

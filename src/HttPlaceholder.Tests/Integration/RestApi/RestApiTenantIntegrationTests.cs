@@ -67,9 +67,9 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 string content = await response.Content.ReadAsStringAsync();
                 var reader = new StringReader(content);
                 var deserializer = new Deserializer();
-                var stubs = deserializer.Deserialize<IEnumerable<StubModel>>(reader);
+                var stubs = deserializer.Deserialize<IEnumerable<FullStubModel>>(reader);
                 Assert.AreEqual(1, stubs.Count());
-                Assert.AreEqual("test-456", stubs.Single().Id);
+                Assert.AreEqual("test-456", stubs.Single().Stub.Id);
             }
         }
 
@@ -109,9 +109,9 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Assert.IsTrue(response.IsSuccessStatusCode);
 
                 string content = await response.Content.ReadAsStringAsync();
-                var stubs = JsonConvert.DeserializeObject<IEnumerable<StubModel>>(content);
+                var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubModel>>(content);
                 Assert.AreEqual(1, stubs.Count());
-                Assert.AreEqual("test-456", stubs.Single().Id);
+                Assert.AreEqual("test-456", stubs.Single().Stub.Id);
             }
         }
 

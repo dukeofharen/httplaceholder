@@ -58,39 +58,45 @@ Returns a list with all configured stubs.
 **Response**<br />
 `200 OK`
 ```yml
-- id: situation-01
-  conditions:
-    method: GET
-    url:
-      path: /users
-      query:
-        id: 12
-        filter: first_name
-  response:
-    statusCode: 200
-    text: |
-      {
-        ""first_name"": ""John""
-      }
-    headers:
-      Content-Type: application/json
+- stub:
+    id: situation-01
+    conditions:
+      method: GET
+      url:
+        path: /users
+        query:
+          id: 12
+          filter: first_name
+    response:
+      statusCode: 200
+      text: |
+        {
+          ""first_name"": ""John""
+        }
+      headers:
+        Content-Type: application/json
+  metadata:
+    readOnly: true
 
-- id: situation-02
-  conditions:
-    method: POST
-    url:
-      path: /users
-      query:
-        id: 12
-        filter: first_name
-  response:
-    statusCode: 200
-    text: |
-      {
-        ""first_name"": ""John""
-      }
-    headers:
-      Content-Type: application/json
+- stub:
+    id: situation-02
+    conditions:
+      method: POST
+      url:
+        path: /users
+        query:
+          id: 12
+          filter: first_name
+    response:
+      statusCode: 200
+      text: |
+        {
+          ""first_name"": ""John""
+        }
+      headers:
+        Content-Type: application/json
+  metadata:
+    readOnly: true
 ```
 
 ### (GET) Get stub
@@ -108,22 +114,25 @@ Returns a specific stub by its ID.
 **Response**<br />
 `200 OK`
 ```yml
-id: situation-01
-conditions:
-  method: GET
-  url:
-    path: /users
-    query:
-      id: 12
-      filter: first_name
-response:
-  statusCode: 200
-  text: |
-    {
-      ""first_name"": ""John""
-    }
-  headers:
-    Content-Type: application/json
+stub:
+  id: situation-01
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: 12
+        filter: first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        ""first_name"": ""John""
+      }
+    headers:
+      Content-Type: application/json
+metadata:
+  readOnly: true
 ```
 
 `404 NotFound`
@@ -244,6 +253,7 @@ Returns all stubs in a given tenant.
 ```json
 [
     {
+      "stub": {
         "id": "regular-xml",
         "conditions": {
             "method": "POST",
@@ -268,8 +278,13 @@ Returns all stubs in a given tenant.
         },
         "priority": 1,
         "tenant": "03-xml"
+      },
+      "metadata": {
+        "readOnly": true
+      }
     },
     {
+      "stub": {
         "id": "soap-xml",
         "conditions": {
             "method": "POST",
@@ -298,6 +313,10 @@ Returns all stubs in a given tenant.
         },
         "priority": 1,
         "tenant": "03-xml"
+      },
+      "metadata": {
+        "readOnly": true
+      }
     }
 ]
 ```

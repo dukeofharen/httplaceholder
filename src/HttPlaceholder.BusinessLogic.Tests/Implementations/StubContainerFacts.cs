@@ -58,9 +58,9 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
 
             // assert
             Assert.AreEqual(3, result.Length);
-            Assert.AreEqual(stub1, result[0]);
-            Assert.AreEqual(stub2, result[1]);
-            Assert.AreEqual(stub3, result[2]);
+            Assert.AreEqual(stub1, result[0].Stub);
+            Assert.AreEqual(stub2, result[1].Stub);
+            Assert.AreEqual(stub3, result[2].Stub);
         }
 
         [TestMethod]
@@ -100,8 +100,8 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
 
             // assert
             Assert.AreEqual(2, result.Length);
-            Assert.AreEqual(stub1, result[0]);
-            Assert.AreEqual(stub3, result[1]);
+            Assert.AreEqual(stub1, result[0].Stub);
+            Assert.AreEqual(stub3, result[1].Stub);
         }
 
         [TestMethod]
@@ -217,7 +217,7 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
             var result = await _container.GetStubAsync("stub2");
 
             // assert
-            Assert.AreEqual(stub2, result);
+            Assert.AreEqual(stub2, result.Stub);
         }
 
         [TestMethod]

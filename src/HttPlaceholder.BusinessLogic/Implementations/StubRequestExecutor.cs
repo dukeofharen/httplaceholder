@@ -44,8 +44,9 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             var foundStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>();
             var stubs = await _stubContainer.GetStubsAsync();
 
-            foreach (var stub in stubs)
+            foreach (var fullStub in stubs)
             {
+                var stub = fullStub.Stub;
                 try
                 {
                     bool passed = false;

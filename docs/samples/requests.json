@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "afdccae3-5bfc-453b-b2b5-b42cb67146aa",
+		"_postman_id": "c924fabf-7e40-459f-80da-67d6c6740b50",
 		"name": "HttPlaceholder Examples",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -985,7 +985,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\t\"id\": \"test-situation\",\r\n\t\"tenant\": \"01-get\",\r\n\t\"conditions\": {\r\n\t\t\"method\": \"GET\",\r\n\t\t\"url\": {\r\n\t\t\t\"path\": \"/testtesttest\",\r\n\t\t\t\"query\": {\r\n\t\t\t\t\"id\": \"13\"\r\n\t\t\t}\r\n\t\t}\r\n\t},\r\n\t\"response\": {\r\n\t\t\"statusCode\": 200,\r\n\t\t\"text\": \"OK my dude!\"\r\n\t}\r\n}"
+									"raw": ""
 								},
 								"url": {
 									"raw": "http://localhost:5000/ph-api/stubs/test-situation",
@@ -1045,6 +1045,52 @@
 										"ph-api",
 										"stubs",
 										"test-situation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/stubs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"stubs"
 									]
 								}
 							},
@@ -1208,7 +1254,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "- id: test-situation-01\r\n  conditions:\r\n    method: GET\r\n    url:\r\n      path: /testtesttest\r\n      query:\r\n        id: 12\r\n  response:\r\n    statusCode: 200\r\n    text: OK my dude 12!\r\n\r\n- id: test-situation-02\r\n  conditions:\r\n    method: GET\r\n    url:\r\n      path: /testtesttest\r\n      query:\r\n        id: 13\r\n  response:\r\n    statusCode: 200\r\n    text: OK my dude 13!"
+									"raw": ""
 								},
 								"url": {
 									"raw": "http://localhost:5000/ph-api/tenants/test-tenant/stubs",
