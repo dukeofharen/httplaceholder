@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import VueCodemirror from 'vue-codemirror'
+import VueShortKey from 'vue-shortkey'
 import './registerServiceWorker'
 
 // Styling
@@ -35,6 +36,7 @@ import store from './store/store.js'
 Vue.config.productionTip = false
 
 Vue.use(VueCodemirror)
+Vue.use(VueShortKey)
 
 new Vue({
   store,

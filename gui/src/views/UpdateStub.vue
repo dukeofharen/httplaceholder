@@ -1,5 +1,5 @@
 <template>
-  <div class="update-stub">
+  <div class="update-stub" v-shortkey="['ctrl', 's']" @shortkey="updateStub">
     <h1>Update stub</h1>
 
     <p>
