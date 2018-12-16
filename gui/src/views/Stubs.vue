@@ -70,12 +70,12 @@ export default {
       this.searchTerm = "";
     },
     deleteAllStubs() {
-      if(confirm(resources.areYouSure)) {
+      this.$dialog.confirm(resources.areYouSure).then(() => {
         let writableStubs = this.stubs.filter(s => !s.metadata.readOnly)
-        for(let stub of writableStubs) {
-          this.$store.dispatch('deleteStub', { stubId: stub.id})
+        for(let fullStub of writableStubs) {
+          this.$store.dispatch('deleteStub', { stubId: fullStub.stub.id})
         }
-      }
+      });
     }
   },
   computed: {

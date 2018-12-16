@@ -4,20 +4,40 @@
     <div class="row">
       <div class="col-md-10">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Filter on stub ID or URL..." v-model="searchTerm" />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Filter on stub ID or URL..."
+            v-model="searchTerm"
+          >
           <span class="input-group-append">
-            <a class="btn btn-outline-secondary" type="button" title="Clear input" v-on:click="clearInput"><span class="fa fa-eraser">&nbsp;</span></a>
+            <a
+              class="btn btn-outline-secondary"
+              type="button"
+              title="Clear input"
+              v-on:click="clearInput"
+            >
+              <span class="fa fa-eraser">&nbsp;</span>
+            </a>
           </span>
         </div>
       </div>
       <div class="col-md-1">
-        <a class="btn btn-danger" v-on:click="deleteAllRequests" title="Delete all requests"><span class="fa fa-trash">&nbsp;</span></a>
+        <a class="btn btn-danger" v-on:click="deleteAllRequests" title="Delete all requests">
+          <span class="fa fa-trash">&nbsp;</span>
+        </a>
       </div>
       <div class="col-md-1">
-        <a class="btn btn-success" v-on:click="getRequests" title="Refresh"><span class="fa fa-refresh">&nbsp;</span></a>
+        <a class="btn btn-success" v-on:click="getRequests" title="Refresh">
+          <span class="fa fa-refresh">&nbsp;</span>
+        </a>
       </div>
     </div>
-    <Request v-bind:request="request" v-for="request in filteredRequests" :key="request.correlationId"></Request>
+    <Request
+      v-bind:request="request"
+      v-for="request in filteredRequests"
+      :key="request.correlationId"
+    ></Request>
   </div>
 </template>
 
@@ -63,9 +83,9 @@ export default {
       }
     },
     deleteAllRequests() {
-      if (confirm(resources.areYouSure)) {
+      this.$dialog.confirm(resources.areYouSure).then(() => {
         this.$store.dispatch("clearRequests");
-      }
+      });
     },
     getRequests() {
       this.$store.dispatch("getRequests");

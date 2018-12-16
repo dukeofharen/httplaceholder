@@ -1,0 +1,151 @@
+/* General
+---------- */
+
+.dark-theme {
+  background-color: #002B36;
+  color: #839496;
+}
+
+.dark-theme .green {
+  color: #2AA198;
+}
+
+.dark-theme .red {
+  color: #D33682;
+}
+
+.dark-theme .blue {
+  color: #6C71C4;
+}
+
+.dark-theme .orange {
+  color: #DC322F;
+}
+
+.dark-theme .yellow {
+  color: #859900;
+}
+
+.dark-theme .purple {
+  color: #6C71C4;
+}
+
+.dark-theme .pink {
+  color: #C574C5;
+}
+
+.dark-theme pre code {
+  color: #839496;
+}
+
+/* General
+---------- */
+
+/* Dialog
+--------- */
+
+.dark-theme .dg-main-content {
+  background-color: #002B36;
+  color: #839496;
+}
+
+.dark-theme .dg-content-body {
+  border-bottom: 0;
+}
+
+.dark-theme .dg-btn--cancel {
+  background-color: #6C71C4;
+}
+
+.dark-theme .dg-btn--ok {
+  border-color: #6C71C4;
+  color: #6C71C4;
+}
+
+/* Dialog
+--------- */
+
+/* Inputs
+  --------- */
+
+.dark-theme input, .dark-theme input:focus, .dark-theme textarea, .dark-theme textarea:focus {
+  background-color: #003847;
+  border-color: #197777;
+  color: #7E8C8A;
+}
+
+.dark-theme .input-group-append a {
+  background-color: #003847;
+  border-color: #197777;
+  border-left: 0;
+  color: #7E8C8A !important;
+}
+
+.dark-theme .input-group-prepend span {
+  background-color: #003847;
+  border-color: #197777;
+  border-right: 0;
+  color: #7E8C8A !important;
+}
+
+.dark-theme .btn-danger {
+  background-color: #D33682;
+  border-color: #D33682;
+}
+
+.dark-theme .btn-success {
+  background-color: #2AA198;
+  border-color: #2AA198;
+}
+
+.dark-theme .btn-primary {
+  background-color: #6C71C4;
+  border-color: #6C71C4;
+}
+
+.dark-theme .btn {
+  color: #FFFFFF !important;
+}
+
+/* Inputs
+  --------- */
+
+/* Navbar
+  --------- */
+
+.dark-theme .navbar {
+  background-color: #0F2931;
+}
+
+.dark-theme .navbar-brand, .dark-theme .navbar-nav .nav-link:hover, .dark-theme .navbar-nav .nav-link:focus, .dark-theme .navbar-nav .nav-link, .dark-theme a.dropdown-item {
+  color: #7E8C8A;
+}
+
+.dark-theme .dropdown-menu {
+  background-color: #0F2931;
+}
+
+/* Navbar
+  --------- */
+
+/* Toastr
+  ---------  */
+
+.dark-theme .toast-success {
+  background-color: #2AA198;
+}
+
+.dark-theme .toast-error {
+  background-color: #D33682;
+}
+
+.dark-theme .toast-info {
+  background-color: #6C71C4;
+}
+
+.dark-theme .toast-warning {
+  background-color: #859900;
+}
+
+/* Toastr
+  ---------  */

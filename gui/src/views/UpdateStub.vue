@@ -1,5 +1,5 @@
 <template>
-  <div class="add-stub">
+  <div class="update-stub" v-shortkey="['ctrl', 's']" @shortkey="updateStub">
     <h1>Update stub</h1>
 
     <p>
@@ -39,6 +39,7 @@ export default {
   },
   created() {
     this.$store.dispatch("getStub", { stubId: this.$route.params.stubId });
+    this.cmOptions.theme = this.theme.codeMirrorTheme;
   },
   components: {
     codemirror
@@ -46,6 +47,9 @@ export default {
   computed: {
     lastSelectedStub() {
       return this.$store.getters.getLastSelectedStub;
+    },
+    theme() {
+      return this.$store.getters.getTheme
     }
   },
   methods: {
@@ -70,7 +74,7 @@ export default {
   width: 100%;
 }
 
-.add-stub {
+.update-stub {
   text-align: left;
 }
 </style>

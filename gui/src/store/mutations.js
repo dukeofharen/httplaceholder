@@ -32,5 +32,8 @@ export default {
     },
     storeLastSelectedStub: (state, stub) => {
         state.lastSelectedStub = stub
+    },
+    storeTheme: (state, theme) => {
+        state.settings.theme = theme
     }
 };

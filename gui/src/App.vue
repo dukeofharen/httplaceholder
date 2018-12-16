@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">HttPlaceholder {{metadata.version}}</a>
+    <nav class="navbar navbar-expand-lg">
+      <a class="navbar-brand" href="#">HttPlaceholder</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -14,12 +14,12 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent" v-if="authenticated">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
+          <li class="nav-item" v-if="authenticated">
             <router-link to="/requests" class="nav-link">Requests</router-link>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" v-if="authenticated">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -34,7 +34,26 @@
               <router-link to="/downloadStubs" class="dropdown-item">Download stubs</router-link>
             </div>
           </li>
-          <li class="nav-item" v-if="authenticationRequired">
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="themesDropdown"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >Themes</a>
+            <div class="dropdown-menu" aria-labelledby="themesDropdown">
+              <a
+                href="#"
+                v-on:click="changeThemeClick(theme)"
+                v-for="theme in themes"
+                v-bind:key="theme.name"
+                class="dropdown-item"
+              >{{theme.name}}</a>
+            </div>
+          </li>
+          <li class="nav-item" v-if="authenticationRequired && authenticated">
             <a href="#" v-on:click="logout()" class="nav-link">Log out</a>
           </li>
         </ul>
@@ -47,12 +66,19 @@
 </template>
 
 <script>
-import { messageTypes } from "@/constants";
+import { messageTypes, themes } from "@/constants";
 import toastr from "toastr";
 
 export default {
   name: "app",
   created() {
+    let themeText = sessionStorage.theme;
+    if (themeText) {
+      let theme = JSON.parse(themeText);
+      this.$store.commit("storeTheme", theme);
+    }
+
+    this.changeTheme();
     let token = sessionStorage.userToken;
     if (token) {
       this.$store.commit("storeUserToken", token);
@@ -62,6 +88,11 @@ export default {
     }
 
     this.$store.dispatch("refreshMetadata");
+  },
+  data() {
+    return {
+      themes: themes
+    };
   },
   computed: {
     metadata() {
@@ -78,6 +109,9 @@ export default {
     },
     authenticationRequired() {
       return this.$store.getters.getAuthenticationRequired;
+    },
+    theme() {
+      return this.$store.getters.getTheme;
     }
   },
   methods: {
@@ -85,6 +119,17 @@ export default {
       sessionStorage.removeItem("userToken");
       this.$store.commit("storeAuthenticated", false);
       this.$router.push({ name: "login" });
+    },
+    changeThemeClick(theme) {
+      this.$store.commit("storeTheme", theme);
+      sessionStorage.theme = JSON.stringify(theme);
+    },
+    changeTheme(oldTheme) {
+      if (oldTheme) {
+        document.body.classList.remove(oldTheme.className);
+      }
+
+      document.body.classList.add(this.theme.className);
     }
   },
   watch: {
@@ -92,6 +137,9 @@ export default {
       if (!isAuthenticated) {
         this.$router.push({ name: "login" });
       }
+    },
+    theme(newTheme, oldTheme) {
+      this.changeTheme(oldTheme);
     },
     toast(newToast) {
       switch (newToast.type) {
@@ -116,36 +164,14 @@ export default {
       } else {
         sessionStorage.userToken = newToken;
       }
+    },
+    metadata() {
+      // Add version to title tag
+      document.title = `HttPlaceholder - v${this.metadata.version}`;
     }
   }
 };
 </script>
 
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-
-.btn {
-  color: #FFFFFF !important;
-}
-.btn-outline-secondary {
-  color: #000000 !important;
-}
 </style>

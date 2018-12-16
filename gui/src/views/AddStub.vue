@@ -1,5 +1,5 @@
 <template>
-  <div class="add-stub">
+  <div class="add-stub" v-shortkey="['ctrl', 's']" @shortkey="addStubs">
     <h1>Add stub(s)</h1>
 
     <p>You can add new stubs here. Fill in the stub below in YAML format and click on "Add stub(s)". For examples, visit
@@ -35,6 +35,14 @@ export default {
         line: true
       }
     };
+  },
+  created() {
+    this.cmOptions.theme = this.theme.codeMirrorTheme
+  },
+  computed: {
+    theme() {
+      return this.$store.getters.getTheme
+    }
   },
   components: {
     codemirror

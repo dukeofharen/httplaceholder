@@ -38,10 +38,12 @@ export default {
   },
   methods: {
     logIn() {
-      this.$store.dispatch("authenticate", {
-        username: this.username,
-        password: this.password
-      });
+      if (this.username && this.password) {
+        this.$store.dispatch("authenticate", {
+          username: this.username,
+          password: this.password
+        });
+      }
     }
   },
   watch: {
@@ -55,7 +57,7 @@ export default {
 </script>
 
 <style scoped>
-.input-group-text {
-  width: 45px;
+.input-group input {
+  border-left: 0;
 }
 </style>
