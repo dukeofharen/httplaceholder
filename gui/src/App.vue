@@ -72,10 +72,10 @@ import toastr from "toastr";
 export default {
   name: "app",
   created() {
-    let themeText = sessionStorage.theme
-    if(themeText) {
-      let theme = JSON.parse(themeText)
-      this.$store.commit("storeTheme", theme)
+    let themeText = sessionStorage.theme;
+    if (themeText) {
+      let theme = JSON.parse(themeText);
+      this.$store.commit("storeTheme", theme);
     }
 
     this.changeTheme();
@@ -164,6 +164,10 @@ export default {
       } else {
         sessionStorage.userToken = newToken;
       }
+    },
+    metadata() {
+      // Add version to title tag
+      document.title = `HttPlaceholder - v${this.metadata.version}`;
     }
   }
 };
