@@ -37,11 +37,11 @@ export default {
     };
   },
   created() {
-    this.cmOptions.theme = this.settings.theme.codeMirrorTheme
+    this.cmOptions.theme = this.theme.codeMirrorTheme
   },
   computed: {
-    settings() {
-      return this.$store.getters.getSettings
+    theme() {
+      return this.$store.getters.getTheme
     }
   },
   components: {

@@ -39,7 +39,7 @@ export default {
   },
   created() {
     this.$store.dispatch("getStub", { stubId: this.$route.params.stubId });
-    this.cmOptions.theme = this.settings.theme.codeMirrorTheme;
+    this.cmOptions.theme = this.theme.codeMirrorTheme;
   },
   components: {
     codemirror
@@ -48,8 +48,8 @@ export default {
     lastSelectedStub() {
       return this.$store.getters.getLastSelectedStub;
     },
-    settings() {
-      return this.$store.getters.getSettings
+    theme() {
+      return this.$store.getters.getTheme
     }
   },
   methods: {

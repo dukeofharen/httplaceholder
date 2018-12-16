@@ -34,8 +34,27 @@
               <router-link to="/downloadStubs" class="dropdown-item">Download stubs</router-link>
             </div>
           </li>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="themesDropdown"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >Themes</a>
+            <div class="dropdown-menu" aria-labelledby="themesDropdown">
+              <a
+                href="#"
+                v-on:click="changeThemeClick(theme)"
+                v-for="theme in themes"
+                v-bind:key="theme.name"
+                class="dropdown-item"
+              >{{theme.name}}</a>
+            </div>
+          </li>
           <li class="nav-item" v-if="authenticationRequired">
-            <a href="#" v-on:click="logout()" class="nav-link">Log out</a>
+            <a v-on:click="logout()" class="nav-link">Log out</a>
           </li>
         </ul>
       </div>
@@ -47,12 +66,18 @@
 </template>
 
 <script>
-import { messageTypes } from "@/constants";
+import { messageTypes, themes } from "@/constants";
 import toastr from "toastr";
 
 export default {
   name: "app",
   created() {
+    let themeText = sessionStorage.theme
+    if(themeText) {
+      let theme = JSON.parse(themeText)
+      this.$store.commit("storeTheme", theme)
+    }
+
     this.changeTheme();
     let token = sessionStorage.userToken;
     if (token) {
@@ -63,6 +88,11 @@ export default {
     }
 
     this.$store.dispatch("refreshMetadata");
+  },
+  data() {
+    return {
+      themes: themes
+    };
   },
   computed: {
     metadata() {
@@ -80,8 +110,8 @@ export default {
     authenticationRequired() {
       return this.$store.getters.getAuthenticationRequired;
     },
-    settings() {
-      return this.$store.getters.getSettings;
+    theme() {
+      return this.$store.getters.getTheme;
     }
   },
   methods: {
@@ -90,12 +120,16 @@ export default {
       this.$store.commit("storeAuthenticated", false);
       this.$router.push({ name: "login" });
     },
-    changeTheme(oldSettings) {
-      if (oldSettings) {
-        document.body.classList.remove(oldSettings.theme.className);
+    changeThemeClick(theme) {
+      this.$store.commit("storeTheme", theme);
+      sessionStorage.theme = JSON.stringify(theme);
+    },
+    changeTheme(oldTheme) {
+      if (oldTheme) {
+        document.body.classList.remove(oldTheme.className);
       }
 
-      document.body.classList.add(this.settings.theme.className);
+      document.body.classList.add(this.theme.className);
     }
   },
   watch: {
@@ -104,8 +138,8 @@ export default {
         this.$router.push({ name: "login" });
       }
     },
-    settings(newSettings, oldSettings) {
-      this.changeTheme(oldSettings);
+    theme(newTheme, oldTheme) {
+      this.changeTheme(oldTheme);
     },
     toast(newToast) {
       switch (newToast.type) {

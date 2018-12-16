@@ -8,5 +8,5 @@ export default {
     getStubs: state => state.stubs,
     getToast: state => state.toast,
     getLastSelectedStub: state => state.lastSelectedStub,
-    getSettings: state => state.settings
+    getTheme: state => state.settings.theme
 };
