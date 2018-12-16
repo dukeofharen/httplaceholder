@@ -53,6 +53,7 @@ import toastr from "toastr";
 export default {
   name: "app",
   created() {
+    this.changeTheme();
     let token = sessionStorage.userToken;
     if (token) {
       this.$store.commit("storeUserToken", token);
@@ -78,6 +79,9 @@ export default {
     },
     authenticationRequired() {
       return this.$store.getters.getAuthenticationRequired;
+    },
+    settings() {
+      return this.$store.getters.getSettings;
     }
   },
   methods: {
@@ -85,6 +89,14 @@ export default {
       sessionStorage.removeItem("userToken");
       this.$store.commit("storeAuthenticated", false);
       this.$router.push({ name: "login" });
+    },
+    changeTheme(oldSettings) {
+      if (oldSettings) {
+        document.body.classList.remove(oldSettings.theme.className);
+      }
+
+      document.body.classList.add(this.settings.theme.className);
+      document.body.classList.clear();
     }
   },
   watch: {
@@ -92,6 +104,9 @@ export default {
       if (!isAuthenticated) {
         this.$router.push({ name: "login" });
       }
+    },
+    settings(newSettings, oldSettings) {
+      this.changeTheme(oldSettings);
     },
     toast(newToast) {
       switch (newToast.type) {
@@ -122,5 +137,4 @@ export default {
 </script>
 
 <style>
-
 </style>

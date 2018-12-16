@@ -25,8 +25,7 @@ export default new Vuex.Store({
             timestamp: new Date().getTime()
         },
         lastSelectedStub: {
-            id: "",
-            yaml: ""
+            id: ""
         },
         settings: {
             theme: themes.lightTheme
