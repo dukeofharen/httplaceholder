@@ -94,7 +94,6 @@ export default {
 
 <style scoped>
 .request {
-  margin: 10px;
   padding: 10px;
   text-align: left;
 }

@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style scoped>
-.input-group-text {
-  width: 45px;
+.input-group input {
+  border-left: 0;
 }
 </style>

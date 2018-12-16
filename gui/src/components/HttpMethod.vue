@@ -1,5 +1,5 @@
 <template>
-  <span v-bind:style="{ color: color }">{{method}}</span>
+  <span v-bind:class="className">{{method}}</span>
 </template>
 
 <script>
@@ -8,22 +8,22 @@ export default {
   props: ["method"],
   data() {
     return {
-      color: "#969696"
+      className: ""
     };
   },
   created() {
     if (this.method === "GET") {
-      this.color = "#61E061";
+      this.className = "green";
     } else if (this.method === "POST") {
-      this.color = "#0055FF";
+      this.className = "blue";
     } else if (this.method === "PUT") {
-      this.color = "#F57520";
+      this.className = "orange";
     } else if (this.method === "DELETE") {
-      this.color = "#F5CA20";
+      this.className = "yellow";
     } else if (this.method === "OPTIONS") {
-      this.color = "#9540EA";
+      this.className = "purple";
     } else if (this.method === "PATCH") {
-      this.color = "#F520F5";
+      this.className = "pink";
     }
   }
 };

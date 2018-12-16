@@ -12,7 +12,15 @@ const messageTypes = {
     ERROR: 'error'
 }
 
+const themes = {
+    lightTheme: {
+        className: 'light-theme',
+        codeMirrorTheme: 'solarized light'
+    }
+}
+
 export {
     authenticateResults,
-    messageTypes
+    messageTypes,
+    themes
 }

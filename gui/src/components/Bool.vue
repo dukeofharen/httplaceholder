@@ -1,5 +1,5 @@
 <template>
-  <span v-bind:class="{'true': bool, 'false': !bool}">{{bool ? trueTextValue : falseTextValue}}</span>
+  <span v-bind:class="{'green': bool, 'red': !bool}">{{bool ? trueTextValue : falseTextValue}}</span>
 </template>
 
 <script>
@@ -29,10 +29,4 @@ export default {
 </script>
 
 <style scoped>
-.true {
-  color: #00d61d;
-}
-.false {
-  color: #d10000;
-}
 </style>
