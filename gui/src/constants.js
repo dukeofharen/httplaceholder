@@ -15,13 +15,11 @@ const messageTypes = {
 const themes = {
     lightTheme: {
         name: "Light theme",
-        icon: "sun-o",
         className: 'light-theme',
         codeMirrorTheme: 'solarized light'
     },
     darkTheme: {
         name: "Dark theme",
-        icon: "moon-o",
         className: 'dark-theme',
         codeMirrorTheme: 'solarized dark'
     }
