@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#">HttPlaceholder {{metadata.version}}</a>
+      <a class="navbar-brand" href="#">HttPlaceholder</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -14,12 +14,12 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent" v-if="authenticated">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
+          <li class="nav-item" v-if="authenticated">
             <router-link to="/requests" class="nav-link">Requests</router-link>
           </li>
-          <li class="nav-item dropdown">
+          <li class="nav-item dropdown" v-if="authenticated">
             <a
               class="nav-link dropdown-toggle"
               href="#"
@@ -53,8 +53,8 @@
               >{{theme.name}}</a>
             </div>
           </li>
-          <li class="nav-item" v-if="authenticationRequired">
-            <a v-on:click="logout()" class="nav-link">Log out</a>
+          <li class="nav-item" v-if="authenticationRequired && authenticated">
+            <a href="#" v-on:click="logout()" class="nav-link">Log out</a>
           </li>
         </ul>
       </div>
