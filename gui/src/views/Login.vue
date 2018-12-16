@@ -38,10 +38,12 @@ export default {
   },
   methods: {
     logIn() {
-      this.$store.dispatch("authenticate", {
-        username: this.username,
-        password: this.password
-      });
+      if (this.username && this.password) {
+        this.$store.dispatch("authenticate", {
+          username: this.username,
+          password: this.password
+        });
+      }
     }
   },
   watch: {
