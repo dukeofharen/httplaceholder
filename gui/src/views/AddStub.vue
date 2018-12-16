@@ -2,7 +2,8 @@
   <div class="add-stub" v-shortkey="['ctrl', 's']" @shortkey="addStubs">
     <h1>Add stub(s)</h1>
 
-    <p>You can add new stubs here. Fill in the stub below in YAML format and click on "Add stub(s)". For examples, visit
+    <p>
+      You can add new stubs here. Fill in the stub below in YAML format and click on "Add stub(s)". For examples, visit
       <a
         href="https://github.com/dukeofharen/httplaceholder"
         target="_blank"
@@ -32,16 +33,17 @@ export default {
         tabSize: 4,
         mode: "text/x-yaml",
         lineNumbers: true,
-        line: true
+        line: true,
+        theme: ""
       }
     };
   },
   created() {
-    this.cmOptions.theme = this.theme.codeMirrorTheme
+    this.setTheme();
   },
   computed: {
     theme() {
-      return this.$store.getters.getTheme
+      return this.$store.getters.getTheme;
     }
   },
   components: {
@@ -50,9 +52,16 @@ export default {
   methods: {
     addStubs() {
       this.$store.dispatch("addStubs", { input: this.input });
+    },
+    setTheme() {
+      this.cmOptions.theme = this.theme.codeMirrorTheme;
     }
   },
-  watch: {}
+  watch: {
+    theme() {
+      this.setTheme();
+    }
+  }
 };
 </script>
 

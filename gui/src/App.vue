@@ -45,7 +45,6 @@
             >Themes</a>
             <div class="dropdown-menu" aria-labelledby="themesDropdown">
               <a
-                href="#"
                 v-on:click="changeThemeClick(theme)"
                 v-for="theme in themes"
                 v-bind:key="theme.name"
@@ -54,7 +53,7 @@
             </div>
           </li>
           <li class="nav-item" v-if="authenticationRequired && authenticated">
-            <a href="#" v-on:click="logout()" class="nav-link">Log out</a>
+            <a v-on:click="logout()" class="nav-link">Log out</a>
           </li>
         </ul>
       </div>
