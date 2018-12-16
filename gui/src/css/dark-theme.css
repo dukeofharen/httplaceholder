@@ -33,6 +33,10 @@
   .dark-theme .pink {
     color: #C574C5;
   }
+
+  .dark-theme pre code {
+    color: #839496;
+  }
   
   /* General
   ---------- */
