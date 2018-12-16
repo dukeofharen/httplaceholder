@@ -7,6 +7,7 @@ import './registerServiceWorker'
 // Styling
 import '@/css/style.css'
 import '@/css/light-theme.css'
+import '@/css/dark-theme.css'
 
 // FontAwesome
 import 'font-awesome/css/font-awesome.css'

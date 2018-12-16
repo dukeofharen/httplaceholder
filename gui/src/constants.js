@@ -16,6 +16,10 @@ const themes = {
     lightTheme: {
         className: 'light-theme',
         codeMirrorTheme: 'solarized light'
+    },
+    darkTheme: {
+        className: 'dark-theme',
+        codeMirrorTheme: 'solarized dark'
     }
 }
 

@@ -96,7 +96,6 @@ export default {
       }
 
       document.body.classList.add(this.settings.theme.className);
-      document.body.classList.clear();
     }
   },
   watch: {
