@@ -99,3 +99,22 @@
 
 /* Navbar
 --------- */
+
+/* Toastr
+---------  */
+
+.light-theme .toast-success {
+  background-color: #2AA198;
+}
+.light-theme .toast-error {
+  background-color: #D33682;
+}
+.light-theme .toast-info {
+  background-color: #6C71C4;
+}
+.light-theme .toast-warning {
+  background-color: #859900;
+}
+
+/* Toastr
+---------  */

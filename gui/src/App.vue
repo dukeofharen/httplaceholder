@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="light-theme">
+  <div id="app">
     <nav class="navbar navbar-expand-lg">
       <a class="navbar-brand" href="#">HttPlaceholder {{metadata.version}}</a>
       <button
