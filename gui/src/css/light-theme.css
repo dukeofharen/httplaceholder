@@ -41,6 +41,30 @@
 /* General
 ---------- */
 
+/* Dialog
+--------- */
+
+.light-theme .dg-main-content {
+  background-color: #FDF6E3;
+  color: #586E75;
+}
+
+.light-theme .dg-content-body {
+  border-bottom: 0;
+}
+
+.light-theme .dg-btn--cancel {
+  background-color: #6C71C4;
+}
+
+.light-theme .dg-btn--ok {
+  border-color: #6C71C4;
+  color: #6C71C4;
+}
+
+/* Dialog
+--------- */
+
 /* Inputs
 --------- */
 
@@ -110,12 +134,15 @@
 .light-theme .toast-success {
   background-color: #2AA198;
 }
+
 .light-theme .toast-error {
   background-color: #D33682;
 }
+
 .light-theme .toast-info {
   background-color: #6C71C4;
 }
+
 .light-theme .toast-warning {
   background-color: #859900;
 }

@@ -1,14 +1,20 @@
+// General
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import VueCodemirror from 'vue-codemirror'
-import VueShortKey from 'vue-shortkey'
 import './registerServiceWorker'
 
 // Styling
 import '@/css/style.css'
 import '@/css/light-theme.css'
 import '@/css/dark-theme.css'
+
+// VuejsDialog
+import VuejsDialog from 'vuejs-dialog';
+import 'vuejs-dialog/dist/vuejs-dialog.min.css';
+
+// VueShortkey
+import VueShortKey from 'vue-shortkey'
 
 // FontAwesome
 import 'font-awesome/css/font-awesome.css'
@@ -21,6 +27,7 @@ import 'bootstrap/dist/css/bootstrap-reboot.css'
 import 'bootstrap/dist/js/bootstrap.bundle'
 
 // CodeMirror
+import VueCodemirror from 'vue-codemirror'
 import '@/css/codemirror-solarized.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/yaml/yaml.js'
@@ -37,6 +44,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueCodemirror)
 Vue.use(VueShortKey)
+Vue.use(VuejsDialog)
 
 new Vue({
   store,
