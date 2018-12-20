@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\HttPlaceholder.Models\ConditionCheckResultModel.cs" Link="Models\ConditionCheckResultModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\Enums\ConditionValidationType.cs" Link="Models\Enums\ConditionValidationType.cs" />
+    <Compile Include="..\HttPlaceholder.Models\FullStubModel.cs" Link="Models\FullStubModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\MetadataModel.cs" Link="Models\MetadataModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\RequestParametersModel.cs" Link="Models\RequestParametersModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\RequestResultModel.cs" Link="Models\RequestResultModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\ResponseModel.cs" Link="Models\ResponseModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\StubBasicAuthenticationModel.cs" Link="Models\StubBasicAuthenticationModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\StubConditionsModel.cs" Link="Models\StubConditionsModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\StubExecutionResultModel.cs" Link="Models\StubExecutionResultModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\StubFormModel.cs" Link="Models\StubFormModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\StubMetadataModel.cs" Link="Models\StubMetadataModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\StubModel.cs" Link="Models\StubModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\StubResponseModel.cs" Link="Models\StubResponseModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\StubResponseWriterResultModel.cs" Link="Models\StubResponseWriterResultModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\StubUrlConditionModel.cs" Link="Models\StubUrlConditionModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\StubXpathModel.cs" Link="Models\StubXpathModel.cs" />
+    <Compile Include="..\HttPlaceholder.Models\UserModel.cs" Link="Models\UserModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="YamlDotNet" Version="5.3.0" />
+  </ItemGroup>
+
+</Project>
