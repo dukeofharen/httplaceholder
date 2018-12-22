@@ -10,14 +10,6 @@ body, html {
   min-height: 100%;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.navbar a {
+  cursor: pointer;
 }

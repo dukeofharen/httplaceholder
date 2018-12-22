@@ -36,7 +36,7 @@ foreach($unitTest in $unitTestProjects)
 
 # Generating swagger.json file
 Write-Host "Generating swagger.json file"
-$swaggerGenBinFile = Join-Path -Path $srcFolder "HttPlaceholder.SwaggerGenerator\bin\Debug\netcoreapp2.1\HttPlaceholder.SwaggerGenerator.dll"
+$swaggerGenBinFile = Join-Path -Path $srcFolder "HttPlaceholder.SwaggerGenerator\bin\Debug\netcoreapp2.2\HttPlaceholder.SwaggerGenerator.dll"
 & dotnet $swaggerGenBinFile
 Assert-Cmd-Ok
 
@@ -55,3 +55,5 @@ Write-Host "Found version $version"
 
 . "$PSScriptRoot\Build-Gui.ps1"
 . "$PSScriptRoot\Build-Windows.ps1" -srcFolder $srcFolder
+. "$PSScriptRoot\Build-NuGet.ps1" -srcFolder $srcFolder
+. "$PSScriptRoot\Publish-NuGet.ps1" -srcFolder $srcFolder

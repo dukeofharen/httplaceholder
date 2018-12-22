@@ -5,7 +5,7 @@
       <Version>0.2.0.0</Version>
       <AssemblyVersion>0.2.0.0</AssemblyVersion>
       <FileVersion>0.2.0.0</FileVersion>
-      <TargetFramework>netcoreapp2.1</TargetFramework>
+      <TargetFramework>netcoreapp2.2</TargetFramework>
       <LangVersion>latest</LangVersion>
    </PropertyGroup>
 

@@ -741,46 +741,6 @@
 					"name": "Requests",
 					"item": [
 						{
-							"name": "GET all",
-							"request": {
-								"auth": {
-									"type": "basic",
-									"basic": [
-										{
-											"key": "password",
-											"value": "pass",
-											"type": "string"
-										},
-										{
-											"key": "username",
-											"value": "user",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
-								"url": {
-									"raw": "http://localhost:5000/ph-api/requests/fallback",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"ph-api",
-										"requests",
-										"fallback"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "GET by stub ID",
 							"request": {
 								"auth": {
@@ -839,6 +799,45 @@
 									]
 								},
 								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/requests",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
 								"header": [],
 								"body": {
 									"mode": "raw",

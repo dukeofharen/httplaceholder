@@ -33,13 +33,14 @@ export default {
         tabSize: 4,
         mode: "text/x-yaml",
         lineNumbers: true,
-        line: true
+        line: true,
+        theme: ""
       }
     };
   },
   created() {
     this.$store.dispatch("getStub", { stubId: this.$route.params.stubId });
-    this.cmOptions.theme = this.theme.codeMirrorTheme;
+    this.setTheme();
   },
   components: {
     codemirror
@@ -49,17 +50,23 @@ export default {
       return this.$store.getters.getLastSelectedStub;
     },
     theme() {
-      return this.$store.getters.getTheme
+      return this.$store.getters.getTheme;
     }
   },
   methods: {
     updateStub() {
       this.$store.dispatch("addStubs", { input: this.input, updated: true });
+    },
+    setTheme() {
+      this.cmOptions.theme = this.theme.codeMirrorTheme;
     }
   },
   watch: {
     lastSelectedStub(newInput) {
       this.input = yaml.dump(newInput.fullStub.stub);
+    },
+    theme() {
+      this.setTheme();
     }
   }
 };
