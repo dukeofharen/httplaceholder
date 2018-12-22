@@ -14,8 +14,8 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.3" />
-    <PackageReference Include="Ducode.Essentials.Async" Version="0.0.1" />
+    <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.4" />
+    <PackageReference Include="Ducode.Essentials.Async" Version="0.0.2" />
     <PackageReference Include="IPAddressRange" Version="3.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>

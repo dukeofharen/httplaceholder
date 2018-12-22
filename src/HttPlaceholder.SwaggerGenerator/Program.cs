@@ -34,7 +34,7 @@ namespace HttPlaceholder.SwaggerGenerator
                 }
 
                 string content = await response.Content.ReadAsStringAsync();
-                string pathToSave = Path.Join(AssemblyHelper.GetExecutingAssemblyRootPath(), "swagger.json");
+                string pathToSave = Path.Join(AssemblyHelper.GetCallingAssemblyRootPath(), "swagger.json");
                 File.WriteAllText(pathToSave, content);
             }
         }

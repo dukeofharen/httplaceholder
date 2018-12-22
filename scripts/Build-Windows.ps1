@@ -8,7 +8,7 @@ Param(
 . "$PSScriptRoot\Functions.ps1"
 
 $nsiPath = Join-Path $PSScriptRoot "httplaceholder.nsi"
-$binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp2.1\win10-x64\publish"
+$binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp2.2\win10-x64\publish"
 $docsFolder = Join-Path $srcFolder "..\docs"
 $installScriptsPath = Join-Path -Path $PSScriptRoot "installscripts\windows"
 $guiDistFolder = "$PSScriptRoot\..\gui\dist"

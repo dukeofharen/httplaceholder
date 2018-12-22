@@ -1,3 +1,5 @@
+image: Visual Studio 2017
+
 before_build:
   - cmd: dotnet --version
   - ps: Get-ChildItem -Path "C:\Program Files\dotnet\sdk"
@@ -7,6 +9,8 @@ before_build:
 environment:
   access_token:
     secure: Zcoti9GsS4Y1t12qVcWhfDXMJLW8QLt4SdeQi8VKUFBtd/gVyWsZlLXDOHLP8i5U
+  nuget_api_key:
+    secure: /spG2CSTqaB6JnDd2aJouT744+d81tM4LTeYLd7kE3DJA7dBpuSOPEZ30kjwTpEr
 
 branches:
   only:
@@ -22,8 +26,11 @@ test: off
 skip_tags: true
 
 artifacts:
-  - path: src\HttPlaceholder\bin\release\netcoreapp2.1\win10-x64\publish\httplaceholder_*.exe
-    name: armyknife-windows
+  - path: src\HttPlaceholder\bin\release\netcoreapp2.2\win10-x64\publish\httplaceholder_*.exe
+    name: httplaceholder-windows
+    type: zip
+  - path: src\HttPlaceholder.Client\bin\Release\*.nupkg
+    name: httplaceholder-nuget
     type: zip
   - path: '**\swagger.json'
     name: swagger
