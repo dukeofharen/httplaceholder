@@ -1,20 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Version>2018.12.22.1234</Version>
+    <AssemblyVersion>2018.12.22.1234</AssemblyVersion>
+    <FileVersion>2018.12.22.1234</FileVersion>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\HttPlaceholder.Models\ConditionCheckResultModel.cs" Link="Models\ConditionCheckResultModel.cs" />
     <Compile Include="..\HttPlaceholder.Models\Enums\ConditionValidationType.cs" Link="Models\Enums\ConditionValidationType.cs" />
@@ -35,11 +34,9 @@
     <Compile Include="..\HttPlaceholder.Models\StubXpathModel.cs" Link="Models\StubXpathModel.cs" />
     <Compile Include="..\HttPlaceholder.Models\UserModel.cs" Link="Models\UserModel.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Flurl.Http" Version="2.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="YamlDotNet" Version="5.3.0" />
   </ItemGroup>
-
 </Project>
