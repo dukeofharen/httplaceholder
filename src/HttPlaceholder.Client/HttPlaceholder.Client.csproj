@@ -5,13 +5,19 @@
     <Version>2018.12.22.1234</Version>
     <AssemblyVersion>2018.12.22.1234</AssemblyVersion>
     <FileVersion>2018.12.22.1234</FileVersion>
+    <Authors>Duco Winterwerp</Authors>
+    <Company>Duco Winterwerp</Company>
+    <Description>A library to communicate with the HttPlaceholder REST API.</Description>
+    <PackageTags>httplaceholder stub</PackageTags>
+    <PackageProjectUrl>https://github.com/dukeofharen/httplaceholder</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dukeofharen/httplaceholder</RepositoryUrl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
