@@ -9,6 +9,8 @@ Quickly mock away any webservice using HttPlaceholder. HttPlaceholder lets you s
 
 # Where?
 * [Download the latest release](https://github.com/dukeofharen/httplaceholder/releases/latest)
+* Install as dotnet tool:<br />
+`dotnet install --global httplaceholder`
 * [Issue tracking on Trello](https://trello.com/b/PCZ6K9Hd/httplaceholder)
 
 # Why?
