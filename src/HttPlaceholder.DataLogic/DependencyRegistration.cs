@@ -22,7 +22,7 @@ namespace HttPlaceholder.DataLogic
 
             var configurationService = services.GetService<IConfigurationService>();
             var config = configurationService.GetConfiguration();
-            if (config.TryGetValue(Constants.ConfigKeys.FileStorageLocation, out string _))
+            if (config.TryGetValue(Constants.ConfigKeys.FileStorageLocation, out string fileStoragePath) && !string.IsNullOrWhiteSpace(fileStoragePath))
             {
                 // If "fileStorageLocation" is set, it means HttPlaceholder should read and write files to a specific location.
                 services.AddSingleton<IStubSource, FileSystemStubSource>();
