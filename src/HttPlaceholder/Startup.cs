@@ -56,7 +56,7 @@ namespace HttPlaceholder
 
             if (loadStaticFiles)
             {
-                string path = $"{AssemblyHelper.GetExecutingAssemblyRootPath()}/gui";
+                string path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/gui";
                 if (Directory.Exists(path))
                 {
                     app.UseFileServer(new FileServerOptions
