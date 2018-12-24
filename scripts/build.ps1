@@ -53,7 +53,7 @@ $propertyGroupNode = $csproj.SelectSingleNode("/Project/PropertyGroup[1]")
 $version = [version]$propertyGroupNode.Version
 Write-Host "Found version $version"
 
-. "$PSScriptRoot\Build-Gui.ps1"
-. "$PSScriptRoot\Build-Windows.ps1" -srcFolder $srcFolder
+. "$PSScriptRoot\Build-Gui.ps1" -srcFolder $srcFolder
+. "$PSScriptRoot\Build-Windows.ps1" -srcFolder $srcFolder -mainProjectFile $mainProjectFile
 . "$PSScriptRoot\Build-NuGet.ps1" -srcFolder $srcFolder
 . "$PSScriptRoot\Publish-NuGet.ps1" -srcFolder $srcFolder
