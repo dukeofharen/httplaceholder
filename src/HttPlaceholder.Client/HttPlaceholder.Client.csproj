@@ -11,12 +11,17 @@
     <PackageTags>httplaceholder stub</PackageTags>
     <PackageProjectUrl>https://github.com/dukeofharen/httplaceholder</PackageProjectUrl>
     <RepositoryUrl>https://github.com/dukeofharen/httplaceholder</RepositoryUrl>
+    <Configurations>Debug;Release;Tool</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tool|AnyCPU'">
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>

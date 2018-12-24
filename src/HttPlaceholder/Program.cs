@@ -45,7 +45,7 @@ namespace HttPlaceholder
         public static IWebHost BuildWebHost(string[] args)
         {
             IDictionary<string, string> argsDictionary;
-            string configPath = Path.Join(AssemblyHelper.GetExecutingAssemblyRootPath(), "config.json");
+            string configPath = Path.Join(AssemblyHelper.GetCallingAssemblyRootPath(), "config.json");
             if (args.Length == 0 && File.Exists(configPath))
             {
                 // If a config file is found, try to load and parse it instead of the arguments.
