@@ -1,4 +1,6 @@
-#$ErrorActionPreference = 'Stop'
+Param(
+    $runUnitTests = $true
+)
 
 $rootFolder = Join-Path -Path $PSScriptRoot ".."
 $srcFolder = Join-Path -Path $rootFolder "src"
@@ -15,7 +17,7 @@ $env:PATH = "$env:PATH;$nsisPath"
 
 # Remove all bin and obj folders
 Write-Host "Cleaning the solution"
-Get-ChildItem $srcFolder -include bin,obj -Recurse | foreach ($_) { remove-item $_.fullname -Force -Recurse }
+Get-ChildItem $srcFolder -include bin, obj -Recurse | foreach ($_) { remove-item $_.fullname -Force -Recurse }
 
 # Perform a debug build
 & dotnet build $solutionFile /p:DebugType=Full
@@ -23,15 +25,16 @@ Get-ChildItem $srcFolder -include bin,obj -Recurse | foreach ($_) { remove-item 
 # Run unit tests
 $unitTestProjects = Get-ChildItem -Path $srcFolder -Filter *.Tests.csproj -Recurse
 Write-Host "Running unit tests"
-foreach($unitTest in $unitTestProjects)
-{
-    Write-Host $unitTest
+if ($runUnitTests) {
+    foreach ($unitTest in $unitTestProjects) {
+        Write-Host $unitTest
 
-    & dotnet restore $unitTest.FullName
-    Assert-Cmd-Ok
+        & dotnet restore $unitTest.FullName
+        Assert-Cmd-Ok
 
-    & dotnet test $unitTest.FullName
-    Assert-Cmd-Ok
+        & dotnet test $unitTest.FullName
+        Assert-Cmd-Ok
+    }
 }
 
 # Generating swagger.json file
@@ -56,4 +59,5 @@ Write-Host "Found version $version"
 . "$PSScriptRoot\Build-Gui.ps1" -srcFolder $srcFolder
 . "$PSScriptRoot\Build-Windows.ps1" -srcFolder $srcFolder -mainProjectFile $mainProjectFile
 . "$PSScriptRoot\Build-NuGet.ps1" -srcFolder $srcFolder
-. "$PSScriptRoot\Publish-NuGet.ps1" -srcFolder $srcFolder
+. "$PSScriptRoot\Build-Tool.ps1" -srcFolder $srcFolder -mainProjectFile $mainProjectFile
+# . "$PSScriptRoot\Publish-NuGet.ps1" -srcFolder $srcFolder
