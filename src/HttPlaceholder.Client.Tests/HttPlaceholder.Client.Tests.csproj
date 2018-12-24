@@ -5,6 +5,7 @@
     <AssemblyVersion>2018.12.22.1234</AssemblyVersion>
     <FileVersion>2018.12.22.1234</FileVersion>
     <IsPackable>false</IsPackable>
+    <Configurations>Debug;Release;Tool</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />

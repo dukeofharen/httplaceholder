@@ -1,61 +1,77 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-   <PropertyGroup>
-      <OutputType>Exe</OutputType>
-      <PackageId>HttPlaceholder</PackageId>
-      <TargetFramework>netcoreapp2.2</TargetFramework>
-      <Version>0.4.0.0</Version>
-      <AssemblyVersion>0.4.0.0</AssemblyVersion>
-      <FileVersion>0.4.0.0</FileVersion>
-      <RuntimeIdentifiers>win81-x64;win10-x64;ubuntu.14.04-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
-      <LangVersion>latest</LangVersion>
-      <Authors>Duco Winterwerp</Authors>
-      <Company>Ducode</Company>
-      <RepositoryUrl>https://github.com/dukeofharen/httplaceholder</RepositoryUrl>
-      <Description>A very flexible cross platform HTTP stub application.</Description>
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-      <WarningsAsErrors />
-   </PropertyGroup>
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-      <WarningsAsErrors />
-   </PropertyGroup>
-   <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-      <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
-      <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
-      <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="4.0.1" />
-      <PackageReference Include="YamlDotNet" Version="5.3.0" />
-   </ItemGroup>
-   <ItemGroup>
-      <ProjectReference Include="..\HttPlaceholder.BusinessLogic\HttPlaceholder.BusinessLogic.csproj" />
-      <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
-      <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />
-   </ItemGroup>
-   <ItemGroup>
-     <Compile Update="Resources\ConsoleAppResources.Designer.cs">
-       <DesignTime>True</DesignTime>
-       <AutoGen>True</AutoGen>
-       <DependentUpon>ConsoleAppResources.resx</DependentUpon>
-     </Compile>
-   </ItemGroup>
-   <ItemGroup>
-      <Content Update="config.json">
-         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-   </ItemGroup>
-   <ItemGroup>
-     <EmbeddedResource Update="Resources\ConsoleAppResources.resx">
-       <Generator>ResXFileCodeGenerator</Generator>
-       <LastGenOutput>ConsoleAppResources.Designer.cs</LastGenOutput>
-     </EmbeddedResource>
-   </ItemGroup>
-   <ItemGroup>
-      <None Update="key.pfx">
-         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-   </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <PackageId>HttPlaceholder</PackageId>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Version>2018.12.24.1234</Version>
+    <AssemblyVersion>2018.12.24.1234</AssemblyVersion>
+    <FileVersion>2018.12.24.1234</FileVersion>
+    <RuntimeIdentifiers>win81-x64;win10-x64;ubuntu.14.04-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
+    <LangVersion>latest</LangVersion>
+    <Authors>Duco Winterwerp</Authors>
+    <Company>Ducode</Company>
+    <RepositoryUrl>https://github.com/dukeofharen/httplaceholder</RepositoryUrl>
+    <Description>A very flexible cross platform HTTP stub application.</Description>
+    <IsPackable>true</IsPackable>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>httplaceholder</ToolCommandName>
+    <Configurations>Debug;Release;Tool</Configurations>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tool|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="2.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="4.0.1" />
+    <PackageReference Include="YamlDotNet" Version="5.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HttPlaceholder.BusinessLogic\HttPlaceholder.BusinessLogic.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resources\ConsoleAppResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ConsoleAppResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'!='Tool|AnyCPU'">
+    <Content Update="_config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="gui\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Update="gui\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\ConsoleAppResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ConsoleAppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="key.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

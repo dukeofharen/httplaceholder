@@ -32,6 +32,9 @@ artifacts:
   - path: src\HttPlaceholder.Client\bin\Release\*.nupkg
     name: httplaceholder-nuget
     type: zip
+  - path: src\HttPlaceholder\bin\Tool\*.nupkg
+    name: httplaceholder-tool
+    type: zip
   - path: '**\swagger.json'
     name: swagger
     type: zip
