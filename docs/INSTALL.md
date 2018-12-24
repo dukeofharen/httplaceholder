@@ -1,5 +1,9 @@
 # Installation
 
+## Dotnet global tool
+
+Make sure you have installed the correct .NET Core SDK for your OS (see https://dotnet.microsoft.com/download). When the .NET Core SDK is installed, run `dotnet install --global httplaceholder` to install HttPlaceholder.
+
 ## Windows
 
 ### Local development setup
