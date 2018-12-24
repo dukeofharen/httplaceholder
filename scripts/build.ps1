@@ -60,4 +60,4 @@ Write-Host "Found version $version"
 . "$PSScriptRoot\Build-Windows.ps1" -srcFolder $srcFolder -mainProjectFile $mainProjectFile
 . "$PSScriptRoot\Build-NuGet.ps1" -srcFolder $srcFolder
 . "$PSScriptRoot\Build-Tool.ps1" -srcFolder $srcFolder -mainProjectFile $mainProjectFile
-# . "$PSScriptRoot\Publish-NuGet.ps1" -srcFolder $srcFolder
+. "$PSScriptRoot\Publish-NuGet.ps1" -srcFolder $srcFolder

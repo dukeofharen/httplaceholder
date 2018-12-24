@@ -17,5 +17,5 @@ $propertyGroupNode.PackAsTool = "true"
 $csproj.Save($mainProjectFile)
 
 # Building dotnet tool
-& dotnet pack $mainProjectFile -c Release
+& dotnet pack $mainProjectFile -c Tool
 Assert-Cmd-Ok

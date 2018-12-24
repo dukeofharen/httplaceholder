@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <PackageId>HttPlaceholder</PackageId>
@@ -50,10 +50,12 @@
       <DependentUpon>ConsoleAppResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Content Update="config.json" Condition="'$(Configuration)|$(Platform)'!='Tool|AnyCPU'">
+  <ItemGroup Condition="'$(Configuration)|$(Platform)'!='Tool|AnyCPU'">
+    <Content Update="_config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Content Update="gui\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

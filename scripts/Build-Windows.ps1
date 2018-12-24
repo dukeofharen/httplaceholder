@@ -31,7 +31,6 @@ Copy-Item (Join-Path $installScriptsPath "**") $binDir -Recurse
 Copy-Item $docsFolder (Join-Path $binDir "docs") -Recurse -Container
 
 # Renaming config files
-Rename-Item -Path "$binDir\config.json" "_config.json"
 Rename-Item -Path "$binDir\web.config" "_web.config"
 
 # Making installer
