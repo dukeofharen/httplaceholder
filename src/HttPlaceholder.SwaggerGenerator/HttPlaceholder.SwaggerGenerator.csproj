@@ -7,9 +7,15 @@
       <FileVersion>0.2.0.0</FileVersion>
       <TargetFramework>netcoreapp2.2</TargetFramework>
       <LangVersion>latest</LangVersion>
+      <Configurations>Debug;Release;Tool</Configurations>
    </PropertyGroup>
 
    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+     <WarningsAsErrors />
+   </PropertyGroup>
+
+   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tool|AnyCPU'">
      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
      <WarningsAsErrors />
    </PropertyGroup>

@@ -6,6 +6,7 @@
     <Version>2018.12.22.1234</Version>
     <AssemblyVersion>2018.12.22.1234</AssemblyVersion>
     <FileVersion>2018.12.22.1234</FileVersion>
+    <Configurations>Debug;Release;Tool</Configurations>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj" />
