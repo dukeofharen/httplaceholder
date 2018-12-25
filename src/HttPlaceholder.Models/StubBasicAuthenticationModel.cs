@@ -2,17 +2,29 @@
 
 namespace HttPlaceholder.Models
 {
-   public class StubBasicAuthenticationModel
-   {
-      [YamlMember(Alias = "username")]
-      public string Username { get; set; }
+    /// <summary>
+    /// A model for storing stub information for the basic authentication condition checker.
+    /// </summary>
+    public class StubBasicAuthenticationModel
+    {
+        /// <summary>
+        /// Gets or sets the username.
+        /// </summary>
+        [YamlMember(Alias = "username")]
+        public string Username { get; set; }
 
-      [YamlMember(Alias = "password")]
-      public string Password { get; set; }
+        /// <summary>
+        /// Gets or sets the password.
+        /// </summary>
+        [YamlMember(Alias = "password")]
+        public string Password { get; set; }
 
-      public override string ToString()
-      {
-         return $@"[Username = '{Username}', Password = '{Password}']";
-      }
-   }
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        public override string ToString()
+        {
+            return $@"[Username = '{Username}', Password = '{Password}']";
+        }
+    }
 }

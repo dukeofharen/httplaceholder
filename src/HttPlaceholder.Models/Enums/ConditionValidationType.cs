@@ -1,13 +1,28 @@
 ﻿namespace HttPlaceholder.Models.Enums
 {
-   public enum ConditionValidationType
-   {
-      NotSet,
+    /// <summary>
+    /// An enum for specifying the result of a condition checker.
+    /// </summary>
+    public enum ConditionValidationType
+    {
+        /// <summary>
+        /// Not set.
+        /// </summary>
+        NotSet,
 
-      Valid,
+        /// <summary>
+        /// Condition is valid.
+        /// </summary>
+        Valid,
 
-      Invalid,
+        /// <summary>
+        /// Condition is invalid.
+        /// </summary>
+        Invalid,
 
-      NotExecuted
-   }
+        /// <summary>
+        /// Condition is not executed.
+        /// </summary>
+        NotExecuted
+    }
 }
