@@ -13,6 +13,7 @@
 
 <script>
 import yaml from "js-yaml";
+import resources from "@/resources";
 
 export default {
   name: "addStub",
@@ -35,7 +36,7 @@ export default {
       let stubsForDownload = newStubs.map(fullStub => {
         return fullStub.stub
       })
-      this.downloadString = yaml.dump(stubsForDownload);
+      this.downloadString = resources.downloadStubsHeader + "\n" + yaml.dump(stubsForDownload);
       this.downloadUrl = `data:application/octet-stream;charset=utf-8;base64,${btoa(this.downloadString)}`
     }
   }

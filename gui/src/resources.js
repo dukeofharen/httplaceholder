@@ -15,7 +15,8 @@ const resources = {
     url:
       path: /stub
   response:
-    text: OK!`
+    text: OK!`,
+    downloadStubsHeader: "# This .yml file was created with HttPlaceholder. For more information, go to http://httplaceholder.com."
 };
 
 export default resources
