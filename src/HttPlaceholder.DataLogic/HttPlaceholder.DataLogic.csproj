@@ -15,11 +15,13 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.5" />
     <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.4" />
     <PackageReference Include="Ducode.Essentials.Console" Version="0.0.2" />
     <PackageReference Include="Ducode.Essentials.Files" Version="0.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
+    <PackageReference Include="MySqlConnector" Version="0.48.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttPlaceholder.Models\HttPlaceholder.Models.csproj" />
