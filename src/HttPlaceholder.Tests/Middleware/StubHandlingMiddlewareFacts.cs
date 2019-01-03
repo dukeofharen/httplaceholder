@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ducode.Essentials.Mvc.Interfaces;
+using Ducode.Essentials.Mvc.TestUtilities;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
-using HttPlaceholder.TestUtilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
