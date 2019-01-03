@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -9,11 +8,8 @@ using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Exceptions;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
-using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
-using Moq;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware
@@ -35,14 +31,6 @@ namespace HttPlaceholder.Middleware
         private readonly IRequestLoggerFactory _requestLoggerFactory;
         private readonly IStubContainer _stubContainer;
         private readonly IStubRequestExecutor _stubRequestExecutor;
-        private RequestDelegate _requestDelegate;
-        private Mock<IClientIpResolver> _clientIpResolver1;
-        private IConfigurationService object1;
-        private IHttpContextService object2;
-        private ILogger<StubHandlingMiddleware> object3;
-        private IRequestLoggerFactory object4;
-        private IStubContainer object5;
-        private IStubRequestExecutor object6;
 
         public StubHandlingMiddleware(
            RequestDelegate next,
@@ -62,18 +50,6 @@ namespace HttPlaceholder.Middleware
             _requestLoggerFactory = requestLoggerFactory;
             _stubContainer = stubContainer;
             _stubRequestExecutor = stubRequestExecutor;
-        }
-
-        public StubHandlingMiddleware(RequestDelegate requestDelegate, Mock<IClientIpResolver> clientIpResolver1, IConfigurationService object1, IHttpContextService object2, ILogger<StubHandlingMiddleware> object3, IRequestLoggerFactory object4, IStubContainer object5, IStubRequestExecutor object6)
-        {
-            _requestDelegate = requestDelegate;
-            _clientIpResolver1 = clientIpResolver1;
-            this.object1 = object1;
-            this.object2 = object2;
-            this.object3 = object3;
-            this.object4 = object4;
-            this.object5 = object5;
-            this.object6 = object6;
         }
 
         public async Task Invoke(HttpContext context)
