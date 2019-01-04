@@ -7,6 +7,7 @@ using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.DataLogic.Implementations.StubSources;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
+using HttPlaceholder.Services.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -20,6 +21,7 @@ namespace HttPlaceholder.DataLogic.Tests.Implementations.StubSources
         private IDictionary<string, string> _config;
         private Mock<IConfigurationService> _configurationServiceMock;
         private Mock<IFileService> _fileServiceMock;
+        private IJsonService _jsonService;
         private FileSystemStubSource _source;
 
         [TestInitialize]
@@ -35,9 +37,11 @@ namespace HttPlaceholder.DataLogic.Tests.Implementations.StubSources
                .Returns(_config);
 
             _fileServiceMock = new Mock<IFileService>();
+            _jsonService = new JsonService();
             _source = new FileSystemStubSource(
                _configurationServiceMock.Object,
-               _fileServiceMock.Object);
+               _fileServiceMock.Object,
+               _jsonService);
         }
 
         [TestCleanup]

@@ -18,15 +18,18 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         private const string StubYamlType = "yaml";
 
         private readonly IConfigurationService _configurationService;
+        private readonly IJsonService _jsonService;
         private readonly IQueryStore _queryStore;
         private readonly IYamlService _yamlService;
 
         public RelationalDbStubSource(
             IConfigurationService configurationService,
+            IJsonService jsonService,
             IQueryStore queryStore,
             IYamlService yamlService)
         {
             _configurationService = configurationService;
+            _jsonService = jsonService;
             _queryStore = queryStore;
             _yamlService = yamlService;
         }
@@ -35,7 +38,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         {
             using (var conn = _queryStore.GetConnection())
             {
-                string json = JsonConvert.SerializeObject(requestResult);
+                string json = _jsonService.SerializeObject(requestResult);
                 await conn.ExecuteAsync(_queryStore.AddRequestQuery, new
                 {
                     CorrelationId = requestResult.CorrelationId,
@@ -51,7 +54,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         {
             using (var conn = _queryStore.GetConnection())
             {
-                string json = JsonConvert.SerializeObject(stub);
+                string json = _jsonService.SerializeObject(stub);
                 await conn.ExecuteAsync(_queryStore.AddStubQuery, new
                 {
                     StubId = stub.Id,
@@ -94,7 +97,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             {
                 var result = await conn.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery);
                 return result
-                    .Select(r => JsonConvert.DeserializeObject<RequestResultModel>(r.Json));
+                    .Select(r => _jsonService.DeserializeObject<RequestResultModel>(r.Json));
             }
         }
 
@@ -109,7 +112,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
                     switch (queryResult.StubType)
                     {
                         case StubJsonType:
-                            result.Add(JsonConvert.DeserializeObject<StubModel>(queryResult.Stub));
+                            result.Add(_jsonService.DeserializeObject<StubModel>(queryResult.Stub));
                             break;
                         case StubYamlType:
                             result.Add(_yamlService.Parse<StubModel>(queryResult.Stub));
