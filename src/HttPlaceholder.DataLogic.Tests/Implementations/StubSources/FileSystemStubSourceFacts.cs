@@ -315,5 +315,16 @@ namespace HttPlaceholder.DataLogic.Tests.Implementations.StubSources
             _fileServiceMock
                .Verify(m => m.DeleteFile(It.IsAny<string>()), Times.Once);
         }
+
+        [TestMethod]
+        public async Task FileSystemStubSource_PrepareStubSourceAsync_HappyFlow()
+        {
+            // act
+            await _source.PrepareStubSourceAsync();
+
+            // assert
+            _fileServiceMock.Verify(m => m.DirectoryExists(It.IsAny<string>()), Times.Exactly(2));
+            _fileServiceMock.Verify(m => m.CreateDirectory(It.IsAny<string>()), Times.Exactly(2));
+        }
     }
 }

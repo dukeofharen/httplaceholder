@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -112,6 +113,13 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
                 string filePath = Path.Combine(path, $"{request.CorrelationId}.json");
                 _fileService.DeleteFile(filePath);
             }
+        }
+
+        public Task PrepareStubSourceAsync()
+        {
+            EnsureAndGetRequestsFolder();
+            EnsureAndGetStubsFolder();
+            return Task.CompletedTask;
         }
 
         private string EnsureAndGetStubsFolder()

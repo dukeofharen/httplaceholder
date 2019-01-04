@@ -51,7 +51,7 @@ namespace HttPlaceholder
             {
                 // Check if the stubs can be loaded.
                 var stubContainer = app.ApplicationServices.GetService<IStubContainer>();
-                Task.Run(() => stubContainer.GetStubsAsync()).GetAwaiter().GetResult();
+                Task.Run(() => stubContainer.PrepareAsync()).GetAwaiter().GetResult();
             }
 
             if (loadStaticFiles)

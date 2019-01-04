@@ -7,5 +7,7 @@ namespace HttPlaceholder.DataLogic
     public interface IStubSource
     {
         Task<IEnumerable<StubModel>> GetStubsAsync();
+
+        Task PrepareStubSourceAsync();
     }
 }

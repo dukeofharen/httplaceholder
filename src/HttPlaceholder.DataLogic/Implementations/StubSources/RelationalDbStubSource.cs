@@ -125,5 +125,10 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
                 return result;
             }
         }
+
+        public Task PrepareStubSourceAsync()
+        {
+            return Task.CompletedTask;
+        }
     }
 }
