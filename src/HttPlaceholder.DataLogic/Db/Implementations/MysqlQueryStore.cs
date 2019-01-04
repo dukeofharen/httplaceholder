@@ -29,6 +29,12 @@ FROM requests";
 (correlation_id, executing_stub_id, request_begin_time, request_end_time, `json`)
 VALUES (@CorrelationId, @ExecutingStubid, @RequestBeginTime, @RequestEndTime, @Json)";
 
+        public string AddStubQuery => @"INSERT INTO stubs
+(stub_id, stub, stub_type)
+VALUES (@StubId, @Stub, @StubType)";
+
+        public string DeletStubQuery => @"DELETE FROM stubs WHERE stub_id = @StubId";
+
         public IDbConnection GetConnection()
         {
             var config = _configurationService.GetConfiguration();

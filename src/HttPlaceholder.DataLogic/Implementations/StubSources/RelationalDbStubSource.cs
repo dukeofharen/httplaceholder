@@ -12,6 +12,9 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 {
     internal class RelationalDbStubSource : IWritableStubSource
     {
+        private const string StubJsonType = "json";
+        private const string StubYamlType = "yaml";
+
         private readonly IQueryStore _queryStore;
 
         public RelationalDbStubSource(IQueryStore queryStore)
@@ -35,9 +38,18 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             }
         }
 
-        public Task AddStubAsync(StubModel stub)
+        public async Task AddStubAsync(StubModel stub)
         {
-            throw new NotImplementedException();
+            using (var conn = _queryStore.GetConnection())
+            {
+                string json = JsonConvert.SerializeObject(stub);
+                await conn.ExecuteAsync(_queryStore.AddStubQuery, new
+                {
+                    StubId = stub.Id,
+                    Stub = json,
+                    StubType = StubJsonType
+                });
+            }
         }
 
         public Task CleanOldRequestResultsAsync()
@@ -53,9 +65,13 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             }
         }
 
-        public Task<bool> DeleteStubAsync(string stubId)
+        public async Task<bool> DeleteStubAsync(string stubId)
         {
-            throw new NotImplementedException();
+            using (var conn = _queryStore.GetConnection())
+            {
+                int updated = await conn.ExecuteAsync(_queryStore.DeletStubQuery, new { StubId = stubId });
+                return updated > 0;
+            }
         }
 
         public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
