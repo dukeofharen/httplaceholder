@@ -41,6 +41,8 @@ stub,
 stub_type AS StubType
 FROM stubs";
 
+        public string CleanOldRequestsQuery => @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
+
         public IDbConnection GetConnection()
         {
             var config = _configurationService.GetConfiguration();

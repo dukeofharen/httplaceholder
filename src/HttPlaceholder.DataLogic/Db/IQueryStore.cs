@@ -20,5 +20,7 @@ namespace HttPlaceholder.DataLogic.Db
         string DeletStubQuery { get; }
 
         string GetStubsQuery { get; }
+
+        string CleanOldRequestsQuery { get; }
     }
 }

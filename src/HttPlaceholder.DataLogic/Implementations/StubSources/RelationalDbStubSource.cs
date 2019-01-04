@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using Ducode.Essentials.Console;
 using HttPlaceholder.DataLogic.Db;
 using HttPlaceholder.DataLogic.Db.Models;
 using HttPlaceholder.Models;
@@ -16,13 +17,16 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         private const string StubJsonType = "json";
         private const string StubYamlType = "yaml";
 
+        private readonly IConfigurationService _configurationService;
         private readonly IQueryStore _queryStore;
         private readonly IYamlService _yamlService;
 
         public RelationalDbStubSource(
+            IConfigurationService configurationService,
             IQueryStore queryStore,
             IYamlService yamlService)
         {
+            _configurationService = configurationService;
             _queryStore = queryStore;
             _yamlService = yamlService;
         }
@@ -57,9 +61,14 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             }
         }
 
-        public Task CleanOldRequestResultsAsync()
+        public async Task CleanOldRequestResultsAsync()
         {
-            return Task.CompletedTask;
+            var config = _configurationService.GetConfiguration();
+            int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
+            using (var conn = _queryStore.GetConnection())
+            {
+                await conn.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new { Limit = maxLength });
+            }
         }
 
         public async Task DeleteAllRequestResultsAsync()
