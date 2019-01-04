@@ -3,7 +3,7 @@
 namespace HttPlaceholder.DataLogic.Db
 {
     /// <summary>
-    /// An interface that describes a class that returns queries for a specific database engine.
+    /// An interface that describes a class that returns queries and other related objects for a specific database engine.
     /// </summary>
     public interface IQueryStore
     {
@@ -12,5 +12,7 @@ namespace HttPlaceholder.DataLogic.Db
         string GetRequestsQuery { get; }
 
         string DeleteAllRequestsQuery { get; }
+
+        string AddRequestQuery { get; }
     }
 }

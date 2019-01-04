@@ -19,9 +19,20 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             _queryStore = queryStore;
         }
 
-        public Task AddRequestResultAsync(RequestResultModel requestResult)
+        public async Task AddRequestResultAsync(RequestResultModel requestResult)
         {
-            throw new NotImplementedException();
+            using (var conn = _queryStore.GetConnection())
+            {
+                string json = JsonConvert.SerializeObject(requestResult);
+                await conn.ExecuteAsync(_queryStore.AddRequestQuery, new
+                {
+                    CorrelationId = requestResult.CorrelationId,
+                    ExecutingStubId = requestResult.ExecutingStubId,
+                    RequestBeginTime = requestResult.RequestBeginTime,
+                    RequestEndTime = requestResult.RequestEndTime,
+                    Json = json
+                });
+            }
         }
 
         public Task AddStubAsync(StubModel stub)
@@ -31,7 +42,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
         public Task CleanOldRequestResultsAsync()
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public async Task DeleteAllRequestResultsAsync()
