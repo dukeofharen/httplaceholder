@@ -23,6 +23,8 @@ namespace HttPlaceholder.DataLogic.Db.Implementations
   `json`
 FROM requests";
 
+        public string DeleteAllRequestsQuery => @"DELETE FROM requests";
+
         public IDbConnection GetConnection()
         {
             var config = _configurationService.GetConfiguration();

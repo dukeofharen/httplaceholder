@@ -10,5 +10,7 @@ namespace HttPlaceholder.DataLogic.Db
         IDbConnection GetConnection();
 
         string GetRequestsQuery { get; }
+
+        string DeleteAllRequestsQuery { get; }
     }
 }

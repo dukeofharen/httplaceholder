@@ -34,9 +34,12 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             throw new NotImplementedException();
         }
 
-        public Task DeleteAllRequestResultsAsync()
+        public async Task DeleteAllRequestResultsAsync()
         {
-            throw new NotImplementedException();
+            using (var conn = _queryStore.GetConnection())
+            {
+                await conn.ExecuteAsync(_queryStore.DeleteAllRequestsQuery);
+            }
         }
 
         public Task<bool> DeleteStubAsync(string stubId)
