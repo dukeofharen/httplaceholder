@@ -35,6 +35,12 @@ VALUES (@StubId, @Stub, @StubType)";
 
         public string DeletStubQuery => @"DELETE FROM stubs WHERE stub_id = @StubId";
 
+        public string GetStubsQuery => @"SELECT
+stub_id AS StubId,
+stub,
+stub_type AS StubType
+FROM stubs";
+
         public IDbConnection GetConnection()
         {
             var config = _configurationService.GetConfiguration();

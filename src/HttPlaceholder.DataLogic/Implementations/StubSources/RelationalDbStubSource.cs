@@ -6,6 +6,7 @@ using Dapper;
 using HttPlaceholder.DataLogic.Db;
 using HttPlaceholder.DataLogic.Db.Models;
 using HttPlaceholder.Models;
+using HttPlaceholder.Services;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.DataLogic.Implementations.StubSources
@@ -16,10 +17,14 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         private const string StubYamlType = "yaml";
 
         private readonly IQueryStore _queryStore;
+        private readonly IYamlService _yamlService;
 
-        public RelationalDbStubSource(IQueryStore queryStore)
+        public RelationalDbStubSource(
+            IQueryStore queryStore,
+            IYamlService yamlService)
         {
             _queryStore = queryStore;
+            _yamlService = yamlService;
         }
 
         public async Task AddRequestResultAsync(RequestResultModel requestResult)
@@ -84,9 +89,29 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             }
         }
 
-        public Task<IEnumerable<StubModel>> GetStubsAsync()
+        public async Task<IEnumerable<StubModel>> GetStubsAsync()
         {
-            return Task.FromResult(new StubModel[0].AsEnumerable());
+            using (var conn = _queryStore.GetConnection())
+            {
+                var queryResults = await conn.QueryAsync<DbStubModel>(_queryStore.GetStubsQuery);
+                var result = new List<StubModel>();
+                foreach (var queryResult in queryResults)
+                {
+                    switch (queryResult.StubType)
+                    {
+                        case StubJsonType:
+                            result.Add(JsonConvert.DeserializeObject<StubModel>(queryResult.Stub));
+                            break;
+                        case StubYamlType:
+                            result.Add(_yamlService.Parse<StubModel>(queryResult.Stub));
+                            break;
+                        default:
+                            throw new NotImplementedException($"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.");
+                    }
+                }
+
+                return result;
+            }
         }
     }
 }
