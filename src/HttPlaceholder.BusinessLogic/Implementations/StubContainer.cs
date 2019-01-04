@@ -131,6 +131,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             var sources = GetStubSources();
             foreach (var source in sources)
             {
+                // Call PrepareStubSourceAsync on all stub sources for letting them prepare their own setup (e.g. create tables, folders etc.).
                 await source.PrepareStubSourceAsync();
             }
         }

@@ -43,6 +43,8 @@ FROM stubs";
 
         public string CleanOldRequestsQuery => @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
 
+        public string MigrationsQuery => MysqlResources.MigrateScript;
+
         public IDbConnection GetConnection()
         {
             var config = _configurationService.GetConfiguration();

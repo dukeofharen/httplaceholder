@@ -28,4 +28,17 @@
     <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Db\MysqlResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MysqlResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Db\MysqlResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MysqlResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

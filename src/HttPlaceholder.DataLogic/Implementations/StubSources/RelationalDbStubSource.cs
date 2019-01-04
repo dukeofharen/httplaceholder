@@ -126,9 +126,12 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             }
         }
 
-        public Task PrepareStubSourceAsync()
+        public async Task PrepareStubSourceAsync()
         {
-            return Task.CompletedTask;
+            using (var conn = _queryStore.GetConnection())
+            {
+                await conn.ExecuteAsync(_queryStore.MigrationsQuery);
+            }
         }
     }
 }
