@@ -126,6 +126,16 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             await source.DeleteAllRequestResultsAsync();
         }
 
+        public async Task PrepareAsync()
+        {
+            var sources = GetStubSources();
+            foreach (var source in sources)
+            {
+                // Call PrepareStubSourceAsync on all stub sources for letting them prepare their own setup (e.g. create tables, folders etc.).
+                await source.PrepareStubSourceAsync();
+            }
+        }
+
         private IWritableStubSource GetWritableStubSource()
         {
             var sources = GetStubSources();

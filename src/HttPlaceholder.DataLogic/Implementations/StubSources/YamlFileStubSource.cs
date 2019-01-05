@@ -96,5 +96,11 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             var result = files.Max(f => _fileService.GetModicationDateTime(f));
             return result;
         }
+
+        public async Task PrepareStubSourceAsync()
+        {
+            // Check if the .yml files could be loaded.
+            await GetStubsAsync();
+        }
     }
 }

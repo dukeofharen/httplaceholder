@@ -98,5 +98,10 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
                 return Task.CompletedTask;
             }
         }
+
+        public Task PrepareStubSourceAsync()
+        {
+            return Task.CompletedTask;
+        }
     }
 }

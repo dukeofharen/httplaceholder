@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,7 +7,6 @@ using Ducode.Essentials.Console;
 using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
-using HttPlaceholder.Utilities;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.DataLogic.Implementations.StubSources
@@ -15,20 +15,23 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
     {
         private readonly IConfigurationService _configurationService;
         private readonly IFileService _fileService;
+        private readonly IJsonService _jsonService;
 
         public FileSystemStubSource(
            IConfigurationService configurationService,
-           IFileService fileService)
+           IFileService fileService,
+           IJsonService jsonService)
         {
             _configurationService = configurationService;
             _fileService = fileService;
+            _jsonService = jsonService;
         }
 
         public Task AddRequestResultAsync(RequestResultModel requestResult)
         {
             string path = EnsureAndGetRequestsFolder();
             string filePath = Path.Combine(path, $"{requestResult.CorrelationId}.json");
-            string contents = JsonConvert.SerializeObject(requestResult);
+            string contents = _jsonService.SerializeObject(requestResult);
             _fileService.WriteAllText(filePath, contents);
             return Task.CompletedTask;
         }
@@ -37,7 +40,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         {
             string path = EnsureAndGetStubsFolder();
             string filePath = Path.Combine(path, $"{stub.Id}.json");
-            string contents = JsonConvert.SerializeObject(stub);
+            string contents = _jsonService.SerializeObject(stub);
             _fileService.WriteAllText(filePath, contents);
             return Task.CompletedTask;
         }
@@ -75,7 +78,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             foreach (string filePath in files)
             {
                 string contents = _fileService.ReadAllText(filePath);
-                var request = JsonConvert.DeserializeObject<RequestResultModel>(contents);
+                var request = _jsonService.DeserializeObject<RequestResultModel>(contents);
                 result.Add(request);
             }
 
@@ -90,7 +93,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             foreach (string filePath in files)
             {
                 string contents = _fileService.ReadAllText(filePath);
-                var stub = JsonConvert.DeserializeObject<StubModel>(contents);
+                var stub = _jsonService.DeserializeObject<StubModel>(contents);
                 result.Add(stub);
             }
 
@@ -110,6 +113,13 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
                 string filePath = Path.Combine(path, $"{request.CorrelationId}.json");
                 _fileService.DeleteFile(filePath);
             }
+        }
+
+        public Task PrepareStubSourceAsync()
+        {
+            EnsureAndGetRequestsFolder();
+            EnsureAndGetStubsFolder();
+            return Task.CompletedTask;
         }
 
         private string EnsureAndGetStubsFolder()

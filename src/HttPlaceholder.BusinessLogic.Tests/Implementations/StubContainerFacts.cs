@@ -442,5 +442,24 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
 
             Assert.IsTrue(newStubs.All(s => s.Tenant == tenant1));
         }
+
+        [TestMethod]
+        public async Task StubContainer_PrepareAsync_HappyFlow()
+        {
+            // arrange
+            var stubSource1 = new Mock<IStubSource>();
+            var stubSource2 = new Mock<IStubSource>();
+
+            _serviceProviderMock
+               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
+               .Returns(new[] { stubSource1.Object, stubSource2.Object });
+
+            // act
+            await _container.PrepareAsync();
+
+            // assert
+            stubSource1.Verify(m => m.PrepareStubSourceAsync(), Times.Once);
+            stubSource2.Verify(m => m.PrepareStubSourceAsync(), Times.Once);
+        }
     }
 }

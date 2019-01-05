@@ -30,6 +30,13 @@ httplaceholder --fileStorageLocation C:\tmp\storage
 
 By default, if you run the application without command line arguments, all stubs that are added through the [REST API](API.md) and all requests are stored in memory, which means that whenever you restart HttPlaceholder, everything is gone. For this reason, a file storage source was developed, so that all requests and stubs are stored on disk. You just have to specify the "fileStorageLocation" parameter so HttPlaceholder knows where to write its files.
 
+### MySQL connection (optional)
+```bash
+httplaceholder --mysqlConnectionString Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true
+```
+
+HttPlaceholder has functionality to save all requests and stubs to a MySQL database. You can connect to a database by providing a connection string as seen above. You already need to have an empty database created for HttPlaceholder. HttPlaceholder will create tables itself (if they aren't created yet). `Allow User Variables` should be set to `true` because the initialization script uses variables.
+
 ### Use HTTPS (optional)
 
 ```bash
@@ -94,6 +101,7 @@ If you just installed HttPlaceholder, a file called `_config.json` is available 
     "port": 5000,
     "useHttps": false,
     "enableRequestLogging": true,
-    "fileStorageLocation": "C:\\tmp\\storage"
+    "fileStorageLocation": "C:\\tmp\\storage",
+    "mysqlConnectionString": "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true"
 }
 ```

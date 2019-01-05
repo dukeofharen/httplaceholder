@@ -27,5 +27,7 @@ namespace HttPlaceholder.BusinessLogic
         Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId);
 
         Task DeleteAllRequestResultsAsync();
+
+        Task PrepareAsync();
     }
 }

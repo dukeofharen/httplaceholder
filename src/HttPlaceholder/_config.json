@@ -1,13 +1,14 @@
 {
-    "apiUsername": null,
-    "apiPassword": null,
-    "httpsPort": 5050,
-    "inputFile": null,
-    "oldRequestsQueueLength": 40,
-    "pfxPassword": null,
-    "pfxPath": null,
-    "port": 5000,
-    "useHttps": false,
-    "enableRequestLogging": true,
-    "fileStorageLocation": "C:\\tmp\\storage"
+   "apiUsername": null,
+   "apiPassword": null,
+   "httpsPort": 5050,
+   "inputFile": null,
+   "oldRequestsQueueLength": 40,
+   "pfxPassword": null,
+   "pfxPath": null,
+   "port": 5000,
+   "useHttps": false,
+   "enableRequestLogging": true,
+   "fileStorageLocation": "C:\\tmp\\storage",
+   "mysqlConnectionString": "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true"
 }
