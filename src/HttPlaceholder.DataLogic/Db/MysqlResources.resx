@@ -141,6 +141,25 @@ CREATE TABLE IF NOT EXISTS `stubs` (
   `stub_type` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_stub_id` (`stub_id`)
-) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;</value>
+) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
+
+/*Add code for custom migrations here*/
+/*SET @dbname = DATABASE();
+SET @tablename = "stubs";
+SET @columnname = "colName";
+SET @preparedStatement = (SELECT IF(
+  (
+    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE
+      (table_name = @tablename)
+      AND (table_schema = @dbname)
+      AND (column_name = @columnname)
+  ) &gt; 0,
+  "SELECT 1",
+  CONCAT("ALTER TABLE ", @tablename, " ADD ", @columnname, " INT(11);")
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;*/</value>
   </data>
 </root>
