@@ -8,6 +8,13 @@ namespace HttPlaceholder.Models
     /// </summary>
     public class StubResponseModel
     {
+
+        /// <summary>
+        /// Gets or sets whether dynamic mode is on.
+        /// </summary>
+        [YamlMember(Alias = "enableDynamicMode")]
+        public bool? EnableDynamicMode { get; set; }
+
         /// <summary>
         /// Gets or sets the status code.
         /// </summary>

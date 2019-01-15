@@ -6,6 +6,8 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
 {
     internal class JsonResponseWriter : IResponseWriter
     {
+        public int Priority => 0;
+
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
             bool executed = false;

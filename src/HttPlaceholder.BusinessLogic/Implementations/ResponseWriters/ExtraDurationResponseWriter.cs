@@ -14,6 +14,8 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
             _asyncService = asyncService;
         }
 
+        public int Priority => 0;
+
         public async Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
             bool executed = false;
