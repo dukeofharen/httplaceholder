@@ -735,6 +735,79 @@
 			]
 		},
 		{
+			"name": "14 Dynamic mode",
+			"item": [
+				{
+					"name": "1 Query string",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/dynamic-query.txt?response_text=This is the response text!&response_header=This is the response header!",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"dynamic-query.txt"
+									],
+									"query": [
+										{
+											"key": "response_text",
+											"value": "This is the response text!"
+										},
+										{
+											"key": "response_header",
+											"value": "This is the response header!"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "2 UUID",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/dynamic-uuid.txt",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"dynamic-uuid.txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
 			"name": "REST API",
 			"item": [
 				{

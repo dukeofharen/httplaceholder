@@ -48,7 +48,7 @@ export default {
       } else {
         this.filteredStubs = this.stubs.filter(r => {
           return (
-            r.id.includes(newValue) || (r.tenant && r.tenant.includes(newValue))
+            r.stub.id.includes(newValue) || (r.stub.tenant && r.stub.tenant.includes(newValue))
           );
         });
       }

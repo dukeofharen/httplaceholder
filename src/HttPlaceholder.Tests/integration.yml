@@ -1,8 +1,4 @@
-﻿# - id: no-conditions
-#   response:
-#     text: No conditions; also OK!
-
-- id: postcode-eelde
+﻿- id: postcode-eelde
   conditions:
     method: GET
     url:
@@ -245,6 +241,24 @@
           </p>
         </body>
       </html>
+
+- id: dynamic-query
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-query.txt
+  response:
+    enableDynamicMode: true
+    text: The value is ((query:queryString1))
+
+- id: dynamic-uuid
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-uuid.txt
+  response:
+    enableDynamicMode: true
+    text: The value is ((uuid))
 
 - id: file
   conditions:

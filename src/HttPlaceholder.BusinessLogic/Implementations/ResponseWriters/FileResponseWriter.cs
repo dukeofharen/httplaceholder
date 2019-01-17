@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.DataLogic;
 using HttPlaceholder.Models;
-using HttPlaceholder.Services;
 
 namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
 {
@@ -22,6 +21,8 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
             _stubContainer = stubContainer;
             _stubRootPathResolver = stubRootPathResolver;
         }
+
+        public int Priority => 0;
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
@@ -47,6 +48,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
                 if (finalFilePath != null)
                 {
                     response.Body = _fileService.ReadAllBytes(finalFilePath);
+                    response.BodyIsBinary = true;
                     executed = true;
                 }
             }

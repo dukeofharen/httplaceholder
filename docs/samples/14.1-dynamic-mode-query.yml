@@ -1,0 +1,11 @@
+# This stub reads query paramters from the request and parses them in the response.
+- id: dynamic-query-example-txt
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-query.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Header: ((query:response_header))
+    text: ((query:response_text))

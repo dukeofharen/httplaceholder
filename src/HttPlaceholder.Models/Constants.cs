@@ -1,4 +1,6 @@
-﻿namespace HttPlaceholder.Models
+﻿using System.Text.RegularExpressions;
+
+namespace HttPlaceholder.Models
 {
     public static class Constants
     {
@@ -32,6 +34,11 @@
         public static class DefaultValues
         {
             public const int MaxRequestsQueueLength = 40;
+        }
+
+        public static class Regexes
+        {
+            public static Regex VarRegex = new Regex(@"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)", RegexOptions.Compiled);
         }
     }
 }

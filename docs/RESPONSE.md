@@ -213,3 +213,61 @@ The permanent and temporary redirect response writers are short hands for defini
   response:
     permanentRedirect: https://reddit.com
 ```
+
+## Dynamic mode
+
+In order to make the responses in HttPlaceholder a bit more dynamic, the "dynamic mode" was introduced. This makes it possible to add variables to your responses that can be parsed. As of now, these variables can be used in the response body (text only) and the response headers. The only requirement is that you set the response variable `enableDynamicMode` to true (by default, it is set to false and the variables will not be parsed).
+
+Variables are written like this `((function_name))` or `((function_name:input))`.
+
+```yml
+- id: dynamic-query-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Header: ((uuid)) ((uuid))
+    text: ((uuid)) ((uuid)) ((uuid))
+```
+
+### Query string
+
+The query string parser makes it possible to write request query string parameters to the response.
+
+```yml
+- id: dynamic-query-example-txt
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-query.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Header: ((query:response_header))
+    text: ((query:response_text))
+```
+
+Let's say you make the request `http://localhost:5000/dynamic-query.txt?response_text=RESPONSE!&response_header=HEADER!`. `((query:response_header))` will be replaced with `RESPONSE!` and `((query:response_text))` will be replaced with `HEADER!`. If no matching query paramter was found, the variable will be filled with an empty string.
+
+### UUID
+
+The UUID parser makes it possible to insert a random UUID to the response.
+
+```yml
+- id: dynamic-uuid-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-uuid.txt
+  response:
+    enableDynamicMode: true
+    text: ((uuid))
+    headers:
+      X-Header: ((uuid))
+  priority: 0
+```
+
+If you go to `http://localhost:5000/dynamic-uuid.txt`, you will retrieve random UUID as response content and a random UUID in the `X-Header` response header.

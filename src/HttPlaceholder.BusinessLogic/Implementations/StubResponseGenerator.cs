@@ -25,7 +25,10 @@ namespace HttPlaceholder.BusinessLogic.Implementations
         {
             var requestLogger = _requestLoggerFactory.GetRequestLogger();
             var response = new ResponseModel();
-            var responseWriters = ((IEnumerable<IResponseWriter>)_serviceProvider.GetServices(typeof(IResponseWriter))).ToArray();
+            var responseWriters = ((IEnumerable<IResponseWriter>)_serviceProvider
+                .GetServices(typeof(IResponseWriter)))
+                .OrderByDescending(w => w.Priority)
+                .ToArray();
             foreach (var writer in responseWriters)
             {
                 bool executed = await writer.WriteToResponseAsync(stub, response);

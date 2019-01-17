@@ -59,5 +59,40 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
             Assert.AreEqual(401, result.StatusCode);
             Assert.AreEqual("12345", result.Headers["X-Api-Key"]);
         }
+
+        [TestMethod]
+        public async Task StubResponseGenerator_GenerateResponseAsync_HappyFlow_ResponseWriterPriority()
+        {
+            // arrange
+            var stub = new StubModel();
+            var responseWriterMock1 = new Mock<IResponseWriter>();
+            var responseWriterMock2 = new Mock<IResponseWriter>();
+
+            responseWriterMock1
+               .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
+               .Callback<StubModel, ResponseModel>((s, r) => r.StatusCode = 401)
+               .ReturnsAsync(true);
+            responseWriterMock1
+                .Setup(m => m.Priority)
+                .Returns(10);
+
+            responseWriterMock2
+               .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
+               .Callback<StubModel, ResponseModel>((s, r) => r.StatusCode = 404)
+               .ReturnsAsync(false);
+            responseWriterMock2
+                .Setup(m => m.Priority)
+                .Returns(-10);
+
+            _serviceProviderMock
+               .Setup(m => m.GetService(typeof(IEnumerable<IResponseWriter>)))
+               .Returns(new[] { responseWriterMock1.Object, responseWriterMock2.Object });
+
+            // act
+            var result = await _generator.GenerateResponseAsync(stub);
+
+            // assert
+            Assert.AreEqual(404, result.StatusCode);
+        }
     }
 }

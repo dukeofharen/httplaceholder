@@ -1,0 +1,12 @@
+# Random UUIDs will be inserted in the response of this stub.
+- id: dynamic-uuid-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-uuid.txt
+  response:
+    enableDynamicMode: true
+    text: ((uuid))
+    headers:
+      X-Header: ((uuid))
+  priority: 0
