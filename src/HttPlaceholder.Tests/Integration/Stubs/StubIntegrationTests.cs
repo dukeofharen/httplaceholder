@@ -647,6 +647,40 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         }
 
         [TestMethod]
+        public async Task StubIntegration_RegularGet_Dynamic_Query()
+        {
+            // arrange
+            string queryVal = "John";
+            string expectedResult = $"The value is {queryVal}";
+            string url = $"{TestServer.BaseAddress}dynamic-query.txt?queryString1={queryVal}";
+
+            // act / assert
+            using (var response = await Client.GetAsync(url))
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.AreEqual(expectedResult, content);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+            }
+        }
+
+        [TestMethod]
+        public async Task StubIntegration_RegularGet_Dynamic_Uuid()
+        {
+            // arrange
+            string url = $"{TestServer.BaseAddress}dynamic-uuid.txt";
+
+            // act / assert
+            using (var response = await Client.GetAsync(url))
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.IsTrue(Guid.TryParse(content.Replace("The value is ", string.Empty), out _));
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+            }
+        }
+
+        [TestMethod]
         public async Task StubIntegration_RegularGet_IsHttps_Ok()
         {
             // arrange
