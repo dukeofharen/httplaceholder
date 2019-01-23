@@ -650,9 +650,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_Query()
         {
             // arrange
-            string queryVal = "John";
-            string expectedResult = $"The value is {queryVal}";
-            string url = $"{TestServer.BaseAddress}dynamic-query.txt?queryString1={queryVal}";
+            string query1Val = "John";
+            string query2Val = "=";
+            string expectedResult = $"The value is {query1Val} {WebUtility.UrlEncode(query2Val)}";
+            string url = $"{TestServer.BaseAddress}dynamic-query.txt?queryString1={query1Val}&queryString2={query2Val}";
 
             // act / assert
             using (var response = await Client.GetAsync(url))

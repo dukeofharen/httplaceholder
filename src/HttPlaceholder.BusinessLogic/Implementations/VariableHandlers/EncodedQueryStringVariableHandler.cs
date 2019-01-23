@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Text.RegularExpressions;
 using Ducode.Essentials.Mvc.Interfaces;
 
 namespace HttPlaceholder.BusinessLogic.Implementations.VariableHandlers
 {
-    public class QueryStringVariableHandler : IVariableHandler
+    public class EncodedQueryStringVariableHandler : IVariableHandler
     {
         private readonly IHttpContextService _httpContextService;
 
-        public QueryStringVariableHandler(IHttpContextService httpContextService)
+        public EncodedQueryStringVariableHandler(IHttpContextService httpContextService)
         {
             _httpContextService = httpContextService;
         }
 
-        public string Name => "query";
+        public string Name => "query_encoded";
 
         public string Parse(string input, IEnumerable<Match> matches)
         {
@@ -26,6 +27,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations.VariableHandlers
                     string replaceValue = string.Empty;
                     queryDict.TryGetValue(queryStringName, out replaceValue);
 
+                    replaceValue = WebUtility.UrlEncode(replaceValue);
                     input = input.Replace(match.Value, replaceValue);
                 }
             }

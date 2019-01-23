@@ -249,7 +249,7 @@
       path: /dynamic-query.txt
   response:
     enableDynamicMode: true
-    text: The value is ((query:queryString1))
+    text: The value is ((query:queryString1)) ((query_encoded:queryString2))
 
 - id: dynamic-uuid
   conditions:
