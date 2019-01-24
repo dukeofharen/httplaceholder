@@ -9,3 +9,15 @@
     headers:
       X-Header: ((query:response_header))
     text: ((query:response_text))
+
+# This stub does the same, but writes the query URL encoded.
+- id: dynamic-encoded-query-example-txt
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-encoded-query.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Header: ((query_encoded:response_header))
+    text: ((query_encoded:response_text))
