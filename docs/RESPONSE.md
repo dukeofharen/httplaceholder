@@ -252,6 +252,21 @@ The query string parser makes it possible to write request query string paramete
 
 Let's say you make the request `http://localhost:5000/dynamic-query.txt?response_text=RESPONSE!&response_header=HEADER!`. `((query:response_header))` will be replaced with `RESPONSE!` and `((query:response_text))` will be replaced with `HEADER!`. If no matching query paramter was found, the variable will be filled with an empty string.
 
+```yml
+- id: dynamic-encoded-query-example-txt
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-encoded-query.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Header: ((query_encoded:response_header))
+    text: ((query_encoded:response_text))
+```
+
+The example above is roughly the same, but writes the query parameter URL encoded.
+
 ### UUID
 
 The UUID parser makes it possible to insert a random UUID to the response.
