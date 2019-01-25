@@ -286,3 +286,23 @@ The UUID parser makes it possible to insert a random UUID to the response.
 ```
 
 If you go to `http://localhost:5000/dynamic-uuid.txt`, you will retrieve random UUID as response content and a random UUID in the `X-Header` response header.
+
+### Request headers
+
+The request headers parser makes it possible to write request header values to the response.
+
+```yml
+- id: dynamic-request-header-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-request-header.txt
+  response:
+    enableDynamicMode: true
+    text: 'API key: ((request_header:X-Api-Key))'
+    headers:
+      X-Header: ((request_header:Host))
+  priority: 0
+```
+
+Let's say you make the request `http://localhost:5000/dynamic-request-header.txt` with header `X-Api-Key: api123`. `((request_header:X-Api-Key))` will be replaced with `api123` and `((request_header:Host))` will be replaced with the hostname (e.g. `localhost:5000`). If no matching request header was found, the variable will be filled with an empty string.

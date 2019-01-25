@@ -34,3 +34,4 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Form values: [.yml](samples/13-form.yml)
 * Dynamic mode - query strings: [.yml](samples/14.1-dynamic-mode-query.yml)
 * Dynamic mode - UUIDs: [.yml](samples/14.2-dynamic-mode-uuid.yml)
+* Dynamic mode - request headers: [.yml](samples/14.3-dynamic-mode-request-header.yml)
