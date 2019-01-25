@@ -1,0 +1,12 @@
+# The posted form values as defined in the variables will be parsed in the response.
+- id: dynamic-form-post-example
+  conditions:
+    method: POST
+    url:
+      path: /dynamic-form-post.txt
+  response:
+    enableDynamicMode: true
+    text: 'Posted: ((form_post:formval1))'
+    headers:
+      X-Header: ((form_post:formval2))
+  priority: 0
