@@ -682,6 +682,29 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         }
 
         [TestMethod]
+        public async Task StubIntegration_RegularGet_Dynamic_RequestHeaders()
+        {
+            // arrange
+            string apiKey = Guid.NewGuid().ToString();
+            string expectedResult = $"API key: {apiKey}";
+            string url = $"{TestServer.BaseAddress}dynamic-request-header.txt";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Add("X-Api-Key", apiKey);
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.AreEqual(expectedResult, content);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+
+                Assert.AreEqual("localhost", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
+            }
+        }
+
+        [TestMethod]
         public async Task StubIntegration_RegularGet_IsHttps_Ok()
         {
             // arrange

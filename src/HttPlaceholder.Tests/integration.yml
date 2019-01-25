@@ -260,6 +260,18 @@
     enableDynamicMode: true
     text: The value is ((uuid))
 
+- id: dynamic-request-header-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-request-header.txt
+  response:
+    enableDynamicMode: true
+    text: 'API key: ((request_header:X-Api-Key))'
+    headers:
+      X-Header: ((request_header:Host))
+  priority: 0
+
 - id: file
   conditions:
     method: GET
