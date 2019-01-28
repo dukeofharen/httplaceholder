@@ -331,3 +331,4 @@ ASALocalRun/
 # Other
 gui/
 !gui/.guiwillbeplacedhere
+.vagrant
