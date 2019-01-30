@@ -306,3 +306,33 @@ The request headers parser makes it possible to write request header values to t
 ```
 
 Let's say you make the request `http://localhost:5000/dynamic-request-header.txt` with header `X-Api-Key: api123`. `((request_header:X-Api-Key))` will be replaced with `api123` and `((request_header:Host))` will be replaced with the hostname (e.g. `localhost:5000`). If no matching request header was found, the variable will be filled with an empty string.
+
+### Form post
+
+The form post parser makes it possible to write posted form values to the response.
+
+```yml
+- id: dynamic-form-post-example
+  conditions:
+    method: POST
+    url:
+      path: /dynamic-form-post.txt
+  response:
+    enableDynamicMode: true
+    text: 'Posted: ((form_post:formval1))'
+    headers:
+      X-Header: ((form_post:formval2))
+  priority: 0
+```
+
+Let's say you make the request `http://localhost:5000/dynamic-form-post.txt` with the following data:
+
+**Posted body**
+```
+formval1=value1&formval2=value2
+```
+
+**Headers**
+`Content-Type`: `application/x-www-form-urlencoded`
+
+`((form_post:formval1))` will be replaced with `value1` and `((form_post:formval2))` will be replaced with `value2`.

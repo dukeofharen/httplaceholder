@@ -881,22 +881,15 @@
 							"name": "Regular",
 							"request": {
 								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "formval1",
-											"value": "value 1",
-											"type": "text"
-										},
-										{
-											"key": "formval2",
-											"value": "value 2",
-											"type": "text"
-										}
-									]
-								},
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {},
 								"url": {
 									"raw": "http://localhost:5000/dynamic-form-post.txt",
 									"protocol": "http",
