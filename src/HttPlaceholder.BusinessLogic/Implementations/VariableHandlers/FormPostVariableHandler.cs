@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Ducode.Essentials.Mvc.Interfaces;
+using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.BusinessLogic.Implementations.VariableHandlers
 {
@@ -18,7 +20,16 @@ namespace HttPlaceholder.BusinessLogic.Implementations.VariableHandlers
 
         public string Parse(string input, IEnumerable<Match> matches)
         {
-            var formValues = _httpContextService.GetFormValues();
+            ValueTuple<string, StringValues>[] formValues;
+            try
+            {
+                // We don't care about any exceptions here.
+                formValues = _httpContextService.GetFormValues();
+            }
+            catch
+            {
+                formValues = new ValueTuple<string, StringValues>[0];
+            }
 
             // TODO there can be multiple form values, so this should be fixed in the future.
             var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
