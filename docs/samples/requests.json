@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7e09c2f1-98dd-4883-853a-117218faa5e3",
+		"_postman_id": "659bd77b-c267-4477-b305-d6fccb54ad96",
 		"name": "HttPlaceholder Examples",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -840,13 +840,78 @@
 				},
 				{
 					"name": "3 Request header",
-					"item": [],
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Api-Key",
+										"value": "abc123",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/dynamic-request-header.txt",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"dynamic-request-header.txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
 					"description": "\t\t\t",
 					"_postman_isSubFolder": true
 				},
 				{
 					"name": "4 Form post",
-					"item": [],
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "formval1",
+											"value": "value 1",
+											"type": "text"
+										},
+										{
+											"key": "formval2",
+											"value": "value 2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:5000/dynamic-form-post.txt",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"dynamic-form-post.txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
 					"_postman_isSubFolder": true
 				}
 			]
