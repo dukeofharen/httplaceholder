@@ -9,6 +9,6 @@ apt-get install -y apt-transport-https
 apt-get update
 apt-get install -y dotnet-sdk-2.2
 
-# Watch HttPlaceholder changes
-cd /vagrant/src/HttPlaceholder
-dotnet watch run
+# # Watch HttPlaceholder changes
+# cd /vagrant/src/HttPlaceholder
+# dotnet watch run
