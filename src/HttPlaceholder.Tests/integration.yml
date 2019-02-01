@@ -284,6 +284,18 @@
       X-Header: ((form_post:formval2))
   priority: 0
 
+- id: dynamic-request-body-example
+  conditions:
+    method: POST
+    url:
+      path: /dynamic-request-body.txt
+  response:
+    enableDynamicMode: true
+    text: 'Posted: ((request_body))'
+    headers:
+      X-Header: ((request_body))
+  priority: 0
+
 - id: file
   conditions:
     method: GET

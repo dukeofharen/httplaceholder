@@ -906,6 +906,35 @@
 						}
 					],
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "5 Request body",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "TEST VALUE"
+								},
+								"url": {
+									"raw": "http://localhost:5000/dynamic-request-body.txt",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"dynamic-request-body.txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
 				}
 			]
 		},

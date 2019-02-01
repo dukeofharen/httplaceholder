@@ -336,3 +336,30 @@ formval1=value1&formval2=value2
 `Content-Type`: `application/x-www-form-urlencoded`
 
 `((form_post:formval1))` will be replaced with `value1` and `((form_post:formval2))` will be replaced with `value2`.
+
+### Request body
+
+The request body parser makes it possible to write the complete posted body to the response.
+
+```yml
+- id: dynamic-request-body-example
+  conditions:
+    method: POST
+    url:
+      path: /dynamic-request-body.txt
+  response:
+    enableDynamicMode: true
+    text: 'Posted: ((request_body))'
+    headers:
+      X-Header: ((request_body))
+  priority: 0
+```
+
+Let's say you make the request `http://localhost:5000dynamic-request-body.txt` with the following data:
+
+**Posted body**
+```
+Test123
+```
+
+`((request_body))` will be replaced with `Test123`.
