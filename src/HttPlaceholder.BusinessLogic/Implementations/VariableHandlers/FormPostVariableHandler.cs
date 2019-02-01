@@ -20,29 +20,32 @@ namespace HttPlaceholder.BusinessLogic.Implementations.VariableHandlers
 
         public string Parse(string input, IEnumerable<Match> matches)
         {
-            ValueTuple<string, StringValues>[] formValues;
-            try
+            if (matches.Any())
             {
-                // We don't care about any exceptions here.
-                formValues = _httpContextService.GetFormValues();
-            }
-            catch
-            {
-                formValues = new ValueTuple<string, StringValues>[0];
-            }
-
-            // TODO there can be multiple form values, so this should be fixed in the future.
-            var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
-
-            foreach (var match in matches)
-            {
-                if (match.Groups.Count == 3)
+                ValueTuple<string, StringValues>[] formValues;
+                try
                 {
-                    string formValueName = match.Groups[2].Value;
-                    string replaceValue = string.Empty;
-                    formDict.TryGetValue(formValueName, out replaceValue);
+                    // We don't care about any exceptions here.
+                    formValues = _httpContextService.GetFormValues();
+                }
+                catch
+                {
+                    formValues = new ValueTuple<string, StringValues>[0];
+                }
 
-                    input = input.Replace(match.Value, replaceValue);
+                // TODO there can be multiple form values, so this should be fixed in the future.
+                var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
+
+                foreach (var match in matches)
+                {
+                    if (match.Groups.Count == 3)
+                    {
+                        string formValueName = match.Groups[2].Value;
+                        string replaceValue = string.Empty;
+                        formDict.TryGetValue(formValueName, out replaceValue);
+
+                        input = input.Replace(match.Value, replaceValue);
+                    }
                 }
             }
 
