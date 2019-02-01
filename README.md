@@ -1,5 +1,7 @@
 # HttPlaceholder
 
+<img src="logo/logo_single.png" alt="HttPlaceholder" style="width:150px" />
+
 | | |
 | --- | --- |
 | **Build** | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/pq6hojs9bqbmjjy5?svg=true)](https://ci.appveyor.com/project/dukeofharen/httplaceholder) |
@@ -17,9 +19,10 @@ Quickly mock away any webservice using HttPlaceholder. HttPlaceholder lets you s
 At my current job, we develop and maintain a lot of web applications. These web applications have a lot of dependencies on other web services. So I thought: instead of running all these dependent web services on the local dev machine, why not use a stub to make development easier? That's exactly what I did.
 
 So a few bullet points in a row:
-1. Define all the needed requests in a YAML file, which can also be checked in for all your team members to use.
-1. Many request conditions take regular expressions, to make your stub even more flexible.
-1. Use the HttPlaceholder REST API to prepare all the requests you need for automated tests.
+
+🐱‍👤 Define all the needed requests in a YAML file, which can also be checked in for all your team members to use.<br />
+🏄‍ Many request conditions take regular expressions, to make your stub even more flexible.<br />
+😴 Use the HttPlaceholder REST API to prepare all the requests you need for automated tests.<br />
 
 # How?
 You have an input YAML file (which contains 1 or more requests):
@@ -56,7 +59,7 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 
 ![Management UI](docs/img/ui_screenshot.png)
 
-# Batteries included
+# Batteries included 🔋
 - XPath conditions.
 - JSONPath conditions.
 - Request header conditions.
@@ -69,7 +72,7 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 - User interface to view stubs and executed requests.
 - And more.
 
-# Documentation
+# Documentation 📚
 * [Installation](docs/INSTALL.md)
 * [Getting started](docs/GETTING-STARTED.md)
 * [Stub samples](docs/SAMPLES.md)
@@ -79,7 +82,7 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 * [Response definitions explained](docs/RESPONSE.md)
 * [Management interface](docs/UI.md)
 
-# Tools
+# Tools 🛠
 * [HttPlaceholder REST API client for .NET](https://www.nuget.org/packages/HttPlaceholder.Client/)
 
 # Todo
