@@ -20,7 +20,7 @@ At my current job, we develop and maintain a lot of web applications. These web 
 
 So a few bullet points in a row:
 
-🐱‍👤 Define all the needed requests in a YAML file, which can also be checked in for all your team members to use.<br />
+🤠 Define all the needed requests in a YAML file, which can also be checked in for all your team members to use.<br />
 🏄‍ Many request conditions take regular expressions, to make your stub even more flexible.<br />
 😴 Use the HttPlaceholder REST API to prepare all the requests you need for automated tests.<br />
 
