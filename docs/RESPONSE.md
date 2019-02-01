@@ -286,3 +286,144 @@ The UUID parser makes it possible to insert a random UUID to the response.
 ```
 
 If you go to `http://localhost:5000/dynamic-uuid.txt`, you will retrieve random UUID as response content and a random UUID in the `X-Header` response header.
+
+### Request headers
+
+The request headers parser makes it possible to write request header values to the response.
+
+```yml
+- id: dynamic-request-header-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-request-header.txt
+  response:
+    enableDynamicMode: true
+    text: 'API key: ((request_header:X-Api-Key))'
+    headers:
+      X-Header: ((request_header:Host))
+  priority: 0
+```
+
+Let's say you make the request `http://localhost:5000/dynamic-request-header.txt` with header `X-Api-Key: api123`. `((request_header:X-Api-Key))` will be replaced with `api123` and `((request_header:Host))` will be replaced with the hostname (e.g. `localhost:5000`). If no matching request header was found, the variable will be filled with an empty string.
+
+### Form post
+
+The form post parser makes it possible to write posted form values to the response.
+
+```yml
+- id: dynamic-form-post-example
+  conditions:
+    method: POST
+    url:
+      path: /dynamic-form-post.txt
+  response:
+    enableDynamicMode: true
+    text: 'Posted: ((form_post:formval1))'
+    headers:
+      X-Header: ((form_post:formval2))
+  priority: 0
+```
+
+Let's say you make the request `http://localhost:5000/dynamic-form-post.txt` with the following data:
+
+**Posted body**
+```
+formval1=value1&formval2=value2
+```
+
+**Headers**
+`Content-Type`: `application/x-www-form-urlencoded`
+
+`((form_post:formval1))` will be replaced with `value1` and `((form_post:formval2))` will be replaced with `value2`.
+
+### Request body
+
+The request body parser makes it possible to write the complete posted body to the response.
+
+```yml
+- id: dynamic-request-body-example
+  conditions:
+    method: POST
+    url:
+      path: /dynamic-request-body.txt
+  response:
+    enableDynamicMode: true
+    text: 'Posted: ((request_body))'
+    headers:
+      X-Header: ((request_body))
+  priority: 0
+```
+
+Let's say you make the request `http://localhost:5000dynamic-request-body.txt` with the following data:
+
+**Posted body**
+```
+Test123
+```
+
+`((request_body))` will be replaced with `Test123`.
+
+### Display URL
+
+The display URL body parser makes it possible to write the complete URL to the response.
+
+```yml
+- id: dynamic-display-url-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-display-url.txt
+  response:
+    enableDynamicMode: true
+    text: 'URL: ((display_url))'
+    headers:
+      X-Header: ((display_url))
+  priority: 0
+```
+
+Let's say you do the following GET request: `http://localhost:5000/dynamic-display-url.txt?var1=value&var2=value2`. The response text will look like this:
+
+```
+URL: http://localhost:5000/dynamic-display-url.txt?var1=value&var2=value2
+```
+
+### Client IP
+
+The client IP body parser makes it possible to write the IP address of the requester to the response.
+
+```yml
+- id: dynamic-client-ip-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-client-ip.txt
+  response:
+    enableDynamicMode: true
+    text: 'IP: ((client_ip))'
+    headers:
+      X-Header: ((client_ip))
+  priority: 0
+```
+
+Let's say you make the following request:
+
+**URL**
+```
+http://localhost:5000/dynamic-client-ip.txt
+```
+
+**Method**
+```
+GET
+```
+
+**IP**
+```
+192.168.178.15
+```
+
+The response will look like this:
+```
+IP: 192.168.178.15
+```

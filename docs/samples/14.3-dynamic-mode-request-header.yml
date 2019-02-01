@@ -1,0 +1,12 @@
+# The request headers as defined in the variables will be parsed in the response.
+- id: dynamic-request-header-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-request-header.txt
+  response:
+    enableDynamicMode: true
+    text: 'API key: ((request_header:X-Api-Key))'
+    headers:
+      X-Header: ((request_header:Host))
+  priority: 0

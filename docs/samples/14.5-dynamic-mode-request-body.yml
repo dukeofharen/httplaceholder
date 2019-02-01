@@ -1,0 +1,12 @@
+# The full posted content will be written to the response.
+- id: dynamic-request-body-example
+  conditions:
+    method: POST
+    url:
+      path: /dynamic-request-body.txt
+  response:
+    enableDynamicMode: true
+    text: 'Posted: ((request_body))'
+    headers:
+      X-Header: ((request_body))
+  priority: 0
