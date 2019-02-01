@@ -133,5 +133,27 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 Assert.AreEqual("Test123", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
             }
         }
+
+        [TestMethod]
+        public async Task StubIntegration_RegularGet_Dynamic_DisplayUrl()
+        {
+            // arrange
+            string query = "?var1=value1&var2=value2";
+            string url = $"{TestServer.BaseAddress}dynamic-display-url.txt{query}";
+            string expectedResult = $"URL: {url}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.AreEqual(expectedResult, content);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+
+                Assert.AreEqual(url, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
+            }
+        }
     }
 }

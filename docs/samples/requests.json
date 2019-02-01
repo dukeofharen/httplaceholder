@@ -935,6 +935,41 @@
 						}
 					],
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "6 Display URL",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/dynamic-display-url.txt?testvar=value1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"dynamic-display-url.txt"
+									],
+									"query": [
+										{
+											"key": "testvar",
+											"value": "value1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
 				}
 			]
 		},

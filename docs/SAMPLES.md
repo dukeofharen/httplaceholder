@@ -37,3 +37,4 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Dynamic mode - request headers: [.yml](samples/14.3-dynamic-mode-request-header.yml)
 * Dynamic mode - form post: [.yml](samples/14.4-dynamic-mode-form-post.yml)
 * Dynamic mode - request body: [.yml](samples/14.5-dynamic-mode-request-body.yml)
+* Dynamic mode - display URL: [.yml](samples/14.6-dynamic-mode-display-url.yml)

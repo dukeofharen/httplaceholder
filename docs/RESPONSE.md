@@ -363,3 +363,27 @@ Test123
 ```
 
 `((request_body))` will be replaced with `Test123`.
+
+### Display URL
+
+The display URL body parser makes it possible to write the complete URL to the response.
+
+```yml
+- id: dynamic-display-url-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-display-url.txt
+  response:
+    enableDynamicMode: true
+    text: 'URL: ((display_url))'
+    headers:
+      X-Header: ((display_url))
+  priority: 0
+```
+
+Let's say you do the following GET request: `http://localhost:5000/dynamic-display-url.txt?var1=value&var2=value2`. The response text will look like this:
+
+```
+URL: http://localhost:5000/dynamic-display-url.txt?var1=value&var2=value2
+```

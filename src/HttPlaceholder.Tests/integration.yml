@@ -296,6 +296,18 @@
       X-Header: ((request_body))
   priority: 0
 
+- id: dynamic-display-url-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-display-url.txt
+  response:
+    enableDynamicMode: true
+    text: 'URL: ((display_url))'
+    headers:
+      X-Header: ((display_url))
+  priority: 0
+
 - id: file
   conditions:
     method: GET
