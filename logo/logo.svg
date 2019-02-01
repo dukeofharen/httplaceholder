@@ -59,7 +59,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -76,13 +76,19 @@
        x="-77.746719"
        y="67.981255"
        ry="5.6696429"
-       transform="rotate(-45.294747)" />
+       transform="rotate(-45.294747)"
+       inkscape:export-xdpi="8.2760553"
+       inkscape:export-ydpi="8.2760553"
+       inkscape:export-filename="F:\Code\priveprojecten\httplaceholder\httplaceholder\gui\public\img\icons\favicon-32x32.png" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:14.76636028px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.36915901"
        x="19.324818"
        y="128.23479"
-       id="text887"><tspan
+       id="text887"
+       inkscape:export-xdpi="8.2760553"
+       inkscape:export-ydpi="8.2760553"
+       inkscape:export-filename="F:\Code\priveprojecten\httplaceholder\httplaceholder\gui\public\img\icons\favicon-32x32.png"><tspan
          sodipodi:role="line"
          id="tspan885"
          x="19.324818"
@@ -93,7 +99,9 @@
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
        x="97.366676"
        y="121.75311"
-       id="text826"><tspan
+       id="text826"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
          sodipodi:role="line"
          id="tspan824"
          x="97.366676"

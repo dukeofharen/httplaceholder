@@ -13,3 +13,7 @@ body, html {
 .navbar a {
   cursor: pointer;
 }
+
+.navbar-brand img {
+  height: 35px;
+}
