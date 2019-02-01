@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ducode.Essentials.Mvc.Interfaces;
+﻿using Ducode.Essentials.Mvc.Interfaces;
 using HttPlaceholder.BusinessLogic.Implementations.VariableHandlers;
 using HttPlaceholder.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
