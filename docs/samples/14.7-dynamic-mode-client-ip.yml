@@ -1,0 +1,12 @@
+# The client IP of the requester is written to the response.
+- id: dynamic-client-ip-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-client-ip.txt
+  response:
+    enableDynamicMode: true
+    text: 'IP: ((client_ip))'
+    headers:
+      X-Header: ((client_ip))
+  priority: 0

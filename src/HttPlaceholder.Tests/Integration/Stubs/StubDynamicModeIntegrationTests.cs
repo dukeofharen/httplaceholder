@@ -155,5 +155,31 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 Assert.AreEqual(url, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
             }
         }
+
+        [TestMethod]
+        public async Task StubIntegration_RegularGet_Dynamic_ClientIp()
+        {
+            // arrange
+            string ip = "11.22.33.44";
+            string url = $"{TestServer.BaseAddress}dynamic-client-ip.txt";
+            string expectedResult = $"IP: {ip}";
+
+            _clientIpResolverMock
+                .Setup(m => m.GetClientIp())
+                .Returns(ip);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.AreEqual(expectedResult, content);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+
+                Assert.AreEqual(ip, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
+            }
+        }
     }
 }

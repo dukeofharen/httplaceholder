@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HttPlaceholder.Tests.Integration.Stubs
 {
     [TestClass]
-    public class StubClientIpIntegrationTests : StubIntegrationTestBase
+    public class StubClientIpConditionsIntegrationTests : StubIntegrationTestBase
     {
         [TestInitialize]
         public void Initialize()

@@ -387,3 +387,43 @@ Let's say you do the following GET request: `http://localhost:5000/dynamic-displ
 ```
 URL: http://localhost:5000/dynamic-display-url.txt?var1=value&var2=value2
 ```
+
+### Client IP
+
+The client IP body parser makes it possible to write the IP address of the requester to the response.
+
+```yml
+- id: dynamic-client-ip-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-client-ip.txt
+  response:
+    enableDynamicMode: true
+    text: 'IP: ((client_ip))'
+    headers:
+      X-Header: ((client_ip))
+  priority: 0
+```
+
+Let's say you make the following request:
+
+**URL**
+```
+http://localhost:5000/dynamic-client-ip.txt
+```
+
+**Method**
+```
+GET
+```
+
+**IP**
+```
+192.168.178.15
+```
+
+The response will look like this:
+```
+IP: 192.168.178.15
+```
