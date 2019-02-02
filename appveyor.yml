@@ -38,6 +38,9 @@ artifacts:
   - path: '**\swagger.json'
     name: swagger
     type: zip
+  - path: src\HttPlaceholder\bin\release\netcoreapp2.2\httplaceholder_*.zip
+    name: httplaceholder-zips
+    type: zip
 
 deploy:
   release: $(releaseName)
