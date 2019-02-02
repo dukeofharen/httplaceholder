@@ -13,7 +13,7 @@ $nsisPath = "C:\Program Files (x86)\NSIS\Bin"
 
 # Updating path variable
 Write-Host "Updating path variable"
-$env:PATH = "$env:PATH;$nsisPath"
+$env:PATH = "$env:PATH;$nsisPath;C:\Program Files\7-Zip"
 
 # Remove all bin and obj folders
 Write-Host "Cleaning the solution"

@@ -19,5 +19,9 @@ Assert-Cmd-Ok
 # Moving docs folder to bin path
 Copy-Item $docsFolder (Join-Path $binDir "docs") -Recurse -Container
 
-# Creating ZIP file
-Compress-Archive -Path $binDir -DestinationPath "$binDir\..\..\httplaceholder_linux-x64.zip"
+# Creating .tar.gz file of binaries.
+& 7z a -ttar "$binDir\httplaceholder_linux-x64.tar" "$binDir\**"
+Assert-Cmd-Ok
+& 7z a -tgzip "$binDir\..\..\httplaceholder_linux-x64.tar.gz" "$binDir\httplaceholder_linux-x64.tar"
+Assert-Cmd-Ok
+Remove-Item "$binDir\httplaceholder_linux-x64.tar"

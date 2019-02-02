@@ -41,6 +41,9 @@ artifacts:
   - path: src\HttPlaceholder\bin\release\netcoreapp2.2\httplaceholder_*.zip
     name: httplaceholder-zips
     type: zip
+  - path: src\HttPlaceholder\bin\release\netcoreapp2.2\httplaceholder_*.tar.gz
+    name: httplaceholder-tars
+    type: zip
 
 deploy:
   release: $(releaseName)
