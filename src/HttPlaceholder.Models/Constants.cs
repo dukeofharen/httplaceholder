@@ -24,13 +24,15 @@ namespace HttPlaceholder.Models
 
             public const string UseHttpsKey = "useHttps";
 
-            public const string EnableRequestLogging = "enableRequestLogging";
+            public const string EnableRequestLoggingKey = "enableRequestLogging";
 
-            public const string FileStorageLocation = "fileStorageLocation";
+            public const string FileStorageLocationKey = "fileStorageLocation";
 
-            public const string MysqlConnectionString = "mysqlConnectionString";
+            public const string MysqlConnectionStringKey = "mysqlConnectionString";
 
-            public const string SqliteConnectionString = "sqliteConnectionString";
+            public const string SqliteConnectionStringKey = "sqliteConnectionString";
+
+            public const string SqlServerConnectionStringKey = "sqlServerConnectionString";
         }
 
         public static class DefaultValues

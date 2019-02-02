@@ -9,7 +9,6 @@ using Ducode.Essentials.Console;
 using HttPlaceholder.Models;
 using HttPlaceholder.Resources;
 using HttPlaceholder.Services.Implementations;
-using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

@@ -50,6 +50,16 @@ httplaceholder --sqliteConnectionString Data Source=C:\tmp\httplaceholder.db
 
 HttPlaceholder has functionality to save all requests and stubs to a SQLite database. You can use SQLite by providing the connection string as seen above. HttPlaceholder will create the file if it doesn't exist and will populate the database with the necessary tables.
 
+### SQL Server connection (optional)
+
+<img src="img/mssql.png" width="100" />
+
+```bash
+httplaceholder --sqlServerConnectionString Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123
+```
+
+HttPlaceholder has functionality to save all requests and stubs to a Microsoft SQL Server database. You can connect to a database by providing a connection string as seen above. You already need to have an empty database created for HttPlaceholder. HttPlaceholder will create tables itself (if they aren't created yet).
+
 ### Use HTTPS (optional)
 
 ```bash
@@ -104,17 +114,19 @@ If you just installed HttPlaceholder, a file called `_config.json` is available 
 
 ```json
 {
-    "apiUsername": null,
-    "apiPassword": null,
-    "httpsPort": 5050,
-    "inputFile": null,
-    "oldRequestsQueueLength": 40,
-    "pfxPassword": null,
-    "pfxPath": null,
-    "port": 5000,
-    "useHttps": false,
-    "enableRequestLogging": true,
-    "fileStorageLocation": "C:\\tmp\\storage",
-    "mysqlConnectionString": "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true"
+   "apiUsername": null,
+   "apiPassword": null,
+   "httpsPort": 5050,
+   "inputFile": null,
+   "oldRequestsQueueLength": 40,
+   "pfxPassword": null,
+   "pfxPath": null,
+   "port": 5000,
+   "useHttps": false,
+   "enableRequestLogging": true,
+   "fileStorageLocation": "C:\\tmp\\storage",
+   "mysqlConnectionString": "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true",
+   "sqliteConnectionString": "Data Source=C:\\tmp\\httplaceholder.db",
+   "sqlServerConnectionString": "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123"
 }
 ```

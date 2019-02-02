@@ -40,6 +40,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>SqliteResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Db\SqlServerResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SqlServerResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Db\MysqlResources.resx">
@@ -49,6 +54,10 @@
     <EmbeddedResource Update="Db\SqliteResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SqliteResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Db\SqlServerResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SqlServerResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

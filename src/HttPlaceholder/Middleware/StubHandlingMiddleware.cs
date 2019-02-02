@@ -108,7 +108,7 @@ namespace HttPlaceholder.Middleware
             var loggingResult = requestLogger.GetResult();
             var jsonLoggingResult = JObject.FromObject(loggingResult);
             var config = _configurationService.GetConfiguration();
-            bool enableRequestLogging = config.GetValue(Constants.ConfigKeys.EnableRequestLogging, true);
+            bool enableRequestLogging = config.GetValue(Constants.ConfigKeys.EnableRequestLoggingKey, true);
             if (enableRequestLogging)
             {
                 _logger.LogInformation(jsonLoggingResult.ToString());

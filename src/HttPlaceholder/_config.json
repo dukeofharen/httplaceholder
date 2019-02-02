@@ -11,5 +11,6 @@
    "enableRequestLogging": true,
    "fileStorageLocation": "C:\\tmp\\storage",
    "mysqlConnectionString": "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true",
-   "sqliteConnectionString": "Data Source=C:\\tmp\\httplaceholder.db"
+   "sqliteConnectionString": "Data Source=C:\\tmp\\httplaceholder.db",
+   "sqlServerConnectionString": "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123"
 }

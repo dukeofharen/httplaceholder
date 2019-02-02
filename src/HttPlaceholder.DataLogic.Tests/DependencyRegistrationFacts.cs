@@ -49,7 +49,7 @@ namespace HttPlaceholder.DataLogic.Tests
         public void DependencyRegistration_AddStubSources_FileStorageLocationKeySet_ShouldRegisterFileSystemStubSource()
         {
             // arrange
-            _args.Add(Constants.ConfigKeys.FileStorageLocation, @"C:\storage");
+            _args.Add(Constants.ConfigKeys.FileStorageLocationKey, @"C:\storage");
 
             // act
             _services.AddStubSources();
@@ -65,7 +65,7 @@ namespace HttPlaceholder.DataLogic.Tests
         public void DependencyRegistration_AddStubSources_MysqlConnectionStringKeySet_ShouldRegisterStubSource()
         {
             // arrange
-            _args.Add(Constants.ConfigKeys.MysqlConnectionString, "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder");
+            _args.Add(Constants.ConfigKeys.MysqlConnectionStringKey, "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder");
 
             // act
             _services.AddStubSources();
@@ -82,7 +82,7 @@ namespace HttPlaceholder.DataLogic.Tests
         public void DependencyRegistration_AddStubSources_SqliteConnectionStringKeySet_ShouldRegisterStubSource()
         {
             // arrange
-            _args.Add(Constants.ConfigKeys.SqliteConnectionString, "Data Source=app.db");
+            _args.Add(Constants.ConfigKeys.SqliteConnectionStringKey, "Data Source=app.db");
 
             // act
             _services.AddStubSources();
@@ -92,6 +92,23 @@ namespace HttPlaceholder.DataLogic.Tests
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqliteQueryStore)));
+            Assert.IsTrue(_services.Any(s => s.ServiceType == typeof(IConfigurationService)));
+        }
+
+        [TestMethod]
+        public void DependencyRegistration_AddStubSources_SqlServerConnectionStringKeySet_ShouldRegisterStubSource()
+        {
+            // arrange
+            _args.Add(Constants.ConfigKeys.SqlServerConnectionStringKey, "Server=localhost;Database=httplaceholder;User Id=sa;Password=Password123");
+
+            // act
+            _services.AddStubSources();
+
+            // assert
+            Assert.AreEqual(4, _services.Count);
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqlServerQueryStore)));
             Assert.IsTrue(_services.Any(s => s.ServiceType == typeof(IConfigurationService)));
         }
     }

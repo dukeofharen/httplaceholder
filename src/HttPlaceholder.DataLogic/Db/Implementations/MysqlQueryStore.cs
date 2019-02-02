@@ -48,7 +48,7 @@ FROM stubs";
         public IDbConnection GetConnection()
         {
             var config = _configurationService.GetConfiguration();
-            string connectionString = config[Constants.ConfigKeys.MysqlConnectionString];
+            string connectionString = config[Constants.ConfigKeys.MysqlConnectionStringKey];
             return new MySqlConnection(connectionString);
         }
     }

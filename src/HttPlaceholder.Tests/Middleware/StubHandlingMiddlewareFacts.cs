@@ -116,7 +116,7 @@ namespace HttPlaceholder.Tests.Middleware
             var requestResult = new RequestResultModel();
             var config = new Dictionary<string, string>
             {
-                { Constants.ConfigKeys.EnableRequestLogging, "true" }
+                { Constants.ConfigKeys.EnableRequestLoggingKey, "true" }
             };
 
             _httpContextServiceMock
