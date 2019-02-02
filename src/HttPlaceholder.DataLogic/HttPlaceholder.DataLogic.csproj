@@ -22,6 +22,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
     <PackageReference Include="MySqlConnector" Version="0.48.2" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.109.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttPlaceholder.Models\HttPlaceholder.Models.csproj" />
@@ -34,11 +35,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>MysqlResources.resx</DependentUpon>
     </Compile>
+    <Compile Update="Db\SqliteResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SqliteResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Db\MysqlResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>MysqlResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Db\SqliteResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>SqliteResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 </Project>

@@ -29,6 +29,8 @@ namespace HttPlaceholder.Models
             public const string FileStorageLocation = "fileStorageLocation";
 
             public const string MysqlConnectionString = "mysqlConnectionString";
+
+            public const string SqliteConnectionString = "sqliteConnectionString";
         }
 
         public static class DefaultValues
