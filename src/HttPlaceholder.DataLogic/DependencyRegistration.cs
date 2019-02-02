@@ -25,16 +25,23 @@ namespace HttPlaceholder.DataLogic
             bool registerRelationDbStubSource = false;
             var configurationService = services.GetService<IConfigurationService>();
             var config = configurationService.GetConfiguration();
+            string connectionString = null;
             if (config.TryGetValue(Constants.ConfigKeys.FileStorageLocation, out string fileStoragePath) && !string.IsNullOrWhiteSpace(fileStoragePath))
             {
                 // If "fileStorageLocation" is set, it means HttPlaceholder should read and write files to a specific location.
                 services.AddSingleton<IStubSource, FileSystemStubSource>();
             }
-            else if (config.TryGetValue(Constants.ConfigKeys.MysqlConnectionString, out string connectionString) && !string.IsNullOrWhiteSpace(connectionString))
+            else if (config.TryGetValue(Constants.ConfigKeys.MysqlConnectionString, out connectionString) && !string.IsNullOrWhiteSpace(connectionString))
             {
                 // If "mysqlConnectionString" is set, the application should connect with a MySQL database instance and store its stuff there.
                 registerRelationDbStubSource = true;
                 services.AddSingleton<IQueryStore, MysqlQueryStore>();
+            }
+            else if (config.TryGetValue(Constants.ConfigKeys.SqliteConnectionString, out connectionString) && !string.IsNullOrWhiteSpace(connectionString))
+            {
+                // If "sqliteConnectionString" is set, the application should connect with a SQLite database instance and store its stuff there.
+                registerRelationDbStubSource = true;
+                services.AddSingleton<IQueryStore, SqliteQueryStore>();
             }
             else
             {

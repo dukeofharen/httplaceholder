@@ -62,7 +62,7 @@ namespace HttPlaceholder.DataLogic.Tests
         }
 
         [TestMethod]
-        public void DependencyRegistration_AddStubSources_MysqlConnectionStringKeySet_ShouldRegisterFileSystemStubSource()
+        public void DependencyRegistration_AddStubSources_MysqlConnectionStringKeySet_ShouldRegisterStubSource()
         {
             // arrange
             _args.Add(Constants.ConfigKeys.MysqlConnectionString, "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder");
@@ -75,6 +75,23 @@ namespace HttPlaceholder.DataLogic.Tests
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(MysqlQueryStore)));
+            Assert.IsTrue(_services.Any(s => s.ServiceType == typeof(IConfigurationService)));
+        }
+
+        [TestMethod]
+        public void DependencyRegistration_AddStubSources_SqliteConnectionStringKeySet_ShouldRegisterStubSource()
+        {
+            // arrange
+            _args.Add(Constants.ConfigKeys.SqliteConnectionString, "Data Source=app.db");
+
+            // act
+            _services.AddStubSources();
+
+            // assert
+            Assert.AreEqual(4, _services.Count);
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqliteQueryStore)));
             Assert.IsTrue(_services.Any(s => s.ServiceType == typeof(IConfigurationService)));
         }
     }
