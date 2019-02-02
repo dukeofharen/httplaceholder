@@ -125,7 +125,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         private string EnsureAndGetStubsFolder()
         {
             var config = _configurationService.GetConfiguration();
-            string folder = config[Constants.ConfigKeys.FileStorageLocation];
+            string folder = config[Constants.ConfigKeys.FileStorageLocationKey];
             string path = Path.Combine(folder, "stubs");
             if (!_fileService.DirectoryExists(path))
             {
@@ -138,7 +138,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         private string EnsureAndGetRequestsFolder()
         {
             var config = _configurationService.GetConfiguration();
-            string folder = config[Constants.ConfigKeys.FileStorageLocation];
+            string folder = config[Constants.ConfigKeys.FileStorageLocationKey];
             string path = Path.Combine(folder, "requests");
             if (!_fileService.DirectoryExists(path))
             {

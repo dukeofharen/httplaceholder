@@ -28,7 +28,7 @@ namespace HttPlaceholder.DataLogic.Tests.Implementations.StubSources
         public void Initialize()
         {
             _config = new Dictionary<string, string>();
-            _config.Add(Constants.ConfigKeys.FileStorageLocation, StorageFolder);
+            _config.Add(Constants.ConfigKeys.FileStorageLocationKey, StorageFolder);
             _config.Add(Constants.ConfigKeys.OldRequestsQueueLengthKey, "2");
 
             _configurationServiceMock = new Mock<IConfigurationService>();

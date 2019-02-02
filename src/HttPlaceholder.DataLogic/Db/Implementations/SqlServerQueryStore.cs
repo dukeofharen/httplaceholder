@@ -1,16 +1,15 @@
-﻿using System;
-using System.Data;
-using System.Data.SQLite;
+﻿using System.Data;
+using System.Data.SqlClient;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 
 namespace HttPlaceholder.DataLogic.Db.Implementations
 {
-    internal class SqliteQueryStore : IQueryStore
+    internal class SqlServerQueryStore : IQueryStore
     {
         private readonly IConfigurationService _configurationService;
 
-        public SqliteQueryStore(IConfigurationService configurationService)
+        public SqlServerQueryStore(IConfigurationService configurationService)
         {
             _configurationService = configurationService;
         }
@@ -21,13 +20,13 @@ namespace HttPlaceholder.DataLogic.Db.Implementations
   executing_stub_id AS ExecutingStubId,
   request_begin_time AS RequestBeginTime,
   request_end_time AS RequestEndTime,
-  `json`
+  json
 FROM requests";
 
         public string DeleteAllRequestsQuery => @"DELETE FROM requests";
 
         public string AddRequestQuery => @"INSERT INTO requests
-(correlation_id, executing_stub_id, request_begin_time, request_end_time, `json`)
+(correlation_id, executing_stub_id, request_begin_time, request_end_time, json)
 VALUES (@CorrelationId, @ExecutingStubid, @RequestBeginTime, @RequestEndTime, @Json)";
 
         public string AddStubQuery => @"INSERT INTO stubs
@@ -42,15 +41,15 @@ stub,
 stub_type AS StubType
 FROM stubs";
 
-        public string CleanOldRequestsQuery => @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
+        public string CleanOldRequestsQuery => @"DELETE FROM requests WHERE ID NOT IN (SELECT TOP (@Limit) ID FROM requests ORDER BY ID DESC)";
 
-        public string MigrationsQuery => SqliteResources.MigrateScript;
+        public string MigrationsQuery => SqlServerResources.MigrateScript;
 
         public IDbConnection GetConnection()
         {
             var config = _configurationService.GetConfiguration();
-            string connectionString = config[Constants.ConfigKeys.SqliteConnectionStringKey];
-            return new SQLiteConnection(connectionString);
+            string connectionString = config[Constants.ConfigKeys.SqlServerConnectionStringKey];
+            return new SqlConnection(connectionString);
         }
     }
 }
