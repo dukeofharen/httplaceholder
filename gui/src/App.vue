@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#">HttPlaceholder</a>
+      <a class="navbar-brand" href="#"><img src="img/logo.png" alt="HttPlaceholder" /></a>
       <button
         class="navbar-toggler"
         type="button"
