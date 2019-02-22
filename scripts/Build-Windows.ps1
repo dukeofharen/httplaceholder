@@ -34,7 +34,7 @@ Copy-Item $docsFolder (Join-Path $binDir "docs") -Recurse -Container
 Rename-Item -Path "$binDir\web.config" "_web.config"
 
 # Creating ZIP file
-Compress-Archive -Path $binDir -DestinationPath "$binDir\..\..\httplaceholder_win-x64.zip"
+Compress-Archive -Path "$binDir\*" -DestinationPath "$binDir\..\..\httplaceholder_win-x64.zip"
 
 # Making installer
 [version]$version = $env:versionString
