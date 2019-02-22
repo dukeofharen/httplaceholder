@@ -35,7 +35,7 @@ By default, if you run the application without command line arguments, all stubs
 <img src="img/mysql.png" width="100" />
 
 ```bash
-httplaceholder --mysqlConnectionString Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true
+httplaceholder --mysqlConnectionString "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true"
 ```
 
 HttPlaceholder has functionality to save all requests and stubs to a MySQL database. You can connect to a database by providing a connection string as seen above. You already need to have an empty database created for HttPlaceholder. HttPlaceholder will create tables itself (if they aren't created yet). `Allow User Variables` should be set to `true` because the initialization script uses variables.
@@ -45,7 +45,7 @@ HttPlaceholder has functionality to save all requests and stubs to a MySQL datab
 <img src="img/sqlite.png" width="100" />
 
 ```bash
-httplaceholder --sqliteConnectionString Data Source=C:\tmp\httplaceholder.db
+httplaceholder --sqliteConnectionString "Data Source=C:\tmp\httplaceholder.db"
 ```
 
 HttPlaceholder has functionality to save all requests and stubs to a SQLite database. You can use SQLite by providing the connection string as seen above. HttPlaceholder will create the file if it doesn't exist and will populate the database with the necessary tables.
@@ -55,7 +55,7 @@ HttPlaceholder has functionality to save all requests and stubs to a SQLite data
 <img src="img/mssql.png" width="100" />
 
 ```bash
-httplaceholder --sqlServerConnectionString Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123
+httplaceholder --sqlServerConnectionString "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123"
 ```
 
 HttPlaceholder has functionality to save all requests and stubs to a Microsoft SQL Server database. You can connect to a database by providing a connection string as seen above. You already need to have an empty database created for HttPlaceholder. HttPlaceholder will create tables itself (if they aren't created yet).

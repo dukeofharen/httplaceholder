@@ -20,9 +20,16 @@ namespace HttPlaceholder
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine($"HttPlaceholder {AssemblyHelper.GetAssemblyVersion()} - (c) 2018 Ducode");
-
             var arg = args.FirstOrDefault();
+            string version = AssemblyHelper.GetAssemblyVersion();
+            if (string.Equals(arg, "-v", StringComparison.OrdinalIgnoreCase) || string.Equals(arg, "--version", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine(version);
+                Environment.Exit(0);
+            }
+
+            Console.WriteLine($"HttPlaceholder {version} - (c) 2019 Ducode");
+
             if (string.Equals(arg, "-h", StringComparison.OrdinalIgnoreCase) || string.Equals(arg, "--help", StringComparison.OrdinalIgnoreCase))
             {
                 Console.WriteLine(ConsoleAppResources.ManPage);

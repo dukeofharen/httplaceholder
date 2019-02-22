@@ -332,3 +332,4 @@ ASALocalRun/
 gui/
 !gui/.guiwillbeplacedhere
 .vagrant
+*.swp
