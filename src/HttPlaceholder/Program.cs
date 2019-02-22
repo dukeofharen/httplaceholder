@@ -6,6 +6,7 @@ using System.Net;
 using System.Reflection;
 using Ducode.Essentials.Assembly;
 using Ducode.Essentials.Console;
+using Ducode.Essentials.Files;
 using HttPlaceholder.Models;
 using HttPlaceholder.Resources;
 using HttPlaceholder.Services.Implementations;
@@ -50,20 +51,8 @@ namespace HttPlaceholder
 
         public static IWebHost BuildWebHost(string[] args)
         {
-            IDictionary<string, string> argsDictionary;
-            string configPath = Path.Join(AssemblyHelper.GetCallingAssemblyRootPath(), "config.json");
-            if (args.Length == 0 && File.Exists(configPath))
-            {
-                // If a config file is found, try to load and parse it instead of the arguments.
-                Console.WriteLine($"Config file found at '{configPath}', so trying to parse that configuration.");
-                string config = File.ReadAllText(configPath);
-                argsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
-            }
-            else
-            {
-                Console.WriteLine("Trying to parse arguments from command line.");
-                argsDictionary = args.Parse();
-            }
+            var configParser = new ConfigurationParser(new AssemblyService(), new FileService());
+            var argsDictionary = configParser.ParseConfiguration(args);
 
             ConfigurationService.StaticSetConfiguration(argsDictionary);
 
