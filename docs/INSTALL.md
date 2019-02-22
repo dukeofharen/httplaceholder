@@ -1,12 +1,12 @@
 # Installation
 
-This page contains information about installing HttPlaceholder in several different ways and on several different operating systems. To get started, learn more about configuring the application or just curious about some samples, read [this](GETTING-STARTED.md), [this](CONFIG.md) and [this](SAMPLES.md).
+This page contains information about installing HttPlaceholder in several different ways and on several different operating systems. To get started, learn more about configuring the application or just curious about some samples, read [this](GETTING-STARTED.md), [this](CONFIG.md)  and [this](SAMPLES.md).
 
-## Dotnet global tool
+## ⚙ Dotnet global tool (cross platform)
 
 Make sure you have installed the correct .NET Core SDK for your OS (see https://dotnet.microsoft.com/download). When the .NET Core SDK is installed, run `dotnet install --global httplaceholder` to install HttPlaceholder.
 
-## Linux
+## 🐧 Linux
 
 To install HttPlaceholder on Linux, run the following command in your terminal (make sure you're running as administrator):
 
@@ -14,9 +14,13 @@ To install HttPlaceholder on Linux, run the following command in your terminal (
 curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/scripts/install-linux.sh | bash
 ```
 
-If you would like to expose HttPlaceholder to the outside world, I would recommend to use Nginx or Apache as reverse proxy.
+If you would like to expose HttPlaceholder to the outside world, I would recommend to use Nginx or Apache as reverse proxy. To keep the service running even if you're not logged in through an SSH session, you can use something like systemd.
 
-## Windows
+## 🍎 Mac
+
+I haven't got access to Mac OS, so I haven't managed to test HttPlaceholder on Mac yet, but it (probably) should work. Download the latest Mac OS artifacts from the releases tab, extract it and it should run.
+
+## 🗔 Windows
 
 ### Local development setup
 

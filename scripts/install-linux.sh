@@ -2,6 +2,7 @@
 set -e
 set -u
 
+# This is added to ensure that the whole script is downloaded before running it.
 {
     echo "Attempting to download and install HttPlaceholder"
 

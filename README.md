@@ -86,5 +86,5 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 * [HttPlaceholder REST API client for .NET](https://www.nuget.org/packages/HttPlaceholder.Client/)
 
 # Todo
-- Make application "really" cross platform (Ubuntu and other Linux distributions, Mac etc.)
 - There's no way to add custom condition checkers or response writers yet.
+- Create an installation script for Mac OS.
