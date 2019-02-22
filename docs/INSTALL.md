@@ -26,6 +26,12 @@ I haven't got access to Mac OS, so I haven't managed to test HttPlaceholder on M
 
 The only thing needed to use HttPlaceholder on your local development machine, is executing the installer (which can be found [here](https://github.com/dukeofharen/httplaceholder/releases/latest)).
 
+For installing HttPlaceholder through your PowerShell terminal, execute the following command:
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dukeofharen/httplaceholder/scripts/Install-Windows.ps1'))
+```
+
 ### Hosting under IIS
 
 - It is also possible to host HttPlaceholder under IIS. You can just install HttPlaceholder using the installer mentioned above.
