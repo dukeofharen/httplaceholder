@@ -1,18 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Text;
 using Ducode.Essentials.Assembly;
 using Ducode.Essentials.Console;
+using Ducode.Essentials.Files;
 using HttPlaceholder.Models;
-using HttPlaceholder.Resources;
+using HttPlaceholder.Models.Attributes;
 using HttPlaceholder.Services.Implementations;
+using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 
 namespace HttPlaceholder
 {
@@ -32,7 +33,7 @@ namespace HttPlaceholder
 
             if (string.Equals(arg, "-h", StringComparison.OrdinalIgnoreCase) || string.Equals(arg, "--help", StringComparison.OrdinalIgnoreCase))
             {
-                Console.WriteLine(ConsoleAppResources.ManPage);
+                Console.WriteLine(GetManPage());
                 Environment.Exit(0);
             }
 
@@ -50,20 +51,8 @@ namespace HttPlaceholder
 
         public static IWebHost BuildWebHost(string[] args)
         {
-            IDictionary<string, string> argsDictionary;
-            string configPath = Path.Join(AssemblyHelper.GetCallingAssemblyRootPath(), "config.json");
-            if (args.Length == 0 && File.Exists(configPath))
-            {
-                // If a config file is found, try to load and parse it instead of the arguments.
-                Console.WriteLine($"Config file found at '{configPath}', so trying to parse that configuration.");
-                string config = File.ReadAllText(configPath);
-                argsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
-            }
-            else
-            {
-                Console.WriteLine("Trying to parse arguments from command line.");
-                argsDictionary = args.Parse();
-            }
+            var configParser = new ConfigurationParser(new AssemblyService(), new FileService());
+            var argsDictionary = configParser.ParseConfiguration(args);
 
             ConfigurationService.StaticSetConfiguration(argsDictionary);
 
@@ -95,6 +84,28 @@ namespace HttPlaceholder
                    }
                })
                .Build();
+        }
+
+        private static string GetManPage()
+        {
+            var builder = new StringBuilder();
+            var constants = ReflectionUtilities.GetConstants(typeof(Constants.ConfigKeys));
+            foreach (var constant in constants)
+            {
+                var attribute = constant.CustomAttributes.FirstOrDefault();
+                if (attribute != null && attribute.AttributeType == typeof(ConfigKeyAttribute))
+                {
+                    var value = constant.GetValue(constant);
+                    string description = attribute.NamedArguments.Single(a => a.MemberName == "Description").TypedValue.Value as string;
+                    string example = attribute.NamedArguments.Single(a => a.MemberName == "Example").TypedValue.Value as string;
+                    builder.AppendLine($"--{value}: {description} (e.g. {example})");
+                }
+            }
+
+            builder.AppendLine();
+            builder.AppendLine("Example: httplaceholder --apiUsername user --apiPassword pass");
+
+            return builder.ToString();
         }
     }
 }

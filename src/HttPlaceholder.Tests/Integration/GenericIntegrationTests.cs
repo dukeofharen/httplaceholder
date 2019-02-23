@@ -82,8 +82,7 @@ namespace HttPlaceholder.Tests.Integration
       [TestMethod]
       public async Task GenericIntegration_Ui_Returns404()
       {
-         // Check if a call to the HttPlaceholder returns a, HTTP 404 instead of 500.
-         // This way, we know the calls aren't intercepted by the stub logic.
+         // The URL ph-ui is not executed as stub, so it doesn't return an HTTP 500 when called.
 
          // arrange
          string url = $"{TestServer.BaseAddress}ph-ui";
@@ -97,7 +96,7 @@ namespace HttPlaceholder.Tests.Integration
          // act / assert
          using (var response = await Client.SendAsync(request))
          {
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+            Assert.AreNotEqual(HttpStatusCode.InternalServerError, response.StatusCode);
          }
       }
    }

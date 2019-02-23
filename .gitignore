@@ -329,7 +329,7 @@ ASALocalRun/
 .mfractor/
 
 # Other
-gui/
-!gui/.guiwillbeplacedhere
+src/HttPlaceholder/gui
+!src/HttPlaceholder/gui/.guiwillbeplacedhere
 .vagrant
 *.swp
