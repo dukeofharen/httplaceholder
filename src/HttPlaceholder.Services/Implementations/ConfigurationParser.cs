@@ -4,6 +4,7 @@ using System.IO;
 using Ducode.Essentials.Assembly.Interfaces;
 using Ducode.Essentials.Console;
 using Ducode.Essentials.Files.Interfaces;
+using HttPlaceholder.Models;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Services.Implementations
@@ -24,13 +25,25 @@ namespace HttPlaceholder.Services.Implementations
         public IDictionary<string, string> ParseConfiguration(string[] args)
         {
             var argsDictionary = args.Parse();
+
+            if (argsDictionary.TryGetValue(Constants.ConfigKeys.ConfigJsonLocationKey, out string configJsonPath))
+            {
+                if (!_fileService.FileExists(configJsonPath))
+                {
+                    throw new FileNotFoundException($"File '{configJsonPath}' not found.");
+                }
+
+                string config = _fileService.ReadAllText(configJsonPath);
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
+            }
+
             string configPath = Path.Combine(_assemblyService.GetCallingAssemblyRootPath(), "config.json");
             if (args.Length == 0 && _fileService.FileExists(configPath))
             {
                 // If a config file is found, try to load and parse it instead of the arguments.
                 Console.WriteLine($"Config file found at '{configPath}', so trying to parse that configuration.");
                 string config = _fileService.ReadAllText(configPath);
-                argsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
             }
 
             return argsDictionary;

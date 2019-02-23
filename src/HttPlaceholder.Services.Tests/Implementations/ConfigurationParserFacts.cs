@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Ducode.Essentials.Assembly.Interfaces;
 using Ducode.Essentials.Files.Interfaces;
+using HttPlaceholder.Models;
 using HttPlaceholder.Services.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -57,7 +59,58 @@ namespace HttPlaceholder.Services.Tests.Implementations
         }
 
         [TestMethod]
-        public void ConfigurationParser_ParseConfiguration_ConfigFileFoundInInstallationFolder_ShouldParse()
+        public void ConfigurationParser_ParseConfiguration_ConfigFileLocationPassedAsArgument_FileNotFound_ShouldThrowFileNotFoundException()
+        {
+            // arrange
+            string configJsonPath = @"F:\httplaceholder\config.json";
+            var args = new[]
+            {
+                $"--{Constants.ConfigKeys.ConfigJsonLocationKey}",
+                configJsonPath
+            };
+
+            _fileServiceMock
+                .Setup(m => m.FileExists(configJsonPath))
+                .Returns(false);
+
+            // act / assert
+            Assert.ThrowsException<FileNotFoundException>(() => _parser.ParseConfiguration(args));
+        }
+
+        [TestMethod]
+        public void ConfigurationParser_ParseConfiguration_ConfigFileLocationPassedAsArgument_FileFound_ShouldParseFile()
+        {
+            // arrange
+            string configJsonPath = @"F:\httplaceholder\config.json";
+            var args = new[]
+            {
+                $"--{Constants.ConfigKeys.ConfigJsonLocationKey}",
+                configJsonPath
+            };
+            string json = $@"{{
+    ""var1"":""value1"",
+    ""var2"":""value2""
+}}";
+
+            _fileServiceMock
+                .Setup(m => m.FileExists(configJsonPath))
+                .Returns(true);
+
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(configJsonPath))
+                .Returns(json);
+
+            // act
+            var result = _parser.ParseConfiguration(args);
+
+            // assert
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("value1", result["var1"]);
+            Assert.AreEqual("value2", result["var2"]);
+        }
+
+        [TestMethod]
+        public void ConfigurationParser_ParseConfiguration_ConfigFileFoundInInstallationFolder_ShouldParseFile()
         {
             // arrange
             string json = @"{

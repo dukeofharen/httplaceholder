@@ -33,6 +33,8 @@ namespace HttPlaceholder.Models
             public const string SqliteConnectionStringKey = "sqliteConnectionString";
 
             public const string SqlServerConnectionStringKey = "sqlServerConnectionString";
+
+            public const string ConfigJsonLocationKey = "configJsonLocation";
         }
 
         public static class DefaultValues
