@@ -33,6 +33,7 @@ namespace HttPlaceholder.Services.Implementations
                     throw new FileNotFoundException($"File '{configJsonPath}' not found.");
                 }
 
+                ConsoleHelpers.WriteLineColor($"Reading configuration from '{configJsonPath}'.", ConsoleColor.Green, ConsoleColor.Black);
                 string config = _fileService.ReadAllText(configJsonPath);
                 return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
             }
