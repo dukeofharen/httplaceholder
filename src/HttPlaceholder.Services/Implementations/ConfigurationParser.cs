@@ -25,7 +25,7 @@ namespace HttPlaceholder.Services.Implementations
         {
             var argsDictionary = args.Parse();
             string configPath = Path.Combine(_assemblyService.GetCallingAssemblyRootPath(), "config.json");
-            if (args.Length == 0 && File.Exists(configPath))
+            if (args.Length == 0 && _fileService.FileExists(configPath))
             {
                 // If a config file is found, try to load and parse it instead of the arguments.
                 Console.WriteLine($"Config file found at '{configPath}', so trying to parse that configuration.");
