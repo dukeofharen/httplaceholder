@@ -108,9 +108,9 @@ httplaceholder --enableRequestLogging false
 
 If this property is set to false, no detailed request logging will be written to the terminal anymore. Default: true.
 
-## Configuration file
+### Config JSON location
 
-If you just installed HttPlaceholder, a file called `_config.json` is available in the installation folder. If you rename this file to `config.json`, and you don't pass any comand line arguments to HttPlaceholder, the application will try to read and parse this file. The file uses the same configuration names as the names you use when passing the values on the command line. An example of a configuration file:
+If you just installed HttPlaceholder, a file called `_config.json` is available in the installation folder. This JSON file contains all possible configuration settings and a default value per setting. You can copy this file to any location on your PC. Don't put the config file in the installation folder, because these files will be overwritten when an update is installed.
 
 ```json
 {
@@ -129,4 +129,10 @@ If you just installed HttPlaceholder, a file called `_config.json` is available 
    "sqliteConnectionString": "Data Source=C:\\tmp\\httplaceholder.db",
    "sqlServerConnectionString": "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123"
 }
+```
+
+You can tell HttPlaceholder to use this file, instead of all separate command line arguments, like this:
+
+```bash
+httplaceholder --configJsonLocation F:\httplaceholder\config.json
 ```
