@@ -18,7 +18,11 @@ If you would like to expose HttPlaceholder to the outside world, I would recomme
 
 ## 🍎 Mac
 
-I haven't got access to Mac OS, so I haven't managed to test HttPlaceholder on Mac yet, but it (probably) should work. Download the latest Mac OS artifacts from the releases tab, extract it and it should run.
+To install HttPlaceholder on Mac OS X, run the following command in your terminal (make sure you're running as administrator):
+
+```bash
+curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | bash
+```
 
 ## 🗔 Windows
 
