@@ -11,15 +11,19 @@
 Quickly mock away any webservice using HttPlaceholder. HttPlaceholder lets you specify what the request should look like and what response needs to be returned.
 
 # Where?
-* Install as dotnet tool<br />
+* ⚙ Install as dotnet tool<br />
 `dotnet install --global httplaceholder`
-* Install on Windows<br />
+* 🗔 Install on Windows<br />
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/Install-Windows.ps1'))
 ```
-* Install on Linux<br />
+* 🐧 Install on Linux<br />
 ```bash
 curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-linux.sh | bash
+```
+* 🍎 Install on Mac OS X<br />
+```bash
+curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | bash
 ```
 
 # Why?
