@@ -13,6 +13,8 @@ set -u
         wget -O $JQ_PATH $JQ_URL
     fi
 
+    chmod 755 $JQ_PATH
+
     RELEASES_URL="https://api.github.com/repos/dukeofharen/httplaceholder/releases"
     RELEASES_JSON=$(curl $RELEASES_URL)
     TAG=$(echo "$RELEASES_JSON" | $JQ_PATH -r '.[0] | .tag_name')

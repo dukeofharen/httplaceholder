@@ -15,11 +15,11 @@ Quickly mock away any webservice using HttPlaceholder. HttPlaceholder lets you s
 `dotnet install --global httplaceholder`
 * Install on Windows<br />
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dukeofharen/httplaceholder/scripts/Install-Windows.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/Install-Windows.ps1'))
 ```
 * Install on Linux<br />
 ```bash
-curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/scripts/install-linux.sh | bash
+curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-linux.sh | bash
 ```
 
 # Why?

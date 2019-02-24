@@ -11,7 +11,7 @@ Make sure you have installed the correct .NET Core SDK for your OS (see https://
 To install HttPlaceholder on Linux, run the following command in your terminal (make sure you're running as administrator):
 
 ```bash
-curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/scripts/install-linux.sh | bash
+curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-linux.sh | bash
 ```
 
 If you would like to expose HttPlaceholder to the outside world, I would recommend to use Nginx or Apache as reverse proxy. To keep the service running even if you're not logged in through an SSH session, you can use something like systemd.
@@ -29,7 +29,7 @@ The only thing needed to use HttPlaceholder on your local development machine, i
 For installing HttPlaceholder through your PowerShell terminal, execute the following command:
 
 ```powershell
-Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dukeofharen/httplaceholder/scripts/Install-Windows.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/Install-Windows.ps1'))
 ```
 
 ### Hosting under IIS
