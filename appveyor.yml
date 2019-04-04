@@ -15,7 +15,6 @@ environment:
 branches:
   only:
     - dev
-    - master
 
 build_script:
   - git submodule update --init --recursive

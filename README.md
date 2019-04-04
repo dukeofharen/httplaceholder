@@ -98,4 +98,3 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 
 # Todo
 - There's no way to add custom condition checkers or response writers yet.
-- Create an installation script for Mac OS.
