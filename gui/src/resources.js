@@ -10,6 +10,7 @@ const resources = {
     areYouSure: "Are you sure?",
     defaultStub:
 `- id: unique-stub-id
+  description: A description for the stub.
   conditions:
     method: GET
     url:
