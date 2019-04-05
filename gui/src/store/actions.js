@@ -163,7 +163,14 @@ export default {
         config.headers["Content-Type"] = 'application/json'
 
         let stubsArray;
-        let parsedObject = yaml.safeLoad(payload.input);
+        let parsedObject;
+        try {
+            parsedObject = yaml.safeLoad(payload.input);
+        } catch(error) {
+            commit(storeToastMutation, { type: messageTypes.ERROR, message: error.message });
+            return;
+        }
+
         if (!Array.isArray(parsedObject)) {
             stubsArray = [parsedObject];
         } else {
@@ -175,7 +182,7 @@ export default {
             axios.post(url, stub, config)
                 .then(response => {
                     let message = resources.stubAddedSuccessfully
-                    if(payload.updated){
+                    if (payload.updated) {
                         message = resources.stubUpdatedSuccessfully
                     }
 
