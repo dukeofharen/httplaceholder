@@ -16,16 +16,22 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         private readonly IConfigurationService _configurationService;
         private readonly ILogger<YamlFileStubSource> _logger;
         private readonly IFileService _fileService;
+        private readonly IHashingService _hashingService;
+        private readonly IJsonService _jsonService;
         private readonly IYamlService _yamlService;
 
         public YamlFileStubSource(
            IConfigurationService configurationService,
            IFileService fileService,
+           IHashingService hashingService,
+           IJsonService jsonService,
            ILogger<YamlFileStubSource> logger,
            IYamlService yamlService)
         {
             _configurationService = configurationService;
             _fileService = fileService;
+            _hashingService = hashingService;
+            _jsonService = jsonService;
             _logger = logger;
             _yamlService = yamlService;
         }
@@ -77,7 +83,9 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
                     string input = _fileService.ReadAllText(file);
                     _logger.LogInformation($"File contents of '{file}': '{input}'");
 
-                    result.AddRange(_yamlService.Parse<List<StubModel>>(input));
+                    var stubs = _yamlService.Parse<List<StubModel>>(input);
+                    EnsureStubsHaveId(stubs);
+                    result.AddRange(stubs);
                     _stubLoadDateTime = DateTime.UtcNow;
                 }
 
@@ -91,16 +99,28 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             return Task.FromResult(_stubs);
         }
 
-        private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files)
-        {
-            var result = files.Max(f => _fileService.GetModicationDateTime(f));
-            return result;
-        }
-
         public async Task PrepareStubSourceAsync()
         {
             // Check if the .yml files could be loaded.
             await GetStubsAsync();
+        }
+
+        private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files)
+        {
+            return files.Max(f => _fileService.GetModicationDateTime(f));
+        }
+
+        private void EnsureStubsHaveId(IEnumerable<StubModel> stubs)
+        {
+            foreach (var stub in stubs)
+            {
+                if (string.IsNullOrWhiteSpace(stub.Id))
+                {
+                    // If no ID is set, calculate a unique ID based on the stub contents.
+                    string contents = _jsonService.SerializeObject(stub);
+                    stub.Id = _hashingService.GetMd5String(contents);
+                }
+            }
         }
     }
 }

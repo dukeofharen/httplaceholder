@@ -50,6 +50,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             _stubSource = new YamlFileStubSource(
                _configurationServiceMock.Object,
                _fileServiceMock.Object,
+               new HashingService(),
+               new JsonService(),
                new Mock<ILogger<YamlFileStubSource>>().Object,
                new YamlService());
             _writableStubSourceMock = new Mock<IWritableStubSource>();
