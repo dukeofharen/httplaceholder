@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -13,7 +14,6 @@ using HttPlaceholder.Services.Implementations;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 
 namespace HttPlaceholder
 {
@@ -21,25 +21,16 @@ namespace HttPlaceholder
     {
         public static void Main(string[] args)
         {
-            var arg = args.FirstOrDefault();
             string version = AssemblyHelper.GetAssemblyVersion();
-            if (string.Equals(arg, "-v", StringComparison.OrdinalIgnoreCase) || string.Equals(arg, "--version", StringComparison.OrdinalIgnoreCase))
-            {
-                Console.WriteLine(version);
-                Environment.Exit(0);
-            }
+            HandleArgument(() => Console.WriteLine(version), args, new string[] { "-v", "--version" });
 
             Console.WriteLine($"HttPlaceholder {version} - (c) 2019 Ducode");
-
-            if (string.Equals(arg, "-h", StringComparison.OrdinalIgnoreCase) || string.Equals(arg, "--help", StringComparison.OrdinalIgnoreCase))
-            {
-                Console.WriteLine(GetManPage());
-                Environment.Exit(0);
-            }
+            HandleArgument(() => Console.WriteLine(GetManPage()), args, new string[] { "-h", "--help", "-?" });
 
             try
             {
                 Console.WriteLine("Run this application with argument '-h' or '--help' to get more info about the command line arguments.");
+                Console.WriteLine("When running in to trouble, or just see what's going on, run this application with argument '-V' or '--verbose' to print the configuration variables.");
                 BuildWebHost(args).Run();
             }
             catch (Exception e)
@@ -49,28 +40,19 @@ namespace HttPlaceholder
             }
         }
 
-        public static IWebHost BuildWebHost(string[] args)
+        private static IWebHost BuildWebHost(string[] args)
         {
             var configParser = new ConfigurationParser(new AssemblyService(), new FileService());
             var argsDictionary = configParser.ParseConfiguration(args);
 
             ConfigurationService.StaticSetConfiguration(argsDictionary);
 
-            int port = argsDictionary.GetValue(Constants.ConfigKeys.PortKey, 5000);
-            Console.WriteLine($"HTTP port: {port}");
-
-            string defaultPfxPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx");
-            string pfxPath = argsDictionary.GetValue(Constants.ConfigKeys.PfxPathKey, defaultPfxPath);
-            Console.WriteLine($"PFX path: {pfxPath}");
-
-            string pfxPassword = argsDictionary.GetValue(Constants.ConfigKeys.PfxPasswordKey, "1234");
-            Console.WriteLine($"PFX password: {pfxPassword}");
-
-            int httpsPort = argsDictionary.GetValue(Constants.ConfigKeys.HttpsPortKey, 5050);
-            Console.WriteLine($"HTTPS port: {httpsPort}");
-
-            bool useHttps = argsDictionary.GetValue(Constants.ConfigKeys.UseHttpsKey, false);
-            Console.WriteLine($"Use HTTPS: {useHttps}");
+            int port = argsDictionary.GetAndSetValue(Constants.ConfigKeys.PortKey, 5000);
+            string pfxPath = argsDictionary.GetAndSetValue(Constants.ConfigKeys.PfxPathKey, Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx"));
+            string pfxPassword = argsDictionary.GetAndSetValue(Constants.ConfigKeys.PfxPasswordKey, "1234");
+            int httpsPort = argsDictionary.GetAndSetValue(Constants.ConfigKeys.HttpsPortKey, 5050);
+            bool useHttps = argsDictionary.GetAndSetValue(Constants.ConfigKeys.UseHttpsKey, false);
+            HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, new string[] { "-V", "--verbose" }, false);
 
             return WebHost.CreateDefaultBuilder(args)
                .UseStartup<Startup>()
@@ -89,8 +71,7 @@ namespace HttPlaceholder
         private static string GetManPage()
         {
             var builder = new StringBuilder();
-            var constants = ReflectionUtilities.GetConstants(typeof(Constants.ConfigKeys));
-            foreach (var constant in constants)
+            foreach (var constant in ReflectionUtilities.GetConstants(typeof(Constants.ConfigKeys)))
             {
                 var attribute = constant.CustomAttributes.FirstOrDefault();
                 if (attribute != null && attribute.AttributeType == typeof(ConfigKeyAttribute))
@@ -106,6 +87,30 @@ namespace HttPlaceholder
             builder.AppendLine("Example: httplaceholder --apiUsername user --apiPassword pass");
 
             return builder.ToString();
+        }
+
+        private static string GetVerbosePage(IDictionary<string, string> args)
+        {
+            var builder = new StringBuilder();
+            foreach(var pair in args)
+            {
+                builder.AppendLine($"--{pair.Key}: {pair.Value}");
+            }
+
+            return builder.ToString();
+        }
+
+        private static void HandleArgument(Action action, string[] args, string[] argKeys, bool exit = true)
+        {
+            var arg = args.FirstOrDefault();
+            if (argKeys.Any(k => k == arg))
+            {
+                action();
+                if (exit)
+                {
+                    Environment.Exit(0);
+                }
+            }
         }
     }
 }

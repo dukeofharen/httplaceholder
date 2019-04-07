@@ -16,7 +16,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.4" />
-    <PackageReference Include="Ducode.Essentials.Console" Version="0.0.2" />
+    <PackageReference Include="Ducode.Essentials.Console" Version="0.0.3" />
     <PackageReference Include="Ducode.Essentials.Files" Version="0.0.2" />
     <PackageReference Include="Ducode.Essentials.Mvc" Version="0.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
