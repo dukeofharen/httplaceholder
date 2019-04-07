@@ -38,6 +38,13 @@ const getUser = (username, password) => {
     return axios.get(url, config)
 }
 
+const handleHttpError = (commit, error) => {
+    const status = error.response.status;
+    if(status !== 401) {
+        commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
+    }
+}
+
 export default {
     refreshMetadata({ commit }) {
         let rootUrl = urls.rootUrl
@@ -94,7 +101,7 @@ export default {
                 commit(storeRequestsMutation, response.data)
             })
             .catch(error => {
-                commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
+                handleHttpError(commit, error);
             });
     },
     clearRequests({ commit, state }) {
@@ -108,7 +115,7 @@ export default {
                 commit('storeRequests', [])
             })
             .catch(error => {
-                commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
+                handleHttpError(commit, error);
             });
     },
     getStubs({ commit, state }) {
@@ -121,7 +128,7 @@ export default {
                 commit('storeStubs', response.data)
             })
             .catch(error => {
-                commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
+                handleHttpError(commit, error);
             });
     },
     getStub({ commit, state }, payload) {
@@ -137,7 +144,7 @@ export default {
                 })
             })
             .catch(error => {
-                commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
+                handleHttpError(commit, error);
             });
     },
     deleteStub({ commit, state, dispatch }, payload) {
@@ -152,7 +159,7 @@ export default {
                 dispatch('getStubs')
             })
             .catch(error => {
-                commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
+                handleHttpError(commit, error);
             });
     },
     addStubs({ commit, state }, payload) {
