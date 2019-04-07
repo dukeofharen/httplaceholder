@@ -12,10 +12,6 @@ environment:
   nuget_api_key:
     secure: /spG2CSTqaB6JnDd2aJouT744+d81tM4LTeYLd7kE3DJA7dBpuSOPEZ30kjwTpEr
 
-branches:
-  only:
-    - dev
-
 build_script:
   - git submodule update --init --recursive
   - ps: scripts\Build.ps1
