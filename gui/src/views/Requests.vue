@@ -2,7 +2,7 @@
   <div class="requests">
     <h1>Requests</h1>
     <div class="row">
-      <div class="col-md-10">
+      <div class="col-md-7">
         <div class="input-group">
           <input
             type="text"
@@ -22,12 +22,10 @@
           </span>
         </div>
       </div>
-      <div class="col-md-1">
+      <div class="col-md-5 buttons">
         <a class="btn btn-danger" v-on:click="deleteAllRequests" title="Delete all requests">
           <span class="fa fa-trash">&nbsp;</span>
         </a>
-      </div>
-      <div class="col-md-1">
         <a class="btn btn-success" v-on:click="getRequests" title="Refresh">
           <span class="fa fa-refresh">&nbsp;</span>
         </a>

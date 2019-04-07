@@ -2,7 +2,7 @@
   <div class="stubs">
     <h1>Stubs</h1>
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-7">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Filter on stub ID or tenant..." v-model="searchTerm" />
           <span class="input-group-append">
@@ -10,10 +10,8 @@
           </span>
         </div>
       </div>
-      <div class="col-md-1">
+      <div class="col-md-5 buttons">
         <a class="btn btn-danger" v-on:click="deleteAllStubs" title="Delete all stubs"><span class="fa fa-trash">&nbsp;</span></a>
-      </div>
-      <div class="col-md-3 buttons">
         <a class="btn btn-success" v-on:click="getStubs" title="Refresh"><span class="fa fa-refresh">&nbsp;</span></a>
         <router-link to="/downloadStubs" class="btn btn-success" title="Download stubs"><span class="fa fa-cloud-download">&nbsp;</span></router-link>
         <router-link to="/addStub" class="btn btn-success" title="Add stubs"><span class="fa fa-plus-circle">&nbsp;</span></router-link>
@@ -101,7 +99,4 @@ export default {
 </script>
 
 <style scoped>
-.buttons > a {
-  margin-right: 5px;
-}
 </style>
