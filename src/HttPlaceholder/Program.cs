@@ -92,7 +92,7 @@ namespace HttPlaceholder
         private static string GetVerbosePage(IDictionary<string, string> args)
         {
             var builder = new StringBuilder();
-            foreach(var pair in args)
+            foreach (var pair in args)
             {
                 builder.AppendLine($"--{pair.Key}: {pair.Value}");
             }
@@ -102,8 +102,7 @@ namespace HttPlaceholder
 
         private static void HandleArgument(Action action, string[] args, string[] argKeys, bool exit = true)
         {
-            var arg = args.FirstOrDefault();
-            if (argKeys.Any(k => k == arg))
+            if (args.Any(arg => argKeys.Contains(arg)))
             {
                 action();
                 if (exit)
