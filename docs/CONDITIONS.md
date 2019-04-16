@@ -42,6 +42,22 @@ The stub also has a "tenant" field defined. This is a free text field which is o
 
 For both the conditions and negativeConditions, all condition checkers as explained on this page are available.
 
+## Description
+
+A free text field where you can specify where the sub is for. It is optional.
+
+```yml
+- id: situation-01
+  description: Returns something
+  conditions:
+    method: GET
+    url:
+      path: /users
+  response:
+    statusCode: 200
+    text: OK
+```
+
 ## Priority
 
 There are cases when a request matches multiple stub. If this is the case, you can use the "priority" element. With the priority element, you can specify which stub should be used if multiple stubs are found. The stub with the highest priority will be used. If you don't set the priority on the stub, it will be 0 by default.

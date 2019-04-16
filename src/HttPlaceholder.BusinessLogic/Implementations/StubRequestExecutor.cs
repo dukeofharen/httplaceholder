@@ -54,15 +54,22 @@ namespace HttPlaceholder.BusinessLogic.Implementations
                     var negativeValidationResults = new List<ConditionCheckResultModel>();
                     foreach (var checker in conditionCheckers)
                     {
-                        ConditionCheckResultModel result;
-
-                        // First, check the regular conditions.
-                        result = CheckConditions(stub.Id, checker, stub.Conditions, false);
+                        ConditionCheckResultModel result = CheckConditions(stub.Id, checker, stub.Conditions, false);
                         validationResults.Add(result);
+                        if (result.ConditionValidation == ConditionValidationType.Invalid)
+                        {
+                            // If any condition is invalid, skip the rest.
+                            break;
+                        }
 
                         // Then check the "negative" conditions. These conditions are the "not" scenarios.
                         result = CheckConditions(stub.Id, checker, stub.NegativeConditions, true);
                         negativeValidationResults.Add(result);
+                        if (result.ConditionValidation == ConditionValidationType.Invalid)
+                        {
+                            // If any condition is invalid, skip the rest.
+                            break;
+                        }
                     }
 
                     var allValidationResults = validationResults.Concat(negativeValidationResults);
@@ -98,12 +105,9 @@ namespace HttPlaceholder.BusinessLogic.Implementations
             var validationResult = checker.Validate(stubId, conditions);
             validationResult.CheckerName = checker.GetType().Name;
             var conditionValidation = validationResult.ConditionValidation;
-            if (negative)
+            if (negative && conditionValidation != ConditionValidationType.NotExecuted)
             {
-                if (conditionValidation != ConditionValidationType.NotExecuted)
-                {
-                    validationResult.ConditionValidation = conditionValidation == ConditionValidationType.Invalid ? ConditionValidationType.Valid : ConditionValidationType.Invalid;
-                }
+                validationResult.ConditionValidation = conditionValidation == ConditionValidationType.Invalid ? ConditionValidationType.Valid : ConditionValidationType.Invalid;
             }
 
             return validationResult;

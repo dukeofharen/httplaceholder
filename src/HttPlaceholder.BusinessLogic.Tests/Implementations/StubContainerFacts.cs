@@ -134,6 +134,45 @@ namespace HttPlaceholder.BusinessLogic.Tests.Implementations
         }
 
         [TestMethod]
+        public async Task StubContainer_AddStubAsync_NoIdSet_ShouldAssignRandomString()
+        {
+            // arrange
+            var stubToBeAdded = new StubModel
+            {
+                Conditions = new StubConditionsModel
+                {
+                    Body = new string[] { "test" }
+                }
+            };
+            var stubSource = new Mock<IWritableStubSource>();
+            stubSource
+               .Setup(m => m.AddStubAsync(stubToBeAdded))
+               .Returns(Task.CompletedTask);
+
+            var stub = new StubModel
+            {
+                Id = "existing-stub"
+            };
+            var readOnlyStubSource = new Mock<IStubSource>();
+            readOnlyStubSource
+               .Setup(m => m.GetStubsAsync())
+               .ReturnsAsync(new[]
+               {
+               stub
+               });
+
+            _serviceProviderMock
+              .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
+              .Returns(new[] { stubSource.Object, readOnlyStubSource.Object });
+
+            // act
+            await _container.AddStubAsync(stubToBeAdded);
+
+            // assert
+            Assert.IsFalse(string.IsNullOrWhiteSpace(stubToBeAdded.Id));
+        }
+
+        [TestMethod]
         public async Task StubContainer_AddStubAsync_HappyFlow()
         {
             // arrange

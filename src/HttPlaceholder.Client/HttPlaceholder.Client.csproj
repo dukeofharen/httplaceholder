@@ -46,8 +46,8 @@
     <Compile Include="..\HttPlaceholder.Models\UserModel.cs" Link="Models\UserModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Flurl.Http" Version="2.4.0" />
+    <PackageReference Include="Flurl.Http" Version="2.4.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="YamlDotNet" Version="5.3.0" />
+    <PackageReference Include="YamlDotNet" Version="6.0.0" />
   </ItemGroup>
 </Project>

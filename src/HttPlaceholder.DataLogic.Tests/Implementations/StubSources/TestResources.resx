@@ -175,4 +175,23 @@
     headers:
       Content-Type: application/json</value>
   </data>
+  <data name="YamlFile3" xml:space="preserve">
+    <value>- conditions:
+    method: GET
+    url:
+      path: /stub1
+  response:
+    text: OK!
+  priority: 0
+  description: Stub without ID
+
+- conditions:
+    method: GET
+    url:
+      path: /stub2
+  response:
+    text: OK!!
+  priority: 0
+  description: Stub without ID</value>
+  </data>
 </root>

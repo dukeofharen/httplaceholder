@@ -19,7 +19,7 @@ namespace HttPlaceholder.DataLogic.Tests.Implementations.StubSources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class TestResources {
@@ -121,6 +121,31 @@ namespace HttPlaceholder.DataLogic.Tests.Implementations.StubSources {
         internal static string YamlFile2 {
             get {
                 return ResourceManager.GetString("YamlFile2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to - conditions:
+        ///    method: GET
+        ///    url:
+        ///      path: /stub1
+        ///  response:
+        ///    text: OK!
+        ///  priority: 0
+        ///  description: Stub without ID
+        ///
+        ///- conditions:
+        ///    method: GET
+        ///    url:
+        ///      path: /stub2
+        ///  response:
+        ///    text: OK!!
+        ///  priority: 0
+        ///  description: Stub without ID.
+        /// </summary>
+        internal static string YamlFile3 {
+            get {
+                return ResourceManager.GetString("YamlFile3", resourceCulture);
             }
         }
     }

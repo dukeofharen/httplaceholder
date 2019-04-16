@@ -9,6 +9,7 @@ using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Filters
 {
@@ -18,6 +19,7 @@ namespace HttPlaceholder.Filters
         {
             bool result;
             var configurationService = context.HttpContext.RequestServices.GetService<IConfigurationService>();
+            var logger = context.HttpContext.RequestServices.GetService<ILogger<ApiAuthorizationAttribute>>();
             var config = configurationService.GetConfiguration();
             string username = config.GetValue(Constants.ConfigKeys.ApiUsernameKey, string.Empty);
             string password = config.GetValue(Constants.ConfigKeys.ApiPasswordKey, string.Empty);
@@ -32,16 +34,24 @@ namespace HttPlaceholder.Filters
                 }
                 else
                 {
-                    value = value.Replace("Basic ", string.Empty);
-                    string basicAuth = Encoding.UTF8.GetString(Convert.FromBase64String(value));
-                    var parts = basicAuth.Split(':');
-                    if (parts.Length != 2)
+                    try
+                    {
+                        value = value.Replace("Basic ", string.Empty);
+                        string basicAuth = Encoding.UTF8.GetString(Convert.FromBase64String(value));
+                        var parts = basicAuth.Split(':');
+                        if (parts.Length != 2)
+                        {
+                            result = false;
+                        }
+                        else
+                        {
+                            result = username == parts[0] && password == parts[1];
+                        }
+                    }
+                    catch (Exception ex)
                     {
                         result = false;
-                    }
-                    else
-                    {
-                        result = username == parts[0] && password == parts[1];
+                        logger.LogWarning(ex, "Error while parsing basic authentication.");
                     }
                 }
             }

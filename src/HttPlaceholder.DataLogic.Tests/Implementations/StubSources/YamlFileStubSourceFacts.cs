@@ -17,24 +17,23 @@ namespace HttPlaceholder.DataLogic.Tests.Implementations.StubSources
     [TestClass]
     public class YamlFileStubSourceFacts
     {
-        private IDictionary<string, string> _config;
-        private Mock<IConfigurationService> _configurationServiceMock;
-        private Mock<ILogger<YamlFileStubSource>> _loggerMock;
-        private Mock<IFileService> _fileServiceMock;
-        private YamlService _yamlService;
+        private readonly IDictionary<string, string> _config = new Dictionary<string, string>();
+        private readonly Mock<IConfigurationService> _configurationServiceMock = new Mock<IConfigurationService>();
+        private readonly Mock<ILogger<YamlFileStubSource>> _loggerMock = new Mock<ILogger<YamlFileStubSource>>();
+        private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
+        private readonly HashingService _hashingService = new HashingService();
+        private readonly YamlService _yamlService = new YamlService();
+        private readonly JsonService _jsonService = new JsonService();
         private YamlFileStubSource _source;
 
         [TestInitialize]
         public void Initialize()
         {
-            _config = new Dictionary<string, string>();
-            _configurationServiceMock = new Mock<IConfigurationService>();
-            _loggerMock = new Mock<ILogger<YamlFileStubSource>>();
-            _fileServiceMock = new Mock<IFileService>();
-            _yamlService = new YamlService();
             _source = new YamlFileStubSource(
                 _configurationServiceMock.Object,
                 _fileServiceMock.Object,
+                _hashingService,
+                _jsonService,
                 _loggerMock.Object,
                 _yamlService);
 
@@ -175,6 +174,39 @@ namespace HttPlaceholder.DataLogic.Tests.Implementations.StubSources
             Assert.AreEqual("situation-01", ids[0]);
             Assert.AreEqual("situation-02", ids[1]);
             Assert.AreEqual("situation-post-01", ids[2]);
+        }
+
+        [TestMethod]
+        public async Task YamlFileStubSource_GetStubsAsync_StubsHaveNoId_IdShouldBeCalculated()
+        {
+            // arrange
+            string inputFile = @"C:\stubs";
+            _config.Add(Constants.ConfigKeys.InputFileKey, inputFile);
+
+            var files = new[]
+            {
+                @"C:\stubs\file3.yml"
+            };
+
+            _fileServiceMock
+                .Setup(m => m.GetFiles(inputFile, "*.yml"))
+                .Returns(files);
+
+            _fileServiceMock
+                .Setup(m => m.IsDirectory(inputFile))
+                .Returns(true);
+
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(files[0]))
+                .Returns(TestResources.YamlFile3);
+
+            // act
+            var result = await _source.GetStubsAsync();
+
+            // assert
+            var ids = result.Select(s => s.Id).ToArray();
+            Assert.AreEqual("70c16a10db758f202829b6dcb2f056c9", ids[0]);
+            Assert.AreEqual("5936f399c30ef95a76cb5d51e405d115", ids[1]);
         }
     }
 }

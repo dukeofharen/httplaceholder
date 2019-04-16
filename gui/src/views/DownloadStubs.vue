@@ -3,10 +3,10 @@
     <h1>Download all stubs</h1>
     <p>This page displays all stubs currently present in HttPlaceholder. You can copy this string and put it in a .yml file on your PC for local development.</p>
     <div class="input-group col-md-12">
-      <textarea class="form-control">{{downloadString}}</textarea>
+      <textarea class="form-control" v-model="downloadString"></textarea>
     </div>
     <div class="col-md-12">
-      <a :href="downloadUrl" download="stubs.yml" class="btn btn-primary">Download</a>
+      <a v-on:click="downloadStubs" class="btn btn-primary">Download</a>
     </div>
   </div>
 </template>
@@ -14,6 +14,7 @@
 <script>
 import yaml from "js-yaml";
 import resources from "@/resources";
+import { downloadBlob } from "@/functions/downloadHelper";
 
 export default {
   name: "addStub",
@@ -22,8 +23,12 @@ export default {
   },
   data() {
     return {
-      downloadString: "",
-      downloadUrl: ""
+      downloadString: ""
+    };
+  },
+  methods: {
+    downloadStubs() {
+      downloadBlob("stubs.yml", this.downloadString);
     }
   },
   computed: {
@@ -34,10 +39,10 @@ export default {
   watch: {
     stubs(newStubs) {
       let stubsForDownload = newStubs.map(fullStub => {
-        return fullStub.stub
-      })
-      this.downloadString = resources.downloadStubsHeader + "\n" + yaml.dump(stubsForDownload);
-      this.downloadUrl = `data:application/octet-stream;charset=utf-8;base64,${btoa(this.downloadString)}`
+        return fullStub.stub;
+      });
+      this.downloadString =
+        resources.downloadStubsHeader + "\n" + yaml.dump(stubsForDownload);
     }
   }
 };

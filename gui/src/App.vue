@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#"><img src="img/logo.png" alt="HttPlaceholder" /></a>
+      <a class="navbar-brand" href="#">
+        <img src="img/logo.png" alt="HttPlaceholder">
+      </a>
       <button
         class="navbar-toggler"
         type="button"
@@ -17,7 +19,12 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item" v-if="authenticated">
-            <router-link to="/requests" class="nav-link">Requests</router-link>
+            <router-link
+              to="/requests"
+              class="nav-link"
+              data-toggle="collapse"
+              data-target=".navbar-collapse"
+            >Requests</router-link>
           </li>
           <li class="nav-item dropdown" v-if="authenticated">
             <a
@@ -29,9 +36,27 @@
               aria-expanded="false"
             >Stubs</a>
             <div class="dropdown-menu" aria-labelledby="stubsDropdown">
-              <router-link to="/stubs" class="dropdown-item">Stubs</router-link>
-              <router-link to="/addStub" class="dropdown-item">Add stub</router-link>
-              <router-link to="/downloadStubs" class="dropdown-item">Download stubs</router-link>
+              <router-link
+                to="/stubs"
+                class="dropdown-item"
+                data-toggle="collapse"
+                data-target=".navbar-collapse.show"
+                data-parent="#stubsDropdown"
+              >Stubs</router-link>
+              <router-link
+                to="/addStub"
+                class="dropdown-item"
+                data-toggle="collapse"
+                data-target=".navbar-collapse.show"
+                data-parent="#stubsDropdown"
+              >Add stub</router-link>
+              <router-link
+                to="/downloadStubs"
+                class="dropdown-item"
+                data-toggle="collapse"
+                data-target=".navbar-collapse.show"
+                data-parent="#stubsDropdown"
+              >Download stubs</router-link>
             </div>
           </li>
           <li class="nav-item dropdown">
@@ -49,11 +74,19 @@
                 v-for="theme in themes"
                 v-bind:key="theme.name"
                 class="dropdown-item"
+                data-toggle="collapse"
+                data-target=".navbar-collapse.show"
+                data-parent="#themesDropdown"
               >{{theme.name}}</a>
             </div>
           </li>
           <li class="nav-item" v-if="authenticationRequired && authenticated">
-            <a v-on:click="logout()" class="nav-link">Log out</a>
+            <a
+              v-on:click="logout()"
+              class="nav-link"
+              data-toggle="collapse"
+              data-target=".navbar-collapse.show"
+            >Log out</a>
           </li>
         </ul>
       </div>

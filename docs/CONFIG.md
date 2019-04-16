@@ -4,6 +4,30 @@ This page contains all command line arguments supported by HttPlaceholder. Confi
 
 ## Command line arguments
 
+### Verbose output
+
+If you want some more logging, append `-V` or `--verbose` as argument.
+
+```bash
+httplaceholder --verbose
+```
+
+### Get version
+
+If you want to check the HttPlaceholder version, append `-v` or `--version` as argument.
+
+```bash
+httplaceholder --version
+```
+
+### Get help
+
+If you want to see all possible configuration parameters, append `-h`, `-?` or `--help` as argument.
+
+```bash
+httplaceholder --help
+```
+
 ### Input file (optional)
 
 ```bash

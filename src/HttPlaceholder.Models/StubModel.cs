@@ -44,6 +44,12 @@ namespace HttPlaceholder.Models
         public string Tenant { get; set; }
 
         /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        [YamlMember(Alias = "description")]
+        public string Description { get; set; }
+
+        /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
