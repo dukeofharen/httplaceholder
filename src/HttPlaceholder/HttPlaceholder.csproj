@@ -3,6 +3,7 @@
     <OutputType>Exe</OutputType>
     <PackageId>HttPlaceholder</PackageId>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Version>2018.12.24.1234</Version>
     <AssemblyVersion>2018.12.24.1234</AssemblyVersion>
     <FileVersion>2018.12.24.1234</FileVersion>
