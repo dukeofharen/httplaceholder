@@ -1,22 +1,27 @@
 ﻿using System.Collections.Generic;
-using System.Net;
 using System.Threading.Tasks;
 using HttPlaceholder.BusinessLogic;
-using HttPlaceholder.Filters;
 using HttPlaceholder.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("ph-api/tenants")]
-    [ApiAuthorization]
-    public class TenantController : Controller
+    public class TenantController : BaseApiController
     {
         private readonly ILogger<TenantController> _logger;
         private readonly IStubContainer _stubContainer;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logger"></param>
+        /// <param name="stubContaner"></param>
         public TenantController(
            ILogger<TenantController> logger,
            IStubContainer stubContaner)
@@ -25,6 +30,11 @@ namespace HttPlaceholder.Controllers
             _stubContainer = stubContaner;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{tenant}/stubs")]
         public async Task<IEnumerable<FullStubModel>> GetAll(string tenant)
@@ -34,9 +44,15 @@ namespace HttPlaceholder.Controllers
             return stubs;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <returns></returns>
         [HttpDelete]
         [Route("{tenant}/stubs")]
-        [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "No content")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> DeleteAll(string tenant)
         {
             _logger.LogInformation($"Deleting all stubs for tenant '{tenant}'.");
@@ -44,9 +60,16 @@ namespace HttPlaceholder.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tenant"></param>
+        /// <param name="stubs"></param>
+        /// <returns></returns>
         [HttpPut]
         [Route("{tenant}/stubs")]
-        [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "No content")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> UpdateAll(string tenant, [FromBody]IEnumerable<StubModel> stubs)
         {
             _logger.LogInformation($"Updating all stubs for tenant '{tenant}'.");

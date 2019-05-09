@@ -14,6 +14,9 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class StubHandlingMiddleware
     {
         private static string[] _segmentsToIgnore = new[]
@@ -32,6 +35,17 @@ namespace HttPlaceholder.Middleware
         private readonly IStubContainer _stubContainer;
         private readonly IStubRequestExecutor _stubRequestExecutor;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="next"></param>
+        /// <param name="clientIpResolver"></param>
+        /// <param name="configurationService"></param>
+        /// <param name="httpContextService"></param>
+        /// <param name="logger"></param>
+        /// <param name="requestLoggerFactory"></param>
+        /// <param name="stubContainer"></param>
+        /// <param name="stubRequestExecutor"></param>
         public StubHandlingMiddleware(
            RequestDelegate next,
            IClientIpResolver clientIpResolver,
@@ -52,6 +66,11 @@ namespace HttPlaceholder.Middleware
             _stubRequestExecutor = stubRequestExecutor;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task Invoke(HttpContext context)
         {
             string path = _httpContextService.Path;

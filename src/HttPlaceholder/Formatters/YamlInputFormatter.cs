@@ -6,11 +6,17 @@ using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Formatters
 {
-    // Source: https://github.com/fiyazbinhasan/CoreFormatters
+    /// <summary>
+    /// Source: https://github.com/fiyazbinhasan/CoreFormatters
+    /// </summary>
     public class YamlInputFormatter : TextInputFormatter
     {
         private readonly IDeserializer _deserializer;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="deserializer"></param>
         public YamlInputFormatter(IDeserializer deserializer)
         {
             _deserializer = deserializer;
@@ -21,6 +27,12 @@ namespace HttPlaceholder.Formatters
             SupportedMediaTypes.Add(MediaTypeHeaderValues.TextYaml);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="encoding"></param>
+        /// <returns></returns>
         public override Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
         {
             if (context == null)
