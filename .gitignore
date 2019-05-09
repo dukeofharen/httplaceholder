@@ -342,7 +342,9 @@ ASALocalRun/
 src/HttPlaceholder/gui
 !src/HttPlaceholder/gui/.guiwillbeplacedhere
 .vagrant
-*.swp*.swp# Local History for Visual Studio
+*.swp
+launchSettings.json
+
 # Local History for Visual Studio
 .localhistory/
 
