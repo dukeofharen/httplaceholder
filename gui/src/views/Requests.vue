@@ -49,7 +49,8 @@ export default {
   data() {
     return {
       filteredRequests: [],
-      searchTerm: ""
+      searchTerm: "",
+      connection: {}
     };
   },
   components: {
@@ -58,6 +59,9 @@ export default {
   created() {
     this.initializeSignalR();
     this.getRequests();
+  },
+  destroyed() {
+    this.connection.stop();
   },
   computed: {
     requests() {
@@ -94,13 +98,13 @@ export default {
       this.searchTerm = "";
     },
     initializeSignalR() {
-      var connection = new HubConnectionBuilder()
+      this.connection = new HubConnectionBuilder()
         .withUrl("/requestHub")
         .build();
-      connection.on("RequestReceived", request => {
+      this.connection.on("RequestReceived", request => {
         this.$store.commit("addAdditionalRequest", request);
       });
-      connection
+      this.connection
         .start()
         .then(() => {})
         .catch(err => {
