@@ -9,31 +9,48 @@ using HttPlaceholder.DataLogic;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Services;
-using HttPlaceholder.Swagger;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.Swagger;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace HttPlaceholder
 {
+    /// <summary>
+    /// Startup class
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             ConfigureServicesStatic(services);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             ConfigureStatic(app, env, true, true);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <param name="preloadStubs"></param>
+        /// <param name="loadStaticFiles"></param>
         public static void ConfigureStatic(IApplicationBuilder app, IHostingEnvironment env, bool preloadStubs, bool loadStaticFiles)
         {
             app
@@ -42,10 +59,7 @@ namespace HttPlaceholder
                .UseMiddleware<StubHandlingMiddleware>()
                .UseMvc()
                .UseSwagger()
-               .UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "HttPlaceholder API V1");
-            });
+               .UseSwaggerUi3();
 
             if (preloadStubs)
             {
@@ -69,6 +83,10 @@ namespace HttPlaceholder
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="services"></param>
         public static void ConfigureServicesStatic(IServiceCollection services)
         {
             services
@@ -78,14 +96,10 @@ namespace HttPlaceholder
                    options.OutputFormatters.Add(new YamlOutputFormatter(new SerializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
                    options.FormatterMappings.SetMediaTypeMappingForFormat("yaml", MediaTypeHeaderValues.ApplicationYaml);
                })
-               .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore);
+               .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
+               .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
 
             services
-               .AddSwaggerGen(c =>
-               {
-                   c.SwaggerDoc("v1", new Info { Title = "HttPlaceholder API", Version = "v1" });
-                   c.OperationFilter<StatusCodeOperationFilter>();
-               })
                .AddBusinessLogic()
                .AddUtilities()
                .AddHttpContextAccessor()
@@ -96,6 +110,8 @@ namespace HttPlaceholder
                .AddCustomMvcServices()
                .AddFileServices()
                .AddAsyncServices();
+
+            services.AddOpenApiDocument(c => c.Title = "HttPlaceholder API");
         }
     }
 }

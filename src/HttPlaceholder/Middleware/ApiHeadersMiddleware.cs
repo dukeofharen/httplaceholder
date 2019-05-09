@@ -4,15 +4,27 @@ using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Middleware
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ApiHeadersMiddleware
     {
         private readonly RequestDelegate _next;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="next"></param>
         public ApiHeadersMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public async Task Invoke(HttpContext context)
         {
             if (context.Request.Path.Value.Contains("ph-api/"))

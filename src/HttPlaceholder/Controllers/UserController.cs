@@ -1,36 +1,47 @@
 ﻿using System.Linq;
-using System.Net;
 using System.Security.Claims;
 using HttPlaceholder.Filters;
 using HttPlaceholder.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace HttPlaceholder.Controllers
 {
+    /// <summary>
+    /// User controller
+    /// </summary>
     [Route("ph-api/users")]
-    [ApiAuthorization]
-    public class UserController : Controller
+    public class UserController : BaseApiController
     {
         private readonly ILogger<UserController> _logger;
 
+        /// <summary>
+        /// Constructor for the <see cref="UserController"/>
+        /// </summary>
+        /// <param name="logger"></param>
         public UserController(ILogger<UserController> logger)
         {
             _logger = logger;
         }
 
+        /// <summary>
+        /// Get the user for the given username
+        /// </summary>
+        /// <param name="username">The user to search for</param>
+        /// <returns>the User</returns>
         [HttpGet]
         [Route("{username}")]
-        [SwaggerResponse((int)HttpStatusCode.Forbidden, Description = "Username in claims and in URL don't match")]
-        [SwaggerResponse((int)HttpStatusCode.OK, Description = "OK", Type = typeof(UserModel))]
-        public IActionResult Get(string username)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesDefaultResponseType]
+        public ActionResult<UserModel> Get(string username)
         {
             _logger.LogInformation($"Getting user data for '{username}'.");
             var nameClaim = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
             if (!string.IsNullOrWhiteSpace(nameClaim?.Value) && username != nameClaim.Value)
             {
-                return StatusCode((int)HttpStatusCode.Forbidden);
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
 
             var user = new UserModel

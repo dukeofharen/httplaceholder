@@ -24,7 +24,7 @@ namespace HttPlaceholder
             string version = AssemblyHelper.GetAssemblyVersion();
             HandleArgument(() => Console.WriteLine(version), args, new string[] { "-v", "--version" });
 
-            Console.WriteLine($"HttPlaceholder {version} - (c) 2019 Ducode");
+            Console.WriteLine($"HttPlaceholder {version} - (c) {DateTime.Now.Year} Ducode");
             HandleArgument(() => Console.WriteLine(GetManPage()), args, new string[] { "-h", "--help", "-?" });
 
             try

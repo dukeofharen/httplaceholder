@@ -13,8 +13,15 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Filters
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ApiAuthorizationAttribute : ActionFilterAttribute
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             bool result;
