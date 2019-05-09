@@ -21,7 +21,7 @@
     <PackageReference Include="Ducode.Essentials.Files" Version="0.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
-    <PackageReference Include="MySqlConnector" Version="0.51.1" />
+    <PackageReference Include="MySqlConnector" Version="0.53.0" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.110" />
   </ItemGroup>
   <ItemGroup>
