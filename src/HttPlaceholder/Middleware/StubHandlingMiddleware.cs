@@ -6,9 +6,11 @@ using Ducode.Essentials.Console;
 using Ducode.Essentials.Mvc.Interfaces;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Exceptions;
+using HttPlaceholder.Hubs;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 
@@ -34,6 +36,7 @@ namespace HttPlaceholder.Middleware
         private readonly IRequestLoggerFactory _requestLoggerFactory;
         private readonly IStubContainer _stubContainer;
         private readonly IStubRequestExecutor _stubRequestExecutor;
+        private readonly IHubContext<RequestHub> _hubContext;
 
         /// <summary>
         /// 
@@ -42,6 +45,7 @@ namespace HttPlaceholder.Middleware
         /// <param name="clientIpResolver"></param>
         /// <param name="configurationService"></param>
         /// <param name="httpContextService"></param>
+        /// <param name="hubContext"></param>
         /// <param name="logger"></param>
         /// <param name="requestLoggerFactory"></param>
         /// <param name="stubContainer"></param>
@@ -51,6 +55,7 @@ namespace HttPlaceholder.Middleware
            IClientIpResolver clientIpResolver,
            IConfigurationService configurationService,
            IHttpContextService httpContextService,
+           IHubContext<RequestHub> hubContext,
            ILogger<StubHandlingMiddleware> logger,
            IRequestLoggerFactory requestLoggerFactory,
            IStubContainer stubContainer,
@@ -64,6 +69,7 @@ namespace HttPlaceholder.Middleware
             _requestLoggerFactory = requestLoggerFactory;
             _stubContainer = stubContainer;
             _stubRequestExecutor = stubRequestExecutor;
+            _hubContext = hubContext;
         }
 
         /// <summary>
@@ -134,6 +140,7 @@ namespace HttPlaceholder.Middleware
             }
 
             await _stubContainer.AddRequestResultAsync(loggingResult);
+            await _hubContext.Clients.All.SendAsync("RequestReceived", loggingResult);
         }
     }
 }
