@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Security.Claims;
-using HttPlaceholder.Filters;
 using HttPlaceholder.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,15 +25,14 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// Get the user for the given username
+        /// Get the user for the given username.
         /// </summary>
-        /// <param name="username">The user to search for</param>
-        /// <returns>the User</returns>
+        /// <param name="username">The user to search for.</param>
+        /// <returns>The User.</returns>
         [HttpGet]
         [Route("{username}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesDefaultResponseType]
         public ActionResult<UserModel> Get(string username)
         {
             _logger.LogInformation($"Getting user data for '{username}'.");

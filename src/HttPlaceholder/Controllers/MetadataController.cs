@@ -2,7 +2,6 @@
 using HttPlaceholder.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Controllers
 {
@@ -13,23 +12,18 @@ namespace HttPlaceholder.Controllers
     public class MetadataController : BaseApiController
     {
         private readonly IAssemblyService _assemblyService;
-        private readonly ILogger<MetadataController> _logger;
 
         /// <summary>
         /// constructor metadata controller
         /// </summary>
         /// <param name="assemblyService"></param>
-        /// <param name="logger"></param>
-        public MetadataController(
-            IAssemblyService assemblyService,
-            ILogger<MetadataController> logger)
+        public MetadataController(IAssemblyService assemblyService)
         {
             _assemblyService = assemblyService;
-            _logger = logger;
         }
 
         /// <summary>
-        /// Get the assembly version
+        /// Gets metadata about the API (like the assembly version).
         /// </summary>
         /// <returns>Assembly version as string</returns>
         [HttpGet]

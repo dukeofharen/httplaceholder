@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 namespace HttPlaceholder.Controllers
 {
     /// <summary>
-    /// 
+    /// Tenant Controller
     /// </summary>
     [Route("ph-api/tenants")]
     public class TenantController : BaseApiController
@@ -18,7 +18,7 @@ namespace HttPlaceholder.Controllers
         private readonly IStubContainer _stubContainer;
 
         /// <summary>
-        /// 
+        /// The tenant controller.
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="stubContaner"></param>
@@ -31,10 +31,10 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Gets all stubs in a specific tenant.
         /// </summary>
         /// <param name="tenant"></param>
-        /// <returns></returns>
+        /// <returns>All stubs in the tenant.</returns>
         [HttpGet]
         [Route("{tenant}/stubs")]
         public async Task<IEnumerable<FullStubModel>> GetAll(string tenant)
@@ -45,10 +45,10 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Deletes all stubs in a specific tenant.
         /// </summary>
         /// <param name="tenant"></param>
-        /// <returns></returns>
+        /// <returns>OK, but no content</returns>
         [HttpDelete]
         [Route("{tenant}/stubs")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -61,11 +61,13 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Updates the stubs in a specific tenant with the posted values.
+        /// If a stub that is currently available in a tenant isn't sent in the request,
+        /// it will be deleted.
         /// </summary>
         /// <param name="tenant"></param>
         /// <param name="stubs"></param>
-        /// <returns></returns>
+        /// <returns>OK, but no content</returns>
         [HttpPut]
         [Route("{tenant}/stubs")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]

@@ -12,6 +12,5 @@ namespace HttPlaceholder.Controllers
     [ApiAuthorization]
     public class BaseApiController : Controller
     {
-
     }
 }
