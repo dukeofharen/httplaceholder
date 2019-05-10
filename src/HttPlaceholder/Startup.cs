@@ -4,13 +4,17 @@ using Ducode.Essentials.Assembly;
 using Ducode.Essentials.Async;
 using Ducode.Essentials.Files;
 using Ducode.Essentials.Mvc;
+using HttPlaceholder.Authorization;
+using HttPlaceholder.Authorization.Implementations;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.DataLogic;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
+using HttPlaceholder.Hubs.Implementations;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Services;
 using HttPlaceholder.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -106,6 +110,9 @@ namespace HttPlaceholder
 
             services
                 .AddSignalR();
+
+            services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<IRequestNotify, RequestNotify>();
 
             services
                .AddBusinessLogic()

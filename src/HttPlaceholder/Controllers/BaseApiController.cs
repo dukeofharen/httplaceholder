@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Filters;
+﻿using HttPlaceholder.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -7,6 +7,7 @@ using Ducode.Essentials.Mvc.Interfaces;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.Exceptions;
 using HttPlaceholder.Hubs;
+using HttPlaceholder.Hubs.Implementations;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using Microsoft.AspNetCore.Http;
@@ -16,9 +17,6 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class StubHandlingMiddleware
     {
         private static string[] _segmentsToIgnore = new[]
@@ -36,28 +34,16 @@ namespace HttPlaceholder.Middleware
         private readonly IRequestLoggerFactory _requestLoggerFactory;
         private readonly IStubContainer _stubContainer;
         private readonly IStubRequestExecutor _stubRequestExecutor;
-        private readonly IHubContext<RequestHub> _hubContext;
+        private readonly IRequestNotify _requestNotify;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="next"></param>
-        /// <param name="clientIpResolver"></param>
-        /// <param name="configurationService"></param>
-        /// <param name="httpContextService"></param>
-        /// <param name="hubContext"></param>
-        /// <param name="logger"></param>
-        /// <param name="requestLoggerFactory"></param>
-        /// <param name="stubContainer"></param>
-        /// <param name="stubRequestExecutor"></param>
         public StubHandlingMiddleware(
            RequestDelegate next,
            IClientIpResolver clientIpResolver,
            IConfigurationService configurationService,
            IHttpContextService httpContextService,
-           IHubContext<RequestHub> hubContext,
            ILogger<StubHandlingMiddleware> logger,
            IRequestLoggerFactory requestLoggerFactory,
+           IRequestNotify requestNotify,
            IStubContainer stubContainer,
            IStubRequestExecutor stubRequestExecutor)
         {
@@ -67,16 +53,11 @@ namespace HttPlaceholder.Middleware
             _httpContextService = httpContextService;
             _logger = logger;
             _requestLoggerFactory = requestLoggerFactory;
+            _requestNotify = requestNotify;
             _stubContainer = stubContainer;
             _stubRequestExecutor = stubRequestExecutor;
-            _hubContext = hubContext;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
         public async Task Invoke(HttpContext context)
         {
             string path = _httpContextService.Path;
@@ -140,7 +121,7 @@ namespace HttPlaceholder.Middleware
             }
 
             await _stubContainer.AddRequestResultAsync(loggingResult);
-            await _hubContext.Clients.All.SendAsync("RequestReceived", loggingResult);
+            await _requestNotify.NewRequestReceivedAsync(loggingResult);
         }
     }
 }

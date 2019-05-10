@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace HttPlaceholder.Filters
+namespace HttPlaceholder.Authorization
 {
     /// <summary>
     /// 
@@ -24,12 +24,20 @@ namespace HttPlaceholder.Filters
         /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            bool result;
+            var loginService = context.HttpContext.RequestServices.GetService<ILoginService>();
             var configurationService = context.HttpContext.RequestServices.GetService<IConfigurationService>();
+
+            bool result;
             var logger = context.HttpContext.RequestServices.GetService<ILogger<ApiAuthorizationAttribute>>();
             var config = configurationService.GetConfiguration();
             string username = config.GetValue(Constants.ConfigKeys.ApiUsernameKey, string.Empty);
             string password = config.GetValue(Constants.ConfigKeys.ApiPasswordKey, string.Empty);
+            if (loginService.CheckLoginCookie())
+            {
+                AddUserContext(context, username);
+                return;
+            }
+
             if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
             {
                 // Try to retrieve basic auth header here.
@@ -73,12 +81,18 @@ namespace HttPlaceholder.Filters
             }
             else
             {
-                // Everything went OK, so put let's add the username to the claims.
-                context.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
-                {
-                   new Claim(ClaimTypes.Name, username)
-                }));
+                // Everything went OK, so let's add the user to the claims.
+                AddUserContext(context, username);
+                loginService.SetLoginCookie(username, password);
             }
+        }
+
+        private static void AddUserContext(ActionExecutingContext context, string username)
+        {
+            context.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Name, username)
+            }));
         }
     }
 }

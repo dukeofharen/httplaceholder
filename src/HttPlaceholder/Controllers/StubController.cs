@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HttPlaceholder.BusinessLogic;
-using HttPlaceholder.Filters;
 using HttPlaceholder.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
