@@ -16,7 +16,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Dapper" Version="1.60.6" />
-    <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.4" />
+    <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.5" />
     <PackageReference Include="Ducode.Essentials.Console" Version="0.0.3" />
     <PackageReference Include="Ducode.Essentials.Files" Version="0.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />

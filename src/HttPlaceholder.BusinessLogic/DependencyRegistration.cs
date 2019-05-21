@@ -1,6 +1,5 @@
 ﻿using Ducode.Essentials.Assembly;
 using HttPlaceholder.BusinessLogic.Implementations;
-using HttPlaceholder.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.BusinessLogic
@@ -15,23 +14,22 @@ namespace HttPlaceholder.BusinessLogic
             services.AddSingleton<IStubResponseGenerator, StubResponseGenerator>();
             services.AddSingleton<IVariableParser, VariableParser>();
 
+            string filter = "HttPlaceholder";
+
             // Condition checkers
-            var conditionCheckerTypes = AssemblyUtilities.GetImplementations<IConditionChecker>("HttPlaceholder");
-            foreach (var type in conditionCheckerTypes)
+            foreach (var type in AssemblyHelper.GetImplementations<IConditionChecker>(filter))
             {
                 services.AddTransient(typeof(IConditionChecker), type);
             }
 
             // Response writers
-            var responseWriterTypes = AssemblyUtilities.GetImplementations<IResponseWriter>("HttPlaceholder");
-            foreach (var type in responseWriterTypes)
+            foreach (var type in AssemblyHelper.GetImplementations<IResponseWriter>(filter))
             {
                 services.AddTransient(typeof(IResponseWriter), type);
             }
 
             // Variable handlers
-            var variableHandlers = AssemblyUtilities.GetImplementations<IVariableHandler>("HttPlaceholder");
-            foreach (var type in variableHandlers)
+            foreach (var type in AssemblyHelper.GetImplementations<IVariableHandler>(filter))
             {
                 services.AddTransient(typeof(IVariableHandler), type);
             }
