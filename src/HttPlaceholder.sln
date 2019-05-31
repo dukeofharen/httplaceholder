@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder", "HttPlaceholder\HttPlaceholder.csproj", "{C59B1B53-C880-473E-8510-AA4F78B7441E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Utilities", "HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj", "{A737B197-6BAB-452E-8DEC-533CF6FD2F58}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.BusinessLogic", "HttPlaceholder.BusinessLogic\HttPlaceholder.BusinessLogic.csproj", "{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Models", "HttPlaceholder.Models\HttPlaceholder.Models.csproj", "{CB4600D4-1B2C-4FFE-92C9-8AFC2E460AA6}"
@@ -66,12 +64,6 @@ Global
 		{C59B1B53-C880-473E-8510-AA4F78B7441E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C59B1B53-C880-473E-8510-AA4F78B7441E}.Tool|Any CPU.ActiveCfg = Tool|Any CPU
 		{C59B1B53-C880-473E-8510-AA4F78B7441E}.Tool|Any CPU.Build.0 = Tool|Any CPU
-		{A737B197-6BAB-452E-8DEC-533CF6FD2F58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A737B197-6BAB-452E-8DEC-533CF6FD2F58}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A737B197-6BAB-452E-8DEC-533CF6FD2F58}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A737B197-6BAB-452E-8DEC-533CF6FD2F58}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A737B197-6BAB-452E-8DEC-533CF6FD2F58}.Tool|Any CPU.ActiveCfg = Tool|Any CPU
-		{A737B197-6BAB-452E-8DEC-533CF6FD2F58}.Tool|Any CPU.Build.0 = Tool|Any CPU
 		{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4577EF1D-82BB-4E07-8BF3-F7D0C28DD9E6}.Release|Any CPU.ActiveCfg = Release|Any CPU

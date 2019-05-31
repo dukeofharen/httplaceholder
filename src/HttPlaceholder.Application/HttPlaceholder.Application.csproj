@@ -6,9 +6,16 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.0" />
+    <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.5" />
+    <PackageReference Include="Ducode.Essentials.Mvc" Version="0.0.3" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="8.4.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Domain\HttPlaceholder.Domain.csproj" />
   </ItemGroup>
 
 </Project>

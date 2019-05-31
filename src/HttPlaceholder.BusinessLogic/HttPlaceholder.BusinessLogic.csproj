@@ -29,6 +29,5 @@
     <ProjectReference Include="..\HttPlaceholder.Exceptions\HttPlaceholder.Exceptions.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Models\HttPlaceholder.Models.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
-    <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />
   </ItemGroup>
 </Project>

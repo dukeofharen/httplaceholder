@@ -41,7 +41,6 @@
   <ItemGroup>
     <ProjectReference Include="..\HttPlaceholder.BusinessLogic\HttPlaceholder.BusinessLogic.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
-    <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)'!='Tool|AnyCPU'">
     <Content Update="_config.json">

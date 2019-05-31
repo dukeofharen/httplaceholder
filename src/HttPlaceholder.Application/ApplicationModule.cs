@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using HttPlaceholder.Application.Infrastructure.MediatR;
+using HttPlaceholder.Application.StubExecution;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,6 +22,9 @@ namespace HttPlaceholder.Application
 
             // Add fluent validations
             services.AddValidatorsFromAssemblies(new[] { currentAssembly });
+
+            // Add other modules
+            services.AddStubExecutionModule();
 
             return services;
         }
