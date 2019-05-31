@@ -1,5 +1,6 @@
 ﻿using Ducode.Essentials.Assembly;
 using HttPlaceholder.Application.StubExecution.ConditionChecking;
+using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseWriting;
 using HttPlaceholder.Application.StubExecution.VariableHandling;
 using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
@@ -11,6 +12,10 @@ namespace HttPlaceholder.Application.StubExecution
     {
         public static IServiceCollection AddStubExecutionModule(this IServiceCollection services)
         {
+            services.AddSingleton<IFinalStubDeterminer, FinalStubDeterminer>();
+            services.AddSingleton<IStubContainer, StubContainer>();
+            services.AddSingleton<IStubRequestExecutor, StubRequestExecutor>();
+            services.AddSingleton<IStubResponseGenerator, StubResponseGenerator>();
             services.AddSingleton<IVariableParser, VariableParser>();
 
             string filter = "HttPlaceholder";

@@ -29,7 +29,6 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HttPlaceholder.BusinessLogic\HttPlaceholder.BusinessLogic.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Models\HttPlaceholder.Models.csproj" />
     <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
     <ProjectReference Include="..\HttPlaceholder\HttPlaceholder.csproj" />

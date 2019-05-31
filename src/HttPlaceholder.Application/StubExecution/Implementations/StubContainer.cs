@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HttPlaceholder.DataLogic;
-using HttPlaceholder.Exceptions;
-using HttPlaceholder.Models;
+using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Domain;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HttPlaceholder.BusinessLogic.Implementations
+namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     internal class StubContainer : IStubContainer
     {

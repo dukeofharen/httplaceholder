@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HttPlaceholder.Exceptions
+namespace HttPlaceholder.Application.Exceptions
 {
     public class ConflictException : Exception
     {

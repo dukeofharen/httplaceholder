@@ -3,7 +3,7 @@ using System.Linq;
 using HttPlaceholder.Models;
 using HttPlaceholder.Models.Enums;
 
-namespace HttPlaceholder.BusinessLogic.Implementations
+namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     internal class FinalStubDeterminer : IFinalStubDeterminer
     {

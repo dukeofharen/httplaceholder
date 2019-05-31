@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.BusinessLogic
+namespace HttPlaceholder.Application.StubExecution
 {
     public interface IStubResponseGenerator
     {

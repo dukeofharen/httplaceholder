@@ -1,37 +1,38 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HttPlaceholder.Exceptions;
-using HttPlaceholder.Models;
-using HttPlaceholder.Models.Enums;
-using HttPlaceholder.Services;
+using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.StubExecution.ConditionChecking;
+using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace HttPlaceholder.BusinessLogic.Implementations
+namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     public class StubRequestExecutor : IStubRequestExecutor
     {
+        private readonly IEnumerable<IConditionChecker> _conditionCheckers;
         private readonly IFinalStubDeterminer _finalStubDeterminer;
         private readonly ILogger<StubRequestExecutor> _logger;
         private readonly IRequestLoggerFactory _requestLoggerFactory;
-        private readonly IServiceProvider _serviceProvider;
         private readonly IStubContainer _stubContainer;
         private readonly IStubResponseGenerator _stubResponseGenerator;
 
         public StubRequestExecutor(
+            IEnumerable<IConditionChecker> conditionCheckers,
             IFinalStubDeterminer finalStubDeterminer,
            ILogger<StubRequestExecutor> logger,
            IRequestLoggerFactory requestLoggerFactory,
-           IServiceProvider serviceProvider,
            IStubContainer stubContainer,
            IStubResponseGenerator stubResponseGenerator)
         {
+            _conditionCheckers = conditionCheckers;
             _finalStubDeterminer = finalStubDeterminer;
             _logger = logger;
             _requestLoggerFactory = requestLoggerFactory;
-            _serviceProvider = serviceProvider;
             _stubContainer = stubContainer;
             _stubResponseGenerator = stubResponseGenerator;
         }
@@ -39,7 +40,6 @@ namespace HttPlaceholder.BusinessLogic.Implementations
         public async Task<ResponseModel> ExecuteRequestAsync()
         {
             var requestLogger = _requestLoggerFactory.GetRequestLogger();
-            var conditionCheckers = ((IEnumerable<IConditionChecker>)_serviceProvider.GetServices(typeof(IConditionChecker))).ToArray();
 
             var foundStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>();
             var stubs = await _stubContainer.GetStubsAsync();
@@ -49,12 +49,12 @@ namespace HttPlaceholder.BusinessLogic.Implementations
                 var stub = fullStub.Stub;
                 try
                 {
-                    bool passed = false;
+                    var passed = false;
                     var validationResults = new List<ConditionCheckResultModel>();
                     var negativeValidationResults = new List<ConditionCheckResultModel>();
-                    foreach (var checker in conditionCheckers)
+                    foreach (var checker in _conditionCheckers)
                     {
-                        ConditionCheckResultModel result = CheckConditions(stub.Id, checker, stub.Conditions, false);
+                        var result = CheckConditions(stub.Id, checker, stub.Conditions, false);
                         validationResults.Add(result);
                         if (result.ConditionValidation == ConditionValidationType.Invalid)
                         {
