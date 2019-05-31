@@ -28,7 +28,7 @@ namespace HttPlaceholder.Authorization.Implementations
             var config = _configurationService.GetConfiguration();
             string username = config.GetValue(Constants.ConfigKeys.ApiUsernameKey, string.Empty);
             string password = config.GetValue(Constants.ConfigKeys.ApiPasswordKey, string.Empty);
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(username) && string.IsNullOrWhiteSpace(password))
             {
                 return true;
             }
