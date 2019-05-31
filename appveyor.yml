@@ -10,7 +10,7 @@ environment:
   access_token:
     secure: Zcoti9GsS4Y1t12qVcWhfDXMJLW8QLt4SdeQi8VKUFBtd/gVyWsZlLXDOHLP8i5U
   nuget_api_key:
-    secure: /spG2CSTqaB6JnDd2aJouT744+d81tM4LTeYLd7kE3DJA7dBpuSOPEZ30kjwTpEr
+    secure: 7EBDqihYRTDxRQzfFeJRYt54OBpZUXWrPCyoMmpCs4+EkUXwxuYp/R4U4CZtsT7z
 
 branches:
   only:
