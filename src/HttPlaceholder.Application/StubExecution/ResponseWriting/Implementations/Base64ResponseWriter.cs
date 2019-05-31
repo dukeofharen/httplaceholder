@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
+namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
 {
     public class Base64ResponseWriter : IResponseWriter
     {
@@ -10,13 +10,13 @@ namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
+            var executed = false;
             if (stub.Response?.Base64 != null)
             {
-                string base64Body = stub.Response.Base64;
+                var base64Body = stub.Response.Base64;
                 response.Body = Convert.FromBase64String(base64Body);
                 response.BodyIsBinary = true;
-                string bodyForLogging = base64Body.Length > 10 ? base64Body.Substring(0, 10) : base64Body;
+                var bodyForLogging = base64Body.Length > 10 ? base64Body.Substring(0, 10) : base64Body;
                 executed = true;
             }
 

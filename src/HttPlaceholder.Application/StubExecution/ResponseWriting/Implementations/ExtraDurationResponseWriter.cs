@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Ducode.Essentials.Async.Interfaces;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
+namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
 {
     public class ExtraDurationResponseWriter : IResponseWriter
     {

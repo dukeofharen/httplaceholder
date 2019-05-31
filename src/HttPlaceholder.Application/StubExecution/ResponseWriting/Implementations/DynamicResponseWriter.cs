@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
+namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
 {
     public class DynamicResponseWriter : IResponseWriter
     {

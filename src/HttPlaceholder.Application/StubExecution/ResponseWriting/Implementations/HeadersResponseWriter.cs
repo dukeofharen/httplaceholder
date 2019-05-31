@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
+namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
 {
     public class HeadersResponseWriter : IResponseWriter
     {

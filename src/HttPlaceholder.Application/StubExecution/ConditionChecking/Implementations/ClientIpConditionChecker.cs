@@ -6,7 +6,7 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using NetTools;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers
+namespace HttPlaceholder.Application.Implementations.ConditionCheckers
 {
     public class ClientIpConditionChecker : IConditionChecker
     {

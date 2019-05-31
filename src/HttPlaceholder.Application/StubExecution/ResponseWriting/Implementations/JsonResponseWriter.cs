@@ -1,8 +1,8 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.ResponseWriters
+namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
 {
     internal class JsonResponseWriter : IResponseWriter
     {

@@ -6,7 +6,7 @@ using HttPlaceholder.Application.StubExecution.ConditionChecking;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.ConditionCheckers
+namespace HttPlaceholder.Application.Implementations.ConditionCheckers
 {
     public class XPathConditionChecker : IConditionChecker
     {
