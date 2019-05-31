@@ -4,16 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HttPlaceholder.Application.StubExecution.Implementations
+namespace HttPlaceholder.Persistence.Implementations
 {
-    internal class StubContainer : IStubContainer
+    internal class StubContext : IStubContext
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public StubContainer(IServiceProvider serviceProvider)
+        public StubContext(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }
@@ -167,7 +168,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             var sources = readOnly ? GetReadOnlyStubSources() : GetStubSources();
             foreach (var source in sources)
             {
-                bool stubSourceIsReadOnly = !(source is IWritableStubSource);
+                var stubSourceIsReadOnly = !(source is IWritableStubSource);
                 var stubs = await source.GetStubsAsync();
                 var fullStubModels = stubs.Select(s => new FullStubModel
                 {

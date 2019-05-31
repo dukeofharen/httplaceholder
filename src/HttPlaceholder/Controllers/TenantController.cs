@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.BusinessLogic;
-using HttPlaceholder.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Controllers
 {
@@ -15,19 +15,19 @@ namespace HttPlaceholder.Controllers
     public class TenantController : BaseApiController
     {
         private readonly ILogger<TenantController> _logger;
-        private readonly IStubContainer _stubContainer;
+        private readonly IStubContext _stubContext;
 
         /// <summary>
         /// The tenant controller.
         /// </summary>
         /// <param name="logger"></param>
-        /// <param name="stubContaner"></param>
+        /// <param name="stubContext"></param>
         public TenantController(
            ILogger<TenantController> logger,
-           IStubContainer stubContaner)
+           IStubContext stubContext)
         {
             _logger = logger;
-            _stubContainer = stubContaner;
+            _stubContext = stubContext;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace HttPlaceholder.Controllers
         public async Task<IEnumerable<FullStubModel>> GetAll(string tenant)
         {
             _logger.LogInformation($"Retrieving all stubs for tenant '{tenant}'.");
-            var stubs = await _stubContainer.GetStubsAsync(tenant);
+            var stubs = await _stubContext.GetStubsAsync(tenant);
             return stubs;
         }
 
@@ -56,7 +56,7 @@ namespace HttPlaceholder.Controllers
         public async Task<IActionResult> DeleteAll(string tenant)
         {
             _logger.LogInformation($"Deleting all stubs for tenant '{tenant}'.");
-            await _stubContainer.DeleteAllStubsAsync(tenant);
+            await _stubContext.DeleteAllStubsAsync(tenant);
             return NoContent();
         }
 
@@ -75,7 +75,7 @@ namespace HttPlaceholder.Controllers
         public async Task<IActionResult> UpdateAll(string tenant, [FromBody]IEnumerable<StubModel> stubs)
         {
             _logger.LogInformation($"Updating all stubs for tenant '{tenant}'.");
-            await _stubContainer.UpdateAllStubs(tenant, stubs);
+            await _stubContext.UpdateAllStubs(tenant, stubs);
             return NoContent();
         }
     }

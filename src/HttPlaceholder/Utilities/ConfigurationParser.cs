@@ -1,30 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Ducode.Essentials.Assembly.Interfaces;
+using Ducode.Essentials.Assembly;
 using Ducode.Essentials.Console;
+using Ducode.Essentials.Files;
 using Ducode.Essentials.Files.Interfaces;
+using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Configuration;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Services.Implementations
+namespace HttPlaceholder.Utilities
 {
-    public class ConfigurationParser : IConfigurationParser
+    public class ConfigurationParser
     {
-        private readonly IAssemblyService _assemblyService;
         private readonly IFileService _fileService;
 
-        public ConfigurationParser(
-            IAssemblyService assemblyService,
-            IFileService fileService)
+        public ConfigurationParser(IFileService fileService)
         {
-            _assemblyService = assemblyService;
             _fileService = fileService;
+        }
+
+        internal ConfigurationParser() : this(new FileService())
+        {
         }
 
         public IDictionary<string, string> ParseConfiguration(string[] args)
         {
             var argsDictionary = args.Parse();
-            if (argsDictionary.TryGetValue(ConfigKeys.ConfigJsonLocationKey, out string configJsonPath))
+            if (argsDictionary.TryGetValue(ConfigKeys.ConfigJsonLocationKey, out var configJsonPath))
             {
                 if (!_fileService.FileExists(configJsonPath))
                 {
@@ -32,11 +35,11 @@ namespace HttPlaceholder.Services.Implementations
                 }
 
                 ConsoleHelpers.WriteLineColor($"Reading configuration from '{configJsonPath}'.", ConsoleColor.Green, ConsoleColor.Black);
-                string config = _fileService.ReadAllText(configJsonPath);
+                var config = _fileService.ReadAllText(configJsonPath);
                 return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
             }
 
-            string configPath = Path.Combine(_assemblyService.GetCallingAssemblyRootPath(), "config.json");
+            var configPath = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), "config.json");
             if (args.Length == 0 && _fileService.FileExists(configPath))
             {
                 // If a config file is found, try to load and parse it instead of the arguments.
@@ -47,7 +50,7 @@ namespace HttPlaceholder.Services.Implementations
                     ConsoleColor.Yellow,
                     ConsoleColor.Black);
 
-                string config = _fileService.ReadAllText(configPath);
+                var config = _fileService.ReadAllText(configPath);
                 return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
             }
 

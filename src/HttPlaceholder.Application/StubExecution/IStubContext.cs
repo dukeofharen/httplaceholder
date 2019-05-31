@@ -4,7 +4,7 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution
 {
-    public interface IStubContainer
+    public interface IStubContext
     {
         Task<IEnumerable<FullStubModel>> GetStubsAsync();
 

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Security.Claims;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

@@ -1,6 +1,7 @@
 ﻿using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Configuration;
-using HttPlaceholder.DataLogic.Db;
+using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Implementations;
 using HttPlaceholder.Persistence.Implementations;
 using HttPlaceholder.Persistence.Implementations.StubSources;
@@ -13,6 +14,7 @@ namespace HttPlaceholder.Persistence
     {
         public static IServiceCollection AddPersistenceModule(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<IStubContext, StubContext>();
             services.AddSingleton<IStubRootPathResolver, StubRootPathResolver>();
 
             // The YAML stub source should always be registered.

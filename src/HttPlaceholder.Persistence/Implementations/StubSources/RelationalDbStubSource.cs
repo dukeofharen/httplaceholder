@@ -7,9 +7,9 @@ using Ducode.Essentials.Console;
 using HttPlaceholder.Application.Interfaces;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
-using HttPlaceholder.DataLogic.Db;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
+using HttPlaceholder.Persistence.Db;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 

@@ -24,7 +24,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
     <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
   </ItemGroup>
 </Project>

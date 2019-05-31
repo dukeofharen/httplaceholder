@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.BusinessLogic;
-using HttPlaceholder.Models;
+using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,19 +15,19 @@ namespace HttPlaceholder.Controllers
     public class StubController : BaseApiController
     {
         private readonly ILogger<StubController> _logger;
-        private readonly IStubContainer _stubContainer;
+        private readonly IStubContext _stubContext;
 
         /// <summary>
         /// The stub controller.
         /// </summary>
         /// <param name="logger"></param>
-        /// <param name="stubContaner"></param>
+        /// <param name="stubContext"></param>
         public StubController(
            ILogger<StubController> logger,
-           IStubContainer stubContaner)
+           IStubContext stubContext)
         {
             _logger = logger;
-            _stubContainer = stubContaner;
+            _stubContext = stubContext;
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace HttPlaceholder.Controllers
             _logger.LogInformation($"Adding new stub '{stubModel}'");
 
             // Delete stub with same ID.
-            await _stubContainer.DeleteStubAsync(stubModel.Id);
+            await _stubContext.DeleteStubAsync(stubModel.Id);
 
-            await _stubContainer.AddStubAsync(stubModel);
+            await _stubContext.AddStubAsync(stubModel);
             return NoContent();
         }
 
@@ -57,7 +57,7 @@ namespace HttPlaceholder.Controllers
         public async Task<ActionResult<IEnumerable<FullStubModel>>> GetAll()
         {
             _logger.LogInformation("Retrieving all stubs.");
-            var stubs = await _stubContainer.GetStubsAsync();
+            var stubs = await _stubContext.GetStubsAsync();
             return Ok(stubs);
         }
 
@@ -74,7 +74,7 @@ namespace HttPlaceholder.Controllers
         public async Task<ActionResult<FullStubModel>> Get([FromRoute]string stubId)
         {
             _logger.LogInformation($"Retrieving stub with ID '{stubId}'.");
-            var result = await _stubContainer.GetStubAsync(stubId);
+            var result = await _stubContext.GetStubAsync(stubId);
             if (result == null)
             {
                 return NotFound();
@@ -93,7 +93,7 @@ namespace HttPlaceholder.Controllers
         public async Task<ActionResult> Delete([FromRoute]string stubId)
         {
             _logger.LogInformation($"Deleting stub with ID '{stubId}'");
-            bool result = await _stubContainer.DeleteStubAsync(stubId);
+            bool result = await _stubContext.DeleteStubAsync(stubId);
             return result ? NoContent() : (ActionResult)NotFound();
         }
     }

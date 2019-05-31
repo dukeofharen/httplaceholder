@@ -7,10 +7,7 @@ using System.Reflection;
 using System.Text;
 using Ducode.Essentials.Assembly;
 using Ducode.Essentials.Console;
-using Ducode.Essentials.Files;
-using HttPlaceholder.Models;
-using HttPlaceholder.Models.Attributes;
-using HttPlaceholder.Services.Implementations;
+using HttPlaceholder.Configuration;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -42,19 +39,18 @@ namespace HttPlaceholder
 
         private static IWebHost BuildWebHost(string[] args)
         {
-            var configParser = new ConfigurationParser(new AssemblyService(), new FileService());
+            var configParser = new ConfigurationParser();
             var argsDictionary = configParser.ParseConfiguration(args);
 
-            ConfigurationService.StaticSetConfiguration(argsDictionary);
-
-            int port = argsDictionary.GetAndSetValue(Constants.ConfigKeys.PortKey, 5000);
-            string pfxPath = argsDictionary.GetAndSetValue(Constants.ConfigKeys.PfxPathKey, Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx"));
-            string pfxPassword = argsDictionary.GetAndSetValue(Constants.ConfigKeys.PfxPasswordKey, "1234");
-            int httpsPort = argsDictionary.GetAndSetValue(Constants.ConfigKeys.HttpsPortKey, 5050);
-            bool useHttps = argsDictionary.GetAndSetValue(Constants.ConfigKeys.UseHttpsKey, false);
+            int port = argsDictionary.GetAndSetValue(ConfigKeys.PortKey, 5000);
+            string pfxPath = argsDictionary.GetAndSetValue(ConfigKeys.PfxPathKey, Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx"));
+            string pfxPassword = argsDictionary.GetAndSetValue(ConfigKeys.PfxPasswordKey, "1234");
+            int httpsPort = argsDictionary.GetAndSetValue(ConfigKeys.HttpsPortKey, 5050);
+            bool useHttps = argsDictionary.GetAndSetValue(ConfigKeys.UseHttpsKey, false);
             HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, new string[] { "-V", "--verbose" }, false);
 
             return WebHost.CreateDefaultBuilder(args)
+               .ConfigureAppConfiguration((_, config) => config.AddConfiguration(argsDictionary))
                .UseStartup<Startup>()
                .UseKestrel(options =>
                {
@@ -71,16 +67,9 @@ namespace HttPlaceholder
         private static string GetManPage()
         {
             var builder = new StringBuilder();
-            foreach (var constant in ReflectionUtilities.GetConstants(typeof(Constants.ConfigKeys)))
+            foreach (var constant in ConfigurationUtilities.GetConfigKeyMetadata())
             {
-                var attribute = constant.CustomAttributes.FirstOrDefault();
-                if (attribute != null && attribute.AttributeType == typeof(ConfigKeyAttribute))
-                {
-                    var value = constant.GetValue(constant);
-                    string description = attribute.NamedArguments.Single(a => a.MemberName == "Description").TypedValue.Value as string;
-                    string example = attribute.NamedArguments.Single(a => a.MemberName == "Example").TypedValue.Value as string;
-                    builder.AppendLine($"--{value}: {description} (e.g. {example})");
-                }
+                builder.AppendLine($"--{constant.configKey}: {constant.description} (e.g. {constant.example})");
             }
 
             builder.AppendLine();

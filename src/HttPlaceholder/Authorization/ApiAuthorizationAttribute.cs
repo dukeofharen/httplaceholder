@@ -3,13 +3,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Ducode.Essentials.Console;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services;
-using HttPlaceholder.Utilities;
+using HttPlaceholder.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Authorization
 {
@@ -25,13 +24,12 @@ namespace HttPlaceholder.Authorization
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var loginService = context.HttpContext.RequestServices.GetService<ILoginService>();
-            var configurationService = context.HttpContext.RequestServices.GetService<IConfigurationService>();
+            var settings = context.HttpContext.RequestServices.GetService<IOptions<SettingsModel>>().Value;
 
             bool result;
             var logger = context.HttpContext.RequestServices.GetService<ILogger<ApiAuthorizationAttribute>>();
-            var config = configurationService.GetConfiguration();
-            string username = config.GetValue(Constants.ConfigKeys.ApiUsernameKey, string.Empty);
-            string password = config.GetValue(Constants.ConfigKeys.ApiPasswordKey, string.Empty);
+            string username = settings.Authentication.ApiUsername ?? string.Empty;
+            string password = settings.Authentication.ApiPassword ?? string.Empty;
             if (loginService.CheckLoginCookie())
             {
                 AddUserContext(context, username);

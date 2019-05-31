@@ -4,15 +4,13 @@ using System.Net;
 using System.Threading.Tasks;
 using Ducode.Essentials.Console;
 using Ducode.Essentials.Mvc.Interfaces;
-using HttPlaceholder.BusinessLogic;
-using HttPlaceholder.Exceptions;
+using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Configuration;
 using HttPlaceholder.Hubs;
-using HttPlaceholder.Hubs.Implementations;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware
@@ -28,34 +26,34 @@ namespace HttPlaceholder.Middleware
 
         private readonly RequestDelegate _next;
         private readonly IClientIpResolver _clientIpResolver;
-        private readonly IConfigurationService _configurationService;
         private readonly IHttpContextService _httpContextService;
         private readonly ILogger<StubHandlingMiddleware> _logger;
         private readonly IRequestLoggerFactory _requestLoggerFactory;
-        private readonly IStubContainer _stubContainer;
+        private readonly IStubContext _stubContext;
         private readonly IStubRequestExecutor _stubRequestExecutor;
         private readonly IRequestNotify _requestNotify;
+        private readonly SettingsModel _settings;
 
         public StubHandlingMiddleware(
            RequestDelegate next,
            IClientIpResolver clientIpResolver,
-           IConfigurationService configurationService,
            IHttpContextService httpContextService,
            ILogger<StubHandlingMiddleware> logger,
            IRequestLoggerFactory requestLoggerFactory,
            IRequestNotify requestNotify,
-           IStubContainer stubContainer,
-           IStubRequestExecutor stubRequestExecutor)
+           IStubContext stubContext,
+           IStubRequestExecutor stubRequestExecutor,
+           IOptions<SettingsModel> options)
         {
             _next = next;
             _clientIpResolver = clientIpResolver;
-            _configurationService = configurationService;
             _httpContextService = httpContextService;
             _logger = logger;
             _requestLoggerFactory = requestLoggerFactory;
             _requestNotify = requestNotify;
-            _stubContainer = stubContainer;
+            _stubContext = stubContext;
             _stubRequestExecutor = stubRequestExecutor;
+            _settings = options.Value;
         }
 
         public async Task Invoke(HttpContext context)
@@ -113,14 +111,13 @@ namespace HttPlaceholder.Middleware
 
             var loggingResult = requestLogger.GetResult();
             var jsonLoggingResult = JObject.FromObject(loggingResult);
-            var config = _configurationService.GetConfiguration();
-            bool enableRequestLogging = config.GetValue(Constants.ConfigKeys.EnableRequestLoggingKey, true);
+            bool enableRequestLogging = _settings.Storage?.EnableRequestLogging ?? false;
             if (enableRequestLogging)
             {
                 _logger.LogInformation(jsonLoggingResult.ToString());
             }
 
-            await _stubContainer.AddRequestResultAsync(loggingResult);
+            await _stubContext.AddRequestResultAsync(loggingResult);
             await _requestNotify.NewRequestReceivedAsync(loggingResult);
         }
     }

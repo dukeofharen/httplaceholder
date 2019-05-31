@@ -39,8 +39,10 @@
     <PackageReference Include="YamlDotNet" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
-    <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Persistence\HttPlaceholder.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)'!='Tool|AnyCPU'">
     <Content Update="_config.json">

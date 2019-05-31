@@ -5,15 +5,11 @@ VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder", "HttPlaceholder\HttPlaceholder.csproj", "{C59B1B53-C880-473E-8510-AA4F78B7441E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Models", "HttPlaceholder.Models\HttPlaceholder.Models.csproj", "{CB4600D4-1B2C-4FFE-92C9-8AFC2E460AA6}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{287482AF-3481-44F5-B4D3-F17589B9261C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.BusinessLogic.Tests", "HttPlaceholder.BusinessLogic.Tests\HttPlaceholder.BusinessLogic.Tests.csproj", "{4E944D08-C74B-4373-A247-55F9C7887552}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Tests", "HttPlaceholder.Tests\HttPlaceholder.Tests.csproj", "{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Services", "HttPlaceholder.Services\HttPlaceholder.Services.csproj", "{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.DataLogic.Tests", "HttPlaceholder.DataLogic.Tests\HttPlaceholder.DataLogic.Tests.csproj", "{FC465FE9-64AB-46B8-8045-53E65A4D244E}"
 EndProject
@@ -33,23 +29,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{21DEC134-DEF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8DC0861E-9BE9-4F9B-90D5-944B33169F55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Common", "HttPlaceholder.Common\HttPlaceholder.Common.csproj", "{A01825A4-30E4-4B5A-9A7F-D7BA933F75CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Common", "HttPlaceholder.Common\HttPlaceholder.Common.csproj", "{A01825A4-30E4-4B5A-9A7F-D7BA933F75CC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{A78C674D-5E73-42AA-AD38-C659E5BC017D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Infrastructure", "HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj", "{C5C45E53-C574-4F87-81F9-6D99C8C3A463}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Infrastructure", "HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj", "{C5C45E53-C574-4F87-81F9-6D99C8C3A463}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{37ECDB20-4C9E-4A7B-AFB9-FDF5E2C64EC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Application", "HttPlaceholder.Application\HttPlaceholder.Application.csproj", "{FC4C3CF7-8831-423D-A4D5-57C5A2E40B45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Application", "HttPlaceholder.Application\HttPlaceholder.Application.csproj", "{FC4C3CF7-8831-423D-A4D5-57C5A2E40B45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Domain", "HttPlaceholder.Domain\HttPlaceholder.Domain.csproj", "{E8DE3E50-ADAD-4B9E-9BAE-4C6E87830C4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Domain", "HttPlaceholder.Domain\HttPlaceholder.Domain.csproj", "{E8DE3E50-ADAD-4B9E-9BAE-4C6E87830C4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Persistence", "HttPlaceholder.Persistence\HttPlaceholder.Persistence.csproj", "{11B67356-3779-4B8F-A4CC-A3A1AE22E35E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Persistence", "HttPlaceholder.Persistence\HttPlaceholder.Persistence.csproj", "{11B67356-3779-4B8F-A4CC-A3A1AE22E35E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{BA04C59E-2413-4460-85FC-DE322A1CBF02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Configuration", "HttPlaceholder.Configuration\HttPlaceholder.Configuration.csproj", "{7F2F6C0F-2CC5-4A4F-93DD-A493C1AB5ACA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Configuration", "HttPlaceholder.Configuration\HttPlaceholder.Configuration.csproj", "{7F2F6C0F-2CC5-4A4F-93DD-A493C1AB5ACA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,12 +60,6 @@ Global
 		{C59B1B53-C880-473E-8510-AA4F78B7441E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C59B1B53-C880-473E-8510-AA4F78B7441E}.Tool|Any CPU.ActiveCfg = Tool|Any CPU
 		{C59B1B53-C880-473E-8510-AA4F78B7441E}.Tool|Any CPU.Build.0 = Tool|Any CPU
-		{CB4600D4-1B2C-4FFE-92C9-8AFC2E460AA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CB4600D4-1B2C-4FFE-92C9-8AFC2E460AA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CB4600D4-1B2C-4FFE-92C9-8AFC2E460AA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CB4600D4-1B2C-4FFE-92C9-8AFC2E460AA6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CB4600D4-1B2C-4FFE-92C9-8AFC2E460AA6}.Tool|Any CPU.ActiveCfg = Tool|Any CPU
-		{CB4600D4-1B2C-4FFE-92C9-8AFC2E460AA6}.Tool|Any CPU.Build.0 = Tool|Any CPU
 		{4E944D08-C74B-4373-A247-55F9C7887552}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4E944D08-C74B-4373-A247-55F9C7887552}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E944D08-C74B-4373-A247-55F9C7887552}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -82,12 +72,6 @@ Global
 		{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E}.Tool|Any CPU.ActiveCfg = Tool|Any CPU
 		{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E}.Tool|Any CPU.Build.0 = Tool|Any CPU
-		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Tool|Any CPU.ActiveCfg = Tool|Any CPU
-		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Tool|Any CPU.Build.0 = Tool|Any CPU
 		{FC465FE9-64AB-46B8-8045-53E65A4D244E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC465FE9-64AB-46B8-8045-53E65A4D244E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC465FE9-64AB-46B8-8045-53E65A4D244E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -187,7 +171,7 @@ Global
 		{E8DE3E50-ADAD-4B9E-9BAE-4C6E87830C4F} = {37ECDB20-4C9E-4A7B-AFB9-FDF5E2C64EC3}
 		{11B67356-3779-4B8F-A4CC-A3A1AE22E35E} = {A78C674D-5E73-42AA-AD38-C659E5BC017D}
 		{BA04C59E-2413-4460-85FC-DE322A1CBF02} = {21DEC134-DEF5-482F-ADE7-EBF67AB9C2B9}
-		{7F2F6C0F-2CC5-4A4F-93DD-A493C1AB5ACA} = {37ECDB20-4C9E-4A7B-AFB9-FDF5E2C64EC3}
+		{7F2F6C0F-2CC5-4A4F-93DD-A493C1AB5ACA} = {A78C674D-5E73-42AA-AD38-C659E5BC017D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B07D99A8-ABA7-4A66-9BA2-37E64043B834}

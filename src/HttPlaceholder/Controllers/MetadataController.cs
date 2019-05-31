@@ -1,5 +1,5 @@
 ﻿using Ducode.Essentials.Assembly.Interfaces;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +25,7 @@ namespace HttPlaceholder.Controllers
         /// <summary>
         /// Gets metadata about the API (like the assembly version).
         /// </summary>
-        /// <returns>Assembly version as string</returns>
+        /// <returns>HttPlaceholder metadata.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<MetadataModel> Get()

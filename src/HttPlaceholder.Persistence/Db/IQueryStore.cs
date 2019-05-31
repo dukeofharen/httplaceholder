@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace HttPlaceholder.DataLogic.Db
+namespace HttPlaceholder.Persistence.Db
 {
     /// <summary>
     /// An interface that describes a class that returns queries and other related objects for a specific database engine.

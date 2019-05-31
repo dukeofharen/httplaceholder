@@ -18,7 +18,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         private readonly IFinalStubDeterminer _finalStubDeterminer;
         private readonly ILogger<StubRequestExecutor> _logger;
         private readonly IRequestLoggerFactory _requestLoggerFactory;
-        private readonly IStubContainer _stubContainer;
+        private readonly IStubContext _stubContainer;
         private readonly IStubResponseGenerator _stubResponseGenerator;
 
         public StubRequestExecutor(
@@ -26,7 +26,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             IFinalStubDeterminer finalStubDeterminer,
            ILogger<StubRequestExecutor> logger,
            IRequestLoggerFactory requestLoggerFactory,
-           IStubContainer stubContainer,
+           IStubContext stubContainer,
            IStubResponseGenerator stubResponseGenerator)
         {
             _conditionCheckers = conditionCheckers;

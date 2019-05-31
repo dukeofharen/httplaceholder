@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using HttPlaceholder.Exceptions;
+using HttPlaceholder.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Middleware

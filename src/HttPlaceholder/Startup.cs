@@ -4,19 +4,18 @@ using Ducode.Essentials.Assembly;
 using Ducode.Essentials.Async;
 using Ducode.Essentials.Files;
 using Ducode.Essentials.Mvc;
+using HttPlaceholder.Application;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Authorization.Implementations;
-using HttPlaceholder.BusinessLogic;
-using HttPlaceholder.DataLogic;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Hubs.Implementations;
 using HttPlaceholder.Middleware;
-using HttPlaceholder.Services;
-using HttPlaceholder.Utilities;
-using Microsoft.AspNetCore.Authorization;
+using HttPlaceholder.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
@@ -25,44 +24,25 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace HttPlaceholder
 {
-    /// <summary>
-    /// Startup class
-    /// </summary>
     public class Startup
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="services"></param>
-        public void ConfigureServices(IServiceCollection services)
+        public Startup(IConfiguration configuration)
         {
-            ConfigureServicesStatic(services);
+            Configuration = configuration;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
+        public IConfiguration Configuration { get; }
+
+        public void ConfigureServices(IServiceCollection services) =>
+            ConfigureServicesStatic(services, Configuration);
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env) =>
             ConfigureStatic(app, env, true, true);
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="app"></param>
-        /// <param name="env"></param>
-        /// <param name="preloadStubs"></param>
-        /// <param name="loadStaticFiles"></param>
         public static void ConfigureStatic(IApplicationBuilder app, IHostingEnvironment env, bool preloadStubs, bool loadStaticFiles)
         {
             app
-                .UseSignalR(routes =>
-                {
-                    routes.MapHub<RequestHub>("/requestHub");
-                })
+               .UseSignalR(r => r.MapHub<RequestHub>("/requestHub"))
                .UseMiddleware<ApiHeadersMiddleware>()
                .UseMiddleware<ApiExceptionHandlingMiddleware>()
                .UseMiddleware<StubHandlingMiddleware>()
@@ -73,7 +53,7 @@ namespace HttPlaceholder
             if (preloadStubs)
             {
                 // Check if the stubs can be loaded.
-                var stubContainer = app.ApplicationServices.GetService<IStubContainer>();
+                var stubContainer = app.ApplicationServices.GetService<IStubContext>();
                 Task.Run(() => stubContainer.PrepareAsync()).GetAwaiter().GetResult();
             }
 
@@ -92,11 +72,7 @@ namespace HttPlaceholder
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="services"></param>
-        public static void ConfigureServicesStatic(IServiceCollection services)
+        public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration)
         {
             services
                .AddMvc(options =>
@@ -115,12 +91,10 @@ namespace HttPlaceholder
             services.AddTransient<IRequestNotify, RequestNotify>();
 
             services
-               .AddBusinessLogic()
-               .AddUtilities()
+               .AddApplicationModule()
                .AddHttpContextAccessor()
                .AddLogging()
-               .AddDataLogic()
-               .AddStubSources()
+               .AddPersistenceModule(configuration)
                .AddAssemblyServices()
                .AddCustomMvcServices()
                .AddFileServices()

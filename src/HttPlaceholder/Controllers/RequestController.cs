@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.BusinessLogic;
-using HttPlaceholder.Models;
+using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,19 +15,19 @@ namespace HttPlaceholder.Controllers
     public class RequestController : BaseApiController
     {
         private readonly ILogger<RequestController> _logger;
-        private readonly IStubContainer _stubContainer;
+        private readonly IStubContext _stubContext;
 
         /// <summary>
         /// Constructor for RequestController
         /// </summary>
         /// <param name="logger"></param>
-        /// <param name="stubContaner"></param>
+        /// <param name="stubContext"></param>
         public RequestController(
            ILogger<RequestController> logger,
-           IStubContainer stubContaner)
+           IStubContext stubContext)
         {
             _logger = logger;
-            _stubContainer = stubContaner;
+            _stubContext = stubContext;
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace HttPlaceholder.Controllers
         public async Task<ActionResult<IEnumerable<RequestResultModel>>> GetAll()
         {
             _logger.LogInformation($"Retrieving all requests.");
-            var requests = await _stubContainer.GetRequestResultsAsync();
+            var requests = await _stubContext.GetRequestResultsAsync();
             return Ok(requests);
         }
 
@@ -54,7 +54,7 @@ namespace HttPlaceholder.Controllers
         public async Task<ActionResult<IEnumerable<RequestResultModel>>> GetByStubId([FromRoute]string stubId)
         {
             _logger.LogInformation($"Retrieving requests for stub ID '{stubId}'");
-            var requests = await _stubContainer.GetRequestResultsByStubIdAsync(stubId);
+            var requests = await _stubContext.GetRequestResultsByStubIdAsync(stubId);
             return Ok(requests);
         }
 
@@ -67,7 +67,7 @@ namespace HttPlaceholder.Controllers
         public async Task<ActionResult> DeleteAll()
         {
             _logger.LogInformation("Deleting all requests.");
-            await _stubContainer.DeleteAllRequestResultsAsync();
+            await _stubContext.DeleteAllRequestResultsAsync();
             return NoContent();
         }
     }

@@ -14,7 +14,6 @@ namespace HttPlaceholder.Application.StubExecution
         {
             services.AddSingleton<IFinalStubDeterminer, FinalStubDeterminer>();
             services.AddSingleton<IRequestLoggerFactory, RequestLoggerFactory>();
-            services.AddSingleton<IStubContainer, StubContainer>();
             services.AddSingleton<IStubRequestExecutor, StubRequestExecutor>();
             services.AddSingleton<IStubResponseGenerator, StubResponseGenerator>();
             services.AddSingleton<IVariableParser, VariableParser>();

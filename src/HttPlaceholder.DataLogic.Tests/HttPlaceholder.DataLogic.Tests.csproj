@@ -26,9 +26,6 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Update="Implementations\StubSources\TestResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

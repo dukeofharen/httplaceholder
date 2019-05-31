@@ -9,12 +9,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
     public class FileResponseWriter : IResponseWriter
     {
         private readonly IFileService _fileService;
-        private readonly IStubContainer _stubContainer;
+        private readonly IStubContext _stubContainer;
         private readonly IStubRootPathResolver _stubRootPathResolver;
 
         public FileResponseWriter(
            IFileService fileService,
-           IStubContainer stubContainer,
+           IStubContext stubContainer,
            IStubRootPathResolver stubRootPathResolver)
         {
             _fileService = fileService;

@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Data.SQLite;
-using HttPlaceholder.DataLogic.Db;
 using HttPlaceholder.Persistence.Db.Resources;
 using Microsoft.Extensions.Configuration;
 
