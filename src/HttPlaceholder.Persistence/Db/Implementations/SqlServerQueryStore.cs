@@ -2,16 +2,18 @@
 using System.Data.SqlClient;
 using HttPlaceholder.DataLogic.Db;
 using HttPlaceholder.Persistence.Db.Resources;
+using Microsoft.Extensions.Configuration;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
 {
     internal class SqlServerQueryStore : IQueryStore
     {
-        private readonly IConfigurationService _configurationService;
+        internal const string ConnectionStringKey = "SqlServer";
+        private readonly IConfiguration _configuration;
 
-        public SqlServerQueryStore(IConfigurationService configurationService)
+        public SqlServerQueryStore(IConfiguration configuration)
         {
-            _configurationService = configurationService;
+            _configuration = configuration;
         }
 
         public string GetRequestsQuery => @"SELECT
@@ -45,11 +47,7 @@ FROM stubs";
 
         public string MigrationsQuery => SqlServerResources.MigrateScript;
 
-        public IDbConnection GetConnection()
-        {
-            var config = _configurationService.GetConfiguration();
-            string connectionString = config[Constants.ConfigKeys.SqlServerConnectionStringKey];
-            return new SqlConnection(connectionString);
-        }
+        public IDbConnection GetConnection() =>
+            new SqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
     }
 }

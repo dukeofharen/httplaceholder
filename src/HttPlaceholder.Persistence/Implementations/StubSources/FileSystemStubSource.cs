@@ -6,22 +6,24 @@ using System.Threading.Tasks;
 using Ducode.Essentials.Console;
 using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class FileSystemStubSource : IWritableStubSource
     {
-        private readonly IConfigurationService _configurationService;
         private readonly IFileService _fileService;
+        private readonly SettingsModel _settings;
 
         public FileSystemStubSource(
-           IConfigurationService configurationService,
-           IFileService fileService)
+           IFileService fileService,
+           IOptions<SettingsModel> options)
         {
-            _configurationService = configurationService;
             _fileService = fileService;
+            _settings = options.Value;
         }
 
         public Task AddRequestResultAsync(RequestResultModel requestResult)
@@ -100,8 +102,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         public async Task CleanOldRequestResultsAsync()
         {
             var path = EnsureAndGetRequestsFolder();
-            var config = _configurationService.GetConfiguration();
-            int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
+            int maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
             var requests = (await GetRequestResultsAsync())
                .OrderByDescending(r => r.RequestEndTime)
                .Skip(maxLength);
@@ -121,9 +122,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         private string EnsureAndGetStubsFolder()
         {
-            var config = _configurationService.GetConfiguration();
-            string folder = config[Constants.ConfigKeys.FileStorageLocationKey];
-            var path = Path.Combine(folder, "stubs");
+            string folder = _settings.Storage?.FileStorageLocation;
+            string path = Path.Combine(folder, "stubs");
             if (!_fileService.DirectoryExists(path))
             {
                 _fileService.CreateDirectory(path);
@@ -134,9 +134,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         private string EnsureAndGetRequestsFolder()
         {
-            var config = _configurationService.GetConfiguration();
-            string folder = config[Constants.ConfigKeys.FileStorageLocationKey];
-            var path = Path.Combine(folder, "requests");
+            string folder = _settings.Storage?.FileStorageLocation;
+            string path = Path.Combine(folder, "requests");
             if (!_fileService.DirectoryExists(path))
             {
                 _fileService.CreateDirectory(path);

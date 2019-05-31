@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Application.Interfaces;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services;
+using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Configuration;
+using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
@@ -14,33 +17,23 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
     {
         private IEnumerable<StubModel> _stubs;
         private DateTime _stubLoadDateTime;
-        private readonly IConfigurationService _configurationService;
         private readonly ILogger<YamlFileStubSource> _logger;
         private readonly IFileService _fileService;
-        private readonly IHashingService _hashingService;
-        private readonly IJsonService _jsonService;
-        private readonly IYamlService _yamlService;
+        private readonly SettingsModel _settings;
 
         public YamlFileStubSource(
-           IConfigurationService configurationService,
            IFileService fileService,
-           IHashingService hashingService,
-           IJsonService jsonService,
            ILogger<YamlFileStubSource> logger,
-           IYamlService yamlService)
+           IOptions<SettingsModel> options)
         {
-            _configurationService = configurationService;
             _fileService = fileService;
-            _hashingService = hashingService;
-            _jsonService = jsonService;
             _logger = logger;
-            _yamlService = yamlService;
+            _settings = options.Value;
         }
 
         public Task<IEnumerable<StubModel>> GetStubsAsync()
         {
-            var config = _configurationService.GetConfiguration();
-            config.TryGetValue(Constants.ConfigKeys.InputFileKey, out string inputFileLocation);
+            string inputFileLocation = _settings.Storage?.InputFile;
             var fileLocations = new List<string>();
             if (string.IsNullOrEmpty(inputFileLocation))
             {
@@ -84,7 +77,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                     var input = _fileService.ReadAllText(file);
                     _logger.LogInformation($"File contents of '{file}': '{input}'");
 
-                    var stubs = _yamlService.Parse<List<StubModel>>(input);
+                    var stubs = YamlUtilities.Parse<List<StubModel>>(input);
                     EnsureStubsHaveId(stubs);
                     result.AddRange(stubs);
                     _stubLoadDateTime = DateTime.UtcNow;
@@ -118,8 +111,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                 if (string.IsNullOrWhiteSpace(stub.Id))
                 {
                     // If no ID is set, calculate a unique ID based on the stub contents.
-                    string contents = _jsonService.SerializeObject(stub);
-                    stub.Id = _hashingService.GetMd5String(contents);
+                    string contents = JsonConvert.SerializeObject(stub);
+                    stub.Id = HashingUtilities.GetMd5String(contents);
                 }
             }
         }

@@ -1,17 +1,19 @@
 ﻿using System.Data;
 using HttPlaceholder.DataLogic.Db;
 using HttPlaceholder.Persistence.Db.Resources;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
 {
     internal class MysqlQueryStore : IQueryStore
     {
-        private readonly IConfigurationService _configurationService;
+        internal const string ConnectionStringKey = "MySql";
+        private readonly IConfiguration _configuration;
 
-        public MysqlQueryStore(IConfigurationService configurationService)
+        public MysqlQueryStore(IConfiguration configuration)
         {
-            _configurationService = configurationService;
+            _configuration = configuration;
         }
 
         public string GetRequestsQuery => @"SELECT
@@ -45,11 +47,7 @@ FROM stubs";
 
         public string MigrationsQuery => MysqlResources.MigrateScript;
 
-        public IDbConnection GetConnection()
-        {
-            var config = _configurationService.GetConfiguration();
-            string connectionString = config[Constants.ConfigKeys.MysqlConnectionStringKey];
-            return new MySqlConnection(connectionString);
-        }
+        public IDbConnection GetConnection() =>
+            new MySqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
     }
 }

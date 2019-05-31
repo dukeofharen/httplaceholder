@@ -1,20 +1,19 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using System.Data.SQLite;
 using HttPlaceholder.DataLogic.Db;
-using HttPlaceholder.Models;
 using HttPlaceholder.Persistence.Db.Resources;
-using HttPlaceholder.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
 {
     internal class SqliteQueryStore : IQueryStore
     {
-        private readonly IConfigurationService _configurationService;
+        internal const string ConnectionStringKey = "Sqlite";
+        private readonly IConfiguration _configuration;
 
-        public SqliteQueryStore(IConfigurationService configurationService)
+        public SqliteQueryStore(IConfiguration configuration)
         {
-            _configurationService = configurationService;
+            _configuration = configuration;
         }
 
         public string GetRequestsQuery => @"SELECT
@@ -48,11 +47,7 @@ FROM stubs";
 
         public string MigrationsQuery => SqliteResources.MigrateScript;
 
-        public IDbConnection GetConnection()
-        {
-            var config = _configurationService.GetConfiguration();
-            string connectionString = config[Constants.ConfigKeys.SqliteConnectionStringKey];
-            return new SQLiteConnection(connectionString);
-        }
+        public IDbConnection GetConnection() =>
+            new SQLiteConnection(_configuration.GetConnectionString(ConnectionStringKey));
     }
 }

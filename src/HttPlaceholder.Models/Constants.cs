@@ -53,11 +53,6 @@ namespace HttPlaceholder.Models
             public const string ConfigJsonLocationKey = "configJsonLocation";
         }
 
-        public static class DefaultValues
-        {
-            public const int MaxRequestsQueueLength = 40;
-        }
-
         public static class CookieKeys
         {
             public const string LoginCookieKey = "HttPlaceholderLoggedin";

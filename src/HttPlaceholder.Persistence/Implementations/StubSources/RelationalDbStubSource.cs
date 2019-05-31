@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Dapper;
 using Ducode.Essentials.Console;
 using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Configuration;
 using HttPlaceholder.DataLogic.Db;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources
@@ -18,28 +20,22 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         private const string StubJsonType = "json";
         private const string StubYamlType = "yaml";
 
-        private readonly IConfigurationService _configurationService;
-        private readonly IJsonService _jsonService;
+        private readonly SettingsModel _settings;
         private readonly IQueryStore _queryStore;
-        private readonly IYamlService _yamlService;
 
         public RelationalDbStubSource(
-            IConfigurationService configurationService,
-            IJsonService jsonService,
-            IQueryStore queryStore,
-            IYamlService yamlService)
+            IOptions<SettingsModel> options,
+            IQueryStore queryStore)
         {
-            _configurationService = configurationService;
-            _jsonService = jsonService;
+            _settings = options.Value;
             _queryStore = queryStore;
-            _yamlService = yamlService;
         }
 
         public async Task AddRequestResultAsync(RequestResultModel requestResult)
         {
             using (var conn = _queryStore.GetConnection())
             {
-                string json = _jsonService.SerializeObject(requestResult);
+                string json = JsonConvert.SerializeObject(requestResult);
                 await conn.ExecuteAsync(_queryStore.AddRequestQuery, new
                 {
                     requestResult.CorrelationId,
@@ -55,7 +51,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var conn = _queryStore.GetConnection())
             {
-                string json = _jsonService.SerializeObject(stub);
+                string json = JsonConvert.SerializeObject(stub);
                 await conn.ExecuteAsync(_queryStore.AddStubQuery, new
                 {
                     StubId = stub.Id,
@@ -67,8 +63,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task CleanOldRequestResultsAsync()
         {
-            var config = _configurationService.GetConfiguration();
-            int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
+            int maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
             using (var conn = _queryStore.GetConnection())
             {
                 await conn.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new { Limit = maxLength });
@@ -98,7 +93,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             {
                 var result = await conn.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery);
                 return result
-                    .Select(r => _jsonService.DeserializeObject<RequestResultModel>(r.Json));
+                    .Select(r => JsonConvert.DeserializeObject<RequestResultModel>(r.Json));
             }
         }
 
@@ -113,10 +108,10 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                     switch (queryResult.StubType)
                     {
                         case StubJsonType:
-                            result.Add(_jsonService.DeserializeObject<StubModel>(queryResult.Stub));
+                            result.Add(JsonConvert.DeserializeObject<StubModel>(queryResult.Stub));
                             break;
                         case StubYamlType:
-                            result.Add(_yamlService.Parse<StubModel>(queryResult.Stub));
+                            result.Add(YamlUtilities.Parse<StubModel>(queryResult.Stub));
                             break;
                         default:
                             throw new NotImplementedException($"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.");

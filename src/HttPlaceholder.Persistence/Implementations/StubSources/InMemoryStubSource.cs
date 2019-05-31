@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ducode.Essentials.Console;
 using HttPlaceholder.Application.Interfaces;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services;
-using HttPlaceholder.Utilities;
+using HttPlaceholder.Configuration;
+using HttPlaceholder.Domain;
+using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
@@ -13,14 +13,14 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
     {
         private static object _lock = new object();
 
-        private readonly IConfigurationService _configurationService;
+        private readonly SettingsModel _settings;
 
         internal readonly IList<RequestResultModel> _requestResultModels = new List<RequestResultModel>();
         internal readonly IList<StubModel> _stubModels = new List<StubModel>();
 
-        public InMemoryStubSource(IConfigurationService configurationService)
+        public InMemoryStubSource(IOptions<SettingsModel> options)
         {
-            _configurationService = configurationService;
+            _settings = options.Value;
         }
 
         public Task AddRequestResultAsync(RequestResultModel requestResult)
@@ -85,9 +85,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             lock (_lock)
             {
-                var config = _configurationService.GetConfiguration();
-                int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
-
+                int maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
                 var requests = _requestResultModels
                    .OrderByDescending(r => r.RequestEndTime)
                    .Skip(maxLength);
