@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Linq;
 using Ducode.Essentials.Console;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using Microsoft.AspNetCore.Http;
@@ -46,15 +44,7 @@ namespace HttPlaceholder.Authorization.Implementations
                 new CookieOptions { HttpOnly = true });
         }
 
-        private string CreateHash(string username, string password)
-        {
-            using (var sha = SHA512.Create())
-            {
-                string inputString = $"{Salt}:{username}:{password}";
-                var bytes = Encoding.UTF8.GetBytes(inputString);
-                var hash = sha.ComputeHash(bytes);
-                return Convert.ToBase64String(hash);
-            }
-        }
+        private string CreateHash(string username, string password) =>
+            HashingUtilities.GetSha512String($"{Salt}:{username}:{password}");
     }
 }

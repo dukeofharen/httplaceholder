@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Ducode.Essentials.Console;
 using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Application.Interfaces;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services;
+using HttPlaceholder.Domain;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources
@@ -16,23 +15,20 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
     {
         private readonly IConfigurationService _configurationService;
         private readonly IFileService _fileService;
-        private readonly IJsonService _jsonService;
 
         public FileSystemStubSource(
            IConfigurationService configurationService,
-           IFileService fileService,
-           IJsonService jsonService)
+           IFileService fileService)
         {
             _configurationService = configurationService;
             _fileService = fileService;
-            _jsonService = jsonService;
         }
 
         public Task AddRequestResultAsync(RequestResultModel requestResult)
         {
             var path = EnsureAndGetRequestsFolder();
             var filePath = Path.Combine(path, $"{requestResult.CorrelationId}.json");
-            string contents = _jsonService.SerializeObject(requestResult);
+            string contents = JsonConvert.SerializeObject(requestResult);
             _fileService.WriteAllText(filePath, contents);
             return Task.CompletedTask;
         }
@@ -41,7 +37,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             var path = EnsureAndGetStubsFolder();
             var filePath = Path.Combine(path, $"{stub.Id}.json");
-            string contents = _jsonService.SerializeObject(stub);
+            string contents = JsonConvert.SerializeObject(stub);
             _fileService.WriteAllText(filePath, contents);
             return Task.CompletedTask;
         }
@@ -79,7 +75,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             foreach (var filePath in files)
             {
                 var contents = _fileService.ReadAllText(filePath);
-                var request = _jsonService.DeserializeObject<RequestResultModel>(contents);
+                var request = JsonConvert.DeserializeObject<RequestResultModel>(contents);
                 result.Add(request);
             }
 
@@ -94,7 +90,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             foreach (var filePath in files)
             {
                 var contents = _fileService.ReadAllText(filePath);
-                var stub = _jsonService.DeserializeObject<StubModel>(contents);
+                var stub = JsonConvert.DeserializeObject<StubModel>(contents);
                 result.Add(stub);
             }
 
