@@ -125,6 +125,10 @@
   background-color: #0F2931;
 }
 
+.dark-theme .navbar-brand {
+  background-image: url(../img/logo-white.png);
+}
+
 /* Navbar
   --------- */
 

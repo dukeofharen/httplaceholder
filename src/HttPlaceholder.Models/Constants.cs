@@ -62,5 +62,10 @@ namespace HttPlaceholder.Models
         {
             public static Regex VarRegex = new Regex(@"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)", RegexOptions.Compiled);
         }
+
+        public static class CookieKeys
+        {
+            public const string LoginCookieKey = "HttPlaceholderLoggedin";
+        }
     }
 }

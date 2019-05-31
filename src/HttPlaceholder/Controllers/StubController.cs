@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HttPlaceholder.BusinessLogic;
-using HttPlaceholder.Filters;
 using HttPlaceholder.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +8,6 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Controllers
 {
-
-
     /// <summary>
     /// Stub Controller
     /// </summary>
@@ -21,7 +18,7 @@ namespace HttPlaceholder.Controllers
         private readonly IStubContainer _stubContainer;
 
         /// <summary>
-        /// 
+        /// The stub controller.
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="stubContaner"></param>
@@ -34,10 +31,10 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Adds a new stub.
         /// </summary>
         /// <param name="stubModel"></param>
-        /// <returns></returns>
+        /// <returns>OK, but no content returned</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -53,9 +50,9 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get all stubs.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>All stubs.</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FullStubModel>>> GetAll()
         {
@@ -65,17 +62,15 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get a specific stub by stub identifier.
         /// </summary>
         /// <param name="stubId"></param>
-        /// <returns></returns>
+        /// <returns>The stub.</returns>
         [HttpGet]
         [Route("{stubId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        //  [SwaggerResponse((int)HttpStatusCode.OK, Description = "OK", Type = typeof(StubModel))]
-        //    [SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Stub not found")]
         public async Task<ActionResult<FullStubModel>> Get([FromRoute]string stubId)
         {
             _logger.LogInformation($"Retrieving stub with ID '{stubId}'.");
@@ -89,14 +84,12 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Delete a specific stub by stub identifier.
         /// </summary>
         /// <param name="stubId"></param>
-        /// <returns></returns>
+        /// <returns>OK, but not content</returns>
         [HttpDelete]
         [Route("{stubId}")]
-        // [SwaggerResponse((int)HttpStatusCode.NotFound, Description = "Stub not found")]
-        // [SwaggerResponse((int)HttpStatusCode.NoContent, Description = "OK, but no content returned")]
         public async Task<ActionResult> Delete([FromRoute]string stubId)
         {
             _logger.LogInformation($"Deleting stub with ID '{stubId}'");

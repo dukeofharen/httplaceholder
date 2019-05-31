@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Filters;
+﻿using HttPlaceholder.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +12,5 @@ namespace HttPlaceholder.Controllers
     [ApiAuthorization]
     public class BaseApiController : Controller
     {
-
     }
 }

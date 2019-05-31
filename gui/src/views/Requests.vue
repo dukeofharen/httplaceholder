@@ -42,20 +42,26 @@
 <script>
 import Request from "@/components/Request";
 import resources from "@/resources";
+import { HubConnectionBuilder } from "@aspnet/signalr";
 
 export default {
   name: "requests",
   data() {
     return {
       filteredRequests: [],
-      searchTerm: ""
+      searchTerm: "",
+      connection: {}
     };
   },
   components: {
     Request
   },
   created() {
+    this.initializeSignalR();
     this.getRequests();
+  },
+  destroyed() {
+    this.connection.stop();
   },
   computed: {
     requests() {
@@ -90,6 +96,20 @@ export default {
     },
     clearInput() {
       this.searchTerm = "";
+    },
+    initializeSignalR() {
+      this.connection = new HubConnectionBuilder()
+        .withUrl("/requestHub")
+        .build();
+      this.connection.on("RequestReceived", request => {
+        this.$store.commit("addAdditionalRequest", request);
+      });
+      this.connection
+        .start()
+        .then(() => {})
+        .catch(err => {
+          return console.error(err.toString());
+        });
     }
   },
   watch: {

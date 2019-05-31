@@ -14,23 +14,22 @@ namespace HttPlaceholder.BusinessLogic
             services.AddSingleton<IStubResponseGenerator, StubResponseGenerator>();
             services.AddSingleton<IVariableParser, VariableParser>();
 
+            string filter = "HttPlaceholder";
+
             // Condition checkers
-            var conditionCheckerTypes = AssemblyHelper.GetImplementations<IConditionChecker>();
-            foreach (var type in conditionCheckerTypes)
+            foreach (var type in AssemblyHelper.GetImplementations<IConditionChecker>(filter))
             {
                 services.AddTransient(typeof(IConditionChecker), type);
             }
 
             // Response writers
-            var responseWriterTypes = AssemblyHelper.GetImplementations<IResponseWriter>();
-            foreach (var type in responseWriterTypes)
+            foreach (var type in AssemblyHelper.GetImplementations<IResponseWriter>(filter))
             {
                 services.AddTransient(typeof(IResponseWriter), type);
             }
 
             // Variable handlers
-            var variableHandlers = AssemblyHelper.GetImplementations<IVariableHandler>();
-            foreach (var type in variableHandlers)
+            foreach (var type in AssemblyHelper.GetImplementations<IVariableHandler>(filter))
             {
                 services.AddTransient(typeof(IVariableHandler), type);
             }

@@ -4,7 +4,7 @@ export default {
     },
     storeAuthenticated: (state, authenticated) => {
         state.authenticated = authenticated
-        if(!authenticated) {
+        if (!authenticated) {
             state.userToken = null
         }
     },
@@ -19,6 +19,9 @@ export default {
     },
     storeRequests: (state, requests) => {
         state.requests = requests
+    },
+    addAdditionalRequest: (state, request) => {
+        state.requests.unshift(request); 
     },
     storeStubs: (state, stubs) => {
         state.stubs = stubs

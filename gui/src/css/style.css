@@ -14,8 +14,12 @@ body, html {
   cursor: pointer;
 }
 
-.navbar-brand img {
+.navbar-brand {
   height: 35px;
+  width: 150px;
+  display: inline-block;
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
 
 @media (max-width: 767px) {

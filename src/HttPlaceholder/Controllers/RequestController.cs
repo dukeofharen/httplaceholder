@@ -31,7 +31,7 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// Get all Requests
+        /// Get all Requests.
         /// </summary>
         /// <returns>All request results</returns>
         [HttpGet]
@@ -44,7 +44,7 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// Get requests for the given stub id 
+        /// Get requests for the given stub ID.
         /// </summary>
         /// <param name="stubId">stub identifier</param>
         /// <returns>request results for the given stubId</returns>
@@ -59,7 +59,7 @@ namespace HttPlaceholder.Controllers
         }
 
         /// <summary>
-        /// Delete all requests. This call flushes all the requests
+        /// Delete all requests. This call flushes all the requests.
         /// </summary>
         /// <returns>OK, but no content returned</returns>
         [HttpDelete]

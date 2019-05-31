@@ -3,10 +3,13 @@ using System.Threading.Tasks;
 using Ducode.Essentials.Mvc.Interfaces;
 using Ducode.Essentials.Mvc.TestUtilities;
 using HttPlaceholder.BusinessLogic;
+using HttPlaceholder.Hubs;
+using HttPlaceholder.Hubs.Implementations;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,6 +29,7 @@ namespace HttPlaceholder.Tests.Middleware
         private Mock<ILogger<StubHandlingMiddleware>> _loggerMock;
         private Mock<IRequestLoggerFactory> _requestLoggerFactoryMock;
         private Mock<IRequestLogger> _requestLoggerMock;
+        private Mock<IRequestNotify> _requestNotifyMock;
         private Mock<IStubContainer> _stubContainerMock;
         private Mock<IStubRequestExecutor> _stubRequestExecutorMock;
         private StubHandlingMiddleware _middleware;
@@ -45,6 +49,7 @@ namespace HttPlaceholder.Tests.Middleware
             _loggerMock = new Mock<ILogger<StubHandlingMiddleware>>();
             _requestLoggerFactoryMock = new Mock<IRequestLoggerFactory>();
             _requestLoggerMock = new Mock<IRequestLogger>();
+            _requestNotifyMock = new Mock<IRequestNotify>();
             _stubContainerMock = new Mock<IStubContainer>();
             _stubRequestExecutorMock = new Mock<IStubRequestExecutor>();
 
@@ -55,6 +60,7 @@ namespace HttPlaceholder.Tests.Middleware
                 _httpContextServiceMock.Object,
                 _loggerMock.Object,
                 _requestLoggerFactoryMock.Object,
+                _requestNotifyMock.Object,
                 _stubContainerMock.Object,
                 _stubRequestExecutorMock.Object);
         }
@@ -67,6 +73,7 @@ namespace HttPlaceholder.Tests.Middleware
             _httpContextServiceMock.VerifyAll();
             _loggerMock.VerifyAll();
             _requestLoggerFactoryMock.VerifyAll();
+            _requestNotifyMock.VerifyAll();
             _stubContainerMock.VerifyAll();
             _stubRequestExecutorMock.VerifyAll();
         }

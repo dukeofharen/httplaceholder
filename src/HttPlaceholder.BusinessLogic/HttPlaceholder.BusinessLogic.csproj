@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>0.1.0.0</Version>
@@ -19,10 +19,10 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.4" />
+    <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.5" />
     <PackageReference Include="Ducode.Essentials.Async" Version="0.0.2" />
     <PackageReference Include="IPAddressRange" Version="3.2.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttPlaceholder.DataLogic\HttPlaceholder.DataLogic.csproj" />

@@ -4,12 +4,17 @@ using Ducode.Essentials.Assembly;
 using Ducode.Essentials.Async;
 using Ducode.Essentials.Files;
 using Ducode.Essentials.Mvc;
+using HttPlaceholder.Authorization;
+using HttPlaceholder.Authorization.Implementations;
 using HttPlaceholder.BusinessLogic;
 using HttPlaceholder.DataLogic;
 using HttPlaceholder.Formatters;
+using HttPlaceholder.Hubs;
+using HttPlaceholder.Hubs.Implementations;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Services;
 using HttPlaceholder.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -54,6 +59,10 @@ namespace HttPlaceholder
         public static void ConfigureStatic(IApplicationBuilder app, IHostingEnvironment env, bool preloadStubs, bool loadStaticFiles)
         {
             app
+                .UseSignalR(routes =>
+                {
+                    routes.MapHub<RequestHub>("/requestHub");
+                })
                .UseMiddleware<ApiHeadersMiddleware>()
                .UseMiddleware<ApiExceptionHandlingMiddleware>()
                .UseMiddleware<StubHandlingMiddleware>()
@@ -98,6 +107,12 @@ namespace HttPlaceholder
                })
                .AddJsonOptions(options => options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
                .SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_2);
+
+            services
+                .AddSignalR();
+
+            services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<IRequestNotify, RequestNotify>();
 
             services
                .AddBusinessLogic()
