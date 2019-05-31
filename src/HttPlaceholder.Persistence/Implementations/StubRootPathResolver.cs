@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using Ducode.Essentials.Assembly.Interfaces;
 using Ducode.Essentials.Files.Interfaces;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services;
+using HttPlaceholder.Application.Interfaces;
 
-namespace HttPlaceholder.DataLogic.Implementations
+namespace HttPlaceholder.Persistence.Implementations
 {
     internal class StubRootPathResolver : IStubRootPathResolver
     {

@@ -1,6 +1,6 @@
 ﻿using Ducode.Essentials.Mvc.Interfaces;
 
-namespace HttPlaceholder.Services.Implementations
+namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     internal class RequestLoggerFactory : IRequestLoggerFactory
     {

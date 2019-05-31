@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.DataLogic
+namespace HttPlaceholder.Application.Interfaces
 {
     public interface IWritableStubSource : IStubSource
     {

@@ -5,11 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ducode.Essentials.Console;
 using Ducode.Essentials.Files.Interfaces;
+using HttPlaceholder.Application.Interfaces;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.DataLogic.Implementations.StubSources
+namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class FileSystemStubSource : IWritableStubSource
     {
@@ -29,8 +30,8 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
         public Task AddRequestResultAsync(RequestResultModel requestResult)
         {
-            string path = EnsureAndGetRequestsFolder();
-            string filePath = Path.Combine(path, $"{requestResult.CorrelationId}.json");
+            var path = EnsureAndGetRequestsFolder();
+            var filePath = Path.Combine(path, $"{requestResult.CorrelationId}.json");
             string contents = _jsonService.SerializeObject(requestResult);
             _fileService.WriteAllText(filePath, contents);
             return Task.CompletedTask;
@@ -38,8 +39,8 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
         public Task AddStubAsync(StubModel stub)
         {
-            string path = EnsureAndGetStubsFolder();
-            string filePath = Path.Combine(path, $"{stub.Id}.json");
+            var path = EnsureAndGetStubsFolder();
+            var filePath = Path.Combine(path, $"{stub.Id}.json");
             string contents = _jsonService.SerializeObject(stub);
             _fileService.WriteAllText(filePath, contents);
             return Task.CompletedTask;
@@ -47,9 +48,9 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
         public Task DeleteAllRequestResultsAsync()
         {
-            string path = EnsureAndGetRequestsFolder();
+            var path = EnsureAndGetRequestsFolder();
             var files = _fileService.GetFiles(path, "*.json");
-            foreach (string filePath in files)
+            foreach (var filePath in files)
             {
                 _fileService.DeleteFile(filePath);
             }
@@ -59,8 +60,8 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
         public Task<bool> DeleteStubAsync(string stubId)
         {
-            string path = EnsureAndGetStubsFolder();
-            string filePath = Path.Combine(path, $"{stubId}.json");
+            var path = EnsureAndGetStubsFolder();
+            var filePath = Path.Combine(path, $"{stubId}.json");
             if (!_fileService.FileExists(filePath))
             {
                 return Task.FromResult(false);
@@ -72,12 +73,12 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
         public Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
         {
-            string path = EnsureAndGetRequestsFolder();
+            var path = EnsureAndGetRequestsFolder();
             var files = _fileService.GetFiles(path, "*.json");
             var result = new List<RequestResultModel>();
-            foreach (string filePath in files)
+            foreach (var filePath in files)
             {
-                string contents = _fileService.ReadAllText(filePath);
+                var contents = _fileService.ReadAllText(filePath);
                 var request = _jsonService.DeserializeObject<RequestResultModel>(contents);
                 result.Add(request);
             }
@@ -87,12 +88,12 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
         public Task<IEnumerable<StubModel>> GetStubsAsync()
         {
-            string path = EnsureAndGetStubsFolder();
+            var path = EnsureAndGetStubsFolder();
             var files = _fileService.GetFiles(path, "*.json");
             var result = new List<StubModel>();
-            foreach (string filePath in files)
+            foreach (var filePath in files)
             {
-                string contents = _fileService.ReadAllText(filePath);
+                var contents = _fileService.ReadAllText(filePath);
                 var stub = _jsonService.DeserializeObject<StubModel>(contents);
                 result.Add(stub);
             }
@@ -102,7 +103,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
 
         public async Task CleanOldRequestResultsAsync()
         {
-            string path = EnsureAndGetRequestsFolder();
+            var path = EnsureAndGetRequestsFolder();
             var config = _configurationService.GetConfiguration();
             int maxLength = config.GetValue(Constants.ConfigKeys.OldRequestsQueueLengthKey, Constants.DefaultValues.MaxRequestsQueueLength);
             var requests = (await GetRequestResultsAsync())
@@ -110,7 +111,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
                .Skip(maxLength);
             foreach (var request in requests)
             {
-                string filePath = Path.Combine(path, $"{request.CorrelationId}.json");
+                var filePath = Path.Combine(path, $"{request.CorrelationId}.json");
                 _fileService.DeleteFile(filePath);
             }
         }
@@ -126,7 +127,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         {
             var config = _configurationService.GetConfiguration();
             string folder = config[Constants.ConfigKeys.FileStorageLocationKey];
-            string path = Path.Combine(folder, "stubs");
+            var path = Path.Combine(folder, "stubs");
             if (!_fileService.DirectoryExists(path))
             {
                 _fileService.CreateDirectory(path);
@@ -139,7 +140,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
         {
             var config = _configurationService.GetConfiguration();
             string folder = config[Constants.ConfigKeys.FileStorageLocationKey];
-            string path = Path.Combine(folder, "requests");
+            var path = Path.Combine(folder, "requests");
             if (!_fileService.DirectoryExists(path))
             {
                 _fileService.CreateDirectory(path);

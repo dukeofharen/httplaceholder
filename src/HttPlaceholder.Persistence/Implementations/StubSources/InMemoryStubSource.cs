@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Ducode.Essentials.Console;
+using HttPlaceholder.Application.Interfaces;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using HttPlaceholder.Utilities;
 
-namespace HttPlaceholder.DataLogic.Implementations.StubSources
+namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class InMemoryStubSource : IWritableStubSource
     {

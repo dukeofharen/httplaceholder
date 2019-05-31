@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HttPlaceholder.DataLogic.Db.Models
+namespace HttPlaceholder.Domain.Entities
 {
     public class DbRequestModel
     {

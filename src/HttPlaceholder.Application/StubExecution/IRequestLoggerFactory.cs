@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.Services
+﻿namespace HttPlaceholder.Application.StubExecution
 {
     public interface IRequestLoggerFactory
     {

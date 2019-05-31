@@ -1,24 +1,18 @@
-﻿using HttPlaceholder.DataLogic.Db;
-using HttPlaceholder.DataLogic.Db.Implementations;
-using HttPlaceholder.DataLogic.Implementations;
-using HttPlaceholder.DataLogic.Implementations.StubSources;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services;
-using HttPlaceholder.Utilities;
+﻿using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.DataLogic.Db;
+using HttPlaceholder.Persistence.Db.Implementations;
+using HttPlaceholder.Persistence.Implementations;
+using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HttPlaceholder.DataLogic
+namespace HttPlaceholder.Persistence
 {
-    public static class DependencyRegistration
+    public static class PersistenceModule
     {
-        public static IServiceCollection AddDataLogic(this IServiceCollection services)
+        public static IServiceCollection AddPersistenceModule(this IServiceCollection services)
         {
             services.AddSingleton<IStubRootPathResolver, StubRootPathResolver>();
-            return services;
-        }
 
-        public static IServiceCollection AddStubSources(this IServiceCollection services)
-        {
             // The YAML stub source should always be registered.
             services.AddSingleton<IStubSource, YamlFileStubSource>();
 

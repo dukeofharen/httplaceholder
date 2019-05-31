@@ -4,13 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Ducode.Essentials.Console;
+using HttPlaceholder.Application.Interfaces;
 using HttPlaceholder.DataLogic.Db;
-using HttPlaceholder.DataLogic.Db.Models;
+using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.DataLogic.Implementations.StubSources
+namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class RelationalDbStubSource : IWritableStubSource
     {
@@ -41,10 +42,10 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
                 string json = _jsonService.SerializeObject(requestResult);
                 await conn.ExecuteAsync(_queryStore.AddRequestQuery, new
                 {
-                    CorrelationId = requestResult.CorrelationId,
-                    ExecutingStubId = requestResult.ExecutingStubId,
-                    RequestBeginTime = requestResult.RequestBeginTime,
-                    RequestEndTime = requestResult.RequestEndTime,
+                    requestResult.CorrelationId,
+                    requestResult.ExecutingStubId,
+                    requestResult.RequestBeginTime,
+                    requestResult.RequestEndTime,
                     Json = json
                 });
             }

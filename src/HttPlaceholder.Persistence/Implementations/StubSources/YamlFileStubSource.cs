@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ducode.Essentials.Files.Interfaces;
+using HttPlaceholder.Application.Interfaces;
 using HttPlaceholder.Models;
 using HttPlaceholder.Services;
 using Microsoft.Extensions.Logging;
 
-namespace HttPlaceholder.DataLogic.Implementations.StubSources
+namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class YamlFileStubSource : IStubSource
     {
@@ -44,7 +45,7 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             if (string.IsNullOrEmpty(inputFileLocation))
             {
                 // If the input file location is not set, try looking in the current directory for .yml files.
-                string currentDirectory = _fileService.GetCurrentDirectory();
+                var currentDirectory = _fileService.GetCurrentDirectory();
                 var yamlFiles = _fileService.GetFiles(currentDirectory, "*.yml");
                 fileLocations.AddRange(yamlFiles);
             }
@@ -52,9 +53,9 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             {
                 // Split on ";": it is possible to supply multiple locations.
                 var parts = inputFileLocation.Split(new[] { "%%" }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string part in parts)
+                foreach (var part in parts)
                 {
-                    string location = part.Trim();
+                    var location = part.Trim();
                     _logger.LogInformation($"Reading location '{location}'.");
                     if (_fileService.IsDirectory(location))
                     {
@@ -77,10 +78,10 @@ namespace HttPlaceholder.DataLogic.Implementations.StubSources
             if (_stubs == null || GetLastStubFileModificationDateTime(fileLocations) > _stubLoadDateTime)
             {
                 var result = new List<StubModel>();
-                foreach (string file in fileLocations)
+                foreach (var file in fileLocations)
                 {
                     // Load the stubs.
-                    string input = _fileService.ReadAllText(file);
+                    var input = _fileService.ReadAllText(file);
                     _logger.LogInformation($"File contents of '{file}': '{input}'");
 
                     var stubs = _yamlService.Parse<List<StubModel>>(input);

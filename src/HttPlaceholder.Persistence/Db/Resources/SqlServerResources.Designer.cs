@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HttPlaceholder.DataLogic.Db {
+namespace HttPlaceholder.Persistence.Db.Resources {
     using System;
     
     
@@ -19,17 +19,17 @@ namespace HttPlaceholder.DataLogic.Db {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class SqliteResources {
+    internal class SqlServerResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal SqliteResources() {
+        internal SqlServerResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace HttPlaceholder.DataLogic.Db {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HttPlaceholder.DataLogic.Db.SqliteResources", typeof(SqliteResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HttPlaceholder.Persistence.Db.Resources.SqlServerResources", typeof(SqlServerResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,21 +61,21 @@ namespace HttPlaceholder.DataLogic.Db {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CREATE TABLE IF NOT EXISTS `requests` (
-        ///	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        ///	`correlation_id`	TEXT NOT NULL,
-        ///	`executing_stub_id`	TEXT,
-        ///	`request_begin_time`	TEXT NOT NULL,
-        ///	`request_end_time`	TEXT,
-        ///	`json`	TEXT NOT NULL
-        ///);
+        ///   Looks up a localized string similar to IF OBJECT_ID(N&apos;dbo.stubs&apos;, N&apos;U&apos;) IS NULL
+        ///BEGIN
+        ///	CREATE TABLE [dbo].[stubs](
+        ///		[id] [bigint] IDENTITY(1,1) NOT NULL,
+        ///		[stub_id] [nvarchar](255) NOT NULL,
+        ///		[stub] [nvarchar](max) NOT NULL,
+        ///		[stub_type] [nvarchar](20) NOT NULL
+        ///	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+        ///END;
         ///
-        ///CREATE TABLE IF NOT EXISTS `stubs` (
-        ///	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-        ///	`stub_id`	TEXT NOT NULL UNIQUE,
-        ///	`stub`	TEXT NOT NULL,
-        ///	`stub_type`	TEXT NOT NULL
-        ///);.
+        ///IF (SELECT COUNT(*) FROM sys.indexes WHERE name = &apos;ix_stub_id&apos; AND object_id = OBJECT_ID(&apos;dbo.stubs&apos;)) = 0
+        ///	CREATE UNIQUE NONCLUSTERED INDEX [ix_stub_id] ON [dbo].[stubs]
+        ///	(
+        ///		[stub_id] ASC
+        ///	) WITH (PAD_INDEX = OFF, STATISTIC [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string MigrateScript {
             get {

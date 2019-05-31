@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.DataLogic
+﻿namespace HttPlaceholder.Application.Interfaces
 {
     public interface IStubRootPathResolver
     {

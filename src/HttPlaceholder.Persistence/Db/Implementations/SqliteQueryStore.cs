@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Data;
 using System.Data.SQLite;
+using HttPlaceholder.DataLogic.Db;
 using HttPlaceholder.Models;
+using HttPlaceholder.Persistence.Db.Resources;
 using HttPlaceholder.Services;
 
-namespace HttPlaceholder.DataLogic.Db.Implementations
+namespace HttPlaceholder.Persistence.Db.Implementations
 {
     internal class SqliteQueryStore : IQueryStore
     {

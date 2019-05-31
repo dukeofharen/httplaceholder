@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.DataLogic.Db.Models
+﻿namespace HttPlaceholder.Domain.Entities
 {
     public class DbStubModel
     {

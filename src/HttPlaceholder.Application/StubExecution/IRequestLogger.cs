@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Services
+namespace HttPlaceholder.Application.StubExecution
 {
     public interface IRequestLogger
     {

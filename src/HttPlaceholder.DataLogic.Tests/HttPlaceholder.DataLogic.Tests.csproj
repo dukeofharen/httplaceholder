@@ -26,7 +26,6 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HttPlaceholder.DataLogic\HttPlaceholder.DataLogic.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
   </ItemGroup>
   <ItemGroup>

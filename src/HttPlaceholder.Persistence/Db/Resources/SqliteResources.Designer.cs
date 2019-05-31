@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HttPlaceholder.DataLogic.Db {
+namespace HttPlaceholder.Persistence.Db.Resources {
     using System;
     
     
@@ -19,17 +19,17 @@ namespace HttPlaceholder.DataLogic.Db {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class MysqlResources {
+    internal class SqliteResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal MysqlResources() {
+        internal SqliteResources() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace HttPlaceholder.DataLogic.Db {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HttPlaceholder.DataLogic.Db.MysqlResources", typeof(MysqlResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HttPlaceholder.Persistence.Db.Resources.SqliteResources", typeof(SqliteResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,18 +61,21 @@ namespace HttPlaceholder.DataLogic.Db {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /*Table structure for table `requests` */
-        ///CREATE TABLE IF NOT EXISTS `requests` (
-        ///  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-        ///  `correlation_id` VARCHAR(100) NOT NULL,
-        ///  `executing_stub_id` VARCHAR(100) DEFAULT NULL,
-        ///  `request_begin_time` DATETIME NOT NULL,
-        ///  `request_end_time` DATETIME DEFAULT NULL,
-        ///  `json` LONGTEXT NOT NULL,
-        ///  PRIMARY KEY (`id`),
-        ///  UNIQUE KEY `ix_correlation_id` (`correlation_id`),
-        ///  KEY `ix_executing_stub_id` (`executing_stub_id`),
-        ///  KEY `ix_request_begin_time` (`request_begi [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to CREATE TABLE IF NOT EXISTS `requests` (
+        ///	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        ///	`correlation_id`	TEXT NOT NULL,
+        ///	`executing_stub_id`	TEXT,
+        ///	`request_begin_time`	TEXT NOT NULL,
+        ///	`request_end_time`	TEXT,
+        ///	`json`	TEXT NOT NULL
+        ///);
+        ///
+        ///CREATE TABLE IF NOT EXISTS `stubs` (
+        ///	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+        ///	`stub_id`	TEXT NOT NULL UNIQUE,
+        ///	`stub`	TEXT NOT NULL,
+        ///	`stub_type`	TEXT NOT NULL
+        ///);.
         /// </summary>
         internal static string MigrateScript {
             get {

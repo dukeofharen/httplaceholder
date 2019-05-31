@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Tests", "Htt
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Services", "HttPlaceholder.Services\HttPlaceholder.Services.csproj", "{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.DataLogic", "HttPlaceholder.DataLogic\HttPlaceholder.DataLogic.csproj", "{2CA478C3-9204-466F-8B85-43DCBFE6E195}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.DataLogic.Tests", "HttPlaceholder.DataLogic.Tests\HttPlaceholder.DataLogic.Tests.csproj", "{FC465FE9-64AB-46B8-8045-53E65A4D244E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Services.Tests", "HttPlaceholder.Services.Tests\HttPlaceholder.Services.Tests.csproj", "{98BBD819-DB3A-4F63-ADD6-2DB40EFA36B1}"
@@ -46,6 +44,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Application", "HttPlaceholder.Application\HttPlaceholder.Application.csproj", "{FC4C3CF7-8831-423D-A4D5-57C5A2E40B45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Domain", "HttPlaceholder.Domain\HttPlaceholder.Domain.csproj", "{E8DE3E50-ADAD-4B9E-9BAE-4C6E87830C4F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Persistence", "HttPlaceholder.Persistence\HttPlaceholder.Persistence.csproj", "{11B67356-3779-4B8F-A4CC-A3A1AE22E35E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,12 +84,6 @@ Global
 		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Tool|Any CPU.ActiveCfg = Tool|Any CPU
 		{E7C2139E-4C12-47D0-8A98-397B13FC6BE2}.Tool|Any CPU.Build.0 = Tool|Any CPU
-		{2CA478C3-9204-466F-8B85-43DCBFE6E195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CA478C3-9204-466F-8B85-43DCBFE6E195}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CA478C3-9204-466F-8B85-43DCBFE6E195}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CA478C3-9204-466F-8B85-43DCBFE6E195}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CA478C3-9204-466F-8B85-43DCBFE6E195}.Tool|Any CPU.ActiveCfg = Tool|Any CPU
-		{2CA478C3-9204-466F-8B85-43DCBFE6E195}.Tool|Any CPU.Build.0 = Tool|Any CPU
 		{FC465FE9-64AB-46B8-8045-53E65A4D244E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FC465FE9-64AB-46B8-8045-53E65A4D244E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC465FE9-64AB-46B8-8045-53E65A4D244E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -156,6 +150,12 @@ Global
 		{E8DE3E50-ADAD-4B9E-9BAE-4C6E87830C4F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E8DE3E50-ADAD-4B9E-9BAE-4C6E87830C4F}.Tool|Any CPU.ActiveCfg = Debug|Any CPU
 		{E8DE3E50-ADAD-4B9E-9BAE-4C6E87830C4F}.Tool|Any CPU.Build.0 = Debug|Any CPU
+		{11B67356-3779-4B8F-A4CC-A3A1AE22E35E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11B67356-3779-4B8F-A4CC-A3A1AE22E35E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11B67356-3779-4B8F-A4CC-A3A1AE22E35E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11B67356-3779-4B8F-A4CC-A3A1AE22E35E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11B67356-3779-4B8F-A4CC-A3A1AE22E35E}.Tool|Any CPU.ActiveCfg = Debug|Any CPU
+		{11B67356-3779-4B8F-A4CC-A3A1AE22E35E}.Tool|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -174,6 +174,7 @@ Global
 		{37ECDB20-4C9E-4A7B-AFB9-FDF5E2C64EC3} = {21DEC134-DEF5-482F-ADE7-EBF67AB9C2B9}
 		{FC4C3CF7-8831-423D-A4D5-57C5A2E40B45} = {37ECDB20-4C9E-4A7B-AFB9-FDF5E2C64EC3}
 		{E8DE3E50-ADAD-4B9E-9BAE-4C6E87830C4F} = {37ECDB20-4C9E-4A7B-AFB9-FDF5E2C64EC3}
+		{11B67356-3779-4B8F-A4CC-A3A1AE22E35E} = {A78C674D-5E73-42AA-AD38-C659E5BC017D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B07D99A8-ABA7-4A66-9BA2-37E64043B834}

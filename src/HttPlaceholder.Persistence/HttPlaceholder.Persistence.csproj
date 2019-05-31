@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Dapper" Version="1.60.6" />
+        <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.5" />
+        <PackageReference Include="Ducode.Essentials.Console" Version="0.0.3" />
+        <PackageReference Include="Ducode.Essentials.Files" Version="0.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
+        <PackageReference Include="MySqlConnector" Version="0.54.0" />
+        <PackageReference Include="System.Data.SQLite" Version="1.0.110" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Db\Resources\MysqlResources.Designer.cs">
+        <DependentUpon>MysqlResources.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <Compile Update="Db\Resources\SqliteResources.Designer.cs">
+        <DependentUpon>SqliteResources.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <Compile Update="Db\Resources\SqlServerResources.Designer.cs">
+        <DependentUpon>SqlServerResources.resx</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Update="Db\Resources\MysqlResources.resx">
+        <LastGenOutput>MysqlResources.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Db\Resources\SqliteResources.resx">
+        <LastGenOutput>SqliteResources.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Db\Resources\SqlServerResources.resx">
+        <LastGenOutput>SqlServerResources.Designer.cs</LastGenOutput>
+        <Generator>ResXFileCodeGenerator</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+</Project>
