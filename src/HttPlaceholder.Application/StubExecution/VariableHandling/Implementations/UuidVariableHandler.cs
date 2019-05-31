@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.VariableHandlers
+namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
 {
     public class UuidVariableHandler : IVariableHandler
     {

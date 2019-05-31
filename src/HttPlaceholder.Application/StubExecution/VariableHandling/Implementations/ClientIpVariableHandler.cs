@@ -3,29 +3,29 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Ducode.Essentials.Mvc.Interfaces;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.VariableHandlers
+namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
 {
-    public class DisplayUrlVariableHandler : IVariableHandler
+    public class ClientIpVariableHandler : IVariableHandler
     {
-        private readonly IHttpContextService _httpContextService;
+        private readonly IClientIpResolver _clientIpResolver;
 
-        public DisplayUrlVariableHandler(IHttpContextService httpContextService)
+        public ClientIpVariableHandler(IClientIpResolver clientIpResolver)
         {
-            _httpContextService = httpContextService;
+            _clientIpResolver = clientIpResolver;
         }
 
-        public string Name => "display_url";
+        public string Name => "client_ip";
 
         public string Parse(string input, IEnumerable<Match> matches)
         {
             if (matches.Any())
             {
-                string url = _httpContextService.DisplayUrl;
+                var ip = _clientIpResolver.GetClientIp();
                 foreach (var match in matches)
                 {
                     if (match.Groups.Count >= 2)
                     {
-                        input = input.Replace(match.Value, url);
+                        input = input.Replace(match.Value, ip);
                     }
                 }
             }

@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Ducode.Essentials.Mvc.Interfaces;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.VariableHandlers
+namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
 {
     public class QueryStringVariableHandler : IVariableHandler
     {

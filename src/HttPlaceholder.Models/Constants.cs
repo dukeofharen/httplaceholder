@@ -58,11 +58,6 @@ namespace HttPlaceholder.Models
             public const int MaxRequestsQueueLength = 40;
         }
 
-        public static class Regexes
-        {
-            public static Regex VarRegex = new Regex(@"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)", RegexOptions.Compiled);
-        }
-
         public static class CookieKeys
         {
             public const string LoginCookieKey = "HttPlaceholderLoggedin";

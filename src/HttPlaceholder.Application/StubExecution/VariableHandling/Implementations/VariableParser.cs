@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using HttPlaceholder.Models;
 
-namespace HttPlaceholder.BusinessLogic.Implementations
+namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
 {
     public class VariableParser : IVariableParser
     {
+        public static Regex VarRegex = new Regex(@"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)", RegexOptions.Compiled);
+
         private readonly IEnumerable<IVariableHandler> _handlers;
 
         public VariableParser(IEnumerable<IVariableHandler> handlers)
@@ -17,7 +18,7 @@ namespace HttPlaceholder.BusinessLogic.Implementations
 
         public string Parse(string input)
         {
-            var matches = Constants.Regexes.VarRegex.Matches(input).Cast<Match>();
+            var matches = VarRegex.Matches(input).Cast<Match>();
             foreach (var handler in _handlers)
             {
                 var handlerMatches = matches

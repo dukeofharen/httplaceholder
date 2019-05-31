@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.BusinessLogic
+﻿namespace HttPlaceholder.Application.StubExecution.VariableHandling
 {
     public interface IVariableParser
     {

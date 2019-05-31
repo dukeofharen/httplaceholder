@@ -12,7 +12,6 @@ namespace HttPlaceholder.BusinessLogic
             services.AddSingleton<IStubContainer, StubContainer>();
             services.AddSingleton<IStubRequestExecutor, StubRequestExecutor>();
             services.AddSingleton<IStubResponseGenerator, StubResponseGenerator>();
-            services.AddSingleton<IVariableParser, VariableParser>();
 
             string filter = "HttPlaceholder";
 

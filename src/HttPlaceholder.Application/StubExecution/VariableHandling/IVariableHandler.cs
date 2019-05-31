@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace HttPlaceholder.BusinessLogic
+namespace HttPlaceholder.Application.StubExecution.VariableHandling
 {
     public interface IVariableHandler
     {

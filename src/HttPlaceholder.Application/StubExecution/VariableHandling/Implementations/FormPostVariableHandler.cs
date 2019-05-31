@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using Ducode.Essentials.Mvc.Interfaces;
 using Microsoft.Extensions.Primitives;
 
-namespace HttPlaceholder.BusinessLogic.Implementations.VariableHandlers
+namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
 {
     public class FormPostVariableHandler : IVariableHandler
     {
