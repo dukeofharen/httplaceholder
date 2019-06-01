@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using HttPlaceholder.BusinessLogic.Implementations;
+using HttPlaceholder.Application.StubExecution.VariableHandling;
+using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Match = System.Text.RegularExpressions.Match;

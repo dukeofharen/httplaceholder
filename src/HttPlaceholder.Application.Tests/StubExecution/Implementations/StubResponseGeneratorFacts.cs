@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.BusinessLogic.Implementations;
-using HttPlaceholder.BusinessLogic.Tests.Utilities;
-using HttPlaceholder.Models;
+using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Application.StubExecution.ResponseWriting;
+using HttPlaceholder.Domain;
+using HttPlaceholder.TestUtilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -12,22 +12,15 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
     [TestClass]
     public class StubResponseGeneratorFacts
     {
-        private Mock<IServiceProvider> _serviceProviderMock;
+        private readonly IList<IResponseWriter> _responseWriters = new List<IResponseWriter>();
         private StubResponseGenerator _generator;
 
         [TestInitialize]
         public void Initialize()
         {
-            _serviceProviderMock = new Mock<IServiceProvider>();
             _generator = new StubResponseGenerator(
                TestObjectFactory.GetRequestLoggerFactory(),
-               _serviceProviderMock.Object);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            _serviceProviderMock.VerifyAll();
+               _responseWriters);
         }
 
         [TestMethod]
@@ -48,9 +41,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
                .Callback<StubModel, ResponseModel>((s, r) => r.Headers.Add("X-Api-Key", "12345"))
                .ReturnsAsync(false);
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IResponseWriter>)))
-               .Returns(new[] { responseWriterMock1.Object, responseWriterMock2.Object });
+            _responseWriters.Add(responseWriterMock1.Object);
+            _responseWriters.Add(responseWriterMock2.Object);
 
             // act
             var result = await _generator.GenerateResponseAsync(stub);
@@ -84,9 +76,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
                 .Setup(m => m.Priority)
                 .Returns(-10);
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IResponseWriter>)))
-               .Returns(new[] { responseWriterMock1.Object, responseWriterMock2.Object });
+            _responseWriters.Add(responseWriterMock1.Object);
+            _responseWriters.Add(responseWriterMock2.Object);
 
             // act
             var result = await _generator.GenerateResponseAsync(stub);

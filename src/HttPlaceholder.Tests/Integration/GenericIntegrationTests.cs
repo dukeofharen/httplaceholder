@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using HttPlaceholder.DataLogic;
-using HttPlaceholder.DataLogic.Implementations.StubSources;
-using HttPlaceholder.Services;
+using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -16,21 +15,15 @@ namespace HttPlaceholder.Tests.Integration
    {
       private Dictionary<string, string> _config;
       private InMemoryStubSource _stubSource;
-      private Mock<IConfigurationService> _configurationServiceMock;
 
       [TestInitialize]
       public void Initialize()
       {
-         _configurationServiceMock = new Mock<IConfigurationService>();
-         _stubSource = new InMemoryStubSource(_configurationServiceMock.Object);
+         _stubSource = new InMemoryStubSource(Options);
          _config = new Dictionary<string, string>();
-         _configurationServiceMock
-            .Setup(m => m.GetConfiguration())
-            .Returns(_config);
 
          InitializeIntegrationTest(new (Type, object)[]
          {
-            ( typeof(IConfigurationService), _configurationServiceMock.Object ),
             ( typeof(IStubSource), _stubSource )
          });
       }

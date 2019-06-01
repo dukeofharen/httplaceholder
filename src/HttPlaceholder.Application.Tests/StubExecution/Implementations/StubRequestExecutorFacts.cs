@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HttPlaceholder.BusinessLogic.Implementations;
-using HttPlaceholder.BusinessLogic.Tests.Utilities;
-using HttPlaceholder.Exceptions;
-using HttPlaceholder.Models;
-using HttPlaceholder.Models.Enums;
+using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.StubExecution.ConditionChecking;
+using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Enums;
+using HttPlaceholder.TestUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -18,8 +20,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
     {
         private Mock<IFinalStubDeterminer> _finalStubDeterminerMock;
         private Mock<ILogger<StubRequestExecutor>> _loggerMock;
-        private Mock<IServiceProvider> _serviceProviderMock;
-        private Mock<IStubContainer> _stubContainerMock;
+        private Mock<IStubContext> _stubContextMock;
         private Mock<IStubResponseGenerator> _stubResponseGeneratorMock;
         private Mock<IConditionChecker> _conditionCheckerMock1;
         private Mock<IConditionChecker> _conditionCheckerMock2;
@@ -32,22 +33,18 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         {
             _finalStubDeterminerMock = new Mock<IFinalStubDeterminer>();
             _loggerMock = new Mock<ILogger<StubRequestExecutor>>();
-            _serviceProviderMock = new Mock<IServiceProvider>();
-            _stubContainerMock = new Mock<IStubContainer>();
+            _stubContextMock = new Mock<IStubContext>();
             _stubResponseGeneratorMock = new Mock<IStubResponseGenerator>();
+            _conditionCheckerMock1 = new Mock<IConditionChecker>();
+            _conditionCheckerMock2 = new Mock<IConditionChecker>();
+
             _executor = new StubRequestExecutor(
+                new[] { _conditionCheckerMock1.Object, _conditionCheckerMock2.Object },
                 _finalStubDeterminerMock.Object,
                _loggerMock.Object,
                TestObjectFactory.GetRequestLoggerFactory(),
-               _serviceProviderMock.Object,
-               _stubContainerMock.Object,
+               _stubContextMock.Object,
                _stubResponseGeneratorMock.Object);
-
-            _conditionCheckerMock1 = new Mock<IConditionChecker>();
-            _conditionCheckerMock2 = new Mock<IConditionChecker>();
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IConditionChecker>)))
-               .Returns(new[] { _conditionCheckerMock1.Object, _conditionCheckerMock2.Object });
 
             _stub1 = new FullStubModel
             {
@@ -71,7 +68,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
                 },
                 Metadata = new StubMetadataModel()
             };
-            _stubContainerMock
+            _stubContextMock
                .Setup(m => m.GetStubsAsync())
                .ReturnsAsync(new[] { _stub1, _stub2 });
         }
@@ -80,8 +77,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         public void Cleanup()
         {
             _finalStubDeterminerMock.VerifyAll();
-            _serviceProviderMock.VerifyAll();
-            _stubContainerMock.VerifyAll();
+            _stubContextMock.VerifyAll();
             _stubResponseGeneratorMock.VerifyAll();
         }
 

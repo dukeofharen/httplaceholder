@@ -8,6 +8,7 @@ using HttPlaceholder.Application;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Authorization.Implementations;
+using HttPlaceholder.Configuration;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Hubs.Implementations;
@@ -86,6 +87,8 @@ namespace HttPlaceholder
 
             services
                 .AddSignalR();
+
+            services.Configure<SettingsModel>(configuration);
 
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<IRequestNotify, RequestNotify>();

@@ -10,18 +10,22 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
     [TestClass]
     public class ConfigurationParserFacts
     {
+        private readonly Mock<IAssemblyService> _assemblyServiceMock = new Mock<IAssemblyService>();
         private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
         private ConfigurationParser _parser;
 
         [TestInitialize]
         public void Initialize()
         {
-            _parser = new ConfigurationParser(_fileServiceMock.Object);
+            _parser = new ConfigurationParser(
+                _assemblyServiceMock.Object,
+                _fileServiceMock.Object);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
+            _assemblyServiceMock.VerifyAll();
             _fileServiceMock.VerifyAll();
         }
 
@@ -36,6 +40,10 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
                 "--var2",
                 "value2"
             };
+
+            _assemblyServiceMock
+                .Setup(m => m.GetCallingAssemblyRootPath())
+                .Returns(@"C:\httplaceholder");
 
             // act
             var result = _parser.ParseConfiguration(args);
@@ -108,6 +116,10 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
             var expectedPath = @"C:\httplaceholder\config.json";
 
             var args = new string[0];
+
+            _assemblyServiceMock
+                .Setup(m => m.GetCallingAssemblyRootPath())
+                .Returns(@"C:\httplaceholder");
 
             _fileServiceMock
                 .Setup(m => m.FileExists(expectedPath))

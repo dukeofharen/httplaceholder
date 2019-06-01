@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Ducode.Essentials.Assembly;
+using Ducode.Essentials.Assembly.Interfaces;
 using Ducode.Essentials.Console;
 using Ducode.Essentials.Files;
 using Ducode.Essentials.Files.Interfaces;
@@ -12,14 +13,20 @@ namespace HttPlaceholder.Configuration.Utilities
 {
     public class ConfigurationParser
     {
+        private readonly IAssemblyService _assemblyService;
         private readonly IFileService _fileService;
 
-        public ConfigurationParser(IFileService fileService)
+        public ConfigurationParser(
+            IAssemblyService assemblyService,
+            IFileService fileService)
         {
+            _assemblyService = assemblyService;
             _fileService = fileService;
         }
 
-        public ConfigurationParser() : this(new FileService())
+        public ConfigurationParser() : this(
+            new AssemblyService(),
+            new FileService())
         {
         }
 
@@ -38,7 +45,7 @@ namespace HttPlaceholder.Configuration.Utilities
                 return JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
             }
 
-            var configPath = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), "config.json");
+            var configPath = Path.Combine(_assemblyService.GetCallingAssemblyRootPath(), "config.json");
             if (args.Length == 0 && _fileService.FileExists(configPath))
             {
                 // If a config file is found, try to load and parse it instead of the arguments.

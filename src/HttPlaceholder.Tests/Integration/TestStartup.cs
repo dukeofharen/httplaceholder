@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using HttPlaceholder.DataLogic;
+using HttPlaceholder.Application.Interfaces;
 using HttPlaceholder.Tests.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -1,7 +1,7 @@
-﻿using HttPlaceholder.Services;
+﻿using HttPlaceholder.Application.StubExecution;
 using Moq;
 
-namespace HttPlaceholder.BusinessLogic.Tests.Utilities
+namespace HttPlaceholder.TestUtilities
 {
     public static class TestObjectFactory
     {

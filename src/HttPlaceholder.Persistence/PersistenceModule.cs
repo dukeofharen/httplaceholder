@@ -17,9 +17,6 @@ namespace HttPlaceholder.Persistence
             services.AddSingleton<IStubContext, StubContext>();
             services.AddSingleton<IStubRootPathResolver, StubRootPathResolver>();
 
-            // The YAML stub source should always be registered.
-            services.AddSingleton<IStubSource, YamlFileStubSource>();
-
             services.AddStubSources(configuration);
             return services;
         }
@@ -65,6 +62,9 @@ namespace HttPlaceholder.Persistence
             {
                 services.AddSingleton<IStubSource, RelationalDbStubSource>();
             }
+
+            // The YAML stub source should always be registered.
+            services.AddSingleton<IStubSource, YamlFileStubSource>();
 
             return services;
         }

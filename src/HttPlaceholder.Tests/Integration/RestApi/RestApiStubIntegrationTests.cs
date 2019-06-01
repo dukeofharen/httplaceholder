@@ -7,7 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using HttPlaceholder.Models;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -387,8 +387,8 @@ response:
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
             request.Headers.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes("wrong:wrong"))}");
 
-            _config.Add(Constants.ConfigKeys.ApiUsernameKey, "correct");
-            _config.Add(Constants.ConfigKeys.ApiPasswordKey, "correct");
+            Settings.Authentication.ApiUsername = "correct";
+            Settings.Authentication.ApiPassword = "correct";
 
             // act / assert
             using (var response = await Client.SendAsync(request))
@@ -418,8 +418,8 @@ response:
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
             request.Headers.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes("correct:correct"))}");
 
-            _config.Add(Constants.ConfigKeys.ApiUsernameKey, "correct");
-            _config.Add(Constants.ConfigKeys.ApiPasswordKey, "correct");
+            Settings.Authentication.ApiUsername = "correct";
+            Settings.Authentication.ApiPassword = "correct";
 
             // act / assert
             using (var response = await Client.SendAsync(request))
