@@ -3,6 +3,11 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+      <WarningsAsErrors />
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Dapper" Version="1.60.6" />
         <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.5" />
