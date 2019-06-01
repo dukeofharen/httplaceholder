@@ -13,7 +13,6 @@ using HttPlaceholder.Configuration;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Hubs.Implementations;
-using HttPlaceholder.Implementations;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Persistence;
 using Microsoft.AspNetCore.Builder;

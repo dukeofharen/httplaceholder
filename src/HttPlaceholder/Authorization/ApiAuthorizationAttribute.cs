@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using Ducode.Essentials.Console;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Configuration;
 using Microsoft.AspNetCore.Mvc;

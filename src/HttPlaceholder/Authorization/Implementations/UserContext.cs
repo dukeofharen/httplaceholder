@@ -2,7 +2,7 @@
 using HttPlaceholder.Application.Interfaces.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace HttPlaceholder.Implementations
+namespace HttPlaceholder.Authorization.Implementations
 {
     public class UserContext : IUserContext
     {

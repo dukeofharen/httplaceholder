@@ -3,7 +3,6 @@ using HttPlaceholder.Application.Users.Queries.GetUserData;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Controllers
 {
