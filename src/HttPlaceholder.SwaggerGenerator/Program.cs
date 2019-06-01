@@ -19,7 +19,7 @@ namespace HttPlaceholder.SwaggerGenerator
             var testServer = new TestServer(
               new WebHostBuilder()
                .ConfigureServices(services => Startup.ConfigureServicesStatic(services, config))
-               .Configure(appBuilder => Startup.ConfigureStatic(appBuilder, null, false, false)));
+               .Configure(appBuilder => Startup.ConfigureStatic(appBuilder, false, false)));
             var client = testServer.CreateClient();
 
             // Retrieve the Swagger URL.
