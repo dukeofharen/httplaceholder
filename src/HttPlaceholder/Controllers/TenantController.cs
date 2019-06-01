@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Dto.Stubs;
+using HttPlaceholder.Application.Tenants.Queries.GetStubsInTenant;
+using HttPlaceholder.Application.Tenants.Commands.DeleteStubsInTenant;
+using HttPlaceholder.Application.Tenants.Commands.UpdateStubsInTenant;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Controllers
@@ -14,49 +18,26 @@ namespace HttPlaceholder.Controllers
     [Route("ph-api/tenants")]
     public class TenantController : BaseApiController
     {
-        private readonly ILogger<TenantController> _logger;
-        private readonly IStubContext _stubContext;
-
-        /// <summary>
-        /// The tenant controller.
-        /// </summary>
-        /// <param name="logger"></param>
-        /// <param name="stubContext"></param>
-        public TenantController(
-           ILogger<TenantController> logger,
-           IStubContext stubContext)
-        {
-            _logger = logger;
-            _stubContext = stubContext;
-        }
-
         /// <summary>
         /// Gets all stubs in a specific tenant.
         /// </summary>
-        /// <param name="tenant"></param>
         /// <returns>All stubs in the tenant.</returns>
         [HttpGet]
         [Route("{tenant}/stubs")]
-        public async Task<IEnumerable<FullStubModel>> GetAll(string tenant)
-        {
-            _logger.LogInformation($"Retrieving all stubs for tenant '{tenant}'.");
-            var stubs = await _stubContext.GetStubsAsync(tenant);
-            return stubs;
-        }
+        public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll([FromRoute]GetStubsInTenantQuery query) =>
+            Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(query)));
 
         /// <summary>
         /// Deletes all stubs in a specific tenant.
         /// </summary>
-        /// <param name="tenant"></param>
         /// <returns>OK, but no content</returns>
         [HttpDelete]
         [Route("{tenant}/stubs")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> DeleteAll(string tenant)
+        public async Task<IActionResult> DeleteAll([FromRoute]DeleteStubsInTenantCommand command)
         {
-            _logger.LogInformation($"Deleting all stubs for tenant '{tenant}'.");
-            await _stubContext.DeleteAllStubsAsync(tenant);
+            await Mediator.Send(command);
             return NoContent();
         }
 
@@ -72,10 +53,9 @@ namespace HttPlaceholder.Controllers
         [Route("{tenant}/stubs")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> UpdateAll(string tenant, [FromBody]IEnumerable<StubModel> stubs)
+        public async Task<IActionResult> UpdateAll(string tenant, [FromBody]IEnumerable<StubDto> stubs)
         {
-            _logger.LogInformation($"Updating all stubs for tenant '{tenant}'.");
-            await _stubContext.UpdateAllStubs(tenant, stubs);
+            await Mediator.Send(new UpdateStubsInTenantCommand { Tenant = tenant, Stubs = Mapper.Map<IEnumerable<StubModel>>(stubs) });
             return NoContent();
         }
     }

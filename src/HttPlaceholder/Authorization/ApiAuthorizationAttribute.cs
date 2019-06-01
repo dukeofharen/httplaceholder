@@ -12,15 +12,8 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Authorization
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ApiAuthorizationAttribute : ActionFilterAttribute
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var loginService = context.HttpContext.RequestServices.GetService<ILoginService>();
@@ -28,8 +21,8 @@ namespace HttPlaceholder.Authorization
 
             bool result;
             var logger = context.HttpContext.RequestServices.GetService<ILogger<ApiAuthorizationAttribute>>();
-            string username = settings.Authentication.ApiUsername ?? string.Empty;
-            string password = settings.Authentication.ApiPassword ?? string.Empty;
+            string username = settings.Authentication?.ApiUsername ?? string.Empty;
+            string password = settings.Authentication?.ApiPassword ?? string.Empty;
             if (loginService.CheckLoginCookie())
             {
                 AddUserContext(context, username);

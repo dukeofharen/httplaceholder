@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using AutoMapper;
 using HttPlaceholder.Application.Interfaces.Mappings;
 
 namespace HttPlaceholder.Application.Infrastructure.AutoMapper
@@ -15,6 +16,19 @@ namespace HttPlaceholder.Application.Infrastructure.AutoMapper
 
     public static class MapperProfileHelper
     {
+        public static void InitializeProfile(this Profile profile, Assembly assembly)
+        {
+            foreach (var map in LoadStandardMappings(assembly))
+            {
+                profile.CreateMap(map.Source, map.Destination).ReverseMap();
+            }
+
+            foreach (var map in LoadCustomMappings(assembly))
+            {
+                map.CreateMappings(profile);
+            }
+        }
+
         public static IList<Map> LoadStandardMappings(Assembly rootAssembly)
         {
             var types = rootAssembly.GetExportedTypes();

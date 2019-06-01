@@ -17,7 +17,7 @@ namespace HttPlaceholder.Persistence.Db
 
         string AddStubQuery { get; }
 
-        string DeletStubQuery { get; }
+        string DeleteStubQuery { get; }
 
         string GetStubsQuery { get; }
 

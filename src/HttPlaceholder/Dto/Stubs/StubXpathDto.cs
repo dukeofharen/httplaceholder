@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using YamlDotNet.Serialization;
 
-namespace HttPlaceholder.Domain
+namespace HttPlaceholder.Dto.Stubs
 {
     /// <summary>
     /// A model for storing information about the XPath condition checker.
     /// </summary>
-    public class StubXpathModel
+    public class StubXpathDto
     {
         /// <summary>
         /// Gets or sets the query string.

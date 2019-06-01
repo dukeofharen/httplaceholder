@@ -13,9 +13,6 @@ namespace HttPlaceholder.Application
         {
             var currentAssembly = typeof(ApplicationModule).Assembly;
 
-            // Add AutoMapper
-            services.AddAutoMapper(new[] { currentAssembly });
-
             // Add MediatR
             services.AddMediatR(currentAssembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));

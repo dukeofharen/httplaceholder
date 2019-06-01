@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.Stubs.Commands.AddStub;
+using HttPlaceholder.Application.Stubs.Commands.DeleteStub;
+using HttPlaceholder.Application.Stubs.Queries.GetAllStubs;
+using HttPlaceholder.Application.Stubs.Queries.GetStub;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Dto.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Controllers
 {
@@ -14,38 +17,17 @@ namespace HttPlaceholder.Controllers
     [Route("ph-api/stubs")]
     public class StubController : BaseApiController
     {
-        private readonly ILogger<StubController> _logger;
-        private readonly IStubContext _stubContext;
-
-        /// <summary>
-        /// The stub controller.
-        /// </summary>
-        /// <param name="logger"></param>
-        /// <param name="stubContext"></param>
-        public StubController(
-           ILogger<StubController> logger,
-           IStubContext stubContext)
-        {
-            _logger = logger;
-            _stubContext = stubContext;
-        }
-
         /// <summary>
         /// Adds a new stub.
         /// </summary>
-        /// <param name="stubModel"></param>
+        /// <param name="stub"></param>
         /// <returns>OK, but no content returned</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult> Add([FromBody]StubModel stubModel)
+        public async Task<ActionResult> Add([FromBody]StubDto stub)
         {
-            _logger.LogInformation($"Adding new stub '{stubModel}'");
-
-            // Delete stub with same ID.
-            await _stubContext.DeleteStubAsync(stubModel.Id);
-
-            await _stubContext.AddStubAsync(stubModel);
+            await Mediator.Send(new AddStubCommand { Stub = Mapper.Map<StubModel>(stub) });
             return NoContent();
         }
 
@@ -54,47 +36,31 @@ namespace HttPlaceholder.Controllers
         /// </summary>
         /// <returns>All stubs.</returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<FullStubModel>>> GetAll()
-        {
-            _logger.LogInformation("Retrieving all stubs.");
-            var stubs = await _stubContext.GetStubsAsync();
-            return Ok(stubs);
-        }
+        public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll() =>
+            Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(new GetAllStubsQuery())));
 
         /// <summary>
         /// Get a specific stub by stub identifier.
         /// </summary>
-        /// <param name="stubId"></param>
         /// <returns>The stub.</returns>
         [HttpGet]
         [Route("{stubId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<FullStubModel>> Get([FromRoute]string stubId)
-        {
-            _logger.LogInformation($"Retrieving stub with ID '{stubId}'.");
-            var result = await _stubContext.GetStubAsync(stubId);
-            if (result == null)
-            {
-                return NotFound();
-            }
-
-            return result;
-        }
+        public async Task<ActionResult<FullStubDto>> Get([FromRoute]GetStubQuery query) =>
+            Ok(Mapper.Map<FullStubDto>(await Mediator.Send(query)));
 
         /// <summary>
         /// Delete a specific stub by stub identifier.
         /// </summary>
-        /// <param name="stubId"></param>
         /// <returns>OK, but not content</returns>
         [HttpDelete]
         [Route("{stubId}")]
-        public async Task<ActionResult> Delete([FromRoute]string stubId)
+        public async Task<ActionResult> Delete([FromRoute]DeleteStubCommand command)
         {
-            _logger.LogInformation($"Deleting stub with ID '{stubId}'");
-            bool result = await _stubContext.DeleteStubAsync(stubId);
-            return result ? NoContent() : (ActionResult)NotFound();
+            await Mediator.Send(command);
+            return NoContent();
         }
     }
 }

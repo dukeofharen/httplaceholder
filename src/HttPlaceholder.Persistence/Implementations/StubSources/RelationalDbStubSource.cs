@@ -82,7 +82,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var conn = _queryStore.GetConnection())
             {
-                int updated = await conn.ExecuteAsync(_queryStore.DeletStubQuery, new { StubId = stubId });
+                int updated = await conn.ExecuteAsync(_queryStore.DeleteStubQuery, new { StubId = stubId });
                 return updated > 0;
             }
         }

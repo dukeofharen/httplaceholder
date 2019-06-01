@@ -34,7 +34,7 @@ VALUES (@CorrelationId, @ExecutingStubid, @RequestBeginTime, @RequestEndTime, @J
 (stub_id, stub, stub_type)
 VALUES (@StubId, @Stub, @StubType)";
 
-        public string DeletStubQuery => @"DELETE FROM stubs WHERE stub_id = @StubId";
+        public string DeleteStubQuery => @"DELETE FROM stubs WHERE stub_id = @StubId";
 
         public string GetStubsQuery => @"SELECT
 stub_id AS StubId,

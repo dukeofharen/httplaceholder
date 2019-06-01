@@ -1,6 +1,4 @@
-﻿using System;
-using HttPlaceholder.Domain.Enums;
-using Newtonsoft.Json;
+﻿using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Domain
 {
@@ -17,18 +15,7 @@ namespace HttPlaceholder.Domain
         /// <summary>
         /// Gets or sets the condition validation.
         /// </summary>
-        [JsonIgnore]
         public ConditionValidationType ConditionValidation { get; set; } = ConditionValidationType.NotExecuted;
-
-        /// <summary>
-        /// Gets or sets the condition validation text.
-        /// </summary>
-        [JsonProperty("ConditionValidation")]
-        public string ConditionValidationText
-        {
-            get => ConditionValidation.ToString();
-            set => ConditionValidation = (ConditionValidationType)Enum.Parse(typeof(ConditionValidationType), value);
-        }
 
         /// <summary>
         /// Gets or sets the log.

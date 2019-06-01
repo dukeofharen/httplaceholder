@@ -35,7 +35,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the priority.
         /// </summary>
         [YamlMember(Alias = "priority")]
-        public int Priority { get; set; } = 0;
+        public int Priority { get; set; }
 
         /// <summary>
         /// Gets or sets the tenant.
@@ -48,16 +48,5 @@ namespace HttPlaceholder.Domain
         /// </summary>
         [YamlMember(Alias = "description")]
         public string Description { get; set; }
-
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return Id;
-        }
     }
 }

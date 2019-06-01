@@ -1,10 +1,12 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using AutoMapper;
 using Ducode.Essentials.Assembly;
 using Ducode.Essentials.Async;
 using Ducode.Essentials.Files;
 using Ducode.Essentials.Mvc;
 using HttPlaceholder.Application;
+using HttPlaceholder.Application.Interfaces;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Authorization.Implementations;
@@ -12,6 +14,7 @@ using HttPlaceholder.Configuration;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Hubs.Implementations;
+using HttPlaceholder.Implementations;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Persistence;
 using Microsoft.AspNetCore.Builder;
@@ -92,6 +95,7 @@ namespace HttPlaceholder
 
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<IRequestNotify, RequestNotify>();
+            services.AddTransient<IUserContext, UserContext>();
 
             services
                .AddApplicationModule()
@@ -101,7 +105,8 @@ namespace HttPlaceholder
                .AddAssemblyServices()
                .AddCustomMvcServices()
                .AddFileServices()
-               .AddAsyncServices();
+               .AddAsyncServices()
+               .AddAutoMapper(new[] { typeof(Startup).Assembly, typeof(ApplicationModule).Assembly });
 
             services.AddOpenApiDocument(c => c.Title = "HttPlaceholder API");
         }

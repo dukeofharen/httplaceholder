@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Dto.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
@@ -67,7 +68,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 string content = await response.Content.ReadAsStringAsync();
                 var reader = new StringReader(content);
                 var deserializer = new Deserializer();
-                var stubs = deserializer.Deserialize<IEnumerable<FullStubModel>>(reader);
+                var stubs = deserializer.Deserialize<IEnumerable<FullStubDto>>(reader);
                 Assert.AreEqual(1, stubs.Count());
                 Assert.AreEqual("test-456", stubs.Single().Stub.Id);
             }
@@ -109,7 +110,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Assert.IsTrue(response.IsSuccessStatusCode);
 
                 string content = await response.Content.ReadAsStringAsync();
-                var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubModel>>(content);
+                var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
                 Assert.AreEqual(1, stubs.Count());
                 Assert.AreEqual("test-456", stubs.Single().Stub.Id);
             }
