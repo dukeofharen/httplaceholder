@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Domain;
 using MediatR;
 

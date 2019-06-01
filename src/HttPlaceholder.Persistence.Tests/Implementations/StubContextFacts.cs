@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

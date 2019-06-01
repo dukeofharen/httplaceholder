@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.Interfaces
+namespace HttPlaceholder.Application.Interfaces.Persistence
 {
     public interface IStubSource
     {

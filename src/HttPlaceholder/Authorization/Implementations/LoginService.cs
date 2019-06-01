@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using Microsoft.AspNetCore.Http;

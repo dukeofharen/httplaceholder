@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace HttPlaceholder.Application.Interfaces
+namespace HttPlaceholder.Application.Interfaces.Authentication
 {
     public interface IUserContext
     {

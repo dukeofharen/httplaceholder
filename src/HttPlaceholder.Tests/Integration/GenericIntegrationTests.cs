@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace HttPlaceholder.Tests.Integration
 {
-   [TestClass]
+    [TestClass]
    public class GenericIntegrationTests : IntegrationTestBase
    {
       private Dictionary<string, string> _config;

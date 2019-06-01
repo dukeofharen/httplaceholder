@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Interfaces;
+﻿using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Persistence.Db;

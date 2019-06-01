@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.TestUtilities.Options;
 using Microsoft.AspNetCore.Hosting;

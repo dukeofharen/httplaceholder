@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using HttPlaceholder.Authorization;
+using HttPlaceholder.Application.Interfaces.Authentication;
 using Microsoft.AspNetCore.SignalR;
 
 namespace HttPlaceholder.Hubs.Implementations

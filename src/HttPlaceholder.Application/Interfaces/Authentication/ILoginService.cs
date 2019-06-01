@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.Authorization
+﻿namespace HttPlaceholder.Application.Interfaces.Authentication
 {
     public interface ILoginService
     {

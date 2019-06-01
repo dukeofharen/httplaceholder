@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Tests.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +11,7 @@ using Moq;
 
 namespace HttPlaceholder.Tests.Integration
 {
-   public static class TestStartup
+    public static class TestStartup
    {
       public static void ConfigureServices(Startup startup, IServiceCollection services, (Type, object)[] servicesToReplace, IEnumerable<IStubSource> stubSources)
       {

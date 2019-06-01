@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.Interfaces;
+﻿using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Moq;
 

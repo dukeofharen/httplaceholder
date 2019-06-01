@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.DependencyInjection;

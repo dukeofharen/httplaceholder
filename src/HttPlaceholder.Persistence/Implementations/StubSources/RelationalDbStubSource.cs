@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Ducode.Essentials.Console;
-using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;

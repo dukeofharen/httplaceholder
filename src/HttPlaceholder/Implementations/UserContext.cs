@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using HttPlaceholder.Application.Interfaces;
+using HttPlaceholder.Application.Interfaces.Authentication;
 using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Implementations
