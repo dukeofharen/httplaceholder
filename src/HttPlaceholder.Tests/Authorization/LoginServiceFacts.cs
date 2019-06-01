@@ -1,4 +1,5 @@
-﻿using Ducode.Essentials.Mvc.TestUtilities;
+﻿using System.Collections.Generic;
+using Ducode.Essentials.Mvc.TestUtilities;
 using HttPlaceholder.Authorization.Implementations;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.TestUtilities.Options;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections.Generic;
 
 namespace HttPlaceholder.Tests.Authorization
 {

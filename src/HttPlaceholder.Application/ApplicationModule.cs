@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using FluentValidation;
+﻿using FluentValidation;
 using HttPlaceholder.Application.Infrastructure.MediatR;
 using HttPlaceholder.Application.StubExecution;
 using MediatR;

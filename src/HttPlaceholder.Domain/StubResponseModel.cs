@@ -8,7 +8,6 @@ namespace HttPlaceholder.Domain
     /// </summary>
     public class StubResponseModel
     {
-
         /// <summary>
         /// Gets or sets whether dynamic mode is on.
         /// </summary>

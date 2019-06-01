@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriting;
 using HttPlaceholder.Domain;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations
 {

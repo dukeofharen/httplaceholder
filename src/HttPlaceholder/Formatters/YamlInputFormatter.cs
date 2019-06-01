@@ -14,7 +14,7 @@ namespace HttPlaceholder.Formatters
         private readonly IDeserializer _deserializer;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="deserializer"></param>
         public YamlInputFormatter(IDeserializer deserializer)
@@ -28,7 +28,7 @@ namespace HttPlaceholder.Formatters
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="encoding"></param>

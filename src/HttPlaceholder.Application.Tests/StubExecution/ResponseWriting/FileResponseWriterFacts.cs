@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

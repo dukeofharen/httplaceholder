@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
-using Ducode.Essentials.Console;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
@@ -110,9 +109,11 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                         case StubJsonType:
                             result.Add(JsonConvert.DeserializeObject<StubModel>(queryResult.Stub));
                             break;
+
                         case StubYamlType:
                             result.Add(YamlUtilities.Parse<StubModel>(queryResult.Stub));
                             break;
+
                         default:
                             throw new NotImplementedException($"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.");
                     }

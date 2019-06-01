@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Ducode.Essentials.Console;
 using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Configuration;

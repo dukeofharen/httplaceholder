@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution.ConditionChecking;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations

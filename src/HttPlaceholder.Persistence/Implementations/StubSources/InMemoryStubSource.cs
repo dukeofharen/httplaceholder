@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ducode.Essentials.Console;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers
 {
     /// <summary>
-    /// Controller for request 
+    /// Controller for request
     /// </summary>
     [Route("ph-api/requests")]
     public class RequestController : BaseApiController

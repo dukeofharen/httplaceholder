@@ -41,7 +41,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 Options);
             _writableStubSourceMock = new Mock<IWritableStubSource>();
 
-            InitializeIntegrationTest(new(Type, object)[]
+            InitializeIntegrationTest(new (Type, object)[]
             {
                 ( typeof(IClientIpResolver), _clientIpResolverMock.Object ),
                 ( typeof(IFileService), _fileServiceMock.Object )

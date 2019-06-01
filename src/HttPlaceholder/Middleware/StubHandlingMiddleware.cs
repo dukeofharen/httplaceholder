@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Ducode.Essentials.Console;
 using Ducode.Essentials.Mvc.Interfaces;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;

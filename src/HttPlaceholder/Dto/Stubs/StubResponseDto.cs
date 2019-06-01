@@ -8,7 +8,6 @@ namespace HttPlaceholder.Dto.Stubs
     /// </summary>
     public class StubResponseDto
     {
-
         /// <summary>
         /// Gets or sets whether dynamic mode is on.
         /// </summary>

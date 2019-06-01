@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Ducode.Essentials.Assembly.Interfaces;
+﻿using Ducode.Essentials.Assembly.Interfaces;
 using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Persistence.Implementations;
@@ -27,7 +26,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                 _assemblyServiceMock.Object,
                 _fileServiceMock.Object,
                 _options);
-
         }
 
         [TestCleanup]

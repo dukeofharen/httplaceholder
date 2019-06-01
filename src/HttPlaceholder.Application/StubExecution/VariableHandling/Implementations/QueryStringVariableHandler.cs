@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Ducode.Essentials.Mvc.Interfaces;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Ducode.Essentials.Mvc.Interfaces;
 
 namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
 {
