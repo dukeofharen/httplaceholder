@@ -12,15 +12,13 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class FileResponseWriterFacts
     {
-        private Mock<IFileService> _fileServiceMock;
-        private Mock<IStubRootPathResolver> _stubRootPathResolverMock;
+        private Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
+        private Mock<IStubRootPathResolver> _stubRootPathResolverMock = new Mock<IStubRootPathResolver>();
         private FileResponseWriter _writer;
 
         [TestInitialize]
         public void Initialize()
         {
-            _fileServiceMock = new Mock<IFileService>();
-            _stubRootPathResolverMock = new Mock<IStubRootPathResolver>();
             _writer = new FileResponseWriter(
                _fileServiceMock.Object,
                _stubRootPathResolverMock.Object);

@@ -13,15 +13,8 @@ namespace HttPlaceholder.Persistence.Tests
     [TestClass]
     public class PersistenceModuleFacts
     {
-        private IServiceCollection _services;
-        private IDictionary<string, string> _args;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            _services = new ServiceCollection();
-            _args = new Dictionary<string, string>();
-        }
+        private IServiceCollection _services = new ServiceCollection();
+        private IDictionary<string, string> _args = new Dictionary<string, string>();
 
         [TestMethod]
         public void DependencyRegistration_AddStubSources_InputFileKeySet_ShouldRegisterYamlFileStubSourceAndInMemoryStubSource()

@@ -8,13 +8,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class RedirectResponseWriterFacts
     {
-        private RedirectResponseWriter _writer;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            _writer = new RedirectResponseWriter();
-        }
+        private RedirectResponseWriter _writer = new RedirectResponseWriter();
 
         [TestMethod]
         public async Task RedirectResponseWriter_WriteToResponseAsync_NoRedirectSet_ShouldContinue()

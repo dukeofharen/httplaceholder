@@ -13,15 +13,13 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
     public class StubRootPathResolverFacts
     {
         private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
-        private Mock<IAssemblyService> _assemblyServiceMock;
-        private Mock<IFileService> _fileServiceMock;
+        private Mock<IAssemblyService> _assemblyServiceMock = new Mock<IAssemblyService>();
+        private Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
         private StubRootPathResolver _resolver;
 
         [TestInitialize]
         public void Initialize()
         {
-            _assemblyServiceMock = new Mock<IAssemblyService>();
-            _fileServiceMock = new Mock<IFileService>();
             _resolver = new StubRootPathResolver(
                 _assemblyServiceMock.Object,
                 _fileServiceMock.Object,

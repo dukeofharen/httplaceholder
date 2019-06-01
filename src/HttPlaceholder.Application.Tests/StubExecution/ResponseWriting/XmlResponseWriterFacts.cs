@@ -11,13 +11,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class XmlResponseWriterFacts
     {
-        private XmlResponseWriter _writer;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            _writer = new XmlResponseWriter();
-        }
+        private XmlResponseWriter _writer = new XmlResponseWriter();
 
         [TestMethod]
         public async Task XmlResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()

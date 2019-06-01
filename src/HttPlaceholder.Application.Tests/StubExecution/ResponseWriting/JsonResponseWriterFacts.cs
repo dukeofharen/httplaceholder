@@ -11,13 +11,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class JsonResponseWriterFacts
     {
-        private JsonResponseWriter _writer;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            _writer = new JsonResponseWriter();
-        }
+        private JsonResponseWriter _writer = new JsonResponseWriter();
 
         [TestMethod]
         public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()

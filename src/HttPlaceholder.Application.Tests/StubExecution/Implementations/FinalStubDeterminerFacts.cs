@@ -9,13 +9,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
     [TestClass]
     public class FinalStubDeterminerFacts
     {
-        private FinalStubDeterminer _determiner;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            _determiner = new FinalStubDeterminer();
-        }
+        private FinalStubDeterminer _determiner = new FinalStubDeterminer();
 
         [TestMethod]
         public void FinalStubDeterminer_DetermineFinalStub_MultipleStubsWithHighestPriority_ShouldPickOneWithMostValidConditions()

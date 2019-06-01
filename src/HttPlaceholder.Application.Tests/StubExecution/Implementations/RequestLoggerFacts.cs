@@ -11,13 +11,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
     [TestClass]
     public class RequestLoggerFacts
     {
-        private RequestLogger _logger;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            _logger = new RequestLogger();
-        }
+        private RequestLogger _logger = new RequestLogger();
 
         [TestMethod]
         public void RequestLogger_GetResult_HappyFlow()

@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.Tests.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Moq;
 
 namespace HttPlaceholder.Tests.Integration
 {
@@ -33,14 +30,6 @@ namespace HttPlaceholder.Tests.Integration
                 services.AddTransient(service.Item1, serviceProvider => service.Item2);
             }
 
-            var loggerFactoryMock = new Mock<ILoggerFactory>();
-            var logger = new MockLogger();
-
-            loggerFactoryMock
-               .Setup(m => m.CreateLogger(It.IsAny<string>()))
-               .Returns(logger);
-
-            services.Add(new ServiceDescriptor(typeof(ILoggerFactory), loggerFactoryMock.Object));
             startup.ConfigureServices(services);
 
             // Replace all stub sources. The tests should prepare their own stub sources.

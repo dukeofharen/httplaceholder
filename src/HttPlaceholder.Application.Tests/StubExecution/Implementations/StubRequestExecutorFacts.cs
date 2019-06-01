@@ -18,26 +18,39 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
     [TestClass]
     public class StubRequestExecutorFacts
     {
-        private Mock<IFinalStubDeterminer> _finalStubDeterminerMock;
-        private Mock<ILogger<StubRequestExecutor>> _loggerMock;
-        private Mock<IStubContext> _stubContextMock;
-        private Mock<IStubResponseGenerator> _stubResponseGeneratorMock;
-        private Mock<IConditionChecker> _conditionCheckerMock1;
-        private Mock<IConditionChecker> _conditionCheckerMock2;
-        private FullStubModel _stub1;
-        private FullStubModel _stub2;
+        private Mock<IFinalStubDeterminer> _finalStubDeterminerMock = new Mock<IFinalStubDeterminer>();
+        private Mock<ILogger<StubRequestExecutor>> _loggerMock = new Mock<ILogger<StubRequestExecutor>>();
+        private Mock<IStubContext> _stubContextMock = new Mock<IStubContext>();
+        private Mock<IStubResponseGenerator> _stubResponseGeneratorMock = new Mock<IStubResponseGenerator>();
+        private Mock<IConditionChecker> _conditionCheckerMock1 = new Mock<IConditionChecker>();
+        private Mock<IConditionChecker> _conditionCheckerMock2 = new Mock<IConditionChecker>();
+        private FullStubModel _stub1 = new FullStubModel
+        {
+            Stub = new StubModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Priority = -1
+            },
+            Metadata = new StubMetadataModel()
+        };
+        private FullStubModel _stub2 = new FullStubModel
+        {
+            Stub = new StubModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Priority = 0
+            },
+            Metadata = new StubMetadataModel()
+        };
         private StubRequestExecutor _executor;
 
         [TestInitialize]
         public void Initialize()
         {
-            _finalStubDeterminerMock = new Mock<IFinalStubDeterminer>();
-            _loggerMock = new Mock<ILogger<StubRequestExecutor>>();
-            _stubContextMock = new Mock<IStubContext>();
-            _stubResponseGeneratorMock = new Mock<IStubResponseGenerator>();
-            _conditionCheckerMock1 = new Mock<IConditionChecker>();
-            _conditionCheckerMock2 = new Mock<IConditionChecker>();
-
             _executor = new StubRequestExecutor(
                 new[] { _conditionCheckerMock1.Object, _conditionCheckerMock2.Object },
                 _finalStubDeterminerMock.Object,
@@ -46,28 +59,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
                _stubContextMock.Object,
                _stubResponseGeneratorMock.Object);
 
-            _stub1 = new FullStubModel
-            {
-                Stub = new StubModel
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Conditions = new StubConditionsModel(),
-                    NegativeConditions = new StubConditionsModel(),
-                    Priority = -1
-                },
-                Metadata = new StubMetadataModel()
-            };
-            _stub2 = new FullStubModel
-            {
-                Stub = new StubModel
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    Conditions = new StubConditionsModel(),
-                    NegativeConditions = new StubConditionsModel(),
-                    Priority = 0
-                },
-                Metadata = new StubMetadataModel()
-            };
             _stubContextMock
                .Setup(m => m.GetStubsAsync())
                .ReturnsAsync(new[] { _stub1, _stub2 });

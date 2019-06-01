@@ -11,13 +11,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class FormValueConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock;
+        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
         private FormValueConditionChecker _checker;
 
         [TestInitialize]
         public void Initialize()
         {
-            _httpContextServiceMock = new Mock<IHttpContextService>();
             _checker = new FormValueConditionChecker(_httpContextServiceMock.Object);
         }
 

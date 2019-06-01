@@ -10,13 +10,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class HostConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock;
+        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
         private HostConditionChecker _checker;
 
         [TestInitialize]
         public void Initialize()
         {
-            _httpContextServiceMock = new Mock<IHttpContextService>();
             _checker = new HostConditionChecker(_httpContextServiceMock.Object);
         }
 

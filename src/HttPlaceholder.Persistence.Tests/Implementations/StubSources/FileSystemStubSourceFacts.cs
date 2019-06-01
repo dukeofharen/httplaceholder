@@ -19,7 +19,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
     {
         private const string StorageFolder = @"C:\storage";
         private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
-        private Mock<IFileService> _fileServiceMock;
+        private Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
         private FileSystemStubSource _source;
 
         [TestInitialize]
@@ -28,7 +28,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             _options.Value.Storage.FileStorageLocation = StorageFolder;
             _options.Value.Storage.OldRequestsQueueLength = 2;
 
-            _fileServiceMock = new Mock<IFileService>();
             _source = new FileSystemStubSource(
                 _fileServiceMock.Object,
                 _options);
