@@ -1,35 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 using Ducode.Essentials.Assembly.Interfaces;
 using Ducode.Essentials.Files.Interfaces;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services.Implementations;
+using HttPlaceholder.Configuration.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Services.Tests.Implementations
+namespace HttPlaceholder.Configuration.Tests.Utilities
 {
     [TestClass]
     public class ConfigurationParserFacts
     {
-        private readonly Mock<IAssemblyService> _assemblyServiceMock = new Mock<IAssemblyService>();
         private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
         private ConfigurationParser _parser;
 
         [TestInitialize]
         public void Initialize()
         {
-            _parser = new ConfigurationParser(
-                _assemblyServiceMock.Object,
-                _fileServiceMock.Object);
+            _parser = new ConfigurationParser(_fileServiceMock.Object);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _assemblyServiceMock.VerifyAll();
             _fileServiceMock.VerifyAll();
         }
 
@@ -45,10 +37,6 @@ namespace HttPlaceholder.Services.Tests.Implementations
                 "value2"
             };
 
-            _assemblyServiceMock
-                .Setup(m => m.GetCallingAssemblyRootPath())
-                .Returns(@"C:\httplaceholder");
-
             // act
             var result = _parser.ParseConfiguration(args);
 
@@ -62,10 +50,10 @@ namespace HttPlaceholder.Services.Tests.Implementations
         public void ConfigurationParser_ParseConfiguration_ConfigFileLocationPassedAsArgument_FileNotFound_ShouldThrowFileNotFoundException()
         {
             // arrange
-            string configJsonPath = @"F:\httplaceholder\config.json";
+            var configJsonPath = @"F:\httplaceholder\config.json";
             var args = new[]
             {
-                $"--{Constants.ConfigKeys.ConfigJsonLocationKey}",
+                $"--{ConfigKeys.ConfigJsonLocationKey}",
                 configJsonPath
             };
 
@@ -81,13 +69,13 @@ namespace HttPlaceholder.Services.Tests.Implementations
         public void ConfigurationParser_ParseConfiguration_ConfigFileLocationPassedAsArgument_FileFound_ShouldParseFile()
         {
             // arrange
-            string configJsonPath = @"F:\httplaceholder\config.json";
+            var configJsonPath = @"F:\httplaceholder\config.json";
             var args = new[]
             {
-                $"--{Constants.ConfigKeys.ConfigJsonLocationKey}",
+                $"--{ConfigKeys.ConfigJsonLocationKey}",
                 configJsonPath
             };
-            string json = $@"{{
+            var json = $@"{{
     ""var1"":""value1"",
     ""var2"":""value2""
 }}";
@@ -113,17 +101,13 @@ namespace HttPlaceholder.Services.Tests.Implementations
         public void ConfigurationParser_ParseConfiguration_ConfigFileFoundInInstallationFolder_ShouldParseFile()
         {
             // arrange
-            string json = @"{
+            var json = @"{
     ""var1"":""value1"",
     ""var2"":""value2""
 }";
-            string expectedPath = @"C:\httplaceholder\config.json";
+            var expectedPath = @"C:\httplaceholder\config.json";
 
             var args = new string[0];
-
-            _assemblyServiceMock
-                .Setup(m => m.GetCallingAssemblyRootPath())
-                .Returns(@"C:\httplaceholder");
 
             _fileServiceMock
                 .Setup(m => m.FileExists(expectedPath))
