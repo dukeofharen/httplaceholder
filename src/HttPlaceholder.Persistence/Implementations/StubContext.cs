@@ -6,23 +6,20 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Persistence.Implementations
 {
     internal class StubContext : IStubContext
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IEnumerable<IStubSource> _stubSources;
 
-        public StubContext(IServiceProvider serviceProvider)
+        public StubContext(IEnumerable<IStubSource> stubSources)
         {
-            _serviceProvider = serviceProvider;
+            _stubSources = stubSources;
         }
 
-        public async Task<IEnumerable<FullStubModel>> GetStubsAsync()
-        {
-            return await GetStubsAsync(false);
-        }
+        public async Task<IEnumerable<FullStubModel>> GetStubsAsync() =>
+            await GetStubsAsync(false);
 
         public async Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant)
         {
@@ -50,11 +47,8 @@ namespace HttPlaceholder.Persistence.Implementations
             await source.AddStubAsync(stub);
         }
 
-        public async Task<bool> DeleteStubAsync(string stubId)
-        {
-            var source = GetWritableStubSource();
-            return await source.DeleteStubAsync(stubId);
-        }
+        public async Task<bool> DeleteStubAsync(string stubId) =>
+            await GetWritableStubSource().DeleteStubAsync(stubId);
 
         public async Task DeleteAllStubsAsync(string tenant)
         {
@@ -93,11 +87,8 @@ namespace HttPlaceholder.Persistence.Implementations
             }
         }
 
-        public async Task<FullStubModel> GetStubAsync(string stubId)
-        {
-            var stub = (await GetStubsAsync()).FirstOrDefault(s => s.Stub.Id == stubId);
-            return stub;
-        }
+        public async Task<FullStubModel> GetStubAsync(string stubId) =>
+            (await GetStubsAsync()).FirstOrDefault(s => s.Stub.Id == stubId);
 
         public async Task AddRequestResultAsync(RequestResultModel requestResult)
         {
@@ -109,12 +100,9 @@ namespace HttPlaceholder.Persistence.Implementations
             await source.AddRequestResultAsync(requestResult);
         }
 
-        public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
-        {
-            var source = GetWritableStubSource();
-            return (await source.GetRequestResultsAsync())
+        public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync() =>
+            (await GetWritableStubSource().GetRequestResultsAsync())
                .OrderByDescending(s => s.RequestBeginTime);
-        }
 
         public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId)
         {
@@ -134,39 +122,23 @@ namespace HttPlaceholder.Persistence.Implementations
 
         public async Task PrepareAsync()
         {
-            var sources = GetStubSources();
-            foreach (var source in sources)
+            foreach (var source in _stubSources)
             {
                 // Call PrepareStubSourceAsync on all stub sources for letting them prepare their own setup (e.g. create tables, folders etc.).
                 await source.PrepareStubSourceAsync();
             }
         }
 
-        private IWritableStubSource GetWritableStubSource()
-        {
-            var sources = GetStubSources();
-            var writableStubSource = (IWritableStubSource)sources.Single(s => s is IWritableStubSource);
-            return writableStubSource;
-        }
+        private IWritableStubSource GetWritableStubSource() =>
+            (IWritableStubSource)_stubSources.Single(s => s is IWritableStubSource);
 
-        private IEnumerable<IStubSource> GetReadOnlyStubSources()
-        {
-            var sources = GetStubSources();
-            var readOnlyStubSources = sources.Where(s => !(s is IWritableStubSource));
-            return readOnlyStubSources;
-        }
-
-        private IEnumerable<IStubSource> GetStubSources()
-        {
-            var sources = ((IEnumerable<IStubSource>)_serviceProvider.GetServices(typeof(IStubSource))).ToArray();
-            return sources;
-        }
+        private IEnumerable<IStubSource> GetReadOnlyStubSources() =>
+            _stubSources.Where(s => !(s is IWritableStubSource));
 
         private async Task<IEnumerable<FullStubModel>> GetStubsAsync(bool readOnly)
         {
             var result = new List<FullStubModel>();
-            var sources = readOnly ? GetReadOnlyStubSources() : GetStubSources();
-            foreach (var source in sources)
+            foreach (var source in readOnly ? GetReadOnlyStubSources() : _stubSources)
             {
                 var stubSourceIsReadOnly = !(source is IWritableStubSource);
                 var stubs = await source.GetStubsAsync();

@@ -14,20 +14,13 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
     [TestClass]
     public class StubContextFacts
     {
-        private Mock<IServiceProvider> _serviceProviderMock;
+        private IList<IStubSource> _stubSources = new List<IStubSource>();
         private StubContext _container;
 
         [TestInitialize]
         public void Initialize()
         {
-            _serviceProviderMock = new Mock<IServiceProvider>();
-            _container = new StubContext(_serviceProviderMock.Object);
-        }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            _serviceProviderMock.VerifyAll();
+            _container = new StubContext(_stubSources);
         }
 
         [TestMethod]
@@ -49,9 +42,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Setup(m => m.GetStubsAsync())
                .ReturnsAsync(new[] { stub3 });
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource1.Object, stubSource2.Object });
+            _stubSources.Add(stubSource1.Object);
+            _stubSources.Add(stubSource2.Object);
 
             // act
             var result = (await _container.GetStubsAsync()).ToArray();
@@ -91,9 +83,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Setup(m => m.GetStubsAsync())
                .ReturnsAsync(new[] { stub3 });
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource1.Object, stubSource2.Object });
+            _stubSources.Add(stubSource1.Object);
+            _stubSources.Add(stubSource2.Object);
 
             // act
             var result = (await _container.GetStubsAsync("tenant1")).ToArray();
@@ -125,9 +116,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                stub
                });
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { writableStubSource.Object, readOnlyStubSource.Object });
+            _stubSources.Add(writableStubSource.Object);
+            _stubSources.Add(readOnlyStubSource.Object);
 
             // act / assert
             await Assert.ThrowsExceptionAsync<ConflictException>(() => _container.AddStubAsync(stubToBeAdded));
@@ -161,9 +151,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                stub
                });
 
-            _serviceProviderMock
-              .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-              .Returns(new[] { stubSource.Object, readOnlyStubSource.Object });
+            _stubSources.Add(stubSource.Object);
+            _stubSources.Add(readOnlyStubSource.Object);
 
             // act
             await _container.AddStubAsync(stubToBeAdded);
@@ -197,9 +186,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                stub
                });
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource.Object, readOnlyStubSource.Object });
+            _stubSources.Add(stubSource.Object);
+            _stubSources.Add(readOnlyStubSource.Object);
 
             // act
             await _container.AddStubAsync(stubToBeAdded);
@@ -218,9 +206,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Setup(m => m.DeleteStubAsync(stubId))
                .ReturnsAsync(true);
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource.Object });
+            _stubSources.Add(stubSource.Object);
 
             // act
             bool result = await _container.DeleteStubAsync(stubId);
@@ -248,9 +234,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Setup(m => m.GetStubsAsync())
                .ReturnsAsync(new[] { stub3 });
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource1.Object, stubSource2.Object });
+            _stubSources.Add(stubSource1.Object);
+            _stubSources.Add(stubSource2.Object);
 
             // act
             var result = await _container.GetStubAsync("stub2");
@@ -269,9 +254,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Setup(m => m.AddRequestResultAsync(request))
                .Returns(Task.CompletedTask);
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource.Object });
+            _stubSources.Add(stubSource.Object);
 
             // act
             await _container.AddRequestResultAsync(request);
@@ -299,9 +282,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Setup(m => m.GetRequestResultsAsync())
                .ReturnsAsync(requests);
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource.Object });
+            _stubSources.Add(stubSource.Object);
 
             // act
             var result = (await _container.GetRequestResultsAsync()).ToArray();
@@ -340,9 +321,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Setup(m => m.GetRequestResultsAsync())
                .ReturnsAsync(requests);
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource.Object });
+            _stubSources.Add(stubSource.Object);
 
             // act
             var result = (await _container.GetRequestResultsByStubIdAsync("stub1")).ToArray();
@@ -362,9 +341,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Setup(m => m.DeleteAllRequestResultsAsync())
                .Returns(Task.CompletedTask);
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource.Object });
+            _stubSources.Add(stubSource.Object);
 
             // act
             await _container.DeleteAllRequestResultsAsync();
@@ -405,9 +382,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                     stub3
                 });
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource.Object });
+            _stubSources.Add(stubSource.Object);
 
             // act
             await _container.DeleteAllStubsAsync(tenant);
@@ -463,9 +438,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                     stub3
                 });
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource.Object });
+            _stubSources.Add(stubSource.Object);
 
             // act
             await _container.UpdateAllStubs(tenant1, newStubs);
@@ -489,9 +462,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             var stubSource1 = new Mock<IStubSource>();
             var stubSource2 = new Mock<IStubSource>();
 
-            _serviceProviderMock
-               .Setup(m => m.GetService(typeof(IEnumerable<IStubSource>)))
-               .Returns(new[] { stubSource1.Object, stubSource2.Object });
+            _stubSources.Add(stubSource1.Object);
+            _stubSources.Add(stubSource2.Object);
 
             // act
             await _container.PrepareAsync();
