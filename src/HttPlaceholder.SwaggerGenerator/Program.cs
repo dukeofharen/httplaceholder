@@ -1,26 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Ducode.Essentials.Assembly;
-using HttPlaceholder.Services.Implementations;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 
 namespace HttPlaceholder.SwaggerGenerator
 {
-    internal class Program
+    internal static class Program
     {
         private static async Task Main(string[] args)
         {
-            // Set dummy configuration.
-            ConfigurationService.StaticSetConfiguration(new Dictionary<string, string>());
+            // Mock settings.
+            var config = new ConfigurationBuilder().Build();
 
             // This program hosts HttPlaceholder in memory, retrieves the contents of the swagger.json file and saves it.
-            var startup = new Startup();
             var testServer = new TestServer(
               new WebHostBuilder()
-               .ConfigureServices(Startup.ConfigureServicesStatic)
+               .ConfigureServices(services => Startup.ConfigureServicesStatic(services, config))
                .Configure(appBuilder => Startup.ConfigureStatic(appBuilder, null, false, false)));
             var client = testServer.CreateClient();
 

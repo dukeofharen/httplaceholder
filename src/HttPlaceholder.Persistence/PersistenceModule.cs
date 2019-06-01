@@ -25,7 +25,7 @@ namespace HttPlaceholder.Persistence
         {
             var settings = configuration.Get<SettingsModel>();
             bool registerRelationDbStubSource = false;
-            string fileStoragePath = settings.Storage?.FileStorageLocation;
+            string fileStoragePath = settings?.Storage?.FileStorageLocation;
             string mysqlConnectionString = configuration.GetConnectionString(MysqlQueryStore.ConnectionStringKey);
             string sqliteConnectionString = configuration.GetConnectionString(SqliteQueryStore.ConnectionStringKey);
             string sqlServerConnectionString = configuration.GetConnectionString(SqlServerQueryStore.ConnectionStringKey);
