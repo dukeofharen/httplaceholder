@@ -6,27 +6,15 @@ using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Middleware
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class ApiExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="next"></param>
         public ApiExceptionHandlingMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
         public async Task Invoke(HttpContext context)
         {
             if (context.Request.Path.Value.Contains("ph-api/"))
@@ -38,6 +26,14 @@ namespace HttPlaceholder.Middleware
                 catch (ConflictException)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                }
+                catch (NotFoundException)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                }
+                catch (ForbiddenException)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 }
                 catch (Exception)
                 {
