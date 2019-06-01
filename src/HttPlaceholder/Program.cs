@@ -8,7 +8,7 @@ using System.Text;
 using Ducode.Essentials.Assembly;
 using Ducode.Essentials.Console;
 using HttPlaceholder.Configuration;
-using HttPlaceholder.Utilities;
+using HttPlaceholder.Configuration.Utilities;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
@@ -50,7 +50,7 @@ namespace HttPlaceholder
             HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, new string[] { "-V", "--verbose" }, false);
 
             return WebHost.CreateDefaultBuilder(args)
-               .ConfigureAppConfiguration((_, config) => config.AddConfiguration(argsDictionary))
+               .ConfigureAppConfiguration((_, config) => config.AddHttPlaceholderConfiguration(argsDictionary))
                .UseStartup<Startup>()
                .UseKestrel(options =>
                {

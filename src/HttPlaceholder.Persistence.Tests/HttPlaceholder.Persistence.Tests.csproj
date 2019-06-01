@@ -1,31 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <Version>2018.12.22.1234</Version>
-    <AssemblyVersion>2018.12.22.1234</AssemblyVersion>
-    <FileVersion>2018.12.22.1234</FileVersion>
+
     <IsPackable>false</IsPackable>
-    <Configurations>Debug;Release;Tool</Configurations>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
+    <PackageReference Include="Moq" Version="4.11.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Configuration\HttPlaceholder.Configuration.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Persistence\HttPlaceholder.Persistence.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Update="TestResources.Designer.cs">
+    <Compile Update="Implementations\StubSources\TestResources.Designer.cs">
+      <DependentUpon>TestResources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>TestResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+
   <ItemGroup>
-    <EmbeddedResource Update="TestResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+    <EmbeddedResource Update="Implementations\StubSources\TestResources.resx">
       <LastGenOutput>TestResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
+
 </Project>

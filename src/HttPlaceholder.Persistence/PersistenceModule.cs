@@ -20,13 +20,18 @@ namespace HttPlaceholder.Persistence
             // The YAML stub source should always be registered.
             services.AddSingleton<IStubSource, YamlFileStubSource>();
 
+            services.AddStubSources(configuration);
+            return services;
+        }
+
+        public static IServiceCollection AddStubSources(this IServiceCollection services, IConfiguration configuration)
+        {
             var settings = configuration.Get<SettingsModel>();
             bool registerRelationDbStubSource = false;
             string fileStoragePath = settings.Storage?.FileStorageLocation;
             string mysqlConnectionString = configuration.GetConnectionString(MysqlQueryStore.ConnectionStringKey);
             string sqliteConnectionString = configuration.GetConnectionString(SqliteQueryStore.ConnectionStringKey);
             string sqlServerConnectionString = configuration.GetConnectionString(SqlServerQueryStore.ConnectionStringKey);
-
             if (!string.IsNullOrWhiteSpace(fileStoragePath))
             {
                 // If "fileStorageLocation" is set, it means HttPlaceholder should read and write files to a specific location.

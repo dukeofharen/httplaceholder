@@ -1,7 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ducode.Essentials.Assembly" Version="0.0.5" />
+    <PackageReference Include="Ducode.Essentials.Console" Version="0.0.3" />
+    <PackageReference Include="Ducode.Essentials.Files" Version="0.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
+  </ItemGroup>
 
 </Project>
