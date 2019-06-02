@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -8,19 +9,21 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     internal class RequestLogger : IRequestLogger
     {
+        private readonly IDateTime _dateTime;
         private readonly RequestResultModel _result;
 
-        public RequestLogger()
+        public RequestLogger(IDateTime dateTime)
         {
+            _dateTime = dateTime;
             _result = new RequestResultModel
             {
-                RequestBeginTime = DateTime.Now
+                RequestBeginTime = _dateTime.UtcNow
             };
         }
 
         public RequestResultModel GetResult()
         {
-            _result.RequestEndTime = DateTime.Now;
+            _result.RequestEndTime = _dateTime.UtcNow;
             return _result;
         }
 

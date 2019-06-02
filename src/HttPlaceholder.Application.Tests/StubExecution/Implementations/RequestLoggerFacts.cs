@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 {
     [TestClass]
     public class RequestLoggerFacts
     {
-        private RequestLogger _logger = new RequestLogger();
+        private RequestLogger _logger = new RequestLogger(new Mock<IDateTime>().Object);
 
         [TestMethod]
         public void RequestLogger_GetResult_HappyFlow()

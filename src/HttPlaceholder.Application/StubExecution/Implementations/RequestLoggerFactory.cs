@@ -1,13 +1,18 @@
 ﻿using Ducode.Essentials.Mvc.Interfaces;
+using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     internal class RequestLoggerFactory : IRequestLoggerFactory
     {
+        private readonly IDateTime _dateTime;
         private readonly IHttpContextService _httpContextService;
 
-        public RequestLoggerFactory(IHttpContextService httpContextService)
+        public RequestLoggerFactory(
+            IDateTime dateTime,
+            IHttpContextService httpContextService)
         {
+            _dateTime = dateTime;
             _httpContextService = httpContextService;
         }
 
@@ -17,7 +22,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             var requestLogger = _httpContextService.GetItem<IRequestLogger>(requestLoggerKey);
             if (requestLogger == null)
             {
-                requestLogger = new RequestLogger();
+                requestLogger = new RequestLogger(_dateTime);
                 _httpContextService.SetItem(requestLoggerKey, requestLogger);
             }
 
