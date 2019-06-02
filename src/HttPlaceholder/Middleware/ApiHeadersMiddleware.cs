@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Http;
 namespace HttPlaceholder.Middleware
 {
     /// <summary>
-    /// 
+    ///
     /// </summary>
     public class ApiHeadersMiddleware
     {
         private readonly RequestDelegate _next;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="next"></param>
         public ApiHeadersMiddleware(RequestDelegate next)
@@ -21,7 +21,7 @@ namespace HttPlaceholder.Middleware
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>

@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net.Http;
+using System.Threading.Tasks;
 using HttPlaceholder.Client;
-using HttPlaceholder.Client.Models;
-using HttPlaceholder.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.TestConsoleApp
 {
@@ -9,56 +10,41 @@ namespace HttPlaceholder.TestConsoleApp
     {
         static async Task Main(string[] args)
         {
-            var settings = new HttPlaceholderSettingsModel
+            try
             {
-                RootUrl = "http://localhost:5000",
-                Username = "user",
-                Password = "pass"
-            };
-            var client = new HttPlaceholderClient(settings);
-            //var result = await client.GetUserAsync("duco", "ducoducoduco");
-            //var result = await client.GetMetadataAsync();
-            //var result = await client.GetAllRequestsAsync();
-            //var result = await client.GetAllRequestsByStubIdAsync("unique-stub-id");
-            //await client.DeleteAllRequestsAsync();
-            //var result = await client.GetStubAsync("main-page");
-            //var result = await client.GetAllStubsAsync();
-            //await client.AddStubAsync(new StubModel
-            //{
-            //    Id = "Duco",
-            //    Conditions = new StubConditionsModel
-            //    {
-            //        Url = new StubUrlConditionModel
-            //        {
-            //            Path = "/ducopietje"
-            //        }
-            //    },
-            //    Response = new StubResponseModel
-            //    {
-            //        Text = "NOU MOOI!!!"
-            //    }
-            //});
-            //await client.DeleteStubAsync("DucoPietje");
-            //var result = await client.GetAllStubsInTenant("simple-site");
-            //await client.DeleteAllStubsInTenant("simple-site");
-            await client.UpdateAllStubsInTenant("duuuuco", new[]
-            {
-                new StubModel
+                var services = new ServiceCollection();
+                services.AddHttPlaceholderClient(settings =>
                 {
-                    Id = "Duco",
-                    Conditions = new StubConditionsModel
-                    {
-                        Url = new StubUrlConditionModel
-                        {
-                            Path = "/ducopietje"
-                        }
-                    },
-                    Response = new StubResponseModel
-                    {
-                        Text = "NOU MOOI!!!"
-                    }
-                }
-            });
+                    settings.BaseUrl = "http://localhost:5000";
+                    settings.Username = "duco";
+                    settings.Password = "pass";
+                });
+                var provider = services.BuildServiceProvider();
+                var factory = provider.GetRequiredService<IHttPlaceholderClientFactory>();
+
+                //var client = factory.MetadataClient;
+                //var result = await client.GetAsync();
+
+                var client = factory.RequestClient;
+                var result = await client.GetAllAsync();
+                var result2 = await client.GetByStubIdAsync("fallback");
+
+                //var client = new StubClient(httpClient)
+                //{
+                //    BaseUrl = baseUrl
+                //};
+                //var result = await client.GetAllAsync();
+
+                //var client = new TenantClient(httpClient)
+                //{
+                //    BaseUrl = baseUrl
+                //};
+                //var result = await client.GetAllAsync("01-get");
+            }
+            catch (Exception ex)
+            {
+                ;
+            }
         }
     }
 }

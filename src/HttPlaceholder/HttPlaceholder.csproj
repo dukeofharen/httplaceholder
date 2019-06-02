@@ -35,13 +35,15 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.5" />
-    <PackageReference Include="NSwag.AspNetCore" Version="12.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.2.0" />
+    <PackageReference Include="NSwag.AspNetCore" Version="12.3.1" />
     <PackageReference Include="YamlDotNet" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HttPlaceholder.BusinessLogic\HttPlaceholder.BusinessLogic.csproj" />
-    <ProjectReference Include="..\HttPlaceholder.Services\HttPlaceholder.Services.csproj" />
-    <ProjectReference Include="..\HttPlaceholder.Utilities\HttPlaceholder.Utilities.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Persistence\HttPlaceholder.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup Condition="'$(Configuration)|$(Platform)'!='Tool|AnyCPU'">
     <Content Update="_config.json">

@@ -1,62 +1,38 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.BusinessLogic;
-using HttPlaceholder.Models;
+using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
+using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
+using HttPlaceholder.Application.Requests.Queries.GetByStubId;
+using HttPlaceholder.Dto.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Controllers
 {
     /// <summary>
-    /// Controller for request 
+    /// Controller for request
     /// </summary>
     [Route("ph-api/requests")]
     public class RequestController : BaseApiController
     {
-        private readonly ILogger<RequestController> _logger;
-        private readonly IStubContainer _stubContainer;
-
-        /// <summary>
-        /// Constructor for RequestController
-        /// </summary>
-        /// <param name="logger"></param>
-        /// <param name="stubContaner"></param>
-        public RequestController(
-           ILogger<RequestController> logger,
-           IStubContainer stubContaner)
-        {
-            _logger = logger;
-            _stubContainer = stubContaner;
-        }
-
         /// <summary>
         /// Get all Requests.
         /// </summary>
         /// <returns>All request results</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<RequestResultModel>>> GetAll()
-        {
-            _logger.LogInformation($"Retrieving all requests.");
-            var requests = await _stubContainer.GetRequestResultsAsync();
-            return Ok(requests);
-        }
+        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetAll() =>
+            Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(new GetAllRequestsQuery())));
 
         /// <summary>
         /// Get requests for the given stub ID.
         /// </summary>
-        /// <param name="stubId">stub identifier</param>
         /// <returns>request results for the given stubId</returns>
         [HttpGet]
-        [Route("{stubId}")]
+        [Route("{StubId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<RequestResultModel>>> GetByStubId([FromRoute]string stubId)
-        {
-            _logger.LogInformation($"Retrieving requests for stub ID '{stubId}'");
-            var requests = await _stubContainer.GetRequestResultsByStubIdAsync(stubId);
-            return Ok(requests);
-        }
+        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetByStubId([FromRoute]GetByStubIdQuery query) =>
+            Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(query)));
 
         /// <summary>
         /// Delete all requests. This call flushes all the requests.
@@ -66,8 +42,7 @@ namespace HttPlaceholder.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteAll()
         {
-            _logger.LogInformation("Deleting all requests.");
-            await _stubContainer.DeleteAllRequestResultsAsync();
+            await Mediator.Send(new DeleteAllRequestsCommand());
             return NoContent();
         }
     }

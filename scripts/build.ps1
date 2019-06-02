@@ -37,12 +37,6 @@ if ($runUnitTests) {
     }
 }
 
-# Generating swagger.json file
-Write-Host "Generating swagger.json file"
-$swaggerGenBinFile = Join-Path -Path $srcFolder "HttPlaceholder.SwaggerGenerator\bin\Debug\netcoreapp2.2\HttPlaceholder.SwaggerGenerator.dll"
-& dotnet $swaggerGenBinFile
-Assert-Cmd-Ok
-
 # Release package build
 Write-Host "Building a release package"
 

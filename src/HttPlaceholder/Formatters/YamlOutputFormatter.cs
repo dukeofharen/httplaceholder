@@ -15,7 +15,7 @@ namespace HttPlaceholder.Formatters
         private readonly ISerializer _serializer;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="serializer"></param>
         public YamlOutputFormatter(ISerializer serializer)
@@ -29,7 +29,7 @@ namespace HttPlaceholder.Formatters
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="context"></param>
         /// <param name="selectedEncoding"></param>

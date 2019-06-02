@@ -12,8 +12,10 @@ foreach ($csprojFile in $csprojFiles) {
     Write-Host "Parsing .csproj file $($csprojFile.FullName)"
     [xml]$csprojContents = Get-Content $csprojFile.FullName
     $propertyGroupNode = $csprojContents.SelectSingleNode("/Project/PropertyGroup[1]")
-    $propertyGroupNode.Version = $env:versionString
-    $propertyGroupNode.AssemblyVersion = $env:versionString
-    $propertyGroupNode.FileVersion = $env:versionString
-    $csprojContents.Save($csprojFile.FullName)
+    if ($null -ne $propertyGroupNode.Version) {
+        $propertyGroupNode.Version = $env:versionString
+        $propertyGroupNode.AssemblyVersion = $env:versionString
+        $propertyGroupNode.FileVersion = $env:versionString
+        $csprojContents.Save($csprojFile.FullName)
+    }
 }

@@ -10,15 +10,10 @@
       <Configurations>Debug;Release;Tool</Configurations>
    </PropertyGroup>
 
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-     <WarningsAsErrors />
-   </PropertyGroup>
-
-   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tool|AnyCPU'">
-     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-     <WarningsAsErrors />
-   </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors />
+    </PropertyGroup>
 
    <ItemGroup>
      <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />

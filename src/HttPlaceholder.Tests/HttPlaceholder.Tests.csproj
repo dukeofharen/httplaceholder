@@ -8,7 +8,7 @@
     <Configurations>Debug;Release;Tool</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -23,14 +23,13 @@
     <PackageReference Include="Ducode.Essentials.Mvc.TestUtilities" Version="0.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.0" />
-    <PackageReference Include="Moq" Version="4.10.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
+    <PackageReference Include="Moq" Version="4.11.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HttPlaceholder.BusinessLogic\HttPlaceholder.BusinessLogic.csproj" />
-    <ProjectReference Include="..\HttPlaceholder.Models\HttPlaceholder.Models.csproj" />
+    <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj" />
     <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
     <ProjectReference Include="..\HttPlaceholder\HttPlaceholder.csproj" />
   </ItemGroup>

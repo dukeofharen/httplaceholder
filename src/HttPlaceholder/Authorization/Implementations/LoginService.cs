@@ -1,60 +1,49 @@
-﻿using System;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using Ducode.Essentials.Console;
-using HttPlaceholder.Models;
-using HttPlaceholder.Services;
+﻿using System.Linq;
+using HttPlaceholder.Application.Interfaces.Authentication;
+using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Configuration;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Authorization.Implementations
 {
     internal class LoginService : ILoginService
     {
         private const string Salt = "83b2737f-7d85-4a0a-8113-b98ed4a255a1";
-        private readonly IConfigurationService _configurationService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly SettingsModel _settings;
 
         public LoginService(
-            IConfigurationService configurationService,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IOptions<SettingsModel> options)
         {
-            _configurationService = configurationService;
             _httpContextAccessor = httpContextAccessor;
+            _settings = options.Value;
         }
 
         public bool CheckLoginCookie()
         {
-            var config = _configurationService.GetConfiguration();
-            string username = config.GetValue(Constants.ConfigKeys.ApiUsernameKey, string.Empty);
-            string password = config.GetValue(Constants.ConfigKeys.ApiPasswordKey, string.Empty);
+            string username = _settings.Authentication?.ApiUsername ?? string.Empty;
+            string password = _settings.Authentication?.ApiPassword ?? string.Empty;
             if (string.IsNullOrWhiteSpace(username) && string.IsNullOrWhiteSpace(password))
             {
                 return true;
             }
 
             string expectedHash = CreateHash(username, password);
-            var cookie = _httpContextAccessor.HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == Constants.CookieKeys.LoginCookieKey);
+            var cookie = _httpContextAccessor.HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == CookieKeys.LoginCookieKey);
             return cookie.Value == expectedHash;
         }
 
         public void SetLoginCookie(string username, string password)
         {
             _httpContextAccessor.HttpContext.Response.Cookies.Append(
-                Constants.CookieKeys.LoginCookieKey,
+                CookieKeys.LoginCookieKey,
                 CreateHash(username, password),
                 new CookieOptions { HttpOnly = true });
         }
 
-        private string CreateHash(string username, string password)
-        {
-            using (var sha = SHA512.Create())
-            {
-                string inputString = $"{Salt}:{username}:{password}";
-                var bytes = Encoding.UTF8.GetBytes(inputString);
-                var hash = sha.ComputeHash(bytes);
-                return Convert.ToBase64String(hash);
-            }
-        }
+        private string CreateHash(string username, string password) =>
+            HashingUtilities.GetSha512String($"{Salt}:{username}:{password}");
     }
 }

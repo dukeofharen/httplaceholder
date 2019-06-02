@@ -11,6 +11,12 @@ Param(
 $binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp2.2\linux-x64\publish"
 $docsFolder = Join-Path $srcFolder "..\docs"
 
+# Patching main .csproj file
+[xml]$csproj = Get-Content $mainProjectFile
+$propertyGroupNode = $csproj.SelectSingleNode("/Project/PropertyGroup[1]")
+$propertyGroupNode.PackAsTool = "false"
+$csproj.Save($mainProjectFile)
+
 # Create Linux package
 Write-Host "Packing up for Linux" -ForegroundColor Green
 & dotnet publish $mainProjectFile --configuration=release --runtime=linux-x64

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
-using HttPlaceholder.Models;
+﻿using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi
 {
@@ -26,23 +21,11 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         [TestMethod]
         public async Task RestApiIntegration_Metadata_Get_CredentialsAreCorrect_UsernameMatches_ShouldReturn200()
         {
-            // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/metadata";
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            // Act
+            var result = await GetFactory().MetadataClient.GetAsync();
 
-            // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-
-                string content = await response.Content.ReadAsStringAsync();
-                var model = JsonConvert.DeserializeObject<MetadataModel>(content);
-                Assert.IsFalse(string.IsNullOrWhiteSpace(model.Version));
-            }
+            // Assert
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result.Version));
         }
     }
 }
