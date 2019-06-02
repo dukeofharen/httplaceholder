@@ -8,7 +8,7 @@
     <Configurations>Debug;Release;Tool</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -29,6 +29,7 @@
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj" />
     <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
     <ProjectReference Include="..\HttPlaceholder\HttPlaceholder.csproj" />
   </ItemGroup>

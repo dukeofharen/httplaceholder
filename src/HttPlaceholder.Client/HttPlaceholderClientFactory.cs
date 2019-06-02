@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
+using System.Text;
 using HttPlaceholder.Client.Configuration;
 using Microsoft.Extensions.Options;
 
@@ -15,6 +17,12 @@ namespace HttPlaceholder.Client
         {
             _httpClient = httpClient;
             _settings = options.Value;
+
+            if (!string.IsNullOrWhiteSpace(_settings.Username) && !string.IsNullOrWhiteSpace(_settings.Password))
+            {
+                string basic = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_settings.Username}:{_settings.Password}"));
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Basic {basic}");
+            }
         }
 
         public IMetadataClient MetadataClient => new MetadataClient(_httpClient)

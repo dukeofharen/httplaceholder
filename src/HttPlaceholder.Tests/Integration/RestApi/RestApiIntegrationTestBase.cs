@@ -1,4 +1,6 @@
 ﻿using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Client;
+using HttPlaceholder.Client.Configuration;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Moq;
 
@@ -24,6 +26,22 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public void CleanupRestApiIntegrationTest()
         {
             CleanupIntegrationTest();
+        }
+
+        protected IHttPlaceholderClientFactory GetFactory(string username = null, string password = null)
+        {
+            var options = Microsoft.Extensions.Options.Options.Create(new HttPlaceholderClientSettings
+            {
+                BaseUrl = Client.BaseAddress.OriginalString,
+                Username = username,
+                Password = password
+            });
+            return new HttPlaceholderClientFactory(Client, options);
+        }
+
+        protected override void AfterTestServerStart()
+        {
+            
         }
     }
 }

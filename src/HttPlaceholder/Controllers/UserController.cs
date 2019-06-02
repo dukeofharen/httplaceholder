@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using HttPlaceholder.Application.Users.Queries.GetUserData;
-using HttPlaceholder.Domain;
+using HttPlaceholder.Dto.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +17,10 @@ namespace HttPlaceholder.Controllers
         /// </summary>
         /// <returns>The User.</returns>
         [HttpGet]
-        [Route("{username}")]
+        [Route("{Username}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<UserModel>> Get([FromRoute]GetUserDataQuery query) =>
-            await Mediator.Send(query);
+        public async Task<ActionResult<UserDto>> Get([FromRoute]GetUserDataQuery query) =>
+            Ok(Mapper.Map<UserDto>(await Mediator.Send(query)));
     }
 }

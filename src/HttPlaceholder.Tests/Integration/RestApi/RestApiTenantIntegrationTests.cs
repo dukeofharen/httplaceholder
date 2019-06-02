@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Client;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -68,7 +69,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 string content = await response.Content.ReadAsStringAsync();
                 var reader = new StringReader(content);
                 var deserializer = new Deserializer();
-                var stubs = deserializer.Deserialize<IEnumerable<FullStubDto>>(reader);
+                var stubs = deserializer.Deserialize<IEnumerable<Dto.Stubs.FullStubDto>>(reader);
                 Assert.AreEqual(1, stubs.Count());
                 Assert.AreEqual("test-456", stubs.Single().Stub.Id);
             }
@@ -110,16 +111,48 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Assert.IsTrue(response.IsSuccessStatusCode);
 
                 string content = await response.Content.ReadAsStringAsync();
-                var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
+                var stubs = JsonConvert.DeserializeObject<IEnumerable<Dto.Stubs.FullStubDto>>(content);
                 Assert.AreEqual(1, stubs.Count());
                 Assert.AreEqual("test-456", stubs.Single().Stub.Id);
             }
         }
 
         [TestMethod]
+        public async Task RestApiIntegration_Tenant_GetAll_Client()
+        {
+            // Arrange
+            string tenant = "tenant1";
+            _stubSource._stubModels.Add(new StubModel
+            {
+                Id = "test-123",
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Response = new StubResponseModel(),
+                Tenant = "otherTenant"
+            });
+            _stubSource._stubModels.Add(new StubModel
+            {
+                Id = "test-456",
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Response = new StubResponseModel(),
+                Tenant = tenant
+            });
+
+            // Act
+            var result = await GetFactory()
+                .TenantClient
+                .GetAllAsync(tenant);
+
+            // Assert
+            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual("test-456", result.Single().Stub.Id);
+        }
+
+        [TestMethod]
         public async Task RestApiIntegration_Tenant_GetAll_CredentialsAreNeededButIncorrect_ShouldReturn401()
         {
-            // arrange
+            // Arrange
             string tenant = "tenant1";
             string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
             _stubSource._stubModels.Add(new StubModel
@@ -139,28 +172,22 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = tenant
             });
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
-            request.Headers.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes("wrong:wrong"))}");
-
             Settings.Authentication.ApiUsername = "correct";
             Settings.Authentication.ApiPassword = "correct";
 
-            // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
-            }
+            // Act
+            var exception = await Assert.ThrowsExceptionAsync<SwaggerException<ProblemDetails>>(() => GetFactory("wrong", "wrong")
+                .TenantClient
+                .GetAllAsync(tenant));
+
+            // Assert
+            Assert.AreEqual(401, exception.StatusCode);
         }
 
         [TestMethod]
         public async Task RestApiIntegration_Tenant_GetAll_CredentialsAreCorrect_ShouldContinue()
         {
-            // arrange
+            // Arrange
             string tenant = "tenant1";
             string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
             _stubSource._stubModels.Add(new StubModel
@@ -180,22 +207,16 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = tenant
             });
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
-            request.Headers.Add("Authorization", $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes("correct:correct"))}");
-
             Settings.Authentication.ApiUsername = "correct";
             Settings.Authentication.ApiPassword = "correct";
 
-            // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+            // Act
+            var result = await GetFactory("correct", "correct")
+                .TenantClient
+                .GetAllAsync(tenant);
+
+            // Assert
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -203,7 +224,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // arrange
             string tenant = "tenant1";
-            string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
             _stubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -221,27 +241,21 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = tenant
             });
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Delete,
-                RequestUri = new Uri(url)
-            };
+            // Act
+            await GetFactory()
+                .TenantClient
+                .DeleteAllAsync(tenant);
 
-            // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-                Assert.AreEqual(1, _stubSource._stubModels.Count);
-                Assert.AreEqual("test-123", _stubSource._stubModels.Single().Id);
-            }
+            // Assert
+            Assert.AreEqual(1, _stubSource._stubModels.Count);
+            Assert.AreEqual("test-123", _stubSource._stubModels.Single().Id);
         }
 
         [TestMethod]
         public async Task RestApiIntegration_Tenant_UpdateAll_HappyFlow()
         {
-            // arrange
+            // Arrange
             string tenant = "tenant1";
-            string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
             _stubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -259,34 +273,43 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = tenant
             });
 
-            string body = @"
-- id: test-123
-  conditions:
-    method: GET
-  response:
-    text: OK
-- id: test-789
-  conditions:
-    method: POST
-  response:
-    text: OK
-";
-
-            var request = new HttpRequestMessage
+            var request = new[]
             {
-                Method = HttpMethod.Put,
-                RequestUri = new Uri(url),
-                Content = new StringContent(body, Encoding.UTF8, "text/yaml")
+                new Client.StubDto
+                {
+                    Id = "test-123",
+                    Conditions = new Client.StubConditionsDto
+                    {
+                        Method = "GET"
+                    },
+                    Response = new Client.StubResponseDto
+                    {
+                        Text = "OK"
+                    }
+                },
+                new Client.StubDto
+                {
+                    Id = "test-789",
+                    Conditions = new Client.StubConditionsDto
+                    {
+                        Method = "POST"
+                    },
+                    Response = new Client.StubResponseDto
+                    {
+                        Text = "OK"
+                    }
+                }
             };
 
-            // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-                Assert.AreEqual(2, _stubSource._stubModels.Count);
-                Assert.AreEqual("test-123", _stubSource._stubModels[0].Id);
-                Assert.AreEqual("test-789", _stubSource._stubModels[1].Id);
-            }
+            // Act
+            await GetFactory()
+                .TenantClient
+                .UpdateAllAsync(tenant, request);
+
+            // Assert
+            Assert.AreEqual(2, _stubSource._stubModels.Count);
+            Assert.AreEqual("test-123", _stubSource._stubModels[0].Id);
+            Assert.AreEqual("test-789", _stubSource._stubModels[1].Id);
         }
     }
 }

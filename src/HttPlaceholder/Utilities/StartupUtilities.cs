@@ -7,6 +7,7 @@ using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Hubs;
+using HttPlaceholder.Infrastructure;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Persistence;
 using Microsoft.AspNetCore.Builder;
@@ -21,6 +22,7 @@ namespace HttPlaceholder.Utilities
         public static IServiceCollection AddHttPlaceholder(this IServiceCollection services, IConfiguration configuration) =>
             services
                 .Configure<SettingsModel>(configuration)
+                .AddInfrastructureModule()
                 .AddApplicationModule()
                 .AddPersistenceModule(configuration)
                 .AddAuthorizationModule()

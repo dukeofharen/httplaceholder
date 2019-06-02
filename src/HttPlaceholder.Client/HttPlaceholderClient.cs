@@ -212,13 +212,13 @@ namespace HttPlaceholder.Client
         /// <summary>Get requests for the given stub ID.</summary>
         /// <returns>request results for the given stubId</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RequestResultModel>> GetByStubIdAsync(string stubId);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RequestResultDto>> GetByStubIdAsync(string stubId);
     
         /// <summary>Get requests for the given stub ID.</summary>
         /// <returns>request results for the given stubId</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RequestResultModel>> GetByStubIdAsync(string stubId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RequestResultDto>> GetByStubIdAsync(string stubId, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -429,7 +429,7 @@ namespace HttPlaceholder.Client
         /// <summary>Get requests for the given stub ID.</summary>
         /// <returns>request results for the given stubId</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RequestResultModel>> GetByStubIdAsync(string stubId)
+        public System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RequestResultDto>> GetByStubIdAsync(string stubId)
         {
             return GetByStubIdAsync(stubId, System.Threading.CancellationToken.None);
         }
@@ -438,10 +438,10 @@ namespace HttPlaceholder.Client
         /// <returns>request results for the given stubId</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RequestResultModel>> GetByStubIdAsync(string stubId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<RequestResultDto>> GetByStubIdAsync(string stubId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/requests/{stubId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/requests/{StubId}");
             urlBuilder_.Replace("{StubId}", System.Uri.EscapeDataString(ConvertToString(stubId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -488,10 +488,10 @@ namespace HttPlaceholder.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(System.Collections.Generic.ICollection<RequestResultModel>); 
+                            var result_ = default(System.Collections.Generic.ICollection<RequestResultDto>); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.ICollection<RequestResultModel>>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.ICollection<RequestResultDto>>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -506,7 +506,7 @@ namespace HttPlaceholder.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.Generic.ICollection<RequestResultModel>);
+                        return default(System.Collections.Generic.ICollection<RequestResultDto>);
                     }
                     finally
                     {
@@ -840,7 +840,7 @@ namespace HttPlaceholder.Client
         public async System.Threading.Tasks.Task<FullStubDto> GetAsync(string stubId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/stubs/{stubId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/stubs/{StubId}");
             urlBuilder_.Replace("{StubId}", System.Uri.EscapeDataString(ConvertToString(stubId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -953,7 +953,7 @@ namespace HttPlaceholder.Client
         public async System.Threading.Tasks.Task DeleteAsync(string stubId, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/stubs/{stubId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/stubs/{StubId}");
             urlBuilder_.Replace("{StubId}", System.Uri.EscapeDataString(ConvertToString(stubId, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -1138,7 +1138,7 @@ namespace HttPlaceholder.Client
         public async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FullStubDto>> GetAllAsync(string tenant, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/tenants/{tenant}/stubs");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/tenants/{Tenant}/stubs");
             urlBuilder_.Replace("{Tenant}", System.Uri.EscapeDataString(ConvertToString(tenant, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -1232,7 +1232,7 @@ namespace HttPlaceholder.Client
         public async System.Threading.Tasks.Task DeleteAllAsync(string tenant, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/tenants/{tenant}/stubs");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/tenants/{Tenant}/stubs");
             urlBuilder_.Replace("{Tenant}", System.Uri.EscapeDataString(ConvertToString(tenant, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -1325,8 +1325,8 @@ namespace HttPlaceholder.Client
         public async System.Threading.Tasks.Task UpdateAllAsync(string tenant, System.Collections.Generic.IEnumerable<StubDto> stubs, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/tenants/{tenant}/stubs");
-            urlBuilder_.Replace("{tenant}", System.Uri.EscapeDataString(ConvertToString(tenant, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/tenants/{Tenant}/stubs");
+            urlBuilder_.Replace("{Tenant}", System.Uri.EscapeDataString(ConvertToString(tenant, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
             try
@@ -1444,13 +1444,13 @@ namespace HttPlaceholder.Client
         /// <summary>Get the user for the given username.</summary>
         /// <returns>The User.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<UserModel> GetAsync(string username);
+        System.Threading.Tasks.Task<UserDto> GetAsync(string username);
     
         /// <summary>Get the user for the given username.</summary>
         /// <returns>The User.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<UserModel> GetAsync(string username, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<UserDto> GetAsync(string username, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -1488,7 +1488,7 @@ namespace HttPlaceholder.Client
         /// <summary>Get the user for the given username.</summary>
         /// <returns>The User.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<UserModel> GetAsync(string username)
+        public System.Threading.Tasks.Task<UserDto> GetAsync(string username)
         {
             return GetAsync(username, System.Threading.CancellationToken.None);
         }
@@ -1497,10 +1497,10 @@ namespace HttPlaceholder.Client
         /// <returns>The User.</returns>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<UserModel> GetAsync(string username, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<UserDto> GetAsync(string username, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/users/{username}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/ph-api/users/{Username}");
             urlBuilder_.Replace("{Username}", System.Uri.EscapeDataString(ConvertToString(username, System.Globalization.CultureInfo.InvariantCulture)));
     
             var client_ = _httpClient;
@@ -1547,10 +1547,10 @@ namespace HttPlaceholder.Client
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(UserModel); 
+                            var result_ = default(UserDto); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<UserDto>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -1580,7 +1580,7 @@ namespace HttPlaceholder.Client
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(UserModel);
+                        return default(UserDto);
                     }
                     finally
                     {
@@ -1726,11 +1726,11 @@ namespace HttPlaceholder.Client
     
         /// <summary>Gets or sets the request begin time.</summary>
         [Newtonsoft.Json.JsonProperty("requestBeginTime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset RequestBeginTime { get; set; }
+        public System.DateTime RequestBeginTime { get; set; }
     
         /// <summary>Gets or sets the request end time.</summary>
         [Newtonsoft.Json.JsonProperty("requestEndTime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset RequestEndTime { get; set; }
+        public System.DateTime RequestEndTime { get; set; }
     
         public string ToJson() 
         {
@@ -1860,157 +1860,6 @@ namespace HttPlaceholder.Client
         public static StubResponseWriterResultDto FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<StubResponseWriterResultDto>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.14.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class RequestResultModel 
-    {
-        [Newtonsoft.Json.JsonProperty("correlationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CorrelationId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("requestParameters", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public RequestParametersModel RequestParameters { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("stubExecutionResults", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<StubExecutionResultModel> StubExecutionResults { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("stubResponseWriterResults", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<StubResponseWriterResultModel> StubResponseWriterResults { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("executingStubId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ExecutingStubId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("requestBeginTime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset RequestBeginTime { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("requestEndTime", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset RequestEndTime { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static RequestResultModel FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<RequestResultModel>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.14.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class RequestParametersModel 
-    {
-        [Newtonsoft.Json.JsonProperty("method", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Method { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("url", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Url { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("body", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Body { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("headers", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IDictionary<string, string> Headers { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("clientIp", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ClientIp { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static RequestParametersModel FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<RequestParametersModel>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.14.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class StubExecutionResultModel 
-    {
-        [Newtonsoft.Json.JsonProperty("stubId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string StubId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("passed", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool Passed { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("conditions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<ConditionCheckResultModel> Conditions { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("negativeConditions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.ICollection<ConditionCheckResultModel> NegativeConditions { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static StubExecutionResultModel FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<StubExecutionResultModel>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.14.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ConditionCheckResultModel 
-    {
-        [Newtonsoft.Json.JsonProperty("checkerName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string CheckerName { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("conditionValidation", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ConditionValidationType ConditionValidation { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("log", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Log { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static ConditionCheckResultModel FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ConditionCheckResultModel>(data);
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.14.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum ConditionValidationType
-    {
-        NotSet = 0,
-    
-        Valid = 1,
-    
-        Invalid = 2,
-    
-        NotExecuted = 3,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.14.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class StubResponseWriterResultModel 
-    {
-        [Newtonsoft.Json.JsonProperty("responseWriterName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ResponseWriterName { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("executed", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public bool Executed { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-    
-        public static StubResponseWriterResultModel FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<StubResponseWriterResultModel>(data);
         }
     
     }
@@ -2327,9 +2176,11 @@ namespace HttPlaceholder.Client
     
     }
     
+    /// <summary>A model for storing information about a user.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.14.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class UserModel 
+    public partial class UserDto 
     {
+        /// <summary>Gets or sets the username.</summary>
         [Newtonsoft.Json.JsonProperty("username", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Username { get; set; }
     
@@ -2338,9 +2189,9 @@ namespace HttPlaceholder.Client
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
     
-        public static UserModel FromJson(string data)
+        public static UserDto FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<UserModel>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<UserDto>(data);
         }
     
     }

@@ -38,9 +38,14 @@ namespace HttPlaceholder.Tests.Integration
                .ConfigureServices(services => TestStartup.ConfigureServices(startup, services, servicesToReplace, stubSources))
                .Configure(app => TestStartup.Configure(startup, app, null)));
             Client = TestServer.CreateClient();
+            AfterTestServerStart();
         }
 
         public void CleanupIntegrationTest() =>
            TestServer.Dispose();
+
+        protected virtual void AfterTestServerStart()
+        {
+        }
     }
 }

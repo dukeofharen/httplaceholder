@@ -12,15 +12,7 @@ namespace HttPlaceholder.Client
         {
             configure = configure ?? (_ => { });
             services.Configure(configure);
-            services.AddHttpClient<IHttPlaceholderClientFactory, HttPlaceholderClientFactory>((serviceProvider, httpClient) =>
-            {
-                var settings = serviceProvider.GetRequiredService<IOptions<HttPlaceholderClientSettings>>().Value;
-                if (!string.IsNullOrWhiteSpace(settings.Username) && !string.IsNullOrWhiteSpace(settings.Password))
-                {
-                    string basic = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{settings.Username}:{settings.Password}"));
-                    httpClient.DefaultRequestHeaders.Add("Authorization", $"Basic {basic}");
-                }
-            });
+            services.AddHttpClient<IHttPlaceholderClientFactory, HttPlaceholderClientFactory>();
             return services;
         }
     }

@@ -13,7 +13,18 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
     [TestClass]
     public class RequestLoggerFacts
     {
-        private RequestLogger _logger = new RequestLogger(new Mock<IDateTime>().Object);
+        private readonly DateTime _utcNow = DateTime.UtcNow;
+        private readonly Mock<IDateTime> _dateTimeMock = new Mock<IDateTime>();
+        private RequestLogger _logger;
+
+        [TestInitialize]
+        public void Initialize()
+        {
+            _dateTimeMock
+                .Setup(m => m.UtcNow)
+                .Returns(_utcNow);
+            _logger = new RequestLogger(_dateTimeMock.Object);
+        }
 
         [TestMethod]
         public void RequestLogger_GetResult_HappyFlow()
@@ -22,8 +33,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var result = _logger.GetResult();
 
             // assert
-            Assert.AreEqual(DateTime.Now.Date, result.RequestBeginTime.Date);
-            Assert.AreEqual(DateTime.Now.Date, result.RequestEndTime.Date);
+            Assert.AreEqual(_utcNow, result.RequestBeginTime);
+            Assert.AreEqual(_utcNow, result.RequestEndTime);
         }
 
         [TestMethod]

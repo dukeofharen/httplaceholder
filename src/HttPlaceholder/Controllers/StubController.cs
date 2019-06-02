@@ -45,7 +45,7 @@ namespace HttPlaceholder.Controllers
         /// </summary>
         /// <returns>The stub.</returns>
         [HttpGet]
-        [Route("{stubId}")]
+        [Route("{StubId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
@@ -57,7 +57,7 @@ namespace HttPlaceholder.Controllers
         /// </summary>
         /// <returns>OK, but not content</returns>
         [HttpDelete]
-        [Route("{stubId}")]
+        [Route("{StubId}")]
         public async Task<ActionResult> Delete([FromRoute]DeleteStubCommand command)
         {
             await Mediator.Send(command);

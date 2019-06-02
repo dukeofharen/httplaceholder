@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetByStubId;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,9 +29,9 @@ namespace HttPlaceholder.Controllers
         /// </summary>
         /// <returns>request results for the given stubId</returns>
         [HttpGet]
-        [Route("{stubId}")]
+        [Route("{StubId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<RequestResultModel>>> GetByStubId([FromRoute]GetByStubIdQuery query) =>
+        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetByStubId([FromRoute]GetByStubIdQuery query) =>
             Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(query)));
 
         /// <summary>
