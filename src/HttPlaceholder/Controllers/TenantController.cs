@@ -22,6 +22,7 @@ namespace HttPlaceholder.Controllers
         /// <returns>All stubs in the tenant.</returns>
         [HttpGet]
         [Route("{tenant}/stubs")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll([FromRoute]GetStubsInTenantQuery query) =>
             Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(query)));
 

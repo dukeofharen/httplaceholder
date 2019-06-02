@@ -36,6 +36,7 @@ namespace HttPlaceholder.Controllers
         /// </summary>
         /// <returns>All stubs.</returns>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll() =>
             Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(new GetAllStubsQuery())));
 

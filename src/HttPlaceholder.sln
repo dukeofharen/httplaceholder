@@ -41,11 +41,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Configuration", "HttPlaceholder.Configuration\HttPlaceholder.Configuration.csproj", "{7F2F6C0F-2CC5-4A4F-93DD-A493C1AB5ACA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Application.Tests", "HttPlaceholder.Application.Tests\HttPlaceholder.Application.Tests.csproj", "{DB9FDF52-85AC-4746-AE20-3A3349683010}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Application.Tests", "HttPlaceholder.Application.Tests\HttPlaceholder.Application.Tests.csproj", "{DB9FDF52-85AC-4746-AE20-3A3349683010}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Persistence.Tests", "HttPlaceholder.Persistence.Tests\HttPlaceholder.Persistence.Tests.csproj", "{A5B2F18A-8F5B-4BF7-A99D-C94A61A7361E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Persistence.Tests", "HttPlaceholder.Persistence.Tests\HttPlaceholder.Persistence.Tests.csproj", "{A5B2F18A-8F5B-4BF7-A99D-C94A61A7361E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Configuration.Tests", "HttPlaceholder.Configuration.Tests\HttPlaceholder.Configuration.Tests.csproj", "{851612E6-C283-4782-A674-28BD074F60CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Configuration.Tests", "HttPlaceholder.Configuration.Tests\HttPlaceholder.Configuration.Tests.csproj", "{851612E6-C283-4782-A674-28BD074F60CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -158,6 +158,9 @@ Global
 		{C59B1B53-C880-473E-8510-AA4F78B7441E} = {BA04C59E-2413-4460-85FC-DE322A1CBF02}
 		{AB78C38B-5070-4ADF-84E7-AB8ECB3D184E} = {287482AF-3481-44F5-B4D3-F17589B9261C}
 		{CD5CAE2B-2943-4E6E-B4BC-734D78753F93} = {287482AF-3481-44F5-B4D3-F17589B9261C}
+		{30655AA9-1F0E-4133-958E-DA3CD7A8473D} = {BA04C59E-2413-4460-85FC-DE322A1CBF02}
+		{8EAC64BA-0286-4737-8A2C-AD3E3DD5AA9B} = {BA04C59E-2413-4460-85FC-DE322A1CBF02}
+		{9D128FE9-788E-4842-9DEF-FD230EA3AC7D} = {BA04C59E-2413-4460-85FC-DE322A1CBF02}
 		{8F67E397-E857-4C64-B700-17E84F0C247A} = {287482AF-3481-44F5-B4D3-F17589B9261C}
 		{8DC0861E-9BE9-4F9B-90D5-944B33169F55} = {21DEC134-DEF5-482F-ADE7-EBF67AB9C2B9}
 		{A01825A4-30E4-4B5A-9A7F-D7BA933F75CC} = {8DC0861E-9BE9-4F9B-90D5-944B33169F55}
