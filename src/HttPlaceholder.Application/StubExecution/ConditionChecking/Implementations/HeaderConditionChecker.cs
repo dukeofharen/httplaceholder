@@ -1,4 +1,5 @@
-﻿using Ducode.Essentials.Mvc.Interfaces;
+﻿using System.Linq;
+using Ducode.Essentials.Mvc.Interfaces;
 using HttPlaceholder.Application.StubExecution.ConditionChecking;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -19,7 +20,7 @@ namespace HttPlaceholder.Application.Implementations.ConditionCheckers
         {
             var result = new ConditionCheckResultModel();
             var headerConditions = conditions?.Headers;
-            if (headerConditions != null)
+            if (headerConditions != null && headerConditions?.Any() == true)
             {
                 int validHeaders = 0;
                 var headers = _httpContextService.GetHeaders();

@@ -24,7 +24,7 @@ namespace HttPlaceholder.Application.Implementations.ConditionCheckers
         {
             var result = new ConditionCheckResultModel();
             var xpathConditions = conditions?.Xpath?.ToArray();
-            if (xpathConditions != null)
+            if (xpathConditions != null && xpathConditions?.Any() == true)
             {
                 int validXpaths = 0;
                 string body = _httpContextService.GetBody();

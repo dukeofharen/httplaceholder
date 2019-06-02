@@ -20,7 +20,7 @@ namespace HttPlaceholder.Application.Implementations.ConditionCheckers
         {
             var result = new ConditionCheckResultModel();
             var formConditions = conditions?.Form?.ToArray();
-            if (formConditions != null)
+            if (formConditions != null && formConditions?.Any() == true)
             {
                 var form = _httpContextService.GetFormValues();
                 int validConditions = 0;

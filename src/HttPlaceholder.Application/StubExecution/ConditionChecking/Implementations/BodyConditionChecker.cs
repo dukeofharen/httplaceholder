@@ -20,7 +20,7 @@ namespace HttPlaceholder.Application.Implementations.ConditionCheckers
         {
             var result = new ConditionCheckResultModel();
             var bodyConditions = conditions?.Body?.ToArray();
-            if (bodyConditions != null)
+            if (bodyConditions != null && bodyConditions?.Any() == true)
             {
                 var body = _httpContextService.GetBody();
 

@@ -20,7 +20,7 @@ namespace HttPlaceholder.Application.Implementations.ConditionCheckers
         {
             var result = new ConditionCheckResultModel();
             var jsonPathConditions = conditions?.JsonPath?.ToArray();
-            if (jsonPathConditions != null)
+            if (jsonPathConditions != null && jsonPathConditions?.Any() == true)
             {
                 int validJsonPaths = 0;
                 string body = _httpContextService.GetBody();

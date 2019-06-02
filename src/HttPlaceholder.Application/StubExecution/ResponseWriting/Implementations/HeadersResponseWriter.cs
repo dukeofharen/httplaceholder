@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
@@ -11,7 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
         {
             bool executed = false;
             var stubResponseHeaders = stub.Response?.Headers;
-            if (stubResponseHeaders != null)
+            if (stubResponseHeaders != null && stubResponseHeaders?.Any() == true)
             {
                 foreach (var header in stubResponseHeaders)
                 {
