@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <Version>2018.12.22.1234</Version>
         <AssemblyVersion>2018.12.22.1234</AssemblyVersion>
         <FileVersion>2018.12.22.1234</FileVersion>
@@ -16,16 +15,16 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
         <WarningsAsErrors />
+        <DocumentationFile />
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <WarningsAsErrors />
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tool|AnyCPU'">
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors />
+        <DocumentationFile />
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="2.2.0" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
         <PackageReference Include="NSwag.MSBuild" Version="12.3.1">
             <PrivateAssets>all</PrivateAssets>
@@ -38,7 +37,7 @@
 
         <!-- Create a client based on this file using NSwag. -->
         <Copy SourceFiles="@(ReferencePath)" DestinationFolder="$(OutDir)References" />
-        <Exec Command="$(NSwagExe_Core22) run client.nswag /variables:Configuration=$(Configuration),OutDir=$(OutDir),ProjectRoot=$(MSBuildThisFileDirectory)\..\.." />
+        <Exec Command="$(NSwagExe_Core22) run client.nswag /variables:Configuration=$(Configuration),OutDir=$(OutDir)\..\..\..,ProjectRoot=$(MSBuildThisFileDirectory)\..\.." />
         <RemoveDir Directories="$(OutDir)References" />
     </Target>
 </Project>
