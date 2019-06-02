@@ -11,6 +11,12 @@ Param(
 $binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp2.2\osx-x64\publish"
 $docsFolder = Join-Path $srcFolder "..\docs"
 
+# Patching main .csproj file
+[xml]$csproj = Get-Content $mainProjectFile
+$propertyGroupNode = $csproj.SelectSingleNode("/Project/PropertyGroup[1]")
+$propertyGroupNode.PackAsTool = "false"
+$csproj.Save($mainProjectFile)
+
 # Create OS X package
 Write-Host "Packing up for OS X" -ForegroundColor Green
 & dotnet publish $mainProjectFile --configuration=release --runtime=osx-x64
