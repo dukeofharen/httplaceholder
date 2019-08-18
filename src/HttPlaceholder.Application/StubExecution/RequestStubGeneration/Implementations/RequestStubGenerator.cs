@@ -44,6 +44,9 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
                 _logger.LogInformation($"Handler '{handler.GetType().Name}'" + (executed ? " executed" : "") + ".");
             }
 
+            // Set a default response
+            stub.Response.Text = "OK!";
+
             // Generate an ID based on the created stub.
             string contents = JsonConvert.SerializeObject(stub);
             stub.Id = "generated-" + HashingUtilities.GetMd5String(contents);
