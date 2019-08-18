@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
 using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetByStubId;
@@ -43,6 +44,19 @@ namespace HttPlaceholder.Controllers
         public async Task<ActionResult> DeleteAll()
         {
             await Mediator.Send(new DeleteAllRequestsCommand());
+            return NoContent();
+        }
+
+        /// <summary>
+        /// An endpoint which accepts the correlation ID of a request made earlier.
+        /// HttPlaceholder will create a stub based on this request for you to tweak lateron.
+        /// </summary>
+        /// <returns>OK, but no content returned</returns>
+        [HttpPost("{CorrelationId}/stubs")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> CreateStubForRequest([FromRoute]CreateStubForRequestCommand command)
+        {
+            await Mediator.Send(command);
             return NoContent();
         }
     }

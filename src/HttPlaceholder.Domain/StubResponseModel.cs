@@ -42,7 +42,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the headers.
         /// </summary>
         [YamlMember(Alias = "headers")]
-        public IDictionary<string, string> Headers { get; set; }
+        public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets or sets the duration of the extra.
