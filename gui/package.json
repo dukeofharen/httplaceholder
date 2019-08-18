@@ -16,6 +16,7 @@
     "js-yaml": "^3.13.1",
     "lodash.camelcase": "^4.3.0",
     "moment": "^2.24.0",
+    "portfinder": "^1.0.21",
     "register-service-worker": "^1.6.2",
     "toastr": "^2.1.4",
     "vue": "^2.6.10",
