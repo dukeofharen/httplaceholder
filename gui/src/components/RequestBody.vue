@@ -1,15 +1,17 @@
 <template>
   <div class="col-12 row">
     <div v-if="renderedBodyTypeText" class="col-12 row">
-      <a v-on:click="viewRawBody" v-bind:class="{ selected: !showRenderedBody }">Raw</a>&nbsp;|&nbsp;<a v-on:click="viewRenderedBody" v-bind:class="{ selected: showRenderedBody }">{{renderedBodyTypeText}}</a>
+      <a v-on:click="viewRawBody" v-bind:class="{ selected: !showRenderedBody }">Raw</a>&nbsp;|&nbsp;
+      <a
+        v-on:click="viewRenderedBody"
+        v-bind:class="{ selected: showRenderedBody }"
+      >{{renderedBodyTypeText}}</a>
     </div>
     <div class="col-12 row">
       <span v-if="showRenderedBody">
         <pre><code>{{renderedBody}}</code></pre>
       </span>
-      <span v-if="!showRenderedBody">
-        {{rawBody}}
-      </span>
+      <span v-if="!showRenderedBody">{{rawBody}}</span>
     </div>
   </div>
 </template>
@@ -17,8 +19,10 @@
 <script>
 const xmlType = "XML";
 const jsonType = "JSON";
+const formType = "Form";
 
 import xmlFormatter from "xml-formatter";
+import { formFormat } from "@/functions/formFormatter";
 
 export default {
   name: "requestBody",
@@ -52,8 +56,10 @@ export default {
         contentType.includes("application/xml")
       ) {
         return xmlType;
-      } else if(contentType.includes("application/json")) {
+      } else if (contentType.includes("application/json")) {
         return jsonType;
+      } else if (contentType.includes("application/x-www-form-urlencoded")) {
+        return formType;
       }
 
       return "";
@@ -71,9 +77,11 @@ export default {
         try {
           let json = JSON.parse(this.requestParameters.body);
           return JSON.stringify(json, null, 2);
-        } catch(err) {
+        } catch (err) {
           return "";
         }
+      } else if (this.renderedBodyTypeText === formType) {
+        return formFormat(this.requestParameters.body);
       }
 
       return "";
