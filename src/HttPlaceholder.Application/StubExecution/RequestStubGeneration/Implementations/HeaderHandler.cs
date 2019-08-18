@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -14,8 +15,10 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
                 return Task.FromResult(false);
             }
 
-            // Do a Regex escape here, if we don do this it might give some strange results lateron.
+            // Do a Regex escape here, if we don do this it might give some strange results lateron
+            // and filter some headers out.
             stub.Conditions.Headers = request.RequestParameters.Headers
+                .Where(h => !h.Key.Equals("Host", StringComparison.OrdinalIgnoreCase))
                 .ToDictionary(d => d.Key, d => Regex.Escape(d.Value));
             return Task.FromResult(true);
         }
