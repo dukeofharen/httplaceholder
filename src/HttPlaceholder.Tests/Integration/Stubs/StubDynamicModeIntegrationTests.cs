@@ -164,7 +164,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             string url = $"{TestServer.BaseAddress}dynamic-client-ip.txt";
             string expectedResult = $"IP: {ip}";
 
-            _clientIpResolverMock
+            ClientIpResolverMock
                 .Setup(m => m.GetClientIp())
                 .Returns(ip);
 

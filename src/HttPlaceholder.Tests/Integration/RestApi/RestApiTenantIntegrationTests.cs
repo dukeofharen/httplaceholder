@@ -37,7 +37,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             // arrange
             string tenant = "tenant1";
             string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -45,7 +45,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -81,7 +81,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             // arrange
             string tenant = "tenant1";
             string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -89,7 +89,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -122,7 +122,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // Arrange
             string tenant = "tenant1";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -130,7 +130,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -155,7 +155,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             // Arrange
             string tenant = "tenant1";
             string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -163,7 +163,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -190,7 +190,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             // Arrange
             string tenant = "tenant1";
             string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -198,7 +198,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -224,7 +224,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // arrange
             string tenant = "tenant1";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -232,7 +232,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -247,8 +247,8 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 .DeleteAllAsync(tenant);
 
             // Assert
-            Assert.AreEqual(1, _stubSource._stubModels.Count);
-            Assert.AreEqual("test-123", _stubSource._stubModels.Single().Id);
+            Assert.AreEqual(1, StubSource._stubModels.Count);
+            Assert.AreEqual("test-123", StubSource._stubModels.Single().Id);
         }
 
         [TestMethod]
@@ -256,7 +256,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // Arrange
             string tenant = "tenant1";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -264,7 +264,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = tenant
             });
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -307,9 +307,9 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 .UpdateAllAsync(tenant, request);
 
             // Assert
-            Assert.AreEqual(2, _stubSource._stubModels.Count);
-            Assert.AreEqual("test-123", _stubSource._stubModels[0].Id);
-            Assert.AreEqual("test-789", _stubSource._stubModels[1].Id);
+            Assert.AreEqual(2, StubSource._stubModels.Count);
+            Assert.AreEqual("test-123", StubSource._stubModels[0].Id);
+            Assert.AreEqual("test-789", StubSource._stubModels[1].Id);
         }
     }
 }

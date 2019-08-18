@@ -64,8 +64,8 @@ response:
             using (var response = await Client.SendAsync(request))
             {
                 Assert.IsTrue(response.IsSuccessStatusCode);
-                Assert.AreEqual(1, _stubSource._stubModels.Count);
-                Assert.AreEqual("situation-01", _stubSource._stubModels.First().Id);
+                Assert.AreEqual(1, StubSource._stubModels.Count);
+                Assert.AreEqual("situation-01", StubSource._stubModels.First().Id);
             }
         }
 
@@ -105,8 +105,8 @@ response:
             using (var response = await Client.SendAsync(request))
             {
                 Assert.IsTrue(response.IsSuccessStatusCode);
-                Assert.AreEqual(1, _stubSource._stubModels.Count);
-                Assert.AreEqual("situation-01", _stubSource._stubModels.First().Id);
+                Assert.AreEqual(1, StubSource._stubModels.Count);
+                Assert.AreEqual("situation-01", StubSource._stubModels.First().Id);
             }
         }
 
@@ -147,8 +147,8 @@ response:
                 .AddAsync(request);
 
             // Assert
-            Assert.AreEqual(1, _stubSource._stubModels.Count);
-            Assert.AreEqual("situation-01", _stubSource._stubModels.First().Id);
+            Assert.AreEqual(1, StubSource._stubModels.Count);
+            Assert.AreEqual("situation-01", StubSource._stubModels.First().Id);
         }
 
         [TestMethod]
@@ -164,7 +164,7 @@ response:
             {
                 Id = "situation-01"
             };
-            _readOnlyStubSource
+            ReadOnlyStubSource
                .Setup(m => m.GetStubsAsync())
                .ReturnsAsync(new[] { existingStub });
 
@@ -182,7 +182,7 @@ response:
         {
             // arrange
             string url = $"{TestServer.BaseAddress}ph-api/stubs";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -216,7 +216,7 @@ response:
         {
             // arrange
             string url = $"{TestServer.BaseAddress}ph-api/stubs";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -247,7 +247,7 @@ response:
         public async Task RestApiIntegration_Stub_GetAll_Client()
         {
             // Arrange
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -270,7 +270,7 @@ response:
         {
             // arrange
             string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -303,7 +303,7 @@ response:
         {
             // arrange
             string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -333,7 +333,7 @@ response:
         public async Task RestApiIntegration_Stub_Get_Client()
         {
             // Arrange
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -355,7 +355,7 @@ response:
         {
             // arrange
             string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-124",
                 Conditions = new StubConditionsModel(),
@@ -376,7 +376,7 @@ response:
         public async Task RestApiIntegration_Stub_Delete()
         {
             // Arrange
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -390,14 +390,14 @@ response:
                 .DeleteAsync("test-123");
 
             // Assert
-            Assert.AreEqual(0, _stubSource._stubModels.Count);
+            Assert.AreEqual(0, StubSource._stubModels.Count);
         }
 
         [TestMethod]
         public async Task RestApiIntegration_Stub_Delete_NotFound_ShouldReturn404()
         {
             // Arrange
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-124",
                 Conditions = new StubConditionsModel(),
@@ -418,7 +418,7 @@ response:
         public async Task RestApiIntegration_Stub_GetAll_CredentialsAreNeededButIncorrect_ShouldReturn401()
         {
             // Arrange
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -442,7 +442,7 @@ response:
         public async Task RestApiIntegration_Stub_GetAll_CredentialsAreCorrect_ShouldContinue()
         {
             // Arrange
-            _stubSource._stubModels.Add(new StubModel
+            StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),

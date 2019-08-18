@@ -13,10 +13,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     public abstract class StubIntegrationTestBase : IntegrationTestBase
     {
         private const string InputFilePath = @"D:\tmp\input.yml";
-        protected Mock<IClientIpResolver> _clientIpResolverMock;
-        protected Mock<IFileService> _fileServiceMock;
-        internal YamlFileStubSource _stubSource;
-        protected Mock<IWritableStubSource> _writableStubSourceMock;
+        protected Mock<IClientIpResolver> ClientIpResolverMock;
+        protected Mock<IFileService> FileServiceMock;
+        internal YamlFileStubSource StubSource;
+        protected Mock<IWritableStubSource> WritableStubSourceMock;
 
         public void InitializeStubIntegrationTest(string yamlFileName)
         {
@@ -24,31 +24,31 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             string path = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), yamlFileName);
             string integrationYml = File.ReadAllText(path);
 
-            _fileServiceMock = new Mock<IFileService>();
-            _fileServiceMock
+            FileServiceMock = new Mock<IFileService>();
+            FileServiceMock
                .Setup(m => m.ReadAllText(InputFilePath))
                .Returns(integrationYml);
-            _fileServiceMock
+            FileServiceMock
                .Setup(m => m.FileExists(InputFilePath))
                .Returns(true);
 
-            _clientIpResolverMock = new Mock<IClientIpResolver>();
+            ClientIpResolverMock = new Mock<IClientIpResolver>();
             Settings.Storage.InputFile = InputFilePath;
 
-            _stubSource = new YamlFileStubSource(
-                _fileServiceMock.Object,
+            StubSource = new YamlFileStubSource(
+                FileServiceMock.Object,
                 new Mock<ILogger<YamlFileStubSource>>().Object,
                 Options);
-            _writableStubSourceMock = new Mock<IWritableStubSource>();
+            WritableStubSourceMock = new Mock<IWritableStubSource>();
 
             InitializeIntegrationTest(new (Type, object)[]
             {
-                ( typeof(IClientIpResolver), _clientIpResolverMock.Object ),
-                ( typeof(IFileService), _fileServiceMock.Object )
+                ( typeof(IClientIpResolver), ClientIpResolverMock.Object ),
+                ( typeof(IFileService), FileServiceMock.Object )
             }, new IStubSource[]
             {
-            _stubSource,
-            _writableStubSourceMock.Object
+            StubSource,
+            WritableStubSourceMock.Object
             });
         }
     }
