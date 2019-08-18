@@ -40,7 +40,7 @@ const getUser = (username, password) => {
 
 const handleHttpError = (commit, error) => {
     const status = error.response.status;
-    if(status !== 401) {
+    if (status !== 401) {
         commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
     }
 }
@@ -173,7 +173,7 @@ export default {
         let parsedObject;
         try {
             parsedObject = yaml.safeLoad(payload.input);
-        } catch(error) {
+        } catch (error) {
             commit(storeToastMutation, { type: messageTypes.ERROR, message: error.message });
             return;
         }
@@ -203,5 +203,22 @@ export default {
                     }
                 });
         }
+    },
+    createStubBasedOnRequest({ commit, state }, payload) {
+        let rootUrl = urls.rootUrl
+        let url = `${rootUrl}ph-api/requests/${payload.correlationId}/stubs`
+        let token = state.userToken
+        let config = getConfig(token)
+        config.headers["Content-Type"] = 'application/json'
+        axios.post(url, '', config)
+            .then(response => {
+                let stub = response.data.stub
+                let message = resources.stubAddedSuccessfully
+                commit(storeToastMutation, { type: messageTypes.SUCCESS, message: message.format(stub.id) })
+                commit('storeLastSelectedStub', {
+                    fullStub: response.data
+                })
+            })
+            .catch(error => commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.stubNotAddedGeneric }))
     }
 }
