@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.StubExecution.RequestStubGeneration;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
@@ -41,12 +42,13 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             foreach (var handler in _handlers)
             {
                 bool executed = await handler.HandleStubGenerationAsync(requestResult, stub);
-                _logger.LogInformation($"Handler '{handler.GetType().Name}'"+ (executed ? " executed" : "") + ".");
+                _logger.LogInformation($"Handler '{handler.GetType().Name}'" + (executed ? " executed" : "") + ".");
             }
 
             // Generate an ID based on the created stub.
             string contents = JsonConvert.SerializeObject(stub);
-            stub.Id = HashingUtilities.GetMd5String(contents);
+            stub.Id = "generated-" + HashingUtilities.GetMd5String(contents);
+            await _stubContext.DeleteStubAsync(stub.Id);
             await _stubContext.AddStubAsync(stub);
             _logger.LogInformation($"Stub with ID '{stub.Id}' generated!");
 

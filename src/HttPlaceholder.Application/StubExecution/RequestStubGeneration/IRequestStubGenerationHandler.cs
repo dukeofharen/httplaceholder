@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution
+namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration
 {
     public interface IRequestStubGenerationHandler
     {

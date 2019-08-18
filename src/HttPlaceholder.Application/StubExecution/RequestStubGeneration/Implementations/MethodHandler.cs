@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration
+namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
 {
     internal class MethodHandler : IRequestStubGenerationHandler
     {
