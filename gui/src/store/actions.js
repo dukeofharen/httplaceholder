@@ -2,7 +2,7 @@ import axios from 'axios'
 import yaml from 'js-yaml'
 import urls from 'urls'
 import { authenticateResults, messageTypes } from '@/constants';
-import resources from '@/resources';
+import { resources } from '@/resources';
 
 const storeToastMutation = 'storeToast'
 const storeAuthMutation = 'storeAuthenticated'
