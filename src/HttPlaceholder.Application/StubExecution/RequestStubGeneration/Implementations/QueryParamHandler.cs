@@ -20,5 +20,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             stub.Conditions.Url.Query = query.ToDictionary(q => q.Key, q => q.Value.ToString());
             return Task.FromResult(true);
         }
+
+        public int Priority => 0;
     }
 }

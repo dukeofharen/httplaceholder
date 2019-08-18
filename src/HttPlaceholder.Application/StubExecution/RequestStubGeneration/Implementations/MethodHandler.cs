@@ -16,5 +16,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             stub.Conditions.Method = request.RequestParameters.Method;
             return Task.FromResult(true);
         }
+
+        public int Priority => 0;
     }
 }

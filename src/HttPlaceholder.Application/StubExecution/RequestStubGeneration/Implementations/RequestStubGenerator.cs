@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.StubExecution.RequestStubGeneration;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Application.StubExecution.Implementations
+namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
 {
     internal class RequestStubGenerator : IRequestStubGenerator
     {
@@ -39,7 +38,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             }
 
             var stub = new StubModel();
-            foreach (var handler in _handlers)
+            foreach (var handler in _handlers.OrderByDescending(w => w.Priority))
             {
                 bool executed = await handler.HandleStubGenerationAsync(requestResult, stub);
                 _logger.LogInformation($"Handler '{handler.GetType().Name}'" + (executed ? " executed" : "") + ".");

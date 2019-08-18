@@ -12,5 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             stub.Conditions.Url.Path = uri.LocalPath;
             return Task.FromResult(true);
         }
+
+        public int Priority => 0;
     }
 }
