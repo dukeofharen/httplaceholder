@@ -14,7 +14,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             {
                 host += $":{uri.Port}";
             }
-            
+
             stub.Conditions.Host = host;
             return Task.FromResult(true);
         }
