@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Hubs.Implementations;
+﻿using HttPlaceholder.Application.Infrastructure.Newtonsoft;
+using HttPlaceholder.Hubs.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +9,10 @@ namespace HttPlaceholder.Hubs
     {
         public static IServiceCollection AddSignalRHubs(this IServiceCollection services)
         {
-            services.AddSignalR();
+            services
+                .AddSignalR()
+                .AddJsonProtocol(options =>
+                    options.PayloadSerializerSettings.ContractResolver = new CamelCaseExceptDictionaryKeysResolver());
             services.AddTransient<IRequestNotify, RequestNotify>();
             return services;
         }

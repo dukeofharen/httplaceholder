@@ -22,7 +22,7 @@
 
 <script>
 import { codemirror } from "vue-codemirror";
-import resources from "@/resources";
+import { resources } from "@/resources";
 
 export default {
   name: "addStub",

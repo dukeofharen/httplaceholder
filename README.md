@@ -12,7 +12,7 @@ Quickly mock away any webservice using HttPlaceholder. HttPlaceholder lets you s
 
 # Where?
 * ⚙ Install as dotnet tool<br />
-`dotnet install --global httplaceholder`
+`dotnet tool install --global httplaceholder`
 * 🗔 Install on Windows<br />
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/Install-Windows.ps1'))

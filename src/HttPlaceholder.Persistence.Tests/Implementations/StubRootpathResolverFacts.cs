@@ -1,4 +1,7 @@
-﻿using Ducode.Essentials.Assembly.Interfaces;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using Ducode.Essentials.Assembly.Interfaces;
 using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Persistence.Implementations;
@@ -55,8 +58,11 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public void StubRootPathResolver_GetStubRootPath_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
         {
             // arrange
-            var inputFilePath = @"C:\stubs";
-            var inputFile = $@"{inputFilePath}\stubs.yml";
+        // TODO we should actually add GetDirectoryName to the FileService
+            var inputFilePath =
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs" : "/opt/httplaceholder";
+
+            var inputFile = Path.Combine($@"{inputFilePath}", "stubs.yml");
             _options.Value.Storage.InputFile = inputFile;
 
             _fileServiceMock
@@ -74,7 +80,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public void StubRootPathResolver_GetStubRootPath_InputFileNotSet_ShouldReturnAssemblyPath()
         {
             // arrange
-            var assemblyPath = @"C:\stubs\bin";
+            var assemblyPath = Path.Combine(@"C:\stubs\bin");
 
             _assemblyServiceMock
                .Setup(m => m.GetEntryAssemblyRootPath())

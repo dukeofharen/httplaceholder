@@ -23,7 +23,7 @@
 
 <script>
 import Stub from "@/components/Stub";
-import resources from "@/resources";
+import { resources } from "@/resources";
 
 export default {
   name: "stubs",

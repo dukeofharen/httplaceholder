@@ -4,7 +4,7 @@ This page contains information about installing HttPlaceholder in several differ
 
 ## ⚙ Dotnet global tool (cross platform)
 
-Make sure you have installed the correct .NET Core SDK for your OS (see https://dotnet.microsoft.com/download). When the .NET Core SDK is installed, run `dotnet install --global httplaceholder` to install HttPlaceholder.
+Make sure you have installed the correct .NET Core SDK for your OS (see https://dotnet.microsoft.com/download). When the .NET Core SDK is installed, run `dotnet tool install --global httplaceholder` to install HttPlaceholder.
 
 ## 🐧 Linux
 
