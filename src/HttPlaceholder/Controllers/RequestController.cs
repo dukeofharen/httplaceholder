@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
 using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetByStubId;
 using HttPlaceholder.Dto.Requests;
+using HttPlaceholder.Dto.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +18,13 @@ namespace HttPlaceholder.Controllers
     [Route("ph-api/requests")]
     public class RequestController : BaseApiController
     {
+        private readonly IMapper _mapper;
+
+        public RequestController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         /// <summary>
         /// Get all Requests.
         /// </summary>
@@ -51,13 +60,11 @@ namespace HttPlaceholder.Controllers
         /// An endpoint which accepts the correlation ID of a request made earlier.
         /// HttPlaceholder will create a stub based on this request for you to tweak lateron.
         /// </summary>
-        /// <returns>OK, but no content returned</returns>
+        /// <returns>OK, with the generated stub</returns>
         [HttpPost("{CorrelationId}/stubs")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult> CreateStubForRequest([FromRoute]CreateStubForRequestCommand command)
-        {
-            await Mediator.Send(command);
-            return NoContent();
-        }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<FullStubDto>> CreateStubForRequest(
+            [FromRoute] CreateStubForRequestCommand command) =>
+            _mapper.Map<FullStubDto>(await Mediator.Send(command));
     }
 }
