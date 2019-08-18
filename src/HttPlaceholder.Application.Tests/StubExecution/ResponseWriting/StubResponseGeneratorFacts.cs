@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseWriting;
 using HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations;
 using HttPlaceholder.Domain;
@@ -8,7 +7,7 @@ using HttPlaceholder.TestUtilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
 {
     [TestClass]
     public class StubResponseGeneratorFacts
