@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -8,6 +9,8 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
 {
     public class HeaderHandler : IRequestStubGenerationHandler
     {
+        private readonly IEnumerable<string> _headersToStrip = new[] { "Postman-Token", "Host" };
+
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {
             if (!request.RequestParameters.Headers.Any())
@@ -18,7 +21,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             // Do a Regex escape here, if we don do this it might give some strange results lateron
             // and filter some headers out.
             stub.Conditions.Headers = request.RequestParameters.Headers
-                .Where(h => !h.Key.Equals("Host", StringComparison.OrdinalIgnoreCase))
+                .Where(h => !_headersToStrip.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
                 .ToDictionary(d => d.Key, d => Regex.Escape(d.Value));
             return Task.FromResult(true);
         }
