@@ -58,7 +58,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public void StubRootPathResolver_GetStubRootPath_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
         {
             // arrange
-            // TODO we should actually add GetDirectoryName to the FileService
+        // TODO we should actually add GetDirectoryName to the FileService
             var inputFilePath =
                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs" : "/opt/httplaceholder";
 
