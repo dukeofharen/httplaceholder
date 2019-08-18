@@ -4,7 +4,7 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
 {
-    public class PathHandler : IRequestStubGenerationHandler
+    internal class PathHandler : IRequestStubGenerationHandler
     {
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {

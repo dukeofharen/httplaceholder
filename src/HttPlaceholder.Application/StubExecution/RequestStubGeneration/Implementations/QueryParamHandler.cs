@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
 {
-    public class QueryParamHandler : IRequestStubGenerationHandler
+    internal class QueryParamHandler : IRequestStubGenerationHandler
     {
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {
