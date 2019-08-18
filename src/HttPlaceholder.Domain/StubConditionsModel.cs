@@ -54,7 +54,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the basic authentication.
         /// </summary>
         [YamlMember(Alias = "basicAuthentication")]
-        public StubBasicAuthenticationModel BasicAuthentication { get; set; } = new StubBasicAuthenticationModel();
+        public StubBasicAuthenticationModel BasicAuthentication { get; set; }
 
         /// <summary>
         /// Gets or sets the client ip.
