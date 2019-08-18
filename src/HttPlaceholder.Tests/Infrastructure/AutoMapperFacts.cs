@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HttPlaceholder.Application.Infrastructure.AutoMapper;
+using HttPlaceholder.Infrastructure.AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Infrastructure

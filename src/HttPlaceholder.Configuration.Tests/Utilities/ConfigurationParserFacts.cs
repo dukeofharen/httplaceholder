@@ -113,7 +113,7 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
     ""var1"":""value1"",
     ""var2"":""value2""
 }";
-            var expectedPath = @"C:\httplaceholder\config.json";
+            var expectedPath = Path.Combine(@"C:\httplaceholder", "config.json");
 
             var args = new string[0];
 

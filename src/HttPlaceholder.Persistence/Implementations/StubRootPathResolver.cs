@@ -34,11 +34,9 @@ namespace HttPlaceholder.Persistence.Implementations
                    inputFile :
                    Path.GetDirectoryName(inputFile);
             }
-            else
-            {
-                // If no input file was provided, return the assembly path instead.
-                return _assemblyService.GetEntryAssemblyRootPath();
-            }
+
+            // If no input file was provided, return the assembly path instead.
+            return _assemblyService.GetEntryAssemblyRootPath();
         }
     }
 }
