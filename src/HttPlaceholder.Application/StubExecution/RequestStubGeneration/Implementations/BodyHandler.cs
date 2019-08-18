@@ -16,6 +16,6 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             return Task.FromResult(true);
         }
 
-        public int Priority => 0;
+        public int Priority => 1;
     }
 }
