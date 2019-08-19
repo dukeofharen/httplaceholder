@@ -18,6 +18,8 @@ The top bar has some options:
 - The blue button removes **ALL** requests.
 - The green button refreshes the requests.
 
+Besides this, you have the "Create stub" button at the top of every request. If you press this button, a stub will be created based on the request parameters, which will save a lot of time.
+
 ## Stubs
 
 On the stubs page you can see all stubs configured in HttPlaceholder. When you click on a stub, you'll see the stub configuration in YAML.
