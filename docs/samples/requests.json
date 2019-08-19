@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "659bd77b-c267-4477-b305-d6fccb54ad96",
+		"_postman_id": "c7d6e0b1-7bfa-476f-b6be-67a18e6e4d5e",
 		"name": "HttPlaceholder Examples",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -889,7 +889,10 @@
 										"type": "text"
 									}
 								],
-								"body": {},
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
 								"url": {
 									"raw": "http://localhost:5000/dynamic-form-post.txt",
 									"protocol": "http",
@@ -1121,6 +1124,32 @@
 									"path": [
 										"ph-api",
 										"requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST create stub by existing request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/requests/4d9347e9-38f7-4efa-baf5-ae3a73cc68a7/stubs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"requests",
+										"4d9347e9-38f7-4efa-baf5-ae3a73cc68a7",
+										"stubs"
 									]
 								}
 							},
@@ -1359,6 +1388,21 @@
 										"ph-api",
 										"stubs"
 									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT update stub",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": ""
 								}
 							},
 							"response": []

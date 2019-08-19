@@ -18,13 +18,6 @@ namespace HttPlaceholder.Controllers
     [Route("ph-api/requests")]
     public class RequestController : BaseApiController
     {
-        private readonly IMapper _mapper;
-
-        public RequestController(IMapper mapper)
-        {
-            _mapper = mapper;
-        }
-
         /// <summary>
         /// Get all Requests.
         /// </summary>
@@ -65,6 +58,6 @@ namespace HttPlaceholder.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<FullStubDto>> CreateStubForRequest(
             [FromRoute] CreateStubForRequestCommand command) =>
-            _mapper.Map<FullStubDto>(await Mediator.Send(command));
+            Mapper.Map<FullStubDto>(await Mediator.Send(command));
     }
 }
