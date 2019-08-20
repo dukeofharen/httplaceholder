@@ -65,7 +65,7 @@ response:
             {
                 Assert.IsTrue(response.IsSuccessStatusCode);
                 Assert.AreEqual(1, StubSource._stubModels.Count);
-                Assert.AreEqual("situation-01", StubSource._stubModels.First().Id);
+                Assert.AreEqual("situation-01", StubSource._stubModels.Single().Id);
             }
         }
 
@@ -506,6 +506,159 @@ response:
                 Assert.AreEqual("Authorization, Content-Type", response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
                 Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS", response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
                 Assert.AreEqual("no-store, no-cache", response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
+            }
+        }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Stub_Add_Then_Update_Yaml()
+        {
+            // Add
+            // arrange
+            string url = $"{TestServer.BaseAddress}ph-api/stubs";
+            string body = @"id: situation-01
+conditions:
+  method: GET
+  url:
+    path: /users
+    query:
+      id: 12
+      filter: first_name
+response:
+  statusCode: 200
+  text: |
+    {
+      ""first_name"": ""John""
+    }
+  headers:
+    Content-Type: application/json
+";
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(url),
+                Content = new StringContent(body, Encoding.UTF8, "application/x-yaml")
+            };
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                Assert.IsTrue(response.IsSuccessStatusCode);
+                Assert.AreEqual(1, StubSource._stubModels.Count);
+                Assert.AreEqual("situation-01", StubSource._stubModels.Single().Id);
+            }
+
+            // Update
+            // Arrange
+            url = $"{TestServer.BaseAddress}ph-api/stubs/situation-01";
+            body = @"id: NEW-STUB-ID
+conditions:
+  method: GET
+  url:
+    path: /users
+    query:
+      id: 12
+      filter: first_name
+response:
+  statusCode: 200
+  text: |
+    {
+      ""first_name"": ""John""
+    }
+  headers:
+    Content-Type: application/json
+";
+            request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri(url),
+                Content = new StringContent(body, Encoding.UTF8, "application/x-yaml")
+            };
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                Assert.IsTrue(response.IsSuccessStatusCode);
+                Assert.AreEqual(1, StubSource._stubModels.Count);
+                Assert.AreEqual("NEW-STUB-ID", StubSource._stubModels.Single().Id);
+            }
+        }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Stub_Add_Then_Update_Json()
+        {
+            // arrange
+            string url = $"{TestServer.BaseAddress}ph-api/stubs";
+            string body = @"{
+  ""id"": ""situation-01"",
+  ""conditions"": {
+    ""method"": ""GET"",
+    ""url"": {
+      ""path"": ""/users"",
+      ""query"": {
+        ""id"": 12,
+        ""filter"": ""first_name""
+      }
+    }
+  },
+  ""response"": {
+    ""statusCode"": 200,
+    ""text"": ""{\n  \""\""first_name\""\"": \""\""John\""\""\n}\n"",
+    ""headers"": {
+      ""Content-Type"": ""application/json""
+    }
+  }
+}";
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(url),
+                Content = new StringContent(body, Encoding.UTF8, "application/json")
+            };
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                Assert.IsTrue(response.IsSuccessStatusCode);
+                Assert.AreEqual(1, StubSource._stubModels.Count);
+                Assert.AreEqual("situation-01", StubSource._stubModels.First().Id);
+            }
+
+            // Update
+            // Arrange
+            url = $"{TestServer.BaseAddress}ph-api/stubs/situation-01";
+            body = @"{
+  ""id"": ""NEW-STUB-ID"",
+  ""conditions"": {
+    ""method"": ""GET"",
+    ""url"": {
+      ""path"": ""/users"",
+      ""query"": {
+        ""id"": 12,
+        ""filter"": ""first_name""
+      }
+    }
+  },
+  ""response"": {
+    ""statusCode"": 200,
+    ""text"": ""{\n  \""\""first_name\""\"": \""\""John\""\""\n}\n"",
+    ""headers"": {
+      ""Content-Type"": ""application/json""
+    }
+  }
+}";
+            request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri(url),
+                Content = new StringContent(body, Encoding.UTF8, "application/x-yaml")
+            };
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                Assert.IsTrue(response.IsSuccessStatusCode);
+                Assert.AreEqual(1, StubSource._stubModels.Count);
+                Assert.AreEqual("NEW-STUB-ID", StubSource._stubModels.Single().Id);
             }
         }
     }
