@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     updateStub() {
-      this.$store.dispatch("addStubs", { input: this.input, updated: true });
+      this.$store.dispatch("updateStub", { input: this.input, stubId: this.$route.params.stubId });
     },
     setTheme() {
       this.cmOptions.theme = this.theme.codeMirrorTheme;

@@ -189,9 +189,6 @@ export default {
             axios.post(url, stub, config)
                 .then(response => {
                     let message = resources.stubAddedSuccessfully
-                    if (payload.updated) {
-                        message = resources.stubUpdatedSuccessfully
-                    }
 
                     commit(storeToastMutation, { type: messageTypes.SUCCESS, message: message.format(stub.id) })
                 })
@@ -203,6 +200,34 @@ export default {
                     }
                 });
         }
+    },
+    updateStub({ commit, state }, payload) {
+        let rootUrl = urls.rootUrl
+        let url = `${rootUrl}ph-api/stubs/${payload.stubId}`
+        let token = state.userToken
+        let config = getConfig(token)
+        config.headers["Content-Type"] = 'application/json'
+
+        let stub;
+        try {
+            stub = yaml.safeLoad(payload.input);
+        } catch (error) {
+            commit(storeToastMutation, { type: messageTypes.ERROR, message: error.message });
+            return;
+        }
+
+        axios.put(url, stub, config)
+            .then(response => {
+                let message = resources.stubUpdatedSuccessfully
+                commit(storeToastMutation, { type: messageTypes.SUCCESS, message: message.format(stub.id) })
+            })
+            .catch(error => {
+                if (error.response.status === 409) {
+                    commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.stubAlreadyAdded.format(stub.id) })
+                } else {
+                    commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.stubNotAdded.format(stub.id) })
+                }
+            });
     },
     createStubBasedOnRequest({ commit, state }, payload) {
         let rootUrl = urls.rootUrl
