@@ -216,6 +216,11 @@ export default {
             return;
         }
 
+        if(!stub || Array.isArray(stub)) {
+            commit(storeToastMutation, {type: messageTypes.ERROR, message: resources.onlyOneStubAtATime });
+            return;
+        }
+
         axios.put(url, stub, config)
             .then(response => {
                 let message = resources.stubUpdatedSuccessfully

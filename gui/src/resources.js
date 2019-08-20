@@ -8,6 +8,7 @@ const resources = {
   stubNotAdded: "Stub with ID '{0}' could not be added.",
   stubNotAddedGeneric: "Stub could not be added.",
   stubAlreadyAdded: "Stub with ID '{0}' is already added.",
+  onlyOneStubAtATime: "You can only update one stub at a time.",
   areYouSure: "Are you sure?",
   defaultStub:
     `- id: unique-stub-id
