@@ -5,6 +5,7 @@ const resources = {
   stubAddedSuccessfully: "Stub with ID '{0}' was added successfully.",
   stubUpdatedSuccessfully: "Stub with ID '{0}' was updated successfully.",
   stubDeletedSuccessfully: "Stub with ID '{0}' was deleted successfully.",
+  stubsDeletedSuccessfully: "All stubs deleted successfully.",
   stubNotAdded: "Stub with ID '{0}' could not be added.",
   stubNotAddedGeneric: "Stub could not be added.",
   stubAlreadyAdded: "Stub with ID '{0}' is already added.",

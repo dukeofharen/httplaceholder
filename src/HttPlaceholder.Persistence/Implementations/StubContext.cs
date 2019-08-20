@@ -63,6 +63,15 @@ namespace HttPlaceholder.Persistence.Implementations
             }
         }
 
+        public async Task DeleteAllStubsAsync()
+        {
+            var source = GetWritableStubSource();
+            foreach (var stub in await source.GetStubsAsync())
+            {
+                await source.DeleteStubAsync(stub.Id);
+            }
+        }
+
         public async Task UpdateAllStubs(string tenant, IEnumerable<StubModel> stubs)
         {
             var source = GetWritableStubSource();

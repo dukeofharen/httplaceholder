@@ -162,6 +162,20 @@ export default {
                 handleHttpError(commit, error);
             });
     },
+    deleteAllStubs({ commit, state, dispatch }, payload) {
+        let rootUrl = urls.rootUrl
+        let url = `${rootUrl}ph-api/stubs`
+        let token = state.userToken
+        let config = getConfig(token)
+        axios.delete(url, config)
+            .then(response => {
+                commit(storeToastMutation, { type: messageTypes.SUCCESS, message: resources.stubsDeletedSuccessfully })
+                dispatch('getStubs')
+            })
+            .catch(error => {
+                handleHttpError(commit, error);
+            });
+    },
     addStubs({ commit, state }, payload) {
         let rootUrl = urls.rootUrl
         let url = `${rootUrl}ph-api/stubs`

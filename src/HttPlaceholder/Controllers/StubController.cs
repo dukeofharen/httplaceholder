@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Stubs.Commands.AddStub;
+using HttPlaceholder.Application.Stubs.Commands.DeleteAllStubs;
 using HttPlaceholder.Application.Stubs.Commands.DeleteStub;
 using HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
 using HttPlaceholder.Application.Stubs.Queries.GetAllStubs;
@@ -75,9 +76,23 @@ namespace HttPlaceholder.Controllers
         /// <returns>OK, but not content</returns>
         [HttpDelete]
         [Route("{StubId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete([FromRoute] DeleteStubCommand command)
         {
             await Mediator.Send(command);
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Delete ALL stubs. Be careful.
+        /// </summary>
+        /// <returns>OK, but not content</returns>
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> DeleteAll()
+        {
+            await Mediator.Send(new DeleteAllStubsCommand());
             return NoContent();
         }
     }

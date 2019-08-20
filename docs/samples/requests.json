@@ -1347,6 +1347,52 @@
 							"response": []
 						},
 						{
+							"name": "DELETE ALL stubs",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/ph-api/stubs",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "GET all",
 							"request": {
 								"auth": {
@@ -1396,13 +1442,30 @@
 							"name": "PUT update stub",
 							"request": {
 								"method": "PUT",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": ""
+									"raw": "{\n\"id\": \"good-name\",\n\"conditions\": {\n    \"method\": \"POST\",\n    \"url\": {\n        \"path\": \"/test123/dinges\",\n        \"query\": {\n            \"query1\": \"val1\",\n            \"query\": \"ducoducoduco\"\n        },\n        \"isHttps\": false\n    },\n    \"body\": [],\n    \"form\": [\n        {\n            \"key\": \"form1\",\n            \"value\": \"val1\"\n        },\n        {\n            \"key\": \"form2\",\n            \"value\": \"val2\"\n        }\n    ],\n    \"headers\": {\n        \"Cache-Control\": \"no-cache\",\n        \"Connection\": \"keep-alive\",\n        \"Content-Type\": \"application/x-www-form-urlencoded\",\n        \"Accept\": \"\\\\*/\\\\*\",\n        \"Accept-Encoding\": \"gzip,\\\\ deflate\",\n        \"User-Agent\": \"PostmanRuntime/7\\\\.6\\\\.0\",\n        \"Content-Length\": \"21\"\n    },\n    \"xpath\": [],\n    \"jsonPath\": [],\n    \"basicAuthentication\": {\n        \"username\": \"ducoo\",\n        \"password\": \"ducoducoduco\"\n    },\n    \"clientIp\": \"127.0.0.1\",\n    \"host\": \"localhost:5000\"\n},\n\"negativeConditions\": {\n    \"url\": {\n        \"query\": {}\n    },\n    \"body\": [],\n    \"form\": [],\n    \"headers\": {},\n    \"xpath\": [],\n    \"jsonPath\": []\n},\n\"response\": {\n    \"text\": \"OK!\",\n    \"headers\": {}\n},\n\"priority\": 0\n}"
 								},
 								"url": {
-									"raw": ""
+									"raw": "http://localhost:5000/ph-api/stubs/generated-9e8629aa68a2b85bea76b65eacc1d34a",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"ph-api",
+										"stubs",
+										"generated-9e8629aa68a2b85bea76b65eacc1d34a"
+									]
 								}
 							},
 							"response": []

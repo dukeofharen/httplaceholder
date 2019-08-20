@@ -16,6 +16,8 @@ namespace HttPlaceholder.Application.StubExecution
 
         Task DeleteAllStubsAsync(string tenant);
 
+        Task DeleteAllStubsAsync();
+
         Task UpdateAllStubs(string tenant, IEnumerable<StubModel> stubs);
 
         Task<FullStubModel> GetStubAsync(string stubId);
