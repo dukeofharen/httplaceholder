@@ -1,5 +1,5 @@
 ﻿using System;
-using Ducode.Essentials.Mvc.Interfaces;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Client;
 using HttPlaceholder.Client.Configuration;

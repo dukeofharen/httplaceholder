@@ -20,7 +20,6 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Ducode.Essentials.Mvc.TestUtilities" Version="0.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
@@ -40,5 +39,10 @@
     <None Update="integration.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ducode.Essentials.Mvc.TestUtilities, Version=0.0.2.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\home\duco\.nuget\packages\ducode.essentials.mvc.testutilities\0.0.2\lib\netstandard2.0\Ducode.Essentials.Mvc.TestUtilities.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

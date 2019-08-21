@@ -1,10 +1,9 @@
 ﻿using System;
 using System.IO;
-using Ducode.Essentials.Assembly;
-using Ducode.Essentials.Files.Interfaces;
-using Ducode.Essentials.Mvc.Interfaces;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Logging;
 using Moq;

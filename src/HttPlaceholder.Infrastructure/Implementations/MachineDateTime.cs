@@ -1,7 +1,7 @@
 ﻿using System;
 using HttPlaceholder.Common;
 
-namespace HttPlaceholder.Infrastructure
+namespace HttPlaceholder.Infrastructure.Implementations
 {
     internal class MachineDateTime : IDateTime
     {

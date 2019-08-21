@@ -1,8 +1,4 @@
-﻿using Ducode.Essentials.Assembly;
-using Ducode.Essentials.Async;
-using Ducode.Essentials.Files;
-using Ducode.Essentials.Mvc;
-using HttPlaceholder.Formatters;
+﻿using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Builder;
@@ -49,10 +45,6 @@ namespace HttPlaceholder
                .AddHttPlaceholder(configuration)
                .AddHttpContextAccessor()
                .AddLogging()
-               .AddAssemblyServices()
-               .AddCustomMvcServices()
-               .AddFileServices()
-               .AddAsyncServices()
                .AddOpenApiDocument(c => c.Title = "HttPlaceholder API");
         }
     }

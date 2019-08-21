@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Ducode.Essentials.Files.Interfaces;
+using HttPlaceholder.Common;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.Implementations.StubSources;

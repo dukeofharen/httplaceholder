@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Ducode.Essentials.Assembly.Interfaces;
+using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using MediatR;
 
@@ -16,9 +17,6 @@ namespace HttPlaceholder.Application.Metadata.Queries.GetMetadata
         }
 
         public Task<MetadataModel> Handle(GetMetadataQuery request, CancellationToken cancellationToken) =>
-            Task.FromResult(new MetadataModel
-            {
-                Version = _assemblyService.GetAssemblyVersion()
-            });
+            Task.FromResult(new MetadataModel {Version = _assemblyService.GetAssemblyVersion()});
     }
 }

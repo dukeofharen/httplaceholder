@@ -1,7 +1,6 @@
 ﻿using System.IO;
-using Ducode.Essentials.Assembly.Interfaces;
-using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Common;
 using HttPlaceholder.Configuration;
 using Microsoft.Extensions.Options;
 

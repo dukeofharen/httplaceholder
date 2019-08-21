@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Ducode.Essentials.Assembly;
-using Ducode.Essentials.Assembly.Interfaces;
-using Ducode.Essentials.Console;
-using Ducode.Essentials.Files;
-using Ducode.Essentials.Files.Interfaces;
+using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Infrastructure;
+using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Configuration.Utilities
