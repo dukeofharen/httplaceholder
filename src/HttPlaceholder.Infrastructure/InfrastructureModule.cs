@@ -1,5 +1,6 @@
 ﻿using HttPlaceholder.Common;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace HttPlaceholder.Infrastructure
 {
@@ -7,7 +8,7 @@ namespace HttPlaceholder.Infrastructure
     {
         public static IServiceCollection AddInfrastructureModule(this IServiceCollection services)
         {
-            services.AddSingleton<IDateTime, MachineDateTime>();
+            services.TryAddSingleton<IDateTime, MachineDateTime>();
             return services;
         }
     }

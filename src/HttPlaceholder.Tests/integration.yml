@@ -320,6 +320,30 @@
       X-Header: ((client_ip))
   priority: 0
 
+- id: dynamic-local-now-example
+  conditions:
+      method: GET
+      url:
+          path: /dynamic-local-now.txt
+  response:
+      enableDynamicMode: true
+      text: 'Local now: ((localnow:yyyy-MM-dd HH:mm:ss))'
+      headers:
+          X-Header: ((localnow:yyyy-MM-dd HH:mm:ss))
+  priority: 0
+
+- id: dynamic-utc-now-example
+  conditions:
+      method: GET
+      url:
+          path: /dynamic-utc-now.txt
+  response:
+      enableDynamicMode: true
+      text: 'UTC now: ((utcnow:yyyy-MM-dd HH:mm:ss))'
+      headers:
+          X-Header: ((utcnow:yyyy-MM-dd HH:mm:ss))
+  priority: 0
+
 - id: file
   conditions:
     method: GET

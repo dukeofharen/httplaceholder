@@ -181,5 +181,59 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 Assert.AreEqual(ip, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
             }
         }
+
+        [TestMethod]
+        public async Task StubIntegration_RegularGet_Dynamic_LocalNow()
+        {
+            // arrange
+            string url = $"{TestServer.BaseAddress}dynamic-local-now.txt";
+            string expectedDateTime = "2019-08-21 20:41:51";
+            string expectedResult = $"Local now: {expectedDateTime}";
+
+            var now = new DateTime(2019, 8, 21, 20, 41, 51, DateTimeKind.Local);
+            DateTimeMock
+                .Setup(m => m.Now)
+                .Returns(now);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.AreEqual(expectedResult, content);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+
+                Assert.AreEqual(expectedDateTime, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
+            }
+        }
+
+        [TestMethod]
+        public async Task StubIntegration_RegularGet_Dynamic_UtcNow()
+        {
+            // arrange
+            string url = $"{TestServer.BaseAddress}dynamic-utc-now.txt";
+            string expectedDateTime = "2019-08-21 20:41:51";
+            string expectedResult = $"UTC now: {expectedDateTime}";
+
+            var now = new DateTime(2019, 8, 21, 20, 41, 51, DateTimeKind.Utc);
+            DateTimeMock
+                .Setup(m => m.UtcNow)
+                .Returns(now);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                Assert.AreEqual(expectedResult, content);
+                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+
+                Assert.AreEqual(expectedDateTime, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
+            }
+        }
     }
 }

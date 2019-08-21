@@ -4,6 +4,7 @@ using Ducode.Essentials.Assembly;
 using Ducode.Essentials.Files.Interfaces;
 using Ducode.Essentials.Mvc.Interfaces;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -17,6 +18,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         protected Mock<IFileService> FileServiceMock;
         internal YamlFileStubSource StubSource;
         protected Mock<IWritableStubSource> WritableStubSourceMock;
+        protected Mock<IDateTime> DateTimeMock;
 
         public void InitializeStubIntegrationTest(string yamlFileName)
         {
@@ -26,11 +28,19 @@ namespace HttPlaceholder.Tests.Integration.Stubs
 
             FileServiceMock = new Mock<IFileService>();
             FileServiceMock
-               .Setup(m => m.ReadAllText(InputFilePath))
-               .Returns(integrationYml);
+                .Setup(m => m.ReadAllText(InputFilePath))
+                .Returns(integrationYml);
             FileServiceMock
-               .Setup(m => m.FileExists(InputFilePath))
-               .Returns(true);
+                .Setup(m => m.FileExists(InputFilePath))
+                .Returns(true);
+
+            DateTimeMock = new Mock<IDateTime>();
+            DateTimeMock
+                .Setup(m => m.Now)
+                .Returns(() => DateTime.Now);
+            DateTimeMock
+                .Setup(m => m.UtcNow)
+                .Returns(() => DateTime.UtcNow);
 
             ClientIpResolverMock = new Mock<IClientIpResolver>();
             Settings.Storage.InputFile = InputFilePath;
@@ -41,15 +51,12 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 Options);
             WritableStubSourceMock = new Mock<IWritableStubSource>();
 
-            InitializeIntegrationTest(new (Type, object)[]
-            {
-                ( typeof(IClientIpResolver), ClientIpResolverMock.Object ),
-                ( typeof(IFileService), FileServiceMock.Object )
-            }, new IStubSource[]
-            {
-            StubSource,
-            WritableStubSourceMock.Object
-            });
+            InitializeIntegrationTest(
+                new (Type, object)[]
+                {
+                    (typeof(IClientIpResolver), ClientIpResolverMock.Object),
+                    (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object)
+                }, new IStubSource[] {StubSource, WritableStubSourceMock.Object});
         }
     }
 }
