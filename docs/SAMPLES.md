@@ -39,3 +39,4 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Dynamic mode - request body: [.yml](samples/14.5-dynamic-mode-request-body.yml)
 * Dynamic mode - display URL: [.yml](samples/14.6-dynamic-mode-display-url.yml)
 * Dynamic mode - client IP: [.yml](samples/14.7-dynamic-mode-client-ip.yml)
+* Dynamic mode - current local or UTC date and time: [.yml](samples/14.8-dynamic-mode-datetime-now.yml)

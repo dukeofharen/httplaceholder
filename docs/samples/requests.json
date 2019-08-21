@@ -1002,6 +1002,58 @@
 						}
 					],
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "8 Current date and time",
+					"item": [
+						{
+							"name": "Local",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/dynamic-local-now.txt",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"dynamic-local-now.txt"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UTC",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "http://localhost:5000/dynamic-utc-now.txt",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"dynamic-utc-now.txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
 				}
 			]
 		},
