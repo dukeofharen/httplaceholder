@@ -427,3 +427,50 @@ The response will look like this:
 ```
 IP: 192.168.178.15
 ```
+
+### Local and UTC date & time
+
+These two body parsers can insert the current local date & time or the UTC date & time in the response body or headers.
+
+```
+- id: dynamic-local-now-example
+  conditions:
+      method: GET
+      url:
+          path: /dynamic-local-now.txt
+  response:
+      enableDynamicMode: true
+      text: 'Local now: ((localnow:yyyy-MM-dd HH:mm:ss))'
+      headers:
+          X-Header: ((localnow:yyyy-MM-dd HH:mm:ss))
+  priority: 0
+
+- id: dynamic-utc-now-example
+  conditions:
+      method: GET
+      url:
+          path: /dynamic-utc-now.txt
+  response:
+      enableDynamicMode: true
+      text: 'UTC now: ((utcnow:yyyy-MM-dd HH:mm:ss))'
+      headers:
+          X-Header: ((utcnow:yyyy-MM-dd HH:mm:ss))
+  priority: 0
+```
+
+**URL**
+```
+http://localhost:5000/dynamic-local-now-ip.txt
+```
+
+**Method**
+```
+GET
+```
+
+The response will look like this:
+```
+Local now: 2019-08-21 21:13:59
+```
+
+For both `localnow` and `utcnow`, you can optionally provide a date format. Since HttPlaceholder is a .NET application, you can use all DateTime format strings supported by .NET. For information on all formatting strings, read https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings.
