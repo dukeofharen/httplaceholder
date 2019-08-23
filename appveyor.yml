@@ -45,9 +45,9 @@ artifacts:
     type: zip
 
 deploy:
-  release: $(releaseName)
-  description: $(description)
+  release: $(RELEASE_NAME)
+  description: $(RELEASE_DESCRIPTION)
   provider: GitHub
   auth_token: $(access_token)
-  draft: $(draft)
-  prerelease: $(prerelease)
+  draft: true
+  prerelease: $(RELEASE_IS_PRERELEASE)

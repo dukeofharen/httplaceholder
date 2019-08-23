@@ -14,9 +14,9 @@ RequestExecutionLevel admin
  
 InstallDir "$PROGRAMFILES\${COMPANYNAME}\${APPNAME}"
 
-LicenseData "..\LICENSE.txt"
+LicenseData "..\..\LICENSE.txt"
 Name "${COMPANYNAME} - ${APPNAME}"
-outFile "$%BuildOutputDirectory%\httplaceholder_install-$%versionString%.exe"
+outFile "$%InstallerLocation%"
  
 !include LogicLib.nsh
 
