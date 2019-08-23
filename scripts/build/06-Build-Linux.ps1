@@ -41,5 +41,5 @@ if (!$IsLinux) {
 }
 else {
     & tar -czvf $distFolder/httplaceholder_linux-x64.tar.gz -C $binDir .
-    Assert-Cmd-Ok
+    Assert-Cmd-Ok -alsoAcceptable 1
 }

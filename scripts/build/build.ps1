@@ -17,7 +17,6 @@ New-Item -ItemType Directory $distFolder
 . "$PSScriptRoot/Functions.ps1"
 . "$PSScriptRoot/01-Set-Vars.ps1"
 . "$PSScriptRoot/02-Patch-Csproj-Versions.ps1" -srcFolder $srcFolder
-
 if ($runUnitTests) {
     . "$PSScriptRoot/03-Run-Tests.ps1" -srcFolder $srcFolder
 }
@@ -38,7 +37,12 @@ if ($runUnitTests) {
     -mainProjectFile $mainProjectFile `
     -distFolder $distFolder `
     -rootFolder $rootFolder
+. "$PSScriptRoot\08-Build-NuGet.ps1" `
+    -srcFolder $srcFolder `
+    -distFolder $distFolder
+. "$PSScriptRoot\09-Build-Tool.ps1" `
+    -srcFolder $srcFolder `
+    -mainProjectFile $mainProjectFile `
+    -distFolder $distFolder `
 
-# . "$PSScriptRoot\Build-NuGet.ps1" -srcFolder $srcFolder
-# . "$PSScriptRoot\Build-Tool.ps1" -srcFolder $srcFolder -mainProjectFile $mainProjectFile
 # . "$PSScriptRoot\Publish-NuGet.ps1" -srcFolder $srcFolder
