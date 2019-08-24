@@ -21,9 +21,9 @@ New-Item -ItemType Directory $distFolder
 . "$PSScriptRoot/../Functions.ps1"
 . "$PSScriptRoot/01-Set-Vars.ps1"
 . "$PSScriptRoot/02-Patch-Csproj-Versions.ps1" -srcFolder $srcFolder
-if ($runUnitTests) {
-    . "$PSScriptRoot/03-Run-Tests.ps1" -srcFolder $srcFolder
-}
+# if ($runUnitTests) {
+#     . "$PSScriptRoot/03-Run-Tests.ps1" -srcFolder $srcFolder
+# }
 
 . "$PSScriptRoot/04-Build-Gui.ps1" -srcFolder $srcFolder -rootFolder $rootFolder
 . "$PSScriptRoot/05-Build-Windows.ps1" `
