@@ -6,11 +6,22 @@ Param(
     [Parameter(Mandatory = $True)][string]$distFolder
 )
 
-$clientCsprojFile = "$srcFolder/HttPlaceholder.Client/HttPlaceholder.Client.csproj"
-$binFolder = "$srcFolder/HttPlaceholder.Client/bin/Release"
+$versionString = $env:RELEASE_VERSION
 
-# Building NuGet packages
-& dotnet pack $clientCsprojFile -c Release
-Assert-Cmd-Ok
+# Create OpenAPI client for .NET
+$clientSrcFolder = "$srcFolder/HttPlaceholder.Client"
+& openapi-generator generate `
+    -i "$distFolder/swagger.json" `
+    -g csharp `
+    -c "$PSScriptRoot/openapi-csharp.json" `
+    -o "$clientSrcFolder" `
+    --additional-properties packageVersion="$versionString"
 
-Copy-Item -Path "$binFolder/*.nupkg" -Destination $distFolder
+# $clientCsprojFile = "$srcFolder/HttPlaceholder.Client/HttPlaceholder.Client.csproj"
+# $binFolder = "$srcFolder/HttPlaceholder.Client/bin/Release"
+
+# # Building NuGet packages
+# & dotnet pack $clientCsprojFile -c Release
+# Assert-Cmd-Ok
+
+# Copy-Item -Path "$binFolder/*.nupkg" -Destination $distFolder
