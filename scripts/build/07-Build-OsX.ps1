@@ -34,7 +34,7 @@ if (!$IsLinux) {
     & "C:\Program Files\7-Zip\7z.exe" a -ttar "$distFolder\httplaceholder_osx-x64.tar" "$binDir\**"
     Assert-Cmd-Ok
 
-    & "C:\Program Files\7-Zip\7z.exe" a -tgzip "$distFolder\..\..\httplaceholder_osx-x64.tar.gz" "$distFolder\httplaceholder_osx-x64.tar"
+    & "C:\Program Files\7-Zip\7z.exe" a -tgzip "$distFolder\httplaceholder_osx-x64.tar.gz" "$distFolder\httplaceholder_osx-x64.tar"
     Assert-Cmd-Ok
 
     Remove-Item "$distFolder\httplaceholder_osx-x64.tar"
