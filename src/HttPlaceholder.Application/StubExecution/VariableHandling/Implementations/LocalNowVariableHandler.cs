@@ -26,7 +26,7 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
                 var now = _dateTime.Now;
                 foreach (var match in enumerable)
                 {
-                    var dateTime = match.Groups.Count == 3
+                    var dateTime = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value)
                         ? now.ToString(match.Groups[2].Value)
                         : now.ToString(CultureInfo.InvariantCulture);
                     input = input.Replace(match.Value, dateTime);

@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
     [TestClass]
     public class LocalNowVariableHandlerFacts
     {
-        private static DateTime _now = new DateTime(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
+        private static readonly DateTime Now = new DateTime(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
         private readonly Mock<IDateTime> _dateTimeMock = new Mock<IDateTime>();
         private LocalNowVariableHandler _handler;
 
@@ -19,7 +19,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         {
             _dateTimeMock
                 .Setup(m => m.Now)
-                .Returns(_now);
+                .Returns(Now);
 
             _handler = new LocalNowVariableHandler(_dateTimeMock.Object);
         }
@@ -55,7 +55,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
             string result = _handler.Parse(input, matches);
 
             // Assert
-            Assert.AreEqual(_now.ToString(CultureInfo.InvariantCulture), result);
+            Assert.AreEqual(Now.ToString(CultureInfo.InvariantCulture), result);
         }
     }
 }
