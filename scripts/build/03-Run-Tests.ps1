@@ -12,6 +12,8 @@ Write-Host "Running unit tests"
 foreach ($unitTest in $unitTestProjects) {
     Write-Host $unitTest
 
+    & dotnet restore $unitTest.FullName
+
     & dotnet test $unitTest.FullName
     Assert-Cmd-Ok
 }
