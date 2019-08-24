@@ -12,6 +12,9 @@ if (Test-Path $distFolder) {
     Remove-Item $distFolder -Confirm:$false -Recurse -Force
 }
 
+# Install OpenAPI generator
+& npm install @openapitools/openapi-generator-cli -g
+
 New-Item -ItemType Directory $distFolder
 
 . "$PSScriptRoot/Functions.ps1"
@@ -37,12 +40,15 @@ if ($runUnitTests) {
     -mainProjectFile $mainProjectFile `
     -distFolder $distFolder `
     -rootFolder $rootFolder
-. "$PSScriptRoot\08-Build-NuGet.ps1" `
+. "$PSScriptRoot\08-Create-OpenAPI-File.ps1" `
     -srcFolder $srcFolder `
     -distFolder $distFolder
-. "$PSScriptRoot\09-Build-Tool.ps1" `
+. "$PSScriptRoot\09-Build-NuGet.ps1" `
+    -srcFolder $srcFolder `
+    -distFolder $distFolder
+. "$PSScriptRoot\10-Build-Tool.ps1" `
     -srcFolder $srcFolder `
     -mainProjectFile $mainProjectFile `
-    -distFolder $distFolder `
+    -distFolder $distFolder
 
 # . "$PSScriptRoot\Publish-NuGet.ps1" -srcFolder $srcFolder
