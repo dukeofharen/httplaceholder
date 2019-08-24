@@ -14,6 +14,8 @@ if (Test-Path $distFolder) {
 
 New-Item -ItemType Directory $distFolder
 
+& dotnet build "$srcFolder/HttPlaceholder/HttPlaceholder.sln"
+
 . "$PSScriptRoot/../Functions.ps1"
 . "$PSScriptRoot/01-Set-Vars.ps1"
 . "$PSScriptRoot/02-Patch-Csproj-Versions.ps1" -srcFolder $srcFolder

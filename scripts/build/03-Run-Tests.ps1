@@ -13,6 +13,7 @@ foreach ($unitTest in $unitTestProjects) {
     Write-Host $unitTest
 
     & dotnet restore $unitTest.FullName
+    Assert-Cmd-Ok
 
     & dotnet test $unitTest.FullName
     Assert-Cmd-Ok
