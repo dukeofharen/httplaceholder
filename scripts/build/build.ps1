@@ -8,13 +8,15 @@ $rootFolder = "$PSScriptRoot/../.."
 $distFolder = "$rootFolder/dist"
 $srcFolder = "$rootFolder/src"
 $mainProjectFile = "$srcFolder/HttPlaceholder/HttPlaceholder.csproj"
+$solutionFile = "$srcFolder/HttPlaceholder.sln"
 if (Test-Path $distFolder) {
     Remove-Item $distFolder -Confirm:$false -Recurse -Force
 }
 
 New-Item -ItemType Directory $distFolder
 
-& dotnet build "$srcFolder/HttPlaceholder/HttPlaceholder.sln"
+& dotnet restore $solutionFile
+& dotnet build $solutionFile /p:DebugType=Full
 
 . "$PSScriptRoot/../Functions.ps1"
 . "$PSScriptRoot/01-Set-Vars.ps1"
