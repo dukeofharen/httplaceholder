@@ -16,8 +16,7 @@ branches:
 
 build_script:
   - git submodule update --init --recursive
-  - ps: scripts\build\build.ps1
-  - ps: scripts\publish\publish.ps1
+  - ps: scripts\bootstrap.ps1
 
 test: off
 
