@@ -3,14 +3,14 @@ image: Visual Studio 2017
 before_build:
   - cmd: dotnet --version
   - ps: Get-ChildItem -Path "C:\Program Files\dotnet\sdk"
-  - ps: scripts\Determine-Variables.ps1
-  - ps: scripts\Patch-Versions.ps1
+  - ps: scripts\build\build.ps1
+  - ps: scripts\publish\publish.ps1
 
 environment:
   access_token:
     secure: Zcoti9GsS4Y1t12qVcWhfDXMJLW8QLt4SdeQi8VKUFBtd/gVyWsZlLXDOHLP8i5U
   nuget_api_key:
-    secure: 7EBDqihYRTDxRQzfFeJRYt54OBpZUXWrPCyoMmpCs4+EkUXwxuYp/R4U4CZtsT7z
+    secure: DkwNpTFW5LR/MS5rp1wi2wBHQPhntAH+waI41ytZ0+3oVt9q9Txuv0CRrslv3rgj
 
 branches:
   only:
@@ -25,29 +25,14 @@ test: off
 skip_tags: true
 
 artifacts:
-  - path: src\HttPlaceholder\bin\release\netcoreapp2.2\win-x64\publish\httplaceholder_*.exe
-    name: httplaceholder-windows
-    type: zip
-  - path: src\HttPlaceholder.Client\bin\Release\*.nupkg
-    name: httplaceholder-nuget
-    type: zip
-  - path: src\HttPlaceholder\bin\Tool\*.nupkg
-    name: httplaceholder-tool
-    type: zip
-  - path: '**\swagger.json'
-    name: swagger
-    type: zip
-  - path: src\HttPlaceholder\bin\release\netcoreapp2.2\httplaceholder_*.zip
-    name: httplaceholder-zips
-    type: zip
-  - path: src\HttPlaceholder\bin\release\netcoreapp2.2\httplaceholder_*.tar.gz
-    name: httplaceholder-tars
+  - path: dist\**
+    name: httplaceholder
     type: zip
 
 deploy:
-  release: $(releaseName)
-  description: $(description)
+  release: $(RELEASE_NAME)
+  description: $(RELEASE_DESCRIPTION)
   provider: GitHub
   auth_token: $(access_token)
-  draft: $(draft)
-  prerelease: $(prerelease)
+  draft: true
+  prerelease: $(RELEASE_IS_PRERELEASE)

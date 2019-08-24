@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
-using Ducode.Essentials.Assembly;
 using HttPlaceholder.Application;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Authorization;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Infrastructure;
@@ -19,7 +19,8 @@ namespace HttPlaceholder.Utilities
 {
     public static class StartupUtilities
     {
-        public static IServiceCollection AddHttPlaceholder(this IServiceCollection services, IConfiguration configuration) =>
+        public static IServiceCollection AddHttPlaceholder(this IServiceCollection services,
+            IConfiguration configuration) =>
             services
                 .Configure<SettingsModel>(configuration)
                 .AddInfrastructureModule()
@@ -27,7 +28,7 @@ namespace HttPlaceholder.Utilities
                 .AddPersistenceModule(configuration)
                 .AddAuthorizationModule()
                 .AddSignalRHubs()
-                .AddAutoMapper(new[] { typeof(Startup).Assembly, typeof(ApplicationModule).Assembly });
+                .AddAutoMapper(typeof(Startup).Assembly, typeof(ApplicationModule).Assembly);
 
         public static IApplicationBuilder UseGui(this IApplicationBuilder app, bool loadStaticFiles)
         {

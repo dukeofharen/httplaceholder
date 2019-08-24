@@ -351,7 +351,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_DeleteAllStubsAsync_HappyFlow()
+        public async Task StubContainer_DeleteAllStubsAsync_Tenant_HappyFlow()
         {
             // arrange
             var tenant = "tenant1";
@@ -390,6 +390,48 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             // assert
             stubSource.Verify(m => m.DeleteStubAsync(stub1.Id), Times.Once);
             stubSource.Verify(m => m.DeleteStubAsync(stub2.Id), Times.Never);
+            stubSource.Verify(m => m.DeleteStubAsync(stub3.Id), Times.Once);
+        }
+
+        [TestMethod]
+        public async Task StubContainer_DeleteAllStubsAsync_HappyFlow()
+        {
+            // arrange
+            var stubSource = new Mock<IWritableStubSource>();
+
+            var stub1 = new StubModel
+            {
+                Id = "stub1",
+                Tenant = "tenant1"
+            };
+            var stub2 = new StubModel
+            {
+                Id = "stub2",
+                Tenant = "tenant2"
+            };
+            var stub3 = new StubModel
+            {
+                Id = "stub3",
+                Tenant = "tenant1"
+            };
+
+            stubSource
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[]
+                {
+                    stub1,
+                    stub2,
+                    stub3
+                });
+
+            _stubSources.Add(stubSource.Object);
+
+            // act
+            await _container.DeleteAllStubsAsync();
+
+            // assert
+            stubSource.Verify(m => m.DeleteStubAsync(stub1.Id), Times.Once);
+            stubSource.Verify(m => m.DeleteStubAsync(stub2.Id), Times.Once);
             stubSource.Verify(m => m.DeleteStubAsync(stub3.Id), Times.Once);
         }
 

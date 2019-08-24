@@ -1,4 +1,6 @@
-﻿using HttPlaceholder.Application.Interfaces.Persistence;
+﻿using System;
+using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Client;
 using HttPlaceholder.Client.Configuration;
 using HttPlaceholder.Persistence.Implementations.StubSources;
@@ -8,22 +10,21 @@ namespace HttPlaceholder.Tests.Integration.RestApi
 {
     public abstract class RestApiIntegrationTestBase : IntegrationTestBase
     {
-        internal InMemoryStubSource _stubSource;
-        protected Mock<IStubSource> _readOnlyStubSource;
+        protected Mock<IClientIpResolver> ClientIpResolverMock = new Mock<IClientIpResolver>();
+        internal InMemoryStubSource StubSource;
+        protected Mock<IStubSource> ReadOnlyStubSource;
 
-        public void InitializeRestApiIntegrationTest()
+        protected void InitializeRestApiIntegrationTest()
         {
-            _stubSource = new InMemoryStubSource(Options);
-            _readOnlyStubSource = new Mock<IStubSource>();
+            StubSource = new InMemoryStubSource(Options);
+            ReadOnlyStubSource = new Mock<IStubSource>();
 
-            InitializeIntegrationTest(stubSources: new[]
-            {
-            _stubSource,
-            _readOnlyStubSource.Object
-            });
+            InitializeIntegrationTest(
+                new (Type, object)[] {(typeof(IClientIpResolver), ClientIpResolverMock.Object)},
+                new[] {StubSource, ReadOnlyStubSource.Object});
         }
 
-        public void CleanupRestApiIntegrationTest()
+        protected void CleanupRestApiIntegrationTest()
         {
             CleanupIntegrationTest();
         }
@@ -32,16 +33,13 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             var options = Microsoft.Extensions.Options.Options.Create(new HttPlaceholderClientSettings
             {
-                BaseUrl = Client.BaseAddress.OriginalString,
-                Username = username,
-                Password = password
+                BaseUrl = Client.BaseAddress.OriginalString, Username = username, Password = password
             });
             return new HttPlaceholderClientFactory(Client, options);
         }
 
         protected override void AfterTestServerStart()
         {
-            
         }
     }
 }

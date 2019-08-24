@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Ducode.Essentials.Async.Interfaces;
 using HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

@@ -1,4 +1,4 @@
-﻿using Ducode.Essentials.Mvc.Interfaces;
+﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations

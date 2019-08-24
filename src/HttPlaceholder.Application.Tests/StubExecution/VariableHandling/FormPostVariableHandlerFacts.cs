@@ -1,4 +1,4 @@
-﻿using Ducode.Essentials.Mvc.Interfaces;
+﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
 using Microsoft.Extensions.Primitives;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

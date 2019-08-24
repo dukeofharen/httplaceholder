@@ -1,6 +1,5 @@
 ﻿using System.IO;
-using Ducode.Essentials.Assembly.Interfaces;
-using Ducode.Essentials.Files.Interfaces;
+using HttPlaceholder.Common;
 using HttPlaceholder.Configuration.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

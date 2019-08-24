@@ -22,10 +22,10 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         public StubRequestExecutor(
             IEnumerable<IConditionChecker> conditionCheckers,
             IFinalStubDeterminer finalStubDeterminer,
-           ILogger<StubRequestExecutor> logger,
-           IRequestLoggerFactory requestLoggerFactory,
-           IStubContext stubContainer,
-           IStubResponseGenerator stubResponseGenerator)
+            ILogger<StubRequestExecutor> logger,
+            IRequestLoggerFactory requestLoggerFactory,
+            IStubContext stubContainer,
+            IStubResponseGenerator stubResponseGenerator)
         {
             _conditionCheckers = conditionCheckers;
             _finalStubDeterminer = finalStubDeterminer;
@@ -71,7 +71,10 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                     }
 
                     var allValidationResults = validationResults.Concat(negativeValidationResults);
-                    if (allValidationResults.All(r => r.ConditionValidation != ConditionValidationType.Invalid) && validationResults.Any(r => r.ConditionValidation != ConditionValidationType.NotExecuted && r.ConditionValidation != ConditionValidationType.NotSet) ||
+                    if (allValidationResults.All(r => r.ConditionValidation != ConditionValidationType.Invalid) &&
+                        validationResults.Any(r =>
+                            r.ConditionValidation != ConditionValidationType.NotExecuted &&
+                            r.ConditionValidation != ConditionValidationType.NotSet) ||
                         allValidationResults.All(r => r.ConditionValidation == ConditionValidationType.NotExecuted))
                     {
                         passed = true;
@@ -89,7 +92,8 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             if (!foundStubs.Any())
             {
                 // If the resulting list is not null, but empty, the condition did not pass and the response should be returned prematurely.
-                throw new RequestValidationException($"The '{nameof(foundStubs)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
+                throw new RequestValidationException(
+                    $"The '{nameof(foundStubs)}' array for condition was empty, which means the condition was configured and the request did not pass or no conditions are configured at all.");
             }
 
             var finalStub = _finalStubDeterminer.DetermineFinalStub(foundStubs);
@@ -98,14 +102,17 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             return response;
         }
 
-        private ConditionCheckResultModel CheckConditions(string stubId, IConditionChecker checker, StubConditionsModel conditions, bool negative)
+        private ConditionCheckResultModel CheckConditions(string stubId, IConditionChecker checker,
+            StubConditionsModel conditions, bool negative)
         {
             var validationResult = checker.Validate(stubId, conditions);
             validationResult.CheckerName = checker.GetType().Name;
             var conditionValidation = validationResult.ConditionValidation;
             if (negative && conditionValidation != ConditionValidationType.NotExecuted)
             {
-                validationResult.ConditionValidation = conditionValidation == ConditionValidationType.Invalid ? ConditionValidationType.Valid : ConditionValidationType.Invalid;
+                validationResult.ConditionValidation = conditionValidation == ConditionValidationType.Invalid
+                    ? ConditionValidationType.Valid
+                    : ConditionValidationType.Invalid;
             }
 
             return validationResult;

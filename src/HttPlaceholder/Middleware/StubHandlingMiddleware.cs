@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Ducode.Essentials.Mvc.Interfaces;
+using AutoMapper;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Configuration;
+using HttPlaceholder.Dto.Requests;
 using HttPlaceholder.Hubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -16,12 +18,7 @@ namespace HttPlaceholder.Middleware
 {
     public class StubHandlingMiddleware
     {
-        private static string[] _segmentsToIgnore = new[]
-        {
-         "/ph-api",
-         "/ph-ui",
-         "swagger"
-      };
+        private static string[] _segmentsToIgnore = new[] {"/ph-api", "/ph-ui", "swagger"};
 
         private readonly RequestDelegate _next;
         private readonly IClientIpResolver _clientIpResolver;
@@ -32,17 +29,19 @@ namespace HttPlaceholder.Middleware
         private readonly IStubRequestExecutor _stubRequestExecutor;
         private readonly IRequestNotify _requestNotify;
         private readonly SettingsModel _settings;
+        private readonly IMapper _mapper;
 
         public StubHandlingMiddleware(
-           RequestDelegate next,
-           IClientIpResolver clientIpResolver,
-           IHttpContextService httpContextService,
-           ILogger<StubHandlingMiddleware> logger,
-           IRequestLoggerFactory requestLoggerFactory,
-           IRequestNotify requestNotify,
-           IStubContext stubContext,
-           IStubRequestExecutor stubRequestExecutor,
-           IOptions<SettingsModel> options)
+            RequestDelegate next,
+            IClientIpResolver clientIpResolver,
+            IHttpContextService httpContextService,
+            ILogger<StubHandlingMiddleware> logger,
+            IRequestLoggerFactory requestLoggerFactory,
+            IRequestNotify requestNotify,
+            IStubContext stubContext,
+            IStubRequestExecutor stubRequestExecutor,
+            IOptions<SettingsModel> options,
+            IMapper mapper)
         {
             _next = next;
             _clientIpResolver = clientIpResolver;
@@ -52,6 +51,7 @@ namespace HttPlaceholder.Middleware
             _requestNotify = requestNotify;
             _stubContext = stubContext;
             _stubRequestExecutor = stubRequestExecutor;
+            _mapper = mapper;
             _settings = options.Value;
         }
 
@@ -75,11 +75,11 @@ namespace HttPlaceholder.Middleware
 
                 // Log the request here
                 requestLogger.LogRequestParameters(
-                   _httpContextService.Method,
-                   _httpContextService.DisplayUrl,
-                   _httpContextService.GetBody(),
-                   _clientIpResolver.GetClientIp(),
-                   _httpContextService.GetHeaders());
+                    _httpContextService.Method,
+                    _httpContextService.DisplayUrl,
+                    _httpContextService.GetBody(),
+                    _clientIpResolver.GetClientIp(),
+                    _httpContextService.GetHeaders());
 
                 _httpContextService.ClearResponse();
                 _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
@@ -117,7 +117,9 @@ namespace HttPlaceholder.Middleware
             }
 
             await _stubContext.AddRequestResultAsync(loggingResult);
-            await _requestNotify.NewRequestReceivedAsync(loggingResult);
+
+            // We need to map the model to a DTO here, because the frontend expected that.
+            await _requestNotify.NewRequestReceivedAsync(_mapper.Map<RequestResultDto>(loggingResult));
         }
     }
 }

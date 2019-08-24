@@ -32,7 +32,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 RequestUri = new Uri(url)
             };
             request.Headers.Add("X-Forwarded-Host", "httplaceholder.com");
-            _clientIpResolverMock
+            ClientIpResolverMock
                 .Setup(m => m.GetClientIp())
                 .Returns("127.0.0.1");
 
@@ -67,10 +67,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             string fileContents = "File contents yo!";
             string url = $"{TestServer.BaseAddress}text.txt";
 
-            _fileServiceMock
+            FileServiceMock
                .Setup(m => m.FileExists("text.txt"))
                .Returns(true);
-            _fileServiceMock
+            FileServiceMock
                .Setup(m => m.ReadAllBytes("text.txt"))
                .Returns(Encoding.UTF8.GetBytes(fileContents));
 

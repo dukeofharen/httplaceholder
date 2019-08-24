@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
 using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetByStubId;
 using HttPlaceholder.Dto.Requests;
+using HttPlaceholder.Dto.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,5 +48,16 @@ namespace HttPlaceholder.Controllers
             await Mediator.Send(new DeleteAllRequestsCommand());
             return NoContent();
         }
+
+        /// <summary>
+        /// An endpoint which accepts the correlation ID of a request made earlier.
+        /// HttPlaceholder will create a stub based on this request for you to tweak lateron.
+        /// </summary>
+        /// <returns>OK, with the generated stub</returns>
+        [HttpPost("{CorrelationId}/stubs")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<FullStubDto>> CreateStubForRequest(
+            [FromRoute] CreateStubForRequestCommand command) =>
+            Mapper.Map<FullStubDto>(await Mediator.Send(command));
     }
 }

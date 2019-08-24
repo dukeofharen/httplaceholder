@@ -1,5 +1,5 @@
-﻿using Ducode.Essentials.Mvc.Interfaces;
-using HttPlaceholder.Application.Implementations.ConditionCheckers;
+﻿using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.Extensions.Primitives;

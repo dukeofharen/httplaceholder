@@ -31,7 +31,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 RequestUri = new Uri(url)
             };
 
-            _clientIpResolverMock
+            ClientIpResolverMock
                 .Setup(m => m.GetClientIp())
                 .Returns("127.0.0.1");
 
@@ -54,7 +54,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 RequestUri = new Uri(url)
             };
 
-            _clientIpResolverMock
+            ClientIpResolverMock
                 .Setup(m => m.GetClientIp())
                 .Returns("127.0.0.5");
 

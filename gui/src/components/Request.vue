@@ -1,19 +1,26 @@
 <template>
   <div class="col-12 request" :key="request.correlationId">
     <strong class="url" v-on:click="showDetails">
-      <HttpMethod v-bind:method="request.requestParameters.method"/>
+      <HttpMethod v-bind:method="request.requestParameters.method" />
       {{request.requestParameters.url}}
       <span>(</span>
-      <Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed"/>
+      <Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed" />
       <span>)</span>
     </strong>
     <div class="row" v-if="detailsVisible">
+      <div class="col-md-12">
+        <a
+          class="btn btn-success"
+          v-on:click="createStub()"
+          title="Create a stub based on the request parameters of this request"
+        >Create stub</a>
+      </div>
       <div class="col-2">Method</div>
       <div class="col-10">{{request.requestParameters.method}}</div>
 
       <div class="col-2">Body</div>
       <div class="col-10">
-        <RequestBody v-bind:requestParameters="request.requestParameters"/>
+        <RequestBody v-bind:requestParameters="request.requestParameters" />
       </div>
 
       <div class="col-2">Client IP</div>
@@ -29,12 +36,12 @@
         </ul>
       </div>
 
-        <div class="col-2" v-if="showQueryParameters">Query parameters</div>
-        <div class="col-10" v-if="showQueryParameters">
-          <ul>
-            <li v-for="(value, key) in queryParameters" :key="key">{{key}}: {{value}}</li>
-          </ul>
-        </div>
+      <div class="col-2" v-if="showQueryParameters">Query parameters</div>
+      <div class="col-10" v-if="showQueryParameters">
+        <ul>
+          <li v-for="(value, key) in queryParameters" :key="key">{{key}}: {{value}}</li>
+        </ul>
+      </div>
 
       <div class="col-2">Correlation ID</div>
       <div class="col-10">{{request.correlationId}}</div>
@@ -77,11 +84,11 @@
 
           <div class="col-3">Executed</div>
           <div class="col-9">
-            <Bool v-bind:bool="result.executed"/>
+            <Bool v-bind:bool="result.executed" />
           </div>
 
           <div class="col-12">
-            <hr>
+            <hr />
           </div>
         </div>
       </div>
@@ -116,8 +123,21 @@ export default {
   },
   created() {
     this.queryParameters = parseUrl(this.request.requestParameters.url);
-    if(Object.keys(this.queryParameters).length > 0){
+    if (Object.keys(this.queryParameters).length > 0) {
       this.showQueryParameters = true;
+    }
+  },
+  computed: {
+    lastSelectedStub() {
+      return this.$store.getters.getLastSelectedStub;
+    }
+  },
+  watch: {
+    lastSelectedStub(fullStub) {
+      this.$router.push({
+        name: "updateStub",
+        params: { stubId: this.lastSelectedStub.fullStub.stub.id }
+      });
     }
   },
   methods: {
@@ -129,6 +149,9 @@ export default {
     },
     showResponseWriterResults() {
       this.responseWriterResultsVisible = !this.responseWriterResultsVisible;
+    },
+    createStub() {
+      this.$store.dispatch("createStubBasedOnRequest", { correlationId: this.request.correlationId });
     }
   }
 };

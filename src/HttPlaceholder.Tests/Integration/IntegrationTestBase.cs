@@ -22,6 +22,8 @@ namespace HttPlaceholder.Tests.Integration
 
         protected TestServer TestServer;
 
+        protected string BaseAddress => TestServer.BaseAddress.ToString();
+
         protected void InitializeIntegrationTest((Type, object)[] servicesToReplace = null, IEnumerable<IStubSource> stubSources = null)
         {
             servicesToReplace = servicesToReplace ?? new (Type, object)[0];

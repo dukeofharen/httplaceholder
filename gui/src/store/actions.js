@@ -40,7 +40,7 @@ const getUser = (username, password) => {
 
 const handleHttpError = (commit, error) => {
     const status = error.response.status;
-    if(status !== 401) {
+    if (status !== 401) {
         commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.somethingWentWrongServer })
     }
 }
@@ -162,6 +162,20 @@ export default {
                 handleHttpError(commit, error);
             });
     },
+    deleteAllStubs({ commit, state, dispatch }, payload) {
+        let rootUrl = urls.rootUrl
+        let url = `${rootUrl}ph-api/stubs`
+        let token = state.userToken
+        let config = getConfig(token)
+        axios.delete(url, config)
+            .then(response => {
+                commit(storeToastMutation, { type: messageTypes.SUCCESS, message: resources.stubsDeletedSuccessfully })
+                dispatch('getStubs')
+            })
+            .catch(error => {
+                handleHttpError(commit, error);
+            });
+    },
     addStubs({ commit, state }, payload) {
         let rootUrl = urls.rootUrl
         let url = `${rootUrl}ph-api/stubs`
@@ -173,7 +187,7 @@ export default {
         let parsedObject;
         try {
             parsedObject = yaml.safeLoad(payload.input);
-        } catch(error) {
+        } catch (error) {
             commit(storeToastMutation, { type: messageTypes.ERROR, message: error.message });
             return;
         }
@@ -189,9 +203,6 @@ export default {
             axios.post(url, stub, config)
                 .then(response => {
                     let message = resources.stubAddedSuccessfully
-                    if (payload.updated) {
-                        message = resources.stubUpdatedSuccessfully
-                    }
 
                     commit(storeToastMutation, { type: messageTypes.SUCCESS, message: message.format(stub.id) })
                 })
@@ -203,5 +214,55 @@ export default {
                     }
                 });
         }
+    },
+    updateStub({ commit, state }, payload) {
+        let rootUrl = urls.rootUrl
+        let url = `${rootUrl}ph-api/stubs/${payload.stubId}`
+        let token = state.userToken
+        let config = getConfig(token)
+        config.headers["Content-Type"] = 'application/json'
+
+        let stub;
+        try {
+            stub = yaml.safeLoad(payload.input);
+        } catch (error) {
+            commit(storeToastMutation, { type: messageTypes.ERROR, message: error.message });
+            return;
+        }
+
+        if(!stub || Array.isArray(stub)) {
+            commit(storeToastMutation, {type: messageTypes.ERROR, message: resources.onlyOneStubAtATime });
+            return;
+        }
+
+        axios.put(url, stub, config)
+            .then(response => {
+                let message = resources.stubUpdatedSuccessfully
+                commit(storeToastMutation, { type: messageTypes.SUCCESS, message: message.format(stub.id) })
+            })
+            .catch(error => {
+                if (error.response.status === 409) {
+                    commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.stubAlreadyAdded.format(stub.id) })
+                } else {
+                    commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.stubNotAdded.format(stub.id) })
+                }
+            });
+    },
+    createStubBasedOnRequest({ commit, state }, payload) {
+        let rootUrl = urls.rootUrl
+        let url = `${rootUrl}ph-api/requests/${payload.correlationId}/stubs`
+        let token = state.userToken
+        let config = getConfig(token)
+        config.headers["Content-Type"] = 'application/json'
+        axios.post(url, '', config)
+            .then(response => {
+                let stub = response.data.stub
+                let message = resources.stubAddedSuccessfully
+                commit(storeToastMutation, { type: messageTypes.SUCCESS, message: message.format(stub.id) })
+                commit('storeLastSelectedStub', {
+                    fullStub: response.data
+                })
+            })
+            .catch(error => commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.stubNotAddedGeneric }))
     }
 }

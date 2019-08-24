@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Ducode.Essentials.Async.Interfaces;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations

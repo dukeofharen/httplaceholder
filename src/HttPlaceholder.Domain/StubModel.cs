@@ -17,19 +17,19 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the conditions.
         /// </summary>
         [YamlMember(Alias = "conditions")]
-        public StubConditionsModel Conditions { get; set; }
+        public StubConditionsModel Conditions { get; set; } = new StubConditionsModel();
 
         /// <summary>
         /// Gets or sets the negative conditions.
         /// </summary>
         [YamlMember(Alias = "negativeConditions")]
-        public StubConditionsModel NegativeConditions { get; set; }
+        public StubConditionsModel NegativeConditions { get; set; } = new StubConditionsModel();
 
         /// <summary>
         /// Gets or sets the response.
         /// </summary>
         [YamlMember(Alias = "response")]
-        public StubResponseModel Response { get; set; }
+        public StubResponseModel Response { get; set; } = new StubResponseModel();
 
         /// <summary>
         /// Gets or sets the priority.

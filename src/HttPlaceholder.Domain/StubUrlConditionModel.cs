@@ -18,7 +18,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the query.
         /// </summary>
         [YamlMember(Alias = "query")]
-        public IDictionary<string, string> Query { get; set; }
+        public IDictionary<string, string> Query { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets or sets the full path.

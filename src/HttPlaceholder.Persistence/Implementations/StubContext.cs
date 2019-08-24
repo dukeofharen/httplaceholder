@@ -28,7 +28,7 @@ namespace HttPlaceholder.Persistence.Implementations
                 .Where(s => string.Equals(s.Stub.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task AddStubAsync(StubModel stub)
+        public async Task<FullStubModel> AddStubAsync(StubModel stub)
         {
             if (string.IsNullOrWhiteSpace(stub.Id))
             {
@@ -45,6 +45,7 @@ namespace HttPlaceholder.Persistence.Implementations
 
             var source = GetWritableStubSource();
             await source.AddStubAsync(stub);
+            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = true}};
         }
 
         public async Task<bool> DeleteStubAsync(string stubId) =>
@@ -57,6 +58,15 @@ namespace HttPlaceholder.Persistence.Implementations
                 .Where(s => string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase))
                 .ToArray();
             foreach (var stub in stubs)
+            {
+                await source.DeleteStubAsync(stub.Id);
+            }
+        }
+
+        public async Task DeleteAllStubsAsync()
+        {
+            var source = GetWritableStubSource();
+            foreach (var stub in await source.GetStubsAsync())
             {
                 await source.DeleteStubAsync(stub.Id);
             }
@@ -102,15 +112,15 @@ namespace HttPlaceholder.Persistence.Implementations
 
         public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync() =>
             (await GetWritableStubSource().GetRequestResultsAsync())
-               .OrderByDescending(s => s.RequestBeginTime);
+            .OrderByDescending(s => s.RequestBeginTime);
 
         public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId)
         {
             var source = GetWritableStubSource();
             var results = await source.GetRequestResultsAsync();
             results = results
-               .Where(r => r.ExecutingStubId == stubId)
-               .OrderByDescending(s => s.RequestBeginTime);
+                .Where(r => r.ExecutingStubId == stubId)
+                .OrderByDescending(s => s.RequestBeginTime);
             return results;
         }
 
@@ -144,11 +154,7 @@ namespace HttPlaceholder.Persistence.Implementations
                 var stubs = await source.GetStubsAsync();
                 var fullStubModels = stubs.Select(s => new FullStubModel
                 {
-                    Stub = s,
-                    Metadata = new StubMetadataModel
-                    {
-                        ReadOnly = stubSourceIsReadOnly
-                    }
+                    Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
                 });
                 result.AddRange(fullStubModels);
             }

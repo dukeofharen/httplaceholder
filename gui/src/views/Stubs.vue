@@ -4,17 +4,37 @@
     <div class="row">
       <div class="col-md-7">
         <div class="input-group">
-          <input type="text" class="form-control" placeholder="Filter on stub ID or tenant..." v-model="searchTerm" />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Filter on stub ID or tenant..."
+            v-model="searchTerm"
+          />
           <span class="input-group-append">
-            <a class="btn btn-outline-secondary" type="button" title="Clear input" v-on:click="clearInput"><span class="fa fa-eraser">&nbsp;</span></a>
+            <a
+              class="btn btn-outline-secondary"
+              type="button"
+              title="Clear input"
+              v-on:click="clearInput"
+            >
+              <span class="fa fa-eraser">&nbsp;</span>
+            </a>
           </span>
         </div>
       </div>
       <div class="col-md-5 buttons">
-        <a class="btn btn-danger" v-on:click="deleteAllStubs" title="Delete all stubs"><span class="fa fa-trash">&nbsp;</span></a>
-        <a class="btn btn-success" v-on:click="getStubs" title="Refresh"><span class="fa fa-refresh">&nbsp;</span></a>
-        <router-link to="/downloadStubs" class="btn btn-success" title="Download stubs"><span class="fa fa-cloud-download">&nbsp;</span></router-link>
-        <router-link to="/addStub" class="btn btn-success" title="Add stubs"><span class="fa fa-plus-circle">&nbsp;</span></router-link>
+        <a class="btn btn-danger" v-on:click="deleteAllStubs" title="Delete all stubs">
+          <span class="fa fa-trash">&nbsp;</span>
+        </a>
+        <a class="btn btn-success" v-on:click="getStubs" title="Refresh">
+          <span class="fa fa-refresh">&nbsp;</span>
+        </a>
+        <router-link to="/downloadStubs" class="btn btn-success" title="Download stubs">
+          <span class="fa fa-cloud-download">&nbsp;</span>
+        </router-link>
+        <router-link to="/addStub" class="btn btn-success" title="Add stubs">
+          <span class="fa fa-plus-circle">&nbsp;</span>
+        </router-link>
       </div>
     </div>
     <Stub v-bind:fullStub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
@@ -46,7 +66,8 @@ export default {
       } else {
         this.filteredStubs = this.stubs.filter(r => {
           return (
-            r.stub.id.includes(newValue) || (r.stub.tenant && r.stub.tenant.includes(newValue))
+            r.stub.id.includes(newValue) ||
+            (r.stub.tenant && r.stub.tenant.includes(newValue))
           );
         });
       }
@@ -71,10 +92,7 @@ export default {
     },
     deleteAllStubs() {
       this.$dialog.confirm(resources.areYouSure).then(() => {
-        let writableStubs = this.stubs.filter(s => !s.metadata.readOnly)
-        for(let fullStub of writableStubs) {
-          this.$store.dispatch('deleteStub', { stubId: fullStub.stub.id})
-        }
+        this.$store.dispatch("deleteAllStubs");
       });
     }
   },

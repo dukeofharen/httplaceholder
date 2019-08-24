@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using Ducode.Essentials.Files.Interfaces;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations

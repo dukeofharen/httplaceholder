@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Text;
-using Ducode.Essentials.Mvc.Interfaces;
-using HttPlaceholder.Application.StubExecution.ConditionChecking;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
-namespace HttPlaceholder.Application.Implementations.ConditionCheckers
+namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations
 {
     public class BasicAuthenticationConditionChecker : IConditionChecker
     {

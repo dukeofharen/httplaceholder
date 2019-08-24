@@ -18,7 +18,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the URL.
         /// </summary>
         [YamlMember(Alias = "url")]
-        public StubUrlConditionModel Url { get; set; }
+        public StubUrlConditionModel Url { get; set; } = new StubUrlConditionModel();
 
         /// <summary>
         /// Gets or sets the body.
@@ -36,7 +36,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the headers.
         /// </summary>
         [YamlMember(Alias = "headers")]
-        public IDictionary<string, string> Headers { get; set; }
+        public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets or sets the xpath.

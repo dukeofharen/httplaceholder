@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <IsPackable>false</IsPackable>
-    <Version>0.1.0.0</Version>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-    <FileVersion>0.1.0.0</FileVersion>
+    <Version>2019.8.24.1234</Version>
+    <AssemblyVersion>2019.8.24.1234</AssemblyVersion>
+    <FileVersion>2019.8.24.1234</FileVersion>
     <Configurations>Debug;Release;Tool</Configurations>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,7 +20,6 @@
     <WarningsAsErrors />
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Ducode.Essentials.Mvc.TestUtilities" Version="0.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
@@ -40,5 +39,10 @@
     <None Update="integration.yml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ducode.Essentials.Mvc.TestUtilities, Version=0.0.2.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\..\..\..\..\..\home\duco\.nuget\packages\ducode.essentials.mvc.testutilities\0.0.2\lib\netstandard2.0\Ducode.Essentials.Mvc.TestUtilities.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
