@@ -2,8 +2,6 @@ Param(
     $runUnitTests = $true
 )
 
-$ErrorActionPreference = 'Stop'
-
 $rootFolder = "$PSScriptRoot/../.."
 $distFolder = "$rootFolder/dist"
 $srcFolder = "$rootFolder/src"
