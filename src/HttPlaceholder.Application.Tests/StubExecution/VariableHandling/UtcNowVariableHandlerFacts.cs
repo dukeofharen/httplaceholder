@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
 using HttPlaceholder.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,6 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
     [TestClass]
     public class UtcNowVariableHandlerFacts
     {
+        private static DateTime _now = new DateTime(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
         private readonly Mock<IDateTime> _dateTimeMock = new Mock<IDateTime>();
         private UtcNowVariableHandler _handler;
 
@@ -54,7 +56,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
             string result = _handler.Parse(input, matches);
 
             // Assert
-            Assert.AreEqual("8/21/19 8:29:17 PM", result);
+            Assert.AreEqual(_now.ToString(CultureInfo.InvariantCulture), result);
         }
     }
 }
