@@ -3,8 +3,6 @@ image: Visual Studio 2017
 before_build:
   - cmd: dotnet --version
   - ps: Get-ChildItem -Path "C:\Program Files\dotnet\sdk"
-  - ps: scripts\build\build.ps1
-  - ps: scripts\publish\publish.ps1
 
 environment:
   access_token:
@@ -18,7 +16,8 @@ branches:
 
 build_script:
   - git submodule update --init --recursive
-  - ps: scripts\Build.ps1
+  - ps: scripts\build\build.ps1
+  - ps: scripts\publish\publish.ps1
 
 test: off
 
