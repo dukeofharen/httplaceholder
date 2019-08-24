@@ -14,10 +14,7 @@ $guiDestinationFolder = "$srcFolder/HttPlaceholder/gui"
 Set-Location $guiProjectFolder
 
 & npm install
-Assert-Cmd-Ok
-
 & npm run build
-Assert-Cmd-Ok
 
 # Moving GUI dist folder to bin path
 Copy-item "$guiDistFolder/*" $guiDestinationFolder -Recurse -Container -Force

@@ -40,9 +40,4 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Ducode.Essentials.Mvc.TestUtilities, Version=0.0.2.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\home\duco\.nuget\packages\ducode.essentials.mvc.testutilities\0.0.2\lib\netstandard2.0\Ducode.Essentials.Mvc.TestUtilities.dll</HintPath>
-    </Reference>
-  </ItemGroup>
 </Project>

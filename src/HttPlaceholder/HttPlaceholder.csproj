@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/dukeofharen/httplaceholder</RepositoryUrl>
     <Description>A very flexible cross platform HTTP stub application.</Description>
     <IsPackable>true</IsPackable>
-    <PackAsTool>true</PackAsTool>
+    <PackAsTool>false</PackAsTool>
     <ToolCommandName>httplaceholder</ToolCommandName>
     <Configurations>Debug;Release;Tool</Configurations>
   </PropertyGroup>
