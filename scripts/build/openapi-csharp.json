@@ -1,6 +1,0 @@
-{
-    "packageName": "HttPlaceholder.Client",
-    "sourceFolder": "src",
-    "targetFramework": "v5.0",
-    "netCoreProjectFile": true
-}

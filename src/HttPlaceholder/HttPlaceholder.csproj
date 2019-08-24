@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <PackageId>HttPlaceholder</PackageId>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Version>2018.12.24.1234</Version>
-    <AssemblyVersion>2018.12.24.1234</AssemblyVersion>
-    <FileVersion>2018.12.24.1234</FileVersion>
+    <Version>2019.8.24.1234</Version>
+    <AssemblyVersion>2019.8.24.1234</AssemblyVersion>
+    <FileVersion>2019.8.24.1234</FileVersion>
     <RuntimeIdentifiers>win81-x64;win10-x64;ubuntu.14.04-x64;ubuntu.16.04-x64</RuntimeIdentifiers>
     <LangVersion>latest</LangVersion>
     <Authors>Duco Winterwerp</Authors>

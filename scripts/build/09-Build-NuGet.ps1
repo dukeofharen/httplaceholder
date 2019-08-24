@@ -6,22 +6,16 @@ Param(
     [Parameter(Mandatory = $True)][string]$distFolder
 )
 
-$versionString = $env:RELEASE_VERSION
+if ($IsLinux) {
+    Write-Host "Nuget client generation currently doesn't work well under Linux. To be continued..."
+}
+else {
+    $clientCsprojFile = "$srcFolder/HttPlaceholder.Client/HttPlaceholder.Client.csproj"
+    $binFolder = "$srcFolder/HttPlaceholder.Client/bin/Release"
 
-# Create OpenAPI client for .NET
-$clientSrcFolder = "$srcFolder/HttPlaceholder.Client"
-& openapi-generator generate `
-    -i "$distFolder/swagger.json" `
-    -g csharp `
-    -c "$PSScriptRoot/openapi-csharp.json" `
-    -o "$clientSrcFolder" `
-    --additional-properties packageVersion="$versionString"
+    # Building NuGet packages
+    & dotnet pack $clientCsprojFile -c Release
+    Assert-Cmd-Ok
 
-# $clientCsprojFile = "$srcFolder/HttPlaceholder.Client/HttPlaceholder.Client.csproj"
-# $binFolder = "$srcFolder/HttPlaceholder.Client/bin/Release"
-
-# # Building NuGet packages
-# & dotnet pack $clientCsprojFile -c Release
-# Assert-Cmd-Ok
-
-# Copy-Item -Path "$binFolder/*.nupkg" -Destination $distFolder
+    Copy-Item -Path "$binFolder/*.nupkg" -Destination $distFolder
+}
