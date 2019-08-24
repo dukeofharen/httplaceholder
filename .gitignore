@@ -357,3 +357,4 @@ MigrationBackup/
 # Other
 .idea
 dist/
+!scripts/publish/
