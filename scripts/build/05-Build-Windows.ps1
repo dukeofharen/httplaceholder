@@ -46,11 +46,13 @@ Write-Host "Building installer $nsiPath"
 $env:VersionMajor = $version.Major
 $env:VersionMinor = $version.Minor
 $env:VersionBuild = $version.Build
-$env:BuildOutputBinDirectory = $(winepath --windows "$binDir")
-$env:InstallerLocation = $(winepath --windows "$distFolder/httplaceholder_install.exe")
 if ($IsLinux) {
+    $env:BuildOutputBinDirectory = $(winepath --windows "$binDir")
+    $env:InstallerLocation = $(winepath --windows "$distFolder/httplaceholder_install.exe")
     & wine "C:\Program Files (x86)\NSIS\makensis.exe" $(winepath --windows "$nsiPath")
 } else {
+    $env:BuildOutputBinDirectory = $binDir
+    $env:InstallerLocation = "$distFolder/httplaceholder_install.exe"
     & "C:\Program Files (x86)\NSIS\Bin\makensis.exe" $nsiPath
 }
 
