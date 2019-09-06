@@ -66,7 +66,8 @@ namespace HttPlaceholder.Persistence.Implementations
         public async Task DeleteAllStubsAsync()
         {
             var source = GetWritableStubSource();
-            foreach (var stub in await source.GetStubsAsync())
+            var stubs = (await source.GetStubsAsync()).ToArray();
+            foreach (var stub in stubs)
             {
                 await source.DeleteStubAsync(stub.Id);
             }

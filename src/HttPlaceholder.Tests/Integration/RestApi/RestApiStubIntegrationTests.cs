@@ -661,5 +661,35 @@ response:
                 Assert.AreEqual("NEW-STUB-ID", StubSource._stubModels.Single().Id);
             }
         }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Stub_DeleteAll()
+        {
+            // Arrange
+            StubSource._stubModels.Add(new StubModel
+            {
+                Id = "test-123",
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Response = new StubResponseModel()
+            });
+            StubSource._stubModels.Add(new StubModel
+            {
+                Id = "test-456",
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Response = new StubResponseModel()
+            });
+
+            var url = $"{TestServer.BaseAddress}ph-api/stubs";
+            var request = new HttpRequestMessage {Method = HttpMethod.Delete, RequestUri = new Uri(url)};
+
+            // Act / Assert
+            using (var response = await Client.SendAsync(request))
+            {
+                Assert.IsTrue(response.IsSuccessStatusCode);
+                Assert.IsFalse(StubSource._stubModels.Any());
+            }
+        }
     }
 }
