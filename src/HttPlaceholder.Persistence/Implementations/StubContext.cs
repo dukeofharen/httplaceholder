@@ -131,6 +131,11 @@ namespace HttPlaceholder.Persistence.Implementations
             await source.DeleteAllRequestResultsAsync();
         }
 
+        public async Task<IEnumerable<string>> GetTenantsAsync() =>
+            (await GetStubsAsync())
+            .Select(s => s.Stub.Tenant)
+            .Distinct();
+
         public async Task PrepareAsync()
         {
             foreach (var source in _stubSources)

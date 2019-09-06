@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Tenants.Commands.DeleteStubsInTenant;
 using HttPlaceholder.Application.Tenants.Commands.UpdateStubsInTenant;
 using HttPlaceholder.Application.Tenants.Queries.GetStubsInTenant;
+using HttPlaceholder.Application.Tenants.Queries.GetTenantNames;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.Stubs;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,16 @@ namespace HttPlaceholder.Controllers
     [Route("ph-api/tenants")]
     public class TenantController : BaseApiController
     {
+        /// <summary>
+        /// Gets all available tenant names.
+        /// </summary>
+        /// <returns>All available tenant names.</returns>
+        [HttpGet]
+        [Route("")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<string>>> GetTenantNames() =>
+            Ok(await Mediator.Send(new GetTenantNamesQuery()));
+
         /// <summary>
         /// Gets all stubs in a specific tenant.
         /// </summary>
