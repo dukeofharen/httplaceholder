@@ -311,5 +311,47 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Assert.AreEqual("test-123", StubSource._stubModels[0].Id);
             Assert.AreEqual("test-789", StubSource._stubModels[1].Id);
         }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Tenant_GetTenantNames()
+        {
+            // arrange
+            string url = $"{TestServer.BaseAddress}ph-api/tenants";
+            StubSource._stubModels.Add(new StubModel
+            {
+                Id = "test-123",
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Response = new StubResponseModel(),
+                Tenant = "otherTenant"
+            });
+            StubSource._stubModels.Add(new StubModel
+            {
+                Id = "test-456",
+                Conditions = new StubConditionsModel(),
+                NegativeConditions = new StubConditionsModel(),
+                Response = new StubResponseModel(),
+                Tenant = "tenant1"
+            });
+
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(url)
+            };
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // act / assert
+            using (var response = await Client.SendAsync(request))
+            {
+                Assert.IsTrue(response.IsSuccessStatusCode);
+
+                string content = await response.Content.ReadAsStringAsync();
+                var tenantNames = JsonConvert.DeserializeObject<List<string>>(content);
+                Assert.AreEqual(2, tenantNames.Count);
+                Assert.AreEqual("otherTenant", tenantNames[0]);
+                Assert.AreEqual("tenant1", tenantNames[1]);
+            }
+        }
     }
 }
