@@ -264,5 +264,18 @@ export default {
                 })
             })
             .catch(error => commit(storeToastMutation, { type: messageTypes.ERROR, message: resources.stubNotAddedGeneric }))
+    },
+    getTenantNames({ commit, state }) {
+        let rootUrl = urls.rootUrl
+        let url = `${rootUrl}ph-api/tenants`
+        let token = state.userToken
+        let config = getConfig(token)
+        axios.get(url, config)
+            .then(response => {
+                commit('storeTenantNames', response.data)
+            })
+            .catch(error => {
+                handleHttpError(commit, error);
+            });
     }
 }
