@@ -16,6 +16,6 @@ namespace HttPlaceholder.Application.Tenants.Queries.GetTenantNames
         }
 
         public async Task<IEnumerable<string>> Handle(GetTenantNamesQuery request, CancellationToken cancellationToken) =>
-            await _stubContext.GetTenantsAsync();
+            await _stubContext.GetTenantNamesAsync();
     }
 }

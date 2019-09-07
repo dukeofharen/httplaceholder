@@ -131,9 +131,10 @@ namespace HttPlaceholder.Persistence.Implementations
             await source.DeleteAllRequestResultsAsync();
         }
 
-        public async Task<IEnumerable<string>> GetTenantsAsync() =>
+        public async Task<IEnumerable<string>> GetTenantNamesAsync() =>
             (await GetStubsAsync())
             .Select(s => s.Stub.Tenant)
+            .Where(n => !string.IsNullOrWhiteSpace(n))
             .Distinct();
 
         public async Task PrepareAsync()

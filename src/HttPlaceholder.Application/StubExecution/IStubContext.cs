@@ -30,7 +30,7 @@ namespace HttPlaceholder.Application.StubExecution
 
         Task DeleteAllRequestResultsAsync();
 
-        Task<IEnumerable<string>> GetTenantsAsync();
+        Task<IEnumerable<string>> GetTenantNamesAsync();
 
         Task PrepareAsync();
     }
