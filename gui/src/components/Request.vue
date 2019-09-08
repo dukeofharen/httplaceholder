@@ -53,6 +53,13 @@
         >{{request.executingStubId}}</router-link>
       </div>
 
+      <div class="col-2" v-if="request.stubTenant">Stub tenant (category)</div>
+      <div class="col-10" v-if="request.stubTenant">
+        <router-link
+          :to="{ name: 'stubs', query: { stubTenant: request.stubTenant }}"
+        >{{request.stubTenant}}</router-link>
+      </div>
+
       <div class="col-2">Request begin time</div>
       <div class="col-10">{{request.requestBeginTime | datetime}}</div>
 

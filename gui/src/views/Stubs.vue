@@ -37,6 +37,21 @@
         </router-link>
       </div>
     </div>
+    <div class="row">
+      <div class="input-group col-md-12" v-if="tenantNames.length > 0">
+        <select v-model="selectedTenantName" class="form-control tenant-list">
+          <option
+            selected="selected"
+            value
+          >Select stub tenant / category name for the stubs you would like to see...</option>
+          <option
+            v-for="tenantName in tenantNames"
+            v-bind:key="tenantName"
+            v-bind:value="tenantName"
+          >{{tenantName}}</option>
+        </select>
+      </div>
+    </div>
     <Stub v-bind:fullStub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
   </div>
 </template>
@@ -50,6 +65,7 @@ export default {
   data() {
     return {
       filteredStubs: [],
+      selectedTenantName: "",
       searchTerm: ""
     };
   },
@@ -58,6 +74,7 @@ export default {
   },
   created() {
     this.getStubs();
+    this.getTenantNames();
   },
   methods: {
     search(newValue) {
@@ -77,9 +94,17 @@ export default {
       if (term) {
         this.searchTerm = term;
       }
+
+      let tenant = this.$route.query.stubTenant;
+      if (tenant) {
+        this.selectedTenantName = tenant;
+      }
     },
     getStubs() {
       this.$store.dispatch("getStubs");
+    },
+    getTenantNames() {
+      this.$store.dispatch("getTenantNames");
     },
     addStub() {
       this.$router.push({ name: "addStub" });
@@ -99,6 +124,9 @@ export default {
   computed: {
     stubs() {
       return this.$store.getters.getStubs;
+    },
+    tenantNames() {
+      return this.$store.getters.getTenantNames;
     }
   },
   watch: {
@@ -111,10 +139,22 @@ export default {
     stubs(newStubs) {
       this.filteredStubs = newStubs;
       this.handleUrlSearch();
+    },
+    selectedTenantName(val) {
+      if (!val) {
+        this.filteredStubs = this.stubs;
+      } else {
+        this.filteredStubs = this.stubs.filter(
+          stub => stub.stub.tenant === val
+        );
+      }
     }
   }
 };
 </script>
 
 <style scoped>
+.tenant-list {
+  margin-top: 10px;
+}
 </style>

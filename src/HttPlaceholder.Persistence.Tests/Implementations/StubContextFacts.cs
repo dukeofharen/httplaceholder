@@ -35,12 +35,12 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             var stub3 = new StubModel();
 
             stubSource1
-               .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[] { stub1, stub2 });
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {stub1, stub2});
 
             stubSource2
-               .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[] { stub3 });
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {stub3});
 
             _stubSources.Add(stubSource1.Object);
             _stubSources.Add(stubSource2.Object);
@@ -62,26 +62,17 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             var stubSource1 = new Mock<IStubSource>();
             var stubSource2 = new Mock<IStubSource>();
 
-            var stub1 = new StubModel
-            {
-                Tenant = "tenant1"
-            };
-            var stub2 = new StubModel
-            {
-                Tenant = "tenant2"
-            };
-            var stub3 = new StubModel
-            {
-                Tenant = "TENaNT1"
-            };
+            var stub1 = new StubModel {Tenant = "tenant1"};
+            var stub2 = new StubModel {Tenant = "tenant2"};
+            var stub3 = new StubModel {Tenant = "TENaNT1"};
 
             stubSource1
-               .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[] { stub1, stub2 });
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {stub1, stub2});
 
             stubSource2
-               .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[] { stub3 });
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {stub3});
 
             _stubSources.Add(stubSource1.Object);
             _stubSources.Add(stubSource2.Object);
@@ -96,25 +87,17 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_AddStubAsync_StubIdAlreadyAddedToReadOnlyStubSource_ShouldThrowConflictException()
+        public async Task
+            StubContainer_AddStubAsync_StubIdAlreadyAddedToReadOnlyStubSource_ShouldThrowConflictException()
         {
             // arrange
-            var stubToBeAdded = new StubModel
-            {
-                Id = "conflicted"
-            };
-            var stub = new StubModel
-            {
-                Id = "COnflicted"
-            };
+            var stubToBeAdded = new StubModel {Id = "conflicted"};
+            var stub = new StubModel {Id = "COnflicted"};
             var writableStubSource = new Mock<IWritableStubSource>();
             var readOnlyStubSource = new Mock<IStubSource>();
             readOnlyStubSource
-               .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[]
-               {
-               stub
-               });
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {stub});
 
             _stubSources.Add(writableStubSource.Object);
             _stubSources.Add(readOnlyStubSource.Object);
@@ -127,29 +110,17 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public async Task StubContainer_AddStubAsync_NoIdSet_ShouldAssignRandomString()
         {
             // arrange
-            var stubToBeAdded = new StubModel
-            {
-                Conditions = new StubConditionsModel
-                {
-                    Body = new string[] { "test" }
-                }
-            };
+            var stubToBeAdded = new StubModel {Conditions = new StubConditionsModel {Body = new string[] {"test"}}};
             var stubSource = new Mock<IWritableStubSource>();
             stubSource
-               .Setup(m => m.AddStubAsync(stubToBeAdded))
-               .Returns(Task.CompletedTask);
+                .Setup(m => m.AddStubAsync(stubToBeAdded))
+                .Returns(Task.CompletedTask);
 
-            var stub = new StubModel
-            {
-                Id = "existing-stub"
-            };
+            var stub = new StubModel {Id = "existing-stub"};
             var readOnlyStubSource = new Mock<IStubSource>();
             readOnlyStubSource
-               .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[]
-               {
-               stub
-               });
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {stub});
 
             _stubSources.Add(stubSource.Object);
             _stubSources.Add(readOnlyStubSource.Object);
@@ -165,26 +136,17 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public async Task StubContainer_AddStubAsync_HappyFlow()
         {
             // arrange
-            var stubToBeAdded = new StubModel
-            {
-                Id = "new-stub-02"
-            };
+            var stubToBeAdded = new StubModel {Id = "new-stub-02"};
             var stubSource = new Mock<IWritableStubSource>();
             stubSource
-               .Setup(m => m.AddStubAsync(stubToBeAdded))
-               .Returns(Task.CompletedTask);
+                .Setup(m => m.AddStubAsync(stubToBeAdded))
+                .Returns(Task.CompletedTask);
 
-            var stub = new StubModel
-            {
-                Id = "new-stub-01"
-            };
+            var stub = new StubModel {Id = "new-stub-01"};
             var readOnlyStubSource = new Mock<IStubSource>();
             readOnlyStubSource
-               .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[]
-               {
-               stub
-               });
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {stub});
 
             _stubSources.Add(stubSource.Object);
             _stubSources.Add(readOnlyStubSource.Object);
@@ -203,8 +165,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             var stubId = "stubId1";
             var stubSource = new Mock<IWritableStubSource>();
             stubSource
-               .Setup(m => m.DeleteStubAsync(stubId))
-               .ReturnsAsync(true);
+                .Setup(m => m.DeleteStubAsync(stubId))
+                .ReturnsAsync(true);
 
             _stubSources.Add(stubSource.Object);
 
@@ -222,17 +184,17 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             var stubSource1 = new Mock<IStubSource>();
             var stubSource2 = new Mock<IStubSource>();
 
-            var stub1 = new StubModel { Id = "stub1" };
-            var stub2 = new StubModel { Id = "stub2" };
-            var stub3 = new StubModel { Id = "stub3" };
+            var stub1 = new StubModel {Id = "stub1"};
+            var stub2 = new StubModel {Id = "stub2"};
+            var stub3 = new StubModel {Id = "stub3"};
 
             stubSource1
-               .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[] { stub1, stub2 });
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {stub1, stub2});
 
             stubSource2
-               .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[] { stub3 });
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {stub3});
 
             _stubSources.Add(stubSource1.Object);
             _stubSources.Add(stubSource2.Object);
@@ -248,11 +210,17 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public async Task StubContainer_AddRequestResultAsync_HappyFlow()
         {
             // arrange
-            var request = new RequestResultModel();
             var stubSource = new Mock<IWritableStubSource>();
+
+            var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
             stubSource
-               .Setup(m => m.AddRequestResultAsync(request))
-               .Returns(Task.CompletedTask);
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {stub});
+
+            var request = new RequestResultModel {ExecutingStubId = stub.Id};
+            stubSource
+                .Setup(m => m.AddRequestResultAsync(request))
+                .Returns(Task.CompletedTask);
 
             _stubSources.Add(stubSource.Object);
 
@@ -262,25 +230,21 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             // assert
             stubSource.Verify(m => m.AddRequestResultAsync(request), Times.Once);
             stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Once);
+
+            Assert.AreEqual(stub.Tenant, request.StubTenant);
         }
 
         [TestMethod]
         public async Task StubContainer_GetRequestResultsAsync_HappyFlow()
         {
             // arrange
-            var request1 = new RequestResultModel
-            {
-                RequestBeginTime = DateTime.Now.AddSeconds(-2)
-            };
-            var request2 = new RequestResultModel
-            {
-                RequestBeginTime = DateTime.Now.AddSeconds(-1)
-            };
-            var requests = new[] { request1, request2 };
+            var request1 = new RequestResultModel {RequestBeginTime = DateTime.Now.AddSeconds(-2)};
+            var request2 = new RequestResultModel {RequestBeginTime = DateTime.Now.AddSeconds(-1)};
+            var requests = new[] {request1, request2};
             var stubSource = new Mock<IWritableStubSource>();
             stubSource
-               .Setup(m => m.GetRequestResultsAsync())
-               .ReturnsAsync(requests);
+                .Setup(m => m.GetRequestResultsAsync())
+                .ReturnsAsync(requests);
 
             _stubSources.Add(stubSource.Object);
 
@@ -298,28 +262,21 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             // arrange
             var request1 = new RequestResultModel
             {
-                ExecutingStubId = "stub1",
-                RequestBeginTime = DateTime.Now.AddSeconds(-2)
+                ExecutingStubId = "stub1", RequestBeginTime = DateTime.Now.AddSeconds(-2)
             };
             var request2 = new RequestResultModel
             {
-                ExecutingStubId = "stub2",
-                RequestBeginTime = DateTime.Now.AddSeconds(-2)
+                ExecutingStubId = "stub2", RequestBeginTime = DateTime.Now.AddSeconds(-2)
             };
             var request3 = new RequestResultModel
             {
-                ExecutingStubId = "stub1",
-                RequestBeginTime = DateTime.Now.AddSeconds(-1)
+                ExecutingStubId = "stub1", RequestBeginTime = DateTime.Now.AddSeconds(-1)
             };
-            var requests = new[] {
-            request1,
-            request2,
-            request3
-         };
+            var requests = new[] {request1, request2, request3};
             var stubSource = new Mock<IWritableStubSource>();
             stubSource
-               .Setup(m => m.GetRequestResultsAsync())
-               .ReturnsAsync(requests);
+                .Setup(m => m.GetRequestResultsAsync())
+                .ReturnsAsync(requests);
 
             _stubSources.Add(stubSource.Object);
 
@@ -338,8 +295,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             // arrange
             var stubSource = new Mock<IWritableStubSource>();
             stubSource
-               .Setup(m => m.DeleteAllRequestResultsAsync())
-               .Returns(Task.CompletedTask);
+                .Setup(m => m.DeleteAllRequestResultsAsync())
+                .Returns(Task.CompletedTask);
 
             _stubSources.Add(stubSource.Object);
 
@@ -357,30 +314,13 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             var tenant = "tenant1";
             var stubSource = new Mock<IWritableStubSource>();
 
-            var stub1 = new StubModel
-            {
-                Id = "stub1",
-                Tenant = tenant
-            };
-            var stub2 = new StubModel
-            {
-                Id = "stub2",
-                Tenant = $"{tenant}bla"
-            };
-            var stub3 = new StubModel
-            {
-                Id = "stub3",
-                Tenant = tenant.ToUpper()
-            };
+            var stub1 = new StubModel {Id = "stub1", Tenant = tenant};
+            var stub2 = new StubModel {Id = "stub2", Tenant = $"{tenant}bla"};
+            var stub3 = new StubModel {Id = "stub3", Tenant = tenant.ToUpper()};
 
             stubSource
                 .Setup(m => m.GetStubsAsync())
-                .ReturnsAsync(new[]
-                {
-                    stub1,
-                    stub2,
-                    stub3
-                });
+                .ReturnsAsync(new[] {stub1, stub2, stub3});
 
             _stubSources.Add(stubSource.Object);
 
@@ -399,30 +339,13 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             // arrange
             var stubSource = new Mock<IWritableStubSource>();
 
-            var stub1 = new StubModel
-            {
-                Id = "stub1",
-                Tenant = "tenant1"
-            };
-            var stub2 = new StubModel
-            {
-                Id = "stub2",
-                Tenant = "tenant2"
-            };
-            var stub3 = new StubModel
-            {
-                Id = "stub3",
-                Tenant = "tenant1"
-            };
+            var stub1 = new StubModel {Id = "stub1", Tenant = "tenant1"};
+            var stub2 = new StubModel {Id = "stub2", Tenant = "tenant2"};
+            var stub3 = new StubModel {Id = "stub3", Tenant = "tenant1"};
 
             stubSource
                 .Setup(m => m.GetStubsAsync())
-                .ReturnsAsync(new[]
-                {
-                    stub1,
-                    stub2,
-                    stub3
-                });
+                .ReturnsAsync(new[] {stub1, stub2, stub3});
 
             _stubSources.Add(stubSource.Object);
 
@@ -443,42 +366,15 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             var tenant2 = "tenant2";
             var stubSource = new Mock<IWritableStubSource>();
 
-            var stub1 = new StubModel
-            {
-                Id = "stub1",
-                Tenant = tenant1
-            };
-            var stub2 = new StubModel
-            {
-                Id = "stub2",
-                Tenant = tenant2
-            };
-            var stub3 = new StubModel
-            {
-                Id = "stub3",
-                Tenant = tenant1.ToUpper()
-            };
+            var stub1 = new StubModel {Id = "stub1", Tenant = tenant1};
+            var stub2 = new StubModel {Id = "stub2", Tenant = tenant2};
+            var stub3 = new StubModel {Id = "stub3", Tenant = tenant1.ToUpper()};
 
-            var newStubs = new[]
-            {
-                new StubModel
-                {
-                    Id = stub2.Id
-                },
-                new StubModel
-                {
-                    Id = stub3.Id
-                }
-            };
+            var newStubs = new[] {new StubModel {Id = stub2.Id}, new StubModel {Id = stub3.Id}};
 
             stubSource
                 .Setup(m => m.GetStubsAsync())
-                .ReturnsAsync(new[]
-                {
-                    stub1,
-                    stub2,
-                    stub3
-                });
+                .ReturnsAsync(new[] {stub1, stub2, stub3});
 
             _stubSources.Add(stubSource.Object);
 
@@ -503,42 +399,15 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             // arrange
             var stubSource = new Mock<IWritableStubSource>();
 
-            var stub1 = new StubModel
-            {
-                Id = "stub1",
-                Tenant = "tenant-1"
-            };
-            var stub2 = new StubModel
-            {
-                Id = "stub2",
-                Tenant = "tenant-2"
-            };
-            var stub3 = new StubModel
-            {
-                Id = "stub3",
-                Tenant = "tenant-2"
-            };
-            var stub4 = new StubModel
-            {
-                Id = "stub4",
-                Tenant = null
-            };
-            var stub5 = new StubModel
-            {
-                Id = "stub5",
-                Tenant = string.Empty
-            };
+            var stub1 = new StubModel {Id = "stub1", Tenant = "tenant-2"};
+            var stub2 = new StubModel {Id = "stub2", Tenant = "tenant-1"};
+            var stub3 = new StubModel {Id = "stub3", Tenant = "tenant-1"};
+            var stub4 = new StubModel {Id = "stub4", Tenant = null};
+            var stub5 = new StubModel {Id = "stub5", Tenant = string.Empty};
 
             stubSource
                 .Setup(m => m.GetStubsAsync())
-                .ReturnsAsync(new[]
-                {
-                    stub1,
-                    stub2,
-                    stub3,
-                    stub4,
-                    stub5
-                });
+                .ReturnsAsync(new[] {stub1, stub2, stub3, stub4, stub5});
 
             _stubSources.Add(stubSource.Object);
 

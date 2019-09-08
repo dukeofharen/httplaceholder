@@ -9,7 +9,7 @@
             class="form-control"
             placeholder="Filter on stub ID or URL..."
             v-model="searchTerm"
-          >
+          />
           <span class="input-group-append">
             <a
               class="btn btn-outline-secondary"
@@ -31,6 +31,21 @@
         </a>
       </div>
     </div>
+    <div class="row">
+      <div class="input-group col-md-12" v-if="tenantNames.length > 0">
+        <select v-model="selectedTenantName" class="form-control tenant-list">
+          <option
+            selected="selected"
+            value=""
+          >Select stub tenant / category name for the stubs you would like to see the requests for...</option>
+          <option
+            v-for="tenantName in tenantNames"
+            v-bind:key="tenantName"
+            v-bind:value="tenantName"
+          >{{tenantName}}</option>
+        </select>
+      </div>
+    </div>
     <Request
       v-bind:request="request"
       v-for="request in filteredRequests"
@@ -50,6 +65,7 @@ export default {
     return {
       filteredRequests: [],
       searchTerm: "",
+      selectedTenantName: "",
       connection: {}
     };
   },
@@ -59,6 +75,7 @@ export default {
   created() {
     this.initializeSignalR();
     this.getRequests();
+    this.getTenantNames();
   },
   destroyed() {
     this.connection.stop();
@@ -66,6 +83,9 @@ export default {
   computed: {
     requests() {
       return this.$store.getters.getRequests;
+    },
+    tenantNames() {
+      return this.$store.getters.getTenantNames;
     }
   },
   methods: {
@@ -93,6 +113,9 @@ export default {
     },
     getRequests() {
       this.$store.dispatch("getRequests");
+    },
+    getTenantNames() {
+      this.$store.dispatch("getTenantNames");
     },
     clearInput() {
       this.searchTerm = "";
@@ -122,10 +145,22 @@ export default {
     requests(newRequests) {
       this.filteredRequests = newRequests;
       this.handleUrlSearch();
+    },
+    selectedTenantName(val) {
+      if (!val) {
+        this.filteredRequests = this.requests;
+      } else {
+        this.filteredRequests = this.requests.filter(
+          req => req.stubTenant === val
+        );
+      }
     }
   }
 };
 </script>
 
 <style scoped>
+.tenant-list {
+  margin-top: 10px;
+}
 </style>
