@@ -43,7 +43,7 @@
           <option
             selected="selected"
             value
-          >Select stub tenant / category name for the stubs you would like to download...</option>
+          >Select stub tenant / category name for the stubs you would like to see...</option>
           <option
             v-for="tenantName in tenantNames"
             v-bind:key="tenantName"
@@ -94,11 +94,16 @@ export default {
       if (term) {
         this.searchTerm = term;
       }
+
+      let tenant = this.$route.query.stubTenant;
+      if (tenant) {
+        this.selectedTenantName = tenant;
+      }
     },
     getStubs() {
       this.$store.dispatch("getStubs");
     },
-    getTenantNames() { 
+    getTenantNames() {
       this.$store.dispatch("getTenantNames");
     },
     addStub() {
@@ -139,7 +144,9 @@ export default {
       if (!val) {
         this.filteredStubs = this.stubs;
       } else {
-        this.filteredStubs = this.stubs.filter(stub => stub.stub.tenant === val);
+        this.filteredStubs = this.stubs.filter(
+          stub => stub.stub.tenant === val
+        );
       }
     }
   }
