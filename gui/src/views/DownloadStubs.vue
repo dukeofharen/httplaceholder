@@ -4,7 +4,7 @@
     <p>This page displays all stubs currently present in HttPlaceholder. You can copy this string and put it in a .yml file on your PC for local development.</p>
     <div class="input-group col-md-12" v-if="tenantNames.length > 0">
       <select v-model="selectedTenantName" class="form-control tenant-list">
-        <option selected="selected" value>Select stub tenant / category name...</option>
+        <option selected="selected" value>Select stub tenant / category name for the stubs you would like to download...</option>
         <option
           v-for="tenantName in tenantNames"
           v-bind:key="tenantName"
