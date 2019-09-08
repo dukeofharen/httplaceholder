@@ -35,10 +35,6 @@ namespace HttPlaceholder.Middleware
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 }
-                catch (Exception)
-                {
-                    throw;
-                }
             }
             else
             {

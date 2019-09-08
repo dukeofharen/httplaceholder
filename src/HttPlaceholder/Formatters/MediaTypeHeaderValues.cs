@@ -2,7 +2,7 @@
 
 namespace HttPlaceholder.Formatters
 {
-    internal class MediaTypeHeaderValues
+    internal static class MediaTypeHeaderValues
     {
         public static readonly MediaTypeHeaderValue ApplicationYaml = MediaTypeHeaderValue.Parse("application/x-yaml").CopyAsReadOnly();
 

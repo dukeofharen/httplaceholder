@@ -9,7 +9,7 @@ dotnet $DIR/SonarScanner.MSBuild.dll begin \
     /k:"$PROJECT_KEY" \
     /d:sonar.host.url="$SONAR_URL" \
     /d:sonar.login="$SONAR_KEY" \
-    /d:sonar.exclusions=**/*.js,**/*.css,**/*.less,**/*.scss
+    /d:sonar.exclusions=**/*.js,**/*.css,**/*.less,**/*.scss,**/HttPlaceholder.TestConsoleApp/**
 dotnet build --no-incremental
 # find . -name "*.Tests.csproj" | while read fname; do
 #     echo "Running unit tests in project $fname"
