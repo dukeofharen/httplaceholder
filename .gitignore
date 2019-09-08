@@ -358,3 +358,4 @@ MigrationBackup/
 .idea
 dist/
 !scripts/publish/
+.sonarqube
