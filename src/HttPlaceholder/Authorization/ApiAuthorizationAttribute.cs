@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -78,8 +79,13 @@ namespace HttPlaceholder.Authorization
             }
         }
 
+        [SuppressMessage(
+            "SonarQube",
+            "S4834",
+            Justification = "There are only 2 permissions, API access or no API access")]
         private static void AddUserContext(ActionExecutingContext context, string username)
         {
+
             context.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, username)

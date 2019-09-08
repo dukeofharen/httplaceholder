@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Configuration.Attributes;
+﻿using System.Diagnostics.CodeAnalysis;
+using HttPlaceholder.Configuration.Attributes;
 
 namespace HttPlaceholder.Configuration
 {
@@ -10,6 +11,7 @@ namespace HttPlaceholder.Configuration
             ConfigPath = "Authentication:ApiUsername")]
         public const string ApiUsernameKey = "apiUsername";
 
+        [SuppressMessage("SonarQube", "S2068", Justification = "Not a password, just a configuration key.")]
         [ConfigKey(
             Description = "the password for securing the REST API",
             Example = "pass",
@@ -34,6 +36,7 @@ namespace HttPlaceholder.Configuration
             ConfigPath = "Storage:OldRequestsQueueLength")]
         public const string OldRequestsQueueLengthKey = "oldRequestsQueueLength";
 
+        [SuppressMessage("SonarQube", "S2068", Justification = "Not a password, just a configuration key.")]
         [ConfigKey(
             Description = "the password for the .pfx file which should be used in the case HTTPS is enabled",
             Example = "112233",

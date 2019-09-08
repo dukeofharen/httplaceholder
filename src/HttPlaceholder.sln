@@ -57,6 +57,8 @@ ProjectSection(SolutionItems) = preProject
 	..\.gitignore = ..\.gitignore
 EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Infrastructure.Tests", "HttPlaceholder.Infrastructure.Tests\HttPlaceholder.Infrastructure.Tests.csproj", "{7A443534-C454-4DF9-816D-A7A0BF1E9184}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -160,6 +162,12 @@ Global
 		{851612E6-C283-4782-A674-28BD074F60CE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{851612E6-C283-4782-A674-28BD074F60CE}.Tool|Any CPU.ActiveCfg = Debug|Any CPU
 		{851612E6-C283-4782-A674-28BD074F60CE}.Tool|Any CPU.Build.0 = Debug|Any CPU
+		{7A443534-C454-4DF9-816D-A7A0BF1E9184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A443534-C454-4DF9-816D-A7A0BF1E9184}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A443534-C454-4DF9-816D-A7A0BF1E9184}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A443534-C454-4DF9-816D-A7A0BF1E9184}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A443534-C454-4DF9-816D-A7A0BF1E9184}.Tool|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A443534-C454-4DF9-816D-A7A0BF1E9184}.Tool|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -185,6 +193,7 @@ Global
 		{DB9FDF52-85AC-4746-AE20-3A3349683010} = {287482AF-3481-44F5-B4D3-F17589B9261C}
 		{A5B2F18A-8F5B-4BF7-A99D-C94A61A7361E} = {287482AF-3481-44F5-B4D3-F17589B9261C}
 		{851612E6-C283-4782-A674-28BD074F60CE} = {287482AF-3481-44F5-B4D3-F17589B9261C}
+		{7A443534-C454-4DF9-816D-A7A0BF1E9184} = {287482AF-3481-44F5-B4D3-F17589B9261C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B07D99A8-ABA7-4A66-9BA2-37E64043B834}

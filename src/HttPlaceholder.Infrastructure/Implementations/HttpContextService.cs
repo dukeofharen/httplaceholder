@@ -80,12 +80,11 @@ namespace HttPlaceholder.Infrastructure.Implementations
             if (header.Key != null && actualIp == "127.0.0.1")
             {
                 // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
+                // TODO any loopback IP should be able to bypass this check, not only 127.0.0.1.
                 return header.Value;
             }
-            else
-            {
-                return request.Host.ToString();
-            }
+
+            return request.Host.ToString();
         }
 
         public bool IsHttps()
@@ -97,12 +96,11 @@ namespace HttPlaceholder.Infrastructure.Implementations
             if (header.Key != null && actualIp == "127.0.0.1")
             {
                 // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
+                // TODO any loopback IP should be able to bypass this check, not only 127.0.0.1.
                 return header.Value.ToString().Equals("https", StringComparison.OrdinalIgnoreCase);
             }
-            else
-            {
-                return request.IsHttps;
-            }
+
+            return request.IsHttps;
         }
 
         public (string, StringValues)[] GetFormValues()

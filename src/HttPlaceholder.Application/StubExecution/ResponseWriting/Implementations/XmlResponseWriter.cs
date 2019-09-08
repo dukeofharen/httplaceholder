@@ -15,7 +15,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             {
                 string body = stub.Response.Xml;
                 response.Body = Encoding.UTF8.GetBytes(body);
-                string bodyForLogging = body.Length > 10 ? body.Substring(0, 10) : body;
                 if (!response.Headers.TryGetValue("Content-Type", out string contentType))
                 {
                     response.Headers.Add("Content-Type", "text/xml");

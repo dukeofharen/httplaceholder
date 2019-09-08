@@ -27,7 +27,7 @@ namespace HttPlaceholder.SwaggerGenerator
             {
                 if (!response.IsSuccessStatusCode)
                 {
-                    throw new Exception($"The call to the swagger.json URL failed with an HTTP '{response.StatusCode}'.");
+                    throw new InvalidOperationException($"The call to the swagger.json URL failed with an HTTP '{response.StatusCode}'.");
                 }
 
                 string content = await response.Content.ReadAsStringAsync();

@@ -16,7 +16,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 var base64Body = stub.Response.Base64;
                 response.Body = Convert.FromBase64String(base64Body);
                 response.BodyIsBinary = true;
-                var bodyForLogging = base64Body.Length > 10 ? base64Body.Substring(0, 10) : base64Body;
                 executed = true;
             }
 

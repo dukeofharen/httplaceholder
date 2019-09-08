@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Formatters;
+﻿using System.Diagnostics.CodeAnalysis;
+using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Builder;
@@ -17,7 +18,7 @@ namespace HttPlaceholder
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) =>
             ConfigureServicesStatic(services, Configuration);
@@ -35,6 +36,7 @@ namespace HttPlaceholder
                .UseGui(loadStaticFiles)
                .PreloadStubs(preloadStubs);
 
+        [SuppressMessage("SonarQube", "S4792")]
         public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration)
         {
             services

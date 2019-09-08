@@ -21,7 +21,7 @@ namespace HttPlaceholder.Hubs.Implementations
         {
             if (!_loginService.CheckLoginCookie())
             {
-                throw new Exception("NOT AUTHORIZED!");
+                throw new InvalidOperationException("NOT AUTHORIZED!");
             }
 
             return base.OnConnectedAsync();

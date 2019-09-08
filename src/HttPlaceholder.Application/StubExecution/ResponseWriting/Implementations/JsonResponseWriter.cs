@@ -15,7 +15,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             {
                 string jsonBody = stub.Response.Json;
                 response.Body = Encoding.UTF8.GetBytes(jsonBody);
-                string bodyForLogging = jsonBody.Length > 10 ? jsonBody.Substring(0, 10) : jsonBody;
                 if (!response.Headers.TryGetValue("Content-Type", out string contentType))
                 {
                     response.Headers.Add("Content-Type", "application/json");
