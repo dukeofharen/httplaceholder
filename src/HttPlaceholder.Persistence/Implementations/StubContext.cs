@@ -139,6 +139,7 @@ namespace HttPlaceholder.Persistence.Implementations
             (await GetStubsAsync())
             .Select(s => s.Stub.Tenant)
             .Where(n => !string.IsNullOrWhiteSpace(n))
+            .OrderBy(n => n)
             .Distinct();
 
         public async Task PrepareAsync()

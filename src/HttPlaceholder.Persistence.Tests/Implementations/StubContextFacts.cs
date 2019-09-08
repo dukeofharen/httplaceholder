@@ -399,9 +399,9 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             // arrange
             var stubSource = new Mock<IWritableStubSource>();
 
-            var stub1 = new StubModel {Id = "stub1", Tenant = "tenant-1"};
-            var stub2 = new StubModel {Id = "stub2", Tenant = "tenant-2"};
-            var stub3 = new StubModel {Id = "stub3", Tenant = "tenant-2"};
+            var stub1 = new StubModel {Id = "stub1", Tenant = "tenant-2"};
+            var stub2 = new StubModel {Id = "stub2", Tenant = "tenant-1"};
+            var stub3 = new StubModel {Id = "stub3", Tenant = "tenant-1"};
             var stub4 = new StubModel {Id = "stub4", Tenant = null};
             var stub5 = new StubModel {Id = "stub5", Tenant = string.Empty};
 
