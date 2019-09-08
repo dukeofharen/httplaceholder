@@ -108,6 +108,10 @@ namespace HttPlaceholder.Persistence.Implementations
             // Clean up old requests here.
             await source.CleanOldRequestResultsAsync();
 
+            var stub = !string.IsNullOrWhiteSpace(requestResult.ExecutingStubId)
+                ? await GetStubAsync(requestResult.ExecutingStubId)
+                : null;
+            requestResult.StubTenant = stub?.Stub?.Tenant;
             await source.AddRequestResultAsync(requestResult);
         }
 

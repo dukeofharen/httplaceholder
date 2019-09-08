@@ -34,6 +34,11 @@ namespace HttPlaceholder.Domain
         public string ExecutingStubId { get; set; }
 
         /// <summary>
+        /// Gets or sets the tenant name of the stub.
+        /// </summary>
+        public string StubTenant { get; set; }
+
+        /// <summary>
         /// Gets or sets the request begin time.
         /// </summary>
         public DateTime RequestBeginTime { get; set; }
