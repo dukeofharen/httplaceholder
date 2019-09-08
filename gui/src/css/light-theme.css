@@ -69,7 +69,7 @@
 /* Inputs
 --------- */
 
-.light-theme input, .light-theme input:focus, .light-theme textarea, .light-theme textarea:focus {
+.light-theme input, .light-theme input:focus, .light-theme textarea, .light-theme textarea:focus, .light-theme select {
   background-color: #DDD6C1;
   border-color: #D3AF86;
   color: #7E8C8A;

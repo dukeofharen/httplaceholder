@@ -15,12 +15,12 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
     public class StubContextFacts
     {
         private IList<IStubSource> _stubSources = new List<IStubSource>();
-        private StubContext _container;
+        private StubContext _context;
 
         [TestInitialize]
         public void Initialize()
         {
-            _container = new StubContext(_stubSources);
+            _context = new StubContext(_stubSources);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource2.Object);
 
             // act
-            var result = (await _container.GetStubsAsync()).ToArray();
+            var result = (await _context.GetStubsAsync()).ToArray();
 
             // assert
             Assert.AreEqual(3, result.Length);
@@ -87,7 +87,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource2.Object);
 
             // act
-            var result = (await _container.GetStubsAsync("tenant1")).ToArray();
+            var result = (await _context.GetStubsAsync("tenant1")).ToArray();
 
             // assert
             Assert.AreEqual(2, result.Length);
@@ -120,7 +120,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(readOnlyStubSource.Object);
 
             // act / assert
-            await Assert.ThrowsExceptionAsync<ConflictException>(() => _container.AddStubAsync(stubToBeAdded));
+            await Assert.ThrowsExceptionAsync<ConflictException>(() => _context.AddStubAsync(stubToBeAdded));
         }
 
         [TestMethod]
@@ -155,7 +155,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(readOnlyStubSource.Object);
 
             // act
-            await _container.AddStubAsync(stubToBeAdded);
+            await _context.AddStubAsync(stubToBeAdded);
 
             // assert
             Assert.IsFalse(string.IsNullOrWhiteSpace(stubToBeAdded.Id));
@@ -190,7 +190,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(readOnlyStubSource.Object);
 
             // act
-            await _container.AddStubAsync(stubToBeAdded);
+            await _context.AddStubAsync(stubToBeAdded);
 
             // assert
             stubSource.Verify(m => m.AddStubAsync(stubToBeAdded), Times.Once);
@@ -209,7 +209,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource.Object);
 
             // act
-            bool result = await _container.DeleteStubAsync(stubId);
+            bool result = await _context.DeleteStubAsync(stubId);
 
             // assert
             Assert.IsTrue(result);
@@ -238,7 +238,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource2.Object);
 
             // act
-            var result = await _container.GetStubAsync("stub2");
+            var result = await _context.GetStubAsync("stub2");
 
             // assert
             Assert.AreEqual(stub2, result.Stub);
@@ -257,7 +257,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource.Object);
 
             // act
-            await _container.AddRequestResultAsync(request);
+            await _context.AddRequestResultAsync(request);
 
             // assert
             stubSource.Verify(m => m.AddRequestResultAsync(request), Times.Once);
@@ -285,7 +285,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource.Object);
 
             // act
-            var result = (await _container.GetRequestResultsAsync()).ToArray();
+            var result = (await _context.GetRequestResultsAsync()).ToArray();
 
             // assert
             Assert.AreEqual(request2, result[0]);
@@ -324,7 +324,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource.Object);
 
             // act
-            var result = (await _container.GetRequestResultsByStubIdAsync("stub1")).ToArray();
+            var result = (await _context.GetRequestResultsByStubIdAsync("stub1")).ToArray();
 
             // assert
             Assert.AreEqual(2, result.Length);
@@ -344,7 +344,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource.Object);
 
             // act
-            await _container.DeleteAllRequestResultsAsync();
+            await _context.DeleteAllRequestResultsAsync();
 
             // assert
             stubSource.Verify(m => m.DeleteAllRequestResultsAsync(), Times.Once);
@@ -385,7 +385,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource.Object);
 
             // act
-            await _container.DeleteAllStubsAsync(tenant);
+            await _context.DeleteAllStubsAsync(tenant);
 
             // assert
             stubSource.Verify(m => m.DeleteStubAsync(stub1.Id), Times.Once);
@@ -427,7 +427,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource.Object);
 
             // act
-            await _container.DeleteAllStubsAsync();
+            await _context.DeleteAllStubsAsync();
 
             // assert
             stubSource.Verify(m => m.DeleteStubAsync(stub1.Id), Times.Once);
@@ -440,7 +440,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         {
             // arrange
             var tenant1 = "tenant1";
-            var tenant2 = "tenant1";
+            var tenant2 = "tenant2";
             var stubSource = new Mock<IWritableStubSource>();
 
             var stub1 = new StubModel
@@ -483,7 +483,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource.Object);
 
             // act
-            await _container.UpdateAllStubs(tenant1, newStubs);
+            await _context.UpdateAllStubs(tenant1, newStubs);
 
             // assert
             stubSource.Verify(m => m.DeleteStubAsync(stub1.Id), Times.Once);
@@ -498,6 +498,60 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
+        public async Task StubContainer_GetTenantNamesAsync_HappyFlow()
+        {
+            // arrange
+            var stubSource = new Mock<IWritableStubSource>();
+
+            var stub1 = new StubModel
+            {
+                Id = "stub1",
+                Tenant = "tenant-1"
+            };
+            var stub2 = new StubModel
+            {
+                Id = "stub2",
+                Tenant = "tenant-2"
+            };
+            var stub3 = new StubModel
+            {
+                Id = "stub3",
+                Tenant = "tenant-2"
+            };
+            var stub4 = new StubModel
+            {
+                Id = "stub4",
+                Tenant = null
+            };
+            var stub5 = new StubModel
+            {
+                Id = "stub5",
+                Tenant = string.Empty
+            };
+
+            stubSource
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[]
+                {
+                    stub1,
+                    stub2,
+                    stub3,
+                    stub4,
+                    stub5
+                });
+
+            _stubSources.Add(stubSource.Object);
+
+            // act
+            var result = await _context.GetTenantNamesAsync();
+
+            // assert
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual("tenant-1", result.ElementAt(0));
+            Assert.AreEqual("tenant-2", result.ElementAt(1));
+        }
+
+        [TestMethod]
         public async Task StubContainer_PrepareAsync_HappyFlow()
         {
             // arrange
@@ -508,7 +562,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource2.Object);
 
             // act
-            await _container.PrepareAsync();
+            await _context.PrepareAsync();
 
             // assert
             stubSource1.Verify(m => m.PrepareStubSourceAsync(), Times.Once);

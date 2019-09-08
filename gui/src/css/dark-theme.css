@@ -68,7 +68,7 @@
 /* Inputs
   --------- */
 
-.dark-theme input, .dark-theme input:focus, .dark-theme textarea, .dark-theme textarea:focus {
+.dark-theme input, .dark-theme input:focus, .dark-theme textarea, .dark-theme textarea:focus, .dark-theme select {
   background-color: #003847;
   border-color: #197777;
   color: #7E8C8A;
