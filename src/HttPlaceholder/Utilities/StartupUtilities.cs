@@ -28,7 +28,10 @@ namespace HttPlaceholder.Utilities
                 .AddPersistenceModule(configuration)
                 .AddAuthorizationModule()
                 .AddSignalRHubs()
-                .AddAutoMapper(typeof(Startup).Assembly, typeof(ApplicationModule).Assembly);
+                .AddAutoMapper(
+                    config => config.AllowNullCollections = true,
+                    typeof(Startup).Assembly,
+                    typeof(ApplicationModule).Assembly);
 
         public static IApplicationBuilder UseGui(this IApplicationBuilder app, bool loadStaticFiles)
         {
@@ -65,6 +68,5 @@ namespace HttPlaceholder.Utilities
             .UseMiddleware<ApiHeadersMiddleware>()
             .UseMiddleware<ApiExceptionHandlingMiddleware>()
             .UseMiddleware<StubHandlingMiddleware>();
-
     }
 }
