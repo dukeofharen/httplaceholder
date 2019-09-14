@@ -4,7 +4,7 @@
       <HttpMethod v-bind:method="request.requestParameters.method" />
       {{request.requestParameters.url}}
       <span>(</span>
-      <Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed" />
+      <Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed" /><span> | {{request.requestEndTime | datetime}}</span>
       <span>)</span>
     </strong>
     <div class="row" v-if="detailsVisible">
