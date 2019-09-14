@@ -1,5 +1,5 @@
-using Ducode.Essentials.Mvc.TestUtilities;
 using HttPlaceholder.Infrastructure.Implementations;
+using HttPlaceholder.TestUtilities.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
