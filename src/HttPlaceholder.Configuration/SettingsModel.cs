@@ -7,5 +7,7 @@
         public WebSettingsModel Web { get; set; }
 
         public StorageSettingsModel Storage { get; set; }
+
+        public GuiSettingsModel Gui { get; set; }
     }
 }

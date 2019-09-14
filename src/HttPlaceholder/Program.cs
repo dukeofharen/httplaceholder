@@ -46,6 +46,7 @@ namespace HttPlaceholder
             string pfxPassword = argsDictionary.GetAndSetValue(ConfigKeys.PfxPasswordKey, "1234");
             int httpsPort = argsDictionary.GetAndSetValue(ConfigKeys.HttpsPortKey, 5050);
             bool useHttps = argsDictionary.GetAndSetValue(ConfigKeys.UseHttpsKey, false);
+            argsDictionary.GetAndSetValue(ConfigKeys.EnableUserInterface, true);
             HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, new string[] { "-V", "--verbose" }, false);
 
             return WebHost.CreateDefaultBuilder(args)

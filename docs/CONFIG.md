@@ -132,6 +132,14 @@ httplaceholder --enableRequestLogging false
 
 If this property is set to false, no detailed request logging will be written to the terminal anymore. Default: true.
 
+### Enable or disable user interface
+
+```bash
+httplaceholder --enableUserInterface false
+```
+
+If this property is set to false, the user interface won't appear when you go to http://httplaceholderhost:port/ph-ui. This might be handy in situations where you only want to deploy the HttPlaceholder application as API / stub engine. 
+
 ### Config JSON location
 
 If you just installed HttPlaceholder, a file called `_config.json` is available in the installation folder. This JSON file contains all possible configuration settings and a default value per setting. You can copy this file to any location on your PC. Don't put the config file in the installation folder, because these files will be overwritten when an update is installed.

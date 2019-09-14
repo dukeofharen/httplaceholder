@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using HttPlaceholder.Configuration;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Utilities;
@@ -24,17 +25,17 @@ namespace HttPlaceholder
             ConfigureServicesStatic(services, Configuration);
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env) =>
-            ConfigureStatic(app, true, true);
+            ConfigureStatic(app, true, Configuration?.Get<SettingsModel>()?.Gui?.EnableUserInterface == true);
 
         public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, bool loadStaticFiles) =>
             app
-               .UseSignalRHubs()
-               .UseHttPlaceholder()
-               .UseMvc()
-               .UseSwagger()
-               .UseSwaggerUi3()
-               .UseGui(loadStaticFiles)
-               .PreloadStubs(preloadStubs);
+                .UseSignalRHubs()
+                .UseHttPlaceholder()
+                .UseMvc()
+                .UseSwagger()
+                .UseSwaggerUi3()
+                .UseGui(loadStaticFiles)
+                .PreloadStubs(preloadStubs);
 
         [SuppressMessage("SonarQube", "S4792")]
         public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration)

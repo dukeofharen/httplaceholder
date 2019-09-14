@@ -92,6 +92,12 @@ namespace HttPlaceholder.Configuration
         public const string SqlServerConnectionStringKey = "sqlServerConnectionString";
 
         [ConfigKey(
+            Description = "whether the user interface should be enabled or not. The user interface is, if enabled, located at http://localhost:PORT/ph-ui.",
+            Example = "true",
+            ConfigPath = "Gui:EnableUserInterface")]
+        public const string EnableUserInterface = "enableUserInterface";
+
+        [ConfigKey(
             Description = "the location of the config.json file. This JSON file contains all possible configuration settings and a default value per setting. You can copy this file to any location on your PC. Don't put the config file in the installation folder, because these files will be overwritten when an update is installed.",
             Example = @"F:\httplaceholder\config.json")]
         public const string ConfigJsonLocationKey = "configJsonLocation";
