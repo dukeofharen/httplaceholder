@@ -9,12 +9,14 @@
       <WarningsAsErrors />
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Dapper" Version="1.60.6" />
+        <PackageReference Include="Dapper" Version="2.0.4" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="2.2.4" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
         <PackageReference Include="MySqlConnector" Version="0.56.0" />
-        <PackageReference Include="System.Data.SQLite" Version="1.0.110" />
+        <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
+        <PackageReference Include="System.Data.SQLite" Version="1.0.111" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
@@ -50,10 +52,5 @@
         <LastGenOutput>SqlServerResources.Designer.cs</LastGenOutput>
         <Generator>ResXFileCodeGenerator</Generator>
       </EmbeddedResource>
-    </ItemGroup>
-    <ItemGroup>
-      <Reference Include="Microsoft.Extensions.Options, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60">
-        <HintPath>..\..\..\..\..\..\..\..\..\..\usr\share\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.options\2.2.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
-      </Reference>
     </ItemGroup>
 </Project>

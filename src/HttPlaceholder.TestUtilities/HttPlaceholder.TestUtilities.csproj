@@ -17,7 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-    <PackageReference Include="Moq" Version="4.11.0" />
+    <PackageReference Include="Moq" Version="4.13.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />

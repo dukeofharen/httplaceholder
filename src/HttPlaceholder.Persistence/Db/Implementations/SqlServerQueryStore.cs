@@ -42,7 +42,8 @@ stub,
 stub_type AS StubType
 FROM stubs";
 
-        public string CleanOldRequestsQuery => @"DELETE FROM requests WHERE ID NOT IN (SELECT TOP (@Limit) ID FROM requests ORDER BY ID DESC)";
+        public string CleanOldRequestsQuery =>
+            @"DELETE FROM requests WHERE ID NOT IN (SELECT TOP (@Limit) ID FROM requests ORDER BY ID DESC)";
 
         public string MigrationsQuery => SqlServerResources.MigrateScript;
 

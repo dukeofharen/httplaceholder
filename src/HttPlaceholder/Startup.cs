@@ -32,7 +32,7 @@ namespace HttPlaceholder
                 .UseSignalRHubs()
                 .UseHttPlaceholder()
                 .UseMvc()
-                .UseSwagger()
+                .UseOpenApi()
                 .UseSwaggerUi3()
                 .UseGui(loadStaticFiles)
                 .PreloadStubs(preloadStubs);
