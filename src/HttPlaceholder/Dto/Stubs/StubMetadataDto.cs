@@ -1,9 +1,12 @@
-﻿namespace HttPlaceholder.Dto.Stubs
+﻿using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Domain;
+
+namespace HttPlaceholder.Dto.Stubs
 {
     /// <summary>
     /// A model for storing metadata of a stub.
     /// </summary>
-    public class StubMetadataDto
+    public class StubMetadataDto : IMapFrom<StubMetadataModel>, IMapTo<StubMetadataModel>
     {
         /// <summary>
         /// Gets or sets a value indicating whether [read only].

@@ -7,7 +7,7 @@ namespace HttPlaceholder.Dto.Requests
     /// <summary>
     /// A model for storing the request data for a request.
     /// </summary>
-    public class RequestParametersDto : IMapFrom<RequestParametersModel>
+    public class RequestParametersDto : IMapFrom<RequestParametersModel>, IMapTo<RequestParametersModel>
     {
         /// <summary>
         /// Gets or sets the method.

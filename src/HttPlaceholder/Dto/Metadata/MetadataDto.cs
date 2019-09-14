@@ -6,7 +6,7 @@ namespace HttPlaceholder.Dto.Metadata
     /// <summary>
     /// A model for storing the HttPlaceholder metadata.
     /// </summary>
-    public class MetadataDto : IMapFrom<MetadataModel>
+    public class MetadataDto : IMapFrom<MetadataModel>, IMapTo<MetadataModel>
     {
         /// <summary>
         /// Gets or sets the version.

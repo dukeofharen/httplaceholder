@@ -8,7 +8,7 @@ namespace HttPlaceholder.Dto.Requests
     /// <summary>
     /// A model for storing a request.
     /// </summary>
-    public class RequestResultDto : IMapFrom<RequestResultModel>
+    public class RequestResultDto : IMapFrom<RequestResultModel>, IMapTo<RequestResultModel>
     {
         /// <summary>
         /// Gets or sets the correlation identifier.

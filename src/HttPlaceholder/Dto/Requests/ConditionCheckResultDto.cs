@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Dto.Requests
 {
@@ -29,6 +31,9 @@ namespace HttPlaceholder.Dto.Requests
             configuration
                 .CreateMap<ConditionCheckResultModel, ConditionCheckResultDto>()
                 .ForMember(dto => dto.ConditionValidation, opt => opt.MapFrom(m => m.ConditionValidation.ToString()));
+            configuration
+                .CreateMap<ConditionCheckResultDto, ConditionCheckResultModel>()
+                .ForMember(model => model.ConditionValidation, opt => opt.MapFrom(m => Enum.Parse<ConditionValidationType>(m.ConditionValidation)));
         }
     }
 }

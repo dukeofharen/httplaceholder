@@ -1,11 +1,13 @@
-﻿using YamlDotNet.Serialization;
+﻿using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Domain;
+using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Dto.Stubs
 {
     /// <summary>
     /// A model for storing data for the form condition checker.
     /// </summary>
-    public class StubFormDto
+    public class StubFormDto : IMapFrom<StubFormModel>, IMapTo<StubFormModel>
     {
         /// <summary>
         /// Gets or sets the key.

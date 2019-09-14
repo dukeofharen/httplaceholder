@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Domain;
 using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Dto.Stubs
@@ -6,7 +8,7 @@ namespace HttPlaceholder.Dto.Stubs
     /// <summary>
     /// A model for storing all conditions for a stub.
     /// </summary>
-    public class StubConditionsDto
+    public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubConditionsModel>
     {
         /// <summary>
         /// Gets or sets the method.

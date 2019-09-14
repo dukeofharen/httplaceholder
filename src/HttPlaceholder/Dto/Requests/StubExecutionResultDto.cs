@@ -7,7 +7,7 @@ namespace HttPlaceholder.Dto.Requests
     /// <summary>
     /// A model for storing all execution related data for a given stub.
     /// </summary>
-    public class StubExecutionResultDto : IMapFrom<StubExecutionResultModel>
+    public class StubExecutionResultDto : IMapFrom<StubExecutionResultModel>, IMapTo<StubExecutionResultModel>
     {
         /// <summary>
         /// Gets or sets the stub identifier.

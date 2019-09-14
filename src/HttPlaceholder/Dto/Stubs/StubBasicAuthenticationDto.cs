@@ -1,11 +1,13 @@
-﻿using YamlDotNet.Serialization;
+﻿using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Domain;
+using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Dto.Stubs
 {
     /// <summary>
     /// A model for storing stub information for the basic authentication condition checker.
     /// </summary>
-    public class StubBasicAuthenticationDto
+    public class StubBasicAuthenticationDto : IMapFrom<StubBasicAuthenticationModel>, IMapTo<StubBasicAuthenticationModel>
     {
         /// <summary>
         /// Gets or sets the username.

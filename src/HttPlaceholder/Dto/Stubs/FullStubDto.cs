@@ -1,11 +1,13 @@
-﻿using YamlDotNet.Serialization;
+﻿using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Domain;
+using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Dto.Stubs
 {
     /// <summary>
     /// A class for storing a stub with its metadata.
     /// </summary>
-    public class FullStubDto
+    public class FullStubDto : IMapFrom<FullStubModel>, IMapTo<FullStubModel>
     {
         /// <summary>
         /// Gets or sets the stub.

@@ -6,7 +6,7 @@ namespace HttPlaceholder.Dto.Requests
     /// <summary>
     /// A model for storing the execution result of a specific response writer.
     /// </summary>
-    public class StubResponseWriterResultDto : IMapFrom<StubResponseWriterResultModel>
+    public class StubResponseWriterResultDto : IMapFrom<StubResponseWriterResultModel>, IMapTo<StubResponseWriterResultModel>
     {
         /// <summary>
         /// Gets or sets the name of the response writer.
