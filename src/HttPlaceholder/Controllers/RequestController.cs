@@ -5,6 +5,7 @@ using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
 using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetByStubId;
+using HttPlaceholder.Authorization;
 using HttPlaceholder.Dto.Requests;
 using HttPlaceholder.Dto.Stubs;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,7 @@ namespace HttPlaceholder.Controllers
     /// Controller for request
     /// </summary>
     [Route("ph-api/requests")]
+    [ApiAuthorization]
     public class RequestController : BaseApiController
     {
         /// <summary>

@@ -6,6 +6,7 @@ using HttPlaceholder.Application.Stubs.Commands.DeleteStub;
 using HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
 using HttPlaceholder.Application.Stubs.Queries.GetAllStubs;
 using HttPlaceholder.Application.Stubs.Queries.GetStub;
+using HttPlaceholder.Authorization;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.Stubs;
 using Microsoft.AspNetCore.Http;
@@ -17,6 +18,7 @@ namespace HttPlaceholder.Controllers
     /// Stub Controller
     /// </summary>
     [Route("ph-api/stubs")]
+    [ApiAuthorization]
     public class StubController : BaseApiController
     {
         /// <summary>

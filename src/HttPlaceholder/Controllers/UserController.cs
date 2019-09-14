@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using HttPlaceholder.Application.Users.Queries.GetUserData;
+using HttPlaceholder.Authorization;
 using HttPlaceholder.Dto.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ namespace HttPlaceholder.Controllers
     /// User controller
     /// </summary>
     [Route("ph-api/users")]
+    [ApiAuthorization]
     public class UserController : BaseApiController
     {
         /// <summary>

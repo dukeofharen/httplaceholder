@@ -12,7 +12,6 @@ namespace HttPlaceholder.Controllers
     /// </summary>
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ApiController]
-    [ApiAuthorization]
     public abstract class BaseApiController : Controller
     {
         private IMapper _mapper;

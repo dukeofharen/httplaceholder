@@ -4,6 +4,7 @@ using HttPlaceholder.Application.Tenants.Commands.DeleteStubsInTenant;
 using HttPlaceholder.Application.Tenants.Commands.UpdateStubsInTenant;
 using HttPlaceholder.Application.Tenants.Queries.GetStubsInTenant;
 using HttPlaceholder.Application.Tenants.Queries.GetTenantNames;
+using HttPlaceholder.Authorization;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.Stubs;
 using Microsoft.AspNetCore.Http;
@@ -15,6 +16,7 @@ namespace HttPlaceholder.Controllers
     /// Tenant Controller
     /// </summary>
     [Route("ph-api/tenants")]
+    [ApiAuthorization]
     public class TenantController : BaseApiController
     {
         /// <summary>
