@@ -56,3 +56,8 @@ IIS, Nginx and Apache (and a lot of other web servers) have the option to run an
 - `X-Forwarded-Host`: contains the hostname of the original call to the proxying web server(e.g. `httplaceholder.com`).
 
 These headers are, right now, only used instead of the "real" values if the actual IP address of the proxy server is the loopback IP (e.g. `127.0.0.1`, `::1` etc.).
+
+Read more about this subject for the specific web servers:
+- [Nginx](https://www.nginx.com/resources/wiki/start/topics/examples/forwarded/)
+- [Apache](https://httpd.apache.org/docs/2.4/mod/mod_proxy.html)
+- [IIS](https://blogs.msdn.microsoft.com/webapps/2018/09/05/how-to-log-client-ip-when-iis-is-load-balanced-the-x-forwarded-for-header-xff/)
