@@ -24,10 +24,6 @@ namespace HttPlaceholder.Application.Interfaces.Http
 
       void SetItem(string key, object item);
 
-      string GetHost();
-
-      bool IsHttps();
-
       (string, StringValues)[] GetFormValues();
 
       void SetStatusCode(int statusCode);

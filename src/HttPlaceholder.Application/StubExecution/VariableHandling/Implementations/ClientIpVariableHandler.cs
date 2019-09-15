@@ -7,11 +7,11 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 {
     public class ClientIpVariableHandler : IVariableHandler
     {
-        private readonly IClientIpResolver _clientIpResolver;
+        private readonly IClientDataResolver _clientDataResolver;
 
-        public ClientIpVariableHandler(IClientIpResolver clientIpResolver)
+        public ClientIpVariableHandler(IClientDataResolver clientDataResolver)
         {
-            _clientIpResolver = clientIpResolver;
+            _clientDataResolver = clientDataResolver;
         }
 
         public string Name => "client_ip";
@@ -20,7 +20,7 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
         {
             if (matches.Any())
             {
-                var ip = _clientIpResolver.GetClientIp();
+                var ip = _clientDataResolver.GetClientIp();
                 foreach (var match in matches)
                 {
                     if (match.Groups.Count >= 2)

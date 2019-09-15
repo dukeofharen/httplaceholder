@@ -21,7 +21,7 @@ namespace HttPlaceholder.Middleware
         private static string[] _segmentsToIgnore = new[] {"/ph-api", "/ph-ui", "swagger"};
 
         private readonly RequestDelegate _next;
-        private readonly IClientIpResolver _clientIpResolver;
+        private readonly IClientDataResolver _clientDataResolver;
         private readonly IHttpContextService _httpContextService;
         private readonly ILogger<StubHandlingMiddleware> _logger;
         private readonly IRequestLoggerFactory _requestLoggerFactory;
@@ -33,7 +33,7 @@ namespace HttPlaceholder.Middleware
 
         public StubHandlingMiddleware(
             RequestDelegate next,
-            IClientIpResolver clientIpResolver,
+            IClientDataResolver clientDataResolver,
             IHttpContextService httpContextService,
             ILogger<StubHandlingMiddleware> logger,
             IRequestLoggerFactory requestLoggerFactory,
@@ -44,7 +44,7 @@ namespace HttPlaceholder.Middleware
             IMapper mapper)
         {
             _next = next;
-            _clientIpResolver = clientIpResolver;
+            _clientDataResolver = clientDataResolver;
             _httpContextService = httpContextService;
             _logger = logger;
             _requestLoggerFactory = requestLoggerFactory;
@@ -78,7 +78,7 @@ namespace HttPlaceholder.Middleware
                     _httpContextService.Method,
                     _httpContextService.DisplayUrl,
                     _httpContextService.GetBody(),
-                    _clientIpResolver.GetClientIp(),
+                    _clientDataResolver.GetClientIp(),
                     _httpContextService.GetHeaders());
 
                 _httpContextService.ClearResponse();

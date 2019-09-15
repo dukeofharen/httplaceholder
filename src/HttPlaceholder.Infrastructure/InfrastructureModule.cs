@@ -14,7 +14,7 @@ namespace HttPlaceholder.Infrastructure
             services.TryAddSingleton<IAsyncService, AsyncService>();
             services.TryAddSingleton<IDateTime, MachineDateTime>();
             services.TryAddSingleton<IFileService, FileService>();
-            services.TryAddTransient<IClientIpResolver, ClientIpResolver>();
+            services.TryAddTransient<IClientDataResolver, ClientDataResolver>();
             services.TryAddTransient<IHttpContextService, HttpContextService>();
             return services;
         }

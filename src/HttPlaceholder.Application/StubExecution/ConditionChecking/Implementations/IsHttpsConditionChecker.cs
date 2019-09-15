@@ -6,11 +6,11 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
 {
     public class IsHttpsConditionChecker : IConditionChecker
     {
-        private readonly IHttpContextService _httpContextService;
+        private readonly IClientDataResolver _clientDataResolver;
 
-        public IsHttpsConditionChecker(IHttpContextService httpContextService)
+        public IsHttpsConditionChecker(IClientDataResolver clientDataResolver)
         {
-            _httpContextService = httpContextService;
+            _clientDataResolver = clientDataResolver;
         }
 
         public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
@@ -20,15 +20,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             if (condition != null)
             {
                 bool shouldBeHttps = condition.Value;
-                bool isHttps = _httpContextService.IsHttps();
-                if (isHttps == shouldBeHttps)
-                {
-                    result.ConditionValidation = ConditionValidationType.Valid;
-                }
-                else
-                {
-                    result.ConditionValidation = ConditionValidationType.Invalid;
-                }
+                bool isHttps = _clientDataResolver.IsHttps();
+                result.ConditionValidation = isHttps == shouldBeHttps
+                    ? ConditionValidationType.Valid
+                    : ConditionValidationType.Invalid;
             }
 
             return result;

@@ -7,11 +7,11 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
 {
     public class HostConditionChecker : IConditionChecker
     {
-        private readonly IHttpContextService _httpContextService;
+        private readonly IClientDataResolver _clientDataResolver;
 
-        public HostConditionChecker(IHttpContextService httpContextService)
+        public HostConditionChecker(IClientDataResolver clientDataResolver)
         {
-            _httpContextService = httpContextService;
+            _clientDataResolver = clientDataResolver;
         }
 
         public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
@@ -20,15 +20,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             var hostCondition = conditions?.Host;
             if (hostCondition != null)
             {
-                string host = _httpContextService.GetHost();
-                if (!StringHelper.IsRegexMatchOrSubstring(host, hostCondition))
-                {
-                    result.ConditionValidation = ConditionValidationType.Invalid;
-                }
-                else
-                {
-                    result.ConditionValidation = ConditionValidationType.Valid;
-                }
+                string host = _clientDataResolver.GetHost();
+                result.ConditionValidation = !StringHelper.IsRegexMatchOrSubstring(host, hostCondition)
+                    ? ConditionValidationType.Invalid
+                    : ConditionValidationType.Valid;
             }
 
             return result;

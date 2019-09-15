@@ -27,9 +27,13 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_StubGeneration_HappyFlow()
         {
             // Arrange
-            ClientIpResolverMock
+            ClientDataResolverMock
                 .Setup(m => m.GetClientIp())
                 .Returns("127.0.0.1");
+
+            ClientDataResolverMock
+                .Setup(m => m.GetHost())
+                .Returns("localhost");
 
             // Do a call to a non-existant stub
             var response = await Client.SendAsync(CreateTestStubRequest());

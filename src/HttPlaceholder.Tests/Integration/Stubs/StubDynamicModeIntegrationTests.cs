@@ -142,6 +142,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             string url = $"{TestServer.BaseAddress}dynamic-display-url.txt{query}";
             string expectedResult = $"URL: {url}";
 
+            ClientIpResolverMock
+                .Setup(m => m.GetHost())
+                .Returns("localhost");
+
             var request = new HttpRequestMessage(HttpMethod.Get, url);
 
             // act / assert

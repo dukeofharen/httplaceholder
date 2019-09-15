@@ -2,11 +2,11 @@
 
 This page contains information about installing HttPlaceholder in several different ways and on several different operating systems. To get started, learn more about configuring the application or just curious about some samples, read [this](GETTING-STARTED.md), [this](CONFIG.md)  and [this](SAMPLES.md).
 
-## ⚙ Dotnet global tool (cross platform)
+## Dotnet global tool (cross platform)
 
 Make sure you have installed the correct .NET Core SDK for your OS (see https://dotnet.microsoft.com/download). When the .NET Core SDK is installed, run `dotnet tool install --global httplaceholder` to install HttPlaceholder.
 
-## 🐧 Linux
+## Linux
 
 To install HttPlaceholder on Linux, run the following command in your terminal (make sure you're running as administrator):
 
@@ -16,7 +16,7 @@ curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scr
 
 If you would like to expose HttPlaceholder to the outside world, I would recommend to use Nginx or Apache as reverse proxy. To keep the service running even if you're not logged in through an SSH session, you can use something like systemd.
 
-## 🍎 Mac
+## Mac
 
 To install HttPlaceholder on Mac OS X, run the following command in your terminal (make sure you're running as administrator):
 
@@ -24,7 +24,7 @@ To install HttPlaceholder on Mac OS X, run the following command in your termina
 curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | bash
 ```
 
-## 🗔 Windows
+## Windows
 
 ### Local development setup
 
@@ -46,3 +46,13 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 ### Hosting as a Windows Service
 
 Hosting the application as a Windows Service (and subsequently using a reverse proxy in IIS to host the application) is officially not supported (maybe in the future). You can, however, use tools like [NSSM](http://nssm.cc/) (Non-Sucking Service Manager, brilliant name by the way) to host a console application as a Windows service. For configuration, you can either use the `config.json` file or the command line arguments.
+
+## Running behind reverse proxy
+
+IIS, Nginx and Apache (and a lot of other web servers) have the option to run an application behind a reverse proxy. For HttPlaceholder to function correctly behind a reverse proxy, the server has to send a few "proxy" headers to HttPlaceholders. The following headers should be sent:
+
+- `X-Forwarded-For`: contains all IP addresses of the calling client and all proxy servers in between the client and HttPlaceholder. Used to determine the IP of the calling client.
+- `X-Forwarded-Proto`: contains the protocal of the original call to the proxying web server (`http` or `https`).
+- `X-Forwarded-Host`: contains the hostname of the original call to the proxying web server(e.g. `httplaceholder.com`).
+
+These headers are, right now, only used instead of the "real" values if the actual IP address of the proxy server is the loopback IP (e.g. `127.0.0.1`, `::1` etc.).

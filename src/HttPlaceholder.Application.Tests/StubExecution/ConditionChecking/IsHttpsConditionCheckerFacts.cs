@@ -10,19 +10,19 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class IsHttpsConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IClientDataResolver> _clientDataResolverMock = new Mock<IClientDataResolver>();
         private IsHttpsConditionChecker _checker;
 
         [TestInitialize]
         public void Initialize()
         {
-            _checker = new IsHttpsConditionChecker(_httpContextServiceMock.Object);
+            _checker = new IsHttpsConditionChecker(_clientDataResolverMock.Object);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _httpContextServiceMock.VerifyAll();
+            _clientDataResolverMock.VerifyAll();
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 }
             };
 
-            _httpContextServiceMock
+            _clientDataResolverMock
                .Setup(m => m.IsHttps())
                .Returns(false);
 
@@ -79,7 +79,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 }
             };
 
-            _httpContextServiceMock
+            _clientDataResolverMock
                .Setup(m => m.IsHttps())
                .Returns(true);
 

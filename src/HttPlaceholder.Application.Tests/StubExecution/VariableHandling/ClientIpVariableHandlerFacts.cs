@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
     [TestClass]
     public class ClientIpVariableHandlerFacts
     {
-        private readonly Mock<IClientIpResolver> _clientIpResolverMock = new Mock<IClientIpResolver>();
+        private readonly Mock<IClientDataResolver> _clientIpResolverMock = new Mock<IClientDataResolver>();
         private ClientIpVariableHandler _handler;
 
         [TestInitialize]

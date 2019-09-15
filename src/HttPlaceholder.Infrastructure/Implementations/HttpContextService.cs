@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,16 +12,14 @@ namespace HttPlaceholder.Infrastructure.Implementations
 {
     public class HttpContextService : IHttpContextService
     {
-        private const string ForwardedHostKey = "X-Forwarded-Host";
-        private const string ForwardedProtoKey = "X-Forwarded-Proto";
-        private readonly IClientIpResolver _clientIpResolver;
+        private readonly IClientDataResolver _clientDataResolver;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public HttpContextService(
-            IClientIpResolver clientIpResolver,
+            IClientDataResolver clientDataResolver,
             IHttpContextAccessor httpContextAccessor)
         {
-            _clientIpResolver = clientIpResolver;
+            _clientDataResolver = clientDataResolver;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -33,7 +30,19 @@ namespace HttPlaceholder.Infrastructure.Implementations
         public string FullPath =>
             $"{_httpContextAccessor.HttpContext.Request.Path}{_httpContextAccessor.HttpContext.Request.QueryString}";
 
-        public string DisplayUrl => _httpContextAccessor.HttpContext.Request.GetDisplayUrl();
+        public string DisplayUrl
+        {
+            get
+            {
+                string proto = _clientDataResolver.IsHttps() ? "https" : "http";
+                string host = _clientDataResolver.GetHost();
+                string path = _httpContextAccessor.HttpContext.Request.Path;
+                string query = _httpContextAccessor.HttpContext.Request.QueryString.HasValue
+                    ? _httpContextAccessor.HttpContext.Request.QueryString.Value
+                    : string.Empty;
+                return $"{proto}://{host}{path}{query}";
+            }
+        }
 
         public string GetBody()
         {
@@ -69,38 +78,6 @@ namespace HttPlaceholder.Infrastructure.Implementations
         public void SetItem(string key, object item)
         {
             _httpContextAccessor.HttpContext?.Items.Add(key, item);
-        }
-
-        public string GetHost()
-        {
-            var request = _httpContextAccessor.HttpContext.Request;
-            var header = request.Headers.FirstOrDefault(h =>
-                h.Key?.Equals(ForwardedHostKey, StringComparison.OrdinalIgnoreCase) == true);
-            string actualIp = _clientIpResolver.GetClientIp();
-            if (header.Key != null && actualIp == "127.0.0.1")
-            {
-                // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
-                // TODO any loopback IP should be able to bypass this check, not only 127.0.0.1.
-                return header.Value;
-            }
-
-            return request.Host.ToString();
-        }
-
-        public bool IsHttps()
-        {
-            var request = _httpContextAccessor.HttpContext.Request;
-            var header = request.Headers.FirstOrDefault(h =>
-                h.Key?.Equals(ForwardedProtoKey, StringComparison.OrdinalIgnoreCase) == true);
-            string actualIp = _clientIpResolver.GetClientIp();
-            if (header.Key != null && actualIp == "127.0.0.1")
-            {
-                // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
-                // TODO any loopback IP should be able to bypass this check, not only 127.0.0.1.
-                return header.Value.ToString().Equals("https", StringComparison.OrdinalIgnoreCase);
-            }
-
-            return request.IsHttps;
         }
 
         public (string, StringValues)[] GetFormValues()

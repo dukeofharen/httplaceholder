@@ -10,19 +10,19 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class HostConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IClientDataResolver> _clientDataResolverMock = new Mock<IClientDataResolver>();
         private HostConditionChecker _checker;
 
         [TestInitialize]
         public void Initialize()
         {
-            _checker = new HostConditionChecker(_httpContextServiceMock.Object);
+            _checker = new HostConditionChecker(_clientDataResolverMock.Object);
         }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _httpContextServiceMock.VerifyAll();
+            _clientDataResolverMock.VerifyAll();
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 Host = "google.com"
             };
 
-            _httpContextServiceMock
+            _clientDataResolverMock
                .Setup(m => m.GetHost())
                .Returns(host);
 
@@ -72,7 +72,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 Host = "httplaceholder.com"
             };
 
-            _httpContextServiceMock
+            _clientDataResolverMock
                .Setup(m => m.GetHost())
                .Returns(host);
 
@@ -93,7 +93,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 Host = "http(.*)"
             };
 
-            _httpContextServiceMock
+            _clientDataResolverMock
                .Setup(m => m.GetHost())
                .Returns(host);
 

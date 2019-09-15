@@ -9,11 +9,11 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
 {
     public class ClientIpConditionChecker : IConditionChecker
     {
-        private readonly IClientIpResolver _clientIpResolver;
+        private readonly IClientDataResolver _clientDataResolver;
 
-        public ClientIpConditionChecker(IClientIpResolver clientIpResolver)
+        public ClientIpConditionChecker(IClientDataResolver clientDataResolver)
         {
-            _clientIpResolver = clientIpResolver;
+            _clientDataResolver = clientDataResolver;
         }
 
         public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
@@ -22,7 +22,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             string clientIpCondition = conditions?.ClientIp;
             if (clientIpCondition != null)
             {
-                var clientIp = IPAddress.Parse(_clientIpResolver.GetClientIp());
+                var clientIp = IPAddress.Parse(_clientDataResolver.GetClientIp());
                 var ranges = IPAddressRange.Parse(clientIpCondition).AsEnumerable();
                 if (ranges.Any(i => i.Equals(clientIp)))
                 {

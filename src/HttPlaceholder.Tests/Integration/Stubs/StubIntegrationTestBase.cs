@@ -13,7 +13,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     public abstract class StubIntegrationTestBase : IntegrationTestBase
     {
         private const string InputFilePath = @"D:\tmp\input.yml";
-        protected Mock<IClientIpResolver> ClientIpResolverMock;
+        protected Mock<IClientDataResolver> ClientIpResolverMock;
         protected Mock<IFileService> FileServiceMock;
         internal YamlFileStubSource StubSource;
         protected Mock<IWritableStubSource> WritableStubSourceMock;
@@ -41,7 +41,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 .Setup(m => m.UtcNow)
                 .Returns(() => DateTime.UtcNow);
 
-            ClientIpResolverMock = new Mock<IClientIpResolver>();
+            ClientIpResolverMock = new Mock<IClientDataResolver>();
             Settings.Storage.InputFile = InputFilePath;
 
             StubSource = new YamlFileStubSource(
@@ -53,7 +53,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             InitializeIntegrationTest(
                 new (Type, object)[]
                 {
-                    (typeof(IClientIpResolver), ClientIpResolverMock.Object),
+                    (typeof(IClientDataResolver), ClientIpResolverMock.Object),
                     (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object)
                 }, new IStubSource[] {StubSource, WritableStubSourceMock.Object});
         }

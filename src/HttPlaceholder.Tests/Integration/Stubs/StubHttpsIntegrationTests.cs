@@ -30,10 +30,12 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             {
                 RequestUri = new Uri(url)
             };
-            request.Headers.Add("X-Forwarded-Proto", "https");
             ClientIpResolverMock
                 .Setup(m => m.GetClientIp())
                 .Returns("127.0.0.1");
+            ClientIpResolverMock
+                .Setup(m => m.IsHttps())
+                .Returns(true);
 
             // act / assert
             using (var response = await Client.SendAsync(request))
