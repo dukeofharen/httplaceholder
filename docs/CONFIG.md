@@ -1,6 +1,6 @@
 # Configuration
 
-This page contains all command line arguments supported by HttPlaceholder. Configuration can be set using command line arguments and a configuration file.
+This page contains all command line arguments supported by HttPlaceholder. Configuration can be set using command line arguments, a configuration file or environment variables.
 
 ## Command line arguments
 

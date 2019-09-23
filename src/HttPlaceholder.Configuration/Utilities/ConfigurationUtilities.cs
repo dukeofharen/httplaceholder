@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration.Attributes;
@@ -8,7 +10,8 @@ namespace HttPlaceholder.Configuration.Utilities
 {
     public static class ConfigurationUtilities
     {
-        public static IEnumerable<(string configKey, string description, string example, string configPath)> GetConfigKeyMetadata()
+        public static IEnumerable<(string configKey, string description, string example, string configPath)>
+            GetConfigKeyMetadata()
         {
             var result = new List<(string, string, string, string)>();
             foreach (var constant in ReflectionUtilities.GetConstants(typeof(ConfigKeys)))
@@ -20,21 +23,37 @@ namespace HttPlaceholder.Configuration.Utilities
                         constant.GetValue(constant) as string,
                         attribute.NamedArguments.Single(a => a.MemberName == "Description").TypedValue.Value as string,
                         attribute.NamedArguments.Single(a => a.MemberName == "Example").TypedValue.Value as string,
-                        attribute.NamedArguments.FirstOrDefault(a => a.MemberName == "ConfigPath").TypedValue.Value as string));
+                        attribute.NamedArguments.FirstOrDefault(a => a.MemberName == "ConfigPath").TypedValue
+                            .Value as string));
                 }
             }
 
             return result;
         }
 
-        public static IConfigurationBuilder AddHttPlaceholderConfiguration(this IConfigurationBuilder builder, IDictionary<string, string> argsDictionary)
+        public static IConfigurationBuilder AddHttPlaceholderConfiguration(this IConfigurationBuilder builder,
+            IDictionary<string, string> argsDictionary)
         {
+            var envVars = Environment.GetEnvironmentVariables()
+                .Cast<DictionaryEntry>()
+                .ToDictionary(de => (string)de.Key, de => (string)de.Value);
             var configDictionary = new Dictionary<string, string>();
             foreach (var constant in GetConfigKeyMetadata())
             {
-                if (constant.configPath != null && argsDictionary.TryGetValue(constant.configKey, out var value))
+                if (constant.configPath != null)
                 {
-                    configDictionary.Add(constant.configPath, value);
+                    // First, add the environment variables to the configuration.
+                    if (envVars.TryGetValue(constant.configKey, out var envVar))
+                    {
+                        configDictionary.Add(constant.configPath, envVar);
+                        continue;
+                    }
+
+                    // Then, add the defualt values and values passed through the command line arguments.
+                    if (argsDictionary.TryGetValue(constant.configKey, out var value))
+                    {
+                        configDictionary.Add(constant.configPath, value);
+                    }
                 }
             }
 
