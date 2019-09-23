@@ -2,6 +2,7 @@
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
+using HttPlaceholder.Hubs.Implementations;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -24,26 +25,33 @@ namespace HttPlaceholder
         public void ConfigureServices(IServiceCollection services) =>
             ConfigureServicesStatic(services, Configuration);
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env) =>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
             ConfigureStatic(app, true, Configuration?.Get<SettingsModel>()?.Gui?.EnableUserInterface == true);
 
-        public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, bool loadStaticFiles) =>
+        public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, bool loadStaticFiles)
+        {
             app
-                .UseSignalRHubs()
                 .UseHttPlaceholder()
-                .UseMvc()
                 .UseOpenApi()
                 .UseSwaggerUi3()
                 .UseGui(loadStaticFiles)
                 .PreloadStubs(preloadStubs);
+            app
+                .UseRouting()
+                .UseEndpoints(options =>
+                {
+                    options.MapHub<RequestHub>("/requestHub");
+                    options.MapControllers();
+                });
+        }
 
         [SuppressMessage("SonarQube", "S4792")]
         public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration)
         {
             services
                .AddMvc(o => o.AddYamlFormatting())
-               .AddJsonOptions(o => o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
-               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+               .AddJsonOptions(o => o.JsonSerializerOptions.IgnoreNullValues = true)
+               .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services
                .AddHttPlaceholder(configuration)
                .AddHttpContextAccessor()

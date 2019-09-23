@@ -11,16 +11,10 @@ namespace HttPlaceholder.Hubs
         {
             services
                 .AddSignalR()
-                .AddJsonProtocol(options =>
+                .AddNewtonsoftJsonProtocol(options =>
                     options.PayloadSerializerSettings.ContractResolver = new CamelCaseExceptDictionaryKeysResolver());
             services.AddTransient<IRequestNotify, RequestNotify>();
             return services;
-        }
-
-        public static IApplicationBuilder UseSignalRHubs(this IApplicationBuilder app)
-        {
-            app.UseSignalR(r => r.MapHub<RequestHub>("/requestHub"));
-            return app;
         }
     }
 }

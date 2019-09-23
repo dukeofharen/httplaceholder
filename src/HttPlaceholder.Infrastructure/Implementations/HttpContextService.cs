@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Primitives;
 
@@ -49,8 +50,14 @@ namespace HttPlaceholder.Infrastructure.Implementations
             using (var bodyStream = new MemoryStream())
             using (var reader = new StreamReader(bodyStream))
             {
+                // TODO fix this: we should make this method async and use CopyToAsync instead.
+                var syncIOFeature = _httpContextAccessor.HttpContext.Features.Get<IHttpBodyControlFeature>();
+                if (syncIOFeature != null)
+                {
+                    syncIOFeature.AllowSynchronousIO = true;
+                }
+
                 _httpContextAccessor.HttpContext.Request.Body.CopyTo(bodyStream);
-                _httpContextAccessor.HttpContext.Request.Body.Seek(0, SeekOrigin.Begin);
                 bodyStream.Seek(0, SeekOrigin.Begin);
                 var body = reader.ReadToEnd();
                 return body;

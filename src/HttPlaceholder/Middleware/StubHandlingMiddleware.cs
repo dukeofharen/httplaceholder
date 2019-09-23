@@ -71,7 +71,7 @@ namespace HttPlaceholder.Middleware
             try
             {
                 // Enable rewind here to be able to read the posted body multiple times.
-                _httpContextService.EnableRewind();
+//                _httpContextService.EnableRewind();
 
                 // Log the request here
                 requestLogger.LogRequestParameters(

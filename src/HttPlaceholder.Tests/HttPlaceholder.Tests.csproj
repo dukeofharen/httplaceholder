@@ -1,43 +1,43 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <IsPackable>false</IsPackable>
-    <Version>2019.8.24.1234</Version>
-    <AssemblyVersion>2019.8.24.1234</AssemblyVersion>
-    <FileVersion>2019.8.24.1234</FileVersion>
-    <Configurations>Debug;Release;Tool</Configurations>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tool|AnyCPU'">
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-    <PackageReference Include="Moq" Version="4.13.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj" />
-    <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
-    <ProjectReference Include="..\HttPlaceholder\HttPlaceholder.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="fallback.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="integration.yml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <Version>2019.8.24.1234</Version>
+        <AssemblyVersion>2019.8.24.1234</AssemblyVersion>
+        <FileVersion>2019.8.24.1234</FileVersion>
+        <Configurations>Debug;Release;Tool</Configurations>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <WarningsAsErrors/>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors/>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tool|AnyCPU'">
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors/>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0"/>
+        <PackageReference Include="Moq" Version="4.13.0"/>
+        <PackageReference Include="MSTest.TestAdapter" Version="2.0.0"/>
+        <PackageReference Include="MSTest.TestFramework" Version="2.0.0"/>
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj"/>
+        <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj"/>
+        <ProjectReference Include="..\HttPlaceholder\HttPlaceholder.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="fallback.yml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="integration.yml">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 </Project>

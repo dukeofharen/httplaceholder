@@ -4,7 +4,6 @@ using HttPlaceholder.Configuration;
 using HttPlaceholder.TestUtilities.Http;
 using HttPlaceholder.TestUtilities.Options;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
