@@ -57,6 +57,7 @@ namespace HttPlaceholder.Infrastructure.Implementations
                     syncIOFeature.AllowSynchronousIO = true;
                 }
 
+                // TODO fix multiple reading of body: https://devblogs.microsoft.com/aspnet/re-reading-asp-net-core-request-bodies-with-enablebuffering/
                 _httpContextAccessor.HttpContext.Request.Body.CopyTo(bodyStream);
                 bodyStream.Seek(0, SeekOrigin.Begin);
                 var body = reader.ReadToEnd();
@@ -122,7 +123,7 @@ namespace HttPlaceholder.Infrastructure.Implementations
         public void EnableRewind()
         {
             var httpContext = _httpContextAccessor.HttpContext;
-            httpContext.Request.EnableRewind();
+            httpContext.Request.EnableBuffering();
         }
 
         public void ClearResponse()
