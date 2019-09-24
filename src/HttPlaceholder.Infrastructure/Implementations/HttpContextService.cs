@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.AspNetCore.Http;
@@ -47,20 +48,23 @@ namespace HttPlaceholder.Infrastructure.Implementations
 
         public string GetBody()
         {
-            using (var bodyStream = new MemoryStream())
-            using (var reader = new StreamReader(bodyStream))
+            var context = _httpContextAccessor.HttpContext;
+            // TODO fix this: we should make this method async and use CopyToAsync instead.
+            var syncIOFeature = context.Features.Get<IHttpBodyControlFeature>();
+            if (syncIOFeature != null)
             {
-                // TODO fix this: we should make this method async and use CopyToAsync instead.
-                var syncIOFeature = _httpContextAccessor.HttpContext.Features.Get<IHttpBodyControlFeature>();
-                if (syncIOFeature != null)
-                {
-                    syncIOFeature.AllowSynchronousIO = true;
-                }
+                syncIOFeature.AllowSynchronousIO = true;
+            }
 
-                // TODO fix multiple reading of body: https://devblogs.microsoft.com/aspnet/re-reading-asp-net-core-request-bodies-with-enablebuffering/
-                _httpContextAccessor.HttpContext.Request.Body.CopyTo(bodyStream);
-                bodyStream.Seek(0, SeekOrigin.Begin);
+            using (var reader = new StreamReader(
+                context.Request.Body,
+                encoding: Encoding.UTF8,
+                detectEncodingFromByteOrderMarks: false,
+                bufferSize: 1024,
+                leaveOpen: true))
+            {
                 var body = reader.ReadToEnd();
+                context.Request.Body.Position = 0;
                 return body;
             }
         }
