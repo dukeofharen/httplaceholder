@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
@@ -51,7 +53,8 @@ namespace HttPlaceholder
             services
                .AddMvc(o => o.AddYamlFormatting())
                .AddJsonOptions(o => o.JsonSerializerOptions.IgnoreNullValues = true)
-               .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+               .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+               .AddApplicationPart(Assembly.GetExecutingAssembly());
             services
                .AddHttPlaceholder(configuration)
                .AddHttpContextAccessor()

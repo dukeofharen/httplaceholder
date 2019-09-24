@@ -49,13 +49,6 @@ namespace HttPlaceholder.Infrastructure.Implementations
         public string GetBody()
         {
             var context = _httpContextAccessor.HttpContext;
-            // TODO fix this: we should make this method async and use CopyToAsync instead.
-            var syncIOFeature = context.Features.Get<IHttpBodyControlFeature>();
-            if (syncIOFeature != null)
-            {
-                syncIOFeature.AllowSynchronousIO = true;
-            }
-
             using (var reader = new StreamReader(
                 context.Request.Body,
                 encoding: Encoding.UTF8,
