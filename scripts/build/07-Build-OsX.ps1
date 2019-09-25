@@ -9,7 +9,7 @@ Param(
     [Parameter(Mandatory = $True)][string]$mainProjectFile
 )
 
-$binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp2.2\osx-x64\publish"
+$binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp3.0\osx-x64\publish"
 $docsFolder = "$rootFolder/docs"
 
 # Patching main .csproj file
@@ -23,7 +23,7 @@ Remove-Item $binDir -Force -Confirm:$false -Recurse -ErrorAction Ignore
 
 # Create OS X package
 Write-Host "Packing up for OS X" -ForegroundColor Green
-& dotnet publish $mainProjectFile --configuration=release --runtime=osx-x64
+& dotnet publish $mainProjectFile --configuration=release --runtime=osx-x64 /p:PublishTrimmed=true
 Assert-Cmd-Ok
 
 # Moving docs folder to bin path

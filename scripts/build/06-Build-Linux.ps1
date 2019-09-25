@@ -9,7 +9,7 @@ Param(
     [Parameter(Mandatory = $True)][string]$mainProjectFile
 )
 
-$binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp2.2\linux-x64\publish"
+$binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp3.0\linux-x64\publish"
 $docsFolder = "$rootFolder/docs"
 
 # Patching main .csproj file
@@ -23,7 +23,7 @@ Remove-Item $binDir -Force -Confirm:$false -Recurse -ErrorAction Ignore
 
 # Create Linux package
 Write-Host "Packing up for Linux" -ForegroundColor Green
-& dotnet publish $mainProjectFile --configuration=release --runtime=linux-x64
+& dotnet publish $mainProjectFile --configuration=release --runtime=linux-x64 /p:PublishTrimmed=true
 Assert-Cmd-Ok
 
 # Moving docs folder to bin path
