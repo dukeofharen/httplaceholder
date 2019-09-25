@@ -2,18 +2,21 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using HttPlaceholder.Application;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Infrastructure;
+using HttPlaceholder.Infrastructure.Web;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 
 namespace HttPlaceholder.Utilities
@@ -29,10 +32,18 @@ namespace HttPlaceholder.Utilities
                 .AddPersistenceModule(configuration)
                 .AddAuthorizationModule()
                 .AddSignalRHubs()
+                .AddWebInfrastructure()
                 .AddAutoMapper(
                     config => config.AllowNullCollections = true,
                     typeof(Startup).Assembly,
                     typeof(ApplicationModule).Assembly);
+
+        public static IServiceCollection AddWebInfrastructure(this IServiceCollection services)
+        {
+            services.TryAddTransient<IClientDataResolver, ClientDataResolver>();
+            services.TryAddTransient<IHttpContextService, HttpContextService>();
+            return services;
+        }
 
         public static IApplicationBuilder UseGui(this IApplicationBuilder app, bool loadStaticFiles)
         {

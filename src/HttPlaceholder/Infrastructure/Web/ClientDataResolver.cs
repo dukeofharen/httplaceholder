@@ -3,10 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common.Utilities;
 using Microsoft.AspNetCore.Http;
 
-namespace HttPlaceholder.Infrastructure.Implementations
+namespace HttPlaceholder.Infrastructure.Web
 {
     public class ClientDataResolver : IClientDataResolver
     {

@@ -1,10 +1,10 @@
-using HttPlaceholder.Infrastructure.Implementations;
+using HttPlaceholder.Infrastructure.Web;
 using HttPlaceholder.TestUtilities.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Infrastructure.Tests.Implementations
+namespace HttPlaceholder.Tests.Infrastructure.Web
 {
     [TestClass]
     public class ClientIpResolverFacts
