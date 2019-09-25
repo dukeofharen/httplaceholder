@@ -11,6 +11,7 @@ using HttPlaceholder.Infrastructure;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Persistence;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
@@ -65,6 +66,17 @@ namespace HttPlaceholder.Utilities
         }
 
         public static IApplicationBuilder UseHttPlaceholder(this IApplicationBuilder app) => app
+            .Use(async (context, next) =>
+            {
+                // TODO fix this: the body should always be retrieved asynchronously.
+                var syncIOFeature = context.Features.Get<IHttpBodyControlFeature>();
+                if (syncIOFeature != null)
+                {
+                    syncIOFeature.AllowSynchronousIO = true;
+                }
+
+                await next.Invoke();
+            })
             .UseMiddleware<ApiHeadersMiddleware>()
             .UseMiddleware<ApiExceptionHandlingMiddleware>()
             .UseMiddleware<StubHandlingMiddleware>();

@@ -10,7 +10,7 @@ Param(
 )
 
 $nsiPath = "$PSScriptRoot/httplaceholder.nsi"
-$binDir = "$srcFolder/HttPlaceholder/bin/release/netcoreapp2.2/win-x64/publish"
+$binDir = "$srcFolder/HttPlaceholder/bin/release/netcoreapp3.0/win-x64/publish"
 $docsFolder = "$rootFolder/docs"
 $installScriptsPath = "$PSScriptRoot/installscripts/windows"
 
@@ -25,7 +25,7 @@ Remove-Item $binDir -Force -Confirm:$false -Recurse -ErrorAction Ignore
 
 # Create Windows package
 Write-Host "Packing up for Windows" -ForegroundColor Green
-& dotnet publish $mainProjectFile --configuration=release --runtime=win-x64
+& dotnet publish $mainProjectFile --configuration=release --runtime=win-x64 /p:PublishTrimmed=true
 Assert-Cmd-Ok
 
 # Moving install scripts for Windows

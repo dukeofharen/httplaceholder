@@ -12,5 +12,5 @@ Set-Location $swaggerGenFolder
 & dotnet run -c Release
 Assert-Cmd-Ok
 
-$swaggerLocation = "$swaggerGenFolder/bin/Release/netcoreapp2.2/swagger.json"
+$swaggerLocation = "$swaggerGenFolder/bin/Release/netcoreapp3.0/swagger.json"
 Copy-Item $swaggerLocation $distFolder

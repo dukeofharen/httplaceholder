@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Primitives;
 
@@ -46,13 +48,16 @@ namespace HttPlaceholder.Infrastructure.Implementations
 
         public string GetBody()
         {
-            using (var bodyStream = new MemoryStream())
-            using (var reader = new StreamReader(bodyStream))
+            var context = _httpContextAccessor.HttpContext;
+            using (var reader = new StreamReader(
+                context.Request.Body,
+                encoding: Encoding.UTF8,
+                detectEncodingFromByteOrderMarks: false,
+                bufferSize: 1024,
+                leaveOpen: true))
             {
-                _httpContextAccessor.HttpContext.Request.Body.CopyTo(bodyStream);
-                _httpContextAccessor.HttpContext.Request.Body.Seek(0, SeekOrigin.Begin);
-                bodyStream.Seek(0, SeekOrigin.Begin);
                 var body = reader.ReadToEnd();
+                context.Request.Body.Position = 0;
                 return body;
             }
         }
@@ -115,7 +120,7 @@ namespace HttPlaceholder.Infrastructure.Implementations
         public void EnableRewind()
         {
             var httpContext = _httpContextAccessor.HttpContext;
-            httpContext.Request.EnableRewind();
+            httpContext.Request.EnableBuffering();
         }
 
         public void ClearResponse()

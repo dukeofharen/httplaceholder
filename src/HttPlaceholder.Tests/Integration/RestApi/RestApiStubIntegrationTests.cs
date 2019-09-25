@@ -650,7 +650,7 @@ response:
             {
                 Method = HttpMethod.Put,
                 RequestUri = new Uri(url),
-                Content = new StringContent(body, Encoding.UTF8, "application/x-yaml")
+                Content = new StringContent(body, Encoding.UTF8, "application/json")
             };
 
             // act / assert

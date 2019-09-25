@@ -18,7 +18,7 @@ namespace HttPlaceholder.Middleware
 {
     public class StubHandlingMiddleware
     {
-        private static string[] _segmentsToIgnore = new[] {"/ph-api", "/ph-ui", "swagger"};
+        private static string[] _segmentsToIgnore = new[] {"/ph-api", "/ph-ui", "swagger", "/requestHub"};
 
         private readonly RequestDelegate _next;
         private readonly IClientDataResolver _clientDataResolver;

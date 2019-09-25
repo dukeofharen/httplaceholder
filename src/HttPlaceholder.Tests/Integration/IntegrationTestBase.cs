@@ -26,9 +26,9 @@ namespace HttPlaceholder.Tests.Integration
 
         protected void InitializeIntegrationTest((Type, object)[] servicesToReplace = null, IEnumerable<IStubSource> stubSources = null)
         {
-            servicesToReplace = servicesToReplace ?? new (Type, object)[0];
+            servicesToReplace ??= new (Type, object)[0];
             servicesToReplace = servicesToReplace.Concat(new (Type, object)[] { (typeof(IOptions<SettingsModel>), Options) }).ToArray();
-            stubSources = stubSources ?? new IStubSource[0];
+            stubSources ??= new IStubSource[0];
             var config = new ConfigurationBuilder()
                 .AddInMemoryCollection(new Dictionary<string, string>
                 {

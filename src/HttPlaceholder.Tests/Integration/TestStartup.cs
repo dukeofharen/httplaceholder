@@ -47,9 +47,7 @@ namespace HttPlaceholder.Tests.Integration
             }
         }
 
-        public static void Configure(Startup startup, IApplicationBuilder app, IHostingEnvironment env)
-        {
+        public static void Configure(Startup startup, IApplicationBuilder app, IWebHostEnvironment env) =>
             startup.Configure(app, env);
-        }
     }
 }
