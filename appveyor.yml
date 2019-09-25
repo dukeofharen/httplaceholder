@@ -1,6 +1,7 @@
 image: Visual Studio 2017
 
 before_build:
+  - cmd: choco install dotnetcore-sdk
   - cmd: dotnet --version
   - ps: Get-ChildItem -Path "C:\Program Files\dotnet\sdk"
 
