@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
-using AuthenticationManager = Microsoft.AspNetCore.Http.Authentication.AuthenticationManager;
 
 namespace HttPlaceholder.TestUtilities.Http
 {
@@ -149,9 +148,6 @@ namespace HttPlaceholder.TestUtilities.Http
         public override ConnectionInfo Connection => ConnectionInfoMock.Object;
 
         public override WebSocketManager WebSockets { get; }
-
-        [Obsolete("")]
-        public override AuthenticationManager Authentication { get; }
 
         public override ClaimsPrincipal User { get; set; }
 
