@@ -1,98 +1,79 @@
 <template>
-  <div id="app">
-    <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#"></a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <v-app id="keep">
+    <v-app-bar app clipped-left color="amber">
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <span class="title ml-3 mr-5">HttPlaceholder</span>
+      <div class="flex-grow-1"></div>
+    </v-app-bar>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item" v-if="authenticated">
-            <router-link
-              to="/requests"
-              class="nav-link"
-              data-toggle="collapse"
-              data-target=".navbar-collapse"
-            >Requests</router-link>
-          </li>
-          <li class="nav-item dropdown" v-if="authenticated">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="stubsDropdown"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >Stubs</a>
-            <div class="dropdown-menu" aria-labelledby="stubsDropdown">
-              <router-link
-                to="/stubs"
-                class="dropdown-item"
-                data-toggle="collapse"
-                data-target=".navbar-collapse.show"
-                data-parent="#stubsDropdown"
-              >Stubs</router-link>
-              <router-link
-                to="/addStub"
-                class="dropdown-item"
-                data-toggle="collapse"
-                data-target=".navbar-collapse.show"
-                data-parent="#stubsDropdown"
-              >Add stub</router-link>
-              <router-link
-                to="/downloadStubs"
-                class="dropdown-item"
-                data-toggle="collapse"
-                data-target=".navbar-collapse.show"
-                data-parent="#stubsDropdown"
-              >Download stubs</router-link>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="themesDropdown"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >Themes</a>
-            <div class="dropdown-menu" aria-labelledby="themesDropdown">
-              <a
-                v-on:click="changeThemeClick(theme)"
-                v-for="theme in themes"
-                v-bind:key="theme.name"
-                class="dropdown-item"
-                data-toggle="collapse"
-                data-target=".navbar-collapse.show"
-                data-parent="#themesDropdown"
-              >{{theme.name}}</a>
-            </div>
-          </li>
-          <li class="nav-item" v-if="authenticationRequired && authenticated">
-            <a
-              v-on:click="logout()"
-              class="nav-link"
-              data-toggle="collapse"
-              data-target=".navbar-collapse.show"
-            >Log out</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <div class="container application">
-      <router-view></router-view>
-    </div>
-  </div>
+    <v-navigation-drawer v-model="drawer" app clipped color="grey lighten-4">
+      <v-list dense class="grey lighten-4">
+        <template>
+          <v-list-item @click="toRequests">
+            <v-list-item-action>
+              <v-icon>mdi-google-chrome</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">
+              Requests
+            </v-list-item-title>
+          </v-list-item>
+          <v-divider
+            :key="i"
+            dark
+            class="my-4"
+          ></v-divider>
+          <v-list-item @click="toStubs">
+            <v-list-item-action>
+              <v-icon>mdi-controller-classic</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">
+              Stubs
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="toAddStub">
+            <v-list-item-action>
+              <v-icon>mdi-plus</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">
+              Add stubs
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="toDownloadStubs">
+            <v-list-item-action>
+              <v-icon>mdi-download</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">
+              Download stubs
+            </v-list-item-title>
+          </v-list-item>
+          <v-divider
+            :key="i"
+            dark
+            class="my-4"
+          ></v-divider>
+          <v-list-item @click="">
+            <v-list-item-action>
+              <v-icon>mdi-cogs</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">
+              Settings
+            </v-list-item-title>
+          </v-list-item>
+          <!-- TODO logout -->
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-content>
+      <v-container fluid class="grey lighten-4 fill-height">
+        <v-row justify="center" align="center">
+          <v-col class="shrink">
+            <router-view></router-view>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
@@ -160,6 +141,18 @@ export default {
       }
 
       document.body.classList.add(this.theme.className);
+    },
+    toRequests() {
+      this.$router.push({name: "requests"});
+    },
+    toStubs() {
+      this.$router.push({name: "stubs"});
+    },
+    toAddStub() {
+      this.$router.push({name: "addStub"});
+    },
+    toDownloadStubs() {
+      this.$router.push({name: "downloadStubs"});
     }
   },
   watch: {

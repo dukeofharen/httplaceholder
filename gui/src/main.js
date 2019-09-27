@@ -4,6 +4,9 @@ import App from './App.vue'
 import router from './router'
 import './registerServiceWorker'
 
+// Fonts
+import 'typeface-roboto';
+
 // Styling
 import '@/css/style.css'
 import '@/css/light-theme.css'
@@ -20,12 +23,6 @@ import VueShortKey from 'vue-shortkey'
 import 'font-awesome/css/font-awesome.css'
 import 'toastr/build/toastr.css'
 
-// Bootstrap
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap/dist/css/bootstrap-grid.css'
-import 'bootstrap/dist/css/bootstrap-reboot.css'
-import 'bootstrap/dist/js/bootstrap.bundle'
-
 // CodeMirror
 import VueCodemirror from 'vue-codemirror'
 import '@/css/codemirror-solarized.css'
@@ -39,6 +36,7 @@ import './filters/datetime'
 import './functions/stringFormat'
 
 import store from './store/store.js'
+import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false
 
@@ -49,5 +47,6 @@ Vue.use(VuejsDialog)
 new Vue({
   store,
   router,
+  vuetify,
   render: h => h(App)
 }).$mount('#app')
