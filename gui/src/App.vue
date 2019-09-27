@@ -13,51 +13,33 @@
             <v-list-item-action>
               <v-icon>mdi-google-chrome</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="grey--text">
-              Requests
-            </v-list-item-title>
+            <v-list-item-title class="grey--text">Requests</v-list-item-title>
           </v-list-item>
-          <v-divider
-            :key="i"
-            dark
-            class="my-4"
-          ></v-divider>
+          <v-divider dark class="my-4"></v-divider>
           <v-list-item @click="toStubs">
             <v-list-item-action>
               <v-icon>mdi-controller-classic</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="grey--text">
-              Stubs
-            </v-list-item-title>
+            <v-list-item-title class="grey--text">Stubs</v-list-item-title>
           </v-list-item>
           <v-list-item @click="toAddStub">
             <v-list-item-action>
               <v-icon>mdi-plus</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="grey--text">
-              Add stubs
-            </v-list-item-title>
+            <v-list-item-title class="grey--text">Add stubs</v-list-item-title>
           </v-list-item>
           <v-list-item @click="toDownloadStubs">
             <v-list-item-action>
               <v-icon>mdi-download</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="grey--text">
-              Download stubs
-            </v-list-item-title>
+            <v-list-item-title class="grey--text">Download stubs</v-list-item-title>
           </v-list-item>
-          <v-divider
-            :key="i"
-            dark
-            class="my-4"
-          ></v-divider>
-          <v-list-item @click="">
+          <v-divider dark class="my-4"></v-divider>
+          <v-list-item>
             <v-list-item-action>
               <v-icon>mdi-cogs</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="grey--text">
-              Settings
-            </v-list-item-title>
+            <v-list-item-title class="grey--text">Settings</v-list-item-title>
           </v-list-item>
           <!-- TODO logout -->
         </template>
@@ -66,11 +48,7 @@
 
     <v-content>
       <v-container fluid class="grey lighten-4 fill-height">
-        <v-row justify="center" align="center">
-          <v-col class="shrink">
-            <router-view></router-view>
-          </v-col>
-        </v-row>
+        <router-view></router-view>
       </v-container>
     </v-content>
   </v-app>
@@ -102,7 +80,8 @@ export default {
   },
   data() {
     return {
-      themes: themes
+      themes: themes,
+      drawer: true
     };
   },
   computed: {
@@ -143,16 +122,16 @@ export default {
       document.body.classList.add(this.theme.className);
     },
     toRequests() {
-      this.$router.push({name: "requests"});
+      this.$router.push({ name: "requests" });
     },
     toStubs() {
-      this.$router.push({name: "stubs"});
+      this.$router.push({ name: "stubs" });
     },
     toAddStub() {
-      this.$router.push({name: "addStub"});
+      this.$router.push({ name: "addStub" });
     },
     toDownloadStubs() {
-      this.$router.push({name: "downloadStubs"});
+      this.$router.push({ name: "downloadStubs" });
     }
   },
   watch: {
