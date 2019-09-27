@@ -2,6 +2,21 @@
   <v-row>
     <v-col>
       <h1>Requests</h1>
+      <v-row>
+        <v-col cols="6">
+          <v-text-field
+            v-model="searchTerm"
+            placeholder="Filter on stub ID or URL..."
+            clearable="true"
+          ></v-text-field>
+          <v-select
+            :items="tenantNames"
+            placeholder="Select stub tenant / category name for the stubs you would like to see the requests for..."
+            v-model="selectedTenantName"
+            clearable="true"
+          ></v-select>
+        </v-col>
+      </v-row>
       <v-expansion-panels>
         <v-expansion-panel
           v-for="request in filteredRequests"

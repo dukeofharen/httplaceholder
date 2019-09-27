@@ -7,11 +7,6 @@ import './registerServiceWorker'
 // Fonts
 import 'typeface-roboto';
 
-// Styling
-import '@/css/style.css'
-import '@/css/light-theme.css'
-import '@/css/dark-theme.css'
-
 // VuejsDialog
 import VuejsDialog from 'vuejs-dialog';
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
@@ -25,7 +20,6 @@ import 'toastr/build/toastr.css'
 
 // CodeMirror
 import VueCodemirror from 'vue-codemirror'
-import '@/css/codemirror-solarized.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/yaml/yaml.js'
 

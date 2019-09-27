@@ -47,7 +47,7 @@
     </v-navigation-drawer>
 
     <v-content>
-      <v-container fluid class="grey lighten-4 fill-height">
+      <v-container fluid class="lighten-4">
         <router-view></router-view>
       </v-container>
     </v-content>
