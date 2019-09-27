@@ -1,19 +1,16 @@
 <template>
-  <div class="col-12 row">
-    <div v-if="renderedBodyTypeText" class="col-12 row">
-      <a v-on:click="viewRawBody" v-bind:class="{ selected: !showRenderedBody }">Raw</a>&nbsp;|&nbsp;
-      <a
-        v-on:click="viewRenderedBody"
-        v-bind:class="{ selected: showRenderedBody }"
-      >{{renderedBodyTypeText}}</a>
-    </div>
-    <div class="col-12 row">
+  <v-row>
+    <v-col>
+      <v-tabs v-if="renderedBodyTypeText">
+        <v-tab @click="viewRenderedBody">{{renderedBodyTypeText}}</v-tab>
+        <v-tab @click="viewRawBody">Raw</v-tab>
+      </v-tabs>
       <span v-if="showRenderedBody">
-        <pre><code>{{renderedBody}}</code></pre>
+        <pre>{{renderedBody}}</pre>
       </span>
       <span v-if="!showRenderedBody">{{rawBody}}</span>
-    </div>
-  </div>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -53,8 +50,8 @@ export default {
       contentType = contentType.toLowerCase();
       if (
         contentType.includes("text/xml") ||
-        contentType.includes("application/xml")
-      ) {
+        contentType.includes("application/xml") ||
+        contentType.includes("application/soap+xml")) {
         return xmlType;
       } else if (contentType.includes("application/json")) {
         return jsonType;

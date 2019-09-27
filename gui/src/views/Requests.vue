@@ -7,13 +7,13 @@
           <v-text-field
             v-model="searchTerm"
             placeholder="Filter on stub ID or URL..."
-            clearable="true"
+            clearable
           ></v-text-field>
           <v-select
             :items="tenantNames"
             placeholder="Select stub tenant / category name for the stubs you would like to see the requests for..."
             v-model="selectedTenantName"
-            clearable="true"
+            clearable
           ></v-select>
         </v-col>
       </v-row>
@@ -35,12 +35,7 @@
             </span>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <v-list-item v-if="request.requestParameters.body">
-              <v-list-item-content>
-                <v-list-item-title>Body (TODO)</v-list-item-title>
-                <v-list-item-subtitle>{{request.requestParameters.body}}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
+            <RequestBody v-bind:requestParameters="request.requestParameters" />
             <v-list-item>
               <v-list-item-content>
                 <v-list-item-title>Client IP</v-list-item-title>
@@ -232,7 +227,7 @@
 </template>
 
 <script>
-import Request from "@/components/Request";
+import RequestBody from "@/components/RequestBody";
 import { resources } from "@/resources";
 import { HubConnectionBuilder } from "@aspnet/signalr";
 
@@ -247,7 +242,7 @@ export default {
     };
   },
   components: {
-    Request
+    RequestBody
   },
   created() {
     this.initializeSignalR();
