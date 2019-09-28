@@ -6,8 +6,8 @@
       <div class="flex-grow-1"></div>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" app clipped color="grey lighten-4">
-      <v-list dense class="grey lighten-4">
+    <v-navigation-drawer v-model="drawer" app clipped>
+      <v-list dense>
         <template>
           <v-list-item @click="toRequests" v-if="authenticated">
             <v-list-item-action>
@@ -54,19 +54,13 @@
 </template>
 
 <script>
-import { messageTypes, themes, authenticateResults } from "@/constants";
+import { messageTypes, authenticateResults } from "@/constants";
 import toastr from "toastr";
 
 export default {
   name: "app",
   created() {
-    let themeText = sessionStorage.theme;
-    if (themeText) {
-      let theme = JSON.parse(themeText);
-      this.$store.commit("storeTheme", theme);
-    }
-
-    this.changeTheme();
+    // this.$vuetify.theme.dark = true;
     let token = sessionStorage.userToken;
     if (token) {
       this.$store.commit("storeUserToken", token);
@@ -79,7 +73,6 @@ export default {
   },
   data() {
     return {
-      themes: themes,
       drawer: true
     };
   },
@@ -98,9 +91,6 @@ export default {
     },
     authenticationRequired() {
       return this.$store.getters.getAuthenticationRequired;
-    },
-    theme() {
-      return this.$store.getters.getTheme;
     }
   },
   methods: {
@@ -108,17 +98,6 @@ export default {
       sessionStorage.removeItem("userToken");
       this.$store.commit("storeAuthenticated", false);
       this.$router.push({ name: "login" });
-    },
-    changeThemeClick(theme) {
-      this.$store.commit("storeTheme", theme);
-      sessionStorage.theme = JSON.stringify(theme);
-    },
-    changeTheme(oldTheme) {
-      if (oldTheme) {
-        document.body.classList.remove(oldTheme.className);
-      }
-
-      document.body.classList.add(this.theme.className);
     },
     toRequests() {
       this.$router.push({ name: "requests" });
@@ -138,9 +117,6 @@ export default {
       if (!isAuthenticated) {
         this.$router.push({ name: "login" });
       }
-    },
-    theme(newTheme, oldTheme) {
-      this.changeTheme(oldTheme);
     },
     toast(newToast) {
       switch (newToast.type) {

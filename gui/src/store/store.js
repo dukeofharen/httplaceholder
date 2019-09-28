@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import actions from './actions';
 import mutations from './mutations';
 import getters from './getters';
-import { authenticateResults, themes } from '@/constants';
+import { authenticateResults } from '@/constants';
 
 Vue.use(Vuex);
 
@@ -28,9 +28,7 @@ export default new Vuex.Store({
         lastSelectedStub: {
             id: ""
         },
-        settings: {
-            theme: themes.lightTheme
-        }
+        settings: {}
     },
     mutations,
     getters,

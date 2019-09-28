@@ -39,9 +39,6 @@ export default {
     storeLastSelectedStub: (state, stub) => {
         state.lastSelectedStub = stub
     },
-    storeTheme: (state, theme) => {
-        state.settings.theme = theme
-    },
     storeTenantNames: (state, tenantNames) => {
         state.tenantNames = tenantNames
     }

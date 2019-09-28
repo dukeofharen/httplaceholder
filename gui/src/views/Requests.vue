@@ -3,6 +3,16 @@
     <v-col>
       <h1>Requests</h1>
       <v-row>
+        <v-col class="buttons">
+          <v-btn title="Refresh" @click="getRequests" color="success">Refresh</v-btn>
+          <v-btn
+            title="Delete all requests"
+            @click.stop="deleteAllDialog = true"
+            color="error"
+          >Delete all requests</v-btn>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col>
           <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or URL..." clearable></v-text-field>
           <v-select
@@ -11,16 +21,6 @@
             v-model="selectedTenantName"
             clearable
           ></v-select>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col class="buttons">
-          <v-btn
-            title="Delete all requests"
-            @click.stop="deleteAllDialog = true"
-            color="error"
-          >Delete all requests</v-btn>
-          <v-btn title="Refresh" @click="getRequests" color="success">Refresh</v-btn>
         </v-col>
       </v-row>
       <v-expansion-panels>

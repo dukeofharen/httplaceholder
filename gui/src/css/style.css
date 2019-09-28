@@ -11,3 +11,7 @@
     background-color: transparent !important;
     border-right: 0 !important;
 }
+
+.toast {
+    font-family: "Roboto", sans-serif;
+}
