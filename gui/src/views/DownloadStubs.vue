@@ -1,24 +1,48 @@
 <template>
-  <div class="download-stubs">
-    <h1>Download all stubs</h1>
-    <p>This page displays all stubs currently present in HttPlaceholder. You can copy this string and put it in a .yml file on your PC for local development.</p>
-    <div class="input-group col-md-12" v-if="tenantNames.length > 0">
-      <select v-model="selectedTenantName" class="form-control tenant-list">
-        <option selected="selected" value>Select stub tenant / category name for the stubs you would like to download...</option>
-        <option
-          v-for="tenantName in tenantNames"
-          v-bind:key="tenantName"
-          v-bind:value="tenantName"
-        >{{tenantName}}</option>
-      </select>
-    </div>
+  <v-row>
+    <v-col>
+      <h1>Download all stubs</h1>
+      <v-card>
+        <v-card-text>This page displays all stubs currently present in HttPlaceholder. You can copy this string and put it in a .yml file on your PC for local development or directly download the file.</v-card-text>
+      </v-card>
+      <v-row>
+        <v-col cols="6">
+          <v-card>
+            <v-card-actions>
+              <v-select
+                :items="tenantNames"
+                placeholder="Select stub tenant / category name for the stubs you would like to download..."
+                v-model="selectedTenantName"
+                clearable
+              ></v-select>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-card>
+            <v-card-actions>
+              <v-textarea v-model="downloadString"></v-textarea>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-btn color="success" @click="downloadStubs">Download stubs</v-btn>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
+  <!-- <div class="download-stubs">
     <div class="input-group col-md-12">
       <textarea class="form-control" v-model="downloadString"></textarea>
     </div>
     <div class="col-md-12">
       <a v-on:click="downloadStubs" class="btn btn-primary">Download</a>
     </div>
-  </div>
+  </div>-->
 </template>
 
 <script>
@@ -67,7 +91,9 @@ export default {
       if (!val) {
         this.filteredStubs = this.stubs;
       } else {
-        this.filteredStubs = this.stubs.filter(stub => stub.stub.tenant === val);
+        this.filteredStubs = this.stubs.filter(
+          stub => stub.stub.tenant === val
+        );
       }
     }
   }
@@ -75,15 +101,4 @@ export default {
 </script>
 
 <style scoped>
-.download-stubs {
-  text-align: left;
-}
-
-.input-group textarea {
-  height: 200px;
-  margin-bottom: 10px;
-}
-.tenant-list {
-  margin-bottom: 10px;
-}
 </style>
