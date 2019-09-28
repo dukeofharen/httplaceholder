@@ -12,7 +12,19 @@
       </span>
     </v-expansion-panel-header>
     <v-expansion-panel-content>
-      <RequestBody v-bind:requestParameters="request.requestParameters" />
+      <v-list-item>
+        <v-btn
+          @click="createStub"
+          title="Create a stub based on the request parameters of this request"
+          color="success"
+        >Create stub</v-btn>
+      </v-list-item>
+      <v-list-item v-if="request.requestParameters">
+        <v-list-item-content>
+          <v-list-item-title>Body</v-list-item-title>
+          <RequestBody v-bind:requestParameters="request.requestParameters" />
+        </v-list-item-content>
+      </v-list-item>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Client IP</v-list-item-title>
@@ -175,6 +187,26 @@ export default {
   },
   components: {
     RequestBody
+  },
+  computed: {
+    lastSelectedStub() {
+      return this.$store.getters.getLastSelectedStub;
+    }
+  },
+  watch: {
+    lastSelectedStub(fullStub) {
+      this.$router.push({
+        name: "updateStub",
+        params: { stubId: this.lastSelectedStub.fullStub.stub.id }
+      });
+    }
+  },
+  methods: {
+    createStub() {
+      this.$store.dispatch("createStubBasedOnRequest", {
+        correlationId: this.request.correlationId
+      });
+    }
   }
 };
 </script>

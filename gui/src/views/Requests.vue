@@ -3,12 +3,9 @@
     <v-col>
       <h1>Requests</h1>
       <v-row>
+        <!-- TODO buttons for refresh and delete all -->
         <v-col cols="6">
-          <v-text-field
-            v-model="searchTerm"
-            placeholder="Filter on stub ID or URL..."
-            clearable
-          ></v-text-field>
+          <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or URL..." clearable></v-text-field>
           <v-select
             :items="tenantNames"
             placeholder="Select stub tenant / category name for the stubs you would like to see the requests for..."
@@ -17,8 +14,26 @@
           ></v-select>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col class="buttons">
+          <v-btn
+            title="Delete all requests"
+            @click="deleteAllRequests"
+            color="error"
+          >Delete all requests</v-btn>
+          <v-btn
+            title="Refresh"
+            @click="getRequests"
+            color="success"
+          >Refresh</v-btn>
+        </v-col>
+      </v-row>
       <v-expansion-panels>
-        <Request v-for="request in filteredRequests" :key="request.correlationId" v-bind:request="request"></Request>
+        <Request
+          v-for="request in filteredRequests"
+          :key="request.correlationId"
+          v-bind:request="request"
+        ></Request>
       </v-expansion-panels>
     </v-col>
   </v-row>
@@ -143,4 +158,8 @@ export default {
 </script>
 
 <style scoped>
+.buttons > button {
+  margin-right: 10px;
+  margin-top: 10px;
+}
 </style>
