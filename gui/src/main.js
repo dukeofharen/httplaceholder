@@ -7,6 +7,9 @@ import './registerServiceWorker'
 // Fonts
 import 'typeface-roboto';
 
+// Styles
+import '@/css/style.css';
+
 // VuejsDialog
 import VuejsDialog from 'vuejs-dialog';
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';

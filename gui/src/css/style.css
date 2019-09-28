@@ -1,0 +1,13 @@
+.vue-codemirror {
+    width: 100%;
+    margin: 10px;
+}
+
+.CodeMirror {
+    width: 100%;
+}
+
+.CodeMirror-gutters {
+    background-color: transparent !important;
+    border-right: 0 !important;
+}
