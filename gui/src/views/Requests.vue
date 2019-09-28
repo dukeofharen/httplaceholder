@@ -3,7 +3,7 @@
     <v-col>
       <h1>Requests</h1>
       <v-row>
-        <v-col cols="6">
+        <v-col>
           <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or URL..." clearable></v-text-field>
           <v-select
             :items="tenantNames"

@@ -13,7 +13,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="6">
+        <v-col>
           <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or tenant..." clearable></v-text-field>
           <v-select
             :items="tenantNames"

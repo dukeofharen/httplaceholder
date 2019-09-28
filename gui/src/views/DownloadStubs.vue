@@ -6,7 +6,7 @@
         <v-card-text>This page displays all stubs currently present in HttPlaceholder. You can copy this string and put it in a .yml file on your PC for local development or directly download the file.</v-card-text>
       </v-card>
       <v-row>
-        <v-col cols="6">
+        <v-col>
           <v-card>
             <v-card-actions>
               <v-select
@@ -35,14 +35,6 @@
       </v-row>
     </v-col>
   </v-row>
-  <!-- <div class="download-stubs">
-    <div class="input-group col-md-12">
-      <textarea class="form-control" v-model="downloadString"></textarea>
-    </div>
-    <div class="col-md-12">
-      <a v-on:click="downloadStubs" class="btn btn-primary">Download</a>
-    </div>
-  </div>-->
 </template>
 
 <script>

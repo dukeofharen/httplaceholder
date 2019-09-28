@@ -9,39 +9,38 @@
     <v-navigation-drawer v-model="drawer" app clipped color="grey lighten-4">
       <v-list dense class="grey lighten-4">
         <template>
-          <v-list-item @click="toRequests">
+          <v-list-item @click="toRequests" v-if="authenticated">
             <v-list-item-action>
               <v-icon>mdi-google-chrome</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text">Requests</v-list-item-title>
           </v-list-item>
-          <v-divider dark class="my-4"></v-divider>
-          <v-list-item @click="toStubs">
+          <v-divider dark class="my-4" v-if="authenticated"></v-divider>
+          <v-list-item @click="toStubs" v-if="authenticated">
             <v-list-item-action>
               <v-icon>mdi-controller-classic</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text">Stubs</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="toAddStub">
+          <v-list-item @click="toAddStub" v-if="authenticated">
             <v-list-item-action>
               <v-icon>mdi-plus</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text">Add stubs</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="toDownloadStubs">
+          <v-list-item @click="toDownloadStubs" v-if="authenticated">
             <v-list-item-action>
               <v-icon>mdi-download</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text">Download stubs</v-list-item-title>
           </v-list-item>
-          <v-divider dark class="my-4"></v-divider>
-          <v-list-item>
+          <v-divider dark class="my-4" v-if="authenticated && authenticationRequired"></v-divider>
+          <v-list-item @click="logout" v-if="authenticated && authenticationRequired">
             <v-list-item-action>
-              <v-icon>mdi-cogs</v-icon>
+              <v-icon>mdi-exit-to-app</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="grey--text">Settings</v-list-item-title>
+            <v-list-item-title class="grey--text">Log out</v-list-item-title>
           </v-list-item>
-          <!-- TODO logout -->
         </template>
       </v-list>
     </v-navigation-drawer>
@@ -55,7 +54,7 @@
 </template>
 
 <script>
-import { messageTypes, themes } from "@/constants";
+import { messageTypes, themes, authenticateResults } from "@/constants";
 import toastr from "toastr";
 
 export default {
