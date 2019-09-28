@@ -3,6 +3,16 @@
     <v-col>
       <h1>Stubs</h1>
       <v-row>
+        <v-col class="buttons">
+          <v-btn title="Refresh" @click="getStubs" color="success">Refresh</v-btn>
+          <v-btn
+            title="Delete all stubs"
+            @click="deleteAllDialog = true"
+            color="error"
+          >Delete all stubs</v-btn>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="6">
           <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or tenant..." clearable></v-text-field>
           <v-select
@@ -17,27 +27,18 @@
         </v-expansion-panels>
       </v-row>
     </v-col>
+    <v-dialog v-model="deleteAllDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">Delete all stubs?</v-card-title>
+        <v-card-text>The stubs can't be recovered.</v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn color="green darken-1" text @click="deleteAllDialog = false">No</v-btn>
+          <v-btn color="green darken-1" text @click="deleteAllStubs">Yes</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
-  <!-- <div class="stubs">
-    <h1>Stubs</h1>
-    <div class="row">
-      <div class="col-md-5 buttons">
-        <a class="btn btn-danger" v-on:click="deleteAllStubs" title="Delete all stubs">
-          <span class="fa fa-trash">&nbsp;</span>
-        </a>
-        <a class="btn btn-success" v-on:click="getStubs" title="Refresh">
-          <span class="fa fa-refresh">&nbsp;</span>
-        </a>
-        <router-link to="/downloadStubs" class="btn btn-success" title="Download stubs">
-          <span class="fa fa-cloud-download">&nbsp;</span>
-        </router-link>
-        <router-link to="/addStub" class="btn btn-success" title="Add stubs">
-          <span class="fa fa-plus-circle">&nbsp;</span>
-        </router-link>
-      </div>
-    </div>
-    
-  </div>-->
 </template>
 
 <script>
@@ -50,7 +51,8 @@ export default {
     return {
       filteredStubs: [],
       selectedTenantName: "",
-      searchTerm: ""
+      searchTerm: "",
+      deleteAllDialog: false
     };
   },
   components: {
@@ -100,9 +102,8 @@ export default {
       this.searchTerm = "";
     },
     deleteAllStubs() {
-      this.$dialog.confirm(resources.areYouSure).then(() => {
-        this.$store.dispatch("deleteAllStubs");
-      });
+      this.deleteAllDialog = false;
+      this.$store.dispatch("deleteAllStubs");
     }
   },
   computed: {
