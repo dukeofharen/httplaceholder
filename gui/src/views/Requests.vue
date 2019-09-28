@@ -3,7 +3,6 @@
     <v-col>
       <h1>Requests</h1>
       <v-row>
-        <!-- TODO buttons for refresh and delete all -->
         <v-col cols="6">
           <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or URL..." clearable></v-text-field>
           <v-select
@@ -37,31 +36,13 @@
           <v-card-text>The requests can't be recovered.</v-card-text>
           <v-card-actions>
             <div class="flex-grow-1"></div>
-
             <v-btn color="green darken-1" text @click="deleteAllDialog = false">No</v-btn>
-
             <v-btn color="green darken-1" text @click="deleteAllRequests">Yes</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </v-col>
   </v-row>
-  <!-- <h1>Requests</h1>
-    <div class="row">
-      <div class="col-md-5 buttons">
-        <a class="btn btn-danger" v-on:click="deleteAllRequests" title="Delete all requests">
-          <span class="fa fa-trash">&nbsp;</span>
-        </a>
-        <a class="btn btn-success" v-on:click="getRequests" title="Refresh">
-          <span class="fa fa-refresh">&nbsp;</span>
-        </a>
-      </div>
-    </div>
-    <Request
-      v-bind:request="request"
-      v-for="request in filteredRequests"
-      :key="request.correlationId"
-  ></Request>-->
 </template>
 
 <script>

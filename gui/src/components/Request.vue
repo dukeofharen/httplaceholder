@@ -61,14 +61,22 @@
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title>Executed stub (TODO)</v-list-item-title>
-          <v-list-item-subtitle>{{request.executingStubId}}</v-list-item-subtitle>
+          <v-list-item-title>Executed stub</v-list-item-title>
+          <v-list-item-subtitle>
+            <router-link
+              :to="{ name: 'stubs', query: { searchTerm: request.executingStubId }}"
+            >{{request.executingStubId}}</router-link>
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title>Stub tenant (category) (TODO)</v-list-item-title>
-          <v-list-item-subtitle>{{request.stubTenant}}</v-list-item-subtitle>
+          <v-list-item-title>Stub tenant (category)</v-list-item-title>
+          <v-list-item-subtitle>
+            <router-link
+              :to="{ name: 'stubs', query: { stubTenant: request.stubTenant }}"
+            >{{request.stubTenant}}</router-link>
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-list-item>

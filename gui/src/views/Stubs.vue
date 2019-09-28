@@ -1,27 +1,26 @@
 <template>
-  <div class="stubs">
+  <v-row>
+    <v-col>
+      <h1>Stubs</h1>
+      <v-row>
+        <v-col cols="6">
+          <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or tenant..." clearable></v-text-field>
+          <v-select
+            :items="tenantNames"
+            placeholder="Select stub tenant / category name for the stubs you would like to see the stubs for..."
+            v-model="selectedTenantName"
+            clearable
+          ></v-select>
+        </v-col>
+        <v-expansion-panels>
+          <Stub v-bind:fullStub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
+        </v-expansion-panels>
+      </v-row>
+    </v-col>
+  </v-row>
+  <!-- <div class="stubs">
     <h1>Stubs</h1>
     <div class="row">
-      <div class="col-md-7">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Filter on stub ID or tenant..."
-            v-model="searchTerm"
-          />
-          <span class="input-group-append">
-            <a
-              class="btn btn-outline-secondary"
-              type="button"
-              title="Clear input"
-              v-on:click="clearInput"
-            >
-              <span class="fa fa-eraser">&nbsp;</span>
-            </a>
-          </span>
-        </div>
-      </div>
       <div class="col-md-5 buttons">
         <a class="btn btn-danger" v-on:click="deleteAllStubs" title="Delete all stubs">
           <span class="fa fa-trash">&nbsp;</span>
@@ -37,23 +36,8 @@
         </router-link>
       </div>
     </div>
-    <div class="row">
-      <div class="input-group col-md-12" v-if="tenantNames.length > 0">
-        <select v-model="selectedTenantName" class="form-control tenant-list">
-          <option
-            selected="selected"
-            value
-          >Select stub tenant / category name for the stubs you would like to see...</option>
-          <option
-            v-for="tenantName in tenantNames"
-            v-bind:key="tenantName"
-            v-bind:value="tenantName"
-          >{{tenantName}}</option>
-        </select>
-      </div>
-    </div>
-    <Stub v-bind:fullStub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
-  </div>
+    
+  </div>-->
 </template>
 
 <script>
@@ -154,7 +138,8 @@ export default {
 </script>
 
 <style scoped>
-.tenant-list {
+.buttons > button {
+  margin-right: 10px;
   margin-top: 10px;
 }
 </style>
