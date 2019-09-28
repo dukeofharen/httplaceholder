@@ -18,14 +18,10 @@
         <v-col class="buttons">
           <v-btn
             title="Delete all requests"
-            @click="deleteAllRequests"
+            @click.stop="deleteAllDialog = true"
             color="error"
           >Delete all requests</v-btn>
-          <v-btn
-            title="Refresh"
-            @click="getRequests"
-            color="success"
-          >Refresh</v-btn>
+          <v-btn title="Refresh" @click="getRequests" color="success">Refresh</v-btn>
         </v-col>
       </v-row>
       <v-expansion-panels>
@@ -35,6 +31,19 @@
           v-bind:request="request"
         ></Request>
       </v-expansion-panels>
+      <v-dialog v-model="deleteAllDialog" max-width="290">
+        <v-card>
+          <v-card-title class="headline">Delete all requests?</v-card-title>
+          <v-card-text>The requests can't be recovered.</v-card-text>
+          <v-card-actions>
+            <div class="flex-grow-1"></div>
+
+            <v-btn color="green darken-1" text @click="deleteAllDialog = false">No</v-btn>
+
+            <v-btn color="green darken-1" text @click="deleteAllRequests">Yes</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-col>
   </v-row>
   <!-- <h1>Requests</h1>
@@ -67,7 +76,8 @@ export default {
       filteredRequests: [],
       searchTerm: "",
       selectedTenantName: "",
-      connection: {}
+      connection: {},
+      deleteAllDialog: false
     };
   },
   components: {
@@ -108,9 +118,8 @@ export default {
       }
     },
     deleteAllRequests() {
-      this.$dialog.confirm(resources.areYouSure).then(() => {
-        this.$store.dispatch("clearRequests");
-      });
+      this.deleteAllDialog = false;
+      this.$store.dispatch("clearRequests");
     },
     getRequests() {
       this.$store.dispatch("getRequests");
