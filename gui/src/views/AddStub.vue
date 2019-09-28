@@ -1,5 +1,5 @@
 <template>
-  <v-row class="add-stub" v-shortkey="['ctrl', 's']" @shortkey="addStubs">
+  <v-row v-shortkey="['ctrl', 's']" @shortkey="addStubs">
     <v-col>
       <h1>Add stub(s)</h1>
       <v-card>
@@ -35,8 +35,7 @@ export default {
         tabSize: 4,
         mode: "text/x-yaml",
         lineNumbers: true,
-        line: true,
-        theme: ""
+        line: true
       }
     };
   },
