@@ -19,7 +19,7 @@
           color="success"
         >Create stub</v-btn>
       </v-list-item>
-      <v-list-item v-if="request.requestParameters">
+      <v-list-item v-if="request.requestParameters.body">
         <v-list-item-content>
           <v-list-item-title>Body</v-list-item-title>
           <RequestBody v-bind:requestParameters="request.requestParameters" />
