@@ -1,0 +1,12 @@
+[
+    {
+        "key": "example-01",
+        "name": "Simple GET example with checks on path and query string",
+        "stub": "Ducoducoduco"
+    },
+    {
+        "key": "example-02",
+        "name": "Simple GET example with checks on path and query string2",
+        "stub": "Ducoducoduco2"
+    }
+]
