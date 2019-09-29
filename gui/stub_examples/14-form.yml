@@ -1,0 +1,16 @@
+id: 14-form
+tenant: 14-form
+description: Simple stub with conditions on posted form values
+conditions:
+  method: POST
+  url:
+    path: /form
+  form:
+    - key: key1
+      value: sjaak
+    - key: key2
+      value: bob
+    - key: key2
+      value: ducoo
+response:
+  text: Form OK
