@@ -1,8 +1,8 @@
 <template>
   <v-app id="keep">
-    <v-app-bar app clipped-left color="amber">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-      <span class="title ml-3 mr-5">HttPlaceholder</span>
+    <v-app-bar app clipped-left color="blue-grey darken-4">
+      <v-app-bar-nav-icon @click="drawer = !drawer" color="white"></v-app-bar-nav-icon>
+      <span class="title ml-3 mr-5"><img src="./img/logo-white.png" /></span>
       <div class="flex-grow-1"></div>
     </v-app-bar>
 
@@ -150,5 +150,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.title img {
+  position: absolute;
+  top: 8px;
+  height: 70%;
+}
 </style>
