@@ -1,0 +1,9 @@
+id: 08-temp-redirect
+tenant: 08-temp-redirect
+description: Simple stub that performs a temporary redirect
+conditions:
+  method: GET
+  url:
+    path: /temp-redirect
+response:
+  temporaryRedirect: https://google.com

@@ -1,3 +1,5 @@
+import { authenticateResults } from "@/constants";
+
 export default {
     storeMetadata: (state, metadata) => {
         state.metadata = metadata
@@ -6,6 +8,7 @@ export default {
         state.authenticated = authenticated
         if (!authenticated) {
             state.userToken = null
+            state.lastAuthenticateResult = authenticateResults.NOT_SET
         }
     },
     storeAuthenticationRequired: (state, authenticationRequired) => {
@@ -21,7 +24,7 @@ export default {
         state.requests = requests
     },
     addAdditionalRequest: (state, request) => {
-        state.requests.unshift(request); 
+        state.requests.unshift(request);
     },
     storeStubs: (state, stubs) => {
         state.stubs = stubs
@@ -36,10 +39,10 @@ export default {
     storeLastSelectedStub: (state, stub) => {
         state.lastSelectedStub = stub
     },
-    storeTheme: (state, theme) => {
-        state.settings.theme = theme
-    },
     storeTenantNames: (state, tenantNames) => {
         state.tenantNames = tenantNames
+    },
+    storeDarkTheme: (state, darkTheme) => {
+        state.settings.darkTheme = darkTheme
     }
 };

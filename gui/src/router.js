@@ -40,5 +40,11 @@ export default new Router({
       name: 'downloadStubs',
       component: () => import(/* webpackChunkName: "downloadStubs" */ './views/DownloadStubs.vue')
     }
+    ,
+    {
+      path: '/settings',
+      name: 'settings',
+      component: () => import(/* webpackChunkName: "settings" */ './views/Settings.vue')
+    }
   ]
 })

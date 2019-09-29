@@ -1,35 +1,36 @@
 <template>
-  <div class="row stub">
-    <div class="col-12">
-      <strong class="url" v-on:click="showOrHide">{{fullStub.stub.id}}</strong>
-      <a
-        class="btn btn-danger pull-right"
-        v-on:click="deleteStub"
-        title="Delete stub"
-        v-if="!fullStub.metadata.readOnly"
-      >
-        <span class="fa fa-trash">&nbsp;</span>
-      </a>
-      <a
-        class="btn btn-primary pull-right"
-        v-on:click="updateStub"
-        title="Update stub"
-        v-if="!fullStub.metadata.readOnly"
-      >
-        <span class="fa fa-pencil">&nbsp;</span>
-      </a>
-      <div class="row" v-if="visible">
-        <div class="col-12">
-          <router-link
-            :to="{ name: 'requests', query: { searchTerm: fullStub.stub.id }}"
-          >View requests made for this stub</router-link>
-        </div>
-        <div class="col-12">
-          <pre><code>{{fullStub.stub | yaml}}</code></pre>
-        </div>
-      </div>
-    </div>
-  </div>
+  <v-expansion-panel>
+    <v-expansion-panel-header>{{fullStub.stub.id}}</v-expansion-panel-header>
+    <v-expansion-panel-content>
+      <v-row>
+        <v-col class="buttons">
+          <v-btn
+            color="success"
+            @click="viewRequests"
+            title="View all requests made for this stub"
+          >View requests</v-btn>
+          <v-btn color="success" @click="updateStub" v-if="!fullStub.metadata.readOnly">Update stub</v-btn>
+          <v-btn
+            color="error"
+            @click.stop="deleteDialog = true"
+            v-if="!fullStub.metadata.readOnly"
+          >Delete stub</v-btn>
+        </v-col>
+      </v-row>
+      <pre>{{fullStub.stub | yaml}}</pre>
+    </v-expansion-panel-content>
+    <v-dialog v-model="deleteDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">Delete the stub?</v-card-title>
+        <v-card-text>The stub can't be recovered.</v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn color="green darken-1" text @click="deleteDialog = false">No</v-btn>
+          <v-btn color="green darken-1" text @click="deleteStub">Yes</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-expansion-panel>
 </template>
 
 <script>
@@ -40,23 +41,25 @@ export default {
   props: ["fullStub"],
   data() {
     return {
-      visible: false
+      deleteDialog: false
     };
   },
   created() {},
   methods: {
-    showOrHide() {
-      this.visible = !this.visible;
-    },
     deleteStub() {
-      this.$dialog.confirm(resources.areYouSure).then(() => {
-        this.$store.dispatch("deleteStub", { stubId: this.fullStub.stub.id });
-      });
+      this.deleteDialog = false;
+      this.$store.dispatch("deleteStub", { stubId: this.fullStub.stub.id });
     },
     updateStub() {
       this.$router.push({
         name: "updateStub",
         params: { stubId: this.fullStub.stub.id }
+      });
+    },
+    viewRequests() {
+      this.$router.push({
+        name: "requests",
+        query: { searchTerm: this.fullStub.stub.id }
       });
     }
   }
@@ -64,15 +67,8 @@ export default {
 </script>
 
 <style scoped>
-.stub {
-  margin: 10px;
-  padding: 10px;
-  text-align: left;
-}
-.url {
-  cursor: pointer;
-}
-.btn {
-  margin-left: 5px;
+.buttons > button {
+  margin-right: 10px;
+  margin-top: 10px;
 }
 </style>

@@ -359,3 +359,4 @@ MigrationBackup/
 dist/
 !scripts/publish/
 .sonarqube
+!**/sonar-scanner-*/bin/
