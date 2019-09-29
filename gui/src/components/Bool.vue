@@ -1,5 +1,5 @@
 <template>
-  <span v-bind:class="{'green': bool, 'red': !bool}">{{bool ? trueTextValue : falseTextValue}}</span>
+  <span v-bind:class="{'green-bool': bool, 'red-bool': !bool}">{{bool ? trueTextValue : falseTextValue}}</span>
 </template>
 
 <script>
@@ -29,4 +29,10 @@ export default {
 </script>
 
 <style scoped>
+.green-bool {
+  color: #4caf50;
+}
+.red-bool /*gives you wings*/ {
+  color: #ff5252;
+}
 </style>

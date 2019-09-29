@@ -5,7 +5,9 @@
         <strong>{{request.requestParameters.method}}</strong>
         {{request.requestParameters.url}}
         <span>(</span>
-        <strong>{{request.executingStubId ? "executed" : "not executed"}}</strong>
+        <strong>
+          <Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed" />
+        </strong>
         <span>&nbsp;|&nbsp;</span>
         <span>{{request.requestEndTime | datetime}}</span>
         <span>)</span>
@@ -100,7 +102,7 @@
             <v-expansion-panels>
               <v-expansion-panel v-for="(result, key) in request.stubExecutionResults" :key="key">
                 <v-expansion-panel-header>
-                  <strong>{{result.stubId}} ({{result.passed ? "passed" : "not passed"}})</strong>
+                  <strong>{{result.stubId}} (<Bool v-bind:bool="result.passed" trueText="passed" falseText="not passed" />)</strong>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div v-if="result.conditions.length  > 0">
@@ -115,7 +117,7 @@
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title>Condition validation</v-list-item-title>
-                          <v-list-item-subtitle>{{condition.conditionValidation}}</v-list-item-subtitle>
+                          <v-list-item-subtitle><Bool v-bind:bool="condition.conditionValidation == 'Valid'" trueText="passed" falseText="not passed" /></v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item v-if="condition.log">
@@ -139,7 +141,7 @@
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title>Condition validation</v-list-item-title>
-                          <v-list-item-subtitle>{{condition.conditionValidation}}</v-list-item-subtitle>
+                          <v-list-item-subtitle><Bool v-bind:bool="condition.conditionValidation == 'Valid'" trueText="passed" falseText="not passed" /></v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item v-if="condition.log">
@@ -164,7 +166,7 @@
             <v-list-item v-for="(result, key) in request.stubResponseWriterResults" :key="key">
               <v-list-item-content>
                 <v-list-item-title>{{result.responseWriterName}}</v-list-item-title>
-                <v-list-item-subtitle>{{result.executed ? "executed" : "not executed"}}</v-list-item-subtitle>
+                <v-list-item-subtitle><Bool v-bind:bool="result.executed" trueText="executed" falseText="not executed" /></v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-expansion-panel-content>
@@ -176,6 +178,7 @@
 
 <script>
 import RequestBody from "@/components/RequestBody";
+import Bool from "@/components/Bool";
 import { parseUrl } from "@/functions/urlFunctions";
 
 export default {
@@ -194,7 +197,8 @@ export default {
     }
   },
   components: {
-    RequestBody
+    RequestBody,
+    Bool
   },
   computed: {
     lastSelectedStub() {
