@@ -41,5 +41,8 @@ export default {
     },
     storeTenantNames: (state, tenantNames) => {
         state.tenantNames = tenantNames
+    },
+    storeDarkTheme: (state, darkTheme) => {
+        state.settings.darkTheme = darkTheme
     }
 };

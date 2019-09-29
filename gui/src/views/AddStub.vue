@@ -48,9 +48,18 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    if (this.darkTheme) {
+      this.cmOptions.theme = "material-darker";
+    }
+  },
   components: {
     codemirror
+  },
+  computed: {
+    darkTheme() {
+      return this.$store.getters.getDarkTheme;
+    }
   },
   methods: {
     addStubs() {
@@ -65,7 +74,7 @@ export default {
       reader.onload = e => {
         this.$store.dispatch("addStubs", { input: e.target.result });
       };
-      reader.readAsText(file)
+      reader.readAsText(file);
     }
   }
 };

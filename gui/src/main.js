@@ -25,6 +25,7 @@ import 'toastr/build/toastr.css'
 import VueCodemirror from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/yaml/yaml.js'
+import '@/css/material-darker.css'
 
 // Filters
 import './filters/yaml'

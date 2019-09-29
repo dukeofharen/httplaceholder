@@ -28,7 +28,9 @@ export default new Vuex.Store({
         lastSelectedStub: {
             id: ""
         },
-        settings: {}
+        settings: {
+            darkTheme: false
+        }
     },
     mutations,
     getters,

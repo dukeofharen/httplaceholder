@@ -15,3 +15,14 @@
 .toast {
     font-family: "Roboto", sans-serif;
 }
+
+/* CodeMirror dark mode override */
+.cm-s-material-darker.CodeMirror {
+    background-color: #424242 !important;
+}
+
+.cm-s-material-darker .CodeMirror-guttermarker,
+.cm-s-material-darker .CodeMirror-guttermarker-subtle,
+.cm-s-material-darker .CodeMirror-linenumber {
+    color: #FFFFFF !important;
+}

@@ -34,6 +34,13 @@
             </v-list-item-action>
             <v-list-item-title class="grey--text">Download stubs</v-list-item-title>
           </v-list-item>
+          <v-divider dark class="my-4" v-if="authenticated"></v-divider>
+          <v-list-item @click="toSettings" v-if="authenticated">
+            <v-list-item-action>
+              <v-icon>mdi-cogs</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">Settings</v-list-item-title>
+          </v-list-item>
           <v-divider dark class="my-4" v-if="authenticated && authenticationRequired"></v-divider>
           <v-list-item @click="logout" v-if="authenticated && authenticationRequired">
             <v-list-item-action>
@@ -60,7 +67,7 @@ import toastr from "toastr";
 export default {
   name: "app",
   created() {
-    // this.$vuetify.theme.dark = true;
+    this.setTheme();
     let token = sessionStorage.userToken;
     if (token) {
       this.$store.commit("storeUserToken", token);
@@ -91,6 +98,9 @@ export default {
     },
     authenticationRequired() {
       return this.$store.getters.getAuthenticationRequired;
+    },
+    darkTheme() {
+      return this.$store.getters.getDarkTheme;
     }
   },
   methods: {
@@ -98,6 +108,13 @@ export default {
       sessionStorage.removeItem("userToken");
       this.$store.commit("storeAuthenticated", false);
       this.$router.push({ name: "login" });
+    },
+    setTheme() {
+      let darkThemeText = sessionStorage.getItem("darkTheme");
+      if(darkThemeText) {
+        let darkTheme = JSON.parse(darkThemeText);
+        this.$store.commit("storeDarkTheme", darkTheme);
+      }
     },
     toRequests() {
       this.$router.push({ name: "requests" });
@@ -110,6 +127,9 @@ export default {
     },
     toDownloadStubs() {
       this.$router.push({ name: "downloadStubs" });
+    },
+    toSettings() {
+      this.$router.push({ name: "settings" });
     }
   },
   watch: {
@@ -145,6 +165,10 @@ export default {
     metadata() {
       // Add version to title tag
       document.title = `HttPlaceholder - v${this.metadata.version}`;
+    },
+    darkTheme(darkTheme) {
+      this.$vuetify.theme.dark = darkTheme;
+      sessionStorage.setItem("darkTheme", JSON.stringify(darkTheme));
     }
   }
 };

@@ -1,3 +1,5 @@
+import { stat } from "fs";
+
 export default {
     getMetadata: state => state.metadata,
     getAuthenticated: state => state.authenticated,
@@ -8,5 +10,6 @@ export default {
     getStubs: state => state.stubs,
     getToast: state => state.toast,
     getLastSelectedStub: state => state.lastSelectedStub,
-    getTenantNames: state => state.tenantNames
+    getTenantNames: state => state.tenantNames,
+    getDarkTheme: state => state.settings.darkTheme
 };

@@ -1,5 +1,5 @@
 <template>
-<v-row class="add-stub" v-shortkey="['ctrl', 's']" @shortkey="updateStub">
+  <v-row class="add-stub" v-shortkey="['ctrl', 's']" @shortkey="updateStub">
     <v-col>
       <h1>Update stub</h1>
       <v-card>
@@ -40,6 +40,9 @@ export default {
   },
   created() {
     this.$store.dispatch("getStub", { stubId: this.$route.params.stubId });
+    if (this.darkTheme) {
+      this.cmOptions.theme = "material-darker";
+    }
   },
   components: {
     codemirror
@@ -47,11 +50,17 @@ export default {
   computed: {
     lastSelectedStub() {
       return this.$store.getters.getLastSelectedStub;
+    },
+    darkTheme() {
+      return this.$store.getters.getDarkTheme;
     }
   },
   methods: {
     updateStub() {
-      this.$store.dispatch("updateStub", { input: this.input, stubId: this.$route.params.stubId });
+      this.$store.dispatch("updateStub", {
+        input: this.input,
+        stubId: this.$route.params.stubId
+      });
     }
   },
   watch: {
