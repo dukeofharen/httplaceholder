@@ -1,0 +1,21 @@
+id: 06-basic-auth
+tenant: 06-basic-auth
+description: Simple GET call with basic authentication
+conditions:
+  method: GET
+  url:
+    path: /auth
+    query:
+      id: 12
+      filter: first_name
+  basicAuthentication:
+    username: user
+    password: pass
+response:
+  statusCode: 200
+  text: |
+    {
+      "first_name": "John"
+    }
+  headers:
+    Content-Type: application/json

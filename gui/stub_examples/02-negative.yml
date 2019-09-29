@@ -1,0 +1,22 @@
+id: 02-negative
+tenant: 02-negative
+description: Simple GET example which contains negative conditions
+conditions:
+  method: GET
+  url:
+    path: /users
+    query:
+      id: 15
+      filter: last_name
+negativeConditions:
+  url:
+    query:
+      last_name: Johnson
+response:
+  statusCode: 200
+  text: |
+    {
+      "last_name": "Jackson"
+    }
+  headers:
+    Content-Type: application/json
