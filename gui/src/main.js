@@ -19,6 +19,9 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/mode/yaml/yaml.js'
 import '@/css/material-darker.css'
 
+// Toastr
+import 'toastr/build/toastr.css'
+
 // Filters
 import './filters/yaml'
 import './filters/datetime'
