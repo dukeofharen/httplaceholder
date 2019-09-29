@@ -1,39 +1,28 @@
-body, html {
-  height: 100%;
+.vue-codemirror {
+    width: 100%;
+    margin: 10px;
 }
 
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  min-height: 100%;
+.CodeMirror {
+    width: 100%;
 }
 
-.navbar a {
-  cursor: pointer;
+.CodeMirror-gutters {
+    background-color: transparent !important;
+    border-right: 0 !important;
 }
 
-.navbar-brand {
-  height: 35px;
-  width: 150px;
-  display: inline-block;
-  background-size: 100%;
-  background-repeat: no-repeat;
+.toast {
+    font-family: "Roboto", sans-serif;
 }
 
-@media (max-width: 767px) {
-  .buttons a {
-    margin: 8px;
-  }
+/* CodeMirror dark mode override */
+.cm-s-material-darker.CodeMirror {
+    background-color: #424242 !important;
 }
 
-@media (min-width: 768px) {
-  .buttons a {
-    margin: 0 8px;
-  }
-}
-
-.navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E") !important;
+.cm-s-material-darker .CodeMirror-guttermarker,
+.cm-s-material-darker .CodeMirror-guttermarker-subtle,
+.cm-s-material-darker .CodeMirror-linenumber {
+    color: #FFFFFF !important;
 }

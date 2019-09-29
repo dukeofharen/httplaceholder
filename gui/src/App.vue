@@ -1,114 +1,73 @@
 <template>
-  <div id="app">
-    <nav class="navbar navbar-expand-lg">
-      <a class="navbar-brand" href="#"></a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <v-app id="keep">
+    <v-app-bar app clipped-left color="blue-grey darken-4">
+      <v-app-bar-nav-icon @click="drawer = !drawer" color="white"></v-app-bar-nav-icon>
+      <span class="title ml-3 mr-5"><img src="./img/logo-white.png" /></span>
+      <div class="flex-grow-1"></div>
+    </v-app-bar>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item" v-if="authenticated">
-            <router-link
-              to="/requests"
-              class="nav-link"
-              data-toggle="collapse"
-              data-target=".navbar-collapse"
-            >Requests</router-link>
-          </li>
-          <li class="nav-item dropdown" v-if="authenticated">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="stubsDropdown"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >Stubs</a>
-            <div class="dropdown-menu" aria-labelledby="stubsDropdown">
-              <router-link
-                to="/stubs"
-                class="dropdown-item"
-                data-toggle="collapse"
-                data-target=".navbar-collapse.show"
-                data-parent="#stubsDropdown"
-              >Stubs</router-link>
-              <router-link
-                to="/addStub"
-                class="dropdown-item"
-                data-toggle="collapse"
-                data-target=".navbar-collapse.show"
-                data-parent="#stubsDropdown"
-              >Add stub</router-link>
-              <router-link
-                to="/downloadStubs"
-                class="dropdown-item"
-                data-toggle="collapse"
-                data-target=".navbar-collapse.show"
-                data-parent="#stubsDropdown"
-              >Download stubs</router-link>
-            </div>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              id="themesDropdown"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >Themes</a>
-            <div class="dropdown-menu" aria-labelledby="themesDropdown">
-              <a
-                v-on:click="changeThemeClick(theme)"
-                v-for="theme in themes"
-                v-bind:key="theme.name"
-                class="dropdown-item"
-                data-toggle="collapse"
-                data-target=".navbar-collapse.show"
-                data-parent="#themesDropdown"
-              >{{theme.name}}</a>
-            </div>
-          </li>
-          <li class="nav-item" v-if="authenticationRequired && authenticated">
-            <a
-              v-on:click="logout()"
-              class="nav-link"
-              data-toggle="collapse"
-              data-target=".navbar-collapse.show"
-            >Log out</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    <div class="container application">
-      <router-view></router-view>
-    </div>
-  </div>
+    <v-navigation-drawer v-model="drawer" app clipped>
+      <v-list dense>
+        <template>
+          <v-list-item @click="toRequests" v-if="authenticated">
+            <v-list-item-action>
+              <v-icon>mdi-google-chrome</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">Requests</v-list-item-title>
+          </v-list-item>
+          <v-divider dark class="my-4" v-if="authenticated"></v-divider>
+          <v-list-item @click="toStubs" v-if="authenticated">
+            <v-list-item-action>
+              <v-icon>mdi-controller-classic</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">Stubs</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="toAddStub" v-if="authenticated">
+            <v-list-item-action>
+              <v-icon>mdi-plus</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">Add stubs</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="toDownloadStubs" v-if="authenticated">
+            <v-list-item-action>
+              <v-icon>mdi-download</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">Download stubs</v-list-item-title>
+          </v-list-item>
+          <v-divider dark class="my-4" v-if="authenticated"></v-divider>
+          <v-list-item @click="toSettings" v-if="authenticated">
+            <v-list-item-action>
+              <v-icon>mdi-cogs</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">Settings</v-list-item-title>
+          </v-list-item>
+          <v-divider dark class="my-4" v-if="authenticated && authenticationRequired"></v-divider>
+          <v-list-item @click="logout" v-if="authenticated && authenticationRequired">
+            <v-list-item-action>
+              <v-icon>mdi-exit-to-app</v-icon>
+            </v-list-item-action>
+            <v-list-item-title class="grey--text">Log out</v-list-item-title>
+          </v-list-item>
+        </template>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-content>
+      <v-container fluid class="lighten-4">
+        <router-view></router-view>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import { messageTypes, themes } from "@/constants";
+import { messageTypes, authenticateResults } from "@/constants";
 import toastr from "toastr";
 
 export default {
   name: "app",
   created() {
-    let themeText = sessionStorage.theme;
-    if (themeText) {
-      let theme = JSON.parse(themeText);
-      this.$store.commit("storeTheme", theme);
-    }
-
-    this.changeTheme();
+    this.setTheme();
     let token = sessionStorage.userToken;
     if (token) {
       this.$store.commit("storeUserToken", token);
@@ -121,7 +80,7 @@ export default {
   },
   data() {
     return {
-      themes: themes
+      drawer: true
     };
   },
   computed: {
@@ -140,8 +99,8 @@ export default {
     authenticationRequired() {
       return this.$store.getters.getAuthenticationRequired;
     },
-    theme() {
-      return this.$store.getters.getTheme;
+    darkTheme() {
+      return this.$store.getters.getDarkTheme;
     }
   },
   methods: {
@@ -150,16 +109,27 @@ export default {
       this.$store.commit("storeAuthenticated", false);
       this.$router.push({ name: "login" });
     },
-    changeThemeClick(theme) {
-      this.$store.commit("storeTheme", theme);
-      sessionStorage.theme = JSON.stringify(theme);
-    },
-    changeTheme(oldTheme) {
-      if (oldTheme) {
-        document.body.classList.remove(oldTheme.className);
+    setTheme() {
+      let darkThemeText = sessionStorage.getItem("darkTheme");
+      if(darkThemeText) {
+        let darkTheme = JSON.parse(darkThemeText);
+        this.$store.commit("storeDarkTheme", darkTheme);
       }
-
-      document.body.classList.add(this.theme.className);
+    },
+    toRequests() {
+      this.$router.push({ name: "requests" });
+    },
+    toStubs() {
+      this.$router.push({ name: "stubs" });
+    },
+    toAddStub() {
+      this.$router.push({ name: "addStub" });
+    },
+    toDownloadStubs() {
+      this.$router.push({ name: "downloadStubs" });
+    },
+    toSettings() {
+      this.$router.push({ name: "settings" });
     }
   },
   watch: {
@@ -167,9 +137,6 @@ export default {
       if (!isAuthenticated) {
         this.$router.push({ name: "login" });
       }
-    },
-    theme(newTheme, oldTheme) {
-      this.changeTheme(oldTheme);
     },
     toast(newToast) {
       switch (newToast.type) {
@@ -198,10 +165,19 @@ export default {
     metadata() {
       // Add version to title tag
       document.title = `HttPlaceholder - v${this.metadata.version}`;
+    },
+    darkTheme(darkTheme) {
+      this.$vuetify.theme.dark = darkTheme;
+      sessionStorage.setItem("darkTheme", JSON.stringify(darkTheme));
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
+.title img {
+  position: absolute;
+  top: 8px;
+  height: 70%;
+}
 </style>

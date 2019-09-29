@@ -1,129 +1,213 @@
 <template>
-  <div class="col-12 request" :key="request.correlationId">
-    <strong class="url" v-on:click="showDetails">
-      <HttpMethod v-bind:method="request.requestParameters.method" />
-      {{request.requestParameters.url}}
-      <span>(</span>
-      <Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed" /><span> | {{request.requestEndTime | datetime}}</span>
-      <span>)</span>
-    </strong>
-    <div class="row" v-if="detailsVisible">
-      <div class="col-md-12">
-        <a
-          class="btn btn-success"
-          v-on:click="createStub()"
+  <v-expansion-panel>
+    <v-expansion-panel-header>
+      <span>
+        <strong>{{request.requestParameters.method}}</strong>
+        {{request.requestParameters.url}}
+        <span>(</span>
+        <strong>
+          <Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed" />
+        </strong>
+        <span>&nbsp;|&nbsp;</span>
+        <span>{{request.requestEndTime | datetime}}</span>
+        <span>)</span>
+      </span>
+    </v-expansion-panel-header>
+    <v-expansion-panel-content>
+      <v-list-item>
+        <v-btn
+          @click="createStub"
           title="Create a stub based on the request parameters of this request"
-        >Create stub</a>
-      </div>
-      <div class="col-2">Method</div>
-      <div class="col-10">{{request.requestParameters.method}}</div>
-
-      <div class="col-2">Body</div>
-      <div class="col-10">
-        <RequestBody v-bind:requestParameters="request.requestParameters" />
-      </div>
-
-      <div class="col-2">Client IP</div>
-      <div class="col-10">{{request.requestParameters.clientIp}}</div>
-
-      <div class="col-2">Headers</div>
-      <div class="col-10">
-        <ul>
-          <li
-            v-for="(value, key) in request.requestParameters.headers"
-            :key="key"
-          >{{key}}: {{value}}</li>
-        </ul>
-      </div>
-
-      <div class="col-2" v-if="showQueryParameters">Query parameters</div>
-      <div class="col-10" v-if="showQueryParameters">
-        <ul>
-          <li v-for="(value, key) in queryParameters" :key="key">{{key}}: {{value}}</li>
-        </ul>
-      </div>
-
-      <div class="col-2">Correlation ID</div>
-      <div class="col-10">{{request.correlationId}}</div>
-
-      <div class="col-2">Executed stub</div>
-      <div class="col-10">
-        <router-link
-          :to="{ name: 'stubs', query: { searchTerm: request.executingStubId }}"
-        >{{request.executingStubId}}</router-link>
-      </div>
-
-      <div class="col-2" v-if="request.stubTenant">Stub tenant (category)</div>
-      <div class="col-10" v-if="request.stubTenant">
-        <router-link
-          :to="{ name: 'stubs', query: { stubTenant: request.stubTenant }}"
-        >{{request.stubTenant}}</router-link>
-      </div>
-
-      <div class="col-2">Request begin time</div>
-      <div class="col-10">{{request.requestBeginTime | datetime}}</div>
-
-      <div class="col-2">Request end time</div>
-      <div class="col-10">{{request.requestEndTime | datetime}}</div>
-
-      <div class="col-12">
-        <strong class="url" v-on:click="showExecutionResults">Stub execution results</strong>
-      </div>
-      <div v-if="executionResultsVisible">
-        <RequestStubExecutionResult
-          v-for="(result, key) in request.stubExecutionResults"
-          v-bind:executionResult="result"
-          :key="key"
-        ></RequestStubExecutionResult>
-      </div>
-
-      <div class="col-12">
-        <strong class="url" v-on:click="showResponseWriterResults">Response writer results</strong>
-      </div>
-      <div v-if="responseWriterResultsVisible">
-        <div
-          class="col-12 row"
-          v-for="(result, key) in request.stubResponseWriterResults"
-          :key="key"
-        >
-          <div class="col-3">Response writer name</div>
-          <div class="col-9">{{result.responseWriterName}}</div>
-
-          <div class="col-3">Executed</div>
-          <div class="col-9">
-            <Bool v-bind:bool="result.executed" />
-          </div>
-
-          <div class="col-12">
-            <hr />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+          color="success"
+        >Create stub</v-btn>
+      </v-list-item>
+      <v-list-item v-if="request.requestParameters.body">
+        <v-list-item-content>
+          <v-list-item-title>Body</v-list-item-title>
+          <RequestBody v-bind:requestParameters="request.requestParameters" />
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Client IP</v-list-item-title>
+          <v-list-item-subtitle>{{request.requestParameters.clientIp}}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Headers</v-list-item-title>
+          <v-list-item-subtitle>
+            <span v-for="(value, key) in request.requestParameters.headers" :key="key">
+              {{key}}: {{value}}
+              <br />
+            </span>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item v-if="showQueryParameters">
+        <v-list-item-content>
+          <v-list-item-title>Query parameters</v-list-item-title>
+          <v-list-item-subtitle>
+            <span v-for="(value, key) in queryParameters" :key="key">
+              {{key}}: {{value}}
+              <br />
+            </span>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Correlation ID</v-list-item-title>
+          <v-list-item-subtitle>{{request.correlationId}}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Executed stub</v-list-item-title>
+          <v-list-item-subtitle>
+            <router-link
+              :to="{ name: 'stubs', query: { searchTerm: request.executingStubId }}"
+            >{{request.executingStubId}}</router-link>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Stub tenant (category)</v-list-item-title>
+          <v-list-item-subtitle>
+            <router-link
+              :to="{ name: 'stubs', query: { stubTenant: request.stubTenant }}"
+            >{{request.stubTenant}}</router-link>
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Request begin time</v-list-item-title>
+          <v-list-item-subtitle>{{request.requestBeginTime | datetime}}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title>Request end time</v-list-item-title>
+          <v-list-item-subtitle>{{request.requestEndTime | datetime}}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+      <v-expansion-panels>
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            <strong>Stub execution results</strong>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-expansion-panels>
+              <v-expansion-panel v-for="(result, key) in orderedStubExecutionResults" :key="key">
+                <v-expansion-panel-header>
+                  <strong>
+                    <span>{{result.stubId}}</span>
+                    <span>&nbsp;</span>
+                    <span>(</span>
+                    <span>
+                      <Bool v-bind:bool="result.passed" trueText="passed" falseText="not passed" />
+                    </span>
+                    <span>)</span>
+                  </strong>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div v-if="result.conditions.length  > 0">
+                    <h2>Executed conditions</h2>
+                    <div v-for="(condition, key) in result.conditions" :key="key">
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title>Checker name</v-list-item-title>
+                          <v-list-item-subtitle>{{condition.checkerName}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title>Condition validation</v-list-item-title>
+                          <v-list-item-subtitle>
+                            <Bool
+                              v-bind:bool="condition.conditionValidation == 'Valid'"
+                              trueText="passed"
+                              falseText="not passed"
+                            />
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item v-if="condition.log">
+                        <v-list-item-content>
+                          <v-list-item-title>Log</v-list-item-title>
+                          <v-list-item-subtitle>{{condition.log}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                    </div>
+                  </div>
+                  <div v-if="result.negativeConditions.length  > 0">
+                    <h2>Executed negative conditions</h2>
+                    <div v-for="(condition, key) in result.negativeConditions" :key="key">
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title>Checker name</v-list-item-title>
+                          <v-list-item-subtitle>{{condition.checkerName}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title>Condition validation</v-list-item-title>
+                          <v-list-item-subtitle>
+                            <Bool
+                              v-bind:bool="condition.conditionValidation == 'Valid'"
+                              trueText="passed"
+                              falseText="not passed"
+                            />
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-list-item v-if="condition.log">
+                        <v-list-item-content>
+                          <v-list-item-title>Log</v-list-item-title>
+                          <v-list-item-subtitle>{{condition.log}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                      <v-divider></v-divider>
+                    </div>
+                  </div>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-expansion-panel>
+          <v-expansion-panel-header>
+            <strong>Response writer results</strong>
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-list-item v-for="(result, key) in orderedStubResponseWriterResults" :key="key">
+              <v-list-item-content>
+                <v-list-item-title>{{result.responseWriterName}}</v-list-item-title>
+                <v-list-item-subtitle>
+                  <Bool v-bind:bool="result.executed" trueText="executed" falseText="not executed" />
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </v-expansion-panel-content>
+  </v-expansion-panel>
 </template>
 
 <script>
-import RequestStubExecutionResult from "./RequestStubExecutionResult";
-import Bool from "./Bool";
-import HttpMethod from "./HttpMethod";
-import RequestBody from "./RequestBody";
+import RequestBody from "@/components/RequestBody";
+import Bool from "@/components/Bool";
 import { parseUrl } from "@/functions/urlFunctions";
 
 export default {
   name: "request",
   props: ["request"],
-  components: {
-    RequestStubExecutionResult,
-    Bool,
-    HttpMethod,
-    RequestBody
-  },
   data() {
     return {
-      detailsVisible: false,
-      executionResultsVisible: false,
-      responseWriterResultsVisible: false,
       queryParameters: {},
       showQueryParameters: false
     };
@@ -134,9 +218,33 @@ export default {
       this.showQueryParameters = true;
     }
   },
+  components: {
+    RequestBody,
+    Bool
+  },
   computed: {
     lastSelectedStub() {
       return this.$store.getters.getLastSelectedStub;
+    },
+    orderedStubExecutionResults() {
+      const compare = (a,b) => {
+        if(a.passed) 
+          return -1;
+        if(!a.passed)
+          return 1;
+        return 0;
+      };
+      return this.request.stubExecutionResults.sort(compare);
+    },
+    orderedStubResponseWriterResults() {
+      const compare = (a,b) => {
+        if(a.executed) 
+          return -1;
+        if(!a.executed)
+          return 1;
+        return 0;
+      };
+      return this.request.stubResponseWriterResults.sort(compare);
     }
   },
   watch: {
@@ -148,28 +256,21 @@ export default {
     }
   },
   methods: {
-    showDetails() {
-      this.detailsVisible = !this.detailsVisible;
-    },
-    showExecutionResults() {
-      this.executionResultsVisible = !this.executionResultsVisible;
-    },
-    showResponseWriterResults() {
-      this.responseWriterResultsVisible = !this.responseWriterResultsVisible;
-    },
     createStub() {
-      this.$store.dispatch("createStubBasedOnRequest", { correlationId: this.request.correlationId });
+      this.$store.dispatch("createStubBasedOnRequest", {
+        correlationId: this.request.correlationId
+      });
     }
   }
 };
 </script>
 
 <style scoped>
-.request {
-  padding: 10px;
-  text-align: left;
+.v-chip {
+  margin-right: 10px;
 }
-.url {
-  cursor: pointer;
+
+.request {
+  margin-bottom: 20px;
 }
 </style>

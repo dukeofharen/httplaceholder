@@ -1,57 +1,48 @@
 <template>
-  <div class="requests">
-    <h1>Requests</h1>
-    <div class="row">
-      <div class="col-md-7">
-        <div class="input-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Filter on stub ID or URL..."
-            v-model="searchTerm"
-          />
-          <span class="input-group-append">
-            <a
-              class="btn btn-outline-secondary"
-              type="button"
-              title="Clear input"
-              v-on:click="clearInput"
-            >
-              <span class="fa fa-eraser">&nbsp;</span>
-            </a>
-          </span>
-        </div>
-      </div>
-      <div class="col-md-5 buttons">
-        <a class="btn btn-danger" v-on:click="deleteAllRequests" title="Delete all requests">
-          <span class="fa fa-trash">&nbsp;</span>
-        </a>
-        <a class="btn btn-success" v-on:click="getRequests" title="Refresh">
-          <span class="fa fa-refresh">&nbsp;</span>
-        </a>
-      </div>
-    </div>
-    <div class="row">
-      <div class="input-group col-md-12" v-if="tenantNames.length > 0">
-        <select v-model="selectedTenantName" class="form-control tenant-list">
-          <option
-            selected="selected"
-            value=""
-          >Select stub tenant / category name for the stubs you would like to see the requests for...</option>
-          <option
-            v-for="tenantName in tenantNames"
-            v-bind:key="tenantName"
-            v-bind:value="tenantName"
-          >{{tenantName}}</option>
-        </select>
-      </div>
-    </div>
-    <Request
-      v-bind:request="request"
-      v-for="request in filteredRequests"
-      :key="request.correlationId"
-    ></Request>
-  </div>
+  <v-row>
+    <v-col>
+      <h1>Requests</h1>
+      <v-row>
+        <v-col class="buttons">
+          <v-btn title="Refresh" @click="getRequests" color="success">Refresh</v-btn>
+          <v-btn
+            title="Delete all requests"
+            @click.stop="deleteAllDialog = true"
+            color="error"
+          >Delete all requests</v-btn>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or URL..." clearable></v-text-field>
+          <v-select
+            :items="tenantNames"
+            placeholder="Select stub tenant / category name for the stubs you would like to see the requests for..."
+            v-model="selectedTenantName"
+            clearable
+          ></v-select>
+        </v-col>
+      </v-row>
+      <v-expansion-panels>
+        <Request
+          v-for="request in filteredRequests"
+          :key="request.correlationId"
+          v-bind:request="request"
+        ></Request>
+      </v-expansion-panels>
+      <v-dialog v-model="deleteAllDialog" max-width="290">
+        <v-card>
+          <v-card-title class="headline">Delete all requests?</v-card-title>
+          <v-card-text>The requests can't be recovered.</v-card-text>
+          <v-card-actions>
+            <div class="flex-grow-1"></div>
+            <v-btn color="green darken-1" text @click="deleteAllDialog = false">No</v-btn>
+            <v-btn color="green darken-1" text @click="deleteAllRequests">Yes</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -66,7 +57,8 @@ export default {
       filteredRequests: [],
       searchTerm: "",
       selectedTenantName: "",
-      connection: {}
+      connection: {},
+      deleteAllDialog: false
     };
   },
   components: {
@@ -107,18 +99,14 @@ export default {
       }
     },
     deleteAllRequests() {
-      this.$dialog.confirm(resources.areYouSure).then(() => {
-        this.$store.dispatch("clearRequests");
-      });
+      this.deleteAllDialog = false;
+      this.$store.dispatch("clearRequests");
     },
     getRequests() {
       this.$store.dispatch("getRequests");
     },
     getTenantNames() {
       this.$store.dispatch("getTenantNames");
-    },
-    clearInput() {
-      this.searchTerm = "";
     },
     initializeSignalR() {
       this.connection = new HubConnectionBuilder()
@@ -160,7 +148,8 @@ export default {
 </script>
 
 <style scoped>
-.tenant-list {
+.buttons > button {
+  margin-right: 10px;
   margin-top: 10px;
 }
 </style>

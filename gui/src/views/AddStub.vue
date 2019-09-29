@@ -1,23 +1,34 @@
 <template>
-  <div class="add-stub" v-shortkey="['ctrl', 's']" @shortkey="addStubs">
-    <h1>Add stub(s)</h1>
-
-    <p>
-      You can add new stubs here. Fill in the stub below in YAML format and click on "Add stub(s)". For examples, visit
-      <a
-        href="https://github.com/dukeofharen/httplaceholder"
-        target="_blank"
-      >https://github.com/dukeofharen/httplaceholder</a>.
-    </p>
-
-    <div class="input-group">
-      <codemirror v-model="input" :options="cmOptions"></codemirror>
-    </div>
-
-    <div class="input-group">
-      <a class="btn btn-success" v-on:click="addStubs">Add stub(s)</a>
-    </div>
-  </div>
+  <v-row v-shortkey="['ctrl', 's']" @shortkey="addStubs">
+    <v-col>
+      <h1>Add stub(s)</h1>
+      <v-card>
+        <v-card-title>You can add new stubs here</v-card-title>
+        <v-card-text>
+          Fill in the stub below in YAML format and click on "Add stub(s)". For examples, visit
+          <a
+            href="https://github.com/dukeofharen/httplaceholder"
+            target="_blank"
+          >https://github.com/dukeofharen/httplaceholder</a>.
+        </v-card-text>
+      </v-card>
+      <v-card class="editor">
+        <v-card-actions>
+          <codemirror v-model="input" :options="cmOptions"></codemirror>
+        </v-card-actions>
+      </v-card>
+      <v-btn color="success" @click="addStubs">Add stub(s)</v-btn>
+      <h1>Upload stub(s)</h1>
+      <v-card>
+        <v-card-title>You can upload stubs here</v-card-title>
+        <v-card-text>Click the button and select a .yml file with stubs from your PC.</v-card-text>
+        <v-card-actions>
+          <input type="file" name="file" ref="stubUpload" @change="loadTextFromFile" />
+          <v-btn color="success" @click="uploadStubs">Upload stubs</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -33,48 +44,48 @@ export default {
         tabSize: 4,
         mode: "text/x-yaml",
         lineNumbers: true,
-        line: true,
-        theme: ""
+        line: true
       }
     };
   },
   created() {
-    this.setTheme();
-  },
-  computed: {
-    theme() {
-      return this.$store.getters.getTheme;
+    if (this.darkTheme) {
+      this.cmOptions.theme = "material-darker";
     }
   },
   components: {
     codemirror
   },
+  computed: {
+    darkTheme() {
+      return this.$store.getters.getDarkTheme;
+    }
+  },
   methods: {
     addStubs() {
       this.$store.dispatch("addStubs", { input: this.input });
     },
-    setTheme() {
-      this.cmOptions.theme = this.theme.codeMirrorTheme;
-    }
-  },
-  watch: {
-    theme() {
-      this.setTheme();
+    uploadStubs() {
+      this.$refs.stubUpload.click();
+    },
+    loadTextFromFile(ev) {
+      const file = ev.target.files[0];
+      const reader = new FileReader();
+      reader.onload = e => {
+        this.$store.dispatch("addStubs", { input: e.target.result });
+      };
+      reader.readAsText(file);
     }
   }
 };
 </script>
 
 <style scoped>
-.vue-codemirror {
-  width: 100%;
-  margin: 10px;
+.editor {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
-.CodeMirror {
-  width: 100%;
-}
-
-.add-stub {
-  text-align: left;
+input[type="file"] {
+  display: none;
 }
 </style>

@@ -1,22 +1,32 @@
 <template>
-  <div class="login" v-on:keyup.enter="logIn">
-    <h1>Log in</h1>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text fa fa-user"></span>
-      </div>
-      <input type="text" class="form-control" placeholder="Username" v-model="username">
-    </div>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend">
-        <span class="input-group-text fa fa-key"></span>
-      </div>
-      <input type="password" class="form-control" placeholder="Password" v-model="password">
-    </div>
-    <div class="input-group">
-      <a class="btn btn-success" v-on:click="logIn">Log in</a>
-    </div>
-  </div>
+  <v-row v-on:keyup.enter="logIn">
+    <v-col>
+      <v-card class="elevation-12">
+        <v-card-text>
+          <v-form>
+            <v-text-field
+              label="Login"
+              name="login"
+              prepend-icon="mdi-account"
+              type="text"
+              v-model="username"
+            ></v-text-field>
+            <v-text-field
+              id="password"
+              label="Password"
+              name="password"
+              prepend-icon="mdi-lock"
+              type="password"
+              v-model="password"
+            ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="logIn">Login</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
