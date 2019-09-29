@@ -12,7 +12,6 @@
     "@aspnet/signalr": "^1.1.4",
     "@mdi/font": "^4.4.95",
     "axios": "^0.18.0",
-    "font-awesome": "^4.7.0",
     "js-yaml": "^3.13.1",
     "lodash.camelcase": "^4.3.0",
     "moment": "^2.24.0",
