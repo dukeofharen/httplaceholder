@@ -23,7 +23,7 @@
           ></v-select>
         </v-col>
         <v-expansion-panels>
-          <Stub v-bind:fullStub="stub" v-for="stub in filteredStubs" :key="stub.id"></Stub>
+          <Stub v-bind:fullStub="stub" v-for="stub in orderedFilteredStubs" :key="stub.id"></Stub>
         </v-expansion-panels>
       </v-row>
     </v-col>
@@ -112,6 +112,16 @@ export default {
     },
     tenantNames() {
       return this.$store.getters.getTenantNames;
+    },
+    orderedFilteredStubs() {
+      const compare = (a, b) => {
+        if(a.stub.id < b.stub.id)
+          return -1;
+        if(a.stub.id > b.stub.id)
+          return 1;
+        return 0;
+      };
+      return this.filteredStubs.sort(compare);
     }
   },
   watch: {
