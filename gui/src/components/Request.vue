@@ -100,9 +100,17 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-expansion-panels>
-              <v-expansion-panel v-for="(result, key) in request.stubExecutionResults" :key="key">
+              <v-expansion-panel v-for="(result, key) in orderedStubExecutionResults" :key="key">
                 <v-expansion-panel-header>
-                  <strong>{{result.stubId}} (<Bool v-bind:bool="result.passed" trueText="passed" falseText="not passed" />)</strong>
+                  <strong>
+                    <span>{{result.stubId}}</span>
+                    <span>&nbsp;</span>
+                    <span>(</span>
+                    <span>
+                      <Bool v-bind:bool="result.passed" trueText="passed" falseText="not passed" />
+                    </span>
+                    <span>)</span>
+                  </strong>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <div v-if="result.conditions.length  > 0">
@@ -117,7 +125,13 @@
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title>Condition validation</v-list-item-title>
-                          <v-list-item-subtitle><Bool v-bind:bool="condition.conditionValidation == 'Valid'" trueText="passed" falseText="not passed" /></v-list-item-subtitle>
+                          <v-list-item-subtitle>
+                            <Bool
+                              v-bind:bool="condition.conditionValidation == 'Valid'"
+                              trueText="passed"
+                              falseText="not passed"
+                            />
+                          </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item v-if="condition.log">
@@ -141,7 +155,13 @@
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title>Condition validation</v-list-item-title>
-                          <v-list-item-subtitle><Bool v-bind:bool="condition.conditionValidation == 'Valid'" trueText="passed" falseText="not passed" /></v-list-item-subtitle>
+                          <v-list-item-subtitle>
+                            <Bool
+                              v-bind:bool="condition.conditionValidation == 'Valid'"
+                              trueText="passed"
+                              falseText="not passed"
+                            />
+                          </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item v-if="condition.log">
@@ -163,10 +183,12 @@
             <strong>Response writer results</strong>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <v-list-item v-for="(result, key) in request.stubResponseWriterResults" :key="key">
+            <v-list-item v-for="(result, key) in orderedStubResponseWriterResults" :key="key">
               <v-list-item-content>
                 <v-list-item-title>{{result.responseWriterName}}</v-list-item-title>
-                <v-list-item-subtitle><Bool v-bind:bool="result.executed" trueText="executed" falseText="not executed" /></v-list-item-subtitle>
+                <v-list-item-subtitle>
+                  <Bool v-bind:bool="result.executed" trueText="executed" falseText="not executed" />
+                </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
           </v-expansion-panel-content>
@@ -203,6 +225,26 @@ export default {
   computed: {
     lastSelectedStub() {
       return this.$store.getters.getLastSelectedStub;
+    },
+    orderedStubExecutionResults() {
+      const compare = (a,b) => {
+        if(a.passed) 
+          return -1;
+        if(!a.passed)
+          return 1;
+        return 0;
+      };
+      return this.request.stubExecutionResults.sort(compare);
+    },
+    orderedStubResponseWriterResults() {
+      const compare = (a,b) => {
+        if(a.executed) 
+          return -1;
+        if(!a.executed)
+          return 1;
+        return 0;
+      };
+      return this.request.stubResponseWriterResults.sort(compare);
     }
   },
   watch: {
