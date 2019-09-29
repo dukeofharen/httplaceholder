@@ -10,16 +10,8 @@ import 'typeface-roboto';
 // Styles
 import '@/css/style.css';
 
-// VuejsDialog
-import VuejsDialog from 'vuejs-dialog';
-import 'vuejs-dialog/dist/vuejs-dialog.min.css';
-
 // VueShortkey
 import VueShortKey from 'vue-shortkey'
-
-// FontAwesome
-import 'font-awesome/css/font-awesome.css'
-import 'toastr/build/toastr.css'
 
 // CodeMirror
 import VueCodemirror from 'vue-codemirror'
@@ -40,7 +32,6 @@ Vue.config.productionTip = false
 
 Vue.use(VueCodemirror)
 Vue.use(VueShortKey)
-Vue.use(VuejsDialog)
 
 new Vue({
   store,
