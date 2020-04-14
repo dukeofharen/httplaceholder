@@ -10,8 +10,8 @@ namespace HttPlaceholder.Formatters
         {
             options.RespectBrowserAcceptHeader = true;
             options.ReturnHttpNotAcceptable = true;
-            options.InputFormatters.Add(new YamlInputFormatter(new DeserializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
-            options.OutputFormatters.Add(new YamlOutputFormatter(new SerializerBuilder().WithNamingConvention(namingConvention: new CamelCaseNamingConvention()).Build()));
+            options.InputFormatters.Add(new YamlInputFormatter(new DeserializerBuilder().WithNamingConvention(namingConvention: CamelCaseNamingConvention.Instance).Build()));
+            options.OutputFormatters.Add(new YamlOutputFormatter(new SerializerBuilder().WithNamingConvention(namingConvention: CamelCaseNamingConvention.Instance).Build()));
             options.FormatterMappings.SetMediaTypeMappingForFormat("yaml", MediaTypeHeaderValues.ApplicationYaml);
             return options;
         }
