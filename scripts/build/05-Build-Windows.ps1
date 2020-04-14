@@ -10,7 +10,7 @@ Param(
 )
 
 $nsiPath = "$PSScriptRoot/httplaceholder.nsi"
-$binDir = "$srcFolder/HttPlaceholder/bin/release/netcoreapp3.0/win-x64/publish"
+$binDir = "$srcFolder/HttPlaceholder/bin/release/netcoreapp3.1/win-x64/publish"
 $docsFolder = "$rootFolder/docs"
 $installScriptsPath = "$PSScriptRoot/installscripts/windows"
 
