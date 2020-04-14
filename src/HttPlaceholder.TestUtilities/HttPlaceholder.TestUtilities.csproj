@@ -8,20 +8,20 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors/>
+        <WarningsAsErrors />
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tool|AnyCPU'">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors/>
+        <WarningsAsErrors />
     </PropertyGroup>
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Moq" Version="4.13.0"/>
+        <PackageReference Include="Moq" Version="4.13.1" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj"/>
-        <ProjectReference Include="..\HttPlaceholder.Configuration\HttPlaceholder.Configuration.csproj"/>
+        <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
+        <ProjectReference Include="..\HttPlaceholder.Configuration\HttPlaceholder.Configuration.csproj" />
     </ItemGroup>
 </Project>
