@@ -4,7 +4,7 @@
   "swaggerGenerator": {
     "fromSwagger": {
       "json": "",
-      "url": "$(ProjectRoot)/src/HttPlaceholder.SwaggerGenerator/bin/$(Configuration)/netcoreapp3.0/swagger.json",
+      "url": "$(ProjectRoot)/src/HttPlaceholder.SwaggerGenerator/bin/$(Configuration)/netcoreapp3.1/swagger.json",
       "output": null
     }
   },
