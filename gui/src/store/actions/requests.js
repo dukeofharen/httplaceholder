@@ -3,14 +3,12 @@ import urls from "urls";
 import {mutationNames} from "@/store/storeConstants";
 import {resources} from "@/shared/resources";
 import {messageTypes} from "@/shared/constants";
+import {toastError, toastSuccess} from "@/utils/toastUtil";
 
 const handleHttpError = (commit, error) => {
     const status = error.response.status;
     if (status !== 401) {
-        commit(mutationNames.storeToastMutation, {
-            type: messageTypes.ERROR,
-            message: resources.somethingWentWrongServer
-        });
+        toastError(resources.somethingWentWrongServer)
     }
 };
 
@@ -54,10 +52,7 @@ export function clearRequests({ commit, state }) {
     axios
         .delete(url, config)
         .then(response => {
-            commit(mutationNames.storeToastMutation, {
-                type: messageTypes.SUCCESS,
-                message: resources.requestsDeletedSuccessfully
-            });
+            toastSuccess(resources.requestsDeletedSuccessfully)
             commit(mutationNames.storeRequests, []);
         })
         .catch(error => {

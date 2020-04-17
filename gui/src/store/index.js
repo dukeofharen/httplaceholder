@@ -17,11 +17,6 @@ const state = {
     stubs: [],
     tenantNames: [],
     stubsDownloadString: "",
-    toast: {
-        message: "",
-        type: "",
-        timestamp: new Date().getTime()
-    },
     lastSelectedStub: {
         id: ""
     },

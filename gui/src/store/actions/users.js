@@ -3,6 +3,7 @@ import axios from "axios";
 import {mutationNames} from "@/store/storeConstants";
 import {authenticateResults, messageTypes} from "@/shared/constants";
 import {resources} from "@/shared/resources";
+import {toastError, toastSuccess} from "@/utils/toastUtil";
 
 const basicAuth = (username, password) => btoa(`${username}:${password}`);
 
@@ -59,19 +60,13 @@ export function authenticate({commit}, payload) {
         })
         .catch(error => {
             if (error.response.status === 401) {
-                commit(mutationNames.storeToastMutation, {
-                    type: messageTypes.ERROR,
-                    message: resources.credentialsIncorrect
-                });
+                toastError(resources.credentialsIncorrect);
                 commit(
                     mutationNames.storeLastAuthResultMutation,
                     authenticateResults.INVALID_CREDENTIALS
                 );
             } else {
-                commit(mutationNames.storeToastMutation, {
-                    type: messageTypes.ERROR,
-                    message: resources.somethingWentWrongServer
-                });
+                toastError(resources.somethingWentWrongServer);
                 commit(
                     mutationNames.storeLastAuthResultMutation,
                     authenticateResults.INTERNAL_SERVER_ERROR

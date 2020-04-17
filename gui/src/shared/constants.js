@@ -5,11 +5,6 @@ const authenticateResults = {
   INTERNAL_SERVER_ERROR: "internal_server_error"
 };
 
-const messageTypes = {
-  INFO: "info",
-  SUCCESS: "success",
-  WARNING: "warning",
-  ERROR: "error"
-};
 
-export { authenticateResults, messageTypes };
+
+export { authenticateResults };

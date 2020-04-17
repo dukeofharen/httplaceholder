@@ -3,15 +3,12 @@ import urls from "urls";
 import yaml from "js-yaml";
 import {mutationNames} from "@/store/storeConstants";
 import {resources} from "@/shared/resources";
-import {messageTypes} from "@/shared/constants";
+import {toastError, toastSuccess} from "@/utils/toastUtil";
 
 const handleHttpError = (commit, error) => {
     const status = error.response.status;
     if (status !== 401) {
-        commit(mutationNames.storeToastMutation, {
-            type: messageTypes.ERROR,
-            message: resources.somethingWentWrongServer
-        });
+        toastError(resources.somethingWentWrongServer);
     }
 };
 
@@ -32,7 +29,7 @@ const getConfig = (userToken, asYaml) => {
     };
 };
 
-export function getStubs({ commit, state }) {
+export function getStubs({commit, state}) {
     let rootUrl = urls.rootUrl;
     let url = `${rootUrl}ph-api/stubs`;
     let token = state.userToken;
@@ -47,7 +44,7 @@ export function getStubs({ commit, state }) {
         });
 }
 
-export function getStub({ commit, state }, payload) {
+export function getStub({commit, state}, payload) {
     let stubId = payload.stubId;
     let rootUrl = urls.rootUrl;
     let url = `${rootUrl}ph-api/stubs/${stubId}`;
@@ -65,7 +62,7 @@ export function getStub({ commit, state }, payload) {
         });
 }
 
-export function deleteStub({ commit, state, dispatch }, payload) {
+export function deleteStub({commit, state, dispatch}, payload) {
     let stubId = payload.stubId;
     let rootUrl = urls.rootUrl;
     let url = `${rootUrl}ph-api/stubs/${stubId}`;
@@ -74,10 +71,7 @@ export function deleteStub({ commit, state, dispatch }, payload) {
     axios
         .delete(url, config)
         .then(response => {
-            commit(mutationNames.storeToastMutation, {
-                type: messageTypes.SUCCESS,
-                message: resources.stubDeletedSuccessfully.format(stubId)
-            });
+            toastSuccess(resources.stubDeletedSuccessfully.format(stubId));
             dispatch("getStubs");
         })
         .catch(error => {
@@ -85,7 +79,7 @@ export function deleteStub({ commit, state, dispatch }, payload) {
         });
 }
 
-export function deleteAllStubs({ commit, state, dispatch }, payload) {
+export function deleteAllStubs({commit, state, dispatch}, payload) {
     let rootUrl = urls.rootUrl;
     let url = `${rootUrl}ph-api/stubs`;
     let token = state.userToken;
@@ -93,10 +87,7 @@ export function deleteAllStubs({ commit, state, dispatch }, payload) {
     axios
         .delete(url, config)
         .then(response => {
-            commit(mutationNames.storeToastMutation, {
-                type: messageTypes.SUCCESS,
-                message: resources.stubsDeletedSuccessfully
-            });
+            toastSuccess(resources.stubsDeletedSuccessfully);
             dispatch("getStubs");
         })
         .catch(error => {
@@ -104,7 +95,7 @@ export function deleteAllStubs({ commit, state, dispatch }, payload) {
         });
 }
 
-export function addStubs({ commit, state }, payload) {
+export function addStubs({commit, state}, payload) {
     let rootUrl = urls.rootUrl;
     let url = `${rootUrl}ph-api/stubs`;
     let token = state.userToken;
@@ -116,10 +107,7 @@ export function addStubs({ commit, state }, payload) {
     try {
         parsedObject = yaml.safeLoad(payload.input);
     } catch (error) {
-        commit(mutationNames.storeToastMutation, {
-            type: messageTypes.ERROR,
-            message: error.message
-        });
+        toastError(error.message);
         return;
     }
 
@@ -135,29 +123,19 @@ export function addStubs({ commit, state }, payload) {
             .post(url, stub, config)
             .then(response => {
                 let message = resources.stubAddedSuccessfully;
-
-                commit(mutationNames.storeToastMutation, {
-                    type: messageTypes.SUCCESS,
-                    message: message.format(stub.id)
-                });
+                toastSuccess(message.format(stub.id));
             })
             .catch(error => {
                 if (error.response.status === 409) {
-                    commit(mutationNames.storeToastMutation, {
-                        type: messageTypes.ERROR,
-                        message: resources.stubAlreadyAdded.format(stub.id)
-                    });
+                    toastError(resources.stubAlreadyAdded.format(stub.id))
                 } else {
-                    commit(mutationNames.storeToastMutation, {
-                        type: messageTypes.ERROR,
-                        message: resources.stubNotAdded.format(stub.id)
-                    });
+                    toastError(resources.stubNotAdded.format(stub.id))
                 }
             });
     }
 }
 
-export function updateStub({ commit, state }, payload) {
+export function updateStub({commit, state}, payload) {
     let rootUrl = urls.rootUrl;
     let url = `${rootUrl}ph-api/stubs/${payload.stubId}`;
     let token = state.userToken;
@@ -168,18 +146,12 @@ export function updateStub({ commit, state }, payload) {
     try {
         stub = yaml.safeLoad(payload.input);
     } catch (error) {
-        commit(mutationNames.storeToastMutation, {
-            type: messageTypes.ERROR,
-            message: error.message
-        });
+        toastError(error.message);
         return;
     }
 
     if (!stub || Array.isArray(stub)) {
-        commit(mutationNames.storeToastMutation, {
-            type: messageTypes.ERROR,
-            message: resources.onlyOneStubAtATime
-        });
+        toastError(resources.onlyOneStubAtATime);
         return;
     }
 
@@ -187,27 +159,18 @@ export function updateStub({ commit, state }, payload) {
         .put(url, stub, config)
         .then(response => {
             let message = resources.stubUpdatedSuccessfully;
-            commit(mutationNames.storeToastMutation, {
-                type: messageTypes.SUCCESS,
-                message: message.format(stub.id)
-            });
+            toastSuccess(message.format(stub.id));
         })
         .catch(error => {
             if (error.response.status === 409) {
-                commit(mutationNames.storeToastMutation, {
-                    type: messageTypes.ERROR,
-                    message: resources.stubAlreadyAdded.format(stub.id)
-                });
+                toastError(resources.stubAlreadyAdded.format(stub.id))
             } else {
-                commit(mutationNames.storeToastMutation, {
-                    type: messageTypes.ERROR,
-                    message: resources.stubNotAdded.format(stub.id)
-                });
+                toastError(resources.stubNotAdded.format(stub.id));
             }
         });
 }
 
-export function createStubBasedOnRequest({ commit, state }, payload) {
+export function createStubBasedOnRequest({commit, state}, payload) {
     let rootUrl = urls.rootUrl;
     let url = `${rootUrl}ph-api/requests/${payload.correlationId}/stubs`;
     let token = state.userToken;
@@ -218,18 +181,12 @@ export function createStubBasedOnRequest({ commit, state }, payload) {
         .then(response => {
             let stub = response.data.stub;
             let message = resources.stubAddedSuccessfully;
-            commit(mutationNames.storeToastMutation, {
-                type: messageTypes.SUCCESS,
-                message: message.format(stub.id)
-            });
+            toastSuccess(message.format(stub.id))
             commit(mutationNames.storeLastSelectedStub, {
                 fullStub: response.data
             });
         })
         .catch(error =>
-            commit(mutationNames.storeToastMutation, {
-                type: messageTypes.ERROR,
-                message: resources.stubNotAddedGeneric
-            })
+            toastError(resources.stubNotAddedGeneric)
         );
 }

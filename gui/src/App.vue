@@ -74,7 +74,6 @@
 
 <script>
 import { messageTypes, authenticateResults } from "@/shared/constants";
-import toastr from "toastr";
 
 export default {
   name: "app",
@@ -148,23 +147,6 @@ export default {
     authenticated(isAuthenticated) {
       if (!isAuthenticated) {
         this.$router.push({ name: "login" });
-      }
-    },
-    toast(newToast) {
-      switch (newToast.type) {
-        case messageTypes.SUCCESS:
-          toastr.success(newToast.message);
-          break;
-        case messageTypes.WARNING:
-          toastr.warning(newToast.message);
-          break;
-        case messageTypes.ERROR:
-          toastr.error(newToast.message);
-          break;
-        default:
-        case messageTypes.INFO:
-          toastr.info(newToast.message);
-          break;
       }
     },
     userToken(newToken) {
