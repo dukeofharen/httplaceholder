@@ -5,10 +5,11 @@ export const mutationNames = {
     userTokenMutation: "storeUserToken",
     storeRequestsMutation: "storeRequests",
     storeLastSelectedStub: "storeLastSelectedStub",
-    storeRequests: "storeRequests",
-    storeTenantNames: "storeTenantNames"
+    storeRequests: "storeRequests"
 }
 
 export const actionNames = {
-    addStubs: "addStubs"
+    addStubs: "addStubs",
+    getStubs: "getStubs",
+    getTenantNames: "getTenantNames"
 }

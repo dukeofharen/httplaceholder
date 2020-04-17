@@ -4,10 +4,12 @@ import {mutationNames} from "@/store/storeConstants";
 import {resources} from "@/shared/resources";
 import {toastError, toastSuccess} from "@/utils/toastUtil";
 
-export function getStubs({commit}) {
-    createInstance()
-        .get("ph-api/stubs")
-        .then(response => commit("storeStubs", response.data));
+export function getStubs() {
+    return new Promise((resolve, reject) =>
+        createInstance()
+            .get("ph-api/stubs")
+            .then(response => resolve(response.data))
+            .catch(error => reject(error)));
 }
 
 export function getStub({commit, state}, payload) {

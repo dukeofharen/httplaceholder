@@ -14,8 +14,6 @@ const state = {
     lastAuthenticateResult: authenticateResults.NOT_SET,
     userToken: "",
     requests: [],
-    stubs: [],
-    tenantNames: [],
     stubsDownloadString: "",
     lastSelectedStub: {
         id: ""

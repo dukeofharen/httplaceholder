@@ -1,8 +1,8 @@
 import createInstance from "@/axios/axiosInstanceFactory";
-import {mutationNames} from "@/store/storeConstants";
 
-export function getTenantNames({commit, state}) {
-    createInstance()
+export function getTenantNames() {
+    return new Promise((resolve, reject) => createInstance()
         .get("ph-api/tenants")
-        .then(response => commit(mutationNames.storeTenantNames, response.data));
+        .then(response => resolve(response.data))
+        .catch(error => reject(error)));
 }
