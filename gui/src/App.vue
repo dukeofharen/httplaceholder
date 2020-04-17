@@ -73,8 +73,6 @@
 </template>
 
 <script>
-import { messageTypes, authenticateResults } from "@/shared/constants";
-
 export default {
   name: "app",
   created() {

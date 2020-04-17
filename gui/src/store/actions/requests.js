@@ -1,57 +1,19 @@
 import createInstance from "@/axios/axiosInstanceFactory";
 import {mutationNames} from "@/store/storeConstants";
 import {resources} from "@/shared/resources";
-import {toastError, toastSuccess} from "@/utils/toastUtil";
+import {toastSuccess} from "@/utils/toastUtil";
 
-const handleHttpError = (commit, error) => {
-    const status = error.response.status;
-    if (status !== 401) {
-        toastError(resources.somethingWentWrongServer)
-    }
-};
-
-const getConfig = (userToken, asYaml) => {
-    if (!asYaml) {
-        asYaml = false;
-    }
-
-    let headers = {
-        Authorization: `Basic ${userToken}`
-    };
-    if (asYaml) {
-        headers["Accept"] = "text/yaml";
-    }
-
-    return {
-        headers: headers
-    };
-};
-
-export function getRequests({ commit, state }) {
-    const instance = createInstance();
-    let token = state.userToken;
-    let config = getConfig(token);
-    instance
-        .get("ph-api/requests", config)
-        .then(response => {
-            commit(mutationNames.storeRequestsMutation, response.data);
-        })
-        .catch(error => {
-            handleHttpError(commit, error);
-        });
+export function getRequests({commit}) {
+    createInstance()
+        .get("ph-api/requests")
+        .then(response => commit(mutationNames.storeRequestsMutation, response.data));
 }
 
-export function clearRequests({ commit, state }) {
-    const instance = createInstance();
-    let token = state.userToken;
-    let config = getConfig(token);
-    instance
-        .delete("ph-api/requests", config)
-        .then(response => {
+export function clearRequests({commit}) {
+    createInstance()
+        .delete("ph-api/requests")
+        .then(() => {
             toastSuccess(resources.requestsDeletedSuccessfully)
             commit(mutationNames.storeRequests, []);
         })
-        .catch(error => {
-            handleHttpError(commit, error);
-        });
 }

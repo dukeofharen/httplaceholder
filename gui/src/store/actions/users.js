@@ -4,36 +4,21 @@ import {authenticateResults, messageTypes} from "@/shared/constants";
 import {resources} from "@/shared/resources";
 import {toastError} from "@/utils/toastUtil";
 
-const basicAuth = (username, password) => btoa(`${username}:${password}`);
-
-const getConfig = (userToken, asYaml) => {
-    if (!asYaml) {
-        asYaml = false;
-    }
-
-    let headers = {
-        Authorization: `Basic ${userToken}`
-    };
-    if (asYaml) {
-        headers["Accept"] = "text/yaml";
-    }
-
-    return {
-        headers: headers
-    };
-};
-
-const getUser = (username, password) => {
-    const instance = createInstance();
-    let token = basicAuth(username, password);
-    let config = getConfig(token);
-    return instance.get(`ph-api/users/${username}`, config);
+const getUser = (username, password, commit) => {
+    const token = btoa(`${username}:${password}`);
+    return createInstance()
+        .get(`ph-api/users/${username}`, {
+            headers: {
+                Authorization: `Basic ${token}`
+            }
+        })
+        .then(() => commit(mutationNames.userTokenMutation, token));
 };
 
 export function ensureAuthenticated({commit}) {
     let username = "testUser";
     let password = "testPassword";
-    getUser(username, password)
+    getUser(username, password, commit)
         .then(() => {
             // No authentication on endpoint, so no login required.
             commit(mutationNames.storeAuthMutation, true);
@@ -49,11 +34,10 @@ export function ensureAuthenticated({commit}) {
 }
 
 export function authenticate({commit}, payload) {
-    let token = basicAuth(payload.username, payload.password);
-    getUser(payload.username, payload.password)
-        .then(response => {
+    getUser(payload.username, payload.password, commit)
+        .then(() => {
             commit(mutationNames.storeLastAuthResultMutation, authenticateResults.OK);
-            commit(mutationNames.userTokenMutation, token);
+
             commit(mutationNames.storeAuthMutation, true);
         })
         .catch(error => {
