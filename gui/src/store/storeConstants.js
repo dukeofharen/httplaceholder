@@ -3,7 +3,6 @@ export const mutationNames = {
     storeAuthRequired: "storeAuthenticationRequired",
     userTokenMutation: "storeUserToken",
     storeRequestsMutation: "storeRequests",
-    storeLastSelectedStub: "storeLastSelectedStub",
     storeDarkTheme: "storeDarkTheme"
 }
 
@@ -16,5 +15,6 @@ export const actionNames = {
     clearRequests: "clearRequests",
     deleteAllStubs: "deleteAllStubs",
     getStub: "getStub",
-    updateStub: "updateStub"
+    updateStub: "updateStub",
+    createStubBasedOnRequest: "createStubBasedOnRequest"
 }

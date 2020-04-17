@@ -87,15 +87,9 @@ export function updateStub({commit, state}, payload) {
 }
 
 export function createStubBasedOnRequest({commit, state}, payload) {
-    createInstance()
+    return new Promise((resolve, reject) =>
+        createInstance()
         .post(`ph-api/requests/${payload.correlationId}/stubs`, "")
-        .then(response => {
-            let stub = response.data.stub;
-            let message = resources.stubAddedSuccessfully;
-            toastSuccess(message.format(stub.id))
-            commit(mutationNames.storeLastSelectedStub, {
-                fullStub: response.data
-            });
-        })
-        .catch(() => toastError(resources.stubNotAddedGeneric));
+        .then(response => resolve(response.data))
+        .catch(error => reject(error)));
 }
