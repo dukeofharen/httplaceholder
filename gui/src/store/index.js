@@ -1,16 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import actions from "./actions";
-import mutations from "./mutations";
-import getters from "./getters";
-import { authenticateResults } from "@/shared//constants";
+import {authenticateResults} from "@/shared/constants";
+import {constructStore} from "@/store/storeConstructor";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {
+const state = {
     metadata: {
-      version: ""
+        version: ""
     },
     authenticated: null,
     authenticationRequired: true,
@@ -21,18 +18,16 @@ export default new Vuex.Store({
     tenantNames: [],
     stubsDownloadString: "",
     toast: {
-      message: "",
-      type: "",
-      timestamp: new Date().getTime()
+        message: "",
+        type: "",
+        timestamp: new Date().getTime()
     },
     lastSelectedStub: {
-      id: ""
+        id: ""
     },
     settings: {
-      darkTheme: false
+        darkTheme: false
     }
-  },
-  mutations,
-  getters,
-  actions
-});
+};
+
+export default new Vuex.Store(constructStore(state));
