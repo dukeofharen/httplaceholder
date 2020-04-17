@@ -1,19 +1,17 @@
 import createInstance from "@/axios/axiosInstanceFactory";
 import {mutationNames} from "@/store/storeConstants";
-import {resources} from "@/shared/resources";
-import {toastSuccess} from "@/utils/toastUtil";
 
-export function getRequests({commit}) {
-    createInstance()
+export function getRequests() {
+    return new Promise((resolve, reject) => createInstance()
         .get("ph-api/requests")
-        .then(response => commit(mutationNames.storeRequestsMutation, response.data));
+        .then(response => resolve(response.data))
+        .catch(error => reject(error)));
 }
 
-export function clearRequests({commit}) {
-    createInstance()
-        .delete("ph-api/requests")
-        .then(() => {
-            toastSuccess(resources.requestsDeletedSuccessfully)
-            commit(mutationNames.storeRequests, []);
-        })
+export function clearRequests() {
+    return new Promise((resolve, reject) =>
+        createInstance()
+            .delete("ph-api/requests")
+            .then(() => resolve())
+            .catch(error => reject(error)));
 }
