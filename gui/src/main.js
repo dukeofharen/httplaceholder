@@ -26,7 +26,7 @@ import "toastr/build/toastr.css";
 import "./filters/yaml";
 import "./filters/datetime";
 
-import "./functions/stringFormat";
+import "./utils/stringFormat";
 
 import store from "./store";
 import vuetify from "./plugins/vuetify";

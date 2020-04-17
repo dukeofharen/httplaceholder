@@ -44,7 +44,7 @@
 <script>
 import yaml from "js-yaml";
 import { resources } from "@/shared/resources";
-import { downloadBlob } from "@/functions/downloadHelper";
+import { downloadBlob } from "@/utils/downloadHelper";
 
 export default {
   name: "addStub",

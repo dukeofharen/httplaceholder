@@ -260,7 +260,7 @@
 <script>
 import RequestBody from "@/components/RequestBody";
 import Bool from "@/components/Bool";
-import { parseUrl } from "@/functions/urlFunctions";
+import { parseUrl } from "@/utils/urlFunctions";
 
 export default {
   name: "request",

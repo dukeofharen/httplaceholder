@@ -19,7 +19,7 @@ const jsonType = "JSON";
 const formType = "Form";
 
 import xmlFormatter from "xml-formatter";
-import { formFormat } from "@/functions/formFormatter";
+import { formFormat } from "@/utils/formFormatter";
 
 export default {
   name: "requestBody",
