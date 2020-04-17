@@ -13,5 +13,6 @@ export const actionNames = {
     getTenantNames: "getTenantNames",
     authenticate: "authenticate",
     getRequests: "getRequests",
-    clearRequests: "clearRequests"
+    clearRequests: "clearRequests",
+    deleteAllStubs: "deleteAllStubs"
 }

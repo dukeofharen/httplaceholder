@@ -11,8 +11,6 @@ const state = {
     authenticated: null,
     authenticationRequired: true,
     userToken: "",
-    requests: [],
-    stubsDownloadString: "",
     lastSelectedStub: {
         id: ""
     },

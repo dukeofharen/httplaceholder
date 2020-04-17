@@ -12,10 +12,7 @@ const storeMap = [
     }, {
         type: storeTypeEnum.GETTER,
         content: require('@/store/getters/metadata')
-    }, {
-        type: storeTypeEnum.GETTER,
-        content: require('@/store/getters/requests')
-    }, {
+    },  {
         type: storeTypeEnum.GETTER,
         content: require('@/store/getters/stubs')
     }, {

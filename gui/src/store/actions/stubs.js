@@ -29,13 +29,12 @@ export function deleteStub({commit, state, dispatch}, payload) {
         });
 }
 
-export function deleteAllStubs({dispatch}) {
-    createInstance()
-        .delete("ph-api/stubs")
-        .then(() => {
-            toastSuccess(resources.stubsDeletedSuccessfully);
-            dispatch("getStubs");
-        });
+export function deleteAllStubs() {
+    return new Promise((resolve, reject) =>
+        createInstance()
+            .delete("ph-api/stubs")
+            .then(() => resolve())
+            .catch(error => reject(error)));
 }
 
 export function addStubs({commit, state}, payload) {
