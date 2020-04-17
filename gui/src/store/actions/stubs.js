@@ -12,12 +12,11 @@ export function getStubs() {
             .catch(error => reject(error)));
 }
 
-export function getStub({commit, state}, payload) {
-    createInstance()
+export function getStub({}, payload) {
+    return new Promise((resolve, reject) => createInstance()
         .get(`ph-api/stubs/${payload.stubId}`)
-        .then(response => commit("storeLastSelectedStub", {
-            fullStub: response.data
-        }));
+        .then(response => resolve(response.data))
+        .catch(error => reject(error)));
 }
 
 export function deleteStub({commit, state, dispatch}, payload) {
@@ -66,30 +65,25 @@ export function addStubs({commit, state}, payload) {
 }
 
 export function updateStub({commit, state}, payload) {
+    return new Promise((resolve, reject) => {
+        let stub;
+        try {
+            stub = yaml.safeLoad(payload.input);
+        } catch(e) {
+            reject(e);
+            return;
+        }
+        
+        if (!stub || Array.isArray(stub)) {
+            reject(resources.onlyOneStubAtATime);
+            return;
+        }
 
-    let stub;
-    try {
-        stub = yaml.safeLoad(payload.input);
-    } catch (error) {
-        toastError(error.message);
-        return;
-    }
-
-    if (!stub || Array.isArray(stub)) {
-        toastError(resources.onlyOneStubAtATime);
-        return;
-    }
-
-    createInstance()
-        .put(`ph-api/stubs/${payload.stubId}`, stub)
-        .then(() => toastSuccess(resources.stubUpdatedSuccessfully.format(stub.id)))
-        .catch(error => {
-            if (error.response.status === 409) {
-                toastError(resources.stubAlreadyAdded.format(stub.id))
-            } else {
-                toastError(resources.stubNotAdded.format(stub.id));
-            }
-        });
+        createInstance()
+            .put(`ph-api/stubs/${payload.stubId}`, stub)
+            .then(() => resolve())
+            .catch(error => reject(error));
+    })
 }
 
 export function createStubBasedOnRequest({commit, state}, payload) {

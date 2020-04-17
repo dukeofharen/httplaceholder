@@ -14,5 +14,7 @@ export const actionNames = {
     authenticate: "authenticate",
     getRequests: "getRequests",
     clearRequests: "clearRequests",
-    deleteAllStubs: "deleteAllStubs"
+    deleteAllStubs: "deleteAllStubs",
+    getStub: "getStub",
+    updateStub: "updateStub"
 }
