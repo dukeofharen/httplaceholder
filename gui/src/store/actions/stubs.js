@@ -52,23 +52,20 @@ export function addStubs({commit, state}, payload) {
         stubsArray = parsedObject;
     }
 
+    const promises = [];
     for (let index in stubsArray) {
         let stub = stubsArray[index];
-        createInstance()
+        promises.push(new Promise((resolve, reject) => createInstance()
             .post("ph-api/stubs", stub)
-            .then(() => toastSuccess(resources.stubAddedSuccessfully.format(stub.id)))
-            .catch(error => {
-                if (error.response.status === 409) {
-                    toastError(resources.stubAlreadyAdded.format(stub.id))
-                } else {
-                    toastError(resources.stubNotAdded.format(stub.id))
-                }
-            });
+            .then(() => resolve(stub))
+            .catch(error => reject({error, stubId: stub.id}))));
     }
+
+    return promises;
 }
 
 export function updateStub({commit, state}, payload) {
-    
+
     let stub;
     try {
         stub = yaml.safeLoad(payload.input);

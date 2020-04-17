@@ -1,5 +1,6 @@
 import {toastError} from "@/utils/toastUtil";
 import router from "@/router";
+import {resources} from "@/shared/resources";
 
 export default function handleError(error) {
     if (error && error.response) {

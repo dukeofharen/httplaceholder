@@ -8,3 +8,7 @@ export const mutationNames = {
     storeRequests: "storeRequests",
     storeTenantNames: "storeTenantNames"
 }
+
+export const actionNames = {
+    addStubs: "addStubs"
+}
