@@ -1,8 +1,5 @@
 import createInstance from "@/axios/axiosInstanceFactory";
 import {mutationNames} from "@/store/storeConstants";
-import {authenticateResults, messageTypes} from "@/shared/constants";
-import {resources} from "@/shared/resources";
-import {toastError} from "@/utils/toastUtil";
 
 const getUser = (username, password, commit) => {
     const token = btoa(`${username}:${password}`);
@@ -34,25 +31,10 @@ export function ensureAuthenticated({commit}) {
 }
 
 export function authenticate({commit}, payload) {
-    getUser(payload.username, payload.password, commit)
+    return new Promise((resolve, reject) => getUser(payload.username, payload.password, commit)
         .then(() => {
-            commit(mutationNames.storeLastAuthResultMutation, authenticateResults.OK);
-
             commit(mutationNames.storeAuthMutation, true);
+            resolve();
         })
-        .catch(error => {
-            if (error.response.status === 401) {
-                toastError(resources.credentialsIncorrect);
-                commit(
-                    mutationNames.storeLastAuthResultMutation,
-                    authenticateResults.INVALID_CREDENTIALS
-                );
-            } else {
-                toastError(resources.somethingWentWrongServer);
-                commit(
-                    mutationNames.storeLastAuthResultMutation,
-                    authenticateResults.INTERNAL_SERVER_ERROR
-                );
-            }
-        });
+        .catch(error => reject(error)));
 }
