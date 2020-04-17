@@ -1,10 +1,8 @@
-import axios from "axios";
-import urls from "urls";
+import createInstance from "@/axios/axiosInstanceFactory";
 
 export function refreshMetadata({commit}) {
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/metadata`;
-    axios.get(url).then(response => {
+    const instance = createInstance();
+    instance.get("ph-api/metadata").then(response => {
         commit("storeMetadata", response.data);
     });
 }

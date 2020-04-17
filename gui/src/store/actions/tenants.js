@@ -1,5 +1,4 @@
-import axios from "axios";
-import urls from "urls";
+import createInstance from "@/axios/axiosInstanceFactory";
 import {mutationNames} from "@/store/storeConstants";
 import {resources} from "@/shared/resources";
 import {toastError} from "@/utils/toastUtil";
@@ -29,12 +28,11 @@ const getConfig = (userToken, asYaml) => {
 };
 
 export function getTenantNames({commit, state}) {
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/tenants`;
+    const instance = createInstance();
     let token = state.userToken;
     let config = getConfig(token);
-    axios
-        .get(url, config)
+    instance
+        .get("ph-api/tenants", config)
         .then(response => {
             commit(mutationNames.storeTenantNames, response.data);
         })

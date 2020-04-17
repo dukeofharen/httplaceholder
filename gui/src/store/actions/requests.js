@@ -1,8 +1,6 @@
-import axios from "axios";
-import urls from "urls";
+import createInstance from "@/axios/axiosInstanceFactory";
 import {mutationNames} from "@/store/storeConstants";
 import {resources} from "@/shared/resources";
-import {messageTypes} from "@/shared/constants";
 import {toastError, toastSuccess} from "@/utils/toastUtil";
 
 const handleHttpError = (commit, error) => {
@@ -30,12 +28,11 @@ const getConfig = (userToken, asYaml) => {
 };
 
 export function getRequests({ commit, state }) {
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/requests`;
+    const instance = createInstance();
     let token = state.userToken;
     let config = getConfig(token);
-    axios
-        .get(url, config)
+    instance
+        .get("ph-api/requests", config)
         .then(response => {
             commit(mutationNames.storeRequestsMutation, response.data);
         })
@@ -45,12 +42,11 @@ export function getRequests({ commit, state }) {
 }
 
 export function clearRequests({ commit, state }) {
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/requests`;
+    const instance = createInstance();
     let token = state.userToken;
     let config = getConfig(token);
-    axios
-        .delete(url, config)
+    instance
+        .delete("ph-api/requests", config)
         .then(response => {
             toastSuccess(resources.requestsDeletedSuccessfully)
             commit(mutationNames.storeRequests, []);

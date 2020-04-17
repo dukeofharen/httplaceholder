@@ -1,5 +1,4 @@
-import axios from "axios";
-import urls from "urls";
+import createInstance from "@/axios/axiosInstanceFactory";
 import yaml from "js-yaml";
 import {mutationNames} from "@/store/storeConstants";
 import {resources} from "@/shared/resources";
@@ -30,12 +29,11 @@ const getConfig = (userToken, asYaml) => {
 };
 
 export function getStubs({commit, state}) {
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/stubs`;
+    const instance = createInstance();
     let token = state.userToken;
     let config = getConfig(token);
-    axios
-        .get(url, config)
+    instance
+        .get("ph-api/stubs", config)
         .then(response => {
             commit("storeStubs", response.data);
         })
@@ -45,13 +43,12 @@ export function getStubs({commit, state}) {
 }
 
 export function getStub({commit, state}, payload) {
+    const instance = createInstance();
     let stubId = payload.stubId;
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/stubs/${stubId}`;
     let token = state.userToken;
     let config = getConfig(token);
-    axios
-        .get(url, config)
+    instance
+        .get(`ph-api/stubs/${stubId}`, config)
         .then(response => {
             commit("storeLastSelectedStub", {
                 fullStub: response.data
@@ -63,13 +60,12 @@ export function getStub({commit, state}, payload) {
 }
 
 export function deleteStub({commit, state, dispatch}, payload) {
+    const instance = createInstance();
     let stubId = payload.stubId;
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/stubs/${stubId}`;
     let token = state.userToken;
     let config = getConfig(token);
-    axios
-        .delete(url, config)
+    instance
+        .delete(`ph-api/stubs/${stubId}`, config)
         .then(response => {
             toastSuccess(resources.stubDeletedSuccessfully.format(stubId));
             dispatch("getStubs");
@@ -80,12 +76,11 @@ export function deleteStub({commit, state, dispatch}, payload) {
 }
 
 export function deleteAllStubs({commit, state, dispatch}, payload) {
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/stubs`;
+    const instance = createInstance();
     let token = state.userToken;
     let config = getConfig(token);
-    axios
-        .delete(url, config)
+    instance
+        .delete("ph-api/stubs", config)
         .then(response => {
             toastSuccess(resources.stubsDeletedSuccessfully);
             dispatch("getStubs");
@@ -96,8 +91,7 @@ export function deleteAllStubs({commit, state, dispatch}, payload) {
 }
 
 export function addStubs({commit, state}, payload) {
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/stubs`;
+    const instance = createInstance();
     let token = state.userToken;
     let config = getConfig(token);
     config.headers["Content-Type"] = "application/json";
@@ -119,12 +113,9 @@ export function addStubs({commit, state}, payload) {
 
     for (let index in stubsArray) {
         let stub = stubsArray[index];
-        axios
-            .post(url, stub, config)
-            .then(response => {
-                let message = resources.stubAddedSuccessfully;
-                toastSuccess(message.format(stub.id));
-            })
+        instance
+            .post("ph-api/stubs", stub, config)
+            .then(() => toastSuccess(resources.stubAddedSuccessfully.format(stub.id)))
             .catch(error => {
                 if (error.response.status === 409) {
                     toastError(resources.stubAlreadyAdded.format(stub.id))
@@ -136,8 +127,7 @@ export function addStubs({commit, state}, payload) {
 }
 
 export function updateStub({commit, state}, payload) {
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/stubs/${payload.stubId}`;
+    const instance = createInstance();
     let token = state.userToken;
     let config = getConfig(token);
     config.headers["Content-Type"] = "application/json";
@@ -155,12 +145,9 @@ export function updateStub({commit, state}, payload) {
         return;
     }
 
-    axios
-        .put(url, stub, config)
-        .then(response => {
-            let message = resources.stubUpdatedSuccessfully;
-            toastSuccess(message.format(stub.id));
-        })
+    instance
+        .put(`ph-api/stubs/${payload.stubId}`, stub, config)
+        .then(() => toastSuccess(resources.stubUpdatedSuccessfully.format(stub.id)))
         .catch(error => {
             if (error.response.status === 409) {
                 toastError(resources.stubAlreadyAdded.format(stub.id))
@@ -171,13 +158,12 @@ export function updateStub({commit, state}, payload) {
 }
 
 export function createStubBasedOnRequest({commit, state}, payload) {
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/requests/${payload.correlationId}/stubs`;
+    const instance = createInstance();
     let token = state.userToken;
     let config = getConfig(token);
     config.headers["Content-Type"] = "application/json";
-    axios
-        .post(url, "", config)
+    instance
+        .post(`ph-api/requests/${payload.correlationId}/stubs`, "", config)
         .then(response => {
             let stub = response.data.stub;
             let message = resources.stubAddedSuccessfully;
@@ -186,7 +172,5 @@ export function createStubBasedOnRequest({commit, state}, payload) {
                 fullStub: response.data
             });
         })
-        .catch(error =>
-            toastError(resources.stubNotAddedGeneric)
-        );
+        .catch(() => toastError(resources.stubNotAddedGeneric));
 }

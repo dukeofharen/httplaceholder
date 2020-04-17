@@ -1,9 +1,8 @@
-import urls from "urls";
-import axios from "axios";
+import createInstance from "@/axios/axiosInstanceFactory";
 import {mutationNames} from "@/store/storeConstants";
 import {authenticateResults, messageTypes} from "@/shared/constants";
 import {resources} from "@/shared/resources";
-import {toastError, toastSuccess} from "@/utils/toastUtil";
+import {toastError} from "@/utils/toastUtil";
 
 const basicAuth = (username, password) => btoa(`${username}:${password}`);
 
@@ -25,18 +24,17 @@ const getConfig = (userToken, asYaml) => {
 };
 
 const getUser = (username, password) => {
-    let rootUrl = urls.rootUrl;
-    let url = `${rootUrl}ph-api/users/${username}`;
+    const instance = createInstance();
     let token = basicAuth(username, password);
     let config = getConfig(token);
-    return axios.get(url, config);
+    return instance.get(`ph-api/users/${username}`, config);
 };
 
 export function ensureAuthenticated({commit}) {
     let username = "testUser";
     let password = "testPassword";
     getUser(username, password)
-        .then(response => {
+        .then(() => {
             // No authentication on endpoint, so no login required.
             commit(mutationNames.storeAuthMutation, true);
             commit(mutationNames.storeAuthRequired, false);
