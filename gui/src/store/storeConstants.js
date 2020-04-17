@@ -3,7 +3,8 @@ export const mutationNames = {
     storeAuthRequired: "storeAuthenticationRequired",
     userTokenMutation: "storeUserToken",
     storeRequestsMutation: "storeRequests",
-    storeLastSelectedStub: "storeLastSelectedStub"
+    storeLastSelectedStub: "storeLastSelectedStub",
+    storeDarkTheme: "storeDarkTheme"
 }
 
 export const actionNames = {
