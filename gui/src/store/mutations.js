@@ -1,4 +1,4 @@
-import { authenticateResults } from "@/constants";
+import { authenticateResults } from "@/shared/constants";
 
 export default {
   storeMetadata: (state, metadata) => {

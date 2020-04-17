@@ -66,7 +66,7 @@
 
 <script>
 import { codemirror } from "vue-codemirror";
-import { resources } from "@/resources";
+import { resources } from "@/shared/resources";
 import stubExamples from "@/stub_examples.json";
 
 export default {

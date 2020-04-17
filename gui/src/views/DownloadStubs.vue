@@ -43,7 +43,7 @@
 
 <script>
 import yaml from "js-yaml";
-import { resources } from "@/resources";
+import { resources } from "@/shared/resources";
 import { downloadBlob } from "@/functions/downloadHelper";
 
 export default {

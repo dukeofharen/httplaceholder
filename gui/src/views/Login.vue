@@ -31,7 +31,7 @@
 
 <script>
 import Request from "@/components/Request";
-import { authenticateResults } from "@/constants";
+import { authenticateResults } from "@/shared/constants";
 
 export default {
   name: "login",

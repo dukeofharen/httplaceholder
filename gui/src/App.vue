@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { messageTypes, authenticateResults } from "@/constants";
+import { messageTypes, authenticateResults } from "@/shared/constants";
 import toastr from "toastr";
 
 export default {

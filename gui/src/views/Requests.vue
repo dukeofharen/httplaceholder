@@ -58,7 +58,6 @@
 
 <script>
 import Request from "@/components/Request";
-import { resources } from "@/resources";
 import { HubConnectionBuilder } from "@aspnet/signalr";
 
 export default {
