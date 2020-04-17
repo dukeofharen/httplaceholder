@@ -7,11 +7,13 @@
         <v-card-text>
           <v-row>
             <v-col>
-              Fill in the stub below in YAML format and click on "Add stub(s)". For examples, visit
+              Fill in the stub below in YAML format and click on "Add stub(s)".
+              For examples, visit
               <a
                 href="https://github.com/dukeofharen/httplaceholder"
                 target="_blank"
-              >https://github.com/dukeofharen/httplaceholder</a>.
+                >https://github.com/dukeofharen/httplaceholder</a
+              >.
             </v-col>
           </v-row>
         </v-card-text>
@@ -22,7 +24,8 @@
             <v-col>
               You can also select an example from the list below.
               <br />
-              <strong>WARNING</strong> The stub in the textbox below will be overwritten!
+              <strong>WARNING</strong> The stub in the textbox below will be
+              overwritten!
               <v-select
                 :items="stubExamples"
                 placeholder="Select a stub example..."
@@ -43,9 +46,17 @@
       <h1>Upload stub(s)</h1>
       <v-card>
         <v-card-title>You can upload stubs here</v-card-title>
-        <v-card-text>Click the button and select a .yml file with stubs from your PC.</v-card-text>
+        <v-card-text
+          >Click the button and select a .yml file with stubs from your
+          PC.</v-card-text
+        >
         <v-card-actions>
-          <input type="file" name="file" ref="stubUpload" @change="loadTextFromFile" />
+          <input
+            type="file"
+            name="file"
+            ref="stubUpload"
+            @change="loadTextFromFile"
+          />
           <v-btn color="success" @click="uploadStubs">Upload stubs</v-btn>
         </v-card-actions>
       </v-card>

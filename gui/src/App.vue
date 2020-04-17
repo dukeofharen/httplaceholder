@@ -1,8 +1,11 @@
 <template>
   <v-app id="keep">
     <v-app-bar app clipped-left color="blue-grey darken-4">
-      <v-app-bar-nav-icon @click="drawer = !drawer" color="white"></v-app-bar-nav-icon>
-      <span class="title ml-3 mr-5"><img src="./img/logo-white.png" /></span>
+      <v-app-bar-nav-icon
+        @click="drawer = !drawer"
+        color="white"
+      ></v-app-bar-nav-icon>
+      <span class="title ml-3 mr-5"><img src="./img/logo-white.png"/></span>
       <div class="flex-grow-1"></div>
     </v-app-bar>
 
@@ -32,7 +35,9 @@
             <v-list-item-action>
               <v-icon>mdi-download</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="grey--text">Download stubs</v-list-item-title>
+            <v-list-item-title class="grey--text"
+              >Download stubs</v-list-item-title
+            >
           </v-list-item>
           <v-divider dark class="my-4" v-if="authenticated"></v-divider>
           <v-list-item @click="toSettings" v-if="authenticated">
@@ -41,8 +46,15 @@
             </v-list-item-action>
             <v-list-item-title class="grey--text">Settings</v-list-item-title>
           </v-list-item>
-          <v-divider dark class="my-4" v-if="authenticated && authenticationRequired"></v-divider>
-          <v-list-item @click="logout" v-if="authenticated && authenticationRequired">
+          <v-divider
+            dark
+            class="my-4"
+            v-if="authenticated && authenticationRequired"
+          ></v-divider>
+          <v-list-item
+            @click="logout"
+            v-if="authenticated && authenticationRequired"
+          >
             <v-list-item-action>
               <v-icon>mdi-exit-to-app</v-icon>
             </v-list-item-action>
@@ -111,7 +123,7 @@ export default {
     },
     setTheme() {
       let darkThemeText = sessionStorage.getItem("darkTheme");
-      if(darkThemeText) {
+      if (darkThemeText) {
         let darkTheme = JSON.parse(darkThemeText);
         this.$store.commit("storeDarkTheme", darkTheme);
       }

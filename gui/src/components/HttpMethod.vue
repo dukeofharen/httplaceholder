@@ -1,5 +1,5 @@
 <template>
-  <span v-bind:class="className">{{method}}</span>
+  <span v-bind:class="className">{{ method }}</span>
 </template>
 
 <script>
@@ -29,5 +29,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

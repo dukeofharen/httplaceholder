@@ -1,5 +1,7 @@
 <template>
-  <span v-bind:class="{'green-bool': bool, 'red-bool': !bool}">{{bool ? trueTextValue : falseTextValue}}</span>
+  <span v-bind:class="{ 'green-bool': bool, 'red-bool': !bool }">{{
+    bool ? trueTextValue : falseTextValue
+  }}</span>
 </template>
 
 <script>

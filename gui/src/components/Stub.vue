@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header>{{fullStub.stub.id}}</v-expansion-panel-header>
+    <v-expansion-panel-header>{{ fullStub.stub.id }}</v-expansion-panel-header>
     <v-expansion-panel-content>
       <v-row>
         <v-col class="buttons">
@@ -8,16 +8,23 @@
             color="success"
             @click="viewRequests"
             title="View all requests made for this stub"
-          >View requests</v-btn>
-          <v-btn color="success" @click="updateStub" v-if="!fullStub.metadata.readOnly">Update stub</v-btn>
+            >View requests</v-btn
+          >
+          <v-btn
+            color="success"
+            @click="updateStub"
+            v-if="!fullStub.metadata.readOnly"
+            >Update stub</v-btn
+          >
           <v-btn
             color="error"
             @click.stop="deleteDialog = true"
             v-if="!fullStub.metadata.readOnly"
-          >Delete stub</v-btn>
+            >Delete stub</v-btn
+          >
         </v-col>
       </v-row>
-      <pre>{{fullStub.stub | yaml}}</pre>
+      <pre>{{ fullStub.stub | yaml }}</pre>
     </v-expansion-panel-content>
     <v-dialog v-model="deleteDialog" max-width="290">
       <v-card>
@@ -25,7 +32,9 @@
         <v-card-text>The stub can't be recovered.</v-card-text>
         <v-card-actions>
           <div class="flex-grow-1"></div>
-          <v-btn color="green darken-1" text @click="deleteDialog = false">No</v-btn>
+          <v-btn color="green darken-1" text @click="deleteDialog = false"
+            >No</v-btn
+          >
           <v-btn color="green darken-1" text @click="deleteStub">Yes</v-btn>
         </v-card-actions>
       </v-card>

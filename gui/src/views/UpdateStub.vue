@@ -4,11 +4,13 @@
       <h1>Update stub</h1>
       <v-card>
         <v-card-text>
-          Fill in the stub below in YAML format and click on "Update stub". For examples, visit
+          Fill in the stub below in YAML format and click on "Update stub". For
+          examples, visit
           <a
             href="https://github.com/dukeofharen/httplaceholder"
             target="_blank"
-          >https://github.com/dukeofharen/httplaceholder</a>.
+            >https://github.com/dukeofharen/httplaceholder</a
+          >.
         </v-card-text>
       </v-card>
       <v-card class="editor">

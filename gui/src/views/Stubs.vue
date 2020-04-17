@@ -4,17 +4,24 @@
       <h1>Stubs</h1>
       <v-row>
         <v-col class="buttons">
-          <v-btn title="Refresh" @click="getStubs" color="success">Refresh</v-btn>
+          <v-btn title="Refresh" @click="getStubs" color="success"
+            >Refresh</v-btn
+          >
           <v-btn
             title="Delete all stubs"
             @click="deleteAllDialog = true"
             color="error"
-          >Delete all stubs</v-btn>
+            >Delete all stubs</v-btn
+          >
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or tenant..." clearable></v-text-field>
+          <v-text-field
+            v-model="searchTerm"
+            placeholder="Filter on stub ID or tenant..."
+            clearable
+          ></v-text-field>
           <v-select
             :items="tenantNames"
             placeholder="Select stub tenant / category name for the stubs you would like to see the stubs for..."
@@ -23,7 +30,11 @@
           ></v-select>
         </v-col>
         <v-expansion-panels>
-          <Stub v-bind:fullStub="stub" v-for="stub in orderedFilteredStubs" :key="stub.id"></Stub>
+          <Stub
+            v-bind:fullStub="stub"
+            v-for="stub in orderedFilteredStubs"
+            :key="stub.id"
+          ></Stub>
         </v-expansion-panels>
       </v-row>
     </v-col>
@@ -33,7 +44,9 @@
         <v-card-text>The stubs can't be recovered.</v-card-text>
         <v-card-actions>
           <div class="flex-grow-1"></div>
-          <v-btn color="green darken-1" text @click="deleteAllDialog = false">No</v-btn>
+          <v-btn color="green darken-1" text @click="deleteAllDialog = false"
+            >No</v-btn
+          >
           <v-btn color="green darken-1" text @click="deleteAllStubs">Yes</v-btn>
         </v-card-actions>
       </v-card>
@@ -115,10 +128,8 @@ export default {
     },
     orderedFilteredStubs() {
       const compare = (a, b) => {
-        if(a.stub.id < b.stub.id)
-          return -1;
-        if(a.stub.id > b.stub.id)
-          return 1;
+        if (a.stub.id < b.stub.id) return -1;
+        if (a.stub.id > b.stub.id) return 1;
         return 0;
       };
       return this.filteredStubs.sort(compare);

@@ -4,17 +4,24 @@
       <h1>Requests</h1>
       <v-row>
         <v-col class="buttons">
-          <v-btn title="Refresh" @click="getRequests" color="success">Refresh</v-btn>
+          <v-btn title="Refresh" @click="getRequests" color="success"
+            >Refresh</v-btn
+          >
           <v-btn
             title="Delete all requests"
             @click.stop="deleteAllDialog = true"
             color="error"
-          >Delete all requests</v-btn>
+            >Delete all requests</v-btn
+          >
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or URL..." clearable></v-text-field>
+          <v-text-field
+            v-model="searchTerm"
+            placeholder="Filter on stub ID or URL..."
+            clearable
+          ></v-text-field>
           <v-select
             :items="tenantNames"
             placeholder="Select stub tenant / category name for the stubs you would like to see the requests for..."
@@ -36,8 +43,12 @@
           <v-card-text>The requests can't be recovered.</v-card-text>
           <v-card-actions>
             <div class="flex-grow-1"></div>
-            <v-btn color="green darken-1" text @click="deleteAllDialog = false">No</v-btn>
-            <v-btn color="green darken-1" text @click="deleteAllRequests">Yes</v-btn>
+            <v-btn color="green darken-1" text @click="deleteAllDialog = false"
+              >No</v-btn
+            >
+            <v-btn color="green darken-1" text @click="deleteAllRequests"
+              >Yes</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>

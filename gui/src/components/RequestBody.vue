@@ -2,13 +2,13 @@
   <v-row>
     <v-col>
       <v-tabs v-if="renderedBodyTypeText">
-        <v-tab @click="viewRenderedBody">{{renderedBodyTypeText}}</v-tab>
+        <v-tab @click="viewRenderedBody">{{ renderedBodyTypeText }}</v-tab>
         <v-tab @click="viewRawBody">Raw</v-tab>
       </v-tabs>
       <span v-if="showRenderedBody">
-        <pre>{{renderedBody}}</pre>
+        <pre>{{ renderedBody }}</pre>
       </span>
-      <span v-if="!showRenderedBody">{{rawBody}}</span>
+      <span v-if="!showRenderedBody">{{ rawBody }}</span>
     </v-col>
   </v-row>
 </template>
@@ -51,7 +51,8 @@ export default {
       if (
         contentType.includes("text/xml") ||
         contentType.includes("application/xml") ||
-        contentType.includes("application/soap+xml")) {
+        contentType.includes("application/soap+xml")
+      ) {
         return xmlType;
       } else if (contentType.includes("application/json")) {
         return jsonType;

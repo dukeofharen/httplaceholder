@@ -3,7 +3,11 @@
     <v-col>
       <h1>Download all stubs</h1>
       <v-card>
-        <v-card-text>This page displays all stubs currently present in HttPlaceholder. You can copy this string and put it in a .yml file on your PC for local development or directly download the file.</v-card-text>
+        <v-card-text
+          >This page displays all stubs currently present in HttPlaceholder. You
+          can copy this string and put it in a .yml file on your PC for local
+          development or directly download the file.</v-card-text
+        >
       </v-card>
       <v-row>
         <v-col>
@@ -92,5 +96,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
