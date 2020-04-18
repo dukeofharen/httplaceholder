@@ -82,14 +82,11 @@
         async created() {
             this.setTheme();
             let token = sessionStorage.userToken;
-            if (token) {
+            this.authRequired = await this.$store.dispatch(actionNames.ensureAuthenticated);
+            if (token && this.authRequired) {
                 this.$store.commit(mutationNames.userTokenMutation, token);
-                this.authRequired = true;
-            } else {
-                this.authRequired = await this.$store.dispatch(actionNames.ensureAuthenticated);
-                if (this.authRequired) {
-                    this.$router.push({name: routeNames.login});
-                }
+            } else if (this.authRequired) {
+                this.$router.push({name: routeNames.login});
             }
 
             this.metadata = await this.$store.dispatch(actionNames.getMetadata);
