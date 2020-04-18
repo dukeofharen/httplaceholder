@@ -15,15 +15,6 @@ $propertyGroupNode = $csproj.SelectSingleNode("/Project/PropertyGroup[1]")
 $propertyGroupNode.PackAsTool = "true"
 $csproj.Save($mainProjectFile)
 
-# Building dotnet tool
-if ($IsLinux) {
-    # For some reason, the MySqlConnector NuGet package has last write time set to "1 january 1980", which NuGet doesn't like.
-    # For now, set the last write time of this package to now to make it work.
-    Write-Host "Updating MySqlConnector last write time"
-    & touch "$($env:HOME)/.nuget/packages/mysqlconnector/0.57.0/lib/netcoreapp3.1/MySqlConnector.dll"
-    Assert-Cmd-Ok
-}
-
 & dotnet pack $mainProjectFile -c Tool
 Assert-Cmd-Ok
 
