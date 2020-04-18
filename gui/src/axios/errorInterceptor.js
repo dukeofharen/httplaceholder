@@ -8,11 +8,11 @@ import { routeNames } from "@/router/routerConstants";
 export default function handleError(error) {
   if (error && error.response) {
     const status = error.response.status;
-    if (status !== 401) {
-      toastError(resources.somethingWentWrongServer);
-    } else {
+    if (status === 401) {
       store.commit(mutationNames.userTokenMutation, null);
       router.push({ name: routeNames.login });
+    } else {
+      toastError(resources.somethingWentWrongServer);
     }
 
     return Promise.reject(error);

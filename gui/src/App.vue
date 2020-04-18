@@ -75,25 +75,20 @@
 <script>
 import { routeNames } from "@/router/routerConstants";
 import { actionNames, mutationNames } from "@/store/storeConstants";
-import { getUserToken, getDarkThemeEnabled } from "@/utils/sessionUtil";
+import { getDarkThemeEnabled } from "@/utils/sessionUtil";
 
 export default {
   name: "app",
   async created() {
+    this.metadata = await this.$store.dispatch(actionNames.getMetadata);
+    document.title = `HttPlaceholder - v${this.metadata.version}`;
+
     this.setTheme();
-    let token = getUserToken();
-    if (token) {
-      this.$store.commit(mutationNames.userTokenMutation, token);
-      this.authRequired = true;
-    } else {
+    if (!this.authenticated) {
       this.authRequired = await this.$store.dispatch(
         actionNames.ensureAuthenticated
       );
-      this.$router.push({ name: routeNames.login });
     }
-
-    this.metadata = await this.$store.dispatch(actionNames.getMetadata);
-    document.title = `HttPlaceholder - v${this.metadata.version}`;
   },
   data() {
     return {
