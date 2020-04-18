@@ -30,8 +30,10 @@
 </template>
 
 <script>
-import Request from "@/components/Request";
-import { authenticateResults } from "@/constants";
+import { toastError } from "@/utils/toastUtil";
+import { resources } from "@/shared/resources";
+import { actionNames } from "@/store/storeConstants";
+import { routeNames } from "@/router/routerConstants";
 
 export default {
   name: "login",
@@ -41,25 +43,20 @@ export default {
       password: ""
     };
   },
-  computed: {
-    lastAuthenticateResult() {
-      return this.$store.getters.getLastAuthenticateResult;
-    }
-  },
   methods: {
-    logIn() {
+    async logIn() {
       if (this.username && this.password) {
-        this.$store.dispatch("authenticate", {
-          username: this.username,
-          password: this.password
-        });
-      }
-    }
-  },
-  watch: {
-    lastAuthenticateResult(result) {
-      if (result == authenticateResults.OK) {
-        this.$router.push({ name: "requests" });
+        try {
+          await this.$store.dispatch(actionNames.authenticate, {
+            username: this.username,
+            password: this.password
+          });
+          this.$router.push({ name: routeNames.requests });
+        } catch (e) {
+          if (e.response.status === 401) {
+            toastError(resources.credentialsIncorrect);
+          }
+        }
       }
     }
   }

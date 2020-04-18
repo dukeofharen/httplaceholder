@@ -4,17 +4,24 @@
       <h1>Requests</h1>
       <v-row>
         <v-col class="buttons">
-          <v-btn title="Refresh" @click="getRequests" color="success">Refresh</v-btn>
+          <v-btn title="Refresh" @click="initialize" color="success"
+            >Refresh
+          </v-btn>
           <v-btn
             title="Delete all requests"
             @click.stop="deleteAllDialog = true"
             color="error"
-          >Delete all requests</v-btn>
+            >Delete all requests
+          </v-btn>
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <v-text-field v-model="searchTerm" placeholder="Filter on stub ID or URL..." clearable></v-text-field>
+          <v-text-field
+            v-model="searchTerm"
+            placeholder="Filter on stub ID or URL..."
+            clearable
+          ></v-text-field>
           <v-select
             :items="tenantNames"
             placeholder="Select stub tenant / category name for the stubs you would like to see the requests for..."
@@ -36,8 +43,12 @@
           <v-card-text>The requests can't be recovered.</v-card-text>
           <v-card-actions>
             <div class="flex-grow-1"></div>
-            <v-btn color="green darken-1" text @click="deleteAllDialog = false">No</v-btn>
-            <v-btn color="green darken-1" text @click="deleteAllRequests">Yes</v-btn>
+            <v-btn color="green darken-1" text @click="deleteAllDialog = false"
+              >No
+            </v-btn>
+            <v-btn color="green darken-1" text @click="deleteAllRequests"
+              >Yes
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -47,14 +58,17 @@
 
 <script>
 import Request from "@/components/Request";
-import { resources } from "@/resources";
 import { HubConnectionBuilder } from "@aspnet/signalr";
+import { actionNames } from "@/store/storeConstants";
+import { toastSuccess } from "@/utils/toastUtil";
+import { resources } from "@/shared/resources";
 
 export default {
   name: "requests",
   data() {
     return {
-      filteredRequests: [],
+      requests: [],
+      tenantNames: [],
       searchTerm: "",
       selectedTenantName: "",
       connection: {},
@@ -64,84 +78,69 @@ export default {
   components: {
     Request
   },
-  created() {
+  async created() {
     this.initializeSignalR();
-    this.getRequests();
-    this.getTenantNames();
+    await this.initialize();
   },
   destroyed() {
     this.connection.stop();
   },
   computed: {
-    requests() {
-      return this.$store.getters.getRequests;
-    },
-    tenantNames() {
-      return this.$store.getters.getTenantNames;
+    filteredRequests() {
+      let result = this.requests;
+      if (this.searchTerm) {
+        result = result.filter(
+          r =>
+            (r.executingStubId &&
+              r.executingStubId.includes(this.searchTerm)) ||
+            r.requestParameters.url.includes(this.searchTerm)
+        );
+      }
+
+      if (this.selectedTenantName) {
+        result = result.filter(r => r.stubTenant === this.selectedTenantName);
+      }
+
+      return result;
     }
   },
   methods: {
-    search(newValue) {
-      if (!newValue) {
-        this.filteredRequests = this.requests;
-      } else {
-        this.filteredRequests = this.requests.filter(
-          r =>
-            (r.executingStubId && r.executingStubId.includes(newValue)) ||
-            r.requestParameters.url.includes(newValue)
-        );
-      }
+    async initialize() {
+      const getRequestsPromise = this.$store.dispatch(actionNames.getRequests);
+      const getTenantNamesPromise = this.$store.dispatch(
+        actionNames.getTenantNames
+      );
+      this.requests = await getRequestsPromise;
+      this.tenantNames = await getTenantNamesPromise;
+
+      this.initializeSearch();
     },
-    handleUrlSearch() {
-      let term = this.$route.query.searchTerm;
-      if (term) {
-        this.searchTerm = term;
-      }
+    initializeSearch() {
+      this.searchTerm = this.$route.query.searchTerm;
+      this.selectedTenantName = this.$route.query.stubTenant;
     },
-    deleteAllRequests() {
+    async deleteAllRequests() {
       this.deleteAllDialog = false;
-      this.$store.dispatch("clearRequests");
-    },
-    getRequests() {
-      this.$store.dispatch("getRequests");
-    },
-    getTenantNames() {
-      this.$store.dispatch("getTenantNames");
+      await this.$store.dispatch(actionNames.clearRequests);
+      toastSuccess(resources.requestsDeletedSuccessfully);
+      this.requests = [];
     },
     initializeSignalR() {
       this.connection = new HubConnectionBuilder()
         .withUrl("/requestHub")
         .build();
-      this.connection.on("RequestReceived", request => {
-        this.$store.commit("addAdditionalRequest", request);
-      });
+      this.connection.on("RequestReceived", request =>
+        this.requests.unshift(request)
+      );
       this.connection
         .start()
         .then(() => {})
-        .catch(err => {
-          return console.error(err.toString());
-        });
+        .catch(err => console.error(err.toString()));
     }
   },
   watch: {
-    searchTerm(newValue, oldValue) {
-      this.search(newValue);
-    },
-    $route(from, to) {
-      this.handleUrlSearch();
-    },
-    requests(newRequests) {
-      this.filteredRequests = newRequests;
-      this.handleUrlSearch();
-    },
-    selectedTenantName(val) {
-      if (!val) {
-        this.filteredRequests = this.requests;
-      } else {
-        this.filteredRequests = this.requests.filter(
-          req => req.stubTenant === val
-        );
-      }
+    $route() {
+      this.initializeSearch();
     }
   }
 };

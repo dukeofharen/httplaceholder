@@ -1,48 +1,60 @@
 <template>
   <v-app id="keep">
     <v-app-bar app clipped-left color="blue-grey darken-4">
-      <v-app-bar-nav-icon @click="drawer = !drawer" color="white"></v-app-bar-nav-icon>
-      <span class="title ml-3 mr-5"><img src="./img/logo-white.png" /></span>
+      <v-app-bar-nav-icon
+        @click="drawer = !drawer"
+        color="white"
+      ></v-app-bar-nav-icon>
+      <span class="title ml-3 mr-5"><img src="./img/logo-white.png"/></span>
       <div class="flex-grow-1"></div>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
         <template>
-          <v-list-item @click="toRequests" v-if="authenticated">
+          <v-list-item v-if="authenticated" :to="{ name: routeNames.requests }">
             <v-list-item-action>
               <v-icon>mdi-google-chrome</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text">Requests</v-list-item-title>
           </v-list-item>
           <v-divider dark class="my-4" v-if="authenticated"></v-divider>
-          <v-list-item @click="toStubs" v-if="authenticated">
+          <v-list-item v-if="authenticated" :to="{ name: routeNames.stubs }">
             <v-list-item-action>
               <v-icon>mdi-controller-classic</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text">Stubs</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="toAddStub" v-if="authenticated">
+          <v-list-item v-if="authenticated" :to="{ name: routeNames.addStub }">
             <v-list-item-action>
               <v-icon>mdi-plus</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text">Add stubs</v-list-item-title>
           </v-list-item>
-          <v-list-item @click="toDownloadStubs" v-if="authenticated">
+          <v-list-item
+            v-if="authenticated"
+            :to="{ name: routeNames.downloadStubs }"
+          >
             <v-list-item-action>
               <v-icon>mdi-download</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="grey--text">Download stubs</v-list-item-title>
+            <v-list-item-title class="grey--text"
+              >Download stubs
+            </v-list-item-title>
           </v-list-item>
           <v-divider dark class="my-4" v-if="authenticated"></v-divider>
-          <v-list-item @click="toSettings" v-if="authenticated">
+          <v-list-item v-if="authenticated" :to="{ name: routeNames.settings }">
             <v-list-item-action>
               <v-icon>mdi-cogs</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text">Settings</v-list-item-title>
           </v-list-item>
-          <v-divider dark class="my-4" v-if="authenticated && authenticationRequired"></v-divider>
-          <v-list-item @click="logout" v-if="authenticated && authenticationRequired">
+          <v-divider
+            dark
+            class="my-4"
+            v-if="authenticated && authRequired"
+          ></v-divider>
+          <v-list-item @click="logout" v-if="authenticated && authRequired">
             <v-list-item-action>
               <v-icon>mdi-exit-to-app</v-icon>
             </v-list-item-action>
@@ -61,43 +73,41 @@
 </template>
 
 <script>
-import { messageTypes, authenticateResults } from "@/constants";
-import toastr from "toastr";
+import { routeNames } from "@/router/routerConstants";
+import { actionNames, mutationNames } from "@/store/storeConstants";
+import { getUserToken, getDarkThemeEnabled } from "@/utils/sessionUtil";
 
 export default {
   name: "app",
-  created() {
+  async created() {
     this.setTheme();
-    let token = sessionStorage.userToken;
+    let token = getUserToken();
     if (token) {
-      this.$store.commit("storeUserToken", token);
-      this.$store.commit("storeAuthenticated", true);
+      this.$store.commit(mutationNames.userTokenMutation, token);
+      this.authRequired = true;
     } else {
-      this.$store.dispatch("ensureAuthenticated");
+      this.authRequired = await this.$store.dispatch(
+        actionNames.ensureAuthenticated
+      );
+      this.$router.push({ name: routeNames.login });
     }
 
-    this.$store.dispatch("refreshMetadata");
+    this.metadata = await this.$store.dispatch(actionNames.getMetadata);
+    document.title = `HttPlaceholder - v${this.metadata.version}`;
   },
   data() {
     return {
-      drawer: true
+      drawer: true,
+      authRequired: false,
+      metadata: {
+        version: ""
+      },
+      routeNames
     };
   },
   computed: {
-    metadata() {
-      return this.$store.getters.getMetadata;
-    },
     authenticated() {
       return this.$store.getters.getAuthenticated;
-    },
-    toast() {
-      return this.$store.getters.getToast;
-    },
-    userToken() {
-      return this.$store.getters.getUserToken;
-    },
-    authenticationRequired() {
-      return this.$store.getters.getAuthenticationRequired;
     },
     darkTheme() {
       return this.$store.getters.getDarkTheme;
@@ -105,70 +115,19 @@ export default {
   },
   methods: {
     logout() {
-      sessionStorage.removeItem("userToken");
-      this.$store.commit("storeAuthenticated", false);
-      this.$router.push({ name: "login" });
+      this.$store.commit(mutationNames.userTokenMutation, null);
+      this.$router.push({ name: routeNames.login });
     },
     setTheme() {
-      let darkThemeText = sessionStorage.getItem("darkTheme");
-      if(darkThemeText) {
-        let darkTheme = JSON.parse(darkThemeText);
-        this.$store.commit("storeDarkTheme", darkTheme);
+      const darkThemeEnabled = getDarkThemeEnabled();
+      if (darkThemeEnabled) {
+        this.$store.commit(mutationNames.storeDarkTheme, darkThemeEnabled);
       }
-    },
-    toRequests() {
-      this.$router.push({ name: "requests" });
-    },
-    toStubs() {
-      this.$router.push({ name: "stubs" });
-    },
-    toAddStub() {
-      this.$router.push({ name: "addStub" });
-    },
-    toDownloadStubs() {
-      this.$router.push({ name: "downloadStubs" });
-    },
-    toSettings() {
-      this.$router.push({ name: "settings" });
     }
   },
   watch: {
-    authenticated(isAuthenticated) {
-      if (!isAuthenticated) {
-        this.$router.push({ name: "login" });
-      }
-    },
-    toast(newToast) {
-      switch (newToast.type) {
-        case messageTypes.SUCCESS:
-          toastr.success(newToast.message);
-          break;
-        case messageTypes.WARNING:
-          toastr.warning(newToast.message);
-          break;
-        case messageTypes.ERROR:
-          toastr.error(newToast.message);
-          break;
-        default:
-        case messageTypes.INFO:
-          toastr.info(newToast.message);
-          break;
-      }
-    },
-    userToken(newToken) {
-      if (!newToken) {
-        sessionStorage.removeItem("userToken");
-      } else {
-        sessionStorage.userToken = newToken;
-      }
-    },
-    metadata() {
-      // Add version to title tag
-      document.title = `HttPlaceholder - v${this.metadata.version}`;
-    },
     darkTheme(darkTheme) {
       this.$vuetify.theme.dark = darkTheme;
-      sessionStorage.setItem("darkTheme", JSON.stringify(darkTheme));
     }
   }
 };

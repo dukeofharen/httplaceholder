@@ -2,14 +2,18 @@
   <v-expansion-panel>
     <v-expansion-panel-header>
       <span>
-        <strong>{{request.requestParameters.method}}</strong>
-        {{request.requestParameters.url}}
+        <strong>{{ request.requestParameters.method }}</strong>
+        {{ request.requestParameters.url }}
         <span>(</span>
         <strong>
-          <Bool v-bind:bool="request.executingStubId" trueText="executed" falseText="not executed" />
+          <Bool
+            v-bind:bool="request.executingStubId"
+            trueText="executed"
+            falseText="not executed"
+          />
         </strong>
         <span>&nbsp;|&nbsp;</span>
-        <span>{{request.requestEndTime | datetime}}</span>
+        <span>{{ request.requestEndTime | datetime }}</span>
         <span>)</span>
       </span>
     </v-expansion-panel-header>
@@ -19,7 +23,8 @@
           @click="createStub"
           title="Create a stub based on the request parameters of this request"
           color="success"
-        >Create stub</v-btn>
+          >Create stub
+        </v-btn>
       </v-list-item>
       <v-list-item v-if="request.requestParameters.body">
         <v-list-item-content>
@@ -30,15 +35,20 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Client IP</v-list-item-title>
-          <v-list-item-subtitle>{{request.requestParameters.clientIp}}</v-list-item-subtitle>
+          <v-list-item-subtitle
+            >{{ request.requestParameters.clientIp }}
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Headers</v-list-item-title>
           <v-list-item-subtitle>
-            <span v-for="(value, key) in request.requestParameters.headers" :key="key">
-              {{key}}: {{value}}
+            <span
+              v-for="(value, key) in request.requestParameters.headers"
+              :key="key"
+            >
+              {{ key }}: {{ value }}
               <br />
             </span>
           </v-list-item-subtitle>
@@ -49,7 +59,7 @@
           <v-list-item-title>Query parameters</v-list-item-title>
           <v-list-item-subtitle>
             <span v-for="(value, key) in queryParameters" :key="key">
-              {{key}}: {{value}}
+              {{ key }}: {{ value }}
               <br />
             </span>
           </v-list-item-subtitle>
@@ -58,7 +68,9 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Correlation ID</v-list-item-title>
-          <v-list-item-subtitle>{{request.correlationId}}</v-list-item-subtitle>
+          <v-list-item-subtitle
+            >{{ request.correlationId }}
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-list-item>
@@ -66,8 +78,12 @@
           <v-list-item-title>Executed stub</v-list-item-title>
           <v-list-item-subtitle>
             <router-link
-              :to="{ name: 'stubs', query: { searchTerm: request.executingStubId }}"
-            >{{request.executingStubId}}</router-link>
+              :to="{
+                name: 'stubs',
+                query: { searchTerm: request.executingStubId }
+              }"
+              >{{ request.executingStubId }}
+            </router-link>
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -76,21 +92,26 @@
           <v-list-item-title>Stub tenant (category)</v-list-item-title>
           <v-list-item-subtitle>
             <router-link
-              :to="{ name: 'stubs', query: { stubTenant: request.stubTenant }}"
-            >{{request.stubTenant}}</router-link>
+              :to="{ name: 'stubs', query: { stubTenant: request.stubTenant } }"
+              >{{ request.stubTenant }}
+            </router-link>
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Request begin time</v-list-item-title>
-          <v-list-item-subtitle>{{request.requestBeginTime | datetime}}</v-list-item-subtitle>
+          <v-list-item-subtitle
+            >{{ request.requestBeginTime | datetime }}
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Request end time</v-list-item-title>
-          <v-list-item-subtitle>{{request.requestEndTime | datetime}}</v-list-item-subtitle>
+          <v-list-item-subtitle
+            >{{ request.requestEndTime | datetime }}
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
       <v-expansion-panels>
@@ -100,34 +121,50 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-expansion-panels>
-              <v-expansion-panel v-for="(result, key) in orderedStubExecutionResults" :key="key">
+              <v-expansion-panel
+                v-for="(result, key) in orderedStubExecutionResults"
+                :key="key"
+              >
                 <v-expansion-panel-header>
                   <strong>
-                    <span>{{result.stubId}}</span>
+                    <span>{{ result.stubId }}</span>
                     <span>&nbsp;</span>
                     <span>(</span>
                     <span>
-                      <Bool v-bind:bool="result.passed" trueText="passed" falseText="not passed" />
+                      <Bool
+                        v-bind:bool="result.passed"
+                        trueText="passed"
+                        falseText="not passed"
+                      />
                     </span>
                     <span>)</span>
                   </strong>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  <div v-if="result.conditions.length  > 0">
+                  <div v-if="result.conditions.length > 0">
                     <h2>Executed conditions</h2>
-                    <div v-for="(condition, key) in result.conditions" :key="key">
+                    <div
+                      v-for="(condition, key) in result.conditions"
+                      :key="key"
+                    >
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title>Checker name</v-list-item-title>
-                          <v-list-item-subtitle>{{condition.checkerName}}</v-list-item-subtitle>
+                          <v-list-item-subtitle
+                            >{{ condition.checkerName }}
+                          </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item>
                         <v-list-item-content>
-                          <v-list-item-title>Condition validation</v-list-item-title>
+                          <v-list-item-title
+                            >Condition validation
+                          </v-list-item-title>
                           <v-list-item-subtitle>
                             <Bool
-                              v-bind:bool="condition.conditionValidation == 'Valid'"
+                              v-bind:bool="
+                                condition.conditionValidation == 'Valid'
+                              "
                               trueText="passed"
                               falseText="not passed"
                             />
@@ -137,27 +174,38 @@
                       <v-list-item v-if="condition.log">
                         <v-list-item-content>
                           <v-list-item-title>Log</v-list-item-title>
-                          <v-list-item-subtitle>{{condition.log}}</v-list-item-subtitle>
+                          <v-list-item-subtitle
+                            >{{ condition.log }}
+                          </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-divider></v-divider>
                     </div>
                   </div>
-                  <div v-if="result.negativeConditions.length  > 0">
+                  <div v-if="result.negativeConditions.length > 0">
                     <h2>Executed negative conditions</h2>
-                    <div v-for="(condition, key) in result.negativeConditions" :key="key">
+                    <div
+                      v-for="(condition, key) in result.negativeConditions"
+                      :key="key"
+                    >
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title>Checker name</v-list-item-title>
-                          <v-list-item-subtitle>{{condition.checkerName}}</v-list-item-subtitle>
+                          <v-list-item-subtitle
+                            >{{ condition.checkerName }}
+                          </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item>
                         <v-list-item-content>
-                          <v-list-item-title>Condition validation</v-list-item-title>
+                          <v-list-item-title
+                            >Condition validation
+                          </v-list-item-title>
                           <v-list-item-subtitle>
                             <Bool
-                              v-bind:bool="condition.conditionValidation == 'Valid'"
+                              v-bind:bool="
+                                condition.conditionValidation == 'Valid'
+                              "
                               trueText="passed"
                               falseText="not passed"
                             />
@@ -167,7 +215,9 @@
                       <v-list-item v-if="condition.log">
                         <v-list-item-content>
                           <v-list-item-title>Log</v-list-item-title>
-                          <v-list-item-subtitle>{{condition.log}}</v-list-item-subtitle>
+                          <v-list-item-subtitle
+                            >{{ condition.log }}
+                          </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-divider></v-divider>
@@ -183,11 +233,20 @@
             <strong>Response writer results</strong>
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <v-list-item v-for="(result, key) in orderedStubResponseWriterResults" :key="key">
+            <v-list-item
+              v-for="(result, key) in orderedStubResponseWriterResults"
+              :key="key"
+            >
               <v-list-item-content>
-                <v-list-item-title>{{result.responseWriterName}}</v-list-item-title>
+                <v-list-item-title
+                  >{{ result.responseWriterName }}
+                </v-list-item-title>
                 <v-list-item-subtitle>
-                  <Bool v-bind:bool="result.executed" trueText="executed" falseText="not executed" />
+                  <Bool
+                    v-bind:bool="result.executed"
+                    trueText="executed"
+                    falseText="not executed"
+                  />
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -201,7 +260,11 @@
 <script>
 import RequestBody from "@/components/RequestBody";
 import Bool from "@/components/Bool";
-import { parseUrl } from "@/functions/urlFunctions";
+import { parseUrl } from "@/utils/urlFunctions";
+import { toastError, toastSuccess } from "@/utils/toastUtil";
+import { resources } from "@/shared/resources";
+import { actionNames } from "@/store/storeConstants";
+import { routeNames } from "@/router/routerConstants";
 
 export default {
   name: "request",
@@ -227,39 +290,44 @@ export default {
       return this.$store.getters.getLastSelectedStub;
     },
     orderedStubExecutionResults() {
-      const compare = (a,b) => {
-        if(a.passed) 
-          return -1;
-        if(!a.passed)
-          return 1;
+      const compare = a => {
+        if (a.passed) return -1;
+        if (!a.passed) return 1;
         return 0;
       };
-      return this.request.stubExecutionResults.sort(compare);
+      const results = this.request.stubExecutionResults;
+      results.sort(compare);
+      return results;
     },
     orderedStubResponseWriterResults() {
-      const compare = (a,b) => {
-        if(a.executed) 
-          return -1;
-        if(!a.executed)
-          return 1;
+      const compare = a => {
+        if (a.executed) return -1;
+        if (!a.executed) return 1;
         return 0;
       };
-      return this.request.stubResponseWriterResults.sort(compare);
-    }
-  },
-  watch: {
-    lastSelectedStub(fullStub) {
-      this.$router.push({
-        name: "updateStub",
-        params: { stubId: this.lastSelectedStub.fullStub.stub.id }
-      });
+      const results = this.request.stubResponseWriterResults;
+      results.sort(compare);
+      return results;
     }
   },
   methods: {
-    createStub() {
-      this.$store.dispatch("createStubBasedOnRequest", {
-        correlationId: this.request.correlationId
-      });
+    async createStub() {
+      try {
+        const fullStub = await this.$store.dispatch(
+          actionNames.createStubBasedOnRequest,
+          {
+            correlationId: this.request.correlationId
+          }
+        );
+        const stub = fullStub.stub;
+        toastSuccess(resources.stubAddedSuccessfully.format(stub.id));
+        this.$router.push({
+          name: routeNames.updateStub,
+          params: { stubId: stub.id }
+        });
+      } catch (e) {
+        toastError(resources.stubNotAddedGeneric);
+      }
     }
   }
 };
