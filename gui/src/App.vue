@@ -12,26 +12,26 @@
         <v-navigation-drawer v-model="drawer" app clipped>
             <v-list dense>
                 <template>
-                    <v-list-item @click="toRequests" v-if="authenticated">
+                    <v-list-item v-if="authenticated" :to="{name: routeNames.requests}">
                         <v-list-item-action>
                             <v-icon>mdi-google-chrome</v-icon>
                         </v-list-item-action>
                         <v-list-item-title class="grey--text">Requests</v-list-item-title>
                     </v-list-item>
                     <v-divider dark class="my-4" v-if="authenticated"></v-divider>
-                    <v-list-item @click="toStubs" v-if="authenticated">
+                    <v-list-item v-if="authenticated" :to="{name: routeNames.stubs}">
                         <v-list-item-action>
                             <v-icon>mdi-controller-classic</v-icon>
                         </v-list-item-action>
                         <v-list-item-title class="grey--text">Stubs</v-list-item-title>
                     </v-list-item>
-                    <v-list-item @click="toAddStub" v-if="authenticated">
+                    <v-list-item v-if="authenticated" :to="{name: routeNames.addStub}">
                         <v-list-item-action>
                             <v-icon>mdi-plus</v-icon>
                         </v-list-item-action>
                         <v-list-item-title class="grey--text">Add stubs</v-list-item-title>
                     </v-list-item>
-                    <v-list-item @click="toDownloadStubs" v-if="authenticated">
+                    <v-list-item v-if="authenticated" :to="{name: routeNames.downloadStubs}">
                         <v-list-item-action>
                             <v-icon>mdi-download</v-icon>
                         </v-list-item-action>
@@ -41,7 +41,7 @@
                         >
                     </v-list-item>
                     <v-divider dark class="my-4" v-if="authenticated"></v-divider>
-                    <v-list-item @click="toSettings" v-if="authenticated">
+                    <v-list-item v-if="authenticated" :to="{name: routeNames.settings}">
                         <v-list-item-action>
                             <v-icon>mdi-cogs</v-icon>
                         </v-list-item-action>
@@ -89,8 +89,6 @@
                 this.authRequired = await this.$store.dispatch(actionNames.ensureAuthenticated);
                 if (this.authRequired) {
                     this.$router.push({name: routeNames.login});
-                } else {
-                    this.$router.push({name: routeNames.requests});
                 }
             }
 
@@ -103,7 +101,8 @@
                 authRequired: false,
                 metadata: {
                     version: ""
-                }
+                },
+                routeNames
             };
         },
         computed: {
@@ -129,21 +128,6 @@
                     let darkTheme = JSON.parse(darkThemeText);
                     this.$store.commit(mutationNames.storeDarkTheme, darkTheme);
                 }
-            },
-            toRequests() {
-                this.$router.push({name: routeNames.requests});
-            },
-            toStubs() {
-                this.$router.push({name: routeNames.stubs});
-            },
-            toAddStub() {
-                this.$router.push({name: routeNames.addStub});
-            },
-            toDownloadStubs() {
-                this.$router.push({name: routeNames.downloadStubs});
-            },
-            toSettings() {
-                this.$router.push({name: routeNames.settings});
             }
         },
         watch: {
