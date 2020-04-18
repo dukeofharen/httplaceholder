@@ -43,6 +43,9 @@
 </template>
 
 <script>
+import {toastSuccess} from "@/utils/toastUtil";
+import {resources} from "@/shared/resources";
+
 export default {
   name: "stub",
   props: ["fullStub"],
@@ -53,9 +56,12 @@ export default {
   },
   created() {},
   methods: {
-    deleteStub() {
+    async deleteStub() {
       this.deleteDialog = false;
-      this.$store.dispatch("deleteStub", { stubId: this.fullStub.stub.id });
+      const stubId = this.fullStub.stub.id;
+      await this.$store.dispatch("deleteStub", { stubId });
+      toastSuccess(resources.stubDeletedSuccessfully.format(stubId));
+      this.$emit('deleted', this.fullStub);
     },
     updateStub() {
       this.$router.push({

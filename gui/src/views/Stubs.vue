@@ -36,6 +36,7 @@
                             v-bind:fullStub="stub"
                             v-for="stub in filteredStubs"
                             :key="stub.id"
+                            v-on:deleted="onDeleted"
                     ></Stub>
                 </v-expansion-panels>
             </v-row>
@@ -80,6 +81,27 @@
         async created() {
             await this.initialize();
         },
+        computed: {
+            filteredStubs() {
+                const compare = (a, b) => {
+                    if (a.stub.id < b.stub.id) return -1;
+                    if (a.stub.id > b.stub.id) return 1;
+                    return 0;
+                };
+
+                let stubs = this.stubs;
+                if (this.searchTerm) {
+                    stubs = stubs.filter(s => s.stub.id.includes(this.searchTerm) ||
+                        (s.stub.tenant && s.stub.tenant.includes(this.searchTerm)))
+                }
+
+                if (this.selectedTenantName) {
+                    stubs = stubs.filter(s => s.stub.tenant === this.selectedTenantName);
+                }
+
+                return stubs.sort(compare);
+            }
+        },
         methods: {
             async initialize() {
                 const getStubsPromise = this.$store.dispatch(actionNames.getStubs);
@@ -103,27 +125,9 @@
                 await this.$store.dispatch(actionNames.deleteAllStubs);
                 toastSuccess(resources.stubsDeletedSuccessfully);
                 await this.initialize();
-            }
-        },
-        computed: {
-            filteredStubs() {
-                const compare = (a, b) => {
-                    if (a.stub.id < b.stub.id) return -1;
-                    if (a.stub.id > b.stub.id) return 1;
-                    return 0;
-                };
-
-                let stubs = this.stubs;
-                if (this.searchTerm) {
-                    stubs = stubs.filter(s => s.stub.id.includes(this.searchTerm) ||
-                        (s.stub.tenant && s.stub.tenant.includes(this.searchTerm)))
-                }
-
-                if (this.selectedTenantName) {
-                    stubs = stubs.filter(s => s.stub.tenant === this.selectedTenantName);
-                }
-
-                return stubs.sort(compare);
+            },
+            async onDeleted() {
+                await this.initialize();
             }
         },
         watch: {

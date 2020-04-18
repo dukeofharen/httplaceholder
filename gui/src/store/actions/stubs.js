@@ -1,6 +1,5 @@
 import createInstance from "@/axios/axiosInstanceFactory";
 import yaml from "js-yaml";
-import {mutationNames} from "@/store/storeConstants";
 import {resources} from "@/shared/resources";
 import {toastError, toastSuccess} from "@/utils/toastUtil";
 
@@ -20,12 +19,10 @@ export function getStub({}, payload) {
 }
 
 export function deleteStub({commit, state, dispatch}, payload) {
-    createInstance()
+    return new Promise((resolve, reject) => createInstance()
         .delete(`ph-api/stubs/${payload.stubId}`)
-        .then(() => {
-            toastSuccess(resources.stubDeletedSuccessfully.format(payload.stubId));
-            dispatch("getStubs");
-        });
+        .then(() => resolve())
+        .catch(error => reject(error)));
 }
 
 export function deleteAllStubs() {
@@ -69,11 +66,11 @@ export function updateStub({commit, state}, payload) {
         let stub;
         try {
             stub = yaml.safeLoad(payload.input);
-        } catch(e) {
+        } catch (e) {
             reject(e);
             return;
         }
-        
+
         if (!stub || Array.isArray(stub)) {
             reject(resources.onlyOneStubAtATime);
             return;
@@ -89,7 +86,7 @@ export function updateStub({commit, state}, payload) {
 export function createStubBasedOnRequest({commit, state}, payload) {
     return new Promise((resolve, reject) =>
         createInstance()
-        .post(`ph-api/requests/${payload.correlationId}/stubs`, "")
-        .then(response => resolve(response.data))
-        .catch(error => reject(error)));
+            .post(`ph-api/requests/${payload.correlationId}/stubs`, "")
+            .then(response => resolve(response.data))
+            .catch(error => reject(error)));
 }
