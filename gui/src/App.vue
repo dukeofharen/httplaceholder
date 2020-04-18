@@ -76,16 +76,18 @@
 <script>
     import {routeNames} from "@/router/routerConstants";
     import {actionNames, mutationNames} from "@/store/storeConstants";
+    import {getUserToken, getDarkThemeEnabled} from "@/utils/sessionUtil";
 
     export default {
         name: "app",
         async created() {
             this.setTheme();
-            let token = sessionStorage.userToken;
-            this.authRequired = await this.$store.dispatch(actionNames.ensureAuthenticated);
-            if (token && this.authRequired) {
+            let token = getUserToken();
+            if (token) {
                 this.$store.commit(mutationNames.userTokenMutation, token);
-            } else if (this.authRequired) {
+                this.authRequired = true;
+            } else {
+                this.authRequired = await this.$store.dispatch(actionNames.ensureAuthenticated);
                 this.$router.push({name: routeNames.login});
             }
 
@@ -106,38 +108,25 @@
             authenticated() {
                 return this.$store.getters.getAuthenticated;
             },
-            userToken() {
-                return this.$store.getters.getUserToken;
-            },
             darkTheme() {
                 return this.$store.getters.getDarkTheme;
             }
         },
         methods: {
             logout() {
-                sessionStorage.removeItem("userToken");
                 this.$store.commit(mutationNames.userTokenMutation, null);
                 this.$router.push({name: routeNames.login});
             },
             setTheme() {
-                let darkThemeText = sessionStorage.getItem("darkTheme");
-                if (darkThemeText) {
-                    let darkTheme = JSON.parse(darkThemeText);
-                    this.$store.commit(mutationNames.storeDarkTheme, darkTheme);
+                const darkThemeEnabled = getDarkThemeEnabled();
+                if (darkThemeEnabled) {
+                    this.$store.commit(mutationNames.storeDarkTheme, darkThemeEnabled);
                 }
             }
         },
         watch: {
-            userToken(newToken) {
-                if (!newToken) {
-                    sessionStorage.removeItem("userToken");
-                } else {
-                    sessionStorage.userToken = newToken;
-                }
-            },
             darkTheme(darkTheme) {
                 this.$vuetify.theme.dark = darkTheme;
-                sessionStorage.setItem("darkTheme", JSON.stringify(darkTheme));
             }
         }
     };
