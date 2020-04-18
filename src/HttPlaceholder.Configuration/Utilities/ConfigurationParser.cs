@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,19 +13,19 @@ namespace HttPlaceholder.Configuration.Utilities
 {
     public class ConfigurationParser
     {
-        private readonly IAssemblyService _assemblyService;
+        private readonly IEnvService _envService;
         private readonly IFileService _fileService;
 
         public ConfigurationParser(
-            IAssemblyService assemblyService,
+            IEnvService envService,
             IFileService fileService)
         {
-            _assemblyService = assemblyService;
+            _envService = envService;
             _fileService = fileService;
         }
 
         public ConfigurationParser() : this(
-            new AssemblyService(),
+            new EnvService(),
             new FileService())
         {
         }
@@ -42,8 +41,6 @@ namespace HttPlaceholder.Configuration.Utilities
         private IDictionary<string, string> DetermineBaseArgsDictionary(string[] args)
         {
             var argsDictionary = args.Parse();
-            var configPath = Path.Combine(_assemblyService.GetCallingAssemblyRootPath(), "config.json");
-
             if (argsDictionary.TryGetValue(ConfigKeys.ConfigJsonLocationKey.ToLower(), out var configJsonPath))
             {
                 // Read the settings from a given file if the correct config key is set
@@ -55,19 +52,6 @@ namespace HttPlaceholder.Configuration.Utilities
                 ConsoleHelpers.WriteLineColor($"Reading configuration from '{configJsonPath}'.", ConsoleColor.Green,
                     ConsoleColor.Black);
                 var config = _fileService.ReadAllText(configJsonPath);
-                argsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
-            }
-            else if (args.Length == 0 && _fileService.FileExists(configPath))
-            {
-                // Read the settings from the installation directory.
-                Console.WriteLine($"Config file found at '{configPath}', so trying to parse that configuration.");
-
-                ConsoleHelpers.WriteLineColor(
-                    $"WARNING! Loading the configuration file from the installation folder is deprecated, because it can be overwritten when an update is installed. Use the --{ConfigKeys.ConfigJsonLocationKey} argument instead to provide the path to the configuration JSON file.",
-                    ConsoleColor.Yellow,
-                    ConsoleColor.Black);
-
-                var config = _fileService.ReadAllText(configPath);
                 argsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
             }
 
@@ -85,18 +69,16 @@ namespace HttPlaceholder.Configuration.Utilities
             argsDictionary.EnsureEntryExists(ConfigKeys.EnableUserInterface, true);
         }
 
-        private static IDictionary<string, string> BuildFinalArgsDictionary(IDictionary<string, string> argsDictionary)
+        private IDictionary<string, string> BuildFinalArgsDictionary(IDictionary<string, string> argsDictionary)
         {
-            var envVars = Environment.GetEnvironmentVariables()
-                .Cast<DictionaryEntry>()
-                .ToDictionary(de => (string)de.Key, de => (string)de.Value);
+            var envVars = _envService.GetEnvironmentVariables();
             var configDictionary = new Dictionary<string, string>();
             foreach (var constant in GetConfigKeyMetadata())
             {
                 if (!string.IsNullOrWhiteSpace(constant.Path))
                 {
                     // First, add the environment variables to the configuration.
-                    if (envVars.TryGetValue(constant.Key, out var envVar))
+                    if (envVars != null && envVars.TryGetValue(constant.Key, out var envVar))
                     {
                         configDictionary.Add(constant.Path, envVar);
                         continue;
