@@ -1,9 +1,5 @@
 export function getAuthenticated(state) {
-    return state.authenticated
-}
-
-export function getAuthenticationRequired(state) {
-    return state.authenticationRequired
+    return !!state.userToken
 }
 
 export function getUserToken(state) {

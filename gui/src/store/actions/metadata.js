@@ -1,6 +1,9 @@
 import createInstance from "@/axios/axiosInstanceFactory";
 
-export function refreshMetadata({commit}) {
-    const instance = createInstance();
-    instance.get("ph-api/metadata").then(response => commit("storeMetadata", response.data));
+export function getMetadata({commit}) {
+    return new Promise((resolve, reject) =>
+        createInstance()
+            .get("ph-api/metadata")
+            .then(response => resolve(response.data))
+            .catch(error => reject(error)));
 }

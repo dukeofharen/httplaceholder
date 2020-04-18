@@ -15,26 +15,23 @@ const getUser = (username, password, commit) => {
 export function ensureAuthenticated({commit}) {
     let username = "testUser";
     let password = "testPassword";
-    getUser(username, password, commit)
-        .then(() => {
-            // No authentication on endpoint, so no login required.
-            commit(mutationNames.storeAuthMutation, true);
-            commit(mutationNames.storeAuthRequired, false);
-        })
-        .catch(error => {
-            // Authentication required, so show login screen.
-            if (error.response.status === 401) {
-                commit(mutationNames.storeAuthMutation, false);
-                commit(mutationNames.storeAuthRequired, true);
-            }
-        });
+    return new Promise((resolve, reject) =>
+        getUser(username, password, commit)
+            .then(() => {
+                // No authentication on endpoint, so no login required.
+                resolve(false);
+            })
+            .catch(error => {
+                // Authentication required, so show login screen.
+                if (error.response.status === 401) {
+                    resolve(true);
+                }
+            }));
 }
 
 export function authenticate({commit}, payload) {
-    return new Promise((resolve, reject) => getUser(payload.username, payload.password, commit)
-        .then(() => {
-            commit(mutationNames.storeAuthMutation, true);
-            resolve();
-        })
-        .catch(error => reject(error)));
+    return new Promise((resolve, reject) =>
+        getUser(payload.username, payload.password, commit)
+            .then(() => resolve())
+            .catch(error => reject(error)));
 }

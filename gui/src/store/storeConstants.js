@@ -1,6 +1,4 @@
 export const mutationNames = {
-    storeAuthMutation: "storeAuthenticated",
-    storeAuthRequired: "storeAuthenticationRequired",
     userTokenMutation: "storeUserToken",
     storeRequestsMutation: "storeRequests",
     storeDarkTheme: "storeDarkTheme"
