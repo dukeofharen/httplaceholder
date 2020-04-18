@@ -75,6 +75,7 @@
 
 <script>
     import {routeNames} from "@/router/routerConstants";
+    import {actionNames, mutationNames} from "@/store/storeConstants";
 
     export default {
         name: "app",
@@ -82,10 +83,10 @@
             this.setTheme();
             let token = sessionStorage.userToken;
             if (token) {
-                this.$store.commit("storeUserToken", token);
+                this.$store.commit(mutationNames.userTokenMutation, token);
                 this.authRequired = true;
             } else {
-                this.authRequired = await this.$store.dispatch("ensureAuthenticated");
+                this.authRequired = await this.$store.dispatch(actionNames.ensureAuthenticated);
                 if (this.authRequired) {
                     this.$router.push({name: routeNames.login});
                 } else {
@@ -93,7 +94,7 @@
                 }
             }
 
-            this.metadata = await this.$store.dispatch("getMetadata");
+            this.metadata = await this.$store.dispatch(actionNames.getMetadata);
             document.title = `HttPlaceholder - v${this.metadata.version}`;
         },
         data() {
@@ -119,14 +120,14 @@
         methods: {
             logout() {
                 sessionStorage.removeItem("userToken");
-                this.$store.commit("storeUserToken", null);
+                this.$store.commit(mutationNames.userTokenMutation, null);
                 this.$router.push({name: routeNames.login});
             },
             setTheme() {
                 let darkThemeText = sessionStorage.getItem("darkTheme");
                 if (darkThemeText) {
                     let darkTheme = JSON.parse(darkThemeText);
-                    this.$store.commit("storeDarkTheme", darkTheme);
+                    this.$store.commit(mutationNames.storeDarkTheme, darkTheme);
                 }
             },
             toRequests() {

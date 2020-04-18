@@ -14,5 +14,8 @@ export const actionNames = {
     deleteAllStubs: "deleteAllStubs",
     getStub: "getStub",
     updateStub: "updateStub",
-    createStubBasedOnRequest: "createStubBasedOnRequest"
+    createStubBasedOnRequest: "createStubBasedOnRequest",
+    deleteStub: "deleteStub",
+    ensureAuthenticated: "ensureAuthenticated",
+    getMetadata: "getMetadata"
 }

@@ -46,6 +46,7 @@
 import {toastSuccess} from "@/utils/toastUtil";
 import {resources} from "@/shared/resources";
 import {routeNames} from "@/router/routerConstants";
+import {actionNames} from "@/store/storeConstants";
 
 export default {
   name: "stub",
@@ -59,7 +60,7 @@ export default {
     async deleteStub() {
       this.deleteDialog = false;
       const stubId = this.fullStub.stub.id;
-      await this.$store.dispatch("deleteStub", { stubId });
+      await this.$store.dispatch(actionNames.deleteStub, { stubId });
       toastSuccess(resources.stubDeletedSuccessfully.format(stubId));
       this.$emit('deleted', this.fullStub);
     },
