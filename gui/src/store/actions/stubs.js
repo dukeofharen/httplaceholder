@@ -17,7 +17,7 @@ export function getStub({}, payload) {
         .catch(error => reject(error)));
 }
 
-export function deleteStub({commit, state, dispatch}, payload) {
+export function deleteStub({}, payload) {
     return new Promise((resolve, reject) => createInstance()
         .delete(`ph-api/stubs/${payload.stubId}`)
         .then(() => resolve())
@@ -32,7 +32,7 @@ export function deleteAllStubs() {
             .catch(error => reject(error)));
 }
 
-export function addStubs({commit, state}, payload) {
+export function addStubs({}, payload) {
     return new Promise(async (resolve, reject) => {
         let stubsArray;
         let parsedObject;
@@ -67,7 +67,7 @@ export function addStubs({commit, state}, payload) {
     });
 }
 
-export function updateStub({commit, state}, payload) {
+export function updateStub({}, payload) {
     return new Promise((resolve, reject) => {
         let stub;
         try {
@@ -89,7 +89,7 @@ export function updateStub({commit, state}, payload) {
     })
 }
 
-export function createStubBasedOnRequest({commit, state}, payload) {
+export function createStubBasedOnRequest({}, payload) {
     return new Promise((resolve, reject) =>
         createInstance()
             .post(`ph-api/requests/${payload.correlationId}/stubs`, "")

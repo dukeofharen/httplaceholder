@@ -11,12 +11,6 @@ const storeMap = [
         content: require('@/store/getters/general')
     }, {
         type: storeTypeEnum.GETTER,
-        content: require('@/store/getters/metadata')
-    },  {
-        type: storeTypeEnum.GETTER,
-        content: require('@/store/getters/stubs')
-    }, {
-        type: storeTypeEnum.GETTER,
         content: require('@/store/getters/users')
     },
 
@@ -42,15 +36,6 @@ const storeMap = [
     {
         type: storeTypeEnum.MUTATION,
         content: require('@/store/mutations/general')
-    }, {
-        type: storeTypeEnum.MUTATION,
-        content: require('@/store/mutations/metadata')
-    }, {
-        type: storeTypeEnum.MUTATION,
-        content: require('@/store/mutations/requests')
-    }, {
-        type: storeTypeEnum.MUTATION,
-        content: require('@/store/mutations/stubs')
     }, {
         type: storeTypeEnum.MUTATION,
         content: require('@/store/mutations/users')

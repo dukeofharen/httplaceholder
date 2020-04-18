@@ -1,6 +1,6 @@
 import createInstance from "@/axios/axiosInstanceFactory";
 
-export function getMetadata({commit}) {
+export function getMetadata() {
     return new Promise((resolve, reject) =>
         createInstance()
             .get("ph-api/metadata")
