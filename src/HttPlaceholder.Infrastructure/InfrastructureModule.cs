@@ -13,6 +13,7 @@ namespace HttPlaceholder.Infrastructure
             services.TryAddSingleton<IAssemblyService, AssemblyService>();
             services.TryAddSingleton<IAsyncService, AsyncService>();
             services.TryAddSingleton<IDateTime, MachineDateTime>();
+            services.TryAddSingleton<IEnvService, EnvService>();
             services.TryAddSingleton<IFileService, FileService>();
             return services;
         }
