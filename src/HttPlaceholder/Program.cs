@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Configuration.Utilities;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace HttPlaceholder
 {
@@ -40,25 +39,20 @@ namespace HttPlaceholder
         {
             var configParser = new ConfigurationParser();
             var argsDictionary = configParser.ParseConfiguration(args);
+            var settings = DeserializeSettings(argsDictionary);
 
-            int port = argsDictionary.GetAndSetValue(ConfigKeys.PortKey, 5000);
-            string pfxPath = argsDictionary.GetAndSetValue(ConfigKeys.PfxPathKey, Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx"));
-            string pfxPassword = argsDictionary.GetAndSetValue(ConfigKeys.PfxPasswordKey, "1234");
-            int httpsPort = argsDictionary.GetAndSetValue(ConfigKeys.HttpsPortKey, 5050);
-            bool useHttps = argsDictionary.GetAndSetValue(ConfigKeys.UseHttpsKey, false);
-            argsDictionary.GetAndSetValue(ConfigKeys.EnableUserInterface, true);
-            HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, new string[] { "-V", "--verbose" }, false);
+            HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, new [] { "-V", "--verbose" }, false);
 
             return WebHost.CreateDefaultBuilder(args)
-               .ConfigureAppConfiguration((_, config) => config.AddHttPlaceholderConfiguration(argsDictionary))
+               .ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(argsDictionary))
                .UseStartup<Startup>()
                .UseKestrel(options =>
                {
                    options.AddServerHeader = false;
-                   options.Listen(IPAddress.Any, port);
-                   if (useHttps && !string.IsNullOrWhiteSpace(pfxPath) && !string.IsNullOrWhiteSpace(pfxPassword))
+                   options.Listen(IPAddress.Any, settings.Web.HttpPort);
+                   if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) && !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
                    {
-                       options.Listen(IPAddress.Any, httpsPort, listenOptions => listenOptions.UseHttps(pfxPath, pfxPassword));
+                       options.Listen(IPAddress.Any, settings.Web.HttpsPort, listenOptions => listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
                    }
                })
                .Build();
@@ -67,13 +61,13 @@ namespace HttPlaceholder
         private static string GetManPage()
         {
             var builder = new StringBuilder();
-            foreach (var constant in ConfigurationUtilities.GetConfigKeyMetadata())
+            foreach (var constant in ConfigurationParser.GetConfigKeyMetadata())
             {
-                builder.AppendLine($"--{constant.configKey}: {constant.description} (e.g. {constant.example})");
+                builder.AppendLine($"--{constant.Key}: {constant.Description} (e.g. {constant.Example})");
             }
 
             builder.AppendLine();
-            builder.AppendLine("Example: httplaceholder --apiUsername user --apiPassword pass");
+            builder.AppendLine("Example: httplaceholder --apiusername user --apipassword pass");
 
             return builder.ToString();
         }
@@ -99,6 +93,14 @@ namespace HttPlaceholder
                     Environment.Exit(0);
                 }
             }
+        }
+
+        private static SettingsModel DeserializeSettings(IDictionary<string, string> args)
+        {
+            var builder = new ConfigurationBuilder();
+            builder.AddInMemoryCollection(args);
+            var config = builder.Build();
+            return config.Get<SettingsModel>();
         }
     }
 }
