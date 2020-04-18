@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import {mutationNames} from "@/store/storeConstants";
+import { mutationNames } from "@/store/storeConstants";
 
 export default {
   data() {

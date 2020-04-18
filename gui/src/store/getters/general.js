@@ -1,3 +1,3 @@
 export function getDarkTheme(state) {
-    return state.settings.darkTheme
+  return state.settings.darkTheme;
 }

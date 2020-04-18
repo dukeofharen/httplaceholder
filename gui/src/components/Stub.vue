@@ -43,10 +43,10 @@
 </template>
 
 <script>
-import {toastSuccess} from "@/utils/toastUtil";
-import {resources} from "@/shared/resources";
-import {routeNames} from "@/router/routerConstants";
-import {actionNames} from "@/store/storeConstants";
+import { toastSuccess } from "@/utils/toastUtil";
+import { resources } from "@/shared/resources";
+import { routeNames } from "@/router/routerConstants";
+import { actionNames } from "@/store/storeConstants";
 
 export default {
   name: "stub",
@@ -62,13 +62,19 @@ export default {
       const stubId = this.fullStub.stub.id;
       await this.$store.dispatch(actionNames.deleteStub, { stubId });
       toastSuccess(resources.stubDeletedSuccessfully.format(stubId));
-      this.$emit('deleted', this.fullStub);
+      this.$emit("deleted", this.fullStub);
     },
     updateStub() {
-      this.$router.push({name: routeNames.updateStub ,params: { stubId: this.fullStub.stub.id }});
+      this.$router.push({
+        name: routeNames.updateStub,
+        params: { stubId: this.fullStub.stub.id }
+      });
     },
     viewRequests() {
-      this.$router.push({name: routeNames.requests ,query: { searchTerm: this.fullStub.stub.id }});
+      this.$router.push({
+        name: routeNames.requests,
+        query: { searchTerm: this.fullStub.stub.id }
+      });
     }
   }
 };

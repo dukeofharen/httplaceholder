@@ -1,22 +1,22 @@
-import {getSession, removeSession, setSession} from "@/utils/storageUtil";
-import {sessionKeys} from "@/shared/constants";
+import { getSession, removeSession, setSession } from "@/utils/storageUtil";
+import { sessionKeys } from "@/shared/constants";
 
 export function getUserToken() {
-    return getSession(sessionKeys.userToken);
+  return getSession(sessionKeys.userToken);
 }
 
 export function clearUserToken() {
-    removeSession(sessionKeys.userToken);
+  removeSession(sessionKeys.userToken);
 }
 
 export function saveUserToken(token) {
-    setSession(sessionKeys.userToken, token);
+  setSession(sessionKeys.userToken, token);
 }
 
 export function getDarkThemeEnabled() {
-    return getSession(sessionKeys.darkTheme);
+  return getSession(sessionKeys.darkTheme);
 }
 
 export function setDarkThemeEnabled(enabled) {
-    setSession(sessionKeys.darkTheme, enabled);
+  setSession(sessionKeys.darkTheme, enabled);
 }
