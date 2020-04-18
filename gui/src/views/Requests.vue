@@ -110,12 +110,12 @@
                 const getTenantNamesPromise = this.$store.dispatch(actionNames.getTenantNames);
                 this.requests = await getRequestsPromise;
                 this.tenantNames = await getTenantNamesPromise;
+
+                this.initializeSearch();
             },
-            handleUrlSearch() {
-                let term = this.$route.query.searchTerm;
-                if (term) {
-                    this.searchTerm = term;
-                }
+            initializeSearch() {
+                this.searchTerm = this.$route.query.searchTerm;
+                this.selectedTenantName = this.$route.query.stubTenant;
             },
             async deleteAllRequests() {
                 this.deleteAllDialog = false;
@@ -127,9 +127,7 @@
                 this.connection = new HubConnectionBuilder()
                     .withUrl("/requestHub")
                     .build();
-                this.connection.on("RequestReceived", request => {
-                    this.$store.commit("addAdditionalRequest", request);
-                });
+                this.connection.on("RequestReceived", request => this.requests.unshift(request));
                 this.connection
                     .start()
                     .then(() => {
@@ -139,7 +137,7 @@
         },
         watch: {
             $route() {
-                this.handleUrlSearch();
+                this.initializeSearch();
             }
         }
     };

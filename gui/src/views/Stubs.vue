@@ -108,17 +108,12 @@
                 const getTenantNamesPromise = this.$store.dispatch(actionNames.getTenantNames);
                 this.stubs = await getStubsPromise;
                 this.tenantNames = await getTenantNamesPromise;
-            },
-            handleUrlSearch() {
-                let term = this.$route.query.searchTerm;
-                if (term) {
-                    this.searchTerm = term;
-                }
 
-                let tenant = this.$route.query.stubTenant;
-                if (tenant) {
-                    this.selectedTenantName = tenant;
-                }
+                this.initializeSearch();
+            },
+            initializeSearch() {
+                this.searchTerm = this.$route.query.searchTerm;
+                this.selectedTenantName = this.$route.query.stubTenant;
             },
             async deleteAllStubs() {
                 this.deleteAllDialog = false;
@@ -132,7 +127,7 @@
         },
         watch: {
             $route() {
-                this.handleUrlSearch();
+                this.initializeSearch();
             }
         }
     };
