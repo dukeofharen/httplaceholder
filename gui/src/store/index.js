@@ -1,11 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { constructStore } from "@/store/storeConstructor";
+import { getUserToken } from "@/utils/sessionUtil";
 
 Vue.use(Vuex);
 
+const token = getUserToken();
 const state = {
-  userToken: "",
+  userToken: token || "",
   settings: {
     darkTheme: false
   }
