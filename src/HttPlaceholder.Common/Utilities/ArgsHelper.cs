@@ -15,7 +15,7 @@ namespace HttPlaceholder.Common.Utilities
             {
                 if (arg.StartsWith("--"))
                 {
-                    varPointer = arg.Replace("--", string.Empty).ToLower();
+                    varPointer = arg.Replace("--", string.Empty);
                     subResult.Add(varPointer, new List<string>());
                 }
                 else
@@ -31,99 +31,13 @@ namespace HttPlaceholder.Common.Utilities
                 .ToDictionary(d => d.Key, d => string.Join(" ", d.Value));
         }
 
-        public static string GetValue(this IDictionary<string, string> args, string key)
+        public static void EnsureEntryExists(this IDictionary<string, string> args, string key, object value)
         {
-            args.TryGetValue(key.ToLower(), out string value);
-            return value;
-        }
-
-        public static string GetValue(this IDictionary<string, string> args, string key, string defaultValue)
-        {
-            args.TryGetValue(key.ToLower(), out string value);
-            return value ?? defaultValue;
-        }
-
-        public static string GetAndSetValue(this IDictionary<string, string> args, string key, string defaultValue)
-        {
-            if(!args.TryGetValue(key.ToLower(), out string value))
+            key = key.ToLower();
+            if (!args.ContainsKey(key))
             {
-                args.Add(key, defaultValue);
+                args.Add(key, value.ToString());
             }
-
-            return value ?? defaultValue;
-        }
-
-        public static int GetValue(this IDictionary<string, string> args, string key, int defaultValue)
-        {
-            if (!args.TryGetValue(key.ToLower(), out string value))
-            {
-                return defaultValue;
-            }
-
-            if (!int.TryParse(value, out int result))
-            {
-                return defaultValue;
-            }
-
-            return result;
-        }
-
-        public static int GetAndSetValue(this IDictionary<string, string> args, string key, int defaultValue)
-        {
-            if (!args.TryGetValue(key.ToLower(), out string value))
-            {
-                args.Add(key, defaultValue.ToString());
-                return defaultValue;
-            }
-
-            if (!int.TryParse(value, out int result))
-            {
-                args.Add(key, defaultValue.ToString());
-                return defaultValue;
-            }
-
-            return result;
-        }
-
-        public static bool GetValue(this IDictionary<string, string> args, string key, bool defaultValue)
-        {
-            if (!args.TryGetValue(key.ToLower(), out string value))
-            {
-                return defaultValue;
-            }
-
-            if (string.Equals(value, "1") || string.Equals(value, "true", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            if (string.Equals(value, "0") || string.Equals(value, "false", StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-
-            return defaultValue;
-        }
-
-        public static bool GetAndSetValue(this IDictionary<string, string> args, string key, bool defaultValue)
-        {
-            if (!args.TryGetValue(key.ToLower(), out string value))
-            {
-                args.Add(key, defaultValue.ToString());
-                return defaultValue;
-            }
-
-            if (string.Equals(value, "1") || string.Equals(value, "true", StringComparison.OrdinalIgnoreCase))
-            {
-                return true;
-            }
-
-            if (string.Equals(value, "0") || string.Equals(value, "false", StringComparison.OrdinalIgnoreCase))
-            {
-                return false;
-            }
-
-            return defaultValue;
         }
     }
 }
