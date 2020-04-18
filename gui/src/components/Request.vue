@@ -278,6 +278,7 @@
     import {toastError, toastSuccess} from "@/utils/toastUtil";
     import {resources} from "@/shared/resources";
     import {actionNames} from "@/store/storeConstants";
+    import {routeNames} from "@/router/routerConstants";
 
     export default {
         name: "request",
@@ -319,11 +320,6 @@
                 return this.request.stubResponseWriterResults.sort(compare);
             }
         },
-        watch: {
-            lastSelectedStub(fullStub) {
-                
-            }
-        },
         methods: {
             async createStub() {
                 try {
@@ -332,10 +328,7 @@
                     });
                     const stub = fullStub.stub;
                     toastSuccess(resources.stubAddedSuccessfully.format(stub.id));
-                    this.$router.push({
-                        name: "updateStub",
-                        params: {stubId: stub.id}
-                    });
+                    this.$router.push({name: routeNames.updateStub, params: {stubId: stub.id}});
                 } catch (e) {
                     toastError(resources.stubNotAddedGeneric);
                 }

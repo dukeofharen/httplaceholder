@@ -33,6 +33,7 @@
     import {toastError} from "@/utils/toastUtil";
     import {resources} from "@/shared/resources";
     import {actionNames} from "@/store/storeConstants";
+    import {routeNames} from "@/router/routerConstants";
 
     export default {
         name: "login",
@@ -50,8 +51,8 @@
                             username: this.username,
                             password: this.password
                         });
-                        this.$router.push({name: "requests"});
-                    } catch(e) {
+                        this.$router.push({name: routeNames.requests});
+                    } catch (e) {
                         if (e.response.status === 401) {
                             toastError(resources.credentialsIncorrect);
                         }

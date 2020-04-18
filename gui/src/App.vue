@@ -74,6 +74,8 @@
 </template>
 
 <script>
+    import {routeNames} from "@/router/routerConstants";
+
     export default {
         name: "app",
         async created() {
@@ -85,9 +87,9 @@
             } else {
                 this.authRequired = await this.$store.dispatch("ensureAuthenticated");
                 if (this.authRequired) {
-                    this.$router.push({name: "login"});
+                    this.$router.push({name: routeNames.login});
                 } else {
-                    this.$router.push({name: "requests"});
+                    this.$router.push({name: routeNames.requests});
                 }
             }
 
@@ -118,7 +120,7 @@
             logout() {
                 sessionStorage.removeItem("userToken");
                 this.$store.commit("storeUserToken", null);
-                this.$router.push({name: "login"});
+                this.$router.push({name: routeNames.login});
             },
             setTheme() {
                 let darkThemeText = sessionStorage.getItem("darkTheme");
@@ -128,19 +130,19 @@
                 }
             },
             toRequests() {
-                this.$router.push({name: "requests"});
+                this.$router.push({name: routeNames.requests});
             },
             toStubs() {
-                this.$router.push({name: "stubs"});
+                this.$router.push({name: routeNames.stubs});
             },
             toAddStub() {
-                this.$router.push({name: "addStub"});
+                this.$router.push({name: routeNames.addStub});
             },
             toDownloadStubs() {
-                this.$router.push({name: "downloadStubs"});
+                this.$router.push({name: routeNames.downloadStubs});
             },
             toSettings() {
-                this.$router.push({name: "settings"});
+                this.$router.push({name: routeNames.settings});
             }
         },
         watch: {

@@ -45,6 +45,7 @@
 <script>
 import {toastSuccess} from "@/utils/toastUtil";
 import {resources} from "@/shared/resources";
+import {routeNames} from "@/router/routerConstants";
 
 export default {
   name: "stub",
@@ -54,7 +55,6 @@ export default {
       deleteDialog: false
     };
   },
-  created() {},
   methods: {
     async deleteStub() {
       this.deleteDialog = false;
@@ -64,16 +64,10 @@ export default {
       this.$emit('deleted', this.fullStub);
     },
     updateStub() {
-      this.$router.push({
-        name: "updateStub",
-        params: { stubId: this.fullStub.stub.id }
-      });
+      this.$router.push({name: routeNames.updateStub ,params: { stubId: this.fullStub.stub.id }});
     },
     viewRequests() {
-      this.$router.push({
-        name: "requests",
-        query: { searchTerm: this.fullStub.stub.id }
-      });
+      this.$router.push({name: routeNames.requests ,query: { searchTerm: this.fullStub.stub.id }});
     }
   }
 };

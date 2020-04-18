@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import {routeNames} from "@/router/routerConstants";
 
 Vue.use(Router);
 
@@ -7,42 +8,42 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "home",
+      name: routeNames.home,
       redirect: { name: "requests" }
     },
     {
       path: "/requests",
-      name: "requests",
+      name: routeNames.requests,
       component: () =>
         import(/* webpackChunkName: "requests" */ "@/views/Requests.vue")
     },
     {
       path: "/stubs",
-      name: "stubs",
+      name: routeNames.stubs,
       component: () =>
         import(/* webpackChunkName: "stubs" */ "@/views/Stubs.vue")
     },
     {
       path: "/login",
-      name: "login",
+      name: routeNames.login,
       component: () =>
         import(/* webpackChunkName: "login" */ "@/views/Login.vue")
     },
     {
       path: "/addStub",
-      name: "addStub",
+      name: routeNames.addStub,
       component: () =>
         import(/* webpackChunkName: "addStub" */ "@/views/AddStub.vue")
     },
     {
       path: "/updateStub/:stubId",
-      name: "updateStub",
+      name: routeNames.updateStub,
       component: () =>
         import(/* webpackChunkName: "updateStub" */ "@/views/UpdateStub.vue")
     },
     {
       path: "/downloadStubs",
-      name: "downloadStubs",
+      name: routeNames.downloadStubs,
       component: () =>
         import(
           /* webpackChunkName: "downloadStubs" */ "@/views/DownloadStubs.vue"
@@ -50,7 +51,7 @@ export default new Router({
     },
     {
       path: "/settings",
-      name: "settings",
+      name: routeNames.settings,
       component: () =>
         import(/* webpackChunkName: "settings" */ "@/views/Settings.vue")
     }
