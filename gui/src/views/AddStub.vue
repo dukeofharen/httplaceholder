@@ -123,18 +123,17 @@
                 }
             },
             async addStubsInternal(input) {
-                const promises = await this.$store.dispatch(actionNames.addStubs, {input});
-                for (let promise of promises) {
-                    try {
-                        const stub = await promise;
-                        toastSuccess(resources.stubAddedSuccessfully.format(stub.id));
-                    } catch (e) {
-                        if (e.error.response.status === 409) {
-                            toastError(resources.stubAlreadyAdded.format(e.stubId))
-                        } else {
-                            toastError(resources.stubNotAdded.format(e.stubId))
+                try {
+                    const results = await this.$store.dispatch(actionNames.addStubs, {input});
+                    for (let result of results) {
+                        if (result.v) {
+                            toastSuccess(resources.stubAddedSuccessfully.format(result.v.id));
+                        } else if (result.e) {
+                            toastError(resources.stubNotAdded.format(result.e.stubId))
                         }
                     }
+                } catch (e) {
+                    toastError(e);
                 }
             }
         }

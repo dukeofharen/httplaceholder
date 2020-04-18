@@ -1,5 +1,4 @@
 import createInstance from "@/axios/axiosInstanceFactory";
-import {mutationNames} from "@/store/storeConstants";
 
 export function getRequests() {
     return new Promise((resolve, reject) => createInstance()

@@ -1,7 +1,6 @@
 import createInstance from "@/axios/axiosInstanceFactory";
 import yaml from "js-yaml";
 import {resources} from "@/shared/resources";
-import {toastError, toastSuccess} from "@/utils/toastUtil";
 
 export function getStubs() {
     return new Promise((resolve, reject) =>
@@ -34,31 +33,38 @@ export function deleteAllStubs() {
 }
 
 export function addStubs({commit, state}, payload) {
-    let stubsArray;
-    let parsedObject;
-    try {
-        parsedObject = yaml.safeLoad(payload.input);
-    } catch (error) {
-        toastError(error.message);
-        return;
-    }
+    return new Promise(async (resolve, reject) => {
+        let stubsArray;
+        let parsedObject;
+        try {
+            parsedObject = yaml.safeLoad(payload.input);
+        } catch (error) {
+            reject(error.message);
+            return;
+        }
 
-    if (!Array.isArray(parsedObject)) {
-        stubsArray = [parsedObject];
-    } else {
-        stubsArray = parsedObject;
-    }
+        if (!Array.isArray(parsedObject)) {
+            stubsArray = [parsedObject];
+        } else {
+            stubsArray = parsedObject;
+        }
 
-    const promises = [];
-    for (let index in stubsArray) {
-        let stub = stubsArray[index];
-        promises.push(new Promise((resolve, reject) => createInstance()
-            .post("ph-api/stubs", stub)
-            .then(() => resolve(stub))
-            .catch(error => reject({error, stubId: stub.id}))));
-    }
+        // Source: https://stackoverflow.com/questions/31424561/wait-until-all-promises-complete-even-if-some-rejected (Benjamin Gruenbaum)
+        const reflect = p => p.then(v => ({v, status: "fulfilled"}),
+            e => ({e, status: "rejected"}));
 
-    return promises;
+        const promises = [];
+        for (let index in stubsArray) {
+            let stub = stubsArray[index];
+            promises.push(new Promise((resolve, reject) => createInstance()
+                .post("ph-api/stubs", stub)
+                .then(() => resolve(stub))
+                .catch(error => reject({error, stubId: stub.id}))));
+        }
+
+        const results = await Promise.all(promises.map(reflect));
+        resolve(results);
+    });
 }
 
 export function updateStub({commit, state}, payload) {
