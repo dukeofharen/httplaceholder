@@ -15,7 +15,7 @@ namespace HttPlaceholder.Common.Utilities
             {
                 if (arg.StartsWith("--"))
                 {
-                    varPointer = arg.Replace("--", string.Empty);
+                    varPointer = arg.Replace("--", string.Empty).ToLower();
                     subResult.Add(varPointer, new List<string>());
                 }
                 else
@@ -33,19 +33,19 @@ namespace HttPlaceholder.Common.Utilities
 
         public static string GetValue(this IDictionary<string, string> args, string key)
         {
-            args.TryGetValue(key, out string value);
+            args.TryGetValue(key.ToLower(), out string value);
             return value;
         }
 
         public static string GetValue(this IDictionary<string, string> args, string key, string defaultValue)
         {
-            args.TryGetValue(key, out string value);
+            args.TryGetValue(key.ToLower(), out string value);
             return value ?? defaultValue;
         }
 
         public static string GetAndSetValue(this IDictionary<string, string> args, string key, string defaultValue)
         {
-            if(!args.TryGetValue(key, out string value))
+            if(!args.TryGetValue(key.ToLower(), out string value))
             {
                 args.Add(key, defaultValue);
             }
@@ -55,7 +55,7 @@ namespace HttPlaceholder.Common.Utilities
 
         public static int GetValue(this IDictionary<string, string> args, string key, int defaultValue)
         {
-            if (!args.TryGetValue(key, out string value))
+            if (!args.TryGetValue(key.ToLower(), out string value))
             {
                 return defaultValue;
             }
@@ -70,7 +70,7 @@ namespace HttPlaceholder.Common.Utilities
 
         public static int GetAndSetValue(this IDictionary<string, string> args, string key, int defaultValue)
         {
-            if (!args.TryGetValue(key, out string value))
+            if (!args.TryGetValue(key.ToLower(), out string value))
             {
                 args.Add(key, defaultValue.ToString());
                 return defaultValue;
@@ -87,7 +87,7 @@ namespace HttPlaceholder.Common.Utilities
 
         public static bool GetValue(this IDictionary<string, string> args, string key, bool defaultValue)
         {
-            if (!args.TryGetValue(key, out string value))
+            if (!args.TryGetValue(key.ToLower(), out string value))
             {
                 return defaultValue;
             }
@@ -107,7 +107,7 @@ namespace HttPlaceholder.Common.Utilities
 
         public static bool GetAndSetValue(this IDictionary<string, string> args, string key, bool defaultValue)
         {
-            if (!args.TryGetValue(key, out string value))
+            if (!args.TryGetValue(key.ToLower(), out string value))
             {
                 args.Add(key, defaultValue.ToString());
                 return defaultValue;
