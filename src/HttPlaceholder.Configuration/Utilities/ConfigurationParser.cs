@@ -72,13 +72,15 @@ namespace HttPlaceholder.Configuration.Utilities
         private IDictionary<string, string> BuildFinalArgsDictionary(IDictionary<string, string> argsDictionary)
         {
             var envVars = _envService.GetEnvironmentVariables();
+            envVars = envVars?.ToDictionary(d => d.Key.ToLower(), d => d.Value);
+
             var configDictionary = new Dictionary<string, string>();
             foreach (var constant in GetConfigKeyMetadata())
             {
                 if (!string.IsNullOrWhiteSpace(constant.Path))
                 {
                     // First, add the environment variables to the configuration.
-                    if (envVars != null && envVars.TryGetValue(constant.Key, out var envVar))
+                    if (envVars != null && envVars.TryGetValue(constant.Key.ToLower(), out var envVar))
                     {
                         configDictionary.Add(constant.Path, envVar);
                         continue;
