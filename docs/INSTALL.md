@@ -39,9 +39,9 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 ### Hosting under IIS
 
 - It is also possible to host HttPlaceholder under IIS. You can just install HttPlaceholder using the installer mentioned above.
-- You need to install the .NET Core Hosting Bundle in order for you to host .NET Core applications under IIS. You can find the installer at <https://www.microsoft.com/net/download/dotnet-core/2.1>, under *Runtime & Hosting Bundle*.
+- You need to install the .NET Core Hosting Bundle in order for you to host .NET Core applications under IIS. You can find the installer at <https://dotnet.microsoft.com/download/dotnet-core/current/runtime>, and download the Hosting Bundle.
 - Additionally, two additional files are also installed on the machine: `_config.json` and `_web.config`. If you want to host the application in IIS, you have to remove the `_` from the filename. The `_` is added to the files so the actual configuration files won't be overwritten if a new version of HttPlaceholder is installed.
-- The `web.config` is needed to instruct IIS how to host the application. The `config.json` file contains all possible configuration values that are also available through the command line. For more information on the `config.json` file, read more [here](CONFIG.md). Besides this, you might want the application logging to be written to a file. You can set the `stdoutLogFile` variable in the `web.config` file to a path on your disk and set `stdoutLogEnabled` to `true`.
+- The `web.config` is needed to instruct IIS how to host the application. The `config.json` file contains all possible configuration values that are also available through the command line. This file needs to be moved to a location outside of the installation directory. For more information on the `config.json` file, read more [here](CONFIG.md). Besides this, you might want the application logging to be written to a file. You can set the `stdoutLogFile` variable in the `web.config` file to a path on your disk and set `stdoutLogEnabled` to `true`.
 
 ### Hosting as a Windows Service
 
@@ -61,3 +61,7 @@ Read more about this subject for the specific web servers:
 - [Nginx](https://www.nginx.com/resources/wiki/start/topics/examples/forwarded/)
 - [Apache](https://httpd.apache.org/docs/2.4/mod/mod_proxy.html)
 - [IIS](https://blogs.msdn.microsoft.com/webapps/2018/09/05/how-to-log-client-ip-when-iis-is-load-balanced-the-x-forwarded-for-header-xff/)
+
+## Using SSL
+
+HttPlaceholder supports HTTPS. See [configuration](CONFIG.md) for more information on this. By default, it uses the private key that is installed with HttPlaceholder. This file is named `key.pfx` and the password is `1234`. Before using HttPlaceholder and calling the HTTPS URL, you'll need to make sure to import and trust the .pfx file on your OS. For your convenience, three scripts (for Windows, Linux and Mac) are added for installing and trusting the .pfx file of HttPlaceholder. You can find the script in the installation folder: `install-private-key.sh` for Mac and Linux and `Install-Private-Key.ps1` for Windows.
