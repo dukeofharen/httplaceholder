@@ -20,12 +20,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}thisisanyurl";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual("No conditions; also OK!", content);
-            }
+            using var response = await Client.GetAsync(url);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("No conditions; also OK!", content);
         }
     }
 }

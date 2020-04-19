@@ -21,15 +21,13 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}bla";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-                var header = response.Headers.First(h => h.Key == "X-HttPlaceholder-Correlation").Value.ToArray();
-                Assert.AreEqual(1, header.Length);
-                Assert.IsFalse(string.IsNullOrWhiteSpace(header.First()));
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+            var header = response.Headers.First(h => h.Key == "X-HttPlaceholder-Correlation").Value.ToArray();
+            Assert.AreEqual(1, header.Length);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(header.First()));
         }
 
         [TestMethod]
@@ -39,12 +37,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9752EX";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
     }
 }

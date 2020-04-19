@@ -21,11 +21,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}temp-redirect";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                Assert.AreEqual(HttpStatusCode.TemporaryRedirect, response.StatusCode);
-                Assert.AreEqual("https://google.com/", response.Headers.Single(h => h.Key == "Location").Value.Single());
-            }
+            using var response = await Client.GetAsync(url);
+            Assert.AreEqual(HttpStatusCode.TemporaryRedirect, response.StatusCode);
+            Assert.AreEqual("https://google.com/", response.Headers.Single(h => h.Key == "Location").Value.Single());
         }
 
         [TestMethod]
@@ -35,11 +33,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}permanent-redirect";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                Assert.AreEqual(HttpStatusCode.MovedPermanently, response.StatusCode);
-                Assert.AreEqual("https://reddit.com/", response.Headers.Single(h => h.Key == "Location").Value.Single());
-            }
+            using var response = await Client.GetAsync(url);
+            Assert.AreEqual(HttpStatusCode.MovedPermanently, response.StatusCode);
+            Assert.AreEqual("https://reddit.com/", response.Headers.Single(h => h.Key == "Location").Value.Single());
         }
     }
 }

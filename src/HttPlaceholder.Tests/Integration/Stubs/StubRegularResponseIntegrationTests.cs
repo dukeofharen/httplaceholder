@@ -31,12 +31,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 .Returns("127.0.0.1");
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual("OK", content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("OK", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
@@ -46,12 +44,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}image.jpg";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsByteArrayAsync();
-                Assert.AreEqual(75583, content.Length);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsByteArrayAsync();
+            Assert.AreEqual(75583, content.Length);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
@@ -69,12 +65,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                .Returns(Encoding.UTF8.GetBytes(fileContents));
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(fileContents, content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(fileContents, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
@@ -84,13 +78,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}index.html";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsTrue(content.Contains("Test page in HttPlaceholder"));
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/html", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(content.Contains("Test page in HttPlaceholder"));
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/html", response.Content.Headers.ContentType.ToString());
         }
     }
 }

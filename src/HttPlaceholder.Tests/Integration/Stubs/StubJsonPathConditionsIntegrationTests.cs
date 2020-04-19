@@ -49,12 +49,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.IsTrue(string.IsNullOrEmpty(content));
         }
 
         [TestMethod]
@@ -90,12 +88,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.IsTrue(string.IsNullOrEmpty(content));
         }
     }
 }

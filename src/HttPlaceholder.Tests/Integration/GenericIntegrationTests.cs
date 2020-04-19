@@ -43,10 +43,8 @@ namespace HttPlaceholder.Tests.Integration
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
         }
 
         [TestMethod]
@@ -62,10 +60,8 @@ namespace HttPlaceholder.Tests.Integration
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
         }
 
         [TestMethod]
@@ -83,10 +79,8 @@ namespace HttPlaceholder.Tests.Integration
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.AreNotEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.AreNotEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
     }
 }

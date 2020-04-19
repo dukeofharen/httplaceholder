@@ -56,17 +56,15 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
 
-                var content = await response.Content.ReadAsStringAsync();
-                var reader = new StringReader(content);
-                var deserializer = new Deserializer();
-                var stubs = deserializer.Deserialize<IEnumerable<Dto.Stubs.FullStubDto>>(reader);
-                Assert.AreEqual(1, stubs.Count());
-                Assert.AreEqual("test-456", stubs.Single().Stub.Id);
-            }
+            var content = await response.Content.ReadAsStringAsync();
+            var reader = new StringReader(content);
+            var deserializer = new Deserializer();
+            var stubs = deserializer.Deserialize<IEnumerable<Dto.Stubs.FullStubDto>>(reader);
+            Assert.AreEqual(1, stubs.Count());
+            Assert.AreEqual("test-456", stubs.Single().Stub.Id);
         }
 
         [TestMethod]
@@ -100,15 +98,13 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
 
-                var content = await response.Content.ReadAsStringAsync();
-                var stubs = JsonConvert.DeserializeObject<IEnumerable<Dto.Stubs.FullStubDto>>(content);
-                Assert.AreEqual(1, stubs.Count());
-                Assert.AreEqual("test-456", stubs.Single().Stub.Id);
-            }
+            var content = await response.Content.ReadAsStringAsync();
+            var stubs = JsonConvert.DeserializeObject<IEnumerable<Dto.Stubs.FullStubDto>>(content);
+            Assert.AreEqual(1, stubs.Count());
+            Assert.AreEqual("test-456", stubs.Single().Stub.Id);
         }
 
         [TestMethod]
@@ -336,16 +332,14 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
 
-                var content = await response.Content.ReadAsStringAsync();
-                var tenantNames = JsonConvert.DeserializeObject<List<string>>(content);
-                Assert.AreEqual(2, tenantNames.Count);
-                Assert.AreEqual("otherTenant", tenantNames[0]);
-                Assert.AreEqual("tenant1", tenantNames[1]);
-            }
+            var content = await response.Content.ReadAsStringAsync();
+            var tenantNames = JsonConvert.DeserializeObject<List<string>>(content);
+            Assert.AreEqual(2, tenantNames.Count);
+            Assert.AreEqual("otherTenant", tenantNames[0]);
+            Assert.AreEqual("tenant1", tenantNames[1]);
         }
     }
 }

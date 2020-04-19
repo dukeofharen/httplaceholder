@@ -27,13 +27,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}dynamic-query.txt?queryString1={query1Val}&queryString2={query2Val}";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(expectedResult, content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(expectedResult, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
@@ -43,13 +41,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}dynamic-uuid.txt";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsTrue(Guid.TryParse(content.Replace("The value is ", string.Empty), out _));
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(Guid.TryParse(content.Replace("The value is ", string.Empty), out _));
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
@@ -64,15 +60,13 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             request.Headers.Add("X-Api-Key", apiKey);
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(expectedResult, content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(expectedResult, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
 
-                Assert.AreEqual("localhost", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
-            }
+            Assert.AreEqual("localhost", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
         }
 
         [TestMethod]
@@ -92,15 +86,13 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(expectedResult, content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(expectedResult, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
 
-                Assert.AreEqual("Value 2!", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
-            }
+            Assert.AreEqual("Value 2!", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
         }
 
         [TestMethod]
@@ -117,15 +109,13 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(expectedResult, content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(expectedResult, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
 
-                Assert.AreEqual("Test123", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
-            }
+            Assert.AreEqual("Test123", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
         }
 
         [TestMethod]
@@ -143,15 +133,13 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var request = new HttpRequestMessage(HttpMethod.Get, url);
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(expectedResult, content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(expectedResult, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
 
-                Assert.AreEqual(url, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
-            }
+            Assert.AreEqual(url, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
         }
 
         [TestMethod]
@@ -169,15 +157,13 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var request = new HttpRequestMessage(HttpMethod.Get, url);
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(expectedResult, content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(expectedResult, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
 
-                Assert.AreEqual(ip, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
-            }
+            Assert.AreEqual(ip, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
         }
 
         [TestMethod]
@@ -196,15 +182,13 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var request = new HttpRequestMessage(HttpMethod.Get, url);
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(expectedResult, content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(expectedResult, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
 
-                Assert.AreEqual(expectedDateTime, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
-            }
+            Assert.AreEqual(expectedDateTime, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
         }
 
         [TestMethod]
@@ -223,15 +207,13 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var request = new HttpRequestMessage(HttpMethod.Get, url);
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(expectedResult, content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(expectedResult, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
 
-                Assert.AreEqual(expectedDateTime, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
-            }
+            Assert.AreEqual(expectedDateTime, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
         }
     }
 }

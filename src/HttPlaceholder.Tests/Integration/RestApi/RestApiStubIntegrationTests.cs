@@ -55,12 +55,10 @@ response:
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
-                Assert.AreEqual(1, StubSource._stubModels.Count);
-                Assert.AreEqual("situation-01", StubSource._stubModels.Single().Id);
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
+            Assert.AreEqual(1, StubSource._stubModels.Count);
+            Assert.AreEqual("situation-01", StubSource._stubModels.Single().Id);
         }
 
         [TestMethod]
@@ -96,12 +94,10 @@ response:
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
-                Assert.AreEqual(1, StubSource._stubModels.Count);
-                Assert.AreEqual("situation-01", StubSource._stubModels.First().Id);
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
+            Assert.AreEqual(1, StubSource._stubModels.Count);
+            Assert.AreEqual("situation-01", StubSource._stubModels.First().Id);
         }
 
         [TestMethod]
@@ -192,17 +188,15 @@ response:
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
 
-                var content = await response.Content.ReadAsStringAsync();
-                var reader = new StringReader(content);
-                var deserializer = new Deserializer();
-                var stubs = deserializer.Deserialize<IEnumerable<Dto.Stubs.FullStubDto>>(reader);
-                Assert.AreEqual(1, stubs.Count());
-                Assert.AreEqual("test-123", stubs.First().Stub.Id);
-            }
+            var content = await response.Content.ReadAsStringAsync();
+            var reader = new StringReader(content);
+            var deserializer = new Deserializer();
+            var stubs = deserializer.Deserialize<IEnumerable<Dto.Stubs.FullStubDto>>(reader);
+            Assert.AreEqual(1, stubs.Count());
+            Assert.AreEqual("test-123", stubs.First().Stub.Id);
         }
 
         [TestMethod]
@@ -226,15 +220,13 @@ response:
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
 
-                var content = await response.Content.ReadAsStringAsync();
-                var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
-                Assert.AreEqual(1, stubs.Count());
-                Assert.AreEqual("test-123", stubs.First().Stub.Id);
-            }
+            var content = await response.Content.ReadAsStringAsync();
+            var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
+            Assert.AreEqual(1, stubs.Count());
+            Assert.AreEqual("test-123", stubs.First().Stub.Id);
         }
 
         [TestMethod]
@@ -280,16 +272,14 @@ response:
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
 
-                var content = await response.Content.ReadAsStringAsync();
-                var reader = new StringReader(content);
-                var deserializer = new Deserializer();
-                var stub = deserializer.Deserialize<Dto.Stubs.FullStubDto>(reader);
-                Assert.AreEqual("test-123", stub.Stub.Id);
-            }
+            var content = await response.Content.ReadAsStringAsync();
+            var reader = new StringReader(content);
+            var deserializer = new Deserializer();
+            var stub = deserializer.Deserialize<Dto.Stubs.FullStubDto>(reader);
+            Assert.AreEqual("test-123", stub.Stub.Id);
         }
 
         [TestMethod]
@@ -313,14 +303,12 @@ response:
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
 
-                var content = await response.Content.ReadAsStringAsync();
-                var stub = JsonConvert.DeserializeObject<FullStubDto>(content);
-                Assert.AreEqual("test-123", stub.Stub.Id);
-            }
+            var content = await response.Content.ReadAsStringAsync();
+            var stub = JsonConvert.DeserializeObject<FullStubDto>(content);
+            Assert.AreEqual("test-123", stub.Stub.Id);
         }
 
         [TestMethod]
@@ -469,14 +457,12 @@ response:
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
-                Assert.AreEqual("*", response.Headers.Single(h => h.Key == "Access-Control-Allow-Origin").Value.Single());
-                Assert.AreEqual("Authorization, Content-Type", response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
-                Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS", response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
-                Assert.AreEqual("no-store, no-cache", response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
+            Assert.AreEqual("*", response.Headers.Single(h => h.Key == "Access-Control-Allow-Origin").Value.Single());
+            Assert.AreEqual("Authorization, Content-Type", response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
+            Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS", response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
+            Assert.AreEqual("no-store, no-cache", response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
         }
 
         [TestMethod]
@@ -493,14 +479,12 @@ response:
             request.Headers.Add("Origin", "http://localhost:8080");
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
-                Assert.AreEqual("*", response.Headers.Single(h => h.Key == "Access-Control-Allow-Origin").Value.Single());
-                Assert.AreEqual("Authorization, Content-Type", response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
-                Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS", response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
-                Assert.AreEqual("no-store, no-cache", response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
+            Assert.AreEqual("*", response.Headers.Single(h => h.Key == "Access-Control-Allow-Origin").Value.Single());
+            Assert.AreEqual("Authorization, Content-Type", response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
+            Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS", response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
+            Assert.AreEqual("no-store, no-cache", response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
         }
 
         [TestMethod]
@@ -679,11 +663,9 @@ response:
             var request = new HttpRequestMessage {Method = HttpMethod.Delete, RequestUri = new Uri(url)};
 
             // Act / Assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
-                Assert.IsFalse(StubSource._stubModels.Any());
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
+            Assert.IsFalse(StubSource._stubModels.Any());
         }
     }
 }

@@ -30,12 +30,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 .Returns("127.0.0.1");
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual("OK", content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("OK", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
@@ -53,12 +51,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 .Returns("127.0.0.5");
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual("OK", content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("OK", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

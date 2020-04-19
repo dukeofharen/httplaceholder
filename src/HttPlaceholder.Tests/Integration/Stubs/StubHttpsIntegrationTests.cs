@@ -32,13 +32,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 .Returns(true);
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual("OK", content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("OK", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
@@ -53,10 +51,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             request.Headers.Add("X-Forwarded-Proto", "http");
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
     }
 }

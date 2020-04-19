@@ -39,13 +39,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual("<result>OK</result>", content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("<result>OK</result>", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
@@ -71,13 +69,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual("<result>OK</result>", content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("<result>OK</result>", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
@@ -103,12 +99,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [TestMethod]
@@ -129,13 +123,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("<result>OK</result>", content);
-                Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("<result>OK</result>", content);
+            Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
@@ -156,12 +148,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.IsTrue(string.IsNullOrEmpty(content));
         }
     }
 }

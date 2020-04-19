@@ -28,13 +28,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsFalse(string.IsNullOrEmpty(content));
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsFalse(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
@@ -49,12 +47,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [TestMethod]
@@ -64,14 +60,12 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9761BP";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsFalse(string.IsNullOrEmpty(content));
-                JObject.Parse(content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsFalse(string.IsNullOrEmpty(content));
+            JObject.Parse(content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
@@ -81,14 +75,12 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9752EM";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsFalse(string.IsNullOrEmpty(content));
-                JObject.Parse(content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsFalse(string.IsNullOrEmpty(content));
+            JObject.Parse(content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
@@ -98,12 +90,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9761BP&filter=postcode";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [TestMethod]
@@ -113,14 +103,12 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9468BA";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                Assert.IsFalse(string.IsNullOrEmpty(content));
-                JObject.Parse(content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsFalse(string.IsNullOrEmpty(content));
+            JObject.Parse(content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
         }
     }
 }
