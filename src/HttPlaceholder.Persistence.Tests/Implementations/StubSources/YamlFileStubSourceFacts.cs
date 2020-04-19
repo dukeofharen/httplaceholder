@@ -190,5 +190,37 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             Assert.AreEqual("94f62b43bdf013c9f75e8786275f13e5", ids[0]);
             Assert.AreEqual("1341ca208eaa83efea41d7043599da8c", ids[1]);
         }
+
+        [TestMethod]
+        public async Task YamlFileStubSource_GetStubsAsync_YamlIsNotInFormOfArray_ShouldParseStubAnyway()
+        {
+            // arrange
+            const string inputFile = @"C:\stubs";
+            _options.Value.Storage.InputFile = inputFile;
+
+            var files = new[]
+            {
+                @"C:\stubs\file4.yml"
+            };
+
+            _fileServiceMock
+                .Setup(m => m.GetFiles(inputFile, "*.yml"))
+                .Returns(files);
+
+            _fileServiceMock
+                .Setup(m => m.IsDirectory(inputFile))
+                .Returns(true);
+
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(files[0]))
+                .Returns(TestResources.YamlFile4);
+
+            // act
+            var result = await _source.GetStubsAsync();
+
+            // assert
+            var ids = result.Select(s => s.Id).ToArray();
+            Assert.AreEqual("situation-01", ids[0]);
+        }
     }
 }
