@@ -94,6 +94,12 @@ namespace HttPlaceholder.Configuration.Utilities
                 // Then, add the default values and values passed through the command line arguments.
                 if (argsDictionary.TryGetValue(constant.Key, out var value))
                 {
+                    if (constant.IsBoolValue == true && string.IsNullOrWhiteSpace(value))
+                    {
+                        // The property is a boolean and no value was provided. Interpret this as "true".
+                        value = "True";
+                    }
+
                     configDictionary.Add(constant.Path, value);
                 }
             }
