@@ -34,11 +34,11 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void UtcNowVariableHandler_Parse_HappyFlow_FormatSet()
         {
             // Arrange
-            string input = "((utcnow:dd-MM-yyyy HH:mm:ss))";
+            var input = "((utcnow:dd-MM-yyyy HH:mm:ss))";
 
             // Act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // Assert
             Assert.AreEqual("21-08-2019 20:29:17", result);
@@ -48,11 +48,11 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void UtcNowVariableHandler_Parse_HappyFlow_NoFormatSet()
         {
             // Arrange
-            string input = "((utcnow))";
+            var input = "((utcnow))";
 
             // Act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // Assert
             Assert.AreEqual(Now.ToString(CultureInfo.InvariantCulture), result);

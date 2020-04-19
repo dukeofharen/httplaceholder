@@ -23,14 +23,14 @@ namespace HttPlaceholder.Authorization.Implementations
 
         public bool CheckLoginCookie()
         {
-            string username = _settings.Authentication?.ApiUsername ?? string.Empty;
-            string password = _settings.Authentication?.ApiPassword ?? string.Empty;
+            var username = _settings.Authentication?.ApiUsername ?? string.Empty;
+            var password = _settings.Authentication?.ApiPassword ?? string.Empty;
             if (string.IsNullOrWhiteSpace(username) && string.IsNullOrWhiteSpace(password))
             {
                 return true;
             }
 
-            string expectedHash = CreateHash(username, password);
+            var expectedHash = CreateHash(username, password);
             var cookie = _httpContextAccessor.HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == CookieKeys.LoginCookieKey);
             return cookie.Value == expectedHash;
         }

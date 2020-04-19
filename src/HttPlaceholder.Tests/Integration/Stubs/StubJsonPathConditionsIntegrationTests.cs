@@ -26,8 +26,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPut_Json_ValidateJsonPath_HappyFlow()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}users";
-            string body = @"{
+            var url = $"{TestServer.BaseAddress}users";
+            var body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -57,7 +57,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
                 Assert.IsTrue(string.IsNullOrEmpty(content));
             }
@@ -67,8 +67,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPut_Json_ValidateJsonPath_StubNotFound()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}users";
-            string body = @"{
+            var url = $"{TestServer.BaseAddress}users";
+            var body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -98,7 +98,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
                 Assert.IsTrue(string.IsNullOrEmpty(content));
             }

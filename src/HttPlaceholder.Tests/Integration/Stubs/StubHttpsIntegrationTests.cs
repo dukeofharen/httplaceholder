@@ -25,7 +25,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_IsHttps_Ok()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ishttps-ok";
+            var url = $"{TestServer.BaseAddress}ishttps-ok";
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(url)
@@ -40,7 +40,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual("OK", content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
@@ -51,7 +51,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_IsHttps_Nok()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ishttps-ok";
+            var url = $"{TestServer.BaseAddress}ishttps-ok";
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(url)

@@ -49,7 +49,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void FullPathConditionChecker_Validate_StubsFound_WrongPath_ShouldReturnInvalid()
         {
             // arrange
-            string path = "/login?success=true";
+            var path = "/login?success=true";
             var conditions = new StubConditionsModel
             {
                 Url = new StubUrlConditionModel
@@ -73,7 +73,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void FullPathConditionChecker_Validate_StubsFound_HappyFlow_CompleteUrl()
         {
             // arrange
-            string path = "/login?success=true";
+            var path = "/login?success=true";
             var conditions = new StubConditionsModel
             {
                 Url = new StubUrlConditionModel
@@ -97,7 +97,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void FullPathConditionChecker_Validate_StubsFound_HappyFlow_Regex()
         {
             // arrange
-            string path = "/locatieserver/v3/suggest";
+            var path = "/locatieserver/v3/suggest";
             var conditions = new StubConditionsModel
             {
                 Url = new StubUrlConditionModel

@@ -33,7 +33,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task<IEnumerable<StubModel>> GetStubsAsync()
         {
-            string inputFileLocation = _settings.Storage?.InputFile;
+            var inputFileLocation = _settings.Storage?.InputFile;
             var fileLocations = new List<string>();
             if (string.IsNullOrEmpty(inputFileLocation))
             {
@@ -111,7 +111,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                 if (string.IsNullOrWhiteSpace(stub.Id))
                 {
                     // If no ID is set, calculate a unique ID based on the stub contents.
-                    string contents = JsonConvert.SerializeObject(stub);
+                    var contents = JsonConvert.SerializeObject(stub);
                     stub.Id = HashingUtilities.GetMd5String(contents);
                 }
             }

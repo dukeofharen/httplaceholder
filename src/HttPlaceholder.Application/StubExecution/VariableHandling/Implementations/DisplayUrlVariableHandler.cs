@@ -20,7 +20,7 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
         {
             if (matches.Any())
             {
-                string url = _httpContextService.DisplayUrl;
+                var url = _httpContextService.DisplayUrl;
                 foreach (var match in matches)
                 {
                     if (match.Groups.Count >= 2)

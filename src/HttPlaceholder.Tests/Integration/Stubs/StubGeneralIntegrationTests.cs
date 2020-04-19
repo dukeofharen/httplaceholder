@@ -24,12 +24,12 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_ReturnsXHttPlaceholderCorrelationHeader()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}bla";
+            var url = $"{TestServer.BaseAddress}bla";
 
             // act / assert
             using (var response = await Client.GetAsync(url))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.IsTrue(string.IsNullOrEmpty(content));
                 Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
                 var header = response.Headers.First(h => h.Key == "X-HttPlaceholder-Correlation").Value.ToArray();
@@ -42,12 +42,12 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_StubNotFound_ShouldReturn500()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9752EX";
+            var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9752EX";
 
             // act / assert
             using (var response = await Client.GetAsync(url))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.IsTrue(string.IsNullOrEmpty(content));
                 Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
             }

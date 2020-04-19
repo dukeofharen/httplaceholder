@@ -24,11 +24,11 @@ namespace HttPlaceholder.Persistence
         public static IServiceCollection AddStubSources(this IServiceCollection services, IConfiguration configuration)
         {
             var settings = configuration.Get<SettingsModel>();
-            bool registerRelationDbStubSource = false;
-            string fileStoragePath = settings?.Storage?.FileStorageLocation;
-            string mysqlConnectionString = configuration.GetConnectionString(MysqlQueryStore.ConnectionStringKey);
-            string sqliteConnectionString = configuration.GetConnectionString(SqliteQueryStore.ConnectionStringKey);
-            string sqlServerConnectionString = configuration.GetConnectionString(SqlServerQueryStore.ConnectionStringKey);
+            var registerRelationDbStubSource = false;
+            var fileStoragePath = settings?.Storage?.FileStorageLocation;
+            var mysqlConnectionString = configuration.GetConnectionString(MysqlQueryStore.ConnectionStringKey);
+            var sqliteConnectionString = configuration.GetConnectionString(SqliteQueryStore.ConnectionStringKey);
+            var sqlServerConnectionString = configuration.GetConnectionString(SqlServerQueryStore.ConnectionStringKey);
             if (!string.IsNullOrWhiteSpace(fileStoragePath))
             {
                 // If "fileStorageLocation" is set, it means HttPlaceholder should read and write files to a specific location.

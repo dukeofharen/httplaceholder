@@ -34,7 +34,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var conn = _queryStore.GetConnection())
             {
-                string json = JsonConvert.SerializeObject(requestResult);
+                var json = JsonConvert.SerializeObject(requestResult);
                 await conn.ExecuteAsync(_queryStore.AddRequestQuery, new
                 {
                     requestResult.CorrelationId,
@@ -50,7 +50,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var conn = _queryStore.GetConnection())
             {
-                string json = JsonConvert.SerializeObject(stub);
+                var json = JsonConvert.SerializeObject(stub);
                 await conn.ExecuteAsync(_queryStore.AddStubQuery, new
                 {
                     StubId = stub.Id,
@@ -62,7 +62,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task CleanOldRequestResultsAsync()
         {
-            int maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
+            var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
             using (var conn = _queryStore.GetConnection())
             {
                 await conn.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new { Limit = maxLength });
@@ -81,7 +81,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var conn = _queryStore.GetConnection())
             {
-                int updated = await conn.ExecuteAsync(_queryStore.DeleteStubQuery, new { StubId = stubId });
+                var updated = await conn.ExecuteAsync(_queryStore.DeleteStubQuery, new { StubId = stubId });
                 return updated > 0;
             }
         }

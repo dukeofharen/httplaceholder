@@ -28,7 +28,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             var path = EnsureAndGetRequestsFolder();
             var filePath = Path.Combine(path, $"{requestResult.CorrelationId}.json");
-            string contents = JsonConvert.SerializeObject(requestResult);
+            var contents = JsonConvert.SerializeObject(requestResult);
             _fileService.WriteAllText(filePath, contents);
             return Task.CompletedTask;
         }
@@ -37,7 +37,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             var path = EnsureAndGetStubsFolder();
             var filePath = Path.Combine(path, $"{stub.Id}.json");
-            string contents = JsonConvert.SerializeObject(stub);
+            var contents = JsonConvert.SerializeObject(stub);
             _fileService.WriteAllText(filePath, contents);
             return Task.CompletedTask;
         }
@@ -100,7 +100,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         public async Task CleanOldRequestResultsAsync()
         {
             var path = EnsureAndGetRequestsFolder();
-            int maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
+            var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
             var requests = (await GetRequestResultsAsync())
                .OrderByDescending(r => r.RequestEndTime)
                .Skip(maxLength);
@@ -120,8 +120,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         private string EnsureAndGetStubsFolder()
         {
-            string folder = _settings.Storage?.FileStorageLocation;
-            string path = Path.Combine(folder, "stubs");
+            var folder = _settings.Storage?.FileStorageLocation;
+            var path = Path.Combine(folder, "stubs");
             if (!_fileService.DirectoryExists(path))
             {
                 _fileService.CreateDirectory(path);
@@ -132,8 +132,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         private string EnsureAndGetRequestsFolder()
         {
-            string folder = _settings.Storage?.FileStorageLocation;
-            string path = Path.Combine(folder, "requests");
+            var folder = _settings.Storage?.FileStorageLocation;
+            var path = Path.Combine(folder, "requests");
             if (!_fileService.DirectoryExists(path))
             {
                 _fileService.CreateDirectory(path);

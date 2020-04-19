@@ -22,8 +22,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public void InitializeStubIntegrationTest(string yamlFileName)
         {
             // Load the integration YAML file here.
-            string path = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), yamlFileName);
-            string integrationYml = File.ReadAllText(path);
+            var path = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), yamlFileName);
+            var integrationYml = File.ReadAllText(path);
 
             FileServiceMock = new Mock<IFileService>();
             FileServiceMock

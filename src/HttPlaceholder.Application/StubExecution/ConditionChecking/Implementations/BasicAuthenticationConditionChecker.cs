@@ -24,15 +24,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 var headers = _httpContextService.GetHeaders();
 
                 // Try to retrieve the Authorization header.
-                if (!headers.TryGetValue("Authorization", out string authorization))
+                if (!headers.TryGetValue("Authorization", out var authorization))
                 {
                     result.ConditionValidation = ConditionValidationType.Invalid;
                     result.Log = "No Authorization header found in request.";
                 }
                 else
                 {
-                    string expectedBase64UsernamePassword = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{basicAuthenticationCondition.Username}:{basicAuthenticationCondition.Password}"));
-                    string expectedAuthorizationHeader = $"Basic {expectedBase64UsernamePassword}";
+                    var expectedBase64UsernamePassword = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{basicAuthenticationCondition.Username}:{basicAuthenticationCondition.Password}"));
+                    var expectedAuthorizationHeader = $"Basic {expectedBase64UsernamePassword}";
                     if (expectedAuthorizationHeader == authorization)
                     {
                         result.Log = $"Basic authentication condition passed for stub '{stubId}'.";

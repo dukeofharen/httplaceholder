@@ -43,7 +43,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void VaribaleParser_Parse_HappyFlow()
         {
             // arange
-            string input = @"((handler1:value1)) ((handler2))
+            var input = @"((handler1:value1)) ((handler2))
 ((handler1:bla))
 ((handler-x))";
 
@@ -57,7 +57,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
                .Returns<string, IEnumerable<Match>>((r, m) => r);
 
             // act
-            string result = _parser.Parse(input);
+            var result = _parser.Parse(input);
 
             // assert
             Assert.AreEqual(input, result);

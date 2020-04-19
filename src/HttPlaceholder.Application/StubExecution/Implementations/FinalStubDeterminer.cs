@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         public StubModel DetermineFinalStub(IList<(StubModel, IEnumerable<ConditionCheckResultModel>)> matchedStubs)
         {
             StubModel finalStub;
-            int highestPriority = matchedStubs.Max(s => s.Item1.Priority);
+            var highestPriority = matchedStubs.Max(s => s.Item1.Priority);
             if (matchedStubs.Count(s => s.Item1.Priority == highestPriority) > 1)
             {
                 // If there are multiple stubs found that have the highest priority, we want to select the stub with the most executed conditions,

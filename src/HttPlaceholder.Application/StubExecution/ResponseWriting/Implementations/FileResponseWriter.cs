@@ -23,7 +23,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
+            var executed = false;
             if (stub.Response?.File != null)
             {
                 string finalFilePath = null;
@@ -34,8 +34,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 else
                 {
                     // File doesn't exist, but might exist in the file root folder.
-                    string yamlFilePath = _stubRootPathResolver.GetStubRootPath();
-                    string tempPath = Path.Combine(yamlFilePath, stub.Response.File);
+                    var yamlFilePath = _stubRootPathResolver.GetStubRootPath();
+                    var tempPath = Path.Combine(yamlFilePath, stub.Response.File);
                     if (_fileService.FileExists(tempPath))
                     {
                         finalFilePath = tempPath;

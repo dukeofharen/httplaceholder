@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
+            var executed = false;
             var stubResponseHeaders = stub.Response?.Headers;
             if (stubResponseHeaders != null && stubResponseHeaders?.Any() == true)
             {

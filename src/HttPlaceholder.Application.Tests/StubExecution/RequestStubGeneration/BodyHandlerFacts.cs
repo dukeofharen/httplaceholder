@@ -19,7 +19,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             var stub = new StubModel();
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsFalse(result);
@@ -30,12 +30,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task BodyHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            string body = "POSTED!";
+            var body = "POSTED!";
             var request = new RequestResultModel {RequestParameters = new RequestParametersModel {Body = body}};
             var stub = new StubModel();
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsTrue(result);

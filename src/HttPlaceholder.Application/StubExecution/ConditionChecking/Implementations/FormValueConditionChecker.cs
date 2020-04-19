@@ -25,7 +25,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             }
 
             var form = _httpContextService.GetFormValues();
-            int validConditions = 0;
+            var validConditions = 0;
             foreach (var condition in formConditions)
             {
                 var formValue = form.FirstOrDefault(f => f.Item1 == condition.Key);
@@ -36,7 +36,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                     break;
                 }
 
-                foreach (string value in formValue.Item2)
+                foreach (var value in formValue.Item2)
                 {
                     if (StringHelper.IsRegexMatchOrSubstring(value, condition.Value))
                     {

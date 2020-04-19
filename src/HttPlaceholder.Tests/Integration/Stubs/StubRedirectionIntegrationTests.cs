@@ -24,7 +24,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_TempRedirect()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}temp-redirect";
+            var url = $"{TestServer.BaseAddress}temp-redirect";
 
             // act / assert
             using (var response = await Client.GetAsync(url))
@@ -38,7 +38,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_PermanentRedirect()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}permanent-redirect";
+            var url = $"{TestServer.BaseAddress}permanent-redirect";
 
             // act / assert
             using (var response = await Client.GetAsync(url))

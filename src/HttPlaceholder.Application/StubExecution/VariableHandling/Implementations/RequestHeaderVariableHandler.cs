@@ -22,8 +22,8 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
             {
                 if (match.Groups.Count == 3)
                 {
-                    string headerName = match.Groups[2].Value;
-                    string replaceValue = string.Empty;
+                    var headerName = match.Groups[2].Value;
+                    var replaceValue = string.Empty;
                     headers.TryGetValue(headerName, out replaceValue);
 
                     input = input.Replace(match.Value, replaceValue);

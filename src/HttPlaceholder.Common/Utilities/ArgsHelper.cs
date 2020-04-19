@@ -10,7 +10,7 @@ namespace HttPlaceholder.Common.Utilities
         {
             var subResult = new Dictionary<string, List<string>>();
 
-            string varPointer = string.Empty;
+            var varPointer = string.Empty;
             foreach (var arg in args)
             {
                 if (arg.StartsWith("--"))

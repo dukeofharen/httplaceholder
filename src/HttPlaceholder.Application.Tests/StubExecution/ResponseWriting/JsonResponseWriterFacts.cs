@@ -28,7 +28,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsFalse(result);
@@ -39,7 +39,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow()
         {
             // arrange
-            string responseText = "{}";
+            var responseText = "{}";
             var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
             var stub = new StubModel
             {
@@ -52,7 +52,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);
@@ -64,7 +64,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
         {
             // arrange
-            string responseText = "{}";
+            var responseText = "{}";
             var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
             var stub = new StubModel
             {
@@ -78,7 +78,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             response.Headers.Add("Content-Type", "text/plain");
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);

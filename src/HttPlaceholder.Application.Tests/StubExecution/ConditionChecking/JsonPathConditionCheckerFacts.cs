@@ -46,7 +46,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void JsonPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
         {
             // arrange
-            string body = @"{
+            var body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -90,7 +90,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void JsonPathConditionChecker_Validate_StubsFound_OnlyOneJsonPathConditionCorrect_ShouldReturnInvalid()
         {
             // arrange
-            string body = @"{
+            var body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -134,7 +134,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void JsonPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
         {
             // arrange
-            string body = @"{
+            var body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,

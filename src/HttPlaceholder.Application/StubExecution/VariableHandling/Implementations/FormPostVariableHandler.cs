@@ -40,8 +40,8 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
                 {
                     if (match.Groups.Count == 3)
                     {
-                        string formValueName = match.Groups[2].Value;
-                        string replaceValue = string.Empty;
+                        var formValueName = match.Groups[2].Value;
+                        var replaceValue = string.Empty;
                         formDict.TryGetValue(formValueName, out replaceValue);
 
                         input = input.Replace(match.Value, replaceValue);

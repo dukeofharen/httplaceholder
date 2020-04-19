@@ -27,15 +27,15 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_Query()
         {
             // arrange
-            string query1Val = "John";
-            string query2Val = "=";
-            string expectedResult = $"The value is {query1Val} {WebUtility.UrlEncode(query2Val)}";
-            string url = $"{TestServer.BaseAddress}dynamic-query.txt?queryString1={query1Val}&queryString2={query2Val}";
+            var query1Val = "John";
+            var query2Val = "=";
+            var expectedResult = $"The value is {query1Val} {WebUtility.UrlEncode(query2Val)}";
+            var url = $"{TestServer.BaseAddress}dynamic-query.txt?queryString1={query1Val}&queryString2={query2Val}";
 
             // act / assert
             using (var response = await Client.GetAsync(url))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(expectedResult, content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
@@ -46,12 +46,12 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_Uuid()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}dynamic-uuid.txt";
+            var url = $"{TestServer.BaseAddress}dynamic-uuid.txt";
 
             // act / assert
             using (var response = await Client.GetAsync(url))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.IsTrue(Guid.TryParse(content.Replace("The value is ", string.Empty), out _));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
@@ -62,9 +62,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_RequestHeaders()
         {
             // arrange
-            string apiKey = Guid.NewGuid().ToString();
-            string expectedResult = $"API key: {apiKey}";
-            string url = $"{TestServer.BaseAddress}dynamic-request-header.txt";
+            var apiKey = Guid.NewGuid().ToString();
+            var expectedResult = $"API key: {apiKey}";
+            var url = $"{TestServer.BaseAddress}dynamic-request-header.txt";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("X-Api-Key", apiKey);
@@ -72,7 +72,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(expectedResult, content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
@@ -85,8 +85,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPost_Dynamic_FormPost()
         {
             // arrange
-            string expectedResult = "Posted: Value 1!";
-            string url = $"{TestServer.BaseAddress}dynamic-form-post.txt";
+            var expectedResult = "Posted: Value 1!";
+            var url = $"{TestServer.BaseAddress}dynamic-form-post.txt";
 
             var request = new HttpRequestMessage(HttpMethod.Post, url)
             {
@@ -100,7 +100,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(expectedResult, content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
@@ -113,9 +113,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPost_Dynamic_RequestBody()
         {
             // arrange
-            string expectedResult = "Posted: Test123";
-            string url = $"{TestServer.BaseAddress}dynamic-request-body.txt";
-            string body = "Test123";
+            var expectedResult = "Posted: Test123";
+            var url = $"{TestServer.BaseAddress}dynamic-request-body.txt";
+            var body = "Test123";
 
             var request = new HttpRequestMessage(HttpMethod.Post, url)
             {
@@ -125,7 +125,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(expectedResult, content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
@@ -138,9 +138,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_DisplayUrl()
         {
             // arrange
-            string query = "?var1=value1&var2=value2";
-            string url = $"{TestServer.BaseAddress}dynamic-display-url.txt{query}";
-            string expectedResult = $"URL: {url}";
+            var query = "?var1=value1&var2=value2";
+            var url = $"{TestServer.BaseAddress}dynamic-display-url.txt{query}";
+            var expectedResult = $"URL: {url}";
 
             ClientIpResolverMock
                 .Setup(m => m.GetHost())
@@ -151,7 +151,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(expectedResult, content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
@@ -164,9 +164,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_ClientIp()
         {
             // arrange
-            string ip = "11.22.33.44";
-            string url = $"{TestServer.BaseAddress}dynamic-client-ip.txt";
-            string expectedResult = $"IP: {ip}";
+            var ip = "11.22.33.44";
+            var url = $"{TestServer.BaseAddress}dynamic-client-ip.txt";
+            var expectedResult = $"IP: {ip}";
 
             ClientIpResolverMock
                 .Setup(m => m.GetClientIp())
@@ -177,7 +177,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(expectedResult, content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
@@ -190,9 +190,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_LocalNow()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}dynamic-local-now.txt";
-            string expectedDateTime = "2019-08-21 20:41:51";
-            string expectedResult = $"Local now: {expectedDateTime}";
+            var url = $"{TestServer.BaseAddress}dynamic-local-now.txt";
+            var expectedDateTime = "2019-08-21 20:41:51";
+            var expectedResult = $"Local now: {expectedDateTime}";
 
             var now = new DateTime(2019, 8, 21, 20, 41, 51, DateTimeKind.Local);
             DateTimeMock
@@ -204,7 +204,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(expectedResult, content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
@@ -217,9 +217,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_UtcNow()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}dynamic-utc-now.txt";
-            string expectedDateTime = "2019-08-21 20:41:51";
-            string expectedResult = $"UTC now: {expectedDateTime}";
+            var url = $"{TestServer.BaseAddress}dynamic-utc-now.txt";
+            var expectedDateTime = "2019-08-21 20:41:51";
+            var expectedResult = $"UTC now: {expectedDateTime}";
 
             var now = new DateTime(2019, 8, 21, 20, 41, 51, DateTimeKind.Utc);
             DateTimeMock
@@ -231,7 +231,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(expectedResult, content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());

@@ -57,7 +57,7 @@ namespace HttPlaceholder.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            string path = _httpContextService.Path;
+            var path = _httpContextService.Path;
             if (_segmentsToIgnore.Any(s => path.Contains(s, StringComparison.OrdinalIgnoreCase)))
             {
                 await _next(context);
@@ -65,7 +65,7 @@ namespace HttPlaceholder.Middleware
             }
 
             const string correlationHeaderKey = "X-HttPlaceholder-Correlation";
-            string correlation = Guid.NewGuid().ToString();
+            var correlation = Guid.NewGuid().ToString();
             var requestLogger = _requestLoggerFactory.GetRequestLogger();
             requestLogger.SetCorrelationId(correlation);
             try
@@ -110,7 +110,7 @@ namespace HttPlaceholder.Middleware
 
             var loggingResult = requestLogger.GetResult();
             var jsonLoggingResult = JObject.FromObject(loggingResult);
-            bool enableRequestLogging = _settings.Storage?.EnableRequestLogging ?? false;
+            var enableRequestLogging = _settings.Storage?.EnableRequestLogging ?? false;
             if (enableRequestLogging)
             {
                 _logger.LogInformation(jsonLoggingResult.ToString());

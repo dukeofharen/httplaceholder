@@ -17,10 +17,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
         {
             var result = new ConditionCheckResultModel();
-            string pathCondition = conditions?.Url?.Path;
+            var pathCondition = conditions?.Url?.Path;
             if (!string.IsNullOrEmpty(pathCondition))
             {
-                string path = _httpContextService.Path;
+                var path = _httpContextService.Path;
                 if (StringHelper.IsRegexMatchOrSubstring(path, pathCondition))
                 {
                     // The path matches the provided regex. Add the stub ID to the resulting list.

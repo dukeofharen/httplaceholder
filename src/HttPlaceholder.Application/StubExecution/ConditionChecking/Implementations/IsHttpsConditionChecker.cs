@@ -19,8 +19,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             var condition = conditions?.Url?.IsHttps;
             if (condition != null)
             {
-                bool shouldBeHttps = condition.Value;
-                bool isHttps = _clientDataResolver.IsHttps();
+                var shouldBeHttps = condition.Value;
+                var isHttps = _clientDataResolver.IsHttps();
                 result.ConditionValidation = isHttps == shouldBeHttps
                     ? ConditionValidationType.Valid
                     : ConditionValidationType.Invalid;

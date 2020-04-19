@@ -28,21 +28,21 @@ namespace HttPlaceholder.Common.Utilities
         public static string GetEntryAssemblyRootPath()
         {
             var assembly = Assembly.GetEntryAssembly();
-            string path = assembly.Location;
+            var path = assembly.Location;
             return Path.GetDirectoryName(path);
         }
 
         public static string GetExecutingAssemblyRootPath()
         {
             var assembly = Assembly.GetExecutingAssembly();
-            string path = assembly.Location;
+            var path = assembly.Location;
             return Path.GetDirectoryName(path);
         }
 
         public static string GetCallingAssemblyRootPath()
         {
             var assembly = Assembly.GetCallingAssembly();
-            string path = assembly.Location;
+            var path = assembly.Location;
             return Path.GetDirectoryName(path);
         }
 

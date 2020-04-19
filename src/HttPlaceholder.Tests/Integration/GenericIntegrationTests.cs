@@ -37,7 +37,7 @@ namespace HttPlaceholder.Tests.Integration
         public async Task GenericIntegration_SwaggerUi_IsApproachable()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}swagger/index.html";
+            var url = $"{TestServer.BaseAddress}swagger/index.html";
 
             var request = new HttpRequestMessage
             {
@@ -56,7 +56,7 @@ namespace HttPlaceholder.Tests.Integration
         public async Task GenericIntegration_SwaggerJson_IsApproachable()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}swagger/v1/swagger.json";
+            var url = $"{TestServer.BaseAddress}swagger/v1/swagger.json";
 
             var request = new HttpRequestMessage
             {
@@ -77,7 +77,7 @@ namespace HttPlaceholder.Tests.Integration
             // The URL ph-ui is not executed as stub, so it doesn't return an HTTP 500 when called.
 
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-ui";
+            var url = $"{TestServer.BaseAddress}ph-ui";
 
             var request = new HttpRequestMessage
             {

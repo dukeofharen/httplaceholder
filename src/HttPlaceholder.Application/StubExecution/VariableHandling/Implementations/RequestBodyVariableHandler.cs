@@ -20,7 +20,7 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
         {
             if (matches.Any())
             {
-                string body = _httpContextService.GetBody();
+                var body = _httpContextService.GetBody();
                 foreach (var match in matches)
                 {
                     if (match.Groups.Count >= 2)

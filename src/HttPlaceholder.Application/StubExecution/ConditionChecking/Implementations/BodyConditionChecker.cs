@@ -23,7 +23,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             {
                 var body = _httpContextService.GetBody();
 
-                int validBodyConditions = 0;
+                var validBodyConditions = 0;
                 foreach (var condition in bodyConditions)
                 {
                     if (!StringHelper.IsRegexMatchOrSubstring(body, condition))

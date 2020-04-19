@@ -46,7 +46,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(true);
 
             // act
-            string result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPath();
 
             // assert
             Assert.AreEqual(inputFile, result);
@@ -68,7 +68,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(false);
 
             // act
-            string result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPath();
 
             // assert
             Assert.AreEqual(inputFilePath, result);
@@ -85,7 +85,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(assemblyPath);
 
             // act
-            string result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPath();
 
             // assert
             Assert.AreEqual(assemblyPath, result);

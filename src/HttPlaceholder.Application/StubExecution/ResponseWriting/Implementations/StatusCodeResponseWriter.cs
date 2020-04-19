@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
+            var executed = false;
             if (response.StatusCode == 0)
             {
                 response.StatusCode = stub.Response?.StatusCode ?? 200;

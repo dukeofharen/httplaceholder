@@ -11,7 +11,7 @@ namespace HttPlaceholder.Common.Utilities
         {
 
             var matches = NamespaceRegex.Matches(body);
-            for (int i = 0; i < matches.Count; i++)
+            for (var i = 0; i < matches.Count; i++)
             {
                 var match = matches[i];
 

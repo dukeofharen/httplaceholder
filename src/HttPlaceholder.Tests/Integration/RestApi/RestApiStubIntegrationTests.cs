@@ -35,8 +35,8 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Stub_Add_Yaml()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs";
-            string body = @"id: situation-01
+            var url = $"{TestServer.BaseAddress}ph-api/stubs";
+            var body = @"id: situation-01
 conditions:
   method: GET
   url:
@@ -73,8 +73,8 @@ response:
         public async Task RestApiIntegration_Stub_Add_Json()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs";
-            string body = @"{
+            var url = $"{TestServer.BaseAddress}ph-api/stubs";
+            var body = @"{
   ""id"": ""situation-01"",
   ""conditions"": {
     ""method"": ""GET"",
@@ -181,7 +181,7 @@ response:
         public async Task RestApiIntegration_Stub_GetAll_Yaml()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs";
+            var url = $"{TestServer.BaseAddress}ph-api/stubs";
             StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -202,7 +202,7 @@ response:
             {
                 Assert.IsTrue(response.IsSuccessStatusCode);
 
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 var reader = new StringReader(content);
                 var deserializer = new Deserializer();
                 var stubs = deserializer.Deserialize<IEnumerable<Dto.Stubs.FullStubDto>>(reader);
@@ -215,7 +215,7 @@ response:
         public async Task RestApiIntegration_Stub_GetAll_Json()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs";
+            var url = $"{TestServer.BaseAddress}ph-api/stubs";
             StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -236,7 +236,7 @@ response:
             {
                 Assert.IsTrue(response.IsSuccessStatusCode);
 
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
                 Assert.AreEqual(1, stubs.Count());
                 Assert.AreEqual("test-123", stubs.First().Stub.Id);
@@ -269,7 +269,7 @@ response:
         public async Task RestApiIntegration_Stub_Get_Yaml()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
+            var url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
             StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -290,7 +290,7 @@ response:
             {
                 Assert.IsTrue(response.IsSuccessStatusCode);
 
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 var reader = new StringReader(content);
                 var deserializer = new Deserializer();
                 var stub = deserializer.Deserialize<Dto.Stubs.FullStubDto>(reader);
@@ -302,7 +302,7 @@ response:
         public async Task RestApiIntegration_Stub_Get_Json()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
+            var url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
             StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -323,7 +323,7 @@ response:
             {
                 Assert.IsTrue(response.IsSuccessStatusCode);
 
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 var stub = JsonConvert.DeserializeObject<FullStubDto>(content);
                 Assert.AreEqual("test-123", stub.Stub.Id);
             }
@@ -354,7 +354,7 @@ response:
         public async Task RestApiIntegration_Stub_Get_StubNotFound_ShouldReturn404()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
+            var url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
             StubSource._stubModels.Add(new StubModel
             {
                 Id = "test-124",
@@ -466,7 +466,7 @@ response:
         public async Task RestApiIntegration_Stub_Get_HeadersAreSet()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs";
+            var url = $"{TestServer.BaseAddress}ph-api/stubs";
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
@@ -489,7 +489,7 @@ response:
         public async Task RestApiIntegration_Stub_Options_HeadersAreSet()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs";
+            var url = $"{TestServer.BaseAddress}ph-api/stubs";
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Options,
@@ -514,8 +514,8 @@ response:
         {
             // Add
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs";
-            string body = @"id: situation-01
+            var url = $"{TestServer.BaseAddress}ph-api/stubs";
+            var body = @"id: situation-01
 conditions:
   method: GET
   url:
@@ -587,8 +587,8 @@ response:
         public async Task RestApiIntegration_Stub_Add_Then_Update_Json()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/stubs";
-            string body = @"{
+            var url = $"{TestServer.BaseAddress}ph-api/stubs";
+            var body = @"{
   ""id"": ""situation-01"",
   ""conditions"": {
     ""method"": ""GET"",

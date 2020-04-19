@@ -20,7 +20,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             var hostCondition = conditions?.Host;
             if (hostCondition != null)
             {
-                string host = _clientDataResolver.GetHost();
+                var host = _clientDataResolver.GetHost();
                 result.ConditionValidation = !StringHelper.IsRegexMatchOrSubstring(host, hostCondition)
                     ? ConditionValidationType.Invalid
                     : ConditionValidationType.Valid;

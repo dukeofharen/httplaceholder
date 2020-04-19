@@ -46,7 +46,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void BodyConditionChecker_Validate_StubsFound_AllBodyConditionsIncorrect_ShouldReturnInvalid()
         {
             // arrange
-            string body = "this is a test";
+            var body = "this is a test";
             var conditions = new StubConditionsModel
             {
                 Body = new[]
@@ -71,7 +71,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void BodyConditionChecker_Validate_StubsFound_OnlyOneBodyConditionCorrect_ShouldReturnInvalid()
         {
             // arrange
-            string body = "this is a test";
+            var body = "this is a test";
             var conditions = new StubConditionsModel
             {
                 Body = new[]
@@ -96,7 +96,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void BodyConditionChecker_Validate_StubsFound_HappyFlow_FullText()
         {
             // arrange
-            string body = "this is a test";
+            var body = "this is a test";
             var conditions = new StubConditionsModel
             {
                 Body = new[]
@@ -120,7 +120,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void BodyConditionChecker_Validate_StubsFound_HappyFlow_Regex()
         {
             // arrange
-            string body = "this is a test";
+            var body = "this is a test";
             var conditions = new StubConditionsModel
             {
                 Body = new[]

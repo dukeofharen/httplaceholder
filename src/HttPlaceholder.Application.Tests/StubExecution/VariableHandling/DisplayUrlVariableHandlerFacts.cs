@@ -27,10 +27,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void RequestBodyVariableHandler_Parse_HappyFlow()
         {
             // arrange
-            string input = "URL: ((display_url))";
-            string url = "http://localhost:5000/test.txt?var1=value1&var2=value2";
+            var input = "URL: ((display_url))";
+            var url = "http://localhost:5000/test.txt?var1=value1&var2=value2";
 
-            string expectedResult = $"URL: {url}";
+            var expectedResult = $"URL: {url}";
 
             _httpContextServiceMock
                 .Setup(m => m.DisplayUrl)
@@ -38,7 +38,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
 
             // act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // assert
             Assert.AreEqual(expectedResult, result);

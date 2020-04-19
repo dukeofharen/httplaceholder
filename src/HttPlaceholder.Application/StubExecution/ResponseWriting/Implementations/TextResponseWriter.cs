@@ -10,11 +10,11 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
+            var executed = false;
             if (stub.Response.Text != null)
             {
                 response.Body = Encoding.UTF8.GetBytes(stub.Response.Text);
-                if (!response.Headers.TryGetValue("Content-Type", out string contentType))
+                if (!response.Headers.TryGetValue("Content-Type", out var contentType))
                 {
                     response.Headers.Add("Content-Type", "text/plain");
                 }

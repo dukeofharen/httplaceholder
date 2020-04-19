@@ -84,7 +84,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             lock (_lock)
             {
-                int maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
+                var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
                 var requests = _requestResultModels
                    .OrderByDescending(r => r.RequestEndTime)
                    .Skip(maxLength);

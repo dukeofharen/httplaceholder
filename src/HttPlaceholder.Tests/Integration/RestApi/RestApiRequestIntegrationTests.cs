@@ -29,7 +29,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Request_GetAll()
         {
             // Arrange
-            string correlation = Guid.NewGuid().ToString();
+            var correlation = Guid.NewGuid().ToString();
             StubSource._requestResultModels.Add(new RequestResultModel
             {
                 CorrelationId = correlation

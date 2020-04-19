@@ -25,7 +25,7 @@ namespace HttPlaceholder.Persistence.Implementations
         public string GetStubRootPath()
         {
             // First, check the "inputFile" configuration property and extract the directory of this folder.
-            string inputFile = _settings.Storage?.InputFile;
+            var inputFile = _settings.Storage?.InputFile;
             if (inputFile != null)
             {
                 return

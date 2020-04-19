@@ -40,7 +40,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             var stub = new StubModel();
             foreach (var handler in _handlers.OrderByDescending(w => w.Priority))
             {
-                bool executed = await handler.HandleStubGenerationAsync(requestResult, stub);
+                var executed = await handler.HandleStubGenerationAsync(requestResult, stub);
                 _logger.LogInformation($"Handler '{handler.GetType().Name}'" + (executed ? " executed" : "") + ".");
             }
 
@@ -48,7 +48,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             stub.Response.Text = "OK!";
 
             // Generate an ID based on the created stub.
-            string contents = JsonConvert.SerializeObject(stub);
+            var contents = JsonConvert.SerializeObject(stub);
             stub.Id = "generated-" + HashingUtilities.GetMd5String(contents);
             await _stubContext.DeleteStubAsync(stub.Id);
             var result = await _stubContext.AddStubAsync(stub);

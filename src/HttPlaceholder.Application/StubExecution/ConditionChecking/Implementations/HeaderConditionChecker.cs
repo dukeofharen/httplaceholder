@@ -21,15 +21,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             var headerConditions = conditions?.Headers;
             if (headerConditions != null && headerConditions?.Any() == true)
             {
-                int validHeaders = 0;
+                var validHeaders = 0;
                 var headers = _httpContextService.GetHeaders();
                 foreach (var condition in headerConditions)
                 {
                     // Check whether the condition header is available in the actual headers.
-                    if (headers.TryGetValue(condition.Key, out string headerValue))
+                    if (headers.TryGetValue(condition.Key, out var headerValue))
                     {
                         // Check whether the condition header value is available in the actual headers.
-                        string value = condition.Value ?? string.Empty;
+                        var value = condition.Value ?? string.Empty;
                         if (!StringHelper.IsRegexMatchOrSubstring(headerValue, value))
                         {
                             // If the check failed, it means the header is incorrect and the condition should fail.

@@ -23,8 +23,8 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
             {
                 if (match.Groups.Count == 3)
                 {
-                    string queryStringName = match.Groups[2].Value;
-                    string replaceValue = string.Empty;
+                    var queryStringName = match.Groups[2].Value;
+                    var replaceValue = string.Empty;
                     queryDict.TryGetValue(queryStringName, out replaceValue);
 
                     replaceValue = WebUtility.UrlEncode(replaceValue);

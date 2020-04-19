@@ -26,8 +26,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPost_SoapXml_ValidateXPath_HappyFlow()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}InStock";
-            string body = @"<?xml version=""1.0""?>
+            var url = $"{TestServer.BaseAddress}InStock";
+            var body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -47,7 +47,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual("<result>OK</result>", content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
@@ -58,8 +58,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPost_SoapXml_ValidateXPath_NoNamespacesDefined_HappyFlow()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}InStock";
-            string body = @"<?xml version=""1.0""?>
+            var url = $"{TestServer.BaseAddress}InStock";
+            var body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -79,7 +79,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual("<result>OK</result>", content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
@@ -90,8 +90,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPost_SoapXml_ValidateXPath_StubNotFound()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}InStock";
-            string body = @"<?xml version=""1.0""?>
+            var url = $"{TestServer.BaseAddress}InStock";
+            var body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -111,7 +111,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.IsTrue(string.IsNullOrEmpty(content));
                 Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
             }
@@ -121,8 +121,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPost_RegularXml_ValidateXPath_HappyFlow_XmlResponseWriter()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}xml";
-            string body = @"<?xml version=""1.0""?>
+            var url = $"{TestServer.BaseAddress}xml";
+            var body = @"<?xml version=""1.0""?>
 <object>
 	<a>TEST</a>
 	<b>TEST2</b>
@@ -137,7 +137,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("<result>OK</result>", content);
                 Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
@@ -148,8 +148,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPost_RegularXml_ValidateXPath_StubNotFound()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}InStock";
-            string body = @"<?xml version=""1.0""?>
+            var url = $"{TestServer.BaseAddress}InStock";
+            var body = @"<?xml version=""1.0""?>
 <object>
 	<a>TEST!</a>
 	<b>TEST2</b>
@@ -164,7 +164,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
                 Assert.IsTrue(string.IsNullOrEmpty(content));
             }

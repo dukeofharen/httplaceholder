@@ -133,7 +133,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
                .Returns(false);
 
             // act
-            bool result = await _source.DeleteStubAsync(stubId);
+            var result = await _source.DeleteStubAsync(stubId);
 
             // assert
             Assert.IsFalse(result);
@@ -159,7 +159,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
                .Setup(m => m.DeleteFile(filePath));
 
             // act
-            bool result = await _source.DeleteStubAsync(stubId);
+            var result = await _source.DeleteStubAsync(stubId);
 
             // assert
             Assert.IsTrue(result);

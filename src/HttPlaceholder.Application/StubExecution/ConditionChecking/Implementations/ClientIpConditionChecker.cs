@@ -19,7 +19,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
         {
             var result = new ConditionCheckResultModel();
-            string clientIpCondition = conditions?.ClientIp;
+            var clientIpCondition = conditions?.ClientIp;
             if (clientIpCondition != null)
             {
                 var clientIp = IPAddress.Parse(_clientDataResolver.GetClientIp());

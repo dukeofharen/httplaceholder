@@ -28,13 +28,13 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void QueryStringHandlerFacts_Parse_HappyFlow()
         {
             // arrange
-            string input = "Query var 1: ((query:var1)), query var 2: ((query:var2)), query var 3: ((query:var3))";
+            var input = "Query var 1: ((query:var1)), query var 2: ((query:var2)), query var 3: ((query:var3))";
             var queryDict = new Dictionary<string, string>
             {
                 { "var1", "https://google.com" },
                 { "var3", "value3" },
             };
-            string expectedResult = "Query var 1: https://google.com, query var 2: , query var 3: value3";
+            var expectedResult = "Query var 1: https://google.com, query var 2: , query var 3: value3";
 
             _httpContextServiceMock
                 .Setup(m => m.GetQueryStringDictionary())
@@ -42,7 +42,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
 
             // act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // assert
             Assert.AreEqual(expectedResult, result);

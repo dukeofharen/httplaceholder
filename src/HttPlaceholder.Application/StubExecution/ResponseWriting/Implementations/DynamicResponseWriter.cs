@@ -19,7 +19,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
+            var executed = false;
             if (stub.Response.EnableDynamicMode == true)
             {
                 executed = true;
@@ -27,13 +27,13 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 // Try to parse and replace the variables in the body.
                 if (!response.BodyIsBinary && response.Body != null)
                 {
-                    string parsedBody = _variableParser.Parse(Encoding.UTF8.GetString(response.Body));
+                    var parsedBody = _variableParser.Parse(Encoding.UTF8.GetString(response.Body));
                     response.Body = Encoding.UTF8.GetBytes(parsedBody);
                 }
 
                 // Try to parse and replace the variables in the header values.
                 var keys = response.Headers.Keys.ToArray();
-                foreach (string key in keys)
+                foreach (var key in keys)
                 {
                     response.Headers[key] = _variableParser.Parse(response.Headers[key]);
                 }

@@ -40,7 +40,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsFalse(result);
@@ -60,7 +60,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);
@@ -78,7 +78,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                     EnableDynamicMode = true
                 }
             };
-            string body = "this is the body";
+            var body = "this is the body";
             var response = new ResponseModel
             {
                 Body = Encoding.UTF8.GetBytes(body)
@@ -89,7 +89,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                 .Returns<string>(i => i);
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);
@@ -114,7 +114,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             };
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);
@@ -132,7 +132,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                     EnableDynamicMode = true
                 }
             };
-            string body = "this is the body";
+            var body = "this is the body";
             var response = new ResponseModel
             {
                 Body = Encoding.UTF8.GetBytes(body),
@@ -148,7 +148,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                 .Returns<string>(i => i);
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);

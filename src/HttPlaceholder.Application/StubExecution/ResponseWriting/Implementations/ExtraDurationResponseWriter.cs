@@ -18,12 +18,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public async Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
+            var executed = false;
 
             // Simulate sluggish response here, if configured.
             if (stub.Response?.ExtraDuration.HasValue == true)
             {
-                int duration = stub.Response.ExtraDuration.Value;
+                var duration = stub.Response.ExtraDuration.Value;
                 await _asyncService.DelayAsync(duration);
                 executed = true;
             }

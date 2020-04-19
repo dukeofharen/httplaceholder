@@ -25,7 +25,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             };
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsFalse(result);
@@ -49,7 +49,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             };
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsFalse(result);
@@ -60,9 +60,9 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            string username = "httplaceholder";
-            string password = "secret";
-            string auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
+            var username = "httplaceholder";
+            var password = "secret";
+            var auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
             var stub = new StubModel();
             stub.Conditions.Headers = new Dictionary<string, string>
             {
@@ -80,7 +80,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             };
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsTrue(result);

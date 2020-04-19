@@ -33,10 +33,10 @@ namespace HttPlaceholder.Infrastructure.Web
         {
             get
             {
-                string proto = _clientDataResolver.IsHttps() ? "https" : "http";
-                string host = _clientDataResolver.GetHost();
+                var proto = _clientDataResolver.IsHttps() ? "https" : "http";
+                var host = _clientDataResolver.GetHost();
                 string path = _httpContextAccessor.HttpContext.Request.Path;
-                string query = _httpContextAccessor.HttpContext.Request.QueryString.HasValue
+                var query = _httpContextAccessor.HttpContext.Request.QueryString.HasValue
                     ? _httpContextAccessor.HttpContext.Request.QueryString.Value
                     : string.Empty;
                 return $"{proto}://{host}{path}{query}";

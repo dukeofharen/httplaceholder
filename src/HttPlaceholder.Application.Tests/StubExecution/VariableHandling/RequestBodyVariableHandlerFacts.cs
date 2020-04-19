@@ -27,10 +27,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void RequestBodyVariableHandler_Parse_HappyFlow()
         {
             // arrange
-            string input = "Posted content: ((request_body))";
-            string body = "POSTED BODY";
+            var input = "Posted content: ((request_body))";
+            var body = "POSTED BODY";
 
-            string expectedResult = "Posted content: POSTED BODY";
+            var expectedResult = "Posted content: POSTED BODY";
 
             _httpContextServiceMock
                 .Setup(m => m.GetBody())
@@ -38,7 +38,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
 
             // act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // assert
             Assert.AreEqual(expectedResult, result);

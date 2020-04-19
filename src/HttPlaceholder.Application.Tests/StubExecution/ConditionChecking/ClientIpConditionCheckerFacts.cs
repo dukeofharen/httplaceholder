@@ -30,7 +30,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void ClientIpConditionChecker_Validate_ConditionNotSet_ShouldReturnNotExecuted()
         {
             // arrange
-            string stubId = "stub1";
+            var stubId = "stub1";
             var conditions = new StubConditionsModel
             {
                 ClientIp = null
@@ -47,8 +47,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void ClientIpConditionChecker_Validate_SingleIp_NotEqual_ShouldReturnInvalid()
         {
             // arrange
-            string stubId = "stub1";
-            string clientIp = "127.0.0.1";
+            var stubId = "stub1";
+            var clientIp = "127.0.0.1";
             var conditions = new StubConditionsModel
             {
                 ClientIp = "127.0.0.2"
@@ -69,8 +69,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void ClientIpConditionChecker_Validate_SingleIp_Equal_ShouldReturnValid()
         {
             // arrange
-            string stubId = "stub1";
-            string clientIp = "127.0.0.1";
+            var stubId = "stub1";
+            var clientIp = "127.0.0.1";
             var conditions = new StubConditionsModel
             {
                 ClientIp = "127.0.0.1"
@@ -91,8 +91,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void ClientIpConditionChecker_Validate_IpRange_NotInRange_ShouldReturnInvalid()
         {
             // arrange
-            string stubId = "stub1";
-            string clientIp = "127.0.0.9";
+            var stubId = "stub1";
+            var clientIp = "127.0.0.9";
             var conditions = new StubConditionsModel
             {
                 ClientIp = "127.0.0.0/29"
@@ -113,8 +113,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void ClientIpConditionChecker_Validate_IpRange_InRange_ShouldReturnValid()
         {
             // arrange
-            string stubId = "stub1";
-            string clientIp = "127.0.0.6";
+            var stubId = "stub1";
+            var clientIp = "127.0.0.6";
             var conditions = new StubConditionsModel
             {
                 ClientIp = "127.0.0.0/29"

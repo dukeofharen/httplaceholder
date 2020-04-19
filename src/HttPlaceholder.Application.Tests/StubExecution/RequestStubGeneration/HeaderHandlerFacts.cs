@@ -24,7 +24,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             var stub = new StubModel();
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsFalse(result);
@@ -51,7 +51,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             var stub = new StubModel();
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsTrue(result);

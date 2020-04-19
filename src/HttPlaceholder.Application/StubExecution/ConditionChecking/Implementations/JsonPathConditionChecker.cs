@@ -21,8 +21,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             var jsonPathConditions = conditions?.JsonPath?.ToArray();
             if (jsonPathConditions != null && jsonPathConditions?.Any() == true)
             {
-                int validJsonPaths = 0;
-                string body = _httpContextService.GetBody();
+                var validJsonPaths = 0;
+                var body = _httpContextService.GetBody();
                 var jsonObject = JObject.Parse(body);
                 foreach (var condition in jsonPathConditions)
                 {

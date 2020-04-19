@@ -125,7 +125,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public async Task YamlFileStubSource_GetStubsAsync_InputFileSet_InputFileIsDirectory_ShouldReadFilesFromThatDirectory()
         {
             // arrange
-            string inputFile = @"C:\stubs";
+            var inputFile = @"C:\stubs";
             _options.Value.Storage.InputFile = inputFile;
 
             var files = new[]

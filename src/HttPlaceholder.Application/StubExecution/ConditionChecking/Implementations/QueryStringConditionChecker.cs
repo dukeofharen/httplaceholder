@@ -21,15 +21,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             var queryStringConditions = conditions?.Url?.Query;
             if (queryStringConditions != null && queryStringConditions?.Any() == true)
             {
-                int validQueryStrings = 0;
+                var validQueryStrings = 0;
                 var queryString = _httpContextService.GetQueryStringDictionary();
                 foreach (var condition in queryStringConditions)
                 {
                     // Check whether the condition query is available in the actual query string.
-                    if (queryString.TryGetValue(condition.Key, out string queryValue))
+                    if (queryString.TryGetValue(condition.Key, out var queryValue))
                     {
                         // Check whether the condition query value is available in the actual query string.
-                        string value = condition.Value ?? string.Empty;
+                        var value = condition.Value ?? string.Empty;
                         if (!StringHelper.IsRegexMatchOrSubstring(queryValue, value))
                         {
                             // If the check failed, it means the query string is incorrect and the condition should fail.

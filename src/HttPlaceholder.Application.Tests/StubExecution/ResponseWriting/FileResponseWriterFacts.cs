@@ -46,7 +46,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsFalse(result);
@@ -77,7 +77,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                .Returns(body);
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);
@@ -88,9 +88,9 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileNotFoundDirectly_ButFoundInStubFolder()
         {
             // arrange
-            string yamlFilePath = @"C:\stubs";
-            string file = "image.png";
-            string expectedFolder = Path.Combine(yamlFilePath, file);
+            var yamlFilePath = @"C:\stubs";
+            var file = "image.png";
+            var expectedFolder = Path.Combine(yamlFilePath, file);
             var body = new byte[] { 1, 2, 3 };
             var stub = new StubModel
             {
@@ -119,7 +119,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                .Returns(body);
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);
@@ -130,9 +130,9 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task FileResponseWriter_WriteToResponseAsync_FileNotFoundDirectly_AlsoNotFoundInStubFolder_ShouldReturnNoBody()
         {
             // arrange
-            string yamlFilePath = @"C:\stubs";
-            string file = "image.png";
-            string expectedFolder = Path.Combine(yamlFilePath, file);
+            var yamlFilePath = @"C:\stubs";
+            var file = "image.png";
+            var expectedFolder = Path.Combine(yamlFilePath, file);
             var stub = new StubModel
             {
                 Response = new StubResponseModel
@@ -156,7 +156,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                .Returns(false);
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsFalse(result);

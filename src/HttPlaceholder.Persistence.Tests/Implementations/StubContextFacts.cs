@@ -171,7 +171,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource.Object);
 
             // act
-            bool result = await _context.DeleteStubAsync(stubId);
+            var result = await _context.DeleteStubAsync(stubId);
 
             // assert
             Assert.IsTrue(result);

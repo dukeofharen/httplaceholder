@@ -22,7 +22,7 @@ namespace HttPlaceholder.Application.StubExecution
             services.AddSingleton<IRequestStubGenerator, RequestStubGenerator>();
             services.AddSingleton<IVariableParser, VariableParser>();
 
-            string filter = "HttPlaceholder";
+            var filter = "HttPlaceholder";
 
             // Condition checkers
             foreach (var type in AssemblyHelper.GetImplementations<IConditionChecker>(filter))

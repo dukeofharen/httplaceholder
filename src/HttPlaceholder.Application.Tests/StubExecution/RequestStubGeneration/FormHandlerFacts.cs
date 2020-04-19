@@ -23,7 +23,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             var stub = new StubModel();
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsFalse(result);
@@ -34,7 +34,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task FormHandler_HandleStubGenerationAsync_NoFormContentTypeSet_ShouldReturnFalse()
         {
             // Arrange
-            string contentType = "application/json";
+            var contentType = "application/json";
             var request = new RequestResultModel
             {
                 RequestParameters = new RequestParametersModel
@@ -48,7 +48,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             var stub = new StubModel();
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsFalse(result);
@@ -59,8 +59,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task FormHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            string contentType = "application/x-www-form-urlencoded";
-            string form = "form1=val1&form2=val2";
+            var contentType = "application/x-www-form-urlencoded";
+            var form = "form1=val1&form2=val2";
             var request = new RequestResultModel
             {
                 RequestParameters = new RequestParametersModel
@@ -75,7 +75,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             var stub = new StubModel();
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsTrue(result);

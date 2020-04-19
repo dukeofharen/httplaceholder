@@ -26,7 +26,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Host()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}client-ip-1";
+            var url = $"{TestServer.BaseAddress}client-ip-1";
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(url)
@@ -39,7 +39,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.SendAsync(request))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual("OK", content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
@@ -49,7 +49,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Base64Content_HappyFlow()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}image.jpg";
+            var url = $"{TestServer.BaseAddress}image.jpg";
 
             // act / assert
             using (var response = await Client.GetAsync(url))
@@ -64,8 +64,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_File_HappyFlow()
         {
             // arrange
-            string fileContents = "File contents yo!";
-            string url = $"{TestServer.BaseAddress}text.txt";
+            var fileContents = "File contents yo!";
+            var url = $"{TestServer.BaseAddress}text.txt";
 
             FileServiceMock
                .Setup(m => m.FileExists("text.txt"))
@@ -77,7 +77,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using (var response = await Client.GetAsync(url))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.AreEqual(fileContents, content);
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             }
@@ -87,12 +87,12 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Html()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}index.html";
+            var url = $"{TestServer.BaseAddress}index.html";
 
             // act / assert
             using (var response = await Client.GetAsync(url))
             {
-                string content = await response.Content.ReadAsStringAsync();
+                var content = await response.Content.ReadAsStringAsync();
                 Assert.IsTrue(content.Contains("Test page in HttPlaceholder"));
                 Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
                 Assert.AreEqual("text/html", response.Content.Headers.ContentType.ToString());
