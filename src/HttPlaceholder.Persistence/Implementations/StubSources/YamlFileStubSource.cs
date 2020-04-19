@@ -22,9 +22,9 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         private readonly SettingsModel _settings;
 
         public YamlFileStubSource(
-           IFileService fileService,
-           ILogger<YamlFileStubSource> logger,
-           IOptions<SettingsModel> options)
+            IFileService fileService,
+            ILogger<YamlFileStubSource> logger,
+            IOptions<SettingsModel> options)
         {
             _fileService = fileService;
             _logger = logger;
@@ -45,7 +45,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             else
             {
                 // Split on ";": it is possible to supply multiple locations.
-                var parts = inputFileLocation.Split(new[] { "%%" }, StringSplitOptions.RemoveEmptyEntries);
+                var parts = inputFileLocation.Split(new[] {"%%"}, StringSplitOptions.RemoveEmptyEntries);
                 parts = parts.Select(StripIllegalCharacters).ToArray();
                 foreach (var part in parts)
                 {
@@ -78,7 +78,17 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                     var input = _fileService.ReadAllText(file);
                     _logger.LogInformation($"File contents of '{file}': '{input}'");
 
-                    var stubs = YamlUtilities.Parse<List<StubModel>>(input);
+                    IEnumerable<StubModel> stubs;
+
+                    if (YamlIsArray(input))
+                    {
+                        stubs = YamlUtilities.Parse<List<StubModel>>(input);
+                    }
+                    else
+                    {
+                        stubs = new[] {YamlUtilities.Parse<StubModel>(input)};
+                    }
+
                     EnsureStubsHaveId(stubs);
                     result.AddRange(stubs);
                     _stubLoadDateTime = DateTime.UtcNow;
@@ -98,7 +108,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             // Check if the .yml files could be loaded.
             await GetStubsAsync();
 
-        private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) => files.Max(f => _fileService.GetModicationDateTime(f));
+        private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
+            files.Max(f => _fileService.GetModicationDateTime(f));
 
         private static void EnsureStubsHaveId(IEnumerable<StubModel> stubs)
         {
@@ -116,5 +127,9 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         }
 
         private static string StripIllegalCharacters(string input) => input.Replace("\"", string.Empty);
+
+        private static bool YamlIsArray(string yaml) => yaml
+            .Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None)
+            .Any(l => l.StartsWith("-"));
     }
 }
