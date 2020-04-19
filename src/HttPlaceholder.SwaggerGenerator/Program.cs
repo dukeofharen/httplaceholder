@@ -10,7 +10,7 @@ namespace HttPlaceholder.SwaggerGenerator
 {
     internal static class Program
     {
-        private static async Task Main(string[] args)
+        public static async Task Main(string[] args)
         {
             // Mock settings.
             var config = new ConfigurationBuilder().Build();
@@ -23,17 +23,15 @@ namespace HttPlaceholder.SwaggerGenerator
             var client = testServer.CreateClient();
 
             // Retrieve the Swagger URL.
-            using (var response = await client.GetAsync("swagger/v1/swagger.json"))
+            using var response = await client.GetAsync("swagger/v1/swagger.json");
+            if (!response.IsSuccessStatusCode)
             {
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new InvalidOperationException($"The call to the swagger.json URL failed with an HTTP '{response.StatusCode}'.");
-                }
-
-                string content = await response.Content.ReadAsStringAsync();
-                string pathToSave = Path.Join(AssemblyHelper.GetCallingAssemblyRootPath(), "swagger.json");
-                File.WriteAllText(pathToSave, content);
+                throw new InvalidOperationException($"The call to the swagger.json URL failed with an HTTP '{response.StatusCode}'.");
             }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var pathToSave = Path.Join(AssemblyHelper.GetCallingAssemblyRootPath(), "swagger.json");
+            await File.WriteAllTextAsync(pathToSave, content);
         }
     }
 }

@@ -64,4 +64,17 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Update="Resources\ManPage.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ManPage.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Resources\ManPage.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ManPage.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
 </Project>

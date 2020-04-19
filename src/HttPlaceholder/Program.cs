@@ -6,6 +6,7 @@ using System.Text;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Configuration.Utilities;
+using HttPlaceholder.Resources;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,21 +17,20 @@ namespace HttPlaceholder
     {
         public static void Main(string[] args)
         {
-            string version = AssemblyHelper.GetAssemblyVersion();
-            HandleArgument(() => Console.WriteLine(version), args, new string[] { "-v", "--version" });
+            var version = AssemblyHelper.GetAssemblyVersion();
+            HandleArgument(() => Console.WriteLine(version), args, new[] { "-v", "--version" });
 
-            Console.WriteLine($"HttPlaceholder {version} - (c) {DateTime.Now.Year} Ducode");
-            HandleArgument(() => Console.WriteLine(GetManPage()), args, new string[] { "-h", "--help", "-?" });
+            Console.WriteLine(ManPage.VersionHeader, version, DateTime.Now.Year);
+            HandleArgument(() => Console.WriteLine(GetManPage()), args, new[] { "-h", "--help", "-?" });
 
             try
             {
-                Console.WriteLine("Run this application with argument '-h' or '--help' to get more info about the command line arguments.");
-                Console.WriteLine("When running in to trouble, or just see what's going on, run this application with argument '-V' or '--verbose' to print the configuration variables.");
+                Console.WriteLine(ManPage.ExplanationHeader);
                 BuildWebHost(args).Run();
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Unexpected exception thrown: {e}");
+                Console.WriteLine(ManPage.ExceptionThrown, e);
                 Environment.Exit(-1);
             }
         }
@@ -67,7 +67,7 @@ namespace HttPlaceholder
             }
 
             builder.AppendLine();
-            builder.AppendLine("Example: httplaceholder --apiusername user --apipassword pass");
+            builder.AppendLine(ManPage.CmdExample);
 
             return builder.ToString();
         }
@@ -75,23 +75,25 @@ namespace HttPlaceholder
         private static string GetVerbosePage(IDictionary<string, string> args)
         {
             var builder = new StringBuilder();
-            foreach (var pair in args)
+            foreach (var (key, value) in args)
             {
-                builder.AppendLine($"--{pair.Key}: {pair.Value}");
+                builder.AppendLine($"--{key}: {value}");
             }
 
             return builder.ToString();
         }
 
-        private static void HandleArgument(Action action, string[] args, string[] argKeys, bool exit = true)
+        private static void HandleArgument(Action action, IEnumerable<string> args, IEnumerable<string> argKeys, bool exit = true)
         {
-            if (args.Any(arg => argKeys.Contains(arg)))
+            if (!args.Any(argKeys.Contains))
             {
-                action();
-                if (exit)
-                {
-                    Environment.Exit(0);
-                }
+                return;
+            }
+
+            action();
+            if (exit)
+            {
+                Environment.Exit(0);
             }
         }
 
