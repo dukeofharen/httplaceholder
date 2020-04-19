@@ -18,13 +18,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         {
             var result = new ConditionCheckResultModel();
             var hostCondition = conditions?.Host;
-            if (hostCondition != null)
+            if (hostCondition == null)
             {
-                string host = _clientDataResolver.GetHost();
-                result.ConditionValidation = !StringHelper.IsRegexMatchOrSubstring(host, hostCondition)
-                    ? ConditionValidationType.Invalid
-                    : ConditionValidationType.Valid;
+                return result;
             }
+
+            var host = _clientDataResolver.GetHost();
+            result.ConditionValidation = !StringHelper.IsRegexMatchOrSubstring(host, hostCondition)
+                ? ConditionValidationType.Invalid
+                : ConditionValidationType.Valid;
 
             return result;
         }

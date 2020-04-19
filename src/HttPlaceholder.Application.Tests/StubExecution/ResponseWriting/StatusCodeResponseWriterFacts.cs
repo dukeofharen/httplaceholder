@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class StatusCodeResponseWriterFacts
     {
-        private StatusCodeResponseWriter _writer = new StatusCodeResponseWriter();
+        private readonly StatusCodeResponseWriter _writer = new StatusCodeResponseWriter();
 
         [TestMethod]
         public async Task StatusCodeResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
@@ -25,7 +25,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);
@@ -47,7 +47,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);
@@ -72,7 +72,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             };
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsFalse(result);

@@ -10,18 +10,19 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
+            var executed = false;
             if (stub.Response?.TemporaryRedirect != null)
             {
-                string url = stub.Response.TemporaryRedirect;
+                var url = stub.Response.TemporaryRedirect;
                 response.StatusCode = (int)HttpStatusCode.TemporaryRedirect;
                 response.Headers.Add("Location", url);
                 executed = true;
             }
 
+            // ReSharper disable once InvertIf
             if (stub.Response?.PermanentRedirect != null)
             {
-                string url = stub.Response.PermanentRedirect;
+                var url = stub.Response.PermanentRedirect;
                 response.StatusCode = (int)HttpStatusCode.MovedPermanently;
                 response.Headers.Add("Location", url);
                 executed = true;

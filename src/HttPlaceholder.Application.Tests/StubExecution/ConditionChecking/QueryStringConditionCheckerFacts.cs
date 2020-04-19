@@ -11,21 +11,16 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class QueryStringConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
         private QueryStringConditionChecker _checker;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _checker = new QueryStringConditionChecker(
-               _httpContextServiceMock.Object);
-        }
+                _httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void QueryStringConditionChecker_Validate_StubsFound_ButNoQueryStringConditions_ShouldReturnNotExecuted()

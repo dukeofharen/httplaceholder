@@ -41,10 +41,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         public void RequestLogger_LogRequestParameters_HappyFlow()
         {
             // arrange
-            var method = "POST";
-            var url = "https://google.com";
-            var body = "HACKING GOOGLE!";
-            var clientIp = "127.0.0.1";
+            const string method = "POST";
+            const string url = "https://google.com";
+            const string body = "HACKING GOOGLE!";
+            const string clientIp = "127.0.0.1";
             var headers = new Dictionary<string, string>();
 
             // act
@@ -77,7 +77,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         public void RequestLogger_SetStubExecutionResult_HappyFlow()
         {
             // arrange
-            var stubId = "stub-01";
+            const string stubId = "stub-01";
 
             var condition1 = new ConditionCheckResultModel
             {
@@ -147,7 +147,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         public void RequestLogger_SetExecutingStubId_HappyFlow()
         {
             // arrange
-            var stubId = "stub-01";
+            const string stubId = "stub-01";
 
             // act
             _logger.SetExecutingStubId(stubId);
@@ -161,8 +161,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         public void RequestLogger_SetResponseWriterResult_HappyFlow()
         {
             // arrange
-            var writerName = "HtmlWriter";
-            var executed = true;
+            const string writerName = "HtmlWriter";
+            const bool executed = true;
 
             // act
             _logger.SetResponseWriterResult(writerName, executed);

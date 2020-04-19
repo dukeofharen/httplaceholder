@@ -12,16 +12,10 @@ namespace HttPlaceholder.Tests.Integration.RestApi
     public class RestApiStubGenerationTests : RestApiIntegrationTestBase
     {
         [TestInitialize]
-        public void Initialize()
-        {
-            InitializeRestApiIntegrationTest();
-        }
+        public void Initialize() => InitializeRestApiIntegrationTest();
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupRestApiIntegrationTest();
-        }
+        public void Cleanup() => CleanupRestApiIntegrationTest();
 
         [TestMethod]
         public async Task RestApiIntegration_StubGeneration_HappyFlow()
@@ -37,10 +31,10 @@ namespace HttPlaceholder.Tests.Integration.RestApi
 
             // Do a call to a non-existant stub
             var response = await Client.SendAsync(CreateTestStubRequest());
-            string correlationId = response.Headers.Single(h => h.Key == "X-HttPlaceholder-Correlation").Value.Single();
+            var correlationId = response.Headers.Single(h => h.Key == "X-HttPlaceholder-Correlation").Value.Single();
 
             // Register a new stub for the failed request
-            string url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
+            var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
             var apiRequest = new HttpRequestMessage
             {
                 RequestUri = new Uri(url),
@@ -54,7 +48,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             response.EnsureSuccessStatusCode();
 
             // Check the actual added stub
-            var addedStub = StubSource._stubModels.Single();
+            var addedStub = StubSource.StubModels.Single();
             Assert.AreEqual("/test123", addedStub.Conditions.Url.Path);
 
             Assert.AreEqual("val1", addedStub.Conditions.Url.Query["query1"]);
@@ -91,7 +85,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             };
             clientRequest.Headers.Add("X-Api-Key", "abc123");
 
-            string auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("duco:pass"));
+            var auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("duco:pass"));
             clientRequest.Headers.Add("Authorization", auth);
             return clientRequest;
         }

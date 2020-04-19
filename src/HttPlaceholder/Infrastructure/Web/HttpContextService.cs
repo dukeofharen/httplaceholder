@@ -33,10 +33,10 @@ namespace HttPlaceholder.Infrastructure.Web
         {
             get
             {
-                string proto = _clientDataResolver.IsHttps() ? "https" : "http";
-                string host = _clientDataResolver.GetHost();
+                var proto = _clientDataResolver.IsHttps() ? "https" : "http";
+                var host = _clientDataResolver.GetHost();
                 string path = _httpContextAccessor.HttpContext.Request.Path;
-                string query = _httpContextAccessor.HttpContext.Request.QueryString.HasValue
+                var query = _httpContextAccessor.HttpContext.Request.QueryString.HasValue
                     ? _httpContextAccessor.HttpContext.Request.QueryString.Value
                     : string.Empty;
                 return $"{proto}://{host}{path}{query}";
@@ -46,30 +46,24 @@ namespace HttPlaceholder.Infrastructure.Web
         public string GetBody()
         {
             var context = _httpContextAccessor.HttpContext;
-            using (var reader = new StreamReader(
+            using var reader = new StreamReader(
                 context.Request.Body,
-                encoding: Encoding.UTF8,
-                detectEncodingFromByteOrderMarks: false,
-                bufferSize: 1024,
-                leaveOpen: true))
-            {
-                var body = reader.ReadToEnd();
-                context.Request.Body.Position = 0;
-                return body;
-            }
+                Encoding.UTF8,
+                false,
+                1024,
+                true);
+            var body = reader.ReadToEnd();
+            context.Request.Body.Position = 0;
+            return body;
         }
 
-        public IDictionary<string, string> GetQueryStringDictionary()
-        {
-            return _httpContextAccessor.HttpContext.Request.Query
+        public IDictionary<string, string> GetQueryStringDictionary() =>
+            _httpContextAccessor.HttpContext.Request.Query
                 .ToDictionary(q => q.Key, q => q.Value.ToString());
-        }
 
-        public IDictionary<string, string> GetHeaders()
-        {
-            return _httpContextAccessor.HttpContext.Request.Headers
+        public IDictionary<string, string> GetHeaders() =>
+            _httpContextAccessor.HttpContext.Request.Headers
                 .ToDictionary(h => h.Key, h => h.Value.ToString());
-        }
 
         public TObject GetItem<TObject>(string key)
         {
@@ -77,10 +71,7 @@ namespace HttPlaceholder.Infrastructure.Web
             return (TObject)item;
         }
 
-        public void SetItem(string key, object item)
-        {
-            _httpContextAccessor.HttpContext?.Items.Add(key, item);
-        }
+        public void SetItem(string key, object item) => _httpContextAccessor.HttpContext?.Items.Add(key, item);
 
         public (string, StringValues)[] GetFormValues()
         {
@@ -105,13 +96,14 @@ namespace HttPlaceholder.Infrastructure.Web
         public bool TryAddHeader(string key, StringValues values)
         {
             var httpContext = _httpContextAccessor.HttpContext;
-            if (!httpContext.Response.Headers.ContainsKey(key))
+            if (httpContext.Response.Headers.ContainsKey(key))
             {
-                httpContext.Response.Headers.Add(key, values);
-                return true;
+                return false;
             }
 
-            return false;
+            httpContext.Response.Headers.Add(key, values);
+            return true;
+
         }
 
         public void EnableRewind()

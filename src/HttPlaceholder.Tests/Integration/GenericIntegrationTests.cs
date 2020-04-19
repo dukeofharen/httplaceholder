@@ -12,15 +12,12 @@ namespace HttPlaceholder.Tests.Integration
     [TestClass]
     public class GenericIntegrationTests : IntegrationTestBase
     {
-        private Dictionary<string, string> _config;
         private InMemoryStubSource _stubSource;
 
         [TestInitialize]
         public void Initialize()
         {
             _stubSource = new InMemoryStubSource(Options);
-            _config = new Dictionary<string, string>();
-
             InitializeIntegrationTest(new (Type, object)[]
             {
             ( typeof(IStubSource), _stubSource )
@@ -28,16 +25,13 @@ namespace HttPlaceholder.Tests.Integration
         }
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupIntegrationTest();
-        }
+        public void Cleanup() => CleanupIntegrationTest();
 
         [TestMethod]
         public async Task GenericIntegration_SwaggerUi_IsApproachable()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}swagger/index.html";
+            var url = $"{TestServer.BaseAddress}swagger/index.html";
 
             var request = new HttpRequestMessage
             {
@@ -46,17 +40,15 @@ namespace HttPlaceholder.Tests.Integration
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
         }
 
         [TestMethod]
         public async Task GenericIntegration_SwaggerJson_IsApproachable()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}swagger/v1/swagger.json";
+            var url = $"{TestServer.BaseAddress}swagger/v1/swagger.json";
 
             var request = new HttpRequestMessage
             {
@@ -65,10 +57,8 @@ namespace HttPlaceholder.Tests.Integration
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
         }
 
         [TestMethod]
@@ -77,7 +67,7 @@ namespace HttPlaceholder.Tests.Integration
             // The URL ph-ui is not executed as stub, so it doesn't return an HTTP 500 when called.
 
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-ui";
+            var url = $"{TestServer.BaseAddress}ph-ui";
 
             var request = new HttpRequestMessage
             {
@@ -86,10 +76,8 @@ namespace HttPlaceholder.Tests.Integration
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.AreNotEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.AreNotEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
     }
 }

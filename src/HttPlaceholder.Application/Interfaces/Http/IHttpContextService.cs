@@ -30,6 +30,7 @@ namespace HttPlaceholder.Application.Interfaces.Http
 
       void AddHeader(string key, StringValues values);
 
+      // ReSharper disable once UnusedMethodReturnValue.Global
       bool TryAddHeader(string key, StringValues values);
 
       void EnableRewind();

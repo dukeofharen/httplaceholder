@@ -30,7 +30,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task MethodHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            string method = "GET";
+            const string method = "GET";
             var request = new RequestResultModel
             {
                 RequestParameters = new RequestParametersModel {Method = method}
@@ -38,7 +38,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             var stub = new StubModel();
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsTrue(result);

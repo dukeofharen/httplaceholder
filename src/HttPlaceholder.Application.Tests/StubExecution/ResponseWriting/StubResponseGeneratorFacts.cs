@@ -16,12 +16,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         private StubResponseGenerator _generator;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _generator = new StubResponseGenerator(
-               TestObjectFactory.GetRequestLoggerFactory(),
-               _responseWriters);
-        }
+                TestObjectFactory.GetRequestLoggerFactory(),
+                _responseWriters);
 
         [TestMethod]
         public async Task StubResponseGenerator_GenerateResponseAsync_HappyFlow()

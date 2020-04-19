@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Client;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Dto.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
+using FullStubDto = HttPlaceholder.Dto.Stubs.FullStubDto;
 
 namespace HttPlaceholder.Tests.Integration.RestApi
 {
@@ -20,24 +18,18 @@ namespace HttPlaceholder.Tests.Integration.RestApi
     public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
     {
         [TestInitialize]
-        public void Initialize()
-        {
-            InitializeRestApiIntegrationTest();
-        }
+        public void Initialize() => InitializeRestApiIntegrationTest();
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupRestApiIntegrationTest();
-        }
+        public void Cleanup() => CleanupRestApiIntegrationTest();
 
         [TestMethod]
         public async Task RestApiIntegration_Tenant_GetAll_Yaml()
         {
             // arrange
-            string tenant = "tenant1";
-            string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-            StubSource._stubModels.Add(new StubModel
+            const string tenant = "tenant1";
+            var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -45,7 +37,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            StubSource._stubModels.Add(new StubModel
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -62,26 +54,24 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
 
-                string content = await response.Content.ReadAsStringAsync();
-                var reader = new StringReader(content);
-                var deserializer = new Deserializer();
-                var stubs = deserializer.Deserialize<IEnumerable<Dto.Stubs.FullStubDto>>(reader);
-                Assert.AreEqual(1, stubs.Count());
-                Assert.AreEqual("test-456", stubs.Single().Stub.Id);
-            }
+            var content = await response.Content.ReadAsStringAsync();
+            var reader = new StringReader(content);
+            var deserializer = new Deserializer();
+            var stubs = deserializer.Deserialize<IEnumerable<FullStubDto>>(reader);
+            Assert.AreEqual(1, stubs.Count());
+            Assert.AreEqual("test-456", stubs.Single().Stub.Id);
         }
 
         [TestMethod]
         public async Task RestApiIntegration_Tenant_GetAll_Json()
         {
             // arrange
-            string tenant = "tenant1";
-            string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-            StubSource._stubModels.Add(new StubModel
+            const string tenant = "tenant1";
+            var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -89,7 +79,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            StubSource._stubModels.Add(new StubModel
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -106,23 +96,21 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
 
-                string content = await response.Content.ReadAsStringAsync();
-                var stubs = JsonConvert.DeserializeObject<IEnumerable<Dto.Stubs.FullStubDto>>(content);
-                Assert.AreEqual(1, stubs.Count());
-                Assert.AreEqual("test-456", stubs.Single().Stub.Id);
-            }
+            var content = await response.Content.ReadAsStringAsync();
+            var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
+            Assert.AreEqual(1, stubs.Count());
+            Assert.AreEqual("test-456", stubs.Single().Stub.Id);
         }
 
         [TestMethod]
         public async Task RestApiIntegration_Tenant_GetAll_Client()
         {
             // Arrange
-            string tenant = "tenant1";
-            StubSource._stubModels.Add(new StubModel
+            const string tenant = "tenant1";
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -130,7 +118,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            StubSource._stubModels.Add(new StubModel
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -145,7 +133,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 .GetAllAsync(tenant);
 
             // Assert
-            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(1, result.Count);
             Assert.AreEqual("test-456", result.Single().Stub.Id);
         }
 
@@ -153,9 +141,8 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Tenant_GetAll_CredentialsAreNeededButIncorrect_ShouldReturn401()
         {
             // Arrange
-            string tenant = "tenant1";
-            string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-            StubSource._stubModels.Add(new StubModel
+            const string tenant = "tenant1";
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -163,7 +150,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            StubSource._stubModels.Add(new StubModel
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -188,9 +175,8 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Tenant_GetAll_CredentialsAreCorrect_ShouldContinue()
         {
             // Arrange
-            string tenant = "tenant1";
-            string url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-            StubSource._stubModels.Add(new StubModel
+            const string tenant = "tenant1";
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -198,7 +184,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            StubSource._stubModels.Add(new StubModel
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -223,8 +209,8 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Tenant_DeleteAll_HappyFlow()
         {
             // arrange
-            string tenant = "tenant1";
-            StubSource._stubModels.Add(new StubModel
+            const string tenant = "tenant1";
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -232,7 +218,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            StubSource._stubModels.Add(new StubModel
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -247,16 +233,16 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 .DeleteAllAsync(tenant);
 
             // Assert
-            Assert.AreEqual(1, StubSource._stubModels.Count);
-            Assert.AreEqual("test-123", StubSource._stubModels.Single().Id);
+            Assert.AreEqual(1, StubSource.StubModels.Count);
+            Assert.AreEqual("test-123", StubSource.StubModels.Single().Id);
         }
 
         [TestMethod]
         public async Task RestApiIntegration_Tenant_UpdateAll_HappyFlow()
         {
             // Arrange
-            string tenant = "tenant1";
-            StubSource._stubModels.Add(new StubModel
+            const string tenant = "tenant1";
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -264,7 +250,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = tenant
             });
-            StubSource._stubModels.Add(new StubModel
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -275,26 +261,26 @@ namespace HttPlaceholder.Tests.Integration.RestApi
 
             var request = new[]
             {
-                new Client.StubDto
+                new StubDto
                 {
                     Id = "test-123",
-                    Conditions = new Client.StubConditionsDto
+                    Conditions = new StubConditionsDto
                     {
                         Method = "GET"
                     },
-                    Response = new Client.StubResponseDto
+                    Response = new StubResponseDto
                     {
                         Text = "OK"
                     }
                 },
-                new Client.StubDto
+                new StubDto
                 {
                     Id = "test-789",
-                    Conditions = new Client.StubConditionsDto
+                    Conditions = new StubConditionsDto
                     {
                         Method = "POST"
                     },
-                    Response = new Client.StubResponseDto
+                    Response = new StubResponseDto
                     {
                         Text = "OK"
                     }
@@ -307,17 +293,17 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 .UpdateAllAsync(tenant, request);
 
             // Assert
-            Assert.AreEqual(2, StubSource._stubModels.Count);
-            Assert.AreEqual("test-123", StubSource._stubModels[0].Id);
-            Assert.AreEqual("test-789", StubSource._stubModels[1].Id);
+            Assert.AreEqual(2, StubSource.StubModels.Count);
+            Assert.AreEqual("test-123", StubSource.StubModels[0].Id);
+            Assert.AreEqual("test-789", StubSource.StubModels[1].Id);
         }
 
         [TestMethod]
         public async Task RestApiIntegration_Tenant_GetTenantNames()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}ph-api/tenants";
-            StubSource._stubModels.Add(new StubModel
+            var url = $"{TestServer.BaseAddress}ph-api/tenants";
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
@@ -325,7 +311,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
-            StubSource._stubModels.Add(new StubModel
+            StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
@@ -342,16 +328,14 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.IsTrue(response.IsSuccessStatusCode);
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
 
-                string content = await response.Content.ReadAsStringAsync();
-                var tenantNames = JsonConvert.DeserializeObject<List<string>>(content);
-                Assert.AreEqual(2, tenantNames.Count);
-                Assert.AreEqual("otherTenant", tenantNames[0]);
-                Assert.AreEqual("tenant1", tenantNames[1]);
-            }
+            var content = await response.Content.ReadAsStringAsync();
+            var tenantNames = JsonConvert.DeserializeObject<List<string>>(content);
+            Assert.AreEqual(2, tenantNames.Count);
+            Assert.AreEqual("otherTenant", tenantNames[0]);
+            Assert.AreEqual("tenant1", tenantNames[1]);
         }
     }
 }

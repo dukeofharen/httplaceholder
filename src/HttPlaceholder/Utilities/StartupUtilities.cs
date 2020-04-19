@@ -38,7 +38,7 @@ namespace HttPlaceholder.Utilities
                     typeof(Startup).Assembly,
                     typeof(ApplicationModule).Assembly);
 
-        public static IServiceCollection AddWebInfrastructure(this IServiceCollection services)
+        private static IServiceCollection AddWebInfrastructure(this IServiceCollection services)
         {
             services.TryAddTransient<IClientDataResolver, ClientDataResolver>();
             services.TryAddTransient<IHttpContextService, HttpContextService>();
@@ -47,31 +47,36 @@ namespace HttPlaceholder.Utilities
 
         public static IApplicationBuilder UseGui(this IApplicationBuilder app, bool loadStaticFiles)
         {
-            if (loadStaticFiles)
+            if (!loadStaticFiles)
             {
-                string path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/gui";
-                if (Directory.Exists(path))
+                return app;
+            }
+
+            var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/gui";
+            if (Directory.Exists(path))
+            {
+                app.UseFileServer(new FileServerOptions
                 {
-                    app.UseFileServer(new FileServerOptions
-                    {
-                        EnableDefaultFiles = true,
-                        FileProvider = new PhysicalFileProvider(path),
-                        RequestPath = "/ph-ui"
-                    });
-                }
+                    EnableDefaultFiles = true,
+                    FileProvider = new PhysicalFileProvider(path),
+                    RequestPath = "/ph-ui"
+                });
             }
 
             return app;
         }
 
+        // ReSharper disable once UnusedMethodReturnValue.Global
         public static IApplicationBuilder PreloadStubs(this IApplicationBuilder app, bool preloadStubs)
         {
-            if (preloadStubs)
+            if (!preloadStubs)
             {
-                // Check if the stubs can be loaded.
-                var stubContainer = app.ApplicationServices.GetService<IStubContext>();
-                Task.Run(() => stubContainer.PrepareAsync()).GetAwaiter().GetResult();
+                return app;
             }
+
+            // Check if the stubs can be loaded.
+            var stubContainer = app.ApplicationServices.GetService<IStubContext>();
+            Task.Run(() => stubContainer.PrepareAsync()).GetAwaiter().GetResult();
 
             return app;
         }
@@ -80,10 +85,10 @@ namespace HttPlaceholder.Utilities
             .Use(async (context, next) =>
             {
                 // TODO fix this: the body should always be retrieved asynchronously.
-                var syncIOFeature = context.Features.Get<IHttpBodyControlFeature>();
-                if (syncIOFeature != null)
+                var syncIoFeature = context.Features.Get<IHttpBodyControlFeature>();
+                if (syncIoFeature != null)
                 {
-                    syncIOFeature.AllowSynchronousIO = true;
+                    syncIoFeature.AllowSynchronousIO = true;
                 }
 
                 await next.Invoke();

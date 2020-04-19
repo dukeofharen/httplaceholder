@@ -13,22 +13,16 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         private FormPostVariableHandler _handler;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _handler = new FormPostVariableHandler(_httpContextServiceMock.Object);
-        }
+        public void Initialize() => _handler = new FormPostVariableHandler(_httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void FormPostVariableHandler_Parse_HappyFlow()
         {
             // arrange
-            string input = "Form var 1: ((form_post:var1)), Form var 2: ((form_post:var2)), Form var 3: ((form_post:var3))";
+            const string input = "Form var 1: ((form_post:var1)), Form var 2: ((form_post:var2)), Form var 3: ((form_post:var3))";
 
             var formTuples = new[]
             {
@@ -36,7 +30,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
                 ("var3", new StringValues("value3"))
             };
 
-            string expectedResult = "Form var 1: https://google.com, Form var 2: , Form var 3: value3";
+            const string expectedResult = "Form var 1: https://google.com, Form var 2: , Form var 3: value3";
 
             _httpContextServiceMock
                 .Setup(m => m.GetFormValues())
@@ -44,7 +38,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
 
             // act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // assert
             Assert.AreEqual(expectedResult, result);

@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
     [TestClass]
     public class UtcNowVariableHandlerFacts
     {
-        private static readonly DateTime Now = new DateTime(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
+        private static readonly DateTime _now = new DateTime(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
         private readonly Mock<IDateTime> _dateTimeMock = new Mock<IDateTime>();
         private UtcNowVariableHandler _handler;
 
@@ -19,26 +19,23 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         {
             _dateTimeMock
                 .Setup(m => m.UtcNow)
-                .Returns(Now);
+                .Returns(_now);
 
             _handler = new UtcNowVariableHandler(_dateTimeMock.Object);
         }
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _dateTimeMock.VerifyAll();
-        }
+        public void Cleanup() => _dateTimeMock.VerifyAll();
 
         [TestMethod]
         public void UtcNowVariableHandler_Parse_HappyFlow_FormatSet()
         {
             // Arrange
-            string input = "((utcnow:dd-MM-yyyy HH:mm:ss))";
+            const string input = "((utcnow:dd-MM-yyyy HH:mm:ss))";
 
             // Act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // Assert
             Assert.AreEqual("21-08-2019 20:29:17", result);
@@ -48,14 +45,14 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void UtcNowVariableHandler_Parse_HappyFlow_NoFormatSet()
         {
             // Arrange
-            string input = "((utcnow))";
+            const string input = "((utcnow))";
 
             // Act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // Assert
-            Assert.AreEqual(Now.ToString(CultureInfo.InvariantCulture), result);
+            Assert.AreEqual(_now.ToString(CultureInfo.InvariantCulture), result);
         }
     }
 }

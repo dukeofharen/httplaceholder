@@ -14,7 +14,7 @@ namespace HttPlaceholder.Application.Exceptions
             Failures = failures;
         }
 
-        public ValidationException(List<ValidationFailure> failures)
+        public ValidationException(IEnumerable<ValidationFailure> failures)
         {
             Failures = failures
                 .Select(f => f.ErrorMessage)

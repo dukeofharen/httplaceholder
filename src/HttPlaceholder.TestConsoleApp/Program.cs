@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Net.Http;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using HttPlaceholder.Client;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.TestConsoleApp
 {
+    [SuppressMessage("ReSharper", "All")]
     class Program
     {
         static async Task Main(string[] args)
@@ -41,10 +42,7 @@ namespace HttPlaceholder.TestConsoleApp
                 //};
                 //var result = await client.GetAllAsync("01-get");
             }
-            catch (Exception ex)
-            {
-                ;
-            }
+            catch (Exception) { }
         }
     }
 }

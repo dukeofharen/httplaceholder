@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {
             var uri = new Uri(request.RequestParameters.Url);
-            string host = uri.Host;
+            var host = uri.Host;
             if (uri.Port != 80 && uri.Port != 443)
             {
                 host += $":{uri.Port}";

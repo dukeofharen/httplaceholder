@@ -14,12 +14,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task PathHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            string url = "https://httplaceholder.com/A/Path?query1=val1&query2=val2";
+            const string url = "https://httplaceholder.com/A/Path?query1=val1&query2=val2";
             var request = new RequestResultModel {RequestParameters = new RequestParametersModel {Url = url}};
             var stub = new StubModel();
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsTrue(result);

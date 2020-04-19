@@ -14,18 +14,16 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
     public class StubRootPathResolverFacts
     {
         private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
-        private Mock<IAssemblyService> _assemblyServiceMock = new Mock<IAssemblyService>();
-        private Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
+        private readonly Mock<IAssemblyService> _assemblyServiceMock = new Mock<IAssemblyService>();
+        private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
         private StubRootPathResolver _resolver;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _resolver = new StubRootPathResolver(
                 _assemblyServiceMock.Object,
                 _fileServiceMock.Object,
                 _options);
-        }
 
         [TestCleanup]
         public void Cleanup()
@@ -38,7 +36,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public void StubRootPathResolver_GetStubRootPath_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
         {
             // arrange
-            var inputFile = @"C:\stubs";
+            const string inputFile = @"C:\stubs";
             _options.Value.Storage.InputFile = inputFile;
 
             _fileServiceMock
@@ -46,7 +44,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(true);
 
             // act
-            string result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPath();
 
             // assert
             Assert.AreEqual(inputFile, result);
@@ -68,7 +66,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(false);
 
             // act
-            string result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPath();
 
             // assert
             Assert.AreEqual(inputFilePath, result);
@@ -85,7 +83,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(assemblyPath);
 
             // act
-            string result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPath();
 
             // assert
             Assert.AreEqual(assemblyPath, result);

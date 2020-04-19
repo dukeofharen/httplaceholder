@@ -1,12 +1,6 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using HttPlaceholder.Client;
-using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi
 {
@@ -14,16 +8,10 @@ namespace HttPlaceholder.Tests.Integration.RestApi
     public class RestApiUserIntegrationTests : RestApiIntegrationTestBase
     {
         [TestInitialize]
-        public void Initialize()
-        {
-            InitializeRestApiIntegrationTest();
-        }
+        public void Initialize() => InitializeRestApiIntegrationTest();
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupRestApiIntegrationTest();
-        }
+        public void Cleanup() => CleanupRestApiIntegrationTest();
 
         [TestMethod]
         public async Task RestApiIntegration_User_Get_CredentialsAreIncorrect_ShouldReturn401()

@@ -24,10 +24,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 new[] {StubSource, ReadOnlyStubSource.Object});
         }
 
-        protected void CleanupRestApiIntegrationTest()
-        {
-            CleanupIntegrationTest();
-        }
+        protected void CleanupRestApiIntegrationTest() => CleanupIntegrationTest();
 
         protected IHttPlaceholderClientFactory GetFactory(string username = null, string password = null)
         {

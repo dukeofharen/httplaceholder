@@ -6,74 +6,32 @@ namespace HttPlaceholder.Infrastructure.Implementations
 {
     public class FileService : IFileService
     {
-        public byte[] ReadAllBytes(string path)
-        {
-            return File.ReadAllBytes(path);
-        }
+        public byte[] ReadAllBytes(string path) => File.ReadAllBytes(path);
 
-        public string ReadAllText(string path)
-        {
-            return File.ReadAllText(path);
-        }
+        public string ReadAllText(string path) => File.ReadAllText(path);
 
-        public void WriteAllBytes(string path, byte[] contents)
-        {
-            File.WriteAllBytes(path, contents);
-        }
+        public void WriteAllBytes(string path, byte[] contents) => File.WriteAllBytes(path, contents);
 
-        public void WriteAllText(string path, string contents)
-        {
-            File.WriteAllText(path, contents);
-        }
+        public void WriteAllText(string path, string contents) => File.WriteAllText(path, contents);
 
-        public bool FileExists(string path)
-        {
-            return File.Exists(path);
-        }
+        public bool FileExists(string path) => File.Exists(path);
 
-        public bool DirectoryExists(string path)
-        {
-            return Directory.Exists(path);
-        }
+        public bool DirectoryExists(string path) => Directory.Exists(path);
 
-        public void CreateDirectory(string path)
-        {
-            Directory.CreateDirectory(path);
-        }
+        public void CreateDirectory(string path) => Directory.CreateDirectory(path);
 
-        public string GetTempPath()
-        {
-            return Path.GetTempPath();
-        }
+        public string GetTempPath() => Path.GetTempPath();
 
-        public void DeleteFile(string path)
-        {
-            File.Delete(path);
-        }
+        public void DeleteFile(string path) => File.Delete(path);
 
-        public DateTime GetLastWriteTime(string path)
-        {
-            return File.GetLastWriteTime(path);
-        }
+        public DateTime GetLastWriteTime(string path) => File.GetLastWriteTime(path);
 
-        public bool IsDirectory(string path)
-        {
-            return (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
-        }
+        public bool IsDirectory(string path) => (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
 
-        public string[] GetFiles(string path, string searchPattern)
-        {
-            return Directory.GetFiles(path, searchPattern);
-        }
+        public string[] GetFiles(string path, string searchPattern) => Directory.GetFiles(path, searchPattern);
 
-        public string GetCurrentDirectory()
-        {
-            return Directory.GetCurrentDirectory();
-        }
+        public string GetCurrentDirectory() => Directory.GetCurrentDirectory();
 
-        public DateTime GetModicationDateTime(string path)
-        {
-            return File.GetLastWriteTimeUtc(path);
-        }
+        public DateTime GetModicationDateTime(string path) => File.GetLastWriteTimeUtc(path);
     }
 }

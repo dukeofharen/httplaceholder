@@ -1,4 +1,5 @@
-﻿namespace HttPlaceholder.Configuration
+﻿// ReSharper disable UnusedAutoPropertyAccessor.Global
+namespace HttPlaceholder.Configuration
 {
     public class WebSettingsModel
     {

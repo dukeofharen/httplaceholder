@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -27,8 +26,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             return _result;
         }
 
-        public void LogRequestParameters(string method, string url, string body, string clientIp, IDictionary<string, string> headers)
-        {
+        public void LogRequestParameters(string method, string url, string body, string clientIp, IDictionary<string, string> headers) =>
             _result.RequestParameters = new RequestParametersModel
             {
                 Body = body,
@@ -37,12 +35,8 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                 Method = method,
                 Url = url
             };
-        }
 
-        public void SetCorrelationId(string correlationId)
-        {
-            _result.CorrelationId = correlationId;
-        }
+        public void SetCorrelationId(string correlationId) => _result.CorrelationId = correlationId;
 
         public void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions, IEnumerable<ConditionCheckResultModel> negativeConditions)
         {
@@ -58,18 +52,13 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             });
         }
 
-        public void SetExecutingStubId(string stubId)
-        {
-            _result.ExecutingStubId = stubId;
-        }
+        public void SetExecutingStubId(string stubId) => _result.ExecutingStubId = stubId;
 
-        public void SetResponseWriterResult(string writerName, bool executed)
-        {
+        public void SetResponseWriterResult(string writerName, bool executed) =>
             _result.StubResponseWriterResults.Add(new StubResponseWriterResultModel
             {
                 Executed = executed,
                 ResponseWriterName = writerName
             });
-        }
     }
 }

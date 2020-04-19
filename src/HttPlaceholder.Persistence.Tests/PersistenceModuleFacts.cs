@@ -95,7 +95,7 @@ namespace HttPlaceholder.Persistence.Tests
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqlServerQueryStore)));
         }
 
-        private IConfiguration BuildConfiguration(IDictionary<string, string> dict) =>
+        private static IConfiguration BuildConfiguration(IDictionary<string, string> dict) =>
             new ConfigurationBuilder()
                 .AddInMemoryCollection(dict)
                 .Build();

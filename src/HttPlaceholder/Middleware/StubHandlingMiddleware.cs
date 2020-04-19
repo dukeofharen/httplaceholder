@@ -16,9 +16,10 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class StubHandlingMiddleware
     {
-        private static string[] _segmentsToIgnore = new[] {"/ph-api", "/ph-ui", "swagger", "/requestHub"};
+        private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "swagger", "/requestHub"};
 
         private readonly RequestDelegate _next;
         private readonly IClientDataResolver _clientDataResolver;
@@ -55,9 +56,10 @@ namespace HttPlaceholder.Middleware
             _settings = options.Value;
         }
 
+        // ReSharper disable once UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
-            string path = _httpContextService.Path;
+            var path = _httpContextService.Path;
             if (_segmentsToIgnore.Any(s => path.Contains(s, StringComparison.OrdinalIgnoreCase)))
             {
                 await _next(context);
@@ -65,7 +67,7 @@ namespace HttPlaceholder.Middleware
             }
 
             const string correlationHeaderKey = "X-HttPlaceholder-Correlation";
-            string correlation = Guid.NewGuid().ToString();
+            var correlation = Guid.NewGuid().ToString();
             var requestLogger = _requestLoggerFactory.GetRequestLogger();
             requestLogger.SetCorrelationId(correlation);
             try
@@ -85,9 +87,9 @@ namespace HttPlaceholder.Middleware
                 _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
                 var response = await _stubRequestExecutor.ExecuteRequestAsync();
                 _httpContextService.SetStatusCode(response.StatusCode);
-                foreach (var header in response.Headers)
+                foreach (var (key, value) in response.Headers)
                 {
-                    _httpContextService.AddHeader(header.Key, header.Value);
+                    _httpContextService.AddHeader(key, value);
                 }
 
                 if (response.Body != null)
@@ -110,7 +112,7 @@ namespace HttPlaceholder.Middleware
 
             var loggingResult = requestLogger.GetResult();
             var jsonLoggingResult = JObject.FromObject(loggingResult);
-            bool enableRequestLogging = _settings.Storage?.EnableRequestLogging ?? false;
+            var enableRequestLogging = _settings.Storage?.EnableRequestLogging ?? false;
             if (enableRequestLogging)
             {
                 _logger.LogInformation(jsonLoggingResult.ToString());

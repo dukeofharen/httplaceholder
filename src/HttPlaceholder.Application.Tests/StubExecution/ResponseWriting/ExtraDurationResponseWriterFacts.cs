@@ -10,21 +10,16 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class ExtraDurationResponseWriterFacts
     {
-        private Mock<IAsyncService> _asyncServiceMock = new Mock<IAsyncService>();
+        private readonly Mock<IAsyncService> _asyncServiceMock = new Mock<IAsyncService>();
         private ExtraDurationResponseWriter _writer;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _writer = new ExtraDurationResponseWriter(
-               _asyncServiceMock.Object);
-        }
+                _asyncServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _asyncServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _asyncServiceMock.VerifyAll();
 
         [TestMethod]
         public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
@@ -41,7 +36,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsFalse(result);
@@ -63,7 +58,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);

@@ -33,7 +33,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task<IEnumerable<StubModel>> GetStubsAsync()
         {
-            string inputFileLocation = _settings.Storage?.InputFile;
+            var inputFileLocation = _settings.Storage?.InputFile;
             var fileLocations = new List<string>();
             if (string.IsNullOrEmpty(inputFileLocation))
             {
@@ -93,27 +93,24 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.FromResult(_stubs);
         }
 
-        public async Task PrepareStubSourceAsync()
-        {
+        public async Task PrepareStubSourceAsync() =>
             // Check if the .yml files could be loaded.
             await GetStubsAsync();
-        }
 
-        private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files)
-        {
-            return files.Max(f => _fileService.GetModicationDateTime(f));
-        }
+        private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) => files.Max(f => _fileService.GetModicationDateTime(f));
 
-        private void EnsureStubsHaveId(IEnumerable<StubModel> stubs)
+        private static void EnsureStubsHaveId(IEnumerable<StubModel> stubs)
         {
             foreach (var stub in stubs)
             {
-                if (string.IsNullOrWhiteSpace(stub.Id))
+                if (!string.IsNullOrWhiteSpace(stub.Id))
                 {
-                    // If no ID is set, calculate a unique ID based on the stub contents.
-                    string contents = JsonConvert.SerializeObject(stub);
-                    stub.Id = HashingUtilities.GetMd5String(contents);
+                    continue;
                 }
+
+                // If no ID is set, calculate a unique ID based on the stub contents.
+                var contents = JsonConvert.SerializeObject(stub);
+                stub.Id = HashingUtilities.GetMd5String(contents);
             }
         }
     }

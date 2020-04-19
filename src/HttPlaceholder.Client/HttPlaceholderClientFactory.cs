@@ -20,7 +20,7 @@ namespace HttPlaceholder.Client
 
             if (!string.IsNullOrWhiteSpace(_settings.Username) && !string.IsNullOrWhiteSpace(_settings.Password))
             {
-                string basic = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_settings.Username}:{_settings.Password}"));
+                var basic = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_settings.Username}:{_settings.Password}"));
                 httpClient.DefaultRequestHeaders.Add("Authorization", $"Basic {basic}");
             }
         }

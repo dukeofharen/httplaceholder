@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class TextResponseWriterFacts
     {
-        private TextResponseWriter _writer = new TextResponseWriter();
+        private readonly TextResponseWriter _writer = new TextResponseWriter();
 
         [TestMethod]
         public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
@@ -27,7 +27,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsFalse(result);
@@ -38,7 +38,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow()
         {
             // arrange
-            string text = "bla123";
+            const string text = "bla123";
             var expectedBody = Encoding.UTF8.GetBytes(text);
             var stub = new StubModel
             {
@@ -51,7 +51,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);
@@ -63,7 +63,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
         {
             // arrange
-            string text = "bla123";
+            const string text = "bla123";
             var expectedBody = Encoding.UTF8.GetBytes(text);
             var stub = new StubModel
             {
@@ -77,7 +77,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             response.Headers.Add("Content-Type", "text/xml");
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);

@@ -11,21 +11,16 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class XPathConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
         private XPathConditionChecker _checker;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _checker = new XPathConditionChecker(
-               _httpContextServiceMock.Object);
-        }
+                _httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void XPathConditionChecker_Validate_StubsFound_ButNoXPathConditions_ShouldReturnNotExecuted()
@@ -47,7 +42,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void XPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
         {
             // arrange
-            string body = @"<?xml version=""1.0""?>
+            const string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -98,7 +93,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void XPathConditionChecker_Validate_StubsFound_OnlyOneXPathConditionCorrect_ShouldReturnInvalid()
         {
             // arrange
-            string body = @"<?xml version=""1.0""?>
+            const string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -149,7 +144,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
         {
             // arrange
-            string body = @"<?xml version=""1.0""?>
+            const string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -200,7 +195,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces_FilteredByRegex()
         {
             // arrange
-            string body = @"<?xml version=""1.0""?>
+            const string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -241,7 +236,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithoutNamespaces()
         {
             // arrange
-            string body = @"<?xml version=""1.0""?>
+            const string body = @"<?xml version=""1.0""?>
 <object>
 	<a>TEST</a>
 	<b>TEST2</b>

@@ -27,29 +27,30 @@ namespace HttPlaceholder.Infrastructure.Web
         {
             var request = _httpContextAccessor.HttpContext.Request;
             var ip = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress;
-            var forwardedHeader = request.Headers.FirstOrDefault(h =>
+            var (key, value) = request.Headers.FirstOrDefault(h =>
                 h.Key?.Equals(ForwardedHeaderKey, StringComparison.OrdinalIgnoreCase) == true);
-            if (forwardedHeader.Key != null && RequestIsFromLoopback(ip))
+            if (key == null || !RequestIsFromLoopback(ip))
             {
-                // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
-                string forwardedFor = forwardedHeader.Value;
-                var parts = forwardedFor.Split(new[] {", "}, StringSplitOptions.None);
-                return parts.First();
+                return ip.ToString();
             }
 
-            return ip.ToString();
+            // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
+            string forwardedFor = value;
+            var parts = forwardedFor.Split(new[] {", "}, StringSplitOptions.None);
+            return parts.First();
+
         }
 
         public string GetHost()
         {
             var request = _httpContextAccessor.HttpContext.Request;
-            var header = request.Headers.FirstOrDefault(h =>
+            var (key, value) = request.Headers.FirstOrDefault(h =>
                 h.Key?.Equals(ForwardedHostKey, StringComparison.OrdinalIgnoreCase) == true);
             var ip = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress;
-            if (header.Key != null && RequestIsFromLoopback(ip))
+            if (key != null && RequestIsFromLoopback(ip))
             {
                 // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
-                return header.Value;
+                return value;
             }
 
             return request.Host.ToString();
@@ -58,19 +59,19 @@ namespace HttPlaceholder.Infrastructure.Web
         public bool IsHttps()
         {
             var request = _httpContextAccessor.HttpContext.Request;
-            var header = request.Headers.FirstOrDefault(h =>
+            var (key, value) = request.Headers.FirstOrDefault(h =>
                 h.Key?.Equals(ForwardedProtoKey, StringComparison.OrdinalIgnoreCase) == true);
             var ip = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress;
-            if (header.Key != null && RequestIsFromLoopback(ip))
+            if (key != null && RequestIsFromLoopback(ip))
             {
                 // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
-                return header.Value.ToString().Equals("https", StringComparison.OrdinalIgnoreCase);
+                return value.ToString().Equals("https", StringComparison.OrdinalIgnoreCase);
             }
 
             return request.IsHttps;
         }
 
-        private bool RequestIsFromLoopback(IPAddress ip) =>
+        private static bool RequestIsFromLoopback(IPAddress ip) =>
             IPAddress.IsLoopback(ip) || ip.Equals(NginxProxyIp);
     }
 }

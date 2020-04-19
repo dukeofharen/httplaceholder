@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using HttPlaceholder.Common;
 using HttPlaceholder.Configuration.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -62,7 +60,7 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
         public void ReadConfigFileFromArgsArray_FileNotFound_ShouldThrowFileNotFoundException()
         {
             // Arrange
-            var path = "/tmp/config.json";
+            const string path = "/tmp/config.json";
             var args = ToArgs($"--configjsonlocation {path}");
 
             _fileServiceMock
@@ -77,7 +75,7 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
         public void ReadConfigFileFromArgsArray_FileFound_ShouldParseCorrectly()
         {
             // Arrange
-            var path = "/tmp/config.json";
+            const string path = "/tmp/config.json";
             var args = ToArgs($"--configjsonlocation {path}");
 
             _fileServiceMock
@@ -169,7 +167,7 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
         public void ReadConfigFileFromArgsArray_CheckCaseInsensitivity()
         {
             // Arrange
-            var path = "/tmp/config.json";
+            const string path = "/tmp/config.json";
             var args = ToArgs($"--configjsonlocation {path}");
 
             _fileServiceMock

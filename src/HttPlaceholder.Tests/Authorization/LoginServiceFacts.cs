@@ -38,7 +38,7 @@ namespace HttPlaceholder.Tests.Authorization
         public void LoginService_CheckLoginCookie_NoUsernameAndPasswordSet_ShouldReturnTrue()
         {
             // Act
-            bool result = _service.CheckLoginCookie();
+            var result = _service.CheckLoginCookie();
 
             // Assert
             Assert.IsTrue(result);
@@ -52,7 +52,7 @@ namespace HttPlaceholder.Tests.Authorization
             _options.Value.Authentication.ApiPassword = "pass";
 
             // Act
-            bool result = _service.CheckLoginCookie();
+            var result = _service.CheckLoginCookie();
 
             // Assert
             Assert.IsFalse(result);
@@ -67,7 +67,7 @@ namespace HttPlaceholder.Tests.Authorization
             _cookies.Add(CookieKeys.LoginCookieKey, "INCORRECT");
 
             // Act
-            bool result = _service.CheckLoginCookie();
+            var result = _service.CheckLoginCookie();
 
             // Assert
             Assert.IsFalse(result);
@@ -82,7 +82,7 @@ namespace HttPlaceholder.Tests.Authorization
             _cookies.Add(CookieKeys.LoginCookieKey, "qkUYd4wTaLeznD/nN1v9ei9/5XUekWt1hyOctq3bQZ9DMhSk7FJz+l1ILk++kyYlu+VguxVcuEC9R4Ryk763GA==");
 
             // Act
-            bool result = _service.CheckLoginCookie();
+            var result = _service.CheckLoginCookie();
 
             // Assert
             Assert.IsTrue(result);

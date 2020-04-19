@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
 using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;

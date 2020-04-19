@@ -19,34 +19,31 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         {
             var result = new ConditionCheckResultModel();
             var bodyConditions = conditions?.Body?.ToArray();
-            if (bodyConditions != null && bodyConditions?.Any() == true)
+            if (bodyConditions == null || bodyConditions?.Any() != true)
             {
-                var body = _httpContextService.GetBody();
-
-                int validBodyConditions = 0;
-                foreach (var condition in bodyConditions)
-                {
-                    if (!StringHelper.IsRegexMatchOrSubstring(body, condition))
-                    {
-                        // If the check failed, it means the query string is incorrect and the condition should fail.
-                        result.Log = $"Body condition '{condition}' failed.";
-                        break;
-                    }
-
-                    validBodyConditions++;
-                }
-
-                // If the number of succeeded conditions is equal to the actual number of conditions,
-                // the body condition is passed and the stub ID is passed to the result.
-                if (validBodyConditions == bodyConditions.Length)
-                {
-                    result.ConditionValidation = ConditionValidationType.Valid;
-                }
-                else
-                {
-                    result.ConditionValidation = ConditionValidationType.Invalid;
-                }
+                return result;
             }
+
+            var body = _httpContextService.GetBody();
+
+            var validBodyConditions = 0;
+            foreach (var condition in bodyConditions)
+            {
+                if (!StringHelper.IsRegexMatchOrSubstring(body, condition))
+                {
+                    // If the check failed, it means the query string is incorrect and the condition should fail.
+                    result.Log = $"Body condition '{condition}' failed.";
+                    break;
+                }
+
+                validBodyConditions++;
+            }
+
+            // If the number of succeeded conditions is equal to the actual number of conditions,
+            // the body condition is passed and the stub ID is passed to the result.
+            result.ConditionValidation = validBodyConditions == bodyConditions.Length
+                ? ConditionValidationType.Valid
+                : ConditionValidationType.Invalid;
 
             return result;
         }

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
@@ -27,8 +26,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 return result;
             }
 
-            int validXpaths = 0;
-            string body = _httpContextService.GetBody();
+            var validXpaths = 0;
+            var body = _httpContextService.GetBody();
             var doc = new XmlDocument();
             doc.LoadXml(body);
             foreach (var condition in xpathConditions)
