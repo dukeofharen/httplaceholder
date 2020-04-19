@@ -20,14 +20,15 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
             var queryDict = _httpContextService.GetQueryStringDictionary();
             foreach (var match in matches)
             {
-                if (match.Groups.Count == 3)
+                if (match.Groups.Count != 3)
                 {
-                    var queryStringName = match.Groups[2].Value;
-                    var replaceValue = string.Empty;
-                    queryDict.TryGetValue(queryStringName, out replaceValue);
-
-                    input = input.Replace(match.Value, replaceValue);
+                    continue;
                 }
+
+                var queryStringName = match.Groups[2].Value;
+                queryDict.TryGetValue(queryStringName, out var replaceValue);
+
+                input = input.Replace(match.Value, replaceValue);
             }
 
             return input;

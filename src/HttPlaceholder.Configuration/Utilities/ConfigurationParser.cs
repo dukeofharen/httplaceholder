@@ -41,19 +41,21 @@ namespace HttPlaceholder.Configuration.Utilities
         private IDictionary<string, string> DetermineBaseArgsDictionary(string[] args)
         {
             var argsDictionary = args.Parse();
-            if (argsDictionary.TryGetValue(ConfigKeys.ConfigJsonLocationKey.ToLower(), out var configJsonPath))
+            if (!argsDictionary.TryGetValue(ConfigKeys.ConfigJsonLocationKey.ToLower(), out var configJsonPath))
             {
-                // Read the settings from a given file if the correct config key is set
-                if (!_fileService.FileExists(configJsonPath))
-                {
-                    throw new FileNotFoundException($"File '{configJsonPath}' not found.");
-                }
-
-                ConsoleHelpers.WriteLineColor($"Reading configuration from '{configJsonPath}'.", ConsoleColor.Green,
-                    ConsoleColor.Black);
-                var config = _fileService.ReadAllText(configJsonPath);
-                argsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
+                return argsDictionary;
             }
+
+            // Read the settings from a given file if the correct config key is set
+            if (!_fileService.FileExists(configJsonPath))
+            {
+                throw new FileNotFoundException($"File '{configJsonPath}' not found.");
+            }
+
+            ConsoleHelpers.WriteLineColor($"Reading configuration from '{configJsonPath}'.", ConsoleColor.Green,
+                ConsoleColor.Black);
+            var config = _fileService.ReadAllText(configJsonPath);
+            argsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
 
             return argsDictionary;
         }
@@ -77,50 +79,43 @@ namespace HttPlaceholder.Configuration.Utilities
             var configDictionary = new Dictionary<string, string>();
             foreach (var constant in GetConfigKeyMetadata())
             {
-                if (!string.IsNullOrWhiteSpace(constant.Path))
+                if (string.IsNullOrWhiteSpace(constant.Path))
                 {
-                    // First, add the environment variables to the configuration.
-                    if (envVars != null && envVars.TryGetValue(constant.Key.ToLower(), out var envVar))
-                    {
-                        configDictionary.Add(constant.Path, envVar);
-                        continue;
-                    }
+                    continue;
+                }
 
-                    // Then, add the default values and values passed through the command line arguments.
-                    if (argsDictionary.TryGetValue(constant.Key, out var value))
-                    {
-                        configDictionary.Add(constant.Path, value);
-                    }
+                // First, add the environment variables to the configuration.
+                if (envVars != null && envVars.TryGetValue(constant.Key.ToLower(), out var envVar))
+                {
+                    configDictionary.Add(constant.Path, envVar);
+                    continue;
+                }
+
+                // Then, add the default values and values passed through the command line arguments.
+                if (argsDictionary.TryGetValue(constant.Key, out var value))
+                {
+                    configDictionary.Add(constant.Path, value);
                 }
             }
 
             return configDictionary;
         }
 
-        public static IEnumerable<ConfigMetadataModel> GetConfigKeyMetadata()
-        {
-            var result = new List<ConfigMetadataModel>();
-            foreach (var constant in ReflectionUtilities.GetConstants(typeof(ConfigKeys)))
-            {
-                var attribute = constant.CustomAttributes.FirstOrDefault();
-                if (attribute != null && attribute.AttributeType == typeof(ConfigKeyAttribute))
+        public static IEnumerable<ConfigMetadataModel> GetConfigKeyMetadata() =>
+            (from constant
+                    in ReflectionUtilities.GetConstants(typeof(ConfigKeys))
+                let attribute = constant.CustomAttributes.FirstOrDefault()
+                where attribute != null && attribute.AttributeType == typeof(ConfigKeyAttribute)
+                select new ConfigMetadataModel
                 {
-                    result.Add(new ConfigMetadataModel
-                    {
-                        Key = (constant.GetValue(constant) as string).ToLower(),
-                        Description =
-                            attribute.NamedArguments.Single(a => a.MemberName == "Description").TypedValue
-                                .Value as string,
-                        Example =
-                            attribute.NamedArguments.Single(a => a.MemberName == "Example").TypedValue
-                                .Value as string,
-                        Path = attribute.NamedArguments.FirstOrDefault(a => a.MemberName == "ConfigPath").TypedValue
-                            .Value as string
-                    });
-                }
-            }
-
-            return result;
-        }
+                    Key = (constant.GetValue(constant) as string).ToLower(),
+                    Description =
+                        attribute.NamedArguments.Single(a => a.MemberName == "Description").TypedValue
+                            .Value as string,
+                    Example =
+                        attribute.NamedArguments.Single(a => a.MemberName == "Example").TypedValue.Value as string,
+                    Path = attribute.NamedArguments.FirstOrDefault(a => a.MemberName == "ConfigPath").TypedValue
+                        .Value as string
+                }).ToList();
     }
 }

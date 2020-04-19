@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;

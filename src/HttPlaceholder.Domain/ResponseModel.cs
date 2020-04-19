@@ -28,6 +28,7 @@ namespace HttPlaceholder.Domain
         /// <summary>
         /// Gets or sets the headers.
         /// </summary>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
     }
 }

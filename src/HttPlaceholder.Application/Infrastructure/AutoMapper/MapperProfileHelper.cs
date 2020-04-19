@@ -29,7 +29,7 @@ namespace HttPlaceholder.Application.Infrastructure.AutoMapper
             }
         }
 
-        public static IList<Map> LoadStandardMappings(Assembly rootAssembly)
+        private static IEnumerable<Map> LoadStandardMappings(Assembly rootAssembly)
         {
             var types = rootAssembly.GetExportedTypes();
             var from = from type in types
@@ -57,7 +57,7 @@ namespace HttPlaceholder.Application.Infrastructure.AutoMapper
             return from.Concat(to).ToList();
         }
 
-        public static IList<IHaveCustomMapping> LoadCustomMappings(Assembly rootAssembly)
+        private static IEnumerable<IHaveCustomMapping> LoadCustomMappings(Assembly rootAssembly)
         {
             var types = rootAssembly.GetExportedTypes();
             return (

@@ -48,7 +48,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             response.EnsureSuccessStatusCode();
 
             // Check the actual added stub
-            var addedStub = StubSource._stubModels.Single();
+            var addedStub = StubSource.StubModels.Single();
             Assert.AreEqual("/test123", addedStub.Conditions.Url.Path);
 
             Assert.AreEqual("val1", addedStub.Conditions.Url.Query["query1"]);

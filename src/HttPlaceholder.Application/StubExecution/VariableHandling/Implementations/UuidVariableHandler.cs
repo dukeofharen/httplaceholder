@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
@@ -8,20 +9,12 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
     {
         public string Name => "uuid";
 
-        public string Parse(string input, IEnumerable<Match> matches)
-        {
-            foreach (var match in matches)
-            {
-                if (match.Groups.Count == 3)
-                {
-                    var replaceRegex = new Regex(Regex.Escape(match.Value));
-
-                    // Only replace first occurrence.
-                    input = replaceRegex.Replace(input, Guid.NewGuid().ToString(), 1);
-                }
-            }
-
-            return input;
-        }
+        public string Parse(string input, IEnumerable<Match> matches) =>
+            (from match
+                    in matches
+                where match.Groups.Count == 3
+                select new Regex(Regex.Escape(match.Value)))
+            .Aggregate(
+                input, (current, replaceRegex) => replaceRegex.Replace(current, Guid.NewGuid().ToString(), 1));
     }
 }

@@ -28,21 +28,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             var validConditions = 0;
             foreach (var condition in formConditions)
             {
-                var formValue = form.FirstOrDefault(f => f.Item1 == condition.Key);
-                if (formValue.Item1 == null)
+                var (formKey, formValues) = form.FirstOrDefault(f => f.Item1 == condition.Key);
+                if (formKey == null)
                 {
                     result.ConditionValidation = ConditionValidationType.Invalid;
                     result.Log = $"No form value with key '{condition.Key}' found.";
                     break;
                 }
 
-                foreach (var value in formValue.Item2)
-                {
-                    if (StringHelper.IsRegexMatchOrSubstring(value, condition.Value))
-                    {
-                        validConditions++;
-                    }
-                }
+                validConditions += formValues
+                    .Count(value => StringHelper.IsRegexMatchOrSubstring(value, condition.Value));
             }
 
             // If the number of succeeded conditions is equal to the actual number of conditions,

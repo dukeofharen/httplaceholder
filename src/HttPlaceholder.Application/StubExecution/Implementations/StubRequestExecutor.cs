@@ -71,14 +71,18 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                     }
 
                     var allValidationResults = validationResults.Concat(negativeValidationResults);
-                    if (allValidationResults.All(r => r.ConditionValidation != ConditionValidationType.Invalid) &&
-                        validationResults.Any(r =>
-                            r.ConditionValidation != ConditionValidationType.NotExecuted &&
-                            r.ConditionValidation != ConditionValidationType.NotSet) ||
-                        allValidationResults.All(r => r.ConditionValidation == ConditionValidationType.NotExecuted))
+                    var conditionCheckResultModels = allValidationResults as ConditionCheckResultModel[] ??
+                                                     allValidationResults.ToArray();
+                    if ((conditionCheckResultModels.All(r =>
+                             r.ConditionValidation != ConditionValidationType.Invalid) &&
+                         validationResults.Any(r =>
+                             r.ConditionValidation != ConditionValidationType.NotExecuted &&
+                             r.ConditionValidation != ConditionValidationType.NotSet)) ||
+                        conditionCheckResultModels.All(
+                            r => r.ConditionValidation == ConditionValidationType.NotExecuted))
                     {
                         passed = true;
-                        foundStubs.Add((stub, allValidationResults));
+                        foundStubs.Add((stub, conditionCheckResultModels));
                     }
 
                     requestLogger.SetStubExecutionResult(stub.Id, passed, validationResults, negativeValidationResults);
@@ -102,8 +106,11 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             return response;
         }
 
-        private ConditionCheckResultModel CheckConditions(string stubId, IConditionChecker checker,
-            StubConditionsModel conditions, bool negative)
+        private static ConditionCheckResultModel CheckConditions(
+            string stubId,
+            IConditionChecker checker,
+            StubConditionsModel conditions,
+            bool negative)
         {
             var validationResult = checker.Validate(stubId, conditions);
             validationResult.CheckerName = checker.GetType().Name;

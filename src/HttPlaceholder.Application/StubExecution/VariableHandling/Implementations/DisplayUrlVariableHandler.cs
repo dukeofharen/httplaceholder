@@ -18,19 +18,16 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Parse(string input, IEnumerable<Match> matches)
         {
-            if (matches.Any())
+            var enumerable = matches as Match[] ?? matches.ToArray();
+            if (!enumerable.Any())
             {
-                var url = _httpContextService.DisplayUrl;
-                foreach (var match in matches)
-                {
-                    if (match.Groups.Count >= 2)
-                    {
-                        input = input.Replace(match.Value, url);
-                    }
-                }
+                return input;
             }
 
-            return input;
+            var url = _httpContextService.DisplayUrl;
+            return enumerable
+                .Where(match => match.Groups.Count >= 2)
+                .Aggregate(input, (current, match) => current.Replace(match.Value, url));
         }
     }
 }

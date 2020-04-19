@@ -21,6 +21,7 @@ namespace HttPlaceholder.Persistence
             return services;
         }
 
+        // ReSharper disable once UnusedMethodReturnValue.Global
         public static IServiceCollection AddStubSources(this IServiceCollection services, IConfiguration configuration)
         {
             var settings = configuration.Get<SettingsModel>();

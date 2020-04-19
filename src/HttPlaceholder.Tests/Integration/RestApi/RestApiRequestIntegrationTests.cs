@@ -24,7 +24,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // Arrange
             var correlation = Guid.NewGuid().ToString();
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 CorrelationId = correlation
             });
@@ -41,11 +41,11 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Request_GetByStubId()
         {
             // Arrange
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub2"
             });
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub1"
             });
@@ -62,11 +62,11 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Request_CredentialsAreNeededButIncorrect_ShouldReturn401()
         {
             // Arrange
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub2"
             });
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub1"
             });
@@ -85,11 +85,11 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Request_CredentialsAreCorrect_ShouldContinue()
         {
             // Arrange
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub2"
             });
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub1"
             });

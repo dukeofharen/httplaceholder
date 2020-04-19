@@ -20,33 +20,37 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Parse(string input, IEnumerable<Match> matches)
         {
-            if (matches.Any())
+            var enumerable = matches as Match[] ?? matches.ToArray();
+            if (!enumerable.Any())
             {
-                ValueTuple<string, StringValues>[] formValues;
-                try
+                return input;
+            }
+
+            ValueTuple<string, StringValues>[] formValues;
+            try
+            {
+                // We don't care about any exceptions here.
+                formValues = _httpContextService.GetFormValues();
+            }
+            catch
+            {
+                formValues = new ValueTuple<string, StringValues>[0];
+            }
+
+            // TODO there can be multiple form values, so this should be fixed in the future.
+            var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
+
+            foreach (var match in enumerable)
+            {
+                if (match.Groups.Count != 3)
                 {
-                    // We don't care about any exceptions here.
-                    formValues = _httpContextService.GetFormValues();
-                }
-                catch
-                {
-                    formValues = new ValueTuple<string, StringValues>[0];
+                    continue;
                 }
 
-                // TODO there can be multiple form values, so this should be fixed in the future.
-                var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
+                var formValueName = match.Groups[2].Value;
+                formDict.TryGetValue(formValueName, out var replaceValue);
 
-                foreach (var match in matches)
-                {
-                    if (match.Groups.Count == 3)
-                    {
-                        var formValueName = match.Groups[2].Value;
-                        var replaceValue = string.Empty;
-                        formDict.TryGetValue(formValueName, out replaceValue);
-
-                        input = input.Replace(match.Value, replaceValue);
-                    }
-                }
+                input = input.Replace(match.Value, replaceValue);
             }
 
             return input;

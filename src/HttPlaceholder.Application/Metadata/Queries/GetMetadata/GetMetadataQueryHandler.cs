@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Common;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using MediatR;
+// ReSharper disable UnusedType.Global
 
 namespace HttPlaceholder.Application.Metadata.Queries.GetMetadata
 {

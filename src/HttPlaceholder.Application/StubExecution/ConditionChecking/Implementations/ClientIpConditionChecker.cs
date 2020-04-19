@@ -20,19 +20,17 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         {
             var result = new ConditionCheckResultModel();
             var clientIpCondition = conditions?.ClientIp;
-            if (clientIpCondition != null)
+            if (clientIpCondition == null)
             {
-                var clientIp = IPAddress.Parse(_clientDataResolver.GetClientIp());
-                var ranges = IPAddressRange.Parse(clientIpCondition).AsEnumerable();
-                if (ranges.Any(i => i.Equals(clientIp)))
-                {
-                    result.ConditionValidation = ConditionValidationType.Valid;
-                }
-                else
-                {
-                    result.ConditionValidation = ConditionValidationType.Invalid;
-                }
+                return result;
             }
+
+            var clientIp = IPAddress.Parse(_clientDataResolver.GetClientIp());
+            var ranges = IPAddressRange.Parse(clientIpCondition).AsEnumerable();
+            result.ConditionValidation = ranges
+                .Any(i => i.Equals(clientIp))
+                ? ConditionValidationType.Valid
+                : ConditionValidationType.Invalid;
 
             return result;
         }

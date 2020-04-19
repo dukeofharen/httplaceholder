@@ -1,7 +1,9 @@
 ﻿using System;
+// ReSharper disable UnusedMember.Global
 
 namespace HttPlaceholder.Domain.Entities
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class DbRequestModel
     {
         public long Id { get; set; }
@@ -14,6 +16,7 @@ namespace HttPlaceholder.Domain.Entities
 
         public DateTime RequestEndTime { get; set; }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Json { get; set; }
     }
 }

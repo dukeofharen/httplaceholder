@@ -7,7 +7,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     internal class FinalStubDeterminer : IFinalStubDeterminer
     {
-        public StubModel DetermineFinalStub(IList<(StubModel, IEnumerable<ConditionCheckResultModel>)> matchedStubs)
+        public StubModel DetermineFinalStub(IEnumerable<(StubModel, IEnumerable<ConditionCheckResultModel>)> matchedStubs)
         {
             StubModel finalStub;
             var highestPriority = matchedStubs.Max(s => s.Item1.Priority);

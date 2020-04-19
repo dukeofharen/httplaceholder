@@ -18,19 +18,21 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         {
             var result = new ConditionCheckResultModel();
             var pathCondition = conditions?.Url?.Path;
-            if (!string.IsNullOrEmpty(pathCondition))
+            if (string.IsNullOrEmpty(pathCondition))
             {
-                var path = _httpContextService.Path;
-                if (StringHelper.IsRegexMatchOrSubstring(path, pathCondition))
-                {
-                    // The path matches the provided regex. Add the stub ID to the resulting list.
-                    result.ConditionValidation = ConditionValidationType.Valid;
-                }
-                else
-                {
-                    result.Log = $"Condition '{pathCondition}' did not pass for request.";
-                    result.ConditionValidation = ConditionValidationType.Invalid;
-                }
+                return result;
+            }
+
+            var path = _httpContextService.Path;
+            if (StringHelper.IsRegexMatchOrSubstring(path, pathCondition))
+            {
+                // The path matches the provided regex. Add the stub ID to the resulting list.
+                result.ConditionValidation = ConditionValidationType.Valid;
+            }
+            else
+            {
+                result.Log = $"Condition '{pathCondition}' did not pass for request.";
+                result.ConditionValidation = ConditionValidationType.Invalid;
             }
 
             return result;

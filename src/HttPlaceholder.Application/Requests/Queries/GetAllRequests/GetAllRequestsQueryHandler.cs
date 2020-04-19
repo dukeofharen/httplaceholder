@@ -7,6 +7,7 @@ using MediatR;
 
 namespace HttPlaceholder.Application.Requests.Queries.GetAllRequests
 {
+    // ReSharper disable once UnusedType.Global
     public class GetAllRequestsQueryHandler : IRequestHandler<GetAllRequestsQuery, IEnumerable<RequestResultModel>>
     {
         private readonly IStubContext _stubContext;

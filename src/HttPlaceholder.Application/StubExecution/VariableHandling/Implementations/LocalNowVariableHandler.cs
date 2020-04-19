@@ -21,16 +21,18 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
         public string Parse(string input, IEnumerable<Match> matches)
         {
             var enumerable = matches as Match[] ?? matches.ToArray();
-            if (enumerable.Any())
+            if (!enumerable.Any())
             {
-                var now = _dateTime.Now;
-                foreach (var match in enumerable)
-                {
-                    var dateTime = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value)
-                        ? now.ToString(match.Groups[2].Value)
-                        : now.ToString(CultureInfo.InvariantCulture);
-                    input = input.Replace(match.Value, dateTime);
-                }
+                return input;
+            }
+
+            var now = _dateTime.Now;
+            foreach (var match in enumerable)
+            {
+                var dateTime = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value)
+                    ? now.ToString(match.Groups[2].Value)
+                    : now.ToString(CultureInfo.InvariantCulture);
+                input = input.Replace(match.Value, dateTime);
             }
 
             return input;

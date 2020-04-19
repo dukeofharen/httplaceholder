@@ -99,16 +99,18 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) => files.Max(f => _fileService.GetModicationDateTime(f));
 
-        private void EnsureStubsHaveId(IEnumerable<StubModel> stubs)
+        private static void EnsureStubsHaveId(IEnumerable<StubModel> stubs)
         {
             foreach (var stub in stubs)
             {
-                if (string.IsNullOrWhiteSpace(stub.Id))
+                if (!string.IsNullOrWhiteSpace(stub.Id))
                 {
-                    // If no ID is set, calculate a unique ID based on the stub contents.
-                    var contents = JsonConvert.SerializeObject(stub);
-                    stub.Id = HashingUtilities.GetMd5String(contents);
+                    continue;
                 }
+
+                // If no ID is set, calculate a unique ID based on the stub contents.
+                var contents = JsonConvert.SerializeObject(stub);
+                stub.Id = HashingUtilities.GetMd5String(contents);
             }
         }
     }

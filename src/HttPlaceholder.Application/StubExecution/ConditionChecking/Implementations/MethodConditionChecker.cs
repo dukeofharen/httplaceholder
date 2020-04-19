@@ -18,19 +18,21 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         {
             var result = new ConditionCheckResultModel();
             var methodCondition = conditions?.Method;
-            if (!string.IsNullOrEmpty(methodCondition))
+            if (string.IsNullOrEmpty(methodCondition))
             {
-                var method = _httpContextService.Method;
-                if (string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase))
-                {
-                    // The path matches the provided regex. Add the stub ID to the resulting list.
-                    result.ConditionValidation = ConditionValidationType.Valid;
-                }
-                else
-                {
-                    result.Log = $"Condition '{methodCondition}' did not pass for request.";
-                    result.ConditionValidation = ConditionValidationType.Invalid;
-                }
+                return result;
+            }
+
+            var method = _httpContextService.Method;
+            if (string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase))
+            {
+                // The path matches the provided regex. Add the stub ID to the resulting list.
+                result.ConditionValidation = ConditionValidationType.Valid;
+            }
+            else
+            {
+                result.Log = $"Condition '{methodCondition}' did not pass for request.";
+                result.ConditionValidation = ConditionValidationType.Invalid;
             }
 
             return result;

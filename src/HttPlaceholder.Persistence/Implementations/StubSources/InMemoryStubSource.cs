@@ -10,12 +10,12 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class InMemoryStubSource : IWritableStubSource
     {
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
         private readonly SettingsModel _settings;
 
-        internal readonly IList<RequestResultModel> _requestResultModels = new List<RequestResultModel>();
-        internal readonly IList<StubModel> _stubModels = new List<StubModel>();
+        internal readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
+        internal readonly IList<StubModel> StubModels = new List<StubModel>();
 
         public InMemoryStubSource(IOptions<SettingsModel> options)
         {
@@ -26,7 +26,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             lock (_lock)
             {
-                _requestResultModels.Add(requestResult);
+                RequestResultModels.Add(requestResult);
                 return Task.CompletedTask;
             }
         }
@@ -35,7 +35,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             lock (_lock)
             {
-                _stubModels.Add(stub);
+                StubModels.Add(stub);
                 return Task.CompletedTask;
             }
         }
@@ -44,7 +44,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             lock (_lock)
             {
-                _requestResultModels.Clear();
+                RequestResultModels.Clear();
                 return Task.CompletedTask;
             }
         }
@@ -53,13 +53,13 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             lock (_lock)
             {
-                var stub = _stubModels.FirstOrDefault(s => s.Id == stubId);
+                var stub = StubModels.FirstOrDefault(s => s.Id == stubId);
                 if (stub == null)
                 {
                     return Task.FromResult(false);
                 }
 
-                _stubModels.Remove(stub);
+                StubModels.Remove(stub);
                 return Task.FromResult(true);
             }
         }
@@ -68,7 +68,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             lock (_lock)
             {
-                return Task.FromResult(_requestResultModels.AsEnumerable());
+                return Task.FromResult(RequestResultModels.AsEnumerable());
             }
         }
 
@@ -76,7 +76,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             lock (_lock)
             {
-                return Task.FromResult(_stubModels.AsEnumerable());
+                return Task.FromResult(StubModels.AsEnumerable());
             }
         }
 
@@ -85,12 +85,12 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             lock (_lock)
             {
                 var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
-                var requests = _requestResultModels
+                var requests = RequestResultModels
                    .OrderByDescending(r => r.RequestEndTime)
                    .Skip(maxLength);
                 foreach (var request in requests)
                 {
-                    _requestResultModels.Remove(request);
+                    RequestResultModels.Remove(request);
                 }
 
                 return Task.CompletedTask;

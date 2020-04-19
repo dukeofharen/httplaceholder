@@ -19,6 +19,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 executed = true;
             }
 
+            // ReSharper disable once InvertIf
             if (stub.Response?.PermanentRedirect != null)
             {
                 var url = stub.Response.PermanentRedirect;

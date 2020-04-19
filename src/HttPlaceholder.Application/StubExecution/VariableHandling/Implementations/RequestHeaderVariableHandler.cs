@@ -20,14 +20,15 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
             var headers = _httpContextService.GetHeaders();
             foreach (var match in matches)
             {
-                if (match.Groups.Count == 3)
+                if (match.Groups.Count != 3)
                 {
-                    var headerName = match.Groups[2].Value;
-                    var replaceValue = string.Empty;
-                    headers.TryGetValue(headerName, out replaceValue);
-
-                    input = input.Replace(match.Value, replaceValue);
+                    continue;
                 }
+
+                var headerName = match.Groups[2].Value;
+                headers.TryGetValue(headerName, out var replaceValue);
+
+                input = input.Replace(match.Value, replaceValue);
             }
 
             return input;
