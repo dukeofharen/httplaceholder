@@ -61,3 +61,7 @@ Read more about this subject for the specific web servers:
 - [Nginx](https://www.nginx.com/resources/wiki/start/topics/examples/forwarded/)
 - [Apache](https://httpd.apache.org/docs/2.4/mod/mod_proxy.html)
 - [IIS](https://blogs.msdn.microsoft.com/webapps/2018/09/05/how-to-log-client-ip-when-iis-is-load-balanced-the-x-forwarded-for-header-xff/)
+
+## Using SSL
+
+HttPlaceholder supports HTTPS. See [configuration](CONFIG.md) for more information on this. By default, it uses the private key that is installed with HttPlaceholder. This file is named `key.pfx` and the password is `1234`. Before using HttPlaceholder and calling the HTTPS URL, you'll need to make sure to import and trust the .pfx file on your OS. For your convenience, three scripts (for Windows, Linux and Mac) are added for installing and trusting the .pfx file of HttPlaceholder. You can find the script in the installation folder: `install-private-key.sh` for Mac and Linux and `Install-Private-Key.ps1` for Windows.
