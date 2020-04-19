@@ -22,13 +22,13 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void EncodedQueryStringHandlerFacts_Parse_HappyFlow()
         {
             // arrange
-            var input = "Query var 1: ((query:var1)), query var 2: ((query:var2)), query var 3: ((query:var3))";
+            const string input = "Query var 1: ((query:var1)), query var 2: ((query:var2)), query var 3: ((query:var3))";
             var queryDict = new Dictionary<string, string>
             {
                 { "var1", "https://google.com" },
-                { "var3", "value3" },
+                { "var3", "value3" }
             };
-            var expectedResult = "Query var 1: https%3A%2F%2Fgoogle.com, query var 2: , query var 3: value3";
+            const string expectedResult = "Query var 1: https%3A%2F%2Fgoogle.com, query var 2: , query var 3: value3";
 
             _httpContextServiceMock
                 .Setup(m => m.GetQueryStringDictionary())

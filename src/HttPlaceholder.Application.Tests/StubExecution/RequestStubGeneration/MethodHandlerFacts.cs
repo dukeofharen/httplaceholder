@@ -30,7 +30,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task MethodHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            var method = "GET";
+            const string method = "GET";
             var request = new RequestResultModel
             {
                 RequestParameters = new RequestParametersModel {Method = method}

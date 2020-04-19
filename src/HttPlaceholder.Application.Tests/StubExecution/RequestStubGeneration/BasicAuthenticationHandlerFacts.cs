@@ -60,13 +60,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            var username = "httplaceholder";
-            var password = "secret";
+            const string username = "httplaceholder";
+            const string password = "secret";
             var auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
-            var stub = new StubModel();
-            stub.Conditions.Headers = new Dictionary<string, string>
+            var stub = new StubModel
             {
-                { "Authorization", auth }
+                Conditions = {Headers = new Dictionary<string, string> {{"Authorization", auth}}}
             };
             var request = new RequestResultModel
             {

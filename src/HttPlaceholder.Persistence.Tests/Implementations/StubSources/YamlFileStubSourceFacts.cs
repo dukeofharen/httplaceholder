@@ -37,7 +37,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public async Task YamlFileStubSource_GetStubsAsync_NoInputFileSet_ShouldReadFilesFromCurrentDirectory()
         {
             // arrange
-            var currentDirectory = @"C:\stubs";
+            const string currentDirectory = @"C:\stubs";
             var files = new[]
             {
                 $@"{currentDirectory}\file1.yml",
@@ -74,7 +74,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public async Task YamlFileStubSource_GetStubsAsync_NoInputFileSet_ShouldReadFilesFromCurrentDirectory_NoFilesFound_ShouldReturnEmptyList()
         {
             // arrange
-            var currentDirectory = @"C:\stubs";
+            const string currentDirectory = @"C:\stubs";
             _fileServiceMock
                 .Setup(m => m.GetCurrentDirectory())
                 .Returns(currentDirectory);
@@ -123,7 +123,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public async Task YamlFileStubSource_GetStubsAsync_InputFileSet_InputFileIsDirectory_ShouldReadFilesFromThatDirectory()
         {
             // arrange
-            var inputFile = @"C:\stubs";
+            const string inputFile = @"C:\stubs";
             _options.Value.Storage.InputFile = inputFile;
 
             var files = new[]
@@ -162,7 +162,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public async Task YamlFileStubSource_GetStubsAsync_StubsHaveNoId_IdShouldBeCalculated()
         {
             // arrange
-            var inputFile = @"C:\stubs";
+            const string inputFile = @"C:\stubs";
             _options.Value.Storage.InputFile = inputFile;
 
             var files = new[]

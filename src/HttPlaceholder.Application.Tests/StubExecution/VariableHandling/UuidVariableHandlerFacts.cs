@@ -14,7 +14,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void UuidVariableHandler_Parse_HappyFlow()
         {
             // arrange
-            var input = "((uuid)) ((uuid:nonsense))";
+            const string input = "((uuid)) ((uuid:nonsense))";
 
             // act
             var matches = VariableParser.VarRegex.Matches(input);

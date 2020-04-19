@@ -12,15 +12,12 @@ namespace HttPlaceholder.Tests.Integration
     [TestClass]
     public class GenericIntegrationTests : IntegrationTestBase
     {
-        private Dictionary<string, string> _config;
         private InMemoryStubSource _stubSource;
 
         [TestInitialize]
         public void Initialize()
         {
             _stubSource = new InMemoryStubSource(Options);
-            _config = new Dictionary<string, string>();
-
             InitializeIntegrationTest(new (Type, object)[]
             {
             ( typeof(IStubSource), _stubSource )

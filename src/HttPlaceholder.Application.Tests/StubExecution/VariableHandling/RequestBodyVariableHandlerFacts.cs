@@ -21,10 +21,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void RequestBodyVariableHandler_Parse_HappyFlow()
         {
             // arrange
-            var input = "Posted content: ((request_body))";
-            var body = "POSTED BODY";
+            const string input = "Posted content: ((request_body))";
+            const string body = "POSTED BODY";
 
-            var expectedResult = "Posted content: POSTED BODY";
+            const string expectedResult = "Posted content: POSTED BODY";
 
             _httpContextServiceMock
                 .Setup(m => m.GetBody())

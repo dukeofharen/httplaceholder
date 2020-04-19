@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Client;
 using HttPlaceholder.Domain;
@@ -33,7 +30,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var result = await GetFactory().RequestClient.GetAllAsync();
 
             // Assert
-            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(1, result.Count);
             Assert.AreEqual(correlation, result.First().CorrelationId);
         }
 
@@ -54,7 +51,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var result = await GetFactory().RequestClient.GetByStubIdAsync("stub1");
 
             // Assert
-            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(1, result.Count);
             Assert.AreEqual("stub1", result.First().ExecutingStubId);
         }
 

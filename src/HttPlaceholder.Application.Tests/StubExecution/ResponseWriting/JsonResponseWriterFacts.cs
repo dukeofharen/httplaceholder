@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations;
@@ -11,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class JsonResponseWriterFacts
     {
-        private JsonResponseWriter _writer = new JsonResponseWriter();
+        private readonly JsonResponseWriter _writer = new JsonResponseWriter();
 
         [TestMethod]
         public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
@@ -39,7 +38,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow()
         {
             // arrange
-            var responseText = "{}";
+            const string responseText = "{}";
             var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
             var stub = new StubModel
             {
@@ -64,7 +63,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
         {
             // arrange
-            var responseText = "{}";
+            const string responseText = "{}";
             var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
             var stub = new StubModel
             {

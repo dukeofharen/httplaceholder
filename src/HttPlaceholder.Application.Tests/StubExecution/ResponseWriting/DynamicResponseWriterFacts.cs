@@ -72,7 +72,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                     EnableDynamicMode = true
                 }
             };
-            var body = "this is the body";
+            const string body = "this is the body";
             var response = new ResponseModel
             {
                 Body = Encoding.UTF8.GetBytes(body)
@@ -126,7 +126,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                     EnableDynamicMode = true
                 }
             };
-            var body = "this is the body";
+            const string body = "this is the body";
             var response = new ResponseModel
             {
                 Body = Encoding.UTF8.GetBytes(body),

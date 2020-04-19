@@ -21,7 +21,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}users";
-            var body = @"{
+            const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -60,7 +60,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}users";
-            var body = @"{
+            const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,

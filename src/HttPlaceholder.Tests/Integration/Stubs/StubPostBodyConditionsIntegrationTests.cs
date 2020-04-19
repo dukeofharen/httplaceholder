@@ -22,7 +22,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}api/users";
-            var body = @"{""username"": ""john""}";
+            const string body = @"{""username"": ""john""}";
             var request = new HttpRequestMessage
             {
                 Content = new StringContent(body),
@@ -50,7 +50,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}api/users";
-            var body = @"{""username"": ""jack""}";
+            const string body = @"{""username"": ""jack""}";
             var request = new HttpRequestMessage
             {
                 Content = new StringContent(body),

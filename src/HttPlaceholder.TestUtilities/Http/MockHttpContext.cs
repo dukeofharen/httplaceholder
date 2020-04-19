@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
+// ReSharper disable UnassignedGetOnlyAutoProperty
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace HttPlaceholder.TestUtilities.Http
 {
@@ -127,7 +130,7 @@ namespace HttPlaceholder.TestUtilities.Http
 
         public override ClaimsPrincipal User { get; set; }
 
-        public override IDictionary<object, object> Items { get; set; }
+        public sealed override IDictionary<object, object> Items { get; set; }
 
         public override IServiceProvider RequestServices
         {
@@ -139,6 +142,6 @@ namespace HttPlaceholder.TestUtilities.Http
 
         public override string TraceIdentifier { get; set; }
 
-        public override ISession Session { get; set; }
+        public sealed override ISession Session { get; set; }
     }
 }

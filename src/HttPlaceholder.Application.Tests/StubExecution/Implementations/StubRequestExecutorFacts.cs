@@ -18,13 +18,13 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
     [TestClass]
     public class StubRequestExecutorFacts
     {
-        private Mock<IFinalStubDeterminer> _finalStubDeterminerMock = new Mock<IFinalStubDeterminer>();
-        private Mock<ILogger<StubRequestExecutor>> _loggerMock = new Mock<ILogger<StubRequestExecutor>>();
-        private Mock<IStubContext> _stubContextMock = new Mock<IStubContext>();
-        private Mock<IStubResponseGenerator> _stubResponseGeneratorMock = new Mock<IStubResponseGenerator>();
-        private Mock<IConditionChecker> _conditionCheckerMock1 = new Mock<IConditionChecker>();
-        private Mock<IConditionChecker> _conditionCheckerMock2 = new Mock<IConditionChecker>();
-        private FullStubModel _stub1 = new FullStubModel
+        private readonly Mock<IFinalStubDeterminer> _finalStubDeterminerMock = new Mock<IFinalStubDeterminer>();
+        private readonly Mock<ILogger<StubRequestExecutor>> _loggerMock = new Mock<ILogger<StubRequestExecutor>>();
+        private readonly Mock<IStubContext> _stubContextMock = new Mock<IStubContext>();
+        private readonly Mock<IStubResponseGenerator> _stubResponseGeneratorMock = new Mock<IStubResponseGenerator>();
+        private readonly Mock<IConditionChecker> _conditionCheckerMock1 = new Mock<IConditionChecker>();
+        private readonly Mock<IConditionChecker> _conditionCheckerMock2 = new Mock<IConditionChecker>();
+        private readonly FullStubModel _stub1 = new FullStubModel
         {
             Stub = new StubModel
             {
@@ -35,7 +35,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             },
             Metadata = new StubMetadataModel()
         };
-        private FullStubModel _stub2 = new FullStubModel
+        private readonly FullStubModel _stub2 = new FullStubModel
         {
             Stub = new StubModel
             {

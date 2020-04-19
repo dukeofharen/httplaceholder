@@ -21,7 +21,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}InStock";
-            var body = @"<?xml version=""1.0""?>
+            const string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -51,7 +51,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}InStock";
-            var body = @"<?xml version=""1.0""?>
+            const string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -81,7 +81,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}InStock";
-            var body = @"<?xml version=""1.0""?>
+            const string body = @"<?xml version=""1.0""?>
 <soap:Envelope xmlns:soap=""http://www.w3.org/2003/05/soap-envelope"" xmlns:m=""http://www.example.org/stock/Reddy"">
   <soap:Header>
   </soap:Header>
@@ -110,7 +110,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}xml";
-            var body = @"<?xml version=""1.0""?>
+            const string body = @"<?xml version=""1.0""?>
 <object>
 	<a>TEST</a>
 	<b>TEST2</b>
@@ -135,7 +135,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}InStock";
-            var body = @"<?xml version=""1.0""?>
+            const string body = @"<?xml version=""1.0""?>
 <object>
 	<a>TEST!</a>
 	<b>TEST2</b>

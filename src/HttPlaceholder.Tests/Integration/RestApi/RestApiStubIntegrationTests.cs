@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -13,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
+using FullStubDto = HttPlaceholder.Dto.Stubs.FullStubDto;
 
 namespace HttPlaceholder.Tests.Integration.RestApi
 {
@@ -30,7 +30,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // arrange
             var url = $"{TestServer.BaseAddress}ph-api/stubs";
-            var body = @"id: situation-01
+            const string body = @"id: situation-01
 conditions:
   method: GET
   url:
@@ -66,7 +66,7 @@ response:
         {
             // arrange
             var url = $"{TestServer.BaseAddress}ph-api/stubs";
-            var body = @"{
+            const string body = @"{
   ""id"": ""situation-01"",
   ""conditions"": {
     ""method"": ""GET"",
@@ -194,7 +194,7 @@ response:
             var content = await response.Content.ReadAsStringAsync();
             var reader = new StringReader(content);
             var deserializer = new Deserializer();
-            var stubs = deserializer.Deserialize<IEnumerable<Dto.Stubs.FullStubDto>>(reader);
+            var stubs = deserializer.Deserialize<IEnumerable<FullStubDto>>(reader);
             Assert.AreEqual(1, stubs.Count());
             Assert.AreEqual("test-123", stubs.First().Stub.Id);
         }
@@ -224,7 +224,7 @@ response:
             Assert.IsTrue(response.IsSuccessStatusCode);
 
             var content = await response.Content.ReadAsStringAsync();
-            var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
+            var stubs = JsonConvert.DeserializeObject<IEnumerable<Client.FullStubDto>>(content);
             Assert.AreEqual(1, stubs.Count());
             Assert.AreEqual("test-123", stubs.First().Stub.Id);
         }
@@ -247,7 +247,7 @@ response:
                 .GetAllAsync();
 
             // Assert
-            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(1, result.Count);
             Assert.AreEqual("test-123", result.First().Stub.Id);
         }
 
@@ -278,7 +278,7 @@ response:
             var content = await response.Content.ReadAsStringAsync();
             var reader = new StringReader(content);
             var deserializer = new Deserializer();
-            var stub = deserializer.Deserialize<Dto.Stubs.FullStubDto>(reader);
+            var stub = deserializer.Deserialize<FullStubDto>(reader);
             Assert.AreEqual("test-123", stub.Stub.Id);
         }
 
@@ -307,7 +307,7 @@ response:
             Assert.IsTrue(response.IsSuccessStatusCode);
 
             var content = await response.Content.ReadAsStringAsync();
-            var stub = JsonConvert.DeserializeObject<FullStubDto>(content);
+            var stub = JsonConvert.DeserializeObject<Client.FullStubDto>(content);
             Assert.AreEqual("test-123", stub.Stub.Id);
         }
 
@@ -336,7 +336,6 @@ response:
         public async Task RestApiIntegration_Stub_Get_StubNotFound_ShouldReturn404()
         {
             // arrange
-            var url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
             StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-124",

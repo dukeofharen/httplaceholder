@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
     [TestClass]
     public class UtcNowVariableHandlerFacts
     {
-        private static readonly DateTime Now = new DateTime(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
+        private static readonly DateTime _now = new DateTime(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
         private readonly Mock<IDateTime> _dateTimeMock = new Mock<IDateTime>();
         private UtcNowVariableHandler _handler;
 
@@ -19,7 +19,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         {
             _dateTimeMock
                 .Setup(m => m.UtcNow)
-                .Returns(Now);
+                .Returns(_now);
 
             _handler = new UtcNowVariableHandler(_dateTimeMock.Object);
         }
@@ -31,7 +31,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void UtcNowVariableHandler_Parse_HappyFlow_FormatSet()
         {
             // Arrange
-            var input = "((utcnow:dd-MM-yyyy HH:mm:ss))";
+            const string input = "((utcnow:dd-MM-yyyy HH:mm:ss))";
 
             // Act
             var matches = VariableParser.VarRegex.Matches(input);
@@ -45,14 +45,14 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void UtcNowVariableHandler_Parse_HappyFlow_NoFormatSet()
         {
             // Arrange
-            var input = "((utcnow))";
+            const string input = "((utcnow))";
 
             // Act
             var matches = VariableParser.VarRegex.Matches(input);
             var result = _handler.Parse(input, matches);
 
             // Assert
-            Assert.AreEqual(Now.ToString(CultureInfo.InvariantCulture), result);
+            Assert.AreEqual(_now.ToString(CultureInfo.InvariantCulture), result);
         }
     }
 }

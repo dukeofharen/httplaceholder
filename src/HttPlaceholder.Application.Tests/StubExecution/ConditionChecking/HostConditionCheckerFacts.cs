@@ -39,7 +39,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void HostConditionChecker_Validate_ConditionIncorrect_ShouldReturnInvalid()
         {
             // arrange
-            var host = "httplaceholder.com";
+            const string host = "httplaceholder.com";
             var conditions = new StubConditionsModel
             {
                 Host = "google.com"
@@ -60,7 +60,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void HostConditionChecker_Validate_ConditionCorrect_ShouldReturnValid()
         {
             // arrange
-            var host = "httplaceholder.com";
+            const string host = "httplaceholder.com";
             var conditions = new StubConditionsModel
             {
                 Host = "httplaceholder.com"
@@ -81,7 +81,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void HostConditionChecker_Validate_ConditionCorrectRegex_ShouldReturnValid()
         {
             // arrange
-            var host = "httplaceholder.com";
+            const string host = "httplaceholder.com";
             var conditions = new StubConditionsModel
             {
                 Host = "http(.*)"

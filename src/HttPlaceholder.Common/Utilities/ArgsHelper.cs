@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,7 +5,7 @@ namespace HttPlaceholder.Common.Utilities
 {
     public static class ArgsHelper
     {
-        public static IDictionary<string, string> Parse(this string[] args)
+        public static IDictionary<string, string> Parse(this IEnumerable<string> args)
         {
             var subResult = new Dictionary<string, List<string>>();
 

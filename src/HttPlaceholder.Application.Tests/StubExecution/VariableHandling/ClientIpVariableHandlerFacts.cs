@@ -21,8 +21,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void RequestBodyVariableHandler_Parse_HappyFlow()
         {
             // arrange
-            var input = "IP: ((client_ip))";
-            var ip = "11.22.33.44";
+            const string input = "IP: ((client_ip))";
+            const string ip = "11.22.33.44";
 
             var expectedResult = $"IP: {ip}";
 

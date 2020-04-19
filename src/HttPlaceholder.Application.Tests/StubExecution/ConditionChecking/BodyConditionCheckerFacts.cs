@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class BodyConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
         private BodyConditionChecker _checker;
 
         [TestInitialize]
@@ -41,7 +41,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void BodyConditionChecker_Validate_StubsFound_AllBodyConditionsIncorrect_ShouldReturnInvalid()
         {
             // arrange
-            var body = "this is a test";
+            const string body = "this is a test";
             var conditions = new StubConditionsModel
             {
                 Body = new[]
@@ -66,7 +66,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void BodyConditionChecker_Validate_StubsFound_OnlyOneBodyConditionCorrect_ShouldReturnInvalid()
         {
             // arrange
-            var body = "this is a test";
+            const string body = "this is a test";
             var conditions = new StubConditionsModel
             {
                 Body = new[]
@@ -91,7 +91,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void BodyConditionChecker_Validate_StubsFound_HappyFlow_FullText()
         {
             // arrange
-            var body = "this is a test";
+            const string body = "this is a test";
             var conditions = new StubConditionsModel
             {
                 Body = new[]
@@ -115,7 +115,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void BodyConditionChecker_Validate_StubsFound_HappyFlow_Regex()
         {
             // arrange
-            var body = "this is a test";
+            const string body = "this is a test";
             var conditions = new StubConditionsModel
             {
                 Body = new[]

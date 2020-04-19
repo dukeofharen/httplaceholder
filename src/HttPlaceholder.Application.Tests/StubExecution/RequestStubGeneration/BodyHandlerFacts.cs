@@ -30,7 +30,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task BodyHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            var body = "POSTED!";
+            const string body = "POSTED!";
             var request = new RequestResultModel {RequestParameters = new RequestParametersModel {Body = body}};
             var stub = new StubModel();
 

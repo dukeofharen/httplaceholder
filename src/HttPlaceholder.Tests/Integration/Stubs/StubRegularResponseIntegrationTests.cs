@@ -54,7 +54,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_File_HappyFlow()
         {
             // arrange
-            var fileContents = "File contents yo!";
+            const string fileContents = "File contents yo!";
             var url = $"{TestServer.BaseAddress}text.txt";
 
             FileServiceMock

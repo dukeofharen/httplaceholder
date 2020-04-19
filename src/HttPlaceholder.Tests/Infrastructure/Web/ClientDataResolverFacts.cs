@@ -26,8 +26,8 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_GetClientIp_IpIsLoopback_ForwardedHeaderSet_ShouldReturnForwardedIp()
         {
             // Arrange
-            var loopbackIp = "127.0.0.1";
-            var forwardedIp = "123.123.123.123";
+            const string loopbackIp = "127.0.0.1";
+            const string forwardedIp = "123.123.123.123";
             _mockContext.SetIp(loopbackIp);
             _mockContext.Request.Headers.Add("X-Forwarded-For", $"{forwardedIp}, 127.0.0.1");
 
@@ -42,7 +42,7 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_GetClientIp_IpIsLoopback_ForwardedHeaderNotSet_ShouldReturnLoopbackIp()
         {
             // Arrange
-            var loopbackIp = "127.0.0.1";
+            const string loopbackIp = "127.0.0.1";
             _mockContext.SetIp(loopbackIp);
 
             // Act
@@ -56,8 +56,8 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_GetClientIp_IpIsNotLoopback_ForwardedHeaderSet_ShouldReturnLoopbackIp()
         {
             // Arrange
-            var externalIp = "222.222.222.222";
-            var forwardedIp = "123.123.123.123";
+            const string externalIp = "222.222.222.222";
+            const string forwardedIp = "123.123.123.123";
             _mockContext.SetIp(externalIp);
             _mockContext.Request.Headers.Add("X-Forwarded-For", $"{forwardedIp}, 127.0.0.1");
 
@@ -78,7 +78,7 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_GetClientIp_LoopbackIps(string ip, bool isLoopback)
         {
             // Arrange
-            var forwardedIp = "123.123.123.123";
+            const string forwardedIp = "123.123.123.123";
             _mockContext.SetIp(ip);
             _mockContext.Request.Headers.Add("X-Forwarded-For", $"{forwardedIp}, 127.0.0.1");
 
@@ -93,7 +93,7 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_GetHost_IpIsLoopback_ForwardedHeaderSet_ShouldReturnForwardedHost()
         {
             // Arrange
-            var loopbackIp = "127.0.0.1";
+            const string loopbackIp = "127.0.0.1";
             _mockContext.SetIp(loopbackIp);
 
             var forwardedHost = "httplaceholder.com";
@@ -110,10 +110,10 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_GetHost_IpIsNotLoopback_ForwardedHeaderSet_ShouldReturnActualHost()
         {
             // Arrange
-            var loopbackIp = "111.111.111.111";
+            const string loopbackIp = "111.111.111.111";
             _mockContext.SetIp(loopbackIp);
 
-            var forwardedHost = "httplaceholder.com";
+            const string forwardedHost = "httplaceholder.com";
             _mockContext.Request.Headers.Add("X-Forwarded-Host", forwardedHost);
 
             var actualHost = "localhost";
@@ -130,10 +130,10 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_GetHost_IpIsLoopback_ForwardedHeaderNotSet_ShouldReturnActualHost()
         {
             // Arrange
-            var loopbackIp = "127.0.0.1";
+            const string loopbackIp = "127.0.0.1";
             _mockContext.SetIp(loopbackIp);
 
-            var actualHost = "localhost";
+            const string actualHost = "localhost";
             _mockContext.SetHost(actualHost);
 
             // Act
@@ -163,7 +163,7 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_IsHttps_IpIsLoopback_ForwardedHeaderSet_Http_ShouldReturnFalse()
         {
             // Arrange
-            var loopbackIp = "127.0.0.1";
+            const string loopbackIp = "127.0.0.1";
             _mockContext.SetIp(loopbackIp);
 
             _mockContext.Request.Headers.Add("X-Forwarded-Proto", "http");
@@ -179,7 +179,7 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_IsHttps_IpIsNotLoopback_ForwardedHeaderNotSet_Https_ShouldReturnTrue()
         {
             // Arrange
-            var loopbackIp = "123.123.123.123";
+            const string loopbackIp = "123.123.123.123";
             _mockContext.SetIp(loopbackIp);
 
             _mockContext.SetHttps(true);
@@ -195,7 +195,7 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_IsHttps_IpIsLoopback_ForwardedHeaderNotSet_Http_ShouldReturnTrue()
         {
             // Arrange
-            var loopbackIp = "123.123.123.123";
+            const string loopbackIp = "123.123.123.123";
             _mockContext.SetIp(loopbackIp);
 
             _mockContext.SetHttps(false);
@@ -211,7 +211,7 @@ namespace HttPlaceholder.Tests.Infrastructure.Web
         public void ClientDataResolver_IsHttps_IpIsLoopback_ForwardedHeaderNotSet_Https_ShouldReturnTrue()
         {
             // Arrange
-            var loopbackIp = "127.0.0.1";
+            const string loopbackIp = "127.0.0.1";
             _mockContext.SetIp(loopbackIp);
 
             _mockContext.SetHttps(true);

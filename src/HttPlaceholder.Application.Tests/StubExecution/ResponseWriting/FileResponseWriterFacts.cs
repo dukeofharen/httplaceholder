@@ -12,8 +12,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class FileResponseWriterFacts
     {
-        private Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
-        private Mock<IStubRootPathResolver> _stubRootPathResolverMock = new Mock<IStubRootPathResolver>();
+        private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
+        private readonly Mock<IStubRootPathResolver> _stubRootPathResolverMock = new Mock<IStubRootPathResolver>();
         private FileResponseWriter _writer;
 
         [TestInitialize]
@@ -86,8 +86,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileNotFoundDirectly_ButFoundInStubFolder()
         {
             // arrange
-            var yamlFilePath = @"C:\stubs";
-            var file = "image.png";
+            const string yamlFilePath = @"C:\stubs";
+            const string file = "image.png";
             var expectedFolder = Path.Combine(yamlFilePath, file);
             var body = new byte[] { 1, 2, 3 };
             var stub = new StubModel
@@ -128,8 +128,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task FileResponseWriter_WriteToResponseAsync_FileNotFoundDirectly_AlsoNotFoundInStubFolder_ShouldReturnNoBody()
         {
             // arrange
-            var yamlFilePath = @"C:\stubs";
-            var file = "image.png";
+            const string yamlFilePath = @"C:\stubs";
+            const string file = "image.png";
             var expectedFolder = Path.Combine(yamlFilePath, file);
             var stub = new StubModel
             {

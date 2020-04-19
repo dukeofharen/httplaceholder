@@ -38,7 +38,7 @@ namespace HttPlaceholder.Configuration.Utilities
             return BuildFinalArgsDictionary(argsDictionary);
         }
 
-        private IDictionary<string, string> DetermineBaseArgsDictionary(string[] args)
+        private IDictionary<string, string> DetermineBaseArgsDictionary(IEnumerable<string> args)
         {
             var argsDictionary = args.Parse();
             if (!argsDictionary.TryGetValue(ConfigKeys.ConfigJsonLocationKey.ToLower(), out var configJsonPath))

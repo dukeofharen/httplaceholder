@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Client;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Dto.Stubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
+using FullStubDto = HttPlaceholder.Dto.Stubs.FullStubDto;
 
 namespace HttPlaceholder.Tests.Integration.RestApi
 {
@@ -29,7 +27,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Tenant_GetAll_Yaml()
         {
             // arrange
-            var tenant = "tenant1";
+            const string tenant = "tenant1";
             var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
             StubSource.StubModels.Add(new StubModel
             {
@@ -62,7 +60,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var content = await response.Content.ReadAsStringAsync();
             var reader = new StringReader(content);
             var deserializer = new Deserializer();
-            var stubs = deserializer.Deserialize<IEnumerable<Dto.Stubs.FullStubDto>>(reader);
+            var stubs = deserializer.Deserialize<IEnumerable<FullStubDto>>(reader);
             Assert.AreEqual(1, stubs.Count());
             Assert.AreEqual("test-456", stubs.Single().Stub.Id);
         }
@@ -71,7 +69,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Tenant_GetAll_Json()
         {
             // arrange
-            var tenant = "tenant1";
+            const string tenant = "tenant1";
             var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
             StubSource.StubModels.Add(new StubModel
             {
@@ -102,7 +100,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Assert.IsTrue(response.IsSuccessStatusCode);
 
             var content = await response.Content.ReadAsStringAsync();
-            var stubs = JsonConvert.DeserializeObject<IEnumerable<Dto.Stubs.FullStubDto>>(content);
+            var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
             Assert.AreEqual(1, stubs.Count());
             Assert.AreEqual("test-456", stubs.Single().Stub.Id);
         }
@@ -111,7 +109,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Tenant_GetAll_Client()
         {
             // Arrange
-            var tenant = "tenant1";
+            const string tenant = "tenant1";
             StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -135,7 +133,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 .GetAllAsync(tenant);
 
             // Assert
-            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(1, result.Count);
             Assert.AreEqual("test-456", result.Single().Stub.Id);
         }
 
@@ -143,8 +141,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Tenant_GetAll_CredentialsAreNeededButIncorrect_ShouldReturn401()
         {
             // Arrange
-            var tenant = "tenant1";
-            var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
+            const string tenant = "tenant1";
             StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -178,8 +175,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Tenant_GetAll_CredentialsAreCorrect_ShouldContinue()
         {
             // Arrange
-            var tenant = "tenant1";
-            var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
+            const string tenant = "tenant1";
             StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -213,7 +209,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Tenant_DeleteAll_HappyFlow()
         {
             // arrange
-            var tenant = "tenant1";
+            const string tenant = "tenant1";
             StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -245,7 +241,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Tenant_UpdateAll_HappyFlow()
         {
             // Arrange
-            var tenant = "tenant1";
+            const string tenant = "tenant1";
             StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-123",
@@ -265,26 +261,26 @@ namespace HttPlaceholder.Tests.Integration.RestApi
 
             var request = new[]
             {
-                new Client.StubDto
+                new StubDto
                 {
                     Id = "test-123",
-                    Conditions = new Client.StubConditionsDto
+                    Conditions = new StubConditionsDto
                     {
                         Method = "GET"
                     },
-                    Response = new Client.StubResponseDto
+                    Response = new StubResponseDto
                     {
                         Text = "OK"
                     }
                 },
-                new Client.StubDto
+                new StubDto
                 {
                     Id = "test-789",
-                    Conditions = new Client.StubConditionsDto
+                    Conditions = new StubConditionsDto
                     {
                         Method = "POST"
                     },
-                    Response = new Client.StubResponseDto
+                    Response = new StubResponseDto
                     {
                         Text = "OK"
                     }

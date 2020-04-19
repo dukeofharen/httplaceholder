@@ -43,7 +43,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void VaribaleParser_Parse_HappyFlow()
         {
             // arange
-            var input = @"((handler1:value1)) ((handler2))
+            const string input = @"((handler1:value1)) ((handler2))
 ((handler1:bla))
 ((handler-x))";
 

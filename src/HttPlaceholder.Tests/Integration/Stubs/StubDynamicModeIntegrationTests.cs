@@ -21,8 +21,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_Query()
         {
             // arrange
-            var query1Val = "John";
-            var query2Val = "=";
+            const string query1Val = "John";
+            const string query2Val = "=";
             var expectedResult = $"The value is {query1Val} {WebUtility.UrlEncode(query2Val)}";
             var url = $"{TestServer.BaseAddress}dynamic-query.txt?queryString1={query1Val}&queryString2={query2Val}";
 
@@ -73,7 +73,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPost_Dynamic_FormPost()
         {
             // arrange
-            var expectedResult = "Posted: Value 1!";
+            const string expectedResult = "Posted: Value 1!";
             var url = $"{TestServer.BaseAddress}dynamic-form-post.txt";
 
             var request = new HttpRequestMessage(HttpMethod.Post, url)
@@ -99,9 +99,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularPost_Dynamic_RequestBody()
         {
             // arrange
-            var expectedResult = "Posted: Test123";
+            const string expectedResult = "Posted: Test123";
             var url = $"{TestServer.BaseAddress}dynamic-request-body.txt";
-            var body = "Test123";
+            const string body = "Test123";
 
             var request = new HttpRequestMessage(HttpMethod.Post, url)
             {
@@ -122,7 +122,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_DisplayUrl()
         {
             // arrange
-            var query = "?var1=value1&var2=value2";
+            const string query = "?var1=value1&var2=value2";
             var url = $"{TestServer.BaseAddress}dynamic-display-url.txt{query}";
             var expectedResult = $"URL: {url}";
 
@@ -146,7 +146,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public async Task StubIntegration_RegularGet_Dynamic_ClientIp()
         {
             // arrange
-            var ip = "11.22.33.44";
+            const string ip = "11.22.33.44";
             var url = $"{TestServer.BaseAddress}dynamic-client-ip.txt";
             var expectedResult = $"IP: {ip}";
 
@@ -171,7 +171,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}dynamic-local-now.txt";
-            var expectedDateTime = "2019-08-21 20:41:51";
+            const string expectedDateTime = "2019-08-21 20:41:51";
             var expectedResult = $"Local now: {expectedDateTime}";
 
             var now = new DateTime(2019, 8, 21, 20, 41, 51, DateTimeKind.Local);
@@ -196,7 +196,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         {
             // arrange
             var url = $"{TestServer.BaseAddress}dynamic-utc-now.txt";
-            var expectedDateTime = "2019-08-21 20:41:51";
+            const string expectedDateTime = "2019-08-21 20:41:51";
             var expectedResult = $"UTC now: {expectedDateTime}";
 
             var now = new DateTime(2019, 8, 21, 20, 41, 51, DateTimeKind.Utc);

@@ -21,8 +21,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void RequestBodyVariableHandler_Parse_HappyFlow()
         {
             // arrange
-            var input = "URL: ((display_url))";
-            var url = "http://localhost:5000/test.txt?var1=value1&var2=value2";
+            const string input = "URL: ((display_url))";
+            const string url = "http://localhost:5000/test.txt?var1=value1&var2=value2";
 
             var expectedResult = $"URL: {url}";
 

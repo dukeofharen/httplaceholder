@@ -14,7 +14,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
     [TestClass]
     public class StubContextFacts
     {
-        private IList<IStubSource> _stubSources = new List<IStubSource>();
+        private readonly IList<IStubSource> _stubSources = new List<IStubSource>();
         private StubContext _context;
 
         [TestInitialize]
@@ -107,7 +107,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public async Task StubContainer_AddStubAsync_NoIdSet_ShouldAssignRandomString()
         {
             // arrange
-            var stubToBeAdded = new StubModel {Conditions = new StubConditionsModel {Body = new string[] {"test"}}};
+            var stubToBeAdded = new StubModel {Conditions = new StubConditionsModel {Body = new[] {"test"}}};
             var stubSource = new Mock<IWritableStubSource>();
             stubSource
                 .Setup(m => m.AddStubAsync(stubToBeAdded))
@@ -159,7 +159,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public async Task StubContainer_DeleteStubAsync_HappyFlow()
         {
             // arrange
-            var stubId = "stubId1";
+            const string stubId = "stubId1";
             var stubSource = new Mock<IWritableStubSource>();
             stubSource
                 .Setup(m => m.DeleteStubAsync(stubId))
@@ -308,7 +308,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public async Task StubContainer_DeleteAllStubsAsync_Tenant_HappyFlow()
         {
             // arrange
-            var tenant = "tenant1";
+            const string tenant = "tenant1";
             var stubSource = new Mock<IWritableStubSource>();
 
             var stub1 = new StubModel {Id = "stub1", Tenant = tenant};
@@ -359,8 +359,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public async Task StubContainer_UpdateAllStubsAsync_HappyFlow()
         {
             // arrange
-            var tenant1 = "tenant1";
-            var tenant2 = "tenant2";
+            const string tenant1 = "tenant1";
+            const string tenant2 = "tenant2";
             var stubSource = new Mock<IWritableStubSource>();
 
             var stub1 = new StubModel {Id = "stub1", Tenant = tenant1};

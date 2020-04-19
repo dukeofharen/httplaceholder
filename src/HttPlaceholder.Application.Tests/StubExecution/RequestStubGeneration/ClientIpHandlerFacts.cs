@@ -14,7 +14,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task ClientIpHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            var ip = "11.22.33.44";
+            const string ip = "11.22.33.44";
             var request = new RequestResultModel {RequestParameters = new RequestParametersModel {ClientIp = ip}};
             var stub = new StubModel();
 

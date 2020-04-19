@@ -15,11 +15,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         private const string InputFilePath = @"D:\tmp\input.yml";
         protected Mock<IClientDataResolver> ClientIpResolverMock;
         protected Mock<IFileService> FileServiceMock;
-        internal YamlFileStubSource StubSource;
-        protected Mock<IWritableStubSource> WritableStubSourceMock;
+        private YamlFileStubSource _stubSource;
+        private Mock<IWritableStubSource> _writableStubSourceMock;
         protected Mock<IDateTime> DateTimeMock;
 
-        public void InitializeStubIntegrationTest(string yamlFileName)
+        protected void InitializeStubIntegrationTest(string yamlFileName)
         {
             // Load the integration YAML file here.
             var path = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), yamlFileName);
@@ -44,18 +44,18 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             ClientIpResolverMock = new Mock<IClientDataResolver>();
             Settings.Storage.InputFile = InputFilePath;
 
-            StubSource = new YamlFileStubSource(
+            _stubSource = new YamlFileStubSource(
                 FileServiceMock.Object,
                 new Mock<ILogger<YamlFileStubSource>>().Object,
                 Options);
-            WritableStubSourceMock = new Mock<IWritableStubSource>();
+            _writableStubSourceMock = new Mock<IWritableStubSource>();
 
             InitializeIntegrationTest(
                 new (Type, object)[]
                 {
                     (typeof(IClientDataResolver), ClientIpResolverMock.Object),
                     (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object)
-                }, new IStubSource[] {StubSource, WritableStubSourceMock.Object});
+                }, new IStubSource[] {_stubSource, _writableStubSourceMock.Object});
         }
     }
 }

@@ -14,7 +14,7 @@ namespace HttPlaceholder.Tests.Integration
 {
     public abstract class IntegrationTestBase
     {
-        protected IOptions<SettingsModel> Options = MockSettingsFactory.GetSettings();
+        protected readonly IOptions<SettingsModel> Options = MockSettingsFactory.GetSettings();
 
         protected SettingsModel Settings => Options.Value;
 
@@ -43,7 +43,7 @@ namespace HttPlaceholder.Tests.Integration
             AfterTestServerStart();
         }
 
-        public void CleanupIntegrationTest() =>
+        protected void CleanupIntegrationTest() =>
            TestServer.Dispose();
 
         protected virtual void AfterTestServerStart()

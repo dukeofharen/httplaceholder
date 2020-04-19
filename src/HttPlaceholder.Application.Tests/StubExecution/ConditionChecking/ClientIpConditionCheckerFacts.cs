@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class ClientIpConditionCheckerFacts
     {
-        private Mock<IClientDataResolver> _clientIpResolverMock = new Mock<IClientDataResolver>();
+        private readonly Mock<IClientDataResolver> _clientIpResolverMock = new Mock<IClientDataResolver>();
         private ClientIpConditionChecker _checker;
 
         [TestInitialize]
@@ -25,7 +25,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void ClientIpConditionChecker_Validate_ConditionNotSet_ShouldReturnNotExecuted()
         {
             // arrange
-            var stubId = "stub1";
+            const string stubId = "stub1";
             var conditions = new StubConditionsModel
             {
                 ClientIp = null
@@ -42,8 +42,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void ClientIpConditionChecker_Validate_SingleIp_NotEqual_ShouldReturnInvalid()
         {
             // arrange
-            var stubId = "stub1";
-            var clientIp = "127.0.0.1";
+            const string stubId = "stub1";
+            const string clientIp = "127.0.0.1";
             var conditions = new StubConditionsModel
             {
                 ClientIp = "127.0.0.2"
@@ -64,8 +64,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void ClientIpConditionChecker_Validate_SingleIp_Equal_ShouldReturnValid()
         {
             // arrange
-            var stubId = "stub1";
-            var clientIp = "127.0.0.1";
+            const string stubId = "stub1";
+            const string clientIp = "127.0.0.1";
             var conditions = new StubConditionsModel
             {
                 ClientIp = "127.0.0.1"
@@ -86,8 +86,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void ClientIpConditionChecker_Validate_IpRange_NotInRange_ShouldReturnInvalid()
         {
             // arrange
-            var stubId = "stub1";
-            var clientIp = "127.0.0.9";
+            const string stubId = "stub1";
+            const string clientIp = "127.0.0.9";
             var conditions = new StubConditionsModel
             {
                 ClientIp = "127.0.0.0/29"
@@ -108,8 +108,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void ClientIpConditionChecker_Validate_IpRange_InRange_ShouldReturnValid()
         {
             // arrange
-            var stubId = "stub1";
-            var clientIp = "127.0.0.6";
+            const string stubId = "stub1";
+            const string clientIp = "127.0.0.6";
             var conditions = new StubConditionsModel
             {
                 ClientIp = "127.0.0.0/29"

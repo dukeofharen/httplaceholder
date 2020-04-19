@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class JsonPathConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
         private JsonPathConditionChecker _checker;
 
         [TestInitialize]
@@ -41,7 +41,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void JsonPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
         {
             // arrange
-            var body = @"{
+            const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -85,7 +85,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void JsonPathConditionChecker_Validate_StubsFound_OnlyOneJsonPathConditionCorrect_ShouldReturnInvalid()
         {
             // arrange
-            var body = @"{
+            const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -129,7 +129,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void JsonPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
         {
             // arrange
-            var body = @"{
+            const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,

@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class TextResponseWriterFacts
     {
-        private TextResponseWriter _writer = new TextResponseWriter();
+        private readonly TextResponseWriter _writer = new TextResponseWriter();
 
         [TestMethod]
         public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
@@ -38,7 +38,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow()
         {
             // arrange
-            var text = "bla123";
+            const string text = "bla123";
             var expectedBody = Encoding.UTF8.GetBytes(text);
             var stub = new StubModel
             {
@@ -63,7 +63,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
         {
             // arrange
-            var text = "bla123";
+            const string text = "bla123";
             var expectedBody = Encoding.UTF8.GetBytes(text);
             var stub = new StubModel
             {

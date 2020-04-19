@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class FullPathConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
         private FullPathConditionChecker _checker;
 
         [TestInitialize]
@@ -44,7 +44,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void FullPathConditionChecker_Validate_StubsFound_WrongPath_ShouldReturnInvalid()
         {
             // arrange
-            var path = "/login?success=true";
+            const string path = "/login?success=true";
             var conditions = new StubConditionsModel
             {
                 Url = new StubUrlConditionModel
@@ -68,7 +68,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void FullPathConditionChecker_Validate_StubsFound_HappyFlow_CompleteUrl()
         {
             // arrange
-            var path = "/login?success=true";
+            const string path = "/login?success=true";
             var conditions = new StubConditionsModel
             {
                 Url = new StubUrlConditionModel
@@ -92,7 +92,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void FullPathConditionChecker_Validate_StubsFound_HappyFlow_Regex()
         {
             // arrange
-            var path = "/locatieserver/v3/suggest";
+            const string path = "/locatieserver/v3/suggest";
             var conditions = new StubConditionsModel
             {
                 Url = new StubUrlConditionModel

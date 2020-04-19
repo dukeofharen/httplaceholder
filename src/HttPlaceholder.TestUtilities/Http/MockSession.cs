@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+// ReSharper disable UnassignedGetOnlyAutoProperty
 
 namespace HttPlaceholder.TestUtilities.Http
 {
@@ -23,6 +24,7 @@ namespace HttPlaceholder.TestUtilities.Http
         public void Clear() => _dictionary.Clear();
 
         public bool IsAvailable { get; }
+
         public string Id { get; }
         public IEnumerable<string> Keys => _dictionary.Keys;
     }

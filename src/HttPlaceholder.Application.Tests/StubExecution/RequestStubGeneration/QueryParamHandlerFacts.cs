@@ -15,7 +15,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task QueryParamHandler_HandleStubGenerationAsync_NoQuerySet_ShouldReturnFalse()
         {
             // Arrange
-            var url = "https://httplaceholder.com/A/Path";
+            const string url = "https://httplaceholder.com/A/Path";
             var request = new RequestResultModel {RequestParameters = new RequestParametersModel {Url = url}};
             var stub = new StubModel();
 
@@ -31,7 +31,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task QueryParamHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            var url = "https://httplaceholder.com/A/Path?query1=val1&query2=val2";
+            const string url = "https://httplaceholder.com/A/Path?query1=val1&query2=val2";
             var request = new RequestResultModel {RequestParameters = new RequestParametersModel {Url = url}};
             var stub = new StubModel();
 
