@@ -39,9 +39,9 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 ### Hosting under IIS
 
 - It is also possible to host HttPlaceholder under IIS. You can just install HttPlaceholder using the installer mentioned above.
-- You need to install the .NET Core Hosting Bundle in order for you to host .NET Core applications under IIS. You can find the installer at <https://www.microsoft.com/net/download/dotnet-core/2.1>, under *Runtime & Hosting Bundle*.
+- You need to install the .NET Core Hosting Bundle in order for you to host .NET Core applications under IIS. You can find the installer at <https://dotnet.microsoft.com/download/dotnet-core/current/runtime>, and download the Hosting Bundle.
 - Additionally, two additional files are also installed on the machine: `_config.json` and `_web.config`. If you want to host the application in IIS, you have to remove the `_` from the filename. The `_` is added to the files so the actual configuration files won't be overwritten if a new version of HttPlaceholder is installed.
-- The `web.config` is needed to instruct IIS how to host the application. The `config.json` file contains all possible configuration values that are also available through the command line. For more information on the `config.json` file, read more [here](CONFIG.md). Besides this, you might want the application logging to be written to a file. You can set the `stdoutLogFile` variable in the `web.config` file to a path on your disk and set `stdoutLogEnabled` to `true`.
+- The `web.config` is needed to instruct IIS how to host the application. The `config.json` file contains all possible configuration values that are also available through the command line. This file needs to be moved to a location outside of the installation directory. For more information on the `config.json` file, read more [here](CONFIG.md). Besides this, you might want the application logging to be written to a file. You can set the `stdoutLogFile` variable in the `web.config` file to a path on your disk and set `stdoutLogEnabled` to `true`.
 
 ### Hosting as a Windows Service
 
