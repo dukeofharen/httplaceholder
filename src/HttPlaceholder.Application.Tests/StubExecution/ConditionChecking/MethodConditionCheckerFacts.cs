@@ -14,17 +14,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         private MethodConditionChecker _checker;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _checker = new MethodConditionChecker(
-               _httpContextServiceMock.Object);
-        }
+                _httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void MethodConditionChecker_Validate_StubsFound_ButNoMethodConditions_ShouldReturnNotExecuted()

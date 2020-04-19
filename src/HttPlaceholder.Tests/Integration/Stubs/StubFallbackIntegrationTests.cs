@@ -8,16 +8,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     public class StubFallbackIntegrationTests : StubIntegrationTestBase
     {
         [TestInitialize]
-        public void Initialize()
-        {
-            InitializeStubIntegrationTest("fallback.yml");
-        }
+        public void Initialize() => InitializeStubIntegrationTest("fallback.yml");
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupIntegrationTest();
-        }
+        public void Cleanup() => CleanupIntegrationTest();
 
         [TestMethod]
         public async Task StubIntegration_RegularGet_NoConditions_AnyUrlShouldExecuteStub()

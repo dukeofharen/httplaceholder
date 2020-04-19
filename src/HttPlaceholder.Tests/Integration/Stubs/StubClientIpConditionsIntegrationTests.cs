@@ -10,16 +10,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     public class StubClientIpConditionsIntegrationTests : StubIntegrationTestBase
     {
         [TestInitialize]
-        public void Initialize()
-        {
-            InitializeStubIntegrationTest("integration.yml");
-        }
+        public void Initialize() => InitializeStubIntegrationTest("integration.yml");
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupIntegrationTest();
-        }
+        public void Cleanup() => CleanupIntegrationTest();
 
         [TestMethod]
         public async Task StubIntegration_RegularGet_ClientIp_SingleAddress()

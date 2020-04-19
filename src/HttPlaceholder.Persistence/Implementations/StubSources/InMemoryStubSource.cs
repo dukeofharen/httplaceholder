@@ -97,9 +97,6 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
-        public Task PrepareStubSourceAsync()
-        {
-            return Task.CompletedTask;
-        }
+        public Task PrepareStubSourceAsync() => Task.CompletedTask;
     }
 }

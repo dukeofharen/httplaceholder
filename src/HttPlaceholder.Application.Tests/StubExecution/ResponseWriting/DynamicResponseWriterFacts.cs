@@ -15,16 +15,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         private DynamicResponseWriter _writer;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _writer = new DynamicResponseWriter(_variableParserMock.Object);
-        }
+        public void Initialize() => _writer = new DynamicResponseWriter(_variableParserMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _variableParserMock.VerifyAll();
-        }
+        public void Cleanup() => _variableParserMock.VerifyAll();
 
         [TestMethod]
         public async Task DynamicResponseWriter_WriteToResponseAsync_EnableDynamicModeIsFalse_ShouldReturnFalse()

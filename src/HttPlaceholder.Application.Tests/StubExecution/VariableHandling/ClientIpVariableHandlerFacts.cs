@@ -12,16 +12,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         private ClientIpVariableHandler _handler;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _handler = new ClientIpVariableHandler(_clientIpResolverMock.Object);
-        }
+        public void Initialize() => _handler = new ClientIpVariableHandler(_clientIpResolverMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _clientIpResolverMock.VerifyAll();
-        }
+        public void Cleanup() => _clientIpResolverMock.VerifyAll();
 
         [TestMethod]
         public void RequestBodyVariableHandler_Parse_HappyFlow()

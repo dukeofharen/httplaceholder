@@ -19,13 +19,11 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         private StubRootPathResolver _resolver;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _resolver = new StubRootPathResolver(
                 _assemblyServiceMock.Object,
                 _fileServiceMock.Object,
                 _options);
-        }
 
         [TestCleanup]
         public void Cleanup()

@@ -14,9 +14,6 @@ namespace HttPlaceholder.Hubs.Implementations
             _hubContext = hubContext;
         }
 
-        public async Task NewRequestReceivedAsync(RequestResultDto request)
-        {
-            await _hubContext.Clients.All.SendAsync("RequestReceived", request);
-        }
+        public async Task NewRequestReceivedAsync(RequestResultDto request) => await _hubContext.Clients.All.SendAsync("RequestReceived", request);
     }
 }

@@ -5,24 +5,12 @@ namespace HttPlaceholder.Infrastructure.Implementations
 {
     public class AssemblyService : IAssemblyService
     {
-        public string GetAssemblyVersion()
-        {
-            return AssemblyHelper.GetAssemblyVersion();
-        }
+        public string GetAssemblyVersion() => AssemblyHelper.GetAssemblyVersion();
 
-        public string GetCallingAssemblyRootPath()
-        {
-            return AssemblyHelper.GetCallingAssemblyRootPath();
-        }
+        public string GetCallingAssemblyRootPath() => AssemblyHelper.GetCallingAssemblyRootPath();
 
-        public string GetEntryAssemblyRootPath()
-        {
-            return AssemblyHelper.GetEntryAssemblyRootPath();
-        }
+        public string GetEntryAssemblyRootPath() => AssemblyHelper.GetEntryAssemblyRootPath();
 
-        public string GetExecutingAssemblyRootPath()
-        {
-            return AssemblyHelper.GetExecutingAssemblyRootPath();
-        }
+        public string GetExecutingAssemblyRootPath() => AssemblyHelper.GetExecutingAssemblyRootPath();
     }
 }

@@ -17,12 +17,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         private FileResponseWriter _writer;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _writer = new FileResponseWriter(
-               _fileServiceMock.Object,
-               _stubRootPathResolverMock.Object);
-        }
+                _fileServiceMock.Object,
+                _stubRootPathResolverMock.Object);
 
         [TestCleanup]
         public void Cleanup()

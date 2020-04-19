@@ -93,16 +93,11 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.FromResult(_stubs);
         }
 
-        public async Task PrepareStubSourceAsync()
-        {
+        public async Task PrepareStubSourceAsync() =>
             // Check if the .yml files could be loaded.
             await GetStubsAsync();
-        }
 
-        private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files)
-        {
-            return files.Max(f => _fileService.GetModicationDateTime(f));
-        }
+        private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) => files.Max(f => _fileService.GetModicationDateTime(f));
 
         private void EnsureStubsHaveId(IEnumerable<StubModel> stubs)
         {

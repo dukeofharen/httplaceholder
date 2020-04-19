@@ -13,16 +13,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         private FormPostVariableHandler _handler;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _handler = new FormPostVariableHandler(_httpContextServiceMock.Object);
-        }
+        public void Initialize() => _handler = new FormPostVariableHandler(_httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void FormPostVariableHandler_Parse_HappyFlow()

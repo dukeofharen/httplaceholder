@@ -35,13 +35,11 @@ namespace HttPlaceholder.Authorization.Implementations
             return cookie.Value == expectedHash;
         }
 
-        public void SetLoginCookie(string username, string password)
-        {
+        public void SetLoginCookie(string username, string password) =>
             _httpContextAccessor.HttpContext.Response.Cookies.Append(
                 CookieKeys.LoginCookieKey,
                 CreateHash(username, password),
                 new CookieOptions { HttpOnly = true });
-        }
 
         private string CreateHash(string username, string password) =>
             HashingUtilities.GetSha512String($"{Salt}:{username}:{password}");

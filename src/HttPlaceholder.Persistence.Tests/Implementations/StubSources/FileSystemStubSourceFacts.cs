@@ -34,10 +34,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _fileServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _fileServiceMock.VerifyAll();
 
         [TestMethod]
         public async Task FileSystemStubSource_AddRequestResultAsync_HappyFlow()

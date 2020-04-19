@@ -12,16 +12,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         private DisplayUrlVariableHandler _handler;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _handler = new DisplayUrlVariableHandler(_httpContextServiceMock.Object);
-        }
+        public void Initialize() => _handler = new DisplayUrlVariableHandler(_httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void RequestBodyVariableHandler_Parse_HappyFlow()

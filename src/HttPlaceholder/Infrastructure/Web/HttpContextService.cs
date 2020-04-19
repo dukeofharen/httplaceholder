@@ -59,17 +59,13 @@ namespace HttPlaceholder.Infrastructure.Web
             }
         }
 
-        public IDictionary<string, string> GetQueryStringDictionary()
-        {
-            return _httpContextAccessor.HttpContext.Request.Query
+        public IDictionary<string, string> GetQueryStringDictionary() =>
+            _httpContextAccessor.HttpContext.Request.Query
                 .ToDictionary(q => q.Key, q => q.Value.ToString());
-        }
 
-        public IDictionary<string, string> GetHeaders()
-        {
-            return _httpContextAccessor.HttpContext.Request.Headers
+        public IDictionary<string, string> GetHeaders() =>
+            _httpContextAccessor.HttpContext.Request.Headers
                 .ToDictionary(h => h.Key, h => h.Value.ToString());
-        }
 
         public TObject GetItem<TObject>(string key)
         {
@@ -77,10 +73,7 @@ namespace HttPlaceholder.Infrastructure.Web
             return (TObject)item;
         }
 
-        public void SetItem(string key, object item)
-        {
-            _httpContextAccessor.HttpContext?.Items.Add(key, item);
-        }
+        public void SetItem(string key, object item) => _httpContextAccessor.HttpContext?.Items.Add(key, item);
 
         public (string, StringValues)[] GetFormValues()
         {

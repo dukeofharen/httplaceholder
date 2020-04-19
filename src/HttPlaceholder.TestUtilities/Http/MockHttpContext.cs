@@ -62,55 +62,36 @@ namespace HttPlaceholder.TestUtilities.Http
 
         public string GetRedirectUrl() => _actualRedirectUrl;
 
-        public void SetIp(byte[] ip)
-        {
+        public void SetIp(byte[] ip) =>
             ConnectionInfoMock
                 .Setup(m => m.RemoteIpAddress)
                 .Returns(new IPAddress(ip));
-        }
 
-        public void SetIp(string ip)
-        {
+        public void SetIp(string ip) =>
             ConnectionInfoMock
                 .Setup(m => m.RemoteIpAddress)
                 .Returns(IPAddress.Parse(ip));
-        }
 
-        public void SetHost(string host)
-        {
+        public void SetHost(string host) =>
             HttpRequestMock
                 .Setup(m => m.Host)
                 .Returns(new HostString(host));
-        }
 
-        public void InitializeUserWithId(long id)
-        {
-            InitializeUserWithId(id.ToString());
-        }
+        public void InitializeUserWithId(long id) => InitializeUserWithId(id.ToString());
 
-        public void InitializeUserWithId(string id)
-        {
-            User = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {new Claim(ClaimTypes.NameIdentifier, id)})});
-        }
+        public void InitializeUserWithId(string id) => User = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {new Claim(ClaimTypes.NameIdentifier, id)})});
 
-        public void SetUser(ClaimsPrincipal user)
-        {
-            User = user;
-        }
+        public void SetUser(ClaimsPrincipal user) => User = user;
 
-        public void SetRequestMethod(string method)
-        {
+        public void SetRequestMethod(string method) =>
             HttpRequestMock
                 .Setup(m => m.Method)
                 .Returns(method);
-        }
 
-        public void SetQueryString(string queryString)
-        {
+        public void SetQueryString(string queryString) =>
             HttpRequestMock
                 .Setup(m => m.QueryString)
                 .Returns(new QueryString(queryString));
-        }
 
         public void SetRequestPath(string path)
         {
@@ -120,17 +101,12 @@ namespace HttPlaceholder.TestUtilities.Http
                 .Returns(pathString);
         }
 
-        public void SetHttps(bool isHttps)
-        {
+        public void SetHttps(bool isHttps) =>
             HttpRequestMock
                 .Setup(m => m.IsHttps)
                 .Returns(isHttps);
-        }
 
-        public override void Abort()
-        {
-            throw new NotImplementedException();
-        }
+        public override void Abort() => throw new NotImplementedException();
 
         public void VerifyAll()
         {

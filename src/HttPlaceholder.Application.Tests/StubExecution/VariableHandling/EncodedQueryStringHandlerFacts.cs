@@ -13,16 +13,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         private EncodedQueryStringVariableHandler _handler;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _handler = new EncodedQueryStringVariableHandler(_httpContextServiceMock.Object);
-        }
+        public void Initialize() => _handler = new EncodedQueryStringVariableHandler(_httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void EncodedQueryStringHandlerFacts_Parse_HappyFlow()

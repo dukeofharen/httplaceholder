@@ -14,17 +14,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         private ClientIpConditionChecker _checker;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _checker = new ClientIpConditionChecker(
                 _clientIpResolverMock.Object);
-        }
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _clientIpResolverMock.VerifyAll();
-        }
+        public void Cleanup() => _clientIpResolverMock.VerifyAll();
 
         [TestMethod]
         public void ClientIpConditionChecker_Validate_ConditionNotSet_ShouldReturnNotExecuted()

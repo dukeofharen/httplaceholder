@@ -46,9 +46,6 @@ namespace HttPlaceholder.Common.Utilities
             return Path.GetDirectoryName(path);
         }
 
-        public static string GetAssemblyVersion()
-        {
-            return Assembly.GetEntryAssembly().GetName().Version.ToString();
-        }
+        public static string GetAssemblyVersion() => Assembly.GetEntryAssembly().GetName().Version.ToString();
     }
 }

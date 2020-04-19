@@ -13,16 +13,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         private RequestHeaderVariableHandler _handler;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _handler = new RequestHeaderVariableHandler(_httpContextServiceMock.Object);
-        }
+        public void Initialize() => _handler = new RequestHeaderVariableHandler(_httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void RequestHeaderVariableHandler_Parse_HappyFlow()

@@ -25,10 +25,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         }
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _dateTimeMock.VerifyAll();
-        }
+        public void Cleanup() => _dateTimeMock.VerifyAll();
 
         [TestMethod]
         public void LocalNowVariableHandler_Parse_HappyFlow_FormatSet()

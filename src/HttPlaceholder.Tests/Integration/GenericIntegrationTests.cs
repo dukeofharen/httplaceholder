@@ -28,10 +28,7 @@ namespace HttPlaceholder.Tests.Integration
         }
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupIntegrationTest();
-        }
+        public void Cleanup() => CleanupIntegrationTest();
 
         [TestMethod]
         public async Task GenericIntegration_SwaggerUi_IsApproachable()

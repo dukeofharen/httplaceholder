@@ -12,16 +12,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
     {
         [TestInitialize]
-        public void Initialize()
-        {
-            InitializeStubIntegrationTest("integration.yml");
-        }
+        public void Initialize() => InitializeStubIntegrationTest("integration.yml");
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupIntegrationTest();
-        }
+        public void Cleanup() => CleanupIntegrationTest();
 
         [TestMethod]
         public async Task StubIntegration_RegularPost_ValidatePostBody_HappyFlow()

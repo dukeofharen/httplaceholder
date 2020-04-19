@@ -16,9 +16,10 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class StubHandlingMiddleware
     {
-        private static string[] _segmentsToIgnore = new[] {"/ph-api", "/ph-ui", "swagger", "/requestHub"};
+        private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "swagger", "/requestHub"};
 
         private readonly RequestDelegate _next;
         private readonly IClientDataResolver _clientDataResolver;
@@ -55,6 +56,7 @@ namespace HttPlaceholder.Middleware
             _settings = options.Value;
         }
 
+        // ReSharper disable once UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
             var path = _httpContextService.Path;
@@ -85,9 +87,9 @@ namespace HttPlaceholder.Middleware
                 _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
                 var response = await _stubRequestExecutor.ExecuteRequestAsync();
                 _httpContextService.SetStatusCode(response.StatusCode);
-                foreach (var header in response.Headers)
+                foreach (var (key, value) in response.Headers)
                 {
-                    _httpContextService.AddHeader(header.Key, header.Value);
+                    _httpContextService.AddHeader(key, value);
                 }
 
                 if (response.Body != null)

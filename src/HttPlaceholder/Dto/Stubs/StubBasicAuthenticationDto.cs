@@ -24,9 +24,6 @@ namespace HttPlaceholder.Dto.Stubs
         /// <summary>
         /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        public override string ToString()
-        {
-            return $"[Username = '{Username}', Password = '{Password}']";
-        }
+        public override string ToString() => $"[Username = '{Username}', Password = '{Password}']";
     }
 }

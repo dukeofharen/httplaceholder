@@ -20,13 +20,11 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         private YamlFileStubSource _source;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _source = new YamlFileStubSource(
                 _fileServiceMock.Object,
                 _loggerMock.Object,
                 _options);
-        }
 
         [TestCleanup]
         public void Cleanup()

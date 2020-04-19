@@ -18,10 +18,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         private StubContext _context;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _context = new StubContext(_stubSources);
-        }
+        public void Initialize() => _context = new StubContext(_stubSources);
 
         [TestMethod]
         public async Task StubContainer_GetStubsAsync_HappyFlow()

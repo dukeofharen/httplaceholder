@@ -14,17 +14,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         private ExtraDurationResponseWriter _writer;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _writer = new ExtraDurationResponseWriter(
-               _asyncServiceMock.Object);
-        }
+                _asyncServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _asyncServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _asyncServiceMock.VerifyAll();
 
         [TestMethod]
         public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
