@@ -46,6 +46,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             {
                 // Split on ";": it is possible to supply multiple locations.
                 var parts = inputFileLocation.Split(new[] { "%%" }, StringSplitOptions.RemoveEmptyEntries);
+                parts = parts.Select(StripIllegalCharacters).ToArray();
                 foreach (var part in parts)
                 {
                     var location = part.Trim();
@@ -113,5 +114,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                 stub.Id = HashingUtilities.GetMd5String(contents);
             }
         }
+
+        private static string StripIllegalCharacters(string input) => input.Replace("\"", string.Empty);
     }
 }
