@@ -48,10 +48,10 @@ namespace HttPlaceholder.Infrastructure.Web
             var context = _httpContextAccessor.HttpContext;
             using var reader = new StreamReader(
                 context.Request.Body,
-                encoding: Encoding.UTF8,
-                detectEncodingFromByteOrderMarks: false,
-                bufferSize: 1024,
-                leaveOpen: true);
+                Encoding.UTF8,
+                false,
+                1024,
+                true);
             var body = reader.ReadToEnd();
             context.Request.Body.Position = 0;
             return body;
