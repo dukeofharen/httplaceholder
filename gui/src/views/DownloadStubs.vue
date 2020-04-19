@@ -3,7 +3,11 @@
     <v-col>
       <h1>Download all stubs</h1>
       <v-card>
-        <v-card-text>This page displays all stubs currently present in HttPlaceholder. You can copy this string and put it in a .yml file on your PC for local development or directly download the file.</v-card-text>
+        <v-card-text
+          >This page displays all stubs currently present in HttPlaceholder. You
+          can copy this string and put it in a .yml file on your PC for local
+          development or directly download the file.
+        </v-card-text>
       </v-card>
       <v-row>
         <v-col>
@@ -39,20 +43,25 @@
 
 <script>
 import yaml from "js-yaml";
-import { resources } from "@/resources";
-import { downloadBlob } from "@/functions/downloadHelper";
+import { resources } from "@/shared/resources";
+import { downloadBlob } from "@/utils/downloadHelper";
+import { actionNames } from "@/store/storeConstants";
 
 export default {
   name: "addStub",
-  created() {
-    this.$store.dispatch("getStubs");
-    this.$store.dispatch("getTenantNames");
+  async created() {
+    const getStubsPromise = this.$store.dispatch(actionNames.getStubs);
+    const getTenantNamesPromise = this.$store.dispatch(
+      actionNames.getTenantNames
+    );
+    this.stubs = await getStubsPromise;
+    this.tenantNames = await getTenantNamesPromise;
   },
   data() {
     return {
-      downloadString: "",
-      selectedTenantName: "",
-      filteredStubs: []
+      stubs: [],
+      tenantNames: [],
+      selectedTenantName: ""
     };
   },
   methods: {
@@ -61,36 +70,18 @@ export default {
     }
   },
   computed: {
-    stubs() {
-      return this.$store.getters.getStubs;
-    },
-    tenantNames() {
-      return this.$store.getters.getTenantNames;
-    }
-  },
-  watch: {
-    stubs(newStubs) {
-      this.filteredStubs = newStubs;
-    },
-    filteredStubs(newStubs) {
-      let stubsForDownload = newStubs.map(fullStub => {
-        return fullStub.stub;
-      });
-      this.downloadString =
-        resources.downloadStubsHeader + "\n" + yaml.dump(stubsForDownload);
-    },
-    selectedTenantName(val) {
-      if (!val) {
-        this.filteredStubs = this.stubs;
-      } else {
-        this.filteredStubs = this.stubs.filter(
-          stub => stub.stub.tenant === val
-        );
-      }
+    downloadString() {
+      const filteredStubs = this.stubs
+        .filter(
+          fullStub =>
+            !this.selectedTenantName ||
+            fullStub.stub.tenant === this.selectedTenantName
+        )
+        .map(fullStub => fullStub.stub);
+      return resources.downloadStubsHeader + "\n" + yaml.dump(filteredStubs);
     }
   }
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

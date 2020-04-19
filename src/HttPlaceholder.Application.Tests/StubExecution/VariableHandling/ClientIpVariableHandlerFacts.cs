@@ -12,23 +12,17 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         private ClientIpVariableHandler _handler;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _handler = new ClientIpVariableHandler(_clientIpResolverMock.Object);
-        }
+        public void Initialize() => _handler = new ClientIpVariableHandler(_clientIpResolverMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _clientIpResolverMock.VerifyAll();
-        }
+        public void Cleanup() => _clientIpResolverMock.VerifyAll();
 
         [TestMethod]
         public void RequestBodyVariableHandler_Parse_HappyFlow()
         {
             // arrange
-            var input = "IP: ((client_ip))";
-            var ip = "11.22.33.44";
+            const string input = "IP: ((client_ip))";
+            const string ip = "11.22.33.44";
 
             var expectedResult = $"IP: {ip}";
 
@@ -38,7 +32,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
 
             // act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // assert
             Assert.AreEqual(expectedResult, result);

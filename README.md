@@ -1,12 +1,11 @@
 # HttPlaceholder
 
-<img src="logo/logo_single.png" alt="HttPlaceholder" width="150"/>
+<img src="media/logo_single.png" alt="HttPlaceholder" width="150"/>
 
 | | |
 | --- | --- |
 | **Build** | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/pq6hojs9bqbmjjy5?svg=true)](https://ci.appveyor.com/project/dukeofharen/httplaceholder) |
 | **License** | [![MIT License](https://img.shields.io/:license-mit-green.svg)](https://opensource.org/licenses/MIT) |
-| **Tickets** | [Trello](https://trello.com/b/PCZ6K9Hd/httplaceholder) |
 
 Quickly mock away any webservice using HttPlaceholder. HttPlaceholder lets you specify what the request should look like and what response needs to be returned.
 

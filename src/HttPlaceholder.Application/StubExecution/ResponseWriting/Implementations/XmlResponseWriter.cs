@@ -10,20 +10,19 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
-            if (stub.Response?.Xml != null)
+            if (stub.Response?.Xml == null)
             {
-                string body = stub.Response.Xml;
-                response.Body = Encoding.UTF8.GetBytes(body);
-                if (!response.Headers.TryGetValue("Content-Type", out string contentType))
-                {
-                    response.Headers.Add("Content-Type", "text/xml");
-                }
-
-                executed = true;
+                return Task.FromResult(false);
             }
 
-            return Task.FromResult(executed);
+            var body = stub.Response.Xml;
+            response.Body = Encoding.UTF8.GetBytes(body);
+            if (!response.Headers.TryGetValue("Content-Type", out _))
+            {
+                response.Headers.Add("Content-Type", "text/xml");
+            }
+
+            return Task.FromResult(true);
         }
     }
 }

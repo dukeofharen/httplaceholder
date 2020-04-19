@@ -20,13 +20,11 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         private YamlFileStubSource _source;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _source = new YamlFileStubSource(
                 _fileServiceMock.Object,
                 _loggerMock.Object,
                 _options);
-        }
 
         [TestCleanup]
         public void Cleanup()
@@ -39,7 +37,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public async Task YamlFileStubSource_GetStubsAsync_NoInputFileSet_ShouldReadFilesFromCurrentDirectory()
         {
             // arrange
-            var currentDirectory = @"C:\stubs";
+            const string currentDirectory = @"C:\stubs";
             var files = new[]
             {
                 $@"{currentDirectory}\file1.yml",
@@ -76,7 +74,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public async Task YamlFileStubSource_GetStubsAsync_NoInputFileSet_ShouldReadFilesFromCurrentDirectory_NoFilesFound_ShouldReturnEmptyList()
         {
             // arrange
-            var currentDirectory = @"C:\stubs";
+            const string currentDirectory = @"C:\stubs";
             _fileServiceMock
                 .Setup(m => m.GetCurrentDirectory())
                 .Returns(currentDirectory);
@@ -125,7 +123,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public async Task YamlFileStubSource_GetStubsAsync_InputFileSet_InputFileIsDirectory_ShouldReadFilesFromThatDirectory()
         {
             // arrange
-            string inputFile = @"C:\stubs";
+            const string inputFile = @"C:\stubs";
             _options.Value.Storage.InputFile = inputFile;
 
             var files = new[]
@@ -164,7 +162,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public async Task YamlFileStubSource_GetStubsAsync_StubsHaveNoId_IdShouldBeCalculated()
         {
             // arrange
-            var inputFile = @"C:\stubs";
+            const string inputFile = @"C:\stubs";
             _options.Value.Storage.InputFile = inputFile;
 
             var files = new[]
@@ -191,6 +189,38 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             var ids = result.Select(s => s.Id).ToArray();
             Assert.AreEqual("94f62b43bdf013c9f75e8786275f13e5", ids[0]);
             Assert.AreEqual("1341ca208eaa83efea41d7043599da8c", ids[1]);
+        }
+
+        [TestMethod]
+        public async Task YamlFileStubSource_GetStubsAsync_YamlIsNotInFormOfArray_ShouldParseStubAnyway()
+        {
+            // arrange
+            const string inputFile = @"C:\stubs";
+            _options.Value.Storage.InputFile = inputFile;
+
+            var files = new[]
+            {
+                @"C:\stubs\file4.yml"
+            };
+
+            _fileServiceMock
+                .Setup(m => m.GetFiles(inputFile, "*.yml"))
+                .Returns(files);
+
+            _fileServiceMock
+                .Setup(m => m.IsDirectory(inputFile))
+                .Returns(true);
+
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(files[0]))
+                .Returns(TestResources.YamlFile4);
+
+            // act
+            var result = await _source.GetStubsAsync();
+
+            // assert
+            var ids = result.Select(s => s.Id).ToArray();
+            Assert.AreEqual("situation-01", ids[0]);
         }
     }
 }

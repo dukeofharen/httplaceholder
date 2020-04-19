@@ -19,7 +19,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
     {
         private const string StorageFolder = @"C:\storage";
         private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
-        private Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
+        private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
         private FileSystemStubSource _source;
 
         [TestInitialize]
@@ -34,10 +34,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _fileServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _fileServiceMock.VerifyAll();
 
         [TestMethod]
         public async Task FileSystemStubSource_AddRequestResultAsync_HappyFlow()
@@ -126,14 +123,14 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             _fileServiceMock
                .Setup(m => m.CreateDirectory(stubsFolder));
 
-            var stubId = "situation-01";
+            const string stubId = "situation-01";
             var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
             _fileServiceMock
                .Setup(m => m.FileExists(filePath))
                .Returns(false);
 
             // act
-            bool result = await _source.DeleteStubAsync(stubId);
+            var result = await _source.DeleteStubAsync(stubId);
 
             // assert
             Assert.IsFalse(result);
@@ -159,7 +156,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
                .Setup(m => m.DeleteFile(filePath));
 
             // act
-            bool result = await _source.DeleteStubAsync(stubId);
+            var result = await _source.DeleteStubAsync(stubId);
 
             // assert
             Assert.IsTrue(result);
@@ -281,8 +278,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             {
             JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-01", RequestEndTime = DateTime.Now.AddHours(-2)}),
             JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-02", RequestEndTime = DateTime.Now.AddHours(-1)}),
-            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-03", RequestEndTime = DateTime.Now.AddMinutes(-30)}),
-         };
+            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-03", RequestEndTime = DateTime.Now.AddMinutes(-30)})
+            };
 
             for (var i = 0; i < files.Length; i++)
             {

@@ -17,9 +17,9 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
                 return Task.FromResult(false);
             }
 
-            string value = pair.Value;
+            var value = pair.Value;
             value = value.Replace("Basic ", string.Empty);
-            string basicAuth = Encoding.UTF8.GetString(Convert.FromBase64String(value));
+            var basicAuth = Encoding.UTF8.GetString(Convert.FromBase64String(value));
             var parts = basicAuth.Split(':');
             if (parts.Length != 2)
             {

@@ -12,23 +12,17 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
     {
         [TestInitialize]
-        public void Initialize()
-        {
-            InitializeStubIntegrationTest("integration.yml");
-        }
+        public void Initialize() => InitializeStubIntegrationTest("integration.yml");
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupIntegrationTest();
-        }
+        public void Cleanup() => CleanupIntegrationTest();
 
         [TestMethod]
         public async Task StubIntegration_RegularPost_ValidatePostBody_HappyFlow()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}api/users";
-            string body = @"{""username"": ""john""}";
+            var url = $"{TestServer.BaseAddress}api/users";
+            const string body = @"{""username"": ""john""}";
             var request = new HttpRequestMessage
             {
                 Content = new StringContent(body),
@@ -43,22 +37,20 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Assert.IsFalse(string.IsNullOrEmpty(content));
-                JObject.Parse(content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsFalse(string.IsNullOrEmpty(content));
+            JObject.Parse(content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
         public async Task StubIntegration_RegularPost_ValidatePostBody_StubNotFound()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}api/users";
-            string body = @"{""username"": ""jack""}";
+            var url = $"{TestServer.BaseAddress}api/users";
+            const string body = @"{""username"": ""jack""}";
             var request = new HttpRequestMessage
             {
                 Content = new StringContent(body),
@@ -72,19 +64,17 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
 
         [TestMethod]
         public async Task StubIntegration_RegularPost_Form_Ok()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}form";
+            var url = $"{TestServer.BaseAddress}form";
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(url),
@@ -98,20 +88,18 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual("OK", content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("OK", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
         }
 
         [TestMethod]
         public async Task StubIntegration_RegularPost_Form_Nok()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}form";
+            var url = $"{TestServer.BaseAddress}form";
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(url),
@@ -124,10 +112,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
         }
     }
 }

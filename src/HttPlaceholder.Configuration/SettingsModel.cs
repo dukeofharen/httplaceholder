@@ -8,6 +8,7 @@
 
         public StorageSettingsModel Storage { get; set; }
 
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public GuiSettingsModel Gui { get; set; }
     }
 }

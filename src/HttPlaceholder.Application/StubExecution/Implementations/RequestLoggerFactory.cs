@@ -20,12 +20,13 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         {
             const string requestLoggerKey = "requestLogger";
             var requestLogger = _httpContextService.GetItem<IRequestLogger>(requestLoggerKey);
-            if (requestLogger == null)
+            if (requestLogger != null)
             {
-                requestLogger = new RequestLogger(_dateTime);
-                _httpContextService.SetItem(requestLoggerKey, requestLogger);
+                return requestLogger;
             }
 
+            requestLogger = new RequestLogger(_dateTime);
+            _httpContextService.SetItem(requestLoggerKey, requestLogger);
             return requestLogger;
         }
     }

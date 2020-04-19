@@ -10,16 +10,15 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            var executed = false;
-            if (stub.Response?.Base64 != null)
+            if (stub.Response?.Base64 == null)
             {
-                var base64Body = stub.Response.Base64;
-                response.Body = Convert.FromBase64String(base64Body);
-                response.BodyIsBinary = true;
-                executed = true;
+                return Task.FromResult(false);
             }
 
-            return Task.FromResult(executed);
+            var base64Body = stub.Response.Base64;
+            response.Body = Convert.FromBase64String(base64Body);
+            response.BodyIsBinary = true;
+            return Task.FromResult(true);
         }
     }
 }

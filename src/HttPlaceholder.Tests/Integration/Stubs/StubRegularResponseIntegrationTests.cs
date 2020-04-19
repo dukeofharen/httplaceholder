@@ -11,22 +11,16 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
     {
         [TestInitialize]
-        public void Initialize()
-        {
-            InitializeStubIntegrationTest("integration.yml");
-        }
+        public void Initialize() => InitializeStubIntegrationTest("integration.yml");
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupIntegrationTest();
-        }
+        public void Cleanup() => CleanupIntegrationTest();
 
         [TestMethod]
         public async Task StubIntegration_RegularGet_Host()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}client-ip-1";
+            var url = $"{TestServer.BaseAddress}client-ip-1";
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(url)
@@ -37,35 +31,31 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 .Returns("127.0.0.1");
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual("OK", content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("OK", content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
         public async Task StubIntegration_RegularGet_Base64Content_HappyFlow()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}image.jpg";
+            var url = $"{TestServer.BaseAddress}image.jpg";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                var content = await response.Content.ReadAsByteArrayAsync();
-                Assert.AreEqual(75583, content.Length);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsByteArrayAsync();
+            Assert.AreEqual(75583, content.Length);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
         public async Task StubIntegration_RegularGet_File_HappyFlow()
         {
             // arrange
-            string fileContents = "File contents yo!";
-            string url = $"{TestServer.BaseAddress}text.txt";
+            const string fileContents = "File contents yo!";
+            var url = $"{TestServer.BaseAddress}text.txt";
 
             FileServiceMock
                .Setup(m => m.FileExists("text.txt"))
@@ -75,28 +65,24 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                .Returns(Encoding.UTF8.GetBytes(fileContents));
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(fileContents, content);
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(fileContents, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
         public async Task StubIntegration_RegularGet_Html()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}index.html";
+            var url = $"{TestServer.BaseAddress}index.html";
 
             // act / assert
-            using (var response = await Client.GetAsync(url))
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Assert.IsTrue(content.Contains("Test page in HttPlaceholder"));
-                Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-                Assert.AreEqual("text/html", response.Content.Headers.ContentType.ToString());
-            }
+            using var response = await Client.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(content.Contains("Test page in HttPlaceholder"));
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/html", response.Content.Headers.ContentType.ToString());
         }
     }
 }

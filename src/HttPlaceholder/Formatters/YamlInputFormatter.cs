@@ -47,19 +47,17 @@ namespace HttPlaceholder.Formatters
 
             var request = context.HttpContext.Request;
 
-            using (var streamReader = context.ReaderFactory(request.Body, encoding))
-            {
-                var type = context.ModelType;
+            using var streamReader = context.ReaderFactory(request.Body, encoding);
+            var type = context.ModelType;
 
-                try
-                {
-                    var model = _deserializer.Deserialize(streamReader, type);
-                    return InputFormatterResult.SuccessAsync(model);
-                }
-                catch (Exception)
-                {
-                    return InputFormatterResult.FailureAsync();
-                }
+            try
+            {
+                var model = _deserializer.Deserialize(streamReader, type);
+                return InputFormatterResult.SuccessAsync(model);
+            }
+            catch (Exception)
+            {
+                return InputFormatterResult.FailureAsync();
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using HttPlaceholder.Common;
 using HttPlaceholder.Configuration.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,132 +10,211 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
     [TestClass]
     public class ConfigurationParserFacts
     {
-        private readonly Mock<IAssemblyService> _assemblyServiceMock = new Mock<IAssemblyService>();
+        private const string ExampleConfig = @"
+{
+    ""apiUsername"": ""user"",
+    ""apiPassword"": ""pass"",
+    ""enableUserInterface"": false
+}";
+        private const string ExampleConfigWithWeirdCasing = @"
+{
+    ""APIUSERNAME"": ""user"",
+    ""apipassword"": ""pass"",
+    ""enableUserInterface"": false
+}";
+
+        private readonly Mock<IEnvService> _envServiceMock = new Mock<IEnvService>();
         private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
         private ConfigurationParser _parser;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _parser = new ConfigurationParser(
-                _assemblyServiceMock.Object,
+                _envServiceMock.Object,
                 _fileServiceMock.Object);
-        }
 
         [TestCleanup]
         public void Cleanup()
         {
-            _assemblyServiceMock.VerifyAll();
+            _envServiceMock.VerifyAll();
             _fileServiceMock.VerifyAll();
         }
 
         [TestMethod]
-        public void ConfigurationParser_ParseConfiguration_ArgumentsPassed_ShouldParseArguments()
+        public void ArgsArray_ShouldParseCorrectly()
         {
-            // arrange
-            var args = new[]
-            {
-                "--var1",
-                "value1",
-                "--var2",
-                "value2"
-            };
+            // Arrange
+            var args = ToArgs("--apiUsername user --apiPassword pass");
 
-            _assemblyServiceMock
-                .Setup(m => m.GetCallingAssemblyRootPath())
-                .Returns(@"C:\httplaceholder");
-
-            // act
+            // Act
             var result = _parser.ParseConfiguration(args);
 
-            // assert
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("value1", result["var1"]);
-            Assert.AreEqual("value2", result["var2"]);
+            // Assert
+            Assert.AreEqual("user", result["Authentication:ApiUsername"]);
+            Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
         }
 
         [TestMethod]
-        public void ConfigurationParser_ParseConfiguration_ConfigFileLocationPassedAsArgument_FileNotFound_ShouldThrowFileNotFoundException()
+        public void ArgsArray_BoolArgsWithoutValue_ShouldInterpretAsTrue()
         {
-            // arrange
-            var configJsonPath = @"F:\httplaceholder\config.json";
-            var args = new[]
-            {
-                $"--{ConfigKeys.ConfigJsonLocationKey}",
-                configJsonPath
-            };
+            // Arrange
+            var args = ToArgs("--useHttps --enableRequestLogging --enableUserInterface --port 5001");
+
+            // Act
+            var result = _parser.ParseConfiguration(args);
+
+            // Assert
+            Assert.AreEqual("5001", result["Web:HttpPort"]);
+            Assert.AreEqual("True", result["Web:UseHttps"]);
+            Assert.AreEqual("True", result["Storage:EnableRequestLogging"]);
+            Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
+        }
+
+        [TestMethod]
+        public void ArgsArray_BoolArgsWithValue_ShouldTakeThatValue()
+        {
+            // Arrange
+            var args = ToArgs("--useHttps false --port 5001");
+
+            // Act
+            var result = _parser.ParseConfiguration(args);
+
+            // Assert
+            Assert.AreEqual("5001", result["Web:HttpPort"]);
+            Assert.AreEqual("false", result["Web:UseHttps"]);
+        }
+
+        [TestMethod]
+        public void ReadConfigFileFromArgsArray_FileNotFound_ShouldThrowFileNotFoundException()
+        {
+            // Arrange
+            const string path = "/tmp/config.json";
+            var args = ToArgs($"--configjsonlocation {path}");
 
             _fileServiceMock
-                .Setup(m => m.FileExists(configJsonPath))
+                .Setup(m => m.FileExists(path))
                 .Returns(false);
 
-            // act / assert
+            // Act / Assert
             Assert.ThrowsException<FileNotFoundException>(() => _parser.ParseConfiguration(args));
         }
 
         [TestMethod]
-        public void ConfigurationParser_ParseConfiguration_ConfigFileLocationPassedAsArgument_FileFound_ShouldParseFile()
+        public void ReadConfigFileFromArgsArray_FileFound_ShouldParseCorrectly()
         {
-            // arrange
-            var configJsonPath = @"F:\httplaceholder\config.json";
-            var args = new[]
-            {
-                $"--{ConfigKeys.ConfigJsonLocationKey}",
-                configJsonPath
-            };
-            var json = $@"{{
-    ""var1"":""value1"",
-    ""var2"":""value2""
-}}";
+            // Arrange
+            const string path = "/tmp/config.json";
+            var args = ToArgs($"--configjsonlocation {path}");
 
             _fileServiceMock
-                .Setup(m => m.FileExists(configJsonPath))
+                .Setup(m => m.FileExists(path))
                 .Returns(true);
 
             _fileServiceMock
-                .Setup(m => m.ReadAllText(configJsonPath))
-                .Returns(json);
+                .Setup(m => m.ReadAllText(path))
+                .Returns(ExampleConfig);
 
-            // act
+            // Act
             var result = _parser.ParseConfiguration(args);
 
-            // assert
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("value1", result["var1"]);
-            Assert.AreEqual("value2", result["var2"]);
+            // Assert
+            Assert.AreEqual("user", result["Authentication:ApiUsername"]);
+            Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
+            Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
         }
 
         [TestMethod]
-        public void ConfigurationParser_ParseConfiguration_ConfigFileFoundInInstallationFolder_ShouldParseFile()
+        public void DefaultValues_ShouldBeSetCorrectly()
         {
-            // arrange
-            var json = @"{
-    ""var1"":""value1"",
-    ""var2"":""value2""
-}";
-            var expectedPath = Path.Combine(@"C:\httplaceholder", "config.json");
+            // Act
+            var result = _parser.ParseConfiguration(new string[0]);
 
-            var args = new string[0];
+            // Assert
+            Assert.AreEqual("5000", result["Web:HttpPort"]);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(result["Web:PfxPath"]));
+            Assert.AreEqual("1234", result["Web:PfxPassword"]);
+            Assert.AreEqual("5050", result["Web:HttpsPort"]);
+            Assert.AreEqual("False", result["Web:UseHttps"]);
+            Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
+        }
 
-            _assemblyServiceMock
-                .Setup(m => m.GetCallingAssemblyRootPath())
-                .Returns(@"C:\httplaceholder");
+        [TestMethod]
+        public void ArgsArray_ShouldOverrideDefaultValue()
+        {
+            // Arrange
+            var args = ToArgs("--port 5001 --httpsPort 5051");
+
+            // Act
+            var result = _parser.ParseConfiguration(args);
+
+            // Assert
+            Assert.AreEqual("5001", result["Web:HttpPort"]);
+            Assert.AreEqual("5051", result["Web:HttpsPort"]);
+        }
+
+        [TestMethod]
+        public void EnvVariables_ShouldOverrideArgsArray()
+        {
+            // Arrange
+            var args = ToArgs("--port 5001 --httpsPort 5051");
+            var env = new Dictionary<string, string> {{"port", "5002"}, {"httpsPort", "5052"}};
+
+            _envServiceMock
+                .Setup(m => m.GetEnvironmentVariables())
+                .Returns(env);
+
+            // Act
+            var result = _parser.ParseConfiguration(args);
+
+            // Assert
+            Assert.AreEqual("5002", result["Web:HttpPort"]);
+            Assert.AreEqual("5052", result["Web:HttpsPort"]);
+        }
+
+        [TestMethod]
+        public void EnvVariablesAndArgsArray_CheckCaseInsensitivity()
+        {
+            // Arrange
+            var args = ToArgs("--POrT 5001 --httpsPORT 5051");
+            var env = new Dictionary<string, string> {{"FILEStorageLocation", "/tmp/stubs"}};
+
+            _envServiceMock
+                .Setup(m => m.GetEnvironmentVariables())
+                .Returns(env);
+
+            // Act
+            var result = _parser.ParseConfiguration(args);
+
+            // Assert
+            Assert.AreEqual("5001", result["Web:HttpPort"]);
+            Assert.AreEqual("5051", result["Web:HttpsPort"]);
+            Assert.AreEqual("/tmp/stubs", result["Storage:FileStorageLocation"]);
+        }
+
+        [TestMethod]
+        public void ReadConfigFileFromArgsArray_CheckCaseInsensitivity()
+        {
+            // Arrange
+            const string path = "/tmp/config.json";
+            var args = ToArgs($"--configjsonlocation {path}");
 
             _fileServiceMock
-                .Setup(m => m.FileExists(expectedPath))
+                .Setup(m => m.FileExists(path))
                 .Returns(true);
 
             _fileServiceMock
-                .Setup(m => m.ReadAllText(expectedPath))
-                .Returns(json);
+                .Setup(m => m.ReadAllText(path))
+                .Returns(ExampleConfigWithWeirdCasing);
 
-            // act
+            // Act
             var result = _parser.ParseConfiguration(args);
 
-            // assert
-            Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("value1", result["var1"]);
-            Assert.AreEqual("value2", result["var2"]);
+            // Assert
+            Assert.AreEqual("user", result["Authentication:ApiUsername"]);
+            Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
+            Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
         }
+
+        private static string[] ToArgs(string input) => input.Split(' ');
     }
 }

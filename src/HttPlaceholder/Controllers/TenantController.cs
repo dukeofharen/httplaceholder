@@ -9,6 +9,7 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+// ReSharper disable InconsistentNaming
 
 namespace HttPlaceholder.Controllers
 {

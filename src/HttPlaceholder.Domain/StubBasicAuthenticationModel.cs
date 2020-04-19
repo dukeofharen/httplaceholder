@@ -22,9 +22,6 @@ namespace HttPlaceholder.Domain
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
-        public override string ToString()
-        {
-            return $@"[Username = '{Username}', Password = '{Password}']";
-        }
+        public override string ToString() => $@"[Username = '{Username}', Password = '{Password}']";
     }
 }

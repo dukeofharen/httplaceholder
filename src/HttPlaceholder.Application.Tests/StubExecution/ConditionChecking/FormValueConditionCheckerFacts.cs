@@ -11,20 +11,14 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class FormValueConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
         private FormValueConditionChecker _checker;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _checker = new FormValueConditionChecker(_httpContextServiceMock.Object);
-        }
+        public void Initialize() => _checker = new FormValueConditionChecker(_httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void FormValueConditionChecker_Validate_StubsFound_ButNoFormConditions_ShouldReturnNotExecuted()

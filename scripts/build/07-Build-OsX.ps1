@@ -9,8 +9,9 @@ Param(
     [Parameter(Mandatory = $True)][string]$mainProjectFile
 )
 
-$binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp3.0\osx-x64\publish"
+$binDir = Join-Path $srcFolder "HttPlaceholder\bin\release\netcoreapp3.1\osx-x64\publish"
 $docsFolder = "$rootFolder/docs"
+$installScriptsPath = "$PSScriptRoot/installscripts/mac"
 
 # Patching main .csproj file
 [xml]$csproj = Get-Content $mainProjectFile
@@ -25,6 +26,9 @@ Remove-Item $binDir -Force -Confirm:$false -Recurse -ErrorAction Ignore
 Write-Host "Packing up for OS X" -ForegroundColor Green
 & dotnet publish $mainProjectFile --configuration=release --runtime=osx-x64 /p:PublishTrimmed=true
 Assert-Cmd-Ok
+
+# Moving install scripts
+Copy-Item "$installScriptsPath/**" $binDir -Recurse
 
 # Moving docs folder to bin path
 Copy-Item $docsFolder (Join-Path $binDir "docs") -Recurse -Container

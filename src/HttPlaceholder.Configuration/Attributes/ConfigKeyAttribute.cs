@@ -1,4 +1,5 @@
 ﻿using System;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace HttPlaceholder.Configuration.Attributes
 {
@@ -10,5 +11,7 @@ namespace HttPlaceholder.Configuration.Attributes
         public string Example { get; set; }
 
         public string ConfigPath { get; set; }
+
+        public bool IsBoolValue { get; set; } = false;
     }
 }

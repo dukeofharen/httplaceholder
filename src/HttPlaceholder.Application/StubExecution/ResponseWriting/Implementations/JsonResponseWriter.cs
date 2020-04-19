@@ -10,20 +10,19 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
-            if (stub.Response?.Json != null)
+            if (stub.Response?.Json == null)
             {
-                string jsonBody = stub.Response.Json;
-                response.Body = Encoding.UTF8.GetBytes(jsonBody);
-                if (!response.Headers.TryGetValue("Content-Type", out string contentType))
-                {
-                    response.Headers.Add("Content-Type", "application/json");
-                }
-
-                executed = true;
+                return Task.FromResult(false);
             }
 
-            return Task.FromResult(executed);
+            var jsonBody = stub.Response.Json;
+            response.Body = Encoding.UTF8.GetBytes(jsonBody);
+            if (!response.Headers.TryGetValue("Content-Type", out _))
+            {
+                response.Headers.Add("Content-Type", "application/json");
+            }
+
+            return Task.FromResult(true);
         }
     }
 }

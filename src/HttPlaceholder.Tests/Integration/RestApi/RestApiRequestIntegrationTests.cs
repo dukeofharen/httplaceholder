@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Client;
 using HttPlaceholder.Domain;
@@ -14,23 +11,17 @@ namespace HttPlaceholder.Tests.Integration.RestApi
     public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         [TestInitialize]
-        public void Initialize()
-        {
-            InitializeRestApiIntegrationTest();
-        }
+        public void Initialize() => InitializeRestApiIntegrationTest();
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupRestApiIntegrationTest();
-        }
+        public void Cleanup() => CleanupRestApiIntegrationTest();
 
         [TestMethod]
         public async Task RestApiIntegration_Request_GetAll()
         {
             // Arrange
-            string correlation = Guid.NewGuid().ToString();
-            StubSource._requestResultModels.Add(new RequestResultModel
+            var correlation = Guid.NewGuid().ToString();
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 CorrelationId = correlation
             });
@@ -39,7 +30,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var result = await GetFactory().RequestClient.GetAllAsync();
 
             // Assert
-            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(1, result.Count);
             Assert.AreEqual(correlation, result.First().CorrelationId);
         }
 
@@ -47,11 +38,11 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Request_GetByStubId()
         {
             // Arrange
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub2"
             });
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub1"
             });
@@ -60,7 +51,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var result = await GetFactory().RequestClient.GetByStubIdAsync("stub1");
 
             // Assert
-            Assert.AreEqual(1, result.Count());
+            Assert.AreEqual(1, result.Count);
             Assert.AreEqual("stub1", result.First().ExecutingStubId);
         }
 
@@ -68,11 +59,11 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Request_CredentialsAreNeededButIncorrect_ShouldReturn401()
         {
             // Arrange
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub2"
             });
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub1"
             });
@@ -91,11 +82,11 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Request_CredentialsAreCorrect_ShouldContinue()
         {
             // Arrange
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub2"
             });
-            StubSource._requestResultModels.Add(new RequestResultModel
+            StubSource.RequestResultModels.Add(new RequestResultModel
             {
                 ExecutingStubId = "stub1"
             });

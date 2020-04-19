@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Formatters;
-using HttPlaceholder.Hubs;
 using HttPlaceholder.Hubs.Implementations;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +25,7 @@ namespace HttPlaceholder
         public void ConfigureServices(IServiceCollection services) =>
             ConfigureServicesStatic(services, Configuration);
 
+        // ReSharper disable once UnusedParameter.Global
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
             ConfigureStatic(app, true, Configuration?.Get<SettingsModel>()?.Gui?.EnableUserInterface == true);
 
@@ -52,10 +51,6 @@ namespace HttPlaceholder
         {
             services
                 .AddMvc(o => o.AddYamlFormatting())
-//               .AddJsonOptions(o =>
-//                {
-//                    o.JsonSerializerOptions.IgnoreNullValues = true;
-//                })
                 .AddNewtonsoftJson(o => o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                .AddApplicationPart(Assembly.GetExecutingAssembly());

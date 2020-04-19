@@ -13,28 +13,22 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         private RequestHeaderVariableHandler _handler;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _handler = new RequestHeaderVariableHandler(_httpContextServiceMock.Object);
-        }
+        public void Initialize() => _handler = new RequestHeaderVariableHandler(_httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void RequestHeaderVariableHandler_Parse_HappyFlow()
         {
             // arrange
-            string input = "Header var 1: ((request_header:var1)), header var 2: ((request_header:var2)), header var 3: ((request_header:var3))";
+            const string input = "Header var 1: ((request_header:var1)), header var 2: ((request_header:var2)), header var 3: ((request_header:var3))";
             var headerDict = new Dictionary<string, string>
             {
                 { "var1", "https://google.com" },
-                { "var3", "value3" },
+                { "var3", "value3" }
             };
-            string expectedResult = "Header var 1: https://google.com, header var 2: , header var 3: value3";
+            const string expectedResult = "Header var 1: https://google.com, header var 2: , header var 3: value3";
 
             _httpContextServiceMock
                 .Setup(m => m.GetHeaders())
@@ -42,7 +36,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
 
             // act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // assert
             Assert.AreEqual(expectedResult, result);

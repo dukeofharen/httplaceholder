@@ -1,11 +1,11 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Middleware
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ApiExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
@@ -15,6 +15,7 @@ namespace HttPlaceholder.Middleware
             _next = next;
         }
 
+        // ReSharper disable once UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
             if (context.Request.Path.Value.Contains("ph-api/"))

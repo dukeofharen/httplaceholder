@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class HeadersResponseWriterFacts
     {
-        private HeadersResponseWriter _writer = new HeadersResponseWriter();
+        private readonly HeadersResponseWriter _writer = new HeadersResponseWriter();
 
         [TestMethod]
         public async Task HeadersResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
@@ -26,7 +26,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsFalse(result);
@@ -52,7 +52,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);

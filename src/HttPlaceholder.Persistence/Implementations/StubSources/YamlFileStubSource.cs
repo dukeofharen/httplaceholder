@@ -22,9 +22,9 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         private readonly SettingsModel _settings;
 
         public YamlFileStubSource(
-           IFileService fileService,
-           ILogger<YamlFileStubSource> logger,
-           IOptions<SettingsModel> options)
+            IFileService fileService,
+            ILogger<YamlFileStubSource> logger,
+            IOptions<SettingsModel> options)
         {
             _fileService = fileService;
             _logger = logger;
@@ -33,7 +33,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task<IEnumerable<StubModel>> GetStubsAsync()
         {
-            string inputFileLocation = _settings.Storage?.InputFile;
+            var inputFileLocation = _settings.Storage?.InputFile;
             var fileLocations = new List<string>();
             if (string.IsNullOrEmpty(inputFileLocation))
             {
@@ -45,7 +45,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             else
             {
                 // Split on ";": it is possible to supply multiple locations.
-                var parts = inputFileLocation.Split(new[] { "%%" }, StringSplitOptions.RemoveEmptyEntries);
+                var parts = inputFileLocation.Split(new[] {"%%"}, StringSplitOptions.RemoveEmptyEntries);
+                parts = parts.Select(StripIllegalCharacters).ToArray();
                 foreach (var part in parts)
                 {
                     var location = part.Trim();
@@ -77,7 +78,17 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                     var input = _fileService.ReadAllText(file);
                     _logger.LogInformation($"File contents of '{file}': '{input}'");
 
-                    var stubs = YamlUtilities.Parse<List<StubModel>>(input);
+                    IEnumerable<StubModel> stubs;
+
+                    if (YamlIsArray(input))
+                    {
+                        stubs = YamlUtilities.Parse<List<StubModel>>(input);
+                    }
+                    else
+                    {
+                        stubs = new[] {YamlUtilities.Parse<StubModel>(input)};
+                    }
+
                     EnsureStubsHaveId(stubs);
                     result.AddRange(stubs);
                     _stubLoadDateTime = DateTime.UtcNow;
@@ -93,28 +104,32 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.FromResult(_stubs);
         }
 
-        public async Task PrepareStubSourceAsync()
-        {
+        public async Task PrepareStubSourceAsync() =>
             // Check if the .yml files could be loaded.
             await GetStubsAsync();
-        }
 
-        private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files)
-        {
-            return files.Max(f => _fileService.GetModicationDateTime(f));
-        }
+        private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
+            files.Max(f => _fileService.GetModicationDateTime(f));
 
-        private void EnsureStubsHaveId(IEnumerable<StubModel> stubs)
+        private static void EnsureStubsHaveId(IEnumerable<StubModel> stubs)
         {
             foreach (var stub in stubs)
             {
-                if (string.IsNullOrWhiteSpace(stub.Id))
+                if (!string.IsNullOrWhiteSpace(stub.Id))
                 {
-                    // If no ID is set, calculate a unique ID based on the stub contents.
-                    string contents = JsonConvert.SerializeObject(stub);
-                    stub.Id = HashingUtilities.GetMd5String(contents);
+                    continue;
                 }
+
+                // If no ID is set, calculate a unique ID based on the stub contents.
+                var contents = JsonConvert.SerializeObject(stub);
+                stub.Id = HashingUtilities.GetMd5String(contents);
             }
         }
+
+        private static string StripIllegalCharacters(string input) => input.Replace("\"", string.Empty);
+
+        private static bool YamlIsArray(string yaml) => yaml
+            .Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None)
+            .Any(l => l.StartsWith("-"));
     }
 }

@@ -10,19 +10,18 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
             var stubResponseHeaders = stub.Response?.Headers;
-            if (stubResponseHeaders != null && stubResponseHeaders?.Any() == true)
+            if (stubResponseHeaders == null || stubResponseHeaders?.Any() != true)
             {
-                foreach (var header in stubResponseHeaders)
-                {
-                    response.Headers.Add(header.Key, header.Value);
-                }
-
-                executed = true;
+                return Task.FromResult(false);
             }
 
-            return Task.FromResult(executed);
+            foreach (var header in stubResponseHeaders)
+            {
+                response.Headers.Add(header.Key, header.Value);
+            }
+
+            return Task.FromResult(true);
         }
     }
 }

@@ -10,21 +10,16 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class PathConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
         private PathConditionChecker _checker;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _checker = new PathConditionChecker(
-               _httpContextServiceMock.Object);
-        }
+                _httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void PathConditionChecker_Validate_StubsFound_ButNoPathConditions_ShouldReturnNotExecuted()
@@ -49,7 +44,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void PathConditionChecker_Validate_StubsFound_WrongPath_ShouldReturnInvalid()
         {
             // arrange
-            string path = "/login";
+            const string path = "/login";
             var conditions = new StubConditionsModel
             {
                 Url = new StubUrlConditionModel
@@ -73,7 +68,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void PathConditionChecker_Validate_StubsFound_HappyFlow_CompleteUrl()
         {
             // arrange
-            string path = "/locatieserver/v3/suggest";
+            const string path = "/locatieserver/v3/suggest";
             var conditions = new StubConditionsModel
             {
                 Url = new StubUrlConditionModel
@@ -97,7 +92,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void PathConditionChecker_Validate_StubsFound_HappyFlow_Regex()
         {
             // arrange
-            string path = "/locatieserver/v3/suggest";
+            const string path = "/locatieserver/v3/suggest";
             var conditions = new StubConditionsModel
             {
                 Url = new StubUrlConditionModel

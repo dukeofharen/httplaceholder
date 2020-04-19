@@ -22,8 +22,8 @@ namespace HttPlaceholder.Authorization
 
             bool result;
             var logger = context.HttpContext.RequestServices.GetService<ILogger<ApiAuthorizationAttribute>>();
-            string username = settings.Authentication?.ApiUsername ?? string.Empty;
-            string password = settings.Authentication?.ApiPassword ?? string.Empty;
+            var username = settings.Authentication?.ApiUsername ?? string.Empty;
+            var password = settings.Authentication?.ApiPassword ?? string.Empty;
             if (loginService.CheckLoginCookie())
             {
                 AddUserContext(context, username);
@@ -34,7 +34,7 @@ namespace HttPlaceholder.Authorization
             {
                 // Try to retrieve basic auth header here.
                 context.HttpContext.Request.Headers.TryGetValue("Authorization", out var values);
-                string value = values.FirstOrDefault();
+                var value = values.FirstOrDefault();
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     result = false;
@@ -44,7 +44,7 @@ namespace HttPlaceholder.Authorization
                     try
                     {
                         value = value.Replace("Basic ", string.Empty);
-                        string basicAuth = Encoding.UTF8.GetString(Convert.FromBase64String(value));
+                        var basicAuth = Encoding.UTF8.GetString(Convert.FromBase64String(value));
                         var parts = basicAuth.Split(':');
                         if (parts.Length != 2)
                         {
@@ -83,13 +83,10 @@ namespace HttPlaceholder.Authorization
             "SonarQube",
             "S4834",
             Justification = "There are only 2 permissions, API access or no API access")]
-        private static void AddUserContext(ActionExecutingContext context, string username)
-        {
-
+        private static void AddUserContext(ActionContext context, string username) =>
             context.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, username)
             }));
-        }
     }
 }

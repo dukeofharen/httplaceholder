@@ -10,21 +10,16 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class JsonPathConditionCheckerFacts
     {
-        private Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
         private JsonPathConditionChecker _checker;
 
         [TestInitialize]
-        public void Initialize()
-        {
+        public void Initialize() =>
             _checker = new JsonPathConditionChecker(
-               _httpContextServiceMock.Object);
-        }
+                _httpContextServiceMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _httpContextServiceMock.VerifyAll();
-        }
+        public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
         public void JsonPathConditionChecker_Validate_StubsFound_ButNoJsonPathConditions_ShouldReturnNotExecuted()
@@ -46,7 +41,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void JsonPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
         {
             // arrange
-            string body = @"{
+            const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -90,7 +85,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void JsonPathConditionChecker_Validate_StubsFound_OnlyOneJsonPathConditionCorrect_ShouldReturnInvalid()
         {
             // arrange
-            string body = @"{
+            const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -134,7 +129,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void JsonPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
         {
             // arrange
-            string body = @"{
+            const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,

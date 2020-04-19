@@ -12,7 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
         {
             var pair = request.RequestParameters.Headers.FirstOrDefault(p =>
                 p.Key.Equals("Content-Type", StringComparison.OrdinalIgnoreCase));
-            string contentType = pair.Value;
+            var contentType = pair.Value;
             if (string.IsNullOrWhiteSpace(contentType))
             {
                 return Task.FromResult(false);

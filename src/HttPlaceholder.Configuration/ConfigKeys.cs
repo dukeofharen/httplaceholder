@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using HttPlaceholder.Configuration.Attributes;
+// ReSharper disable UnusedMember.Global
 
 namespace HttPlaceholder.Configuration
 {
@@ -58,13 +59,15 @@ namespace HttPlaceholder.Configuration
         [ConfigKey(
             Description = "whether HTTPS should be enabled or not. Default: false",
             Example = "true",
-            ConfigPath = "Web:UseHttps")]
+            ConfigPath = "Web:UseHttps",
+            IsBoolValue = true)]
         public const string UseHttpsKey = "useHttps";
 
         [ConfigKey(
             Description = "whether stub requests should be logged to the terminal window. Default: false",
             Example = "false",
-            ConfigPath = "Storage:EnableRequestLogging")]
+            ConfigPath = "Storage:EnableRequestLogging",
+            IsBoolValue = true)]
         public const string EnableRequestLoggingKey = "enableRequestLogging";
 
         [ConfigKey(
@@ -94,7 +97,8 @@ namespace HttPlaceholder.Configuration
         [ConfigKey(
             Description = "whether the user interface should be enabled or not. The user interface is, if enabled, located at http://localhost:PORT/ph-ui.",
             Example = "true",
-            ConfigPath = "Gui:EnableUserInterface")]
+            ConfigPath = "Gui:EnableUserInterface",
+            IsBoolValue = true)]
         public const string EnableUserInterface = "enableUserInterface";
 
         [ConfigKey(

@@ -11,23 +11,17 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
     {
         [TestInitialize]
-        public void Initialize()
-        {
-            InitializeStubIntegrationTest("integration.yml");
-        }
+        public void Initialize() => InitializeStubIntegrationTest("integration.yml");
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            CleanupIntegrationTest();
-        }
+        public void Cleanup() => CleanupIntegrationTest();
 
         [TestMethod]
         public async Task StubIntegration_RegularPut_Json_ValidateJsonPath_HappyFlow()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}users";
-            string body = @"{
+            var url = $"{TestServer.BaseAddress}users";
+            const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -55,20 +49,18 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
+            Assert.IsTrue(string.IsNullOrEmpty(content));
         }
 
         [TestMethod]
         public async Task StubIntegration_RegularPut_Json_ValidateJsonPath_StubNotFound()
         {
             // arrange
-            string url = $"{TestServer.BaseAddress}users";
-            string body = @"{
+            var url = $"{TestServer.BaseAddress}users";
+            const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -96,12 +88,10 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             };
 
             // act / assert
-            using (var response = await Client.SendAsync(request))
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-                Assert.IsTrue(string.IsNullOrEmpty(content));
-            }
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.IsTrue(string.IsNullOrEmpty(content));
         }
     }
 }

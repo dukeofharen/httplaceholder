@@ -14,16 +14,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         private HostConditionChecker _checker;
 
         [TestInitialize]
-        public void Initialize()
-        {
-            _checker = new HostConditionChecker(_clientDataResolverMock.Object);
-        }
+        public void Initialize() => _checker = new HostConditionChecker(_clientDataResolverMock.Object);
 
         [TestCleanup]
-        public void Cleanup()
-        {
-            _clientDataResolverMock.VerifyAll();
-        }
+        public void Cleanup() => _clientDataResolverMock.VerifyAll();
 
         [TestMethod]
         public void HostConditionChecker_Validate_NoConditionFound_ShouldReturnNotExecuted()
@@ -45,7 +39,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void HostConditionChecker_Validate_ConditionIncorrect_ShouldReturnInvalid()
         {
             // arrange
-            string host = "httplaceholder.com";
+            const string host = "httplaceholder.com";
             var conditions = new StubConditionsModel
             {
                 Host = "google.com"
@@ -66,7 +60,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void HostConditionChecker_Validate_ConditionCorrect_ShouldReturnValid()
         {
             // arrange
-            string host = "httplaceholder.com";
+            const string host = "httplaceholder.com";
             var conditions = new StubConditionsModel
             {
                 Host = "httplaceholder.com"
@@ -87,7 +81,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void HostConditionChecker_Validate_ConditionCorrectRegex_ShouldReturnValid()
         {
             // arrange
-            string host = "httplaceholder.com";
+            const string host = "httplaceholder.com";
             var conditions = new StubConditionsModel
             {
                 Host = "http(.*)"

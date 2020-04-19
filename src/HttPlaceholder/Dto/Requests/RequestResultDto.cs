@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
+// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable CollectionNeverUpdated.Global
 
 namespace HttPlaceholder.Dto.Requests
 {

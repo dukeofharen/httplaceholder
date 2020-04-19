@@ -1,5 +1,7 @@
 ﻿using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
+// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable UnusedMember.Global
 
 namespace HttPlaceholder.Dto.Requests
 {

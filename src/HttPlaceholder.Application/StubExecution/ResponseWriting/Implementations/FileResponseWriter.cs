@@ -12,8 +12,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
         private readonly IStubRootPathResolver _stubRootPathResolver;
 
         public FileResponseWriter(
-           IFileService fileService,
-           IStubRootPathResolver stubRootPathResolver)
+            IFileService fileService,
+            IStubRootPathResolver stubRootPathResolver)
         {
             _fileService = fileService;
             _stubRootPathResolver = stubRootPathResolver;
@@ -23,34 +23,36 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            bool executed = false;
-            if (stub.Response?.File != null)
+            if (stub.Response?.File == null)
             {
-                string finalFilePath = null;
-                if (_fileService.FileExists(stub.Response.File))
-                {
-                    finalFilePath = stub.Response.File;
-                }
-                else
-                {
-                    // File doesn't exist, but might exist in the file root folder.
-                    string yamlFilePath = _stubRootPathResolver.GetStubRootPath();
-                    string tempPath = Path.Combine(yamlFilePath, stub.Response.File);
-                    if (_fileService.FileExists(tempPath))
-                    {
-                        finalFilePath = tempPath;
-                    }
-                }
+                return Task.FromResult(false);
+            }
 
-                if (finalFilePath != null)
+            string finalFilePath = null;
+            if (_fileService.FileExists(stub.Response.File))
+            {
+                finalFilePath = stub.Response.File;
+            }
+            else
+            {
+                // File doesn't exist, but might exist in the file root folder.
+                var yamlFilePath = _stubRootPathResolver.GetStubRootPath();
+                var tempPath = Path.Combine(yamlFilePath, stub.Response.File);
+                if (_fileService.FileExists(tempPath))
                 {
-                    response.Body = _fileService.ReadAllBytes(finalFilePath);
-                    response.BodyIsBinary = true;
-                    executed = true;
+                    finalFilePath = tempPath;
                 }
             }
 
-            return Task.FromResult(executed);
+            if (finalFilePath == null)
+            {
+                return Task.FromResult(false);
+            }
+
+            response.Body = _fileService.ReadAllBytes(finalFilePath);
+            response.BodyIsBinary = true;
+
+            return Task.FromResult(true);
         }
     }
 }

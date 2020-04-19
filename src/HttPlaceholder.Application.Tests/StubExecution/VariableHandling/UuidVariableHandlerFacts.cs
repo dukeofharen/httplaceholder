@@ -14,11 +14,11 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         public void UuidVariableHandler_Parse_HappyFlow()
         {
             // arrange
-            string input = "((uuid)) ((uuid:nonsense))";
+            const string input = "((uuid)) ((uuid:nonsense))";
 
             // act
             var matches = VariableParser.VarRegex.Matches(input);
-            string result = _handler.Parse(input, matches);
+            var result = _handler.Parse(input, matches);
 
             // assert
             var parts = result.Split(' ');

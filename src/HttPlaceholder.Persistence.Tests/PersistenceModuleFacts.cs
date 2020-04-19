@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using HttPlaceholder.Configuration;
-using HttPlaceholder.Configuration.Utilities;
 using HttPlaceholder.Persistence.Db.Implementations;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Configuration;
@@ -13,14 +11,15 @@ namespace HttPlaceholder.Persistence.Tests
     [TestClass]
     public class PersistenceModuleFacts
     {
-        private IServiceCollection _services = new ServiceCollection();
-        private IDictionary<string, string> _args = new Dictionary<string, string>();
+        private readonly IServiceCollection _services = new ServiceCollection();
+        private readonly IDictionary<string, string> _args = new Dictionary<string, string>();
 
         [TestMethod]
-        public void DependencyRegistration_AddStubSources_InputFileKeySet_ShouldRegisterYamlFileStubSourceAndInMemoryStubSource()
+        public void
+            DependencyRegistration_AddStubSources_InputFileKeySet_ShouldRegisterYamlFileStubSourceAndInMemoryStubSource()
         {
             // arrange
-            _args.Add(ConfigKeys.InputFileKey, @"C:\yamlFiles");
+            _args.Add("Storage:InputFile", @"C:\yamlFiles");
 
             // act
             _services.AddStubSources(BuildConfiguration(_args));
@@ -35,7 +34,7 @@ namespace HttPlaceholder.Persistence.Tests
         public void DependencyRegistration_AddStubSources_FileStorageLocationKeySet_ShouldRegisterFileSystemStubSource()
         {
             // arrange
-            _args.Add(ConfigKeys.FileStorageLocationKey, @"C:\storage");
+            _args.Add("Storage:FileStorageLocation", @"C:\storage");
 
             // act
             _services.AddStubSources(BuildConfiguration(_args));
@@ -50,7 +49,8 @@ namespace HttPlaceholder.Persistence.Tests
         public void DependencyRegistration_AddStubSources_MysqlConnectionStringKeySet_ShouldRegisterStubSource()
         {
             // arrange
-            _args.Add(ConfigKeys.MysqlConnectionStringKey, "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder");
+            _args.Add("ConnectionStrings:MySql",
+                "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder");
 
             // act
             _services.AddStubSources(BuildConfiguration(_args));
@@ -66,7 +66,7 @@ namespace HttPlaceholder.Persistence.Tests
         public void DependencyRegistration_AddStubSources_SqliteConnectionStringKeySet_ShouldRegisterStubSource()
         {
             // arrange
-            _args.Add(ConfigKeys.SqliteConnectionStringKey, "Data Source=app.db");
+            _args.Add("ConnectionStrings:Sqlite", "Data Source=app.db");
 
             // act
             _services.AddStubSources(BuildConfiguration(_args));
@@ -82,7 +82,8 @@ namespace HttPlaceholder.Persistence.Tests
         public void DependencyRegistration_AddStubSources_SqlServerConnectionStringKeySet_ShouldRegisterStubSource()
         {
             // arrange
-            _args.Add(ConfigKeys.SqlServerConnectionStringKey, "Server=localhost;Database=httplaceholder;User Id=sa;Password=Password123");
+            _args.Add("ConnectionStrings:SqlServer",
+                "Server=localhost;Database=httplaceholder;User Id=sa;Password=Password123");
 
             // act
             _services.AddStubSources(BuildConfiguration(_args));
@@ -94,9 +95,9 @@ namespace HttPlaceholder.Persistence.Tests
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqlServerQueryStore)));
         }
 
-        private IConfiguration BuildConfiguration(IDictionary<string, string> argsDictionary) =>
+        private static IConfiguration BuildConfiguration(IDictionary<string, string> dict) =>
             new ConfigurationBuilder()
-                .AddHttPlaceholderConfiguration(argsDictionary)
+                .AddInMemoryCollection(dict)
                 .Build();
     }
 }

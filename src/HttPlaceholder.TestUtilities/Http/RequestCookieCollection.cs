@@ -7,12 +7,13 @@ namespace HttPlaceholder.TestUtilities.Http
     {
         public RequestCookieCollection(IDictionary<string, string> dict)
         {
-            foreach (var pair in dict)
+            foreach (var (key, value) in dict)
             {
-                Add(pair.Key, pair.Value);
+                Add(key, value);
             }
         }
 
-        public ICollection<string> Keys { get; }
+        // ReSharper disable once UnassignedGetOnlyAutoProperty
+        public new ICollection<string> Keys { get; }
     }
 }

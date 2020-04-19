@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class RedirectResponseWriterFacts
     {
-        private RedirectResponseWriter _writer = new RedirectResponseWriter();
+        private readonly RedirectResponseWriter _writer = new RedirectResponseWriter();
 
         [TestMethod]
         public async Task RedirectResponseWriter_WriteToResponseAsync_NoRedirectSet_ShouldContinue()
@@ -26,7 +26,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsFalse(result);
@@ -48,7 +48,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);
@@ -71,7 +71,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // act
-            bool result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
             Assert.IsTrue(result);

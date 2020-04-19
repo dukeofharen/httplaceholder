@@ -47,12 +47,10 @@ namespace HttPlaceholder.Formatters
             }
 
             var response = context.HttpContext.Response;
-            using (var writer = context.WriterFactory(response.Body, selectedEncoding))
-            {
-                WriteObject(writer, context.Object);
+            await using var writer = context.WriterFactory(response.Body, selectedEncoding);
+            WriteObject(writer, context.Object);
 
-                await writer.FlushAsync();
-            }
+            await writer.FlushAsync();
         }
 
         private void WriteObject(TextWriter writer, object value)

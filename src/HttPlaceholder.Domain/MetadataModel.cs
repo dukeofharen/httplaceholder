@@ -8,6 +8,7 @@
         /// <summary>
         /// Gets or sets the version.
         /// </summary>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Version { get; set; }
     }
 }

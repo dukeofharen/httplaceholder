@@ -14,12 +14,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task ClientIpHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
-            string ip = "11.22.33.44";
+            const string ip = "11.22.33.44";
             var request = new RequestResultModel {RequestParameters = new RequestParametersModel {ClientIp = ip}};
             var stub = new StubModel();
 
             // Act
-            bool result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
             Assert.IsTrue(result);

@@ -25,9 +25,9 @@ namespace HttPlaceholder.Tests.Integration
             }
 
             // Add mock services
-            foreach (var service in servicesToReplace)
+            foreach (var (interfaceType, implemenationType) in servicesToReplace)
             {
-                services.AddTransient(service.Item1, serviceProvider => service.Item2);
+                services.AddTransient(interfaceType, serviceProvider => implemenationType);
             }
 
             startup.ConfigureServices(services);

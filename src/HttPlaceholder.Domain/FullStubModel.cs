@@ -17,6 +17,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the metadata.
         /// </summary>
         [YamlMember(Alias = "metadata")]
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public StubMetadataModel Metadata { get; set; }
     }
 }

@@ -19,40 +19,38 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         {
             var result = new ConditionCheckResultModel();
             var headerConditions = conditions?.Headers;
-            if (headerConditions != null && headerConditions?.Any() == true)
+            if (headerConditions == null || headerConditions?.Any() != true)
             {
-                int validHeaders = 0;
-                var headers = _httpContextService.GetHeaders();
-                foreach (var condition in headerConditions)
-                {
-                    // Check whether the condition header is available in the actual headers.
-                    if (headers.TryGetValue(condition.Key, out string headerValue))
-                    {
-                        // Check whether the condition header value is available in the actual headers.
-                        string value = condition.Value ?? string.Empty;
-                        if (!StringHelper.IsRegexMatchOrSubstring(headerValue, value))
-                        {
-                            // If the check failed, it means the header is incorrect and the condition should fail.
-                            result.Log = $"Header condition '{condition.Key}: {condition.Value}' failed.";
-                            break;
-                        }
-
-                        validHeaders++;
-                    }
-                }
-
-                // If the number of succeeded conditions is equal to the actual number of conditions,
-                // the header condition is passed and the stub ID is passed to the result.
-                if (validHeaders == headerConditions.Count)
-                {
-                    result.ConditionValidation = ConditionValidationType.Valid;
-                }
-                else
-                {
-                    result.ConditionValidation = ConditionValidationType.Invalid;
-                }
+                return result;
             }
 
+            var validHeaders = 0;
+            var headers = _httpContextService.GetHeaders();
+            foreach (var condition in headerConditions)
+            {
+                // Check whether the condition header is available in the actual headers.
+                if (!headers.TryGetValue(condition.Key, out var headerValue))
+                {
+                    continue;
+                }
+
+                // Check whether the condition header value is available in the actual headers.
+                var value = condition.Value ?? string.Empty;
+                if (!StringHelper.IsRegexMatchOrSubstring(headerValue, value))
+                {
+                    // If the check failed, it means the header is incorrect and the condition should fail.
+                    result.Log = $"Header condition '{condition.Key}: {condition.Value}' failed.";
+                    break;
+                }
+
+                validHeaders++;
+            }
+
+            // If the number of succeeded conditions is equal to the actual number of conditions,
+            // the header condition is passed and the stub ID is passed to the result.
+            result.ConditionValidation = validHeaders == headerConditions.Count
+                ? ConditionValidationType.Valid
+                : ConditionValidationType.Invalid;
             return result;
         }
     }

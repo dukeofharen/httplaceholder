@@ -13,6 +13,7 @@ namespace HttPlaceholder.Application.StubExecution
 {
     public static class StubExecutionModule
     {
+        // ReSharper disable once UnusedMethodReturnValue.Global
         public static IServiceCollection AddStubExecutionModule(this IServiceCollection services)
         {
             services.AddSingleton<IFinalStubDeterminer, FinalStubDeterminer>();
@@ -22,7 +23,7 @@ namespace HttPlaceholder.Application.StubExecution
             services.AddSingleton<IRequestStubGenerator, RequestStubGenerator>();
             services.AddSingleton<IVariableParser, VariableParser>();
 
-            string filter = "HttPlaceholder";
+            const string filter = "HttPlaceholder";
 
             // Condition checkers
             foreach (var type in AssemblyHelper.GetImplementations<IConditionChecker>(filter))
