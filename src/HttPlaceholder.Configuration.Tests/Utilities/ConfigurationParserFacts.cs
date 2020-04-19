@@ -40,8 +40,6 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
             _fileServiceMock.VerifyAll();
         }
 
-        // Check case insensitivity.
-
         [TestMethod]
         public void ArgsArray_ShouldParseCorrectly()
         {
@@ -54,6 +52,36 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
             // Assert
             Assert.AreEqual("user", result["Authentication:ApiUsername"]);
             Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
+        }
+
+        [TestMethod]
+        public void ArgsArray_BoolArgsWithoutValue_ShouldInterpretAsTrue()
+        {
+            // Arrange
+            var args = ToArgs("--useHttps --enableRequestLogging --enableUserInterface --port 5001");
+
+            // Act
+            var result = _parser.ParseConfiguration(args);
+
+            // Assert
+            Assert.AreEqual("5001", result["Web:HttpPort"]);
+            Assert.AreEqual("True", result["Web:UseHttps"]);
+            Assert.AreEqual("True", result["Storage:EnableRequestLogging"]);
+            Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
+        }
+
+        [TestMethod]
+        public void ArgsArray_BoolArgsWithValue_ShouldTakeThatValue()
+        {
+            // Arrange
+            var args = ToArgs("--useHttps false --port 5001");
+
+            // Act
+            var result = _parser.ParseConfiguration(args);
+
+            // Assert
+            Assert.AreEqual("5001", result["Web:HttpPort"]);
+            Assert.AreEqual("false", result["Web:UseHttps"]);
         }
 
         [TestMethod]
