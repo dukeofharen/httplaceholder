@@ -41,7 +41,7 @@ namespace HttPlaceholder.Authorization.Implementations
                 CreateHash(username, password),
                 new CookieOptions { HttpOnly = true });
 
-        private string CreateHash(string username, string password) =>
+        private static string CreateHash(string username, string password) =>
             HashingUtilities.GetSha512String($"{Salt}:{username}:{password}");
     }
 }

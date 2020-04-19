@@ -1,6 +1,5 @@
 ﻿using HttPlaceholder.Application.Infrastructure.Newtonsoft;
 using HttPlaceholder.Hubs.Implementations;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Hubs

@@ -47,7 +47,7 @@ namespace HttPlaceholder.Formatters
             }
 
             var response = context.HttpContext.Response;
-            using var writer = context.WriterFactory(response.Body, selectedEncoding);
+            await using var writer = context.WriterFactory(response.Body, selectedEncoding);
             WriteObject(writer, context.Object);
 
             await writer.FlushAsync();

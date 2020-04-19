@@ -7,6 +7,7 @@ namespace HttPlaceholder.Middleware
     /// <summary>
     ///
     /// </summary>
+    // ReSharper disable once ClassNeverInstantiated.Global
     public class ApiHeadersMiddleware
     {
         private readonly RequestDelegate _next;
@@ -25,6 +26,7 @@ namespace HttPlaceholder.Middleware
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
+        // ReSharper disable once UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
             if (context.Request.Path.Value.Contains("ph-api/"))

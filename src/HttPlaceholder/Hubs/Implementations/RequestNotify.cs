@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.Requests;
 using Microsoft.AspNetCore.SignalR;
 

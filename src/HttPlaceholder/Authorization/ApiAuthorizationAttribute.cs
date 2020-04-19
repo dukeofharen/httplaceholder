@@ -83,7 +83,7 @@ namespace HttPlaceholder.Authorization
             "SonarQube",
             "S4834",
             Justification = "There are only 2 permissions, API access or no API access")]
-        private static void AddUserContext(ActionExecutingContext context, string username) =>
+        private static void AddUserContext(ActionContext context, string username) =>
             context.HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, username)

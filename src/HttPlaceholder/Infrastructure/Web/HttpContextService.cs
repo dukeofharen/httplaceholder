@@ -96,13 +96,14 @@ namespace HttPlaceholder.Infrastructure.Web
         public bool TryAddHeader(string key, StringValues values)
         {
             var httpContext = _httpContextAccessor.HttpContext;
-            if (!httpContext.Response.Headers.ContainsKey(key))
+            if (httpContext.Response.Headers.ContainsKey(key))
             {
-                httpContext.Response.Headers.Add(key, values);
-                return true;
+                return false;
             }
 
-            return false;
+            httpContext.Response.Headers.Add(key, values);
+            return true;
+
         }
 
         public void EnableRewind()

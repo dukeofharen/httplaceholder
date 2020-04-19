@@ -6,6 +6,7 @@ namespace HttPlaceholder.Formatters
 {
     public static class FormatterUtilities
     {
+        // ReSharper disable once UnusedMethodReturnValue.Global
         public static MvcOptions AddYamlFormatting(this MvcOptions options)
         {
             options.RespectBrowserAcceptHeader = true;
