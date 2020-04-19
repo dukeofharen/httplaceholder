@@ -9,5 +9,7 @@ namespace HttPlaceholder.Configuration
         public string Example { get; set; }
 
         public string Path { get; set; }
+
+        public bool? IsBoolValue { get; set; }
     }
 }
