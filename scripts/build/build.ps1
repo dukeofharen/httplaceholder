@@ -17,7 +17,7 @@ New-Item -ItemType Directory $distFolder
 # & dotnet build $solutionFile /p:DebugType=Full
 
 . "$PSScriptRoot/../Functions.ps1"
-#. "$PSScriptRoot/01-Set-Vars.ps1"
+. "$PSScriptRoot/01-Set-Vars.ps1"
 #. "$PSScriptRoot/02-Patch-Csproj-Versions.ps1" -srcFolder $srcFolder
 #if ($runUnitTests) {
 #    . "$PSScriptRoot/03-Run-Tests.ps1" -srcFolder $srcFolder
