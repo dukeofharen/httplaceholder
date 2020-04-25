@@ -49,3 +49,4 @@ if ($runUnitTests) {
     -srcFolder $srcFolder `
     -mainProjectFile $mainProjectFile `
     -distFolder $distFolder
+. "$PSScriptRoot\11-Build-Publish-Docker.ps1"

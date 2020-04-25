@@ -1,4 +1,4 @@
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 before_build:
   - cmd: choco install dotnetcore-sdk
@@ -10,6 +10,10 @@ environment:
     secure: Zcoti9GsS4Y1t12qVcWhfDXMJLW8QLt4SdeQi8VKUFBtd/gVyWsZlLXDOHLP8i5U
   nuget_api_key:
     secure: DkwNpTFW5LR/MS5rp1wi2wBHQPhntAH+waI41ytZ0+3oVt9q9Txuv0CRrslv3rgj
+  docker_username:
+    secure: KhZ3/ULtULyNnX01Z+dyjQ==
+  docker_password:
+    secure: vvSCaazrIojONbb9W14eoz4+cZmNNjKl2qAQmuFtcm0=
 
 branches:
   only:
