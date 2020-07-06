@@ -55,6 +55,7 @@ namespace HttPlaceholder
                        options.Listen(IPAddress.Any, settings.Web.HttpsPort, listenOptions => listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
                    }
                })
+               .UseIIS()
                .Build();
         }
 
