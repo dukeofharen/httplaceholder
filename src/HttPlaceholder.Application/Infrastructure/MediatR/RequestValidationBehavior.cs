@@ -20,7 +20,7 @@ namespace HttPlaceholder.Application.Infrastructure.MediatR
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            var context = new ValidationContext(request);
+            var context = new ValidationContext<TRequest>(request);
 
             var failures = new List<ValidationFailure>();
             foreach (var validator in _validators)

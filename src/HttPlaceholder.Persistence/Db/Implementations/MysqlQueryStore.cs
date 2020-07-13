@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using HttPlaceholder.Persistence.Db.Resources;
 using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
 {
