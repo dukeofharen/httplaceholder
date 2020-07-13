@@ -18,7 +18,7 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Moq" Version="4.13.1" />
+        <PackageReference Include="Moq" Version="4.14.5" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
