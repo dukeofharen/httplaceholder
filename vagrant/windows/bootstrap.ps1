@@ -46,7 +46,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName IIS-ApplicationDevelopment
 & choco install nodejs -y
 
 # Set correct path
-$env:PATH = "C:\Program Files\dotnet;$($env:PATH)"
+$env:PATH = "C:\Program Files\nodejs;C:\Program Files\dotnet;$($env:PATH)"
 
 # Stop HttPlaceholder IIS site if it exists.
 Stop-Website -Name HttPlaceholder -ErrorAction SilentlyContinue
