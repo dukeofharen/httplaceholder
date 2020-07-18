@@ -41,9 +41,16 @@ namespace HttPlaceholder.Configuration.Utilities
         private IDictionary<string, string> DetermineBaseArgsDictionary(IEnumerable<string> args)
         {
             var argsDictionary = args.Parse();
-            if (!argsDictionary.TryGetValue(ConfigKeys.ConfigJsonLocationKey.ToLower(), out var configJsonPath))
+            var key = ConfigKeys.ConfigJsonLocationKey.ToLower();
+            if (!argsDictionary.TryGetValue(key, out var configJsonPath))
             {
-                return argsDictionary;
+                var envVars = _envService.GetEnvironmentVariables();
+                configJsonPath = envVars.FirstOrDefault(v => v.Key.Equals(key, StringComparison.OrdinalIgnoreCase))
+                    .Value;
+                if (string.IsNullOrWhiteSpace(configJsonPath))
+                {
+                    return argsDictionary;
+                }
             }
 
             // Read the settings from a given file if the correct config key is set
