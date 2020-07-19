@@ -51,7 +51,7 @@ $env:PATH = "C:\Program Files\nodejs;C:\Program Files\dotnet;$($env:PATH)"
 # Stop HttPlaceholder IIS site if it exists.
 Stop-Website -Name HttPlaceholder -ErrorAction SilentlyContinue
 
-# Install HttPlaceholder.
+# Creating HttPlaceholder folder
 $installPath = "C:\bin\httplaceholder"
 if (Test-Path $installPath) {
     Write-Host "Deleting path $installPath"

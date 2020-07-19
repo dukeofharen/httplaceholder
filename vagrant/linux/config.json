@@ -1,0 +1,8 @@
+{
+   "httpsPort": 5050,
+   "oldRequestsQueueLength": 500,
+   "port": 5000,
+   "useHttps": true,
+   "enableRequestLogging": true,
+   "sqliteConnectionString": "Data Source=/etc/httplaceholder/data.db"
+}
