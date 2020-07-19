@@ -30,6 +30,7 @@ function Add-Env-Variable($envVarsElement, $name, $value) {
 
 $iisUser = "IIS_IUSRS"
 $tmpFolder = $env:TEMP
+$iisSite = "HttPlaceholder"
 
 # First, install IIS (help from https://weblog.west-wind.com/posts/2017/may/25/automating-iis-feature-installation-with-powershell).
 Write-Host "Installing Windows Features for IIS"
@@ -49,7 +50,7 @@ Enable-WindowsOptionalFeature -Online -FeatureName IIS-ApplicationDevelopment
 $env:PATH = "C:\Program Files\nodejs;C:\Program Files\dotnet;$($env:PATH)"
 
 # Stop HttPlaceholder IIS site if it exists.
-Stop-Website -Name HttPlaceholder -ErrorAction SilentlyContinue
+Stop-Website -Name $iisSite -ErrorAction SilentlyContinue
 
 # Creating HttPlaceholder folder
 $installPath = "C:\bin\httplaceholder"
@@ -120,7 +121,34 @@ $webConfig.Save($webConfigPath)
 # Remove default site
 Remove-Website -Name "Default Web Site" -ErrorAction SilentlyContinue
 
+# Create a self signed certificate
+$store = "cert:\LocalMachine\My"
+$cn = "CN=localhost"
+$certs = Get-ChildItem $store | where {$_.Subject -eq $cn}
+$cert = $null
+if($certs.Length -ge 1) {
+    Write-Host "Certificate with CN $cn already exists"
+    $cert = $certs[0]
+} else {
+    Write-Host "Creating new self-signed certificate for CN $cn"
+    New-SelfSignedCertificate -DnsName "localhost" -CertStoreLocation $store
+    $certs = Get-ChildItem $store | where {$_.Subject -eq $cn}
+    $cert = $certs[0]
+}
+
 # Add site to IIS.
+$httpPort = 80
+$httpsPort = 443
+$httpsProto = "https"
+$sitePath = "C:\bin\httplaceholder"
+
 Write-Host "Adding site to IIS."
-New-WebSite -Name HttPlaceholder -Port 80 -PhysicalPath "C:\bin\httplaceholder" -Force
-Start-Website -Name HttPlaceholder -ErrorAction SilentlyContinue
+New-WebSite -Name $iisSite -Port $httpPort -PhysicalPath $sitePath -Force
+$binding = Get-WebBinding -Name $iisSite -Port $httpsPort -Protocol $httpsProto
+if ($binding -eq $null) {
+    New-WebBinding -Name $iisSite -Port $httpsPort -Protocol "https" -SslFlags 0
+    $binding = Get-WebBinding -Name $iisSite -Port $httpsPort -Protocol $httpsProto
+}
+
+$binding.AddSslCertificate($certs[0].Thumbprint, "my")
+Start-Website -Name $iisSite -ErrorAction SilentlyContinue
