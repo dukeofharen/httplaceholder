@@ -82,7 +82,12 @@ sudo systemctl start httplaceholder
 sudo rm /etc/nginx/sites-available/default
 sudo rm /etc/nginx/sites-enabled/default
 
+# Create self signed certificate for website
+if [ ! -f "/etc/httplaceholder/nginx.key" ]; then
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj "/C=NL/ST=Drenthe/L=Eelde/O=IT/CN=localhost" -keyout /etc/httplaceholder/nginx.key -out /etc/httplaceholder/nginx.crt
+fi
+
 # Install HttPlaceholder reverse proxy site in Nginx
 sudo cp $NEW_SOURCE_PATH/vagrant/linux/httplaceholder.conf /etc/nginx/sites-available
-ln -s /etc/nginx/sites-available/httplaceholder.conf /etc/nginx/sites-enabled/httplaceholder.conf
+ln -sf /etc/nginx/sites-available/httplaceholder.conf /etc/nginx/sites-enabled/httplaceholder.conf
 systemctl restart nginx
