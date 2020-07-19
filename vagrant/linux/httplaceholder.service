@@ -1,0 +1,16 @@
+[Unit]
+Description=HttPlaceholder
+After=network.target
+
+[Service]
+WorkingDirectory=$INSTALL_PATH
+ExecStart=$INSTALL_PATH/HttPlaceholder --configjsonlocation $DATA_PATH/config.json
+Restart=always
+RestartSec=10s
+StandardOutput=syslog
+StandardError=syslog
+KillSignal=SIGINT
+SyslogIdentifier=httplaceholder
+
+[Install]
+WantedBy=multi-user.target
