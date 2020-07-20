@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c7d6e0b1-7bfa-476f-b6be-67a18e6e4d5e",
+		"_postman_id": "0e1ce150-823e-4bdf-8a9c-07dd1bba3963",
 		"name": "HttPlaceholder Examples",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13,19 +13,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/users?id=12&filter=first_name",
-							"protocol": "http",
+							"raw": "{{rootUrl}}users?id=12&filter=first_name",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"users"
+								"{{rootUrl}}users"
 							],
 							"query": [
 								{
@@ -46,19 +37,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/users?id=14&filter=last_name",
-							"protocol": "http",
+							"raw": "{{rootUrl}}users?id=14&filter=last_name",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"users"
+								"{{rootUrl}}users"
 							],
 							"query": [
 								{
@@ -79,19 +61,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/users?id=15&filter=last_name&last_name=Jackson",
-							"protocol": "http",
+							"raw": "{{rootUrl}}users?id=15&filter=last_name&last_name=Jackson",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"users"
+								"{{rootUrl}}users"
 							],
 							"query": [
 								{
@@ -116,19 +89,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/users?filter=first_name",
-							"protocol": "http",
+							"raw": "{{rootUrl}}users?filter=first_name",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"users"
+								"{{rootUrl}}users"
 							],
 							"query": [
 								{
@@ -145,25 +109,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/users",
-							"protocol": "http",
+							"raw": "{{rootUrl}}users",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"users"
+								"{{rootUrl}}users"
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "02 Post",
@@ -197,20 +153,16 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:5000/users",
-							"protocol": "http",
+							"raw": "{{rootUrl}}users",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"users"
+								"{{rootUrl}}users"
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "03 XML",
@@ -230,14 +182,9 @@
 							"raw": "<?xml version=\"1.0\"?>\r\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" \r\n    xmlns:m=\"http://www.example.org/stock/Reddy\">\r\n    <soap:Header></soap:Header>\r\n    <soap:Body>\r\n        <m:GetStockPrice>\r\n            <m:StockName>GOOG</m:StockName>\r\n        </m:GetStockPrice>\r\n    </soap:Body>\r\n</soap:Envelope>"
 						},
 						"url": {
-							"raw": "http://localhost:5000/InStock",
-							"protocol": "http",
+							"raw": "{{rootUrl}}InStock",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"InStock"
+								"{{rootUrl}}InStock"
 							]
 						}
 					},
@@ -258,20 +205,16 @@
 							"raw": "<?xml version=\"1.0\"?><object><a>TEST</a><b>TEST2</b></object>"
 						},
 						"url": {
-							"raw": "http://localhost:5000/thingy",
-							"protocol": "http",
+							"raw": "{{rootUrl}}thingy",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"thingy"
+								"{{rootUrl}}thingy"
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "04 JSON",
@@ -291,20 +234,16 @@
 							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"iPhone\",\r\n            \"number\": \"0123-4567-8888\"\r\n        },\r\n        {\r\n            \"type\": \"home\",\r\n            \"number\": \"0123-4567-8910\"\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
-							"raw": "http://localhost:5000/users",
-							"protocol": "http",
+							"raw": "{{rootUrl}}users",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"users"
+								"{{rootUrl}}users"
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "05 Base64 - File",
@@ -314,19 +253,11 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/cat_file.jpg",
-							"protocol": "http",
+							"raw": "{{rootUrl}}cat_file.jpg",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"cat_file.jpg"
+								"{{rootUrl}}cat_file",
+								"jpg"
 							]
 						}
 					},
@@ -337,25 +268,18 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/cat.jpg",
-							"protocol": "http",
+							"raw": "{{rootUrl}}cat.jpg",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"cat.jpg"
+								"{{rootUrl}}cat",
+								"jpg"
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "06 Basic authentication",
@@ -380,19 +304,10 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/auth?id=12&filter=first_name",
-							"protocol": "http",
+							"raw": "{{rootUrl}}auth?id=12&filter=first_name",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"auth"
+								"{{rootUrl}}auth"
 							],
 							"query": [
 								{
@@ -408,7 +323,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "07 Slow response",
@@ -421,19 +337,10 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/slooooow?id=12&filter=first_name",
-							"protocol": "http",
+							"raw": "{{rootUrl}}slooooow?id=12&filter=first_name",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"slooooow"
+								"{{rootUrl}}slooooow"
 							],
 							"query": [
 								{
@@ -449,7 +356,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "08 Redirect",
@@ -459,19 +367,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/temp-redirect",
-							"protocol": "http",
+							"raw": "{{rootUrl}}temp-redirect",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"temp-redirect"
+								"{{rootUrl}}temp-redirect"
 							]
 						}
 					},
@@ -482,25 +381,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/permanent-redirect",
-							"protocol": "http",
+							"raw": "{{rootUrl}}permanent-redirect",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"permanent-redirect"
+								"{{rootUrl}}permanent-redirect"
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "09 Client IP",
@@ -510,19 +401,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/client-ip-1",
-							"protocol": "http",
+							"raw": "{{rootUrl}}client-ip-1",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"client-ip-1"
+								"{{rootUrl}}client-ip-1"
 							]
 						}
 					},
@@ -533,25 +415,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/client-ip-2",
-							"protocol": "http",
+							"raw": "{{rootUrl}}client-ip-2",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"client-ip-2"
+								"{{rootUrl}}client-ip-2"
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "10 Hostname",
@@ -561,10 +435,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://httplaceholder2.local:5000/host-2",
 							"protocol": "http",
@@ -585,10 +455,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "http://httplaceholder.local:5000/host-1",
 							"protocol": "http",
@@ -604,7 +470,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "11 Is HTTPS",
@@ -614,10 +481,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "https://localhost:5050/ishttps-ok",
 							"protocol": "https",
@@ -632,7 +495,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "12 Priority",
@@ -642,19 +506,10 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/adsfasdfgas",
-							"protocol": "http",
+							"raw": "{{rootUrl}}adsfasdfgas",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"adsfasdfgas"
+								"{{rootUrl}}adsfasdfgas"
 							]
 						}
 					},
@@ -665,25 +520,17 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
-							"raw": "http://localhost:5000/not-fallback",
-							"protocol": "http",
+							"raw": "{{rootUrl}}not-fallback",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"not-fallback"
+								"{{rootUrl}}not-fallback"
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "13 Form",
@@ -719,20 +566,16 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:5000/form",
-							"protocol": "http",
+							"raw": "{{rootUrl}}form",
 							"host": [
-								"localhost"
-							],
-							"port": "5000",
-							"path": [
-								"form"
+								"{{rootUrl}}form"
 							]
 						}
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "14 Dynamic mode",
@@ -745,19 +588,11 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/dynamic-query.txt?response_text=This is the response text!&response_header=This is the response header!",
-									"protocol": "http",
+									"raw": "{{rootUrl}}dynamic-query.txt?response_text=This is the response text!&response_header=This is the response header!",
 									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"dynamic-query.txt"
+										"{{rootUrl}}dynamic-query",
+										"txt"
 									],
 									"query": [
 										{
@@ -778,19 +613,11 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/dynamic-query.txt?response_text=This is the response text!&response_header=This is the response header!",
-									"protocol": "http",
+									"raw": "{{rootUrl}}dynamic-query.txt?response_text=This is the response text!&response_header=This is the response header!",
 									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"dynamic-query.txt"
+										"{{rootUrl}}dynamic-query",
+										"txt"
 									],
 									"query": [
 										{
@@ -807,6 +634,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -817,25 +645,18 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/dynamic-uuid.txt",
-									"protocol": "http",
+									"raw": "{{rootUrl}}dynamic-uuid.txt",
 									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"dynamic-uuid.txt"
+										"{{rootUrl}}dynamic-uuid",
+										"txt"
 									]
 								}
 							},
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -852,19 +673,11 @@
 										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/dynamic-request-header.txt",
-									"protocol": "http",
+									"raw": "{{rootUrl}}dynamic-request-header.txt",
 									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"dynamic-request-header.txt"
+										"{{rootUrl}}dynamic-request-header",
+										"txt"
 									]
 								}
 							},
@@ -872,6 +685,7 @@
 						}
 					],
 					"description": "\t\t\t",
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -894,20 +708,17 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "http://localhost:5000/dynamic-form-post.txt",
-									"protocol": "http",
+									"raw": "{{rootUrl}}dynamic-form-post.txt",
 									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"dynamic-form-post.txt"
+										"{{rootUrl}}dynamic-form-post",
+										"txt"
 									]
 								}
 							},
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -923,20 +734,17 @@
 									"raw": "TEST VALUE"
 								},
 								"url": {
-									"raw": "http://localhost:5000/dynamic-request-body.txt",
-									"protocol": "http",
+									"raw": "{{rootUrl}}dynamic-request-body.txt",
 									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"dynamic-request-body.txt"
+										"{{rootUrl}}dynamic-request-body",
+										"txt"
 									]
 								}
 							},
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -947,19 +755,11 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/dynamic-display-url.txt?testvar=value1",
-									"protocol": "http",
+									"raw": "{{rootUrl}}dynamic-display-url.txt?testvar=value1",
 									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"dynamic-display-url.txt"
+										"{{rootUrl}}dynamic-display-url",
+										"txt"
 									],
 									"query": [
 										{
@@ -972,6 +772,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -982,25 +783,18 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/dynamic-client-ip.txt",
-									"protocol": "http",
+									"raw": "{{rootUrl}}dynamic-client-ip.txt",
 									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"dynamic-client-ip.txt"
+										"{{rootUrl}}dynamic-client-ip",
+										"txt"
 									]
 								}
 							},
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1011,19 +805,11 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/dynamic-local-now.txt",
-									"protocol": "http",
+									"raw": "{{rootUrl}}dynamic-local-now.txt",
 									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"dynamic-local-now.txt"
+										"{{rootUrl}}dynamic-local-now",
+										"txt"
 									]
 								}
 							},
@@ -1034,28 +820,22 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/dynamic-utc-now.txt",
-									"protocol": "http",
+									"raw": "{{rootUrl}}dynamic-utc-now.txt",
 									"host": [
-										"localhost"
-									],
-									"port": "5000",
-									"path": [
-										"dynamic-utc-now.txt"
+										"{{rootUrl}}dynamic-utc-now",
+										"txt"
 									]
 								}
 							},
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "REST API",
@@ -1083,19 +863,12 @@
 								},
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/requests/fallback",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/requests/fallback",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"requests",
 										"fallback"
 									]
@@ -1128,14 +901,11 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/requests",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/requests",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"requests"
 									]
 								}
@@ -1162,19 +932,12 @@
 								},
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/requests",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/requests",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"requests"
 									]
 								}
@@ -1191,14 +954,11 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/requests/4d9347e9-38f7-4efa-baf5-ae3a73cc68a7/stubs",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/requests/4d9347e9-38f7-4efa-baf5-ae3a73cc68a7/stubs",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"requests",
 										"4d9347e9-38f7-4efa-baf5-ae3a73cc68a7",
 										"stubs"
@@ -1208,6 +968,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1244,14 +1005,11 @@
 									"raw": "id: test-situation\r\ntenant: 01-get\r\nconditions:\r\n  method: GET\r\n  url:\r\n    path: /testtesttest\r\n    query:\r\n      id: 12\r\nresponse:\r\n  statusCode: 200\r\n  text: OK my dude!"
 								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/stubs",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/stubs",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"stubs"
 									]
 								}
@@ -1290,14 +1048,11 @@
 									"raw": "{\r\n\t\"id\": \"test-situation\",\r\n\t\"tenant\": \"01-get\",\r\n\t\"conditions\": {\r\n\t\t\"method\": \"GET\",\r\n\t\t\"url\": {\r\n\t\t\t\"path\": \"/testtesttest\",\r\n\t\t\t\"query\": {\r\n\t\t\t\t\"id\": \"13\"\r\n\t\t\t}\r\n\t\t}\r\n\t},\r\n\t\"response\": {\r\n\t\t\"statusCode\": 200,\r\n\t\t\"text\": \"OK my dude!\"\r\n\t}\r\n}"
 								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/stubs",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/stubs",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"stubs"
 									]
 								}
@@ -1331,19 +1086,12 @@
 										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/stubs/test-situation",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/stubs/test-situation",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"stubs",
 										"test-situation"
 									]
@@ -1383,14 +1131,11 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/stubs/test-situation",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/stubs/test-situation",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"stubs",
 										"test-situation"
 									]
@@ -1430,14 +1175,11 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/stubs",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/stubs",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"stubs"
 									]
 								}
@@ -1471,19 +1213,12 @@
 										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/stubs",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/stubs",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"stubs"
 									]
 								}
@@ -1507,14 +1242,11 @@
 									"raw": "{\n\"id\": \"good-name\",\n\"conditions\": {\n    \"method\": \"POST\",\n    \"url\": {\n        \"path\": \"/test123/dinges\",\n        \"query\": {\n            \"query1\": \"val1\",\n            \"query\": \"ducoducoduco\"\n        },\n        \"isHttps\": false\n    },\n    \"body\": [],\n    \"form\": [\n        {\n            \"key\": \"form1\",\n            \"value\": \"val1\"\n        },\n        {\n            \"key\": \"form2\",\n            \"value\": \"val2\"\n        }\n    ],\n    \"headers\": {\n        \"Cache-Control\": \"no-cache\",\n        \"Connection\": \"keep-alive\",\n        \"Content-Type\": \"application/x-www-form-urlencoded\",\n        \"Accept\": \"\\\\*/\\\\*\",\n        \"Accept-Encoding\": \"gzip,\\\\ deflate\",\n        \"User-Agent\": \"PostmanRuntime/7\\\\.6\\\\.0\",\n        \"Content-Length\": \"21\"\n    },\n    \"xpath\": [],\n    \"jsonPath\": [],\n    \"basicAuthentication\": {\n        \"username\": \"ducoo\",\n        \"password\": \"ducoducoduco\"\n    },\n    \"clientIp\": \"127.0.0.1\",\n    \"host\": \"localhost:5000\"\n},\n\"negativeConditions\": {\n    \"url\": {\n        \"query\": {}\n    },\n    \"body\": [],\n    \"form\": [],\n    \"headers\": {},\n    \"xpath\": [],\n    \"jsonPath\": []\n},\n\"response\": {\n    \"text\": \"OK!\",\n    \"headers\": {}\n},\n\"priority\": 0\n}"
 								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/stubs/generated-9e8629aa68a2b85bea76b65eacc1d34a",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/stubs/generated-9e8629aa68a2b85bea76b65eacc1d34a",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"stubs",
 										"generated-9e8629aa68a2b85bea76b65eacc1d34a"
 									]
@@ -1523,6 +1255,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1533,19 +1266,12 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/metadata",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/metadata",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"metadata"
 									]
 								}
@@ -1553,6 +1279,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1589,14 +1316,11 @@
 									"raw": "- id: test-situation-01\r\n  conditions:\r\n    method: GET\r\n    url:\r\n      path: /testtesttest\r\n      query:\r\n        id: 12\r\n  response:\r\n    statusCode: 200\r\n    text: OK my dude 12!\r\n\r\n- id: test-situation-02\r\n  conditions:\r\n    method: GET\r\n    url:\r\n      path: /testtesttest\r\n      query:\r\n        id: 13\r\n  response:\r\n    statusCode: 200\r\n    text: OK my dude 13!"
 								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/tenants/test-tenant/stubs",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/tenants/test-tenant/stubs",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"tenants",
 										"test-tenant",
 										"stubs"
@@ -1636,14 +1360,11 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/tenants/test-tenant/stubs",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/tenants/test-tenant/stubs",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"tenants",
 										"test-tenant",
 										"stubs"
@@ -1678,19 +1399,12 @@
 										"type": "text"
 									}
 								],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/tenants/test-tenant/stubs",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/tenants/test-tenant/stubs",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"tenants",
 										"test-tenant",
 										"stubs"
@@ -1704,19 +1418,12 @@
 							"request": {
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/tenants",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/tenants",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"tenants"
 									]
 								}
@@ -1724,6 +1431,7 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				},
 				{
@@ -1749,19 +1457,12 @@
 								},
 								"method": "GET",
 								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": ""
-								},
 								"url": {
-									"raw": "http://localhost:5000/ph-api/users/user",
-									"protocol": "http",
+									"raw": "{{rootUrl}}ph-api/users/user",
 									"host": [
-										"localhost"
+										"{{rootUrl}}ph-api"
 									],
-									"port": "5000",
 									"path": [
-										"ph-api",
 										"users",
 										"user"
 									]
@@ -1770,9 +1471,41 @@
 							"response": []
 						}
 					],
+					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
-	]
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "8ef693a8-2c3d-4a56-8265-e199ae00e522",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "bf014577-bc5b-4125-a398-3076497e6e7d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "7f66f381-3e73-4187-9afd-002d220fd57c",
+			"key": "rootUrl",
+			"value": "http://localhost:5000/"
+		}
+	],
+	"protocolProfileBehavior": {}
 }
