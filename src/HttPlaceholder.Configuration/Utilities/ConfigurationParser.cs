@@ -45,7 +45,7 @@ namespace HttPlaceholder.Configuration.Utilities
             if (!argsDictionary.TryGetValue(key, out var configJsonPath))
             {
                 var envVars = _envService.GetEnvironmentVariables();
-                configJsonPath = envVars.FirstOrDefault(v => v.Key.Equals(key, StringComparison.OrdinalIgnoreCase))
+                configJsonPath = envVars?.FirstOrDefault(v => v.Key.Equals(key, StringComparison.OrdinalIgnoreCase))
                     .Value;
                 if (string.IsNullOrWhiteSpace(configJsonPath))
                 {

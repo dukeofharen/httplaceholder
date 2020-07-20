@@ -16,6 +16,7 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
     ""apiPassword"": ""pass"",
     ""enableUserInterface"": false
 }";
+
         private const string ExampleConfigWithWeirdCasing = @"
 {
     ""APIUSERNAME"": ""user"",
@@ -105,6 +106,35 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
             // Arrange
             const string path = "/tmp/config.json";
             var args = ToArgs($"--configjsonlocation {path}");
+
+            _fileServiceMock
+                .Setup(m => m.FileExists(path))
+                .Returns(true);
+
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(path))
+                .Returns(ExampleConfig);
+
+            // Act
+            var result = _parser.ParseConfiguration(args);
+
+            // Assert
+            Assert.AreEqual("user", result["Authentication:ApiUsername"]);
+            Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
+            Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
+        }
+
+        [TestMethod]
+        public void ReadConfigFileFromEnvVar_FileFound_ShouldParseCorrectly()
+        {
+            // Arrange
+            const string path = "/tmp/config.json";
+            var args = new string[0];
+            var envVars = new Dictionary<string, string> {{"configjsonlocation", path}};
+
+            _envServiceMock
+                .Setup(m => m.GetEnvironmentVariables())
+                .Returns(envVars);
 
             _fileServiceMock
                 .Setup(m => m.FileExists(path))
