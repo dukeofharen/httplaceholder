@@ -8,12 +8,13 @@ using HttPlaceholder.Application.Stubs.Queries.GetAllStubs;
 using HttPlaceholder.Application.Stubs.Queries.GetStub;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Dto.Stubs;
+using HttPlaceholder.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 // ReSharper disable InconsistentNaming
 
-namespace HttPlaceholder.Controllers
+namespace HttPlaceholder.Controllers.v1
 {
     /// <summary>
     /// Stub Controller

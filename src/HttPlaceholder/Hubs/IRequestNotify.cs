@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using HttPlaceholder.Dto.Requests;
+using HttPlaceholder.Dto.v1.Requests;
 
 namespace HttPlaceholder.Hubs
 {

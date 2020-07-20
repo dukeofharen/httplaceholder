@@ -7,7 +7,7 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Configuration;
-using HttPlaceholder.Dto.Requests;
+using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Hubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

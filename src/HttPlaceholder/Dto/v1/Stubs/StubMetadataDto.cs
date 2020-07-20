@@ -1,10 +1,11 @@
 ﻿using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
 using YamlDotNet.Serialization;
+
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable UnusedMember.Global
 
-namespace HttPlaceholder.Dto.Stubs
+namespace HttPlaceholder.Dto.v1.Stubs
 {
     /// <summary>
     /// A model for storing metadata of a stub.
