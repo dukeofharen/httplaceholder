@@ -1,9 +1,10 @@
 ﻿using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
+
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable UnusedMember.Global
 
-namespace HttPlaceholder.Dto.Requests
+namespace HttPlaceholder.Dto.v1.Requests
 {
     /// <summary>
     /// A model for storing the execution result of a specific response writer.

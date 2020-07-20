@@ -5,12 +5,12 @@ using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetByStubId;
 using HttPlaceholder.Authorization;
-using HttPlaceholder.Dto.Requests;
-using HttPlaceholder.Dto.Stubs;
+using HttPlaceholder.Dto.v1.Requests;
+using HttPlaceholder.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HttPlaceholder.Controllers
+namespace HttPlaceholder.Controllers.v1
 {
     /// <summary>
     /// Controller for request

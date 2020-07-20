@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
-using FullStubDto = HttPlaceholder.Dto.Stubs.FullStubDto;
+using FullStubDto = HttPlaceholder.Dto.v1.Stubs.FullStubDto;
 
 namespace HttPlaceholder.Tests.Integration.RestApi
 {

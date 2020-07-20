@@ -1,7 +1,7 @@
 ﻿using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Dto.Users
+namespace HttPlaceholder.Dto.v1.Users
 {
     /// <summary>
     /// A model for storing information about a user.
