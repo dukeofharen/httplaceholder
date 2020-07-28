@@ -71,7 +71,7 @@ namespace HttPlaceholder.Configuration.Utilities
         {
             argsDictionary.EnsureEntryExists(ConfigKeys.PortKey, 5000);
             argsDictionary.EnsureEntryExists(ConfigKeys.PfxPathKey,
-                Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx"));
+                Path.Combine(AssemblyHelper.GetEntryAssemblyRootPath(), "key.pfx"));
             argsDictionary.EnsureEntryExists(ConfigKeys.PfxPasswordKey, "1234");
             argsDictionary.EnsureEntryExists(ConfigKeys.HttpsPortKey, 5050);
             argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, true);
