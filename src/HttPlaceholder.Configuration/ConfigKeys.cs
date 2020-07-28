@@ -71,7 +71,7 @@ namespace HttPlaceholder.Configuration
         public const string EnableRequestLoggingKey = "enableRequestLogging";
 
         [ConfigKey(
-            Description = "a location where the stubs and requests are stored. This is enabled by default and the stubs will be saved in your user profile folder. Specify 'useInMemoryStorage' to only save stubs in memory.",
+            Description = "a location where the stubs and requests are stored. This is enabled by default and, if you omit this property, the stubs will be saved in your user profile folder. Specify 'useInMemoryStorage' to only save stubs in memory.",
             Example = @"C:\httplaceholder_storage",
             ConfigPath = "Storage:FileStorageLocation")]
         public const string FileStorageLocationKey = "fileStorageLocation";
