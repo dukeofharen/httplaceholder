@@ -164,7 +164,7 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
             Assert.IsFalse(string.IsNullOrWhiteSpace(result["Web:PfxPath"]));
             Assert.AreEqual("1234", result["Web:PfxPassword"]);
             Assert.AreEqual("5050", result["Web:HttpsPort"]);
-            Assert.AreEqual("False", result["Web:UseHttps"]);
+            Assert.AreEqual("True", result["Web:UseHttps"]);
             Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
         }
 
