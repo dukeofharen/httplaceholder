@@ -76,6 +76,7 @@ namespace HttPlaceholder.Configuration.Utilities
             argsDictionary.EnsureEntryExists(ConfigKeys.HttpsPortKey, 5050);
             argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, true);
             argsDictionary.EnsureEntryExists(ConfigKeys.EnableUserInterface, true);
+            argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, 40);
         }
 
         private IDictionary<string, string> BuildFinalArgsDictionary(IDictionary<string, string> argsDictionary)

@@ -166,6 +166,7 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
             Assert.AreEqual("5050", result["Web:HttpsPort"]);
             Assert.AreEqual("True", result["Web:UseHttps"]);
             Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
+            Assert.AreEqual("40", result["Storage:OldRequestsQueueLength"]);
         }
 
         [TestMethod]
