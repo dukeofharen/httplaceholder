@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration.Attributes;
@@ -67,7 +68,7 @@ namespace HttPlaceholder.Configuration.Utilities
             return argsDictionary;
         }
 
-        private static void EnsureDefaultValuesAreAdded(IDictionary<string, string> argsDictionary)
+        private void EnsureDefaultValuesAreAdded(IDictionary<string, string> argsDictionary)
         {
             argsDictionary.EnsureEntryExists(ConfigKeys.PortKey, 5000);
             argsDictionary.EnsureEntryExists(ConfigKeys.PfxPathKey,
@@ -77,6 +78,34 @@ namespace HttPlaceholder.Configuration.Utilities
             argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, true);
             argsDictionary.EnsureEntryExists(ConfigKeys.EnableUserInterface, true);
             argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, 40);
+
+            // Determine and set file storage location.
+            string fileStorageLocation;
+            var tempPath = _fileService.GetTempPath();
+            var windowsProfilePath = _envService.GetEnvironmentVariable("USERPROFILE");
+            var unixProfilePath = _envService.GetEnvironmentVariable("HOME");
+            var stubFolderName = ".httplaceholder";
+            if (_envService.IsOs(OSPlatform.Windows) && _fileService.DirectoryExists(windowsProfilePath))
+            {
+                fileStorageLocation = Path.Combine(windowsProfilePath, stubFolderName);
+            }
+            else if (
+                (_envService.IsOs(OSPlatform.Linux) ||
+                 _envService.IsOs(OSPlatform.OSX)) && _fileService.DirectoryExists(unixProfilePath))
+            {
+                fileStorageLocation = Path.Combine(unixProfilePath, stubFolderName);
+            }
+            else
+            {
+                fileStorageLocation = Path.Combine(tempPath, stubFolderName);
+            }
+
+            if (!_fileService.DirectoryExists(fileStorageLocation))
+            {
+                _fileService.CreateDirectory(fileStorageLocation);
+            }
+
+            argsDictionary.EnsureEntryExists(ConfigKeys.FileStorageLocationKey, fileStorageLocation);
         }
 
         private IDictionary<string, string> BuildFinalArgsDictionary(IDictionary<string, string> argsDictionary)
