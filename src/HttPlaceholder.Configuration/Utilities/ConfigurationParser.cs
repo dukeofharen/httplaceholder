@@ -80,32 +80,30 @@ namespace HttPlaceholder.Configuration.Utilities
             argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, 40);
 
             // Determine and set file storage location.
-            string fileStorageLocation;
-            var tempPath = _fileService.GetTempPath();
+            string fileStorageLocation = null;
             var windowsProfilePath = _envService.GetEnvironmentVariable("USERPROFILE");
             var unixProfilePath = _envService.GetEnvironmentVariable("HOME");
             var stubFolderName = ".httplaceholder";
             if (_envService.IsOs(OSPlatform.Windows) && _fileService.DirectoryExists(windowsProfilePath))
             {
-                fileStorageLocation = Path.Combine(windowsProfilePath, stubFolderName);
+                fileStorageLocation = $"{windowsProfilePath}\\{stubFolderName}";
             }
             else if (
                 (_envService.IsOs(OSPlatform.Linux) ||
                  _envService.IsOs(OSPlatform.OSX)) && _fileService.DirectoryExists(unixProfilePath))
             {
-                fileStorageLocation = Path.Combine(unixProfilePath, stubFolderName);
-            }
-            else
-            {
-                fileStorageLocation = Path.Combine(tempPath, stubFolderName);
+                fileStorageLocation = $"{unixProfilePath}/{stubFolderName}";
             }
 
-            if (!_fileService.DirectoryExists(fileStorageLocation))
+            if (!string.IsNullOrWhiteSpace(fileStorageLocation))
             {
-                _fileService.CreateDirectory(fileStorageLocation);
-            }
+                if (!_fileService.DirectoryExists(fileStorageLocation))
+                {
+                    _fileService.CreateDirectory(fileStorageLocation);
+                }
 
-            argsDictionary.EnsureEntryExists(ConfigKeys.FileStorageLocationKey, fileStorageLocation);
+                argsDictionary.EnsureEntryExists(ConfigKeys.FileStorageLocationKey, fileStorageLocation);
+            }
         }
 
         private IDictionary<string, string> BuildFinalArgsDictionary(IDictionary<string, string> argsDictionary)

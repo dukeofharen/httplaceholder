@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 using HttPlaceholder.Common;
 using HttPlaceholder.Configuration.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -167,6 +169,52 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
             Assert.AreEqual("True", result["Web:UseHttps"]);
             Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
             Assert.AreEqual("40", result["Storage:OldRequestsQueueLength"]);
+        }
+
+        [DataTestMethod]
+        [DataRow("WINDOWS", "C:\\Users\\duco", "C:\\Users\\duco\\.httplaceholder", false, true, true)]
+        [DataRow("WINDOWS", "C:\\Users\\duco", "C:\\Users\\duco\\.httplaceholder", true, false, true)]
+        [DataRow("LINUX", "/home/duco", "/home/duco/.httplaceholder", false, true, true)]
+        [DataRow("LINUX", "/home/duco", "/home/duco/.httplaceholder", true, false, true)]
+        [DataRow("OSX", "/home/duco", "/home/duco/.httplaceholder", false, true, true)]
+        [DataRow("OSX", "/home/duco", "/home/duco/.httplaceholder", false, false, true)]
+        [DataRow(null, "", "", false, false, false)]
+        public void ShouldSetDefaultFileStorageLocationSuccessfully(
+            string platform,
+            string userHomeFolder,
+            string expectedFileStorageLocation,
+            bool folderAlreadyExists,
+            bool shouldCreateFolder,
+            bool fileStorageLocationShouldBeSet)
+        {
+            // Arrange
+            if (!string.IsNullOrWhiteSpace(platform))
+            {
+                var os = OSPlatform.Create(platform);
+                _envServiceMock.Setup(m => m.IsOs(os)).Returns(true);
+                _fileServiceMock.Setup(m => m.DirectoryExists(userHomeFolder)).Returns(true);
+                _fileServiceMock.Setup(m => m.DirectoryExists(expectedFileStorageLocation)).Returns(folderAlreadyExists);
+            }
+
+            _envServiceMock.Setup(m => m.GetEnvironmentVariable("USERPROFILE")).Returns(userHomeFolder);
+            _envServiceMock.Setup(m => m.GetEnvironmentVariable("HOME")).Returns(userHomeFolder);
+
+            // Act
+            var result = _parser.ParseConfiguration(new string[0]);
+
+            // Assert
+            const string key = "Storage:FileStorageLocation";
+            if (fileStorageLocationShouldBeSet)
+            {
+                Assert.AreEqual(expectedFileStorageLocation, result[key]);
+                _fileServiceMock.Verify(
+                    m => m.CreateDirectory(expectedFileStorageLocation),
+                    Times.Exactly(folderAlreadyExists ? 0 : 1));
+            }
+            else
+            {
+                Assert.IsFalse(result.Any(x => x.Key == key));
+            }
         }
 
         [TestMethod]
