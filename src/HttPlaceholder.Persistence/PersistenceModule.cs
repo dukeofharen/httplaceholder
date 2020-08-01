@@ -30,7 +30,13 @@ namespace HttPlaceholder.Persistence
             var mysqlConnectionString = configuration.GetConnectionString(MysqlQueryStore.ConnectionStringKey);
             var sqliteConnectionString = configuration.GetConnectionString(SqliteQueryStore.ConnectionStringKey);
             var sqlServerConnectionString = configuration.GetConnectionString(SqlServerQueryStore.ConnectionStringKey);
-            if (!string.IsNullOrWhiteSpace(fileStoragePath))
+            var useInMemory = settings?.Storage?.UseInMemoryStorage ?? false;
+            if (useInMemory)
+            {
+                // User specifically wants to use the in memory stub source.
+                services.AddSingleton<IStubSource, InMemoryStubSource>();
+            }
+            else if (!string.IsNullOrWhiteSpace(fileStoragePath))
             {
                 // If "fileStorageLocation" is set, it means HttPlaceholder should read and write files to a specific location.
                 services.AddSingleton<IStubSource, FileSystemStubSource>();

@@ -31,6 +31,22 @@ namespace HttPlaceholder.Persistence.Tests
         }
 
         [TestMethod]
+        public void
+            DependencyRegistration_AddStubSources_UseInMemoryStubSource()
+        {
+            // arrange
+            _args.Add("Storage:UseInMemoryStorage", @"true");
+
+            // act
+            _services.AddStubSources(BuildConfiguration(_args));
+
+            // assert
+            Assert.AreEqual(2, _services.Count);
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(InMemoryStubSource)));
+        }
+
+        [TestMethod]
         public void DependencyRegistration_AddStubSources_FileStorageLocationKeySet_ShouldRegisterFileSystemStubSource()
         {
             // arrange
