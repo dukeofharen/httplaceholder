@@ -10,5 +10,7 @@
         public bool EnableRequestLogging { get; set; }
 
         public string FileStorageLocation { get; set; }
+
+        public bool UseInMemoryStorage { get; set; }
     }
 }

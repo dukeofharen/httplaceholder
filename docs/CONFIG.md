@@ -52,7 +52,17 @@ httplaceholder --inputFile C:\path\to\stubsfolder%%C:\path\to\file.yml
 httplaceholder --fileStorageLocation C:\tmp\storage
 ```
 
-By default, if you run the application without command line arguments, all stubs that are added through the [REST API](API.md) and all requests are stored in memory, which means that whenever you restart HttPlaceholder, everything is gone. For this reason, a file storage source was developed, so that all requests and stubs are stored on disk. You just have to specify the "fileStorageLocation" parameter so HttPlaceholder knows where to write its files.
+This configuration value can be used to configure where you want to save the stubs (which are created through the API). The files will be saved as plain JSON files. 
+
+By default, if you start the application, a folder called `.httplaceholder` will be added to your user profile folder. On Windows, this will be `C:\Users\<username>\.httplaceholder` and on Unix like systems (in this case Linux and OS X) this will be `/home/<username>/.httplaceholder`. If HttPlaceholder couldn't determine your OS or your profile folder is in a non-standard location, the "in memory stub source" is used, which means your data will be cleared when you start HttPlaceholder.
+
+### Use in memory storage (optional)
+
+```bash
+httplaceholder --useInMemoryStorage
+```
+
+If you specifically don't want the stubs and requests to be stored on a static location (e.g. disk or database), you can specify this option so all your data will be cleared whenever the application is restarted. This can be handy in test scenarios where HttPlaceholder will not be running for a long time.
 
 ### MySQL connection (optional)
 

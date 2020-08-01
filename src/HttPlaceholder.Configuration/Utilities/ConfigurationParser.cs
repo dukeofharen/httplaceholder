@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration.Attributes;
@@ -67,15 +68,42 @@ namespace HttPlaceholder.Configuration.Utilities
             return argsDictionary;
         }
 
-        private static void EnsureDefaultValuesAreAdded(IDictionary<string, string> argsDictionary)
+        private void EnsureDefaultValuesAreAdded(IDictionary<string, string> argsDictionary)
         {
             argsDictionary.EnsureEntryExists(ConfigKeys.PortKey, 5000);
             argsDictionary.EnsureEntryExists(ConfigKeys.PfxPathKey,
-                Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "key.pfx"));
+                Path.Combine(AssemblyHelper.GetEntryAssemblyRootPath(), "key.pfx"));
             argsDictionary.EnsureEntryExists(ConfigKeys.PfxPasswordKey, "1234");
             argsDictionary.EnsureEntryExists(ConfigKeys.HttpsPortKey, 5050);
-            argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, false);
+            argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, true);
             argsDictionary.EnsureEntryExists(ConfigKeys.EnableUserInterface, true);
+            argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, 40);
+
+            // Determine and set file storage location.
+            string fileStorageLocation = null;
+            var windowsProfilePath = _envService.GetEnvironmentVariable("USERPROFILE");
+            var unixProfilePath = _envService.GetEnvironmentVariable("HOME");
+            var stubFolderName = ".httplaceholder";
+            if (_envService.IsOs(OSPlatform.Windows) && _fileService.DirectoryExists(windowsProfilePath))
+            {
+                fileStorageLocation = $"{windowsProfilePath}\\{stubFolderName}";
+            }
+            else if (
+                (_envService.IsOs(OSPlatform.Linux) ||
+                 _envService.IsOs(OSPlatform.OSX)) && _fileService.DirectoryExists(unixProfilePath))
+            {
+                fileStorageLocation = $"{unixProfilePath}/{stubFolderName}";
+            }
+
+            if (!string.IsNullOrWhiteSpace(fileStorageLocation))
+            {
+                if (!_fileService.DirectoryExists(fileStorageLocation))
+                {
+                    _fileService.CreateDirectory(fileStorageLocation);
+                }
+
+                argsDictionary.EnsureEntryExists(ConfigKeys.FileStorageLocationKey, fileStorageLocation);
+            }
         }
 
         private IDictionary<string, string> BuildFinalArgsDictionary(IDictionary<string, string> argsDictionary)
