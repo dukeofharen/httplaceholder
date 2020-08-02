@@ -17,11 +17,17 @@ namespace HttPlaceholder
 {
     internal static class Program
     {
+        private static readonly string[] _verboseArgs = {"-V", "--verbose"};
+        private static readonly string[] _versionArgs = {"-v", "--version"};
+        private static string[] _helpArgs = {"-h", "--help", "-?"};
+
         public static int Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            var loggingConfig = new LoggerConfiguration();
+            loggingConfig = args.Any(a => _verboseArgs.Contains(a))
+                ? loggingConfig.MinimumLevel.Debug()
+                : loggingConfig.MinimumLevel.Information();
+            Log.Logger = loggingConfig
                 .Enrich.FromLogContext()
                 .WriteTo.Console(
                     outputTemplate:
@@ -29,10 +35,10 @@ namespace HttPlaceholder
                 .CreateLogger();
 
             var version = AssemblyHelper.GetAssemblyVersion();
-            HandleArgument(() => Console.WriteLine(version), args, new[] {"-v", "--version"});
+            HandleArgument(() => Console.WriteLine(version), args, _versionArgs);
 
             Console.WriteLine(ManPage.VersionHeader, version, DateTime.Now.Year);
-            HandleArgument(() => Console.WriteLine(GetManPage()), args, new[] {"-h", "--help", "-?"});
+            HandleArgument(() => Console.WriteLine(GetManPage()), args, _helpArgs);
 
             try
             {
@@ -58,7 +64,7 @@ namespace HttPlaceholder
             var argsDictionary = configParser.ParseConfiguration(args);
             var settings = DeserializeSettings(argsDictionary);
 
-            HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, new[] {"-V", "--verbose"},
+            HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, _verboseArgs,
                 false);
 
             return WebHost.CreateDefaultBuilder(args)
