@@ -10,18 +10,35 @@ using HttPlaceholder.Resources;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Serilog;
+using Serilog.Events;
 
 namespace HttPlaceholder
 {
     internal static class Program
     {
-        public static void Main(string[] args)
+        private static readonly string[] _verboseArgs = {"-V", "--verbose"};
+        private static readonly string[] _versionArgs = {"-v", "--version"};
+        private static string[] _helpArgs = {"-h", "--help", "-?"};
+
+        public static int Main(string[] args)
         {
+            var loggingConfig = new LoggerConfiguration();
+            loggingConfig = args.Any(a => _verboseArgs.Contains(a))
+                ? loggingConfig.MinimumLevel.Debug()
+                : loggingConfig.MinimumLevel.Information();
+            Log.Logger = loggingConfig
+                .Enrich.FromLogContext()
+                .WriteTo.Console(
+                    outputTemplate:
+                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
             var version = AssemblyHelper.GetAssemblyVersion();
-            HandleArgument(() => Console.WriteLine(version), args, new[] { "-v", "--version" });
+            HandleArgument(() => Console.WriteLine(version), args, _versionArgs);
 
             Console.WriteLine(ManPage.VersionHeader, version, DateTime.Now.Year);
-            HandleArgument(() => Console.WriteLine(GetManPage()), args, new[] { "-h", "--help", "-?" });
+            HandleArgument(() => Console.WriteLine(GetManPage()), args, _helpArgs);
 
             try
             {
@@ -30,9 +47,15 @@ namespace HttPlaceholder
             }
             catch (Exception e)
             {
-                Console.WriteLine(ManPage.ExceptionThrown, e);
-                Environment.Exit(-1);
+                Log.Fatal(e, "Host terminated unexpectedly");
+                return 1;
             }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
+
+            return 0;
         }
 
         private static IWebHost BuildWebHost(string[] args)
@@ -41,22 +64,26 @@ namespace HttPlaceholder
             var argsDictionary = configParser.ParseConfiguration(args);
             var settings = DeserializeSettings(argsDictionary);
 
-            HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, new [] { "-V", "--verbose" }, false);
+            HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, _verboseArgs,
+                false);
 
             return WebHost.CreateDefaultBuilder(args)
-               .ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(argsDictionary))
-               .UseStartup<Startup>()
-               .UseKestrel(options =>
-               {
-                   options.AddServerHeader = false;
-                   options.Listen(IPAddress.Any, settings.Web.HttpPort);
-                   if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) && !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
-                   {
-                       options.Listen(IPAddress.Any, settings.Web.HttpsPort, listenOptions => listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
-                   }
-               })
-               .UseIIS()
-               .Build();
+                .UseSerilog()
+                .ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(argsDictionary))
+                .UseStartup<Startup>()
+                .UseKestrel(options =>
+                {
+                    options.AddServerHeader = false;
+                    options.Listen(IPAddress.Any, settings.Web.HttpPort);
+                    if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) &&
+                        !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
+                    {
+                        options.Listen(IPAddress.Any, settings.Web.HttpsPort,
+                            listenOptions => listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
+                    }
+                })
+                .UseIIS()
+                .Build();
         }
 
         private static string GetManPage()
@@ -84,7 +111,8 @@ namespace HttPlaceholder
             return builder.ToString();
         }
 
-        private static void HandleArgument(Action action, IEnumerable<string> args, IEnumerable<string> argKeys, bool exit = true)
+        private static void HandleArgument(Action action, IEnumerable<string> args, IEnumerable<string> argKeys,
+            bool exit = true)
         {
             if (!args.Any(argKeys.Contains))
             {

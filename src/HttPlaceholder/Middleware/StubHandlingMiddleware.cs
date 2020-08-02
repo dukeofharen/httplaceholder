@@ -101,7 +101,7 @@ namespace HttPlaceholder.Middleware
             {
                 _httpContextService.SetStatusCode((int)HttpStatusCode.InternalServerError);
                 _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
-                _logger.LogWarning($"Request validation exception thrown: {e.Message}");
+                _logger.LogInformation($"Request validation exception thrown: {e.Message}");
             }
             catch (Exception e)
             {
