@@ -13,6 +13,7 @@
             name="file"
             ref="stubUpload"
             @change="loadTextFromFile"
+            multiple
           />
           <v-btn color="success" @click="uploadStubs">Upload stubs</v-btn>
         </v-card-actions>
@@ -33,12 +34,23 @@
         this.$refs.stubUpload.click();
       },
       loadTextFromFile(ev) {
-        const file = ev.target.files[0];
-        const reader = new FileReader();
-        reader.onload = e => {
-          this.addStubsInternal(e.target.result);
-        };
-        reader.readAsText(file);
+        const expectedExtensions = ["yml", "yaml"];
+        // const fileNames = ev.target.files.map(f => f.name);
+        for (let file of ev.target.files) {
+          let parts = file.name.split(".");
+          if (!expectedExtensions.includes(parts[parts.length - 1])) {
+            toastError(resources.onlyUploadYmlFiles);
+            return;
+          }
+        }
+
+        for (let file of ev.target.files) {
+          let reader = new FileReader();
+          reader.onload = e => {
+            this.addStubsInternal(e.target.result);
+          };
+          reader.readAsText(file);
+        }
       },
       async addStubsInternal(input) {
         try {
