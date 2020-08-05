@@ -36,6 +36,12 @@ export default new Router({
         import(/* webpackChunkName: "addStub" */ "@/views/AddStub.vue")
     },
     {
+      path: "/addStubForm",
+      name: routeNames.addStubForm,
+      component: () =>
+        import(/* webpackChunkName: "addStubForm" */ "@/views/AddStubForm.vue")
+    },
+    {
       path: "/uploadStub",
       name: routeNames.uploadStub,
       component: () =>
