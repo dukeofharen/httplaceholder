@@ -163,6 +163,11 @@
           validationMessages.push(formValidationMessages.queryStringIncorrect);
         }
 
+        console.log(this.stub.priority);
+        if(isNaN(this.stub.priority)) {
+          validationMessages.push(formValidationMessages.priorityNotInteger);
+        }
+
         return validationMessages;
       },
       async addStub() {

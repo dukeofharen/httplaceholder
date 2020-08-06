@@ -40,7 +40,8 @@ const formPlaceholderResources = {
 };
 
 const formValidationMessages = {
-  queryStringIncorrect: "You've filled in a value at 'Query strings', but the value could not be parsed. Make sure to fill in a correct value here."
+  queryStringIncorrect: "You've filled in a value at 'Query strings', but the value could not be parsed. Make sure to fill in a correct value here.",
+  priorityNotInteger: "Make sure the priority is numeric."
 };
 
 const conditionValidationType = {
