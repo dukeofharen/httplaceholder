@@ -90,7 +90,7 @@
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="urlPath"/>
                 <v-text-field v-model="stub.conditions.url.path" label="URL path" class="pa-2"
-                              placeholder="e.g. '/users' or '^/users$' (regex)"/>
+                              :placeholder="formPlaceholderResources.urlPath"/>
               </div>
             </v-col>
           </v-row>
@@ -106,7 +106,7 @@
   import {httpMethods} from "@/shared/resources";
   import FormTooltip from "@/components/FormTooltip";
   import {toastError, toastSuccess} from "@/utils/toastUtil";
-  import {resources} from "@/shared/resources";
+  import {resources, formPlaceholderResources} from "@/shared/resources";
 
   export default {
     name: "addStubForm",
@@ -118,6 +118,7 @@
       return {
         tenantNames: [],
         httpMethods,
+        formPlaceholderResources,
         stub: {
           id: "",
           tenant: "",

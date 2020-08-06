@@ -33,6 +33,10 @@ const tooltipResources = {
   urlPath: "The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions."
 };
 
+const formPlaceholderResources = {
+  urlPath: "e.g. '/users' or '^/users$' (regex)"
+}
+
 const conditionValidationType = {
   NotSet: "NotSet",
   Valid: "Valid",
@@ -49,4 +53,4 @@ const httpMethods = [
   "OPTIONS"
 ]
 
-export { resources, conditionValidationType, httpMethods, tooltipResources };
+export { resources, conditionValidationType, httpMethods, tooltipResources, formPlaceholderResources };
