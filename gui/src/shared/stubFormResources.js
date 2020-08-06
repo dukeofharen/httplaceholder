@@ -21,7 +21,8 @@ const tooltipResources = {
   responseBodyType: "Here you can select the type of response you would like to return.",
   responseBody: "Provide the body that should be added to the response.",
   responseHeaders: "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'.",
-  extraDuration: "Whenever you want to simulate a busy web service, you can use the 'extraDuration' response writer. You can set the number of extra milliseconds HttPlaceholder should wait and the request will actually take that much time to complete."
+  extraDuration: "Whenever you want to simulate a busy web service, you can use the 'extraDuration' response writer. You can set the number of extra milliseconds HttPlaceholder should wait and the request will actually take that much time to complete.",
+  redirect: "The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the 'temporaryRedirect' property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the 'permanentRedirect' an HTTP 301."
 };
 
 const formPlaceholderResources = {
@@ -36,7 +37,8 @@ const formPlaceholderResources = {
   clientIp: "e.g. '127.0.0.1' or '127.0.0.0/29'",
   hostname: "e.g. 'httplaceholder.com' or 'http(.*)' (regex)",
   headers: "Content-Type: text/plain\nX-Api-Key: bla123\nX-Some-Header: ^somevalue$\n...",
-  responseHeaders: "Content-Type: text/plain\nX-Api-Key: bla123\n..."
+  responseHeaders: "Content-Type: text/plain\nX-Api-Key: bla123\n...",
+  redirect: "e.g. 'https://reddit.com'"
 };
 
 const formValidationMessages = {
@@ -48,7 +50,8 @@ const formValidationMessages = {
   xpathNotFilledIn: "You filled in XML namespaces, but you didn't fill in any XPath expressions.",
   basicAuthInvalid: "Leave basic authentication username and password both empty or fill in both fields. You can't fill in only one field.",
   fillInCorrectStatusCode: "Fill in a valid HTTP status code.",
-  extraDurationInvalid: "Make sure to fill in a valid extra duration."
+  extraDurationInvalid: "Make sure to fill in a valid extra duration.",
+  fillInOneTypeOfRedirect: "You cannot fill in both permanent redirect and temporary redirect."
 };
 
 const formLabels = {
@@ -77,7 +80,9 @@ const formLabels = {
   responseBodyType: "Response body type",
   responseBody: "Response body",
   responseHeaders: "Response headers",
-  extraDuration: "Extra duration in milliseconds"
+  extraDuration: "Extra duration in milliseconds",
+  temporaryRedirect: "Temporary redirect (HTTP 301)",
+  permanentRedirect: "Permanent redirect (HTTP 307)"
 };
 
 const isHttpsValues = {

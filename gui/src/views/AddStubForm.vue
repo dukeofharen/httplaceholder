@@ -328,6 +328,29 @@
                               :placeholder="formPlaceholderResources.responseHeaders" @keyup="responseHeadersChanged"/>
                 </div>
               </div>
+
+              <div>
+                <h2 class="section-title" @click="show.redirectWriters = !show.redirectWriters">
+                  <v-icon>{{show.redirectWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Redirection writers
+                </h2>
+              </div>
+
+              <div v-if="show.redirectWriters">
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="redirect"/>
+                  <v-text-field v-model="stub.response.temporaryRedirect" :label="formLabels.temporaryRedirect"
+                                class="pa-2"
+                                :placeholder="formPlaceholderResources.redirect"/>
+                </div>
+
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="redirect"/>
+                  <v-text-field v-model="stub.response.permanentRedirect" :label="formLabels.permanentRedirect"
+                                class="pa-2"
+                                :placeholder="formPlaceholderResources.redirect"/>
+                </div>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -371,7 +394,8 @@
           authenticationConditions: false,
           generalWriters: true,
           bodyWriters: false,
-          headerWriters: false
+          headerWriters: false,
+          redirectWriters: false
         },
         tenantNames: [],
         httpMethods,
@@ -415,14 +439,16 @@
             headers: null
           },
           response: {
-            statusCode: 200,
+            statusCode: null,
             text: null,
             json: null,
             html: null,
             xml: null,
             base64: null,
             headers: null,
-            extraDuration: null
+            extraDuration: null,
+            temporaryRedirect: null,
+            permanentRedirect: null
           }
         }
       };
@@ -483,8 +509,9 @@
           validationMessages.push(formValidationMessages.basicAuthInvalid);
         }
 
-        const parsedStatusCode = parseInt(this.stub.response.statusCode);
-        if (isNaN(parsedStatusCode) || parsedStatusCode < 100 || parsedStatusCode >= 600) {
+        const statusCode = this.stub.response.statusCode;
+        const parsedStatusCode = parseInt(statusCode);
+        if (statusCode !== null && (isNaN(parsedStatusCode) || parsedStatusCode < 100 || parsedStatusCode >= 600)) {
           validationMessages.push(formValidationMessages.fillInCorrectStatusCode);
         }
 
@@ -496,6 +523,10 @@
         const parsedExtraDuration = parseInt(extraDuration);
         if (extraDuration !== null && (isNaN(parsedExtraDuration) || parsedExtraDuration <= 0)) {
           validationMessages.push(formValidationMessages.extraDurationInvalid);
+        }
+
+        if (this.stub.response.permanentRedirect && this.stub.response.temporaryRedirect) {
+          validationMessages.push(formValidationMessages.fillInOneTypeOfRedirect);
         }
 
         return validationMessages;
@@ -690,8 +721,20 @@
             this.stub.conditions.basicAuthentication.password = null;
           }
 
+          if (this.stub.response.statusCode === "") {
+            this.stub.response.statusCode = null;
+          }
+
           if (this.stub.response.extraDuration === "") {
             this.stub.response.extraDuration = null;
+          }
+
+          if (this.stub.response.temporaryRedirect === "") {
+            this.stub.response.temporaryRedirect = null;
+          }
+
+          if (this.stub.response.permanentRedirect === "") {
+            this.stub.response.permanentRedirect = null;
           }
 
           console.log(JSON.stringify(this.stub)); // TODO remove this
