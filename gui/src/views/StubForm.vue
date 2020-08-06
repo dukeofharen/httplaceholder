@@ -125,22 +125,22 @@
                               :placeholder="formPlaceholderResources.queryString"/>
                 </div>
 
-                <!--                &lt;!&ndash; Full path &ndash;&gt;-->
-                <!--                <div class="d-flex flex-row mb-6">-->
-                <!--                  <FormTooltip tooltipKey="fullPath"/>-->
-                <!--                  <v-text-field v-model="stub.conditions.url.fullPath" :label="formLabels.fullPath" class="pa-2"-->
-                <!--                                :placeholder="formPlaceholderResources.fullPath"/>-->
-                <!--                </div>-->
+                <!-- Full path -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="fullPath"/>
+                  <v-text-field v-model="stubConditionUrlFullPath" :label="formLabels.fullPath" class="pa-2"
+                                :placeholder="formPlaceholderResources.fullPath"/>
+                </div>
 
-                <!--                &lt;!&ndash; Is HTTPS &ndash;&gt;-->
-                <!--                <div class="d-flex flex-row mb-6">-->
-                <!--                  <FormTooltip tooltipKey="isHttps"/>-->
-                <!--                  <v-radio-group v-model="isHttps" class="pa-2" @change="isHttpsSelected">-->
-                <!--                    <v-radio :value="isHttpsValues.onlyHttps" :label="formLabels.onlyHttps"></v-radio>-->
-                <!--                    <v-radio :value="isHttpsValues.onlyHttp" :label="formLabels.onlyHttp"></v-radio>-->
-                <!--                    <v-radio :value="isHttpsValues.httpAndHttps" :label="formLabels.httpAndHttps"></v-radio>-->
-                <!--                  </v-radio-group>-->
-                <!--                </div>-->
+                <!-- Is HTTPS -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="isHttps"/>
+                  <v-radio-group v-model="stubIsHttp" class="pa-2">
+                    <v-radio :value="isHttpsValues.onlyHttps" :label="formLabels.onlyHttps"></v-radio>
+                    <v-radio :value="isHttpsValues.onlyHttp" :label="formLabels.onlyHttp"></v-radio>
+                    <v-radio :value="isHttpsValues.httpAndHttps" :label="formLabels.httpAndHttps"></v-radio>
+                  </v-radio-group>
+                </div>
               </div>
 
               <!--              <div>-->
@@ -488,7 +488,9 @@
         stubConditionClientIp: "stubForm.stub.conditions.clientIp",
         stubConditionHostname: "stubForm.stub.conditions.hostname",
         stubConditionUrlPath: "stubForm.stub.conditions.url.path",
-        stubQueryStrings: "stubForm.queryStrings"
+        stubQueryStrings: "stubForm.queryStrings",
+        stubConditionUrlFullPath: "stubForm.stub.conditions.url.fullPath",
+        stubIsHttp: "stubForm.isHttps"
       })
     },
     methods: {
@@ -640,20 +642,6 @@
         }
 
         return result;
-      },
-      isHttpsSelected() {
-        // I had to add this intermediate function, because for some reason, Vuetify doesn't allow the binding of a "null" value.
-        switch (this.isHttps) {
-          case isHttpsValues.httpAndHttps:
-            this.stub.conditions.url.isHttps = null;
-            break;
-          case isHttpsValues.onlyHttp:
-            this.stub.conditions.url.isHttps = false;
-            break;
-          case isHttpsValues.onlyHttps:
-            this.stub.conditions.url.isHttps = true;
-            break;
-        }
       },
       responseBodyChanged() {
         this.stub.response.html = null;

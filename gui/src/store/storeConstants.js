@@ -3,7 +3,9 @@ export const mutationNames = {
   storeDarkTheme: "storeDarkTheme",
   storeMetadata: "storeMetadata",
   storeStubQueryStrings: "storeStubQueryStrings",
-  storeQueryStrings: "storeQueryStrings"
+  storeQueryStrings: "storeQueryStrings",
+  storeStubIsHttpsSelected: "storeStubIsHttpsSelected",
+  storeIsHttpsSelected: "storeIsHttpsSelected"
 };
 
 export const actionNames = {
