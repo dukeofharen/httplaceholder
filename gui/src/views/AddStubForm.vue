@@ -142,39 +142,39 @@
                             :placeholder="formPlaceholderResources.headers" @keyup="headersChanged"/>
               </div>
 
-              <div>
+              <div v-if="showBodyConditionForms">
                 <h2>Body conditions</h2>
               </div>
 
               <!-- Body -->
-              <div class="d-flex flex-row mb-6">
+              <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
                 <FormTooltip tooltipKey="body"/>
                 <v-textarea v-model="body" :label="formLabels.body"
                             :placeholder="formPlaceholderResources.body" @keyup="bodyChanged"/>
               </div>
 
               <!-- Form body -->
-              <div class="d-flex flex-row mb-6">
+              <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
                 <FormTooltip tooltipKey="formBody"/>
                 <v-textarea v-model="formBody" :label="formLabels.formBody"
                             :placeholder="formPlaceholderResources.formBody" @keyup="formBodyChanged"/>
               </div>
 
               <!-- XPath -->
-              <div class="d-flex flex-row mb-6">
+              <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
                 <FormTooltip tooltipKey="xpath"/>
                 <v-textarea v-model="xpath" :label="formLabels.xpath"
                             :placeholder="formPlaceholderResources.xpath" @keyup="xpathChanged"/>
               </div>
 
-              <div class="d-flex flex-row mb-6">
+              <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
                 <FormTooltip tooltipKey="xpathNamespaces"/>
                 <v-textarea v-model="xpathNamespaces" :label="formLabels.xpathNamespaces"
                             :placeholder="formPlaceholderResources.xpathNamespaces" @keyup="xpathChanged"/>
               </div>
 
               <!-- JSONPath -->
-              <div class="d-flex flex-row mb-6">
+              <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
                 <FormTooltip tooltipKey="jsonPath"/>
                 <v-textarea v-model="jsonPath" :label="formLabels.jsonPath"
                             :placeholder="formPlaceholderResources.jsonPath" @keyup="jsonPathChanged"/>
@@ -355,6 +355,9 @@
       },
       showResponseBodyForm() {
         return this.bodyResponseType !== responseBodyTypes.empty;
+      },
+      showBodyConditionForms() {
+        return this.stub.conditions.method !== "GET";
       }
     },
     methods: {
