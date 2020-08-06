@@ -17,7 +17,9 @@ const tooltipResources = {
   clientIp: "It is also possible to set a condition to check the the client IP. A condition can be set for a single IP address or a whole IP range.",
   hostname: "It is possible to check if a hostname in a request is correct. This condition can be used with regular expressions if needed.",
   headers: "This condition checker can check whether the sent headers match with the headers in the stub. The condition can both check on substring and regular expressions. Place a new header condition on a new line in the form of 'key: expected_value'.",
-  statusCode: "Defines the HTTP status code that should be returned. Default is HTTP 200 (OK)."
+  statusCode: "Defines the HTTP status code that should be returned. Default is HTTP 200 (OK).",
+  responseBodyType: "Here you can select the type of response you would like to return.",
+  responseBody: "Provide the body that should be added to the response."
 };
 
 const formPlaceholderResources = {
@@ -66,7 +68,9 @@ const formLabels = {
   clientIp: "Client IP",
   hostname: "Hostname",
   headers: "Headers",
-  statusCode: "Status code"
+  statusCode: "Status code",
+  responseBodyType: "Response body type",
+  responseBody: "Response body"
 };
 
 const isHttpsValues = {
@@ -83,6 +87,16 @@ const httpMethods = [
   "PATCH",
   "OPTIONS"
 ];
+
+const responseBodyTypes = {
+  text: "Text",
+  json: "JSON",
+  xml: "XML",
+  html: "HTML",
+  custom: "Custom",
+  empty: "Empty body"
+};
+
 const httpStatusCodes = [
   {
     code: 100,
@@ -345,5 +359,6 @@ export {
   formLabels,
   isHttpsValues,
   httpMethods,
-  httpStatusCodes
+  httpStatusCodes,
+  responseBodyTypes
 };

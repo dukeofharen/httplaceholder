@@ -222,6 +222,25 @@
                   </v-list>
                 </v-menu>
               </div>
+
+              <div>
+                <h2>Body writers</h2>
+              </div>
+
+              <!-- Select response body type -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="statusCode"/>
+                <v-select v-model="bodyResponseType" :items="responseBodyTypes" item-text="value" item-value="value"
+                          :label="formLabels.responseBodyType" @change="responseBodyChanged"/>
+              </div>
+
+              <!-- Response body -->
+              <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm">
+                <FormTooltip tooltipKey="responseBody"/>
+                <v-textarea v-model="responseBody" :label="formLabels.responseBody"
+                            :placeholder="formPlaceholderResources.responseBody" @keyup="responseBodyChanged"/>
+              </div>
+
             </v-col>
           </v-row>
         </v-card-text>
@@ -243,7 +262,8 @@
     formLabels,
     isHttpsValues,
     httpMethods,
-    httpStatusCodes
+    httpStatusCodes,
+    responseBodyTypes
   } from "@/shared/stubFormResources";
 
   export default {
@@ -267,6 +287,8 @@
         jsonPath: "",
         headers: "",
         isHttps: isHttpsValues.httpAndHttps,
+        bodyResponseType: responseBodyTypes.text,
+        responseBody: null,
         stub: {
           id: "",
           tenant: "",
@@ -293,7 +315,11 @@
             headers: null
           },
           response: {
-            statusCode: 200
+            statusCode: 200,
+            text: null,
+            json: null,
+            html: null,
+            xml: null
           }
         }
       };
@@ -308,6 +334,13 @@
       },
       formattedStatusCodes() {
         return httpStatusCodes.map(c => ({code: c.code, text: `${c.code} - ${c.name}`}));
+      },
+      responseBodyTypes() {
+        const keys = Object.keys(responseBodyTypes);
+        return keys.map(k => ({key: k, value: responseBodyTypes[k]}));
+      },
+      showResponseBodyForm() {
+        return this.bodyResponseType !== responseBodyTypes.empty;
       }
     },
     methods: {
@@ -464,6 +497,27 @@
             break;
           case isHttpsValues.onlyHttps:
             this.stub.conditions.url.isHttps = true;
+            break;
+        }
+      },
+      responseBodyChanged() {
+        this.stub.response.html = null;
+        this.stub.response.text = null;
+        this.stub.response.json = null;
+        this.stub.response.xml = null;
+        switch (this.bodyResponseType) {
+          case responseBodyTypes.custom:
+          case responseBodyTypes.text:
+            this.stub.response.text = this.responseBody;
+            break;
+          case responseBodyTypes.html:
+            this.stub.response.html = this.responseBody;
+            break;
+          case responseBodyTypes.json:
+            this.stub.response.json = this.responseBody;
+            break;
+          case responseBodyTypes.xml:
+            this.stub.response.xml = this.responseBody;
             break;
         }
       }
