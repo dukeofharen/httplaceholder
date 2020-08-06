@@ -92,6 +92,8 @@
   import {actionNames} from "@/store/storeConstants";
   import {httpMethods} from "@/shared/resources";
   import FormTooltip from "@/components/FormTooltip";
+  import {toastError, toastSuccess} from "@/utils/toastUtil";
+  import {resources} from "@/shared/resources";
 
   export default {
     name: "addStubForm",
@@ -129,8 +131,22 @@
           actionNames.getTenantNames
         );
       },
-      addStub() {
-        console.log(JSON.stringify(this.stub));
+      async addStub() {
+        try {
+          const results = await this.$store.dispatch(actionNames.addStubs, {
+            input: this.stub,
+            inputIsJson: true
+          });
+          for (let result of results) {
+            if (result.v) {
+              toastSuccess(resources.stubAddedSuccessfully.format(result.v.id));
+            } else if (result.e) {
+              toastError(resources.stubNotAdded.format(result.e.stubId));
+            }
+          }
+        } catch (e) {
+          toastError(e);
+        }
       },
       tenantSelect(tenant) {
         this.stub.tenant = tenant;
