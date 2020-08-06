@@ -22,7 +22,7 @@
               <div class="d-flex flex-row mb-6">
                 <FormTooltip
                   text="The ID of the stub. If you don't fill in an ID, an ID will be calculated when the stub is added. If you provide an ID of a stub that already exists, that stub will be overwritten with this one."/>
-                <v-text-field v-model="stub.id" label="ID"/>
+                <v-text-field v-model="stub.id" label="ID" class="pa-2"/>
               </div>
 
               <!-- Tenant -->
@@ -31,7 +31,8 @@
                   text="The stub also has a 'tenant' field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant). "/>
                 <v-menu absolute offset-y>
                   <template v-slot:activator="{on}">
-                    <v-text-field v-model="stub.tenant" label="Stub tenant / category" v-on="on" clearable/>
+                    <v-text-field v-model="stub.tenant" label="Stub tenant / category" v-on="on" clearable
+                                  class="pa-2"/>
                   </template>
                   <v-list>
                     <v-list-item v-for="(tenant, index) in filteredTenantNames" :key="index"
@@ -63,13 +64,18 @@
         <v-card-text>
           <v-row>
             <v-col>
+              <div>
+                <h2>General conditions</h2>
+              </div>
+
               <!-- HTTP method -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip
                   text="This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.)."/>
                 <v-menu absolute offset-y>
                   <template v-slot:activator="{on}">
-                    <v-text-field v-model="stub.conditions.method" label="HTTP method" v-on="on" clearable/>
+                    <v-text-field v-model="stub.conditions.method" label="HTTP method" v-on="on" clearable
+                                  class="pa-2"/>
                   </template>
                   <v-list>
                     <v-list-item v-for="(method, index) in httpMethods" :key="index"
@@ -78,6 +84,17 @@
                     </v-list-item>
                   </v-list>
                 </v-menu>
+              </div>
+
+              <div>
+                <h2>URL conditions</h2>
+              </div>
+
+              <!-- URL path -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip
+                  text="The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions."/>
+                <v-text-field v-model="stub.conditions.url.path" label="URL path" class="pa-2" placeholder="e.g. '/users' or '^/users$' (regex)"/>
               </div>
             </v-col>
           </v-row>
@@ -111,7 +128,10 @@
           description: "",
           priority: 0,
           conditions: {
-            method: ""
+            method: null,
+            url: {
+              path: null
+            }
           }
         }
       };
