@@ -20,7 +20,8 @@ const tooltipResources = {
   statusCode: "Defines the HTTP status code that should be returned. Default is HTTP 200 (OK).",
   responseBodyType: "Here you can select the type of response you would like to return.",
   responseBody: "Provide the body that should be added to the response.",
-  responseHeaders: "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'."
+  responseHeaders: "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'.",
+  extraDuration: "Whenever you want to simulate a busy web service, you can use the 'extraDuration' response writer. You can set the number of extra milliseconds HttPlaceholder should wait and the request will actually take that much time to complete."
 };
 
 const formPlaceholderResources = {
@@ -46,7 +47,8 @@ const formValidationMessages = {
   priorityNotInteger: "Make sure the priority is numeric.",
   xpathNotFilledIn: "You filled in XML namespaces, but you didn't fill in any XPath expressions.",
   basicAuthInvalid: "Leave basic authentication username and password both empty or fill in both fields. You can't fill in only one field.",
-  fillInCorrectStatusCode: "Fill in a valid HTTP status code."
+  fillInCorrectStatusCode: "Fill in a valid HTTP status code.",
+  extraDurationInvalid: "Make sure to fill in a valid extra duration."
 };
 
 const formLabels = {
@@ -74,7 +76,8 @@ const formLabels = {
   statusCode: "Status code",
   responseBodyType: "Response body type",
   responseBody: "Response body",
-  responseHeaders: "Response headers"
+  responseHeaders: "Response headers",
+  extraDuration: "Extra duration in milliseconds"
 };
 
 const isHttpsValues = {

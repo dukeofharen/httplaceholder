@@ -282,6 +282,12 @@
                     </v-list>
                   </v-menu>
                 </div>
+
+                <!-- Extra duration -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="extraDuration"/>
+                  <v-text-field v-model="stub.response.extraDuration" :label="formLabels.extraDuration" class="pa-2"/>
+                </div>
               </div>
 
               <div>
@@ -326,7 +332,6 @@
           </v-row>
         </v-card-text>
       </v-card>
-      {{stub}} <!-- TODO remove this line if done -->
       <v-btn color="success" @click="addStub">Add stub</v-btn>
     </v-col>
   </v-row>
@@ -385,9 +390,9 @@
         responseBody: null,
         responseHeaders: "",
         stub: {
-          id: "",
-          tenant: "",
-          description: "",
+          id: null,
+          tenant: null,
+          description: null,
           priority: 0,
           conditions: {
             method: null,
@@ -416,7 +421,8 @@
             html: null,
             xml: null,
             base64: null,
-            headers: null
+            headers: null,
+            extraDuration: null
           }
         }
       };
@@ -484,6 +490,12 @@
 
         if (this.responseHeaders && !this.stub.response.headers) {
           validationMessages.push(formValidationMessages.headersIncorrect);
+        }
+
+        const extraDuration = this.stub.response.extraDuration;
+        const parsedExtraDuration = parseInt(extraDuration);
+        if (extraDuration !== null && (isNaN(parsedExtraDuration) || parsedExtraDuration <= 0)) {
+          validationMessages.push(formValidationMessages.extraDurationInvalid);
         }
 
         return validationMessages;
@@ -632,6 +644,58 @@
       responseHeadersChanged() {
         const result = this.parseKeyValue(this.responseHeaders);
         this.stub.response.headers = Object.keys(result).length ? result : null;
+      }
+    },
+    watch: {
+      stub: {
+        deep: true,
+        handler() {
+          if (this.stub.id === "") {
+            this.stub.id = null;
+          }
+
+          if (this.stub.tenant === "") {
+            this.stub.tenant = null;
+          }
+
+          if (this.stub.description === "") {
+            this.stub.description = null;
+          }
+
+          if (this.stub.conditions.clientIp === "") {
+            this.stub.conditions.clientIp = null;
+          }
+
+          if (this.stub.conditions.hostname === "") {
+            this.stub.conditions.hostname = null;
+          }
+
+          if (this.stub.conditions.method === "") {
+            this.stub.conditions.method = null;
+          }
+
+          if (this.stub.conditions.url.path === "") {
+            this.stub.conditions.url.path = null;
+          }
+
+          if (this.stub.conditions.url.fullPath === "") {
+            this.stub.conditions.url.fullPath = null;
+          }
+
+          if (this.stub.conditions.basicAuthentication.username === "") {
+            this.stub.conditions.basicAuthentication.username = null;
+          }
+
+          if (this.stub.conditions.basicAuthentication.password === "") {
+            this.stub.conditions.basicAuthentication.password = null;
+          }
+
+          if (this.stub.response.extraDuration === "") {
+            this.stub.response.extraDuration = null;
+          }
+
+          console.log(JSON.stringify(this.stub)); // TODO remove this
+        }
       }
     }
   };
