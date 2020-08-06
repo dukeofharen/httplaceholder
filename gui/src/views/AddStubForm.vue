@@ -62,135 +62,189 @@
           <v-row>
             <v-col>
               <div>
-                <h2>General conditions</h2>
+                <h2 class="section-title" @click="show.generalConditions = !show.generalConditions">
+                  <v-icon>{{show.generalConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  General
+                  conditions
+                </h2>
               </div>
 
-              <!-- HTTP method -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="httpMethod"/>
-                <v-menu absolute offset-y>
-                  <template v-slot:activator="{on}">
-                    <v-text-field v-model="stub.conditions.method" :label="formLabels.httpMethod" v-on="on" clearable
-                                  class="pa-2"/>
-                  </template>
-                  <v-list>
-                    <v-list-item v-for="(method, index) in httpMethods" :key="index"
-                                 @click="stub.conditions.method = method">
-                      <v-list-item-title>{{method}}</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </div>
+              <div v-if="show.generalConditions">
+                <!-- HTTP method -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="httpMethod"/>
+                  <v-menu absolute offset-y>
+                    <template v-slot:activator="{on}">
+                      <v-text-field v-model="stub.conditions.method" :label="formLabels.httpMethod" v-on="on"
+                                    clearable
+                                    class="pa-2"/>
+                    </template>
+                    <v-list>
+                      <v-list-item v-for="(method, index) in httpMethods" :key="index"
+                                   @click="stub.conditions.method = method">
+                        <v-list-item-title>{{method}}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
 
-              <!-- Client IP -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="clientIp"/>
-                <v-text-field v-model="stub.conditions.clientIp" :label="formLabels.clientIp" class="pa-2"
-                              :placeholder="formPlaceholderResources.clientIp"/>
-              </div>
+                <!-- Client IP -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="clientIp"/>
+                  <v-text-field v-model="stub.conditions.clientIp" :label="formLabels.clientIp" class="pa-2"
+                                :placeholder="formPlaceholderResources.clientIp"/>
+                </div>
 
-              <!-- Hostname -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="hostname"/>
-                <v-text-field v-model="stub.conditions.hostname" :label="formLabels.hostname" class="pa-2"
-                              :placeholder="formPlaceholderResources.hostname"/>
-              </div>
-
-              <div>
-                <h2>URL conditions</h2>
-              </div>
-
-              <!-- URL path -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="urlPath"/>
-                <v-text-field v-model="stub.conditions.url.path" :label="formLabels.urlPath" class="pa-2"
-                              :placeholder="formPlaceholderResources.urlPath"/>
-              </div>
-
-              <!-- Query string -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="queryString"/>
-                <v-textarea v-model="queryStrings" :label="formLabels.queryString"
-                            :placeholder="formPlaceholderResources.queryString" @keyup="queryStringChanged"/>
-              </div>
-
-              <!-- Full path -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="fullPath"/>
-                <v-text-field v-model="stub.conditions.url.fullPath" :label="formLabels.fullPath" class="pa-2"
-                              :placeholder="formPlaceholderResources.fullPath"/>
-              </div>
-
-              <!-- Is HTTPS -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="isHttps"/>
-                <v-radio-group v-model="isHttps" class="pa-2" @change="isHttpsSelected">
-                  <v-radio :value="isHttpsValues.onlyHttps" :label="formLabels.onlyHttps"></v-radio>
-                  <v-radio :value="isHttpsValues.onlyHttp" :label="formLabels.onlyHttp"></v-radio>
-                  <v-radio :value="isHttpsValues.httpAndHttps" :label="formLabels.httpAndHttps"></v-radio>
-                </v-radio-group>
+                <!-- Hostname -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="hostname"/>
+                  <v-text-field v-model="stub.conditions.hostname" :label="formLabels.hostname" class="pa-2"
+                                :placeholder="formPlaceholderResources.hostname"/>
+                </div>
               </div>
 
               <div>
-                <h2>Header conditions</h2>
+                <h2 class="section-title" @click="show.urlConditions = !show.urlConditions">
+                  <v-icon>{{show.urlConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  URL conditions
+                </h2>
               </div>
 
-              <!-- Headers -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="headers"/>
-                <v-textarea v-model="headers" :label="formLabels.headers"
-                            :placeholder="formPlaceholderResources.headers" @keyup="headersChanged"/>
+              <div v-if="show.urlConditions">
+                <!-- URL path -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="urlPath"/>
+                  <v-text-field v-model="stub.conditions.url.path" :label="formLabels.urlPath" class="pa-2"
+                                :placeholder="formPlaceholderResources.urlPath"/>
+                </div>
+
+                <!-- Query string -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="queryString"/>
+                  <v-textarea v-model="queryStrings" :label="formLabels.queryString"
+                              :placeholder="formPlaceholderResources.queryString" @keyup="queryStringChanged"/>
+                </div>
+
+                <!-- Full path -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="fullPath"/>
+                  <v-text-field v-model="stub.conditions.url.fullPath" :label="formLabels.fullPath" class="pa-2"
+                                :placeholder="formPlaceholderResources.fullPath"/>
+                </div>
+
+                <!-- Is HTTPS -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="isHttps"/>
+                  <v-radio-group v-model="isHttps" class="pa-2" @change="isHttpsSelected">
+                    <v-radio :value="isHttpsValues.onlyHttps" :label="formLabels.onlyHttps"></v-radio>
+                    <v-radio :value="isHttpsValues.onlyHttp" :label="formLabels.onlyHttp"></v-radio>
+                    <v-radio :value="isHttpsValues.httpAndHttps" :label="formLabels.httpAndHttps"></v-radio>
+                  </v-radio-group>
+                </div>
+              </div>
+
+              <div>
+                <h2 class="section-title" @click="show.headerConditions = !show.headerConditions">
+                  <v-icon>{{show.headerConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Header conditions
+                </h2>
+              </div>
+
+              <div v-if="show.headerConditions">
+                <!-- Headers -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="headers"/>
+                  <v-textarea v-model="headers" :label="formLabels.headers"
+                              :placeholder="formPlaceholderResources.headers" @keyup="headersChanged"/>
+                </div>
               </div>
 
               <div v-if="showBodyConditionForms">
-                <h2>Body conditions</h2>
+                <h2 class="section-title" @click="show.bodyConditions = !show.bodyConditions">
+                  <v-icon>{{show.bodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Body conditions
+                </h2>
               </div>
 
-              <!-- Body -->
-              <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
-                <FormTooltip tooltipKey="body"/>
-                <v-textarea v-model="body" :label="formLabels.body"
-                            :placeholder="formPlaceholderResources.body" @keyup="bodyChanged"/>
+              <div v-if="show.bodyConditions">
+                <!-- Body -->
+                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
+                  <FormTooltip tooltipKey="body"/>
+                  <v-textarea v-model="body" :label="formLabels.body"
+                              :placeholder="formPlaceholderResources.body" @keyup="bodyChanged"/>
+                </div>
               </div>
 
-              <!-- Form body -->
-              <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
-                <FormTooltip tooltipKey="formBody"/>
-                <v-textarea v-model="formBody" :label="formLabels.formBody"
-                            :placeholder="formPlaceholderResources.formBody" @keyup="formBodyChanged"/>
+              <div v-if="showBodyConditionForms">
+                <h2 class="section-title" @click="show.formBodyConditions = !show.formBodyConditions">
+                  <v-icon>{{show.formBodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Form body conditions
+                </h2>
               </div>
 
-              <!-- XPath -->
-              <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
-                <FormTooltip tooltipKey="xpath"/>
-                <v-textarea v-model="xpath" :label="formLabels.xpath"
-                            :placeholder="formPlaceholderResources.xpath" @keyup="xpathChanged"/>
+              <div v-if="show.formBodyConditions">
+                <!-- Form body -->
+                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
+                  <FormTooltip tooltipKey="formBody"/>
+                  <v-textarea v-model="formBody" :label="formLabels.formBody"
+                              :placeholder="formPlaceholderResources.formBody" @keyup="formBodyChanged"/>
+                </div>
               </div>
 
-              <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
-                <FormTooltip tooltipKey="xpathNamespaces"/>
-                <v-textarea v-model="xpathNamespaces" :label="formLabels.xpathNamespaces"
-                            :placeholder="formPlaceholderResources.xpathNamespaces" @keyup="xpathChanged"/>
+              <div v-if="showBodyConditionForms">
+                <h2 class="section-title" @click="show.xmlBodyConditions = !show.xmlBodyConditions">
+                  <v-icon>{{show.xmlBodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  XML body conditions
+                </h2>
               </div>
 
-              <!-- JSONPath -->
-              <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
-                <FormTooltip tooltipKey="jsonPath"/>
-                <v-textarea v-model="jsonPath" :label="formLabels.jsonPath"
-                            :placeholder="formPlaceholderResources.jsonPath" @keyup="jsonPathChanged"/>
+              <div v-if="show.xmlBodyConditions">
+                <!-- XPath -->
+                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
+                  <FormTooltip tooltipKey="xpath"/>
+                  <v-textarea v-model="xpath" :label="formLabels.xpath"
+                              :placeholder="formPlaceholderResources.xpath" @keyup="xpathChanged"/>
+                </div>
+
+                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
+                  <FormTooltip tooltipKey="xpathNamespaces"/>
+                  <v-textarea v-model="xpathNamespaces" :label="formLabels.xpathNamespaces"
+                              :placeholder="formPlaceholderResources.xpathNamespaces" @keyup="xpathChanged"/>
+                </div>
+              </div>
+
+              <div v-if="showBodyConditionForms">
+                <h2 class="section-title" @click="show.jsonBodyConditions = !show.jsonBodyConditions">
+                  <v-icon>{{show.jsonBodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  JSON body conditions
+                </h2>
+              </div>
+
+              <div v-if="show.jsonBodyConditions">
+                <!-- JSONPath -->
+                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
+                  <FormTooltip tooltipKey="jsonPath"/>
+                  <v-textarea v-model="jsonPath" :label="formLabels.jsonPath"
+                              :placeholder="formPlaceholderResources.jsonPath" @keyup="jsonPathChanged"/>
+                </div>
               </div>
 
               <div>
-                <h2>Authentication conditions</h2>
+                <h2 class="section-title" @click="show.authenticationConditions = !show.authenticationConditions">
+                  <v-icon>{{show.authenticationConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Authentication conditions
+                </h2>
               </div>
 
-              <!-- Basic authentication -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="fullPath"/>
-                <v-text-field v-model="stub.conditions.basicAuthentication.username"
-                              :label="formLabels.basicAuthUsername" class="pa-2"/>
-                <v-text-field v-model="stub.conditions.basicAuthentication.password"
-                              :label="formLabels.basicAuthPassword" class="pa-2"/>
+              <div v-if="show.authenticationConditions">
+                <!-- Basic authentication -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="fullPath"/>
+                  <v-text-field v-model="stub.conditions.basicAuthentication.username"
+                                :label="formLabels.basicAuthUsername" class="pa-2"/>
+                  <v-text-field v-model="stub.conditions.basicAuthentication.password"
+                                :label="formLabels.basicAuthPassword" class="pa-2"/>
+                </div>
               </div>
             </v-col>
           </v-row>
@@ -202,56 +256,72 @@
         <v-card-text>
           <v-row>
             <v-col>
-              <div>
-                <h2>General writers</h2>
-              </div>
-
-              <!-- Status code -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="statusCode"/>
-                <v-menu absolute offset-y>
-                  <template v-slot:activator="{on}">
-                    <v-text-field v-model="stub.response.statusCode" :label="formLabels.statusCode" v-on="on" clearable
-                                  class="pa-2"/>
-                  </template>
-                  <v-list max-height="300px">
-                    <v-list-item v-for="code in formattedStatusCodes" :key="code.code"
-                                 @click="stub.response.statusCode = code.code">
-                      <v-list-item-title>{{code.text}}</v-list-item-title>
-                    </v-list-item>
-                  </v-list>
-                </v-menu>
-              </div>
 
               <div>
-                <h2>Body writers</h2>
+                <h2 class="section-title" @click="show.generalWriters = !show.generalWriters">
+                  <v-icon>{{show.generalWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  General writers
+                </h2>
               </div>
 
-              <!-- Select response body type -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="responseBodyType"/>
-                <v-select v-model="bodyResponseType" :items="responseBodyTypes" item-text="value" item-value="value"
-                          :label="formLabels.responseBodyType" @change="responseBodyChanged"/>
-              </div>
-
-              <!-- Response body -->
-              <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm">
-                <FormTooltip tooltipKey="responseBody"/>
-                <v-textarea v-model="responseBody" :label="formLabels.responseBody"
-                            :placeholder="formPlaceholderResources.responseBody" @keyup="responseBodyChanged"/>
+              <div v-if="show.generalWriters">
+                <!-- Status code -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="statusCode"/>
+                  <v-menu absolute offset-y>
+                    <template v-slot:activator="{on}">
+                      <v-text-field v-model="stub.response.statusCode" :label="formLabels.statusCode" v-on="on"
+                                    clearable
+                                    class="pa-2"/>
+                    </template>
+                    <v-list max-height="300px">
+                      <v-list-item v-for="code in formattedStatusCodes" :key="code.code"
+                                   @click="stub.response.statusCode = code.code">
+                        <v-list-item-title>{{code.text}}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
               </div>
 
               <div>
-                <h2>Header writers</h2>
+                <h2 class="section-title" @click="show.bodyWriters = !show.bodyWriters">
+                  <v-icon>{{show.bodyWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Body writers
+                </h2>
               </div>
 
-              <!-- Headers -->
-              <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="responseHeaders"/>
-                <v-textarea v-model="responseHeaders" :label="formLabels.responseHeaders"
-                            :placeholder="formPlaceholderResources.responseHeaders" @keyup="responseHeadersChanged"/>
+              <div v-if="show.bodyWriters">
+                <!-- Select response body type -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="responseBodyType"/>
+                  <v-select v-model="bodyResponseType" :items="responseBodyTypes" item-text="value" item-value="value"
+                            :label="formLabels.responseBodyType" @change="responseBodyChanged"/>
+                </div>
+
+                <!-- Response body -->
+                <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm">
+                  <FormTooltip tooltipKey="responseBody"/>
+                  <v-textarea v-model="responseBody" :label="formLabels.responseBody"
+                              :placeholder="formPlaceholderResources.responseBody" @keyup="responseBodyChanged"/>
+                </div>
               </div>
 
+              <div>
+                <h2 class="section-title" @click="show.headerWriters = !show.headerWriters">
+                  <v-icon>{{show.headerWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Header writers
+                </h2>
+              </div>
+
+              <div v-if="show.headerWriters">
+                <!-- Headers -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="responseHeaders"/>
+                  <v-textarea v-model="responseHeaders" :label="formLabels.responseHeaders"
+                              :placeholder="formPlaceholderResources.responseHeaders" @keyup="responseHeadersChanged"/>
+                </div>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -285,6 +355,19 @@
     },
     data() {
       return {
+        show: {
+          generalConditions: false,
+          urlConditions: false,
+          headerConditions: false,
+          bodyConditions: false,
+          formBodyConditions: false,
+          xmlBodyConditions: false,
+          jsonBodyConditions: false,
+          authenticationConditions: false,
+          generalWriters: false,
+          bodyWriters: false,
+          headerWriters: false
+        },
         tenantNames: [],
         httpMethods,
         formPlaceholderResources,
@@ -562,5 +645,11 @@
 
   .v-list-item {
     background-color: #ffffff !important;
+  }
+
+  h2.section-title {
+    color: #112b00;
+    cursor: pointer;
+    margin-bottom: 10px;
   }
 </style>
