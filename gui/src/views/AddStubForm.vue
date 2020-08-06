@@ -123,11 +123,14 @@
 
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="body"/>
+                <v-textarea v-model="body" :label="formLabels.body"
+                            :placeholder="formPlaceholderResources.body" @keyup="bodyChanged"/>
               </div>
             </v-col>
           </v-row>
         </v-card-text>
       </v-card>
+      {{stub}} <!-- TODO remove this line if done -->
       <v-btn color="success" @click="addStub">Add stub</v-btn>
     </v-col>
   </v-row>
@@ -160,6 +163,7 @@
         formLabels,
         isHttpsValues,
         queryStrings: "",
+        body: "",
         isHttps: isHttpsValues.httpAndHttps,
         stub: {
           id: "",
@@ -173,7 +177,8 @@
               query: null,
               fullPath: null,
               isHttps: null
-            }
+            },
+            body: null
           }
         }
       };
@@ -199,7 +204,6 @@
           validationMessages.push(formValidationMessages.queryStringIncorrect);
         }
 
-        console.log(this.stub.priority);
         if (isNaN(this.stub.priority)) {
           validationMessages.push(formValidationMessages.priorityNotInteger);
         }
@@ -246,6 +250,18 @@
           this.stub.conditions.url.query = value;
         }
       },
+      bodyChanged() {
+        const value = this.parseLines(this.body);
+        this.stub.conditions.body = value.length ? value : null;
+      },
+      parseLines(input) {
+        const result = input.split(/\r?\n/);
+        if (result.every(l => !l)) {
+          return [];
+        }
+
+        return result;
+      },
       parseKeyValue(input) {
         let result = {};
         const lines = input.split(/\r?\n/);
@@ -265,7 +281,7 @@
       },
       isHttpsSelected() {
         // I had to add this intermediate function, because for some reason, Vuetify doesn't allow the binding of a "null" value.
-        switch(this.isHttps){
+        switch (this.isHttps) {
           case isHttpsValues.httpAndHttps:
             this.stub.conditions.url.isHttps = null;
             break;

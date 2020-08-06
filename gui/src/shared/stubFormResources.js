@@ -8,13 +8,14 @@ const tooltipResources = {
   queryString: "This condition checker can check the query string in a name-value collection like way. The condition can both check on substring and regular expressions. Place a new query string condition on a new line in the form of 'key: expected_value'.",
   fullPath: "This condition checker looks a lot like the path checker, but this checker also checks extra URL parameters, like the query string. The condition can both check on substring and regular expressions.",
   isHttps: "This condition checker can be used to verify if a request uses HTTPS or not.",
-  body: "This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions."
+  body: "This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. Add one condition per line. Add The condition can both check on substring and regular expressions."
 };
 
 const formPlaceholderResources = {
   urlPath: "e.g. '/users' or '^/users$' (regex)",
   queryString: "id: 14\nfilter: last_name\napi_key: ^apikey1122$\n...",
-  fullPath: "e.g. '/users?filter=first_name'"
+  fullPath: "e.g. '/users?filter=first_name'",
+  body: "first_name=duco\nid=14\n^somevalue$\n..."
 };
 
 const formValidationMessages = {
@@ -31,10 +32,10 @@ const formLabels = {
   urlPath: "URL path",
   queryString: "Query strings (1 on each line)",
   fullPath: "Full path",
-
   onlyHttps: "The request should be made over HTTPS",
   onlyHttp: "The request should be made over HTTP",
-  httpAndHttps: "The request can be made over HTTP or HTTPS"
+  httpAndHttps: "The request can be made over HTTP or HTTPS",
+  body: "Body"
 }
 
 const isHttpsValues = {
