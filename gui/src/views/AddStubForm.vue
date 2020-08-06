@@ -1,5 +1,5 @@
 <template>
-  <v-row v-shortkey="['ctrl', 's']" @shortkey="addStub">
+  <v-row v-shortkey="['ctrl', 's']" @shortkey="saveStub">
     <v-col>
       <h1>Add stub</h1>
       <v-card>
@@ -355,7 +355,7 @@
           </v-row>
         </v-card-text>
       </v-card>
-      <v-btn color="success" @click="addStub">Add stub</v-btn>
+      <v-btn color="success" @click="saveStub">Save stub</v-btn>
     </v-col>
   </v-row>
 </template>
@@ -531,7 +531,7 @@
 
         return validationMessages;
       },
-      async addStub() {
+      async saveStub() {
         const messages = this.validateForm();
         if (messages.length) {
           for (let message of messages) {
