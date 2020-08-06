@@ -15,6 +15,10 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Name => "query";
 
+        public string FullName => "Query string variable handler";
+
+        public string Example => "((query:query_string_key))";
+
         public string Parse(string input, IEnumerable<Match> matches)
         {
             var queryDict = _httpContextService.GetQueryStringDictionary();

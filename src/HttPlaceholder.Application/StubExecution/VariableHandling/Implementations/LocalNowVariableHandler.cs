@@ -18,6 +18,10 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Name => "localnow";
 
+        public string FullName => "Variable handler for retrieving local date / time";
+
+        public string Example => "((localnow:yyyy-MM-dd HH:mm:ss))";
+
         public string Parse(string input, IEnumerable<Match> matches)
         {
             var enumerable = matches as Match[] ?? matches.ToArray();
