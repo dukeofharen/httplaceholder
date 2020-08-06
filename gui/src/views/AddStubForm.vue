@@ -34,7 +34,7 @@
                   </template>
                   <v-list>
                     <v-list-item v-for="(tenant, index) in filteredTenantNames" :key="index"
-                                 @click="tenantSelect(tenant)">
+                                 @click="stub.tenant = tenant">
                       <v-list-item-title>{{tenant}}</v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -57,7 +57,7 @@
         </v-card-text>
       </v-card>
       <v-card>
-        <v-card-title>Conditions</v-card-title>
+        <v-card-title>Request conditions</v-card-title>
         <v-card-text>
           <v-row>
             <v-col>
@@ -75,7 +75,7 @@
                   </template>
                   <v-list>
                     <v-list-item v-for="(method, index) in httpMethods" :key="index"
-                                 @click="methodSelect(method)">
+                                 @click="stub.conditions.method = method">
                       <v-list-item-title>{{method}}</v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -196,6 +196,36 @@
           </v-row>
         </v-card-text>
       </v-card>
+
+      <v-card>
+        <v-card-title>Response writers</v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col>
+              <div>
+                <h2>General writers</h2>
+              </div>
+
+              <!-- Status code -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="statusCode"/>
+                <v-menu absolute offset-y>
+                  <template v-slot:activator="{on}">
+                    <v-text-field v-model="stub.response.statusCode" :label="formLabels.statusCode" v-on="on" clearable
+                                  class="pa-2"/>
+                  </template>
+                  <v-list max-height="300px">
+                    <v-list-item v-for="code in formattedStatusCodes" :key="code.code"
+                                 @click="stub.response.statusCode = code.code">
+                      <v-list-item-title>{{code.text}}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
       {{stub}} <!-- TODO remove this line if done -->
       <v-btn color="success" @click="addStub">Add stub</v-btn>
     </v-col>
@@ -204,7 +234,6 @@
 
 <script>
   import {actionNames} from "@/store/storeConstants";
-  import {httpMethods} from "@/shared/stubFormResources";
   import FormTooltip from "@/components/FormTooltip";
   import {toastError, toastSuccess} from "@/utils/toastUtil";
   import {resources} from "@/shared/resources";
@@ -212,7 +241,9 @@
     formPlaceholderResources,
     formValidationMessages,
     formLabels,
-    isHttpsValues
+    isHttpsValues,
+    httpMethods,
+    httpStatusCodes
   } from "@/shared/stubFormResources";
 
   export default {
@@ -260,6 +291,9 @@
             clientIp: null,
             hostname: null,
             headers: null
+          },
+          response: {
+            statusCode: 200
           }
         }
       };
@@ -271,6 +305,9 @@
         }
 
         return this.tenantNames.filter(t => t.includes(this.stub.tenant));
+      },
+      formattedStatusCodes() {
+        return httpStatusCodes.map(c => ({code: c.code, text: `${c.code} - ${c.name}`}));
       }
     },
     methods: {
@@ -307,6 +344,11 @@
           validationMessages.push(formValidationMessages.basicAuthInvalid);
         }
 
+        const parsedStatusCode = parseInt(this.stub.response.statusCode);
+        if (isNaN(parsedStatusCode) || parsedStatusCode < 100 || parsedStatusCode >= 600) {
+          validationMessages.push(formValidationMessages.fillInCorrectStatusCode);
+        }
+
         return validationMessages;
       },
       async addStub() {
@@ -334,12 +376,6 @@
         } catch (e) {
           toastError(e);
         }
-      },
-      tenantSelect(tenant) {
-        this.stub.tenant = tenant;
-      },
-      methodSelect(method) {
-        this.stub.conditions.method = method;
       },
       queryStringChanged() {
         const result = this.parseKeyValue(this.queryStrings);
@@ -439,5 +475,9 @@
   .v-card {
     margin-top: 10px;
     margin-bottom: 10px;
+  }
+
+  .v-list-item {
+    background-color: #ffffff !important;
   }
 </style>

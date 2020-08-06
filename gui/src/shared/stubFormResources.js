@@ -16,7 +16,8 @@ const tooltipResources = {
   basicAuthentication: "This condition checker can check whether the sent basic authentication matches with the data in the stub.",
   clientIp: "It is also possible to set a condition to check the the client IP. A condition can be set for a single IP address or a whole IP range.",
   hostname: "It is possible to check if a hostname in a request is correct. This condition can be used with regular expressions if needed.",
-  headers: "This condition checker can check whether the sent headers match with the headers in the stub. The condition can both check on substring and regular expressions. Place a new header condition on a new line in the form of 'key: expected_value'."
+  headers: "This condition checker can check whether the sent headers match with the headers in the stub. The condition can both check on substring and regular expressions. Place a new header condition on a new line in the form of 'key: expected_value'.",
+  statusCode: "Defines the HTTP status code that should be returned. Default is HTTP 200 (OK)."
 };
 
 const formPlaceholderResources = {
@@ -39,7 +40,8 @@ const formValidationMessages = {
   headersIncorrect: "You've filled in a value at 'Headers', but the value could not be parsed. Make sure to fill in a correct value here.",
   priorityNotInteger: "Make sure the priority is numeric.",
   xpathNotFilledIn: "You filled in XML namespaces, but you didn't fill in any XPath expressions.",
-  basicAuthInvalid: "Leave basic authentication username and password both empty or fill in both fields. You can't fill in only one field."
+  basicAuthInvalid: "Leave basic authentication username and password both empty or fill in both fields. You can't fill in only one field.",
+  fillInCorrectStatusCode: "Fill in a valid HTTP status code."
 };
 
 const formLabels = {
@@ -63,7 +65,8 @@ const formLabels = {
   basicAuthPassword: "Basic authentication password",
   clientIp: "Client IP",
   hostname: "Hostname",
-  headers: "Headers"
+  headers: "Headers",
+  statusCode: "Status code"
 };
 
 const isHttpsValues = {
