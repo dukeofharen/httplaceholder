@@ -134,6 +134,8 @@
                 <v-textarea v-model="formBody" :label="formLabels.formBody"
                             :placeholder="formPlaceholderResources.formBody" @keyup="formBodyChanged"/>
               </div>
+
+              <!-- XPath -->
             </v-col>
           </v-row>
         </v-card-text>
@@ -212,6 +214,10 @@
         const validationMessages = [];
         if (this.queryStrings && !this.stub.conditions.url.query) {
           validationMessages.push(formValidationMessages.queryStringIncorrect);
+        }
+
+        if (this.formBody && !this.stub.conditions.form) {
+          validationMessages.push(formValidationMessages.formBodyIncorrect);
         }
 
         if (isNaN(this.stub.priority)) {
