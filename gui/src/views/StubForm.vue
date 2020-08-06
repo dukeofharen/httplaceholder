@@ -419,7 +419,7 @@
   } from "@/shared/stubFormResources";
 
   export default {
-    name: "addStubForm",
+    name: "stubForm",
     components: {FormTooltip},
     async mounted() {
       await this.initialize();

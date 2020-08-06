@@ -4,7 +4,7 @@ export const routeNames = {
   stubs: "stubs",
   login: "login",
   addStub: "addStub",
-  addStubForm: "addStubForm",
+  stubForm: "stubForm",
   uploadStub: "uploadStub",
   updateStub: "updateStub",
   downloadStubs: "downloadStubs",
