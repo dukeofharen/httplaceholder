@@ -270,7 +270,7 @@ This condition checker can check whether the posted body corresponds to the give
 
 ## Form
 
-The form value condition checker can check whether the posted form values correspodn to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions.
+The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions.
 
 ```yml
 - id: form-ok
