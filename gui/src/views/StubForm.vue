@@ -373,28 +373,28 @@
                 </div>
               </div>
 
-              <!--                    <div>-->
-              <!--                      <h2 class="section-title" @click="show.redirectWriters = !show.redirectWriters">-->
-              <!--                        <v-icon>{{show.redirectWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-              <!--                        Redirection writers-->
-              <!--                      </h2>-->
-              <!--                    </div>-->
+              <div>
+                <h2 class="section-title" @click="show.redirectWriters = !show.redirectWriters">
+                  <v-icon>{{show.redirectWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Redirection writers
+                </h2>
+              </div>
 
-              <!--                    <div v-if="show.redirectWriters">-->
-              <!--                      <div class="d-flex flex-row mb-6">-->
-              <!--                        <FormTooltip tooltipKey="redirect"/>-->
-              <!--                        <v-text-field v-model="stub.response.temporaryRedirect" :label="formLabels.temporaryRedirect"-->
-              <!--                                      class="pa-2"-->
-              <!--                                      :placeholder="formPlaceholderResources.redirect"/>-->
-              <!--                      </div>-->
+              <div v-if="show.redirectWriters">
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="redirect"/>
+                  <v-text-field v-model="stubResponseTempRedirect" :label="formLabels.temporaryRedirect"
+                                class="pa-2"
+                                :placeholder="formPlaceholderResources.redirect"/>
+                </div>
 
-              <!--                      <div class="d-flex flex-row mb-6">-->
-              <!--                        <FormTooltip tooltipKey="redirect"/>-->
-              <!--                        <v-text-field v-model="stub.response.permanentRedirect" :label="formLabels.permanentRedirect"-->
-              <!--                                      class="pa-2"-->
-              <!--                                      :placeholder="formPlaceholderResources.redirect"/>-->
-              <!--                      </div>-->
-              <!--                    </div>-->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="redirect"/>
+                  <v-text-field v-model="stubResponsePermanentRedirect" :label="formLabels.permanentRedirect"
+                                class="pa-2"
+                                :placeholder="formPlaceholderResources.redirect"/>
+                </div>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -505,7 +505,9 @@
         stubResponseDynamicMode: "stubForm.stub.response.enableDynamicMode",
         stubBodyResponseType: "stubForm.bodyResponseType",
         stubResponseBody: "stubForm.responseBody",
-        stubResponseHeaders: "stubForm.responseHeaders"
+        stubResponseHeaders: "stubForm.responseHeaders",
+        stubResponseTempRedirect: "stubForm.stub.response.temporaryRedirect",
+        stubResponsePermanentRedirect: "stubForm.stub.response.permanentRedirect"
       })
     },
     methods: {
