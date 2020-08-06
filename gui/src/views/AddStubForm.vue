@@ -20,15 +20,13 @@
             <v-col>
               <!-- ID -->
               <div class="d-flex flex-row mb-6">
-                <FormTooltip
-                  text="The ID of the stub. If you don't fill in an ID, an ID will be calculated when the stub is added. If you provide an ID of a stub that already exists, that stub will be overwritten with this one."/>
+                <FormTooltip tooltipKey="id"/>
                 <v-text-field v-model="stub.id" label="ID" class="pa-2"/>
               </div>
 
               <!-- Tenant -->
               <div class="d-flex flex-row mb-6">
-                <FormTooltip
-                  text="The stub also has a 'tenant' field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant). "/>
+                <FormTooltip tooltipKey="tenant"/>
                 <v-menu absolute offset-y>
                   <template v-slot:activator="{on}">
                     <v-text-field v-model="stub.tenant" label="Stub tenant / category" v-on="on" clearable
@@ -45,14 +43,13 @@
 
               <!-- Description -->
               <div class="d-flex flex-row mb-6">
-                <FormTooltip text="A free text field where you can specify where the stub is for. It is optional."/>
+                <FormTooltip tooltipKey="description"/>
                 <v-textarea v-model="stub.description" label="Description"/>
               </div>
 
               <!-- Priority -->
               <div class="d-flex flex-row mb-6">
-                <FormTooltip
-                  text="There are cases when a request matches multiple stub. If this is the case, you can use the 'priority' element. With the priority element, you can specify which stub should be used if multiple stubs are found. The stub with the highest priority will be used. If you don't set the priority on the stub, it will be 0 by default."/>
+                <FormTooltip tooltipKey="priority"/>
                 <v-text-field v-model="stub.priority" label="Priority" class="pa-2"/>
               </div>
             </v-col>
@@ -70,8 +67,7 @@
 
               <!-- HTTP method -->
               <div class="d-flex flex-row mb-6">
-                <FormTooltip
-                  text="This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.)."/>
+                <FormTooltip tooltipKey="httpMethod"/>
                 <v-menu absolute offset-y>
                   <template v-slot:activator="{on}">
                     <v-text-field v-model="stub.conditions.method" label="HTTP method" v-on="on" clearable
@@ -92,9 +88,9 @@
 
               <!-- URL path -->
               <div class="d-flex flex-row mb-6">
-                <FormTooltip
-                  text="The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions."/>
-                <v-text-field v-model="stub.conditions.url.path" label="URL path" class="pa-2" placeholder="e.g. '/users' or '^/users$' (regex)"/>
+                <FormTooltip tooltipKey="urlPath"/>
+                <v-text-field v-model="stub.conditions.url.path" label="URL path" class="pa-2"
+                              placeholder="e.g. '/users' or '^/users$' (regex)"/>
               </div>
             </v-col>
           </v-row>

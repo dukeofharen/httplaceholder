@@ -24,6 +24,15 @@ const resources = {
     "# This .yml file was created with HttPlaceholder. For more information, go to http://httplaceholder.com."
 };
 
+const tooltipResources = {
+  id: "The ID of the stub. If you don't fill in an ID, an ID will be calculated when the stub is added. If you provide an ID of a stub that already exists, that stub will be overwritten with this one.",
+  tenant: "The stub also has a 'tenant' field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant).",
+  description: "A free text field where you can specify where the stub is for. It is optional.",
+  priority: "There are cases when a request matches multiple stub. If this is the case, you can use the 'priority' element. With the priority element, you can specify which stub should be used if multiple stubs are found. The stub with the highest priority will be used. If you don't set the priority on the stub, it will be 0 by default.",
+  httpMethod: "This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.).",
+  urlPath: "The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions."
+};
+
 const conditionValidationType = {
   NotSet: "NotSet",
   Valid: "Valid",
@@ -40,4 +49,4 @@ const httpMethods = [
   "OPTIONS"
 ]
 
-export { resources, conditionValidationType, httpMethods };
+export { resources, conditionValidationType, httpMethods, tooltipResources };
