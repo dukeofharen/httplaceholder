@@ -29,6 +29,7 @@
                   </v-list-item>
                 </v-list>
               </v-menu>
+              <v-textarea v-model="stub.description" label="Description" />
             </v-col>
           </v-row>
         </v-card-text>
