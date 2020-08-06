@@ -43,4 +43,13 @@ export default function addWatches(store) {
   store.watch(state => state.stubForm.responseHeaders, () => store.commit(mutationNames.storeStubResponseHeaders));
 
   store.watch(state => state.stubForm.stub.response.headers, () => store.commit(mutationNames.storeResponseHeaders));
+
+  store.watch(state => state.stubForm.stub.conditions.basicAuthentication, () => {
+    if (!store.state.stubForm.stub.conditions.basicAuthentication) {
+      store.state.stubForm.stub.conditions.basicAuthentication = {
+        username: "",
+        password: ""
+      };
+    }
+  });
 }

@@ -40,7 +40,7 @@ export function getStubFormValidation(state) {
 
   const extraDuration = state.stubForm.stub.response.extraDuration;
   const parsedExtraDuration = parseInt(extraDuration);
-  if (extraDuration !== null && (isNaN(parsedExtraDuration) || parsedExtraDuration <= 0)) {
+  if (extraDuration !== null && extraDuration !== undefined && (isNaN(parsedExtraDuration) || parsedExtraDuration <= 0)) {
     validationMessages.push(formValidationMessages.extraDurationInvalid);
   }
 

@@ -171,7 +171,7 @@
                 <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
                   <FormTooltip tooltipKey="body"/>
                   <v-textarea v-model="stubBody" :label="formLabels.body"
-                              :placeholder="formPlaceholderResources.body" @keyup="bodyChanged"/>
+                              :placeholder="formPlaceholderResources.body"/>
                 </div>
               </div>
 
@@ -424,6 +424,9 @@
     name: "stubForm",
     components: {FormTooltip},
     async mounted() {
+      this.tenantNames = await this.$store.dispatch(
+        actionNames.getTenantNames
+      );
       await this.initialize();
     },
     data() {
@@ -450,10 +453,6 @@
       };
     },
     computed: {
-      stubId() {
-        // Get ID from route for editing
-        return this.$route.params.id;
-      },
       filteredTenantNames() {
         if (!this.stubTenant) {
           return this.tenantNames;
@@ -481,6 +480,7 @@
         return this.$store.getters.getVariableHandlers;
       },
       ...mapFields({
+        stub: "stubForm.stub",
         stubId: "stubForm.stub.id",
         stubTenant: "stubForm.stub.tenant",
         stubDescription: "stubForm.stub.description",
@@ -512,9 +512,13 @@
     },
     methods: {
       async initialize() {
-        this.tenantNames = await this.$store.dispatch(
-          actionNames.getTenantNames
-        );
+        const id = this.$route.params.id;
+        if (id) {
+          const fullStub = await this.$store.dispatch(actionNames.getStub, {
+            stubId: id
+          });
+          this.stub = fullStub.stub;
+        }
       },
       async saveStub() {
         const messages = this.$store.getters.getStubFormValidation;
@@ -526,21 +530,44 @@
           return;
         }
 
-        try {
-          const results = await this.$store.dispatch(actionNames.addStubs, {
-            input: this.$store.getters.getStubForSaving,
-            inputIsJson: true
-          });
-          for (let result of results) {
-            if (result.v) {
-              toastSuccess(resources.stubAddedSuccessfully.format(result.v.stub.id));
-            } else if (result.e) {
-              toastError(resources.stubNotAdded.format(result.e.stubId));
+        const id = this.$route.params.id;
+        if (id) {
+          try {
+            await this.$store.dispatch(actionNames.updateStub, {
+              input: this.$store.getters.getStubForSaving,
+              inputIsJson: true,
+              id
+            });
+            toastSuccess(resources.stubUpdatedSuccessfully.format(id));
+          } catch (e) {
+            if (e.response) {
+              if (e.response.status === 409) {
+                toastError(resources.stubAlreadyAdded.format(id));
+              } else {
+                toastError(resources.stubNotAdded.format(id));
+              }
+            } else {
+              toastError(e);
             }
           }
-        } catch (e) {
-          toastError(e);
+        } else {
+          try {
+            const results = await this.$store.dispatch(actionNames.addStubs, {
+              input: this.$store.getters.getStubForSaving,
+              inputIsJson: true
+            });
+            for (let result of results) {
+              if (result.v) {
+                toastSuccess(resources.stubAddedSuccessfully.format(result.v.stub.id));
+              } else if (result.e) {
+                toastError(resources.stubNotAdded.format(result.e.stubId));
+              }
+            }
+          } catch (e) {
+            toastError(e);
+          }
         }
+
       },
       insertHandlerInBody(handler) {
         this.stubResponseBody = this.insertHandler(handler, this.stubResponseBody || "", "response-body");
@@ -556,6 +583,11 @@
       }
     },
     watch: {
+      '$route.params.id': {
+        async handler() {
+          await this.initialize();
+        }
+      },
       stub: {
         deep: true,
         handler() {

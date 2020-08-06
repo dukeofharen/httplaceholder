@@ -65,7 +65,7 @@ export default {
     async updateStub() {
       const stubId = this.$route.params.stubId;
       try {
-        this.$store.dispatch(actionNames.updateStub, {
+        await this.$store.dispatch(actionNames.updateStub, {
           input: this.input,
           stubId
         });

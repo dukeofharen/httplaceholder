@@ -13,14 +13,16 @@ export function storeStubQueryStrings(state) {
 export function storeQueryStrings(state) {
   let result = "";
   const value = state.stubForm.stub.conditions.url.query;
-  const keys = Object.keys(value);
-  if (keys.length) {
-    const list = [];
-    for (let key of keys) {
-      list.push(`${key}: ${value[key]}`);
-    }
+  if (value) {
+    const keys = Object.keys(value);
+    if (keys.length) {
+      const list = [];
+      for (let key of keys) {
+        list.push(`${key}: ${value[key]}`);
+      }
 
-    result = list.join("\n");
+      result = list.join("\n");
+    }
   }
 
   state.stubForm.queryStrings = result;
@@ -63,14 +65,16 @@ export function storeStubHeaders(state) {
 export function storeHeaders(state) {
   let result = "";
   const value = state.stubForm.stub.conditions.headers;
-  const keys = Object.keys(value);
-  if (keys.length) {
-    const list = [];
-    for (let key of keys) {
-      list.push(`${key}: ${value[key]}`);
-    }
+  if (value) {
+    const keys = Object.keys(value);
+    if (keys.length) {
+      const list = [];
+      for (let key of keys) {
+        list.push(`${key}: ${value[key]}`);
+      }
 
-    result = list.join("\n");
+      result = list.join("\n");
+    }
   }
 
   state.stubForm.headers = result;
@@ -138,23 +142,28 @@ export function storeStubXPathAndNamespaces(state) {
 
 export function storeXPathAndNamespaces(state) {
   // Expressions
-  const value = state.stubForm.stub.conditions.xpath.map(x => x.queryString);
-  state.stubForm.xpath = value && value.length ? value.join("\n") : "";
+  if (state.stubForm.stub.conditions.xpath) {
+    const value = state.stubForm.stub.conditions.xpath.map(x => x.queryString);
+    state.stubForm.xpath = value && value.length ? value.join("\n") : "";
 
-  // XML namespaces
-  let nsResult = null;
-  const namespaces = state.stubForm.stub.conditions.xpath.length ? state.stubForm.stub.conditions.xpath[0].namespaces : null;
-  if (namespaces) {
-    const list = [];
-    const keys = Object.keys(namespaces);
-    for (let key of keys) {
-      list.push(`${key}: ${namespaces[key]}`);
+    // XML namespaces
+    let nsResult = null;
+    const namespaces = state.stubForm.stub.conditions.xpath.length ? state.stubForm.stub.conditions.xpath[0].namespaces : null;
+    if (namespaces) {
+      const list = [];
+      const keys = Object.keys(namespaces);
+      for (let key of keys) {
+        list.push(`${key}: ${namespaces[key]}`);
+      }
+
+      nsResult = list.join("\n");
     }
 
-    nsResult = list.join("\n");
+    state.stubForm.xpathNamespaces = nsResult;
+  } else {
+    state.stubForm.xpath = "";
+    state.stubForm.xpathNamespaces = "";
   }
-
-  state.stubForm.xpathNamespaces = nsResult;
 }
 
 export function storeStubJsonPath(state) {
@@ -196,17 +205,22 @@ export function storeResponseBodyType(state) {
 
 export function storeStubResponseBodyType(state) {
   const response = state.stubForm.stub.response;
-  let result = responseBodyTypes.text;
+  let result;
   if (response.text) {
     result = responseBodyTypes.text;
+    state.stubForm.responseBody = response.text;
   } else if (response.html) {
     result = responseBodyTypes.html;
+    state.stubForm.responseBody = response.html;
   } else if (response.json) {
     result = responseBodyTypes.json;
+    state.stubForm.responseBody = response.json;
   } else if (response.xml) {
     result = responseBodyTypes.xml;
+    state.stubForm.responseBody = response.xml;
   } else if (response.base64) {
     result = responseBodyTypes.base64;
+    state.stubForm.responseBody = response.base64;
   } else {
     result = responseBodyTypes.empty;
     state.stubForm.responseBody = null;

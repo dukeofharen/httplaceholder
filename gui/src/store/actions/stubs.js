@@ -90,11 +90,15 @@ export function addStubs({}, payload) {
 export function updateStub({}, payload) {
   return new Promise((resolve, reject) => {
     let stub;
-    try {
-      stub = yaml.safeLoad(payload.input);
-    } catch (e) {
-      reject(e);
-      return;
+    if (payload.inputIsJson) {
+      stub = payload.input;
+    } else {
+      try {
+        stub = yaml.safeLoad(payload.input);
+      } catch (e) {
+        reject(e);
+        return;
+      }
     }
 
     if (!stub || Array.isArray(stub)) {
