@@ -13,20 +13,73 @@
           </v-row>
         </v-card-text>
       </v-card>
-      <v-btn color="success" @click="addStub">Add stub(s)</v-btn>
+      <v-card>
+        <v-card-title>General</v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col>
+              <v-text-field v-model="stub.id" label="ID"/>
+              <v-menu absolute offset-y>
+                <template v-slot:activator="{on}">
+                  <v-text-field v-model="stub.tenant" label="Stub tenant / category" v-on="on" clearable/>
+                </template>
+                <v-list>
+                  <v-list-item v-for="(tenant, index) in filteredTenantNames" :key="index" @click="tenantSelect(tenant)" re>
+                    <v-list-item-title>{{tenant}}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+      <v-card>
+        <v-card-title>Conditions</v-card-title>
+      </v-card>
+      <v-btn color="success" @click="addStub">Add stub</v-btn>
     </v-col>
   </v-row>
 </template>
 
 <script>
+  import {actionNames} from "@/store/storeConstants";
+
   export default {
     name: "addStubForm",
+    async mounted() {
+      await this.initialize();
+    },
     data() {
-      return {};
+      return {
+        tenantNames: [],
+        stub: {
+          id: "",
+          tenant: "",
+          description: "",
+          priority: 0
+        }
+      };
+    },
+    computed: {
+      filteredTenantNames() {
+        if (!this.stub.tenant) {
+          return this.tenantNames;
+        }
+
+        return this.tenantNames.filter(t => t.includes(this.stub.tenant));
+      }
     },
     methods: {
+      async initialize() {
+        this.tenantNames = await this.$store.dispatch(
+          actionNames.getTenantNames
+        );
+      },
       addStub() {
-
+        console.log(JSON.stringify(this.stub));
+      },
+      tenantSelect(tenant) {
+        this.stub.tenant = tenant;
       }
     }
   };
