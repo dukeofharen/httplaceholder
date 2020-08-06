@@ -251,153 +251,154 @@
         </v-card-text>
       </v-card>
 
-      <!--      <v-card>-->
-      <!--        <v-card-title>Response writers</v-card-title>-->
-      <!--        <v-card-text>-->
-      <!--          <v-row>-->
-      <!--            <v-col>-->
+      <v-card>
+        <v-card-title>Response writers</v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col>
 
-      <!--              <div>-->
-      <!--                <h2 class="section-title" @click="show.generalWriters = !show.generalWriters">-->
-      <!--                  <v-icon>{{show.generalWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-      <!--                  General writers-->
-      <!--                </h2>-->
-      <!--              </div>-->
+              <div>
+                <h2 class="section-title" @click="show.generalWriters = !show.generalWriters">
+                  <v-icon>{{show.generalWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  General writers
+                </h2>
+              </div>
 
-      <!--              <div v-if="show.generalWriters">-->
-      <!--                &lt;!&ndash; Status code &ndash;&gt;-->
-      <!--                <div class="d-flex flex-row mb-6">-->
-      <!--                  <FormTooltip tooltipKey="statusCode"/>-->
-      <!--                  <v-menu absolute offset-y>-->
-      <!--                    <template v-slot:activator="{on}">-->
-      <!--                      <v-text-field v-model="stub.response.statusCode" :label="formLabels.statusCode" v-on="on"-->
-      <!--                                    clearable-->
-      <!--                                    class="pa-2"/>-->
-      <!--                    </template>-->
-      <!--                    <v-list max-height="300px">-->
-      <!--                      <v-list-item v-for="code in formattedStatusCodes" :key="code.code"-->
-      <!--                                   @click="stub.response.statusCode = code.code">-->
-      <!--                        <v-list-item-title>{{code.text}}</v-list-item-title>-->
-      <!--                      </v-list-item>-->
-      <!--                    </v-list>-->
-      <!--                  </v-menu>-->
-      <!--                </div>-->
+              <div v-if="show.generalWriters">
+                <!-- Status code -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="statusCode"/>
+                  <v-menu absolute offset-y>
+                    <template v-slot:activator="{on}">
+                      <v-text-field v-model="stubResponseStatusCode" :label="formLabels.statusCode" v-on="on"
+                                    clearable
+                                    class="pa-2"/>
+                    </template>
+                    <v-list max-height="300px">
+                      <v-list-item v-for="code in formattedStatusCodes" :key="code.code"
+                                   @click="stubResponseStatusCode = code.code">
+                        <v-list-item-title>{{code.text}}</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
 
-      <!--                &lt;!&ndash; Extra duration &ndash;&gt;-->
-      <!--                <div class="d-flex flex-row mb-6">-->
-      <!--                  <FormTooltip tooltipKey="extraDuration"/>-->
-      <!--                  <v-text-field v-model="stub.response.extraDuration" :label="formLabels.extraDuration" class="pa-2"/>-->
-      <!--                </div>-->
+                <!-- Extra duration -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="extraDuration"/>
+                  <v-text-field v-model="stubResponseExtraDuration" :label="formLabels.extraDuration" class="pa-2"/>
+                </div>
 
-      <!--                &lt;!&ndash; Dynamic mode &ndash;&gt;-->
-      <!--                <div class="d-flex flex-row mb-6">-->
-      <!--                  <FormTooltip tooltipKey="dynamicMode"/>-->
-      <!--                  <v-switch v-model="stub.response.enableDynamicMode" :label="formLabels.enableDynamicMode"-->
-      <!--                            class="pa-2"/>-->
-      <!--                </div>-->
-      <!--              </div>-->
+                <!-- Dynamic mode -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="dynamicMode"/>
+                  <v-switch v-model="stubResponseDynamicMode" :label="formLabels.enableDynamicMode"
+                            class="pa-2"/>
+                </div>
+              </div>
 
-      <!--              <div>-->
-      <!--                <h2 class="section-title" @click="show.bodyWriters = !show.bodyWriters">-->
-      <!--                  <v-icon>{{show.bodyWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-      <!--                  Body writers-->
-      <!--                </h2>-->
-      <!--              </div>-->
+              <div>
+                <h2 class="section-title" @click="show.bodyWriters = !show.bodyWriters">
+                  <v-icon>{{show.bodyWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Body writers
+                </h2>
+              </div>
 
-      <!--              <div v-if="show.bodyWriters">-->
-      <!--                &lt;!&ndash; Response body type &ndash;&gt;-->
-      <!--                <div class="d-flex flex-row mb-6">-->
-      <!--                  <FormTooltip tooltipKey="responseBodyType"/>-->
-      <!--                  <v-select v-model="bodyResponseType" :items="responseBodyTypes" item-text="value" item-value="value"-->
-      <!--                            :label="formLabels.responseBodyType" @change="responseBodyChanged"/>-->
-      <!--                </div>-->
+              <div v-if="show.bodyWriters">
+                <!-- Response body type -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="responseBodyType"/>
+                  <v-select v-model="stubBodyResponseType" :items="responseBodyTypes" item-text="value"
+                            item-value="value"
+                            :label="formLabels.responseBodyType"/>
+                </div>
 
-      <!--                &lt;!&ndash; Response body &ndash;&gt;-->
-      <!--                <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm">-->
-      <!--                  <FormTooltip tooltipKey="responseBody"/>-->
-      <!--                  <v-textarea v-model="responseBody" :label="formLabels.responseBody"-->
-      <!--                              :placeholder="formPlaceholderResources.responseBody" @keyup="responseBodyChanged"-->
-      <!--                              id="response-body"/>-->
-      <!--                </div>-->
+                <!-- Response body -->
+                <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm">
+                  <FormTooltip tooltipKey="responseBody"/>
+                  <v-textarea v-model="stubResponseBody" :label="formLabels.responseBody"
+                              :placeholder="formPlaceholderResources.responseBody"
+                              id="response-body"/>
+                </div>
 
-      <!--                &lt;!&ndash; Body variable handler &ndash;&gt;-->
-      <!--                <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm && dynamicModeEnabled">-->
-      <!--                  <FormTooltip tooltipKey="selectVariableHandler"/>-->
-      <!--                  <v-menu absolute offset-y>-->
-      <!--                    <template v-slot:activator="{on}">-->
-      <!--                      <v-btn color="success" v-on="on">Select variable handler</v-btn>-->
-      <!--                    </template>-->
-      <!--                    <v-list max-height="300px">-->
-      <!--                      <v-list-item v-for="handler in variableHandlers" :key="handler.name"-->
-      <!--                                   @click="insertHandlerInBody(handler)">-->
-      <!--                        <v-list-item-title>{{handler.name}}: {{handler.fullName}}. Example: {{handler.example}}-->
-      <!--                        </v-list-item-title>-->
-      <!--                      </v-list-item>-->
-      <!--                    </v-list>-->
-      <!--                  </v-menu>-->
-      <!--                </div>-->
-      <!--              </div>-->
+                <!-- Body variable handler -->
+                <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm && dynamicModeEnabled">
+                  <FormTooltip tooltipKey="selectVariableHandler"/>
+                  <v-menu absolute offset-y>
+                    <template v-slot:activator="{on}">
+                      <v-btn color="success" v-on="on">Select variable handler</v-btn>
+                    </template>
+                    <v-list max-height="300px">
+                      <v-list-item v-for="handler in variableHandlers" :key="handler.name"
+                                   @click="insertHandlerInBody(handler)">
+                        <v-list-item-title>{{handler.name}}: {{handler.fullName}}. Example: {{handler.example}}
+                        </v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
+              </div>
 
-      <!--              <div>-->
-      <!--                <h2 class="section-title" @click="show.headerWriters = !show.headerWriters">-->
-      <!--                  <v-icon>{{show.headerWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-      <!--                  Header writers-->
-      <!--                </h2>-->
-      <!--              </div>-->
+              <div>
+                <h2 class="section-title" @click="show.headerWriters = !show.headerWriters">
+                  <v-icon>{{show.headerWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Header writers
+                </h2>
+              </div>
 
-      <!--              <div v-if="show.headerWriters">-->
-      <!--                &lt;!&ndash; Headers &ndash;&gt;-->
-      <!--                <div class="d-flex flex-row mb-6">-->
-      <!--                  <FormTooltip tooltipKey="responseHeaders"/>-->
-      <!--                  <v-textarea v-model="responseHeaders" :label="formLabels.responseHeaders"-->
-      <!--                              :placeholder="formPlaceholderResources.responseHeaders" @keyup="responseHeadersChanged"-->
-      <!--                              id="response-headers"/>-->
-      <!--                </div>-->
+              <div v-if="show.headerWriters">
+                <!-- Headers -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="responseHeaders"/>
+                  <v-textarea v-model="stubResponseHeaders" :label="formLabels.responseHeaders"
+                              :placeholder="formPlaceholderResources.responseHeaders"
+                              id="response-headers"/>
+                </div>
 
-      <!--                &lt;!&ndash; Headers variable handler &ndash;&gt;-->
-      <!--                <div class="d-flex flex-row mb-6" v-if="dynamicModeEnabled">-->
-      <!--                  <FormTooltip tooltipKey="selectVariableHandler"/>-->
-      <!--                  <v-menu absolute offset-y>-->
-      <!--                    <template v-slot:activator="{on}">-->
-      <!--                      <v-btn color="success" v-on="on">Select variable handler</v-btn>-->
-      <!--                    </template>-->
-      <!--                    <v-list max-height="300px">-->
-      <!--                      <v-list-item v-for="handler in variableHandlers" :key="handler.name"-->
-      <!--                                   @click="insertHandlerInHeaders(handler)">-->
-      <!--                        <v-list-item-title>{{handler.name}}: {{handler.fullName}}. Example: {{handler.example}}-->
-      <!--                        </v-list-item-title>-->
-      <!--                      </v-list-item>-->
-      <!--                    </v-list>-->
-      <!--                  </v-menu>-->
-      <!--                </div>-->
-      <!--              </div>-->
+                <!-- Headers variable handler -->
+                <div class="d-flex flex-row mb-6" v-if="dynamicModeEnabled">
+                  <FormTooltip tooltipKey="selectVariableHandler"/>
+                  <v-menu absolute offset-y>
+                    <template v-slot:activator="{on}">
+                      <v-btn color="success" v-on="on">Select variable handler</v-btn>
+                    </template>
+                    <v-list max-height="300px">
+                      <v-list-item v-for="handler in variableHandlers" :key="handler.name"
+                                   @click="insertHandlerInHeaders(handler)">
+                        <v-list-item-title>{{handler.name}}: {{handler.fullName}}. Example: {{handler.example}}
+                        </v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </div>
+              </div>
 
-      <!--              <div>-->
-      <!--                <h2 class="section-title" @click="show.redirectWriters = !show.redirectWriters">-->
-      <!--                  <v-icon>{{show.redirectWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-      <!--                  Redirection writers-->
-      <!--                </h2>-->
-      <!--              </div>-->
+              <!--                    <div>-->
+              <!--                      <h2 class="section-title" @click="show.redirectWriters = !show.redirectWriters">-->
+              <!--                        <v-icon>{{show.redirectWriters ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
+              <!--                        Redirection writers-->
+              <!--                      </h2>-->
+              <!--                    </div>-->
 
-      <!--              <div v-if="show.redirectWriters">-->
-      <!--                <div class="d-flex flex-row mb-6">-->
-      <!--                  <FormTooltip tooltipKey="redirect"/>-->
-      <!--                  <v-text-field v-model="stub.response.temporaryRedirect" :label="formLabels.temporaryRedirect"-->
-      <!--                                class="pa-2"-->
-      <!--                                :placeholder="formPlaceholderResources.redirect"/>-->
-      <!--                </div>-->
+              <!--                    <div v-if="show.redirectWriters">-->
+              <!--                      <div class="d-flex flex-row mb-6">-->
+              <!--                        <FormTooltip tooltipKey="redirect"/>-->
+              <!--                        <v-text-field v-model="stub.response.temporaryRedirect" :label="formLabels.temporaryRedirect"-->
+              <!--                                      class="pa-2"-->
+              <!--                                      :placeholder="formPlaceholderResources.redirect"/>-->
+              <!--                      </div>-->
 
-      <!--                <div class="d-flex flex-row mb-6">-->
-      <!--                  <FormTooltip tooltipKey="redirect"/>-->
-      <!--                  <v-text-field v-model="stub.response.permanentRedirect" :label="formLabels.permanentRedirect"-->
-      <!--                                class="pa-2"-->
-      <!--                                :placeholder="formPlaceholderResources.redirect"/>-->
-      <!--                </div>-->
-      <!--              </div>-->
-      <!--            </v-col>-->
-      <!--          </v-row>-->
-      <!--        </v-card-text>-->
-      <!--      </v-card>-->
+              <!--                      <div class="d-flex flex-row mb-6">-->
+              <!--                        <FormTooltip tooltipKey="redirect"/>-->
+              <!--                        <v-text-field v-model="stub.response.permanentRedirect" :label="formLabels.permanentRedirect"-->
+              <!--                                      class="pa-2"-->
+              <!--                                      :placeholder="formPlaceholderResources.redirect"/>-->
+              <!--                      </div>-->
+              <!--                    </div>-->
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
       <v-btn color="success" @click="saveStub">Save stub</v-btn>
     </v-col>
   </v-row>
@@ -468,7 +469,7 @@
         return keys.map(k => ({key: k, value: responseBodyTypes[k]}));
       },
       showResponseBodyForm() {
-        return this.bodyResponseType !== responseBodyTypes.empty;
+        return this.stubBodyResponseType !== responseBodyTypes.empty;
       },
       showBodyConditionForms() {
         return this.stubConditionMethod !== "GET";
@@ -498,7 +499,13 @@
         stubXPathNamespaces: "stubForm.xpathNamespaces",
         stubJsonPath: "stubForm.jsonPath",
         stubConditionBasicAuthUsername: "stubForm.stub.conditions.basicAuthentication.username",
-        stubConditionBasicAuthPassword: "stubForm.stub.conditions.basicAuthentication.password"
+        stubConditionBasicAuthPassword: "stubForm.stub.conditions.basicAuthentication.password",
+        stubResponseStatusCode: "stubForm.stub.response.statusCode",
+        stubResponseExtraDuration: "stubForm.stub.response.extraDuration",
+        stubResponseDynamicMode: "stubForm.stub.response.enableDynamicMode",
+        stubBodyResponseType: "stubForm.bodyResponseType",
+        stubResponseBody: "stubForm.responseBody",
+        stubResponseHeaders: "stubForm.responseHeaders"
       })
     },
     methods: {
@@ -583,43 +590,14 @@
           toastError(e);
         }
       },
-      responseBodyChanged() {
-        this.stub.response.html = null;
-        this.stub.response.text = null;
-        this.stub.response.json = null;
-        this.stub.response.xml = null;
-        this.stub.response.base64 = null;
-        switch (this.bodyResponseType) {
-          case responseBodyTypes.custom:
-          case responseBodyTypes.text:
-            this.stub.response.text = this.responseBody;
-            break;
-          case responseBodyTypes.html:
-            this.stub.response.html = this.responseBody;
-            break;
-          case responseBodyTypes.json:
-            this.stub.response.json = this.responseBody;
-            break;
-          case responseBodyTypes.xml:
-            this.stub.response.xml = this.responseBody;
-            break;
-          case responseBodyTypes.base64:
-            this.stub.response.base64 = this.responseBody;
-            break;
-        }
-      },
-      responseHeadersChanged() {
-        const result = this.parseKeyValue(this.responseHeaders);
-        this.stub.response.headers = Object.keys(result).length ? result : null;
-      },
       insertHandlerInBody(handler) {
-        this.responseBody = this.insertHandler(handler, this.responseBody || "", "response-body");
+        this.stubResponseBody = this.insertHandler(handler, this.stubResponseBody || "", "response-body");
       },
       insertHandlerInHeaders(handler) {
-        this.responseHeaders = this.insertHandler(handler, this.responseHeaders || "", "response-headers");
+        this.stubResponseHeaders = this.insertHandler(handler, this.stubResponseHeaders || "", "response-headers");
       },
       insertHandler(handler, text, elementId) {
-        this.stub.response.enableDynamicMode = true;
+        this.stubResponseDynamicMode = true;
         const elem = document.getElementById(elementId);
         const position = elem.selectionStart || 0;
         return [text.slice(0, position), handler.example, text.slice(position)].join("");

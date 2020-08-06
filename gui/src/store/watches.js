@@ -30,4 +30,17 @@ export default function addWatches(store) {
   store.watch(state => state.stubForm.jsonPath, () => store.commit(mutationNames.storeStubJsonPath));
 
   store.watch(state => state.stubForm.stub.conditions.jsonPath, () => store.commit(mutationNames.storeJsonPath));
+
+  store.watch(state => state.stubForm.bodyResponseType, () => store.commit(mutationNames.storeResponseBodyType));
+  store.watch(state => state.stubForm.responseBody, () => store.commit(mutationNames.storeResponseBodyType));
+
+  store.watch(state => state.stubForm.stub.response.base64, () => store.commit(mutationNames.storeStubResponseBodyType));
+  store.watch(state => state.stubForm.stub.response.text, () => store.commit(mutationNames.storeStubResponseBodyType));
+  store.watch(state => state.stubForm.stub.response.html, () => store.commit(mutationNames.storeStubResponseBodyType));
+  store.watch(state => state.stubForm.stub.response.json, () => store.commit(mutationNames.storeStubResponseBodyType));
+  store.watch(state => state.stubForm.stub.response.xml, () => store.commit(mutationNames.storeStubResponseBodyType));
+
+  store.watch(state => state.stubForm.responseHeaders, () => store.commit(mutationNames.storeStubResponseHeaders));
+
+  store.watch(state => state.stubForm.stub.response.headers, () => store.commit(mutationNames.storeResponseHeaders));
 }

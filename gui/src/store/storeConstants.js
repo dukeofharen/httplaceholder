@@ -15,7 +15,11 @@ export const mutationNames = {
   storeStubXPathAndNamespaces: "storeStubXPathAndNamespaces",
   storeXPathAndNamespaces: "storeXPathAndNamespaces",
   storeStubJsonPath: "storeStubJsonPath",
-  storeJsonPath: "storeJsonPath"
+  storeJsonPath: "storeJsonPath",
+  storeResponseBodyType: "storeResponseBodyType",
+  storeStubResponseBodyType: "storeStubResponseBodyType",
+  storeStubResponseHeaders: "storeStubResponseHeaders",
+  storeResponseHeaders: "storeResponseHeaders",
 };
 
 export const actionNames = {

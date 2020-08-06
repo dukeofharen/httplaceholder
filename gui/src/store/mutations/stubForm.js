@@ -1,5 +1,5 @@
 import {parseKeyValue, parseLines} from "@/utils/stubFormUtil";
-import {isHttpsValues} from "@/shared/stubFormResources";
+import {isHttpsValues, responseBodyTypes} from "@/shared/stubFormResources";
 
 export function storeStubQueryStrings(state) {
   const result = parseKeyValue(state.stubForm.queryStrings);
@@ -165,4 +165,73 @@ export function storeStubJsonPath(state) {
 export function storeJsonPath(state) {
   const value = state.stubForm.stub.conditions.body;
   state.stubForm.body = value && value.length ? value.join("\n") : "";
+}
+
+export function storeResponseBodyType(state) {
+  state.stubForm.stub.response.html = null;
+  state.stubForm.stub.response.text = null;
+  state.stubForm.stub.response.json = null;
+  state.stubForm.stub.response.xml = null;
+  state.stubForm.stub.response.base64 = null;
+  const body = state.stubForm.responseBody;
+  switch (state.stubForm.bodyResponseType) {
+    case responseBodyTypes.custom:
+    case responseBodyTypes.text:
+      state.stubForm.stub.response.text = body;
+      break;
+    case responseBodyTypes.html:
+      state.stubForm.stub.response.html = body;
+      break;
+    case responseBodyTypes.json:
+      state.stubForm.stub.response.json = body;
+      break;
+    case responseBodyTypes.xml:
+      state.stubForm.stub.response.xml = body;
+      break;
+    case responseBodyTypes.base64:
+      state.stubForm.stub.response.base64 = body;
+      break;
+  }
+}
+
+export function storeStubResponseBodyType(state) {
+  const response = state.stubForm.stub.response;
+  let result = responseBodyTypes.text;
+  if (response.text) {
+    result = responseBodyTypes.text;
+  } else if (response.html) {
+    result = responseBodyTypes.html;
+  } else if (response.json) {
+    result = responseBodyTypes.json;
+  } else if (response.xml) {
+    result = responseBodyTypes.xml;
+  } else if (response.base64) {
+    result = responseBodyTypes.base64;
+  } else {
+    result = responseBodyTypes.empty;
+    state.stubForm.responseBody = null;
+  }
+
+  state.stubForm.bodyResponseType = result;
+}
+
+export function storeStubResponseHeaders(state) {
+  const result = parseKeyValue(state.stubForm.responseHeaders);
+  state.stubForm.stub.response.headers = Object.keys(result).length ? result : null;
+}
+
+export function storeResponseHeaders(state) {
+  let result = "";
+  const value = state.stubForm.stub.response.headers;
+  const keys = Object.keys(value);
+  if (keys.length) {
+    const list = [];
+    for (let key of keys) {
+      list.push(`${key}: ${value[key]}`);
+    }
+
+    result = list.join("\n");
+  }
+
+  state.stubForm.responseHeaders = result;
 }
