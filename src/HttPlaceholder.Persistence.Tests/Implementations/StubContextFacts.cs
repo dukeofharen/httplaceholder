@@ -104,7 +104,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_AddStubAsync_NoIdSet_ShouldAssignRandomString()
+        public async Task StubContainer_AddStubAsync_NoIdSet_ShouldAssignHashedStubAsId()
         {
             // arrange
             var stubToBeAdded = new StubModel {Conditions = new StubConditionsModel {Body = new[] {"test"}}};
@@ -126,7 +126,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             await _context.AddStubAsync(stubToBeAdded);
 
             // assert
-            Assert.IsFalse(string.IsNullOrWhiteSpace(stubToBeAdded.Id));
+            Assert.AreEqual("stub-d96ca27805fccd40cc6f8a6e21dc669d", stubToBeAdded.Id);
         }
 
         [TestMethod]

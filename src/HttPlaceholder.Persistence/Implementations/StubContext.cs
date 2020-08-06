@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Implementations
 {
@@ -33,7 +35,8 @@ namespace HttPlaceholder.Persistence.Implementations
             if (string.IsNullOrWhiteSpace(stub.Id))
             {
                 // If no ID is sent, create one here.
-                stub.Id = Guid.NewGuid().ToString();
+                var id = HashingUtilities.GetMd5String(JsonConvert.SerializeObject(stub));
+                stub.Id = $"stub-{id}";
             }
 
             // Check that a stub with the new ID isn't already added to a readonly stub source.
