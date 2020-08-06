@@ -121,10 +121,18 @@
                 <h2>Body conditions</h2>
               </div>
 
+              <!-- Body -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="body"/>
                 <v-textarea v-model="body" :label="formLabels.body"
                             :placeholder="formPlaceholderResources.body" @keyup="bodyChanged"/>
+              </div>
+
+              <!-- Form body -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="formBody"/>
+                <v-textarea v-model="formBody" :label="formLabels.formBody"
+                            :placeholder="formPlaceholderResources.formBody" @keyup="formBodyChanged"/>
               </div>
             </v-col>
           </v-row>
@@ -164,6 +172,7 @@
         isHttpsValues,
         queryStrings: "",
         body: "",
+        formBody: "",
         isHttps: isHttpsValues.httpAndHttps,
         stub: {
           id: "",
@@ -178,7 +187,8 @@
               fullPath: null,
               isHttps: null
             },
-            body: null
+            body: null,
+            form: null
           }
         }
       };
@@ -243,16 +253,25 @@
         this.stub.conditions.method = method;
       },
       queryStringChanged() {
-        const value = this.parseKeyValue(this.queryStrings);
-        if (!Object.keys(value).length) {
+        const result = this.parseKeyValue(this.queryStrings);
+        if (!Object.keys(result).length) {
           this.stub.conditions.url.query = null;
         } else {
-          this.stub.conditions.url.query = value;
+          this.stub.conditions.url.query = result;
         }
       },
       bodyChanged() {
-        const value = this.parseLines(this.body);
-        this.stub.conditions.body = value.length ? value : null;
+        const result = this.parseLines(this.body);
+        this.stub.conditions.body = result.length ? result : null;
+      },
+      formBodyChanged() {
+        const result = this.parseKeyValue(this.formBody);
+        const keys = Object.keys(result);
+        if (!keys.length) {
+          this.stub.conditions.form = null;
+        } else {
+          this.stub.conditions.form = keys.map(k => ({key: k, value: result[k]}));
+        }
       },
       parseLines(input) {
         const result = input.split(/\r?\n/);
