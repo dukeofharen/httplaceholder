@@ -10,7 +10,7 @@
       >mdi-help
       </v-icon>
     </template>
-    <span v-html="tooltipResources[tooltipKey]" />
+    <span v-html="tooltipText" />
   </v-tooltip>
 </template>
 
@@ -21,6 +21,11 @@
     data() {
       return {
         tooltipResources
+      }
+    },
+    computed: {
+      tooltipText() {
+        return tooltipResources[this.tooltipKey].replace(/(?:\r\n|\r|\n)/g, '</br>');
       }
     }
   }
