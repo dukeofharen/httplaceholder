@@ -21,8 +21,15 @@ const formValidationMessages = {
   priorityNotInteger: "Make sure the priority is numeric."
 };
 
+const formLabels = {
+  isHttpsTrue: "The request should be made over HTTPS",
+  isHttpsFalse: "The request should be made over HTTP",
+  isHttpsNull: "The request can be made over HTTP or HTTPS"
+}
+
 export {
   tooltipResources,
   formPlaceholderResources,
-  formValidationMessages
+  formValidationMessages,
+  formLabels
 }

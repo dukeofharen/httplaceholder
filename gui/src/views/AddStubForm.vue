@@ -99,6 +99,22 @@
                 <v-textarea v-model="queryStrings" label="Query strings (1 on each line)"
                             :placeholder="formPlaceholderResources.queryString" @keyup="queryStringChanged"/>
               </div>
+
+              <!-- Full path -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="fullPath"/>
+                <v-text-field v-model="stub.conditions.url.fullPath" label="Full path" class="pa-2"
+                              :placeholder="formPlaceholderResources.fullPath"/>
+              </div>
+
+              <!-- Is HTTPS -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="isHttps"/>
+                <v-switch v-model="stub.conditions.url.isHttps" class="pa-2" :label="isHttpsLabel"/>
+                <div class="pa-2">
+                  <v-btn color="primary" @click="stub.conditions.url.isHttps = null">Clear HTTPS bit</v-btn>
+                </div>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -113,7 +129,8 @@
   import {httpMethods} from "@/shared/resources";
   import FormTooltip from "@/components/FormTooltip";
   import {toastError, toastSuccess} from "@/utils/toastUtil";
-  import {resources, formPlaceholderResources, formValidationMessages} from "@/shared/resources";
+  import {resources} from "@/shared/resources";
+  import {formPlaceholderResources, formValidationMessages, formLabels} from "@/shared/stubFormResources";
 
   export default {
     name: "addStubForm",
@@ -136,7 +153,9 @@
             method: null,
             url: {
               path: null,
-              query: null
+              query: null,
+              fullPath: null,
+              isHttps: null
             }
           }
         }
@@ -149,6 +168,16 @@
         }
 
         return this.tenantNames.filter(t => t.includes(this.stub.tenant));
+      },
+      isHttpsLabel() {
+        const httpsStatus = this.stub.conditions.url.isHttps;
+        if(httpsStatus === true) {
+          return formLabels.isHttpsTrue;
+        } else if (httpsStatus === false) {
+          return formLabels.isHttpsFalse;
+        }
+
+        return formLabels.isHttpsNull;
       }
     },
     methods: {
@@ -164,7 +193,7 @@
         }
 
         console.log(this.stub.priority);
-        if(isNaN(this.stub.priority)) {
+        if (isNaN(this.stub.priority)) {
           validationMessages.push(formValidationMessages.priorityNotInteger);
         }
 
