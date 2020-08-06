@@ -97,6 +97,7 @@ const responseBodyTypes = {
   json: "JSON",
   xml: "XML",
   html: "HTML",
+  base64: "Base64 string",
   custom: "Custom",
   empty: "Empty body"
 };

@@ -229,7 +229,7 @@
 
               <!-- Select response body type -->
               <div class="d-flex flex-row mb-6">
-                <FormTooltip tooltipKey="statusCode"/>
+                <FormTooltip tooltipKey="responseBodyType"/>
                 <v-select v-model="bodyResponseType" :items="responseBodyTypes" item-text="value" item-value="value"
                           :label="formLabels.responseBodyType" @change="responseBodyChanged"/>
               </div>
@@ -332,6 +332,7 @@
             json: null,
             html: null,
             xml: null,
+            base64: null,
             headers: null
           }
         }
@@ -522,6 +523,7 @@
         this.stub.response.text = null;
         this.stub.response.json = null;
         this.stub.response.xml = null;
+        this.stub.response.base64 = null;
         switch (this.bodyResponseType) {
           case responseBodyTypes.custom:
           case responseBodyTypes.text:
@@ -535,6 +537,9 @@
             break;
           case responseBodyTypes.xml:
             this.stub.response.xml = this.responseBody;
+            break;
+          case responseBodyTypes.base64:
+            this.stub.response.base64 = this.responseBody;
             break;
         }
       },
