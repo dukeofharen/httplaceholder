@@ -22,7 +22,8 @@ const tooltipResources = {
   responseBody: "Provide the body that should be added to the response.",
   responseHeaders: "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'.",
   extraDuration: "Whenever you want to simulate a busy web service, you can use the 'extraDuration' response writer. You can set the number of extra milliseconds HttPlaceholder should wait and the request will actually take that much time to complete.",
-  redirect: "The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the 'temporaryRedirect' property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the 'permanentRedirect' an HTTP 301."
+  redirect: "The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the 'temporaryRedirect' property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the 'permanentRedirect' an HTTP 301.",
+  dynamicMode: "In order to make the responses in HttPlaceholder a bit more dynamic, the 'dynamic mode' was introduced. This makes it possible to add variables to your responses that can be parsed. As of now, these variables can be used in the response body (text only) and the response headers. The only requirement is that you set this switch to on (by default, it is set to off and the variables will not be parsed)."
 };
 
 const formPlaceholderResources = {
@@ -82,7 +83,8 @@ const formLabels = {
   responseHeaders: "Response headers",
   extraDuration: "Extra duration in milliseconds",
   temporaryRedirect: "Temporary redirect (HTTP 301)",
-  permanentRedirect: "Permanent redirect (HTTP 307)"
+  permanentRedirect: "Permanent redirect (HTTP 307)",
+  enableDynamicMode: "Enable dynamic mode"
 };
 
 const isHttpsValues = {

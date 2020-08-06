@@ -288,6 +288,13 @@
                   <FormTooltip tooltipKey="extraDuration"/>
                   <v-text-field v-model="stub.response.extraDuration" :label="formLabels.extraDuration" class="pa-2"/>
                 </div>
+
+                <!-- Dynamic mode -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="dynamicMode"/>
+                  <v-switch v-model="stub.response.enableDynamicMode" :label="formLabels.enableDynamicMode"
+                            class="pa-2"/>
+                </div>
               </div>
 
               <div>
@@ -448,7 +455,8 @@
             headers: null,
             extraDuration: null,
             temporaryRedirect: null,
-            permanentRedirect: null
+            permanentRedirect: null,
+            enableDynamicMode: false
           }
         }
       };
