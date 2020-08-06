@@ -305,7 +305,7 @@
               </div>
 
               <div v-if="show.bodyWriters">
-                <!-- Select response body type -->
+                <!-- Response body type -->
                 <div class="d-flex flex-row mb-6">
                   <FormTooltip tooltipKey="responseBodyType"/>
                   <v-select v-model="bodyResponseType" :items="responseBodyTypes" item-text="value" item-value="value"
@@ -316,7 +316,25 @@
                 <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm">
                   <FormTooltip tooltipKey="responseBody"/>
                   <v-textarea v-model="responseBody" :label="formLabels.responseBody"
-                              :placeholder="formPlaceholderResources.responseBody" @keyup="responseBodyChanged"/>
+                              :placeholder="formPlaceholderResources.responseBody" @keyup="responseBodyChanged"
+                              id="response-body"/>
+                </div>
+
+                <!-- Body variable handler -->
+                <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm && dynamicModeEnabled">
+                  <FormTooltip tooltipKey="selectVariableHandler"/>
+                  <v-menu absolute offset-y>
+                    <template v-slot:activator="{on}">
+                      <v-btn color="success" v-on="on">Select variable handler</v-btn>
+                    </template>
+                    <v-list max-height="300px">
+                      <v-list-item v-for="handler in variableHandlers" :key="handler.name"
+                                   @click="insertHandlerInBody(handler)">
+                        <v-list-item-title>{{handler.name}}: {{handler.fullName}}. Example: {{handler.example}}
+                        </v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                 </div>
               </div>
 
@@ -481,6 +499,12 @@
       },
       showBodyConditionForms() {
         return this.stub.conditions.method !== "GET";
+      },
+      dynamicModeEnabled() {
+        return this.stub.response.enableDynamicMode && this.variableHandlers.length;
+      },
+      variableHandlers() {
+        return this.$store.getters.getVariableHandlers;
       }
     },
     methods: {
@@ -683,6 +707,15 @@
       responseHeadersChanged() {
         const result = this.parseKeyValue(this.responseHeaders);
         this.stub.response.headers = Object.keys(result).length ? result : null;
+      },
+      insertHandlerInBody(handler) {
+        let text = this.responseBody || "";
+        this.responseBody = this.insertHandler(handler, text, "response-body");
+      },
+      insertHandler(handler, text, elementId) {
+        const elem = document.getElementById(elementId);
+        const position = elem.selectionStart || 0;
+        return [text.slice(0, position), handler.example, text.slice(position)].join("");
       }
     },
     watch: {
@@ -744,8 +777,6 @@
           if (this.stub.response.permanentRedirect === "") {
             this.stub.response.permanentRedirect = null;
           }
-
-          console.log(JSON.stringify(this.stub)); // TODO remove this
         }
       }
     }
