@@ -136,6 +136,17 @@
               </div>
 
               <!-- XPath -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="xpath"/>
+                <v-textarea v-model="xpath" :label="formLabels.xpath"
+                            :placeholder="formPlaceholderResources.xpath" @keyup="xpathChanged"/>
+              </div>
+
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="xpathNamespaces"/>
+                <v-textarea v-model="xpathNamespaces" :label="formLabels.xpathNamespaces"
+                            :placeholder="formPlaceholderResources.xpathNamespaces" @keyup="xpathChanged"/>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -175,6 +186,8 @@
         queryStrings: "",
         body: "",
         formBody: "",
+        xpath: "",
+        xpathNamespaces: "",
         isHttps: isHttpsValues.httpAndHttps,
         stub: {
           id: "",
@@ -190,7 +203,8 @@
               isHttps: null
             },
             body: null,
-            form: null
+            form: null,
+            xpath: null
           }
         }
       };
@@ -222,6 +236,10 @@
 
         if (isNaN(this.stub.priority)) {
           validationMessages.push(formValidationMessages.priorityNotInteger);
+        }
+
+        if (this.xpathNamespaces && !this.stub.conditions.xpath) {
+          validationMessages.push(formValidationMessages.xpathNotFilledIn);
         }
 
         return validationMessages;
@@ -277,6 +295,28 @@
           this.stub.conditions.form = null;
         } else {
           this.stub.conditions.form = keys.map(k => ({key: k, value: result[k]}));
+        }
+      },
+      xpathChanged() {
+        const result = this.parseLines(this.xpath);
+        if (!result.length) {
+          this.stub.conditions.xpath = null;
+        } else {
+          this.stub.conditions.xpath = result.map(e => ({queryString: e}));
+          const nsResult = this.parseKeyValue(this.xpathNamespaces);
+          const nsKeys = Object.keys(nsResult);
+          let namespaces = {};
+          if (nsKeys.length) {
+            for (let key of nsKeys) {
+              namespaces[key] = nsResult[key];
+            }
+          } else {
+            namespaces = null;
+          }
+
+          for (let expression of this.stub.conditions.xpath) {
+            expression.namespaces = namespaces;
+          }
         }
       },
       parseLines(input) {

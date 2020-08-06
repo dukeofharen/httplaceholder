@@ -9,7 +9,9 @@ const tooltipResources = {
   fullPath: "This condition checker looks a lot like the path checker, but this checker also checks extra URL parameters, like the query string. The condition can both check on substring and regular expressions.",
   isHttps: "This condition checker can be used to verify if a request uses HTTPS or not.",
   body: "This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. Add one condition per line. Add The condition can both check on substring and regular expressions.",
-  formBody: "The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions. Place a new form body condition on a new line in the form of 'key: expected_value'."
+  formBody: "The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions. Place a new form body condition on a new line in the form of 'key: expected_value'.",
+  xpath: "Using the XPath condition checker, you can check the posted XML body to see if it contains the correct elements. It is possible to add multiple conditions. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.\n\nIt is also possible to (pre)-set the XML namespaces of a posted XML body. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.",
+  xpathNamespaces: "Fill in the XML namespaces here. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression. Place a new namespace on a new line in the form of 'key: expected_value'."
 };
 
 const formPlaceholderResources = {
@@ -17,13 +19,16 @@ const formPlaceholderResources = {
   queryString: "id: 14\nfilter: last_name\napi_key: ^apikey1122$\n...",
   fullPath: "e.g. '/users?filter=first_name'",
   body: "first_name=duco\nid=14\n^somevalue$\n...",
-  formBody: "first_name: duco\nid: 14\naddress: Some street 1\n..."
+  formBody: "first_name: duco\nid: 14\naddress: Some street 1\n...",
+  xpath: "/object/a[text() = 'TEST']\n/object/b[text() = 'SomeValue']\n...",
+  xpathNamespaces: "soap: http://www.w3.org/2003/05/soap-envelope\nm: http://www.example.org/stock/Reddy\n..."
 };
 
 const formValidationMessages = {
   queryStringIncorrect: "You've filled in a value at 'Query strings', but the value could not be parsed. Make sure to fill in a correct value here.",
   formBodyIncorrect: "You've filled in a value at 'Form body', but the value could not be parsed. Make sure to fill in a correct value here.",
-  priorityNotInteger: "Make sure the priority is numeric."
+  priorityNotInteger: "Make sure the priority is numeric.",
+  xpathNotFilledIn: "You filled in XML namespaces, but you didn't fill in any XPath expressions."
 };
 
 const formLabels = {
@@ -39,14 +44,16 @@ const formLabels = {
   onlyHttp: "The request should be made over HTTP",
   httpAndHttps: "The request can be made over HTTP or HTTPS",
   body: "Body",
-  formBody: "Form body"
-}
+  formBody: "Form body",
+  xpath: "XPath expressions",
+  xpathNamespaces: "XML namespaces (optional)"
+};
 
 const isHttpsValues = {
   onlyHttps: 0,
   onlyHttp: 1,
   httpAndHttps: 2
-}
+};
 
 export {
   tooltipResources,
@@ -54,4 +61,4 @@ export {
   formValidationMessages,
   formLabels,
   isHttpsValues
-}
+};
