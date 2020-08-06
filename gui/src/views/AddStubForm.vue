@@ -350,7 +350,25 @@
                 <div class="d-flex flex-row mb-6">
                   <FormTooltip tooltipKey="responseHeaders"/>
                   <v-textarea v-model="responseHeaders" :label="formLabels.responseHeaders"
-                              :placeholder="formPlaceholderResources.responseHeaders" @keyup="responseHeadersChanged"/>
+                              :placeholder="formPlaceholderResources.responseHeaders" @keyup="responseHeadersChanged"
+                              id="response-headers"/>
+                </div>
+
+                <!-- Headers variable handler -->
+                <div class="d-flex flex-row mb-6" v-if="dynamicModeEnabled">
+                  <FormTooltip tooltipKey="selectVariableHandler"/>
+                  <v-menu absolute offset-y>
+                    <template v-slot:activator="{on}">
+                      <v-btn color="success" v-on="on">Select variable handler</v-btn>
+                    </template>
+                    <v-list max-height="300px">
+                      <v-list-item v-for="handler in variableHandlers" :key="handler.name"
+                                   @click="insertHandlerInHeaders(handler)">
+                        <v-list-item-title>{{handler.name}}: {{handler.fullName}}. Example: {{handler.example}}
+                        </v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                 </div>
               </div>
 
@@ -501,7 +519,7 @@
         return this.stub.conditions.method !== "GET";
       },
       dynamicModeEnabled() {
-        return this.stub.response.enableDynamicMode && this.variableHandlers.length;
+        return this.variableHandlers.length;
       },
       variableHandlers() {
         return this.$store.getters.getVariableHandlers;
@@ -709,10 +727,13 @@
         this.stub.response.headers = Object.keys(result).length ? result : null;
       },
       insertHandlerInBody(handler) {
-        let text = this.responseBody || "";
-        this.responseBody = this.insertHandler(handler, text, "response-body");
+        this.responseBody = this.insertHandler(handler, this.responseBody || "", "response-body");
+      },
+      insertHandlerInHeaders(handler) {
+        this.responseHeaders = this.insertHandler(handler, this.responseHeaders || "", "response-headers");
       },
       insertHandler(handler, text, elementId) {
+        this.stub.response.enableDynamicMode = true;
         const elem = document.getElementById(elementId);
         const position = elem.selectionStart || 0;
         return [text.slice(0, position), handler.example, text.slice(position)].join("");
