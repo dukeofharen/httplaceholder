@@ -26,4 +26,8 @@ export default function addWatches(store) {
   store.watch(state => state.stubForm.xpathNamespaces, () => store.commit(mutationNames.storeStubXPathAndNamespaces));
 
   store.watch(state => state.stubForm.stub.conditions.xpath, () => store.commit(mutationNames.storeXPathAndNamespaces));
+
+  store.watch(state => state.stubForm.jsonPath, () => store.commit(mutationNames.storeStubJsonPath));
+
+  store.watch(state => state.stubForm.stub.conditions.jsonPath, () => store.commit(mutationNames.storeJsonPath));
 }

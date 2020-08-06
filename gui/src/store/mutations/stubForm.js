@@ -156,3 +156,13 @@ export function storeXPathAndNamespaces(state) {
 
   state.stubForm.xpathNamespaces = nsResult;
 }
+
+export function storeStubJsonPath(state) {
+  const result = parseLines(state.stubForm.jsonPath);
+  state.stubForm.stub.conditions.jsonPath = result.length ? result : null;
+}
+
+export function storeJsonPath(state) {
+  const value = state.stubForm.stub.conditions.body;
+  state.stubForm.body = value && value.length ? value.join("\n") : "";
+}

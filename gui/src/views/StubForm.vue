@@ -213,39 +213,39 @@
                 </div>
               </div>
 
-              <!--              <div v-if="showBodyConditionForms">-->
-              <!--                <h2 class="section-title" @click="show.jsonBodyConditions = !show.jsonBodyConditions">-->
-              <!--                  <v-icon>{{show.jsonBodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-              <!--                  JSON body conditions-->
-              <!--                </h2>-->
-              <!--              </div>-->
+              <div v-if="showBodyConditionForms">
+                <h2 class="section-title" @click="show.jsonBodyConditions = !show.jsonBodyConditions">
+                  <v-icon>{{show.jsonBodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  JSON body conditions
+                </h2>
+              </div>
 
-              <!--              <div v-if="show.jsonBodyConditions">-->
-              <!--                &lt;!&ndash; JSONPath &ndash;&gt;-->
-              <!--                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">-->
-              <!--                  <FormTooltip tooltipKey="jsonPath"/>-->
-              <!--                  <v-textarea v-model="jsonPath" :label="formLabels.jsonPath"-->
-              <!--                              :placeholder="formPlaceholderResources.jsonPath" @keyup="jsonPathChanged"/>-->
-              <!--                </div>-->
-              <!--              </div>-->
+              <div v-if="show.jsonBodyConditions">
+                <!-- JSONPath -->
+                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
+                  <FormTooltip tooltipKey="jsonPath"/>
+                  <v-textarea v-model="stubJsonPath" :label="formLabels.jsonPath"
+                              :placeholder="formPlaceholderResources.jsonPath"/>
+                </div>
+              </div>
 
-              <!--              <div>-->
-              <!--                <h2 class="section-title" @click="show.authenticationConditions = !show.authenticationConditions">-->
-              <!--                  <v-icon>{{show.authenticationConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-              <!--                  Authentication conditions-->
-              <!--                </h2>-->
-              <!--              </div>-->
+              <div>
+                <h2 class="section-title" @click="show.authenticationConditions = !show.authenticationConditions">
+                  <v-icon>{{show.authenticationConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Authentication conditions
+                </h2>
+              </div>
 
-              <!--              <div v-if="show.authenticationConditions">-->
-              <!--                &lt;!&ndash; Basic authentication &ndash;&gt;-->
-              <!--                <div class="d-flex flex-row mb-6">-->
-              <!--                  <FormTooltip tooltipKey="fullPath"/>-->
-              <!--                  <v-text-field v-model="stub.conditions.basicAuthentication.username"-->
-              <!--                                :label="formLabels.basicAuthUsername" class="pa-2"/>-->
-              <!--                  <v-text-field v-model="stub.conditions.basicAuthentication.password"-->
-              <!--                                :label="formLabels.basicAuthPassword" class="pa-2"/>-->
-              <!--                </div>-->
-              <!--              </div>-->
+              <div v-if="show.authenticationConditions">
+                <!-- Basic authentication -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="fullPath"/>
+                  <v-text-field v-model="stubConditionBasicAuthUsername"
+                                :label="formLabels.basicAuthUsername" class="pa-2"/>
+                  <v-text-field v-model="stubConditionBasicAuthPassword"
+                                :label="formLabels.basicAuthPassword" class="pa-2"/>
+                </div>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -495,7 +495,10 @@
         stubBody: "stubForm.body",
         stubFormBody: "stubForm.formBody",
         stubXPath: "stubForm.xpath",
-        stubXPathNamespaces: "stubForm.xpathNamespaces"
+        stubXPathNamespaces: "stubForm.xpathNamespaces",
+        stubJsonPath: "stubForm.jsonPath",
+        stubConditionBasicAuthUsername: "stubForm.stub.conditions.basicAuthentication.username",
+        stubConditionBasicAuthPassword: "stubForm.stub.conditions.basicAuthentication.password"
       })
     },
     methods: {
@@ -579,10 +582,6 @@
         } catch (e) {
           toastError(e);
         }
-      },
-      jsonPathChanged() {
-        const result = this.parseLines(this.jsonPath);
-        this.stub.conditions.jsonPath = result.length ? result : null;
       },
       responseBodyChanged() {
         this.stub.response.html = null;
