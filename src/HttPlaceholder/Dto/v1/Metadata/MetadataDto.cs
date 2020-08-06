@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Mappings;
+﻿using System.Collections.Generic;
+using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Dto.v1.Metadata
@@ -12,5 +13,10 @@ namespace HttPlaceholder.Dto.v1.Metadata
         /// Gets or sets the version.
         /// </summary>
         public string Version { get; set; }
+
+        /// <summary>
+        /// Gets or sets the available variable handlers.
+        /// </summary>
+        public IEnumerable<VariableHandlerDto> VariableHandlers { get; set; }
     }
 }
