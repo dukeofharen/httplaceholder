@@ -7,7 +7,8 @@ const tooltipResources = {
   urlPath: "The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions.",
   queryString: "This condition checker can check the query string in a name-value collection like way. The condition can both check on substring and regular expressions. Place a new query string condition on a new line in the form of 'key: expected_value'.",
   fullPath: "This condition checker looks a lot like the path checker, but this checker also checks extra URL parameters, like the query string. The condition can both check on substring and regular expressions.",
-  isHttps: "This condition checker can be used to verify if a request uses HTTPS or not."
+  isHttps: "This condition checker can be used to verify if a request uses HTTPS or not.",
+  body: "This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions."
 };
 
 const formPlaceholderResources = {
@@ -22,14 +23,21 @@ const formValidationMessages = {
 };
 
 const formLabels = {
-  isHttpsTrue: "The request should be made over HTTPS",
-  isHttpsFalse: "The request should be made over HTTP",
-  isHttpsNull: "The request can be made over HTTP or HTTPS"
+  onlyHttps: "The request should be made over HTTPS",
+  onlyHttp: "The request should be made over HTTP",
+  httpAndHttps: "The request can be made over HTTP or HTTPS"
+}
+
+const isHttpsValues = {
+  onlyHttps: 0,
+  onlyHttp: 1,
+  httpAndHttps: 2
 }
 
 export {
   tooltipResources,
   formPlaceholderResources,
   formValidationMessages,
-  formLabels
+  formLabels,
+  isHttpsValues
 }

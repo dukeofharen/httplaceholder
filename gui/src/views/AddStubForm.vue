@@ -110,11 +110,19 @@
               <!-- Is HTTPS -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="isHttps"/>
-                <v-switch v-model="stub.conditions.url.isHttps" class="pa-2" :label="isHttpsLabel"/>
+                <v-radio-group v-model="isHttps" class="pa-2" @change="isHttpsSelected">
+                  <v-radio :value="isHttpsValues.onlyHttps" :label="formLabels.onlyHttps"></v-radio>
+                  <v-radio :value="isHttpsValues.onlyHttp" :label="formLabels.onlyHttp"></v-radio>
+                  <v-radio :value="isHttpsValues.httpAndHttps" :label="formLabels.httpAndHttps"></v-radio>
+                </v-radio-group>
               </div>
 
               <div>
-                <v-btn color="primary" @click="stub.conditions.url.isHttps = null">Clear HTTPS bit</v-btn>
+                <h2>Body conditions</h2>
+              </div>
+
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="body"/>
               </div>
             </v-col>
           </v-row>
@@ -131,7 +139,12 @@
   import FormTooltip from "@/components/FormTooltip";
   import {toastError, toastSuccess} from "@/utils/toastUtil";
   import {resources} from "@/shared/resources";
-  import {formPlaceholderResources, formValidationMessages, formLabels} from "@/shared/stubFormResources";
+  import {
+    formPlaceholderResources,
+    formValidationMessages,
+    formLabels,
+    isHttpsValues
+  } from "@/shared/stubFormResources";
 
   export default {
     name: "addStubForm",
@@ -144,7 +157,10 @@
         tenantNames: [],
         httpMethods,
         formPlaceholderResources,
+        formLabels,
+        isHttpsValues,
         queryStrings: "",
+        isHttps: isHttpsValues.httpAndHttps,
         stub: {
           id: "",
           tenant: "",
@@ -169,16 +185,6 @@
         }
 
         return this.tenantNames.filter(t => t.includes(this.stub.tenant));
-      },
-      isHttpsLabel() {
-        const httpsStatus = this.stub.conditions.url.isHttps;
-        if(httpsStatus === true) {
-          return formLabels.isHttpsTrue;
-        } else if (httpsStatus === false) {
-          return formLabels.isHttpsFalse;
-        }
-
-        return formLabels.isHttpsNull;
       }
     },
     methods: {
@@ -256,6 +262,20 @@
         }
 
         return result;
+      },
+      isHttpsSelected() {
+        // I had to add this intermediate function, because for some reason, Vuetify doesn't allow the binding of a "null" value.
+        switch(this.isHttps){
+          case isHttpsValues.httpAndHttps:
+            this.stub.conditions.url.isHttps = null;
+            break;
+          case isHttpsValues.onlyHttp:
+            this.stub.conditions.url.isHttps = false;
+            break;
+          case isHttpsValues.onlyHttps:
+            this.stub.conditions.url.isHttps = true;
+            break;
+        }
       }
     }
   };
