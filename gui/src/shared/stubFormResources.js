@@ -19,7 +19,8 @@ const tooltipResources = {
   headers: "This condition checker can check whether the sent headers match with the headers in the stub. The condition can both check on substring and regular expressions. Place a new header condition on a new line in the form of 'key: expected_value'.",
   statusCode: "Defines the HTTP status code that should be returned. Default is HTTP 200 (OK).",
   responseBodyType: "Here you can select the type of response you would like to return.",
-  responseBody: "Provide the body that should be added to the response."
+  responseBody: "Provide the body that should be added to the response.",
+  responseHeaders: "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'."
 };
 
 const formPlaceholderResources = {
@@ -33,13 +34,15 @@ const formPlaceholderResources = {
   jsonPath: "$.phoneNumbers[?(@.type=='iPhone')]\n$.phoneNumbers[?(@.year=='2016')]\n...",
   clientIp: "e.g. '127.0.0.1' or '127.0.0.0/29'",
   hostname: "e.g. 'httplaceholder.com' or 'http(.*)' (regex)",
-  headers: "Content-Type: text/plain\nX-Api-Key: bla123\nX-Some-Header: ^somevalue$\n..."
+  headers: "Content-Type: text/plain\nX-Api-Key: bla123\nX-Some-Header: ^somevalue$\n...",
+  responseHeaders: "Content-Type: text/plain\nX-Api-Key: bla123\n..."
 };
 
 const formValidationMessages = {
   queryStringIncorrect: "You've filled in a value at 'Query strings', but the value could not be parsed. Make sure to fill in a correct value here.",
   formBodyIncorrect: "You've filled in a value at 'Form body', but the value could not be parsed. Make sure to fill in a correct value here.",
   headersIncorrect: "You've filled in a value at 'Headers', but the value could not be parsed. Make sure to fill in a correct value here.",
+  responseHeadersIncorrect: "You've filled in a value at 'Response headers', but the value could not be parsed. Make sure to fill in a correct value here.",
   priorityNotInteger: "Make sure the priority is numeric.",
   xpathNotFilledIn: "You filled in XML namespaces, but you didn't fill in any XPath expressions.",
   basicAuthInvalid: "Leave basic authentication username and password both empty or fill in both fields. You can't fill in only one field.",
@@ -70,7 +73,8 @@ const formLabels = {
   headers: "Headers",
   statusCode: "Status code",
   responseBodyType: "Response body type",
-  responseBody: "Response body"
+  responseBody: "Response body",
+  responseHeaders: "Response headers"
 };
 
 const isHttpsValues = {

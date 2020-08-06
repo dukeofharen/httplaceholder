@@ -135,7 +135,7 @@
                 <h2>Header conditions</h2>
               </div>
 
-              <!-- Query string -->
+              <!-- Headers -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="headers"/>
                 <v-textarea v-model="headers" :label="formLabels.headers"
@@ -241,6 +241,17 @@
                             :placeholder="formPlaceholderResources.responseBody" @keyup="responseBodyChanged"/>
               </div>
 
+              <div>
+                <h2>Header writers</h2>
+              </div>
+
+              <!-- Headers -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="responseHeaders"/>
+                <v-textarea v-model="responseHeaders" :label="formLabels.responseHeaders"
+                            :placeholder="formPlaceholderResources.responseHeaders" @keyup="responseHeadersChanged"/>
+              </div>
+
             </v-col>
           </v-row>
         </v-card-text>
@@ -289,6 +300,7 @@
         isHttps: isHttpsValues.httpAndHttps,
         bodyResponseType: responseBodyTypes.text,
         responseBody: null,
+        responseHeaders: "",
         stub: {
           id: "",
           tenant: "",
@@ -319,7 +331,8 @@
             text: null,
             json: null,
             html: null,
-            xml: null
+            xml: null,
+            headers: null
           }
         }
       };
@@ -380,6 +393,10 @@
         const parsedStatusCode = parseInt(this.stub.response.statusCode);
         if (isNaN(parsedStatusCode) || parsedStatusCode < 100 || parsedStatusCode >= 600) {
           validationMessages.push(formValidationMessages.fillInCorrectStatusCode);
+        }
+
+        if (this.responseHeaders && !this.stub.response.headers) {
+          validationMessages.push(formValidationMessages.headersIncorrect);
         }
 
         return validationMessages;
@@ -520,6 +537,10 @@
             this.stub.response.xml = this.responseBody;
             break;
         }
+      },
+      responseHeadersChanged() {
+        const result = this.parseKeyValue(this.responseHeaders);
+        this.stub.response.headers = Object.keys(result).length ? result : null;
       }
     }
   };
