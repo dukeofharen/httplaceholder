@@ -132,6 +132,17 @@
               </div>
 
               <div>
+                <h2>Header conditions</h2>
+              </div>
+
+              <!-- Query string -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="headers"/>
+                <v-textarea v-model="headers" :label="formLabels.headers"
+                            :placeholder="formPlaceholderResources.headers" @keyup="headersChanged"/>
+              </div>
+
+              <div>
                 <h2>Body conditions</h2>
               </div>
 
@@ -176,8 +187,10 @@
               <!-- Basic authentication -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="fullPath"/>
-                <v-text-field v-model="stub.conditions.basicAuthentication.username" :label="formLabels.basicAuthUsername" class="pa-2"/>
-                <v-text-field v-model="stub.conditions.basicAuthentication.password" :label="formLabels.basicAuthPassword" class="pa-2"/>
+                <v-text-field v-model="stub.conditions.basicAuthentication.username"
+                              :label="formLabels.basicAuthUsername" class="pa-2"/>
+                <v-text-field v-model="stub.conditions.basicAuthentication.password"
+                              :label="formLabels.basicAuthPassword" class="pa-2"/>
               </div>
             </v-col>
           </v-row>
@@ -221,6 +234,7 @@
         xpath: "",
         xpathNamespaces: "",
         jsonPath: "",
+        headers: "",
         isHttps: isHttpsValues.httpAndHttps,
         stub: {
           id: "",
@@ -244,7 +258,8 @@
               password: null
             },
             clientIp: null,
-            hostname: null
+            hostname: null,
+            headers: null
           }
         }
       };
@@ -274,6 +289,10 @@
           validationMessages.push(formValidationMessages.formBodyIncorrect);
         }
 
+        if (this.headers && !this.stub.conditions.headers) {
+          validationMessages.push(formValidationMessages.headersIncorrect);
+        }
+
         if (isNaN(this.stub.priority)) {
           validationMessages.push(formValidationMessages.priorityNotInteger);
         }
@@ -282,7 +301,7 @@
           validationMessages.push(formValidationMessages.xpathNotFilledIn);
         }
 
-        if(
+        if (
           !this.stub.conditions.basicAuthentication.username && this.stub.conditions.basicAuthentication.password ||
           this.stub.conditions.basicAuthentication.username && !this.stub.conditions.basicAuthentication.password) {
           validationMessages.push(formValidationMessages.basicAuthInvalid);
@@ -368,6 +387,10 @@
       jsonPathChanged() {
         const result = this.parseLines(this.jsonPath);
         this.stub.conditions.jsonPath = result.length ? result : null;
+      },
+      headersChanged() {
+        const result = this.parseKeyValue(this.headers);
+        this.stub.conditions.headers = Object.keys(result).length ? result : null;
       },
       parseLines(input) {
         const result = input.split(/\r?\n/);

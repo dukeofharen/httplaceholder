@@ -15,7 +15,8 @@ const tooltipResources = {
   jsonPath: "Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions. Add one condition per line.",
   basicAuthentication: "This condition checker can check whether the sent basic authentication matches with the data in the stub.",
   clientIp: "It is also possible to set a condition to check the the client IP. A condition can be set for a single IP address or a whole IP range.",
-  hostname: "It is possible to check if a hostname in a request is correct. This condition can be used with regular expressions if needed."
+  hostname: "It is possible to check if a hostname in a request is correct. This condition can be used with regular expressions if needed.",
+  headers: "This condition checker can check whether the sent headers match with the headers in the stub. The condition can both check on substring and regular expressions. Place a new header condition on a new line in the form of 'key: expected_value'."
 };
 
 const formPlaceholderResources = {
@@ -28,12 +29,14 @@ const formPlaceholderResources = {
   xpathNamespaces: "soap: http://www.w3.org/2003/05/soap-envelope\nm: http://www.example.org/stock/Reddy\n...",
   jsonPath: "$.phoneNumbers[?(@.type=='iPhone')]\n$.phoneNumbers[?(@.year=='2016')]\n...",
   clientIp: "e.g. '127.0.0.1' or '127.0.0.0/29'",
-  hostname: "e.g. 'httplaceholder.com' or 'http(.*)' (regex)"
+  hostname: "e.g. 'httplaceholder.com' or 'http(.*)' (regex)",
+  headers: "Content-Type: text/plain\nX-Api-Key: bla123\nX-Some-Header: ^somevalue$\n..."
 };
 
 const formValidationMessages = {
   queryStringIncorrect: "You've filled in a value at 'Query strings', but the value could not be parsed. Make sure to fill in a correct value here.",
   formBodyIncorrect: "You've filled in a value at 'Form body', but the value could not be parsed. Make sure to fill in a correct value here.",
+  headersIncorrect: "You've filled in a value at 'Headers', but the value could not be parsed. Make sure to fill in a correct value here.",
   priorityNotInteger: "Make sure the priority is numeric.",
   xpathNotFilledIn: "You filled in XML namespaces, but you didn't fill in any XPath expressions.",
   basicAuthInvalid: "Leave basic authentication username and password both empty or fill in both fields. You can't fill in only one field."
@@ -59,7 +62,8 @@ const formLabels = {
   basicAuthUsername: "Basic authentication username",
   basicAuthPassword: "Basic authentication password",
   clientIp: "Client IP",
-  hostname: "Hostname"
+  hostname: "Hostname",
+  headers: "Headers"
 };
 
 const isHttpsValues = {
