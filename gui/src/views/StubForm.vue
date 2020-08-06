@@ -516,58 +516,8 @@
           actionNames.getTenantNames
         );
       },
-      validateForm() {
-        const validationMessages = [];
-        if (this.queryStrings && !this.stub.conditions.url.query) {
-          validationMessages.push(formValidationMessages.queryStringIncorrect);
-        }
-
-        if (this.formBody && !this.stub.conditions.form) {
-          validationMessages.push(formValidationMessages.formBodyIncorrect);
-        }
-
-        if (this.headers && !this.stub.conditions.headers) {
-          validationMessages.push(formValidationMessages.headersIncorrect);
-        }
-
-        if (isNaN(this.stub.priority)) {
-          validationMessages.push(formValidationMessages.priorityNotInteger);
-        }
-
-        if (this.xpathNamespaces && !this.stub.conditions.xpath) {
-          validationMessages.push(formValidationMessages.xpathNotFilledIn);
-        }
-
-        if (
-          !this.stub.conditions.basicAuthentication.username && this.stub.conditions.basicAuthentication.password ||
-          this.stub.conditions.basicAuthentication.username && !this.stub.conditions.basicAuthentication.password) {
-          validationMessages.push(formValidationMessages.basicAuthInvalid);
-        }
-
-        const statusCode = this.stub.response.statusCode;
-        const parsedStatusCode = parseInt(statusCode);
-        if (statusCode !== null && (isNaN(parsedStatusCode) || parsedStatusCode < 100 || parsedStatusCode >= 600)) {
-          validationMessages.push(formValidationMessages.fillInCorrectStatusCode);
-        }
-
-        if (this.responseHeaders && !this.stub.response.headers) {
-          validationMessages.push(formValidationMessages.headersIncorrect);
-        }
-
-        const extraDuration = this.stub.response.extraDuration;
-        const parsedExtraDuration = parseInt(extraDuration);
-        if (extraDuration !== null && (isNaN(parsedExtraDuration) || parsedExtraDuration <= 0)) {
-          validationMessages.push(formValidationMessages.extraDurationInvalid);
-        }
-
-        if (this.stub.response.permanentRedirect && this.stub.response.temporaryRedirect) {
-          validationMessages.push(formValidationMessages.fillInOneTypeOfRedirect);
-        }
-
-        return validationMessages;
-      },
       async saveStub() {
-        const messages = this.validateForm();
+        const messages = this.$store.getters.getStubFormValidation;
         if (messages.length) {
           for (let message of messages) {
             toastError(message);
@@ -578,7 +528,7 @@
 
         try {
           const results = await this.$store.dispatch(actionNames.addStubs, {
-            input: this.stub,
+            input: this.$store.getters.getStubForSaving,
             inputIsJson: true
           });
           for (let result of results) {

@@ -19,6 +19,10 @@ const storeMap = [
   },
   {
     type: storeTypeEnum.GETTER,
+    content: require("@/store/getters/stubForm")
+  },
+  {
+    type: storeTypeEnum.GETTER,
     content: require("@/store/getters/users")
   },
 
