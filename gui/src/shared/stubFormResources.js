@@ -11,7 +11,8 @@ const tooltipResources = {
   body: "This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. Add one condition per line. Add The condition can both check on substring and regular expressions.",
   formBody: "The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions. Place a new form body condition on a new line in the form of 'key: expected_value'.",
   xpath: "Using the XPath condition checker, you can check the posted XML body to see if it contains the correct elements. It is possible to add multiple conditions. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.\n\nIt is also possible to (pre)-set the XML namespaces of a posted XML body. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.",
-  xpathNamespaces: "Fill in the XML namespaces here. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression. Place a new namespace on a new line in the form of 'key: expected_value'."
+  xpathNamespaces: "Fill in the XML namespaces here. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression. Place a new namespace on a new line in the form of 'key: expected_value'.",
+  jsonPath: "Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions. Add one condition per line."
 };
 
 const formPlaceholderResources = {
@@ -21,7 +22,8 @@ const formPlaceholderResources = {
   body: "first_name=duco\nid=14\n^somevalue$\n...",
   formBody: "first_name: duco\nid: 14\naddress: Some street 1\n...",
   xpath: "/object/a[text() = 'TEST']\n/object/b[text() = 'SomeValue']\n...",
-  xpathNamespaces: "soap: http://www.w3.org/2003/05/soap-envelope\nm: http://www.example.org/stock/Reddy\n..."
+  xpathNamespaces: "soap: http://www.w3.org/2003/05/soap-envelope\nm: http://www.example.org/stock/Reddy\n...",
+  jsonPath: "$.phoneNumbers[?(@.type=='iPhone')]\n$.phoneNumbers[?(@.year=='2016')]\n..."
 };
 
 const formValidationMessages = {
@@ -46,7 +48,8 @@ const formLabels = {
   body: "Body",
   formBody: "Form body",
   xpath: "XPath expressions",
-  xpathNamespaces: "XML namespaces (optional)"
+  xpathNamespaces: "XML namespaces (optional)",
+  jsonPath: "JSONPath"
 };
 
 const isHttpsValues = {

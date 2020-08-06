@@ -147,6 +147,13 @@
                 <v-textarea v-model="xpathNamespaces" :label="formLabels.xpathNamespaces"
                             :placeholder="formPlaceholderResources.xpathNamespaces" @keyup="xpathChanged"/>
               </div>
+
+              <!-- JSONPath -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="jsonPath"/>
+                <v-textarea v-model="jsonPath" :label="formLabels.jsonPath"
+                            :placeholder="formPlaceholderResources.jsonPath" @keyup="jsonPathChanged"/>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -188,6 +195,7 @@
         formBody: "",
         xpath: "",
         xpathNamespaces: "",
+        jsonPath: "",
         isHttps: isHttpsValues.httpAndHttps,
         stub: {
           id: "",
@@ -204,7 +212,8 @@
             },
             body: null,
             form: null,
-            xpath: null
+            xpath: null,
+            jsonPath: null
           }
         }
       };
@@ -318,6 +327,10 @@
             expression.namespaces = namespaces;
           }
         }
+      },
+      jsonPathChanged() {
+        const result = this.parseLines(this.jsonPath);
+        this.stub.conditions.jsonPath = result.length ? result : null;
       },
       parseLines(input) {
         const result = input.split(/\r?\n/);
