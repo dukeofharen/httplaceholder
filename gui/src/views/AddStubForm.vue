@@ -92,6 +92,13 @@
                 <v-text-field v-model="stub.conditions.url.path" label="URL path" class="pa-2"
                               :placeholder="formPlaceholderResources.urlPath"/>
               </div>
+
+              <!-- Query string -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="queryString"/>
+                <v-textarea v-model="queryStrings" label="Query strings (1 on each line)"
+                            :placeholder="formPlaceholderResources.queryString" @keyup="queryStringChanged"/>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -106,7 +113,7 @@
   import {httpMethods} from "@/shared/resources";
   import FormTooltip from "@/components/FormTooltip";
   import {toastError, toastSuccess} from "@/utils/toastUtil";
-  import {resources, formPlaceholderResources} from "@/shared/resources";
+  import {resources, formPlaceholderResources, formValidationMessages} from "@/shared/resources";
 
   export default {
     name: "addStubForm",
@@ -119,6 +126,7 @@
         tenantNames: [],
         httpMethods,
         formPlaceholderResources,
+        queryStrings: "",
         stub: {
           id: "",
           tenant: "",
@@ -127,7 +135,8 @@
           conditions: {
             method: null,
             url: {
-              path: null
+              path: null,
+              query: null
             }
           }
         }
@@ -148,7 +157,24 @@
           actionNames.getTenantNames
         );
       },
+      validateForm() {
+        const validationMessages = [];
+        if (this.queryStrings && !this.stub.conditions.url.query) {
+          validationMessages.push(formValidationMessages.queryStringIncorrect);
+        }
+
+        return validationMessages;
+      },
       async addStub() {
+        const messages = this.validateForm();
+        if (messages.length) {
+          for (let message of messages) {
+            toastError(message);
+          }
+
+          return;
+        }
+
         try {
           const results = await this.$store.dispatch(actionNames.addStubs, {
             input: this.stub,
@@ -170,6 +196,31 @@
       },
       methodSelect(method) {
         this.stub.conditions.method = method;
+      },
+      queryStringChanged() {
+        const value = this.parseKeyValue(this.queryStrings);
+        if (!Object.keys(value).length) {
+          this.stub.conditions.url.query = null;
+        } else {
+          this.stub.conditions.url.query = value;
+        }
+      },
+      parseKeyValue(input) {
+        let result = {};
+        const lines = input.split(/\r?\n/);
+
+        for (let line of lines) {
+          let parts = line.split(":");
+          if (parts.length <= 1) {
+            continue;
+          }
+
+          let key = parts[0];
+          let value = parts.slice(1).join(":").trim();
+          result[key] = value;
+        }
+
+        return result;
       }
     }
   };

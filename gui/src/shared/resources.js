@@ -30,12 +30,18 @@ const tooltipResources = {
   description: "A free text field where you can specify where the stub is for. It is optional.",
   priority: "There are cases when a request matches multiple stub. If this is the case, you can use the 'priority' element. With the priority element, you can specify which stub should be used if multiple stubs are found. The stub with the highest priority will be used. If you don't set the priority on the stub, it will be 0 by default.",
   httpMethod: "This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.).",
-  urlPath: "The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions."
+  urlPath: "The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions.",
+  queryString: "This condition checker can check the query string in a name-value collection like way. The condition can both check on substring and regular expressions. Place a new query string condition on a new line in the form of 'key: expected_value'."
 };
 
 const formPlaceholderResources = {
-  urlPath: "e.g. '/users' or '^/users$' (regex)"
-}
+  urlPath: "e.g. '/users' or '^/users$' (regex)",
+  queryString: "id: 14\nfilter: last_name\napi_key: ^apikey1122$\n..."
+};
+
+const formValidationMessages = {
+  queryStringIncorrect: "You've filled in a value at 'Query strings', but the value could not be parsed. Make sure to fill in a correct value here."
+};
 
 const conditionValidationType = {
   NotSet: "NotSet",
@@ -51,6 +57,13 @@ const httpMethods = [
   "DELETE",
   "PATCH",
   "OPTIONS"
-]
+];
 
-export { resources, conditionValidationType, httpMethods, tooltipResources, formPlaceholderResources };
+export {
+  resources,
+  conditionValidationType,
+  httpMethods,
+  tooltipResources,
+  formPlaceholderResources,
+  formValidationMessages
+};
