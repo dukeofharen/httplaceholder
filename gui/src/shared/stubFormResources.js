@@ -68,10 +68,20 @@ const isHttpsValues = {
   httpAndHttps: 2
 };
 
+const httpMethods = [
+  "GET",
+  "POST",
+  "PUT",
+  "DELETE",
+  "PATCH",
+  "OPTIONS"
+];
+
 export {
   tooltipResources,
   formPlaceholderResources,
   formValidationMessages,
   formLabels,
-  isHttpsValues
+  isHttpsValues,
+  httpMethods
 };

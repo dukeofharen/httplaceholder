@@ -191,7 +191,7 @@
 
 <script>
   import {actionNames} from "@/store/storeConstants";
-  import {httpMethods} from "@/shared/resources";
+  import {httpMethods} from "@/shared/stubFormResources";
   import FormTooltip from "@/components/FormTooltip";
   import {toastError, toastSuccess} from "@/utils/toastUtil";
   import {resources} from "@/shared/resources";
