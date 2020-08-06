@@ -356,7 +356,7 @@
     data() {
       return {
         show: {
-          generalConditions: false,
+          generalConditions: true,
           urlConditions: false,
           headerConditions: false,
           bodyConditions: false,
@@ -364,7 +364,7 @@
           xmlBodyConditions: false,
           jsonBodyConditions: false,
           authenticationConditions: false,
-          generalWriters: false,
+          generalWriters: true,
           bodyWriters: false,
           headerWriters: false
         },
