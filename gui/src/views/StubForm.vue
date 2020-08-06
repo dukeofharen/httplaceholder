@@ -143,75 +143,75 @@
                 </div>
               </div>
 
-              <!--              <div>-->
-              <!--                <h2 class="section-title" @click="show.headerConditions = !show.headerConditions">-->
-              <!--                  <v-icon>{{show.headerConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-              <!--                  Header conditions-->
-              <!--                </h2>-->
-              <!--              </div>-->
+              <div>
+                <h2 class="section-title" @click="show.headerConditions = !show.headerConditions">
+                  <v-icon>{{show.headerConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Header conditions
+                </h2>
+              </div>
 
-              <!--              <div v-if="show.headerConditions">-->
-              <!--                &lt;!&ndash; Headers &ndash;&gt;-->
-              <!--                <div class="d-flex flex-row mb-6">-->
-              <!--                  <FormTooltip tooltipKey="headers"/>-->
-              <!--                  <v-textarea v-model="headers" :label="formLabels.headers"-->
-              <!--                              :placeholder="formPlaceholderResources.headers" @keyup="headersChanged"/>-->
-              <!--                </div>-->
-              <!--              </div>-->
+              <div v-if="show.headerConditions">
+                <!-- Headers -->
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="headers"/>
+                  <v-textarea v-model="stubHeaders" :label="formLabels.headers"
+                              :placeholder="formPlaceholderResources.headers"/>
+                </div>
+              </div>
 
-              <!--              <div v-if="showBodyConditionForms">-->
-              <!--                <h2 class="section-title" @click="show.bodyConditions = !show.bodyConditions">-->
-              <!--                  <v-icon>{{show.bodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-              <!--                  Body conditions-->
-              <!--                </h2>-->
-              <!--              </div>-->
+              <div v-if="showBodyConditionForms">
+                <h2 class="section-title" @click="show.bodyConditions = !show.bodyConditions">
+                  <v-icon>{{show.bodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Body conditions
+                </h2>
+              </div>
 
-              <!--              <div v-if="show.bodyConditions">-->
-              <!--                &lt;!&ndash; Body &ndash;&gt;-->
-              <!--                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">-->
-              <!--                  <FormTooltip tooltipKey="body"/>-->
-              <!--                  <v-textarea v-model="body" :label="formLabels.body"-->
-              <!--                              :placeholder="formPlaceholderResources.body" @keyup="bodyChanged"/>-->
-              <!--                </div>-->
-              <!--              </div>-->
+              <div v-if="show.bodyConditions">
+                <!-- Body -->
+                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
+                  <FormTooltip tooltipKey="body"/>
+                  <v-textarea v-model="stubBody" :label="formLabels.body"
+                              :placeholder="formPlaceholderResources.body" @keyup="bodyChanged"/>
+                </div>
+              </div>
 
-              <!--              <div v-if="showBodyConditionForms">-->
-              <!--                <h2 class="section-title" @click="show.formBodyConditions = !show.formBodyConditions">-->
-              <!--                  <v-icon>{{show.formBodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-              <!--                  Form body conditions-->
-              <!--                </h2>-->
-              <!--              </div>-->
+              <div v-if="showBodyConditionForms">
+                <h2 class="section-title" @click="show.formBodyConditions = !show.formBodyConditions">
+                  <v-icon>{{show.formBodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Form body conditions
+                </h2>
+              </div>
 
-              <!--              <div v-if="show.formBodyConditions">-->
-              <!--                &lt;!&ndash; Form body &ndash;&gt;-->
-              <!--                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">-->
-              <!--                  <FormTooltip tooltipKey="formBody"/>-->
-              <!--                  <v-textarea v-model="formBody" :label="formLabels.formBody"-->
-              <!--                              :placeholder="formPlaceholderResources.formBody" @keyup="formBodyChanged"/>-->
-              <!--                </div>-->
-              <!--              </div>-->
+              <div v-if="show.formBodyConditions">
+                <!-- Form body -->
+                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
+                  <FormTooltip tooltipKey="formBody"/>
+                  <v-textarea v-model="stubFormBody" :label="formLabels.formBody"
+                              :placeholder="formPlaceholderResources.formBody"/>
+                </div>
+              </div>
 
-              <!--              <div v-if="showBodyConditionForms">-->
-              <!--                <h2 class="section-title" @click="show.xmlBodyConditions = !show.xmlBodyConditions">-->
-              <!--                  <v-icon>{{show.xmlBodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>-->
-              <!--                  XML body conditions-->
-              <!--                </h2>-->
-              <!--              </div>-->
+              <div v-if="showBodyConditionForms">
+                <h2 class="section-title" @click="show.xmlBodyConditions = !show.xmlBodyConditions">
+                  <v-icon>{{show.xmlBodyConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  XML body conditions
+                </h2>
+              </div>
 
-              <!--              <div v-if="show.xmlBodyConditions">-->
-              <!--                &lt;!&ndash; XPath &ndash;&gt;-->
-              <!--                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">-->
-              <!--                  <FormTooltip tooltipKey="xpath"/>-->
-              <!--                  <v-textarea v-model="xpath" :label="formLabels.xpath"-->
-              <!--                              :placeholder="formPlaceholderResources.xpath" @keyup="xpathChanged"/>-->
-              <!--                </div>-->
+              <div v-if="show.xmlBodyConditions">
+                <!-- XPath -->
+                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
+                  <FormTooltip tooltipKey="xpath"/>
+                  <v-textarea v-model="stubXPath" :label="formLabels.xpath"
+                              :placeholder="formPlaceholderResources.xpath"/>
+                </div>
 
-              <!--                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">-->
-              <!--                  <FormTooltip tooltipKey="xpathNamespaces"/>-->
-              <!--                  <v-textarea v-model="xpathNamespaces" :label="formLabels.xpathNamespaces"-->
-              <!--                              :placeholder="formPlaceholderResources.xpathNamespaces" @keyup="xpathChanged"/>-->
-              <!--                </div>-->
-              <!--              </div>-->
+                <div class="d-flex flex-row mb-6" v-if="showBodyConditionForms">
+                  <FormTooltip tooltipKey="xpathNamespaces"/>
+                  <v-textarea v-model="stubXPathNamespaces" :label="formLabels.xpathNamespaces"
+                              :placeholder="formPlaceholderResources.xpathNamespaces"/>
+                </div>
+              </div>
 
               <!--              <div v-if="showBodyConditionForms">-->
               <!--                <h2 class="section-title" @click="show.jsonBodyConditions = !show.jsonBodyConditions">-->
@@ -471,7 +471,7 @@
         return this.bodyResponseType !== responseBodyTypes.empty;
       },
       showBodyConditionForms() {
-        return this.stub.conditions.method !== "GET";
+        return this.stubConditionMethod !== "GET";
       },
       dynamicModeEnabled() {
         return this.variableHandlers.length;
@@ -490,7 +490,12 @@
         stubConditionUrlPath: "stubForm.stub.conditions.url.path",
         stubQueryStrings: "stubForm.queryStrings",
         stubConditionUrlFullPath: "stubForm.stub.conditions.url.fullPath",
-        stubIsHttp: "stubForm.isHttps"
+        stubIsHttp: "stubForm.isHttps",
+        stubHeaders: "stubForm.headers",
+        stubBody: "stubForm.body",
+        stubFormBody: "stubForm.formBody",
+        stubXPath: "stubForm.xpath",
+        stubXPathNamespaces: "stubForm.xpathNamespaces"
       })
     },
     methods: {
@@ -575,73 +580,9 @@
           toastError(e);
         }
       },
-      bodyChanged() {
-        const result = this.parseLines(this.body);
-        this.stub.conditions.body = result.length ? result : null;
-      },
-      formBodyChanged() {
-        const result = this.parseKeyValue(this.formBody);
-        const keys = Object.keys(result);
-        if (!keys.length) {
-          this.stub.conditions.form = null;
-        } else {
-          this.stub.conditions.form = keys.map(k => ({key: k, value: result[k]}));
-        }
-      },
-      xpathChanged() {
-        const result = this.parseLines(this.xpath);
-        if (!result.length) {
-          this.stub.conditions.xpath = null;
-        } else {
-          this.stub.conditions.xpath = result.map(e => ({queryString: e}));
-          const nsResult = this.parseKeyValue(this.xpathNamespaces);
-          const nsKeys = Object.keys(nsResult);
-          let namespaces = {};
-          if (nsKeys.length) {
-            for (let key of nsKeys) {
-              namespaces[key] = nsResult[key];
-            }
-          } else {
-            namespaces = null;
-          }
-
-          for (let expression of this.stub.conditions.xpath) {
-            expression.namespaces = namespaces;
-          }
-        }
-      },
       jsonPathChanged() {
         const result = this.parseLines(this.jsonPath);
         this.stub.conditions.jsonPath = result.length ? result : null;
-      },
-      headersChanged() {
-        const result = this.parseKeyValue(this.headers);
-        this.stub.conditions.headers = Object.keys(result).length ? result : null;
-      },
-      parseLines(input) {
-        const result = input.split(/\r?\n/);
-        if (result.every(l => !l)) {
-          return [];
-        }
-
-        return result;
-      },
-      parseKeyValue(input) {
-        let result = {};
-        const lines = input.split(/\r?\n/);
-
-        for (let line of lines) {
-          let parts = line.split(":");
-          if (parts.length <= 1) {
-            continue;
-          }
-
-          let key = parts[0];
-          let value = parts.slice(1).join(":").trim();
-          result[key] = value;
-        }
-
-        return result;
       },
       responseBodyChanged() {
         this.stub.response.html = null;

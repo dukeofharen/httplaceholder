@@ -5,7 +5,15 @@ export const mutationNames = {
   storeStubQueryStrings: "storeStubQueryStrings",
   storeQueryStrings: "storeQueryStrings",
   storeStubIsHttpsSelected: "storeStubIsHttpsSelected",
-  storeIsHttpsSelected: "storeIsHttpsSelected"
+  storeIsHttpsSelected: "storeIsHttpsSelected",
+  storeStubHeaders: "storeStubHeaders",
+  storeHeaders: "storeHeaders",
+  storeStubBody: "storeStubBody",
+  storeBody: "storeBody",
+  storeStubFormBody: "storeStubFormBody",
+  storeFormBody: "storeFormBody",
+  storeStubXPathAndNamespaces: "storeStubXPathAndNamespaces",
+  storeXPathAndNamespaces: "storeXPathAndNamespaces"
 };
 
 export const actionNames = {

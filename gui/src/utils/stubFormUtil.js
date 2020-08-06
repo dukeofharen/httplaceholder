@@ -1,5 +1,9 @@
 export function parseKeyValue(input) {
   let result = {};
+  if (!input) {
+    return result;
+  }
+
   const lines = input.split(/\r?\n/);
 
   for (let line of lines) {
@@ -15,3 +19,12 @@ export function parseKeyValue(input) {
 
   return result;
 }
+
+export function parseLines(input) {
+  const result = input.split(/\r?\n/);
+  if (result.every(l => !l)) {
+    return [];
+  }
+
+  return result;
+};
