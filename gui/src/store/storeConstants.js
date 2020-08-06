@@ -1,7 +1,9 @@
 export const mutationNames = {
   userTokenMutation: "storeUserToken",
   storeDarkTheme: "storeDarkTheme",
-  storeMetadata: "storeMetadata"
+  storeMetadata: "storeMetadata",
+  storeStubQueryStrings: "storeStubQueryStrings",
+  storeQueryStrings: "storeQueryStrings"
 };
 
 export const actionNames = {
