@@ -23,6 +23,15 @@ const formValidationMessages = {
 };
 
 const formLabels = {
+  id: "ID",
+  tenant: "Stub tenant / category",
+  description: "Description",
+  priority: "Priority",
+  httpMethod: "HTTP method",
+  urlPath: "URL path",
+  queryString: "Query strings (1 on each line)",
+  fullPath: "Full path",
+
   onlyHttps: "The request should be made over HTTPS",
   onlyHttp: "The request should be made over HTTP",
   httpAndHttps: "The request can be made over HTTP or HTTPS"

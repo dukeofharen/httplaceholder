@@ -21,7 +21,7 @@
               <!-- ID -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="id"/>
-                <v-text-field v-model="stub.id" label="ID" class="pa-2"/>
+                <v-text-field v-model="stub.id" :label="formLabels.id" class="pa-2"/>
               </div>
 
               <!-- Tenant -->
@@ -29,7 +29,7 @@
                 <FormTooltip tooltipKey="tenant"/>
                 <v-menu absolute offset-y>
                   <template v-slot:activator="{on}">
-                    <v-text-field v-model="stub.tenant" label="Stub tenant / category" v-on="on" clearable
+                    <v-text-field v-model="stub.tenant" :label="formLabels.tenant" v-on="on" clearable
                                   class="pa-2"/>
                   </template>
                   <v-list>
@@ -44,13 +44,13 @@
               <!-- Description -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="description"/>
-                <v-textarea v-model="stub.description" label="Description"/>
+                <v-textarea v-model="stub.description" :label="formLabels.description"/>
               </div>
 
               <!-- Priority -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="priority"/>
-                <v-text-field v-model="stub.priority" label="Priority" class="pa-2"/>
+                <v-text-field v-model="stub.priority" :label="formLabels.priority" class="pa-2"/>
               </div>
             </v-col>
           </v-row>
@@ -70,7 +70,7 @@
                 <FormTooltip tooltipKey="httpMethod"/>
                 <v-menu absolute offset-y>
                   <template v-slot:activator="{on}">
-                    <v-text-field v-model="stub.conditions.method" label="HTTP method" v-on="on" clearable
+                    <v-text-field v-model="stub.conditions.method" :label="formLabels.httpMethod" v-on="on" clearable
                                   class="pa-2"/>
                   </template>
                   <v-list>
@@ -89,21 +89,21 @@
               <!-- URL path -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="urlPath"/>
-                <v-text-field v-model="stub.conditions.url.path" label="URL path" class="pa-2"
+                <v-text-field v-model="stub.conditions.url.path" :label="formLabels.urlPath" class="pa-2"
                               :placeholder="formPlaceholderResources.urlPath"/>
               </div>
 
               <!-- Query string -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="queryString"/>
-                <v-textarea v-model="queryStrings" label="Query strings (1 on each line)"
+                <v-textarea v-model="queryStrings" :label="formLabels.queryString"
                             :placeholder="formPlaceholderResources.queryString" @keyup="queryStringChanged"/>
               </div>
 
               <!-- Full path -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="fullPath"/>
-                <v-text-field v-model="stub.conditions.url.fullPath" label="Full path" class="pa-2"
+                <v-text-field v-model="stub.conditions.url.fullPath" :label="formLabels.fullPath" class="pa-2"
                               :placeholder="formPlaceholderResources.fullPath"/>
               </div>
 
