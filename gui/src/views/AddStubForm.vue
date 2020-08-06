@@ -35,8 +35,7 @@
                   </template>
                   <v-list>
                     <v-list-item v-for="(tenant, index) in filteredTenantNames" :key="index"
-                                 @click="tenantSelect(tenant)"
-                                 re>
+                                 @click="tenantSelect(tenant)">
                       <v-list-item-title>{{tenant}}</v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -61,6 +60,28 @@
       </v-card>
       <v-card>
         <v-card-title>Conditions</v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col>
+              <!-- HTTP method -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip
+                  text="This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.)."/>
+                <v-menu absolute offset-y>
+                  <template v-slot:activator="{on}">
+                    <v-text-field v-model="stub.conditions.method" label="HTTP method" v-on="on" clearable/>
+                  </template>
+                  <v-list>
+                    <v-list-item v-for="(method, index) in httpMethods" :key="index"
+                                 @click="methodSelect(method)">
+                      <v-list-item-title>{{method}}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card-text>
       </v-card>
       <v-btn color="success" @click="addStub">Add stub</v-btn>
     </v-col>
@@ -69,6 +90,7 @@
 
 <script>
   import {actionNames} from "@/store/storeConstants";
+  import {httpMethods} from "@/shared/resources";
   import FormTooltip from "@/components/FormTooltip";
 
   export default {
@@ -80,11 +102,15 @@
     data() {
       return {
         tenantNames: [],
+        httpMethods,
         stub: {
           id: "",
           tenant: "",
           description: "",
-          priority: 0
+          priority: 0,
+          conditions: {
+            method: ""
+          }
         }
       };
     },
@@ -108,6 +134,9 @@
       },
       tenantSelect(tenant) {
         this.stub.tenant = tenant;
+      },
+      methodSelect(method) {
+        this.stub.conditions.method = method;
       }
     }
   };

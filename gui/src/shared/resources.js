@@ -31,4 +31,13 @@ const conditionValidationType = {
   NotExecuted: "NotExecuted"
 };
 
-export { resources, conditionValidationType };
+const httpMethods = [
+  "GET",
+  "POST",
+  "PUT",
+  "DELETE",
+  "PATCH",
+  "OPTIONS"
+]
+
+export { resources, conditionValidationType, httpMethods };
