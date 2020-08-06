@@ -111,9 +111,10 @@
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="isHttps"/>
                 <v-switch v-model="stub.conditions.url.isHttps" class="pa-2" :label="isHttpsLabel"/>
-                <div class="pa-2">
-                  <v-btn color="primary" @click="stub.conditions.url.isHttps = null">Clear HTTPS bit</v-btn>
-                </div>
+              </div>
+
+              <div>
+                <v-btn color="primary" @click="stub.conditions.url.isHttps = null">Clear HTTPS bit</v-btn>
               </div>
             </v-col>
           </v-row>
