@@ -44,7 +44,7 @@ For both the conditions and negativeConditions, all condition checkers as explai
 
 ## Description
 
-A free text field where you can specify where the sub is for. It is optional.
+A free text field where you can specify where the stub is for. It is optional.
 
 ```yml
 - id: situation-01

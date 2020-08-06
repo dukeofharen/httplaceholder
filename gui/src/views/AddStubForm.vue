@@ -18,18 +18,43 @@
         <v-card-text>
           <v-row>
             <v-col>
-              <v-text-field v-model="stub.id" label="ID"/>
-              <v-menu absolute offset-y>
-                <template v-slot:activator="{on}">
-                  <v-text-field v-model="stub.tenant" label="Stub tenant / category" v-on="on" clearable/>
-                </template>
-                <v-list>
-                  <v-list-item v-for="(tenant, index) in filteredTenantNames" :key="index" @click="tenantSelect(tenant)" re>
-                    <v-list-item-title>{{tenant}}</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-menu>
-              <v-textarea v-model="stub.description" label="Description" />
+              <!-- ID -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip
+                  text="The ID of the stub. If you don't fill in an ID, an ID will be calculated when the stub is added. If you provide an ID of a stub that already exists, that stub will be overwritten with this one."/>
+                <v-text-field v-model="stub.id" label="ID"/>
+              </div>
+
+              <!-- Tenant -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip
+                  text="The stub also has a 'tenant' field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant). "/>
+                <v-menu absolute offset-y>
+                  <template v-slot:activator="{on}">
+                    <v-text-field v-model="stub.tenant" label="Stub tenant / category" v-on="on" clearable/>
+                  </template>
+                  <v-list>
+                    <v-list-item v-for="(tenant, index) in filteredTenantNames" :key="index"
+                                 @click="tenantSelect(tenant)"
+                                 re>
+                      <v-list-item-title>{{tenant}}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
+                </v-menu>
+              </div>
+
+              <!-- Description -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip text="A free text field where you can specify where the stub is for. It is optional."/>
+                <v-textarea v-model="stub.description" label="Description"/>
+              </div>
+
+              <!-- Priority -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip
+                  text="There are cases when a request matches multiple stub. If this is the case, you can use the 'priority' element. With the priority element, you can specify which stub should be used if multiple stubs are found. The stub with the highest priority will be used. If you don't set the priority on the stub, it will be 0 by default."/>
+                <v-text-field v-model="stub.priority" label="Priority" class="pa-2"/>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -44,9 +69,11 @@
 
 <script>
   import {actionNames} from "@/store/storeConstants";
+  import FormTooltip from "@/components/FormTooltip";
 
   export default {
     name: "addStubForm",
+    components: {FormTooltip},
     async mounted() {
       await this.initialize();
     },
