@@ -1,12 +1,13 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Domain;
 using MediatR;
 
 namespace HttPlaceholder.Application.Stubs.Commands.AddStub
 {
     // ReSharper disable once UnusedType.Global
-    public class AddStubCommandHandler : IRequestHandler<AddStubCommand>
+    public class AddStubCommandHandler : IRequestHandler<AddStubCommand, FullStubModel>
     {
         private readonly IStubContext _stubContext;
 
@@ -15,14 +16,11 @@ namespace HttPlaceholder.Application.Stubs.Commands.AddStub
             _stubContext = stubContext;
         }
 
-        public async Task<Unit> Handle(AddStubCommand request, CancellationToken cancellationToken)
+        public async Task<FullStubModel> Handle(AddStubCommand request, CancellationToken cancellationToken)
         {
             // Delete stub with same ID.
             await _stubContext.DeleteStubAsync(request.Stub.Id);
-
-            await _stubContext.AddStubAsync(request.Stub);
-
-            return Unit.Value;
+            return await _stubContext.AddStubAsync(request.Stub);
         }
     }
 }

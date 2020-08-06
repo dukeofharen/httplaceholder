@@ -48,7 +48,7 @@ namespace HttPlaceholder.Persistence.Implementations
 
             var source = GetWritableStubSource();
             await source.AddStubAsync(stub);
-            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = true}};
+            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = false}};
         }
 
         public async Task<bool> DeleteStubAsync(string stubId) =>

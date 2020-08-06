@@ -56,6 +56,8 @@ response:
 
             // act / assert
             using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(content.Contains("situation-01"));
             Assert.IsTrue(response.IsSuccessStatusCode);
             Assert.AreEqual(1, StubSource.StubModels.Count);
             Assert.AreEqual("situation-01", StubSource.StubModels.Single().Id);
@@ -95,6 +97,8 @@ response:
 
             // act / assert
             using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(content.Contains("situation-01"));
             Assert.IsTrue(response.IsSuccessStatusCode);
             Assert.AreEqual(1, StubSource.StubModels.Count);
             Assert.AreEqual("situation-01", StubSource.StubModels.First().Id);
