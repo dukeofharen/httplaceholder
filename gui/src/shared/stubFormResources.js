@@ -12,7 +12,8 @@ const tooltipResources = {
   formBody: "The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions. Place a new form body condition on a new line in the form of 'key: expected_value'.",
   xpath: "Using the XPath condition checker, you can check the posted XML body to see if it contains the correct elements. It is possible to add multiple conditions. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.\n\nIt is also possible to (pre)-set the XML namespaces of a posted XML body. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.",
   xpathNamespaces: "Fill in the XML namespaces here. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression. Place a new namespace on a new line in the form of 'key: expected_value'.",
-  jsonPath: "Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions. Add one condition per line."
+  jsonPath: "Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions. Add one condition per line.",
+  basicAuthentication: "This condition checker can check whether the sent basic authentication matches with the data in the stub."
 };
 
 const formPlaceholderResources = {
@@ -30,7 +31,8 @@ const formValidationMessages = {
   queryStringIncorrect: "You've filled in a value at 'Query strings', but the value could not be parsed. Make sure to fill in a correct value here.",
   formBodyIncorrect: "You've filled in a value at 'Form body', but the value could not be parsed. Make sure to fill in a correct value here.",
   priorityNotInteger: "Make sure the priority is numeric.",
-  xpathNotFilledIn: "You filled in XML namespaces, but you didn't fill in any XPath expressions."
+  xpathNotFilledIn: "You filled in XML namespaces, but you didn't fill in any XPath expressions.",
+  basicAuthInvalid: "Leave basic authentication username and password both empty or fill in both fields. You can't fill in only one field."
 };
 
 const formLabels = {
@@ -49,7 +51,9 @@ const formLabels = {
   formBody: "Form body",
   xpath: "XPath expressions",
   xpathNamespaces: "XML namespaces (optional)",
-  jsonPath: "JSONPath"
+  jsonPath: "JSONPath",
+  basicAuthUsername: "Basic authentication username",
+  basicAuthPassword: "Basic authentication password",
 };
 
 const isHttpsValues = {

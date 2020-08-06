@@ -154,6 +154,16 @@
                 <v-textarea v-model="jsonPath" :label="formLabels.jsonPath"
                             :placeholder="formPlaceholderResources.jsonPath" @keyup="jsonPathChanged"/>
               </div>
+
+              <div>
+                <h2>Authentication conditions</h2>
+              </div>
+
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="fullPath"/>
+                <v-text-field v-model="stub.conditions.basicAuthentication.username" :label="formLabels.basicAuthUsername" class="pa-2"/>
+                <v-text-field v-model="stub.conditions.basicAuthentication.password" :label="formLabels.basicAuthPassword" class="pa-2"/>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -213,7 +223,11 @@
             body: null,
             form: null,
             xpath: null,
-            jsonPath: null
+            jsonPath: null,
+            basicAuthentication: {
+              username: null,
+              password: null
+            }
           }
         }
       };
@@ -249,6 +263,12 @@
 
         if (this.xpathNamespaces && !this.stub.conditions.xpath) {
           validationMessages.push(formValidationMessages.xpathNotFilledIn);
+        }
+
+        if(
+          !this.stub.conditions.basicAuthentication.username && this.stub.conditions.basicAuthentication.password ||
+          this.stub.conditions.basicAuthentication.username && !this.stub.conditions.basicAuthentication.password) {
+          validationMessages.push(formValidationMessages.basicAuthInvalid);
         }
 
         return validationMessages;
