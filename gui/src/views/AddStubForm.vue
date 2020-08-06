@@ -89,6 +89,13 @@
                               :placeholder="formPlaceholderResources.clientIp"/>
               </div>
 
+              <!-- Hostname -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="hostname"/>
+                <v-text-field v-model="stub.conditions.hostname" :label="formLabels.hostname" class="pa-2"
+                              :placeholder="formPlaceholderResources.hostname"/>
+              </div>
+
               <div>
                 <h2>URL conditions</h2>
               </div>
@@ -236,7 +243,8 @@
               username: null,
               password: null
             },
-            clientIp: null
+            clientIp: null,
+            hostname: null
           }
         }
       };
