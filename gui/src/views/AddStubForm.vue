@@ -82,6 +82,13 @@
                 </v-menu>
               </div>
 
+              <!-- Client IP -->
+              <div class="d-flex flex-row mb-6">
+                <FormTooltip tooltipKey="clientIp"/>
+                <v-text-field v-model="stub.conditions.clientIp" :label="formLabels.clientIp" class="pa-2"
+                              :placeholder="formPlaceholderResources.clientIp"/>
+              </div>
+
               <div>
                 <h2>URL conditions</h2>
               </div>
@@ -159,6 +166,7 @@
                 <h2>Authentication conditions</h2>
               </div>
 
+              <!-- Basic authentication -->
               <div class="d-flex flex-row mb-6">
                 <FormTooltip tooltipKey="fullPath"/>
                 <v-text-field v-model="stub.conditions.basicAuthentication.username" :label="formLabels.basicAuthUsername" class="pa-2"/>
@@ -227,7 +235,8 @@
             basicAuthentication: {
               username: null,
               password: null
-            }
+            },
+            clientIp: null
           }
         }
       };

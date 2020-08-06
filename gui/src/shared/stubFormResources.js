@@ -13,7 +13,8 @@ const tooltipResources = {
   xpath: "Using the XPath condition checker, you can check the posted XML body to see if it contains the correct elements. It is possible to add multiple conditions. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.\n\nIt is also possible to (pre)-set the XML namespaces of a posted XML body. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.",
   xpathNamespaces: "Fill in the XML namespaces here. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression. Place a new namespace on a new line in the form of 'key: expected_value'.",
   jsonPath: "Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions. Add one condition per line.",
-  basicAuthentication: "This condition checker can check whether the sent basic authentication matches with the data in the stub."
+  basicAuthentication: "This condition checker can check whether the sent basic authentication matches with the data in the stub.",
+  clientIp: "It is also possible to set a condition to check the the client IP. A condition can be set for a single IP address or a whole IP range."
 };
 
 const formPlaceholderResources = {
@@ -24,7 +25,8 @@ const formPlaceholderResources = {
   formBody: "first_name: duco\nid: 14\naddress: Some street 1\n...",
   xpath: "/object/a[text() = 'TEST']\n/object/b[text() = 'SomeValue']\n...",
   xpathNamespaces: "soap: http://www.w3.org/2003/05/soap-envelope\nm: http://www.example.org/stock/Reddy\n...",
-  jsonPath: "$.phoneNumbers[?(@.type=='iPhone')]\n$.phoneNumbers[?(@.year=='2016')]\n..."
+  jsonPath: "$.phoneNumbers[?(@.type=='iPhone')]\n$.phoneNumbers[?(@.year=='2016')]\n...",
+  clientIp: "e.g. '127.0.0.1' or '127.0.0.0/29'"
 };
 
 const formValidationMessages = {
@@ -54,6 +56,7 @@ const formLabels = {
   jsonPath: "JSONPath",
   basicAuthUsername: "Basic authentication username",
   basicAuthPassword: "Basic authentication password",
+  clientIp: "Client IP"
 };
 
 const isHttpsValues = {
