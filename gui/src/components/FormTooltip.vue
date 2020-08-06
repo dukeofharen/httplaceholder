@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import {tooltipResources} from "@/shared/resources";
+  import {tooltipResources} from "@/shared/stubFormResources";
   export default {
     props: ["tooltipKey"],
     data() {
