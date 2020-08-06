@@ -75,7 +75,8 @@ export function addStubs({}, payload) {
         new Promise((resolve, reject) =>
           createInstance()
             .post("ph-api/stubs", stub)
-            .then(() => resolve(stub))
+            .then(r => r.data)
+            .then(result => resolve(result))
             .catch(error => reject({error, stubId: stub.id}))
         )
       );

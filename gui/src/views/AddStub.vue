@@ -100,7 +100,7 @@ export default {
         });
         for (let result of results) {
           if (result.v) {
-            toastSuccess(resources.stubAddedSuccessfully.format(result.v.id));
+            toastSuccess(resources.stubAddedSuccessfully.format(result.v.stub.id));
           } else if (result.e) {
             toastError(resources.stubNotAdded.format(result.e.stubId));
           }
