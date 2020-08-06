@@ -51,7 +51,7 @@
               <v-icon>mdi-download</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text"
-              >Download stubs
+            >Download stubs
             </v-list-item-title>
           </v-list-item>
           <v-divider dark class="my-4" v-if="authenticated"></v-divider>
@@ -85,65 +85,62 @@
 </template>
 
 <script>
-import { routeNames } from "@/router/routerConstants";
-import { actionNames, mutationNames } from "@/store/storeConstants";
-import { getDarkThemeEnabled } from "@/utils/sessionUtil";
+  import {routeNames} from "@/router/routerConstants";
+  import {actionNames, mutationNames} from "@/store/storeConstants";
+  import {getDarkThemeEnabled} from "@/utils/sessionUtil";
 
-export default {
-  name: "app",
-  async created() {
-    this.metadata = await this.$store.dispatch(actionNames.getMetadata);
-    document.title = `HttPlaceholder - v${this.metadata.version}`;
+  export default {
+    name: "app",
+    async created() {
+      this.metadata = await this.$store.dispatch(actionNames.getMetadata);
+      document.title = `HttPlaceholder - v${this.metadata.version}`;
 
-    this.setTheme();
-    if (!this.authenticated) {
-      this.authRequired = await this.$store.dispatch(
-        actionNames.ensureAuthenticated
-      );
-    }
-  },
-  data() {
-    return {
-      drawer: true,
-      authRequired: false,
-      metadata: {
-        version: ""
+      this.setTheme();
+      if (!this.authenticated) {
+        this.authRequired = await this.$store.dispatch(
+          actionNames.ensureAuthenticated
+        );
+      }
+    },
+    data() {
+      return {
+        drawer: true,
+        authRequired: false,
+        routeNames
+      };
+    },
+    computed: {
+      authenticated() {
+        return this.$store.getters.getAuthenticated;
       },
-      routeNames
-    };
-  },
-  computed: {
-    authenticated() {
-      return this.$store.getters.getAuthenticated;
+      darkTheme() {
+        return this.$store.getters.getDarkTheme;
+      }
     },
-    darkTheme() {
-      return this.$store.getters.getDarkTheme;
-    }
-  },
-  methods: {
-    logout() {
-      this.$store.commit(mutationNames.userTokenMutation, null);
-      this.$router.push({ name: routeNames.login });
+    methods: {
+      logout() {
+        this.$store.commit(mutationNames.userTokenMutation, null);
+        this.$router.push({name: routeNames.login});
+      },
+      setTheme() {
+        const darkThemeEnabled = getDarkThemeEnabled();
+        if (darkThemeEnabled) {
+          this.$store.commit(mutationNames.storeDarkTheme, darkThemeEnabled);
+        }
+      }
     },
-    setTheme() {
-      const darkThemeEnabled = getDarkThemeEnabled();
-      if (darkThemeEnabled) {
-        this.$store.commit(mutationNames.storeDarkTheme, darkThemeEnabled);
+    watch: {
+      darkTheme(darkTheme) {
+        this.$vuetify.theme.dark = darkTheme;
       }
     }
-  },
-  watch: {
-    darkTheme(darkTheme) {
-      this.$vuetify.theme.dark = darkTheme;
-    }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.title img {
-  position: absolute;
-  top: 8px;
-  height: 70%;
-}
+  .title img {
+    position: absolute;
+    top: 8px;
+    height: 70%;
+  }
 </style>

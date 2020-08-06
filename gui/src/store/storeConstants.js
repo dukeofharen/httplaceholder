@@ -1,6 +1,7 @@
 export const mutationNames = {
   userTokenMutation: "storeUserToken",
-  storeDarkTheme: "storeDarkTheme"
+  storeDarkTheme: "storeDarkTheme",
+  storeMetadata: "storeMetadata"
 };
 
 export const actionNames = {

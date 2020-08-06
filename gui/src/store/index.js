@@ -10,7 +10,8 @@ const state = {
   userToken: token || "",
   settings: {
     darkTheme: false
-  }
+  },
+  metadata: null
 };
 
 export default new Vuex.Store(constructStore(state));
