@@ -1,8 +1,9 @@
+<!--suppress CssUnusedSymbol -->
 <template>
   <v-row v-shortkey="['ctrl', 's']" @shortkey="saveStub">
     <v-col>
       <h1>{{routeStubId ? "Update stub" : "Add stub"}}</h1>
-      <v-card>
+      <v-card class="ma-5">
         <v-card-title v-if="!routeStubId">You can add a new stub here</v-card-title>
         <v-card-title v-if="routeStubId">You can update the stub here</v-card-title>
         <v-card-text>
@@ -14,7 +15,7 @@
           </v-row>
         </v-card-text>
       </v-card>
-      <v-card>
+      <v-card class="ma-5">
         <v-card-title>General</v-card-title>
         <v-card-text>
           <v-row>
@@ -57,11 +58,16 @@
           </v-row>
         </v-card-text>
       </v-card>
-      <v-card>
+      <v-card class="ma-5">
         <v-card-title>Request conditions</v-card-title>
         <v-card-text>
           <v-row>
             <v-col>
+              <div>
+                <p>
+                  Define what the request should look like before the response is returned to the client.
+                </p>
+              </div>
               <div>
                 <h2 class="section-title" @click="show.generalConditions = !show.generalConditions">
                   <v-icon>{{show.generalConditions ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
@@ -252,11 +258,17 @@
         </v-card-text>
       </v-card>
 
-      <v-card>
+      <v-card class="ma-5">
         <v-card-title>Response writers</v-card-title>
         <v-card-text>
           <v-row>
             <v-col>
+
+              <div>
+                <p>
+                  Define what the response should look like that will be returned to the client.
+                </p>
+              </div>
 
               <div>
                 <h2 class="section-title" @click="show.generalWriters = !show.generalWriters">
@@ -324,7 +336,7 @@
 
                 <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm && showFileUpload">
                   <FormTooltip tooltipKey="base64Upload"/>
-                  <v-btn color="success" @click="selectFile">Select file</v-btn>
+                  <v-btn color="success" @click="selectFile" class="ma-5">Select file</v-btn>
                   <input
                     type="file"
                     name="file"
@@ -338,7 +350,7 @@
                   <FormTooltip tooltipKey="selectVariableHandler"/>
                   <v-menu absolute offset-y>
                     <template v-slot:activator="{on}">
-                      <v-btn color="success" v-on="on">Select variable handler</v-btn>
+                      <v-btn color="success" v-on="on" class="ma-5">Select variable handler</v-btn>
                     </template>
                     <v-list max-height="300px">
                       <v-list-item v-for="handler in variableHandlers" :key="handler.name"
@@ -372,7 +384,7 @@
                   <FormTooltip tooltipKey="selectVariableHandler"/>
                   <v-menu absolute offset-y>
                     <template v-slot:activator="{on}">
-                      <v-btn color="success" v-on="on">Select variable handler</v-btn>
+                      <v-btn color="success" v-on="on" class="ma-5">Select variable handler</v-btn>
                     </template>
                     <v-list max-height="300px">
                       <v-list-item v-for="handler in variableHandlers" :key="handler.name"
@@ -412,7 +424,7 @@
         </v-card-text>
       </v-card>
 
-      <v-card>
+      <v-card class="ma-5">
         <v-card-text>
           <v-row>
             <v-col>
@@ -434,8 +446,8 @@
         </v-card-text>
       </v-card>
 
-      <v-btn color="success" @click="saveStub">Save stub</v-btn>
-      <v-btn color="error" @click="clearForm">Clear form</v-btn>
+      <v-btn color="success" @click="saveStub" class="ma-5">Save stub</v-btn>
+      <v-btn color="error" @click="clearForm" class="ma-5">Clear form</v-btn>
     </v-col>
   </v-row>
 </template>
@@ -446,12 +458,11 @@
   import {toastError, toastSuccess} from "@/utils/toastUtil";
   import {resources} from "@/shared/resources";
   import {
-    formPlaceholderResources,
-    formValidationMessages,
     formLabels,
-    isHttpsValues,
+    formPlaceholderResources,
     httpMethods,
     httpStatusCodes,
+    isHttpsValues,
     responseBodyTypes
   } from "@/shared/stubFormResources";
   import {mapFields} from "vuex-map-fields";
@@ -644,9 +655,8 @@
         reader.onload = e => {
           const dataUrl = e.target.result;
           const parts = dataUrl.split(",");
-          const base64 = parts[1];
-          this.stubResponseBody = base64;
-          const regexMatches = parts[0].match(/^data\:(.*);base64$/);
+          this.stubResponseBody = parts[1];
+          const regexMatches = parts[0].match(/^data:(.*);base64$/);
           if (regexMatches.length > 1) {
             const mime = regexMatches[1];
             this.$store.commit(mutationNames.setResponseHeader, {key: "Content-Type", value: mime});
@@ -728,11 +738,6 @@
 </script>
 
 <style scoped>
-  .v-card {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
-
   .v-list-item {
     background-color: #ffffff !important;
   }
@@ -741,10 +746,6 @@
     color: #112b00;
     cursor: pointer;
     margin-bottom: 10px;
-  }
-
-  .v-btn {
-    margin-right: 10px;
   }
 
   input[type="file"] {
