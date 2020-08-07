@@ -172,8 +172,8 @@ export function storeStubJsonPath(state) {
 }
 
 export function storeJsonPath(state) {
-  const value = state.stubForm.stub.conditions.body;
-  state.stubForm.body = value && value.length ? value.join("\n") : "";
+  const value = state.stubForm.stub.conditions.jsonPath;
+  state.stubForm.jsonPath = value && value.length ? value.join("\n") : "";
 }
 
 export function storeResponseBodyType(state) {
@@ -237,14 +237,16 @@ export function storeStubResponseHeaders(state) {
 export function storeResponseHeaders(state) {
   let result = "";
   const value = state.stubForm.stub.response.headers;
-  const keys = Object.keys(value);
-  if (keys.length) {
-    const list = [];
-    for (let key of keys) {
-      list.push(`${key}: ${value[key]}`);
-    }
+  if (value) {
+    const keys = Object.keys(value);
+    if (keys.length) {
+      const list = [];
+      for (let key of keys) {
+        list.push(`${key}: ${value[key]}`);
+      }
 
-    result = list.join("\n");
+      result = list.join("\n");
+    }
   }
 
   state.stubForm.responseHeaders = result;

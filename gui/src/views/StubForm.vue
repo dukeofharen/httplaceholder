@@ -98,7 +98,7 @@
                 <!-- Hostname -->
                 <div class="d-flex flex-row mb-6">
                   <FormTooltip tooltipKey="hostname"/>
-                  <v-text-field v-model="stubConditionHostname" :label="formLabels.hostname" class="pa-2"
+                  <v-text-field v-model="stubConditionHost" :label="formLabels.hostname" class="pa-2"
                                 :placeholder="formPlaceholderResources.hostname"/>
                 </div>
               </div>
@@ -487,7 +487,7 @@
         stubPriority: "stubForm.stub.priority",
         stubConditionMethod: "stubForm.stub.conditions.method",
         stubConditionClientIp: "stubForm.stub.conditions.clientIp",
-        stubConditionHostname: "stubForm.stub.conditions.hostname",
+        stubConditionHost: "stubForm.stub.conditions.host",
         stubConditionUrlPath: "stubForm.stub.conditions.url.path",
         stubQueryStrings: "stubForm.queryStrings",
         stubConditionUrlFullPath: "stubForm.stub.conditions.url.fullPath",
@@ -583,7 +583,7 @@
       }
     },
     watch: {
-      '$route.params.id': {
+      "$route.params.id": {
         async handler() {
           await this.initialize();
         }
@@ -623,12 +623,14 @@
             this.stub.conditions.url.fullPath = null;
           }
 
-          if (this.stub.conditions.basicAuthentication.username === "") {
-            this.stub.conditions.basicAuthentication.username = null;
-          }
+          if (this.stub.conditions.basicAuthentication) {
+            if (this.stub.conditions.basicAuthentication.username === "") {
+              this.stub.conditions.basicAuthentication.username = null;
+            }
 
-          if (this.stub.conditions.basicAuthentication.password === "") {
-            this.stub.conditions.basicAuthentication.password = null;
+            if (this.stub.conditions.basicAuthentication.password === "") {
+              this.stub.conditions.basicAuthentication.password = null;
+            }
           }
 
           if (this.stub.response.statusCode === "") {
