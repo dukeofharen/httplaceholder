@@ -402,14 +402,22 @@
       </v-card>
 
       <v-card>
-        <v-card-title>Stub as YAML</v-card-title>
         <v-card-text>
           <v-row>
             <v-col>
-              <p>
-                Here you can see the stub as YAML for use on your PC for example.
-              </p>
-              <pre>{{[stubForSaving] | yaml}}</pre>
+              <div>
+                <h2 class="section-title" @click="show.yaml = !show.yaml">
+                  <v-icon>{{show.yaml ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Stub as YAML
+                </h2>
+              </div>
+
+              <div v-if="show.yaml">
+                <p>
+                  Here you can see the stub as YAML for use on your PC for example.
+                </p>
+                <pre>{{[stubForSaving] | yaml}}</pre>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -463,7 +471,8 @@
           generalWriters: true,
           bodyWriters: false,
           headerWriters: false,
-          redirectWriters: false
+          redirectWriters: false,
+          yaml: false
         },
         tenantNames: [],
         httpMethods,
