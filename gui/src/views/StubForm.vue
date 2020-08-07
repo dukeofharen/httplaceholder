@@ -435,6 +435,7 @@
     responseBodyTypes
   } from "@/shared/stubFormResources";
   import {mapFields} from "vuex-map-fields";
+  import {routeNames} from "../router/routerConstants";
 
   export default {
     name: "stubForm",
@@ -578,6 +579,7 @@
             for (let result of results) {
               if (result.v) {
                 toastSuccess(resources.stubAddedSuccessfully.format(result.v.stub.id));
+                this.$router.push({name: routeNames.stubForm, params: {id: result.v.stub.id}});
               } else if (result.e) {
                 toastError(resources.stubNotAdded.format(result.e.stubId));
               }
