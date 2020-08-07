@@ -400,6 +400,21 @@
           </v-row>
         </v-card-text>
       </v-card>
+
+      <v-card>
+        <v-card-title>Stub as YAML</v-card-title>
+        <v-card-text>
+          <v-row>
+            <v-col>
+              <p>
+                Here you can see the stub as YAML for use on your PC for example.
+              </p>
+              <pre>{{stubForSaving | yaml}}</pre>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+
       <v-btn color="success" @click="saveStub">Save stub</v-btn>
     </v-col>
   </v-row>
@@ -481,6 +496,9 @@
       variableHandlers() {
         return this.$store.getters.getVariableHandlers;
       },
+      stubForSaving() {
+        return this.$store.getters.getStubForSaving;
+      },
       ...mapFields({
         stub: "stubForm.stub",
         stubId: "stubForm.stub.id",
@@ -535,7 +553,7 @@
         if (this.routeStubId) {
           try {
             await this.$store.dispatch(actionNames.updateStub, {
-              input: this.$store.getters.getStubForSaving,
+              input: this.stubForSaving,
               inputIsJson: true,
               id: this.routeStubId
             });
