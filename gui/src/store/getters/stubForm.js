@@ -30,7 +30,7 @@ export function getStubFormValidation(state) {
 
   const statusCode = state.stubForm.stub.response.statusCode;
   const parsedStatusCode = parseInt(statusCode);
-  if (statusCode !== null && (isNaN(parsedStatusCode) || parsedStatusCode < 100 || parsedStatusCode >= 600)) {
+  if (statusCode !== null && statusCode !== undefined && (isNaN(parsedStatusCode) || parsedStatusCode < 100 || parsedStatusCode >= 600)) {
     validationMessages.push(formValidationMessages.fillInCorrectStatusCode);
   }
 

@@ -1,9 +1,10 @@
 <template>
   <v-row v-shortkey="['ctrl', 's']" @shortkey="saveStub">
     <v-col>
-      <h1>Add stub</h1>
+      <h1>{{routeStubId ? "Update stub" : "Add stub"}}</h1>
       <v-card>
-        <v-card-title>You can add a new stub here</v-card-title>
+        <v-card-title v-if="!routeStubId">You can add a new stub here</v-card-title>
+        <v-card-title v-if="routeStubId">You can update the stub here</v-card-title>
         <v-card-text>
           <v-row>
             <v-col>
@@ -431,6 +432,7 @@
     },
     data() {
       return {
+        routeStubId: null,
         show: {
           generalConditions: true,
           urlConditions: false,
@@ -512,10 +514,10 @@
     },
     methods: {
       async initialize() {
-        const id = this.$route.params.id;
-        if (id) {
+        this.routeStubId = this.$route.params.id;
+        if (this.routeStubId) {
           const fullStub = await this.$store.dispatch(actionNames.getStub, {
-            stubId: id
+            stubId: this.routeStubId
           });
           this.stub = fullStub.stub;
         }
@@ -530,21 +532,20 @@
           return;
         }
 
-        const id = this.$route.params.id;
-        if (id) {
+        if (this.routeStubId) {
           try {
             await this.$store.dispatch(actionNames.updateStub, {
               input: this.$store.getters.getStubForSaving,
               inputIsJson: true,
-              id
+              id: this.routeStubId
             });
-            toastSuccess(resources.stubUpdatedSuccessfully.format(id));
+            toastSuccess(resources.stubUpdatedSuccessfully.format(this.routeStubId));
           } catch (e) {
             if (e.response) {
               if (e.response.status === 409) {
-                toastError(resources.stubAlreadyAdded.format(id));
+                toastError(resources.stubAlreadyAdded.format(this.routeStubId));
               } else {
-                toastError(resources.stubNotAdded.format(id));
+                toastError(resources.stubNotAdded.format(this.routeStubId));
               }
             } else {
               toastError(e);
