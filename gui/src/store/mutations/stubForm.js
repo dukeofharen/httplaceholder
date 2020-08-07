@@ -1,5 +1,6 @@
 import {parseKeyValue, parseLines} from "@/utils/stubFormUtil";
 import {isHttpsValues, responseBodyTypes} from "@/shared/stubFormResources";
+import {getEmptyStubForm} from "@/store/storeConstants";
 
 export function storeStubQueryStrings(state) {
   const result = parseKeyValue(state.stubForm.queryStrings);
@@ -250,4 +251,8 @@ export function storeResponseHeaders(state) {
   }
 
   state.stubForm.responseHeaders = result;
+}
+
+export function clearStubForm(state) {
+  state.stubForm = getEmptyStubForm();
 }

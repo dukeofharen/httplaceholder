@@ -416,6 +416,7 @@
       </v-card>
 
       <v-btn color="success" @click="saveStub">Save stub</v-btn>
+      <v-btn color="error" @click="clearForm">Clear form</v-btn>
     </v-col>
   </v-row>
 </template>
@@ -436,6 +437,7 @@
   } from "@/shared/stubFormResources";
   import {mapFields} from "vuex-map-fields";
   import {routeNames} from "../router/routerConstants";
+  import {mutationNames} from "../store/storeConstants";
 
   export default {
     name: "stubForm",
@@ -539,6 +541,8 @@
             stubId: this.routeStubId
           });
           this.stub = fullStub.stub;
+        } else {
+          this.$store.commit(mutationNames.clearStubForm);
         }
       },
       async saveStub() {
@@ -588,7 +592,9 @@
             toastError(e);
           }
         }
-
+      },
+      clearForm() {
+        this.$store.commit(mutationNames.clearStubForm);
       },
       insertHandlerInBody(handler) {
         this.stubResponseBody = this.insertHandler(handler, this.stubResponseBody || "", "response-body");
@@ -689,5 +695,9 @@
     color: #112b00;
     cursor: pointer;
     margin-bottom: 10px;
+  }
+
+  .v-btn {
+    margin-right: 10px;
   }
 </style>
