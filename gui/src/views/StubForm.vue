@@ -322,8 +322,19 @@
                               id="response-body"/>
                 </div>
 
+                <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm && showFileUpload">
+                  <FormTooltip tooltipKey="base64Upload"/>
+                  <v-btn color="success" @click="selectFile">Select file</v-btn>
+                  <input
+                    type="file"
+                    name="file"
+                    ref="fileUpload"
+                    @change="loadTextFromFile"
+                  />
+                </div>
+
                 <!-- Body variable handler -->
-                <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm && dynamicModeEnabled">
+                <div class="d-flex flex-row mb-6" v-if="showResponseBodyForm && dynamicModeEnabled && !showFileUpload">
                   <FormTooltip tooltipKey="selectVariableHandler"/>
                   <v-menu absolute offset-y>
                     <template v-slot:activator="{on}">
@@ -505,6 +516,9 @@
       dynamicModeEnabled() {
         return this.variableHandlers.length;
       },
+      showFileUpload() {
+        return this.stubBodyResponseType === responseBodyTypes.base64;
+      },
       variableHandlers() {
         return this.$store.getters.getVariableHandlers;
       },
@@ -616,7 +630,30 @@
         const elem = document.getElementById(elementId);
         const position = elem.selectionStart || 0;
         return [text.slice(0, position), handler.example, text.slice(position)].join("");
-      }
+      },
+      selectFile() {
+        this.$refs.fileUpload.click();
+      },
+      loadTextFromFile(ev) {
+        const files = ev.target.files;
+        if (!files.length) {
+          return;
+        }
+
+        let reader = new FileReader();
+        reader.onload = e => {
+          const dataUrl = e.target.result;
+          const parts = dataUrl.split(",");
+          const base64 = parts[1];
+          this.stubResponseBody = base64;
+          const regexMatches = parts[0].match(/^data\:(.*);base64$/);
+          if (regexMatches.length > 1) {
+            const mime = regexMatches[1];
+            this.$store.commit(mutationNames.setResponseHeader, {key: "Content-Type", value: mime});
+          }
+        };
+        reader.readAsDataURL(files[0]);
+      },
     },
     watch: {
       "$route.params.id": {
@@ -708,5 +745,9 @@
 
   .v-btn {
     margin-right: 10px;
+  }
+
+  input[type="file"] {
+    display: none;
   }
 </style>

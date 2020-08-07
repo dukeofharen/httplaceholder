@@ -22,7 +22,8 @@ export const mutationNames = {
   storeStubResponseBodyType: "storeStubResponseBodyType",
   storeStubResponseHeaders: "storeStubResponseHeaders",
   storeResponseHeaders: "storeResponseHeaders",
-  clearStubForm: "clearStubForm"
+  clearStubForm: "clearStubForm",
+  setResponseHeader: "setResponseHeader"
 };
 
 export const actionNames = {

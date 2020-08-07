@@ -256,3 +256,13 @@ export function storeResponseHeaders(state) {
 export function clearStubForm(state) {
   state.stubForm = getEmptyStubForm();
 }
+
+export function setResponseHeader(state, header) {
+  const headers = state.stubForm.stub.response.headers || {};
+  const keys = Object.keys(headers);
+  const headerKey = keys.find(k => k.toLowerCase() === header.key.toLowerCase()) || header.key;
+  headers[headerKey] = header.value;
+
+  // We have to clone the object for the watchers to pick this change up.
+  state.stubForm.stub.response.headers = JSON.parse(JSON.stringify(headers));
+}

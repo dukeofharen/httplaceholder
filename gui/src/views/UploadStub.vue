@@ -35,7 +35,6 @@
       },
       loadTextFromFile(ev) {
         const expectedExtensions = ["yml", "yaml"];
-        // const fileNames = ev.target.files.map(f => f.name);
         for (let file of ev.target.files) {
           let parts = file.name.split(".");
           if (!expectedExtensions.includes(parts[parts.length - 1])) {
