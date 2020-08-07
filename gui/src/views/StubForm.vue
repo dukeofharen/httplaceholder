@@ -409,7 +409,7 @@
               <p>
                 Here you can see the stub as YAML for use on your PC for example.
               </p>
-              <pre>{{stubForSaving | yaml}}</pre>
+              <pre>{{[stubForSaving] | yaml}}</pre>
             </v-col>
           </v-row>
         </v-card-text>
