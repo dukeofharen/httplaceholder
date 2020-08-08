@@ -1,5 +1,4 @@
 import {formValidationMessages} from "@/shared/stubFormResources";
-import yaml from "js-yaml";
 
 export function getStubFormValidation(state) {
   const validationMessages = [];
