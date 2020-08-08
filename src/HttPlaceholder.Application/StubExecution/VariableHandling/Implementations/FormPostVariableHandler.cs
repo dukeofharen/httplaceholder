@@ -18,6 +18,10 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Name => "form_post";
 
+        public string FullName => "Form post variable handler";
+
+        public string Example => "((form_post:form_key))";
+
         public string Parse(string input, IEnumerable<Match> matches)
         {
             var enumerable = matches as Match[] ?? matches.ToArray();

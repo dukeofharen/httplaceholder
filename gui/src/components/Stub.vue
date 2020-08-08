@@ -6,21 +6,31 @@
         <v-col class="buttons">
           <v-btn
             color="success"
-            @click="viewRequests"
             title="View all requests made for this stub"
-            >View requests</v-btn
+            :to="{name: routeNames.requests,query: {searchTerm: this.fullStub.stub.id}}"
+          >View requests
+          </v-btn
           >
           <v-btn
             color="success"
-            @click="updateStub"
             v-if="!fullStub.metadata.readOnly"
-            >Update stub</v-btn
+            :to="{name: routeNames.updateStub,params: { stubId: this.fullStub.stub.id }}"
+          >Update stub as YAML
+          </v-btn
+          >
+          <v-btn
+            color="success"
+            v-if="!fullStub.metadata.readOnly"
+            :to="{name: routeNames.stubForm,params: {id: this.fullStub.stub.id}}"
+          >Update stub with form
+          </v-btn
           >
           <v-btn
             color="error"
             @click.stop="deleteDialog = true"
             v-if="!fullStub.metadata.readOnly"
-            >Delete stub</v-btn
+          >Delete stub
+          </v-btn
           >
         </v-col>
       </v-row>
@@ -33,7 +43,8 @@
         <v-card-actions>
           <div class="flex-grow-1"></div>
           <v-btn color="green darken-1" text @click="deleteDialog = false"
-            >No</v-btn
+          >No
+          </v-btn
           >
           <v-btn color="green darken-1" text @click="deleteStub">Yes</v-btn>
         </v-card-actions>
@@ -43,46 +54,35 @@
 </template>
 
 <script>
-import { toastSuccess } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import { routeNames } from "@/router/routerConstants";
-import { actionNames } from "@/store/storeConstants";
+  import {toastSuccess} from "@/utils/toastUtil";
+  import {resources} from "@/shared/resources";
+  import {routeNames} from "@/router/routerConstants";
+  import {actionNames} from "@/store/storeConstants";
 
-export default {
-  name: "stub",
-  props: ["fullStub"],
-  data() {
-    return {
-      deleteDialog: false
-    };
-  },
-  methods: {
-    async deleteStub() {
-      this.deleteDialog = false;
-      const stubId = this.fullStub.stub.id;
-      await this.$store.dispatch(actionNames.deleteStub, { stubId });
-      toastSuccess(resources.stubDeletedSuccessfully.format(stubId));
-      this.$emit("deleted", this.fullStub);
+  export default {
+    name: "stub",
+    props: ["fullStub"],
+    data() {
+      return {
+        deleteDialog: false,
+        routeNames
+      };
     },
-    updateStub() {
-      this.$router.push({
-        name: routeNames.updateStub,
-        params: { stubId: this.fullStub.stub.id }
-      });
-    },
-    viewRequests() {
-      this.$router.push({
-        name: routeNames.requests,
-        query: { searchTerm: this.fullStub.stub.id }
-      });
+    methods: {
+      async deleteStub() {
+        this.deleteDialog = false;
+        const stubId = this.fullStub.stub.id;
+        await this.$store.dispatch(actionNames.deleteStub, {stubId});
+        toastSuccess(resources.stubDeletedSuccessfully.format(stubId));
+        this.$emit("deleted", this.fullStub);
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.buttons > button {
-  margin-right: 10px;
-  margin-top: 10px;
-}
+  .buttons > button, .buttons > a {
+    margin-right: 10px;
+    margin-top: 10px;
+  }
 </style>

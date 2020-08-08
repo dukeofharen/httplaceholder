@@ -16,6 +16,10 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Name => "request_body";
 
+        public string FullName => "Variable handler for inserting complete request body";
+
+        public string Example => "((request_body))";
+
         public string Parse(string input, IEnumerable<Match> matches)
         {
             var enumerable = matches as Match[] ?? matches.ToArray();

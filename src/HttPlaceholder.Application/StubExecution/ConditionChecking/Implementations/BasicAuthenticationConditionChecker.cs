@@ -19,7 +19,9 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         {
             var result = new ConditionCheckResultModel();
             var basicAuthenticationCondition = conditions?.BasicAuthentication;
-            if (basicAuthenticationCondition == null)
+            if (basicAuthenticationCondition == null ||
+                (string.IsNullOrWhiteSpace(basicAuthenticationCondition.Username) &&
+                 string.IsNullOrWhiteSpace(basicAuthenticationCondition.Password)))
             {
                 return result;
             }
@@ -34,7 +36,9 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             }
             else
             {
-                var expectedBase64UsernamePassword = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{basicAuthenticationCondition.Username}:{basicAuthenticationCondition.Password}"));
+                var expectedBase64UsernamePassword = Convert.ToBase64String(
+                    Encoding.UTF8.GetBytes(
+                        $"{basicAuthenticationCondition.Username}:{basicAuthenticationCondition.Password}"));
                 var expectedAuthorizationHeader = $"Basic {expectedBase64UsernamePassword}";
                 if (expectedAuthorizationHeader == authorization)
                 {
@@ -43,7 +47,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 }
                 else
                 {
-                    result.Log = $"Basic authentication condition failed for stub '{stubId}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.";
+                    result.Log =
+                        $"Basic authentication condition failed for stub '{stubId}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.";
                     result.ConditionValidation = ConditionValidationType.Invalid;
                 }
             }

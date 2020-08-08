@@ -43,22 +43,6 @@
         </v-card-actions>
       </v-card>
       <v-btn color="success" @click="addStubs">Add stub(s)</v-btn>
-      <h1>Upload stub(s)</h1>
-      <v-card>
-        <v-card-title>You can upload stubs here</v-card-title>
-        <v-card-text
-          >Click the button and select a .yml file with stubs from your PC.
-        </v-card-text>
-        <v-card-actions>
-          <input
-            type="file"
-            name="file"
-            ref="stubUpload"
-            @change="loadTextFromFile"
-          />
-          <v-btn color="success" @click="uploadStubs">Upload stubs</v-btn>
-        </v-card-actions>
-      </v-card>
     </v-col>
   </v-row>
 </template>
@@ -102,17 +86,6 @@ export default {
     async addStubs() {
       await this.addStubsInternal(this.input);
     },
-    uploadStubs() {
-      this.$refs.stubUpload.click();
-    },
-    loadTextFromFile(ev) {
-      const file = ev.target.files[0];
-      const reader = new FileReader();
-      reader.onload = e => {
-        this.addStubsInternal(e.target.result);
-      };
-      reader.readAsText(file);
-    },
     stubExampleSelected(key) {
       if (key !== "empty") {
         let stub = this.stubExamples.find(e => e.key === key);
@@ -127,7 +100,7 @@ export default {
         });
         for (let result of results) {
           if (result.v) {
-            toastSuccess(resources.stubAddedSuccessfully.format(result.v.id));
+            toastSuccess(resources.stubAddedSuccessfully.format(result.v.stub.id));
           } else if (result.e) {
             toastError(resources.stubNotAdded.format(result.e.stubId));
           }
@@ -144,9 +117,5 @@ export default {
 .v-card {
   margin-top: 10px;
   margin-bottom: 10px;
-}
-
-input[type="file"] {
-  display: none;
 }
 </style>

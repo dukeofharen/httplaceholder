@@ -27,15 +27,12 @@ namespace HttPlaceholder.Controllers.v1
         /// Adds a new stub.
         /// </summary>
         /// <param name="stub"></param>
-        /// <returns>OK, but no content returned</returns>
+        /// <returns>OK, with the created stub</returns>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult> Add([FromBody] StubDto stub)
-        {
-            await Mediator.Send(new AddStubCommand {Stub = Mapper.Map<StubModel>(stub)});
-            return NoContent();
-        }
+        public async Task<ActionResult<FullStubDto>> Add([FromBody] StubDto stub) =>
+            Ok(await Mediator.Send(new AddStubCommand {Stub = Mapper.Map<StubModel>(stub)}));
 
         /// <summary>
         /// Updates a given stub.

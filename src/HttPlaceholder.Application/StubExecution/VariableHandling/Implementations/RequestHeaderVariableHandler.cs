@@ -15,6 +15,10 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Name => "request_header";
 
+        public string FullName => "Variable handler for inserting request header";
+
+        public string Example => "((request_header:X-Api-Key))";
+
         public string Parse(string input, IEnumerable<Match> matches)
         {
             var headers = _httpContextService.GetHeaders();

@@ -9,6 +9,10 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
     {
         public string Name => "uuid";
 
+        public string FullName => "Variable handler for inserting UUID";
+
+        public string Example => "((uuid))";
+
         public string Parse(string input, IEnumerable<Match> matches) =>
             (from match
                     in matches

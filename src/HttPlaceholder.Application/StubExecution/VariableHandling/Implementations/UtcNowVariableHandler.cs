@@ -18,6 +18,10 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Name => "utcnow";
 
+        public string FullName => "Variable handler for retrieving UTC date / time";
+
+        public string Example => "((utcnow:yyyy-MM-dd HH:mm:ss))";
+
         public string Parse(string input, IEnumerable<Match> matches)
         {
             var enumerable = matches as Match[] ?? matches.ToArray();

@@ -2,7 +2,7 @@
 /* eslint-disable no-async-promise-executor */
 import createInstance from "@/axios/axiosInstanceFactory";
 import yaml from "js-yaml";
-import { resources } from "@/shared/resources";
+import {resources} from "@/shared/resources";
 
 export function getStubs() {
   return new Promise((resolve, reject) =>
@@ -44,11 +44,15 @@ export function addStubs({}, payload) {
   return new Promise(async (resolve, reject) => {
     let stubsArray;
     let parsedObject;
-    try {
-      parsedObject = yaml.safeLoad(payload.input);
-    } catch (error) {
-      reject(error.message);
-      return;
+    if (payload.inputIsJson) {
+      parsedObject = payload.input;
+    } else {
+      try {
+        parsedObject = yaml.safeLoad(payload.input);
+      } catch (error) {
+        reject(error.message);
+        return;
+      }
     }
 
     if (!Array.isArray(parsedObject)) {
@@ -60,8 +64,8 @@ export function addStubs({}, payload) {
     // Source: https://stackoverflow.com/questions/31424561/wait-until-all-promises-complete-even-if-some-rejected (Benjamin Gruenbaum)
     const reflect = p =>
       p.then(
-        v => ({ v, status: "fulfilled" }),
-        e => ({ e, status: "rejected" })
+        v => ({v, status: "fulfilled"}),
+        e => ({e, status: "rejected"})
       );
 
     const promises = [];
@@ -71,8 +75,9 @@ export function addStubs({}, payload) {
         new Promise((resolve, reject) =>
           createInstance()
             .post("ph-api/stubs", stub)
-            .then(() => resolve(stub))
-            .catch(error => reject({ error, stubId: stub.id }))
+            .then(r => r.data)
+            .then(result => resolve(result))
+            .catch(error => reject({error, stubId: stub.id}))
         )
       );
     }
@@ -85,11 +90,15 @@ export function addStubs({}, payload) {
 export function updateStub({}, payload) {
   return new Promise((resolve, reject) => {
     let stub;
-    try {
-      stub = yaml.safeLoad(payload.input);
-    } catch (e) {
-      reject(e);
-      return;
+    if (payload.inputIsJson) {
+      stub = payload.input;
+    } else {
+      try {
+        stub = yaml.safeLoad(payload.input);
+      } catch (e) {
+        reject(e);
+        return;
+      }
     }
 
     if (!stub || Array.isArray(stub)) {

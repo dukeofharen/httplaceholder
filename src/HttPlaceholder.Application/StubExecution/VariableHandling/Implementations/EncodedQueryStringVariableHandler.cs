@@ -16,6 +16,10 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Name => "query_encoded";
 
+        public string FullName => "URL encoded query string variable handler";
+
+        public string Example => "((query_encoded:query_string_key))";
+
         public string Parse(string input, IEnumerable<Match> matches)
         {
             var queryDict = _httpContextService.GetQueryStringDictionary();

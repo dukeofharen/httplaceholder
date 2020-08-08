@@ -23,12 +23,27 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
-        public void BasicAuthenticationConditionChecker_Validate_StubsFound_ButNoBasicAuthenticationCondition_ShouldReturnNotExecuted()
+        public void
+            BasicAuthenticationConditionChecker_Validate_StubsFound_ButNoBasicAuthenticationCondition_ShouldReturnNotExecuted()
+        {
+            // arrange
+            var conditions = new StubConditionsModel {BasicAuthentication = null};
+
+            // act
+            var result = _checker.Validate("id", conditions);
+
+            // assert
+            Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+        }
+
+        [TestMethod]
+        public void
+            BasicAuthenticationConditionChecker_Validate_StubsFound_NoUsernameAndPasswordSet_ShouldReturnNotExecuted()
         {
             // arrange
             var conditions = new StubConditionsModel
             {
-                BasicAuthentication = null
+                BasicAuthentication = new StubBasicAuthenticationModel {Username = null, Password = null}
             };
 
             // act
@@ -46,19 +61,15 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             {
                 BasicAuthentication = new StubBasicAuthenticationModel
                 {
-                    Username = "username",
-                    Password = "password"
+                    Username = "username", Password = "password"
                 }
             };
 
-            var headers = new Dictionary<string, string>
-         {
-            { "X-Api-Key", "1" }
-         };
+            var headers = new Dictionary<string, string> {{"X-Api-Key", "1"}};
 
             _httpContextServiceMock
-               .Setup(m => m.GetHeaders())
-               .Returns(headers);
+                .Setup(m => m.GetHeaders())
+                .Returns(headers);
 
             // act
             var result = _checker.Validate("id", conditions);
@@ -75,19 +86,15 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             {
                 BasicAuthentication = new StubBasicAuthenticationModel
                 {
-                    Username = "username",
-                    Password = "password"
+                    Username = "username", Password = "password"
                 }
             };
 
-            var headers = new Dictionary<string, string>
-         {
-            { "Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmRk" }
-         };
+            var headers = new Dictionary<string, string> {{"Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmRk"}};
 
             _httpContextServiceMock
-               .Setup(m => m.GetHeaders())
-               .Returns(headers);
+                .Setup(m => m.GetHeaders())
+                .Returns(headers);
 
             // act
             var result = _checker.Validate("id", conditions);
@@ -104,19 +111,15 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             {
                 BasicAuthentication = new StubBasicAuthenticationModel
                 {
-                    Username = "username",
-                    Password = "password"
+                    Username = "username", Password = "password"
                 }
             };
 
-            var headers = new Dictionary<string, string>
-         {
-            { "Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmQ=" }
-         };
+            var headers = new Dictionary<string, string> {{"Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmQ="}};
 
             _httpContextServiceMock
-               .Setup(m => m.GetHeaders())
-               .Returns(headers);
+                .Setup(m => m.GetHeaders())
+                .Returns(headers);
 
             // act
             var result = _checker.Validate("id", conditions);

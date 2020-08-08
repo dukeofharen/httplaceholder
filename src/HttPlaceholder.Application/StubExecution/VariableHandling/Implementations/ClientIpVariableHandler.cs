@@ -16,6 +16,10 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Name => "client_ip";
 
+        public string FullName => "Client IP variable handler";
+
+        public string Example => "((client_ip))";
+
         public string Parse(string input, IEnumerable<Match> matches)
         {
             var enumerable = matches as Match[] ?? matches.ToArray();

@@ -16,6 +16,10 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Name => "display_url";
 
+        public string FullName => "Display URL variable handler";
+
+        public string Example => "((display_url))";
+
         public string Parse(string input, IEnumerable<Match> matches)
         {
             var enumerable = matches as Match[] ?? matches.ToArray();

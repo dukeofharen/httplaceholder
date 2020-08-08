@@ -1,7 +1,10 @@
+import {getField, updateField} from "vuex-map-fields";
+
 const storeTypeEnum = {
   GETTER: 0,
   MUTATION: 1,
-  ACTION: 2
+  ACTION: 2,
+  WATCH: 3
 };
 
 const storeMap = [
@@ -9,6 +12,14 @@ const storeMap = [
   {
     type: storeTypeEnum.GETTER,
     content: require("@/store/getters/general")
+  },
+  {
+    type: storeTypeEnum.GETTER,
+    content: require("@/store/getters/metadata")
+  },
+  {
+    type: storeTypeEnum.GETTER,
+    content: require("@/store/getters/stubForm")
   },
   {
     type: storeTypeEnum.GETTER,
@@ -44,6 +55,14 @@ const storeMap = [
   },
   {
     type: storeTypeEnum.MUTATION,
+    content: require("@/store/mutations/metadata")
+  },
+  {
+    type: storeTypeEnum.MUTATION,
+    content: require("@/store/mutations/stubForm")
+  },
+  {
+    type: storeTypeEnum.MUTATION,
     content: require("@/store/mutations/users")
   }
 ];
@@ -70,11 +89,18 @@ export function constructStore(state) {
     }
 
     for (let key in storeResult.content) {
-      let value = storeResult.content[key];
-      if (typeof value === "function") {
-        result[typeKey][key] = value;
+      if (storeResult.type === storeTypeEnum.WATCH) {
+        storeResult.content[key]();
+      } else {
+        let value = storeResult.content[key];
+        if (typeof value === "function") {
+          result[typeKey][key] = value;
+        }
       }
     }
   }
+
+  result.getters.getField = getField;
+  result.mutations.updateField = updateField;
   return result;
 }
