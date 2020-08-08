@@ -1,6 +1,6 @@
 # Management interface
 
-Besides being an HTTP stub and having a REST API to configure the stubs, HttPlaceholder also has a user interface to manage HttPlaceholder. This user interface talks to the [API.md](REST API).
+Besides being an HTTP stub and having a REST API to configure the stubs, HttPlaceholder also has a user interface to manage HttPlaceholder. This user interface talks to the [API](REST API).
 
 ## How to get there
 
@@ -12,13 +12,7 @@ On the requests page you can see all requests made to HttPlaceholder. It will sh
 
 ![](img/requests_details.png)
 
-The top bar has some options:
-
-- You can fill in the stub ID or the URL to filter the requests. The eraser empties the search bar.
-- The blue button removes **ALL** requests.
-- The green button refreshes the requests.
-
-Besides this, you have the "Create stub" button at the top of every request. If you press this button, a stub will be created based on the request parameters, which will save a lot of time.
+You can also delete all requests here and filter all requests by a search term or tenant (category). 
 
 ## Stubs
 
@@ -26,13 +20,30 @@ On the stubs page you can see all stubs configured in HttPlaceholder. When you c
 
 ![](img/stubs_details.png)
 
-The top bar has some options:
-
-- You can fill in the stub ID to filter the stubs. The eraser empties the search bar.
-- The green button refreshes the requests.
-
 ## Add stub(s)
 
-When you're on the Stubs page and you click on the "+" icon, you will go to the Add Stub(s) page. On this page, you can fill in a piece of YAML which represents the stub (see the [samples](SAMPLES.md)).
+You can add stubs in one of three ways: either by filling in the stub YAML, by filling in a form or by uploading a YAML file from your PC.
 
-![](img/stubs_add.png)
+### Adding stubs as YAML
+
+Click on the "Add stubs (through yaml)" button in the sidebar.
+
+![](img/stub_add_yaml.png)
+
+You can add a single stub here or you can provide multiple stubs in YAML format. You can also pick an example so you can work from that.
+
+### Adding stub through form
+
+Click on the "Add stubs (through form)" button in the sidebar.
+
+![](img/stub_add_form.png)
+
+You can fill in nearly all request conditions and response writers available in YAML on this form.
+
+### Uploading stubs
+
+Click on the "Upload stubs" button in the sidebar.
+
+![](img/stub_upload.png)
+
+You can select one or multiple .yaml files from your PC. The stubs will then be added to HttPlaceholder.
