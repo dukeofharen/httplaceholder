@@ -21,6 +21,7 @@ namespace HttPlaceholder.Application
 
             // Add other modules
             services.AddStubExecutionModule();
+            services.AddHttpClient();
 
             return services;
         }
