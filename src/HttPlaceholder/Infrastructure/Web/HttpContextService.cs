@@ -57,6 +57,15 @@ namespace HttPlaceholder.Infrastructure.Web
             return body;
         }
 
+        public byte[] GetBodyAsBytes()
+        {
+            var context = _httpContextAccessor.HttpContext;
+            using var ms = new MemoryStream();
+            context.Request.Body.CopyTo(ms);
+            context.Request.Body.Position = 0;
+            return ms.ToArray();
+        }
+
         public IDictionary<string, string> GetQueryStringDictionary() =>
             _httpContextAccessor.HttpContext.Request.Query
                 .ToDictionary(q => q.Key, q => q.Value.ToString());

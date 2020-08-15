@@ -16,6 +16,8 @@ namespace HttPlaceholder.Application.Interfaces.Http
 
       string GetBody();
 
+      byte[] GetBodyAsBytes();
+
       IDictionary<string, string> GetQueryStringDictionary();
 
       IDictionary<string, string> GetHeaders();

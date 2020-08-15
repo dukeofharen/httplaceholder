@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
@@ -38,14 +39,31 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             // - SSL validation (enable / disable?)
             // - Proxy exact path as received by HttPlaceholder or the URL as configured in the stub.
             using var httpClient = _httpClientFactory.CreateClient();
-            var request = new HttpRequestMessage(new HttpMethod(_httpContextService.Method), stub.Response.ProxyToUrl);
-            var headers = _httpContextService
-                .GetHeaders()
+            var method = new HttpMethod(_httpContextService.Method);
+            var request = new HttpRequestMessage(method, stub.Response.ProxyToUrl);
+            var originalHeaders = _httpContextService
+                .GetHeaders();
+            var headers = originalHeaders
                 .Where(h => !_excludedRequestHeaderNames.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
                 .ToArray();
             foreach (var header in headers)
             {
                 request.Headers.Add(header.Key, header.Value);
+            }
+
+            if (method != HttpMethod.Get)
+            {
+                var requestBody = _httpContextService.GetBodyAsBytes();
+                if (requestBody.Any())
+                {
+                    request.Content = new ByteArrayContent(requestBody);
+                    var contentTypeHeader = originalHeaders.FirstOrDefault(h =>
+                        h.Key.Equals("content-type", StringComparison.OrdinalIgnoreCase));
+                    if (!string.IsNullOrWhiteSpace(contentTypeHeader.Value))
+                    {
+                        request.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeHeader.Value);
+                    }
+                }
             }
 
             using var responseMessage = await httpClient.SendAsync(request);
@@ -60,8 +78,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             }
 
             response.StatusCode = (int)responseMessage.StatusCode;
-
-            // var requestBody = _httpContextService.GetBody();
 
             return true;
         }
