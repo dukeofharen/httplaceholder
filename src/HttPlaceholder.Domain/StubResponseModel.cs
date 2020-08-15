@@ -81,8 +81,8 @@ namespace HttPlaceholder.Domain
         public string PermanentRedirect { get; set; }
 
         /// <summary>
-        /// Gets or sets the URL where the request should be sent to.
+        /// Gets or sets the proxy settings.
         /// </summary>
-        public string ProxyToUrl { get; set; }
+        public StubResponseProxyModel Proxy { get; set; }
     }
 }

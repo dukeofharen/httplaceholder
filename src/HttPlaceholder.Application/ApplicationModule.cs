@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Net.Http;
+using FluentValidation;
 using HttPlaceholder.Application.Infrastructure.MediatR;
 using HttPlaceholder.Application.StubExecution;
 using MediatR;
@@ -17,11 +18,15 @@ namespace HttPlaceholder.Application
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             // Add fluent validations
-            services.AddValidatorsFromAssemblies(new[] { currentAssembly });
+            services.AddValidatorsFromAssemblies(new[] {currentAssembly});
 
             // Add other modules
             services.AddStubExecutionModule();
-            services.AddHttpClient();
+            services.AddHttpClient("proxy").ConfigureHttpMessageHandlerBuilder(h =>
+                h.PrimaryHandler = new HttpClientHandler
+                {
+                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                });
 
             return services;
         }

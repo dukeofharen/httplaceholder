@@ -86,8 +86,8 @@ namespace HttPlaceholder.Dto.v1.Stubs
         public string PermanentRedirect { get; set; }
 
         /// <summary>
-        /// Gets or sets the URL where the request should be sent to.
+        /// Gets or sets the proxy settings.
         /// </summary>
-        public string ProxyToUrl { get; set; }
+        public StubResponseProxyDto Proxy { get; set; }
     }
 }

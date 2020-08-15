@@ -70,6 +70,8 @@ namespace HttPlaceholder.Infrastructure.Web
             _httpContextAccessor.HttpContext.Request.Query
                 .ToDictionary(q => q.Key, q => q.Value.ToString());
 
+        public string GetQueryString() => _httpContextAccessor.HttpContext.Request.QueryString.Value;
+
         public IDictionary<string, string> GetHeaders() =>
             _httpContextAccessor.HttpContext.Request.Headers
                 .ToDictionary(h => h.Key, h => h.Value.ToString());

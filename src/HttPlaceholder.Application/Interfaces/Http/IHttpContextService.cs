@@ -20,6 +20,8 @@ namespace HttPlaceholder.Application.Interfaces.Http
 
       IDictionary<string, string> GetQueryStringDictionary();
 
+      string GetQueryString();
+
       IDictionary<string, string> GetHeaders();
 
       TObject GetItem<TObject>(string key);

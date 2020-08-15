@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
@@ -11,7 +12,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
     public class ProxyResponseWriter : IResponseWriter
     {
         private static readonly string[] _excludedRequestHeaderNames = {"content-type", "content-length", "host"};
-        private static readonly string[] _excludedResponseHeaderNames = {"x-httplaceholder-correlation", "transfer-encoding"};
+
+        private static readonly string[] _excludedResponseHeaderNames =
+        {
+            "x-httplaceholder-correlation", "transfer-encoding"
+        };
+
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IHttpContextService _httpContextService;
 
@@ -27,20 +33,30 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public async Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            if (string.IsNullOrWhiteSpace(stub.Response?.ProxyToUrl))
+            if (stub.Response.Proxy == null ||
+                (string.IsNullOrWhiteSpace(stub.Response.Proxy.Url) &&
+                 string.IsNullOrWhiteSpace(stub.Response.Proxy.BaseUrl)))
             {
                 return false;
             }
 
+            string proxyUrl;
+            if (!string.IsNullOrWhiteSpace(stub.Response.Proxy.Url))
+            {
+                proxyUrl = stub.Response.Proxy.Url;
+            }
+            else
+            {
+                var rootUrl = stub.Response.Proxy.BaseUrl.EnsureEndsWith("/");
+                proxyUrl = rootUrl + _httpContextService.Path.TrimStart('/') + _httpContextService.GetQueryString();
+            }
+
             // TODO
-            // - Add post data: plain text
-            // - Add post data: complex (e.g. file upload)
-            // - Do a web call and add result body and headers to stub response.
             // - SSL validation (enable / disable?)
-            // - Proxy exact path as received by HttPlaceholder or the URL as configured in the stub.
-            using var httpClient = _httpClientFactory.CreateClient();
+            // - In response, replace proxy URL with URL of HttPlaceholder.
+            using var httpClient = _httpClientFactory.CreateClient("proxy");
             var method = new HttpMethod(_httpContextService.Method);
-            var request = new HttpRequestMessage(method, stub.Response.ProxyToUrl);
+            var request = new HttpRequestMessage(method, proxyUrl);
             var originalHeaders = _httpContextService
                 .GetHeaders();
             var headers = originalHeaders
