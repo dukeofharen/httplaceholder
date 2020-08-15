@@ -53,6 +53,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
             if (method != HttpMethod.Get)
             {
+                var bla = _httpContextService.GetBody();
                 var requestBody = _httpContextService.GetBodyAsBytes();
                 if (requestBody.Any())
                 {
@@ -61,7 +62,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                         h.Key.Equals("content-type", StringComparison.OrdinalIgnoreCase));
                     if (!string.IsNullOrWhiteSpace(contentTypeHeader.Value))
                     {
-                        request.Content.Headers.ContentType = new MediaTypeHeaderValue(contentTypeHeader.Value);
+                        request.Content.Headers.Add("Content-Type", contentTypeHeader.Value);
                     }
                 }
             }
