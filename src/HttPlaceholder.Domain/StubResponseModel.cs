@@ -79,5 +79,10 @@ namespace HttPlaceholder.Domain
         /// </summary>
         [YamlMember(Alias = "permanentRedirect")]
         public string PermanentRedirect { get; set; }
+
+        /// <summary>
+        /// Gets or sets the URL where the request should be sent to.
+        /// </summary>
+        public string ProxyToUrl { get; set; }
     }
 }
