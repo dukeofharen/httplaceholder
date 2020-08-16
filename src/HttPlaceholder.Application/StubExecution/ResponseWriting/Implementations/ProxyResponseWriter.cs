@@ -44,6 +44,10 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             if (!string.IsNullOrWhiteSpace(stub.Response.Proxy.Url))
             {
                 proxyUrl = stub.Response.Proxy.Url;
+                if (stub.Response.Proxy.AppendQueryString == true)
+                {
+                    proxyUrl += _httpContextService.GetQueryString();
+                }
             }
             else
             {
@@ -52,7 +56,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             }
 
             // TODO
-            // - SSL validation (enable / disable?)
             // - In response, replace proxy URL with URL of HttPlaceholder.
             using var httpClient = _httpClientFactory.CreateClient("proxy");
             var method = new HttpMethod(_httpContextService.Method);
