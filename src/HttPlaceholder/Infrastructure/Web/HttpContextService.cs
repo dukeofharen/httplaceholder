@@ -43,6 +43,15 @@ namespace HttPlaceholder.Infrastructure.Web
             }
         }
 
+        public string RootUrl {
+            get
+            {
+                var proto = _clientDataResolver.IsHttps() ? "https" : "http";
+                var host = _clientDataResolver.GetHost();
+                return $"{proto}://{host}";
+            }
+        }
+
         public string GetBody()
         {
             var context = _httpContextAccessor.HttpContext;

@@ -14,6 +14,8 @@ namespace HttPlaceholder.Application.Interfaces.Http
 
       string DisplayUrl { get; }
 
+      string RootUrl { get; }
+
       string GetBody();
 
       byte[] GetBodyAsBytes();

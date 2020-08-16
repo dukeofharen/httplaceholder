@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
@@ -72,7 +73,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
             if (method != HttpMethod.Get)
             {
-                var bla = _httpContextService.GetBody();
                 var requestBody = _httpContextService.GetBodyAsBytes();
                 if (requestBody.Any())
                 {
@@ -88,6 +88,15 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
             using var responseMessage = await httpClient.SendAsync(request);
             var content = await responseMessage.Content.ReadAsByteArrayAsync();
+            if (stub.Response.Proxy.ReplaceRootUrl == true)
+            {
+                var contentAsString = Encoding.UTF8.GetString(content);
+                var rootUrlParts = proxyUrl.Split(new[]{"/"}, StringSplitOptions.RemoveEmptyEntries);
+                var rootUrl = $"{rootUrlParts[0]}//{rootUrlParts[1]}";
+                contentAsString = contentAsString.Replace(rootUrl, _httpContextService.RootUrl);
+                content = Encoding.UTF8.GetBytes(contentAsString);
+            }
+
             response.Body = content;
             var responseHeaders = responseMessage.Headers
                 .Where(h => !_excludedResponseHeaderNames.Contains(h.Key, StringComparer.OrdinalIgnoreCase))

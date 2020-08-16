@@ -22,5 +22,10 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// Gets or sets whether the query string of the request to HttPlaceholder should be appended to the string that will be send to the proxy URL. This can only be used in combination with the property <see cref="Url"/>.
         /// </summary>
         public bool? AppendQueryString { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the root URL of the response of the target web service should be replaced with the root URL of HttPlaceholder.
+        /// </summary>
+        public bool? ReplaceRootUrl { get; set; }
     }
 }
