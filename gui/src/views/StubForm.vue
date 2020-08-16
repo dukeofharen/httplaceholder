@@ -419,6 +419,46 @@
                                 :placeholder="formPlaceholderResources.redirect"/>
                 </div>
               </div>
+
+              <div>
+                <h2 class="section-title" @click="show.proxy = !show.proxy">
+                  <v-icon>{{show.proxy ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Proxy writers
+                </h2>
+              </div>
+
+              <div v-if="show.proxy">
+                <div>
+                  <p>
+                    The proxy functionality is useful for if you want some (or all) requests to be sent to an external web service.
+                  </p>
+                </div>
+
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="proxyUrl"/>
+                  <v-text-field v-model="stubResponseProxyUrl" :label="formLabels.proxyUrl"
+                                class="pa-2"
+                                :placeholder="formPlaceholderResources.redirect"/>
+                </div>
+
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="appendQueryString"/>
+                  <v-switch v-model="stubResponseProxyAppendQueryString" :label="formLabels.appendQueryString"
+                            class="pa-2"/>
+                </div>
+
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="appendPath"/>
+                  <v-switch v-model="stubResponseProxyAppendPath" :label="formLabels.appendPath"
+                            class="pa-2"/>
+                </div>
+
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="replaceRootUrl"/>
+                  <v-switch v-model="stubResponseProxyReplaceRootUrl" :label="formLabels.replaceRootUrl"
+                            class="pa-2"/>
+                </div>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -494,6 +534,7 @@
           bodyWriters: false,
           headerWriters: false,
           redirectWriters: false,
+          proxy: false,
           yaml: false
         },
         tenantNames: [],
@@ -564,7 +605,11 @@
         stubResponseBody: "stubForm.responseBody",
         stubResponseHeaders: "stubForm.responseHeaders",
         stubResponseTempRedirect: "stubForm.stub.response.temporaryRedirect",
-        stubResponsePermanentRedirect: "stubForm.stub.response.permanentRedirect"
+        stubResponsePermanentRedirect: "stubForm.stub.response.permanentRedirect",
+        stubResponseProxyUrl: "stubForm.stub.response.proxy.url",
+        stubResponseProxyAppendQueryString: "stubForm.stub.response.proxy.appendQueryString",
+        stubResponseProxyAppendPath: "stubForm.stub.response.proxy.appendPath",
+        stubResponseProxyReplaceRootUrl: "stubForm.stub.response.proxy.replaceRootUrl"
       })
     },
     methods: {

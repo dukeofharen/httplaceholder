@@ -91,8 +91,14 @@ export function getEmptyStubForm() {
         extraDuration: null,
         temporaryRedirect: null,
         permanentRedirect: null,
-        enableDynamicMode: false
+        enableDynamicMode: false,
+        proxy: {
+          url: null,
+          appendQueryString: false,
+          appendPath: false,
+          replaceRootUrl: false
+        }
       }
     }
   };
-};
+}
