@@ -92,7 +92,7 @@ export function getEmptyStubForm() {
         temporaryRedirect: null,
         permanentRedirect: null,
         enableDynamicMode: false,
-        proxy: {
+        reverseProxy: {
           url: null,
           appendQueryString: false,
           appendPath: false,

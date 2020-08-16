@@ -350,7 +350,7 @@
     url:
       path: /todoitems
   response:
-    proxy:
+    reverseProxy:
       url: https://jsonplaceholder.typicode.com
       appendPath: true
       appendQueryString: true
@@ -362,7 +362,7 @@
     url:
       path: /todoitems
   response:
-    proxy:
+    reverseProxy:
       url: https://jsonplaceholder.typicode.com
       appendPath: true
       appendQueryString: true

@@ -421,41 +421,41 @@
               </div>
 
               <div>
-                <h2 class="section-title" @click="show.proxy = !show.proxy">
-                  <v-icon>{{show.proxy ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
-                  Proxy writers
+                <h2 class="section-title" @click="show.reverseProxy = !show.reverseProxy">
+                  <v-icon>{{show.reverseProxy ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Reverse proxy writers
                 </h2>
               </div>
 
-              <div v-if="show.proxy">
+              <div v-if="show.reverseProxy">
                 <div>
                   <p>
-                    The proxy functionality is useful for if you want some (or all) requests to be sent to an external web service.
+                    The reverse proxy functionality is useful for if you want some (or all) requests to be sent to an external web service.
                   </p>
                 </div>
 
                 <div class="d-flex flex-row mb-6">
-                  <FormTooltip tooltipKey="proxyUrl"/>
-                  <v-text-field v-model="stubResponseProxyUrl" :label="formLabels.proxyUrl"
+                  <FormTooltip tooltipKey="reverseProxyUrl"/>
+                  <v-text-field v-model="stubResponseReverseProxyUrl" :label="formLabels.reverseProxyUrl"
                                 class="pa-2"
-                                :placeholder="formPlaceholderResources.redirect"/>
+                                :placeholder="formPlaceholderResources.reverseProxyUrl"/>
                 </div>
 
                 <div class="d-flex flex-row mb-6">
                   <FormTooltip tooltipKey="appendQueryString"/>
-                  <v-switch v-model="stubResponseProxyAppendQueryString" :label="formLabels.appendQueryString"
+                  <v-switch v-model="stubResponseReverseProxyAppendQueryString" :label="formLabels.appendQueryString"
                             class="pa-2"/>
                 </div>
 
                 <div class="d-flex flex-row mb-6">
                   <FormTooltip tooltipKey="appendPath"/>
-                  <v-switch v-model="stubResponseProxyAppendPath" :label="formLabels.appendPath"
+                  <v-switch v-model="stubResponseReverseProxyAppendPath" :label="formLabels.appendPath"
                             class="pa-2"/>
                 </div>
 
                 <div class="d-flex flex-row mb-6">
                   <FormTooltip tooltipKey="replaceRootUrl"/>
-                  <v-switch v-model="stubResponseProxyReplaceRootUrl" :label="formLabels.replaceRootUrl"
+                  <v-switch v-model="stubResponseReverseProxyReplaceRootUrl" :label="formLabels.replaceRootUrl"
                             class="pa-2"/>
                 </div>
               </div>
@@ -534,7 +534,7 @@
           bodyWriters: false,
           headerWriters: false,
           redirectWriters: false,
-          proxy: false,
+          reverseProxy: false,
           yaml: false
         },
         tenantNames: [],
@@ -606,10 +606,10 @@
         stubResponseHeaders: "stubForm.responseHeaders",
         stubResponseTempRedirect: "stubForm.stub.response.temporaryRedirect",
         stubResponsePermanentRedirect: "stubForm.stub.response.permanentRedirect",
-        stubResponseProxyUrl: "stubForm.stub.response.proxy.url",
-        stubResponseProxyAppendQueryString: "stubForm.stub.response.proxy.appendQueryString",
-        stubResponseProxyAppendPath: "stubForm.stub.response.proxy.appendPath",
-        stubResponseProxyReplaceRootUrl: "stubForm.stub.response.proxy.replaceRootUrl"
+        stubResponseReverseProxyUrl: "stubForm.stub.response.reverseProxy.url",
+        stubResponseReverseProxyAppendQueryString: "stubForm.stub.response.reverseProxy.appendQueryString",
+        stubResponseReverseProxyAppendPath: "stubForm.stub.response.reverseProxy.appendPath",
+        stubResponseReverseProxyReplaceRootUrl: "stubForm.stub.response.reverseProxy.replaceRootUrl"
       })
     },
     methods: {

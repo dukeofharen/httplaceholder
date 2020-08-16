@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations;
 using HttPlaceholder.Domain;
-using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RichardSzalay.MockHttp;
@@ -15,15 +14,15 @@ using RichardSzalay.MockHttp;
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
 {
     [TestClass]
-    public class ProxyResponseWriterFacts
+    public class ReverseProxyResponseWriterFacts
     {
         private readonly Mock<IHttpClientFactory> _mockHttpClientFactory = new Mock<IHttpClientFactory>();
         private readonly Mock<IHttpContextService> _mockHttpContextService = new Mock<IHttpContextService>();
-        private ProxyResponseWriter _writer;
+        private ReverseProxyResponseWriter _writer;
 
         [TestInitialize]
         public void Initialize() =>
-            _writer = new ProxyResponseWriter(_mockHttpClientFactory.Object, _mockHttpContextService.Object);
+            _writer = new ReverseProxyResponseWriter(_mockHttpClientFactory.Object, _mockHttpContextService.Object);
 
         [TestCleanup]
         public void Cleanup() => _mockHttpClientFactory.VerifyAll();
@@ -32,7 +31,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task WriteToResponseAsync_NoProxySet_ShouldReturnFalse()
         {
             // Arrange
-            var stub = new StubModel {Response = new StubResponseModel {Proxy = null}};
+            var stub = new StubModel {Response = new StubResponseModel {ReverseProxy = null}};
 
             // Act
             var result = await _writer.WriteToResponseAsync(stub, null);
@@ -47,7 +46,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             // Arrange
             var stub = new StubModel
             {
-                Response = new StubResponseModel {Proxy = new StubResponseProxyModel {Url = string.Empty}}
+                Response = new StubResponseModel
+                {
+                    ReverseProxy = new StubResponseReverseProxyModel {Url = string.Empty}
+                }
             };
 
             // Act
@@ -97,7 +99,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                 Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = pathCondition}},
                 Response = new StubResponseModel
                 {
-                    Proxy = new StubResponseProxyModel
+                    ReverseProxy = new StubResponseReverseProxyModel
                     {
                         AppendPath = appendPath, AppendQueryString = appendQueryString, Url = proxyUrl
                     }
@@ -143,7 +145,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             {
                 Response = new StubResponseModel
                 {
-                    Proxy = new StubResponseProxyModel
+                    ReverseProxy = new StubResponseReverseProxyModel
                     {
                         AppendPath = false, AppendQueryString = false, Url = "http://example.com"
                     }
@@ -201,7 +203,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             {
                 Response = new StubResponseModel
                 {
-                    Proxy = new StubResponseProxyModel
+                    ReverseProxy = new StubResponseReverseProxyModel
                     {
                         AppendPath = false, AppendQueryString = false, Url = "http://example.com"
                     }
@@ -266,7 +268,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             {
                 Response = new StubResponseModel
                 {
-                    Proxy = new StubResponseProxyModel
+                    ReverseProxy = new StubResponseReverseProxyModel
                     {
                         AppendPath = false, AppendQueryString = false, Url = "http://example.com"
                     }
@@ -318,7 +320,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             {
                 Response = new StubResponseModel
                 {
-                    Proxy = new StubResponseProxyModel
+                    ReverseProxy = new StubResponseReverseProxyModel
                     {
                         AppendPath = false, AppendQueryString = false, Url = "http://example.com"
                     }
@@ -388,7 +390,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                 Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = pathCondition}},
                 Response = new StubResponseModel
                 {
-                    Proxy = new StubResponseProxyModel
+                    ReverseProxy = new StubResponseReverseProxyModel
                     {
                         AppendPath = appendPath,
                         AppendQueryString = false,

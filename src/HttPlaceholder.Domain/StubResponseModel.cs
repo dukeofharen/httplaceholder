@@ -81,9 +81,9 @@ namespace HttPlaceholder.Domain
         public string PermanentRedirect { get; set; }
 
         /// <summary>
-        /// Gets or sets the proxy settings.
+        /// Gets or sets the reverse proxy settings.
         /// </summary>
-        [YamlMember(Alias = "proxy")]
-        public StubResponseProxyModel Proxy { get; set; }
+        [YamlMember(Alias = "reverseProxy")]
+        public StubResponseReverseProxyModel ReverseProxy { get; set; }
     }
 }

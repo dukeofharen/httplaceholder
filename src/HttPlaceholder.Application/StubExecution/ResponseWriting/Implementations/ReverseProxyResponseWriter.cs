@@ -10,7 +10,7 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
 {
-    public class ProxyResponseWriter : IResponseWriter
+    public class ReverseProxyResponseWriter : IResponseWriter
     {
         private static readonly string[] _excludedRequestHeaderNames =
         {
@@ -25,7 +25,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IHttpContextService _httpContextService;
 
-        public ProxyResponseWriter(
+        public ReverseProxyResponseWriter(
             IHttpClientFactory httpClientFactory,
             IHttpContextService httpContextService)
         {
@@ -37,13 +37,13 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public async Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            if (stub.Response.Proxy == null || string.IsNullOrWhiteSpace(stub.Response.Proxy.Url))
+            if (stub.Response.ReverseProxy == null || string.IsNullOrWhiteSpace(stub.Response.ReverseProxy.Url))
             {
                 return false;
             }
 
-            var proxyUrl = stub.Response.Proxy.Url;
-            var appendPath = stub.Response.Proxy.AppendPath == true;
+            var proxyUrl = stub.Response.ReverseProxy.Url;
+            var appendPath = stub.Response.ReverseProxy.AppendPath == true;
             if (appendPath)
             {
                 proxyUrl = proxyUrl.EnsureEndsWith("/") + _httpContextService.Path.TrimStart('/');
@@ -59,7 +59,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 }
             }
 
-            if (stub.Response.Proxy.AppendQueryString == true)
+            if (stub.Response.ReverseProxy.AppendQueryString == true)
             {
                 proxyUrl += _httpContextService.GetQueryString();
             }
@@ -98,7 +98,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 : new byte[0];
             var rawResponseHeaders = responseMessage.Headers
                 .ToDictionary(h => h.Key, h => h.Value.First());
-            if (stub.Response.Proxy.ReplaceRootUrl == true)
+            if (stub.Response.ReverseProxy.ReplaceRootUrl == true)
             {
                 var contentAsString = Encoding.UTF8.GetString(content);
                 var rootUrlParts = proxyUrl.Split(new[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
