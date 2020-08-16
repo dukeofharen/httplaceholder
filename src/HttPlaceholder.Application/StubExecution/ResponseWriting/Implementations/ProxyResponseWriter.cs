@@ -12,7 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 {
     public class ProxyResponseWriter : IResponseWriter
     {
-        private static readonly string[] _excludedRequestHeaderNames = {"content-type", "content-length", "host"};
+        private static readonly string[] _excludedRequestHeaderNames = {"content-type", "content-length", "host", "connection", "accept-encoding"};
 
         private static readonly string[] _excludedResponseHeaderNames =
         {
@@ -56,8 +56,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 proxyUrl = rootUrl + _httpContextService.Path.TrimStart('/') + _httpContextService.GetQueryString();
             }
 
-            // TODO
-            // - In response, replace proxy URL with URL of HttPlaceholder.
             using var httpClient = _httpClientFactory.CreateClient("proxy");
             var method = new HttpMethod(_httpContextService.Method);
             var request = new HttpRequestMessage(method, proxyUrl);
@@ -98,12 +96,16 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             }
 
             response.Body = content;
-            var responseHeaders = responseMessage.Headers
+            var rawResponseHeaders = responseMessage.Headers
+                .ToDictionary(h => h.Key, h => h.Value.First())
+                .Concat(responseMessage.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First()))
+                .ToArray();
+            var responseHeaders = rawResponseHeaders
                 .Where(h => !_excludedResponseHeaderNames.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
                 .ToArray();
             foreach (var header in responseHeaders)
             {
-                response.Headers.Add(header.Key, header.Value.First());
+                response.Headers.Add(header.Key, header.Value);
             }
 
             response.StatusCode = (int)responseMessage.StatusCode;
