@@ -1,7 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -43,7 +43,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             }
 
             var proxyUrl = stub.Response.Proxy.Url;
-            if (stub.Response.Proxy.AppendPath == true)
+            var appendPath = stub.Response.Proxy.AppendPath == true;
+            if (appendPath)
             {
                 proxyUrl = proxyUrl.EnsureEndsWith("/") + _httpContextService.Path.TrimStart('/');
                 if (!string.IsNullOrWhiteSpace(stub.Conditions?.Url?.Path))
@@ -92,30 +93,43 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             }
 
             using var responseMessage = await httpClient.SendAsync(request);
-            var content = await responseMessage.Content.ReadAsByteArrayAsync();
+            var content = responseMessage.Content != null
+                ? await responseMessage.Content.ReadAsByteArrayAsync()
+                : new byte[0];
+            var rawResponseHeaders = responseMessage.Headers
+                .ToDictionary(h => h.Key, h => h.Value.First());
             if (stub.Response.Proxy.ReplaceRootUrl == true)
             {
                 var contentAsString = Encoding.UTF8.GetString(content);
                 var rootUrlParts = proxyUrl.Split(new[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
                 var rootUrl = $"{rootUrlParts[0]}//{rootUrlParts[1]}";
-                contentAsString = contentAsString.Replace(rootUrl, _httpContextService.RootUrl);
+                var httPlaceholderRootUrl = _httpContextService.RootUrl;
+                if (appendPath && !string.IsNullOrWhiteSpace(stub.Conditions?.Url?.Path))
+                {
+                    httPlaceholderRootUrl += stub.Conditions.Url.Path.EnsureStartsWith("/");
+                }
+
+                contentAsString = contentAsString.Replace(rootUrl, httPlaceholderRootUrl);
                 content = Encoding.UTF8.GetBytes(contentAsString);
+
+                rawResponseHeaders = rawResponseHeaders
+                    .ToDictionary(h => h.Key, h => h.Value.Replace(rootUrl, httPlaceholderRootUrl));
             }
 
             response.Body = content;
-            var responseHeaders =
-                responseMessage.Headers
-                    .ToDictionary(h => h.Key, h => h.Value.First())
-                    .Concat(responseMessage.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First()))
-                    .Where(h => !_excludedResponseHeaderNames.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
-                    .ToArray();
+            var contentHeaders = responseMessage.Content != null
+                ? responseMessage.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First())
+                : new Dictionary<string, string>();
+            var responseHeaders = rawResponseHeaders
+                .Concat(contentHeaders)
+                .Where(h => !_excludedResponseHeaderNames.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
+                .ToArray();
             foreach (var header in responseHeaders)
             {
                 response.Headers.Add(header.Key, header.Value);
             }
 
             response.StatusCode = (int)responseMessage.StatusCode;
-
             return true;
         }
     }
