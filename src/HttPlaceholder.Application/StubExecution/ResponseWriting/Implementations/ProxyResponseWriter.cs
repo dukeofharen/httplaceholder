@@ -64,7 +64,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 proxyUrl += _httpContextService.GetQueryString();
             }
 
-            using var httpClient = _httpClientFactory.CreateClient("proxy");
             var method = new HttpMethod(_httpContextService.Method);
             var request = new HttpRequestMessage(method, proxyUrl);
             var originalHeaders = _httpContextService
@@ -92,6 +91,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 }
             }
 
+            using var httpClient = _httpClientFactory.CreateClient("proxy");
             using var responseMessage = await httpClient.SendAsync(request);
             var content = responseMessage.Content != null
                 ? await responseMessage.Content.ReadAsByteArrayAsync()

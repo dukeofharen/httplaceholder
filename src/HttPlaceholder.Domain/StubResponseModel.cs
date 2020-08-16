@@ -83,6 +83,7 @@ namespace HttPlaceholder.Domain
         /// <summary>
         /// Gets or sets the proxy settings.
         /// </summary>
+        [YamlMember(Alias = "proxy")]
         public StubResponseProxyModel Proxy { get; set; }
     }
 }
