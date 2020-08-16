@@ -12,7 +12,10 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 {
     public class ProxyResponseWriter : IResponseWriter
     {
-        private static readonly string[] _excludedRequestHeaderNames = {"content-type", "content-length", "host", "connection", "accept-encoding"};
+        private static readonly string[] _excludedRequestHeaderNames =
+        {
+            "content-type", "content-length", "host", "connection", "accept-encoding"
+        };
 
         private static readonly string[] _excludedResponseHeaderNames =
         {
@@ -34,26 +37,30 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public async Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            if (stub.Response.Proxy == null ||
-                (string.IsNullOrWhiteSpace(stub.Response.Proxy.Url) &&
-                 string.IsNullOrWhiteSpace(stub.Response.Proxy.BaseUrl)))
+            if (stub.Response.Proxy == null || string.IsNullOrWhiteSpace(stub.Response.Proxy.Url))
             {
                 return false;
             }
 
-            string proxyUrl;
-            if (!string.IsNullOrWhiteSpace(stub.Response.Proxy.Url))
+            var proxyUrl = stub.Response.Proxy.Url;
+            if (stub.Response.Proxy.AppendPath == true)
             {
-                proxyUrl = stub.Response.Proxy.Url;
-                if (stub.Response.Proxy.AppendQueryString == true)
+                proxyUrl = proxyUrl.EnsureEndsWith("/") + _httpContextService.Path.TrimStart('/');
+                if (!string.IsNullOrWhiteSpace(stub.Conditions?.Url?.Path))
                 {
-                    proxyUrl += _httpContextService.GetQueryString();
+                    // If the path condition is set, make sure the configured path is stripped from the proxy URL
+                    var configuredPath = stub.Conditions.Url.Path;
+                    var index = proxyUrl.IndexOf(configuredPath, StringComparison.OrdinalIgnoreCase);
+                    if (index > -1)
+                    {
+                        proxyUrl = proxyUrl.Remove(index, configuredPath.Length);
+                    }
                 }
             }
-            else
+
+            if (stub.Response.Proxy.AppendQueryString == true)
             {
-                var rootUrl = stub.Response.Proxy.BaseUrl.EnsureEndsWith("/");
-                proxyUrl = rootUrl + _httpContextService.Path.TrimStart('/') + _httpContextService.GetQueryString();
+                proxyUrl += _httpContextService.GetQueryString();
             }
 
             using var httpClient = _httpClientFactory.CreateClient("proxy");
@@ -89,20 +96,19 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             if (stub.Response.Proxy.ReplaceRootUrl == true)
             {
                 var contentAsString = Encoding.UTF8.GetString(content);
-                var rootUrlParts = proxyUrl.Split(new[]{"/"}, StringSplitOptions.RemoveEmptyEntries);
+                var rootUrlParts = proxyUrl.Split(new[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
                 var rootUrl = $"{rootUrlParts[0]}//{rootUrlParts[1]}";
                 contentAsString = contentAsString.Replace(rootUrl, _httpContextService.RootUrl);
                 content = Encoding.UTF8.GetBytes(contentAsString);
             }
 
             response.Body = content;
-            var rawResponseHeaders = responseMessage.Headers
-                .ToDictionary(h => h.Key, h => h.Value.First())
-                .Concat(responseMessage.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First()))
-                .ToArray();
-            var responseHeaders = rawResponseHeaders
-                .Where(h => !_excludedResponseHeaderNames.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
-                .ToArray();
+            var responseHeaders =
+                responseMessage.Headers
+                    .ToDictionary(h => h.Key, h => h.Value.First())
+                    .Concat(responseMessage.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First()))
+                    .Where(h => !_excludedResponseHeaderNames.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
+                    .ToArray();
             foreach (var header in responseHeaders)
             {
                 response.Headers.Add(header.Key, header.Value);
