@@ -9,7 +9,7 @@ environment:
   access_token:
     secure: Zcoti9GsS4Y1t12qVcWhfDXMJLW8QLt4SdeQi8VKUFBtd/gVyWsZlLXDOHLP8i5U
   nuget_api_key:
-    secure: DkwNpTFW5LR/MS5rp1wi2wBHQPhntAH+waI41ytZ0+3oVt9q9Txuv0CRrslv3rgj
+    secure: yxTEUFQrrYJ+jNksz7q7GpVQI2Zf2EEWkksAq+NputcnPZ3OQMtWpaXpjMWNFpIG
   docker_username:
     secure: KhZ3/ULtULyNnX01Z+dyjQ==
   docker_password:
