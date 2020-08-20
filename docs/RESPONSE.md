@@ -490,7 +490,7 @@ Scenario: `https://jsonplaceholder.typicode.com/todos` is an API for testing pur
     reverseProxy:
       url: https://jsonplaceholder.typicode.com/todos
       appendPath: true
-      appendQuery: true
+      appendQueryString: true
       replaceRootUrl: true
 ```
 
@@ -498,6 +498,6 @@ When you now make a call to `http://localhost:5000/todos`, a request will be mad
 
 The variable `appendPath` is set to true (which is, by default, set to false by the way), which means that everything you put in your URL after `/todos` (which you've you configured in your conditions) will be appended to the proxy URL. So, let's say you go to `http://localhost:5000/todos/1`, HttPlaceholder will send a request to `https://jsonplaceholder.typicode.com/todos/1`.
 
-Also, the variable `appendQuery` is set to true (which is by default false). Like the name says, it appends the query string of the request to HttPlaceholder to the reverse proxy request. For example, let's say you make a request to `http://localhost:5000/todos?key=val`, then HttPlaceholder will make a request to `https://jsonplaceholder.typicode.com/todos?key=val`.
+Also, the variable `appendQueryString` is set to true (which is by default false). Like the name says, it appends the query string of the request to HttPlaceholder to the reverse proxy request. For example, let's say you make a request to `http://localhost:5000/todos?key=val`, then HttPlaceholder will make a request to `https://jsonplaceholder.typicode.com/todos?key=val`.
 
 Finally, there is also a reverse proxy setting called `replaceRootUrl` (which is by default false). If this is set to true, any reference of `https://jsonplaceholder.typicode.com` (so the **root** URL of your reverse proxy URL) will be replaced by the root URL of HttPlaceholder (e.g. `http://localhost:5000`). The replacing will be done in the reverse proxy response body and response headers.
