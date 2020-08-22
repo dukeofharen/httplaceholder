@@ -344,6 +344,30 @@
           X-Header: ((utcnow:yyyy-MM-dd HH:mm:ss))
   priority: 0
 
+- id: proxy-test-1
+  conditions:
+    method: GET
+    url:
+      path: /todoitems
+  response:
+    reverseProxy:
+      url: https://jsonplaceholder.typicode.com
+      appendPath: true
+      appendQueryString: true
+      replaceRootUrl: true
+
+- id: proxy-test-2
+  conditions:
+    method: POST
+    url:
+      path: /todoitems
+  response:
+    reverseProxy:
+      url: https://jsonplaceholder.typicode.com
+      appendPath: true
+      appendQueryString: true
+      replaceRootUrl: true
+
 - id: file
   conditions:
     method: GET

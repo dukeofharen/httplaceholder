@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
@@ -7,6 +8,7 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Logging;
 using Moq;
+using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Tests.Integration.Stubs
 {
@@ -18,6 +20,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         private YamlFileStubSource _stubSource;
         private Mock<IWritableStubSource> _writableStubSourceMock;
         protected Mock<IDateTime> DateTimeMock;
+        protected MockHttpMessageHandler MockHttp;
 
         protected void InitializeStubIntegrationTest(string yamlFileName)
         {
@@ -50,11 +53,18 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 Options);
             _writableStubSourceMock = new Mock<IWritableStubSource>();
 
+            MockHttp = new MockHttpMessageHandler();
+            var mockHttpClientFactory = new Mock<IHttpClientFactory>();
+            mockHttpClientFactory
+                .Setup(m => m.CreateClient("proxy"))
+                .Returns(() => MockHttp.ToHttpClient());
+
             InitializeIntegrationTest(
                 new (Type, object)[]
                 {
                     (typeof(IClientDataResolver), ClientIpResolverMock.Object),
-                    (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object)
+                    (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object),
+                    (typeof(IHttpClientFactory), mockHttpClientFactory.Object),
                 }, new IStubSource[] {_stubSource, _writableStubSourceMock.Object});
         }
     }

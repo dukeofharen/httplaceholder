@@ -24,8 +24,8 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             var response = new ResponseModel();
             foreach (var writer in _responseWriters.OrderByDescending(w => w.Priority))
             {
-                var executed = await writer.WriteToResponseAsync(stub, response);
-                requestLogger.SetResponseWriterResult(writer.GetType().Name, executed);
+                var result = await writer.WriteToResponseAsync(stub, response);
+                requestLogger.SetResponseWriterResult(result);
             }
 
             return response;

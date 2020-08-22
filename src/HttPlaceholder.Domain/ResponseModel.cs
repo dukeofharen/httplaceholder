@@ -30,5 +30,10 @@ namespace HttPlaceholder.Domain
         /// </summary>
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// Gets or sets the logging string.
+        /// </summary>
+        public string Log { get; set; }
     }
 }

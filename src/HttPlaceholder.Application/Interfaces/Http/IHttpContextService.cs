@@ -14,9 +14,15 @@ namespace HttPlaceholder.Application.Interfaces.Http
 
       string DisplayUrl { get; }
 
+      string RootUrl { get; }
+
       string GetBody();
 
+      byte[] GetBodyAsBytes();
+
       IDictionary<string, string> GetQueryStringDictionary();
+
+      string GetQueryString();
 
       IDictionary<string, string> GetHeaders();
 

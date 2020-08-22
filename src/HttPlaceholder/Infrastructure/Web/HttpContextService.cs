@@ -43,6 +43,15 @@ namespace HttPlaceholder.Infrastructure.Web
             }
         }
 
+        public string RootUrl {
+            get
+            {
+                var proto = _clientDataResolver.IsHttps() ? "https" : "http";
+                var host = _clientDataResolver.GetHost();
+                return $"{proto}://{host}";
+            }
+        }
+
         public string GetBody()
         {
             var context = _httpContextAccessor.HttpContext;
@@ -57,9 +66,20 @@ namespace HttPlaceholder.Infrastructure.Web
             return body;
         }
 
+        public byte[] GetBodyAsBytes()
+        {
+            var context = _httpContextAccessor.HttpContext;
+            using var ms = new MemoryStream();
+            context.Request.Body.CopyTo(ms);
+            context.Request.Body.Position = 0;
+            return ms.ToArray();
+        }
+
         public IDictionary<string, string> GetQueryStringDictionary() =>
             _httpContextAccessor.HttpContext.Request.Query
                 .ToDictionary(q => q.Key, q => q.Value.ToString());
+
+        public string GetQueryString() => _httpContextAccessor.HttpContext.Request.QueryString.Value;
 
         public IDictionary<string, string> GetHeaders() =>
             _httpContextAccessor.HttpContext.Request.Headers

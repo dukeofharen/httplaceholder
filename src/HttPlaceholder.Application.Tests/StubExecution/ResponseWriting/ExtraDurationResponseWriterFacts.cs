@@ -39,7 +39,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Executed);
             _asyncServiceMock.Verify(m => m.DelayAsync(It.IsAny<int>()), Times.Never);
         }
 
@@ -61,7 +61,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             _asyncServiceMock.Verify(m => m.DelayAsync(stub.Response.ExtraDuration.Value), Times.Once);
         }
     }

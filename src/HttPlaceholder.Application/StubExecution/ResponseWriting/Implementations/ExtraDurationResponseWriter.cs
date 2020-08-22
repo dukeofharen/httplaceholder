@@ -16,17 +16,17 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public int Priority => 0;
 
-        public async Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
+        public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
             // Simulate sluggish response here, if configured.
             if (stub.Response?.ExtraDuration.HasValue != true)
             {
-                return false;
+                return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
             }
 
             var duration = stub.Response.ExtraDuration.Value;
             await _asyncService.DelayAsync(duration);
-            return true;
+            return StubResponseWriterResultModel.IsExecuted(GetType().Name);
         }
     }
 }

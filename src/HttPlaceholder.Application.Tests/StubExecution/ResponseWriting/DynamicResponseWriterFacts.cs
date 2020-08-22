@@ -37,7 +37,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Executed);
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             _variableParserMock.Verify(m => m.Parse(It.IsAny<string>()), Times.Never);
         }
 
@@ -86,7 +86,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             _variableParserMock.Verify(m => m.Parse(body), Times.Once);
         }
 
@@ -111,7 +111,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             _variableParserMock.Verify(m => m.Parse(It.IsAny<string>()), Times.Never);
         }
 
@@ -145,7 +145,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             _variableParserMock.Verify(m => m.Parse(body), Times.Once);
             _variableParserMock.Verify(m => m.Parse("Header1"), Times.Once);
             _variableParserMock.Verify(m => m.Parse("Header2"), Times.Once);

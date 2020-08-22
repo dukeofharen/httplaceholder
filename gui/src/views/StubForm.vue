@@ -419,6 +419,46 @@
                                 :placeholder="formPlaceholderResources.redirect"/>
                 </div>
               </div>
+
+              <div>
+                <h2 class="section-title" @click="show.reverseProxy = !show.reverseProxy">
+                  <v-icon>{{show.reverseProxy ? "mdi-chevron-down" : "mdi-chevron-right"}}</v-icon>
+                  Reverse proxy writers
+                </h2>
+              </div>
+
+              <div v-if="show.reverseProxy">
+                <div>
+                  <p>
+                    The reverse proxy functionality is useful for if you want some (or all) requests to be sent to an external web service.
+                  </p>
+                </div>
+
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="reverseProxyUrl"/>
+                  <v-text-field v-model="stubResponseReverseProxyUrl" :label="formLabels.reverseProxyUrl"
+                                class="pa-2"
+                                :placeholder="formPlaceholderResources.reverseProxyUrl"/>
+                </div>
+
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="appendQueryString"/>
+                  <v-switch v-model="stubResponseReverseProxyAppendQueryString" :label="formLabels.appendQueryString"
+                            class="pa-2"/>
+                </div>
+
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="appendPath"/>
+                  <v-switch v-model="stubResponseReverseProxyAppendPath" :label="formLabels.appendPath"
+                            class="pa-2"/>
+                </div>
+
+                <div class="d-flex flex-row mb-6">
+                  <FormTooltip tooltipKey="replaceRootUrl"/>
+                  <v-switch v-model="stubResponseReverseProxyReplaceRootUrl" :label="formLabels.replaceRootUrl"
+                            class="pa-2"/>
+                </div>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -494,6 +534,7 @@
           bodyWriters: false,
           headerWriters: false,
           redirectWriters: false,
+          reverseProxy: false,
           yaml: false
         },
         tenantNames: [],
@@ -564,7 +605,11 @@
         stubResponseBody: "stubForm.responseBody",
         stubResponseHeaders: "stubForm.responseHeaders",
         stubResponseTempRedirect: "stubForm.stub.response.temporaryRedirect",
-        stubResponsePermanentRedirect: "stubForm.stub.response.permanentRedirect"
+        stubResponsePermanentRedirect: "stubForm.stub.response.permanentRedirect",
+        stubResponseReverseProxyUrl: "stubForm.stub.response.reverseProxy.url",
+        stubResponseReverseProxyAppendQueryString: "stubForm.stub.response.reverseProxy.appendQueryString",
+        stubResponseReverseProxyAppendPath: "stubForm.stub.response.reverseProxy.appendPath",
+        stubResponseReverseProxyReplaceRootUrl: "stubForm.stub.response.reverseProxy.replaceRootUrl"
       })
     },
     methods: {

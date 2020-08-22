@@ -838,6 +838,90 @@
 			"protocolProfileBehavior": {}
 		},
 		{
+			"name": "15 Reverse proxy",
+			"item": [
+				{
+					"name": "Regular: get all todo items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}todoitems/todos",
+							"host": [
+								"{{rootUrl}}todoitems"
+							],
+							"path": [
+								"todos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regular: get todo item 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}todoitems/todos/1",
+							"host": [
+								"{{rootUrl}}todoitems"
+							],
+							"path": [
+								"todos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regular: get todo item 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}todoitems/todos/2",
+							"host": [
+								"{{rootUrl}}todoitems"
+							],
+							"path": [
+								"todos",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regular: query string forwarding",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/itemsproxy?id=14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"itemsproxy"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "14"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
 			"name": "REST API",
 			"item": [
 				{
@@ -1502,7 +1586,7 @@
 	],
 	"variable": [
 		{
-			"id": "7f66f381-3e73-4187-9afd-002d220fd57c",
+			"id": "5642039a-fca9-4fde-98ee-be1850ff504c",
 			"key": "rootUrl",
 			"value": "http://localhost:5000/"
 		}

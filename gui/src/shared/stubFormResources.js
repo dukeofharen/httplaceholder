@@ -25,7 +25,11 @@ const tooltipResources = {
   redirect: "The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the 'temporaryRedirect' property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the 'permanentRedirect' an HTTP 301.",
   dynamicMode: "In order to make the responses in HttPlaceholder a bit more dynamic, the 'dynamic mode' was introduced. This makes it possible to add variables to your responses that can be parsed. As of now, these variables can be used in the response body (text only) and the response headers. The only requirement is that you set this switch to on (by default, it is set to off and the variables will not be parsed).",
   selectVariableHandler: "When clicking this button, you will be able to insert a variable handler. This variable handler will be parsed when the stub is executed.",
-  base64Upload: "When clicking this button, you will be able to select a file from your PC. This file will be base64 encoded and added to the response body."
+  base64Upload: "When clicking this button, you will be able to select a file from your PC. This file will be base64 encoded and added to the response body.",
+  reverseProxyUrl: "The URL HttPlaceholder should send the request to.",
+  appendQueryString: "Whether the query string of the request to HttPlaceholder should be appended to the request that will be sent to the proxy URL.",
+  appendPath: "Whether the path of the request to HttPlaceholder (so the string after https://.../ and before the query string) should be appended to the request that will be sent to the proxy URL.",
+  replaceRootUrl: "Whether the content returned by the proxy request should have its URLs replaced by the HttPlaceholder root URL. Both the response body and the HTTP headers will have its URLs replaced."
 };
 
 const formPlaceholderResources = {
@@ -41,7 +45,8 @@ const formPlaceholderResources = {
   hostname: "e.g. 'httplaceholder.com' or 'http(.*)' (regex)",
   headers: "Content-Type: text/plain\nX-Api-Key: bla123\nX-Some-Header: ^somevalue$\n...",
   responseHeaders: "Content-Type: text/plain\nX-Api-Key: bla123\n...",
-  redirect: "e.g. 'https://reddit.com'"
+  redirect: "e.g. 'https://reddit.com'",
+  reverseProxyUrl: "e.g. https://jsonplaceholder.typicode.com"
 };
 
 const formValidationMessages = {
@@ -87,7 +92,11 @@ const formLabels = {
   temporaryRedirect: "Temporary redirect (HTTP 301)",
   permanentRedirect: "Permanent redirect (HTTP 307)",
   enableDynamicMode: "Enable dynamic mode",
-  variableHandler: "Variable handler"
+  variableHandler: "Variable handler",
+  reverseProxyUrl: "Proxy URL",
+  appendQueryString: "Append request query string",
+  appendPath: "Append request path",
+  replaceRootUrl: "Replace proxy root URL in response"
 };
 
 const isHttpsValues = {

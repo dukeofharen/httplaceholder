@@ -1,0 +1,80 @@
+# Example of a stub that uses a proxy.
+
+# Setup the "mock" reverse proxy endpoints.
+- id: reverse-proxy-echo-all-todo-items
+  tenant: 15-reverse-proxy
+  priority: -1
+  conditions:
+    method: GET
+    url:
+      path: /todos
+  response:
+    json: |
+      [
+        {
+          "id": 1,
+          "text": "Do groceries"
+        },
+        {
+          "id": 2,
+          "text": "Get a haircut"
+        }
+      ]
+
+- id: reverse-proxy-echo-todo-item-1
+  tenant: 15-reverse-proxy
+  conditions:
+    method: GET
+    url:
+      path: /todos/1
+  response:
+    json: |
+      {
+        "id": 1,
+        "text": "Do groceries"
+      }
+      
+- id: reverse-proxy-echo-todo-item-2
+  tenant: 15-reverse-proxy
+  conditions:
+    method: GET
+    url:
+      path: /todos/2
+  response:
+    json: |
+      {
+        "id": 2,
+        "text": "Get a haircut"
+      }
+
+- id: reverse-proxy-echo-query-string
+  tenant: 15-reverse-proxy
+  conditions:
+    method: GET
+    url:
+      path: /items
+      query:
+        id: 14
+  response:
+    text: OK
+
+# Setup the actual reverse proxies.
+- id: reverse-proxy-1
+  tenant: 15-reverse-proxy
+  conditions:
+    url:
+      path: /todoitems
+  response:
+    reverseProxy:
+      url: http://localhost:5000
+      appendPath: true
+
+- id: reverse-proxy-2
+  tenant: 15-reverse-proxy
+  conditions:
+    url:
+      path: /itemsproxy
+  response:
+    reverseProxy:
+      url: http://localhost:5000/items
+      appendQueryString: true

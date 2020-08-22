@@ -8,11 +8,11 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
     {
         public int Priority => 0;
 
-        public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
+        public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
             if (stub.Response?.Json == null)
             {
-                return Task.FromResult(false);
+                return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
             }
 
             var jsonBody = stub.Response.Json;
@@ -22,7 +22,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 response.Headers.Add("Content-Type", "application/json");
             }
 
-            return Task.FromResult(true);
+            return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
         }
     }
 }

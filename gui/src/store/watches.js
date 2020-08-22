@@ -43,4 +43,15 @@ export default function addWatches(store) {
       };
     }
   });
+
+  store.watch(state => state.stubForm.stub.response.reverseProxy, () => {
+    if (!store.state.stubForm.stub.response.reverseProxy) {
+      store.state.stubForm.stub.response.reverseProxy = {
+        url: null,
+        appendPath: null,
+        appendQueryString: null,
+        replaceRootUrl: null
+      }
+    }
+  });
 }

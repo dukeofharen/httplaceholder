@@ -84,5 +84,11 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// </summary>
         [YamlMember(Alias = "permanentRedirect")]
         public string PermanentRedirect { get; set; }
+
+        /// <summary>
+        /// Gets or sets the reverse proxy settings.
+        /// </summary>
+        [YamlMember(Alias = "reverseProxy")]
+        public StubResponseReverseProxyDto ReverseProxy { get; set; }
     }
 }

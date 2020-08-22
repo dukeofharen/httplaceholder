@@ -187,8 +187,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
 
             // assert
             var ids = result.Select(s => s.Id).ToArray();
-            Assert.AreEqual("94f62b43bdf013c9f75e8786275f13e5", ids[0]);
-            Assert.AreEqual("1341ca208eaa83efea41d7043599da8c", ids[1]);
+            Assert.AreEqual("5ecec0f918f8d28f4c81454bb3231232", ids[0]);
+            Assert.AreEqual("821eb6655be08df94dadba31b8e0382a", ids[1]);
         }
 
         [TestMethod]

@@ -8,11 +8,11 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
     {
         public int Priority => 0;
 
-        public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
+        public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
             if (stub.Response?.Html == null)
             {
-                return Task.FromResult(false);
+                return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
             }
 
             var body = stub.Response.Html;
@@ -22,7 +22,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 response.Headers.Add("Content-Type", "text/html");
             }
 
-            return Task.FromResult(true);
+            return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
         }
     }
 }

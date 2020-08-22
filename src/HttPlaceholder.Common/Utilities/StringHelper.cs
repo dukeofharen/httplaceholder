@@ -16,5 +16,25 @@ namespace HttPlaceholder.Common.Utilities
 
             return result;
         }
+
+        public static string EnsureEndsWith(this string input, string append)
+        {
+            if (!input.EndsWith(append))
+            {
+                return input + append;
+            }
+
+            return input;
+        }
+
+        public static string EnsureStartsWith(this string input, string append)
+        {
+            if (!input.StartsWith(append))
+            {
+                return append + input;
+            }
+
+            return input;
+        }
     }
 }

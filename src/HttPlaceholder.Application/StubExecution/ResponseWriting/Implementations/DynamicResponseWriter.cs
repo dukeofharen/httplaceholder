@@ -17,11 +17,11 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public int Priority => -10;
 
-        public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
+        public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
             if (stub.Response.EnableDynamicMode != true)
             {
-                return Task.FromResult(false);
+                return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
             }
 
 
@@ -39,7 +39,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 response.Headers[key] = _variableParser.Parse(response.Headers[key]);
             }
 
-            return Task.FromResult(true);
+            return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
         }
     }
 }
