@@ -21,4 +21,8 @@ cp -r $ROOT_DIR/gui/dist/. $ROOT_DIR/src/HttPlaceholder/gui
 # Pack tool
 cd src/HttPlaceholder
 sed -i 's/<PackAsTool>false<\/PackAsTool>/<PackAsTool>true<\/PackAsTool>/' HttPlaceholder.csproj
-dotnet pack -c Tool -o $BIN_DIR
+dotnet pack -c Tool \
+    -o $BIN_DIR \
+    /p:Version=$VERSION \
+    /p:AssemblyVersion=$VERSION \
+    /p:FileVersion=$VERSION
