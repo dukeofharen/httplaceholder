@@ -50,3 +50,6 @@ build-windows:
   script:
     - chmod +x ./scripts/build/build-windows.sh
     - ./scripts/build/build-windows.sh
+  artifacts:
+    paths:
+      - dist/windows
