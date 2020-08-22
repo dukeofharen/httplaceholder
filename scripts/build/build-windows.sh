@@ -8,13 +8,9 @@ fi
 VERSION=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=$DIR/../..
-DIST_DIR=$ROOT_DIR/dist
-WIN_DIST_DIR=$DIST_DIR/windows
+WIN_DIST_DIR=$ROOT_DIR/dist/windows
 INSTALL_SCRIPT_DIR=$DIR/installscripts/windows
 
-# Create dist dir
-mkdir $DIR/dist
-mkdir $WIN_DIST_DIR
 
 # Publish application
 cd src/HttPlaceholder
