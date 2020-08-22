@@ -39,66 +39,66 @@ build-ui:
     paths:
       - gui/dist
     expire_in: 1 week
-
-build-windows:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - apt update && apt install zip -y
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-windows.sh
-    - ./scripts/build/build-windows.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-
-build-linux:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-linux.sh
-    - ./scripts/build/build-linux.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-
-build-osx:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-osx.sh
-    - ./scripts/build/build-osx.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-
-build-tool:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-tool.sh
-    - ./scripts/build/build-tool.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-
-create-open-api-file:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - chmod +x ./scripts/build/create-open-api-file.sh
-    - ./scripts/build/create-open-api-file.sh
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
+#
+#build-windows:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - apt update && apt install zip -y
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-windows.sh
+#    - ./scripts/build/build-windows.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
+#
+#build-linux:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-linux.sh
+#    - ./scripts/build/build-linux.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
+#
+#build-osx:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-osx.sh
+#    - ./scripts/build/build-osx.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
+#
+#build-tool:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-tool.sh
+#    - ./scripts/build/build-tool.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
+#
+#create-open-api-file:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - chmod +x ./scripts/build/create-open-api-file.sh
+#    - ./scripts/build/create-open-api-file.sh
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
 
 docker-build:
   image: docker:latest
@@ -107,7 +107,7 @@ docker-build:
     - docker:18.09.7-dind # https://github.com/docker-library/docker/issues/175
   script:
     - VERSION="$(cat version.txt)"
-    - docker login -u="$DOCKER_PASSWORD" -p="$DOCKER_USERNAME"
+    - docker login -u="$$DOCKER_USERNAME" -p="DOCKER_PASSWORD"
     - chmod +x ./scripts/build/build-and-push-docker.sh
     - ./scripts/build/build-and-push-docker.sh "$VERSION"
   when: manual
