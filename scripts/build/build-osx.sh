@@ -12,6 +12,9 @@ DIST_DIR=$ROOT_DIR/dist
 BIN_DIR=$ROOT_DIR/bin
 INSTALL_SCRIPT_DIR=$DIR/installscripts/mac
 
+# Create dist dir
+mkdir $DIST_DIR
+
 # Publish application
 cd src/HttPlaceholder
 dotnet publish --configuration=release \
