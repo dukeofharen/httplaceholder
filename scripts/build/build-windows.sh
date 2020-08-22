@@ -5,11 +5,12 @@ if [ "$1" = "" ]; then
 fi
 
 VERSION=$1
-ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+ROOT_DIR=$DIR/../..
 WIN_DIST_DIR=$ROOT_DIR/dist/windows
-INSTALL_SCRIPT_DIR=$ROOT_DIR/scripts/build/installscripts/windows
+INSTALL_SCRIPT_DIR=$DIR/installscripts/windows
 
-mkdir $ROOT_DIR/dist
+mkdir $DIR/dist
 mkdir $WIN_DIST_DIR
 
 cd src/HttPlaceholder
