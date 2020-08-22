@@ -77,3 +77,15 @@ build-osx:
     paths:
       - dist
     expire_in: 1 week
+
+build-tool:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - VERSION="$(cat version.txt)"
+    - chmod +x ./scripts/build/build-tool.sh
+    - ./scripts/build/build-tool.sh "$VERSION"
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
