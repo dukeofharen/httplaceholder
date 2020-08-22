@@ -8,9 +8,9 @@ fi
 VERSION=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=$DIR/../..
-WIN_DIST_DIR=$ROOT_DIR/dist/windows
+DIST_DIR=$ROOT_DIR/dist
+BIN_DIR=$ROOT_DIR/dist/windows
 INSTALL_SCRIPT_DIR=$DIR/installscripts/windows
-
 
 # Publish application
 cd src/HttPlaceholder
@@ -20,17 +20,18 @@ dotnet publish --configuration=release \
     /p:Version=$VERSION \
     /p:AssemblyVersion=$VERSION \
     /p:FileVersion=$VERSION \
-    -o $WIN_DIST_DIR
+    -o $BIN_DIR
     
 # Copy GUI to dist dir
-cp -r $ROOT_DIR/gui/dist/. $WIN_DIST_DIR/gui
+cp -r $ROOT_DIR/gui/dist/. $BIN_DIR/gui
 
 # Copy install scripts to dist dir
-cp -r $INSTALL_SCRIPT_DIR/. $WIN_DIST_DIR
+cp -r $INSTALL_SCRIPT_DIR/. $BIN_DIR
 
 # Rename web.config
-mv $WIN_DIST_DIR/web.config $WIN_DIST_DIR/_web.config
+mv $BIN_DIR/web.config $BIN_DIR/_web.config
 
 # Archive binaries
-cd $WIN_DIST_DIR
+cd $BIN_DIR
 zip httplaceholder_win-x64.zip -r .
+cp httplaceholder_win-x64.zip $DIST_DIR

@@ -51,7 +51,7 @@ build-windows:
     - ./scripts/build/build-windows.sh "$VERSION"
   artifacts:
     paths:
-      - dist/windows/*.zip
+      - dist
     expire_in: 1 week
 
 build-linux:
@@ -63,7 +63,7 @@ build-linux:
     - ./scripts/build/build-linux.sh "$VERSION"
   artifacts:
     paths:
-      - dist/linux/*.tar.gz
+      - dist
     expire_in: 1 week
 
 build-osx:
@@ -75,5 +75,5 @@ build-osx:
     - ./scripts/build/build-osx.sh "$VERSION"
   artifacts:
     paths:
-      - dist/mac/*.tar.gz
+      - dist
     expire_in: 1 week

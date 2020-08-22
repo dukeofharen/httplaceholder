@@ -8,9 +8,9 @@ fi
 VERSION=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=$DIR/../..
-MAC_DIST_DIR=$ROOT_DIR/dist/mac
+DIST_DIR=$ROOT_DIR/dist
+BIN_DIR=$ROOT_DIR/dist/mac
 INSTALL_SCRIPT_DIR=$DIR/installscripts/mac
-
 
 # Publish application
 cd src/HttPlaceholder
@@ -20,17 +20,18 @@ dotnet publish --configuration=release \
     /p:Version=$VERSION \
     /p:AssemblyVersion=$VERSION \
     /p:FileVersion=$VERSION \
-    -o $MAC_DIST_DIR
+    -o $BIN_DIR
     
 # Copy GUI to dist dir
-cp -r $ROOT_DIR/gui/dist/. $MAC_DIST_DIR/gui
+cp -r $ROOT_DIR/gui/dist/. $BIN_DIR/gui
 
 # Copy install scripts to dist dir
-cp -r $INSTALL_SCRIPT_DIR/. $MAC_DIST_DIR
+cp -r $INSTALL_SCRIPT_DIR/. $BIN_DIR
 
 # Remove web.config
-rm $MAC_DIST_DIR/web.config
+rm $BIN_DIR/web.config
 
 # Archive binaries
-cd $MAC_DIST_DIR
+cd $BIN_DIR
 tar -czvf httplaceholder_linux-x64.tar.gz .
+cp httplaceholder_linux-x64.tar.gz $DIST_DIR
