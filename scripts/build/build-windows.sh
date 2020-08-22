@@ -9,7 +9,7 @@ VERSION=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=$DIR/../..
 DIST_DIR=$ROOT_DIR/dist
-BIN_DIR=$ROOT_DIR/dist/windows
+BIN_DIR=$ROOT_DIR/bin
 INSTALL_SCRIPT_DIR=$DIR/installscripts/windows
 
 # Publish application
