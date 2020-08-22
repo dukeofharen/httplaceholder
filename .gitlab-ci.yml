@@ -42,4 +42,4 @@ build-ui:
   stage: build-ui
   script:
     - chmod +x ./scripts/build/build-ui.sh
-    - ./scripts/build/build-ui.sh
+    - bash ./scripts/build/build-ui.sh
