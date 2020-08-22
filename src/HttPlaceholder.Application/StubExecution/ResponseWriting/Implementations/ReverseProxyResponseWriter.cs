@@ -35,13 +35,14 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public int Priority => -10;
 
-        public async Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
+        public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
             if (stub.Response.ReverseProxy == null || string.IsNullOrWhiteSpace(stub.Response.ReverseProxy.Url))
             {
-                return false;
+                return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
             }
 
+            var log = string.Empty;
             var proxyUrl = stub.Response.ReverseProxy.Url;
             var appendPath = stub.Response.ReverseProxy.AppendPath == true;
             if (appendPath)
@@ -66,6 +67,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
             var method = new HttpMethod(_httpContextService.Method);
             var request = new HttpRequestMessage(method, proxyUrl);
+            log = $"Performing {method} request to URL {proxyUrl}";
             var originalHeaders = _httpContextService
                 .GetHeaders();
             var headers = originalHeaders
@@ -130,7 +132,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             }
 
             response.StatusCode = (int)responseMessage.StatusCode;
-            return true;
+            return StubResponseWriterResultModel.IsExecuted(GetType().Name, log);
         }
     }
 }

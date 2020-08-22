@@ -30,7 +30,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Executed);
             Assert.IsNull(response.Body);
         }
 
@@ -54,7 +54,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             Assert.IsTrue(expectedBody.SequenceEqual(response.Body));
             Assert.AreEqual("text/plain", response.Headers["Content-Type"]);
         }
@@ -80,7 +80,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             Assert.IsTrue(expectedBody.SequenceEqual(response.Body));
             Assert.AreEqual("text/xml", response.Headers["Content-Type"]);
         }

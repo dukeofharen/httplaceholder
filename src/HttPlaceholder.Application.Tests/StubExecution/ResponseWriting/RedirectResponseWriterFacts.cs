@@ -29,7 +29,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Executed);
             Assert.AreEqual(0, response.StatusCode);
         }
 
@@ -51,7 +51,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             Assert.AreEqual(307, response.StatusCode);
             Assert.AreEqual("https://google.com", response.Headers["Location"]);
         }
@@ -74,7 +74,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             Assert.AreEqual(301, response.StatusCode);
             Assert.AreEqual("https://google.com", response.Headers["Location"]);
         }

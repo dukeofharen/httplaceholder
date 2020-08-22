@@ -29,7 +29,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Executed);
             Assert.AreEqual(0, response.Headers.Count);
         }
 
@@ -55,7 +55,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             Assert.AreEqual(2, response.Headers.Count);
             Assert.AreEqual("1223", response.Headers["X-Api-Key"]);
             Assert.AreEqual("abc", response.Headers["X-User-Secret"]);

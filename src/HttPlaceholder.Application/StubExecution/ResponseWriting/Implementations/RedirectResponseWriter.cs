@@ -8,15 +8,14 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
     {
         public int Priority => 0;
 
-        public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
+        public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            var executed = false;
             if (stub.Response?.TemporaryRedirect != null)
             {
                 var url = stub.Response.TemporaryRedirect;
                 response.StatusCode = (int)HttpStatusCode.TemporaryRedirect;
                 response.Headers.Add("Location", url);
-                executed = true;
+                return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
             }
 
             // ReSharper disable once InvertIf
@@ -25,10 +24,11 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 var url = stub.Response.PermanentRedirect;
                 response.StatusCode = (int)HttpStatusCode.MovedPermanently;
                 response.Headers.Add("Location", url);
-                executed = true;
+
+                return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
             }
 
-            return Task.FromResult(executed);
+            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
         }
     }
 }

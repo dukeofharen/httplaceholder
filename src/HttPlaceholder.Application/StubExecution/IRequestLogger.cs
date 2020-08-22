@@ -13,7 +13,7 @@ namespace HttPlaceholder.Application.StubExecution
 
         void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions, IEnumerable<ConditionCheckResultModel> negativeConditions);
 
-        void SetResponseWriterResult(string writerName, bool executed);
+        void SetResponseWriterResult(StubResponseWriterResultModel result);
 
         void SetExecutingStubId(string stubId);
     }

@@ -32,12 +32,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             responseWriterMock1
                .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
                .Callback<StubModel, ResponseModel>((s, r) => r.StatusCode = 401)
-               .ReturnsAsync(true);
+               .ReturnsAsync(StubResponseWriterResultModel.IsExecuted(GetType().Name));
 
             responseWriterMock2
                .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
                .Callback<StubModel, ResponseModel>((s, r) => r.Headers.Add("X-Api-Key", "12345"))
-               .ReturnsAsync(false);
+               .ReturnsAsync(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
 
             _responseWriters.Add(responseWriterMock1.Object);
             _responseWriters.Add(responseWriterMock2.Object);
@@ -61,7 +61,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             responseWriterMock1
                .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
                .Callback<StubModel, ResponseModel>((s, r) => r.StatusCode = 401)
-               .ReturnsAsync(true);
+               .ReturnsAsync(StubResponseWriterResultModel.IsExecuted(GetType().Name));
             responseWriterMock1
                 .Setup(m => m.Priority)
                 .Returns(10);
@@ -69,7 +69,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             responseWriterMock2
                .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
                .Callback<StubModel, ResponseModel>((s, r) => r.StatusCode = 404)
-               .ReturnsAsync(false);
+               .ReturnsAsync(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
             responseWriterMock2
                 .Setup(m => m.Priority)
                 .Returns(-10);

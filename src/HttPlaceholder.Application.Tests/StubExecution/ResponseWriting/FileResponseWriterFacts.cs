@@ -47,7 +47,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Executed);
             Assert.IsNull(response.Body);
         }
 
@@ -78,7 +78,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             Assert.AreEqual(body, response.Body);
         }
 
@@ -120,7 +120,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
             Assert.AreEqual(body, response.Body);
         }
 
@@ -157,7 +157,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Executed);
             Assert.IsNull(response.Body);
         }
     }

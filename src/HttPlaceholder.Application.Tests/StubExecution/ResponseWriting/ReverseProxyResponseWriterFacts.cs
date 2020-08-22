@@ -37,7 +37,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, null);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Executed);
         }
 
         [TestMethod]
@@ -56,7 +56,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var result = await _writer.WriteToResponseAsync(stub, null);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result.Executed);
         }
 
         [DataTestMethod]
@@ -134,7 +134,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             // Assert
             Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
             Assert.AreEqual(200, responseModel.StatusCode);
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
         }
 
         [TestMethod]
@@ -192,7 +192,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             // Assert
             Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
             Assert.AreEqual(200, responseModel.StatusCode);
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
         }
 
         [TestMethod]
@@ -252,7 +252,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             // Assert
             Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
             Assert.AreEqual(200, responseModel.StatusCode);
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
 
             Assert.AreEqual(3, responseModel.Headers.Count);
             Assert.AreEqual("text/plain; charset=utf-8", responseModel.Headers["Content-Type"]);
@@ -309,7 +309,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             // Assert
             Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
             Assert.AreEqual(200, responseModel.StatusCode);
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
         }
 
         [TestMethod]
@@ -361,7 +361,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             // Assert
             Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
             Assert.AreEqual(200, responseModel.StatusCode);
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
         }
 
         [DataTestMethod]
@@ -434,7 +434,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             Assert.AreEqual(expectedReplacementUrl, Encoding.UTF8.GetString(responseModel.Body));
             Assert.AreEqual(expectedReplacementUrl, responseModel.Headers["X-Url"]);
             Assert.AreEqual(200, responseModel.StatusCode);
-            Assert.IsTrue(result);
+            Assert.IsTrue(result.Executed);
         }
     }
 }

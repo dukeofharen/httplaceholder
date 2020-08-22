@@ -161,17 +161,18 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         public void RequestLogger_SetResponseWriterResult_HappyFlow()
         {
             // arrange
-            const string writerName = "HtmlWriter";
-            const bool executed = true;
+            var resultModel = new StubResponseWriterResultModel
+            {
+                Executed = true, Log = string.Empty, ResponseWriterName = "Writer"
+            };
 
             // act
-            _logger.SetResponseWriterResult(writerName, executed);
+            _logger.SetResponseWriterResult(resultModel);
             var result = _logger.GetResult();
 
             // assert
             var responseWriterResult = result.StubResponseWriterResults.Single();
-            Assert.AreEqual(writerName, responseWriterResult.ResponseWriterName);
-            Assert.AreEqual(executed, responseWriterResult.Executed);
+            Assert.AreEqual(resultModel, responseWriterResult);
         }
     }
 }

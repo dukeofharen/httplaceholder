@@ -54,11 +54,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 
         public void SetExecutingStubId(string stubId) => _result.ExecutingStubId = stubId;
 
-        public void SetResponseWriterResult(string writerName, bool executed) =>
-            _result.StubResponseWriterResults.Add(new StubResponseWriterResultModel
-            {
-                Executed = executed,
-                ResponseWriterName = writerName
-            });
+        public void SetResponseWriterResult(StubResponseWriterResultModel result) =>
+            _result.StubResponseWriterResults.Add(result);
     }
 }

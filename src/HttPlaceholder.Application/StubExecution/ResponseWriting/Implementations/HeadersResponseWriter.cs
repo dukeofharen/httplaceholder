@@ -8,12 +8,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
     {
         public int Priority => 0;
 
-        public Task<bool> WriteToResponseAsync(StubModel stub, ResponseModel response)
+        public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
             var stubResponseHeaders = stub.Response?.Headers;
             if (stubResponseHeaders == null || stubResponseHeaders?.Any() != true)
             {
-                return Task.FromResult(false);
+                return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
             }
 
             foreach (var header in stubResponseHeaders)
@@ -21,7 +21,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 response.Headers.Add(header.Key, header.Value);
             }
 
-            return Task.FromResult(true);
+            return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
         }
     }
 }

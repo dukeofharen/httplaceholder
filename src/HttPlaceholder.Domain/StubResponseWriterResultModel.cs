@@ -14,5 +14,19 @@
         /// Gets or sets a value indicating whether this <see cref="StubResponseWriterResultModel"/> is executed.
         /// </summary>
         public bool Executed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the log string of the executed response writer.
+        /// </summary>
+        public string Log { get; set; }
+
+        public static StubResponseWriterResultModel IsNotExecuted(string responseWriterName) =>
+            new StubResponseWriterResultModel {Executed = false, ResponseWriterName = responseWriterName};
+
+        public static StubResponseWriterResultModel IsExecuted(string responseWriterName) =>
+            new StubResponseWriterResultModel {Executed = true, ResponseWriterName = responseWriterName};
+
+        public static StubResponseWriterResultModel IsExecuted(string responseWriterName, string log) =>
+            new StubResponseWriterResultModel {Executed = true, ResponseWriterName = responseWriterName, Log = log};
     }
 }
