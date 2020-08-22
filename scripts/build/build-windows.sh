@@ -33,5 +33,5 @@ mv $BIN_DIR/web.config $BIN_DIR/_web.config
 
 # Archive binaries
 cd $BIN_DIR
-zip httplaceholder_win-x64.zip -r .
+zip -r httplaceholder_win-x64.zip .
 cp httplaceholder_win-x64.zip $DIST_DIR
