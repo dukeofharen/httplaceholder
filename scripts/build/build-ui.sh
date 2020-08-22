@@ -2,4 +2,5 @@
 cd gui
 npm install
 npm run build
-cp -r gui/dist/. src/HttPlaceholder/gui
+
+cp -r dist/. ../src/HttPlaceholder/gui
