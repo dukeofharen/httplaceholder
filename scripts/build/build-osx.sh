@@ -30,3 +30,7 @@ cp -r $INSTALL_SCRIPT_DIR/. $MAC_DIST_DIR
 
 # Remove web.config
 rm $MAC_DIST_DIR/web.config
+
+# Archive binaries
+cd $MAC_DIST_DIR
+tar -czvf httplaceholder_linux-x64.tar.gz .

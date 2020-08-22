@@ -30,3 +30,7 @@ cp -r $INSTALL_SCRIPT_DIR/. $WIN_DIST_DIR
 
 # Rename web.config
 mv $WIN_DIST_DIR/web.config $WIN_DIST_DIR/_web.config
+
+# Archive binaries
+cd $WIN_DIST_DIR
+zip httplaceholder_win-x64.zip -r .

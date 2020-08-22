@@ -30,3 +30,7 @@ cp -r $INSTALL_SCRIPT_DIR/. $LIN_DIST_DIR
 
 # Remove web.config
 rm $LIN_DIST_DIR/web.config
+
+# Archive binaries
+cd $LIN_DIST_DIR
+tar -czvf httplaceholder_osx-x64.tar.gz .
