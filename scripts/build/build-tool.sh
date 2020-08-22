@@ -9,7 +9,6 @@ VERSION=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=$DIR/../..
 DIST_DIR=$ROOT_DIR/dist
-BIN_DIR=$ROOT_DIR/bin
 INSTALL_SCRIPT_DIR=$DIR/installscripts/linux
 
 # Create dist dir
@@ -23,7 +22,7 @@ rm $ROOT_DIR/src/HttPlaceholder/gui/.guiwillbeplacedhere
 cd src/HttPlaceholder
 sed -i 's/<PackAsTool>false<\/PackAsTool>/<PackAsTool>true<\/PackAsTool>/' HttPlaceholder.csproj
 dotnet pack -c Tool \
-    -o $BIN_DIR \
+    -o $DIST_DIR \
     /p:Version=$VERSION \
     /p:AssemblyVersion=$VERSION \
     /p:FileVersion=$VERSION
