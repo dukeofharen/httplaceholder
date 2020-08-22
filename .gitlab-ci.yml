@@ -6,7 +6,6 @@ variables:
 
 stages:
   - prepare-version
-  - prebuild
   - test
   - build-ui
   - build-server
@@ -23,13 +22,6 @@ set-version:
     paths:
       - version.txt
     expire_in: 1 week
-
-patch-csproj-versions:
-  image: $PWSH_IMAGE
-  stage: prebuild
-  script:
-    - VERSION="$(cat version.txt)"
-    - pwsh scripts/build/patch-csproj-versions.ps1 -srcFolder src
 
 #test:
 #  image: $DOTNET_IMAGE
@@ -49,8 +41,9 @@ build-windows:
   image: $DOTNET_IMAGE
   stage: build-server
   script:
+    - VERSION="$(cat version.txt)"
     - chmod +x ./scripts/build/build-windows.sh
-    - ./scripts/build/build-windows.sh
+    - ./scripts/build/build-windows.sh "$VERSION"
   artifacts:
     paths:
       - dist/windows
