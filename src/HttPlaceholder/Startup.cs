@@ -50,15 +50,16 @@ namespace HttPlaceholder
         public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddMvc(o => o.AddYamlFormatting())
+                .AddMvc()
                 .AddNewtonsoftJson(o => o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
-               .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-               .AddApplicationPart(Assembly.GetExecutingAssembly());
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .AddApplicationPart(Assembly.GetExecutingAssembly());
+            services.Configure<MvcOptions>(o => o.AddYamlFormatting());
             services
-               .AddHttPlaceholder(configuration)
-               .AddHttpContextAccessor()
-               .AddLogging()
-               .AddOpenApiDocument(c => c.Title = "HttPlaceholder API");
+                .AddHttPlaceholder(configuration)
+                .AddHttpContextAccessor()
+                .AddLogging()
+                .AddOpenApiDocument(c => c.Title = "HttPlaceholder API");
         }
     }
 }
