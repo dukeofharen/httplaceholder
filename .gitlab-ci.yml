@@ -45,7 +45,7 @@ build-windows:
   image: $DOTNET_IMAGE
   stage: build-server
   script:
-    - apt install zip
+    - apt update && apt install zip
     - VERSION="$(cat version.txt)"
     - chmod +x ./scripts/build/build-windows.sh
     - ./scripts/build/build-windows.sh "$VERSION"
