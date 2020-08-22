@@ -1,5 +1,6 @@
 stages:
-  - prepare
+  - prepare-version
+  - prebuild
   - test
   - build
   - install
@@ -7,10 +8,17 @@ stages:
 
 set-version:
   image: debian:stable-slim
-  stage: prepare
+  stage: prepare-version
   script:
     - chmod +x ./scripts/build/set-version.sh
     - ./scripts/build/set-version.sh "$CI_PIPELINE_IID"
   artifacts:
     paths:
       - version.txt
+
+patch-csproj-versions:
+  image: mcr.microsoft.com/powershell:latest
+  stage: prebuild
+  script:
+    - VERSION="$(cat version.txt)"
+    - pwsh scripts/build/patch-csproj-versions.ps1 -srcFolder src
