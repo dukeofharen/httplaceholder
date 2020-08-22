@@ -1,3 +1,8 @@
+variables:
+  DEBIAN_IMAGE: debian:stable-slim
+  PWSH_IMAGE: mcr.microsoft.com/powershell:latest
+  DOTNET_IMAGE: mcr.microsoft.com/dotnet/core/sdk:3.1
+
 stages:
   - prepare-version
   - prebuild
@@ -7,7 +12,7 @@ stages:
   - deploy
 
 set-version:
-  image: debian:stable-slim
+  image: $DEBIAN_IMAGE
   stage: prepare-version
   script:
     - chmod +x ./scripts/build/set-version.sh
@@ -17,8 +22,15 @@ set-version:
       - version.txt
 
 patch-csproj-versions:
-  image: mcr.microsoft.com/powershell:latest
+  image: $PWSH_IMAGE
   stage: prebuild
   script:
     - VERSION="$(cat version.txt)"
     - pwsh scripts/build/patch-csproj-versions.ps1 -srcFolder src
+
+test:
+  image: $DOTNET_IMAGE
+  stage: test
+  script:
+    - cd src
+    - dotnet test
