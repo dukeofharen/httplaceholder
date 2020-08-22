@@ -9,6 +9,7 @@ stages:
   - test
   - build-ui
   - build-server
+  - publish
 
 set-version:
   image: $DEBIAN_IMAGE
@@ -98,3 +99,15 @@ create-open-api-file:
     paths:
       - dist
     expire_in: 1 week
+
+docker-build:
+  image: docker:latest
+  stage: publish
+  services:
+    - docker:18.09.7-dind # https://github.com/docker-library/docker/issues/175
+  script:
+    - VERSION="$(cat version.txt)"
+    - docker login -u="$DOCKER_PASSWORD" -p="$DOCKER_USERNAME"
+    - chmod +x ./scripts/build/build-and-push-docker.sh
+    - ./scripts/build/build-and-push-docker.sh "$VERSION"
+  when: manual
