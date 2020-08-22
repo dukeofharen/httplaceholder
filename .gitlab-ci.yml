@@ -109,5 +109,5 @@ docker-build:
     - VERSION="$(cat version.txt)"
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - chmod +x ./scripts/build/build-and-push-docker.sh
-    - bash ./scripts/build/build-and-push-docker.sh "$VERSION"
+    - sh ./scripts/build/build-and-push-docker.sh "$VERSION"
   when: manual
