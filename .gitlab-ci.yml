@@ -107,7 +107,9 @@ docker-build:
     - docker:18.09.7-dind # https://github.com/docker-library/docker/issues/175
   script:
     - VERSION="$(cat version.txt)"
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - chmod +x ./scripts/build/build-and-push-docker.sh
-    - sh ./scripts/build/build-and-push-docker.sh "$VERSION"
+    - REPO_NAME="dukeofharen/httplaceholder"
+    - docker build -t ${REPO_NAME}:${VERSION} .
+    - docker tag ${REPO_NAME}:${VERSION} ${REPO_NAME}:latest
+    - docker push ${REPO_NAME}:${VERSION}
+    - docker push ${REPO_NAME}:latest
   when: manual
