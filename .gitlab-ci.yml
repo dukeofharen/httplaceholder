@@ -43,3 +43,10 @@ build-ui:
   script:
     - chmod +x ./scripts/build/build-ui.sh
     - sh ./scripts/build/build-ui.sh
+
+build-windows:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - chmod +x ./scripts/build/build-windows.sh
+    - ./scripts/build/build-windows.sh
