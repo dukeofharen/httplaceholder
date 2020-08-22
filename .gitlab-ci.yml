@@ -28,17 +28,17 @@ set-version:
 #  script:
 #    - cd src
 #    - dotnet test
-
-build-ui:
-  image: $NODE_IMAGE
-  stage: build-ui
-  script:
-    - chmod +x ./scripts/build/build-ui.sh
-    - sh ./scripts/build/build-ui.sh
-  artifacts: 
-    paths:
-      - gui/dist
-    expire_in: 1 week
+#
+#build-ui:
+#  image: $NODE_IMAGE
+#  stage: build-ui
+#  script:
+#    - chmod +x ./scripts/build/build-ui.sh
+#    - sh ./scripts/build/build-ui.sh
+#  artifacts: 
+#    paths:
+#      - gui/dist
+#    expire_in: 1 week
 #
 #build-windows:
 #  image: $DOTNET_IMAGE
@@ -109,5 +109,5 @@ docker-build:
     - VERSION="$(cat version.txt)"
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - chmod +x ./scripts/build/build-and-push-docker.sh
-    - sh ./scripts/build/build-and-push-docker.sh "$VERSION"
+    - bash ./scripts/build/build-and-push-docker.sh "$VERSION"
   when: manual
