@@ -36,6 +36,10 @@ build-ui:
   script:
     - chmod +x ./scripts/build/build-ui.sh
     - sh ./scripts/build/build-ui.sh
+  artifacts: 
+    paths:
+      - gui/dist
+    expire_in: 1 week
 
 build-windows:
   image: $DOTNET_IMAGE
