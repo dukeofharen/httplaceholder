@@ -1,0 +1,16 @@
+stages:
+  - prepare
+  - test
+  - build
+  - install
+  - deploy
+
+set-version:
+  image: debian:stable-slim
+  stage: prepare
+  script:
+    - chmod +x ./scripts/build/set-version.sh
+    - ./scripts/build/set-version.sh "$CI_BUILD_ID"
+  artifacts:
+    paths:
+      - version.txt
