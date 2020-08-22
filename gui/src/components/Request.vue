@@ -23,20 +23,20 @@
           @click="createStub"
           title="Create a stub based on the request parameters of this request"
           color="success"
-          >Create stub
+        >Create stub
         </v-btn>
       </v-list-item>
       <v-list-item v-if="request.requestParameters.body">
         <v-list-item-content>
           <v-list-item-title>Body</v-list-item-title>
-          <RequestBody v-bind:requestParameters="request.requestParameters" />
+          <RequestBody v-bind:requestParameters="request.requestParameters"/>
         </v-list-item-content>
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title>Client IP</v-list-item-title>
           <v-list-item-subtitle
-            >{{ request.requestParameters.clientIp }}
+          >{{ request.requestParameters.clientIp }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -49,7 +49,7 @@
               :key="key"
             >
               {{ key }}: {{ value }}
-              <br />
+              <br/>
             </span>
           </v-list-item-subtitle>
         </v-list-item-content>
@@ -60,7 +60,7 @@
           <v-list-item-subtitle>
             <span v-for="(value, key) in queryParameters" :key="key">
               {{ key }}: {{ value }}
-              <br />
+              <br/>
             </span>
           </v-list-item-subtitle>
         </v-list-item-content>
@@ -69,7 +69,7 @@
         <v-list-item-content>
           <v-list-item-title>Correlation ID</v-list-item-title>
           <v-list-item-subtitle
-            >{{ request.correlationId }}
+          >{{ request.correlationId }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -82,7 +82,7 @@
                 name: 'stubs',
                 query: { searchTerm: request.executingStubId }
               }"
-              >{{ request.executingStubId }}
+            >{{ request.executingStubId }}
             </router-link>
           </v-list-item-subtitle>
         </v-list-item-content>
@@ -93,7 +93,7 @@
           <v-list-item-subtitle>
             <router-link
               :to="{ name: 'stubs', query: { stubTenant: request.stubTenant } }"
-              >{{ request.stubTenant }}
+            >{{ request.stubTenant }}
             </router-link>
           </v-list-item-subtitle>
         </v-list-item-content>
@@ -102,7 +102,7 @@
         <v-list-item-content>
           <v-list-item-title>Request begin time</v-list-item-title>
           <v-list-item-subtitle
-            >{{ request.requestBeginTime | datetime }}
+          >{{ request.requestBeginTime | datetime }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -110,7 +110,7 @@
         <v-list-item-content>
           <v-list-item-title>Request end time</v-list-item-title>
           <v-list-item-subtitle
-            >{{ request.requestEndTime | datetime }}
+          >{{ request.requestEndTime | datetime }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -151,19 +151,19 @@
                         <v-list-item-content>
                           <v-list-item-title>Checker name</v-list-item-title>
                           <v-list-item-subtitle
-                            >{{ condition.checkerName }}
+                          >{{ condition.checkerName }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title
-                            >Condition validation
+                          >Condition validation
                           </v-list-item-title>
                           <v-list-item-subtitle>
                             <Bool
                               v-bind:bool="
-                                condition.conditionValidation == 'Valid'
+                                condition.conditionValidation === conditionValidationType.Valid
                               "
                               trueText="passed"
                               falseText="not passed"
@@ -175,7 +175,7 @@
                         <v-list-item-content>
                           <v-list-item-title>Log</v-list-item-title>
                           <v-list-item-subtitle
-                            >{{ condition.log }}
+                          >{{ condition.log }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
@@ -192,19 +192,19 @@
                         <v-list-item-content>
                           <v-list-item-title>Checker name</v-list-item-title>
                           <v-list-item-subtitle
-                            >{{ condition.checkerName }}
+                          >{{ condition.checkerName }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title
-                            >Condition validation
+                          >Condition validation
                           </v-list-item-title>
                           <v-list-item-subtitle>
                             <Bool
                               v-bind:bool="
-                                condition.conditionValidation == 'Valid'
+                                condition.conditionValidation === conditionValidationType.Valid
                               "
                               trueText="passed"
                               falseText="not passed"
@@ -216,7 +216,7 @@
                         <v-list-item-content>
                           <v-list-item-title>Log</v-list-item-title>
                           <v-list-item-subtitle
-                            >{{ condition.log }}
+                          >{{ condition.log }}
                           </v-list-item-subtitle>
                         </v-list-item-content>
                       </v-list-item>
@@ -239,7 +239,7 @@
             >
               <v-list-item-content>
                 <v-list-item-title
-                  >{{ result.responseWriterName }}
+                >{{ result.responseWriterName }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
                   <Bool
@@ -247,6 +247,8 @@
                     trueText="executed"
                     falseText="not executed"
                   />
+                  <br/>
+                  <span v-if="result.log">{{result.log}}</span>
                 </v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
@@ -258,87 +260,89 @@
 </template>
 
 <script>
-import RequestBody from "@/components/RequestBody";
-import Bool from "@/components/Bool";
-import { parseUrl } from "@/utils/urlFunctions";
-import { toastError, toastSuccess } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import { actionNames } from "@/store/storeConstants";
-import { routeNames } from "@/router/routerConstants";
+  import RequestBody from "@/components/RequestBody";
+  import Bool from "@/components/Bool";
+  import {parseUrl} from "@/utils/urlFunctions";
+  import {toastError, toastSuccess} from "@/utils/toastUtil";
+  import {resources} from "@/shared/resources";
+  import {actionNames} from "@/store/storeConstants";
+  import {routeNames} from "@/router/routerConstants";
+  import {conditionValidationType} from "@/shared/resources";
 
-export default {
-  name: "request",
-  props: ["request"],
-  data() {
-    return {
-      queryParameters: {},
-      showQueryParameters: false
-    };
-  },
-  created() {
-    this.queryParameters = parseUrl(this.request.requestParameters.url);
-    if (Object.keys(this.queryParameters).length > 0) {
-      this.showQueryParameters = true;
-    }
-  },
-  components: {
-    RequestBody,
-    Bool
-  },
-  computed: {
-    lastSelectedStub() {
-      return this.$store.getters.getLastSelectedStub;
-    },
-    orderedStubExecutionResults() {
-      const compare = a => {
-        if (a.passed) return -1;
-        if (!a.passed) return 1;
-        return 0;
+  export default {
+    name: "request",
+    props: ["request"],
+    data() {
+      return {
+        queryParameters: {},
+        showQueryParameters: false,
+        conditionValidationType
       };
-      const results = this.request.stubExecutionResults;
-      results.sort(compare);
-      return results;
     },
-    orderedStubResponseWriterResults() {
-      const compare = a => {
-        if (a.executed) return -1;
-        if (!a.executed) return 1;
-        return 0;
-      };
-      const results = this.request.stubResponseWriterResults;
-      results.sort(compare);
-      return results;
-    }
-  },
-  methods: {
-    async createStub() {
-      try {
-        const fullStub = await this.$store.dispatch(
-          actionNames.createStubBasedOnRequest,
-          {
-            correlationId: this.request.correlationId
-          }
-        );
-        const stub = fullStub.stub;
-        toastSuccess(resources.stubAddedSuccessfully.format(stub.id));
-        this.$router.push({
-          name: routeNames.updateStub,
-          params: { stubId: stub.id }
-        });
-      } catch (e) {
-        toastError(resources.stubNotAddedGeneric);
+    created() {
+      this.queryParameters = parseUrl(this.request.requestParameters.url);
+      if (Object.keys(this.queryParameters).length > 0) {
+        this.showQueryParameters = true;
+      }
+    },
+    components: {
+      RequestBody,
+      Bool
+    },
+    computed: {
+      lastSelectedStub() {
+        return this.$store.getters.getLastSelectedStub;
+      },
+      orderedStubExecutionResults() {
+        const compare = a => {
+          if (a.passed) return -1;
+          if (!a.passed) return 1;
+          return 0;
+        };
+        const results = this.request.stubExecutionResults;
+        results.sort(compare);
+        return results;
+      },
+      orderedStubResponseWriterResults() {
+        const compare = a => {
+          if (a.executed) return -1;
+          if (!a.executed) return 1;
+          return 0;
+        };
+        const results = this.request.stubResponseWriterResults;
+        results.sort(compare);
+        return results;
+      }
+    },
+    methods: {
+      async createStub() {
+        try {
+          const fullStub = await this.$store.dispatch(
+            actionNames.createStubBasedOnRequest,
+            {
+              correlationId: this.request.correlationId
+            }
+          );
+          const stub = fullStub.stub;
+          toastSuccess(resources.stubAddedSuccessfully.format(stub.id));
+          this.$router.push({
+            name: routeNames.updateStub,
+            params: {stubId: stub.id}
+          });
+        } catch (e) {
+          toastError(resources.stubNotAddedGeneric);
+        }
       }
     }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.v-chip {
-  margin-right: 10px;
-}
+  .v-chip {
+    margin-right: 10px;
+  }
 
-.request {
-  margin-bottom: 20px;
-}
+  .request {
+    margin-bottom: 20px;
+  }
 </style>
