@@ -52,3 +52,27 @@ build-windows:
     paths:
       - dist/windows
     expire_in: 1 week
+
+build-linux:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - VERSION="$(cat version.txt)"
+    - chmod +x ./scripts/build/build-linux.sh
+    - ./scripts/build/build-linux.sh "$VERSION"
+  artifacts:
+    paths:
+      - dist/linux
+    expire_in: 1 week
+
+build-osx:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - VERSION="$(cat version.txt)"
+    - chmod +x ./scripts/build/build-osx.sh
+    - ./scripts/build/build-osx.sh "$VERSION"
+  artifacts:
+    paths:
+      - dist/mac
+    expire_in: 1 week
