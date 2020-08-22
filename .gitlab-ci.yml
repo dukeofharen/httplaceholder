@@ -107,7 +107,7 @@ docker-build:
     - docker:18.09.7-dind # https://github.com/docker-library/docker/issues/175
   script:
     - VERSION="$(cat version.txt)"
-    - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
     - chmod +x ./scripts/build/build-and-push-docker.sh
     - ./scripts/build/build-and-push-docker.sh "$VERSION"
   when: manual
