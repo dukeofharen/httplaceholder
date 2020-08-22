@@ -10,7 +10,7 @@ set-version:
   stage: prepare
   script:
     - chmod +x ./scripts/build/set-version.sh
-    - ./scripts/build/set-version.sh "$CI_BUILD_ID"
+    - ./scripts/build/set-version.sh "$CI_PIPELINE_ID"
   artifacts:
     paths:
       - version.txt
