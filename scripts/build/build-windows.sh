@@ -1,7 +1,7 @@
 #!/bin/bash
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-WIN_DIST_DIR=$DIR/dist/windows
-INSTALL_SCRIPT_DIR=$DIR/scripts/build/installscripts/windows
+WIN_DIST_DIR=$ROOT_DIR/dist/windows
+INSTALL_SCRIPT_DIR=$ROOT_DIR/scripts/build/installscripts/windows
 
 mkdir $DIR/dist
 mkdir $WIN_DIST_DIR

@@ -22,6 +22,7 @@ set-version:
   artifacts:
     paths:
       - version.txt
+    expire_in: 1 week
 
 patch-csproj-versions:
   image: $PWSH_IMAGE
@@ -53,3 +54,4 @@ build-windows:
   artifacts:
     paths:
       - dist/windows
+    expire_in: 1 week
