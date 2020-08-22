@@ -2,12 +2,14 @@ variables:
   DEBIAN_IMAGE: debian:stable-slim
   PWSH_IMAGE: mcr.microsoft.com/powershell:latest
   DOTNET_IMAGE: mcr.microsoft.com/dotnet/core/sdk:3.1
+  NODE_IMAGE: node:lts-alpine3.9
 
 stages:
   - prepare-version
   - prebuild
   - test
-  - build
+  - build-ui
+  - build-server
   - install
   - deploy
 
@@ -28,9 +30,16 @@ patch-csproj-versions:
     - VERSION="$(cat version.txt)"
     - pwsh scripts/build/patch-csproj-versions.ps1 -srcFolder src
 
-test:
-  image: $DOTNET_IMAGE
-  stage: test
+#test:
+#  image: $DOTNET_IMAGE
+#  stage: test
+#  script:
+#    - cd src
+#    - dotnet test
+
+build-ui:
+  image: $NODE_IMAGE
+  stage: build-ui
   script:
-    - cd src
-    - dotnet test
+    - chmod +x ./scripts/build/build-ui.sh
+    - ./scripts/build/build-ui.sh
