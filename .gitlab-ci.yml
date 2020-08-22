@@ -9,8 +9,6 @@ stages:
   - test
   - build-ui
   - build-server
-  - install
-  - deploy
 
 set-version:
   image: $DEBIAN_IMAGE
@@ -85,6 +83,17 @@ build-tool:
     - VERSION="$(cat version.txt)"
     - chmod +x ./scripts/build/build-tool.sh
     - ./scripts/build/build-tool.sh "$VERSION"
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
+
+create-open-api-file:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - chmod +x ./scripts/build/create-open-api-file.sh
+    - ./scripts/build/create-open-api-file.sh
   artifacts:
     paths:
       - dist
