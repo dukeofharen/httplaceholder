@@ -13,15 +13,11 @@ DIST_DIR=$ROOT_DIR/dist
 # Create dist dir
 mkdir $DIST_DIR
 
-# Copy GUI to src dir
-cp -r $ROOT_DIR/gui/dist/. $ROOT_DIR/src/HttPlaceholder/gui
-rm $ROOT_DIR/src/HttPlaceholder/gui/.guiwillbeplacedhere
-
 # Pack tool
-cd src/HttPlaceholder
-sed -i 's/<PackAsTool>false<\/PackAsTool>/<PackAsTool>true<\/PackAsTool>/' HttPlaceholder.csproj
-dotnet pack -c Tool \
+cd cs-client/src/HttPlaceholder.Client
+dotnet pack -c Release \
     -o $DIST_DIR \
     /p:Version=$VERSION \
     /p:AssemblyVersion=$VERSION \
     /p:FileVersion=$VERSION
+    
