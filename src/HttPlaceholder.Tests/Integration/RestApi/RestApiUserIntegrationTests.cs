@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Client;
+﻿using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using HttPlaceholder.TestUtilities.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.RestApi
@@ -21,12 +23,13 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Settings.Authentication.ApiPassword = "correct";
 
             // Act
-            var exception = await Assert.ThrowsExceptionAsync<SwaggerException<ProblemDetails>>(() => GetFactory("wrong", "wrong")
-            .UserClient
-            .GetAsync("wrong"));
+            var request =
+                new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/users/wrong");
+            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
+            using var response = await Client.SendAsync(request);
 
             // Assert
-            Assert.AreEqual(401, exception.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
         [TestMethod]
@@ -37,12 +40,13 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Settings.Authentication.ApiPassword = "correct";
 
             // Act
-            var exception = await Assert.ThrowsExceptionAsync<SwaggerException<ProblemDetails>>(() => GetFactory("correct", "correct")
-            .UserClient
-            .GetAsync("wrong"));
+            var request =
+                new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/users/wrong");
+            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
+            using var response = await Client.SendAsync(request);
 
             // Assert
-            Assert.AreEqual(403, exception.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Forbidden, response.StatusCode);
         }
 
         [TestMethod]
@@ -53,24 +57,25 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Settings.Authentication.ApiPassword = "correct";
 
             // Act
-            var result = await GetFactory("correct", "correct")
-            .UserClient
-            .GetAsync("correct");
+            var request =
+                new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/users/correct");
+            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
+            using var response = await Client.SendAsync(request);
 
             // Assert
-            Assert.AreEqual("correct", result.Username);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
         public async Task RestApiIntegration_User_Get_NoAuthenticationConfigured_ShouldReturn200()
         {
             // Act
-            var result = await GetFactory()
-            .UserClient
-            .GetAsync("correct");
+            var request =
+                new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/users/correct");
+            using var response = await Client.SendAsync(request);
 
             // Assert
-            Assert.AreEqual("correct", result.Username);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

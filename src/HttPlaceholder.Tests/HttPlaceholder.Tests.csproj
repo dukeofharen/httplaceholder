@@ -29,7 +29,6 @@
         <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj" />
         <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
         <ProjectReference Include="..\HttPlaceholder\HttPlaceholder.csproj" />
     </ItemGroup>

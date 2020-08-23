@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using HttPlaceholder.Client;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Dto.v1.Stubs;
+using HttPlaceholder.TestUtilities.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -105,51 +108,10 @@ response:
         }
 
         [TestMethod]
-        public async Task RestApiIntegration_Stub_Add_Client()
-        {
-            // Arrange
-            var request = new StubDto
-            {
-                Id = "situation-01",
-                Conditions = new StubConditionsDto
-                {
-                    Method = "GET",
-                    Url = new StubUrlConditionDto
-                    {
-                        Path = "/users",
-                        Query = new Dictionary<string, string>
-                            {
-                                { "id", "12" },
-                                { "filter", "first_name" }
-                            }
-                    }
-                },
-                Response = new StubResponseDto
-                {
-                    StatusCode = 200,
-                    Text = @"{""first_name"": ""John""}",
-                    Headers = new Dictionary<string, string>
-                        {
-                            { "Content-Type", "application/json" }
-                        }
-                }
-            };
-
-            // Act
-            await GetFactory()
-                .StubClient
-                .AddAsync(request);
-
-            // Assert
-            Assert.AreEqual(1, StubSource.StubModels.Count);
-            Assert.AreEqual("situation-01", StubSource.StubModels.First().Id);
-        }
-
-        [TestMethod]
         public async Task RestApiIntegration_Stub_Add_Json_StubIdAlreadyExistsInReadOnlySource_ShouldReturn409()
         {
             // arrange
-            var request = new StubDto
+            var stub = new StubDto
             {
                 Id = "situation-01"
             };
@@ -163,12 +125,14 @@ response:
                .ReturnsAsync(new[] { existingStub });
 
             // Act
-            var exception = await Assert.ThrowsExceptionAsync<SwaggerException<ProblemDetails>>(() => GetFactory()
-                .StubClient
-                .AddAsync(request));
+            var request = new HttpRequestMessage(HttpMethod.Post, $"{TestServer.BaseAddress}ph-api/stubs")
+            {
+                Content = new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, "application/json")
+            };
+            using var response = await Client.SendAsync(request);
 
             // Assert
-            Assert.AreEqual(409, exception.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Conflict, response.StatusCode);
         }
 
         [TestMethod]
@@ -228,31 +192,9 @@ response:
             Assert.IsTrue(response.IsSuccessStatusCode);
 
             var content = await response.Content.ReadAsStringAsync();
-            var stubs = JsonConvert.DeserializeObject<IEnumerable<Client.FullStubDto>>(content);
-            Assert.AreEqual(1, stubs.Count());
+            var stubs = JsonConvert.DeserializeObject<FullStubDto[]>(content);
+            Assert.AreEqual(1, stubs.Length);
             Assert.AreEqual("test-123", stubs.First().Stub.Id);
-        }
-
-        [TestMethod]
-        public async Task RestApiIntegration_Stub_GetAll_Client()
-        {
-            // Arrange
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
-            });
-
-            // Act
-            var result = await GetFactory()
-                .StubClient
-                .GetAllAsync();
-
-            // Assert
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("test-123", result.First().Stub.Id);
         }
 
         [TestMethod]
@@ -311,29 +253,8 @@ response:
             Assert.IsTrue(response.IsSuccessStatusCode);
 
             var content = await response.Content.ReadAsStringAsync();
-            var stub = JsonConvert.DeserializeObject<Client.FullStubDto>(content);
+            var stub = JsonConvert.DeserializeObject<FullStubDto>(content);
             Assert.AreEqual("test-123", stub.Stub.Id);
-        }
-
-        [TestMethod]
-        public async Task RestApiIntegration_Stub_Get_Client()
-        {
-            // Arrange
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
-            });
-
-            // Act
-            var result = await GetFactory()
-                .StubClient
-                .GetAsync("test-123");
-
-            // Assert
-            Assert.AreEqual("test-123", result.Stub.Id);
         }
 
         [TestMethod]
@@ -349,12 +270,10 @@ response:
             });
 
             // Act
-            var exception = await Assert.ThrowsExceptionAsync<SwaggerException<ProblemDetails>>(() => GetFactory()
-            .StubClient
-            .GetAsync("test-123"));
+            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/stubs/test-123");
 
             // Assert
-            Assert.AreEqual(404, exception.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [TestMethod]
@@ -370,9 +289,7 @@ response:
             });
 
             // Act
-            await GetFactory()
-                .StubClient
-                .DeleteAsync("test-123");
+            using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/stubs/test-123");
 
             // Assert
             Assert.AreEqual(0, StubSource.StubModels.Count);
@@ -391,12 +308,10 @@ response:
             });
 
             // Act
-            var exception = await Assert.ThrowsExceptionAsync<SwaggerException>(() => GetFactory()
-                .StubClient
-                .DeleteAsync("test-123"));
+            using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/stubs/test-123");
 
             // Assert
-            Assert.AreEqual(404, exception.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [TestMethod]
@@ -415,12 +330,12 @@ response:
             Settings.Authentication.ApiPassword = "correct";
 
             // Act
-            var exception = await Assert.ThrowsExceptionAsync<SwaggerException<ProblemDetails>>(() => GetFactory("wrong", "wrong")
-                .StubClient
-                .GetAllAsync());
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/stubs/test-123");
+            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
+            using var response = await Client.SendAsync(request);
 
             // Assert
-            Assert.AreEqual(401, exception.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
         [TestMethod]
@@ -439,12 +354,13 @@ response:
             Settings.Authentication.ApiPassword = "correct";
 
             // Act
-            var result = await GetFactory("correct", "correct")
-                .StubClient
-                .GetAllAsync();
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/stubs/test-123");
+            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
+            using var response = await Client.SendAsync(request);
 
             // Assert
-            Assert.IsNotNull(result);
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
