@@ -4,7 +4,7 @@
 
 | | |
 | --- | --- |
-| **Build** | [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/pq6hojs9bqbmjjy5?svg=true)](https://ci.appveyor.com/project/dukeofharen/httplaceholder) |
+| **Build** | [![pipeline status](https://gitlab.com/ducode/httplaceholder/badges/master/pipeline.svg)](https://gitlab.com/ducode/httplaceholder/-/commits/master) |
 | **License** | [![MIT License](https://img.shields.io/:license-mit-green.svg)](https://opensource.org/licenses/MIT) |
 
 Quickly mock away any webservice using HttPlaceholder. HttPlaceholder lets you specify what the request should look like and what response needs to be returned.

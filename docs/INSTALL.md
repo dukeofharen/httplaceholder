@@ -28,7 +28,7 @@ curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scr
 
 ### Local development setup
 
-The only thing needed to use HttPlaceholder on your local development machine, is executing the installer (which can be found [here](https://github.com/dukeofharen/httplaceholder/releases/latest)).
+The only thing needed to use HttPlaceholder on your local development machine, is extracting the archive with the HttPlaceholder binaries (which can be found [here](https://github.com/dukeofharen/httplaceholder/releases/latest)).
 
 For installing HttPlaceholder through your PowerShell terminal, execute the following command:
 

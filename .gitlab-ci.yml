@@ -1,0 +1,134 @@
+variables:
+  DEBIAN_IMAGE: debian:stable-slim
+  PWSH_IMAGE: mcr.microsoft.com/powershell:latest
+  DOTNET_IMAGE: mcr.microsoft.com/dotnet/core/sdk:3.1
+  NODE_IMAGE: node:lts-alpine3.9
+  DOCKER_IMAGE: docker:latest
+  WINE_IMAGE: scottyhardy/docker-wine:latest
+
+stages:
+  - prepare-version
+  - test
+  - build-ui
+  - build-server
+  - build-installer
+  - publish
+
+set-version:
+  image: $DEBIAN_IMAGE
+  stage: prepare-version
+  script:
+    - chmod +x ./scripts/build/set-version.sh
+    - ./scripts/build/set-version.sh "$CI_PIPELINE_IID"
+  artifacts:
+    paths:
+      - version.txt
+    expire_in: 1 week
+
+test:
+  image: $DOTNET_IMAGE
+  stage: test
+  script:
+    - cd src
+    - dotnet test
+
+build-ui:
+  image: $NODE_IMAGE
+  stage: build-ui
+  script:
+    - chmod +x ./scripts/build/build-ui.sh
+    - sh ./scripts/build/build-ui.sh
+  artifacts:
+    paths:
+      - gui/dist
+    expire_in: 1 week
+
+build-windows:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - apt update && apt install zip -y
+    - VERSION="$(cat version.txt)"
+    - chmod +x ./scripts/build/build-windows.sh
+    - ./scripts/build/build-windows.sh "$VERSION"
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
+
+build-linux:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - VERSION="$(cat version.txt)"
+    - chmod +x ./scripts/build/build-linux.sh
+    - ./scripts/build/build-linux.sh "$VERSION"
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
+
+build-osx:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - VERSION="$(cat version.txt)"
+    - chmod +x ./scripts/build/build-osx.sh
+    - ./scripts/build/build-osx.sh "$VERSION"
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
+
+build-tool:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - VERSION="$(cat version.txt)"
+    - chmod +x ./scripts/build/build-tool.sh
+    - ./scripts/build/build-tool.sh "$VERSION"
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
+
+create-open-api-file:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - chmod +x ./scripts/build/create-open-api-file.sh
+    - ./scripts/build/create-open-api-file.sh
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
+
+docker-build:
+  image: $DOCKER_IMAGE
+  stage: publish
+  when: manual
+  services:
+    - docker:18.09.7-dind # https://github.com/docker-library/docker/issues/175
+  script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - VERSION="$(cat version.txt)"
+    - REPO_NAME="dukeofharen/httplaceholder"
+    - docker build -t ${REPO_NAME}:${VERSION} .
+    - docker tag ${REPO_NAME}:${VERSION} ${REPO_NAME}:latest
+    - docker push ${REPO_NAME}:${VERSION}
+    - docker push ${REPO_NAME}:latest
+
+publish-nuget:
+  image: $DOTNET_IMAGE
+  stage: publish
+  when: manual
+  script:
+    - dotnet nuget push dist/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+
+publish-github:
+  image: $PWSH_IMAGE
+  stage: publish
+  when: manual
+  script:
+    - VERSION="$(cat version.txt)"
+    - pwsh scripts/publish/publish-to-github.ps1 -apiKey $GITHUB_API_KEY -distFolder dist -version $VERSION -commitHash $CI_COMMIT_SHA
