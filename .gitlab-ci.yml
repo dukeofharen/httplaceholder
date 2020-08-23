@@ -103,30 +103,25 @@ set-version:
 #      - dist
 #    expire_in: 1 week
 #
-build-nsis-installer:
-  image: $WINE_IMAGE
-  stage: build-installer
-  script:
-    - bash ./scripts/build/install-installer-dependencies.sh
-#
-#docker-build:
-#  image: $DOCKER_IMAGE
-#  stage: publish
-#  when: manual
-#  services:
-#    - docker:18.09.7-dind # https://github.com/docker-library/docker/issues/175
-#  script:
-#    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-#    - VERSION="$(cat version.txt)"
-#    - REPO_NAME="dukeofharen/httplaceholder"
-#    - docker build -t ${REPO_NAME}:${VERSION} .
-#    - docker tag ${REPO_NAME}:${VERSION} ${REPO_NAME}:latest
-#    - docker push ${REPO_NAME}:${VERSION}
-#    - docker push ${REPO_NAME}:latest
 
-#publish-nuget:
-#  image: $DOTNET_IMAGE
-#  stage: publish
-#  when: manual
-#  script:
-#    - dotnet nuget push dist/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+docker-build:
+  image: $DOCKER_IMAGE
+  stage: publish
+  when: manual
+  services:
+    - docker:18.09.7-dind # https://github.com/docker-library/docker/issues/175
+  script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - VERSION="$(cat version.txt)"
+    - REPO_NAME="dukeofharen/httplaceholder"
+    - docker build -t ${REPO_NAME}:${VERSION} .
+    - docker tag ${REPO_NAME}:${VERSION} ${REPO_NAME}:latest
+    - docker push ${REPO_NAME}:${VERSION}
+    - docker push ${REPO_NAME}:latest
+
+publish-nuget:
+  image: $DOTNET_IMAGE
+  stage: publish
+  when: manual
+  script:
+    - dotnet nuget push dist/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
