@@ -3,6 +3,7 @@ variables:
   PWSH_IMAGE: mcr.microsoft.com/powershell:latest
   DOTNET_IMAGE: mcr.microsoft.com/dotnet/core/sdk:3.1
   NODE_IMAGE: node:lts-alpine3.9
+  DOCKER_IMAGE: docker:latest
 
 stages:
   - prepare-version
@@ -77,17 +78,17 @@ set-version:
 #      - dist
 #    expire_in: 1 week
 #
-#build-tool:
-#  image: $DOTNET_IMAGE
-#  stage: build-server
-#  script:
-#    - VERSION="$(cat version.txt)"
-#    - chmod +x ./scripts/build/build-tool.sh
-#    - ./scripts/build/build-tool.sh "$VERSION"
-#  artifacts:
-#    paths:
-#      - dist
-#    expire_in: 1 week
+build-tool:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - VERSION="$(cat version.txt)"
+    - chmod +x ./scripts/build/build-tool.sh
+    - ./scripts/build/build-tool.sh "$VERSION"
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
 #
 #create-open-api-file:
 #  image: $DOTNET_IMAGE
@@ -101,8 +102,9 @@ set-version:
 #    expire_in: 1 week
 
 docker-build:
-  image: docker:latest
+  image: $DOCKER_IMAGE
   stage: publish
+  when: manual
   services:
     - docker:18.09.7-dind # https://github.com/docker-library/docker/issues/175
   script:
@@ -113,4 +115,11 @@ docker-build:
     - docker tag ${REPO_NAME}:${VERSION} ${REPO_NAME}:latest
     - docker push ${REPO_NAME}:${VERSION}
     - docker push ${REPO_NAME}:latest
+
+publish-nuget:
+  image: $DOTNET_IMAGE
+  stage: publish
   when: manual
+  script:
+    - chmod +x ./scripts/publish/publish-nuget.sh
+    - sh ./scripts/publish/publish-nuget.sh
