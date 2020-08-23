@@ -4,12 +4,14 @@ variables:
   DOTNET_IMAGE: mcr.microsoft.com/dotnet/core/sdk:3.1
   NODE_IMAGE: node:lts-alpine3.9
   DOCKER_IMAGE: docker:latest
+  WINE_IMAGE: scottyhardy/docker-wine:latest
 
 stages:
   - prepare-version
   - test
   - build-ui
   - build-server
+  - build-installer
   - publish
 
 set-version:
@@ -30,29 +32,29 @@ set-version:
 #    - cd src
 #    - dotnet test
 #
-build-ui:
-  image: $NODE_IMAGE
-  stage: build-ui
-  script:
-    - chmod +x ./scripts/build/build-ui.sh
-    - sh ./scripts/build/build-ui.sh
-  artifacts: 
-    paths:
-      - gui/dist
-    expire_in: 1 week
-#
-#build-windows:
-#  image: $DOTNET_IMAGE
-#  stage: build-server
+#build-ui:
+#  image: $NODE_IMAGE
+#  stage: build-ui
 #  script:
-#    - apt update && apt install zip -y
-#    - VERSION="$(cat version.txt)"
-#    - chmod +x ./scripts/build/build-windows.sh
-#    - ./scripts/build/build-windows.sh "$VERSION"
-#  artifacts:
+#    - chmod +x ./scripts/build/build-ui.sh
+#    - sh ./scripts/build/build-ui.sh
+#  artifacts: 
 #    paths:
-#      - dist
+#      - gui/dist
 #    expire_in: 1 week
+#
+build-windows:
+  image: $DOTNET_IMAGE
+  stage: build-server
+  script:
+    - apt update && apt install zip -y
+    - VERSION="$(cat version.txt)"
+    - chmod +x ./scripts/build/build-windows.sh
+    - ./scripts/build/build-windows.sh "$VERSION"
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
 #
 #build-linux:
 #  image: $DOTNET_IMAGE
@@ -78,17 +80,17 @@ build-ui:
 #      - dist
 #    expire_in: 1 week
 #
-build-tool:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-tool.sh
-    - ./scripts/build/build-tool.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
+#build-tool:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-tool.sh
+#    - ./scripts/build/build-tool.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
 #
 #create-open-api-file:
 #  image: $DOTNET_IMAGE
@@ -100,25 +102,32 @@ build-tool:
 #    paths:
 #      - dist
 #    expire_in: 1 week
-
-docker-build:
-  image: $DOCKER_IMAGE
-  stage: publish
-  when: manual
-  services:
-    - docker:18.09.7-dind # https://github.com/docker-library/docker/issues/175
+#
+build-nsis-installer:
+  image: $WINE_IMAGE
+  stage: build-installer
   script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - VERSION="$(cat version.txt)"
-    - REPO_NAME="dukeofharen/httplaceholder"
-    - docker build -t ${REPO_NAME}:${VERSION} .
-    - docker tag ${REPO_NAME}:${VERSION} ${REPO_NAME}:latest
-    - docker push ${REPO_NAME}:${VERSION}
-    - docker push ${REPO_NAME}:latest
+    - chmod +x ./scripts/build/install-installer-dependencies.sh
+    - ./scripts/build/install-installer-dependencies.sh
+#
+#docker-build:
+#  image: $DOCKER_IMAGE
+#  stage: publish
+#  when: manual
+#  services:
+#    - docker:18.09.7-dind # https://github.com/docker-library/docker/issues/175
+#  script:
+#    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+#    - VERSION="$(cat version.txt)"
+#    - REPO_NAME="dukeofharen/httplaceholder"
+#    - docker build -t ${REPO_NAME}:${VERSION} .
+#    - docker tag ${REPO_NAME}:${VERSION} ${REPO_NAME}:latest
+#    - docker push ${REPO_NAME}:${VERSION}
+#    - docker push ${REPO_NAME}:latest
 
-publish-nuget:
-  image: $DOTNET_IMAGE
-  stage: publish
-  when: manual
-  script:
-    - dotnet nuget push dist/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+#publish-nuget:
+#  image: $DOTNET_IMAGE
+#  stage: publish
+#  when: manual
+#  script:
+#    - dotnet nuget push dist/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
