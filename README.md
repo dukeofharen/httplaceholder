@@ -93,7 +93,7 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 * [Management interface](docs/UI.md)
 
 # Tools 🛠
-* [HttPlaceholder REST API client for .NET](https://www.nuget.org/packages/HttPlaceholder.Client/)
+* [HttPlaceholder REST API client for .NET](docs/NUGETCLIENT.md)
 
 # Todo
 - There's no way to add custom condition checkers or response writers yet.

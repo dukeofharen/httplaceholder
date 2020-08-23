@@ -9,7 +9,6 @@ VERSION=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=$DIR/../..
 DIST_DIR=$ROOT_DIR/dist
-INSTALL_SCRIPT_DIR=$DIR/installscripts/linux
 
 # Create dist dir
 mkdir $DIST_DIR

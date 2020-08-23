@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
-using HttPlaceholder.Client;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Dto.v1.Stubs;
+using HttPlaceholder.TestUtilities.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
-using FullStubDto = HttPlaceholder.Dto.v1.Stubs.FullStubDto;
 
 namespace HttPlaceholder.Tests.Integration.RestApi
 {
@@ -46,11 +48,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = tenant
             });
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
             // act / assert
@@ -60,7 +58,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var content = await response.Content.ReadAsStringAsync();
             var reader = new StringReader(content);
             var deserializer = new Deserializer();
-            var stubs = deserializer.Deserialize<IEnumerable<FullStubDto>>(reader);
+            var stubs = deserializer.Deserialize<FullStubDto[]>(reader);
             Assert.AreEqual(1, stubs.Count());
             Assert.AreEqual("test-456", stubs.Single().Stub.Id);
         }
@@ -88,11 +86,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = tenant
             });
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
@@ -100,41 +94,9 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Assert.IsTrue(response.IsSuccessStatusCode);
 
             var content = await response.Content.ReadAsStringAsync();
-            var stubs = JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
+            var stubs = JsonConvert.DeserializeObject<FullStubDto[]>(content);
             Assert.AreEqual(1, stubs.Count());
             Assert.AreEqual("test-456", stubs.Single().Stub.Id);
-        }
-
-        [TestMethod]
-        public async Task RestApiIntegration_Tenant_GetAll_Client()
-        {
-            // Arrange
-            const string tenant = "tenant1";
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = "otherTenant"
-            });
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-456",
-                Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = tenant
-            });
-
-            // Act
-            var result = await GetFactory()
-                .TenantClient
-                .GetAllAsync(tenant);
-
-            // Assert
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("test-456", result.Single().Stub.Id);
         }
 
         [TestMethod]
@@ -163,12 +125,13 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Settings.Authentication.ApiPassword = "correct";
 
             // Act
-            var exception = await Assert.ThrowsExceptionAsync<SwaggerException<ProblemDetails>>(() => GetFactory("wrong", "wrong")
-                .TenantClient
-                .GetAllAsync(tenant));
+            var request =
+                new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs");
+            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
+            using var response = await Client.SendAsync(request);
 
             // Assert
-            Assert.AreEqual(401, exception.StatusCode);
+            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
         [TestMethod]
@@ -197,12 +160,13 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Settings.Authentication.ApiPassword = "correct";
 
             // Act
-            var result = await GetFactory("correct", "correct")
-                .TenantClient
-                .GetAllAsync(tenant);
+            var request =
+                new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs");
+            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
+            using var response = await Client.SendAsync(request);
 
             // Assert
-            Assert.IsNotNull(result);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
         [TestMethod]
@@ -228,9 +192,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             });
 
             // Act
-            await GetFactory()
-                .TenantClient
-                .DeleteAllAsync(tenant);
+            using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs");
 
             // Assert
             Assert.AreEqual(1, StubSource.StubModels.Count);
@@ -259,38 +221,32 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = tenant
             });
 
-            var request = new[]
+            var stubs = new[]
             {
                 new StubDto
                 {
                     Id = "test-123",
-                    Conditions = new StubConditionsDto
-                    {
-                        Method = "GET"
-                    },
-                    Response = new StubResponseDto
-                    {
-                        Text = "OK"
-                    }
+                    Conditions = new StubConditionsDto {Method = "GET"},
+                    Response = new StubResponseDto {Text = "OK"}
                 },
                 new StubDto
                 {
                     Id = "test-789",
-                    Conditions = new StubConditionsDto
-                    {
-                        Method = "POST"
-                    },
-                    Response = new StubResponseDto
-                    {
-                        Text = "OK"
-                    }
+                    Conditions = new StubConditionsDto {Method = "POST"},
+                    Response = new StubResponseDto {Text = "OK"}
                 }
             };
 
             // Act
-            await GetFactory()
-                .TenantClient
-                .UpdateAllAsync(tenant, request);
+            var request =
+                new HttpRequestMessage(HttpMethod.Put, $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs")
+                {
+                    Content = new StringContent(
+                        JsonConvert.SerializeObject(stubs),
+                        Encoding.UTF8,
+                        "application/json")
+                };
+            using var response = await Client.SendAsync(request);
 
             // Assert
             Assert.AreEqual(2, StubSource.StubModels.Count);
@@ -320,11 +276,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = "tenant1"
             });
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
