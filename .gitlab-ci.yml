@@ -107,8 +107,7 @@ build-nsis-installer:
   image: $WINE_IMAGE
   stage: build-installer
   script:
-    - sudo chmod +x ./scripts/build/install-installer-dependencies.sh
-    - sudo bash ./scripts/build/install-installer-dependencies.sh
+    - bash ./scripts/build/install-installer-dependencies.sh
 #
 #docker-build:
 #  image: $DOCKER_IMAGE
