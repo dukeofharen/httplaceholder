@@ -16,7 +16,7 @@ INSTALL_SCRIPT_DIR=$DIR/installscripts/linux
 mkdir $DIST_DIR
 
 # Publish application
-cd src/HttPlaceholder
+cd $ROOT_DIR/src/HttPlaceholder
 dotnet publish --configuration=release \
     --runtime=linux-x64 \
     /p:PublishTrimmed=true \
@@ -36,5 +36,4 @@ rm $BIN_DIR/web.config
 
 # Archive binaries
 cd $BIN_DIR
-tar -czvf httplaceholder_osx-x64.tar.gz .
-cp httplaceholder_osx-x64.tar.gz $DIST_DIR
+tar -czvf $DIST_DIR/httplaceholder_linux-x64.tar.gz .
