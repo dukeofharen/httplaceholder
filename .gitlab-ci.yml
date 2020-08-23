@@ -30,16 +30,16 @@ set-version:
 #    - cd src
 #    - dotnet test
 #
-#build-ui:
-#  image: $NODE_IMAGE
-#  stage: build-ui
-#  script:
-#    - chmod +x ./scripts/build/build-ui.sh
-#    - sh ./scripts/build/build-ui.sh
-#  artifacts: 
-#    paths:
-#      - gui/dist
-#    expire_in: 1 week
+build-ui:
+  image: $NODE_IMAGE
+  stage: build-ui
+  script:
+    - chmod +x ./scripts/build/build-ui.sh
+    - sh ./scripts/build/build-ui.sh
+  artifacts: 
+    paths:
+      - gui/dist
+    expire_in: 1 week
 #
 #build-windows:
 #  image: $DOTNET_IMAGE
@@ -121,5 +121,4 @@ publish-nuget:
   stage: publish
   when: manual
   script:
-    - chmod +x ./scripts/publish/publish-nuget.sh
-    - sh ./scripts/publish/publish-nuget.sh
+    - dotnet nuget push dist/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
