@@ -43,18 +43,18 @@ set-version:
 #      - gui/dist
 #    expire_in: 1 week
 #
-build-windows:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - apt update && apt install zip -y
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-windows.sh
-    - ./scripts/build/build-windows.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
+#build-windows:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - apt update && apt install zip -y
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-windows.sh
+#    - ./scripts/build/build-windows.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
 #
 #build-linux:
 #  image: $DOTNET_IMAGE
@@ -107,8 +107,8 @@ build-nsis-installer:
   image: $WINE_IMAGE
   stage: build-installer
   script:
-    - chmod +x ./scripts/build/install-installer-dependencies.sh
-    - ./scripts/build/install-installer-dependencies.sh
+    - sudo chmod +x ./scripts/build/install-installer-dependencies.sh
+    - sudo bash ./scripts/build/install-installer-dependencies.sh
 #
 #docker-build:
 #  image: $DOCKER_IMAGE
