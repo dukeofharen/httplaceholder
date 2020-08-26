@@ -20,12 +20,6 @@ namespace HttPlaceholder.Domain
         public StubConditionsModel Conditions { get; set; } = new StubConditionsModel();
 
         /// <summary>
-        /// Gets or sets the negative conditions.
-        /// </summary>
-        [YamlMember(Alias = "negativeConditions")]
-        public StubConditionsModel NegativeConditions { get; set; } = new StubConditionsModel();
-
-        /// <summary>
         /// Gets or sets the response.
         /// </summary>
         [YamlMember(Alias = "response")]
