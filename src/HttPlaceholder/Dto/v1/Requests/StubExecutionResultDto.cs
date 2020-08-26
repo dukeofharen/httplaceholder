@@ -26,10 +26,5 @@ namespace HttPlaceholder.Dto.v1.Requests
         /// Gets or sets the conditions.
         /// </summary>
         public IEnumerable<ConditionCheckResultDto> Conditions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the negative conditions.
-        /// </summary>
-        public IEnumerable<ConditionCheckResultDto> NegativeConditions { get; set; }
     }
 }
