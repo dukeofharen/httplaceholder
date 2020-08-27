@@ -6,7 +6,6 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **Id** | **string** | Gets or sets the identifier. | [optional] 
 **Conditions** | [**StubConditionsDto**](StubConditionsDto.md) | Gets or sets the conditions. | [optional] 
-**NegativeConditions** | [**StubConditionsDto**](StubConditionsDto.md) | Gets or sets the negative conditions. | [optional] 
 **Response** | [**StubResponseDto**](StubResponseDto.md) | Gets or sets the response. | [optional] 
 **Priority** | **int** | Gets or sets the priority. | [optional] 
 **Tenant** | **string** | Gets or sets the tenant. | [optional] 

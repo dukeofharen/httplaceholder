@@ -30,7 +30,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             {
                 Id = Guid.NewGuid().ToString(),
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Priority = -1
             },
             Metadata = new StubMetadataModel()
@@ -41,7 +40,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             {
                 Id = Guid.NewGuid().ToString(),
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Priority = 0
             },
             Metadata = new StubMetadataModel()
@@ -129,12 +127,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             _conditionCheckerMock2
                .Setup(m => m.Validate(_stub1.Stub.Id, _stub1.Stub.Conditions))
                .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
-            _conditionCheckerMock1
-               .Setup(m => m.Validate(_stub1.Stub.Id, _stub1.Stub.NegativeConditions))
-               .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
-            _conditionCheckerMock2
-               .Setup(m => m.Validate(_stub1.Stub.Id, _stub1.Stub.NegativeConditions))
-               .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
             _conditionCheckerMock1
                .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.Conditions))
@@ -142,12 +134,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             _conditionCheckerMock2
                .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.Conditions))
                .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
-            _conditionCheckerMock1
-               .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.NegativeConditions))
-               .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
-            _conditionCheckerMock2
-               .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.NegativeConditions))
-               .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
             _finalStubDeterminerMock
                 .Setup(m => m.DetermineFinalStub(It.Is<List<(StubModel, IEnumerable<ConditionCheckResultModel>)>>(s => s.Any(fs => fs.Item1 == _stub2.Stub))))
@@ -174,12 +160,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             _conditionCheckerMock2
                .Setup(m => m.Validate(_stub1.Stub.Id, _stub1.Stub.Conditions))
                .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
-            _conditionCheckerMock1
-               .Setup(m => m.Validate(_stub1.Stub.Id, _stub1.Stub.NegativeConditions))
-               .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
-            _conditionCheckerMock2
-               .Setup(m => m.Validate(_stub1.Stub.Id, _stub1.Stub.NegativeConditions))
-               .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
             _conditionCheckerMock1
                .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.Conditions))
@@ -187,12 +167,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             _conditionCheckerMock2
                .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.Conditions))
                .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
-            _conditionCheckerMock1
-               .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.NegativeConditions))
-               .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
-            _conditionCheckerMock2
-               .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.NegativeConditions))
-               .Returns(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
 
             _finalStubDeterminerMock
                 .Setup(m => m.DetermineFinalStub(It.Is<List<(StubModel, IEnumerable<ConditionCheckResultModel>)>>(s => s.Any(fs => fs.Item1 == _stub2.Stub))))

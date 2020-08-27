@@ -26,12 +26,6 @@ namespace HttPlaceholder.Dto.v1.Stubs
         public StubConditionsDto Conditions { get; set; }
 
         /// <summary>
-        /// Gets or sets the negative conditions.
-        /// </summary>
-        [YamlMember(Alias = "negativeConditions")]
-        public StubConditionsDto NegativeConditions { get; set; }
-
-        /// <summary>
         /// Gets or sets the response.
         /// </summary>
         [YamlMember(Alias = "response")]

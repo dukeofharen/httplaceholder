@@ -144,7 +144,6 @@ response:
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
 
@@ -176,7 +175,6 @@ response:
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
 
@@ -206,7 +204,6 @@ response:
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
 
@@ -237,7 +234,6 @@ response:
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
 
@@ -265,7 +261,6 @@ response:
             {
                 Id = "test-124",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
 
@@ -284,7 +279,6 @@ response:
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
 
@@ -303,7 +297,6 @@ response:
             {
                 Id = "test-124",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
 
@@ -322,7 +315,6 @@ response:
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
 
@@ -346,7 +338,6 @@ response:
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
 
@@ -567,14 +558,12 @@ response:
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
             StubSource.StubModels.Add(new StubModel
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel()
             });
 

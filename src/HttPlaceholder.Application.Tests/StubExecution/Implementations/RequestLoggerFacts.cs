@@ -81,50 +81,20 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 
             var condition1 = new ConditionCheckResultModel
             {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.Invalid
+                CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.Invalid
             };
             var condition2 = new ConditionCheckResultModel
             {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.Valid
+                CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.Valid
             };
             var condition3 = new ConditionCheckResultModel
             {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.NotExecuted
+                CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.NotExecuted
             };
-            var conditions = new[]
-            {
-            condition1,
-            condition2,
-            condition3
-         };
-
-            var negativeCondition1 = new ConditionCheckResultModel
-            {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.Invalid
-            };
-            var negativeCondition2 = new ConditionCheckResultModel
-            {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.NotExecuted
-            };
-            var negativeCondition3 = new ConditionCheckResultModel
-            {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.Valid
-            };
-            var negativeConditions = new[]
-            {
-            negativeCondition1,
-            negativeCondition2,
-            negativeCondition3
-         };
+            var conditions = new[] {condition1, condition2, condition3};
 
             // act
-            _logger.SetStubExecutionResult(stubId, false, conditions, negativeConditions);
+            _logger.SetStubExecutionResult(stubId, false, conditions);
             var result = _logger.GetResult();
 
             // assert
@@ -136,11 +106,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             Assert.AreEqual(2, conditionsResult.Length);
             Assert.AreEqual(condition1, conditionsResult[0]);
             Assert.AreEqual(condition2, conditionsResult[1]);
-
-            var negativeConditionsResult = executionResult.NegativeConditions.ToArray();
-            Assert.AreEqual(2, negativeConditionsResult.Length);
-            Assert.AreEqual(negativeCondition1, negativeConditionsResult[0]);
-            Assert.AreEqual(negativeCondition3, negativeConditionsResult[1]);
         }
 
         [TestMethod]

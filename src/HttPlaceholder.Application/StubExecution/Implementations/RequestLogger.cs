@@ -38,17 +38,15 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 
         public void SetCorrelationId(string correlationId) => _result.CorrelationId = correlationId;
 
-        public void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions, IEnumerable<ConditionCheckResultModel> negativeConditions)
+        public void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions)
         {
             // Do not log the conditions with validation type "NotExecuted". They severely pollute the logging and API.
             conditions = conditions.Where(m => m.ConditionValidation != ConditionValidationType.NotExecuted);
-            negativeConditions = negativeConditions.Where(m => m.ConditionValidation != ConditionValidationType.NotExecuted);
             _result.StubExecutionResults.Add(new StubExecutionResultModel
             {
                 Passed = passed,
                 StubId = stubId,
-                Conditions = conditions,
-                NegativeConditions = negativeConditions
+                Conditions = conditions
             });
         }
 

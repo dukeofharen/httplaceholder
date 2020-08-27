@@ -11,7 +11,7 @@ namespace HttPlaceholder.Application.StubExecution
 
         RequestResultModel GetResult();
 
-        void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions, IEnumerable<ConditionCheckResultModel> negativeConditions);
+        void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions);
 
         void SetResponseWriterResult(StubResponseWriterResultModel result);
 

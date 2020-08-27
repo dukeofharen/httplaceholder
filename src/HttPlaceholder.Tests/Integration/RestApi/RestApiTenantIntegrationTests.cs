@@ -35,7 +35,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
@@ -43,7 +42,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = tenant
             });
@@ -73,7 +71,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
@@ -81,7 +78,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = tenant
             });
@@ -108,7 +104,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
@@ -116,7 +111,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = tenant
             });
@@ -143,7 +137,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
@@ -151,7 +144,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = tenant
             });
@@ -178,7 +170,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
@@ -186,7 +177,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = tenant
             });
@@ -208,7 +198,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = tenant
             });
@@ -216,7 +205,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = tenant
             });
@@ -263,7 +251,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-123",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = "otherTenant"
             });
@@ -271,7 +258,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             {
                 Id = "test-456",
                 Conditions = new StubConditionsModel(),
-                NegativeConditions = new StubConditionsModel(),
                 Response = new StubResponseModel(),
                 Tenant = "tenant1"
             });

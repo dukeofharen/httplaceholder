@@ -84,19 +84,6 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         }
 
         [TestMethod]
-        public async Task StubIntegration_RegularGet_ReturnsJson_ConflictingNegativeCondition_ShouldReturnHttp500()
-        {
-            // arrange
-            var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9761BP&filter=postcode";
-
-            // act / assert
-            using var response = await Client.GetAsync(url);
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(string.IsNullOrEmpty(content));
-            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
-        }
-
-        [TestMethod]
         public async Task StubIntegration_RegularGet_ReturnsJson_Scenario3_JsonResponseTag()
         {
             // arrange
