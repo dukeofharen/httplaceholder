@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Common.Utilities;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +14,20 @@ namespace HttPlaceholder.SwaggerGenerator
         // ReSharper disable once UnusedParameter.Global
         public static async Task Main(string[] args)
         {
+            var pathToSave = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), "swagger.json");
+            if (args.Any())
+            {
+                var firstArg = args[0];
+                if (File.Exists(firstArg))
+                {
+                    pathToSave = firstArg;
+                }
+                else if (Directory.Exists(firstArg))
+                {
+                    pathToSave = Path.Combine(firstArg, "swagger.json");
+                }
+            }
+
             // Mock settings.
             var config = new ConfigurationBuilder().Build();
 
@@ -31,7 +46,7 @@ namespace HttPlaceholder.SwaggerGenerator
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            var pathToSave = Path.Join(AssemblyHelper.GetCallingAssemblyRootPath(), "swagger.json");
+            Console.WriteLine($@"Saving Swagger file to {pathToSave}");
             await File.WriteAllTextAsync(pathToSave, content);
         }
     }
