@@ -37,13 +37,11 @@ namespace HttPlaceholder.Client.Model
         /// <param name="stubId">Gets or sets the stub identifier..</param>
         /// <param name="passed">Gets or sets a value indicating whether this StubExecutionResultDto is passed..</param>
         /// <param name="conditions">Gets or sets the conditions..</param>
-        /// <param name="negativeConditions">Gets or sets the negative conditions..</param>
-        public StubExecutionResultDto(string stubId = default(string), bool passed = default(bool), List<ConditionCheckResultDto> conditions = default(List<ConditionCheckResultDto>), List<ConditionCheckResultDto> negativeConditions = default(List<ConditionCheckResultDto>))
+        public StubExecutionResultDto(string stubId = default(string), bool passed = default(bool), List<ConditionCheckResultDto> conditions = default(List<ConditionCheckResultDto>))
         {
             this.StubId = stubId;
             this.Passed = passed;
             this.Conditions = conditions;
-            this.NegativeConditions = negativeConditions;
         }
         
         /// <summary>
@@ -68,13 +66,6 @@ namespace HttPlaceholder.Client.Model
         public List<ConditionCheckResultDto> Conditions { get; set; }
 
         /// <summary>
-        /// Gets or sets the negative conditions.
-        /// </summary>
-        /// <value>Gets or sets the negative conditions.</value>
-        [DataMember(Name="negativeConditions", EmitDefaultValue=true)]
-        public List<ConditionCheckResultDto> NegativeConditions { get; set; }
-
-        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -85,7 +76,6 @@ namespace HttPlaceholder.Client.Model
             sb.Append("  StubId: ").Append(StubId).Append("\n");
             sb.Append("  Passed: ").Append(Passed).Append("\n");
             sb.Append("  Conditions: ").Append(Conditions).Append("\n");
-            sb.Append("  NegativeConditions: ").Append(NegativeConditions).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -134,12 +124,6 @@ namespace HttPlaceholder.Client.Model
                     this.Conditions != null &&
                     input.Conditions != null &&
                     this.Conditions.SequenceEqual(input.Conditions)
-                ) && 
-                (
-                    this.NegativeConditions == input.NegativeConditions ||
-                    this.NegativeConditions != null &&
-                    input.NegativeConditions != null &&
-                    this.NegativeConditions.SequenceEqual(input.NegativeConditions)
                 );
         }
 
@@ -157,8 +141,6 @@ namespace HttPlaceholder.Client.Model
                 hashCode = hashCode * 59 + this.Passed.GetHashCode();
                 if (this.Conditions != null)
                     hashCode = hashCode * 59 + this.Conditions.GetHashCode();
-                if (this.NegativeConditions != null)
-                    hashCode = hashCode * 59 + this.NegativeConditions.GetHashCode();
                 return hashCode;
             }
         }

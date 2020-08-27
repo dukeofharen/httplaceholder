@@ -36,16 +36,14 @@ namespace HttPlaceholder.Client.Model
         /// </summary>
         /// <param name="id">Gets or sets the identifier..</param>
         /// <param name="conditions">Gets or sets the conditions..</param>
-        /// <param name="negativeConditions">Gets or sets the negative conditions..</param>
         /// <param name="response">Gets or sets the response..</param>
         /// <param name="priority">Gets or sets the priority..</param>
         /// <param name="tenant">Gets or sets the tenant..</param>
         /// <param name="description">Gets or sets the description..</param>
-        public StubDto(string id = default(string), StubConditionsDto conditions = default(StubConditionsDto), StubConditionsDto negativeConditions = default(StubConditionsDto), StubResponseDto response = default(StubResponseDto), int priority = default(int), string tenant = default(string), string description = default(string))
+        public StubDto(string id = default(string), StubConditionsDto conditions = default(StubConditionsDto), StubResponseDto response = default(StubResponseDto), int priority = default(int), string tenant = default(string), string description = default(string))
         {
             this.Id = id;
             this.Conditions = conditions;
-            this.NegativeConditions = negativeConditions;
             this.Response = response;
             this.Priority = priority;
             this.Tenant = tenant;
@@ -65,13 +63,6 @@ namespace HttPlaceholder.Client.Model
         /// <value>Gets or sets the conditions.</value>
         [DataMember(Name="conditions", EmitDefaultValue=true)]
         public StubConditionsDto Conditions { get; set; }
-
-        /// <summary>
-        /// Gets or sets the negative conditions.
-        /// </summary>
-        /// <value>Gets or sets the negative conditions.</value>
-        [DataMember(Name="negativeConditions", EmitDefaultValue=true)]
-        public StubConditionsDto NegativeConditions { get; set; }
 
         /// <summary>
         /// Gets or sets the response.
@@ -111,7 +102,6 @@ namespace HttPlaceholder.Client.Model
             sb.Append("class StubDto {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Conditions: ").Append(Conditions).Append("\n");
-            sb.Append("  NegativeConditions: ").Append(NegativeConditions).Append("\n");
             sb.Append("  Response: ").Append(Response).Append("\n");
             sb.Append("  Priority: ").Append(Priority).Append("\n");
             sb.Append("  Tenant: ").Append(Tenant).Append("\n");
@@ -161,11 +151,6 @@ namespace HttPlaceholder.Client.Model
                     this.Conditions.Equals(input.Conditions))
                 ) && 
                 (
-                    this.NegativeConditions == input.NegativeConditions ||
-                    (this.NegativeConditions != null &&
-                    this.NegativeConditions.Equals(input.NegativeConditions))
-                ) && 
-                (
                     this.Response == input.Response ||
                     (this.Response != null &&
                     this.Response.Equals(input.Response))
@@ -199,8 +184,6 @@ namespace HttPlaceholder.Client.Model
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.Conditions != null)
                     hashCode = hashCode * 59 + this.Conditions.GetHashCode();
-                if (this.NegativeConditions != null)
-                    hashCode = hashCode * 59 + this.NegativeConditions.GetHashCode();
                 if (this.Response != null)
                     hashCode = hashCode * 59 + this.Response.GetHashCode();
                 hashCode = hashCode * 59 + this.Priority.GetHashCode();
