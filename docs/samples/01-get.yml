@@ -35,29 +35,6 @@
     headers:
       Content-Type: application/json
 
-# Same as the scenario above, but this configuration uses the "negativeConditions". In this case, if a query parameter last_name: Johnson is added, the configuration will NOT be executed.
-- id: situation-03
-  tenant: 01-get
-  conditions:
-    method: GET
-    url:
-      path: /users
-      query:
-        id: 15
-        filter: last_name
-  negativeConditions:
-    url:
-      query:
-        last_name: Johnson
-  response:
-    statusCode: 200
-    text: |
-      {
-        "last_name": "Jackson"
-      }
-    headers:
-      Content-Type: application/json
-
 # Use fullPath instead of path to set a condition on the complete path including query string.
 - id: situation-04
   tenant: 01-get

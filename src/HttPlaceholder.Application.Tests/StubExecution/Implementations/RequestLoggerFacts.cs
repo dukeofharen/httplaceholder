@@ -81,41 +81,17 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 
             var condition1 = new ConditionCheckResultModel
             {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.Invalid
+                CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.Invalid
             };
             var condition2 = new ConditionCheckResultModel
             {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.Valid
+                CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.Valid
             };
             var condition3 = new ConditionCheckResultModel
             {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.NotExecuted
+                CheckerName = Guid.NewGuid().ToString(), ConditionValidation = ConditionValidationType.NotExecuted
             };
-            var conditions = new[]
-            {
-            condition1,
-            condition2,
-            condition3
-         };
-
-            var negativeCondition1 = new ConditionCheckResultModel
-            {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.Invalid
-            };
-            var negativeCondition2 = new ConditionCheckResultModel
-            {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.NotExecuted
-            };
-            var negativeCondition3 = new ConditionCheckResultModel
-            {
-                CheckerName = Guid.NewGuid().ToString(),
-                ConditionValidation = ConditionValidationType.Valid
-            };
+            var conditions = new[] {condition1, condition2, condition3};
 
             // act
             _logger.SetStubExecutionResult(stubId, false, conditions);

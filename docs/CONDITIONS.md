@@ -4,7 +4,7 @@ Whenever HttPlaceholder receives a request, all the conditions of all stubs are 
 
 ## General
 
-HttPlaceholder uses two different conditions: "regular conditions" and "negative conditions". Let's say we have the following stub .yml file:
+Under the "conditions" elemennt, you describe how 
 
 ```yml
 - id: situation-03
@@ -16,10 +16,6 @@ HttPlaceholder uses two different conditions: "regular conditions" and "negative
       query:
         id: 15
         filter: last_name
-  negativeConditions:
-    url:
-      query:
-        last_name: Johnson
   response:
     statusCode: 200
     text: |
@@ -30,17 +26,14 @@ HttPlaceholder uses two different conditions: "regular conditions" and "negative
       Content-Type: application/json
 ```
 
-This example uses both conditions and negativeConditions. This means that when:
+This example uses both conditions. This means that when:
 - The URL path contains "/users"
 - A query string with name "id" and value "15" is sent.
 - A query string with name "filter" and value "last_name" is sent.
-- There is **no** query string with name "last_name" and value "Johnson".
 
-If all these (negative) conditions match, the response as defined under the "response" element is returned. For more information about the response element, you can read more [here](RESPONSE.md).
+If all these conditions match, the response as defined under the "response" element is returned. For more information about the response element, you can read more [here](RESPONSE.md).
 
 The stub also has a "tenant" field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant). To learn more about tenants, go to [API](API.md).
-
-For both the conditions and negativeConditions, all condition checkers as explained on this page are available.
 
 ## Description
 
