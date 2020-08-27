@@ -182,47 +182,6 @@
                       <v-divider></v-divider>
                     </div>
                   </div>
-                  <div v-if="result.negativeConditions.length > 0">
-                    <h2>Executed negative conditions</h2>
-                    <div
-                      v-for="(condition, key) in result.negativeConditions"
-                      :key="key"
-                    >
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>Checker name</v-list-item-title>
-                          <v-list-item-subtitle
-                          >{{ condition.checkerName }}
-                          </v-list-item-subtitle>
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title
-                          >Condition validation
-                          </v-list-item-title>
-                          <v-list-item-subtitle>
-                            <Bool
-                              v-bind:bool="
-                                condition.conditionValidation === conditionValidationType.Valid
-                              "
-                              trueText="passed"
-                              falseText="not passed"
-                            />
-                          </v-list-item-subtitle>
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-list-item v-if="condition.log">
-                        <v-list-item-content>
-                          <v-list-item-title>Log</v-list-item-title>
-                          <v-list-item-subtitle
-                          >{{ condition.log }}
-                          </v-list-item-subtitle>
-                        </v-list-item-content>
-                      </v-list-item>
-                      <v-divider></v-divider>
-                    </div>
-                  </div>
                 </v-expansion-panel-content>
               </v-expansion-panel>
             </v-expansion-panels>
