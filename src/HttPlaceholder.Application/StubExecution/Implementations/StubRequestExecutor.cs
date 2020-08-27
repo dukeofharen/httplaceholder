@@ -47,28 +47,28 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                 var stub = fullStub.Stub;
                 try
                 {
-                    var passed = false;
                     var validationResults = new List<ConditionCheckResultModel>();
                     foreach (var checker in _conditionCheckers)
                     {
                         var validationResult = checker.Validate(stub.Id, stub.Conditions);
                         validationResult.CheckerName = checker.GetType().Name;
                         validationResults.Add(validationResult);
+                        if (validationResult.ConditionValidation == ConditionValidationType.Invalid)
                         {
                             // If any condition is invalid, skip the rest.
                             break;
                         }
                     }
 
-                    if ((validationResults.All(r =>
-                             r.ConditionValidation != ConditionValidationType.Invalid) &&
-                         validationResults.Any(r =>
-                             r.ConditionValidation != ConditionValidationType.NotExecuted &&
-                             r.ConditionValidation != ConditionValidationType.NotSet)) ||
-                        validationResults.All(
-                            r => r.ConditionValidation == ConditionValidationType.NotExecuted))
+                    var passed = (validationResults.All(r =>
+                                      r.ConditionValidation != ConditionValidationType.Invalid) &&
+                                  validationResults.Any(r =>
+                                      r.ConditionValidation != ConditionValidationType.NotExecuted &&
+                                      r.ConditionValidation != ConditionValidationType.NotSet)) ||
+                                 validationResults.All(
+                                     r => r.ConditionValidation == ConditionValidationType.NotExecuted);
+                    if (passed)
                     {
-                        passed = true;
                         foundStubs.Add((stub, validationResults));
                     }
 

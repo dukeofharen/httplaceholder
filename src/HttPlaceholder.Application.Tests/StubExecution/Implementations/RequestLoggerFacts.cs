@@ -116,15 +116,9 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
                 CheckerName = Guid.NewGuid().ToString(),
                 ConditionValidation = ConditionValidationType.Valid
             };
-            var negativeConditions = new[]
-            {
-            negativeCondition1,
-            negativeCondition2,
-            negativeCondition3
-         };
 
             // act
-            _logger.SetStubExecutionResult(stubId, false, conditions, negativeConditions);
+            _logger.SetStubExecutionResult(stubId, false, conditions);
             var result = _logger.GetResult();
 
             // assert
@@ -136,11 +130,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             Assert.AreEqual(2, conditionsResult.Length);
             Assert.AreEqual(condition1, conditionsResult[0]);
             Assert.AreEqual(condition2, conditionsResult[1]);
-
-            var negativeConditionsResult = executionResult.NegativeConditions.ToArray();
-            Assert.AreEqual(2, negativeConditionsResult.Length);
-            Assert.AreEqual(negativeCondition1, negativeConditionsResult[0]);
-            Assert.AreEqual(negativeCondition3, negativeConditionsResult[1]);
         }
 
         [TestMethod]
