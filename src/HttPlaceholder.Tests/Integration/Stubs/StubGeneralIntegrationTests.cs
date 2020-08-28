@@ -24,7 +24,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             using var response = await Client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(string.IsNullOrEmpty(content));
-            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
             var header = response.Headers.First(h => h.Key == "X-HttPlaceholder-Correlation").Value.ToArray();
             Assert.AreEqual(1, header.Length);
             Assert.IsFalse(string.IsNullOrWhiteSpace(header.First()));
@@ -40,7 +40,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             using var response = await Client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(string.IsNullOrEmpty(content));
-            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
         }
     }
 }

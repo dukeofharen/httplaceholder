@@ -67,7 +67,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             using var response = await Client.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
             Assert.IsTrue(string.IsNullOrEmpty(content));
-            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
         }
 
         [TestMethod]
@@ -113,7 +113,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
 
             // act / assert
             using var response = await Client.SendAsync(request);
-            Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
         }
     }
 }
