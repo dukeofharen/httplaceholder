@@ -23,7 +23,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             // First, do a request to the stub for adding at least 1 request.
             var stubUrl = $"{TestServer.BaseAddress}non-existing-stub";
             using var stubResponse = await Client.GetAsync(stubUrl);
-            Assert.AreEqual(HttpStatusCode.InternalServerError, stubResponse.StatusCode);
+            Assert.AreEqual(HttpStatusCode.NotImplemented, stubResponse.StatusCode);
 
             // Then, fetch all requests from the API.
             var apiUrl = $"{TestServer.BaseAddress}ph-api/requests";
