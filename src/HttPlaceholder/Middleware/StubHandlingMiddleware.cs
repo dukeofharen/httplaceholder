@@ -99,7 +99,7 @@ namespace HttPlaceholder.Middleware
             }
             catch (RequestValidationException e)
             {
-                _httpContextService.SetStatusCode((int)HttpStatusCode.InternalServerError);
+                _httpContextService.SetStatusCode((int)HttpStatusCode.NotImplemented);
                 _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
                 _logger.LogInformation($"Request validation exception thrown: {e.Message}");
             }
