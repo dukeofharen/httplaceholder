@@ -35,14 +35,15 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             using (var conn = _queryStore.GetConnection())
             {
                 var json = JsonConvert.SerializeObject(requestResult);
-                await conn.ExecuteAsync(_queryStore.AddRequestQuery, new
-                {
-                    requestResult.CorrelationId,
-                    requestResult.ExecutingStubId,
-                    requestResult.RequestBeginTime,
-                    requestResult.RequestEndTime,
-                    Json = json
-                });
+                await conn.ExecuteAsync(_queryStore.AddRequestQuery,
+                    new
+                    {
+                        requestResult.CorrelationId,
+                        requestResult.ExecutingStubId,
+                        requestResult.RequestBeginTime,
+                        requestResult.RequestEndTime,
+                        Json = json
+                    });
             }
         }
 
@@ -51,12 +52,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             using (var conn = _queryStore.GetConnection())
             {
                 var json = JsonConvert.SerializeObject(stub);
-                await conn.ExecuteAsync(_queryStore.AddStubQuery, new
-                {
-                    StubId = stub.Id,
-                    Stub = json,
-                    StubType = StubJsonType
-                });
+                await conn.ExecuteAsync(_queryStore.AddStubQuery,
+                    new {StubId = stub.Id, Stub = json, StubType = StubJsonType});
             }
         }
 
@@ -65,7 +62,22 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
             using (var conn = _queryStore.GetConnection())
             {
-                await conn.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new { Limit = maxLength });
+                await conn.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new {Limit = maxLength});
+            }
+        }
+
+        public async Task<RequestResultModel> GetRequestAsync(string correlationId)
+        {
+            using (var conn = _queryStore.GetConnection())
+            {
+                var result = await conn.QuerySingleAsync<DbRequestModel>(_queryStore.GetRequestQuery,
+                    new {CorrelationId = correlationId});
+                if (result == null)
+                {
+                    return null;
+                }
+
+                return JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
             }
         }
 
@@ -81,7 +93,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var conn = _queryStore.GetConnection())
             {
-                var updated = await conn.ExecuteAsync(_queryStore.DeleteStubQuery, new { StubId = stubId });
+                var updated = await conn.ExecuteAsync(_queryStore.DeleteStubQuery, new {StubId = stubId});
                 return updated > 0;
             }
         }
@@ -115,7 +127,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                             break;
 
                         default:
-                            throw new NotImplementedException($"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.");
+                            throw new NotImplementedException(
+                                $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.");
                     }
                 }
 

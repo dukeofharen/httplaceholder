@@ -24,6 +24,8 @@ namespace HttPlaceholder.Persistence.Db.Implementations
   json
 FROM requests";
 
+        public string GetRequestQuery { get; }
+
         public string DeleteAllRequestsQuery => @"DELETE FROM requests";
 
         public string AddRequestQuery => @"INSERT INTO requests

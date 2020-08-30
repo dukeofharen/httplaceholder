@@ -11,6 +11,8 @@ namespace HttPlaceholder.Persistence.Db
 
         string GetRequestsQuery { get; }
 
+        string GetRequestQuery { get; }
+
         string DeleteAllRequestsQuery { get; }
 
         string AddRequestQuery { get; }
