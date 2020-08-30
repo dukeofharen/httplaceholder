@@ -36,11 +36,6 @@ namespace HttPlaceholder.Persistence
                 // User specifically wants to use the in memory stub source.
                 services.AddSingleton<IStubSource, InMemoryStubSource>();
             }
-            else if (!string.IsNullOrWhiteSpace(fileStoragePath))
-            {
-                // If "fileStorageLocation" is set, it means HttPlaceholder should read and write files to a specific location.
-                services.AddSingleton<IStubSource, FileSystemStubSource>();
-            }
             else if (!string.IsNullOrWhiteSpace(mysqlConnectionString))
             {
                 // If "mysqlConnectionString" is set, the application should connect with a MySQL database instance and store its stuff there.
@@ -58,6 +53,11 @@ namespace HttPlaceholder.Persistence
                 // If "sqlServerConnectionString" is set, the application should connect with a MS SQL Server database instance and store its stuff there.
                 registerRelationDbStubSource = true;
                 services.AddSingleton<IQueryStore, SqlServerQueryStore>();
+            }
+            else if (!string.IsNullOrWhiteSpace(fileStoragePath))
+            {
+                // If "fileStorageLocation" is set, it means HttPlaceholder should read and write files to a specific location.
+                services.AddSingleton<IStubSource, FileSystemStubSource>();
             }
             else
             {
