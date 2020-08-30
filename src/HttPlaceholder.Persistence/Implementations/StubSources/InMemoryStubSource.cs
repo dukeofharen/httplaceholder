@@ -40,6 +40,14 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
+        public Task<RequestResultModel> GetRequestAsync(string correlationId)
+        {
+            lock (_lock)
+            {
+                return Task.FromResult(RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId));
+            }
+        }
+
         public Task DeleteAllRequestResultsAsync()
         {
             lock (_lock)
@@ -86,8 +94,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             {
                 var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
                 var requests = RequestResultModels
-                   .OrderByDescending(r => r.RequestEndTime)
-                   .Skip(maxLength);
+                    .OrderByDescending(r => r.RequestEndTime)
+                    .Skip(maxLength);
                 foreach (var request in requests)
                 {
                     RequestResultModels.Remove(request);
