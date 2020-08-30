@@ -29,12 +29,12 @@ namespace HttPlaceholder.Controllers.v1
             Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(new GetAllRequestsQuery())));
 
         /// <summary>
-        /// Get overview of all Requests..
+        /// Get overview of all Requests.
         /// </summary>
         /// <returns>All request results</returns>
         [HttpGet("overview")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetOverview() =>
+        public async Task<ActionResult<IEnumerable<RequestOverviewDto>>> GetOverview() =>
             Ok(Mapper.Map<IEnumerable<RequestOverviewDto>>(await Mediator.Send(new GetAllRequestsQuery())));
 
         /// <summary>
