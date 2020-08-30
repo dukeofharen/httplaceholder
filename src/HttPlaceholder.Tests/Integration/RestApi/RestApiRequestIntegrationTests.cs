@@ -45,7 +45,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
 
             // Act
-            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/stub1");
+            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/stubs/stub1/requests");
             var content = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<RequestResultDto[]>(content);
 
@@ -65,7 +65,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Settings.Authentication.ApiPassword = "correct";
 
             // Act
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/requests/stub1");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/stubs/stub1/requests");
             request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
             using var response = await Client.SendAsync(request);
 

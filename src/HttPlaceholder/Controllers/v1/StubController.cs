@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Requests.Queries.GetByStubId;
 using HttPlaceholder.Application.Stubs.Commands.AddStub;
 using HttPlaceholder.Application.Stubs.Commands.DeleteAllStubs;
 using HttPlaceholder.Application.Stubs.Commands.DeleteStub;
@@ -8,6 +9,7 @@ using HttPlaceholder.Application.Stubs.Queries.GetAllStubs;
 using HttPlaceholder.Application.Stubs.Queries.GetStub;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -58,6 +60,16 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll() =>
             Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(new GetAllStubsQuery())));
+
+        /// <summary>
+        /// Get requests for the given stub ID.
+        /// </summary>
+        /// <returns>request results for the given stubId</returns>
+        [HttpGet]
+        [Route("{StubId}/requests")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetRequestsByStubId([FromRoute]GetByStubIdQuery query) =>
+            Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(query)));
 
         /// <summary>
         /// Get a specific stub by stub identifier.
