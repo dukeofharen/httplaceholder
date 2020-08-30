@@ -28,6 +28,8 @@ namespace HttPlaceholder.Application.StubExecution
 
         Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId);
 
+        Task<RequestResultModel> GetRequestResultAsync(string correlationId);
+
         Task DeleteAllRequestResultsAsync();
 
         Task<IEnumerable<string>> GetTenantNamesAsync();

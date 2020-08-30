@@ -132,6 +132,12 @@ namespace HttPlaceholder.Persistence.Implementations
             return results;
         }
 
+        public async Task<RequestResultModel> GetRequestResultAsync(string correlationId)
+        {
+            var source = GetWritableStubSource();
+            return await source.GetRequestAsync(correlationId);
+        }
+
         public async Task DeleteAllRequestResultsAsync()
         {
             var source = GetWritableStubSource();

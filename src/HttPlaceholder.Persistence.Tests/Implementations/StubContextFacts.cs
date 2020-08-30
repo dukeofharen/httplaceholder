@@ -21,7 +21,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public void Initialize() => _context = new StubContext(_stubSources);
 
         [TestMethod]
-        public async Task StubContainer_GetStubsAsync_HappyFlow()
+        public async Task GetStubsAsync_HappyFlow()
         {
             // arrange
             var stubSource1 = new Mock<IStubSource>();
@@ -53,7 +53,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_GetStubsAsync_ByTenant_HappyFlow()
+        public async Task GetStubsAsync_ByTenant_HappyFlow()
         {
             // arrange
             var stubSource1 = new Mock<IStubSource>();
@@ -85,7 +85,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
 
         [TestMethod]
         public async Task
-            StubContainer_AddStubAsync_StubIdAlreadyAddedToReadOnlyStubSource_ShouldThrowConflictException()
+            AddStubAsync_StubIdAlreadyAddedToReadOnlyStubSource_ShouldThrowConflictException()
         {
             // arrange
             var stubToBeAdded = new StubModel {Id = "conflicted"};
@@ -104,7 +104,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_AddStubAsync_NoIdSet_ShouldAssignHashedStubAsId()
+        public async Task AddStubAsync_NoIdSet_ShouldAssignHashedStubAsId()
         {
             // arrange
             var stubToBeAdded = new StubModel {Conditions = new StubConditionsModel {Body = new[] {"test"}}};
@@ -130,7 +130,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_AddStubAsync_HappyFlow()
+        public async Task AddStubAsync_HappyFlow()
         {
             // arrange
             var stubToBeAdded = new StubModel {Id = "new-stub-02"};
@@ -156,7 +156,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_DeleteStubAsync_HappyFlow()
+        public async Task DeleteStubAsync_HappyFlow()
         {
             // arrange
             const string stubId = "stubId1";
@@ -175,7 +175,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_GetStubAsync_HappyFlow()
+        public async Task GetStubAsync_HappyFlow()
         {
             // arrange
             var stubSource1 = new Mock<IStubSource>();
@@ -204,7 +204,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_AddRequestResultAsync_HappyFlow()
+        public async Task AddRequestResultAsync_HappyFlow()
         {
             // arrange
             var stubSource = new Mock<IWritableStubSource>();
@@ -232,7 +232,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_GetRequestResultsAsync_HappyFlow()
+        public async Task GetRequestResultsAsync_HappyFlow()
         {
             // arrange
             var request1 = new RequestResultModel {RequestBeginTime = DateTime.Now.AddSeconds(-2)};
@@ -254,7 +254,27 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_GetRequestResultsByStubIdAsync_HappyFlow()
+        public async Task GetRequestResultAsync_HappyFlow()
+        {
+            // arrange
+            var correlationId = Guid.NewGuid().ToString();
+            var request = new RequestResultModel {CorrelationId = correlationId};
+            var stubSource = new Mock<IWritableStubSource>();
+            stubSource
+                .Setup(m => m.GetRequestAsync(correlationId))
+                .ReturnsAsync(request);
+
+            _stubSources.Add(stubSource.Object);
+
+            // act
+            var result = await _context.GetRequestResultAsync(correlationId);
+
+            // assert
+            Assert.AreEqual(request, result);
+        }
+
+        [TestMethod]
+        public async Task GetRequestResultsByStubIdAsync_HappyFlow()
         {
             // arrange
             var request1 = new RequestResultModel
@@ -287,7 +307,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_DeleteAllRequestResultsAsync_HappyFlow()
+        public async Task DeleteAllRequestResultsAsync_HappyFlow()
         {
             // arrange
             var stubSource = new Mock<IWritableStubSource>();
@@ -305,7 +325,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_DeleteAllStubsAsync_Tenant_HappyFlow()
+        public async Task DeleteAllStubsAsync_Tenant_HappyFlow()
         {
             // arrange
             const string tenant = "tenant1";
@@ -331,7 +351,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_DeleteAllStubsAsync_HappyFlow()
+        public async Task DeleteAllStubsAsync_HappyFlow()
         {
             // arrange
             var stubSource = new Mock<IWritableStubSource>();
@@ -356,7 +376,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_UpdateAllStubsAsync_HappyFlow()
+        public async Task UpdateAllStubsAsync_HappyFlow()
         {
             // arrange
             const string tenant1 = "tenant1";
@@ -391,7 +411,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_GetTenantNamesAsync_HappyFlow()
+        public async Task GetTenantNamesAsync_HappyFlow()
         {
             // arrange
             var stubSource = new Mock<IWritableStubSource>();
@@ -418,7 +438,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task StubContainer_PrepareAsync_HappyFlow()
+        public async Task PrepareAsync_HappyFlow()
         {
             // arrange
             var stubSource1 = new Mock<IStubSource>();
