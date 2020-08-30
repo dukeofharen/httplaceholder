@@ -70,7 +70,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var conn = _queryStore.GetConnection())
             {
-                var result = await conn.QuerySingleAsync<DbRequestModel>(_queryStore.GetRequestQuery,
+                var result = await conn.QueryFirstOrDefaultAsync<DbRequestModel>(_queryStore.GetRequestQuery,
                     new {CorrelationId = correlationId});
                 if (result == null)
                 {
