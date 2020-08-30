@@ -100,17 +100,9 @@
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title>Request begin time</v-list-item-title>
+          <v-list-item-title>Request time</v-list-item-title>
           <v-list-item-subtitle
-          >{{ request.requestBeginTime | datetime }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>Request end time</v-list-item-title>
-          <v-list-item-subtitle
-          >{{ request.requestEndTime | datetime }}
+          >{{ request.requestEndTime | datetime }} (it took <em>{{duration | decimal}}</em> ms)
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -271,6 +263,11 @@
         const results = this.request.stubResponseWriterResults;
         results.sort(compare);
         return results;
+      },
+      duration() {
+        const from = new Date(this.request.requestBeginTime);
+        const to = new Date(this.request.requestEndTime);
+        return to.getTime() - from.getTime();
       }
     },
     methods: {
@@ -297,10 +294,12 @@
 </script>
 
 <style scoped>
+  /*noinspection CssUnusedSymbol*/
   .v-chip {
     margin-right: 10px;
   }
 
+  /*noinspection CssUnusedSymbol*/
   .request {
     margin-bottom: 20px;
   }
