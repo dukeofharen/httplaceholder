@@ -42,6 +42,19 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.CompletedTask;
         }
 
+        public Task<RequestResultModel> GetRequestAsync(string correlationId)
+        {
+            var path = EnsureAndGetRequestsFolder();
+            var filePath = Path.Combine(path, $"{correlationId}.json");
+            if (!_fileService.FileExists(filePath))
+            {
+                return Task.FromResult((RequestResultModel)null);
+            }
+
+            var contents = _fileService.ReadAllText(filePath);
+            return Task.FromResult(JsonConvert.DeserializeObject<RequestResultModel>(contents));
+        }
+
         public Task DeleteAllRequestResultsAsync()
         {
             var path = EnsureAndGetRequestsFolder();

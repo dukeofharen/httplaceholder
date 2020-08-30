@@ -37,7 +37,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public void Cleanup() => _fileServiceMock.VerifyAll();
 
         [TestMethod]
-        public async Task FileSystemStubSource_AddRequestResultAsync_HappyFlow()
+        public async Task AddRequestResultAsync_HappyFlow()
         {
             // arrange
             var requestsFolder = Path.Combine(StorageFolder, "requests");
@@ -61,7 +61,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
-        public async Task FileSystemStubSource_AddStubAsync_HappyFlow()
+        public async Task AddStubAsync_HappyFlow()
         {
             // arrange
             var stubsFolder = Path.Combine(StorageFolder, "stubs");
@@ -85,7 +85,58 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
-        public async Task FileSystemStubSource_DeleteAllRequestResultsAsync_HappyFlow()
+        public async Task GetRequestAsync_RequestNotFound_ShouldReturnNull()
+        {
+            // Arrange
+            var correlationId = Guid.NewGuid().ToString();
+            var requestsFolder = Path.Combine(StorageFolder, "requests");
+            _fileServiceMock
+                .Setup(m => m.DirectoryExists(requestsFolder))
+                .Returns(false);
+            _fileServiceMock
+                .Setup(m => m.CreateDirectory(requestsFolder));
+
+            var expectedPath = Path.Combine(requestsFolder, $"{correlationId}.json");
+            _fileServiceMock
+                .Setup(m => m.FileExists(expectedPath))
+                .Returns(false);
+
+            // Act
+            var result = await _source.GetRequestAsync(correlationId);
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public async Task GetRequestAsync_RequestFound_ShouldReturnRequest()
+        {
+            // Arrange
+            var correlationId = Guid.NewGuid().ToString();
+            var requestsFolder = Path.Combine(StorageFolder, "requests");
+            _fileServiceMock
+                .Setup(m => m.DirectoryExists(requestsFolder))
+                .Returns(false);
+            _fileServiceMock
+                .Setup(m => m.CreateDirectory(requestsFolder));
+
+            var expectedPath = Path.Combine(requestsFolder, $"{correlationId}.json");
+            _fileServiceMock
+                .Setup(m => m.FileExists(expectedPath))
+                .Returns(true);
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(expectedPath))
+                .Returns(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = correlationId}));
+
+            // Act
+            var result = await _source.GetRequestAsync(correlationId);
+
+            // Assert
+            Assert.AreEqual(correlationId, result.CorrelationId);
+        }
+
+        [TestMethod]
+        public async Task DeleteAllRequestResultsAsync_HappyFlow()
         {
             // arrange
             var requestsFolder = Path.Combine(StorageFolder, "requests");
@@ -113,7 +164,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
-        public async Task FileSystemStubSource_DeleteStubAsync_StubDoesntExist_ShouldReturnFalse()
+        public async Task DeleteStubAsync_StubDoesntExist_ShouldReturnFalse()
         {
             // arrange
             var stubsFolder = Path.Combine(StorageFolder, "stubs");
@@ -137,7 +188,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
-        public async Task FileSystemStubSource_DeleteStubAsync_StubExists_ShouldReturnTrueAndDeleteStub()
+        public async Task DeleteStubAsync_StubExists_ShouldReturnTrueAndDeleteStub()
         {
             // arrange
             var stubsFolder = Path.Combine(StorageFolder, "stubs");
@@ -163,7 +214,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
-        public async Task FileSystemStubSource_GetRequestResultsAsync_HappyFlow()
+        public async Task GetRequestResultsAsync_HappyFlow()
         {
             // arrange
             var requestsFolder = Path.Combine(StorageFolder, "requests");
@@ -208,7 +259,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
-        public async Task FileSystemStubSource_GetStubsAsync_HappyFlow()
+        public async Task GetStubsAsync_HappyFlow()
         {
             // arrange
             var stubsFolder = Path.Combine(StorageFolder, "stubs");
@@ -253,7 +304,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
-        public async Task FileSystemStubSource_CleanOldRequestResultsAsync_HappyFlow()
+        public async Task CleanOldRequestResultsAsync_HappyFlow()
         {
             // arrange
             var requestsFolder = Path.Combine(StorageFolder, "requests");
@@ -302,7 +353,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
-        public async Task FileSystemStubSource_PrepareStubSourceAsync_HappyFlow()
+        public async Task PrepareStubSourceAsync_HappyFlow()
         {
             // act
             await _source.PrepareStubSourceAsync();
