@@ -24,7 +24,15 @@ namespace HttPlaceholder.Persistence.Db.Implementations
   `json`
 FROM requests";
 
-        public string GetRequestQuery { get; }
+        public string GetRequestQuery => @"SELECT
+  id,
+  correlation_id AS CorelationId,
+  executing_stub_id AS ExecutingStubId,
+  request_begin_time AS RequestBeginTime,
+  request_end_time AS RequestEndTime,
+  `json`
+FROM requests
+WHERE correlation_id = @CorrelationId";
 
         public string DeleteAllRequestsQuery => @"DELETE FROM requests";
 

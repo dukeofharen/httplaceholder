@@ -988,12 +988,46 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{rootUrl}}ph-api/requests",
+									"raw": "{{rootUrl}}ph-api/requests/overview",
 									"host": [
 										"{{rootUrl}}ph-api"
 									],
 									"path": [
-										"requests"
+										"requests",
+										"overview"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET single request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests/5f7153cb-32d8-42df-a23e-288adce4cbe0",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests",
+										"5f7153cb-32d8-42df-a23e-288adce4cbe0"
 									]
 								}
 							},
