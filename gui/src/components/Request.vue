@@ -13,7 +13,7 @@
           />
         </strong>
         <span>&nbsp;|&nbsp;</span>
-        <span>{{ request.requestEndTime | datetime }}</span>
+        <span :title="request.requestEndTime | datetime">{{ timeFrom }}</span>
         <span>)</span>
       </span>
     </v-expansion-panel-header>
@@ -219,6 +219,7 @@
   import {actionNames} from "@/store/storeConstants";
   import {routeNames} from "@/router/routerConstants";
   import {conditionValidationType} from "@/shared/resources";
+  import moment from "moment";
 
   export default {
     name: "request",
@@ -227,13 +228,24 @@
       return {
         queryParameters: {},
         showQueryParameters: false,
-        conditionValidationType
+        conditionValidationType,
+        refreshTimeFromInterval: null,
+        timeFrom: null
       };
     },
     created() {
       this.queryParameters = parseUrl(this.request.requestParameters.url);
       if (Object.keys(this.queryParameters).length > 0) {
         this.showQueryParameters = true;
+      }
+    },
+    mounted() {
+      this.refreshTimeFrom();
+      this.refreshTimeFromInterval = setInterval(() => this.refreshTimeFrom(), 60000);
+    },
+    destroyed() {
+      if (this.refreshTimeFromInterval) {
+        clearInterval(this.refreshTimeFromInterval);
       }
     },
     components: {
@@ -288,6 +300,10 @@
         } catch (e) {
           toastError(resources.stubNotAddedGeneric);
         }
+      },
+      refreshTimeFrom() {
+        let date = moment(this.request.requestEndTime);
+        this.timeFrom = date.fromNow();
       }
     }
   };
