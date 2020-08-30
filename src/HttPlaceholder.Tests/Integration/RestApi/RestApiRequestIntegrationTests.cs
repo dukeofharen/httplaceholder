@@ -55,25 +55,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         }
 
         [TestMethod]
-        public async Task RestApiIntegration_Request_CredentialsAreNeededButIncorrect_ShouldReturn401()
-        {
-            // Arrange
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
-
-            Settings.Authentication.ApiUsername = "correct";
-            Settings.Authentication.ApiPassword = "correct";
-
-            // Act
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/requests/stub1");
-            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
-            using var response = await Client.SendAsync(request);
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
-        }
-
-        [TestMethod]
         public async Task RestApiIntegration_Request_CredentialsAreCorrect_ShouldContinue()
         {
             // Arrange
