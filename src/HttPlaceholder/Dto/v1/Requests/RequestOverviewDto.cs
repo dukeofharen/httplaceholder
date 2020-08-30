@@ -8,7 +8,7 @@ namespace HttPlaceholder.Dto.v1.Requests
     /// <summary>
     /// A model for storing the base properties of a request.
     /// </summary>
-    public class RequestOverviewDto : IHaveCustomMapping //IMapFrom<RequestResultModel>
+    public class RequestOverviewDto : IHaveCustomMapping
     {
         /// <summary>
         /// Gets or sets the correlation identifier.

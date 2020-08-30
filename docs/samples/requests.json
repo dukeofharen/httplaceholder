@@ -968,6 +968,38 @@
 							"response": []
 						},
 						{
+							"name": "GET overview",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "POST create stub by existing request",
 							"request": {
 								"method": "POST",

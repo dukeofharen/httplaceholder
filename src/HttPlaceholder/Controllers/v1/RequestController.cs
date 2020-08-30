@@ -29,6 +29,15 @@ namespace HttPlaceholder.Controllers.v1
             Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(new GetAllRequestsQuery())));
 
         /// <summary>
+        /// Get overview of all Requests..
+        /// </summary>
+        /// <returns>All request results</returns>
+        [HttpGet("overview")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetOverview() =>
+            Ok(Mapper.Map<IEnumerable<RequestOverviewDto>>(await Mediator.Send(new GetAllRequestsQuery())));
+
+        /// <summary>
         /// Delete all requests. This call flushes all the requests.
         /// </summary>
         /// <returns>OK, but no content returned</returns>

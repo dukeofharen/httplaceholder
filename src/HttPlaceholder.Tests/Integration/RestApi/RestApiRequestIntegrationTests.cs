@@ -38,6 +38,23 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         }
 
         [TestMethod]
+        public async Task RestApiIntegration_Request_GetOverview()
+        {
+            // Arrange
+            var correlation = Guid.NewGuid().ToString();
+            StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+
+            // Act
+            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/overview");
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<RequestOverviewDto[]>(content);
+
+            // Assert
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual(correlation, result.First().CorrelationId);
+        }
+
+        [TestMethod]
         public async Task RestApiIntegration_Request_GetByStubId()
         {
             // Arrange
