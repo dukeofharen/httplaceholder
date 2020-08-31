@@ -10,67 +10,67 @@ namespace HttPlaceholder.Tests.Integration.RestApi
     [TestClass]
     public class RestApiAuthorizationTests : RestApiIntegrationTestBase
     {
-        private static (string relativeUrl, HttpMethod httpMethod, bool expect401, bool postArray)[] _urls = new[]
-        {
-            ("ph-api/metadata", HttpMethod.Get, false, false), ("ph-api/requests", HttpMethod.Get, true, false),
-            ("ph-api/requests/3b392b80-b35f-4a4d-be01-e95d2d42d869", HttpMethod.Get, true, false),
-            ("ph-api/requests/overview", HttpMethod.Get, true, false),
-            ("ph-api/requests", HttpMethod.Delete, true, false),
-            ("ph-api/stubs/stub-123/requests", HttpMethod.Get, true, false),
-            ("ph-api/requests/babceb20-d386-4741-8006-67cbccf33810/stubs", HttpMethod.Post, true, false),
-            ("ph-api/stubs", HttpMethod.Post, true, false), ("ph-api/stubs", HttpMethod.Get, true, false),
-            ("ph-api/stubs", HttpMethod.Delete, true, false),
-            ("ph-api/stubs/stub-123", HttpMethod.Put, true, false),
-            ("ph-api/stubs/stub-123", HttpMethod.Get, true, false),
-            ("ph-api/stubs/stub-123", HttpMethod.Delete, true, false),
-            ("ph-api/tenants", HttpMethod.Get, true, false),
-            ("ph-api/tenants/tenantname/stubs", HttpMethod.Get, true, false),
-            ("ph-api/tenants/tenantname/stubs", HttpMethod.Delete, true, false),
-            ("ph-api/tenants/tenantname/stubs", HttpMethod.Put, true, true),
-            ("ph-api/users/username", HttpMethod.Put, false, false)
-        };
-
         [TestInitialize]
         public void Initialize() => InitializeRestApiIntegrationTest();
 
         [TestCleanup]
         public void Cleanup() => CleanupRestApiIntegrationTest();
 
-        [TestMethod]
-        public async Task RestApiIntegration_IncorrectCredentials_ShouldReturn401()
+        [DataTestMethod]
+        [DataRow("ph-api/metadata", "GET", false, false)]
+        [DataRow("ph-api/requests", "GET", true, false)]
+        [DataRow("ph-api/requests/3b392b80-b35f-4a4d-be01-e95d2d42d869", "GET", true, false)]
+        [DataRow("ph-api/requests/overview", "GET", true, false)]
+        [DataRow("ph-api/requests", "DELETE", true, false)]
+        [DataRow("ph-api/stubs/stub-123/requests", "GET", true, false)]
+        [DataRow("ph-api/requests/babceb20-d386-4741-8006-67cbccf33810/stubs", "POST", true, false)]
+        [DataRow("ph-api/stubs", "POST", true, false)]
+        [DataRow("ph-api/stubs", "GET", true, false)]
+        [DataRow("ph-api/stubs", "DELETE", true, false)]
+        [DataRow("ph-api/stubs/stub-123", "PUT", true, false)]
+        [DataRow("ph-api/stubs/stub-123", "GET", true, false)]
+        [DataRow("ph-api/stubs/stub-123", "DELETE", true, false)]
+        [DataRow("ph-api/tenants", "GET", true, false)]
+        [DataRow("ph-api/tenants/tenantname/stubs", "GET", true, false)]
+        [DataRow("ph-api/tenants/tenantname/stubs", "DELETE", true, false)]
+        [DataRow("ph-api/tenants/tenantname/stubs", "PUT", true, true)]
+        [DataRow("ph-api/users/username", "PUT", false, false)]
+        public async Task RestApiIntegration_IncorrectCredentials_ShouldReturn401(
+            string relativeUrl,
+            string httpMethod,
+            bool expect401,
+            bool postArray)
         {
             // Arrange
             Settings.Authentication.ApiUsername = "correct";
             Settings.Authentication.ApiPassword = "correct";
 
-            foreach (var url in _urls)
+            // Act
+            var parsedHttpMethod = new HttpMethod(httpMethod);
+            var request =
+                new HttpRequestMessage(parsedHttpMethod, $"{TestServer.BaseAddress}{relativeUrl}");
+            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
+            if (parsedHttpMethod == HttpMethod.Post || parsedHttpMethod == HttpMethod.Put)
             {
-                // Act
-                var request =
-                    new HttpRequestMessage(url.httpMethod, $"{TestServer.BaseAddress}{url.relativeUrl}");
-                request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
-                if (url.httpMethod == HttpMethod.Post || url.httpMethod == HttpMethod.Put)
-                {
-                    request.Content = new StringContent(url.postArray ? "[]" : "{}", Encoding.UTF8, "application/json");
-                }
+                request.Content = new StringContent(postArray ? "[]" : "{}", Encoding.UTF8, "application/json");
+            }
 
-                using var response = await Client.SendAsync(request);
-                var content = await response.Content.ReadAsStringAsync();
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
 
-                // Assert
-                if (url.expect401)
-                {
-                    Assert.AreEqual(
-                        HttpStatusCode.Unauthorized,
-                        response.StatusCode,
-                        $"Expected call to relative URL {url.relativeUrl} ({url.httpMethod}) to return HTTP status code 401 but got {(int)response.StatusCode} with returned content '{content}'.");
-                }
-                else
-                {
-                    Assert.IsFalse(
-                        response.StatusCode != HttpStatusCode.Unauthorized && (int)response.StatusCode >= 500,
-                        $"Expected call to relative URL {url.relativeUrl} ({url.httpMethod}) to NOT return 401 and no 5xx error, but returned {(int)response.StatusCode} with returned content '{content}'.");
-                }
+            // Assert
+            if (expect401)
+            {
+                Assert.AreEqual(
+                    HttpStatusCode.Unauthorized,
+                    response.StatusCode,
+                    $"Expected call to relative URL {relativeUrl} ({httpMethod}) to return HTTP status code 401 but got {(int)response.StatusCode} with returned content '{content}'.");
+            }
+            else
+            {
+                Assert.IsFalse(
+                    response.StatusCode != HttpStatusCode.Unauthorized && (int)response.StatusCode >= 500,
+                    $"Expected call to relative URL {relativeUrl} ({httpMethod}) to NOT return 401 and no 5xx error, but returned {(int)response.StatusCode} with returned content '{content}'.");
             }
         }
     }
