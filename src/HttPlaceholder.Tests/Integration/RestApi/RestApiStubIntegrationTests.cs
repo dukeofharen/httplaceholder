@@ -111,18 +111,12 @@ response:
         public async Task RestApiIntegration_Stub_Add_Json_StubIdAlreadyExistsInReadOnlySource_ShouldReturn409()
         {
             // arrange
-            var stub = new StubDto
-            {
-                Id = "situation-01"
-            };
+            var stub = new StubDto {Id = "situation-01"};
 
-            var existingStub = new StubModel
-            {
-                Id = "situation-01"
-            };
+            var existingStub = new StubModel {Id = "situation-01"};
             ReadOnlyStubSource
-               .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[] { existingStub });
+                .Setup(m => m.GetStubsAsync())
+                .ReturnsAsync(new[] {existingStub});
 
             // Act
             var request = new HttpRequestMessage(HttpMethod.Post, $"{TestServer.BaseAddress}ph-api/stubs")
@@ -142,16 +136,10 @@ response:
             var url = $"{TestServer.BaseAddress}ph-api/stubs";
             StubSource.StubModels.Add(new StubModel
             {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
+                Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
             });
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
             // act / assert
@@ -173,16 +161,10 @@ response:
             var url = $"{TestServer.BaseAddress}ph-api/stubs";
             StubSource.StubModels.Add(new StubModel
             {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
+                Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
             });
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
@@ -196,22 +178,39 @@ response:
         }
 
         [TestMethod]
+        public async Task RestApiIntegration_Stub_GetOverview()
+        {
+            // arrange
+            var url = $"{TestServer.BaseAddress}ph-api/stubs/overview";
+            StubSource.StubModels.Add(new StubModel
+            {
+                Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
+            });
+
+            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // act / assert
+            using var response = await Client.SendAsync(request);
+            Assert.IsTrue(response.IsSuccessStatusCode);
+
+            var content = await response.Content.ReadAsStringAsync();
+            var stubs = JsonConvert.DeserializeObject<FullStubOverviewDto[]>(content);
+            Assert.AreEqual(1, stubs.Length);
+            Assert.AreEqual("test-123", stubs.First().Stub.Id);
+        }
+
+        [TestMethod]
         public async Task RestApiIntegration_Stub_Get_Yaml()
         {
             // arrange
             var url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
             StubSource.StubModels.Add(new StubModel
             {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
+                Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
             });
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
             // act / assert
@@ -232,16 +231,10 @@ response:
             var url = $"{TestServer.BaseAddress}ph-api/stubs/test-123";
             StubSource.StubModels.Add(new StubModel
             {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
+                Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
             });
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
@@ -259,9 +252,7 @@ response:
             // arrange
             StubSource.StubModels.Add(new StubModel
             {
-                Id = "test-124",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
+                Id = "test-124", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
             });
 
             // Act
@@ -277,9 +268,7 @@ response:
             // Arrange
             StubSource.StubModels.Add(new StubModel
             {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
+                Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
             });
 
             // Act
@@ -295,9 +284,7 @@ response:
             // Arrange
             StubSource.StubModels.Add(new StubModel
             {
-                Id = "test-124",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
+                Id = "test-124", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
             });
 
             // Act
@@ -312,20 +299,19 @@ response:
         {
             // arrange
             var url = $"{TestServer.BaseAddress}ph-api/stubs";
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
             using var response = await Client.SendAsync(request);
             Assert.IsTrue(response.IsSuccessStatusCode);
             Assert.AreEqual("*", response.Headers.Single(h => h.Key == "Access-Control-Allow-Origin").Value.Single());
-            Assert.AreEqual("Authorization, Content-Type", response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
-            Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS", response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
-            Assert.AreEqual("no-store, no-cache", response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
+            Assert.AreEqual("Authorization, Content-Type",
+                response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
+            Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS",
+                response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
+            Assert.AreEqual("no-store, no-cache",
+                response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
         }
 
         [TestMethod]
@@ -333,11 +319,7 @@ response:
         {
             // arrange
             var url = $"{TestServer.BaseAddress}ph-api/stubs";
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Options,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage {Method = HttpMethod.Options, RequestUri = new Uri(url)};
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Headers.Add("Origin", "http://localhost:8080");
 
@@ -345,9 +327,12 @@ response:
             using var response = await Client.SendAsync(request);
             Assert.IsTrue(response.IsSuccessStatusCode);
             Assert.AreEqual("*", response.Headers.Single(h => h.Key == "Access-Control-Allow-Origin").Value.Single());
-            Assert.AreEqual("Authorization, Content-Type", response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
-            Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS", response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
-            Assert.AreEqual("no-store, no-cache", response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
+            Assert.AreEqual("Authorization, Content-Type",
+                response.Headers.Single(h => h.Key == "Access-Control-Allow-Headers").Value.Single());
+            Assert.AreEqual("GET, POST, PUT, DELETE, OPTIONS",
+                response.Headers.Single(h => h.Key == "Access-Control-Allow-Methods").Value.Single());
+            Assert.AreEqual("no-store, no-cache",
+                response.Headers.Single(h => h.Key == "Cache-Control").Value.Single());
         }
 
         [TestMethod]
@@ -509,15 +494,11 @@ response:
             // Arrange
             StubSource.StubModels.Add(new StubModel
             {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
+                Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
             });
             StubSource.StubModels.Add(new StubModel
             {
-                Id = "test-456",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
+                Id = "test-456", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
             });
 
             var url = $"{TestServer.BaseAddress}ph-api/stubs";
