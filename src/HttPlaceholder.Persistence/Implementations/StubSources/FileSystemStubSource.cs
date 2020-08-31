@@ -119,6 +119,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.FromResult(result.AsEnumerable());
         }
 
+        public Task<StubModel> GetStubAsync(string stubId) => throw new System.NotImplementedException();
+
         public async Task CleanOldRequestResultsAsync()
         {
             var path = EnsureAndGetRequestsFolder();

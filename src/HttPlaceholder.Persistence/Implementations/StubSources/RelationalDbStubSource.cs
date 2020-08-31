@@ -151,6 +151,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
+        public Task<StubModel> GetStubAsync(string stubId) => throw new NotImplementedException();
+
         public async Task PrepareStubSourceAsync()
         {
             using (var conn = _queryStore.GetConnection())
