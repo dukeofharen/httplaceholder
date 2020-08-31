@@ -183,15 +183,13 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
 
             var stub1 = new StubModel {Id = "stub1"};
             var stub2 = new StubModel {Id = "stub2"};
-            var stub3 = new StubModel {Id = "stub3"};
 
             stubSource1
-                .Setup(m => m.GetStubsAsync())
-                .ReturnsAsync(new[] {stub1, stub2});
-
+                .Setup(m => m.GetStubAsync(stub2.Id))
+                .ReturnsAsync(stub2);
             stubSource2
-                .Setup(m => m.GetStubsAsync())
-                .ReturnsAsync(new[] {stub3});
+                .Setup(m => m.GetStubAsync(stub1.Id))
+                .ReturnsAsync(stub1);
 
             _stubSources.Add(stubSource1.Object);
             _stubSources.Add(stubSource2.Object);
@@ -211,8 +209,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
 
             var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
             stubSource
-                .Setup(m => m.GetStubsAsync())
-                .ReturnsAsync(new[] {stub});
+                .Setup(m => m.GetStubAsync(stub.Id))
+                .ReturnsAsync(stub);
 
             var request = new RequestResultModel {ExecutingStubId = stub.Id};
             stubSource
