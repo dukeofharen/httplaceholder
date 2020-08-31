@@ -344,6 +344,47 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
+        public async Task GetStubsOverviewAsync_HappyFlow()
+        {
+            // arrange
+            var stubsFolder = Path.Combine(StorageFolder, "stubs");
+            _fileServiceMock
+                .Setup(m => m.DirectoryExists(stubsFolder))
+                .Returns(false);
+            _fileServiceMock
+                .Setup(m => m.CreateDirectory(stubsFolder));
+
+            var files = new[] {Path.Combine(stubsFolder, "stub-01.json"), Path.Combine(stubsFolder, "stub-02.json")};
+
+            _fileServiceMock
+                .Setup(m => m.GetFiles(stubsFolder, "*.json"))
+                .Returns(files);
+
+            var stubFileContents = new[]
+            {
+                JsonConvert.SerializeObject(new StubModel {Id = "stub-01"}),
+                JsonConvert.SerializeObject(new StubModel {Id = "stub-02"})
+            };
+
+            for (var i = 0; i < files.Length; i++)
+            {
+                var file = files[i];
+                var contents = stubFileContents[i];
+                _fileServiceMock
+                    .Setup(m => m.ReadAllText(file))
+                    .Returns(contents);
+            }
+
+            // act
+            var result = (await _source.GetStubsOverviewAsync()).ToArray();
+
+            // assert
+            Assert.AreEqual(2, result.Length);
+            Assert.AreEqual("stub-01", result[0].Id);
+            Assert.AreEqual("stub-02", result[1].Id);
+        }
+
+        [TestMethod]
         public async Task CleanOldRequestResultsAsync_HappyFlow()
         {
             // arrange

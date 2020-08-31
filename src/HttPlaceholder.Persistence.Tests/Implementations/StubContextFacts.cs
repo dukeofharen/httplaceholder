@@ -53,6 +53,38 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
+        public async Task GetStubsOverviewAsync_HappyFlow()
+        {
+            // arrange
+            var stubSource1 = new Mock<IStubSource>();
+            var stubSource2 = new Mock<IStubSource>();
+
+            var stub1 = new StubOverviewModel();
+            var stub2 = new StubOverviewModel();
+            var stub3 = new StubOverviewModel();
+
+            stubSource1
+                .Setup(m => m.GetStubsOverviewAsync())
+                .ReturnsAsync(new[] {stub1, stub2});
+
+            stubSource2
+                .Setup(m => m.GetStubsOverviewAsync())
+                .ReturnsAsync(new[] {stub3});
+
+            _stubSources.Add(stubSource1.Object);
+            _stubSources.Add(stubSource2.Object);
+
+            // act
+            var result = (await _context.GetStubsOverviewAsync()).ToArray();
+
+            // assert
+            Assert.AreEqual(3, result.Length);
+            Assert.AreEqual(stub1, result[0].Stub);
+            Assert.AreEqual(stub2, result[1].Stub);
+            Assert.AreEqual(stub3, result[2].Stub);
+        }
+
+        [TestMethod]
         public async Task GetStubsAsync_ByTenant_HappyFlow()
         {
             // arrange
