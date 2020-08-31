@@ -151,6 +151,11 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
+        public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync()  =>
+            (await GetStubsAsync())
+            .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant})
+            .ToArray();
+
         public async Task<StubModel> GetStubAsync(string stubId)
         {
             using (var conn = _queryStore.GetConnection())

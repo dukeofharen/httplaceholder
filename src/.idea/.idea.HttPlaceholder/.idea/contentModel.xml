@@ -617,6 +617,7 @@
           <e p="ConditionValidationType.cs" t="Include" />
         </e>
         <e p="FullStubModel.cs" t="Include" />
+        <e p="FullStubOverviewModel.cs" t="Include" />
         <e p="HttPlaceholder.Domain.csproj" t="IncludeRecursive" />
         <e p="MetadataModel.cs" t="Include" />
         <e p="RequestOverviewModel.cs" t="Include" />
@@ -629,6 +630,7 @@
         <e p="StubFormModel.cs" t="Include" />
         <e p="StubMetadataModel.cs" t="Include" />
         <e p="StubModel.cs" t="Include" />
+        <e p="StubOverviewModel.cs" t="Include" />
         <e p="StubResponseModel.cs" t="Include" />
         <e p="StubResponseReverseProxyModel.cs" t="Include" />
         <e p="StubResponseWriterResultModel.cs" t="Include" />

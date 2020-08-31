@@ -30,6 +30,23 @@ namespace HttPlaceholder.Persistence.Implementations
                 .Where(s => string.Equals(s.Stub.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
         }
 
+        public async Task<IEnumerable<FullStubOverviewModel>> GetStubsOverviewAsync()
+        {
+            var result = new List<FullStubOverviewModel>();
+            foreach (var source in _stubSources)
+            {
+                var stubSourceIsReadOnly = !(source is IWritableStubSource);
+                var stubs = await source.GetStubsOverviewAsync();
+                var fullStubModels = stubs.Select(s => new FullStubOverviewModel
+                {
+                    Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
+                });
+                result.AddRange(fullStubModels);
+            }
+
+            return result;
+        }
+
         public async Task<FullStubModel> AddStubAsync(StubModel stub)
         {
             if (string.IsNullOrWhiteSpace(stub.Id))

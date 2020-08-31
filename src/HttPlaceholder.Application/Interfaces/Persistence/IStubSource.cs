@@ -8,6 +8,8 @@ namespace HttPlaceholder.Application.Interfaces.Persistence
     {
         Task<IEnumerable<StubModel>> GetStubsAsync();
 
+        Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync();
+
         Task<StubModel> GetStubAsync(string stubId);
 
         Task PrepareStubSourceAsync();

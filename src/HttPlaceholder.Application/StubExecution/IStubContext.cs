@@ -10,6 +10,8 @@ namespace HttPlaceholder.Application.StubExecution
 
         Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant);
 
+        Task<IEnumerable<FullStubOverviewModel>> GetStubsOverviewAsync();
+
         Task<FullStubModel> AddStubAsync(StubModel stub);
 
         Task<bool> DeleteStubAsync(string stubId);
