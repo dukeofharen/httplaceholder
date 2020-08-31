@@ -122,6 +122,10 @@ namespace HttPlaceholder.Persistence.Implementations
             (await GetWritableStubSource().GetRequestResultsAsync())
             .OrderByDescending(s => s.RequestBeginTime);
 
+        public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync() =>
+            (await GetWritableStubSource().GetRequestResultsOverviewAsync())
+            .OrderByDescending(s => s.RequestEndTime);
+
         public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId)
         {
             var source = GetWritableStubSource();

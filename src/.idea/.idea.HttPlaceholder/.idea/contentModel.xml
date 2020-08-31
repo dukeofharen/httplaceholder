@@ -305,6 +305,10 @@
               <e p="GetRequestQuery.cs" t="Include" />
               <e p="GetRequestQueryHandler.cs" t="Include" />
             </e>
+            <e p="GetRequestsOverview" t="Include">
+              <e p="GetAllRequestsQueryHandler.cs" t="Include" />
+              <e p="GetRequestsOverviewQuery.cs" t="Include" />
+            </e>
           </e>
         </e>
         <e p="StubExecution" t="Include">

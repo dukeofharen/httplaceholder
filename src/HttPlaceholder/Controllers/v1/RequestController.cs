@@ -4,6 +4,7 @@ using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
 using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetRequest;
+using HttPlaceholder.Application.Requests.Queries.GetRequestsOverview;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Dto.v1.Stubs;
@@ -35,7 +36,7 @@ namespace HttPlaceholder.Controllers.v1
         [HttpGet("overview")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<RequestOverviewDto>>> GetOverview() =>
-            Ok(Mapper.Map<IEnumerable<RequestOverviewDto>>(await Mediator.Send(new GetAllRequestsQuery())));
+            Ok(Mapper.Map<IEnumerable<RequestOverviewDto>>(await Mediator.Send(new GetRequestsOverviewQuery())));
 
         /// <summary>
         /// Gets a specific request by correlation ID.

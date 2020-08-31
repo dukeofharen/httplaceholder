@@ -26,6 +26,8 @@ namespace HttPlaceholder.Application.StubExecution
 
         Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
 
+        Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync();
+
         Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId);
 
         Task<RequestResultModel> GetRequestResultAsync(string correlationId);

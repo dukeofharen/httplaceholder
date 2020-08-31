@@ -254,6 +254,28 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
+        public async Task GetRequestResultsOverviewAsync_HappyFlow()
+        {
+            // arrange
+            var request1 = new RequestOverviewModel {RequestEndTime = DateTime.Now.AddSeconds(-2)};
+            var request2 = new RequestOverviewModel {RequestEndTime = DateTime.Now.AddSeconds(-1)};
+            var requests = new[] {request1, request2};
+            var stubSource = new Mock<IWritableStubSource>();
+            stubSource
+                .Setup(m => m.GetRequestResultsOverviewAsync())
+                .ReturnsAsync(requests);
+
+            _stubSources.Add(stubSource.Object);
+
+            // act
+            var result = (await _context.GetRequestResultsOverviewAsync()).ToArray();
+
+            // assert
+            Assert.AreEqual(request2, result[0]);
+            Assert.AreEqual(request1, result[1]);
+        }
+
+        [TestMethod]
         public async Task GetRequestResultAsync_HappyFlow()
         {
             // arrange
