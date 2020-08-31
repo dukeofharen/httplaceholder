@@ -119,7 +119,18 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.FromResult(result.AsEnumerable());
         }
 
-        public Task<StubModel> GetStubAsync(string stubId) => throw new System.NotImplementedException();
+        public Task<StubModel> GetStubAsync(string stubId)
+        {
+            var path = EnsureAndGetStubsFolder();
+            var stubPath = Path.Combine(path, $"{stubId}.json");
+            if (!_fileService.FileExists(stubPath))
+            {
+                return Task.FromResult((StubModel)null);
+            }
+
+            var contents = _fileService.ReadAllText(stubPath);
+            return Task.FromResult(JsonConvert.DeserializeObject<StubModel>(contents));
+        }
 
         public async Task CleanOldRequestResultsAsync()
         {

@@ -101,8 +101,24 @@ namespace HttPlaceholder.Persistence.Implementations
             }
         }
 
-        public async Task<FullStubModel> GetStubAsync(string stubId) =>
-            (await GetStubsAsync()).FirstOrDefault(s => s.Stub.Id == stubId);
+        public async Task<FullStubModel> GetStubAsync(string stubId)
+        {
+            FullStubModel result = null;
+            foreach (var source in _stubSources)
+            {
+                var stub = await source.GetStubAsync(stubId);
+                if (stub != null)
+                {
+                    result = new FullStubModel
+                    {
+                        Stub = stub, Metadata = new StubMetadataModel {ReadOnly = !(source is IWritableStubSource)}
+                    };
+                    break;
+                }
+            }
+
+            return result;
+        }
 
         public async Task AddRequestResultAsync(RequestResultModel requestResult)
         {

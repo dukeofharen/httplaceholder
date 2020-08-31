@@ -52,6 +52,13 @@ stub,
 stub_type AS StubType
 FROM stubs";
 
+        public string GetStubQuery => @"SELECT
+stub_id AS StubId,
+stub,
+stub_type AS StubType
+FROM stubs
+WHERE stub_id = @StubId";
+
         public string CleanOldRequestsQuery => @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
 
         public string MigrationsQuery => SqliteResources.MigrateScript;

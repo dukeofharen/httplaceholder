@@ -103,7 +103,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
-        public Task<StubModel> GetStubAsync(string stubId) => throw new System.NotImplementedException();
+        public Task<StubModel> GetStubAsync(string stubId) =>
+            Task.FromResult(StubModels.FirstOrDefault(s => s.Id == stubId));
 
         public Task CleanOldRequestResultsAsync()
         {

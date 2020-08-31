@@ -151,7 +151,29 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
-        public Task<StubModel> GetStubAsync(string stubId) => throw new NotImplementedException();
+        public async Task<StubModel> GetStubAsync(string stubId)
+        {
+            using (var conn = _queryStore.GetConnection())
+            {
+                var result = await conn.QueryFirstOrDefaultAsync<DbStubModel>(_queryStore.GetStubQuery,
+                    new {StubId = stubId});
+                if (result == null)
+                {
+                    return null;
+                }
+
+                switch (result.StubType)
+                {
+                    case StubJsonType:
+                        return JsonConvert.DeserializeObject<StubModel>(result.Stub);
+                    case StubYamlType:
+                        return YamlUtilities.Parse<StubModel>(result.Stub);
+                    default:
+                        throw new NotImplementedException(
+                            $"StubType '{result.StubType}' not supported: stub '{stubId}'.");
+                }
+            }
+        }
 
         public async Task PrepareStubSourceAsync()
         {

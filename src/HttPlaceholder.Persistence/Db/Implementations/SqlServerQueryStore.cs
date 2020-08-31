@@ -52,6 +52,13 @@ stub,
 stub_type AS StubType
 FROM stubs";
 
+        public string GetStubQuery => @"SELECT
+stub_id AS StubId,
+stub,
+stub_type AS StubType
+FROM stubs
+WHERE stub_id = @StubId";
+
         public string CleanOldRequestsQuery =>
             @"DELETE FROM requests WHERE ID NOT IN (SELECT TOP (@Limit) ID FROM requests ORDER BY ID DESC)";
 

@@ -104,7 +104,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.FromResult(_stubs);
         }
 
-        public Task<StubModel> GetStubAsync(string stubId) => throw new NotImplementedException();
+        public async Task<StubModel> GetStubAsync(string stubId) =>
+            (await GetStubsAsync()).FirstOrDefault(s => s.Id == stubId);
 
         public async Task PrepareStubSourceAsync() =>
             // Check if the .yml files could be loaded.

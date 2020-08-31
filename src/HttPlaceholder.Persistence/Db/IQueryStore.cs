@@ -23,6 +23,8 @@ namespace HttPlaceholder.Persistence.Db
 
         string GetStubsQuery { get; }
 
+        string GetStubQuery { get; }
+
         string CleanOldRequestsQuery { get; }
 
         string MigrationsQuery { get; }
