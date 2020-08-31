@@ -40,7 +40,20 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
-        public Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync() => throw new System.NotImplementedException();
+        public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
+        {
+            // This method is not optimized right now.
+            var requests = await GetRequestResultsAsync();
+            return requests.Select(r => new RequestOverviewModel
+            {
+                Method = r.RequestParameters.Method,
+                Url = r.RequestParameters.Url,
+                CorrelationId = r.CorrelationId,
+                StubTenant = r.StubTenant,
+                ExecutingStubId = r.ExecutingStubId,
+                RequestEndTime = r.RequestEndTime
+            }).ToArray();
+        }
 
         public Task<RequestResultModel> GetRequestAsync(string correlationId)
         {
