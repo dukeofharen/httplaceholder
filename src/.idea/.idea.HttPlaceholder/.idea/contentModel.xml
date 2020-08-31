@@ -158,11 +158,13 @@
             </e>
             <e p="Stubs" t="Include">
               <e p="FullStubDto.cs" t="Include" />
+              <e p="FullStubOverviewDto.cs" t="Include" />
               <e p="StubBasicAuthenticationDto.cs" t="Include" />
               <e p="StubConditionsDto.cs" t="Include" />
               <e p="StubDto.cs" t="Include" />
               <e p="StubFormDto.cs" t="Include" />
               <e p="StubMetadataDto.cs" t="Include" />
+              <e p="StubOverviewModel.cs" t="Include" />
               <e p="StubResponseDto.cs" t="Include" />
               <e p="StubResponseReverseProxyDto.cs" t="Include" />
               <e p="StubUrlConditionDto.cs" t="Include" />
@@ -423,6 +425,10 @@
             <e p="GetStub" t="Include">
               <e p="GetStubQuery.cs" t="Include" />
               <e p="GetStubQueryHandler.cs" t="Include" />
+            </e>
+            <e p="GetStubsOverview" t="Include">
+              <e p="GetStubsOverviewQuery.cs" t="Include" />
+              <e p="GetStubsOverviewQueryHandler.cs" t="Include" />
             </e>
           </e>
         </e>

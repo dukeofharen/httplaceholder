@@ -7,6 +7,7 @@ using HttPlaceholder.Application.Stubs.Commands.DeleteStub;
 using HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
 using HttPlaceholder.Application.Stubs.Queries.GetAllStubs;
 using HttPlaceholder.Application.Stubs.Queries.GetStub;
+using HttPlaceholder.Application.Stubs.Queries.GetStubsOverview;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Requests;
@@ -60,6 +61,15 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll() =>
             Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(new GetAllStubsQuery())));
+
+        /// <summary>
+        /// Get stub overview.
+        /// </summary>
+        /// <returns>All stubs.</returns>
+        [HttpGet("overview")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<FullStubOverviewDto>>> GetOverview() =>
+            Ok(Mapper.Map<IEnumerable<FullStubOverviewDto>>(await Mediator.Send(new GetStubsOverviewQuery())));
 
         /// <summary>
         /// Get requests for the given stub ID.
