@@ -100,24 +100,5 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Assert.AreEqual(1, result.Length);
             Assert.AreEqual("stub1", result.First().ExecutingStubId);
         }
-
-        [TestMethod]
-        public async Task RestApiIntegration_Request_CredentialsAreCorrect_ShouldContinue()
-        {
-            // Arrange
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
-
-            Settings.Authentication.ApiUsername = "correct";
-            Settings.Authentication.ApiPassword = "correct";
-
-            // Act
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/stubs/stub1/requests");
-            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
-            using var response = await Client.SendAsync(request);
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        }
     }
 }

@@ -308,30 +308,6 @@ response:
         }
 
         [TestMethod]
-        public async Task RestApiIntegration_Stub_GetAll_CredentialsAreCorrect_ShouldContinue()
-        {
-            // Arrange
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel()
-            });
-
-            Settings.Authentication.ApiUsername = "correct";
-            Settings.Authentication.ApiPassword = "correct";
-
-            // Act
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/stubs/test-123");
-            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
-            using var response = await Client.SendAsync(request);
-
-            // Assert
-
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        }
-
-        [TestMethod]
         public async Task RestApiIntegration_Stub_Get_HeadersAreSet()
         {
             // arrange

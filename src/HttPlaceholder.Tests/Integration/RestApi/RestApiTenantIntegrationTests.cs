@@ -96,39 +96,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         }
 
         [TestMethod]
-        public async Task RestApiIntegration_Tenant_GetAll_CredentialsAreCorrect_ShouldContinue()
-        {
-            // Arrange
-            const string tenant = "tenant1";
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = "otherTenant"
-            });
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-456",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = tenant
-            });
-
-            Settings.Authentication.ApiUsername = "correct";
-            Settings.Authentication.ApiPassword = "correct";
-
-            // Act
-            var request =
-                new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs");
-            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
-            using var response = await Client.SendAsync(request);
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        }
-
-        [TestMethod]
         public async Task RestApiIntegration_Tenant_DeleteAll_HappyFlow()
         {
             // arrange
