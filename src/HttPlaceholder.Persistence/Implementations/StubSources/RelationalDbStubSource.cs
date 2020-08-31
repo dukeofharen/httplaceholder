@@ -66,6 +66,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
+        public Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync() => throw new NotImplementedException();
+
         public async Task<RequestResultModel> GetRequestAsync(string correlationId)
         {
             using (var conn = _queryStore.GetConnection())

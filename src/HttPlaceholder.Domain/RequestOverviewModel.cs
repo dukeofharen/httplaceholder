@@ -1,14 +1,11 @@
 using System;
-using AutoMapper;
-using HttPlaceholder.Application.Interfaces.Mappings;
-using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Dto.v1.Requests
+namespace HttPlaceholder.Domain
 {
     /// <summary>
-    /// A model for storing the base properties of a request.
+    /// A model for storing a stripped down version of a request.
     /// </summary>
-    public class RequestOverviewDto : IMapFrom<RequestOverviewModel>
+    public class RequestOverviewModel
     {
         /// <summary>
         /// Gets or sets the correlation identifier.

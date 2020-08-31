@@ -42,6 +42,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.CompletedTask;
         }
 
+        public Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync() => throw new System.NotImplementedException();
+
         public Task<RequestResultModel> GetRequestAsync(string correlationId)
         {
             var path = EnsureAndGetRequestsFolder();

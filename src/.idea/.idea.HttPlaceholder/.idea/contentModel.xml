@@ -615,6 +615,7 @@
         <e p="FullStubModel.cs" t="Include" />
         <e p="HttPlaceholder.Domain.csproj" t="IncludeRecursive" />
         <e p="MetadataModel.cs" t="Include" />
+        <e p="RequestOverviewModel.cs" t="Include" />
         <e p="RequestParametersModel.cs" t="Include" />
         <e p="RequestResultModel.cs" t="Include" />
         <e p="ResponseModel.cs" t="Include" />

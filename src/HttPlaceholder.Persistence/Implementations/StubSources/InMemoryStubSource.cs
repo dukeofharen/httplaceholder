@@ -40,6 +40,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
+        public Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync() => throw new System.NotImplementedException();
+
         public Task<RequestResultModel> GetRequestAsync(string correlationId)
         {
             lock (_lock)
