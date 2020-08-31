@@ -13,6 +13,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         private static (string relativeUrl, HttpMethod httpMethod, bool expect401, bool postArray)[] _urls = new[]
         {
             ("ph-api/metadata", HttpMethod.Get, false, false), ("ph-api/requests", HttpMethod.Get, true, false),
+            ("ph-api/requests/3b392b80-b35f-4a4d-be01-e95d2d42d869", HttpMethod.Get, true, false),
             ("ph-api/requests/overview", HttpMethod.Get, true, false),
             ("ph-api/requests", HttpMethod.Delete, true, false),
             ("ph-api/stubs/stub-123/requests", HttpMethod.Get, true, false),

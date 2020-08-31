@@ -38,6 +38,36 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         }
 
         [TestMethod]
+        public async Task RestApiIntegration_Request_GetSingle_RequestNotFound_ShouldReturn404()
+        {
+            // Arrange
+            var correlation = Guid.NewGuid().ToString();
+            StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+
+            // Act
+            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}1");
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Request_GetSingle_RequestFound_ShouldReturnRequest()
+        {
+            // Arrange
+            var correlation = Guid.NewGuid().ToString();
+            StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+
+            // Act
+            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}");
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<RequestResultDto>(content);
+
+            // Assert
+            Assert.AreEqual(correlation, result.CorrelationId);
+        }
+
+        [TestMethod]
         public async Task RestApiIntegration_Request_GetOverview()
         {
             // Arrange
