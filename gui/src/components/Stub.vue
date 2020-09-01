@@ -1,7 +1,7 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header>{{ fullStub.stub.id }}</v-expansion-panel-header>
-    <v-expansion-panel-content>
+    <v-expansion-panel-header @click="loadStub">{{ overviewStub.stub.id }}</v-expansion-panel-header>
+    <v-expansion-panel-content v-if="fullStub">
       <v-row>
         <v-col class="buttons">
           <v-btn
@@ -61,20 +61,28 @@
 
   export default {
     name: "stub",
-    props: ["fullStub"],
+    props: ["overviewStub"],
     data() {
       return {
         deleteDialog: false,
-        routeNames
+        routeNames,
+        fullStub: null
       };
     },
     methods: {
       async deleteStub() {
         this.deleteDialog = false;
-        const stubId = this.fullStub.stub.id;
+        const stubId = this.overviewStub.stub.id;
         await this.$store.dispatch(actionNames.deleteStub, {stubId});
         toastSuccess(resources.stubDeletedSuccessfully.format(stubId));
         this.$emit("deleted", this.fullStub);
+      },
+      async loadStub() {
+        if (!this.fullStub) {
+          this.fullStub = await this.$store.dispatch(actionNames.getStub, {
+            stubId: this.overviewStub.stub.id
+          });
+        }
       }
     }
   };

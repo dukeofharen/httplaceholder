@@ -4,10 +4,10 @@ import createInstance from "@/axios/axiosInstanceFactory";
 import yaml from "js-yaml";
 import {resources} from "@/shared/resources";
 
-export function getStubs() {
+export function getStubsOverview() {
   return new Promise((resolve, reject) =>
     createInstance()
-      .get("ph-api/stubs")
+      .get("ph-api/stubs/overview")
       .then(response => resolve(response.data))
       .catch(error => reject(error))
   );

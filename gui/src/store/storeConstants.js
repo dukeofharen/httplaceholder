@@ -28,7 +28,7 @@ export const mutationNames = {
 
 export const actionNames = {
   addStubs: "addStubs",
-  getStubs: "getStubs",
+  getStubsOverview: "getStubsOverview",
   getTenantNames: "getTenantNames",
   authenticate: "authenticate",
   getRequestsOverview: "getRequestsOverview",

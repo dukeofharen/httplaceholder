@@ -31,7 +31,7 @@
         </v-col>
         <v-expansion-panels>
           <Stub
-            v-bind:fullStub="stub"
+            :overviewStub="stub"
             v-for="stub in filteredStubs"
             :key="stub.id"
             v-on:deleted="onDeleted"
@@ -108,7 +108,7 @@
     },
     methods: {
       async initialize() {
-        const getStubsPromise = this.$store.dispatch(actionNames.getStubs);
+        const getStubsPromise = this.$store.dispatch(actionNames.getStubsOverview);
         const getTenantNamesPromise = this.$store.dispatch(
           actionNames.getTenantNames
         );
