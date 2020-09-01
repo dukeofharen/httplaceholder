@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header @click="loadRequest">
+    <v-expansion-panel-header>
       <span>
         <strong>{{ overviewRequest.method }}</strong>
         {{ overviewRequest.url }}
@@ -17,7 +17,7 @@
         <span>)</span>
       </span>
     </v-expansion-panel-header>
-    <v-expansion-panel-content v-if="request">
+    <v-expansion-panel-content>
       <v-list-item>
         <v-btn
           @click="createStub"
@@ -100,17 +100,9 @@
       </v-list-item>
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title>Request begin time</v-list-item-title>
+          <v-list-item-title>Request time</v-list-item-title>
           <v-list-item-subtitle
-          >{{ request.requestBeginTime | datetime }}
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>Request end time</v-list-item-title>
-          <v-list-item-subtitle
-          >{{ request.requestEndTime | datetime }}
+          >{{ overviewRequest.requestEndTime | datetime }} (it took <em>{{duration | decimal}}</em> ms)
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -227,15 +219,29 @@
   import {actionNames} from "@/store/storeConstants";
   import {routeNames} from "@/router/routerConstants";
   import {conditionValidationType} from "@/shared/resources";
+  import moment from "moment";
 
   export default {
     name: "request",
     props: ["overviewRequest"],
     data() {
       return {
+        queryParameters: {},
+        showQueryParameters: false,
         conditionValidationType,
-        request: null
+        refreshTimeFromInterval: null,
+        request: null,
+        timeFrom: null
       };
+    },
+    mounted() {
+      this.refreshTimeFrom();
+      this.refreshTimeFromInterval = setInterval(() => this.refreshTimeFrom(), 60000);
+    },
+    destroyed() {
+      if (this.refreshTimeFromInterval) {
+        clearInterval(this.refreshTimeFromInterval);
+      }
     },
     components: {
       RequestBody,
@@ -264,6 +270,11 @@
         const results = this.request.stubResponseWriterResults;
         results.sort(compare);
         return results;
+      },
+      duration() {
+        const from = new Date(this.overviewRequest.requestBeginTime);
+        const to = new Date(this.overviewRequest.requestEndTime);
+        return to.getTime() - from.getTime();
       },
       queryParameters() {
         return parseUrl(this.request.requestParameters.url);
@@ -295,14 +306,21 @@
         if (!this.request) {
           this.request = await this.$store.dispatch(actionNames.getRequest, this.overviewRequest.correlationId);
         }
+      },
+      refreshTimeFrom() {
+        let date = moment(this.request.requestEndTime);
+        this.timeFrom = date.fromNow();
       }
     }
   };
 </script>
 
 <style scoped>
-  /*noinspection CssUnusedSymbol*/
   .v-chip {
     margin-right: 10px;
+  }
+
+  .request {
+    margin-bottom: 20px;
   }
 </style>

@@ -25,6 +25,7 @@ import "toastr/build/toastr.css";
 // Filters
 import "./filters/yaml";
 import "./filters/datetime";
+import "./filters/decimal";
 
 import "./utils/stringFormat";
 

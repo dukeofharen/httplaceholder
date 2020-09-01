@@ -23,9 +23,10 @@
 </template>
 
 <script>
-  import {toastError, toastSuccess} from "@/utils/toastUtil";
+  import {toastError, toastSuccess, toastWarning} from "@/utils/toastUtil";
   import {actionNames} from "@/store/storeConstants";
   import {resources} from "@/shared/resources";
+  import {getExtension} from "@/utils/fileHelper";
 
   export default {
     name: "uploadStub",
@@ -35,15 +36,16 @@
       },
       loadTextFromFile(ev) {
         const expectedExtensions = ["yml", "yaml"];
-        for (let file of ev.target.files) {
-          let parts = file.name.split(".");
-          if (!expectedExtensions.includes(parts[parts.length - 1])) {
-            toastError(resources.onlyUploadYmlFiles);
-            return;
-          }
+        const files = Array.from(ev.target.files);
+        const invalidFileNames = files
+          .filter(f => !expectedExtensions.includes(getExtension(f.name)))
+          .map(f => f.name);
+        if (invalidFileNames.length) {
+          toastWarning(resources.uploadInvalidFiles.format(invalidFileNames.join(", ")) + " " + resources.onlyUploadYmlFiles);
         }
 
-        for (let file of ev.target.files) {
+        const validFiles = files.filter(f => !invalidFileNames.includes(f.name));
+        for (let file of validFiles) {
           let reader = new FileReader();
           reader.onload = e => {
             this.addStubsInternal(e.target.result);
@@ -72,6 +74,7 @@
 </script>
 
 <style scoped>
+  /*noinspection CssUnusedSymbol*/
   .v-card {
     margin-top: 10px;
     margin-bottom: 10px;
