@@ -5,6 +5,6 @@ namespace HttPlaceholder.Hubs
 {
     public interface IRequestNotify
     {
-        Task NewRequestReceivedAsync(RequestResultDto request);
+        Task NewRequestReceivedAsync(RequestOverviewDto request);
     }
 }
