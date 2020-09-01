@@ -92,12 +92,15 @@ Class | Method | HTTP request | Description
 *RequestApi* | [**RequestCreateStubForRequest**](docs/RequestApi.md#requestcreatestubforrequest) | **POST** /ph-api/requests/{CorrelationId}/stubs | An endpoint which accepts the correlation ID of a request made earlier. HttPlaceholder will create a stub based on this request for you to tweak lateron.
 *RequestApi* | [**RequestDeleteAll**](docs/RequestApi.md#requestdeleteall) | **DELETE** /ph-api/requests | Delete all requests. This call flushes all the requests.
 *RequestApi* | [**RequestGetAll**](docs/RequestApi.md#requestgetall) | **GET** /ph-api/requests | Get all Requests.
-*RequestApi* | [**RequestGetByStubId**](docs/RequestApi.md#requestgetbystubid) | **GET** /ph-api/requests/{StubId} | Get requests for the given stub ID.
+*RequestApi* | [**RequestGetOverview**](docs/RequestApi.md#requestgetoverview) | **GET** /ph-api/requests/overview | Get overview of all Requests.
+*RequestApi* | [**RequestGetRequest**](docs/RequestApi.md#requestgetrequest) | **GET** /ph-api/requests/{correlationId} | Gets a specific request by correlation ID.
 *StubApi* | [**StubAdd**](docs/StubApi.md#stubadd) | **POST** /ph-api/stubs | Adds a new stub.
 *StubApi* | [**StubDelete**](docs/StubApi.md#stubdelete) | **DELETE** /ph-api/stubs/{StubId} | Delete a specific stub by stub identifier.
 *StubApi* | [**StubDeleteAll**](docs/StubApi.md#stubdeleteall) | **DELETE** /ph-api/stubs | Delete ALL stubs. Be careful.
 *StubApi* | [**StubGet**](docs/StubApi.md#stubget) | **GET** /ph-api/stubs/{StubId} | Get a specific stub by stub identifier.
 *StubApi* | [**StubGetAll**](docs/StubApi.md#stubgetall) | **GET** /ph-api/stubs | Get all stubs.
+*StubApi* | [**StubGetOverview**](docs/StubApi.md#stubgetoverview) | **GET** /ph-api/stubs/overview | Get stub overview.
+*StubApi* | [**StubGetRequestsByStubId**](docs/StubApi.md#stubgetrequestsbystubid) | **GET** /ph-api/stubs/{StubId}/requests | Get requests for the given stub ID.
 *StubApi* | [**StubUpdate**](docs/StubApi.md#stubupdate) | **PUT** /ph-api/stubs/{StubId} | Updates a given stub.
 *TenantApi* | [**TenantDeleteAll**](docs/TenantApi.md#tenantdeleteall) | **DELETE** /ph-api/tenants/{Tenant}/stubs | Deletes all stubs in a specific tenant.
 *TenantApi* | [**TenantGetAll**](docs/TenantApi.md#tenantgetall) | **GET** /ph-api/tenants/{Tenant}/stubs | Gets all stubs in a specific tenant.
@@ -111,8 +114,10 @@ Class | Method | HTTP request | Description
 
  - [Model.ConditionCheckResultDto](docs/ConditionCheckResultDto.md)
  - [Model.FullStubDto](docs/FullStubDto.md)
+ - [Model.FullStubOverviewDto](docs/FullStubOverviewDto.md)
  - [Model.MetadataDto](docs/MetadataDto.md)
  - [Model.ProblemDetails](docs/ProblemDetails.md)
+ - [Model.RequestOverviewDto](docs/RequestOverviewDto.md)
  - [Model.RequestParametersDto](docs/RequestParametersDto.md)
  - [Model.RequestResultDto](docs/RequestResultDto.md)
  - [Model.StubBasicAuthenticationDto](docs/StubBasicAuthenticationDto.md)
@@ -121,6 +126,7 @@ Class | Method | HTTP request | Description
  - [Model.StubExecutionResultDto](docs/StubExecutionResultDto.md)
  - [Model.StubFormDto](docs/StubFormDto.md)
  - [Model.StubMetadataDto](docs/StubMetadataDto.md)
+ - [Model.StubOverviewDto](docs/StubOverviewDto.md)
  - [Model.StubResponseDto](docs/StubResponseDto.md)
  - [Model.StubResponseReverseProxyDto](docs/StubResponseReverseProxyDto.md)
  - [Model.StubResponseWriterResultDto](docs/StubResponseWriterResultDto.md)

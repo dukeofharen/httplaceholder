@@ -87,26 +87,45 @@ namespace HttPlaceholder.Client.Api
         /// <returns>ApiResponse of List&lt;RequestResultDto&gt;</returns>
         ApiResponse<List<RequestResultDto>> RequestGetAllWithHttpInfo ();
         /// <summary>
-        /// Get requests for the given stub ID.
+        /// Get overview of all Requests.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="stubId"></param>
-        /// <returns>List&lt;RequestResultDto&gt;</returns>
-        List<RequestResultDto> RequestGetByStubId (string stubId);
+        /// <returns>List&lt;RequestOverviewDto&gt;</returns>
+        List<RequestOverviewDto> RequestGetOverview ();
 
         /// <summary>
-        /// Get requests for the given stub ID.
+        /// Get overview of all Requests.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="stubId"></param>
-        /// <returns>ApiResponse of List&lt;RequestResultDto&gt;</returns>
-        ApiResponse<List<RequestResultDto>> RequestGetByStubIdWithHttpInfo (string stubId);
+        /// <returns>ApiResponse of List&lt;RequestOverviewDto&gt;</returns>
+        ApiResponse<List<RequestOverviewDto>> RequestGetOverviewWithHttpInfo ();
+        /// <summary>
+        /// Gets a specific request by correlation ID.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="correlationId">The original correlation ID.</param>
+        /// <returns>RequestResultDto</returns>
+        RequestResultDto RequestGetRequest (string correlationId);
+
+        /// <summary>
+        /// Gets a specific request by correlation ID.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="correlationId">The original correlation ID.</param>
+        /// <returns>ApiResponse of RequestResultDto</returns>
+        ApiResponse<RequestResultDto> RequestGetRequestWithHttpInfo (string correlationId);
         #endregion Synchronous Operations
     }
 
@@ -176,26 +195,45 @@ namespace HttPlaceholder.Client.Api
         /// <returns>Task of ApiResponse (List&lt;RequestResultDto&gt;)</returns>
         System.Threading.Tasks.Task<ApiResponse<List<RequestResultDto>>> RequestGetAllAsyncWithHttpInfo ();
         /// <summary>
-        /// Get requests for the given stub ID.
+        /// Get overview of all Requests.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="stubId"></param>
-        /// <returns>Task of List&lt;RequestResultDto&gt;</returns>
-        System.Threading.Tasks.Task<List<RequestResultDto>> RequestGetByStubIdAsync (string stubId);
+        /// <returns>Task of List&lt;RequestOverviewDto&gt;</returns>
+        System.Threading.Tasks.Task<List<RequestOverviewDto>> RequestGetOverviewAsync ();
 
         /// <summary>
-        /// Get requests for the given stub ID.
+        /// Get overview of all Requests.
         /// </summary>
         /// <remarks>
         /// 
         /// </remarks>
         /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="stubId"></param>
-        /// <returns>Task of ApiResponse (List&lt;RequestResultDto&gt;)</returns>
-        System.Threading.Tasks.Task<ApiResponse<List<RequestResultDto>>> RequestGetByStubIdAsyncWithHttpInfo (string stubId);
+        /// <returns>Task of ApiResponse (List&lt;RequestOverviewDto&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<RequestOverviewDto>>> RequestGetOverviewAsyncWithHttpInfo ();
+        /// <summary>
+        /// Gets a specific request by correlation ID.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="correlationId">The original correlation ID.</param>
+        /// <returns>Task of RequestResultDto</returns>
+        System.Threading.Tasks.Task<RequestResultDto> RequestGetRequestAsync (string correlationId);
+
+        /// <summary>
+        /// Gets a specific request by correlation ID.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="correlationId">The original correlation ID.</param>
+        /// <returns>Task of ApiResponse (RequestResultDto)</returns>
+        System.Threading.Tasks.Task<ApiResponse<RequestResultDto>> RequestGetRequestAsyncWithHttpInfo (string correlationId);
         #endregion Asynchronous Operations
     }
 
@@ -626,28 +664,127 @@ namespace HttPlaceholder.Client.Api
         }
 
         /// <summary>
-        /// Get requests for the given stub ID. 
+        /// Get overview of all Requests. 
         /// </summary>
         /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="stubId"></param>
-        /// <returns>List&lt;RequestResultDto&gt;</returns>
-        public List<RequestResultDto> RequestGetByStubId (string stubId)
+        /// <returns>List&lt;RequestOverviewDto&gt;</returns>
+        public List<RequestOverviewDto> RequestGetOverview ()
         {
-             HttPlaceholder.Client.Client.ApiResponse<List<RequestResultDto>> localVarResponse = RequestGetByStubIdWithHttpInfo(stubId);
+             HttPlaceholder.Client.Client.ApiResponse<List<RequestOverviewDto>> localVarResponse = RequestGetOverviewWithHttpInfo();
              return localVarResponse.Data;
         }
 
         /// <summary>
-        /// Get requests for the given stub ID. 
+        /// Get overview of all Requests. 
         /// </summary>
         /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="stubId"></param>
-        /// <returns>ApiResponse of List&lt;RequestResultDto&gt;</returns>
-        public HttPlaceholder.Client.Client.ApiResponse< List<RequestResultDto> > RequestGetByStubIdWithHttpInfo (string stubId)
+        /// <returns>ApiResponse of List&lt;RequestOverviewDto&gt;</returns>
+        public HttPlaceholder.Client.Client.ApiResponse< List<RequestOverviewDto> > RequestGetOverviewWithHttpInfo ()
         {
-            // verify the required parameter 'stubId' is set
-            if (stubId == null)
-                throw new HttPlaceholder.Client.Client.ApiException(400, "Missing required parameter 'stubId' when calling RequestApi->RequestGetByStubId");
+            HttPlaceholder.Client.Client.RequestOptions localVarRequestOptions = new HttPlaceholder.Client.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "application/json"
+            };
+
+            var localVarContentType = HttPlaceholder.Client.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = HttPlaceholder.Client.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< List<RequestOverviewDto> >("/ph-api/requests/overview", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("RequestGetOverview", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Get overview of all Requests. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>Task of List&lt;RequestOverviewDto&gt;</returns>
+        public async System.Threading.Tasks.Task<List<RequestOverviewDto>> RequestGetOverviewAsync ()
+        {
+             HttPlaceholder.Client.Client.ApiResponse<List<RequestOverviewDto>> localVarResponse = await RequestGetOverviewAsyncWithHttpInfo();
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Get overview of all Requests. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>Task of ApiResponse (List&lt;RequestOverviewDto&gt;)</returns>
+        public async System.Threading.Tasks.Task<HttPlaceholder.Client.Client.ApiResponse<List<RequestOverviewDto>>> RequestGetOverviewAsyncWithHttpInfo ()
+        {
+
+            HttPlaceholder.Client.Client.RequestOptions localVarRequestOptions = new HttPlaceholder.Client.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "application/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<List<RequestOverviewDto>>("/ph-api/requests/overview", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("RequestGetOverview", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Gets a specific request by correlation ID. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="correlationId">The original correlation ID.</param>
+        /// <returns>RequestResultDto</returns>
+        public RequestResultDto RequestGetRequest (string correlationId)
+        {
+             HttPlaceholder.Client.Client.ApiResponse<RequestResultDto> localVarResponse = RequestGetRequestWithHttpInfo(correlationId);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Gets a specific request by correlation ID. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="correlationId">The original correlation ID.</param>
+        /// <returns>ApiResponse of RequestResultDto</returns>
+        public HttPlaceholder.Client.Client.ApiResponse< RequestResultDto > RequestGetRequestWithHttpInfo (string correlationId)
+        {
+            // verify the required parameter 'correlationId' is set
+            if (correlationId == null)
+                throw new HttPlaceholder.Client.Client.ApiException(400, "Missing required parameter 'correlationId' when calling RequestApi->RequestGetRequest");
 
             HttPlaceholder.Client.Client.RequestOptions localVarRequestOptions = new HttPlaceholder.Client.Client.RequestOptions();
 
@@ -665,15 +802,15 @@ namespace HttPlaceholder.Client.Api
             var localVarAccept = HttPlaceholder.Client.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("StubId", HttPlaceholder.Client.Client.ClientUtils.ParameterToString(stubId)); // path parameter
+            localVarRequestOptions.PathParameters.Add("correlationId", HttPlaceholder.Client.Client.ClientUtils.ParameterToString(correlationId)); // path parameter
 
 
             // make the HTTP request
-            var localVarResponse = this.Client.Get< List<RequestResultDto> >("/ph-api/requests/{StubId}", localVarRequestOptions, this.Configuration);
+            var localVarResponse = this.Client.Get< RequestResultDto >("/ph-api/requests/{correlationId}", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("RequestGetByStubId", localVarResponse);
+                Exception _exception = this.ExceptionFactory("RequestGetRequest", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
@@ -681,29 +818,29 @@ namespace HttPlaceholder.Client.Api
         }
 
         /// <summary>
-        /// Get requests for the given stub ID. 
+        /// Gets a specific request by correlation ID. 
         /// </summary>
         /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="stubId"></param>
-        /// <returns>Task of List&lt;RequestResultDto&gt;</returns>
-        public async System.Threading.Tasks.Task<List<RequestResultDto>> RequestGetByStubIdAsync (string stubId)
+        /// <param name="correlationId">The original correlation ID.</param>
+        /// <returns>Task of RequestResultDto</returns>
+        public async System.Threading.Tasks.Task<RequestResultDto> RequestGetRequestAsync (string correlationId)
         {
-             HttPlaceholder.Client.Client.ApiResponse<List<RequestResultDto>> localVarResponse = await RequestGetByStubIdAsyncWithHttpInfo(stubId);
+             HttPlaceholder.Client.Client.ApiResponse<RequestResultDto> localVarResponse = await RequestGetRequestAsyncWithHttpInfo(correlationId);
              return localVarResponse.Data;
 
         }
 
         /// <summary>
-        /// Get requests for the given stub ID. 
+        /// Gets a specific request by correlation ID. 
         /// </summary>
         /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
-        /// <param name="stubId"></param>
-        /// <returns>Task of ApiResponse (List&lt;RequestResultDto&gt;)</returns>
-        public async System.Threading.Tasks.Task<HttPlaceholder.Client.Client.ApiResponse<List<RequestResultDto>>> RequestGetByStubIdAsyncWithHttpInfo (string stubId)
+        /// <param name="correlationId">The original correlation ID.</param>
+        /// <returns>Task of ApiResponse (RequestResultDto)</returns>
+        public async System.Threading.Tasks.Task<HttPlaceholder.Client.Client.ApiResponse<RequestResultDto>> RequestGetRequestAsyncWithHttpInfo (string correlationId)
         {
-            // verify the required parameter 'stubId' is set
-            if (stubId == null)
-                throw new HttPlaceholder.Client.Client.ApiException(400, "Missing required parameter 'stubId' when calling RequestApi->RequestGetByStubId");
+            // verify the required parameter 'correlationId' is set
+            if (correlationId == null)
+                throw new HttPlaceholder.Client.Client.ApiException(400, "Missing required parameter 'correlationId' when calling RequestApi->RequestGetRequest");
 
 
             HttPlaceholder.Client.Client.RequestOptions localVarRequestOptions = new HttPlaceholder.Client.Client.RequestOptions();
@@ -722,16 +859,16 @@ namespace HttPlaceholder.Client.Api
             foreach (var _accept in _accepts)
                 localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
             
-            localVarRequestOptions.PathParameters.Add("StubId", HttPlaceholder.Client.Client.ClientUtils.ParameterToString(stubId)); // path parameter
+            localVarRequestOptions.PathParameters.Add("correlationId", HttPlaceholder.Client.Client.ClientUtils.ParameterToString(correlationId)); // path parameter
 
 
             // make the HTTP request
 
-            var localVarResponse = await this.AsynchronousClient.GetAsync<List<RequestResultDto>>("/ph-api/requests/{StubId}", localVarRequestOptions, this.Configuration);
+            var localVarResponse = await this.AsynchronousClient.GetAsync<RequestResultDto>("/ph-api/requests/{correlationId}", localVarRequestOptions, this.Configuration);
 
             if (this.ExceptionFactory != null)
             {
-                Exception _exception = this.ExceptionFactory("RequestGetByStubId", localVarResponse);
+                Exception _exception = this.ExceptionFactory("RequestGetRequest", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 
