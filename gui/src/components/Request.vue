@@ -301,7 +301,7 @@
 </script>
 
 <style scoped>
-  /*noinspection ALL*/
+  /*noinspection CssUnusedSymbol*/
   .v-chip {
     margin-right: 10px;
   }
