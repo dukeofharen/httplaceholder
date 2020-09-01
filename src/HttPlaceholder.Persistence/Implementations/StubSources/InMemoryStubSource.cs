@@ -51,6 +51,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                 CorrelationId = r.CorrelationId,
                 StubTenant = r.StubTenant,
                 ExecutingStubId = r.ExecutingStubId,
+                RequestBeginTime = r.RequestBeginTime,
                 RequestEndTime = r.RequestEndTime
             }).ToArray();
         }

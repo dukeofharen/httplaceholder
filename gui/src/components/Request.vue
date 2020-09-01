@@ -13,7 +13,7 @@
           />
         </strong>
         <span>&nbsp;|&nbsp;</span>
-        <span>{{ overviewRequest.requestEndTime | datetime }}</span>
+        <span :title="overviewRequest.requestEndTime | datetime">{{ timeFrom }}</span>
         <span>)</span>
       </span>
     </v-expansion-panel-header>

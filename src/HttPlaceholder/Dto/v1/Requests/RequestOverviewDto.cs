@@ -36,6 +36,11 @@ namespace HttPlaceholder.Dto.v1.Requests
         public string StubTenant { get; set; }
 
         /// <summary>
+        /// Gets or sets the request begin time.
+        /// </summary>
+        public DateTime RequestBeginTime { get; set; }
+
+        /// <summary>
         /// Gets or sets the request end time.
         /// </summary>
         public DateTime RequestEndTime { get; set; }
