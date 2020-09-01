@@ -1,6 +1,6 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header>
+    <v-expansion-panel-header @click="loadRequest">
       <span>
         <strong>{{ overviewRequest.method }}</strong>
         {{ overviewRequest.url }}
@@ -17,7 +17,7 @@
         <span>)</span>
       </span>
     </v-expansion-panel-header>
-    <v-expansion-panel-content>
+    <v-expansion-panel-content v-if="request">
       <v-list-item>
         <v-btn
           @click="createStub"
@@ -226,8 +226,6 @@
     props: ["overviewRequest"],
     data() {
       return {
-        queryParameters: {},
-        showQueryParameters: false,
         conditionValidationType,
         refreshTimeFromInterval: null,
         request: null,
@@ -308,7 +306,7 @@
         }
       },
       refreshTimeFrom() {
-        let date = moment(this.request.requestEndTime);
+        let date = moment(this.overviewRequest.requestEndTime);
         this.timeFrom = date.fromNow();
       }
     }
