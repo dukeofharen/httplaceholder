@@ -1021,13 +1021,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{rootUrl}}ph-api/requests/5f7153cb-32d8-42df-a23e-288adce4cbe0",
+									"raw": "{{rootUrl}}ph-api/requests/7172d054-f7d9-4c77-b39d-a881d972aa4e",
 									"host": [
 										"{{rootUrl}}ph-api"
 									],
 									"path": [
 										"requests",
-										"5f7153cb-32d8-42df-a23e-288adce4cbe0"
+										"7172d054-f7d9-4c77-b39d-a881d972aa4e"
 									]
 								}
 							},
@@ -1176,13 +1176,13 @@
 									}
 								],
 								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs/test-situation",
+									"raw": "{{rootUrl}}ph-api/stubs/client-ip-1",
 									"host": [
 										"{{rootUrl}}ph-api"
 									],
 									"path": [
 										"stubs",
-										"test-situation"
+										"client-ip-1"
 									]
 								}
 							},
@@ -1309,6 +1309,46 @@
 									],
 									"path": [
 										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET overview",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs/overview",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs",
+										"overview"
 									]
 								}
 							},

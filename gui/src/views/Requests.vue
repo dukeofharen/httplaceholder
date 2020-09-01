@@ -34,7 +34,7 @@
         <Request
           v-for="request in filteredRequests"
           :key="request.correlationId"
-          v-bind:request="request"
+          :overviewRequest="request"
         ></Request>
       </v-expansion-panels>
       <v-dialog v-model="deleteAllDialog" max-width="290">
@@ -110,7 +110,7 @@
     },
     methods: {
       async initialize() {
-        const getRequestsPromise = this.$store.dispatch(actionNames.getRequests);
+        const getRequestsPromise = this.$store.dispatch(actionNames.getRequestsOverview);
         const getTenantNamesPromise = this.$store.dispatch(
           actionNames.getTenantNames
         );

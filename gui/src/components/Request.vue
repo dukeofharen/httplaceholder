@@ -1,23 +1,23 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header>
+    <v-expansion-panel-header @click="loadRequest">
       <span>
-        <strong>{{ request.requestParameters.method }}</strong>
-        {{ request.requestParameters.url }}
+        <strong>{{ overviewRequest.method }}</strong>
+        {{ overviewRequest.url }}
         <span>(</span>
         <strong>
           <Bool
-            v-bind:bool="request.executingStubId"
+            v-bind:bool="overviewRequest.executingStubId"
             trueText="executed"
             falseText="not executed"
           />
         </strong>
         <span>&nbsp;|&nbsp;</span>
-        <span>{{ request.requestEndTime | datetime }}</span>
+        <span>{{ overviewRequest.requestEndTime | datetime }}</span>
         <span>)</span>
       </span>
     </v-expansion-panel-header>
-    <v-expansion-panel-content>
+    <v-expansion-panel-content v-if="request">
       <v-list-item>
         <v-btn
           @click="createStub"
@@ -230,19 +230,12 @@
 
   export default {
     name: "request",
-    props: ["request"],
+    props: ["overviewRequest"],
     data() {
       return {
-        queryParameters: {},
-        showQueryParameters: false,
-        conditionValidationType
+        conditionValidationType,
+        request: null
       };
-    },
-    created() {
-      this.queryParameters = parseUrl(this.request.requestParameters.url);
-      if (Object.keys(this.queryParameters).length > 0) {
-        this.showQueryParameters = true;
-      }
     },
     components: {
       RequestBody,
@@ -271,6 +264,12 @@
         const results = this.request.stubResponseWriterResults;
         results.sort(compare);
         return results;
+      },
+      queryParameters() {
+        return parseUrl(this.request.requestParameters.url);
+      },
+      showQueryParameters() {
+        return Object.keys(this.queryParameters).length > 0;
       }
     },
     methods: {
@@ -291,17 +290,19 @@
         } catch (e) {
           toastError(resources.stubNotAddedGeneric);
         }
+      },
+      async loadRequest() {
+        if (!this.request) {
+          this.request = await this.$store.dispatch(actionNames.getRequest, this.overviewRequest.correlationId);
+        }
       }
     }
   };
 </script>
 
 <style scoped>
+  /*noinspection ALL*/
   .v-chip {
     margin-right: 10px;
-  }
-
-  .request {
-    margin-bottom: 20px;
   }
 </style>
