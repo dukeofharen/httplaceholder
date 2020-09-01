@@ -302,7 +302,15 @@
       },
       async loadRequest() {
         if (!this.request) {
-          this.request = await this.$store.dispatch(actionNames.getRequest, this.overviewRequest.correlationId);
+          try {
+            this.request = await this.$store.dispatch(actionNames.getRequest, this.overviewRequest.correlationId);
+          } catch (e) {
+            if (e.response) {
+              if (e.response.status === 404) {
+                toastError(resources.requestNotFoundAnymore);
+              }
+            }
+          }
         }
       },
       refreshTimeFrom() {

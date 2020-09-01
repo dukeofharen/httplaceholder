@@ -11,7 +11,7 @@ export default function handleError(error) {
     if (status === 401) {
       store.commit(mutationNames.userTokenMutation, null);
       router.push({ name: routeNames.login });
-    } else {
+    } else if(status >= 500) {
       toastError(resources.somethingWentWrongServer);
     }
 
