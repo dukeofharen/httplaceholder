@@ -93,7 +93,7 @@
             r => {
               const searchTerm = this.searchTerm.toLowerCase();
               const stubId = r.executingStubId ? r.executingStubId.toLowerCase() : "";
-              const url = r.requestParameters.url.toLowerCase();
+              const url = r.url.toLowerCase();
               return stubId &&
                 stubId.includes(searchTerm) ||
                 url.includes(searchTerm);
