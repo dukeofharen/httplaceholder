@@ -1,10 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import {constructStore} from "@/store/storeConstructor";
-import {getUserToken} from "@/utils/sessionUtil";
+import { constructStore } from "@/store/storeConstructor";
+import { getUserToken } from "@/utils/sessionUtil";
 
 import addWatches from "@/store/watches";
-import {getEmptyStubForm} from "@/store/storeConstants";
+import { getEmptyStubForm } from "@/store/storeConstants";
 
 Vue.use(Vuex);
 

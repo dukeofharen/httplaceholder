@@ -52,8 +52,10 @@
         <e p="Model" t="Include">
           <e p="ConditionCheckResultDto.cs" t="Include" />
           <e p="FullStubDto.cs" t="Include" />
+          <e p="FullStubOverviewDto.cs" t="Include" />
           <e p="MetadataDto.cs" t="Include" />
           <e p="ProblemDetails.cs" t="Include" />
+          <e p="RequestOverviewDto.cs" t="Include" />
           <e p="RequestParametersDto.cs" t="Include" />
           <e p="RequestResultDto.cs" t="Include" />
           <e p="StubBasicAuthenticationDto.cs" t="Include" />
@@ -62,6 +64,7 @@
           <e p="StubExecutionResultDto.cs" t="Include" />
           <e p="StubFormDto.cs" t="Include" />
           <e p="StubMetadataDto.cs" t="Include" />
+          <e p="StubOverviewDto.cs" t="Include" />
           <e p="StubResponseDto.cs" t="Include" />
           <e p="StubResponseReverseProxyDto.cs" t="Include" />
           <e p="StubResponseWriterResultDto.cs" t="Include" />
@@ -88,8 +91,10 @@
         <e p="Model" t="Include">
           <e p="ConditionCheckResultDtoTests.cs" t="Include" />
           <e p="FullStubDtoTests.cs" t="Include" />
+          <e p="FullStubOverviewDtoTests.cs" t="Include" />
           <e p="MetadataDtoTests.cs" t="Include" />
           <e p="ProblemDetailsTests.cs" t="Include" />
+          <e p="RequestOverviewDtoTests.cs" t="Include" />
           <e p="RequestParametersDtoTests.cs" t="Include" />
           <e p="RequestResultDtoTests.cs" t="Include" />
           <e p="StubBasicAuthenticationDtoTests.cs" t="Include" />
@@ -98,6 +103,7 @@
           <e p="StubExecutionResultDtoTests.cs" t="Include" />
           <e p="StubFormDtoTests.cs" t="Include" />
           <e p="StubMetadataDtoTests.cs" t="Include" />
+          <e p="StubOverviewDtoTests.cs" t="Include" />
           <e p="StubResponseDtoTests.cs" t="Include" />
           <e p="StubResponseReverseProxyDtoTests.cs" t="Include" />
           <e p="StubResponseWriterResultDtoTests.cs" t="Include" />

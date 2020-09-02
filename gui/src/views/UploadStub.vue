@@ -5,7 +5,7 @@
       <v-card>
         <v-card-title>You can upload stubs here</v-card-title>
         <v-card-text
-        >Click the button and select a .yml file with stubs from your PC.
+          >Click the button and select a .yml file with stubs from your PC.
         </v-card-text>
         <v-card-actions>
           <input
@@ -23,64 +23,70 @@
 </template>
 
 <script>
-  import {toastError, toastSuccess, toastWarning} from "@/utils/toastUtil";
-  import {actionNames} from "@/store/storeConstants";
-  import {resources} from "@/shared/resources";
-  import {getExtension} from "@/utils/fileHelper";
+import { toastError, toastSuccess, toastWarning } from "@/utils/toastUtil";
+import { actionNames } from "@/store/storeConstants";
+import { resources } from "@/shared/resources";
+import { getExtension } from "@/utils/fileHelper";
 
-  export default {
-    name: "uploadStub",
-    methods: {
-      uploadStubs() {
-        this.$refs.stubUpload.click();
-      },
-      loadTextFromFile(ev) {
-        const expectedExtensions = ["yml", "yaml"];
-        const files = Array.from(ev.target.files);
-        const invalidFileNames = files
-          .filter(f => !expectedExtensions.includes(getExtension(f.name)))
-          .map(f => f.name);
-        if (invalidFileNames.length) {
-          toastWarning(resources.uploadInvalidFiles.format(invalidFileNames.join(", ")) + " " + resources.onlyUploadYmlFiles);
-        }
+export default {
+  name: "uploadStub",
+  methods: {
+    uploadStubs() {
+      this.$refs.stubUpload.click();
+    },
+    loadTextFromFile(ev) {
+      const expectedExtensions = ["yml", "yaml"];
+      const files = Array.from(ev.target.files);
+      const invalidFileNames = files
+        .filter(f => !expectedExtensions.includes(getExtension(f.name)))
+        .map(f => f.name);
+      if (invalidFileNames.length) {
+        toastWarning(
+          resources.uploadInvalidFiles.format(invalidFileNames.join(", ")) +
+            " " +
+            resources.onlyUploadYmlFiles
+        );
+      }
 
-        const validFiles = files.filter(f => !invalidFileNames.includes(f.name));
-        for (let file of validFiles) {
-          let reader = new FileReader();
-          reader.onload = e => {
-            this.addStubsInternal(e.target.result);
-          };
-          reader.readAsText(file);
-        }
-      },
-      async addStubsInternal(input) {
-        try {
-          const results = await this.$store.dispatch(actionNames.addStubs, {
-            input
-          });
-          for (let result of results) {
-            if (result.v) {
-              toastSuccess(resources.stubAddedSuccessfully.format(result.v.stub.id));
-            } else if (result.e) {
-              toastError(resources.stubNotAdded.format(result.e.stubId));
-            }
+      const validFiles = files.filter(f => !invalidFileNames.includes(f.name));
+      for (let file of validFiles) {
+        let reader = new FileReader();
+        reader.onload = e => {
+          this.addStubsInternal(e.target.result);
+        };
+        reader.readAsText(file);
+      }
+    },
+    async addStubsInternal(input) {
+      try {
+        const results = await this.$store.dispatch(actionNames.addStubs, {
+          input
+        });
+        for (let result of results) {
+          if (result.v) {
+            toastSuccess(
+              resources.stubAddedSuccessfully.format(result.v.stub.id)
+            );
+          } else if (result.e) {
+            toastError(resources.stubNotAdded.format(result.e.stubId));
           }
-        } catch (e) {
-          toastError(e);
         }
+      } catch (e) {
+        toastError(e);
       }
     }
-  };
+  }
+};
 </script>
 
 <style scoped>
-  /*noinspection CssUnusedSymbol*/
-  .v-card {
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
+/*noinspection CssUnusedSymbol*/
+.v-card {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 
-  input[type="file"] {
-    display: none;
-  }
+input[type="file"] {
+  display: none;
+}
 </style>

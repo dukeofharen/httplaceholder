@@ -45,8 +45,10 @@
       <e p="Model" t="Include">
         <e p="ConditionCheckResultDto.cs" t="Include" />
         <e p="FullStubDto.cs" t="Include" />
+        <e p="FullStubOverviewDto.cs" t="Include" />
         <e p="MetadataDto.cs" t="Include" />
         <e p="ProblemDetails.cs" t="Include" />
+        <e p="RequestOverviewDto.cs" t="Include" />
         <e p="RequestParametersDto.cs" t="Include" />
         <e p="RequestResultDto.cs" t="Include" />
         <e p="StubBasicAuthenticationDto.cs" t="Include" />
@@ -55,6 +57,7 @@
         <e p="StubExecutionResultDto.cs" t="Include" />
         <e p="StubFormDto.cs" t="Include" />
         <e p="StubMetadataDto.cs" t="Include" />
+        <e p="StubOverviewDto.cs" t="Include" />
         <e p="StubResponseDto.cs" t="Include" />
         <e p="StubResponseReverseProxyDto.cs" t="Include" />
         <e p="StubResponseWriterResultDto.cs" t="Include" />

@@ -1,6 +1,6 @@
-import {parseKeyValue, parseLines} from "@/utils/stubFormUtil";
-import {isHttpsValues, responseBodyTypes} from "@/shared/stubFormResources";
-import {getEmptyStubForm} from "@/store/storeConstants";
+import { parseKeyValue, parseLines } from "@/utils/stubFormUtil";
+import { isHttpsValues, responseBodyTypes } from "@/shared/stubFormResources";
+import { getEmptyStubForm } from "@/store/storeConstants";
 
 export function storeStubQueryStrings(state) {
   const result = parseKeyValue(state.stubForm.queryStrings);
@@ -60,7 +60,9 @@ export function storeIsHttpsSelected(state) {
 
 export function storeStubHeaders(state) {
   const result = parseKeyValue(state.stubForm.headers);
-  state.stubForm.stub.conditions.headers = Object.keys(result).length ? result : null;
+  state.stubForm.stub.conditions.headers = Object.keys(result).length
+    ? result
+    : null;
 }
 
 export function storeHeaders(state) {
@@ -97,7 +99,10 @@ export function storeStubFormBody(state) {
   if (!keys.length) {
     state.stubForm.stub.conditions.form = null;
   } else {
-    state.stubForm.stub.conditions.form = keys.map(k => ({key: k, value: result[k]}));
+    state.stubForm.stub.conditions.form = keys.map(k => ({
+      key: k,
+      value: result[k]
+    }));
   }
 }
 
@@ -121,7 +126,7 @@ export function storeStubXPathAndNamespaces(state) {
   if (!result.length) {
     state.stubForm.stub.conditions.xpath = null;
   } else {
-    const expressions = result.map(e => ({queryString: e}));
+    const expressions = result.map(e => ({ queryString: e }));
     const nsResult = parseKeyValue(state.stubForm.xpathNamespaces);
     const nsKeys = Object.keys(nsResult);
     let namespaces = {};
@@ -149,7 +154,9 @@ export function storeXPathAndNamespaces(state) {
 
     // XML namespaces
     let nsResult = null;
-    const namespaces = state.stubForm.stub.conditions.xpath.length ? state.stubForm.stub.conditions.xpath[0].namespaces : null;
+    const namespaces = state.stubForm.stub.conditions.xpath.length
+      ? state.stubForm.stub.conditions.xpath[0].namespaces
+      : null;
     if (namespaces) {
       const list = [];
       const keys = Object.keys(namespaces);
@@ -232,7 +239,9 @@ export function storeStubResponseBodyType(state) {
 
 export function storeStubResponseHeaders(state) {
   const result = parseKeyValue(state.stubForm.responseHeaders);
-  state.stubForm.stub.response.headers = Object.keys(result).length ? result : null;
+  state.stubForm.stub.response.headers = Object.keys(result).length
+    ? result
+    : null;
 }
 
 export function storeResponseHeaders(state) {
@@ -260,7 +269,8 @@ export function clearStubForm(state) {
 export function setResponseHeader(state, header) {
   const headers = state.stubForm.stub.response.headers || {};
   const keys = Object.keys(headers);
-  const headerKey = keys.find(k => k.toLowerCase() === header.key.toLowerCase()) || header.key;
+  const headerKey =
+    keys.find(k => k.toLowerCase() === header.key.toLowerCase()) || header.key;
   headers[headerKey] = header.value;
 
   // We have to clone the object for the watchers to pick this change up.

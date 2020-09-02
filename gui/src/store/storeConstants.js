@@ -1,4 +1,4 @@
-import {isHttpsValues, responseBodyTypes} from "@/shared/stubFormResources";
+import { isHttpsValues, responseBodyTypes } from "@/shared/stubFormResources";
 
 export const mutationNames = {
   userTokenMutation: "storeUserToken",

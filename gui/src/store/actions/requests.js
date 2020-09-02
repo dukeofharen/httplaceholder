@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-pattern */
 import createInstance from "@/axios/axiosInstanceFactory";
 
 export function getRequestsOverview() {

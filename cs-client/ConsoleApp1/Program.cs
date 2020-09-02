@@ -14,6 +14,7 @@ namespace ConsoleApp1
             }.AddBasicAuthentication("duco", "pass"); // This is optional: only do this if the API is secured.
             var requests = new RequestApi(config); 
             var requestResult = await requests.RequestGetAllAsync();
+            var overview = await requests.RequestGetOverviewAsync();
         }
     }
 }

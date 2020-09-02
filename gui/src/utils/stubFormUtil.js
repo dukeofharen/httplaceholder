@@ -13,8 +13,10 @@ export function parseKeyValue(input) {
     }
 
     let key = parts[0];
-    let value = parts.slice(1).join(":").trim();
-    result[key] = value;
+    result[key] = parts
+      .slice(1)
+      .join(":")
+      .trim();
   }
 
   return result;
@@ -27,4 +29,4 @@ export function parseLines(input) {
   }
 
   return result;
-};
+}

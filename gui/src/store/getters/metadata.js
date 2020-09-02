@@ -3,7 +3,7 @@ export function getMetadata(state) {
 }
 
 export function getVariableHandlers(state) {
-  if(!state.metadata) {
+  if (!state.metadata) {
     return [];
   }
 
