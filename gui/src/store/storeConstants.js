@@ -1,4 +1,4 @@
-import {isHttpsValues, responseBodyTypes} from "@/shared/stubFormResources";
+import { isHttpsValues, responseBodyTypes } from "@/shared/stubFormResources";
 
 export const mutationNames = {
   userTokenMutation: "storeUserToken",
@@ -28,10 +28,11 @@ export const mutationNames = {
 
 export const actionNames = {
   addStubs: "addStubs",
-  getStubs: "getStubs",
+  getStubsOverview: "getStubsOverview",
   getTenantNames: "getTenantNames",
   authenticate: "authenticate",
-  getRequests: "getRequests",
+  getRequestsOverview: "getRequestsOverview",
+  getRequest: "getRequest",
   clearRequests: "clearRequests",
   deleteAllStubs: "deleteAllStubs",
   getStub: "getStub",

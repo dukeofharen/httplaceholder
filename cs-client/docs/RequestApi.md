@@ -7,7 +7,8 @@ Method | HTTP request | Description
 [**RequestCreateStubForRequest**](RequestApi.md#requestcreatestubforrequest) | **POST** /ph-api/requests/{CorrelationId}/stubs | An endpoint which accepts the correlation ID of a request made earlier. HttPlaceholder will create a stub based on this request for you to tweak lateron.
 [**RequestDeleteAll**](RequestApi.md#requestdeleteall) | **DELETE** /ph-api/requests | Delete all requests. This call flushes all the requests.
 [**RequestGetAll**](RequestApi.md#requestgetall) | **GET** /ph-api/requests | Get all Requests.
-[**RequestGetByStubId**](RequestApi.md#requestgetbystubid) | **GET** /ph-api/requests/{StubId} | Get requests for the given stub ID.
+[**RequestGetOverview**](RequestApi.md#requestgetoverview) | **GET** /ph-api/requests/overview | Get overview of all Requests.
+[**RequestGetRequest**](RequestApi.md#requestgetrequest) | **GET** /ph-api/requests/{correlationId} | Gets a specific request by correlation ID.
 
 
 <a name="requestcreatestubforrequest"></a>
@@ -208,11 +209,11 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
-<a name="requestgetbystubid"></a>
-# **RequestGetByStubId**
-> List&lt;RequestResultDto&gt; RequestGetByStubId (string stubId)
+<a name="requestgetoverview"></a>
+# **RequestGetOverview**
+> List&lt;RequestOverviewDto&gt; RequestGetOverview ()
 
-Get requests for the given stub ID.
+Get overview of all Requests.
 
 ### Example
 ```csharp
@@ -224,24 +225,23 @@ using HttPlaceholder.Client.Model;
 
 namespace Example
 {
-    public class RequestGetByStubIdExample
+    public class RequestGetOverviewExample
     {
         public static void Main()
         {
             Configuration config = new Configuration();
             config.BasePath = "http://localhost";
             var apiInstance = new RequestApi(config);
-            var stubId = stubId_example;  // string | 
 
             try
             {
-                // Get requests for the given stub ID.
-                List<RequestResultDto> result = apiInstance.RequestGetByStubId(stubId);
+                // Get overview of all Requests.
+                List<RequestOverviewDto> result = apiInstance.RequestGetOverview();
                 Debug.WriteLine(result);
             }
             catch (ApiException  e)
             {
-                Debug.Print("Exception when calling RequestApi.RequestGetByStubId: " + e.Message );
+                Debug.Print("Exception when calling RequestApi.RequestGetOverview: " + e.Message );
                 Debug.Print("Status Code: "+ e.ErrorCode);
                 Debug.Print(e.StackTrace);
             }
@@ -251,14 +251,11 @@ namespace Example
 ```
 
 ### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **stubId** | **string**|  | 
+This endpoint does not need any parameter.
 
 ### Return type
 
-[**List&lt;RequestResultDto&gt;**](RequestResultDto.md)
+[**List&lt;RequestOverviewDto&gt;**](RequestOverviewDto.md)
 
 ### Authorization
 
@@ -273,7 +270,77 @@ No authorization required
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 | **401** |  |  -  |
-| **200** | request results for the given stubId |  -  |
+| **200** | All request results |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+<a name="requestgetrequest"></a>
+# **RequestGetRequest**
+> RequestResultDto RequestGetRequest (string correlationId)
+
+Gets a specific request by correlation ID.
+
+### Example
+```csharp
+using System.Collections.Generic;
+using System.Diagnostics;
+using HttPlaceholder.Client.Api;
+using HttPlaceholder.Client.Client;
+using HttPlaceholder.Client.Model;
+
+namespace Example
+{
+    public class RequestGetRequestExample
+    {
+        public static void Main()
+        {
+            Configuration config = new Configuration();
+            config.BasePath = "http://localhost";
+            var apiInstance = new RequestApi(config);
+            var correlationId = correlationId_example;  // string | The original correlation ID.
+
+            try
+            {
+                // Gets a specific request by correlation ID.
+                RequestResultDto result = apiInstance.RequestGetRequest(correlationId);
+                Debug.WriteLine(result);
+            }
+            catch (ApiException  e)
+            {
+                Debug.Print("Exception when calling RequestApi.RequestGetRequest: " + e.Message );
+                Debug.Print("Status Code: "+ e.ErrorCode);
+                Debug.Print(e.StackTrace);
+            }
+        }
+    }
+}
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **correlationId** | **string**| The original correlation ID. | 
+
+### Return type
+
+[**RequestResultDto**](RequestResultDto.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+| **401** |  |  -  |
+| **200** | The request. |  -  |
+| **404** |  |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

@@ -38,6 +38,53 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         }
 
         [TestMethod]
+        public async Task RestApiIntegration_Request_GetSingle_RequestNotFound_ShouldReturn404()
+        {
+            // Arrange
+            var correlation = Guid.NewGuid().ToString();
+            StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+
+            // Act
+            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}1");
+
+            // Assert
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Request_GetSingle_RequestFound_ShouldReturnRequest()
+        {
+            // Arrange
+            var correlation = Guid.NewGuid().ToString();
+            StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+
+            // Act
+            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}");
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<RequestResultDto>(content);
+
+            // Assert
+            Assert.AreEqual(correlation, result.CorrelationId);
+        }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Request_GetOverview()
+        {
+            // Arrange
+            var correlation = Guid.NewGuid().ToString();
+            StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+
+            // Act
+            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/overview");
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<RequestOverviewDto[]>(content);
+
+            // Assert
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual(correlation, result.First().CorrelationId);
+        }
+
+        [TestMethod]
         public async Task RestApiIntegration_Request_GetByStubId()
         {
             // Arrange
@@ -45,51 +92,13 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
 
             // Act
-            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/stub1");
+            using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/stubs/stub1/requests");
             var content = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<RequestResultDto[]>(content);
 
             // Assert
             Assert.AreEqual(1, result.Length);
             Assert.AreEqual("stub1", result.First().ExecutingStubId);
-        }
-
-        [TestMethod]
-        public async Task RestApiIntegration_Request_CredentialsAreNeededButIncorrect_ShouldReturn401()
-        {
-            // Arrange
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
-
-            Settings.Authentication.ApiUsername = "correct";
-            Settings.Authentication.ApiPassword = "correct";
-
-            // Act
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/requests/stub1");
-            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
-            using var response = await Client.SendAsync(request);
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
-        }
-
-        [TestMethod]
-        public async Task RestApiIntegration_Request_CredentialsAreCorrect_ShouldContinue()
-        {
-            // Arrange
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
-
-            Settings.Authentication.ApiUsername = "correct";
-            Settings.Authentication.ApiPassword = "correct";
-
-            // Act
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/requests/stub1");
-            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
-            using var response = await Client.SendAsync(request);
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }
 }

@@ -40,6 +40,30 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
+        public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
+        {
+            // This method is not optimized right now.
+            var requests = await GetRequestResultsAsync();
+            return requests.Select(r => new RequestOverviewModel
+            {
+                Method = r.RequestParameters?.Method,
+                Url = r.RequestParameters?.Url,
+                CorrelationId = r.CorrelationId,
+                StubTenant = r.StubTenant,
+                ExecutingStubId = r.ExecutingStubId,
+                RequestBeginTime = r.RequestBeginTime,
+                RequestEndTime = r.RequestEndTime
+            }).ToArray();
+        }
+
+        public Task<RequestResultModel> GetRequestAsync(string correlationId)
+        {
+            lock (_lock)
+            {
+                return Task.FromResult(RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId));
+            }
+        }
+
         public Task DeleteAllRequestResultsAsync()
         {
             lock (_lock)
@@ -80,14 +104,22 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
+        public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync()  =>
+            (await GetStubsAsync())
+            .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant})
+            .ToArray();
+
+        public Task<StubModel> GetStubAsync(string stubId) =>
+            Task.FromResult(StubModels.FirstOrDefault(s => s.Id == stubId));
+
         public Task CleanOldRequestResultsAsync()
         {
             lock (_lock)
             {
                 var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
                 var requests = RequestResultModels
-                   .OrderByDescending(r => r.RequestEndTime)
-                   .Skip(maxLength);
+                    .OrderByDescending(r => r.RequestEndTime)
+                    .Skip(maxLength);
                 foreach (var request in requests)
                 {
                     RequestResultModels.Remove(request);

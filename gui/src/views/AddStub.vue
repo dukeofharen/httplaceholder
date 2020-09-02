@@ -100,7 +100,9 @@ export default {
         });
         for (let result of results) {
           if (result.v) {
-            toastSuccess(resources.stubAddedSuccessfully.format(result.v.stub.id));
+            toastSuccess(
+              resources.stubAddedSuccessfully.format(result.v.stub.id)
+            );
           } else if (result.e) {
             toastError(resources.stubNotAdded.format(result.e.stubId));
           }
@@ -114,6 +116,7 @@ export default {
 </script>
 
 <style scoped>
+/*noinspection CssUnusedSymbol*/
 .v-card {
   margin-top: 10px;
   margin-bottom: 10px;

@@ -900,39 +900,6 @@
 					"name": "Requests",
 					"item": [
 						{
-							"name": "GET by stub ID",
-							"request": {
-								"auth": {
-									"type": "basic",
-									"basic": [
-										{
-											"key": "password",
-											"value": "pass",
-											"type": "string"
-										},
-										{
-											"key": "username",
-											"value": "user",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}ph-api/requests/fallback",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"requests",
-										"fallback"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "DELETE all",
 							"request": {
 								"auth": {
@@ -995,6 +962,72 @@
 									],
 									"path": [
 										"requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET overview",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests/overview",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests",
+										"overview"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET single request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests/7172d054-f7d9-4c77-b39d-a881d972aa4e",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests",
+										"7172d054-f7d9-4c77-b39d-a881d972aa4e"
 									]
 								}
 							},
@@ -1143,13 +1176,13 @@
 									}
 								],
 								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs/test-situation",
+									"raw": "{{rootUrl}}ph-api/stubs/client-ip-1",
 									"host": [
 										"{{rootUrl}}ph-api"
 									],
 									"path": [
 										"stubs",
-										"test-situation"
+										"client-ip-1"
 									]
 								}
 							},
@@ -1282,6 +1315,46 @@
 							"response": []
 						},
 						{
+							"name": "GET overview",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs/overview",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs",
+										"overview"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "PUT update stub",
 							"request": {
 								"method": "PUT",
@@ -1305,6 +1378,40 @@
 									"path": [
 										"stubs",
 										"generated-9e8629aa68a2b85bea76b65eacc1d34a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET requests by stub ID",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs/fallback/requests",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs",
+										"fallback",
+										"requests"
 									]
 								}
 							},

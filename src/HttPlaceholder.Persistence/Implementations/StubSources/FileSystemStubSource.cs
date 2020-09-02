@@ -42,6 +42,35 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.CompletedTask;
         }
 
+        public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
+        {
+            // This method is not optimized right now.
+            var requests = await GetRequestResultsAsync();
+            return requests.Select(r => new RequestOverviewModel
+            {
+                Method = r.RequestParameters.Method,
+                Url = r.RequestParameters.Url,
+                CorrelationId = r.CorrelationId,
+                StubTenant = r.StubTenant,
+                ExecutingStubId = r.ExecutingStubId,
+                RequestBeginTime = r.RequestBeginTime,
+                RequestEndTime = r.RequestEndTime
+            }).ToArray();
+        }
+
+        public Task<RequestResultModel> GetRequestAsync(string correlationId)
+        {
+            var path = EnsureAndGetRequestsFolder();
+            var filePath = Path.Combine(path, $"{correlationId}.json");
+            if (!_fileService.FileExists(filePath))
+            {
+                return Task.FromResult((RequestResultModel)null);
+            }
+
+            var contents = _fileService.ReadAllText(filePath);
+            return Task.FromResult(JsonConvert.DeserializeObject<RequestResultModel>(contents));
+        }
+
         public Task DeleteAllRequestResultsAsync()
         {
             var path = EnsureAndGetRequestsFolder();
@@ -89,6 +118,24 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                 .Select(JsonConvert.DeserializeObject<StubModel>).ToList();
 
             return Task.FromResult(result.AsEnumerable());
+        }
+
+        public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
+            (await GetStubsAsync())
+            .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant})
+            .ToArray();
+
+        public Task<StubModel> GetStubAsync(string stubId)
+        {
+            var path = EnsureAndGetStubsFolder();
+            var stubPath = Path.Combine(path, $"{stubId}.json");
+            if (!_fileService.FileExists(stubPath))
+            {
+                return Task.FromResult((StubModel)null);
+            }
+
+            var contents = _fileService.ReadAllText(stubPath);
+            return Task.FromResult(JsonConvert.DeserializeObject<StubModel>(contents));
         }
 
         public async Task CleanOldRequestResultsAsync()

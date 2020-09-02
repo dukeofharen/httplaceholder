@@ -10,6 +10,8 @@ namespace HttPlaceholder.Application.StubExecution
 
         Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant);
 
+        Task<IEnumerable<FullStubOverviewModel>> GetStubsOverviewAsync();
+
         Task<FullStubModel> AddStubAsync(StubModel stub);
 
         Task<bool> DeleteStubAsync(string stubId);
@@ -26,7 +28,11 @@ namespace HttPlaceholder.Application.StubExecution
 
         Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
 
+        Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync();
+
         Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId);
+
+        Task<RequestResultModel> GetRequestResultAsync(string correlationId);
 
         Task DeleteAllRequestResultsAsync();
 

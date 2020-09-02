@@ -120,8 +120,8 @@ namespace HttPlaceholder.Middleware
 
             await _stubContext.AddRequestResultAsync(loggingResult);
 
-            // We need to map the model to a DTO here, because the frontend expected that.
-            await _requestNotify.NewRequestReceivedAsync(_mapper.Map<RequestResultDto>(loggingResult));
+            // We need to map the model to a DTO here, because the frontend expects that.
+            await _requestNotify.NewRequestReceivedAsync(_mapper.Map<RequestOverviewDto>(loggingResult));
         }
     }
 }

@@ -6,14 +6,15 @@
     <AssemblyName>HttPlaceholder.Client</AssemblyName>
     <PackageId>HttPlaceholder.Client</PackageId>
     <OutputType>Library</OutputType>
-    <Authors>Ducode</Authors>
-    <Company>Ducode</Company>
-    <RepositoryUrl>https://github.com/dukeofharen/httplaceholder</RepositoryUrl>
-    <Description>A very flexible cross platform HTTP stub application.</Description>
+    <Authors>OpenAPI</Authors>
+    <Company>OpenAPI</Company>
     <AssemblyTitle>OpenAPI Library</AssemblyTitle>
-    <Copyright>Ducode</Copyright>
+    <Description>A library generated from a OpenAPI doc</Description>
+    <Copyright>No Copyright</Copyright>
     <RootNamespace>HttPlaceholder.Client</RootNamespace>
+    <Version>1.0.0</Version>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\HttPlaceholder.Client.xml</DocumentationFile>
+    <RepositoryUrl>https://github.com/GIT_USER_ID/GIT_REPO_ID.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReleaseNotes>Minor update</PackageReleaseNotes>
   </PropertyGroup>

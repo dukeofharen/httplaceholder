@@ -1,4 +1,4 @@
-import {getField, updateField} from "vuex-map-fields";
+import { getField, updateField } from "vuex-map-fields";
 
 const storeTypeEnum = {
   GETTER: 0,

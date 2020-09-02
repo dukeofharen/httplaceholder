@@ -129,6 +129,46 @@ namespace HttPlaceholder.Client.Api
         /// <returns>ApiResponse of List&lt;FullStubDto&gt;</returns>
         ApiResponse<List<FullStubDto>> StubGetAllWithHttpInfo ();
         /// <summary>
+        /// Get stub overview.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>List&lt;FullStubOverviewDto&gt;</returns>
+        List<FullStubOverviewDto> StubGetOverview ();
+
+        /// <summary>
+        /// Get stub overview.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>ApiResponse of List&lt;FullStubOverviewDto&gt;</returns>
+        ApiResponse<List<FullStubOverviewDto>> StubGetOverviewWithHttpInfo ();
+        /// <summary>
+        /// Get requests for the given stub ID.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stubId"></param>
+        /// <returns>List&lt;RequestResultDto&gt;</returns>
+        List<RequestResultDto> StubGetRequestsByStubId (string stubId);
+
+        /// <summary>
+        /// Get requests for the given stub ID.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stubId"></param>
+        /// <returns>ApiResponse of List&lt;RequestResultDto&gt;</returns>
+        ApiResponse<List<RequestResultDto>> StubGetRequestsByStubIdWithHttpInfo (string stubId);
+        /// <summary>
         /// Updates a given stub.
         /// </summary>
         /// <remarks>
@@ -261,6 +301,46 @@ namespace HttPlaceholder.Client.Api
         /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
         /// <returns>Task of ApiResponse (List&lt;FullStubDto&gt;)</returns>
         System.Threading.Tasks.Task<ApiResponse<List<FullStubDto>>> StubGetAllAsyncWithHttpInfo ();
+        /// <summary>
+        /// Get stub overview.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>Task of List&lt;FullStubOverviewDto&gt;</returns>
+        System.Threading.Tasks.Task<List<FullStubOverviewDto>> StubGetOverviewAsync ();
+
+        /// <summary>
+        /// Get stub overview.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>Task of ApiResponse (List&lt;FullStubOverviewDto&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<FullStubOverviewDto>>> StubGetOverviewAsyncWithHttpInfo ();
+        /// <summary>
+        /// Get requests for the given stub ID.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stubId"></param>
+        /// <returns>Task of List&lt;RequestResultDto&gt;</returns>
+        System.Threading.Tasks.Task<List<RequestResultDto>> StubGetRequestsByStubIdAsync (string stubId);
+
+        /// <summary>
+        /// Get requests for the given stub ID.
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stubId"></param>
+        /// <returns>Task of ApiResponse (List&lt;RequestResultDto&gt;)</returns>
+        System.Threading.Tasks.Task<ApiResponse<List<RequestResultDto>>> StubGetRequestsByStubIdAsyncWithHttpInfo (string stubId);
         /// <summary>
         /// Updates a given stub.
         /// </summary>
@@ -933,6 +1013,218 @@ namespace HttPlaceholder.Client.Api
             if (this.ExceptionFactory != null)
             {
                 Exception _exception = this.ExceptionFactory("StubGetAll", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Get stub overview. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>List&lt;FullStubOverviewDto&gt;</returns>
+        public List<FullStubOverviewDto> StubGetOverview ()
+        {
+             HttPlaceholder.Client.Client.ApiResponse<List<FullStubOverviewDto>> localVarResponse = StubGetOverviewWithHttpInfo();
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Get stub overview. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>ApiResponse of List&lt;FullStubOverviewDto&gt;</returns>
+        public HttPlaceholder.Client.Client.ApiResponse< List<FullStubOverviewDto> > StubGetOverviewWithHttpInfo ()
+        {
+            HttPlaceholder.Client.Client.RequestOptions localVarRequestOptions = new HttPlaceholder.Client.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "application/json"
+            };
+
+            var localVarContentType = HttPlaceholder.Client.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = HttPlaceholder.Client.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< List<FullStubOverviewDto> >("/ph-api/stubs/overview", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("StubGetOverview", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Get stub overview. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>Task of List&lt;FullStubOverviewDto&gt;</returns>
+        public async System.Threading.Tasks.Task<List<FullStubOverviewDto>> StubGetOverviewAsync ()
+        {
+             HttPlaceholder.Client.Client.ApiResponse<List<FullStubOverviewDto>> localVarResponse = await StubGetOverviewAsyncWithHttpInfo();
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Get stub overview. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <returns>Task of ApiResponse (List&lt;FullStubOverviewDto&gt;)</returns>
+        public async System.Threading.Tasks.Task<HttPlaceholder.Client.Client.ApiResponse<List<FullStubOverviewDto>>> StubGetOverviewAsyncWithHttpInfo ()
+        {
+
+            HttPlaceholder.Client.Client.RequestOptions localVarRequestOptions = new HttPlaceholder.Client.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "application/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<List<FullStubOverviewDto>>("/ph-api/stubs/overview", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("StubGetOverview", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Get requests for the given stub ID. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stubId"></param>
+        /// <returns>List&lt;RequestResultDto&gt;</returns>
+        public List<RequestResultDto> StubGetRequestsByStubId (string stubId)
+        {
+             HttPlaceholder.Client.Client.ApiResponse<List<RequestResultDto>> localVarResponse = StubGetRequestsByStubIdWithHttpInfo(stubId);
+             return localVarResponse.Data;
+        }
+
+        /// <summary>
+        /// Get requests for the given stub ID. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stubId"></param>
+        /// <returns>ApiResponse of List&lt;RequestResultDto&gt;</returns>
+        public HttPlaceholder.Client.Client.ApiResponse< List<RequestResultDto> > StubGetRequestsByStubIdWithHttpInfo (string stubId)
+        {
+            // verify the required parameter 'stubId' is set
+            if (stubId == null)
+                throw new HttPlaceholder.Client.Client.ApiException(400, "Missing required parameter 'stubId' when calling StubApi->StubGetRequestsByStubId");
+
+            HttPlaceholder.Client.Client.RequestOptions localVarRequestOptions = new HttPlaceholder.Client.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "application/json"
+            };
+
+            var localVarContentType = HttPlaceholder.Client.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
+            if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
+
+            var localVarAccept = HttPlaceholder.Client.Client.ClientUtils.SelectHeaderAccept(_accepts);
+            if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
+
+            localVarRequestOptions.PathParameters.Add("StubId", HttPlaceholder.Client.Client.ClientUtils.ParameterToString(stubId)); // path parameter
+
+
+            // make the HTTP request
+            var localVarResponse = this.Client.Get< List<RequestResultDto> >("/ph-api/stubs/{StubId}/requests", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("StubGetRequestsByStubId", localVarResponse);
+                if (_exception != null) throw _exception;
+            }
+
+            return localVarResponse;
+        }
+
+        /// <summary>
+        /// Get requests for the given stub ID. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stubId"></param>
+        /// <returns>Task of List&lt;RequestResultDto&gt;</returns>
+        public async System.Threading.Tasks.Task<List<RequestResultDto>> StubGetRequestsByStubIdAsync (string stubId)
+        {
+             HttPlaceholder.Client.Client.ApiResponse<List<RequestResultDto>> localVarResponse = await StubGetRequestsByStubIdAsyncWithHttpInfo(stubId);
+             return localVarResponse.Data;
+
+        }
+
+        /// <summary>
+        /// Get requests for the given stub ID. 
+        /// </summary>
+        /// <exception cref="HttPlaceholder.Client.Client.ApiException">Thrown when fails to make API call</exception>
+        /// <param name="stubId"></param>
+        /// <returns>Task of ApiResponse (List&lt;RequestResultDto&gt;)</returns>
+        public async System.Threading.Tasks.Task<HttPlaceholder.Client.Client.ApiResponse<List<RequestResultDto>>> StubGetRequestsByStubIdAsyncWithHttpInfo (string stubId)
+        {
+            // verify the required parameter 'stubId' is set
+            if (stubId == null)
+                throw new HttPlaceholder.Client.Client.ApiException(400, "Missing required parameter 'stubId' when calling StubApi->StubGetRequestsByStubId");
+
+
+            HttPlaceholder.Client.Client.RequestOptions localVarRequestOptions = new HttPlaceholder.Client.Client.RequestOptions();
+
+            String[] _contentTypes = new String[] {
+            };
+
+            // to determine the Accept header
+            String[] _accepts = new String[] {
+                "application/json"
+            };
+            
+            foreach (var _contentType in _contentTypes)
+                localVarRequestOptions.HeaderParameters.Add("Content-Type", _contentType);
+            
+            foreach (var _accept in _accepts)
+                localVarRequestOptions.HeaderParameters.Add("Accept", _accept);
+            
+            localVarRequestOptions.PathParameters.Add("StubId", HttPlaceholder.Client.Client.ClientUtils.ParameterToString(stubId)); // path parameter
+
+
+            // make the HTTP request
+
+            var localVarResponse = await this.AsynchronousClient.GetAsync<List<RequestResultDto>>("/ph-api/stubs/{StubId}/requests", localVarRequestOptions, this.Configuration);
+
+            if (this.ExceptionFactory != null)
+            {
+                Exception _exception = this.ExceptionFactory("StubGetRequestsByStubId", localVarResponse);
                 if (_exception != null) throw _exception;
             }
 

@@ -30,6 +30,23 @@ namespace HttPlaceholder.Persistence.Implementations
                 .Where(s => string.Equals(s.Stub.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
         }
 
+        public async Task<IEnumerable<FullStubOverviewModel>> GetStubsOverviewAsync()
+        {
+            var result = new List<FullStubOverviewModel>();
+            foreach (var source in _stubSources)
+            {
+                var stubSourceIsReadOnly = !(source is IWritableStubSource);
+                var stubs = await source.GetStubsOverviewAsync();
+                var fullStubModels = stubs.Select(s => new FullStubOverviewModel
+                {
+                    Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
+                });
+                result.AddRange(fullStubModels);
+            }
+
+            return result;
+        }
+
         public async Task<FullStubModel> AddStubAsync(StubModel stub)
         {
             if (string.IsNullOrWhiteSpace(stub.Id))
@@ -101,8 +118,24 @@ namespace HttPlaceholder.Persistence.Implementations
             }
         }
 
-        public async Task<FullStubModel> GetStubAsync(string stubId) =>
-            (await GetStubsAsync()).FirstOrDefault(s => s.Stub.Id == stubId);
+        public async Task<FullStubModel> GetStubAsync(string stubId)
+        {
+            FullStubModel result = null;
+            foreach (var source in _stubSources)
+            {
+                var stub = await source.GetStubAsync(stubId);
+                if (stub != null)
+                {
+                    result = new FullStubModel
+                    {
+                        Stub = stub, Metadata = new StubMetadataModel {ReadOnly = !(source is IWritableStubSource)}
+                    };
+                    break;
+                }
+            }
+
+            return result;
+        }
 
         public async Task AddRequestResultAsync(RequestResultModel requestResult)
         {
@@ -122,6 +155,10 @@ namespace HttPlaceholder.Persistence.Implementations
             (await GetWritableStubSource().GetRequestResultsAsync())
             .OrderByDescending(s => s.RequestBeginTime);
 
+        public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync() =>
+            (await GetWritableStubSource().GetRequestResultsOverviewAsync())
+            .OrderByDescending(s => s.RequestEndTime);
+
         public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId)
         {
             var source = GetWritableStubSource();
@@ -130,6 +167,12 @@ namespace HttPlaceholder.Persistence.Implementations
                 .Where(r => r.ExecutingStubId == stubId)
                 .OrderByDescending(s => s.RequestBeginTime);
             return results;
+        }
+
+        public async Task<RequestResultModel> GetRequestResultAsync(string correlationId)
+        {
+            var source = GetWritableStubSource();
+            return await source.GetRequestAsync(correlationId);
         }
 
         public async Task DeleteAllRequestResultsAsync()

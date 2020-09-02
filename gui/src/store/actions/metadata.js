@@ -1,5 +1,5 @@
 import createInstance from "@/axios/axiosInstanceFactory";
-import {mutationNames} from "@/store/storeConstants";
+import { mutationNames } from "@/store/storeConstants";
 
 export function getMetadata(store) {
   return new Promise((resolve, reject) =>

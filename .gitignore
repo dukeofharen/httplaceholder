@@ -354,8 +354,13 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
+# JetBrains Rider
+**/.idea/**/workspace.xml
+**/.idea/**/usage.statistics.xml
+**/.idea/**/tasks.xml
+**/.idea/**/shelf
+
 # Other
-.idea
 dist/
 !scripts/publish/
 .sonarqube

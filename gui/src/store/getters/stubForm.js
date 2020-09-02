@@ -1,8 +1,11 @@
-import {formValidationMessages} from "@/shared/stubFormResources";
+import { formValidationMessages } from "@/shared/stubFormResources";
 
 export function getStubFormValidation(state) {
   const validationMessages = [];
-  if (state.stubForm.queryStrings && !state.stubForm.stub.conditions.url.query) {
+  if (
+    state.stubForm.queryStrings &&
+    !state.stubForm.stub.conditions.url.query
+  ) {
     validationMessages.push(formValidationMessages.queryStringIncorrect);
   }
 
@@ -23,14 +26,23 @@ export function getStubFormValidation(state) {
   }
 
   if (
-    !state.stubForm.stub.conditions.basicAuthentication.username && state.stubForm.stub.conditions.basicAuthentication.password ||
-    state.stubForm.stub.conditions.basicAuthentication.username && !state.stubForm.stub.conditions.basicAuthentication.password) {
+    (!state.stubForm.stub.conditions.basicAuthentication.username &&
+      state.stubForm.stub.conditions.basicAuthentication.password) ||
+    (state.stubForm.stub.conditions.basicAuthentication.username &&
+      !state.stubForm.stub.conditions.basicAuthentication.password)
+  ) {
     validationMessages.push(formValidationMessages.basicAuthInvalid);
   }
 
   const statusCode = state.stubForm.stub.response.statusCode;
   const parsedStatusCode = parseInt(statusCode);
-  if (statusCode !== null && statusCode !== undefined && (isNaN(parsedStatusCode) || parsedStatusCode < 100 || parsedStatusCode >= 600)) {
+  if (
+    statusCode !== null &&
+    statusCode !== undefined &&
+    (isNaN(parsedStatusCode) ||
+      parsedStatusCode < 100 ||
+      parsedStatusCode >= 600)
+  ) {
     validationMessages.push(formValidationMessages.fillInCorrectStatusCode);
   }
 
@@ -40,11 +52,18 @@ export function getStubFormValidation(state) {
 
   const extraDuration = state.stubForm.stub.response.extraDuration;
   const parsedExtraDuration = parseInt(extraDuration);
-  if (extraDuration !== null && extraDuration !== undefined && (isNaN(parsedExtraDuration) || parsedExtraDuration <= 0)) {
+  if (
+    extraDuration !== null &&
+    extraDuration !== undefined &&
+    (isNaN(parsedExtraDuration) || parsedExtraDuration <= 0)
+  ) {
     validationMessages.push(formValidationMessages.extraDurationInvalid);
   }
 
-  if (state.stubForm.stub.response.permanentRedirect && state.stubForm.stub.response.temporaryRedirect) {
+  if (
+    state.stubForm.stub.response.permanentRedirect &&
+    state.stubForm.stub.response.temporaryRedirect
+  ) {
     validationMessages.push(formValidationMessages.fillInOneTypeOfRedirect);
   }
 

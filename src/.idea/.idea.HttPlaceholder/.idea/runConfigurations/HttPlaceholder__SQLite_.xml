@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="HttPlaceholder MySQL" type="DotNetProject" factoryName=".NET Project">
+  <configuration default="false" name="HttPlaceholder (SQLite)" type="DotNetProject" factoryName=".NET Project">
     <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/netcoreapp3.1/HttPlaceholder.dll" />
     <option name="PROGRAM_PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <envs>
-      <env name="mysqlConnectionString" value="Server=localhost;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" />
+      <env name="sqliteConnectionString" value="Data Source=/tmp/httplaceholder.db" />
     </envs>
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
     <option name="USE_MONO" value="0" />

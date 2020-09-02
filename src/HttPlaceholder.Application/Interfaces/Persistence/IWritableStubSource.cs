@@ -14,6 +14,10 @@ namespace HttPlaceholder.Application.Interfaces.Persistence
 
         Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
 
+        Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync();
+
+        Task<RequestResultModel> GetRequestAsync(string correlationId);
+
         Task DeleteAllRequestResultsAsync();
 
         Task CleanOldRequestResultsAsync();

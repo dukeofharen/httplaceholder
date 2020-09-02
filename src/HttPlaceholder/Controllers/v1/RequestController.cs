@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
 using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
-using HttPlaceholder.Application.Requests.Queries.GetByStubId;
+using HttPlaceholder.Application.Requests.Queries.GetRequest;
+using HttPlaceholder.Application.Requests.Queries.GetRequestsOverview;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Dto.v1.Stubs;
@@ -29,14 +30,24 @@ namespace HttPlaceholder.Controllers.v1
             Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(new GetAllRequestsQuery())));
 
         /// <summary>
-        /// Get requests for the given stub ID.
+        /// Get overview of all Requests.
         /// </summary>
-        /// <returns>request results for the given stubId</returns>
-        [HttpGet]
-        [Route("{StubId}")]
+        /// <returns>All request results</returns>
+        [HttpGet("overview")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetByStubId([FromRoute]GetByStubIdQuery query) =>
-            Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(query)));
+        public async Task<ActionResult<IEnumerable<RequestOverviewDto>>> GetOverview() =>
+            Ok(Mapper.Map<IEnumerable<RequestOverviewDto>>(await Mediator.Send(new GetRequestsOverviewQuery())));
+
+        /// <summary>
+        /// Gets a specific request by correlation ID.
+        /// </summary>
+        /// <param name="correlationId">The original correlation ID.</param>
+        /// <returns>The request.</returns>
+        [HttpGet("{correlationId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<RequestResultDto>> GetRequest([FromRoute] string correlationId) =>
+            Ok(Mapper.Map<RequestResultDto>(await Mediator.Send(new GetRequestQuery {CorrelationId = correlationId})));
 
         /// <summary>
         /// Delete all requests. This call flushes all the requests.

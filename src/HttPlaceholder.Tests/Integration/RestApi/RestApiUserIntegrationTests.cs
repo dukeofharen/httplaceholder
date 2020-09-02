@@ -16,23 +16,6 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public void Cleanup() => CleanupRestApiIntegrationTest();
 
         [TestMethod]
-        public async Task RestApiIntegration_User_Get_CredentialsAreIncorrect_ShouldReturn401()
-        {
-            // Arrange
-            Settings.Authentication.ApiUsername = "correct";
-            Settings.Authentication.ApiPassword = "correct";
-
-            // Act
-            var request =
-                new HttpRequestMessage(HttpMethod.Get, $"{TestServer.BaseAddress}ph-api/users/wrong");
-            request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
-            using var response = await Client.SendAsync(request);
-
-            // Assert
-            Assert.AreEqual(HttpStatusCode.Unauthorized, response.StatusCode);
-        }
-
-        [TestMethod]
         public async Task RestApiIntegration_User_Get_CredentialsAreCorrect_UsernameDoesntMatch_ShouldReturn403()
         {
             // Arrange
