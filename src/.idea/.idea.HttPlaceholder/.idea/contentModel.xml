@@ -233,7 +233,7 @@
         <e p="key.pfx" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp5.0" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -552,7 +552,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp5.0" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.Application.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -616,7 +616,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp5.0" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.Configuration.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -686,7 +686,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp5.0" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.Infrastructure.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -749,7 +749,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp5.0" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.Persistence.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -761,7 +761,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp5.0" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.SwaggerGenerator.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -785,7 +785,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp5.0" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.TestUtilities.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -839,7 +839,7 @@
         <e p="integration.yml" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp5.0" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
