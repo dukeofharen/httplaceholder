@@ -254,7 +254,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             Assert.AreEqual(200, responseModel.StatusCode);
             Assert.IsTrue(result.Executed);
 
-            Assert.AreEqual(3, responseModel.Headers.Count);
+            Assert.AreEqual(4, responseModel.Headers.Count);
+            Assert.AreEqual("2", responseModel.Headers["Content-Length"]);
             Assert.AreEqual("text/plain; charset=utf-8", responseModel.Headers["Content-Type"]);
             Assert.AreEqual("2020-08-16", responseModel.Headers["Some-Date"]);
             Assert.AreEqual("abc123", responseModel.Headers["Token"]);

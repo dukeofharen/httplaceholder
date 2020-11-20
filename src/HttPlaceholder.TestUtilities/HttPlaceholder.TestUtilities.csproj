@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>netcoreapp5.0</TargetFramework>
         <Version>2019.8.24.1234</Version>
         <AssemblyVersion>2019.8.24.1234</AssemblyVersion>
         <FileVersion>2019.8.24.1234</FileVersion>
