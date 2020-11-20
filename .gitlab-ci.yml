@@ -135,7 +135,9 @@ publish-nuget:
   stage: publish
   when: manual
   script:
-    - dotnet nuget push dist/*.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+    - VERSION="$(cat version.txt)"
+    - dotnet nuget push dist/HttPlaceholder.$VERSION.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+    - dotnet nuget push dist/HttPlaceholder.Client.$VERSION.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
 
 publish-github:
   image: $PWSH_IMAGE
