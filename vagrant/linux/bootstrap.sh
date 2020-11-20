@@ -10,7 +10,7 @@ dpkg -i packages-microsoft-prod.deb
 apt update
 apt install -y apt-transport-https
 apt update
-apt install -y dotnet-sdk-3.1
+apt install -y dotnet-sdk-5.0
 
 # Install Node.js
 NODE_BIN_PATH=/bin/node

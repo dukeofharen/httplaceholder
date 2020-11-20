@@ -42,7 +42,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
             }
 
-            var log = string.Empty;
             var proxyUrl = stub.Response.ReverseProxy.Url;
             var appendPath = stub.Response.ReverseProxy.AppendPath == true;
             if (appendPath)
@@ -67,7 +66,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
             var method = new HttpMethod(_httpContextService.Method);
             var request = new HttpRequestMessage(method, proxyUrl);
-            log = $"Performing {method} request to URL {proxyUrl}";
+            var log = $"Performing {method} request to URL {proxyUrl}";
             var originalHeaders = _httpContextService
                 .GetHeaders();
             var headers = originalHeaders

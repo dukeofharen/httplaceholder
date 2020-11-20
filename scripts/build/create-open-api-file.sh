@@ -9,4 +9,4 @@ mkdir $DIST_DIR
 # Run OpenAPI tool
 cd $SWAGGER_GEN_DIR
 dotnet run -c Release
-cp $SWAGGER_GEN_DIR/bin/Release/netcoreapp3.1/swagger.json $DIST_DIR
+cp $SWAGGER_GEN_DIR/bin/Release/net5.0/swagger.json $DIST_DIR

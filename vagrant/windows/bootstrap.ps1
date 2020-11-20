@@ -42,8 +42,8 @@ Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpRedirect
 Enable-WindowsOptionalFeature -Online -FeatureName IIS-ApplicationDevelopment
 
 # Install dependencies
-& choco install dotnetcore-windowshosting -y
-& choco install dotnetcore-sdk -y
+& choco install dotnet-windowshosting -y
+& choco install dotnet-sdk -y
 & choco install nodejs -y
 
 # Set correct path

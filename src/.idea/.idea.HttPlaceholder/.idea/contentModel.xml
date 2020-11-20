@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.1/extResources" t="IncludeRecursive" />
-    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.1/resharper-host/local/Transient/ReSharperHost/v201/SolutionCaches/_HttPlaceholder.1863202540.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.2/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.cache/JetBrains/Rider2020.2/resharper-host/local/Transient/Rider/v202/SolutionCaches/_HttPlaceholder.-1110372707.00" t="ExcludeRecursive" />
     <e p="$APPLICATION_CONFIG_DIR$/consoles/db" t="IncludeRecursive" />
     <e p="$APPLICATION_CONFIG_DIR$/extensions" t="IncludeRecursive" />
-    <e p="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.6.1/build/netcoreapp2.1" t="Include">
+    <e p="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.8.0/build/netcoreapp2.1" t="Include">
       <e p="Microsoft.NET.Test.Sdk.Program.cs" t="Include" />
     </e>
     <e p="$USER_HOME$/.nuget/packages/mstest.testadapter/2.1.2/build/_common/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" t="Include" />
@@ -87,30 +87,36 @@
     <e p="$PROJECT_DIR$/../gui/node_modules/@vue/cli-service" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/@vue/component-compiler-utils" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/@vue/eslint-config-prettier" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$/../gui/node_modules/acorn" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/address" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/axios" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/babel-eslint" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/chalk" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/cli-highlight" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$/../gui/node_modules/cli-spinners" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$/../gui/node_modules/clipboardy" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/commander" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/core-js" t="IncludeRecursive" />
-    <e p="$PROJECT_DIR$/../gui/node_modules/dotenv-expand" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/eslint" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/eslint-plugin-prettier" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/eslint-plugin-vue" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$/../gui/node_modules/globby" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/javascript-stringify" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/js-yaml" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/lodash.camelcase" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/moment" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$/../gui/node_modules/ora" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/portfinder" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/postcss" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/postcss-selector-parser" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$/../gui/node_modules/read-pkg" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/register-service-worker" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/sass" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/sass-loader" t="IncludeRecursive" />
-    <e p="$PROJECT_DIR$/../gui/node_modules/source-map" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$/../gui/node_modules/strip-ansi" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/terser" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/toastr" t="IncludeRecursive" />
+    <e p="$PROJECT_DIR$/../gui/node_modules/type-fest" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/typeface-roboto" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/vue" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/vue-cli-plugin-vuetify" t="IncludeRecursive" />
@@ -227,7 +233,7 @@
         <e p="key.pfx" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp3.1" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -546,7 +552,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp3.1" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.Application.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -610,7 +616,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp3.1" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.Configuration.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -680,7 +686,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp3.1" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.Infrastructure.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -743,7 +749,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp3.1" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.Persistence.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -755,7 +761,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp3.1" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.SwaggerGenerator.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -779,7 +785,7 @@
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp3.1" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.TestUtilities.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
@@ -833,7 +839,7 @@
         <e p="integration.yml" t="Include" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
-            <e p="netcoreapp3.1" t="Include">
+            <e p="net5.0" t="Include">
               <e p="HttPlaceholder.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
