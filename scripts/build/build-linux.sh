@@ -22,7 +22,6 @@ mkdir $DIST_DIR
 cd $ROOT_DIR/src/HttPlaceholder
 dotnet publish --configuration=release \
     --runtime=linux-x64 \
-    /p:PublishTrimmed=true \
     /p:Version=$VERSION \
     /p:AssemblyVersion=$VERSION \
     /p:FileVersion=$VERSION \
