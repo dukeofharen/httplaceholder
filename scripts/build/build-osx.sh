@@ -4,6 +4,9 @@ if [ "$1" = "" ]; then
     exit 1
 fi
 
+set -e
+set -u
+
 # Set vars
 VERSION=$1
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -19,7 +22,6 @@ mkdir $DIST_DIR
 cd src/HttPlaceholder
 dotnet publish --configuration=release \
     --runtime=osx-x64 \
-    /p:PublishTrimmed=true \
     /p:Version=$VERSION \
     /p:AssemblyVersion=$VERSION \
     /p:FileVersion=$VERSION \
@@ -30,9 +32,6 @@ cp -r $ROOT_DIR/gui/dist/. $BIN_DIR/gui
 
 # Copy install scripts to dist dir
 cp -r $INSTALL_SCRIPT_DIR/. $BIN_DIR
-
-# Remove web.config
-rm $BIN_DIR/web.config
 
 # Archive binaries
 cd $BIN_DIR
