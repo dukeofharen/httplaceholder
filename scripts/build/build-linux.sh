@@ -33,9 +33,6 @@ cp -r $ROOT_DIR/gui/dist/. $BIN_DIR/gui
 # Copy install scripts to dist dir
 cp -r $INSTALL_SCRIPT_DIR/. $BIN_DIR
 
-# Remove web.config
-rm $BIN_DIR/web.config
-
 # Archive binaries
 cd $BIN_DIR
 tar -czvf $DIST_DIR/httplaceholder_linux-x64.tar.gz .
