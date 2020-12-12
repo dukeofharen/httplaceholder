@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  httplaceholder:
+    image: dukeofharen/httplaceholder:latest
+    environment:
+      inputFile: '/etc/httplaceholder'
+      useInMemoryStorage: 'true'
+    ports:
+      - 5000:5000
+    restart: on-failure
+    volumes:
+      - ./stubs:/etc/httplaceholder

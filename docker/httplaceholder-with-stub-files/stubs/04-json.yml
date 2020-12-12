@@ -1,0 +1,13 @@
+# A simple JSON path setup.
+- id: jpath-test
+  tenant: 04-json
+  conditions:
+    method: PUT
+    url:
+      path: /users
+    headers:
+      Content-Type: application/json
+    jsonPath:
+      - "$.phoneNumbers[?(@.type=='iPhone')]"
+  response:
+    statusCode: 204

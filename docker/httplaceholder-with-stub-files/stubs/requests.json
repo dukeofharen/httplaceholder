@@ -1,0 +1,1674 @@
+{
+	"info": {
+		"_postman_id": "e37ff568-e074-4886-b72b-a8283c3527d6",
+		"name": "HttPlaceholder Examples",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "01 Get",
+			"item": [
+				{
+					"name": "Regular 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}users?id=12&filter=first_name",
+							"host": [
+								"{{rootUrl}}users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "12"
+								},
+								{
+									"key": "filter",
+									"value": "first_name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regular 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}users?id=14&filter=last_name",
+							"host": [
+								"{{rootUrl}}users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "14"
+								},
+								{
+									"key": "filter",
+									"value": "last_name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Use fullPath",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}users?filter=first_name",
+							"host": [
+								"{{rootUrl}}users"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "first_name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Fallback scenario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}users",
+							"host": [
+								"{{rootUrl}}users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "02 Post",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "X-Api-Key",
+								"value": "123abc"
+							},
+							{
+								"key": "X-Another-Secret",
+								"value": "72354deg"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "john",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{rootUrl}}users",
+							"host": [
+								"{{rootUrl}}users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "03 XML",
+			"item": [
+				{
+					"name": "SOAP XML",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/soap+xml; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\"?>\r\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" \r\n    xmlns:m=\"http://www.example.org/stock/Reddy\">\r\n    <soap:Header></soap:Header>\r\n    <soap:Body>\r\n        <m:GetStockPrice>\r\n            <m:StockName>GOOG</m:StockName>\r\n        </m:GetStockPrice>\r\n    </soap:Body>\r\n</soap:Envelope>"
+						},
+						"url": {
+							"raw": "{{rootUrl}}InStock",
+							"host": [
+								"{{rootUrl}}InStock"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regular XML",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/soap+xml; charset=utf-8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\"?><object><a>TEST</a><b>TEST2</b></object>"
+						},
+						"url": {
+							"raw": "{{rootUrl}}thingy",
+							"host": [
+								"{{rootUrl}}thingy"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "04 JSON",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"iPhone\",\r\n            \"number\": \"0123-4567-8888\"\r\n        },\r\n        {\r\n            \"type\": \"home\",\r\n            \"number\": \"0123-4567-8910\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}users",
+							"host": [
+								"{{rootUrl}}users"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "05 Base64 - File",
+			"item": [
+				{
+					"name": "Read file from disk",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}cat_file.jpg",
+							"host": [
+								"{{rootUrl}}cat_file",
+								"jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read file from stub",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}cat.jpg",
+							"host": [
+								"{{rootUrl}}cat",
+								"jpg"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "06 Basic authentication",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}auth?id=12&filter=first_name",
+							"host": [
+								"{{rootUrl}}auth"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "12"
+								},
+								{
+									"key": "filter",
+									"value": "first_name"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "07 Slow response",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}slooooow?id=12&filter=first_name",
+							"host": [
+								"{{rootUrl}}slooooow"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "12"
+								},
+								{
+									"key": "filter",
+									"value": "first_name"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "08 Redirect",
+			"item": [
+				{
+					"name": "Temporary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}temp-redirect",
+							"host": [
+								"{{rootUrl}}temp-redirect"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Permanent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}permanent-redirect",
+							"host": [
+								"{{rootUrl}}permanent-redirect"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "09 Client IP",
+			"item": [
+				{
+					"name": "Exact IP",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}client-ip-1",
+							"host": [
+								"{{rootUrl}}client-ip-1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "IP range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}client-ip-2",
+							"host": [
+								"{{rootUrl}}client-ip-2"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "10 Hostname",
+			"item": [
+				{
+					"name": "Regex",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://httplaceholder2.local:5000/host-2",
+							"protocol": "http",
+							"host": [
+								"httplaceholder2",
+								"local"
+							],
+							"port": "5000",
+							"path": [
+								"host-2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Full",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://httplaceholder.local:5000/host-1",
+							"protocol": "http",
+							"host": [
+								"httplaceholder",
+								"local"
+							],
+							"port": "5000",
+							"path": [
+								"host-1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "11 Is HTTPS",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:5050/ishttps-ok",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "5050",
+							"path": [
+								"ishttps-ok"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "12 Priority",
+			"item": [
+				{
+					"name": "Fallback scenario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}adsfasdfgas",
+							"host": [
+								"{{rootUrl}}adsfasdfgas"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "\"Not\" fallback scenario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}not-fallback",
+							"host": [
+								"{{rootUrl}}not-fallback"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "13 Form",
+			"item": [
+				{
+					"name": "Regular",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "key1",
+									"value": "sjaak",
+									"type": "text"
+								},
+								{
+									"key": "key2",
+									"value": "bob",
+									"type": "text"
+								},
+								{
+									"key": "key2",
+									"value": "ducoo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{rootUrl}}form",
+							"host": [
+								"{{rootUrl}}form"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "14 Dynamic mode",
+			"item": [
+				{
+					"name": "1 Query string",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-query.txt?response_text=This is the response text!&response_header=This is the response header!",
+									"host": [
+										"{{rootUrl}}dynamic-query",
+										"txt"
+									],
+									"query": [
+										{
+											"key": "response_text",
+											"value": "This is the response text!"
+										},
+										{
+											"key": "response_header",
+											"value": "This is the response header!"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Encoded",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-query.txt?response_text=This is the response text!&response_header=This is the response header!",
+									"host": [
+										"{{rootUrl}}dynamic-query",
+										"txt"
+									],
+									"query": [
+										{
+											"key": "response_text",
+											"value": "This is the response text!"
+										},
+										{
+											"key": "response_header",
+											"value": "This is the response header!"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "2 UUID",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-uuid.txt",
+									"host": [
+										"{{rootUrl}}dynamic-uuid",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "3 Request header",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "X-Api-Key",
+										"value": "abc123",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-request-header.txt",
+									"host": [
+										"{{rootUrl}}dynamic-request-header",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "\t\t\t",
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "4 Form post",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{rootUrl}}dynamic-form-post.txt",
+									"host": [
+										"{{rootUrl}}dynamic-form-post",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "5 Request body",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "TEST VALUE"
+								},
+								"url": {
+									"raw": "{{rootUrl}}dynamic-request-body.txt",
+									"host": [
+										"{{rootUrl}}dynamic-request-body",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "6 Display URL",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-display-url.txt?testvar=value1",
+									"host": [
+										"{{rootUrl}}dynamic-display-url",
+										"txt"
+									],
+									"query": [
+										{
+											"key": "testvar",
+											"value": "value1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "7 Client IP",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-client-ip.txt",
+									"host": [
+										"{{rootUrl}}dynamic-client-ip",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "8 Current date and time",
+					"item": [
+						{
+							"name": "Local",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-local-now.txt",
+									"host": [
+										"{{rootUrl}}dynamic-local-now",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UTC",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-utc-now.txt",
+									"host": [
+										"{{rootUrl}}dynamic-utc-now",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "15 Reverse proxy",
+			"item": [
+				{
+					"name": "Regular: get all todo items",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}todoitems/todos",
+							"host": [
+								"{{rootUrl}}todoitems"
+							],
+							"path": [
+								"todos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regular: get todo item 1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}todoitems/todos/1",
+							"host": [
+								"{{rootUrl}}todoitems"
+							],
+							"path": [
+								"todos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regular: get todo item 2",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}todoitems/todos/2",
+							"host": [
+								"{{rootUrl}}todoitems"
+							],
+							"path": [
+								"todos",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regular: query string forwarding",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/itemsproxy?id=14",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"itemsproxy"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "14"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "REST API",
+			"item": [
+				{
+					"name": "Requests",
+					"item": [
+						{
+							"name": "DELETE all",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET overview",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests/overview",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests",
+										"overview"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET single request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests/7172d054-f7d9-4c77-b39d-a881d972aa4e",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests",
+										"7172d054-f7d9-4c77-b39d-a881d972aa4e"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST create stub by existing request",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests/4d9347e9-38f7-4efa-baf5-ae3a73cc68a7/stubs",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests",
+										"4d9347e9-38f7-4efa-baf5-ae3a73cc68a7",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Stubs",
+					"item": [
+						{
+							"name": "POST new stub (YAML)",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/yaml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "id: test-situation\r\ntenant: 01-get\r\nconditions:\r\n  method: GET\r\n  url:\r\n    path: /testtesttest\r\n    query:\r\n      id: 12\r\nresponse:\r\n  statusCode: 200\r\n  text: OK my dude!"
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST new stub (JSON)",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"id\": \"test-situation\",\r\n\t\"tenant\": \"01-get\",\r\n\t\"conditions\": {\r\n\t\t\"method\": \"GET\",\r\n\t\t\"url\": {\r\n\t\t\t\"path\": \"/testtesttest\",\r\n\t\t\t\"query\": {\r\n\t\t\t\t\"id\": \"13\"\r\n\t\t\t}\r\n\t\t}\r\n\t},\r\n\t\"response\": {\r\n\t\t\"statusCode\": 200,\r\n\t\t\"text\": \"OK my dude!\"\r\n\t}\r\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET stub by ID",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs/client-ip-1",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs",
+										"client-ip-1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE stub by ID",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs/test-situation",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs",
+										"test-situation"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE ALL stubs",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET overview",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs/overview",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs",
+										"overview"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT update stub",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"id\": \"good-name\",\n\"conditions\": {\n    \"method\": \"POST\",\n    \"url\": {\n        \"path\": \"/test123/dinges\",\n        \"query\": {\n            \"query1\": \"val1\",\n            \"query\": \"ducoducoduco\"\n        },\n        \"isHttps\": false\n    },\n    \"body\": [],\n    \"form\": [\n        {\n            \"key\": \"form1\",\n            \"value\": \"val1\"\n        },\n        {\n            \"key\": \"form2\",\n            \"value\": \"val2\"\n        }\n    ],\n    \"headers\": {\n        \"Cache-Control\": \"no-cache\",\n        \"Connection\": \"keep-alive\",\n        \"Content-Type\": \"application/x-www-form-urlencoded\",\n        \"Accept\": \"\\\\*/\\\\*\",\n        \"Accept-Encoding\": \"gzip,\\\\ deflate\",\n        \"User-Agent\": \"PostmanRuntime/7\\\\.6\\\\.0\",\n        \"Content-Length\": \"21\"\n    },\n    \"xpath\": [],\n    \"jsonPath\": [],\n    \"basicAuthentication\": {\n        \"username\": \"ducoo\",\n        \"password\": \"ducoducoduco\"\n    },\n    \"clientIp\": \"127.0.0.1\",\n    \"host\": \"localhost:5000\"\n},\n\"response\": {\n    \"text\": \"OK!\",\n    \"headers\": {}\n},\n\"priority\": 0\n}"
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs/generated-9e8629aa68a2b85bea76b65eacc1d34a",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs",
+										"generated-9e8629aa68a2b85bea76b65eacc1d34a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET requests by stub ID",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs/fallback/requests",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs",
+										"fallback",
+										"requests"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Metadata",
+					"item": [
+						{
+							"name": "GET metadata",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/metadata",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"metadata"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Tenants",
+					"item": [
+						{
+							"name": "PUT tenant",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/yaml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "- id: test-situation-01\r\n  conditions:\r\n    method: GET\r\n    url:\r\n      path: /testtesttest\r\n      query:\r\n        id: 12\r\n  response:\r\n    statusCode: 200\r\n    text: OK my dude 12!\r\n\r\n- id: test-situation-02\r\n  conditions:\r\n    method: GET\r\n    url:\r\n      path: /testtesttest\r\n      query:\r\n        id: 13\r\n  response:\r\n    statusCode: 200\r\n    text: OK my dude 13!"
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/tenants/test-tenant/stubs",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"tenants",
+										"test-tenant",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE all stubs in tenant",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/yaml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/tenants/test-tenant/stubs",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"tenants",
+										"test-tenant",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all stubs in tenant",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/yaml",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/tenants/test-tenant/stubs",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"tenants",
+										"test-tenant",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET all tenant names",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/tenants",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"tenants"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "GET user data",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/users/user",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"users",
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "c027dd98-00fd-411e-86bd-749dc30708eb",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "d381c577-17f1-4a79-846d-12cd74dbc25e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "5642039a-fca9-4fde-98ee-be1850ff504c",
+			"key": "rootUrl",
+			"value": "http://localhost:5000/"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

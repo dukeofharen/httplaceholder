@@ -1,0 +1,76 @@
+# Simple GET situations.
+- id: situation-01
+  tenant: 01-get
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: 12
+        filter: first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "John"
+      }
+    headers:
+      Content-Type: application/json
+
+- id: situation-02
+  tenant: 01-get
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: 14
+        filter: last_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "last_name": "Jackson"
+      }
+    headers:
+      Content-Type: application/json
+
+# Use fullPath instead of path to set a condition on the complete path including query string.
+- id: situation-04
+  tenant: 01-get
+  conditions:
+    method: GET
+    url:
+      fullPath: /users?filter=first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "Sjaak"
+      }
+    headers:
+      Content-Type: application/json
+
+# This is essentially the "fallback" scenario of the /users endpoint.
+- id: situation-fallback
+  tenant: 01-get
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: ^[0-9]+$
+  response:
+    statusCode: 404
+    headers:
+      Content-Type: application/json
+
+# If you want to return UTF8 characters, make sure you send the correct Content-Type header to the client.
+- id: utf8test
+  conditions:
+    url:
+      path: utf8
+  response:
+    text: 😻
+    headers:
+      Content-Type: text/plain; charset=utf8

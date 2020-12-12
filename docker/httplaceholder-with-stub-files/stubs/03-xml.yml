@@ -1,0 +1,36 @@
+# Several XML situations.
+# Since .NET only supports XPath 1.0 (:S) we need to provide namespaces.
+- id: soap-xml
+  tenant: 03-xml
+  conditions:
+    method: POST
+    url:
+      path: /InStock
+    headers:
+      Content-Type: application/soap+xml; charset=utf-8
+    xpath:
+      - queryString: /soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'GOOG']
+        namespaces:
+          soap: http://www.w3.org/2003/05/soap-envelope
+          m: http://www.example.org/stock/Reddy
+  response:
+    statusCode: 200
+    text: <result>OK</result>
+    headers:
+      Content-Type: text/xml
+
+- id: regular-xml
+  tenant: 03-xml
+  conditions:
+    method: POST
+    url:
+      path: /thingy
+    headers:
+      Content-Type: application/soap+xml; charset=utf-8
+    xpath:
+      - queryString: /object/a[text() = 'TEST']
+  response:
+    statusCode: 200
+    text: <result>OK</result>
+    headers:
+      Content-Type: text/xml
