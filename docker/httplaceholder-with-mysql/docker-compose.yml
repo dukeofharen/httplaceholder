@@ -22,4 +22,4 @@ services:
       - httplaceholder_mysql_data:/var/lib/mysql
 
 volumes:
-  httplaceholder_mysql_data:
+  mysql_data:

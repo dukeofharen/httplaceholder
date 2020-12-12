@@ -23,4 +23,4 @@ services:
     command: /bin/bash /usr/local/bin/initscripts/entrypoint.sh
 
 volumes:
-  httplaceholder_mssql_data:
+  mssql_data:

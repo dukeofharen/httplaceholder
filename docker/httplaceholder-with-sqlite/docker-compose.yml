@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  httplaceholder:
+    image: dukeofharen/httplaceholder:latest
+    environment:
+      sqliteConnectionString: 'Data Source=/etc/httplaceholder/httplaceholder.db'
+    ports:
+      - 5000:5000
+    restart: on-failure
+    volumes:
+      - sqlite_data:/etc/httplaceholder
+    
+volumes:
+  sqlite_data:
