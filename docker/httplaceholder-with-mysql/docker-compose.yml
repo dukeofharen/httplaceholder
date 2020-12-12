@@ -18,6 +18,8 @@ services:
       MYSQL_PASSWORD: httplaceholder
     ports:
       - 3306:3306
+    volumes:
+      - httplaceholder_mysql_data:/var/lib/mysql
 
 volumes:
-  mysql_data:
+  httplaceholder_mysql_data:
