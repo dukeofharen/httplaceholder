@@ -87,6 +87,7 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 
 # Documentation 📚
 * [Installation](docs/INSTALL.md)
+   * [Docker](docs/DOCKER.md)
 * [Getting started](docs/GETTING-STARTED.md)
 * [Stub samples](docs/SAMPLES.md)
 * [HttPlaceholder REST API](docs/API.md)
