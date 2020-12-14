@@ -2,6 +2,13 @@
 
 This page contains information about installing HttPlaceholder in several different ways and on several different operating systems. To get started, learn more about configuring the application or just curious about some samples, read [this](GETTING-STARTED.md), [this](CONFIG.md)  and [this](SAMPLES.md).
 
+## Installation instructions per OS
+
+* [Windows (and IIS)](INSTALL-WINDOWS.md)
+* [Linux](INSTALL-LINUX.md)
+* [Mac](INSTALL-MAC.md)
+* [Docker](INSTALL-DOCKER.md)
+
 ## Dotnet global tool (cross platform)
 
 Make sure you have installed the correct .NET SDK (at least .NET 5) for your OS (see https://dotnet.microsoft.com/download). When the .NET SDK is installed, run `dotnet tool install --global httplaceholder` to install HttPlaceholder.
