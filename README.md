@@ -87,6 +87,7 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 
 # Documentation 📚
 * [Installation](docs/INSTALL.md)
+   * [Windows (and IIS)](docs/INSTALL-WINDOWS.md)
    * [Linux](docs/INSTALL-LINUX.md)
    * [Mac](docs/INSTALL-MAC.md)
    * [Docker](docs/INSTALL-DOCKER.md)

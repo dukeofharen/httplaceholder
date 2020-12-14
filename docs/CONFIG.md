@@ -156,20 +156,22 @@ If you just installed HttPlaceholder, a file called `_config.json` is available 
 
 ```json
 {
-   "apiUsername": null,
-   "apiPassword": null,
-   "httpsPort": 5050,
-   "inputFile": null,
-   "oldRequestsQueueLength": 40,
-   "pfxPassword": null,
-   "pfxPath": null,
-   "port": 5000,
-   "useHttps": false,
-   "enableRequestLogging": true,
-   "fileStorageLocation": "C:\\tmp\\storage",
-   "mysqlConnectionString": "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true",
-   "sqliteConnectionString": "Data Source=C:\\tmp\\httplaceholder.db",
-   "sqlServerConnectionString": "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123"
+    "apiUsername": null,
+    "apiPassword": null,
+    "httpsPort": 5050,
+    "inputFile": null,
+    "oldRequestsQueueLength": 40,
+    "pfxPassword": null,
+    "pfxPath": null,
+    "port": 5000,
+    "useHttps": false,
+    "enableRequestLogging": true,
+    "fileStorageLocation": "C:\\tmp\\storage",
+    "mysqlConnectionString": "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true",
+    "sqliteConnectionString": "Data Source=C:\\tmp\\httplaceholder.db",
+    "sqlServerConnectionString": "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123",
+    "useInMemoryStorage": false,
+    "enableUserInterface": true
 }
 ```
 
