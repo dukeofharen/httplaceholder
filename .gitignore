@@ -365,3 +365,4 @@ dist/
 !scripts/publish/
 .sonarqube
 !**/sonar-scanner-*/bin/
+version.txt

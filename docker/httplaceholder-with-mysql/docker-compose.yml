@@ -1,0 +1,26 @@
+# A Docker Compose example that starts HttPlaceholder with a MySQL database, so all stubs (that are made through the UI) and requests are saved to the database.
+version: '3.8'
+services:
+  httplaceholder:
+    depends_on:
+      - mysql
+    image: dukeofharen/httplaceholder:latest
+    environment:
+      mysqlConnectionString: 'Server=mysql;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true'
+    ports:
+      - 5000:5000
+    restart: on-failure
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: httplaceholder
+      MYSQL_USER: httplaceholder
+      MYSQL_PASSWORD: httplaceholder
+    ports:
+      - 3306:3306
+    volumes:
+      - httplaceholder_mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

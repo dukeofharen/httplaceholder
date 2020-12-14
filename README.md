@@ -6,6 +6,9 @@
 | --- | --- |
 | **Build** | [![pipeline status](https://gitlab.com/ducode/httplaceholder/badges/master/pipeline.svg)](https://gitlab.com/ducode/httplaceholder/-/commits/master) |
 | **License** | [![MIT License](https://img.shields.io/:license-mit-green.svg)](https://opensource.org/licenses/MIT) |
+| **Docker** | [![HttPlaceholder on Docker Hub](https://img.shields.io/docker/pulls/dukeofharen/httplaceholder)](https://hub.docker.com/r/dukeofharen/httplaceholder) |
+| **.NET Tool** | [![HttPlaceholder tool on NuGet](https://img.shields.io/nuget/dt/HttPlaceholder)](https://www.nuget.org/packages/HttPlaceholder/) |
+| **.NET Client** | [![HttPlaceholder .NET Client](https://img.shields.io/nuget/dt/HttPlaceholder.Client)](https://www.nuget.org/packages/HttPlaceholder.Client/) |
 
 Quickly mock away any webservice using HttPlaceholder. HttPlaceholder lets you specify what the request should look like and what response needs to be returned.
 
@@ -18,11 +21,11 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 ```
 * 🐧 Install on Linux<br />
 ```bash
-curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-linux.sh | bash
+curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-linux.sh | sudo bash
 ```
 * 🍎 Install on Mac OS X<br />
 ```bash
-curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | bash
+curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | sudo bash
 ```
 
 # Why?
@@ -84,6 +87,7 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 
 # Documentation 📚
 * [Installation](docs/INSTALL.md)
+   * [Docker](docs/DOCKER.md)
 * [Getting started](docs/GETTING-STARTED.md)
 * [Stub samples](docs/SAMPLES.md)
 * [HttPlaceholder REST API](docs/API.md)

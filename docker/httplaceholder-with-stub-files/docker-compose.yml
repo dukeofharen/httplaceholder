@@ -1,0 +1,13 @@
+# A Docker Compose example that starts HttPlaceholder with a few stub .yml files. Besides this, it starts HttPlaceholder in "in memory mode", so the stubs that are made through the UI or API and requests are not persisted when the container is restarted.
+version: '3.8'
+services:
+  httplaceholder:
+    image: dukeofharen/httplaceholder:latest
+    environment:
+      inputFile: '/etc/httplaceholder'
+      useInMemoryStorage: 'true'
+    ports:
+      - 5000:5000
+    restart: on-failure
+    volumes:
+      - ./stubs:/etc/httplaceholder

@@ -1,0 +1,27 @@
+# A Docker Compose example that starts HttPlaceholder with a Microsoft SQL Server database, so all stubs (that are made through the UI) and requests are saved to the database.
+version: '3.8'
+services:
+  httplaceholder:
+    depends_on:
+      - mssql
+    image: dukeofharen/httplaceholder:latest
+    environment:
+      sqlServerConnectionString: 'Server=mssql,1433;Database=httplaceholder;User Id=sa;Password=Password123!'
+    ports:
+      - 5000:5000
+    restart: on-failure
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: Password123!
+      MSSQL_PID: Developer
+    ports:
+      - 1433:1433
+    volumes:
+      - httplaceholder_mssql_data:/var/opt/mssql
+      - ./initscripts:/usr/local/bin/initscripts
+    command: /bin/bash /usr/local/bin/initscripts/entrypoint.sh
+
+volumes:
+  mssql_data:
