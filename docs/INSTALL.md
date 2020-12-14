@@ -6,32 +6,6 @@ This page contains information about installing HttPlaceholder in several differ
 
 Make sure you have installed the correct .NET SDK (at least .NET 5) for your OS (see https://dotnet.microsoft.com/download). When the .NET SDK is installed, run `dotnet tool install --global httplaceholder` to install HttPlaceholder.
 
-## Linux
-
-The only thing needed to use HttPlaceholder on your local development machine, is extracting the archive with the HttPlaceholder binaries (which can be found [here](https://github.com/dukeofharen/httplaceholder/releases/latest)). You need to put HttPlaceholder on your path variable yourself.
-
-Alternatively, to install HttPlaceholder on Linux, run the following command in your terminal (make sure you're running as administrator):
-
-```bash
-curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-linux.sh | sudo bash
-```
-
-This is a self contained version of HttPlaceolder: no SDK has to be installed to run it.
-
-If you would like to expose HttPlaceholder to the outside world, I would recommend to use Nginx or Apache as reverse proxy. To keep the service running even if you're not logged in through an SSH session, you can use something like systemd.
-
-## Mac
-
-The only thing needed to use HttPlaceholder on your local development machine, is extracting the archive with the HttPlaceholder binaries (which can be found [here](https://github.com/dukeofharen/httplaceholder/releases/latest)). You need to put HttPlaceholder on your path variable yourself.
-
-To install HttPlaceholder on Mac OS X, run the following command in your terminal (make sure you're running as administrator):
-
-```bash
-curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | sudo bash
-```
-
-This is a self contained version of HttPlaceolder: no SDK has to be installed to run it.
-
 ## Windows
 
 ### Local development setup
@@ -59,7 +33,7 @@ Hosting the application as a Windows Service (and subsequently using a reverse p
 
 ## Docker
 
-HttPlaceholder has an official Docker image. Read more about it [here](DOCKER.md).
+HttPlaceholder has an official Docker image. Read more about it [here](INSTALL-DOCKER.md).
 
 ## Running behind reverse proxy
 
