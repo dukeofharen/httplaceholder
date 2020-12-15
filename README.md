@@ -101,6 +101,3 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 
 # Tools 🛠
 * [HttPlaceholder REST API client for .NET](docs/NUGETCLIENT.md)
-
-# Todo
-- There's no way to add custom condition checkers or response writers yet.
