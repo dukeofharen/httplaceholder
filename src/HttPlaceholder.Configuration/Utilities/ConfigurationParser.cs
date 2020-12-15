@@ -43,7 +43,10 @@ namespace HttPlaceholder.Configuration.Utilities
         {
             var argsDictionary = args.Parse();
             var key = ConfigKeys.ConfigJsonLocationKey.ToLower();
-            if (!argsDictionary.TryGetValue(key, out var configJsonPath))
+            var pair = argsDictionary.FirstOrDefault(d =>
+                string.Equals(d.Key, key, StringComparison.CurrentCultureIgnoreCase));
+            var configJsonPath = pair.Value;
+            if (string.IsNullOrWhiteSpace(configJsonPath))
             {
                 var envVars = _envService.GetEnvironmentVariables();
                 configJsonPath = envVars?.FirstOrDefault(v => v.Key.Equals(key, StringComparison.OrdinalIgnoreCase))

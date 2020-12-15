@@ -127,6 +127,30 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
         }
 
         [TestMethod]
+        public void ReadConfigFileFromArgsArray_FileFound_CaseInsensitiveCheck()
+        {
+            // Arrange
+            const string path = "/tmp/config.json";
+            var args = ToArgs($"--configJSONlocAtion {path}");
+
+            _fileServiceMock
+                .Setup(m => m.FileExists(path))
+                .Returns(true);
+
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(path))
+                .Returns(ExampleConfig);
+
+            // Act
+            var result = _parser.ParseConfiguration(args);
+
+            // Assert
+            Assert.AreEqual("user", result["Authentication:ApiUsername"]);
+            Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
+            Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
+        }
+
+        [TestMethod]
         public void ReadConfigFileFromEnvVar_FileFound_ShouldParseCorrectly()
         {
             // Arrange
