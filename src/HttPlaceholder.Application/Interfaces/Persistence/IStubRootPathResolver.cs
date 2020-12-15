@@ -2,6 +2,6 @@
 {
     public interface IStubRootPathResolver
     {
-        string GetStubRootPath();
+        string[] GetStubRootPaths();
     }
 }

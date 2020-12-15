@@ -36,7 +36,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             else
             {
                 // File doesn't exist, but might exist in the file root folder.
-                var yamlFilePath = _stubRootPathResolver.GetStubRootPath();
+                var yamlFilePath = _stubRootPathResolver.GetStubRootPaths();
                 var tempPath = Path.Combine(yamlFilePath, stub.Response.File);
                 if (_fileService.FileExists(tempPath))
                 {

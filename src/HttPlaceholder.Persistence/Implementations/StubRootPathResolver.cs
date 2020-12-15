@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Configuration;
@@ -13,29 +14,27 @@ namespace HttPlaceholder.Persistence.Implementations
         private readonly IFileService _fileService;
 
         public StubRootPathResolver(
-           IAssemblyService assemblyService,
-           IFileService fileService,
-           IOptions<SettingsModel> options)
+            IAssemblyService assemblyService,
+            IFileService fileService,
+            IOptions<SettingsModel> options)
         {
             _assemblyService = assemblyService;
             _fileService = fileService;
             _settings = options.Value;
         }
 
-        public string GetStubRootPath()
+        public string[] GetStubRootPaths()
         {
             // First, check the "inputFile" configuration property and extract the directory of this folder.
             var inputFile = _settings.Storage?.InputFile;
             if (inputFile != null)
             {
-                return
-                   _fileService.IsDirectory(inputFile) ?
-                   inputFile :
-                   Path.GetDirectoryName(inputFile);
+                var path = _fileService.IsDirectory(inputFile) ? inputFile : Path.GetDirectoryName(inputFile);
+                return path.Split(new[] {"%%"}, StringSplitOptions.RemoveEmptyEntries);
             }
 
             // If no input file was provided, return the assembly path instead.
-            return _assemblyService.GetEntryAssemblyRootPath();
+            return new[] {_assemblyService.GetEntryAssemblyRootPath()};
         }
     }
 }

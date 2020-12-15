@@ -44,7 +44,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(true);
 
             // act
-            var result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPaths();
 
             // assert
             Assert.AreEqual(inputFile, result);
@@ -54,7 +54,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public void StubRootPathResolver_GetStubRootPath_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
         {
             // arrange
-        // TODO we should actually add GetDirectoryName to the FileService
             var inputFilePath =
                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs" : "/opt/httplaceholder";
 
@@ -66,7 +65,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(false);
 
             // act
-            var result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPaths();
 
             // assert
             Assert.AreEqual(inputFilePath, result);
@@ -83,7 +82,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(assemblyPath);
 
             // act
-            var result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPaths();
 
             // assert
             Assert.AreEqual(assemblyPath, result);

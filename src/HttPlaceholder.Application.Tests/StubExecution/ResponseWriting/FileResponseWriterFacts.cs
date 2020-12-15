@@ -101,7 +101,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             _stubRootPathResolverMock
-               .Setup(m => m.GetStubRootPath())
+               .Setup(m => m.GetStubRootPaths())
                .Returns(yamlFilePath);
 
             _fileServiceMock
@@ -142,7 +142,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             _stubRootPathResolverMock
-               .Setup(m => m.GetStubRootPath())
+               .Setup(m => m.GetStubRootPaths())
                .Returns(yamlFilePath);
 
             _fileServiceMock
