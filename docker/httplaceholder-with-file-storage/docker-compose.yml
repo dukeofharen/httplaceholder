@@ -1,4 +1,4 @@
-# A Docker Compose example that starts HttPlaceholder with a file storage location, so all stubs (that are made through the UI) and requests are saved to that folder.
+# A Docker Compose example that starts HttPlaceholder with a file storage location, so all stubs (that are made through the UI or API) and requests are saved to that folder.
 version: '3.8'
 services:
   httplaceholder:

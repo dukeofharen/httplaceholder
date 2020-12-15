@@ -4,7 +4,7 @@ Whenever HttPlaceholder receives a request, all the conditions of all stubs are 
 
 ## General
 
-Under the "conditions" elemennt, you describe how 
+Under the "conditions" element, you describe how the request should look like. If the incoming request matches the conditions, the [response](RESPONSE.md) will be returned.
 
 ```yml
 - id: situation-03

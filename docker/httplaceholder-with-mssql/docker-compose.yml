@@ -1,4 +1,4 @@
-# A Docker Compose example that starts HttPlaceholder with a Microsoft SQL Server database, so all stubs (that are made through the UI) and requests are saved to the database.
+# A Docker Compose example that starts HttPlaceholder with a Microsoft SQL Server database, so all stubs (that are made through the UI or API) and requests are saved to the database.
 version: '3.8'
 services:
   httplaceholder:
