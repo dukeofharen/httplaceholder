@@ -86,9 +86,9 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileNotFoundDirectly_ButFoundInStubFolder()
         {
             // arrange
-            const string yamlFilePath = @"C:\stubs";
+            var stubRootPaths = new[] {"/var/stubs1", "/var/stubs2"};
             const string file = "image.png";
-            var expectedFolder = Path.Combine(yamlFilePath, file);
+            var expectedFolder = Path.Combine(stubRootPaths[1], file);
             var body = new byte[] { 1, 2, 3 };
             var stub = new StubModel
             {
@@ -102,7 +102,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
 
             _stubRootPathResolverMock
                .Setup(m => m.GetStubRootPaths())
-               .Returns(yamlFilePath);
+               .Returns(stubRootPaths);
 
             _fileServiceMock
                .Setup(m => m.FileExists(stub.Response.File))
@@ -128,9 +128,9 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task FileResponseWriter_WriteToResponseAsync_FileNotFoundDirectly_AlsoNotFoundInStubFolder_ShouldReturnNoBody()
         {
             // arrange
-            const string yamlFilePath = @"C:\stubs";
             const string file = "image.png";
-            var expectedFolder = Path.Combine(yamlFilePath, file);
+            var stubRootPaths = new[] {"/var/stubs1", "/var/stubs2"};
+            var expectedFolder = Path.Combine(stubRootPaths[0], file);
             var stub = new StubModel
             {
                 Response = new StubResponseModel
@@ -143,7 +143,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
 
             _stubRootPathResolverMock
                .Setup(m => m.GetStubRootPaths())
-               .Returns(yamlFilePath);
+               .Returns(stubRootPaths);
 
             _fileServiceMock
                .Setup(m => m.FileExists(stub.Response.File))
