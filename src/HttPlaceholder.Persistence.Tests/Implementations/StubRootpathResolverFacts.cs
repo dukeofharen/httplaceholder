@@ -33,7 +33,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public void StubRootPathResolver_GetStubRootPath_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
+        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
         {
             // arrange
             const string inputFile = @"C:\stubs";
@@ -47,11 +47,12 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             var result = _resolver.GetStubRootPaths();
 
             // assert
-            Assert.AreEqual(inputFile, result);
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual(inputFile, result[0]);
         }
 
         [TestMethod]
-        public void StubRootPathResolver_GetStubRootPath_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
+        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
         {
             // arrange
             var inputFilePath =
@@ -68,7 +69,30 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             var result = _resolver.GetStubRootPaths();
 
             // assert
-            Assert.AreEqual(inputFilePath, result);
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual(inputFilePath, result[0]);
+        }
+
+        [TestMethod]
+        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths()
+        {
+            // arrange
+            var inputFilePath =
+                RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs1%%C:\stubs2\stub.yml" : "/opt/httplaceholder/stubs1%%/opt/httplaceholder/stubs2/stub.yml";
+
+            _options.Value.Storage.InputFile = inputFilePath;
+
+            _fileServiceMock
+                .Setup(m => m.IsDirectory(inputFilePath))
+                .Returns(false);
+
+            // act
+            var result = _resolver.GetStubRootPaths();
+
+            // assert
+            Assert.AreEqual(2, result.Length);
+            Assert.IsTrue(result[0].Contains("stubs1"));
+            Assert.IsTrue(result[1].Contains("stubs2"));
         }
 
         [TestMethod]
@@ -85,7 +109,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             var result = _resolver.GetStubRootPaths();
 
             // assert
-            Assert.AreEqual(assemblyPath, result);
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual(assemblyPath, result[0]);
         }
     }
 }
