@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Configuration;
@@ -29,8 +31,9 @@ namespace HttPlaceholder.Persistence.Implementations
             var inputFile = _settings.Storage?.InputFile;
             if (inputFile != null)
             {
-                var path = _fileService.IsDirectory(inputFile) ? inputFile : Path.GetDirectoryName(inputFile);
-                return path.Split(new[] {"%%"}, StringSplitOptions.RemoveEmptyEntries);
+                return inputFile.Split(new[] {"%%"}, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(f => _fileService.IsDirectory(f) ? f : Path.GetDirectoryName(f))
+                    .ToArray();
             }
 
             // If no input file was provided, return the assembly path instead.

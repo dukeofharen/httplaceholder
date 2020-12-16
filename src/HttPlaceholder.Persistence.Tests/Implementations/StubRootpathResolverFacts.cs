@@ -77,13 +77,18 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         public void StubRootPathResolver_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths()
         {
             // arrange
-            var inputFilePath =
-                RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs1%%C:\stubs2\stub.yml" : "/opt/httplaceholder/stubs1%%/opt/httplaceholder/stubs2/stub.yml";
+            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            var path1 = isWindows ? @"C:\stubs1" : "/opt/httplaceholder/stubs1";
+            var path2 = isWindows ? @"C:\stubs2\stub.yml" : "/opt/httplaceholder/stubs2/stub.yml";
+            var inputFilePath = $"{path1}%%{path2}";
 
             _options.Value.Storage.InputFile = inputFilePath;
 
             _fileServiceMock
-                .Setup(m => m.IsDirectory(inputFilePath))
+                .Setup(m => m.IsDirectory(path1))
+                .Returns(true);
+            _fileServiceMock
+                .Setup(m => m.IsDirectory(path2))
                 .Returns(false);
 
             // act
@@ -91,8 +96,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
 
             // assert
             Assert.AreEqual(2, result.Length);
-            Assert.IsTrue(result[0].Contains("stubs1"));
-            Assert.IsTrue(result[1].Contains("stubs2"));
+            Assert.AreEqual(path1, result[0]);
+            Assert.AreEqual(Path.GetDirectoryName(path2), result[1]);
         }
 
         [TestMethod]
