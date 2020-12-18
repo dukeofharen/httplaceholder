@@ -33,7 +33,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public void StubRootPathResolver_GetStubRootPath_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
+        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
         {
             // arrange
             const string inputFile = @"C:\stubs";
@@ -44,17 +44,17 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(true);
 
             // act
-            var result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPaths();
 
             // assert
-            Assert.AreEqual(inputFile, result);
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual(inputFile, result[0]);
         }
 
         [TestMethod]
-        public void StubRootPathResolver_GetStubRootPath_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
+        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
         {
             // arrange
-        // TODO we should actually add GetDirectoryName to the FileService
             var inputFilePath =
                 RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs" : "/opt/httplaceholder";
 
@@ -66,10 +66,38 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(false);
 
             // act
-            var result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPaths();
 
             // assert
-            Assert.AreEqual(inputFilePath, result);
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual(inputFilePath, result[0]);
+        }
+
+        [TestMethod]
+        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths()
+        {
+            // arrange
+            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            var path1 = isWindows ? @"C:\stubs1" : "/opt/httplaceholder/stubs1";
+            var path2 = isWindows ? @"C:\stubs2\stub.yml" : "/opt/httplaceholder/stubs2/stub.yml";
+            var inputFilePath = $"{path1}%%{path2}";
+
+            _options.Value.Storage.InputFile = inputFilePath;
+
+            _fileServiceMock
+                .Setup(m => m.IsDirectory(path1))
+                .Returns(true);
+            _fileServiceMock
+                .Setup(m => m.IsDirectory(path2))
+                .Returns(false);
+
+            // act
+            var result = _resolver.GetStubRootPaths();
+
+            // assert
+            Assert.AreEqual(2, result.Length);
+            Assert.AreEqual(path1, result[0]);
+            Assert.AreEqual(Path.GetDirectoryName(path2), result[1]);
         }
 
         [TestMethod]
@@ -83,10 +111,11 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
                .Returns(assemblyPath);
 
             // act
-            var result = _resolver.GetStubRootPath();
+            var result = _resolver.GetStubRootPaths();
 
             // assert
-            Assert.AreEqual(assemblyPath, result);
+            Assert.AreEqual(1, result.Length);
+            Assert.AreEqual(assemblyPath, result[0]);
         }
     }
 }
