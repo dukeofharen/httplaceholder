@@ -994,6 +994,7 @@
           <e p="ReflectionUtilities.cs" t="Include" />
           <e p="StringHelper.cs" t="Include" />
           <e p="XmlUtilities.cs" t="Include" />
+          <e p="YamlUtilities.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
@@ -1146,9 +1147,7 @@
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
-        <e p="Utilities" t="Include">
-          <e p="YamlUtilities.cs" t="Include" />
-        </e>
+        <e p="Utilities" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
