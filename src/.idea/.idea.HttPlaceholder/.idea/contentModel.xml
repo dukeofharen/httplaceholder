@@ -1051,6 +1051,7 @@
         </e>
         <e p="Enums" t="Include">
           <e p="ConditionValidationType.cs" t="Include" />
+          <e p="LineEndingType.cs" t="Include" />
         </e>
         <e p="FullStubModel.cs" t="Include" />
         <e p="FullStubOverviewModel.cs" t="Include" />

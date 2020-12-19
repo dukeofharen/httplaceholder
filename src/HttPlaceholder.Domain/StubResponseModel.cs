@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HttPlaceholder.Domain.Enums;
 using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Domain
@@ -85,5 +86,11 @@ namespace HttPlaceholder.Domain
         /// </summary>
         [YamlMember(Alias = "reverseProxy")]
         public StubResponseReverseProxyModel ReverseProxy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the line endings type.
+        /// </summary>
+        [YamlMember(Alias = "lineEndings")]
+        public LineEndingType LineEndings { get; set; }
     }
 }

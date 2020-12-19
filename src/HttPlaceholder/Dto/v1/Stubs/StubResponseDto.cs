@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Enums;
 using YamlDotNet.Serialization;
 
 // ReSharper disable ClassNeverInstantiated.Global
@@ -90,5 +91,11 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// </summary>
         [YamlMember(Alias = "reverseProxy")]
         public StubResponseReverseProxyDto ReverseProxy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the line endings type.
+        /// </summary>
+        [YamlMember(Alias = "lineEndings")]
+        public LineEndingType LineEndings { get; set; }
     }
 }
