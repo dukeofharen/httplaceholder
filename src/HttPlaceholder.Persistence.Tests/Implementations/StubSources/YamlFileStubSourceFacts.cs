@@ -88,12 +88,14 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             Assert.AreEqual(0, result.Count());
         }
 
-        [TestMethod]
-        public async Task YamlFileStubSource_GetStubsAsync_InputFileSet_ShouldReadFilesFromThatDirectory()
+        [DataTestMethod]
+        [DataRow(",")]
+        [DataRow("%%")]
+        public async Task YamlFileStubSource_GetStubsAsync_InputFileSet_ShouldReadFilesFromThatDirectory(string separator)
         {
             // arrange
             var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
-            _options.Value.Storage.InputFile = string.Join("%%", files);
+            _options.Value.Storage.InputFile = string.Join(separator, files);
 
             _fileServiceMock
                 .Setup(m => m.ReadAllText(files[0]))

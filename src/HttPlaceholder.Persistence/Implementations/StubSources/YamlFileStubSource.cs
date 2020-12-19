@@ -47,7 +47,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             else
             {
                 // Split file path: it is possible to supply multiple locations.
-                var parts = inputFileLocation.Split(new[] {"%%"}, StringSplitOptions.RemoveEmptyEntries);
+                var parts = inputFileLocation.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries);
                 parts = parts.Select(StripIllegalCharacters).ToArray();
                 foreach (var part in parts)
                 {
