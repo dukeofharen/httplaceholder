@@ -32,6 +32,8 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Check HTTP(S): [.yml](samples/11-ishttps.yml)
 * Priority: [.yml](samples/12-priority.yml)
 * Form values: [.yml](samples/13-form.yml)
+* Reverse proxy: [.yml](samples/15-reverse-proxy.yml)
+* Enforce line endings: [.yml](samples/16-line-endings.yml)
 * Dynamic mode - query strings: [.yml](samples/14.1-dynamic-mode-query.yml)
 * Dynamic mode - UUIDs: [.yml](samples/14.2-dynamic-mode-uuid.yml)
 * Dynamic mode - request headers: [.yml](samples/14.3-dynamic-mode-request-header.yml)
