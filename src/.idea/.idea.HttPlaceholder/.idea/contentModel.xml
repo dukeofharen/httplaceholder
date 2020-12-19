@@ -1013,7 +1013,6 @@
         <e p="AuthenticationSettingsModel.cs" t="Include" />
         <e p="ConfigKeys.cs" t="Include" />
         <e p="ConfigMetadataModel.cs" t="Include" />
-        <e p="Constants.cs" t="Include" />
         <e p="GuiSettingsModel.cs" t="Include" />
         <e p="HttPlaceholder.Configuration.csproj" t="IncludeRecursive" />
         <e p="SettingsModel.cs" t="Include" />
@@ -1047,6 +1046,7 @@
       </e>
       <e p="HttPlaceholder.Domain" t="IncludeRecursive">
         <e p="ConditionCheckResultModel.cs" t="Include" />
+        <e p="Constants.cs" t="Include" />
         <e p="Entities" t="Include">
           <e p="DbRequestModel.cs" t="Include" />
           <e p="DbStubModel.cs" t="Include" />

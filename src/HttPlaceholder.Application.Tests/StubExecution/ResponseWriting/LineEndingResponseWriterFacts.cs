@@ -33,11 +33,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task WriteToResponseAsync_Unix_ShouldReturnUnixLineEndings()
         {
             // Arrange
-            var stub = new StubModel
-            {
-                Response = new StubResponseModel {LineEndings = "unix", Text = "the\r\ncontent\r\n"}
-            };
-            var response = new ResponseModel();
+            var stub = new StubModel {Response = new StubResponseModel {LineEndings = "unix"}};
+            var response = new ResponseModel {Body = Encoding.UTF8.GetBytes("the\r\ncontent\r\n")};
 
             // Act
             var result = await _writer.WriteToResponseAsync(stub, response);
@@ -52,8 +49,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task WriteToResponseAsync_Windows_ShouldReturnWindowsLineEndings()
         {
             // Arrange
-            var stub = new StubModel {Response = new StubResponseModel {LineEndings = "unix", Text = "the\ncontent\n"}};
-            var response = new ResponseModel();
+            var stub = new StubModel {Response = new StubResponseModel {LineEndings = "windows"}};
+            var response = new ResponseModel {Body = Encoding.UTF8.GetBytes("the\ncontent\n")};
 
             // Act
             var result = await _writer.WriteToResponseAsync(stub, response);
@@ -79,10 +76,9 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
 
             // Assert
             Assert.IsTrue(result.Executed);
-            var content = Encoding.UTF8.GetString(response.Body);
-            Assert.AreEqual("the\ncontent\n", content);
+            Assert.IsNull(response.Body);
             Assert.AreEqual("Line ending type 'unknown' is not supported. Options are 'unix' and 'windows'.",
-                response.Log);
+                result.Log);
         }
 
         [TestMethod]
@@ -103,7 +99,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
 
             // Assert
             Assert.IsTrue(result.Executed);
-            Assert.AreEqual("The response body is binary; cannot replace line endings.", response.Log);
+            Assert.AreEqual("The response body is binary; cannot replace line endings.", result.Log);
         }
     }
 }
