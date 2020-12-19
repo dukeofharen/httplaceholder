@@ -91,6 +91,6 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the line endings type.
         /// </summary>
         [YamlMember(Alias = "lineEndings")]
-        public LineEndingType? LineEndings { get; set; }
+        public string LineEndings { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Common.Utilities
 {

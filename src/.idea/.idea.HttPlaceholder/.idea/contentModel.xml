@@ -1052,7 +1052,6 @@
         </e>
         <e p="Enums" t="Include">
           <e p="ConditionValidationType.cs" t="Include" />
-          <e p="LineEndingType.cs" t="Include" />
         </e>
         <e p="FullStubModel.cs" t="Include" />
         <e p="FullStubOverviewModel.cs" t="Include" />
@@ -1147,7 +1146,6 @@
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
         </e>
-        <e p="Utilities" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
