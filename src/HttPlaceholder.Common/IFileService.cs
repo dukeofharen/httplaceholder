@@ -31,7 +31,7 @@ namespace HttPlaceholder.Common
 
         string[] GetFiles(string path, string searchPattern);
 
-        string[] GetFiles(string path, IEnumerable<string> allowedFileExtensions);
+        string[] GetFiles(string path, string[] allowedFileExtensions);
 
         string GetCurrentDirectory();
 

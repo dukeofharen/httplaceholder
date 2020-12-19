@@ -32,7 +32,7 @@ namespace HttPlaceholder.Infrastructure.Implementations
 
         public string[] GetFiles(string path, string searchPattern) => Directory.GetFiles(path, searchPattern);
 
-        public string[] GetFiles(string path, IEnumerable<string> allowedFileExtensions) =>
+        public string[] GetFiles(string path, string[] allowedFileExtensions) =>
             Directory.GetFiles(path)
                 .Where(f => allowedFileExtensions.Any(e => f.ToLower().EndsWith(e)))
                 .ToArray();
