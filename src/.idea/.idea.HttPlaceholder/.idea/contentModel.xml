@@ -1011,6 +1011,7 @@
         <e p="AuthenticationSettingsModel.cs" t="Include" />
         <e p="ConfigKeys.cs" t="Include" />
         <e p="ConfigMetadataModel.cs" t="Include" />
+        <e p="Constants.cs" t="Include" />
         <e p="GuiSettingsModel.cs" t="Include" />
         <e p="HttPlaceholder.Configuration.csproj" t="IncludeRecursive" />
         <e p="SettingsModel.cs" t="Include" />

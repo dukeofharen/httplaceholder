@@ -26,8 +26,8 @@ namespace HttPlaceholder.Configuration
         public const string HttpsPortKey = "httpsPort";
 
         [ConfigKey(
-            Description = "for input file, you can both provide a path to a .yml file (to load only that file) or provide a path to a folder containing .yml files (which will all be loaded in that case)",
-            Example = @"C:\path\to\stubsfolder or C:\path\to\stubsfolder%%C:\path\to\file.yml for multiple paths",
+            Description = "for input file, you can both provide a path to a .yml file (to load only that file) or provide a path to a folder containing .yml files (which will all be loaded in that case).",
+            Example = @"C:\path\to\stubsfolder or C:\path\to\stubsfolder,C:\path\to\file.yml for multiple paths",
             ConfigPath = "Storage:InputFile")]
         public const string InputFileKey = "inputFile";
 

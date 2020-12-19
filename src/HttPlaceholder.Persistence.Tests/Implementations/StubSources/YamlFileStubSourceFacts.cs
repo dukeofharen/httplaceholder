@@ -38,18 +38,15 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             const string currentDirectory = @"C:\stubs";
-            var files = new[]
-            {
-                $@"{currentDirectory}\file1.yml",
-                $@"{currentDirectory}\file2.yml"
-            };
+            var files = new[] {$@"{currentDirectory}\file1.yml", $@"{currentDirectory}\file2.yml"};
 
             _fileServiceMock
                 .Setup(m => m.GetCurrentDirectory())
                 .Returns(currentDirectory);
 
             _fileServiceMock
-                .Setup(m => m.GetFiles(currentDirectory, "*.yml"))
+                .Setup(m => m.GetFiles(currentDirectory,
+                    It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
                 .Returns(files);
 
             _fileServiceMock
@@ -71,7 +68,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
-        public async Task YamlFileStubSource_GetStubsAsync_NoInputFileSet_ShouldReadFilesFromCurrentDirectory_NoFilesFound_ShouldReturnEmptyList()
+        public async Task
+            YamlFileStubSource_GetStubsAsync_NoInputFileSet_ShouldReadFilesFromCurrentDirectory_NoFilesFound_ShouldReturnEmptyList()
         {
             // arrange
             const string currentDirectory = @"C:\stubs";
@@ -80,7 +78,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
                 .Returns(currentDirectory);
 
             _fileServiceMock
-                .Setup(m => m.GetFiles(currentDirectory, "*.yml"))
+                .Setup(m => m.GetFiles(currentDirectory, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
                 .Returns(new string[0]);
 
             // act
@@ -90,16 +88,14 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             Assert.AreEqual(0, result.Count());
         }
 
-        [TestMethod]
-        public async Task YamlFileStubSource_GetStubsAsync_InputFileSet_ShouldReadFilesFromThatDirectory()
+        [DataTestMethod]
+        [DataRow(",")]
+        [DataRow("%%")]
+        public async Task YamlFileStubSource_GetStubsAsync_InputFileSet_ShouldReadFilesFromThatDirectory(string separator)
         {
             // arrange
-            var files = new[]
-            {
-                @"C:\stubs\file1.yml",
-                @"C:\stubs\file2.yml"
-            };
-            _options.Value.Storage.InputFile = string.Join("%%", files);
+            var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
+            _options.Value.Storage.InputFile = string.Join(separator, files);
 
             _fileServiceMock
                 .Setup(m => m.ReadAllText(files[0]))
@@ -114,26 +110,49 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
 
             // assert
             var ids = result.Select(s => s.Id).ToArray();
+            Assert.AreEqual(3, ids.Length);
             Assert.AreEqual("situation-01", ids[0]);
             Assert.AreEqual("situation-02", ids[1]);
             Assert.AreEqual("situation-post-01", ids[2]);
         }
 
         [TestMethod]
-        public async Task YamlFileStubSource_GetStubsAsync_InputFileSet_InputFileIsDirectory_ShouldReadFilesFromThatDirectory()
+        public async Task YamlFileStubSource_GetStubsAsync_OneYamlFileIsInvalid_ShouldContinueAnyway()
+        {
+            // arrange
+            var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
+            _options.Value.Storage.InputFile = string.Join(",", files);
+
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(files[0]))
+                .Returns(TestResources.YamlFile1);
+
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(files[1]))
+                .Returns("THIS IS INVALID YAML!");
+
+            // act
+            var result = await _source.GetStubsAsync();
+
+            // assert
+            var ids = result.Select(s => s.Id).ToArray();
+            Assert.AreEqual(2, ids.Length);
+            Assert.AreEqual("situation-01", ids[0]);
+            Assert.AreEqual("situation-02", ids[1]);
+        }
+
+        [TestMethod]
+        public async Task
+            YamlFileStubSource_GetStubsAsync_InputFileSet_InputFileIsDirectory_ShouldReadFilesFromThatDirectory()
         {
             // arrange
             const string inputFile = @"C:\stubs";
             _options.Value.Storage.InputFile = inputFile;
 
-            var files = new[]
-            {
-                @"C:\stubs\file1.yml",
-                @"C:\stubs\file2.yml"
-            };
+            var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
 
             _fileServiceMock
-                .Setup(m => m.GetFiles(inputFile, "*.yml"))
+                .Setup(m => m.GetFiles(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
                 .Returns(files);
 
             _fileServiceMock
@@ -165,13 +184,10 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             const string inputFile = @"C:\stubs";
             _options.Value.Storage.InputFile = inputFile;
 
-            var files = new[]
-            {
-                @"C:\stubs\file3.yml"
-            };
+            var files = new[] {@"C:\stubs\file3.yml"};
 
             _fileServiceMock
-                .Setup(m => m.GetFiles(inputFile, "*.yml"))
+                .Setup(m => m.GetFiles(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
                 .Returns(files);
 
             _fileServiceMock
@@ -198,13 +214,10 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             const string inputFile = @"C:\stubs";
             _options.Value.Storage.InputFile = inputFile;
 
-            var files = new[]
-            {
-                @"C:\stubs\file4.yml"
-            };
+            var files = new[] {@"C:\stubs\file4.yml"};
 
             _fileServiceMock
-                .Setup(m => m.GetFiles(inputFile, "*.yml"))
+                .Setup(m => m.GetFiles(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
                 .Returns(files);
 
             _fileServiceMock

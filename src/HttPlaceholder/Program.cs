@@ -64,7 +64,7 @@ namespace HttPlaceholder
             var argsDictionary = configParser.ParseConfiguration(args);
             var settings = DeserializeSettings(argsDictionary);
 
-            HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary)), args, _verboseArgs,
+            HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary, args)), args, _verboseArgs,
                 false);
 
             return WebHost.CreateDefaultBuilder(args)
@@ -100,10 +100,12 @@ namespace HttPlaceholder
             return builder.ToString();
         }
 
-        private static string GetVerbosePage(IDictionary<string, string> args)
+        private static string GetVerbosePage(IDictionary<string, string> argsDictionary, string[] args)
         {
             var builder = new StringBuilder();
-            foreach (var (key, value) in args)
+            builder.AppendLine($"Provided command line arguments: {string.Join(" ", args)}");
+            builder.AppendLine("Configuration that will be used by HttPlaceholder:");
+            foreach (var (key, value) in argsDictionary)
             {
                 builder.AppendLine($"--{key}: {value}");
             }

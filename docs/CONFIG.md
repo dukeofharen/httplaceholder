@@ -43,8 +43,10 @@ For input file, you can both provide a path to a .yml file (to load only that fi
 If you want to provide multiple paths (be it folders or files), that's also possible. You can do it like this:
 
 ```bash
-httplaceholder --inputFile C:\path\to\stubsfolder%%C:\path\to\file.yml
+httplaceholder --inputFile "C:\path\to\stubsfolder,C:\path\to\file.yml"
 ```
+
+Make sure to surround the value with double quotes if you run the command from PowerShell.
 
 ### File store (optional)
 

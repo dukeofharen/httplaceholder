@@ -10,11 +10,15 @@ using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using YamlDotNet.Core;
+using Constants = HttPlaceholder.Configuration.Constants;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class YamlFileStubSource : IStubSource
     {
+        private static string[] _extensions = {".yml", ".yaml"};
+
         private IEnumerable<StubModel> _stubs;
         private DateTime _stubLoadDateTime;
         private readonly ILogger<YamlFileStubSource> _logger;
@@ -39,13 +43,14 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             {
                 // If the input file location is not set, try looking in the current directory for .yml files.
                 var currentDirectory = _fileService.GetCurrentDirectory();
-                var yamlFiles = _fileService.GetFiles(currentDirectory, "*.yml");
+                var yamlFiles = _fileService.GetFiles(currentDirectory, _extensions);
                 fileLocations.AddRange(yamlFiles);
             }
             else
             {
-                // Split on ";": it is possible to supply multiple locations.
-                var parts = inputFileLocation.Split(new[] {"%%"}, StringSplitOptions.RemoveEmptyEntries);
+                // Split file path: it is possible to supply multiple locations.
+                var parts = inputFileLocation.Split(Constants.InputFileSeparators,
+                    StringSplitOptions.RemoveEmptyEntries);
                 parts = parts.Select(StripIllegalCharacters).ToArray();
                 foreach (var part in parts)
                 {
@@ -53,7 +58,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                     _logger.LogInformation($"Reading location '{location}'.");
                     if (_fileService.IsDirectory(location))
                     {
-                        var yamlFiles = _fileService.GetFiles(location, "*.yml");
+                        var yamlFiles = _fileService.GetFiles(location, _extensions);
                         fileLocations.AddRange(yamlFiles);
                     }
                     else
@@ -76,22 +81,30 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                 {
                     // Load the stubs.
                     var input = _fileService.ReadAllText(file);
-                    _logger.LogInformation($"File contents of '{file}': '{input}'");
+                    _logger.LogInformation($"Parsing .yml file '{file}'.");
+                    _logger.LogDebug($"File contents of '{file}': '{input}'");
 
-                    IEnumerable<StubModel> stubs;
-
-                    if (YamlIsArray(input))
+                    try
                     {
-                        stubs = YamlUtilities.Parse<List<StubModel>>(input);
-                    }
-                    else
-                    {
-                        stubs = new[] {YamlUtilities.Parse<StubModel>(input)};
-                    }
+                        IEnumerable<StubModel> stubs;
 
-                    EnsureStubsHaveId(stubs);
-                    result.AddRange(stubs);
-                    _stubLoadDateTime = DateTime.UtcNow;
+                        if (YamlIsArray(input))
+                        {
+                            stubs = YamlUtilities.Parse<List<StubModel>>(input);
+                        }
+                        else
+                        {
+                            stubs = new[] {YamlUtilities.Parse<StubModel>(input)};
+                        }
+
+                        EnsureStubsHaveId(stubs);
+                        result.AddRange(stubs);
+                        _stubLoadDateTime = DateTime.UtcNow;
+                    }
+                    catch (YamlException ex)
+                    {
+                        _logger.LogWarning(ex, $"Error occurred while parsing YAML file '{file}'");
+                    }
                 }
 
                 _stubs = result;
@@ -104,7 +117,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.FromResult(_stubs);
         }
 
-        public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync()  =>
+        public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
             (await GetStubsAsync())
             .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant})
             .ToArray();
