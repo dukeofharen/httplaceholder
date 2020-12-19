@@ -110,9 +110,35 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
 
             // assert
             var ids = result.Select(s => s.Id).ToArray();
+            Assert.AreEqual(3, ids.Length);
             Assert.AreEqual("situation-01", ids[0]);
             Assert.AreEqual("situation-02", ids[1]);
             Assert.AreEqual("situation-post-01", ids[2]);
+        }
+
+        [TestMethod]
+        public async Task YamlFileStubSource_GetStubsAsync_OneYamlFileIsInvalid_ShouldContinueAnyway()
+        {
+            // arrange
+            var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
+            _options.Value.Storage.InputFile = string.Join(",", files);
+
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(files[0]))
+                .Returns(TestResources.YamlFile1);
+
+            _fileServiceMock
+                .Setup(m => m.ReadAllText(files[1]))
+                .Returns("THIS IS INVALID YAML!");
+
+            // act
+            var result = await _source.GetStubsAsync();
+
+            // assert
+            var ids = result.Select(s => s.Id).ToArray();
+            Assert.AreEqual(2, ids.Length);
+            Assert.AreEqual("situation-01", ids[0]);
+            Assert.AreEqual("situation-02", ids[1]);
         }
 
         [TestMethod]
