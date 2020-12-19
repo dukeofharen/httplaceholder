@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+
 // ReSharper disable UnusedMember.Global
 
 namespace HttPlaceholder.Common
@@ -28,6 +30,8 @@ namespace HttPlaceholder.Common
         bool IsDirectory(string path);
 
         string[] GetFiles(string path, string searchPattern);
+
+        string[] GetFiles(string path, IEnumerable<string> allowedFileExtensions);
 
         string GetCurrentDirectory();
 

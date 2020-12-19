@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Infrastructure.Implementations
@@ -29,6 +31,11 @@ namespace HttPlaceholder.Infrastructure.Implementations
         public bool IsDirectory(string path) => (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
 
         public string[] GetFiles(string path, string searchPattern) => Directory.GetFiles(path, searchPattern);
+
+        public string[] GetFiles(string path, IEnumerable<string> allowedFileExtensions) =>
+            Directory.GetFiles(path)
+                .Where(f => allowedFileExtensions.Any(e => f.ToLower().EndsWith(e)))
+                .ToArray();
 
         public string GetCurrentDirectory() => Directory.GetCurrentDirectory();
 
