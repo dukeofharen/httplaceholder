@@ -104,9 +104,6 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                     catch (YamlException ex)
                     {
                         _logger.LogWarning(ex, $"Error occurred while parsing YAML file '{file}'");
-#if DEBUG
-                        throw;
-#endif
                     }
                 }
 

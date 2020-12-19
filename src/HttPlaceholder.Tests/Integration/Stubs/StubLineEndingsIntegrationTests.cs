@@ -37,7 +37,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
 
             // Assert
             var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("text\r\nwith\r\nunix\r\nline\r\nendings\r\n", content);
+            Assert.AreEqual("text\r\nwith\r\nwindows\r\nline\r\nendings\r\n", content);
         }
     }
 }
