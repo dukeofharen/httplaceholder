@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using YamlDotNet.Core;
-using Constants = HttPlaceholder.Configuration.Constants;
+using Constants = HttPlaceholder.Domain.Constants;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
