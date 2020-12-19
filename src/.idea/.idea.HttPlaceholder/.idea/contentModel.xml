@@ -1246,6 +1246,7 @@
             <e p="StubHttpsIntegrationTests.cs" t="Include" />
             <e p="StubIntegrationTestBase.cs" t="Include" />
             <e p="StubJsonPathConditionsIntegrationTests.cs" t="Include" />
+            <e p="StubLineEndingsIntegrationTests.cs" t="Include" />
             <e p="StubPostBodyConditionsIntegrationTests.cs" t="Include" />
             <e p="StubProxyIntegrationTests.cs" t="Include" />
             <e p="StubRedirectionIntegrationTests.cs" t="Include" />
