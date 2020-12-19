@@ -31,7 +31,7 @@ namespace HttPlaceholder.Persistence.Implementations
             var inputFile = _settings.Storage?.InputFile;
             if (inputFile != null)
             {
-                return inputFile.Split(new[] {"%%"}, StringSplitOptions.RemoveEmptyEntries)
+                return inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
                     .Select(f => _fileService.IsDirectory(f) ? f : Path.GetDirectoryName(f))
                     .ToArray();
             }

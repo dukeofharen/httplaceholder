@@ -73,14 +73,16 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             Assert.AreEqual(inputFilePath, result[0]);
         }
 
-        [TestMethod]
-        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths()
+        [DataTestMethod]
+        [DataRow(",")]
+        [DataRow("%%")]
+        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths(string separator)
         {
             // arrange
             var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             var path1 = isWindows ? @"C:\stubs1" : "/opt/httplaceholder/stubs1";
             var path2 = isWindows ? @"C:\stubs2\stub.yml" : "/opt/httplaceholder/stubs2/stub.yml";
-            var inputFilePath = $"{path1}%%{path2}";
+            var inputFilePath = $"{path1}{separator}{path2}";
 
             _options.Value.Storage.InputFile = inputFilePath;
 
