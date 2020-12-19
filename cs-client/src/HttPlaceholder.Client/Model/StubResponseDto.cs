@@ -26,7 +26,7 @@ using OpenAPIDateConverter = HttPlaceholder.Client.Client.OpenAPIDateConverter;
 namespace HttPlaceholder.Client.Model
 {
     /// <summary>
-    /// A model for storing all possible response paramaters for a stub.
+    /// A model for storing all possible response parameters for a stub.
     /// </summary>
     [DataContract]
     public partial class StubResponseDto :  IEquatable<StubResponseDto>, IValidatableObject
@@ -47,7 +47,8 @@ namespace HttPlaceholder.Client.Model
         /// <param name="temporaryRedirect">Gets or sets the temporary redirect..</param>
         /// <param name="permanentRedirect">Gets or sets the permanent redirect..</param>
         /// <param name="reverseProxy">Gets or sets the reverse proxy settings..</param>
-        public StubResponseDto(bool? enableDynamicMode = default(bool?), int? statusCode = default(int?), string text = default(string), string base64 = default(string), string file = default(string), Dictionary<string, string> headers = default(Dictionary<string, string>), int? extraDuration = default(int?), string json = default(string), string xml = default(string), string html = default(string), string temporaryRedirect = default(string), string permanentRedirect = default(string), StubResponseReverseProxyDto reverseProxy = default(StubResponseReverseProxyDto))
+        /// <param name="lineEndings">Gets or sets the line endings type..</param>
+        public StubResponseDto(bool? enableDynamicMode = default(bool?), int? statusCode = default(int?), string text = default(string), string base64 = default(string), string file = default(string), Dictionary<string, string> headers = default(Dictionary<string, string>), int? extraDuration = default(int?), string json = default(string), string xml = default(string), string html = default(string), string temporaryRedirect = default(string), string permanentRedirect = default(string), StubResponseReverseProxyDto reverseProxy = default(StubResponseReverseProxyDto), string lineEndings = default(string))
         {
             this.EnableDynamicMode = enableDynamicMode;
             this.StatusCode = statusCode;
@@ -62,6 +63,7 @@ namespace HttPlaceholder.Client.Model
             this.TemporaryRedirect = temporaryRedirect;
             this.PermanentRedirect = permanentRedirect;
             this.ReverseProxy = reverseProxy;
+            this.LineEndings = lineEndings;
         }
         
         /// <summary>
@@ -156,6 +158,13 @@ namespace HttPlaceholder.Client.Model
         public StubResponseReverseProxyDto ReverseProxy { get; set; }
 
         /// <summary>
+        /// Gets or sets the line endings type.
+        /// </summary>
+        /// <value>Gets or sets the line endings type.</value>
+        [DataMember(Name="lineEndings", EmitDefaultValue=true)]
+        public string LineEndings { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -176,6 +185,7 @@ namespace HttPlaceholder.Client.Model
             sb.Append("  TemporaryRedirect: ").Append(TemporaryRedirect).Append("\n");
             sb.Append("  PermanentRedirect: ").Append(PermanentRedirect).Append("\n");
             sb.Append("  ReverseProxy: ").Append(ReverseProxy).Append("\n");
+            sb.Append("  LineEndings: ").Append(LineEndings).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -275,6 +285,11 @@ namespace HttPlaceholder.Client.Model
                     this.ReverseProxy == input.ReverseProxy ||
                     (this.ReverseProxy != null &&
                     this.ReverseProxy.Equals(input.ReverseProxy))
+                ) && 
+                (
+                    this.LineEndings == input.LineEndings ||
+                    (this.LineEndings != null &&
+                    this.LineEndings.Equals(input.LineEndings))
                 );
         }
 
@@ -313,6 +328,8 @@ namespace HttPlaceholder.Client.Model
                     hashCode = hashCode * 59 + this.PermanentRedirect.GetHashCode();
                 if (this.ReverseProxy != null)
                     hashCode = hashCode * 59 + this.ReverseProxy.GetHashCode();
+                if (this.LineEndings != null)
+                    hashCode = hashCode * 59 + this.LineEndings.GetHashCode();
                 return hashCode;
             }
         }
