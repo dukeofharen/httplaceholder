@@ -23,7 +23,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
 
             // Assert
             var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("text\nwith\nunix\nline\nendings", content);
+            Assert.AreEqual("text\nwith\nunix\nline\nendings\n", content);
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
 
             // Assert
             var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("text\r\nwith\r\nunix\r\nline\r\nendings", content);
+            Assert.AreEqual("text\r\nwith\r\nunix\r\nline\r\nendings\r\n", content);
         }
     }
 }

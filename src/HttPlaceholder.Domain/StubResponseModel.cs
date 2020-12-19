@@ -5,7 +5,7 @@ using YamlDotNet.Serialization;
 namespace HttPlaceholder.Domain
 {
     /// <summary>
-    /// A model for storing all possible response paramaters for a stub.
+    /// A model for storing all possible response parameters for a stub.
     /// </summary>
     public class StubResponseModel
     {

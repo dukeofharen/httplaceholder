@@ -800,7 +800,7 @@
               <e p="HeadersResponseWriter.cs" t="Include" />
               <e p="HtmlResponseWriter.cs" t="Include" />
               <e p="JsonResponseWriter.cs" t="Include" />
-              <e p="LineEndingWriter.cs" t="Include" />
+              <e p="LineEndingResponseWriter.cs" t="Include" />
               <e p="RedirectResponseWriter.cs" t="Include" />
               <e p="ReverseProxyResponseWriter.cs" t="Include" />
               <e p="StatusCodeResponseWriter.cs" t="Include" />
@@ -949,6 +949,7 @@
             <e p="HeadersResponseWriterFacts.cs" t="Include" />
             <e p="HtmResponseWriterFacts.cs" t="Include" />
             <e p="JsonResponseWriterFacts.cs" t="Include" />
+            <e p="LineEndingResponseWriterFacts.cs" t="Include" />
             <e p="RedirectResponseWriterFacts.cs" t="Include" />
             <e p="ReverseProxyResponseWriterFacts.cs" t="Include" />
             <e p="StatusCodeResponseWriterFacts.cs" t="Include" />

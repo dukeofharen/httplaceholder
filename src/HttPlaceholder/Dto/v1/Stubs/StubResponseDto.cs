@@ -10,7 +10,7 @@ using YamlDotNet.Serialization;
 namespace HttPlaceholder.Dto.v1.Stubs
 {
     /// <summary>
-    /// A model for storing all possible response paramaters for a stub.
+    /// A model for storing all possible response parameters for a stub.
     /// </summary>
     public class StubResponseDto : IMapFrom<StubResponseModel>, IMapTo<StubResponseModel>
     {
