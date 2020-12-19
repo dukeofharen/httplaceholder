@@ -76,7 +76,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                 {
                     // Load the stubs.
                     var input = _fileService.ReadAllText(file);
-                    _logger.LogInformation($"File contents of '{file}': '{input}'");
+                    _logger.LogInformation($"Parsing .yml file '{file}'.");
+                    _logger.LogDebug($"File contents of '{file}': '{input}'");
 
                     IEnumerable<StubModel> stubs;
 
