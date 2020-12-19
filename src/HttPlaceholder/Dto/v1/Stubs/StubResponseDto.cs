@@ -96,6 +96,6 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// Gets or sets the line endings type.
         /// </summary>
         [YamlMember(Alias = "lineEndings")]
-        public LineEndingType LineEndings { get; set; }
+        public LineEndingType? LineEndings { get; set; }
     }
 }
