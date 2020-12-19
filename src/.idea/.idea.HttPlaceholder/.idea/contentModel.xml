@@ -800,6 +800,7 @@
               <e p="HeadersResponseWriter.cs" t="Include" />
               <e p="HtmlResponseWriter.cs" t="Include" />
               <e p="JsonResponseWriter.cs" t="Include" />
+              <e p="LineEndingWriter.cs" t="Include" />
               <e p="RedirectResponseWriter.cs" t="Include" />
               <e p="ReverseProxyResponseWriter.cs" t="Include" />
               <e p="StatusCodeResponseWriter.cs" t="Include" />
@@ -993,7 +994,6 @@
           <e p="ReflectionUtilities.cs" t="Include" />
           <e p="StringHelper.cs" t="Include" />
           <e p="XmlUtilities.cs" t="Include" />
-          <e p="YamlUtilities.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
@@ -1145,6 +1145,9 @@
         <e p="PersistenceModule.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
+        </e>
+        <e p="Utilities" t="Include">
+          <e p="YamlUtilities.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">

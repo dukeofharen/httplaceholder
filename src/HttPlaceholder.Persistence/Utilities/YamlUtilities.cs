@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using YamlDotNet.Serialization;
 
-namespace HttPlaceholder.Common.Utilities
+namespace HttPlaceholder.Persistence.Utilities
 {
     public static class YamlUtilities
     {

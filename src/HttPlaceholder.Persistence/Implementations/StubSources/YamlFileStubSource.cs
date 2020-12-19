@@ -7,6 +7,7 @@ using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Persistence.Utilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -104,6 +105,9 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                     catch (YamlException ex)
                     {
                         _logger.LogWarning(ex, $"Error occurred while parsing YAML file '{file}'");
+#if DEBUG
+                        throw;
+#endif
                     }
                 }
 
