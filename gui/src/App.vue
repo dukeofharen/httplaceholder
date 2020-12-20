@@ -91,11 +91,13 @@ import { getDarkThemeEnabled } from "@/utils/sessionUtil";
 
 export default {
   name: "app",
+  beforeMount() {
+    this.setTheme();
+  },
   async created() {
     this.metadata = await this.$store.dispatch("metadata/getMetadata");
     document.title = `HttPlaceholder - v${this.metadata.version}`;
 
-    this.setTheme();
     if (!this.authenticated) {
       this.authRequired = await this.$store.dispatch("users/ensureAuthenticated");
     }
