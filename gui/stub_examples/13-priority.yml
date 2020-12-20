@@ -1,9 +1,0 @@
-id: 13-fallback
-tenant: 13-fallback
-description: Simple fallback scenario with a very low priority
-priority: -10
-conditions: 
-  method: GET
-response:
-  statusCode: 200
-  text: OK-Fallback

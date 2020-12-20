@@ -14,22 +14,10 @@
         </v-card-text>
       </v-card>
       <v-card class="editor">
-        <v-card-text v-if="newStub">
+        <v-card-text>
           <v-row>
             <v-col>
-              You can also select an example from the list below.
-              <br/>
-              <strong>WARNING</strong> The stub in the textbox below will be
-              overwritten!
-              <v-select
-                :items="stubExamples"
-                placeholder="Select a stub example..."
-                v-model="selectedStubExample"
-                item-text="name"
-                item-value="key"
-                @change="stubExampleSelected"
-                clearable
-              ></v-select>
+
             </v-col>
           </v-row>
         </v-card-text>
@@ -45,7 +33,6 @@
 <script>
 import {codemirror} from "vue-codemirror";
 import yaml from "js-yaml";
-import stubExamples from "@/stub_examples.json";
 import {toastError, toastSuccess} from "@/utils/toastUtil";
 import {resources} from "@/shared/resources";
 import {routeNames} from "@/router/routerConstants";
@@ -56,8 +43,6 @@ export default {
     return {
       stubId: null,
       input: "",
-      selectedStubExample: {},
-      stubExamples: stubExamples,
       cmOptions: {
         tabSize: 4,
         mode: "text/x-yaml",
@@ -139,13 +124,6 @@ export default {
             toastError(e);
           }
         }
-      }
-    },
-    stubExampleSelected(key) {
-      if (key !== "empty") {
-        let stub = this.stubExamples.find(e => e.key === key);
-        this.selectedStubExample = stub;
-        this.input = stub.stub;
       }
     }
   }

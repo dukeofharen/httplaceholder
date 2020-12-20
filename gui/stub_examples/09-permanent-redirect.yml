@@ -1,9 +1,0 @@
-id: 09-permanent-redirect
-tenant: 09-permanent-redirect
-description: Simple stub that performs a permanentredirect
-conditions:
-  method: GET
-  url:
-    path: /temp-redirect
-response:
-  permanentRedirect: https://google.com
