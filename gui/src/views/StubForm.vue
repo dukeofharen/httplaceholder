@@ -69,11 +69,12 @@ export default {
   components: {
     codemirror
   },
-  async mounted() {
+  created() {
     if (this.darkTheme) {
       this.cmOptions.theme = "material-darker";
     }
-
+  },
+  async mounted() {
     const stubId = this.$route.params.stubId;
     if (stubId) {
       this.stubId = stubId;

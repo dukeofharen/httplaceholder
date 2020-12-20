@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="HttPlaceholder (default)" type="DotNetProject" factoryName=".NET Project">
+  <configuration default="false" name="HttPlaceholder (authentication)" type="DotNetProject" factoryName=".NET Project">
     <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net5.0/HttPlaceholder.dll" />
-    <option name="PROGRAM_PARAMETERS" value="-V" />
+    <option name="PROGRAM_PARAMETERS" value="--inputfile $PROJECT_DIR$/../docs/samples --apiUsername duco --apiPassword duco" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
-    <option name="PASS_PARENT_ENVS" value="1" />
+    <option name="PASS_PARENT_ENVS" value="0" />
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
     <option name="USE_MONO" value="0" />
     <option name="RUNTIME_ARGUMENTS" value="" />
