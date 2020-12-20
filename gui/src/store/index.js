@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import { getUserToken } from "@/utils/sessionUtil";
 
 import metadata from "@/store/modules/metadata";
+import requests from "@/store/modules/requests";
 
 Vue.use(Vuex);
 
@@ -17,6 +18,7 @@ const state = {
 
 export default new Vuex.Store({
   modules: {
-    metadata
+    metadata,
+    requests
   }
 });
