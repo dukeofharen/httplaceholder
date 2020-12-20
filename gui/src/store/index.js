@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { constructStore } from "@/store/storeConstructor";
 import { getUserToken } from "@/utils/sessionUtil";
+
+import metadata from "@/store/modules/metadata";
 
 Vue.use(Vuex);
 
@@ -14,4 +15,8 @@ const state = {
   metadata: null
 };
 
-export default new Vuex.Store(constructStore(state));
+export default new Vuex.Store({
+  modules: {
+    metadata
+  }
+});
