@@ -45,15 +45,12 @@
 import yaml from "js-yaml";
 import { resources } from "@/shared/resources";
 import { downloadBlob } from "@/utils/downloadHelper";
-import { actionNames } from "@/store/storeConstants";
 
 export default {
   name: "addStub",
   async created() {
-    const getStubsPromise = this.$store.dispatch(actionNames.getStubs);
-    const getTenantNamesPromise = this.$store.dispatch(
-      actionNames.getTenantNames
-    );
+    const getStubsPromise = this.$store.dispatch("stubs/getStubs");
+    const getTenantNamesPromise = this.$store.dispatch("tenants/getTenantNames");
     this.stubs = await getStubsPromise;
     this.tenantNames = await getTenantNamesPromise;
   },

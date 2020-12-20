@@ -28,7 +28,6 @@ import { codemirror } from "vue-codemirror";
 import yaml from "js-yaml";
 import { toastError, toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
-import { actionNames } from "@/store/storeConstants";
 
 export default {
   name: "updateStub",
@@ -48,7 +47,7 @@ export default {
       this.cmOptions.theme = "material-darker";
     }
 
-    const fullStub = await this.$store.dispatch(actionNames.getStub, {
+    const fullStub = await this.$store.dispatch("stubs/getStub", {
       stubId: this.$route.params.stubId
     });
     this.input = yaml.dump(fullStub.stub);
@@ -65,7 +64,7 @@ export default {
     async updateStub() {
       const stubId = this.$route.params.stubId;
       try {
-        await this.$store.dispatch(actionNames.updateStub, {
+        await this.$store.dispatch("stubs/updateStub", {
           input: this.input,
           stubId
         });

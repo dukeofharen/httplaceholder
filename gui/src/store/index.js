@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { getUserToken } from "@/utils/sessionUtil";
 
+import general from "@/store/modules/general";
 import metadata from "@/store/modules/metadata";
 import requests from "@/store/modules/requests";
 import stubs from "@/store/modules/stubs";
@@ -10,21 +10,13 @@ import users from "@/store/modules/users";
 
 Vue.use(Vuex);
 
-const token = getUserToken();
-const state = {
-  userToken: token || "",
-  settings: {
-    darkTheme: false
-  },
-  metadata: null
-};
-
 export default new Vuex.Store({
   modules: {
     metadata,
     requests,
     stubs,
     tenants,
-    users
+    users,
+    general
   }
 });

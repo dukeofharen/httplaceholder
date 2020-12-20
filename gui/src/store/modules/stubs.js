@@ -13,6 +13,14 @@ const actions = {
         .catch(error => reject(error))
     );
   },
+  getStubs() {
+    return new Promise((resolve, reject) =>
+      createInstance()
+        .get("ph-api/stubs")
+        .then(response => resolve(response.data))
+        .catch(error => reject(error))
+    );
+  },
   getStub({}, payload) {
     return new Promise((resolve, reject) =>
       createInstance()

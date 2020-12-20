@@ -32,7 +32,6 @@
 <script>
 import { toastError } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
-import { actionNames } from "@/store/storeConstants";
 import { routeNames } from "@/router/routerConstants";
 
 export default {
@@ -47,11 +46,11 @@ export default {
     async logIn() {
       if (this.username && this.password) {
         try {
-          await this.$store.dispatch(actionNames.authenticate, {
+          await this.$store.dispatch("users/authenticate", {
             username: this.username,
             password: this.password
           });
-          this.$router.push({ name: routeNames.requests });
+          await this.$router.push({name: routeNames.requests});
         } catch (e) {
           if (e.response.status === 401) {
             toastError(resources.credentialsIncorrect);

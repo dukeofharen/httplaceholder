@@ -87,20 +87,17 @@
 
 <script>
 import { routeNames } from "@/router/routerConstants";
-import { actionNames, mutationNames } from "@/store/storeConstants";
 import { getDarkThemeEnabled } from "@/utils/sessionUtil";
 
 export default {
   name: "app",
   async created() {
-    this.metadata = await this.$store.dispatch(actionNames.getMetadata);
+    this.metadata = await this.$store.dispatch("metadata/getMetadata");
     document.title = `HttPlaceholder - v${this.metadata.version}`;
 
     this.setTheme();
     if (!this.authenticated) {
-      this.authRequired = await this.$store.dispatch(
-        actionNames.ensureAuthenticated
-      );
+      this.authRequired = await this.$store.dispatch("users/ensureAuthenticated");
     }
   },
   data() {
@@ -120,13 +117,13 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.commit(mutationNames.userTokenMutation, null);
+      this.$store.commit("users/storeUserToken", null);
       this.$router.push({ name: routeNames.login });
     },
     setTheme() {
       const darkThemeEnabled = getDarkThemeEnabled();
       if (darkThemeEnabled) {
-        this.$store.commit(mutationNames.storeDarkTheme, darkThemeEnabled);
+        this.$store.commit("general/storeDarkTheme", darkThemeEnabled);
       }
     }
   },

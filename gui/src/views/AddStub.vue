@@ -51,7 +51,6 @@
 import { codemirror } from "vue-codemirror";
 import { resources } from "@/shared/resources";
 import stubExamples from "@/stub_examples.json";
-import { actionNames } from "@/store/storeConstants";
 import { toastError, toastSuccess } from "@/utils/toastUtil";
 
 export default {
@@ -95,7 +94,7 @@ export default {
     },
     async addStubsInternal(input) {
       try {
-        const results = await this.$store.dispatch(actionNames.addStubs, {
+        const results = await this.$store.dispatch("stubs/addStubs", {
           input
         });
         for (let result of results) {

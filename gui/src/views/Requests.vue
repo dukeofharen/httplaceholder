@@ -59,7 +59,6 @@
 <script>
 import Request from "@/components/Request";
 import { HubConnectionBuilder } from "@aspnet/signalr";
-import { actionNames } from "@/store/storeConstants";
 import { toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
 
@@ -110,12 +109,8 @@ export default {
   },
   methods: {
     async initialize() {
-      const getRequestsPromise = this.$store.dispatch(
-        actionNames.getRequestsOverview
-      );
-      const getTenantNamesPromise = this.$store.dispatch(
-        actionNames.getTenantNames
-      );
+      const getRequestsPromise = this.$store.dispatch("requests/getRequestsOverview");
+      const getTenantNamesPromise = this.$store.dispatch("tenants/getTenantNames");
       this.requests = await getRequestsPromise;
       this.tenantNames = await getTenantNamesPromise;
 
@@ -127,7 +122,7 @@ export default {
     },
     async deleteAllRequests() {
       this.deleteAllDialog = false;
-      await this.$store.dispatch(actionNames.clearRequests);
+      await this.$store.dispatch("requests/clearRequests");
       toastSuccess(resources.requestsDeletedSuccessfully);
       this.requests = [];
     },
