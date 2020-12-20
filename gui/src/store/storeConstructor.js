@@ -1,4 +1,3 @@
-import { getField, updateField } from "vuex-map-fields";
 
 const storeTypeEnum = {
   GETTER: 0,
@@ -92,7 +91,5 @@ export function constructStore(state) {
     }
   }
 
-  result.getters.getField = getField;
-  result.mutations.updateField = updateField;
   return result;
 }
