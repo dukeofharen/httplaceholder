@@ -109,10 +109,10 @@ export default {
   },
   computed: {
     authenticated() {
-      return this.$store.getters.getAuthenticated;
+      return this.$store.getters["users/getAuthenticated"];
     },
     darkTheme() {
-      return this.$store.getters.getDarkTheme;
+      return this.$store.getters["general/getDarkTheme"];
     }
   },
   methods: {

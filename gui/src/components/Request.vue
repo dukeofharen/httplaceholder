@@ -252,9 +252,6 @@ export default {
     Bool
   },
   computed: {
-    lastSelectedStub() {
-      return this.$store.getters.getLastSelectedStub;
-    },
     orderedStubExecutionResults() {
       const compare = a => {
         if (a.passed) return -1;

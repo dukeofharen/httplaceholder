@@ -15,7 +15,7 @@ export default {
     };
   },
   created() {
-    this.darkTheme = this.$store.getters.getDarkTheme;
+    this.darkTheme = this.$store.getters["general/getDarkTheme"];
   },
   watch: {
     darkTheme() {

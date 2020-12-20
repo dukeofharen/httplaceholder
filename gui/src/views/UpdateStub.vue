@@ -57,7 +57,7 @@ export default {
   },
   computed: {
     darkTheme() {
-      return this.$store.getters.getDarkTheme;
+      return this.$store.getters["general/getDarkTheme"];
     }
   },
   methods: {
