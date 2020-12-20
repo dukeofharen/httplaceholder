@@ -17,14 +17,14 @@ const resources = {
   requestNotFoundAnymore:
     "The request could not be found (anymore). Perhaps it's already cleaned up.",
   areYouSure: "Are you sure?",
-  defaultStub: `- id: unique-stub-id
-  description: A description for the stub.
-  conditions:
-    method: GET
-    url:
-      path: /stub
-  response:
-    text: OK!`,
+  defaultStub: `id: unique-stub-id
+description: A description for the stub.
+conditions:
+  method: GET
+  url:
+    path: /stub
+response:
+  text: OK!`,
   downloadStubsHeader:
     "# This .yml file was created with HttPlaceholder. For more information, go to http://httplaceholder.com."
 };
