@@ -30,22 +30,16 @@ export default new Router({
         import(/* webpackChunkName: "login" */ "@/views/Login.vue")
     },
     {
-      path: "/addStub",
-      name: routeNames.addStub,
-      component: () =>
-        import(/* webpackChunkName: "addStub" */ "@/views/AddStub.vue")
-    },
-    {
       path: "/uploadStub",
       name: routeNames.uploadStub,
       component: () =>
         import(/* webpackChunkName: "addStub" */ "@/views/UploadStub.vue")
     },
     {
-      path: "/updateStub/:stubId",
-      name: routeNames.updateStub,
+      path: "/stubForm/:stubId?",
+      name: routeNames.stubForm,
       component: () =>
-        import(/* webpackChunkName: "updateStub" */ "@/views/UpdateStub.vue")
+        import(/* webpackChunkName: "stubForm" */ "@/views/StubForm.vue")
     },
     {
       path: "/downloadStubs",

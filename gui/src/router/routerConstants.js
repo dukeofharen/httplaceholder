@@ -3,9 +3,8 @@ export const routeNames = {
   requests: "requests",
   stubs: "stubs",
   login: "login",
-  addStub: "addStub",
   uploadStub: "uploadStub",
-  updateStub: "updateStub",
+  stubForm: "stubForm",
   downloadStubs: "downloadStubs",
   settings: "settings"
 };

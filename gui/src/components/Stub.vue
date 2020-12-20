@@ -19,7 +19,7 @@
             color="success"
             v-if="!fullStub.metadata.readOnly"
             :to="{
-              name: routeNames.updateStub,
+              name: routeNames.stubForm,
               params: { stubId: this.fullStub.stub.id }
             }"
             >Update stub

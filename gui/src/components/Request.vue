@@ -295,8 +295,8 @@ export default {
         );
         const stub = fullStub.stub;
         toastSuccess(resources.stubAddedSuccessfully.format(stub.id));
-        this.$router.push({
-          name: routeNames.updateStub,
+        await this.$router.push({
+          name: routeNames.stubForm,
           params: { stubId: stub.id }
         });
       } catch (e) {
