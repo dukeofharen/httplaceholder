@@ -28,6 +28,13 @@ const mutations = {
       parsed.description = defaultValues.description;
       state.input = yaml.dump(parsed);
     }
+  },
+  setDefaultPriority(state) {
+    const parsed = parseInput(state);
+    if(parsed) {
+      parsed.priority = defaultValues.priority;
+      state.input = yaml.dump(parsed);
+    }
   }
 };
 

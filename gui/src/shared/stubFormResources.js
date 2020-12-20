@@ -325,7 +325,8 @@ const httpStatusCodes = [
 ];
 
 const defaultValues = {
-  description: "A description for the stub."
+  description: "A description for the stub.",
+  priority: 1
 }
 
 export {

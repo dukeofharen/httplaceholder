@@ -41,6 +41,11 @@ export default {
           title: "Description",
           subTitle: tooltipResources.description,
           onClick: this.setDescription
+        },
+        {
+          title: "Priority",
+          subTitle: tooltipResources.priority,
+          onClick: this.setPriority
         }
       ]
     };
@@ -48,6 +53,10 @@ export default {
   methods: {
     setDescription() {
       this.$store.commit("stubForm/setDefaultDescription");
+      this.showList = false;
+    },
+    setPriority() {
+      this.$store.commit("stubForm/setDefaultPriority");
       this.showList = false;
     }
   }
