@@ -14,6 +14,7 @@
               }}
             </v-list-item-title>
             <v-list-item-title :class="{bold: item.divider}" v-else>{{ item.title }}</v-list-item-title>
+            <v-list-item-subtitle v-if="item.subTitle">{{item.subTitle}}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -22,6 +23,8 @@
 </template>
 
 <script>
+import {tooltipResources} from "@/shared/stubFormResources";
+
 export default {
   mounted() {
 
@@ -36,6 +39,7 @@ export default {
         },
         {
           title: "Description",
+          subTitle: tooltipResources.description,
           onClick: this.setDescription
         }
       ]
