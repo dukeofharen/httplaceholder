@@ -2,7 +2,9 @@ import createInstance from "@/axios/axiosInstanceFactory";
 import yaml from "js-yaml";
 import {resources} from "@/shared/resources";
 
-const state = () => ({
+const state = () => ({});
+
+const actions = {
   getStubsOverview() {
     return new Promise((resolve, reject) =>
       createInstance()
@@ -114,9 +116,7 @@ const state = () => ({
         .catch(error => reject(error))
     );
   }
-});
-
-const actions = {};
+};
 
 const mutations = {};
 

@@ -1,6 +1,8 @@
 import createInstance from "@/axios/axiosInstanceFactory";
 
-const state = () => ({
+const state = () => ({});
+
+const actions = {
   getRequestsOverview() {
     return new Promise((resolve, reject) =>
       createInstance()
@@ -25,9 +27,7 @@ const state = () => ({
         .catch(error => reject(error))
     );
   }
-});
-
-const actions = {};
+};
 
 const mutations = {};
 
