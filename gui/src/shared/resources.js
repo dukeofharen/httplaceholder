@@ -26,7 +26,8 @@ conditions:
 response:
   text: OK!`,
   downloadStubsHeader:
-    "# This .yml file was created with HttPlaceholder. For more information, go to http://httplaceholder.com."
+    "# This .yml file was created with HttPlaceholder. For more information, go to http://httplaceholder.com.",
+  errorDuringParsingOfYaml: "Something went wrong while parsing the YAML: {0}"
 };
 
 const conditionValidationType = {

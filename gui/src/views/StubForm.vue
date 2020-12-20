@@ -13,14 +13,12 @@
           >.
         </v-card-text>
       </v-card>
-      <v-card class="editor">
+      <v-card>
         <v-card-text>
-          <v-row>
-            <v-col>
-
-            </v-col>
-          </v-row>
+          <FormHelperSelector/>
         </v-card-text>
+      </v-card>
+      <v-card class="editor">
         <v-card-actions>
           <codemirror v-model="input" :options="cmOptions"></codemirror>
         </v-card-actions>
@@ -36,13 +34,13 @@ import yaml from "js-yaml";
 import {toastError, toastSuccess} from "@/utils/toastUtil";
 import {resources} from "@/shared/resources";
 import {routeNames} from "@/router/routerConstants";
+import FormHelperSelector from "@/components/formHelpers/FormHelperSelector";
 
 export default {
   name: "stubForm",
   data() {
     return {
       stubId: null,
-      input: "",
       cmOptions: {
         tabSize: 4,
         mode: "text/x-yaml",
@@ -52,7 +50,8 @@ export default {
     };
   },
   components: {
-    codemirror
+    codemirror,
+    FormHelperSelector
   },
   created() {
     if (this.darkTheme) {
@@ -66,10 +65,12 @@ export default {
       const fullStub = await this.$store.dispatch("stubs/getStub", {
         stubId
       });
-      this.input = yaml.dump(fullStub.stub);
+      const input = yaml.dump(fullStub.stub);
+      await this.$store.commit("stubForm/setInput", input);
     } else {
       this.stubId = null;
-      this.input = resources.defaultStub;
+      const input = resources.defaultStub;
+      await this.$store.commit("stubForm/setInput", input);
     }
   },
   computed: {
@@ -81,6 +82,14 @@ export default {
     },
     title() {
       return this.newStub ? "Add stub(s)" : "Update stub";
+    },
+    input: {
+      get() {
+        return this.$store.getters["stubForm/getInput"];
+      },
+      set(value) {
+        this.$store.commit("stubForm/setInput", value);
+      }
     }
   },
   methods: {

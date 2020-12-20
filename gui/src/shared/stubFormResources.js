@@ -61,83 +61,6 @@ const tooltipResources = {
     "Whether the content returned by the proxy request should have its URLs replaced by the HttPlaceholder root URL. Both the response body and the HTTP headers will have its URLs replaced."
 };
 
-const formPlaceholderResources = {
-  urlPath: "e.g. '/users' or '^/users$' (regex)",
-  queryString: "id: 14\nfilter: last_name\napi_key: ^apikey1122$\n...",
-  fullPath: "e.g. '/users?filter=first_name'",
-  body: "first_name=duco\nid=14\n^somevalue$\n...",
-  formBody: "first_name: duco\nid: 14\naddress: Some street 1\n...",
-  xpath: "/object/a[text() = 'TEST']\n/object/b[text() = 'SomeValue']\n...",
-  xpathNamespaces:
-    "soap: http://www.w3.org/2003/05/soap-envelope\nm: http://www.example.org/stock/Reddy\n...",
-  jsonPath:
-    "$.phoneNumbers[?(@.type=='iPhone')]\n$.phoneNumbers[?(@.year=='2016')]\n...",
-  clientIp: "e.g. '127.0.0.1' or '127.0.0.0/29'",
-  hostname: "e.g. 'httplaceholder.com' or 'http(.*)' (regex)",
-  headers:
-    "Content-Type: text/plain\nX-Api-Key: bla123\nX-Some-Header: ^somevalue$\n...",
-  responseHeaders: "Content-Type: text/plain\nX-Api-Key: bla123\n...",
-  redirect: "e.g. 'https://reddit.com'",
-  reverseProxyUrl: "e.g. https://jsonplaceholder.typicode.com"
-};
-
-const formValidationMessages = {
-  queryStringIncorrect:
-    "You've filled in a value at 'Query strings', but the value could not be parsed. Make sure to fill in a correct value here.",
-  formBodyIncorrect:
-    "You've filled in a value at 'Form body', but the value could not be parsed. Make sure to fill in a correct value here.",
-  headersIncorrect:
-    "You've filled in a value at 'Headers', but the value could not be parsed. Make sure to fill in a correct value here.",
-  responseHeadersIncorrect:
-    "You've filled in a value at 'Response headers', but the value could not be parsed. Make sure to fill in a correct value here.",
-  priorityNotInteger: "Make sure the priority is numeric.",
-  xpathNotFilledIn:
-    "You filled in XML namespaces, but you didn't fill in any XPath expressions.",
-  basicAuthInvalid:
-    "Leave basic authentication username and password both empty or fill in both fields. You can't fill in only one field.",
-  fillInCorrectStatusCode: "Fill in a valid HTTP status code.",
-  extraDurationInvalid: "Make sure to fill in a valid extra duration.",
-  fillInOneTypeOfRedirect:
-    "You cannot fill in both permanent redirect and temporary redirect."
-};
-
-const formLabels = {
-  id: "ID",
-  tenant: "Stub tenant / category",
-  description: "Description",
-  priority: "Priority",
-  httpMethod: "HTTP method",
-  urlPath: "URL path",
-  queryString: "Query strings (1 on each line)",
-  fullPath: "Full path",
-  onlyHttps: "The request should be made over HTTPS",
-  onlyHttp: "The request should be made over HTTP",
-  httpAndHttps: "The request can be made over HTTP or HTTPS",
-  body: "Body",
-  formBody: "Form body",
-  xpath: "XPath expressions",
-  xpathNamespaces: "XML namespaces (optional)",
-  jsonPath: "JSONPath",
-  basicAuthUsername: "Basic authentication username",
-  basicAuthPassword: "Basic authentication password",
-  clientIp: "Client IP",
-  hostname: "Hostname",
-  headers: "Headers",
-  statusCode: "Status code",
-  responseBodyType: "Response body type",
-  responseBody: "Response body",
-  responseHeaders: "Response headers",
-  extraDuration: "Extra duration in milliseconds",
-  temporaryRedirect: "Temporary redirect (HTTP 301)",
-  permanentRedirect: "Permanent redirect (HTTP 307)",
-  enableDynamicMode: "Enable dynamic mode",
-  variableHandler: "Variable handler",
-  reverseProxyUrl: "Proxy URL",
-  appendQueryString: "Append request query string",
-  appendPath: "Append request path",
-  replaceRootUrl: "Replace proxy root URL in response"
-};
-
 const isHttpsValues = {
   onlyHttps: 0,
   onlyHttp: 1,
@@ -145,16 +68,6 @@ const isHttpsValues = {
 };
 
 const httpMethods = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"];
-
-const responseBodyTypes = {
-  text: "Text",
-  json: "JSON",
-  xml: "XML",
-  html: "HTML",
-  base64: "Base64 string",
-  custom: "Custom",
-  empty: "Empty body"
-};
 
 const httpStatusCodes = [
   {
@@ -411,13 +324,14 @@ const httpStatusCodes = [
   }
 ];
 
+const defaultValues = {
+  description: "A description for the stub."
+}
+
 export {
   tooltipResources,
-  formPlaceholderResources,
-  formValidationMessages,
-  formLabels,
   isHttpsValues,
   httpMethods,
   httpStatusCodes,
-  responseBodyTypes
+  defaultValues
 };
