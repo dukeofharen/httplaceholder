@@ -22,16 +22,7 @@
               name: routeNames.updateStub,
               params: { stubId: this.fullStub.stub.id }
             }"
-            >Update stub as YAML
-          </v-btn>
-          <v-btn
-            color="success"
-            v-if="!fullStub.metadata.readOnly"
-            :to="{
-              name: routeNames.stubForm,
-              params: { id: this.fullStub.stub.id }
-            }"
-            >Update stub with form
+            >Update stub
           </v-btn>
           <v-btn
             color="error"

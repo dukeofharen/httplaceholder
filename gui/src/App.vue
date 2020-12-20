@@ -30,15 +30,7 @@
               <v-icon>mdi-plus</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text"
-              >Add stubs (through yaml)</v-list-item-title
-            >
-          </v-list-item>
-          <v-list-item v-if="authenticated" :to="{ name: routeNames.stubForm }">
-            <v-list-item-action>
-              <v-icon>mdi-plus</v-icon>
-            </v-list-item-action>
-            <v-list-item-title class="grey--text"
-              >Add stubs (through form)</v-list-item-title
+              >Add stubs</v-list-item-title
             >
           </v-list-item>
           <v-list-item
