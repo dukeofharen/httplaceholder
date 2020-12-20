@@ -48,6 +48,7 @@ import yaml from "js-yaml";
 import stubExamples from "@/stub_examples.json";
 import {toastError, toastSuccess} from "@/utils/toastUtil";
 import {resources} from "@/shared/resources";
+import {routeNames} from "@/router/routerConstants";
 
 export default {
   name: "stubForm",
@@ -81,6 +82,7 @@ export default {
       });
       this.input = yaml.dump(fullStub.stub);
     } else {
+      this.stubId = null;
       this.input = resources.defaultStub;
     }
   },
@@ -111,6 +113,10 @@ export default {
               toastError(resources.stubNotAdded.format(result.e.stubId));
             }
           }
+          if (results.length === 1 && results[0].v) {
+            await this.$router.push({name: routeNames.stubForm, params: {stubId: results[0].v.stub.id}});
+          }
+
         } catch (e) {
           toastError(e);
         }

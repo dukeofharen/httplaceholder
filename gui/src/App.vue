@@ -79,7 +79,7 @@
 
     <v-main>
       <v-container fluid class="lighten-4">
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
       </v-container>
     </v-main>
   </v-app>
