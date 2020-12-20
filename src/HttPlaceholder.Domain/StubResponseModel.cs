@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using HttPlaceholder.Domain.Enums;
 using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Domain
 {
     /// <summary>
-    /// A model for storing all possible response paramaters for a stub.
+    /// A model for storing all possible response parameters for a stub.
     /// </summary>
     public class StubResponseModel
     {
@@ -85,5 +86,11 @@ namespace HttPlaceholder.Domain
         /// </summary>
         [YamlMember(Alias = "reverseProxy")]
         public StubResponseReverseProxyModel ReverseProxy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the line endings type.
+        /// </summary>
+        [YamlMember(Alias = "lineEndings")]
+        public string LineEndings { get; set; }
     }
 }

@@ -90,8 +90,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "02 Post",
@@ -133,8 +132,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "03 XML",
@@ -185,8 +183,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "04 JSON",
@@ -214,8 +211,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "05 Base64 - File",
@@ -250,8 +246,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "06 Basic authentication",
@@ -295,8 +290,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "07 Slow response",
@@ -328,8 +322,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "08 Redirect",
@@ -362,8 +355,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "09 Client IP",
@@ -396,8 +388,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "10 Hostname",
@@ -442,8 +433,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "11 Is HTTPS",
@@ -467,8 +457,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "12 Priority",
@@ -501,8 +490,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "13 Form",
@@ -546,8 +534,7 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "14 Dynamic mode",
@@ -605,9 +592,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "2 UUID",
@@ -627,9 +612,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "3 Request header",
@@ -656,9 +639,7 @@
 							"response": []
 						}
 					],
-					"description": "\t\t\t",
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					"description": "\t\t\t"
 				},
 				{
 					"name": "4 Form post",
@@ -689,9 +670,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "5 Request body",
@@ -715,9 +694,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "6 Display URL",
@@ -743,9 +720,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "7 Client IP",
@@ -765,9 +740,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "8 Current date and time",
@@ -802,12 +775,9 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "15 Reverse proxy",
@@ -890,8 +860,40 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
+		},
+		{
+			"name": "16 Enforce line endings",
+			"item": [
+				{
+					"name": "Enforce Unix line endings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}unix-line-endings",
+							"host": [
+								"{{rootUrl}}unix-line-endings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Enforce Windows line endings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}windows-line-endings",
+							"host": [
+								"{{rootUrl}}windows-line-endings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "REST API",
@@ -1056,9 +1058,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Stubs",
@@ -1417,9 +1417,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Metadata",
@@ -1441,9 +1439,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Tenants",
@@ -1593,9 +1589,7 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Users",
@@ -1633,19 +1627,15 @@
 							},
 							"response": []
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "c027dd98-00fd-411e-86bd-749dc30708eb",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1655,7 +1645,6 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "d381c577-17f1-4a79-846d-12cd74dbc25e",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -1665,10 +1654,8 @@
 	],
 	"variable": [
 		{
-			"id": "5642039a-fca9-4fde-98ee-be1850ff504c",
 			"key": "rootUrl",
 			"value": "http://localhost:5000/"
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

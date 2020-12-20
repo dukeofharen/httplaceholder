@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Configuration;
+using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Implementations

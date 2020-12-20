@@ -800,6 +800,7 @@
               <e p="HeadersResponseWriter.cs" t="Include" />
               <e p="HtmlResponseWriter.cs" t="Include" />
               <e p="JsonResponseWriter.cs" t="Include" />
+              <e p="LineEndingResponseWriter.cs" t="Include" />
               <e p="RedirectResponseWriter.cs" t="Include" />
               <e p="ReverseProxyResponseWriter.cs" t="Include" />
               <e p="StatusCodeResponseWriter.cs" t="Include" />
@@ -948,6 +949,7 @@
             <e p="HeadersResponseWriterFacts.cs" t="Include" />
             <e p="HtmResponseWriterFacts.cs" t="Include" />
             <e p="JsonResponseWriterFacts.cs" t="Include" />
+            <e p="LineEndingResponseWriterFacts.cs" t="Include" />
             <e p="RedirectResponseWriterFacts.cs" t="Include" />
             <e p="ReverseProxyResponseWriterFacts.cs" t="Include" />
             <e p="StatusCodeResponseWriterFacts.cs" t="Include" />
@@ -1011,7 +1013,6 @@
         <e p="AuthenticationSettingsModel.cs" t="Include" />
         <e p="ConfigKeys.cs" t="Include" />
         <e p="ConfigMetadataModel.cs" t="Include" />
-        <e p="Constants.cs" t="Include" />
         <e p="GuiSettingsModel.cs" t="Include" />
         <e p="HttPlaceholder.Configuration.csproj" t="IncludeRecursive" />
         <e p="SettingsModel.cs" t="Include" />
@@ -1045,6 +1046,7 @@
       </e>
       <e p="HttPlaceholder.Domain" t="IncludeRecursive">
         <e p="ConditionCheckResultModel.cs" t="Include" />
+        <e p="Constants.cs" t="Include" />
         <e p="Entities" t="Include">
           <e p="DbRequestModel.cs" t="Include" />
           <e p="DbStubModel.cs" t="Include" />
@@ -1246,6 +1248,7 @@
             <e p="StubHttpsIntegrationTests.cs" t="Include" />
             <e p="StubIntegrationTestBase.cs" t="Include" />
             <e p="StubJsonPathConditionsIntegrationTests.cs" t="Include" />
+            <e p="StubLineEndingsIntegrationTests.cs" t="Include" />
             <e p="StubPostBodyConditionsIntegrationTests.cs" t="Include" />
             <e p="StubProxyIntegrationTests.cs" t="Include" />
             <e p="StubRedirectionIntegrationTests.cs" t="Include" />

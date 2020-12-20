@@ -29,7 +29,7 @@ namespace HttPlaceholder.Client.Model
     /// ProblemDetails
     /// </summary>
     [DataContract]
-    public partial class ProblemDetails :  IEquatable<ProblemDetails>, IValidatableObject
+    public partial class ProblemDetails : Dictionary<String, object>,  IEquatable<ProblemDetails>, IValidatableObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ProblemDetails" /> class.
@@ -40,7 +40,7 @@ namespace HttPlaceholder.Client.Model
         /// <param name="detail">detail.</param>
         /// <param name="instance">instance.</param>
         /// <param name="extensions">extensions.</param>
-        public ProblemDetails(string type = default(string), string title = default(string), int? status = default(int?), string detail = default(string), string instance = default(string), Dictionary<string, object> extensions = default(Dictionary<string, object>))
+        public ProblemDetails(string type = default(string), string title = default(string), int? status = default(int?), string detail = default(string), string instance = default(string), Dictionary<string, object> extensions = default(Dictionary<string, object>)) : base()
         {
             this.Type = type;
             this.Title = title;
@@ -94,6 +94,7 @@ namespace HttPlaceholder.Client.Model
         {
             var sb = new StringBuilder();
             sb.Append("class ProblemDetails {\n");
+            sb.Append("  ").Append(base.ToString().Replace("\n", "\n  ")).Append("\n");
             sb.Append("  Type: ").Append(Type).Append("\n");
             sb.Append("  Title: ").Append(Title).Append("\n");
             sb.Append("  Status: ").Append(Status).Append("\n");
@@ -108,7 +109,7 @@ namespace HttPlaceholder.Client.Model
         /// Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
-        public virtual string ToJson()
+        public string ToJson()
         {
             return JsonConvert.SerializeObject(this, Formatting.Indented);
         }
@@ -133,32 +134,32 @@ namespace HttPlaceholder.Client.Model
             if (input == null)
                 return false;
 
-            return 
+            return base.Equals(input) && 
                 (
                     this.Type == input.Type ||
                     (this.Type != null &&
                     this.Type.Equals(input.Type))
-                ) && 
+                ) && base.Equals(input) && 
                 (
                     this.Title == input.Title ||
                     (this.Title != null &&
                     this.Title.Equals(input.Title))
-                ) && 
+                ) && base.Equals(input) && 
                 (
                     this.Status == input.Status ||
                     (this.Status != null &&
                     this.Status.Equals(input.Status))
-                ) && 
+                ) && base.Equals(input) && 
                 (
                     this.Detail == input.Detail ||
                     (this.Detail != null &&
                     this.Detail.Equals(input.Detail))
-                ) && 
+                ) && base.Equals(input) && 
                 (
                     this.Instance == input.Instance ||
                     (this.Instance != null &&
                     this.Instance.Equals(input.Instance))
-                ) && 
+                ) && base.Equals(input) && 
                 (
                     this.Extensions == input.Extensions ||
                     this.Extensions != null &&
@@ -175,7 +176,7 @@ namespace HttPlaceholder.Client.Model
         {
             unchecked // Overflow is fine, just wrap
             {
-                int hashCode = 41;
+                int hashCode = base.GetHashCode();
                 if (this.Type != null)
                     hashCode = hashCode * 59 + this.Type.GetHashCode();
                 if (this.Title != null)

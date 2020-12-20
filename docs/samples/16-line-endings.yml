@@ -1,0 +1,28 @@
+# Enforce Windows or Unix line endings for your stub.
+- id: line-endings-all-unix
+  conditions:
+    method: GET
+    url:
+      path: /unix-line-endings
+  response:
+    lineEndings: unix
+    text: |
+      text
+      with
+      unix
+      line
+      endings
+
+- id: line-endings-all-windows
+  conditions:
+    method: GET
+    url:
+      path: /windows-line-endings
+  response:
+    lineEndings: windows
+    text: |
+      text
+      with
+      windows
+      line
+      endings

@@ -364,6 +364,34 @@
       appendQueryString: true
       replaceRootUrl: true
 
+- id: line-endings-all-unix
+  conditions:
+    method: GET
+    url:
+      path: /unix-line-endings
+  response:
+    lineEndings: unix
+    text: |
+      text
+      with
+      unix
+      line
+      endings
+
+- id: line-endings-all-windows
+  conditions:
+    method: GET
+    url:
+      path: /windows-line-endings
+  response:
+    lineEndings: windows
+    text: |
+      text
+      with
+      windows
+      line
+      endings
+
 - id: file
   conditions:
     method: GET

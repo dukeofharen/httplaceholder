@@ -214,6 +214,46 @@ The permanent and temporary redirect response writers are short hands for defini
     permanentRedirect: https://reddit.com
 ```
 
+## Update line endings
+
+In some cases, you might want to enforce which types of line endings are returned. Some software might only react correctly on Windows or Unix line endings. Besides that, GIT might change the line endings when you commit your stub file, so it is not always clear what the actual line endings are. For setting the line endings specifically, the `lineEndings` response writer was introduced. The supported values are `unix` and `windows`. Here are 2 examples:
+
+*Enforce Unix line endings*
+
+```yml
+- id: line-endings-all-unix
+  conditions:
+    method: GET
+    url:
+      path: /unix-line-endings
+  response:
+    lineEndings: unix
+    text: |
+      text
+      with
+      unix
+      line
+      endings
+```
+
+*Enforce Windows line endings*
+
+```yml
+- id: line-endings-all-windows
+  conditions:
+    method: GET
+    url:
+      path: /windows-line-endings
+  response:
+    lineEndings: windows
+    text: |
+      text
+      with
+      windows
+      line
+      endings
+```
+
 ## Dynamic mode
 
 In order to make the responses in HttPlaceholder a bit more dynamic, the "dynamic mode" was introduced. This makes it possible to add variables to your responses that can be parsed. As of now, these variables can be used in the response body (text only) and the response headers. The only requirement is that you set the response variable `enableDynamicMode` to true (by default, it is set to false and the variables will not be parsed).

@@ -1,5 +1,5 @@
 # HttPlaceholder.Client.Model.StubResponseDto
-A model for storing all possible response paramaters for a stub.
+A model for storing all possible response parameters for a stub.
 ## Properties
 
 Name | Type | Description | Notes
@@ -17,6 +17,7 @@ Name | Type | Description | Notes
 **TemporaryRedirect** | **string** | Gets or sets the temporary redirect. | [optional] 
 **PermanentRedirect** | **string** | Gets or sets the permanent redirect. | [optional] 
 **ReverseProxy** | [**StubResponseReverseProxyDto**](StubResponseReverseProxyDto.md) | Gets or sets the reverse proxy settings. | [optional] 
+**LineEndings** | **string** | Gets or sets the line endings type. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
