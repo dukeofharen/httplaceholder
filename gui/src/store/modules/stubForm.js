@@ -101,7 +101,14 @@ const mutations = {
           parsed.conditions.url = {};
         }
 
-        parsed.conditions.url.query = defaultValues.query;
+        let queryResult = parsed.conditions.url.query;
+        if (!queryResult) {
+          queryResult = defaultValues.query;
+        } else {
+          queryResult = {...queryResult, ...defaultValues.query};
+        }
+
+        parsed.conditions.url.query = queryResult;
         state.input = yaml.dump(parsed);
       }
     });
