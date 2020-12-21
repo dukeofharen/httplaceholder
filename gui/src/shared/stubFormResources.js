@@ -327,12 +327,17 @@ const httpStatusCodes = [
 const defaultValues = {
   description: "A description for the stub.",
   priority: 1
-}
+};
+
+const formHelperKeys = {
+  httpMethod: "httpMethod"
+};
 
 export {
   tooltipResources,
   isHttpsValues,
   httpMethods,
   httpStatusCodes,
-  defaultValues
+  defaultValues,
+  formHelperKeys
 };

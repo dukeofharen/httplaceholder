@@ -6,14 +6,15 @@ import {defaultValues} from "@/shared/stubFormResources";
 const parseInput = state => {
   try {
     return yaml.load(state.input);
-  } catch(e) {
+  } catch (e) {
     toastError(resources.errorDuringParsingOfYaml.format(e));
     return null;
   }
 };
 
 const state = () => ({
-  input: ""
+  input: "",
+  currentSelectedFormHelper: ""
 });
 
 const actions = {};
@@ -22,16 +23,19 @@ const mutations = {
   setInput(state, input) {
     state.input = input;
   },
+  openFormHelper(state, key) {
+    state.currentSelectedFormHelper = key;
+  },
   setDefaultDescription(state) {
     const parsed = parseInput(state);
-    if(parsed) {
+    if (parsed) {
       parsed.description = defaultValues.description;
       state.input = yaml.dump(parsed);
     }
   },
   setDefaultPriority(state) {
     const parsed = parseInput(state);
-    if(parsed) {
+    if (parsed) {
       parsed.priority = defaultValues.priority;
       state.input = yaml.dump(parsed);
     }
@@ -41,6 +45,9 @@ const mutations = {
 const getters = {
   getInput(state) {
     return state.input;
+  },
+  getCurrentSelectedFormHelper(state) {
+    return state.currentSelectedFormHelper;
   }
 };
 
