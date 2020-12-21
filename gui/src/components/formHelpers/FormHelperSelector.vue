@@ -73,7 +73,12 @@ export default {
         {
           title: "URL path",
           subTitle: tooltipResources.urlPath,
-          onClick: () => this.setDefaultValue("stubForm/setDefaultPriority")
+          onClick: () => this.setDefaultValue("stubForm/setDefaultPath")
+        },
+        {
+          title: "Full path",
+          subTitle: tooltipResources.fullPath,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultFullPath")
         }
       ]
     };

@@ -21,8 +21,6 @@ const resources = {
 description: A description for the stub.
 conditions:
   method: GET
-  url:
-    path: /stub
 response:
   text: OK!`,
   downloadStubsHeader:
