@@ -325,6 +325,25 @@ const mutations = {
         state.input = yaml.dump(parsed);
       }
     });
+  },
+  setResponseContentType(state, contentType) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        if (!parsed.response.headers) {
+          parsed.response.headers = {};
+        }
+
+        const key = Object.keys(parsed.response.headers).find(k => k.toLowerCase().trim() === "content-type");
+        delete parsed.response.headers[key];
+        parsed.response.headers['Content-Type'] = contentType;
+        state.input = yaml.dump(parsed);
+      }
+    });
   }
 };
 
@@ -359,7 +378,6 @@ const getters = {
         }
 
         const res = parsed.response;
-        console.log(res);
         if (res.text) {
           return responseBodyTypes.text;
         } else if (res.json) {

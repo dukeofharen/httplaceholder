@@ -15,6 +15,20 @@
           label="Select a response type..."/>
       </v-col>
     </v-row>
+    <v-row v-if="responseBodyType === responseBodyTypes.base64">
+      <v-col cols="12">
+        <input
+          type="file"
+          name="file"
+          ref="base64Upload"
+          @change="upload"
+        />
+        <p>
+          You can upload a file for use in the Base64 response.
+        </p>
+        <v-btn color="primary" @click="uploadClick">Upload a file</v-btn>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col cols="12">
         <v-textarea label="Fill in the response..." v-model="responseBody"></v-textarea>
@@ -55,6 +69,25 @@ export default {
     },
     close() {
       this.$store.commit("stubForm/closeFormHelper");
+    },
+    uploadClick() {
+      this.$refs.base64Upload.click();
+    },
+    upload(ev) {
+      const files = Array.from(ev.target.files);
+      const file = files[0];
+      const reader = new FileReader();
+      const regex = /^data:(.+);base64,(.*)$/;
+      reader.onload = e => {
+        const matches = e.target.result.match(regex);
+        const contentType = matches[1];
+        const body = matches[2];
+        this.$store.commit("stubForm/setResponseContentType", contentType);
+        this.$store.commit("stubForm/setResponseBody", {type: responseBodyTypes.base64, body});
+        this.responseBody = body;
+        this.$store.commit("stubForm/closeFormHelper");
+      };
+      reader.readAsDataURL(file);
     }
   }
 };
@@ -63,5 +96,9 @@ export default {
 <style scoped>
 .form {
   margin-left: 20px;
+}
+
+input[type="file"] {
+  display: none;
 }
 </style>
