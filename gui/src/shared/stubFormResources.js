@@ -354,7 +354,8 @@ const defaultValues = {
       key: "key2",
       value: "val2"
     }
-  ]
+  ],
+  clientIp: "127.0.0.1"
 };
 
 const formHelperKeys = {

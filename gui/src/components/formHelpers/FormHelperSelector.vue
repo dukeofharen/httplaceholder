@@ -109,6 +109,11 @@ export default {
           title: "Form body",
           subTitle: tooltipResources.formBody,
           onClick: () => this.setDefaultValue("stubForm/setDefaultFormBody")
+        },
+        {
+          title: "Client IP",
+          subTitle: tooltipResources.clientIp,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultClientIp")
         }
       ]
     };

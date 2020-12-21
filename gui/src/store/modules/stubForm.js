@@ -191,6 +191,19 @@ const mutations = {
       }
     });
   },
+  setDefaultClientIp(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        parsed.conditions.clientIp = defaultValues.clientIp;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
   setMethod(state, method) {
     handle(() => {
       const parsed = parseInput(state);
