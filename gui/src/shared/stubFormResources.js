@@ -326,7 +326,8 @@ const httpStatusCodes = [
 
 const defaultValues = {
   description: "A description for the stub.",
-  priority: 1
+  priority: 1,
+  urlPath: "/path"
 };
 
 const formHelperKeys = {

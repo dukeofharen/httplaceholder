@@ -12,6 +12,14 @@ const parseInput = state => {
   }
 };
 
+const handle = func => {
+  try {
+    func();
+  } catch (e) {
+    toastError(resources.errorDuringParsingOfYaml.format(e));
+  }
+};
+
 const state = () => ({
   input: "",
   currentSelectedFormHelper: ""
@@ -30,36 +38,61 @@ const mutations = {
     state.currentSelectedFormHelper = "";
   },
   setDefaultDescription(state) {
-    const parsed = parseInput(state);
-    if (parsed) {
-      parsed.description = defaultValues.description;
-      state.input = yaml.dump(parsed);
-    }
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        parsed.description = defaultValues.description;
+        state.input = yaml.dump(parsed);
+      }
+    });
   },
   setDefaultPriority(state) {
-    const parsed = parseInput(state);
-    if (parsed) {
-      parsed.priority = defaultValues.priority;
-      state.input = yaml.dump(parsed);
-    }
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        parsed.priority = defaultValues.priority;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultPath(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.url) {
+          parsed.conditions.url = {};
+        }
+
+        parsed.conditions.url.path = defaultValues.urlPath;
+        state.input = yaml.dump(parsed);
+      }
+    });
   },
   setMethod(state, method) {
-    const parsed = parseInput(state);
-    if (parsed) {
-      if (!parsed.conditions) {
-        parsed.conditions = {};
-      }
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
 
-      parsed.conditions.method = method;
-      state.input = yaml.dump(parsed);
-    }
+        parsed.conditions.method = method;
+        state.input = yaml.dump(parsed);
+      }
+    });
   },
   setTenant(state, tenant) {
-    const parsed = parseInput(state);
-    if (parsed) {
-      parsed.tenant = tenant;
-      state.input = yaml.dump(parsed);
-    }
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        parsed.tenant = tenant;
+        state.input = yaml.dump(parsed);
+      }
+    });
   }
 };
 

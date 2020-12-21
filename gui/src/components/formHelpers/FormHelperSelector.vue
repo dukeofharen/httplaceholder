@@ -69,6 +69,11 @@ export default {
           title: "HTTP method",
           subTitle: tooltipResources.httpMethod,
           onClick: () => this.openFormHelper(this.formHelperKeys.httpMethod)
+        },
+        {
+          title: "URL path",
+          subTitle: tooltipResources.urlPath,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultPriority")
         }
       ]
     };
