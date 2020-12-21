@@ -84,6 +84,11 @@ export default {
           title: "Query string",
           subTitle: tooltipResources.queryString,
           onClick: () => this.setDefaultValue("stubForm/setDefaultQuery")
+        },
+        {
+          title: "HTTPS",
+          subTitle: tooltipResources.isHttps,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultIsHttps")
         }
       ]
     };
