@@ -94,6 +94,11 @@ export default {
           title: "Basic authentication",
           subTitle: tooltipResources.basicAuthentication,
           onClick: () => this.setDefaultValue("stubForm/setDefaultBasicAuth")
+        },
+        {
+          title: "Headers",
+          subTitle: tooltipResources.headers,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultRequestHeaders")
         }
       ]
     };

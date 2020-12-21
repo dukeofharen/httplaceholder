@@ -143,6 +143,30 @@ const mutations = {
       }
     });
   },
+  setDefaultRequestHeaders(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.headers) {
+          parsed.conditions.headers = {};
+        }
+
+        let headerResult = parsed.conditions.headers;
+        if (!headerResult) {
+          headerResult = defaultValues.requestHeaders;
+        } else {
+          headerResult = {...headerResult, ...defaultValues.requestHeaders};
+        }
+
+        parsed.conditions.headers = headerResult;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
   setMethod(state, method) {
     handle(() => {
       const parsed = parseInput(state);

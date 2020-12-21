@@ -336,7 +336,11 @@ const defaultValues = {
   basicAuthentication: {
     username: "username",
     password: "password"
-  }
+  },
+  requestHeaders: {
+    Header1: "val1",
+    Header2: "val2"
+  },
 };
 
 const formHelperKeys = {
