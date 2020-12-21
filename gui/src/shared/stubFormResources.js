@@ -355,7 +355,8 @@ const defaultValues = {
       value: "val2"
     }
   ],
-  clientIp: "127.0.0.1"
+  clientIp: "127.0.0.1",
+  hostname: "httplaceholder.com"
 };
 
 const formHelperKeys = {

@@ -114,6 +114,11 @@ export default {
           title: "Client IP",
           subTitle: tooltipResources.clientIp,
           onClick: () => this.setDefaultValue("stubForm/setDefaultClientIp")
+        },
+        {
+          title: "Hostname",
+          subTitle: tooltipResources.hostname,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultHostname")
         }
       ]
     };
