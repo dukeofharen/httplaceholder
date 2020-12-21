@@ -2,7 +2,7 @@
   <v-row>
     <v-col>
       <v-list-item>
-        <v-list-item-content>
+        <v-list-item-content class="description">
           <v-list-item-title>Select a tenant below. After selecting a tenant, you can change it in the YAML form below.
           </v-list-item-title>
         </v-list-item-content>
@@ -39,6 +39,10 @@ export default {
 </script>
 
 <style scoped>
+.description {
+  padding-left: 20px;
+}
+
 .tenant {
   font-weight: bold;
   cursor: pointer;

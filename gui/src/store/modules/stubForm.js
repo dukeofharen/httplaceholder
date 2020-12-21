@@ -272,6 +272,19 @@ const mutations = {
         state.input = yaml.dump(parsed);
       }
     });
+  },
+  setStatusCode(state, code) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        parsed.response.statusCode = code;
+        state.input = yaml.dump(parsed);
+      }
+    });
   }
 };
 

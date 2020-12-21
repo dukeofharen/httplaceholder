@@ -373,7 +373,8 @@ const defaultValues = {
 
 const formHelperKeys = {
   tenant: "tenant",
-  httpMethod: "httpMethod"
+  httpMethod: "httpMethod",
+  statusCode: "statusCode"
 };
 
 export {
