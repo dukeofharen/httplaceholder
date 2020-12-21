@@ -234,6 +234,23 @@ const mutations = {
       }
     });
   },
+  setDefaultXPath(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.xpath) {
+          parsed.conditions.xpath = [];
+        }
+
+        parsed.conditions.xpath = parsed.conditions.xpath.concat(defaultValues.xpath);
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
   setMethod(state, method) {
     handle(() => {
       const parsed = parseInput(state);

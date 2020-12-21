@@ -124,6 +124,11 @@ export default {
           title: "JSONPath",
           subTitle: tooltipResources.jsonPath,
           onClick: () => this.setDefaultValue("stubForm/setDefaultJsonPath")
+        },
+        {
+          title: "XPath",
+          subTitle: tooltipResources.xpath,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultXPath")
         }
       ]
     };

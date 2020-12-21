@@ -357,7 +357,18 @@ const defaultValues = {
   ],
   clientIp: "127.0.0.1",
   hostname: "httplaceholder.com",
-  jsonPath: ["$.phoneNumbers[?(@.type==\"iPhone\")]"]
+  jsonPath: ["$.phoneNumbers[?(@.type==\"iPhone\")]"],
+  xpath: [
+    {
+      queryString: "/object/a[text() = \"TEST\"]"
+    },
+    {
+      queryString: "/object/b[text() = \"TEST\"]",
+      namespaces: {
+        soap: "http://www.w3.org/2003/05/soap-envelope",
+        m: "http://www.example.org/stock/Reddy"
+      }
+    }]
 };
 
 const formHelperKeys = {
