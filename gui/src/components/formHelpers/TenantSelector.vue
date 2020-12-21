@@ -9,8 +9,8 @@
       </v-list-item>
 
       <v-list-item v-for="(tenant, index) of tenantNames" :key="index">
-        <v-list-item-content>
-          <v-list-item-title class="method" @click="tenantSelected(tenant)">{{ tenant }}</v-list-item-title>
+        <v-list-item-content class="tenant" @click="tenantSelected(tenant)">
+          <v-list-item-title>{{ tenant }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-col>
@@ -39,8 +39,13 @@ export default {
 </script>
 
 <style scoped>
-.method {
+.tenant {
   font-weight: bold;
   cursor: pointer;
+  padding-left: 20px;
+}
+
+.tenant:hover {
+  background-color: #f1f1f1;
 }
 </style>

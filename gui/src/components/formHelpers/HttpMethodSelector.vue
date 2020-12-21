@@ -9,8 +9,8 @@
       </v-list-item>
 
       <v-list-item v-for="(method, index) of httpMethods" :key="index">
-        <v-list-item-content>
-          <v-list-item-title class="method" @click="methodSelected(method)">{{ method }}</v-list-item-title>
+        <v-list-item-content class="method" @click="methodSelected(method)">
+          <v-list-item-title>{{ method }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-col>
@@ -39,5 +39,10 @@ export default {
 .method {
   font-weight: bold;
   cursor: pointer;
+  padding-left: 20px;
+}
+
+.method:hover {
+  background-color: #f1f1f1;
 }
 </style>

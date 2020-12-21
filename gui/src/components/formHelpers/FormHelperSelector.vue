@@ -3,7 +3,7 @@
     <v-col>
       <v-list-item v-if="!showList">
         <v-list-item-content>
-          <v-list-item-title class="clickable bold" @click="showList = !showList">Click here to add request or response
+          <v-list-item-title class="clickable bold" @click="doShowList">Click here to add request or response
             value
           </v-list-item-title>
         </v-list-item-content>
@@ -142,6 +142,10 @@ export default {
     }
   },
   methods: {
+    doShowList() {
+      this.$store.commit("stubForm/closeFormHelper");
+      this.showList = true;
+    },
     setDefaultValue(mutationName) {
       this.$store.commit(mutationName);
       this.showList = false;
