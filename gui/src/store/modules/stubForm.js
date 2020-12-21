@@ -174,6 +174,23 @@ const mutations = {
       }
     });
   },
+  setDefaultFormBody(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.form) {
+          parsed.conditions.form = [];
+        }
+
+        parsed.conditions.form = parsed.conditions.form.concat(defaultValues.formBody);
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
   setMethod(state, method) {
     handle(() => {
       const parsed = parseInput(state);

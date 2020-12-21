@@ -344,6 +344,16 @@ const defaultValues = {
   requestBody: [
     "val1",
     "val2"
+  ],
+  formBody: [
+    {
+      key: "key1",
+      value: "val1"
+    },
+    {
+      key: "key2",
+      value: "val2"
+    }
   ]
 };
 
