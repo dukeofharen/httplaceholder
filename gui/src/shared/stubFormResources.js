@@ -330,6 +330,7 @@ const defaultValues = {
 };
 
 const formHelperKeys = {
+  tenant: "tenant",
   httpMethod: "httpMethod"
 };
 

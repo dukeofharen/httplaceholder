@@ -53,6 +53,13 @@ const mutations = {
       parsed.conditions.method = method;
       state.input = yaml.dump(parsed);
     }
+  },
+  setTenant(state, tenant) {
+    const parsed = parseInput(state);
+    if (parsed) {
+      parsed.tenant = tenant;
+      state.input = yaml.dump(parsed);
+    }
   }
 };
 

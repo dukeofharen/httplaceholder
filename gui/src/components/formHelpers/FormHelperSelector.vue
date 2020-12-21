@@ -16,11 +16,12 @@
               }}
             </v-list-item-title>
             <v-list-item-title :class="{bold: item.divider}" v-else>{{ item.title }}</v-list-item-title>
-            <v-list-item-subtitle v-if="item.subTitle">{{ item.subTitle }}</v-list-item-subtitle>
+            <v-list-item-content v-if="item.subTitle" class="subtitle">{{ item.subTitle }}</v-list-item-content>
           </v-list-item-content>
         </v-list-item>
       </template>
       <HttpMethodSelector v-if="currentSelectedFormHelper === formHelperKeys.httpMethod" />
+      <TenantSelector v-if="currentSelectedFormHelper === formHelperKeys.tenant" />
     </v-col>
   </v-row>
 </template>
@@ -28,9 +29,11 @@
 <script>
 import {tooltipResources, formHelperKeys} from "@/shared/stubFormResources";
 import HttpMethodSelector from "@/components/formHelpers/HttpMethodSelector";
+import TenantSelector from "@/components/formHelpers/TenantSelector";
+
 
 export default {
-  components: {HttpMethodSelector},
+  components: {HttpMethodSelector, TenantSelector},
   mounted() {
 
   },
@@ -54,6 +57,11 @@ export default {
           onClick: () => this.setDefaultValue("stubForm/setDefaultPriority")
         },
         {
+          title: "Tenant",
+          subTitle: tooltipResources.tenant,
+          onClick: () => this.openFormHelper(this.formHelperKeys.tenant)
+        },
+        {
           title: "Request",
           divider: true
         },
@@ -62,8 +70,6 @@ export default {
           subTitle: tooltipResources.httpMethod,
           onClick: () => this.openFormHelper(this.formHelperKeys.httpMethod)
         }
-        // TODO
-        // - Tenant
       ]
     };
   },
@@ -92,5 +98,9 @@ export default {
 
 .clickable {
   cursor: pointer;
+}
+
+.subtitle {
+  color: #909090;
 }
 </style>
