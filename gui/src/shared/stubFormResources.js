@@ -18,7 +18,7 @@ const tooltipResources = {
   isHttps:
     "This condition checker can be used to verify if a request uses HTTPS or not.",
   body:
-    "This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. Add one condition per line. Add The condition can both check on substring and regular expressions.",
+    "This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. Add one condition per line. The condition can both check on substring and regular expressions.",
   formBody:
     "The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions. Place a new form body condition on a new line in the form of 'key: expected_value'.",
   xpath:
@@ -341,6 +341,10 @@ const defaultValues = {
     Header1: "val1",
     Header2: "val2"
   },
+  requestBody: [
+    "val1",
+    "val2"
+  ]
 };
 
 const formHelperKeys = {

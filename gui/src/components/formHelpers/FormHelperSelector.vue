@@ -99,6 +99,11 @@ export default {
           title: "Headers",
           subTitle: tooltipResources.headers,
           onClick: () => this.setDefaultValue("stubForm/setDefaultRequestHeaders")
+        },
+        {
+          title: "Body",
+          subTitle: tooltipResources.body,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultRequestBody")
         }
       ]
     };

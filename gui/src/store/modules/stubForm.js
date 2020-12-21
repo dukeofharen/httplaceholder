@@ -101,14 +101,11 @@ const mutations = {
           parsed.conditions.url = {};
         }
 
-        let queryResult = parsed.conditions.url.query;
-        if (!queryResult) {
-          queryResult = defaultValues.query;
-        } else {
-          queryResult = {...queryResult, ...defaultValues.query};
+        if (!parsed.conditions.url.query) {
+          parsed.conditions.url.query = {};
         }
 
-        parsed.conditions.url.query = queryResult;
+        parsed.conditions.url.query = {...parsed.conditions.url.query, ...defaultValues.query};
         state.input = yaml.dump(parsed);
       }
     });
@@ -155,14 +152,24 @@ const mutations = {
           parsed.conditions.headers = {};
         }
 
-        let headerResult = parsed.conditions.headers;
-        if (!headerResult) {
-          headerResult = defaultValues.requestHeaders;
-        } else {
-          headerResult = {...headerResult, ...defaultValues.requestHeaders};
+        parsed.conditions.headers = {...parsed.conditions.headers, ...defaultValues.requestHeaders};
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultRequestBody(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
         }
 
-        parsed.conditions.headers = headerResult;
+        if (!parsed.conditions.body) {
+          parsed.conditions.body = [];
+        }
+
+        parsed.conditions.body = parsed.conditions.body.concat(defaultValues.requestBody);
         state.input = yaml.dump(parsed);
       }
     });
