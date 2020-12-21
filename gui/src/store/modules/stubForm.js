@@ -26,6 +26,9 @@ const mutations = {
   openFormHelper(state, key) {
     state.currentSelectedFormHelper = key;
   },
+  closeFormHelper(state) {
+    state.currentSelectedFormHelper = "";
+  },
   setDefaultDescription(state) {
     const parsed = parseInput(state);
     if (parsed) {
@@ -37,6 +40,17 @@ const mutations = {
     const parsed = parseInput(state);
     if (parsed) {
       parsed.priority = defaultValues.priority;
+      state.input = yaml.dump(parsed);
+    }
+  },
+  setMethod(state, method) {
+    const parsed = parseInput(state);
+    if (parsed) {
+      if (!parsed.conditions) {
+        parsed.conditions = {};
+      }
+
+      parsed.conditions.method = method;
       state.input = yaml.dump(parsed);
     }
   }

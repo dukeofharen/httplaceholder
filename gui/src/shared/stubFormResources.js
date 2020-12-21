@@ -67,7 +67,7 @@ const isHttpsValues = {
   httpAndHttps: 2
 };
 
-const httpMethods = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"];
+const httpMethods = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"];
 
 const httpStatusCodes = [
   {
