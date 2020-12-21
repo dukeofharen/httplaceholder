@@ -356,7 +356,8 @@ const defaultValues = {
     }
   ],
   clientIp: "127.0.0.1",
-  hostname: "httplaceholder.com"
+  hostname: "httplaceholder.com",
+  jsonPath: ["$.phoneNumbers[?(@.type==\"iPhone\")]"]
 };
 
 const formHelperKeys = {

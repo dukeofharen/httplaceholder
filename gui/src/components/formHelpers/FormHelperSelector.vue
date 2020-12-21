@@ -119,6 +119,11 @@ export default {
           title: "Hostname",
           subTitle: tooltipResources.hostname,
           onClick: () => this.setDefaultValue("stubForm/setDefaultHostname")
+        },
+        {
+          title: "JSONPath",
+          subTitle: tooltipResources.jsonPath,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultJsonPath")
         }
       ]
     };
