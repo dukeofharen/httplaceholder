@@ -49,7 +49,7 @@ export default {
       formHelperKeys,
       formHelperItems: [
         {
-          title: "General",
+          title: "General information",
           subItems: [
             {
               title: "Description",
@@ -68,7 +68,7 @@ export default {
             }]
         },
         {
-          title: "Request",
+          title: "Request conditions",
           subItems: [
             {
               title: "HTTP method",
@@ -138,7 +138,7 @@ export default {
           ]
         },
         {
-          title: "Response",
+          title: "Response definitions",
           subItems: [
             {
               title: "HTTP status code",
