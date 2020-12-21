@@ -29,7 +29,12 @@
         <v-btn color="primary" @click="uploadClick">Upload a file</v-btn>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="responseBodyType === responseBodyTypes.base64">
+      <v-col cols="12">
+        <v-btn color="primary" @click="showBase64TextInput = true">Show text input</v-btn>
+      </v-col>
+    </v-row>
+    <v-row v-if="responseBodyType !== responseBodyTypes.base64 || showBase64TextInput">
       <v-col cols="12">
         <v-textarea label="Fill in the response..." v-model="responseBody"></v-textarea>
       </v-col>
@@ -49,13 +54,19 @@ import {responseBodyTypes} from "@/shared/stubFormResources";
 export default {
   mounted() {
     this.responseBodyType = this.$store.getters["stubForm/getResponseBodyType"];
-    this.responseBody = this.$store.getters["stubForm/getResponseBody"];
+    let responseBody = this.$store.getters["stubForm/getResponseBody"];
+    if (this.responseBodyType === responseBodyTypes.base64) {
+      responseBody = atob(responseBody);
+    }
+
+    this.responseBody = responseBody;
   },
   data() {
     return {
       responseBodyTypes,
       responseBodyType: "",
-      responseBody: ""
+      responseBody: "",
+      showBase64TextInput: false
     };
   },
   computed: {
@@ -65,7 +76,12 @@ export default {
   },
   methods: {
     insert() {
-      this.$store.commit("stubForm/setResponseBody", {type: this.responseBodyType, body: this.responseBody});
+      let responseBody = this.responseBody;
+      if(this.responseBodyType === responseBodyTypes.base64) {
+        responseBody = btoa(responseBody);
+      }
+      this.$store.commit("stubForm/setResponseBody", {type: this.responseBodyType, body: responseBody});
+      this.showBase64TextInput = false;
     },
     close() {
       this.$store.commit("stubForm/closeFormHelper");
@@ -86,6 +102,7 @@ export default {
         this.$store.commit("stubForm/setResponseBody", {type: responseBodyTypes.base64, body});
         this.responseBody = body;
         this.$store.commit("stubForm/closeFormHelper");
+        this.showBase64TextInput = false;
       };
       reader.readAsDataURL(file);
     }
