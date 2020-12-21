@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
 import {toastError} from "@/utils/toastUtil";
 import {resources} from "@/shared/resources";
-import {defaultValues} from "@/shared/stubFormResources";
+import {defaultValues, responseBodyTypes} from "@/shared/stubFormResources";
 
 const parseInput = state => {
   try {
@@ -14,9 +14,10 @@ const parseInput = state => {
 
 const handle = func => {
   try {
-    func();
+    return func();
   } catch (e) {
     toastError(resources.errorDuringParsingOfYaml.format(e));
+    return null;
   }
 };
 
@@ -285,6 +286,45 @@ const mutations = {
         state.input = yaml.dump(parsed);
       }
     });
+  },
+  setResponseBody(state, payload) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        delete parsed.response.text;
+        delete parsed.response.json;
+        delete parsed.response.xml;
+        delete parsed.response.html;
+        delete parsed.response.base64;
+
+        const responseType = payload.type || responseBodyTypes.text;
+        const responseBody = payload.body || "";
+        switch (responseType) {
+          case responseBodyTypes.json:
+            parsed.response.json = responseBody;
+            break;
+          case responseBodyTypes.xml:
+            parsed.response.xml = responseBody;
+            break;
+          case responseBodyTypes.html:
+            parsed.response.html = responseBody;
+            break;
+          case responseBodyTypes.base64:
+            parsed.response.base64 = responseBody;
+            break;
+          default:
+          case responseBodyTypes.text:
+            parsed.response.text = responseBody;
+            break;
+        }
+
+        state.input = yaml.dump(parsed);
+      }
+    });
   }
 };
 
@@ -294,6 +334,47 @@ const getters = {
   },
   getCurrentSelectedFormHelper(state) {
     return state.currentSelectedFormHelper;
+  },
+  getResponseBody(state) {
+    return handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          return "";
+        }
+
+        const res = parsed.response;
+        return res.text || res.json || res.xml || res.html || res.base64 || "";
+      }
+
+      return "";
+    });
+  },
+  getResponseBodyType(state) {
+    return handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          return responseBodyTypes.text;
+        }
+
+        const res = parsed.response;
+        console.log(res);
+        if (res.text) {
+          return responseBodyTypes.text;
+        } else if (res.json) {
+          return responseBodyTypes.json;
+        } else if (res.xml) {
+          return responseBodyTypes.xml;
+        } else if (res.html) {
+          return responseBodyTypes.html;
+        } else if (res.base64) {
+          return responseBodyTypes.base64;
+        }
+      }
+
+      return responseBodyTypes.text;
+    });
   }
 };
 

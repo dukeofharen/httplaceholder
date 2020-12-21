@@ -25,6 +25,7 @@
       <HttpMethodSelector v-if="currentSelectedFormHelper === formHelperKeys.httpMethod"/>
       <TenantSelector v-if="currentSelectedFormHelper === formHelperKeys.tenant"/>
       <HttpStatusCodeSelector v-if="currentSelectedFormHelper === formHelperKeys.statusCode"/>
+      <ResponseBodyHelper v-if="currentSelectedFormHelper === formHelperKeys.responseBody"/>
     </v-col>
   </v-row>
 </template>
@@ -34,10 +35,11 @@ import {tooltipResources, formHelperKeys} from "@/shared/stubFormResources";
 import HttpMethodSelector from "@/components/formHelpers/HttpMethodSelector";
 import TenantSelector from "@/components/formHelpers/TenantSelector";
 import HttpStatusCodeSelector from "@/components/formHelpers/HttpStatusCodeSelector";
+import ResponseBodyHelper from "@/components/formHelpers/ResponseBodyHelper";
 
 
 export default {
-  components: {HttpMethodSelector, TenantSelector, HttpStatusCodeSelector},
+  components: {HttpMethodSelector, TenantSelector, HttpStatusCodeSelector, ResponseBodyHelper},
   mounted() {
 
   },
@@ -142,6 +144,11 @@ export default {
               title: "HTTP status code",
               subTitle: tooltipResources.statusCode,
               onClick: () => this.openFormHelper(this.formHelperKeys.statusCode)
+            },
+            {
+              title: "Response body",
+              subTitle: tooltipResources.responseBody,
+              onClick: () => this.openFormHelper(this.formHelperKeys.responseBody)
             }
           ]
         }

@@ -374,8 +374,17 @@ const defaultValues = {
 const formHelperKeys = {
   tenant: "tenant",
   httpMethod: "httpMethod",
-  statusCode: "statusCode"
+  statusCode: "statusCode",
+  responseBody: "responseBody"
 };
+
+const responseBodyTypes = {
+  text: "Text",
+  json: "JSON",
+  xml: "XML",
+  html: "HTML",
+  base64: "Base64"
+}
 
 export {
   tooltipResources,
@@ -383,5 +392,6 @@ export {
   httpMethods,
   httpStatusCodes,
   defaultValues,
-  formHelperKeys
+  formHelperKeys,
+  responseBodyTypes
 };
