@@ -2,8 +2,8 @@
   <v-row>
     <v-col>
       <v-list-item v-if="!showList">
-        <v-list-item-content>
-          <v-list-item-title class="clickable bold" @click="doShowList">Click here to add request or response
+        <v-list-item-content class="helper-button" @click="doShowList">
+          <v-list-item-title>Click here to add request or response
             value
           </v-list-item-title>
         </v-list-item-content>
@@ -16,7 +16,7 @@
 
           <v-list-item v-for="(subItem, index) in item.subItems" :key="index" class="sub-item" @click="subItem.onClick">
             <v-list-item-content>
-              <v-list-item-title v-text="subItem.title" class="clickable"></v-list-item-title>
+              <v-list-item-title v-text="subItem.title"></v-list-item-title>
               <v-list-item-content class="subtitle">{{ subItem.subTitle }}</v-list-item-content>
             </v-list-item-content>
           </v-list-item>
@@ -132,6 +132,10 @@ export default {
               onClick: () => this.setDefaultValue("stubForm/setDefaultXPath")
             }
           ]
+        },
+        {
+          title: "Response",
+          subItems: []
         }
       ]
     };
@@ -172,12 +176,13 @@ export default {
   background-color: #f1f1f1;
 }
 
-.bold {
+.helper-button {
   font-weight: bold;
-}
-
-.clickable {
   cursor: pointer;
+  padding-left: 20px;
+}
+.helper-button:hover {
+  background-color: #f1f1f1;
 }
 
 .subtitle {
