@@ -123,6 +123,19 @@ const mutations = {
       }
     });
   },
+  setDefaultBasicAuth(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        parsed.conditions.basicAuthentication = defaultValues.basicAuthentication;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
   setMethod(state, method) {
     handle(() => {
       const parsed = parseInput(state);

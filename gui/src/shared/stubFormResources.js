@@ -332,6 +332,10 @@ const defaultValues = {
   query: {
     query1: "val1",
     query2: "val2"
+  },
+  basicAuthentication: {
+    username: "username",
+    password: "password"
   }
 };
 

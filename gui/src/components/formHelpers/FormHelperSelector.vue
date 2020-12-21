@@ -89,6 +89,11 @@ export default {
           title: "HTTPS",
           subTitle: tooltipResources.isHttps,
           onClick: () => this.setDefaultValue("stubForm/setDefaultIsHttps")
+        },
+        {
+          title: "Basic authentication",
+          subTitle: tooltipResources.basicAuthentication,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultBasicAuth")
         }
       ]
     };
