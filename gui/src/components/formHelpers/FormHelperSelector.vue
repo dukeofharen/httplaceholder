@@ -79,6 +79,11 @@ export default {
           title: "Full path",
           subTitle: tooltipResources.fullPath,
           onClick: () => this.setDefaultValue("stubForm/setDefaultFullPath")
+        },
+        {
+          title: "Query string",
+          subTitle: tooltipResources.queryString,
+          onClick: () => this.setDefaultValue("stubForm/setDefaultQuery")
         }
       ]
     };

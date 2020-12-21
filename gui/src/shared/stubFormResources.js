@@ -329,6 +329,10 @@ const defaultValues = {
   priority: 1,
   urlPath: "/path",
   fullPath: "/path?query=val1",
+  query: {
+    query1: "val1",
+    query2: "val2"
+  }
 };
 
 const formHelperKeys = {
