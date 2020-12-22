@@ -400,6 +400,25 @@ const mutations = {
         state.input = yaml.dump(parsed);
       }
     });
+  },
+  setLineEndings(state, lineEndings) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        console.log(lineEndings);
+        if (!lineEndings) {
+          delete parsed.response.lineEndings;
+        } else {
+          parsed.response.lineEndings = lineEndings;
+        }
+
+        state.input = yaml.dump(parsed);
+      }
+    });
   }
 };
 

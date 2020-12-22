@@ -58,7 +58,8 @@ const tooltipResources = {
   appendPath:
     "Whether the path of the request to HttPlaceholder (so the string after https://.../ and before the query string) should be appended to the request that will be sent to the proxy URL.",
   replaceRootUrl:
-    "Whether the content returned by the proxy request should have its URLs replaced by the HttPlaceholder root URL. Both the response body and the HTTP headers will have its URLs replaced."
+    "Whether the content returned by the proxy request should have its URLs replaced by the HttPlaceholder root URL. Both the response body and the HTTP headers will have its URLs replaced.",
+  lineEndings: "Whether the response should be returned with Unix or Windows line endings or return the line endings as provided in the response body. This is done because some software only accepts Windows or Unix line endings."
 };
 
 const isHttpsValues = {
@@ -382,7 +383,8 @@ const formHelperKeys = {
   httpMethod: "httpMethod",
   statusCode: "statusCode",
   responseBody: "responseBody",
-  redirect: "redirect"
+  redirect: "redirect",
+  lineEndings: "lineEndings"
 };
 
 const responseBodyTypes = {
@@ -393,6 +395,11 @@ const responseBodyTypes = {
   base64: "Base64"
 };
 
+const lineEndingTypes = {
+  windows: "windows",
+  unix: "unix"
+};
+
 export {
   tooltipResources,
   isHttpsValues,
@@ -400,5 +407,6 @@ export {
   httpStatusCodes,
   defaultValues,
   formHelperKeys,
-  responseBodyTypes
+  responseBodyTypes,
+  lineEndingTypes
 };

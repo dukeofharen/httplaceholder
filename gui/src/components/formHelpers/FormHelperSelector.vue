@@ -26,7 +26,8 @@
       <TenantSelector v-if="currentSelectedFormHelper === formHelperKeys.tenant"/>
       <HttpStatusCodeSelector v-if="currentSelectedFormHelper === formHelperKeys.statusCode"/>
       <ResponseBodyHelper v-if="currentSelectedFormHelper === formHelperKeys.responseBody"/>
-      <RedirectSelector v-if="currentSelectedFormHelper === formHelperKeys.redirect" />
+      <RedirectSelector v-if="currentSelectedFormHelper === formHelperKeys.redirect"/>
+      <LineEndingSelector v-if="currentSelectedFormHelper === formHelperKeys.lineEndings"/>
     </v-col>
   </v-row>
 </template>
@@ -38,10 +39,18 @@ import TenantSelector from "@/components/formHelpers/TenantSelector";
 import HttpStatusCodeSelector from "@/components/formHelpers/HttpStatusCodeSelector";
 import ResponseBodyHelper from "@/components/formHelpers/ResponseBodyHelper";
 import RedirectSelector from "@/components/formHelpers/RedirectSelector";
+import LineEndingSelector from "@/components/formHelpers/LineEndingSelector";
 
 
 export default {
-  components: {HttpMethodSelector, TenantSelector, HttpStatusCodeSelector, ResponseBodyHelper, RedirectSelector},
+  components: {
+    HttpMethodSelector,
+    TenantSelector,
+    HttpStatusCodeSelector,
+    ResponseBodyHelper,
+    RedirectSelector,
+    LineEndingSelector
+  },
   mounted() {
 
   },
@@ -166,6 +175,11 @@ export default {
               title: "Redirect",
               subTitle: tooltipResources.redirect,
               onClick: () => this.openFormHelper(this.formHelperKeys.redirect)
+            },
+            {
+              title: "Line endings",
+              subTitle: tooltipResources.lineEndings,
+              onClick: () => this.openFormHelper(this.formHelperKeys.lineEndings)
             }
           ]
         }
@@ -213,6 +227,7 @@ export default {
   cursor: pointer;
   padding-left: 20px;
 }
+
 .helper-button:hover {
   background-color: #f1f1f1;
 }
