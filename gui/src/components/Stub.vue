@@ -19,19 +19,10 @@
             color="success"
             v-if="!fullStub.metadata.readOnly"
             :to="{
-              name: routeNames.updateStub,
+              name: routeNames.stubForm,
               params: { stubId: this.fullStub.stub.id }
             }"
-            >Update stub as YAML
-          </v-btn>
-          <v-btn
-            color="success"
-            v-if="!fullStub.metadata.readOnly"
-            :to="{
-              name: routeNames.stubForm,
-              params: { id: this.fullStub.stub.id }
-            }"
-            >Update stub with form
+            >Update stub
           </v-btn>
           <v-btn
             color="error"
@@ -63,7 +54,6 @@
 import { toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
 import { routeNames } from "@/router/routerConstants";
-import { actionNames } from "@/store/storeConstants";
 
 export default {
   name: "stub",
@@ -79,13 +69,13 @@ export default {
     async deleteStub() {
       this.deleteDialog = false;
       const stubId = this.overviewStub.stub.id;
-      await this.$store.dispatch(actionNames.deleteStub, { stubId });
+      await this.$store.dispatch("stubs/deleteStub", { stubId });
       toastSuccess(resources.stubDeletedSuccessfully.format(stubId));
       this.$emit("deleted", this.fullStub);
     },
     async loadStub() {
       if (!this.fullStub) {
-        this.fullStub = await this.$store.dispatch(actionNames.getStub, {
+        this.fullStub = await this.$store.dispatch("stubs/getStub", {
           stubId: this.overviewStub.stub.id
         });
       }

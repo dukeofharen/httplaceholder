@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import { mutationNames } from "@/store/storeConstants";
-
 export default {
   data() {
     return {
@@ -17,11 +15,11 @@ export default {
     };
   },
   created() {
-    this.darkTheme = this.$store.getters.getDarkTheme;
+    this.darkTheme = this.$store.getters["general/getDarkTheme"];
   },
   watch: {
     darkTheme() {
-      this.$store.commit(mutationNames.storeDarkTheme, this.darkTheme);
+      this.$store.commit("general/storeDarkTheme", this.darkTheme);
     }
   }
 };

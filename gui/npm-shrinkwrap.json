@@ -3538,9 +3538,9 @@
       }
     },
     "core-js": {
-      "version": "3.6.5",
-      "resolved": "https://registry.npmjs.org/core-js/-/core-js-3.6.5.tgz",
-      "integrity": "sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA=="
+      "version": "3.8.1",
+      "resolved": "https://registry.npmjs.org/core-js/-/core-js-3.8.1.tgz",
+      "integrity": "sha512-9Id2xHY1W7m8hCl8NkhQn5CufmF/WuR30BTRewvCXc1aZd3kMECwNZ69ndLbekKfakw9Rf2Xyc+QR6E7Gg+obg=="
     },
     "core-util-is": {
       "version": "1.0.2",
@@ -5049,9 +5049,9 @@
       }
     },
     "eslint-plugin-prettier": {
-      "version": "3.1.4",
-      "resolved": "https://registry.npmjs.org/eslint-plugin-prettier/-/eslint-plugin-prettier-3.1.4.tgz",
-      "integrity": "sha512-jZDa8z76klRqo+TdGDTFJSavwbnWK2ZpqGKNZ+VvweMW516pDUMmQ2koXvxEE4JhzNvTv+radye/bWGBmA6jmg==",
+      "version": "3.3.0",
+      "resolved": "https://registry.npmjs.org/eslint-plugin-prettier/-/eslint-plugin-prettier-3.3.0.tgz",
+      "integrity": "sha512-tMTwO8iUWlSRZIwS9k7/E4vrTsfvsrcM5p1eftyuqWH25nKsz/o6/54I7jwQ/3zobISyC7wMy9ZsFwgTxOcOpQ==",
       "dev": true,
       "requires": {
         "prettier-linter-helpers": "^1.0.0"
@@ -7543,9 +7543,9 @@
       "dev": true
     },
     "js-yaml": {
-      "version": "3.14.0",
-      "resolved": "https://registry.npmjs.org/js-yaml/-/js-yaml-3.14.0.tgz",
-      "integrity": "sha512-/4IbIeHcD9VMHFqDR/gQ7EdZdLimOvW2DdcxFjdyyZ9NsbS+ccrXqVWDtab/lRl5AlUqmpBx8EhPaWR+OtY17A==",
+      "version": "3.14.1",
+      "resolved": "https://registry.npmjs.org/js-yaml/-/js-yaml-3.14.1.tgz",
+      "integrity": "sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==",
       "requires": {
         "argparse": "^1.0.7",
         "esprima": "^4.0.0"
@@ -8170,9 +8170,9 @@
       }
     },
     "moment": {
-      "version": "2.27.0",
-      "resolved": "https://registry.npmjs.org/moment/-/moment-2.27.0.tgz",
-      "integrity": "sha512-al0MUK7cpIcglMv3YF13qSgdAIqxHTO7brRtaz3DlSULbqfazqkc5kEjNrLDOM7fsjshoFIihnU8snrP7zUvhQ=="
+      "version": "2.29.1",
+      "resolved": "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz",
+      "integrity": "sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ=="
     },
     "move-concurrently": {
       "version": "1.0.1",
@@ -9998,9 +9998,9 @@
       }
     },
     "register-service-worker": {
-      "version": "1.7.1",
-      "resolved": "https://registry.npmjs.org/register-service-worker/-/register-service-worker-1.7.1.tgz",
-      "integrity": "sha512-IdTfUZ4u8iJL8o1w8es8l6UMGPmkwHolUdT+UmM1UypC80IB4KbpuIlvwWVj8UDS7eJwkEYRcKRgfRX+oTmJsw=="
+      "version": "1.7.2",
+      "resolved": "https://registry.npmjs.org/register-service-worker/-/register-service-worker-1.7.2.tgz",
+      "integrity": "sha512-CiD3ZSanZqcMPRhtfct5K9f7i3OLCcBBWsJjLh1gW9RO/nS94sVzY59iS+fgYBOBqaBpf4EzfqUF3j9IG+xo8A=="
     },
     "regjsgen": {
       "version": "0.5.1",
@@ -10344,9 +10344,9 @@
       "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg=="
     },
     "sass": {
-      "version": "1.26.10",
-      "resolved": "https://registry.npmjs.org/sass/-/sass-1.26.10.tgz",
-      "integrity": "sha512-bzN0uvmzfsTvjz0qwccN1sPm2HxxpNI/Xa+7PlUEMS+nQvbyuEK7Y0qFqxlPHhiNHb1Ze8WQJtU31olMObkAMw==",
+      "version": "1.30.0",
+      "resolved": "https://registry.npmjs.org/sass/-/sass-1.30.0.tgz",
+      "integrity": "sha512-26EUhOXRLaUY7+mWuRFqGeGGNmhB1vblpTENO1Z7mAzzIZeVxZr9EZoaY1kyGLFWdSOZxRMAufiN2mkbO6dAlw==",
       "dev": true,
       "requires": {
         "chokidar": ">=2.0.0 <4.0.0"
@@ -12052,9 +12052,9 @@
       "dev": true
     },
     "vue": {
-      "version": "2.6.11",
-      "resolved": "https://registry.npmjs.org/vue/-/vue-2.6.11.tgz",
-      "integrity": "sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ=="
+      "version": "2.6.12",
+      "resolved": "https://registry.npmjs.org/vue/-/vue-2.6.12.tgz",
+      "integrity": "sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg=="
     },
     "vue-cli-plugin-vuetify": {
       "version": "0.6.3",
@@ -12119,9 +12119,9 @@
       }
     },
     "vue-router": {
-      "version": "3.4.2",
-      "resolved": "https://registry.npmjs.org/vue-router/-/vue-router-3.4.2.tgz",
-      "integrity": "sha512-n3Ok70hW0EpcJF4lcWIwSHAQbFTnIOLl/fhO8+oTs4jHNtBNsovcVvPZeTOyKEd8C3xF1Crft2ASuOiVT5K1mw=="
+      "version": "3.4.9",
+      "resolved": "https://registry.npmjs.org/vue-router/-/vue-router-3.4.9.tgz",
+      "integrity": "sha512-CGAKWN44RqXW06oC+u4mPgHLQQi2t6vLD/JbGRDAXm0YpMv0bgpKuU5bBd7AvMgfTz9kXVRIWKHqRwGEb8xFkA=="
     },
     "vue-shortkey": {
       "version": "3.1.7",
@@ -12143,9 +12143,9 @@
       }
     },
     "vue-template-compiler": {
-      "version": "2.6.11",
-      "resolved": "https://registry.npmjs.org/vue-template-compiler/-/vue-template-compiler-2.6.11.tgz",
-      "integrity": "sha512-KIq15bvQDrcCjpGjrAhx4mUlyyHfdmTaoNfeoATHLAiWB+MU3cx4lOzMwrnUh9cCxy0Lt1T11hAFY6TQgroUAA==",
+      "version": "2.6.12",
+      "resolved": "https://registry.npmjs.org/vue-template-compiler/-/vue-template-compiler-2.6.12.tgz",
+      "integrity": "sha512-OzzZ52zS41YUbkCBfdXShQTe69j1gQDZ9HIX8miuC9C3rBCk9wIRjLiZZLrmX9V+Ftq/YEyv1JaVr5Y/hNtByg==",
       "dev": true,
       "requires": {
         "de-indent": "^1.0.2",
@@ -12159,9 +12159,9 @@
       "dev": true
     },
     "vuetify": {
-      "version": "2.3.8",
-      "resolved": "https://registry.npmjs.org/vuetify/-/vuetify-2.3.8.tgz",
-      "integrity": "sha512-T754w4jV3eeuEwEfRTpHdlo76ZRUVTBeMMzVyqSEr61AfhDSYf9rJfHOlhfXG4aaQbZ34dRR48bzRiS4ICz2fQ=="
+      "version": "2.3.21",
+      "resolved": "https://registry.npmjs.org/vuetify/-/vuetify-2.3.21.tgz",
+      "integrity": "sha512-c9FOjkpVPDoIim88wbfqSIuCsH3jtgQQBC1iMW+ZFxf/Bj+d73HySL2LhEnZwAQT7XTAUGfad4aLPfcNZzK5YQ=="
     },
     "vuetify-loader": {
       "version": "1.6.0",
@@ -12186,14 +12186,9 @@
       }
     },
     "vuex": {
-      "version": "3.5.1",
-      "resolved": "https://registry.npmjs.org/vuex/-/vuex-3.5.1.tgz",
-      "integrity": "sha512-w7oJzmHQs0FM9LXodfskhw9wgKBiaB+totOdb8sNzbTB2KDCEEwEs29NzBZFh/lmEK1t5tDmM1vtsO7ubG1DFw=="
-    },
-    "vuex-map-fields": {
-      "version": "1.4.0",
-      "resolved": "https://registry.npmjs.org/vuex-map-fields/-/vuex-map-fields-1.4.0.tgz",
-      "integrity": "sha512-fwRgCwzgxS2GB3ADbPtO6laDlBVLzu+yV+60yZ6/nqPqbn2Ds5G85NeUZojOVLWcaFIMNpuG0ukZ9KKJXh/95A=="
+      "version": "3.6.0",
+      "resolved": "https://registry.npmjs.org/vuex/-/vuex-3.6.0.tgz",
+      "integrity": "sha512-W74OO2vCJPs9/YjNjW8lLbj+jzT24waTo2KShI8jLvJW8OaIkgb3wuAMA7D+ZiUxDOx3ubwSZTaJBip9G8a3aQ=="
     },
     "watchpack": {
       "version": "1.6.1",

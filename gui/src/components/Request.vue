@@ -220,7 +220,6 @@ import Bool from "@/components/Bool";
 import { parseUrl } from "@/utils/urlFunctions";
 import { toastError, toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
-import { actionNames } from "@/store/storeConstants";
 import { routeNames } from "@/router/routerConstants";
 import { conditionValidationType } from "@/shared/resources";
 import moment from "moment";
@@ -253,9 +252,6 @@ export default {
     Bool
   },
   computed: {
-    lastSelectedStub() {
-      return this.$store.getters.getLastSelectedStub;
-    },
     orderedStubExecutionResults() {
       const compare = a => {
         if (a.passed) return -1;
@@ -292,15 +288,15 @@ export default {
     async createStub() {
       try {
         const fullStub = await this.$store.dispatch(
-          actionNames.createStubBasedOnRequest,
+          "stubs/createStubBasedOnRequest",
           {
             correlationId: this.request.correlationId
           }
         );
         const stub = fullStub.stub;
         toastSuccess(resources.stubAddedSuccessfully.format(stub.id));
-        this.$router.push({
-          name: routeNames.updateStub,
+        await this.$router.push({
+          name: routeNames.stubForm,
           params: { stubId: stub.id }
         });
       } catch (e) {
@@ -311,7 +307,7 @@ export default {
       if (!this.request) {
         try {
           this.request = await this.$store.dispatch(
-            actionNames.getRequest,
+            "requests/getRequest",
             this.overviewRequest.correlationId
           );
         } catch (e) {

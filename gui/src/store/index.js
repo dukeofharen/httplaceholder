@@ -1,23 +1,24 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { constructStore } from "@/store/storeConstructor";
-import { getUserToken } from "@/utils/sessionUtil";
 
-import addWatches from "@/store/watches";
-import { getEmptyStubForm } from "@/store/storeConstants";
+import general from "@/store/modules/general";
+import metadata from "@/store/modules/metadata";
+import requests from "@/store/modules/requests";
+import stubForm from "@/store/modules/stubForm";
+import stubs from "@/store/modules/stubs";
+import tenants from "@/store/modules/tenants";
+import users from "@/store/modules/users";
 
 Vue.use(Vuex);
 
-const token = getUserToken();
-const state = {
-  userToken: token || "",
-  settings: {
-    darkTheme: false
-  },
-  metadata: null,
-  stubForm: getEmptyStubForm()
-};
-
-const store = new Vuex.Store(constructStore(state));
-addWatches(store);
-export default store;
+export default new Vuex.Store({
+  modules: {
+    metadata,
+    requests,
+    stubForm,
+    stubs,
+    tenants,
+    users,
+    general
+  }
+});

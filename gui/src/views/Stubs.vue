@@ -57,7 +57,6 @@
 
 <script>
 import Stub from "@/components/Stub";
-import { actionNames } from "@/store/storeConstants";
 import { toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
 
@@ -108,11 +107,9 @@ export default {
   },
   methods: {
     async initialize() {
-      const getStubsPromise = this.$store.dispatch(
-        actionNames.getStubsOverview
-      );
+      const getStubsPromise = this.$store.dispatch("stubs/getStubsOverview");
       const getTenantNamesPromise = this.$store.dispatch(
-        actionNames.getTenantNames
+        "tenants/getTenantNames"
       );
       this.stubs = await getStubsPromise;
       this.tenantNames = await getTenantNamesPromise;
@@ -125,7 +122,7 @@ export default {
     },
     async deleteAllStubs() {
       this.deleteAllDialog = false;
-      await this.$store.dispatch(actionNames.deleteAllStubs);
+      await this.$store.dispatch("stubs/deleteAllStubs");
       toastSuccess(resources.stubsDeletedSuccessfully);
       await this.initialize();
     },

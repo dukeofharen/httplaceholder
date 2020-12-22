@@ -5,7 +5,9 @@
         @click="drawer = !drawer"
         color="white"
       ></v-app-bar-nav-icon>
-      <span class="title ml-3 mr-5"><img src="./img/logo-white.png" alt=""/></span>
+      <span class="title ml-3 mr-5"
+        ><img src="./img/logo-white.png" alt=""
+      /></span>
       <div class="flex-grow-1"></div>
     </v-app-bar>
 
@@ -25,21 +27,11 @@
             </v-list-item-action>
             <v-list-item-title class="grey--text">Stubs</v-list-item-title>
           </v-list-item>
-          <v-list-item v-if="authenticated" :to="{ name: routeNames.addStub }">
-            <v-list-item-action>
-              <v-icon>mdi-plus</v-icon>
-            </v-list-item-action>
-            <v-list-item-title class="grey--text"
-              >Add stubs (through yaml)</v-list-item-title
-            >
-          </v-list-item>
           <v-list-item v-if="authenticated" :to="{ name: routeNames.stubForm }">
             <v-list-item-action>
               <v-icon>mdi-plus</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="grey--text"
-              >Add stubs (through form)</v-list-item-title
-            >
+            <v-list-item-title class="grey--text">Add stubs</v-list-item-title>
           </v-list-item>
           <v-list-item
             v-if="authenticated"
@@ -87,7 +79,7 @@
 
     <v-main>
       <v-container fluid class="lighten-4">
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
       </v-container>
     </v-main>
   </v-app>
@@ -95,19 +87,20 @@
 
 <script>
 import { routeNames } from "@/router/routerConstants";
-import { actionNames, mutationNames } from "@/store/storeConstants";
 import { getDarkThemeEnabled } from "@/utils/sessionUtil";
 
 export default {
   name: "app",
+  beforeMount() {
+    this.setTheme();
+  },
   async created() {
-    this.metadata = await this.$store.dispatch(actionNames.getMetadata);
+    this.metadata = await this.$store.dispatch("metadata/getMetadata");
     document.title = `HttPlaceholder - v${this.metadata.version}`;
 
-    this.setTheme();
     if (!this.authenticated) {
       this.authRequired = await this.$store.dispatch(
-        actionNames.ensureAuthenticated
+        "users/ensureAuthenticated"
       );
     }
   },
@@ -120,21 +113,21 @@ export default {
   },
   computed: {
     authenticated() {
-      return this.$store.getters.getAuthenticated;
+      return this.$store.getters["users/getAuthenticated"];
     },
     darkTheme() {
-      return this.$store.getters.getDarkTheme;
+      return this.$store.getters["general/getDarkTheme"];
     }
   },
   methods: {
     logout() {
-      this.$store.commit(mutationNames.userTokenMutation, null);
+      this.$store.commit("users/storeUserToken", null);
       this.$router.push({ name: routeNames.login });
     },
     setTheme() {
       const darkThemeEnabled = getDarkThemeEnabled();
       if (darkThemeEnabled) {
-        this.$store.commit(mutationNames.storeDarkTheme, darkThemeEnabled);
+        this.$store.commit("general/storeDarkTheme", darkThemeEnabled);
       }
     }
   },

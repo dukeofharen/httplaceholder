@@ -1,6 +1,4 @@
-const tooltipResources = {
-  id:
-    "The ID of the stub. If you don't fill in an ID, an ID will be calculated when the stub is added. If you provide an ID of a stub that already exists, that stub will be overwritten with this one.",
+const elementDescriptions = {
   tenant:
     "The stub also has a 'tenant' field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant).",
   description:
@@ -18,13 +16,11 @@ const tooltipResources = {
   isHttps:
     "This condition checker can be used to verify if a request uses HTTPS or not.",
   body:
-    "This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. Add one condition per line. Add The condition can both check on substring and regular expressions.",
+    "This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. Add one condition per line. The condition can both check on substring and regular expressions.",
   formBody:
     "The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions. Place a new form body condition on a new line in the form of 'key: expected_value'.",
   xpath:
     "Using the XPath condition checker, you can check the posted XML body to see if it contains the correct elements. It is possible to add multiple conditions. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.\n\nIt is also possible to (pre)-set the XML namespaces of a posted XML body. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.",
-  xpathNamespaces:
-    "Fill in the XML namespaces here. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression. Place a new namespace on a new line in the form of 'key: expected_value'.",
   jsonPath:
     "Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions. Add one condition per line.",
   basicAuthentication:
@@ -37,8 +33,6 @@ const tooltipResources = {
     "This condition checker can check whether the sent headers match with the headers in the stub. The condition can both check on substring and regular expressions. Place a new header condition on a new line in the form of 'key: expected_value'.",
   statusCode:
     "Defines the HTTP status code that should be returned. Default is HTTP 200 (OK).",
-  responseBodyType:
-    "Here you can select the type of response you would like to return.",
   responseBody: "Provide the body that should be added to the response.",
   responseHeaders:
     "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'.",
@@ -48,113 +42,18 @@ const tooltipResources = {
     "The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the 'temporaryRedirect' property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the 'permanentRedirect' an HTTP 301.",
   dynamicMode:
     "In order to make the responses in HttPlaceholder a bit more dynamic, the 'dynamic mode' was introduced. This makes it possible to add variables to your responses that can be parsed. As of now, these variables can be used in the response body (text only) and the response headers. The only requirement is that you set this switch to on (by default, it is set to off and the variables will not be parsed).",
-  selectVariableHandler:
-    "When clicking this button, you will be able to insert a variable handler. This variable handler will be parsed when the stub is executed.",
-  base64Upload:
-    "When clicking this button, you will be able to select a file from your PC. This file will be base64 encoded and added to the response body.",
-  reverseProxyUrl: "The URL HttPlaceholder should send the request to.",
-  appendQueryString:
-    "Whether the query string of the request to HttPlaceholder should be appended to the request that will be sent to the proxy URL.",
-  appendPath:
-    "Whether the path of the request to HttPlaceholder (so the string after https://.../ and before the query string) should be appended to the request that will be sent to the proxy URL.",
-  replaceRootUrl:
-    "Whether the content returned by the proxy request should have its URLs replaced by the HttPlaceholder root URL. Both the response body and the HTTP headers will have its URLs replaced."
+  reverseProxy: "A simple reverse proxy for letting a stub call other URLs."
 };
 
-const formPlaceholderResources = {
-  urlPath: "e.g. '/users' or '^/users$' (regex)",
-  queryString: "id: 14\nfilter: last_name\napi_key: ^apikey1122$\n...",
-  fullPath: "e.g. '/users?filter=first_name'",
-  body: "first_name=duco\nid=14\n^somevalue$\n...",
-  formBody: "first_name: duco\nid: 14\naddress: Some street 1\n...",
-  xpath: "/object/a[text() = 'TEST']\n/object/b[text() = 'SomeValue']\n...",
-  xpathNamespaces:
-    "soap: http://www.w3.org/2003/05/soap-envelope\nm: http://www.example.org/stock/Reddy\n...",
-  jsonPath:
-    "$.phoneNumbers[?(@.type=='iPhone')]\n$.phoneNumbers[?(@.year=='2016')]\n...",
-  clientIp: "e.g. '127.0.0.1' or '127.0.0.0/29'",
-  hostname: "e.g. 'httplaceholder.com' or 'http(.*)' (regex)",
-  headers:
-    "Content-Type: text/plain\nX-Api-Key: bla123\nX-Some-Header: ^somevalue$\n...",
-  responseHeaders: "Content-Type: text/plain\nX-Api-Key: bla123\n...",
-  redirect: "e.g. 'https://reddit.com'",
-  reverseProxyUrl: "e.g. https://jsonplaceholder.typicode.com"
-};
-
-const formValidationMessages = {
-  queryStringIncorrect:
-    "You've filled in a value at 'Query strings', but the value could not be parsed. Make sure to fill in a correct value here.",
-  formBodyIncorrect:
-    "You've filled in a value at 'Form body', but the value could not be parsed. Make sure to fill in a correct value here.",
-  headersIncorrect:
-    "You've filled in a value at 'Headers', but the value could not be parsed. Make sure to fill in a correct value here.",
-  responseHeadersIncorrect:
-    "You've filled in a value at 'Response headers', but the value could not be parsed. Make sure to fill in a correct value here.",
-  priorityNotInteger: "Make sure the priority is numeric.",
-  xpathNotFilledIn:
-    "You filled in XML namespaces, but you didn't fill in any XPath expressions.",
-  basicAuthInvalid:
-    "Leave basic authentication username and password both empty or fill in both fields. You can't fill in only one field.",
-  fillInCorrectStatusCode: "Fill in a valid HTTP status code.",
-  extraDurationInvalid: "Make sure to fill in a valid extra duration.",
-  fillInOneTypeOfRedirect:
-    "You cannot fill in both permanent redirect and temporary redirect."
-};
-
-const formLabels = {
-  id: "ID",
-  tenant: "Stub tenant / category",
-  description: "Description",
-  priority: "Priority",
-  httpMethod: "HTTP method",
-  urlPath: "URL path",
-  queryString: "Query strings (1 on each line)",
-  fullPath: "Full path",
-  onlyHttps: "The request should be made over HTTPS",
-  onlyHttp: "The request should be made over HTTP",
-  httpAndHttps: "The request can be made over HTTP or HTTPS",
-  body: "Body",
-  formBody: "Form body",
-  xpath: "XPath expressions",
-  xpathNamespaces: "XML namespaces (optional)",
-  jsonPath: "JSONPath",
-  basicAuthUsername: "Basic authentication username",
-  basicAuthPassword: "Basic authentication password",
-  clientIp: "Client IP",
-  hostname: "Hostname",
-  headers: "Headers",
-  statusCode: "Status code",
-  responseBodyType: "Response body type",
-  responseBody: "Response body",
-  responseHeaders: "Response headers",
-  extraDuration: "Extra duration in milliseconds",
-  temporaryRedirect: "Temporary redirect (HTTP 301)",
-  permanentRedirect: "Permanent redirect (HTTP 307)",
-  enableDynamicMode: "Enable dynamic mode",
-  variableHandler: "Variable handler",
-  reverseProxyUrl: "Proxy URL",
-  appendQueryString: "Append request query string",
-  appendPath: "Append request path",
-  replaceRootUrl: "Replace proxy root URL in response"
-};
-
-const isHttpsValues = {
-  onlyHttps: 0,
-  onlyHttp: 1,
-  httpAndHttps: 2
-};
-
-const httpMethods = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"];
-
-const responseBodyTypes = {
-  text: "Text",
-  json: "JSON",
-  xml: "XML",
-  html: "HTML",
-  base64: "Base64 string",
-  custom: "Custom",
-  empty: "Empty body"
-};
+const httpMethods = [
+  "GET",
+  "POST",
+  "PUT",
+  "DELETE",
+  "PATCH",
+  "OPTIONS",
+  "HEAD"
+];
 
 const httpStatusCodes = [
   {
@@ -411,13 +310,91 @@ const httpStatusCodes = [
   }
 ];
 
+const defaultValues = {
+  description: "A description for the stub.",
+  priority: 1,
+  urlPath: "/path",
+  fullPath: "/path?query=val1",
+  query: {
+    query1: "val1",
+    query2: "val2"
+  },
+  basicAuthentication: {
+    username: "username",
+    password: "password"
+  },
+  requestHeaders: {
+    Header1: "val1",
+    Header2: "val2"
+  },
+  requestBody: ["val1", "val2"],
+  formBody: [
+    {
+      key: "key1",
+      value: "val1"
+    },
+    {
+      key: "key2",
+      value: "val2"
+    }
+  ],
+  clientIp: "127.0.0.1",
+  hostname: "httplaceholder.com",
+  jsonPath: ['$.phoneNumbers[?(@.type=="iPhone")]'],
+  xpath: [
+    {
+      queryString: '/object/a[text() = "TEST"]'
+    },
+    {
+      queryString: '/object/b[text() = "TEST"]',
+      namespaces: {
+        soap: "http://www.w3.org/2003/05/soap-envelope",
+        m: "http://www.example.org/stock/Reddy"
+      }
+    }
+  ],
+  responseHeaders: {
+    Header1: "val1",
+    Header2: "val2"
+  },
+  extraDuration: 10000,
+  redirect: "https://google.com",
+  reverseProxy: {
+    url: "https://jsonplaceholder.typicode.com/todos",
+    appendPath: true,
+    appendQueryString: true,
+    replaceRootUrl: true
+  }
+};
+
+const formHelperKeys = {
+  tenant: "tenant",
+  httpMethod: "httpMethod",
+  statusCode: "statusCode",
+  responseBody: "responseBody",
+  redirect: "redirect",
+  lineEndings: "lineEndings"
+};
+
+const responseBodyTypes = {
+  text: "Text",
+  json: "JSON",
+  xml: "XML",
+  html: "HTML",
+  base64: "Base64"
+};
+
+const lineEndingTypes = {
+  windows: "windows",
+  unix: "unix"
+};
+
 export {
-  tooltipResources,
-  formPlaceholderResources,
-  formValidationMessages,
-  formLabels,
-  isHttpsValues,
+  elementDescriptions,
   httpMethods,
   httpStatusCodes,
-  responseBodyTypes
+  defaultValues,
+  formHelperKeys,
+  responseBodyTypes,
+  lineEndingTypes
 };

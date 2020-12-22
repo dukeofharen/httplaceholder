@@ -128,7 +128,6 @@
     <e p="$PROJECT_DIR$/../gui/node_modules/vuetify" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/vuetify-loader" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/vuex" t="IncludeRecursive" />
-    <e p="$PROJECT_DIR$/../gui/node_modules/vuex-map-fields" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$/../gui/node_modules/xml-formatter" t="IncludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="HttPlaceholder" t="IncludeRecursive">

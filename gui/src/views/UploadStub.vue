@@ -24,7 +24,6 @@
 
 <script>
 import { toastError, toastSuccess, toastWarning } from "@/utils/toastUtil";
-import { actionNames } from "@/store/storeConstants";
 import { resources } from "@/shared/resources";
 import { getExtension } from "@/utils/fileHelper";
 
@@ -59,7 +58,7 @@ export default {
     },
     async addStubsInternal(input) {
       try {
-        const results = await this.$store.dispatch(actionNames.addStubs, {
+        const results = await this.$store.dispatch("stubs/addStubs", {
           input
         });
         for (let result of results) {

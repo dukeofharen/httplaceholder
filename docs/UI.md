@@ -30,15 +30,11 @@ Click on the "Add stubs (through yaml)" button in the sidebar.
 
 ![](img/stub_add_yaml.png)
 
-You can add a single stub here or you can provide multiple stubs in YAML format. You can also pick an example so you can work from that.
+You can add a single stub here or you can provide multiple stubs in YAML format.
 
-### Adding stub through form
+![](img/stub_add_yaml_helpers.png)
 
-Click on the "Add stubs (through form)" button in the sidebar.
-
-![](img/stub_add_form.png)
-
-You can fill in nearly all request conditions and response writers available in YAML on this form.
+You can also click on "Click here to add request or response value" so you can see what kind of values you can use in your request conditions and response definitions and insert them.
 
 ### Uploading stubs
 
