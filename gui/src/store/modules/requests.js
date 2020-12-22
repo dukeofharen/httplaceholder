@@ -11,6 +11,7 @@ const actions = {
         .catch(error => reject(error))
     );
   },
+  /* eslint no-empty-pattern: 0 */
   getRequest({}, correlationId) {
     return new Promise((resolve, reject) =>
       createInstance()

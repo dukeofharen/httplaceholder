@@ -3,7 +3,9 @@
     <v-col>
       <v-list-item>
         <v-list-item-content class="description">
-          <v-list-item-title>Select a tenant below. After selecting a tenant, you can change it in the YAML form below.
+          <v-list-item-title
+            >Select a tenant below. After selecting a tenant, you can change it
+            in the YAML form below.
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -21,7 +23,7 @@
 export default {
   async mounted() {
     let tenantNames = await this.$store.dispatch("tenants/getTenantNames");
-    tenantNames.unshift("Default tenant")
+    tenantNames.unshift("Default tenant");
     this.tenantNames = tenantNames;
   },
   data() {

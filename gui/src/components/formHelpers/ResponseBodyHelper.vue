@@ -3,7 +3,8 @@
     <v-row>
       <v-col cols="12">
         <p>
-          Select a type of response and fill in the actual response that should be returned and press "Insert".
+          Select a type of response and fill in the actual response that should
+          be returned and press "Insert".
         </p>
       </v-col>
     </v-row>
@@ -12,17 +13,13 @@
         <v-select
           :items="responseBodyTypeSelectList"
           v-model="responseBodyType"
-          label="Select a response type..."/>
+          label="Select a response type..."
+        />
       </v-col>
     </v-row>
     <v-row v-if="responseBodyType === responseBodyTypes.base64">
       <v-col cols="12">
-        <input
-          type="file"
-          name="file"
-          ref="base64Upload"
-          @change="upload"
-        />
+        <input type="file" name="file" ref="base64Upload" @change="upload"/>
         <p>
           You can upload a file for use in the Base64 response.
         </p>
@@ -31,7 +28,10 @@
     </v-row>
     <v-row v-if="responseBodyType === responseBodyTypes.base64">
       <v-col cols="12">
-        <v-btn color="primary" @click="showBase64TextInput = true">Show text input</v-btn>
+        <v-btn color="primary" @click="showBase64TextInput = true"
+        >Show text input
+        </v-btn
+        >
       </v-col>
     </v-row>
     <v-row v-if="showDynamicModeRow">
@@ -39,7 +39,11 @@
         <p>
           {{ elementDescriptions.dynamicMode }}
         </p>
-        <v-checkbox v-model="enableDynamicMode" label="Enable dynamic mode" @change="changeDynamicMode"/>
+        <v-checkbox
+          v-model="enableDynamicMode"
+          label="Enable dynamic mode"
+          @change="changeDynamicMode"
+        />
       </v-col>
       <v-col cols="12" v-if="showVariableParsers">
         <v-select
@@ -48,12 +52,21 @@
           item-text="name"
           item-value="key"
           label="Select a variable handler to insert in the response..."
-          @input="insertVariableHandler"/>
+          @input="insertVariableHandler"
+        />
       </v-col>
     </v-row>
-    <v-row v-if="responseBodyType !== responseBodyTypes.base64 || showBase64TextInput">
+    <v-row
+      v-if="
+        responseBodyType !== responseBodyTypes.base64 || showBase64TextInput
+      "
+    >
       <v-col cols="12">
-        <v-textarea label="Fill in the response..." v-model="responseBody" id="responseBody"></v-textarea>
+        <v-textarea
+          label="Fill in the response..."
+          v-model="responseBody"
+          id="responseBody"
+        ></v-textarea>
       </v-col>
     </v-row>
     <v-row>
@@ -66,7 +79,10 @@
 </template>
 
 <script>
-import {responseBodyTypes, elementDescriptions} from "@/shared/stubFormResources";
+import {
+  responseBodyTypes,
+  elementDescriptions
+} from "@/shared/stubFormResources";
 
 export default {
   async mounted() {
@@ -122,7 +138,10 @@ export default {
       if (this.responseBodyType === responseBodyTypes.base64) {
         responseBody = btoa(responseBody);
       }
-      this.$store.commit("stubForm/setResponseBody", {type: this.responseBodyType, body: responseBody});
+      this.$store.commit("stubForm/setResponseBody", {
+        type: this.responseBodyType,
+        body: responseBody
+      });
       this.showBase64TextInput = false;
     },
     close() {
@@ -141,7 +160,10 @@ export default {
         const contentType = matches[1];
         const body = matches[2];
         this.$store.commit("stubForm/setResponseContentType", contentType);
-        this.$store.commit("stubForm/setResponseBody", {type: responseBodyTypes.base64, body});
+        this.$store.commit("stubForm/setResponseBody", {
+          type: responseBodyTypes.base64,
+          body
+        });
         this.responseBody = body;
         this.$store.commit("stubForm/closeFormHelper");
         this.showBase64TextInput = false;
@@ -152,13 +174,18 @@ export default {
       this.$store.commit("stubForm/setDynamicMode", this.enableDynamicMode);
     },
     insertVariableHandler(value) {
-      setTimeout(() => this.selectedVariableHandler = "default", 10);
-      const handler = this.metadata.variableHandlers.find(h => h.name === value);
+      setTimeout(() => (this.selectedVariableHandler = "default"), 10);
+      const handler = this.metadata.variableHandlers.find(
+        h => h.name === value
+      );
       const textarea = document.getElementById("responseBody");
       const cursorPosition = textarea.selectionStart;
       const body = this.responseBody;
-      const newResponseBody = [body.slice(0, cursorPosition), handler.example, body.slice(cursorPosition)].join("");
-      this.responseBody = newResponseBody;
+      this.responseBody = [
+        body.slice(0, cursorPosition),
+        handler.example,
+        body.slice(cursorPosition)
+      ].join("");
     }
   }
 };

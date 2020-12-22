@@ -109,8 +109,12 @@ export default {
   },
   methods: {
     async initialize() {
-      const getRequestsPromise = this.$store.dispatch("requests/getRequestsOverview");
-      const getTenantNamesPromise = this.$store.dispatch("tenants/getTenantNames");
+      const getRequestsPromise = this.$store.dispatch(
+        "requests/getRequestsOverview"
+      );
+      const getTenantNamesPromise = this.$store.dispatch(
+        "tenants/getTenantNames"
+      );
       this.requests = await getRequestsPromise;
       this.tenantNames = await getTenantNamesPromise;
 

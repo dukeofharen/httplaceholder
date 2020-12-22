@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
-import {toastError} from "@/utils/toastUtil";
-import {resources} from "@/shared/resources";
-import {defaultValues, responseBodyTypes} from "@/shared/stubFormResources";
+import { toastError } from "@/utils/toastUtil";
+import { resources } from "@/shared/resources";
+import { defaultValues, responseBodyTypes } from "@/shared/stubFormResources";
 
 const parseInput = state => {
   try {
@@ -106,7 +106,10 @@ const mutations = {
           parsed.conditions.url.query = {};
         }
 
-        parsed.conditions.url.query = {...parsed.conditions.url.query, ...defaultValues.query};
+        parsed.conditions.url.query = {
+          ...parsed.conditions.url.query,
+          ...defaultValues.query
+        };
         state.input = yaml.dump(parsed);
       }
     });
@@ -136,7 +139,8 @@ const mutations = {
           parsed.conditions = {};
         }
 
-        parsed.conditions.basicAuthentication = defaultValues.basicAuthentication;
+        parsed.conditions.basicAuthentication =
+          defaultValues.basicAuthentication;
         state.input = yaml.dump(parsed);
       }
     });
@@ -153,7 +157,10 @@ const mutations = {
           parsed.conditions.headers = {};
         }
 
-        parsed.conditions.headers = {...parsed.conditions.headers, ...defaultValues.requestHeaders};
+        parsed.conditions.headers = {
+          ...parsed.conditions.headers,
+          ...defaultValues.requestHeaders
+        };
         state.input = yaml.dump(parsed);
       }
     });
@@ -170,7 +177,9 @@ const mutations = {
           parsed.conditions.body = [];
         }
 
-        parsed.conditions.body = parsed.conditions.body.concat(defaultValues.requestBody);
+        parsed.conditions.body = parsed.conditions.body.concat(
+          defaultValues.requestBody
+        );
         state.input = yaml.dump(parsed);
       }
     });
@@ -187,7 +196,9 @@ const mutations = {
           parsed.conditions.form = [];
         }
 
-        parsed.conditions.form = parsed.conditions.form.concat(defaultValues.formBody);
+        parsed.conditions.form = parsed.conditions.form.concat(
+          defaultValues.formBody
+        );
         state.input = yaml.dump(parsed);
       }
     });
@@ -230,7 +241,9 @@ const mutations = {
           parsed.conditions.jsonPath = [];
         }
 
-        parsed.conditions.jsonPath = parsed.conditions.jsonPath.concat(defaultValues.jsonPath);
+        parsed.conditions.jsonPath = parsed.conditions.jsonPath.concat(
+          defaultValues.jsonPath
+        );
         state.input = yaml.dump(parsed);
       }
     });
@@ -247,7 +260,9 @@ const mutations = {
           parsed.conditions.xpath = [];
         }
 
-        parsed.conditions.xpath = parsed.conditions.xpath.concat(defaultValues.xpath);
+        parsed.conditions.xpath = parsed.conditions.xpath.concat(
+          defaultValues.xpath
+        );
         state.input = yaml.dump(parsed);
       }
     });
@@ -338,7 +353,9 @@ const mutations = {
           parsed.response.headers = {};
         }
 
-        const key = Object.keys(parsed.response.headers).find(k => k.toLowerCase().trim() === "content-type");
+        const key = Object.keys(parsed.response.headers).find(
+          k => k.toLowerCase().trim() === "content-type"
+        );
         delete parsed.response.headers[key];
         parsed.response.headers["Content-Type"] = contentType;
         state.input = yaml.dump(parsed);
@@ -357,7 +374,10 @@ const mutations = {
           parsed.response.headers = {};
         }
 
-        parsed.response.headers = {...parsed.response.headers, ...defaultValues.responseHeaders};
+        parsed.response.headers = {
+          ...parsed.response.headers,
+          ...defaultValues.responseHeaders
+        };
         state.input = yaml.dump(parsed);
       }
     });

@@ -50,7 +50,7 @@ export default {
             username: this.username,
             password: this.password
           });
-          await this.$router.push({name: routeNames.requests});
+          await this.$router.push({ name: routeNames.requests });
         } catch (e) {
           if (e.response.status === 401) {
             toastError(resources.credentialsIncorrect);

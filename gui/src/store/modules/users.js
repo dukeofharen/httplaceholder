@@ -1,5 +1,9 @@
 import createInstance from "@/axios/axiosInstanceFactory";
-import {clearUserToken, getUserToken, saveUserToken} from "@/utils/sessionUtil";
+import {
+  clearUserToken,
+  getUserToken,
+  saveUserToken
+} from "@/utils/sessionUtil";
 
 const token = getUserToken();
 const getUser = (username, password, commit) => {

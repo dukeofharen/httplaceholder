@@ -107,9 +107,7 @@ export default {
   },
   methods: {
     async initialize() {
-      const getStubsPromise = this.$store.dispatch(
-        "stubs/getStubsOverview"
-      );
+      const getStubsPromise = this.$store.dispatch("stubs/getStubsOverview");
       const getTenantNamesPromise = this.$store.dispatch(
         "tenants/getTenantNames"
       );

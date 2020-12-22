@@ -5,7 +5,9 @@
         @click="drawer = !drawer"
         color="white"
       ></v-app-bar-nav-icon>
-      <span class="title ml-3 mr-5"><img src="./img/logo-white.png" alt=""/></span>
+      <span class="title ml-3 mr-5"
+        ><img src="./img/logo-white.png" alt=""
+      /></span>
       <div class="flex-grow-1"></div>
     </v-app-bar>
 
@@ -29,9 +31,7 @@
             <v-list-item-action>
               <v-icon>mdi-plus</v-icon>
             </v-list-item-action>
-            <v-list-item-title class="grey--text"
-              >Add stubs</v-list-item-title
-            >
+            <v-list-item-title class="grey--text">Add stubs</v-list-item-title>
           </v-list-item>
           <v-list-item
             v-if="authenticated"
@@ -99,7 +99,9 @@ export default {
     document.title = `HttPlaceholder - v${this.metadata.version}`;
 
     if (!this.authenticated) {
-      this.authRequired = await this.$store.dispatch("users/ensureAuthenticated");
+      this.authRequired = await this.$store.dispatch(
+        "users/ensureAuthenticated"
+      );
     }
   },
   data() {

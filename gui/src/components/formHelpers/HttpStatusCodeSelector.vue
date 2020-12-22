@@ -3,13 +3,20 @@
     <v-col>
       <v-list-item>
         <v-list-item-content class="description">
-          <v-list-item-title>Select an HTTP status code from the list below.</v-list-item-title>
+          <v-list-item-title
+            >Select an HTTP status code from the list below.</v-list-item-title
+          >
         </v-list-item-content>
       </v-list-item>
 
       <v-list-item v-for="code of httpStatusCodes" :key="code.code">
-        <v-list-item-content class="status-code" @click="codeSelected(code.code)">
-          <v-list-item-title>{{ code.name }} - {{ code.code }}</v-list-item-title>
+        <v-list-item-content
+          class="status-code"
+          @click="codeSelected(code.code)"
+        >
+          <v-list-item-title
+            >{{ code.name }} - {{ code.code }}</v-list-item-title
+          >
         </v-list-item-content>
       </v-list-item>
     </v-col>
@@ -17,7 +24,7 @@
 </template>
 
 <script>
-import {httpStatusCodes} from "@/shared/stubFormResources";
+import { httpStatusCodes } from "@/shared/stubFormResources";
 
 export default {
   data() {

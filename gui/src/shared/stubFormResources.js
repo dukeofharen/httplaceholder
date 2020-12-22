@@ -45,7 +45,15 @@ const elementDescriptions = {
   reverseProxy: "A simple reverse proxy for letting a stub call other URLs."
 };
 
-const httpMethods = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"];
+const httpMethods = [
+  "GET",
+  "POST",
+  "PUT",
+  "DELETE",
+  "PATCH",
+  "OPTIONS",
+  "HEAD"
+];
 
 const httpStatusCodes = [
   {
@@ -319,10 +327,7 @@ const defaultValues = {
     Header1: "val1",
     Header2: "val2"
   },
-  requestBody: [
-    "val1",
-    "val2"
-  ],
+  requestBody: ["val1", "val2"],
   formBody: [
     {
       key: "key1",
@@ -335,18 +340,19 @@ const defaultValues = {
   ],
   clientIp: "127.0.0.1",
   hostname: "httplaceholder.com",
-  jsonPath: ["$.phoneNumbers[?(@.type==\"iPhone\")]"],
+  jsonPath: ['$.phoneNumbers[?(@.type=="iPhone")]'],
   xpath: [
     {
-      queryString: "/object/a[text() = \"TEST\"]"
+      queryString: '/object/a[text() = "TEST"]'
     },
     {
-      queryString: "/object/b[text() = \"TEST\"]",
+      queryString: '/object/b[text() = "TEST"]',
       namespaces: {
         soap: "http://www.w3.org/2003/05/soap-envelope",
         m: "http://www.example.org/stock/Reddy"
       }
-    }],
+    }
+  ],
   responseHeaders: {
     Header1: "val1",
     Header2: "val2"

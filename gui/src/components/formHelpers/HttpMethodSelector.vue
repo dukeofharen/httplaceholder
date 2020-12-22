@@ -3,7 +3,9 @@
     <v-col>
       <v-list-item>
         <v-list-item-content class="description">
-          <v-list-item-title>Select an HTTP method or fill in a custom HTTP method in the YAML below.
+          <v-list-item-title
+            >Select an HTTP method or fill in a custom HTTP method in the YAML
+            below.
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -18,7 +20,7 @@
 </template>
 
 <script>
-import {httpMethods} from "@/shared/stubFormResources";
+import { httpMethods } from "@/shared/stubFormResources";
 
 export default {
   data() {

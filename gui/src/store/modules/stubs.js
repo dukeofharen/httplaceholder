@@ -1,6 +1,6 @@
 import createInstance from "@/axios/axiosInstanceFactory";
 import yaml from "js-yaml";
-import {resources} from "@/shared/resources";
+import { resources } from "@/shared/resources";
 
 const state = () => ({});
 
@@ -21,6 +21,7 @@ const actions = {
         .catch(error => reject(error))
     );
   },
+  /* eslint no-empty-pattern: 0 */
   getStub({}, payload) {
     return new Promise((resolve, reject) =>
       createInstance()
@@ -29,6 +30,7 @@ const actions = {
         .catch(error => reject(error))
     );
   },
+  /* eslint no-empty-pattern: 0 */
   deleteStub({}, payload) {
     return new Promise((resolve, reject) =>
       createInstance()
@@ -45,7 +47,9 @@ const actions = {
         .catch(error => reject(error))
     );
   },
+  /* eslint no-empty-pattern: 0 */
   addStubs({}, payload) {
+    /* eslint no-async-promise-executor: 0 */
     return new Promise(async (resolve, reject) => {
       let stubsArray;
       let parsedObject;
@@ -91,6 +95,7 @@ const actions = {
       resolve(results);
     });
   },
+  /* eslint no-empty-pattern: 0 */
   updateStub({}, payload) {
     return new Promise((resolve, reject) => {
       let stub;
@@ -116,6 +121,7 @@ const actions = {
         .catch(error => reject(error));
     });
   },
+  /* eslint no-empty-pattern: 0 */
   createStubBasedOnRequest({}, payload) {
     return new Promise((resolve, reject) =>
       createInstance()

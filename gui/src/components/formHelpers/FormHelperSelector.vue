@@ -3,44 +3,67 @@
     <v-col>
       <v-list-item v-if="!showList">
         <v-list-item-content class="helper-button" @click="doShowList">
-          <v-list-item-title>Click here to add request or response
-            value
+          <v-list-item-title
+            >Click here to add request or response value
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <template v-if="showList">
         <v-list-group v-for="(item, index) in formHelperItems" :key="index">
           <template v-slot:activator>
-            <v-list-item-title class="main-item">{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="main-item">{{
+              item.title
+            }}</v-list-item-title>
           </template>
 
-          <v-list-item v-for="(subItem, index) in item.subItems" :key="index" class="sub-item" @click="subItem.onClick">
+          <v-list-item
+            v-for="(subItem, index) in item.subItems"
+            :key="index"
+            class="sub-item"
+            @click="subItem.onClick"
+          >
             <v-list-item-content>
               <v-list-item-title v-text="subItem.title"></v-list-item-title>
-              <v-list-item-content class="subtitle">{{ subItem.subTitle }}</v-list-item-content>
+              <v-list-item-content class="subtitle">{{
+                subItem.subTitle
+              }}</v-list-item-content>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
       </template>
-      <HttpMethodSelector v-if="currentSelectedFormHelper === formHelperKeys.httpMethod"/>
-      <TenantSelector v-if="currentSelectedFormHelper === formHelperKeys.tenant"/>
-      <HttpStatusCodeSelector v-if="currentSelectedFormHelper === formHelperKeys.statusCode"/>
-      <ResponseBodyHelper v-if="currentSelectedFormHelper === formHelperKeys.responseBody"/>
-      <RedirectSelector v-if="currentSelectedFormHelper === formHelperKeys.redirect"/>
-      <LineEndingSelector v-if="currentSelectedFormHelper === formHelperKeys.lineEndings"/>
+      <HttpMethodSelector
+        v-if="currentSelectedFormHelper === formHelperKeys.httpMethod"
+      />
+      <TenantSelector
+        v-if="currentSelectedFormHelper === formHelperKeys.tenant"
+      />
+      <HttpStatusCodeSelector
+        v-if="currentSelectedFormHelper === formHelperKeys.statusCode"
+      />
+      <ResponseBodyHelper
+        v-if="currentSelectedFormHelper === formHelperKeys.responseBody"
+      />
+      <RedirectSelector
+        v-if="currentSelectedFormHelper === formHelperKeys.redirect"
+      />
+      <LineEndingSelector
+        v-if="currentSelectedFormHelper === formHelperKeys.lineEndings"
+      />
     </v-col>
   </v-row>
 </template>
 
 <script>
-import {elementDescriptions, formHelperKeys} from "@/shared/stubFormResources";
+import {
+  elementDescriptions,
+  formHelperKeys
+} from "@/shared/stubFormResources";
 import HttpMethodSelector from "@/components/formHelpers/HttpMethodSelector";
 import TenantSelector from "@/components/formHelpers/TenantSelector";
 import HttpStatusCodeSelector from "@/components/formHelpers/HttpStatusCodeSelector";
 import ResponseBodyHelper from "@/components/formHelpers/ResponseBodyHelper";
 import RedirectSelector from "@/components/formHelpers/RedirectSelector";
 import LineEndingSelector from "@/components/formHelpers/LineEndingSelector";
-
 
 export default {
   components: {
@@ -51,9 +74,7 @@ export default {
     RedirectSelector,
     LineEndingSelector
   },
-  mounted() {
-
-  },
+  mounted() {},
   data() {
     return {
       showList: false,
@@ -65,7 +86,8 @@ export default {
             {
               title: "Description",
               subTitle: elementDescriptions.description,
-              onClick: () => this.setDefaultValue("stubForm/setDefaultDescription")
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultDescription")
             },
             {
               title: "Priority",
@@ -76,7 +98,8 @@ export default {
               title: "Tenant",
               subTitle: elementDescriptions.tenant,
               onClick: () => this.openFormHelper(this.formHelperKeys.tenant)
-            }]
+            }
+          ]
         },
         {
           title: "Request conditions",
@@ -109,17 +132,20 @@ export default {
             {
               title: "Basic authentication",
               subTitle: elementDescriptions.basicAuthentication,
-              onClick: () => this.setDefaultValue("stubForm/setDefaultBasicAuth")
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultBasicAuth")
             },
             {
               title: "Headers",
               subTitle: elementDescriptions.headers,
-              onClick: () => this.setDefaultValue("stubForm/setDefaultRequestHeaders")
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultRequestHeaders")
             },
             {
               title: "Body",
               subTitle: elementDescriptions.body,
-              onClick: () => this.setDefaultValue("stubForm/setDefaultRequestBody")
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultRequestBody")
             },
             {
               title: "Form body",
@@ -159,17 +185,20 @@ export default {
             {
               title: "Response body",
               subTitle: elementDescriptions.responseBody,
-              onClick: () => this.openFormHelper(this.formHelperKeys.responseBody)
+              onClick: () =>
+                this.openFormHelper(this.formHelperKeys.responseBody)
             },
             {
               title: "Response headers",
               subTitle: elementDescriptions.responseHeaders,
-              onClick: () => this.setDefaultValue("stubForm/setDefaultResponseHeaders")
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultResponseHeaders")
             },
             {
               title: "Extra duration",
               subTitle: elementDescriptions.extraDuration,
-              onClick: () => this.setDefaultValue("stubForm/setDefaultExtraDuration")
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultExtraDuration")
             },
             {
               title: "Redirect",
@@ -179,12 +208,14 @@ export default {
             {
               title: "Line endings",
               subTitle: elementDescriptions.lineEndings,
-              onClick: () => this.openFormHelper(this.formHelperKeys.lineEndings)
+              onClick: () =>
+                this.openFormHelper(this.formHelperKeys.lineEndings)
             },
             {
               title: "Reverse proxy",
               subTitle: elementDescriptions.reverseProxy,
-              onClick: () => this.setDefaultValue("stubForm/setDefaultReverseProxy")
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultReverseProxy")
             }
           ]
         }

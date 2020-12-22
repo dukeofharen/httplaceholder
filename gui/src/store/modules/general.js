@@ -1,4 +1,4 @@
-import {setDarkThemeEnabled} from "@/utils/sessionUtil";
+import { setDarkThemeEnabled } from "@/utils/sessionUtil";
 
 const state = () => ({
   settings: {
@@ -19,7 +19,6 @@ const getters = {
   getDarkTheme(state) {
     return state.settings.darkTheme;
   }
-
 };
 
 export default {

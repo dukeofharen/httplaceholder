@@ -9,13 +9,13 @@
           <a
             href="https://github.com/dukeofharen/httplaceholder"
             target="_blank"
-          >https://github.com/dukeofharen/httplaceholder</a
+            >https://github.com/dukeofharen/httplaceholder</a
           >.
         </v-card-text>
       </v-card>
       <v-card v-if="showFormHelperSelector">
         <v-card-text>
-          <FormHelperSelector/>
+          <FormHelperSelector />
         </v-card-text>
       </v-card>
       <v-card class="editor">
@@ -29,11 +29,11 @@
 </template>
 
 <script>
-import {codemirror} from "vue-codemirror";
+import { codemirror } from "vue-codemirror";
 import yaml from "js-yaml";
-import {toastError, toastSuccess} from "@/utils/toastUtil";
-import {resources} from "@/shared/resources";
-import {routeNames} from "@/router/routerConstants";
+import { toastError, toastSuccess } from "@/utils/toastUtil";
+import { resources } from "@/shared/resources";
+import { routeNames } from "@/router/routerConstants";
 import FormHelperSelector from "@/components/formHelpers/FormHelperSelector";
 
 export default {
@@ -112,9 +112,11 @@ export default {
             }
           }
           if (results.length === 1 && results[0].v) {
-            await this.$router.push({name: routeNames.stubForm, params: {stubId: results[0].v.stub.id}});
+            await this.$router.push({
+              name: routeNames.stubForm,
+              params: { stubId: results[0].v.stub.id }
+            });
           }
-
         } catch (e) {
           toastError(e);
         }

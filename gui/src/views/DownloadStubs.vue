@@ -50,7 +50,9 @@ export default {
   name: "addStub",
   async created() {
     const getStubsPromise = this.$store.dispatch("stubs/getStubs");
-    const getTenantNamesPromise = this.$store.dispatch("tenants/getTenantNames");
+    const getTenantNamesPromise = this.$store.dispatch(
+      "tenants/getTenantNames"
+    );
     this.stubs = await getStubsPromise;
     this.tenantNames = await getTenantNamesPromise;
   },
