@@ -149,6 +149,11 @@ export default {
               title: "Response body",
               subTitle: tooltipResources.responseBody,
               onClick: () => this.openFormHelper(this.formHelperKeys.responseBody)
+            },
+            {
+              title: "Response headers",
+              subTitle: tooltipResources.responseHeaders,
+              onClick: () => this.setDefaultValue("stubForm/setDefaultResponseHeaders")
             }
           ]
         }

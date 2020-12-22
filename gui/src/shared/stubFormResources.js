@@ -368,7 +368,11 @@ const defaultValues = {
         soap: "http://www.w3.org/2003/05/soap-envelope",
         m: "http://www.example.org/stock/Reddy"
       }
-    }]
+    }],
+  responseHeaders: {
+    Header1: "val1",
+    Header2: "val2"
+  },
 };
 
 const formHelperKeys = {
@@ -384,7 +388,7 @@ const responseBodyTypes = {
   xml: "XML",
   html: "HTML",
   base64: "Base64"
-}
+};
 
 export {
   tooltipResources,

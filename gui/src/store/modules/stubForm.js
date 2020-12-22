@@ -344,7 +344,24 @@ const mutations = {
         state.input = yaml.dump(parsed);
       }
     });
-  }
+  },
+  setDefaultResponseHeaders(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        if (!parsed.response.headers) {
+          parsed.response.headers = {};
+        }
+
+        parsed.response.headers = {...parsed.response.headers, ...defaultValues.responseHeaders};
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
 };
 
 const getters = {
