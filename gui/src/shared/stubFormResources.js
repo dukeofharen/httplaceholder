@@ -1,6 +1,4 @@
-const tooltipResources = {
-  id:
-    "The ID of the stub. If you don't fill in an ID, an ID will be calculated when the stub is added. If you provide an ID of a stub that already exists, that stub will be overwritten with this one.",
+const elementDescriptions = {
   tenant:
     "The stub also has a 'tenant' field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant).",
   description:
@@ -23,8 +21,6 @@ const tooltipResources = {
     "The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions. Place a new form body condition on a new line in the form of 'key: expected_value'.",
   xpath:
     "Using the XPath condition checker, you can check the posted XML body to see if it contains the correct elements. It is possible to add multiple conditions. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.\n\nIt is also possible to (pre)-set the XML namespaces of a posted XML body. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.",
-  xpathNamespaces:
-    "Fill in the XML namespaces here. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression. Place a new namespace on a new line in the form of 'key: expected_value'.",
   jsonPath:
     "Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions. Add one condition per line.",
   basicAuthentication:
@@ -37,8 +33,6 @@ const tooltipResources = {
     "This condition checker can check whether the sent headers match with the headers in the stub. The condition can both check on substring and regular expressions. Place a new header condition on a new line in the form of 'key: expected_value'.",
   statusCode:
     "Defines the HTTP status code that should be returned. Default is HTTP 200 (OK).",
-  responseBodyType:
-    "Here you can select the type of response you would like to return.",
   responseBody: "Provide the body that should be added to the response.",
   responseHeaders:
     "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'.",
@@ -48,10 +42,6 @@ const tooltipResources = {
     "The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the 'temporaryRedirect' property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the 'permanentRedirect' an HTTP 301.",
   dynamicMode:
     "In order to make the responses in HttPlaceholder a bit more dynamic, the 'dynamic mode' was introduced. This makes it possible to add variables to your responses that can be parsed. As of now, these variables can be used in the response body (text only) and the response headers. The only requirement is that you set this switch to on (by default, it is set to off and the variables will not be parsed).",
-  selectVariableHandler:
-    "When clicking this button, you will be able to insert a variable handler. This variable handler will be parsed when the stub is executed.",
-  base64Upload:
-    "When clicking this button, you will be able to select a file from your PC. This file will be base64 encoded and added to the response body.",
   reverseProxyUrl: "The URL HttPlaceholder should send the request to.",
   appendQueryString:
     "Whether the query string of the request to HttPlaceholder should be appended to the request that will be sent to the proxy URL.",
@@ -60,12 +50,6 @@ const tooltipResources = {
   replaceRootUrl:
     "Whether the content returned by the proxy request should have its URLs replaced by the HttPlaceholder root URL. Both the response body and the HTTP headers will have its URLs replaced.",
   lineEndings: "Whether the response should be returned with Unix or Windows line endings or return the line endings as provided in the response body. This is done because some software only accepts Windows or Unix line endings."
-};
-
-const isHttpsValues = {
-  onlyHttps: 0,
-  onlyHttp: 1,
-  httpAndHttps: 2
 };
 
 const httpMethods = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"];
@@ -401,8 +385,7 @@ const lineEndingTypes = {
 };
 
 export {
-  tooltipResources,
-  isHttpsValues,
+  elementDescriptions,
   httpMethods,
   httpStatusCodes,
   defaultValues,

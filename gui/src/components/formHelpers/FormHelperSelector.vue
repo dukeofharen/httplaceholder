@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import {tooltipResources, formHelperKeys} from "@/shared/stubFormResources";
+import {elementDescriptions, formHelperKeys} from "@/shared/stubFormResources";
 import HttpMethodSelector from "@/components/formHelpers/HttpMethodSelector";
 import TenantSelector from "@/components/formHelpers/TenantSelector";
 import HttpStatusCodeSelector from "@/components/formHelpers/HttpStatusCodeSelector";
@@ -64,17 +64,17 @@ export default {
           subItems: [
             {
               title: "Description",
-              subTitle: tooltipResources.description,
+              subTitle: elementDescriptions.description,
               onClick: () => this.setDefaultValue("stubForm/setDefaultDescription")
             },
             {
               title: "Priority",
-              subTitle: tooltipResources.priority,
+              subTitle: elementDescriptions.priority,
               onClick: () => this.setDefaultValue("stubForm/setDefaultPriority")
             },
             {
               title: "Tenant",
-              subTitle: tooltipResources.tenant,
+              subTitle: elementDescriptions.tenant,
               onClick: () => this.openFormHelper(this.formHelperKeys.tenant)
             }]
         },
@@ -83,67 +83,67 @@ export default {
           subItems: [
             {
               title: "HTTP method",
-              subTitle: tooltipResources.httpMethod,
+              subTitle: elementDescriptions.httpMethod,
               onClick: () => this.openFormHelper(this.formHelperKeys.httpMethod)
             },
             {
               title: "URL path",
-              subTitle: tooltipResources.urlPath,
+              subTitle: elementDescriptions.urlPath,
               onClick: () => this.setDefaultValue("stubForm/setDefaultPath")
             },
             {
               title: "Full path",
-              subTitle: tooltipResources.fullPath,
+              subTitle: elementDescriptions.fullPath,
               onClick: () => this.setDefaultValue("stubForm/setDefaultFullPath")
             },
             {
               title: "Query string",
-              subTitle: tooltipResources.queryString,
+              subTitle: elementDescriptions.queryString,
               onClick: () => this.setDefaultValue("stubForm/setDefaultQuery")
             },
             {
               title: "HTTPS",
-              subTitle: tooltipResources.isHttps,
+              subTitle: elementDescriptions.isHttps,
               onClick: () => this.setDefaultValue("stubForm/setDefaultIsHttps")
             },
             {
               title: "Basic authentication",
-              subTitle: tooltipResources.basicAuthentication,
+              subTitle: elementDescriptions.basicAuthentication,
               onClick: () => this.setDefaultValue("stubForm/setDefaultBasicAuth")
             },
             {
               title: "Headers",
-              subTitle: tooltipResources.headers,
+              subTitle: elementDescriptions.headers,
               onClick: () => this.setDefaultValue("stubForm/setDefaultRequestHeaders")
             },
             {
               title: "Body",
-              subTitle: tooltipResources.body,
+              subTitle: elementDescriptions.body,
               onClick: () => this.setDefaultValue("stubForm/setDefaultRequestBody")
             },
             {
               title: "Form body",
-              subTitle: tooltipResources.formBody,
+              subTitle: elementDescriptions.formBody,
               onClick: () => this.setDefaultValue("stubForm/setDefaultFormBody")
             },
             {
               title: "Client IP",
-              subTitle: tooltipResources.clientIp,
+              subTitle: elementDescriptions.clientIp,
               onClick: () => this.setDefaultValue("stubForm/setDefaultClientIp")
             },
             {
               title: "Hostname",
-              subTitle: tooltipResources.hostname,
+              subTitle: elementDescriptions.hostname,
               onClick: () => this.setDefaultValue("stubForm/setDefaultHostname")
             },
             {
               title: "JSONPath",
-              subTitle: tooltipResources.jsonPath,
+              subTitle: elementDescriptions.jsonPath,
               onClick: () => this.setDefaultValue("stubForm/setDefaultJsonPath")
             },
             {
               title: "XPath",
-              subTitle: tooltipResources.xpath,
+              subTitle: elementDescriptions.xpath,
               onClick: () => this.setDefaultValue("stubForm/setDefaultXPath")
             }
           ]
@@ -153,32 +153,32 @@ export default {
           subItems: [
             {
               title: "HTTP status code",
-              subTitle: tooltipResources.statusCode,
+              subTitle: elementDescriptions.statusCode,
               onClick: () => this.openFormHelper(this.formHelperKeys.statusCode)
             },
             {
               title: "Response body",
-              subTitle: tooltipResources.responseBody,
+              subTitle: elementDescriptions.responseBody,
               onClick: () => this.openFormHelper(this.formHelperKeys.responseBody)
             },
             {
               title: "Response headers",
-              subTitle: tooltipResources.responseHeaders,
+              subTitle: elementDescriptions.responseHeaders,
               onClick: () => this.setDefaultValue("stubForm/setDefaultResponseHeaders")
             },
             {
               title: "Extra duration",
-              subTitle: tooltipResources.extraDuration,
+              subTitle: elementDescriptions.extraDuration,
               onClick: () => this.setDefaultValue("stubForm/setDefaultExtraDuration")
             },
             {
               title: "Redirect",
-              subTitle: tooltipResources.redirect,
+              subTitle: elementDescriptions.redirect,
               onClick: () => this.openFormHelper(this.formHelperKeys.redirect)
             },
             {
               title: "Line endings",
-              subTitle: tooltipResources.lineEndings,
+              subTitle: elementDescriptions.lineEndings,
               onClick: () => this.openFormHelper(this.formHelperKeys.lineEndings)
             }
           ]

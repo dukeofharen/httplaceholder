@@ -37,7 +37,7 @@
     <v-row v-if="showDynamicModeRow">
       <v-col cols="12">
         <p>
-          {{ tooltipResources.dynamicMode }}
+          {{ elementDescriptions.dynamicMode }}
         </p>
         <v-checkbox v-model="enableDynamicMode" label="Enable dynamic mode" @change="changeDynamicMode"/>
       </v-col>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import {responseBodyTypes, tooltipResources} from "@/shared/stubFormResources";
+import {responseBodyTypes, elementDescriptions} from "@/shared/stubFormResources";
 
 export default {
   async mounted() {
@@ -84,7 +84,7 @@ export default {
   data() {
     return {
       responseBodyTypes,
-      tooltipResources,
+      elementDescriptions,
       responseBodyType: "",
       responseBody: "",
       showBase64TextInput: false,
