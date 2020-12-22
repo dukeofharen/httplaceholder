@@ -373,6 +373,7 @@ const defaultValues = {
     Header1: "val1",
     Header2: "val2"
   },
+  extraDuration: 10000
 };
 
 const formHelperKeys = {

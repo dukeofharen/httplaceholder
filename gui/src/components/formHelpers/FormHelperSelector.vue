@@ -154,6 +154,11 @@ export default {
               title: "Response headers",
               subTitle: tooltipResources.responseHeaders,
               onClick: () => this.setDefaultValue("stubForm/setDefaultResponseHeaders")
+            },
+            {
+              title: "Extra duration",
+              subTitle: tooltipResources.extraDuration,
+              onClick: () => this.setDefaultValue("stubForm/setDefaultExtraDuration")
             }
           ]
         }

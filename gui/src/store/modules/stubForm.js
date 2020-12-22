@@ -340,7 +340,7 @@ const mutations = {
 
         const key = Object.keys(parsed.response.headers).find(k => k.toLowerCase().trim() === "content-type");
         delete parsed.response.headers[key];
-        parsed.response.headers['Content-Type'] = contentType;
+        parsed.response.headers["Content-Type"] = contentType;
         state.input = yaml.dump(parsed);
       }
     });
@@ -362,6 +362,19 @@ const mutations = {
       }
     });
   },
+  setDefaultExtraDuration(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        parsed.response.extraDuration = defaultValues.extraDuration;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  }
 };
 
 const getters = {
