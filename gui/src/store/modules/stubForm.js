@@ -409,13 +409,25 @@ const mutations = {
           parsed.response = {};
         }
 
-        console.log(lineEndings);
         if (!lineEndings) {
           delete parsed.response.lineEndings;
         } else {
           parsed.response.lineEndings = lineEndings;
         }
 
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDynamicMode(state, value) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        parsed.response.enableDynamicMode = value;
         state.input = yaml.dump(parsed);
       }
     });
@@ -467,6 +479,20 @@ const getters = {
       }
 
       return responseBodyTypes.text;
+    });
+  },
+  getDynamicMode(state) {
+    return handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          return false;
+        }
+
+        return parsed.response.enableDynamicMode || false;
+      }
+
+      return false;
     });
   }
 };

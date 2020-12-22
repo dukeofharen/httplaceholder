@@ -34,9 +34,26 @@
         <v-btn color="primary" @click="showBase64TextInput = true">Show text input</v-btn>
       </v-col>
     </v-row>
+    <v-row v-if="showDynamicModeRow">
+      <v-col cols="12">
+        <p>
+          {{ tooltipResources.dynamicMode }}
+        </p>
+        <v-checkbox v-model="enableDynamicMode" label="Enable dynamic mode" @change="changeDynamicMode"/>
+      </v-col>
+      <v-col cols="12" v-if="showVariableParsers">
+        <v-select
+          :items="variableParserSelectList"
+          v-model="selectedVariableHandler"
+          item-text="name"
+          item-value="key"
+          label="Select a variable handler to insert in the response..."
+          @input="insertVariableHandler"/>
+      </v-col>
+    </v-row>
     <v-row v-if="responseBodyType !== responseBodyTypes.base64 || showBase64TextInput">
       <v-col cols="12">
-        <v-textarea label="Fill in the response..." v-model="responseBody"></v-textarea>
+        <v-textarea label="Fill in the response..." v-model="responseBody" id="responseBody"></v-textarea>
       </v-col>
     </v-row>
     <v-row>
@@ -49,10 +66,10 @@
 </template>
 
 <script>
-import {responseBodyTypes} from "@/shared/stubFormResources";
+import {responseBodyTypes, tooltipResources} from "@/shared/stubFormResources";
 
 export default {
-  mounted() {
+  async mounted() {
     this.responseBodyType = this.$store.getters["stubForm/getResponseBodyType"];
     let responseBody = this.$store.getters["stubForm/getResponseBody"];
     if (this.responseBodyType === responseBodyTypes.base64) {
@@ -60,24 +77,49 @@ export default {
     }
 
     this.responseBody = responseBody;
+
+    this.metadata = await this.$store.dispatch("metadata/getMetadata");
+    this.enableDynamicMode = this.$store.getters["stubForm/getDynamicMode"];
   },
   data() {
     return {
       responseBodyTypes,
+      tooltipResources,
       responseBodyType: "",
       responseBody: "",
-      showBase64TextInput: false
+      showBase64TextInput: false,
+      metadata: null,
+      enableDynamicMode: false,
+      selectedVariableHandler: "default"
     };
   },
   computed: {
     responseBodyTypeSelectList() {
       return Object.keys(responseBodyTypes).map(k => responseBodyTypes[k]);
+    },
+    variableParserSelectList() {
+      if (!this.metadata || !this.metadata.variableHandlers) {
+        return [];
+      }
+
+      const result = this.metadata.variableHandlers.map(h => ({
+        key: h.name,
+        name: h.fullName
+      }));
+      result.unshift({key: "default", name: ""});
+      return result;
+    },
+    showDynamicModeRow() {
+      return this.responseBodyType !== responseBodyTypes.base64;
+    },
+    showVariableParsers() {
+      return this.showDynamicModeRow && this.enableDynamicMode;
     }
   },
   methods: {
     insert() {
       let responseBody = this.responseBody;
-      if(this.responseBodyType === responseBodyTypes.base64) {
+      if (this.responseBodyType === responseBodyTypes.base64) {
         responseBody = btoa(responseBody);
       }
       this.$store.commit("stubForm/setResponseBody", {type: this.responseBodyType, body: responseBody});
@@ -105,6 +147,18 @@ export default {
         this.showBase64TextInput = false;
       };
       reader.readAsDataURL(file);
+    },
+    changeDynamicMode() {
+      this.$store.commit("stubForm/setDynamicMode", this.enableDynamicMode);
+    },
+    insertVariableHandler(value) {
+      setTimeout(() => this.selectedVariableHandler = "default", 10);
+      const handler = this.metadata.variableHandlers.find(h => h.name === value);
+      const textarea = document.getElementById("responseBody");
+      const cursorPosition = textarea.selectionStart;
+      const body = this.responseBody;
+      const newResponseBody = [body.slice(0, cursorPosition), handler.example, body.slice(cursorPosition)].join("");
+      this.responseBody = newResponseBody;
     }
   }
 };
@@ -113,6 +167,11 @@ export default {
 <style scoped>
 .form {
   margin-left: 20px;
+  margin-right: 20px;
+}
+
+.row {
+  border-bottom: 1px solid #d5d5d5;
 }
 
 input[type="file"] {
