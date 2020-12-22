@@ -431,6 +431,19 @@ const mutations = {
         state.input = yaml.dump(parsed);
       }
     });
+  },
+  setDefaultReverseProxy(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        parsed.response.reverseProxy = defaultValues.reverseProxy;
+        state.input = yaml.dump(parsed);
+      }
+    });
   }
 };
 

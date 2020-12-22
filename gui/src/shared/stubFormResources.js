@@ -42,14 +42,7 @@ const elementDescriptions = {
     "The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the 'temporaryRedirect' property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the 'permanentRedirect' an HTTP 301.",
   dynamicMode:
     "In order to make the responses in HttPlaceholder a bit more dynamic, the 'dynamic mode' was introduced. This makes it possible to add variables to your responses that can be parsed. As of now, these variables can be used in the response body (text only) and the response headers. The only requirement is that you set this switch to on (by default, it is set to off and the variables will not be parsed).",
-  reverseProxyUrl: "The URL HttPlaceholder should send the request to.",
-  appendQueryString:
-    "Whether the query string of the request to HttPlaceholder should be appended to the request that will be sent to the proxy URL.",
-  appendPath:
-    "Whether the path of the request to HttPlaceholder (so the string after https://.../ and before the query string) should be appended to the request that will be sent to the proxy URL.",
-  replaceRootUrl:
-    "Whether the content returned by the proxy request should have its URLs replaced by the HttPlaceholder root URL. Both the response body and the HTTP headers will have its URLs replaced.",
-  lineEndings: "Whether the response should be returned with Unix or Windows line endings or return the line endings as provided in the response body. This is done because some software only accepts Windows or Unix line endings."
+  reverseProxy: "A simple reverse proxy for letting a stub call other URLs."
 };
 
 const httpMethods = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"];
@@ -359,7 +352,13 @@ const defaultValues = {
     Header2: "val2"
   },
   extraDuration: 10000,
-  redirect: "https://google.com"
+  redirect: "https://google.com",
+  reverseProxy: {
+    url: "https://jsonplaceholder.typicode.com/todos",
+    appendPath: true,
+    appendQueryString: true,
+    replaceRootUrl: true
+  }
 };
 
 const formHelperKeys = {

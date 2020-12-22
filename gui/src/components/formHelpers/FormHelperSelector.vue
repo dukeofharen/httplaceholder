@@ -180,6 +180,11 @@ export default {
               title: "Line endings",
               subTitle: elementDescriptions.lineEndings,
               onClick: () => this.openFormHelper(this.formHelperKeys.lineEndings)
+            },
+            {
+              title: "Reverse proxy",
+              subTitle: elementDescriptions.reverseProxy,
+              onClick: () => this.setDefaultValue("stubForm/setDefaultReverseProxy")
             }
           ]
         }
