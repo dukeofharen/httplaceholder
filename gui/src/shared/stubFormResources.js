@@ -373,14 +373,16 @@ const defaultValues = {
     Header1: "val1",
     Header2: "val2"
   },
-  extraDuration: 10000
+  extraDuration: 10000,
+  redirect: "https://google.com"
 };
 
 const formHelperKeys = {
   tenant: "tenant",
   httpMethod: "httpMethod",
   statusCode: "statusCode",
-  responseBody: "responseBody"
+  responseBody: "responseBody",
+  redirect: "redirect"
 };
 
 const responseBodyTypes = {

@@ -26,6 +26,7 @@
       <TenantSelector v-if="currentSelectedFormHelper === formHelperKeys.tenant"/>
       <HttpStatusCodeSelector v-if="currentSelectedFormHelper === formHelperKeys.statusCode"/>
       <ResponseBodyHelper v-if="currentSelectedFormHelper === formHelperKeys.responseBody"/>
+      <RedirectSelector v-if="currentSelectedFormHelper === formHelperKeys.redirect" />
     </v-col>
   </v-row>
 </template>
@@ -36,10 +37,11 @@ import HttpMethodSelector from "@/components/formHelpers/HttpMethodSelector";
 import TenantSelector from "@/components/formHelpers/TenantSelector";
 import HttpStatusCodeSelector from "@/components/formHelpers/HttpStatusCodeSelector";
 import ResponseBodyHelper from "@/components/formHelpers/ResponseBodyHelper";
+import RedirectSelector from "@/components/formHelpers/RedirectSelector";
 
 
 export default {
-  components: {HttpMethodSelector, TenantSelector, HttpStatusCodeSelector, ResponseBodyHelper},
+  components: {HttpMethodSelector, TenantSelector, HttpStatusCodeSelector, ResponseBodyHelper, RedirectSelector},
   mounted() {
 
   },
@@ -159,6 +161,11 @@ export default {
               title: "Extra duration",
               subTitle: tooltipResources.extraDuration,
               onClick: () => this.setDefaultValue("stubForm/setDefaultExtraDuration")
+            },
+            {
+              title: "Redirect",
+              subTitle: tooltipResources.redirect,
+              onClick: () => this.openFormHelper(this.formHelperKeys.redirect)
             }
           ]
         }

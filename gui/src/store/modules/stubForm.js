@@ -374,6 +374,32 @@ const mutations = {
         state.input = yaml.dump(parsed);
       }
     });
+  },
+  setDefaultTempRedirect(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        parsed.response.temporaryRedirect = defaultValues.redirect;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultPermanentRedirect(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        parsed.response.permanentRedirect = defaultValues.redirect;
+        state.input = yaml.dump(parsed);
+      }
+    });
   }
 };
 
