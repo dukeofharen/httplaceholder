@@ -13,7 +13,7 @@
           >.
         </v-card-text>
       </v-card>
-      <v-card>
+      <v-card v-if="showFormHelperSelector">
         <v-card-text>
           <FormHelperSelector/>
         </v-card-text>
@@ -90,6 +90,9 @@ export default {
       set(value) {
         this.$store.commit("stubForm/setInput", value);
       }
+    },
+    showFormHelperSelector() {
+      return this.input.indexOf("- ") !== 0;
     }
   },
   methods: {
