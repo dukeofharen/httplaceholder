@@ -118,7 +118,7 @@
         </v-list-item-content>
       </v-list-item>
       <v-expansion-panels>
-        <v-expansion-panel>
+        <v-expansion-panel v-if="orderedStubExecutionResults.length">
           <v-expansion-panel-header>
             <strong>Stub execution results</strong>
           </v-expansion-panel-header>
@@ -191,7 +191,7 @@
             </v-expansion-panels>
           </v-expansion-panel-content>
         </v-expansion-panel>
-        <v-expansion-panel>
+        <v-expansion-panel v-if="orderedStubResponseWriterResults.length">
           <v-expansion-panel-header>
             <strong>Response writer results</strong>
           </v-expansion-panel-header>
