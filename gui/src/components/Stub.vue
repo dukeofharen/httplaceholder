@@ -1,8 +1,8 @@
 <template>
   <v-expansion-panel>
-    <v-expansion-panel-header @click="loadStub">{{
+    <v-expansion-panel-header @click="loadStub" :class="{disabled: !overviewStub.stub.enabled}">{{
       overviewStub.stub.id
-    }}</v-expansion-panel-header>
+    }}<span v-if="!overviewStub.stub.enabled">&nbsp;(disabled)</span></v-expansion-panel-header>
     <v-expansion-panel-content v-if="fullStub">
       <v-row>
         <v-col class="buttons">
@@ -89,5 +89,9 @@ export default {
 .buttons > a {
   margin-right: 10px;
   margin-top: 10px;
+}
+
+.disabled {
+  color: #969696;
 }
 </style>
