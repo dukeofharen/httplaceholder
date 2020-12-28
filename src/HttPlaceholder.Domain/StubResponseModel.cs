@@ -22,6 +22,12 @@ namespace HttPlaceholder.Domain
         public int? StatusCode { get; set; }
 
         /// <summary>
+        /// Gets or sets the response content type.
+        /// </summary>
+        [YamlMember(Alias = "contentType")]
+        public string ContentType { get; set; }
+
+        /// <summary>
         /// Gets or sets the text.
         /// </summary>
         [YamlMember(Alias = "text")]
