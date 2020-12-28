@@ -61,6 +61,9 @@
         <None Update="gui\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
+        <Content Include="ph-static\**\*.*">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
     <ItemGroup>
         <None Update="key.pfx">
@@ -68,16 +71,25 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <EmbeddedResource Update="Resources\ManPage.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>ManPage.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ManPage.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>ManPage.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\StaticResources.resx">
+          <Generator>ResXFileCodeGenerator</Generator>
+          <LastGenOutput>StaticResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Resources\ManPage.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>ManPage.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Resources\ManPage.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ManPage.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\StaticResources.Designer.cs">
+          <DesignTime>True</DesignTime>
+          <AutoGen>True</AutoGen>
+          <DependentUpon>StaticResources.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -6,9 +7,11 @@ using AutoMapper;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Common;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Hubs;
+using HttPlaceholder.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -19,7 +22,10 @@ namespace HttPlaceholder.Middleware
     // ReSharper disable once ClassNeverInstantiated.Global
     public class StubHandlingMiddleware
     {
-        private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "swagger", "/requestHub"};
+        private static readonly string[] _segmentsToIgnore =
+        {
+            "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub"
+        };
 
         private readonly RequestDelegate _next;
         private readonly IClientDataResolver _clientDataResolver;
@@ -31,6 +37,8 @@ namespace HttPlaceholder.Middleware
         private readonly IRequestNotify _requestNotify;
         private readonly SettingsModel _settings;
         private readonly IMapper _mapper;
+        private readonly IFileService _fileService;
+        private readonly IAssemblyService _assemblyService;
 
         public StubHandlingMiddleware(
             RequestDelegate next,
@@ -42,7 +50,9 @@ namespace HttPlaceholder.Middleware
             IStubContext stubContext,
             IStubRequestExecutor stubRequestExecutor,
             IOptions<SettingsModel> options,
-            IMapper mapper)
+            IMapper mapper,
+            IFileService fileService,
+            IAssemblyService assemblyService)
         {
             _next = next;
             _clientDataResolver = clientDataResolver;
@@ -53,6 +63,8 @@ namespace HttPlaceholder.Middleware
             _stubContext = stubContext;
             _stubRequestExecutor = stubRequestExecutor;
             _mapper = mapper;
+            _fileService = fileService;
+            _assemblyService = assemblyService;
             _settings = options.Value;
         }
 
@@ -101,6 +113,9 @@ namespace HttPlaceholder.Middleware
             {
                 _httpContextService.SetStatusCode((int)HttpStatusCode.NotImplemented);
                 _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
+                var pageContents =
+                    StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.DisplayUrl);
+                await _httpContextService.WriteAsync(pageContents);
                 _logger.LogInformation($"Request validation exception thrown: {e.Message}");
             }
             catch (Exception e)

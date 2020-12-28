@@ -219,6 +219,8 @@
         <e p="Resources" t="Include">
           <e p="ManPage.Designer.cs" t="Include" />
           <e p="ManPage.resx" t="Include" />
+          <e p="StaticResources.Designer.cs" t="Include" />
+          <e p="StaticResources.resx" t="Include" />
         </e>
         <e p="Startup.cs" t="Include" />
         <e p="Utilities" t="Include">
@@ -656,6 +658,11 @@
               <e p="HttPlaceholder.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
+        </e>
+        <e p="ph-static" t="Include">
+          <e p="README.txt" t="Include" />
+          <e p="logo.png" t="Include" />
+          <e p="style.css" t="Include" />
         </e>
       </e>
       <e p="HttPlaceholder.Application" t="IncludeRecursive">

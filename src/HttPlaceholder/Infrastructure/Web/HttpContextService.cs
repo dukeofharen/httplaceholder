@@ -143,5 +143,12 @@ namespace HttPlaceholder.Infrastructure.Web
             var httpContext = _httpContextAccessor.HttpContext;
             await httpContext.Response.Body.WriteAsync(body, 0, body.Length);
         }
+
+        public async Task WriteAsync(string body)
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            var bodyBytes = Encoding.UTF8.GetBytes(body);
+            await httpContext.Response.Body.WriteAsync(bodyBytes, 0, bodyBytes.Length);
+        }
     }
 }

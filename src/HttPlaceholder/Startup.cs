@@ -36,6 +36,7 @@ namespace HttPlaceholder
                 .UseOpenApi()
                 .UseSwaggerUi3()
                 .UseGui(loadStaticFiles)
+                .UsePhStatic()
                 .PreloadStubs(preloadStubs);
             app
                 .UseRouting()

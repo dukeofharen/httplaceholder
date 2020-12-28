@@ -22,8 +22,6 @@ namespace HttPlaceholder.Tests.Integration.Stubs
 
             // act / assert
             using var response = await Client.GetAsync(url);
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(string.IsNullOrEmpty(content));
             Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
             var header = response.Headers.First(h => h.Key == "X-HttPlaceholder-Correlation").Value.ToArray();
             Assert.AreEqual(1, header.Length);
@@ -31,7 +29,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         }
 
         [TestMethod]
-        public async Task StubIntegration_RegularGet_StubNotFound_ShouldReturn500()
+        public async Task StubIntegration_RegularGet_StubNotFound_ShouldReturn501WithContent()
         {
             // arrange
             var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9752EX";
@@ -39,7 +37,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using var response = await Client.GetAsync(url);
             var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(string.IsNullOrEmpty(content));
+            Assert.IsFalse(string.IsNullOrEmpty(content));
+            Assert.IsTrue(content.Contains("<html"));
             Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
         }
     }

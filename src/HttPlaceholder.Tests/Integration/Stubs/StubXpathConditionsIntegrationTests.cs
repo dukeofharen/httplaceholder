@@ -100,8 +100,6 @@ namespace HttPlaceholder.Tests.Integration.Stubs
 
             // act / assert
             using var response = await Client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.IsTrue(string.IsNullOrEmpty(content));
             Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
         }
 
@@ -149,9 +147,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
 
             // act / assert
             using var response = await Client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
             Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
-            Assert.IsTrue(string.IsNullOrEmpty(content));
         }
     }
 }
