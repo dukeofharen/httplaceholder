@@ -129,6 +129,26 @@ const actions = {
         .then(response => resolve(response.data))
         .catch(error => reject(error))
     );
+  },
+  async enableStub({}, stubId){
+    const stub = (await createInstance()
+      .get(`ph-api/stubs/${stubId}`)).data.stub;
+    stub.enabled = true;
+    return new Promise((resolve, reject) =>
+      createInstance()
+        .put(`ph-api/stubs/${stubId}`, stub)
+        .then(() => resolve())
+        .catch(error => reject(error)));
+  },
+  async disableStub({}, stubId){
+    const stub = (await createInstance()
+      .get(`ph-api/stubs/${stubId}`)).data.stub;
+    stub.enabled = false;
+    return new Promise((resolve, reject) =>
+      createInstance()
+        .put(`ph-api/stubs/${stubId}`, stub)
+        .then(() => resolve())
+        .catch(error => reject(error)));
   }
 };
 

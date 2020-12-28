@@ -1,8 +1,8 @@
 <template>
   <v-expansion-panel>
     <v-expansion-panel-header @click="loadStub" :class="{disabled: !overviewStub.stub.enabled}">{{
-      overviewStub.stub.id
-    }}<span v-if="!overviewStub.stub.enabled">&nbsp;(disabled)</span></v-expansion-panel-header>
+        overviewStub.stub.id
+      }}<span v-if="!overviewStub.stub.enabled">&nbsp;(disabled)</span></v-expansion-panel-header>
     <v-expansion-panel-content v-if="fullStub">
       <v-row>
         <v-col class="buttons">
@@ -13,7 +13,7 @@
               name: routeNames.requests,
               query: { searchTerm: this.fullStub.stub.id }
             }"
-            >View requests
+          >View requests
           </v-btn>
           <v-btn
             color="success"
@@ -22,13 +22,19 @@
               name: routeNames.stubForm,
               params: { stubId: this.fullStub.stub.id }
             }"
-            >Update stub
+          >Update stub
+          </v-btn>
+          <v-btn
+            color="success"
+            v-if="!fullStub.metadata.readOnly"
+            @click="enableOrDisableStub()"
+          >{{ overviewStub.stub.enabled ? "Disable stub" : "Enable stub" }}
           </v-btn>
           <v-btn
             color="error"
             @click.stop="deleteDialog = true"
             v-if="!fullStub.metadata.readOnly"
-            >Delete stub
+          >Delete stub
           </v-btn>
         </v-col>
       </v-row>
@@ -41,7 +47,7 @@
         <v-card-actions>
           <div class="flex-grow-1"></div>
           <v-btn color="green darken-1" text @click="deleteDialog = false"
-            >No
+          >No
           </v-btn>
           <v-btn color="green darken-1" text @click="deleteStub">Yes</v-btn>
         </v-card-actions>
@@ -51,9 +57,9 @@
 </template>
 
 <script>
-import { toastSuccess } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import { routeNames } from "@/router/routerConstants";
+import {toastSuccess} from "@/utils/toastUtil";
+import {resources} from "@/shared/resources";
+import {routeNames} from "@/router/routerConstants";
 
 export default {
   name: "stub",
@@ -69,16 +75,27 @@ export default {
     async deleteStub() {
       this.deleteDialog = false;
       const stubId = this.overviewStub.stub.id;
-      await this.$store.dispatch("stubs/deleteStub", { stubId });
+      await this.$store.dispatch("stubs/deleteStub", {stubId});
       toastSuccess(resources.stubDeletedSuccessfully.format(stubId));
-      this.$emit("deleted", this.fullStub);
+      this.$emit("updated", this.fullStub);
     },
-    async loadStub() {
-      if (!this.fullStub) {
+    async loadStub(forceLoad) {
+      if (!this.fullStub || forceLoad) {
         this.fullStub = await this.$store.dispatch("stubs/getStub", {
           stubId: this.overviewStub.stub.id
         });
       }
+    },
+    async enableOrDisableStub() {
+      const stubId = this.overviewStub.stub.id;
+      if (this.overviewStub.stub.enabled) {
+        await this.$store.dispatch("stubs/disableStub", stubId);
+      } else {
+        await this.$store.dispatch("stubs/enableStub", stubId);
+      }
+
+      this.$emit("updated", this.fullStub);
+      await this.loadStub(true);
     }
   }
 };
