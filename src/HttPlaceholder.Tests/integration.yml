@@ -410,6 +410,16 @@
   response:
     text: This stub is disabled.
 
+- id: content-type-csv
+  conditions:
+    method: GET
+    url:
+      path: /content-type.csv
+  response:
+    statusCode: 200
+    text: 'id,name,amount\n1,DukeOfHaren,20'
+    contentType: text/csv
+
 - id: file
   conditions:
     method: GET
