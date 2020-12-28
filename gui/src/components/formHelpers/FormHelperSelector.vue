@@ -95,6 +95,11 @@ export default {
               onClick: () => this.setDefaultValue("stubForm/setDefaultPriority")
             },
             {
+              title: "Disable stub",
+              subTitle: elementDescriptions.disable,
+              onClick: () => this.setDefaultValue("stubForm/setStubDisabled")
+            },
+            {
               title: "Tenant",
               subTitle: elementDescriptions.tenant,
               onClick: () => this.openFormHelper(this.formHelperKeys.tenant)
