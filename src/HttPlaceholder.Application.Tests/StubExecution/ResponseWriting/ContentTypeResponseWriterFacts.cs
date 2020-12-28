@@ -31,14 +31,14 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         {
             // Arrange
             var response = new ResponseModel();
-            response.Headers.Add("Content-Type", "text/plain");
-            var stub = new StubModel {Response = new StubResponseModel {ContentType = "text/csv "}};
+            response.Headers.Add("content-Type", "text/plain");
+            var stub = new StubModel {Response = new StubResponseModel {ContentType = "text/csv"}};
 
             // Act
             var result = await _writer.WriteToResponseAsync(stub, response);
 
             // Arrange
-            Assert.IsFalse(result.Executed);
+            Assert.IsTrue(result.Executed);
             Assert.AreEqual("text/csv", response.Headers["Content-Type"]);
         }
     }
