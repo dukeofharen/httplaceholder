@@ -35,6 +35,7 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Reverse proxy: [.yml](samples/15-reverse-proxy.yml)
 * Enforce line endings: [.yml](samples/16-line-endings.yml)
 * Enable / disable stub: [.yml](samples/17-disabled.yml)
+* Set response content type: [.yml](samples/18-content-type.yml)
 * Dynamic mode - query strings: [.yml](samples/14.1-dynamic-mode-query.yml)
 * Dynamic mode - UUIDs: [.yml](samples/14.2-dynamic-mode-uuid.yml)
 * Dynamic mode - request headers: [.yml](samples/14.3-dynamic-mode-request-header.yml)
