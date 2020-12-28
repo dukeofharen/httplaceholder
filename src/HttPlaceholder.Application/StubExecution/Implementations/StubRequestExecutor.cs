@@ -40,7 +40,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             var requestLogger = _requestLoggerFactory.GetRequestLogger();
 
             var foundStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>();
-            var stubs = await _stubContainer.GetStubsAsync();
+            var stubs = (await _stubContainer.GetStubsAsync()).Where(s => s.Stub.Enabled).ToArray();
 
             foreach (var fullStub in stubs)
             {

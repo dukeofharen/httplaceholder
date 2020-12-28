@@ -36,7 +36,7 @@
         &lt;h1&gt;HTTP 501 - Not Implemented&lt;/h1&gt;
 
         &lt;p&gt;
-            No stub was configured for this requests. To view the configured stubs and the requests, go to &lt;a href="[ROOT_URL]ph-ui"&gt;[ROOT_URL]ph-ui&lt;/a&gt;.
+            No stub was configured for this request. To view the configured stubs and the requests, go to &lt;a href="[ROOT_URL]ph-ui"&gt;[ROOT_URL]ph-ui&lt;/a&gt;.
         &lt;/p&gt;
 
         &lt;hr /&gt;
