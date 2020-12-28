@@ -44,6 +44,17 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             },
             Metadata = new StubMetadataModel()
         };
+        private readonly FullStubModel _stub3 = new FullStubModel
+        {
+            Stub = new StubModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                Conditions = new StubConditionsModel(),
+                Priority = 0,
+                Enabled = false
+            },
+            Metadata = new StubMetadataModel()
+        };
         private StubRequestExecutor _executor;
 
         [TestInitialize]
@@ -59,7 +70,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 
             _stubContextMock
                .Setup(m => m.GetStubsAsync())
-               .ReturnsAsync(new[] { _stub1, _stub2 });
+               .ReturnsAsync(new[] { _stub1, _stub2, _stub3 });
         }
 
         [TestCleanup]
@@ -116,7 +127,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         }
 
         [TestMethod]
-        public async Task StubRequestExecutor_ExecuteRequestAsync_MultipleValidStubs_ShouldPickStubWithLowestPriority()
+        public async Task StubRequestExecutor_ExecuteRequestAsync_MultipleValidStubs_ShouldPickStubWithHighestPriority()
         {
             // arrange
             var expectedResponseModel = new ResponseModel();
@@ -180,6 +191,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 
             // assert
             Assert.AreEqual(expectedResponseModel, response);
+            _conditionCheckerMock1
+                .Verify(m => m.Validate(_stub3.Stub.Id, It.IsAny<StubConditionsModel>()), Times.Never);
         }
     }
 }
