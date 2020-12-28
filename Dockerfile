@@ -17,4 +17,6 @@ FROM mcr.microsoft.com/dotnet/sdk:5.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 COPY --from=gui-build-env /app/gui/dist ./gui
+ENV inputFile=/var/httplaceholder
+RUN mkdir /var/httplaceholder
 ENTRYPOINT ["dotnet", "HttPlaceholder.dll", "-V"]
