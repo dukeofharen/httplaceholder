@@ -19,7 +19,7 @@ namespace HttPlaceholder.Middleware
     // ReSharper disable once ClassNeverInstantiated.Global
     public class StubHandlingMiddleware
     {
-        private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "swagger", "/requestHub"};
+        private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub"};
 
         private readonly RequestDelegate _next;
         private readonly IClientDataResolver _clientDataResolver;
