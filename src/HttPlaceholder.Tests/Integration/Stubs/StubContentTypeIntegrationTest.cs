@@ -23,6 +23,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             using var response = await Client.GetAsync(url);
 
             // Assert
+            response.EnsureSuccessStatusCode();
             var content = await response.Content.ReadAsStringAsync();
             Assert.IsFalse(string.IsNullOrWhiteSpace(content));
             Assert.AreEqual("text/csv", response.Content.Headers.Single(h => h.Key == "Content-Type").Value.Single());

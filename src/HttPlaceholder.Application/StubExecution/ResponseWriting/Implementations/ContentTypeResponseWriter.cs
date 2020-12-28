@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
@@ -13,7 +14,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
             }
 
-            var pair = response.Headers.FirstOrDefault(h => string.Equals("content-type", h.Key));
+            var pair = response.Headers.FirstOrDefault(h => string.Equals("content-type", h.Key, StringComparison.OrdinalIgnoreCase));
             if (!string.IsNullOrWhiteSpace(pair.Key))
             {
                 response.Headers.Remove(pair.Key);
