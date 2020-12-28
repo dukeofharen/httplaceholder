@@ -1249,6 +1249,7 @@
             <e p="StubBasicAuthIntegrationTests.cs" t="Include" />
             <e p="StubClientIpConditionsIntegrationTests.cs" t="Include" />
             <e p="StubDynamicModeIntegrationTests.cs" t="Include" />
+            <e p="StubEnabledDisabledIntegrationTests.cs" t="Include" />
             <e p="StubFallbackIntegrationTests.cs" t="Include" />
             <e p="StubGeneralIntegrationTests.cs" t="Include" />
             <e p="StubHttpsIntegrationTests.cs" t="Include" />
