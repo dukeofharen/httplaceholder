@@ -120,11 +120,6 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.FromResult(result.AsEnumerable());
         }
 
-        public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
-            (await GetStubsAsync())
-            .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant})
-            .ToArray();
-
         public Task<StubModel> GetStubAsync(string stubId)
         {
             var path = EnsureAndGetStubsFolder();
@@ -137,6 +132,11 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             var contents = _fileService.ReadAllText(stubPath);
             return Task.FromResult(JsonConvert.DeserializeObject<StubModel>(contents));
         }
+
+        public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
+            (await GetStubsAsync())
+            .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
+            .ToArray();
 
         public async Task CleanOldRequestResultsAsync()
         {

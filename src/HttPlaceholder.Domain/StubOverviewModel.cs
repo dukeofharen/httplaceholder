@@ -14,5 +14,10 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the tenant.
         /// </summary>
         public string Tenant { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether the stub is enabled or not.
+        /// </summary>
+        public bool Enabled { get; set; }
     }
 }
