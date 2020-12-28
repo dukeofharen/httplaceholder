@@ -659,6 +659,9 @@
         </e>
         <e p="ph-static" t="Include">
           <e p="README.txt" t="Include" />
+          <e p="index.html" t="Include" />
+          <e p="logo.png" t="Include" />
+          <e p="style.css" t="Include" />
         </e>
       </e>
       <e p="HttPlaceholder.Application" t="IncludeRecursive">

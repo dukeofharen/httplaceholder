@@ -44,5 +44,7 @@ namespace HttPlaceholder.Application.Interfaces.Http
       void ClearResponse();
 
       Task WriteAsync(byte[] body);
+
+      Task WriteAsync(string body);
    }
 }
