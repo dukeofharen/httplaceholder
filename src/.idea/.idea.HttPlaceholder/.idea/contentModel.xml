@@ -800,6 +800,7 @@
             <e p="IResponseWriter.cs" t="Include" />
             <e p="Implementations" t="Include">
               <e p="Base64ResponseWriter.cs" t="Include" />
+              <e p="ContentTypeResponseWriter.cs" t="Include" />
               <e p="DynamicResponseWriter.cs" t="Include" />
               <e p="ExtraDurationResponseWriter.cs" t="Include" />
               <e p="FileResponseWriter.cs" t="Include" />
@@ -949,6 +950,7 @@
           </e>
           <e p="ResponseWriting" t="Include">
             <e p="Base64ResponseWriterFacts.cs" t="Include" />
+            <e p="ContentTypeResponseWriterFacts.cs" t="Include" />
             <e p="DynamicResponseWriterFacts.cs" t="Include" />
             <e p="ExtraDurationResponseWriterFacts.cs" t="Include" />
             <e p="FileResponseWriterFacts.cs" t="Include" />
