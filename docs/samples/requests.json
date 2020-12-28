@@ -896,6 +896,39 @@
 			]
 		},
 		{
+			"name": "17 Disabled",
+			"item": [
+				{
+					"name": "Enabled",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}enabled",
+							"host": [
+								"{{rootUrl}}enabled"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Disabled",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}disabled",
+							"host": [
+								"{{rootUrl}}disabled"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "REST API",
 			"item": [
 				{

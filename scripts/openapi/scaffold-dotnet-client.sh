@@ -1,12 +1,12 @@
 #!/bin/bash
-if [ "$1" = "" ]; then
-    echo "Please provide the path to the swagger file"
-    exit 1
-fi
 
-SWAGGER_PATH="$1"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 SOURCE_FOLDER="$DIR/../../cs-client"
+SWAGGER_PATH="/tmp/swagger.json"
+SWAGGERGEN_PATH="$DIR/../../src/HttPlaceholder.SwaggerGenerator"
+cd $SWAGGERGEN_PATH
+dotnet run "$SWAGGER_PATH"
+
 if [ ! -d "$SOURCE_FOLDER" ]; then
     echo "Creating directory $SOURCE_FOLDER"
     mkdir $SOURCE_FOLDER

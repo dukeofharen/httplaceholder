@@ -1,0 +1,18 @@
+# With the "enabled" flag, you can specify whether a stub is enabled or not. By default, if the flag is not set, the stub is enabled.
+- id: stub-enabled
+  enabled: true
+  conditions:
+    method: GET
+    url:
+      path: /enabled
+  response:
+    text: This stub is enabled.
+
+- id: stub-disabled
+  enabled: false
+  conditions:
+    method: GET
+    url:
+      path: /disabled
+  response:
+    text: This stub is disabled.

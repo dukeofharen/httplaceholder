@@ -18,7 +18,7 @@ namespace HttPlaceholder.SwaggerGenerator
             if (args.Any())
             {
                 var firstArg = args[0];
-                if (File.Exists(firstArg))
+                if (Directory.Exists(Path.GetDirectoryName(firstArg)))
                 {
                     pathToSave = firstArg;
                 }

@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
-import { toastError } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import { defaultValues, responseBodyTypes } from "@/shared/stubFormResources";
+import {toastError} from "@/utils/toastUtil";
+import {resources} from "@/shared/resources";
+import {defaultValues, responseBodyTypes} from "@/shared/stubFormResources";
 
 const parseInput = state => {
   try {
@@ -461,6 +461,15 @@ const mutations = {
         }
 
         parsed.response.reverseProxy = defaultValues.reverseProxy;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setStubDisabled(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        parsed.enabled = false;
         state.input = yaml.dump(parsed);
       }
     });

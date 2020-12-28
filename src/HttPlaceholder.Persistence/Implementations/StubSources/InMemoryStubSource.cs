@@ -106,7 +106,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync()  =>
             (await GetStubsAsync())
-            .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant})
+            .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
             .ToArray();
 
         public Task<StubModel> GetStubAsync(string stubId) =>

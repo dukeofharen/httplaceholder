@@ -51,6 +51,21 @@ A free text field where you can specify where the stub is for. It is optional.
     text: OK
 ```
 
+## Enabled
+
+Describes whether the stub is enabled or not. If no `enabled` field is provided, the stub is enabled by default. Value can be `true` or `false`.
+
+```yml
+- id: is-disabled
+  enabled: false
+  conditions:
+    method: GET
+    url:
+      path: /users
+  response:
+    text: This stub is disabled.
+```
+
 ## Priority
 
 There are cases when a request matches multiple stub. If this is the case, you can use the "priority" element. With the priority element, you can specify which stub should be used if multiple stubs are found. The stub with the highest priority will be used. If you don't set the priority on the stub, it will be 0 by default.

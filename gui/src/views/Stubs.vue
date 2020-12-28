@@ -34,7 +34,7 @@
             :overviewStub="stub"
             v-for="stub in filteredStubs"
             :key="stub.id"
-            v-on:deleted="onDeleted"
+            v-on:updated="onUpdated"
           ></Stub>
         </v-expansion-panels>
       </v-row>
@@ -126,7 +126,7 @@ export default {
       toastSuccess(resources.stubsDeletedSuccessfully);
       await this.initialize();
     },
-    async onDeleted() {
+    async onUpdated() {
       await this.initialize();
     }
   },

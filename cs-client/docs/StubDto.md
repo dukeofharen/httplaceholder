@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **Priority** | **int** | Gets or sets the priority. | [optional] 
 **Tenant** | **string** | Gets or sets the tenant. | [optional] 
 **Description** | **string** | Gets or sets the description. | [optional] 
+**Enabled** | **bool** | Gets or sets whether this stub is enabled or not. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

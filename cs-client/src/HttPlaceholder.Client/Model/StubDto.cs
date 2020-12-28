@@ -40,7 +40,8 @@ namespace HttPlaceholder.Client.Model
         /// <param name="priority">Gets or sets the priority..</param>
         /// <param name="tenant">Gets or sets the tenant..</param>
         /// <param name="description">Gets or sets the description..</param>
-        public StubDto(string id = default(string), StubConditionsDto conditions = default(StubConditionsDto), StubResponseDto response = default(StubResponseDto), int priority = default(int), string tenant = default(string), string description = default(string))
+        /// <param name="enabled">Gets or sets whether this stub is enabled or not..</param>
+        public StubDto(string id = default(string), StubConditionsDto conditions = default(StubConditionsDto), StubResponseDto response = default(StubResponseDto), int priority = default(int), string tenant = default(string), string description = default(string), bool enabled = default(bool))
         {
             this.Id = id;
             this.Conditions = conditions;
@@ -48,6 +49,7 @@ namespace HttPlaceholder.Client.Model
             this.Priority = priority;
             this.Tenant = tenant;
             this.Description = description;
+            this.Enabled = enabled;
         }
         
         /// <summary>
@@ -93,6 +95,13 @@ namespace HttPlaceholder.Client.Model
         public string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets whether this stub is enabled or not.
+        /// </summary>
+        /// <value>Gets or sets whether this stub is enabled or not.</value>
+        [DataMember(Name="enabled", EmitDefaultValue=false)]
+        public bool Enabled { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -106,6 +115,7 @@ namespace HttPlaceholder.Client.Model
             sb.Append("  Priority: ").Append(Priority).Append("\n");
             sb.Append("  Tenant: ").Append(Tenant).Append("\n");
             sb.Append("  Description: ").Append(Description).Append("\n");
+            sb.Append("  Enabled: ").Append(Enabled).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -168,6 +178,10 @@ namespace HttPlaceholder.Client.Model
                     this.Description == input.Description ||
                     (this.Description != null &&
                     this.Description.Equals(input.Description))
+                ) && 
+                (
+                    this.Enabled == input.Enabled ||
+                    this.Enabled.Equals(input.Enabled)
                 );
         }
 
@@ -191,6 +205,7 @@ namespace HttPlaceholder.Client.Model
                     hashCode = hashCode * 59 + this.Tenant.GetHashCode();
                 if (this.Description != null)
                     hashCode = hashCode * 59 + this.Description.GetHashCode();
+                hashCode = hashCode * 59 + this.Enabled.GetHashCode();
                 return hashCode;
             }
         }

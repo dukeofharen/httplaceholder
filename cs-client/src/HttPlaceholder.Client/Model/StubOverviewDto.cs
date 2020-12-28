@@ -36,10 +36,12 @@ namespace HttPlaceholder.Client.Model
         /// </summary>
         /// <param name="id">Gets or sets the identifier..</param>
         /// <param name="tenant">Gets or sets the tenant..</param>
-        public StubOverviewDto(string id = default(string), string tenant = default(string))
+        /// <param name="enabled">Gets or sets whether the stub is enabled or not..</param>
+        public StubOverviewDto(string id = default(string), string tenant = default(string), bool enabled = default(bool))
         {
             this.Id = id;
             this.Tenant = tenant;
+            this.Enabled = enabled;
         }
         
         /// <summary>
@@ -57,6 +59,13 @@ namespace HttPlaceholder.Client.Model
         public string Tenant { get; set; }
 
         /// <summary>
+        /// Gets or sets whether the stub is enabled or not.
+        /// </summary>
+        /// <value>Gets or sets whether the stub is enabled or not.</value>
+        [DataMember(Name="enabled", EmitDefaultValue=false)]
+        public bool Enabled { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -66,6 +75,7 @@ namespace HttPlaceholder.Client.Model
             sb.Append("class StubOverviewDto {\n");
             sb.Append("  Id: ").Append(Id).Append("\n");
             sb.Append("  Tenant: ").Append(Tenant).Append("\n");
+            sb.Append("  Enabled: ").Append(Enabled).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -109,6 +119,10 @@ namespace HttPlaceholder.Client.Model
                     this.Tenant == input.Tenant ||
                     (this.Tenant != null &&
                     this.Tenant.Equals(input.Tenant))
+                ) && 
+                (
+                    this.Enabled == input.Enabled ||
+                    this.Enabled.Equals(input.Enabled)
                 );
         }
 
@@ -125,6 +139,7 @@ namespace HttPlaceholder.Client.Model
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
                 if (this.Tenant != null)
                     hashCode = hashCode * 59 + this.Tenant.GetHashCode();
+                hashCode = hashCode * 59 + this.Enabled.GetHashCode();
                 return hashCode;
             }
         }

@@ -5,6 +5,7 @@ const elementDescriptions = {
     "A free text field where you can specify where the stub is for. It is optional.",
   priority:
     "There are cases when a request matches multiple stub. If this is the case, you can use the 'priority' element. With the priority element, you can specify which stub should be used if multiple stubs are found. The stub with the highest priority will be used. If you don't set the priority on the stub, it will be 0 by default.",
+  disable: "By setting 'enabled' to false, the stub will not be used when determining which stub should be executed for a request.",
   httpMethod:
     "This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.).",
   urlPath:
@@ -340,13 +341,13 @@ const defaultValues = {
   ],
   clientIp: "127.0.0.1",
   hostname: "httplaceholder.com",
-  jsonPath: ['$.phoneNumbers[?(@.type=="iPhone")]'],
+  jsonPath: ["$.phoneNumbers[?(@.type==\"iPhone\")]"],
   xpath: [
     {
-      queryString: '/object/a[text() = "TEST"]'
+      queryString: "/object/a[text() = \"TEST\"]"
     },
     {
-      queryString: '/object/b[text() = "TEST"]',
+      queryString: "/object/b[text() = \"TEST\"]",
       namespaces: {
         soap: "http://www.w3.org/2003/05/soap-envelope",
         m: "http://www.example.org/stock/Reddy"
