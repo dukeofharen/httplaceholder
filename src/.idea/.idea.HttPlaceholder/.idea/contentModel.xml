@@ -657,6 +657,9 @@
             </e>
           </e>
         </e>
+        <e p="ph-static" t="Include">
+          <e p="README.txt" t="Include" />
+        </e>
       </e>
       <e p="HttPlaceholder.Application" t="IncludeRecursive">
         <e p="ApplicationModule.cs" t="Include" />

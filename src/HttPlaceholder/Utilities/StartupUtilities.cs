@@ -66,6 +66,17 @@ namespace HttPlaceholder.Utilities
             return app;
         }
 
+        public static IApplicationBuilder UsePhStatic(this IApplicationBuilder app)
+        {
+            var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/ph-static";
+            return app.UseFileServer(new FileServerOptions
+            {
+                EnableDefaultFiles = true,
+                FileProvider = new PhysicalFileProvider(path),
+                RequestPath = "/ph-static"
+            });
+        }
+
         // ReSharper disable once UnusedMethodReturnValue.Global
         public static IApplicationBuilder PreloadStubs(this IApplicationBuilder app, bool preloadStubs)
         {
