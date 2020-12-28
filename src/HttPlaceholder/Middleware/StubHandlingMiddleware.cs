@@ -11,6 +11,7 @@ using HttPlaceholder.Common;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Hubs;
+using HttPlaceholder.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -113,12 +114,7 @@ namespace HttPlaceholder.Middleware
                 _httpContextService.SetStatusCode((int)HttpStatusCode.NotImplemented);
                 _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
                 var pageContents =
-                    _fileService.ReadAllText(
-                        Path.Combine(
-                            _assemblyService.GetExecutingAssemblyRootPath(),
-                            "ph-static",
-                            "index.html"));
-                pageContents = pageContents.Replace("[ROOT_URL]", _httpContextService.DisplayUrl);
+                    StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.DisplayUrl);
                 await _httpContextService.WriteAsync(pageContents);
                 _logger.LogInformation($"Request validation exception thrown: {e.Message}");
             }
