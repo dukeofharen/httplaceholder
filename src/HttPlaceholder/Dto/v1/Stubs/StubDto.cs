@@ -48,5 +48,11 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// </summary>
         [YamlMember(Alias = "description")]
         public string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether this stub is enabled or not.
+        /// </summary>
+        [YamlMember(Alias = "enabled")]
+        public bool Enabled { get; set; } = true;
     }
 }
