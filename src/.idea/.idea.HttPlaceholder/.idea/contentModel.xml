@@ -8,6 +8,10 @@
     <e p="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.8.0/build/netcoreapp2.1" t="Include">
       <e p="Microsoft.NET.Test.Sdk.Program.cs" t="Include" />
     </e>
+    <e p="$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.8.3/build/netcoreapp2.1" t="Include">
+      <e p="Microsoft.NET.Test.Sdk.Program.cs" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/microsoft.testplatform.testhost/16.8.3/build/netcoreapp2.1/Microsoft.TestPlatform.PlatformAbstractions.dll" t="Include" />
     <e p="$USER_HOME$/.nuget/packages/mstest.testadapter/2.1.2/build/_common/Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll" t="Include" />
     <e p="$USER_HOME$/.nuget/packages/mstest.testadapter/2.1.2/build/_common/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll" t="Include" />
     <e p="$USER_HOME$/.nuget/packages/mstest.testadapter/2.1.2/build/netcoreapp1.0/Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll" t="Include" />
@@ -998,6 +1002,7 @@
         <e p="Utilities" t="Include">
           <e p="ArgsHelper.cs" t="Include" />
           <e p="AssemblyHelper.cs" t="Include" />
+          <e p="CollectionUtilities.cs" t="Include" />
           <e p="ConsoleHelpers.cs" t="Include" />
           <e p="HashingUtilities.cs" t="Include" />
           <e p="ReflectionUtilities.cs" t="Include" />
@@ -1010,6 +1015,20 @@
           <e p="Debug" t="Include">
             <e p="netstandard2.0" t="Include">
               <e p="HttPlaceholder.Common.AssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+      </e>
+      <e p="HttPlaceholder.Common.Tests" t="IncludeRecursive">
+        <e p="HttPlaceholder.Common.Tests.csproj" t="IncludeRecursive" />
+        <e p="Utilities" t="Include">
+          <e p="CollectionUtilities.cs" t="Include" />
+        </e>
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="net5.0" t="Include">
+              <e p="HttPlaceholder.Common.Tests.AssemblyInfo.cs" t="Include" />
             </e>
           </e>
         </e>
