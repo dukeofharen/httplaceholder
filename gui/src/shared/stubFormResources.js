@@ -40,6 +40,7 @@ const elementDescriptions = {
   responseContentType: "This sets the Content-Type response header.",
   extraDuration:
     "Whenever you want to simulate a busy web service, you can use the 'extraDuration' response writer. You can set the number of extra milliseconds HttPlaceholder should wait and the request will actually take that much time to complete.",
+  image: "If you want to create placeholder images, use this response writer. With this response writer, JPEG, PNG, BMP and GIF images can be returned.",
   redirect:
     "The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the 'temporaryRedirect' property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the 'permanentRedirect' an HTTP 301.",
   dynamicMode:
@@ -367,7 +368,16 @@ const defaultValues = {
     appendQueryString: true,
     replaceRootUrl: true
   },
-  responseContentType: "application/json"
+  responseContentType: "application/json",
+  image: {
+    type: "png",
+    width: 1024,
+    height: 256,
+    backgroundColor: "#ffa0d3",
+    text: "Placeholder text that will be drawn in the image",
+    fontSize: 10,
+    wordWrap: false
+  }
 };
 
 const formHelperKeys = {

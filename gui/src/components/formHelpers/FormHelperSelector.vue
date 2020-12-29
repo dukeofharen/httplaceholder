@@ -212,6 +212,12 @@ export default {
                 this.setDefaultValue("stubForm/setDefaultExtraDuration")
             },
             {
+              title: "Image",
+              subTitle: elementDescriptions.image,
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultImage")
+            },
+            {
               title: "Redirect",
               subTitle: elementDescriptions.redirect,
               onClick: () => this.openFormHelper(this.formHelperKeys.redirect)

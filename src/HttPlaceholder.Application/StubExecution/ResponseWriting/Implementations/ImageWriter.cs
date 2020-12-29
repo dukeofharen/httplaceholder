@@ -97,6 +97,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             return StubResponseWriterResultModel.IsExecuted(GetType().Name);
         }
 
-        public int Priority { get; } = 0;
+        public int Priority { get; } = -11;
     }
 }
