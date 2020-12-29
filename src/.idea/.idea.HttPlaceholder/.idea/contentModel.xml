@@ -1022,7 +1022,7 @@
       <e p="HttPlaceholder.Common.Tests" t="IncludeRecursive">
         <e p="HttPlaceholder.Common.Tests.csproj" t="IncludeRecursive" />
         <e p="Utilities" t="Include">
-          <e p="CollectionUtilities.cs" t="Include" />
+          <e p="CollectionUtilitiesFacts.cs" t="Include" />
         </e>
         <e p="bin" t="ExcludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
