@@ -31,6 +31,22 @@
       text: Test image PNG!
       fontSize: 7
       wordWrap: false
+      
+- id: image-png-transparency
+  tenant: 19-stub-image
+  conditions:
+    method: GET
+    url:
+      path: /stub-image-transparency.png
+  response:
+    image:
+      type: png
+      width: 1024
+      height: 256
+      backgroundColor: '#f700ff00'
+      text: Test image PNG!
+      fontSize: 7
+      wordWrap: false
 
 - id: image-bmp
   tenant: 19-stub-image

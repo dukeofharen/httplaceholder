@@ -982,6 +982,21 @@
 					"response": []
 				},
 				{
+					"name": "PNG with transparency",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}stub-image-transparency.png",
+							"host": [
+								"{{rootUrl}}stub-image-transparency",
+								"png"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "BMP",
 					"request": {
 						"method": "GET",
