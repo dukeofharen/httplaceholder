@@ -25,5 +25,10 @@ namespace HttPlaceholder.Common.Utilities
 
             dict.Add(key, value);
         }
+
+        public static string CaseInsensitiveSearch(this IDictionary<string, string> dict, string key)
+        {
+            return string.Empty;
+        }
     }
 }

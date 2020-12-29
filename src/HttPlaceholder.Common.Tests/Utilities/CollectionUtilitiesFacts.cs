@@ -63,5 +63,22 @@ namespace HttPlaceholder.Common.Tests.Utilities
             Assert.AreEqual("application/json", dictionary["content-type"]);
             Assert.AreEqual("text/xml", dictionary["Accept"]);
         }
+
+        [DataTestMethod]
+        [DataRow("var1", "value1")]
+        [DataRow("VAr1", "value1")]
+        [DataRow("var2", "value2")]
+        [DataRow("var3", null)]
+        public void CaseInsensitiveSearch_ShouldReturnCorrectValue(string key, string expectedValue)
+        {
+            // Arrange
+            var dictionary = new Dictionary<string, string> {{"var1", "value1"}, {"var2", "value2"}};
+
+            // Act
+            var result = dictionary.CaseInsensitiveSearch(key);
+
+            // Assert
+            Assert.AreEqual(expectedValue, result);
+        }
     }
 }
