@@ -420,6 +420,71 @@
     text: 'id,name,amount\n1,DukeOfHaren,20'
     contentType: text/csv
 
+- id: image-jpeg
+  tenant: 19-stub-image
+  conditions:
+    method: GET
+    url:
+      path: /stub-image.jpg
+  response:
+    image:
+      type: jpeg
+      width: 1024
+      height: 256
+      backgroundColor: '#f700ff'
+      text: Test image JPEG!
+      fontSize: 7
+      jpegQuality: 80
+      wordWrap: false
+
+- id: image-png
+  tenant: 19-stub-image
+  conditions:
+    method: GET
+    url:
+      path: /stub-image.png
+  response:
+    image:
+      type: png
+      width: 1024
+      height: 256
+      backgroundColor: '#f700ff'
+      text: Test image PNG!
+      fontSize: 7
+      wordWrap: false
+
+- id: image-bmp
+  tenant: 19-stub-image
+  conditions:
+    method: GET
+    url:
+      path: /stub-image.bmp
+  response:
+    image:
+      type: bmp
+      width: 1024
+      height: 256
+      backgroundColor: '#f700ff'
+      text: Test image BMP!
+      fontSize: 7
+      wordWrap: false
+
+- id: image-gif
+  tenant: 19-stub-image
+  conditions:
+    method: GET
+    url:
+      path: /stub-image.gif
+  response:
+    image:
+      type: gif
+      width: 1024
+      height: 256
+      backgroundColor: '#f700ff'
+      text: Test image GIF!
+      fontSize: 7
+      wordWrap: false
+
 - id: file
   conditions:
     method: GET
