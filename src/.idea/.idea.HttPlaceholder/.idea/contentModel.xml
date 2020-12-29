@@ -178,6 +178,7 @@
               <e p="StubMetadataDto.cs" t="Include" />
               <e p="StubOverviewModel.cs" t="Include" />
               <e p="StubResponseDto.cs" t="Include" />
+              <e p="StubResponseImageDto.cs" t="Include" />
               <e p="StubResponseReverseProxyDto.cs" t="Include" />
               <e p="StubUrlConditionDto.cs" t="Include" />
               <e p="StubXpathDto.cs" t="Include" />
@@ -1096,6 +1097,7 @@
         <e p="StubMetadataModel.cs" t="Include" />
         <e p="StubModel.cs" t="Include" />
         <e p="StubOverviewModel.cs" t="Include" />
+        <e p="StubResponseImageModel.cs" t="Include" />
         <e p="StubResponseModel.cs" t="Include" />
         <e p="StubResponseReverseProxyModel.cs" t="Include" />
         <e p="StubResponseWriterResultModel.cs" t="Include" />

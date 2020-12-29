@@ -98,5 +98,11 @@ namespace HttPlaceholder.Domain
         /// </summary>
         [YamlMember(Alias = "lineEndings")]
         public string LineEndings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stub image.
+        /// </summary>
+        [YamlMember(Alias = "image")]
+        public StubResponseImageModel Image { get; set; }
     }
 }

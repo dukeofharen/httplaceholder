@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Domain.Enums;
 using YamlDotNet.Serialization;
-
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable UnusedMember.Global
 
 namespace HttPlaceholder.Dto.v1.Stubs
 {
@@ -103,5 +99,11 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// </summary>
         [YamlMember(Alias = "lineEndings")]
         public string LineEndings { get; set; }
+
+        /// <summary>
+        /// Gets or sets the stub image.
+        /// </summary>
+        [YamlMember(Alias = "image")]
+        public StubResponseImageDto Image { get; set; }
     }
 }
