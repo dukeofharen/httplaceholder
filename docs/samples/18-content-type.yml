@@ -1,4 +1,5 @@
 - id: content-type-csv
+  tenant: 18-content-type
   conditions:
     method: GET
     url:

@@ -1,5 +1,6 @@
 # With the "enabled" flag, you can specify whether a stub is enabled or not. By default, if the flag is not set, the stub is enabled.
 - id: stub-enabled
+  tenant: 17-disabled
   enabled: true
   conditions:
     method: GET
@@ -9,6 +10,7 @@
     text: This stub is enabled.
 
 - id: stub-disabled
+  tenant: 17-disabled
   enabled: false
   conditions:
     method: GET

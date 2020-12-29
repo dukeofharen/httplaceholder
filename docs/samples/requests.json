@@ -949,6 +949,71 @@
 			]
 		},
 		{
+			"name": "19 Stub image",
+			"item": [
+				{
+					"name": "JPEG",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}stub-image.jpg",
+							"host": [
+								"{{rootUrl}}stub-image",
+								"jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PNG",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}stub-image.png",
+							"host": [
+								"{{rootUrl}}stub-image",
+								"png"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "BMP",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}stub-image.bmp",
+							"host": [
+								"{{rootUrl}}stub-image",
+								"bmp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GIF",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}stub-image.gif",
+							"host": [
+								"{{rootUrl}}stub-image",
+								"gif"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "REST API",
 			"item": [
 				{
