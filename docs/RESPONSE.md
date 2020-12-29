@@ -110,6 +110,22 @@ To return a set of HTTP headers with your response, use the "headers" response w
       X-Correlation: correlation_id
 ```
 
+## Content type
+
+Instead of setting a header with the content type, you can also use the `contentType` property. This will always override the value set in the response headers.
+
+```yml
+- id: content-type-csv
+  conditions:
+    method: GET
+    url:
+      path: /content-type.csv
+  response:
+    statusCode: 200
+    text: 'id,name,amount\n1,DukeOfHaren,20'
+    contentType: text/csv
+```
+
 ## File
 
 To return a file from disk, use the "file" response writer. There are two ways in which you can use this response writer.
