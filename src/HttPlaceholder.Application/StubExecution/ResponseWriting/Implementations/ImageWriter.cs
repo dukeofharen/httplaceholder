@@ -69,8 +69,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                     ? Color.ParseHex(stubImage.FontColor)
                     : parsedColor.InvertColor();
                 image.Mutate(i =>
-                    i.Fill(parsedColor, polygon).ApplyScalingWaterMark(font, stubImage.Text, fontColor, 5,
-                        stubImage.WordWrap));
+                    i
+                        .Fill(parsedColor, polygon)
+                        .ApplyScalingWaterMark(font, stubImage.Text, fontColor, 5, stubImage.WordWrap));
                 using var ms = new MemoryStream();
                 switch (stubImage.Type)
                 {
