@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
 
 namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
 {
@@ -30,7 +31,7 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
                 }
 
                 var headerName = match.Groups[2].Value;
-                headers.TryGetValue(headerName, out var replaceValue);
+                var replaceValue = headers.CaseInsensitiveSearch(headerName);
 
                 input = input.Replace(match.Value, replaceValue);
             }
