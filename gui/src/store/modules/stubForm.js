@@ -487,6 +487,19 @@ const mutations = {
       }
     });
   },
+  setDefaultImage(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        parsed.response.image = defaultValues.image;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  }
 };
 
 const getters = {

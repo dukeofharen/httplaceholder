@@ -19,6 +19,7 @@ Name | Type | Description | Notes
 **PermanentRedirect** | **string** | Gets or sets the permanent redirect. | [optional] 
 **ReverseProxy** | [**StubResponseReverseProxyDto**](StubResponseReverseProxyDto.md) | Gets or sets the reverse proxy settings. | [optional] 
 **LineEndings** | **string** | Gets or sets the line endings type. | [optional] 
+**Image** | [**StubResponseImageDto**](StubResponseImageDto.md) | Gets or sets the stub image. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -128,6 +128,7 @@ Class | Method | HTTP request | Description
  - [Model.StubMetadataDto](docs/StubMetadataDto.md)
  - [Model.StubOverviewDto](docs/StubOverviewDto.md)
  - [Model.StubResponseDto](docs/StubResponseDto.md)
+ - [Model.StubResponseImageDto](docs/StubResponseImageDto.md)
  - [Model.StubResponseReverseProxyDto](docs/StubResponseReverseProxyDto.md)
  - [Model.StubResponseWriterResultDto](docs/StubResponseWriterResultDto.md)
  - [Model.StubUrlConditionDto](docs/StubUrlConditionDto.md)

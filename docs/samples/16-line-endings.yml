@@ -1,5 +1,6 @@
 # Enforce Windows or Unix line endings for your stub.
 - id: line-endings-all-unix
+  tenant: 16-line-endings
   conditions:
     method: GET
     url:
@@ -14,6 +15,7 @@
       endings
 
 - id: line-endings-all-windows
+  tenant: 16-line-endings
   conditions:
     method: GET
     url:
