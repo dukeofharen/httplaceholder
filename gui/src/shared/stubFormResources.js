@@ -37,6 +37,7 @@ const elementDescriptions = {
   responseBody: "Provide the body that should be added to the response.",
   responseHeaders:
     "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'.",
+  responseContentType: "This sets the Content-Type response header.",
   extraDuration:
     "Whenever you want to simulate a busy web service, you can use the 'extraDuration' response writer. You can set the number of extra milliseconds HttPlaceholder should wait and the request will actually take that much time to complete.",
   redirect:
@@ -365,7 +366,8 @@ const defaultValues = {
     appendPath: true,
     appendQueryString: true,
     replaceRootUrl: true
-  }
+  },
+  responseContentType: "application/json"
 };
 
 const formHelperKeys = {

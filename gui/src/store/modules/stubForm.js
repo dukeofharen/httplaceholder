@@ -473,7 +473,20 @@ const mutations = {
         state.input = yaml.dump(parsed);
       }
     });
-  }
+  },
+  setDefaultResponseContentType(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        parsed.response.contentType = defaultValues.responseContentType;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
 };
 
 const getters = {

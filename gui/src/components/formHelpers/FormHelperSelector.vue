@@ -200,6 +200,12 @@ export default {
                 this.setDefaultValue("stubForm/setDefaultResponseHeaders")
             },
             {
+              title: "Content type",
+              subTitle: elementDescriptions.responseContentType,
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultResponseContentType")
+            },
+            {
               title: "Extra duration",
               subTitle: elementDescriptions.extraDuration,
               onClick: () =>
