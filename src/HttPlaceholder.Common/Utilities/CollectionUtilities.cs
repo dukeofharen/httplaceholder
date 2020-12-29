@@ -28,7 +28,8 @@ namespace HttPlaceholder.Common.Utilities
 
         public static string CaseInsensitiveSearch(this IDictionary<string, string> dict, string key)
         {
-            return string.Empty;
+            var pair = dict.FirstOrDefault(h => string.Equals(key, h.Key, StringComparison.OrdinalIgnoreCase));
+            return string.IsNullOrWhiteSpace(pair.Key) ? null : pair.Value;
         }
     }
 }
