@@ -14,4 +14,8 @@
     <PackageReference Include="YamlDotNet" Version="9.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
+  </ItemGroup>
+
 </Project>

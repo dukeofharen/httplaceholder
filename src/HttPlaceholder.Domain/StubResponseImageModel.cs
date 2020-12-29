@@ -1,4 +1,6 @@
-﻿using YamlDotNet.Serialization;
+﻿using HttPlaceholder.Common.Utilities;
+using Newtonsoft.Json;
+using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Domain
 {
@@ -60,5 +62,25 @@ namespace HttPlaceholder.Domain
         /// </summary>
         [YamlMember(Alias = "wordWrap")]
         public bool WordWrap { get; set; }
+
+        [JsonIgnore] public string Hash => HashingUtilities.GetMd5String(JsonConvert.SerializeObject(this));
+
+        public string ContentTypeHeaderValue
+        {
+            get
+            {
+                switch (Type)
+                {
+                    case Constants.BmpType:
+                        return "image/bmp";
+                    case Constants.GifType:
+                        return "image/gif";
+                    case Constants.JpegType:
+                        return "image/jpeg";
+                    default:
+                        return "image/png";
+                }
+            }
+        }
     }
 }
