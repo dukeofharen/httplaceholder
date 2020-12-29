@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
@@ -17,10 +18,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
             var body = stub.Response.Xml;
             response.Body = Encoding.UTF8.GetBytes(body);
-            if (!response.Headers.TryGetValue("Content-Type", out _))
-            {
-                response.Headers.Add("Content-Type", "text/xml");
-            }
+            response.Headers.AddOrReplaceCaseInsensitive("Content-Type", "text/xml", false);
 
             return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
         }

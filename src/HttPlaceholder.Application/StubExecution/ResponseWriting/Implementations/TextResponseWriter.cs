@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
@@ -16,10 +17,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             }
 
             response.Body = Encoding.UTF8.GetBytes(stub.Response.Text);
-            if (!response.Headers.TryGetValue("Content-Type", out _))
-            {
-                response.Headers.Add("Content-Type", "text/plain");
-            }
+            response.Headers.AddOrReplaceCaseInsensitive("Content-Type", "text/plain", false);
 
             return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
         }
