@@ -9,11 +9,6 @@ namespace HttPlaceholder.Dto.v1.Stubs
     /// </summary>
     public class StubResponseImageDto : IMapFrom<StubResponseImageModel>, IMapTo<StubResponseImageModel>
     {
-        public StubResponseImageDto()
-        {
-            Text = $"HttPlaceholder - {Height}x{Width}";
-        }
-
         /// <summary>
         /// Gets or sets the image type. Possibilities: jpeg, png, bmp and gif.
         /// </summary>
@@ -42,7 +37,7 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// Gets or sets the text that should be drawn in the image.
         /// </summary>
         [YamlMember(Alias = "text")]
-        public string Text { get; set; }
+        public string Text { get; set; } = "HttPlaceholder";
 
         /// <summary>
         /// Gets or sets the fontsize for the text in the image.
