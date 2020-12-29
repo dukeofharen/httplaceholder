@@ -49,7 +49,8 @@ namespace HttPlaceholder.Client.Model
         /// <param name="permanentRedirect">Gets or sets the permanent redirect..</param>
         /// <param name="reverseProxy">Gets or sets the reverse proxy settings..</param>
         /// <param name="lineEndings">Gets or sets the line endings type..</param>
-        public StubResponseDto(bool? enableDynamicMode = default(bool?), int? statusCode = default(int?), string contentType = default(string), string text = default(string), string base64 = default(string), string file = default(string), Dictionary<string, string> headers = default(Dictionary<string, string>), int? extraDuration = default(int?), string json = default(string), string xml = default(string), string html = default(string), string temporaryRedirect = default(string), string permanentRedirect = default(string), StubResponseReverseProxyDto reverseProxy = default(StubResponseReverseProxyDto), string lineEndings = default(string))
+        /// <param name="image">Gets or sets the stub image..</param>
+        public StubResponseDto(bool? enableDynamicMode = default(bool?), int? statusCode = default(int?), string contentType = default(string), string text = default(string), string base64 = default(string), string file = default(string), Dictionary<string, string> headers = default(Dictionary<string, string>), int? extraDuration = default(int?), string json = default(string), string xml = default(string), string html = default(string), string temporaryRedirect = default(string), string permanentRedirect = default(string), StubResponseReverseProxyDto reverseProxy = default(StubResponseReverseProxyDto), string lineEndings = default(string), StubResponseImageDto image = default(StubResponseImageDto))
         {
             this.EnableDynamicMode = enableDynamicMode;
             this.StatusCode = statusCode;
@@ -66,6 +67,7 @@ namespace HttPlaceholder.Client.Model
             this.PermanentRedirect = permanentRedirect;
             this.ReverseProxy = reverseProxy;
             this.LineEndings = lineEndings;
+            this.Image = image;
         }
         
         /// <summary>
@@ -174,6 +176,13 @@ namespace HttPlaceholder.Client.Model
         public string LineEndings { get; set; }
 
         /// <summary>
+        /// Gets or sets the stub image.
+        /// </summary>
+        /// <value>Gets or sets the stub image.</value>
+        [DataMember(Name="image", EmitDefaultValue=true)]
+        public StubResponseImageDto Image { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -196,6 +205,7 @@ namespace HttPlaceholder.Client.Model
             sb.Append("  PermanentRedirect: ").Append(PermanentRedirect).Append("\n");
             sb.Append("  ReverseProxy: ").Append(ReverseProxy).Append("\n");
             sb.Append("  LineEndings: ").Append(LineEndings).Append("\n");
+            sb.Append("  Image: ").Append(Image).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -305,6 +315,11 @@ namespace HttPlaceholder.Client.Model
                     this.LineEndings == input.LineEndings ||
                     (this.LineEndings != null &&
                     this.LineEndings.Equals(input.LineEndings))
+                ) && 
+                (
+                    this.Image == input.Image ||
+                    (this.Image != null &&
+                    this.Image.Equals(input.Image))
                 );
         }
 
@@ -347,6 +362,8 @@ namespace HttPlaceholder.Client.Model
                     hashCode = hashCode * 59 + this.ReverseProxy.GetHashCode();
                 if (this.LineEndings != null)
                     hashCode = hashCode * 59 + this.LineEndings.GetHashCode();
+                if (this.Image != null)
+                    hashCode = hashCode * 59 + this.Image.GetHashCode();
                 return hashCode;
             }
         }
