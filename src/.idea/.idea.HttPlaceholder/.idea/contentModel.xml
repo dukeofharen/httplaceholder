@@ -963,6 +963,7 @@
             <e p="FileResponseWriterFacts.cs" t="Include" />
             <e p="HeadersResponseWriterFacts.cs" t="Include" />
             <e p="HtmResponseWriterFacts.cs" t="Include" />
+            <e p="ImageWriterFacts.cs" t="Include" />
             <e p="JsonResponseWriterFacts.cs" t="Include" />
             <e p="LineEndingResponseWriterFacts.cs" t="Include" />
             <e p="RedirectResponseWriterFacts.cs" t="Include" />
