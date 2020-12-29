@@ -126,6 +126,44 @@ Instead of setting a header with the content type, you can also use the `content
     contentType: text/csv
 ```
 
+## Image
+
+It is possible for HttPlaceholder to generate stub images. This can be done by setting the `image` response writer. This writer is built using the amazing [ImageSharp](https://docs.sixlabors.com/) library. Here is an example:
+
+```yml
+id: image-example
+conditions:
+  method: GET
+  url:
+    path: /image.png
+response:
+  image:
+    type: png
+    width: 1024
+    height: 256
+    backgroundColor: '#ffa0d3'
+    text: Placeholder text that will be drawn in the image
+    fontSize: 10
+    jpegQuality: 95
+    wordWrap: false
+```
+
+When you visit the URL `http://localhost:5000/image.png`, you'll get this image:
+
+![](img/image_example_1.png)
+
+The following properties can be set for the `image` response writer:
+
+- `type`: the image type that should be returned. Can be `jpeg`, `png`, `bmp` or `gif`.
+- `width`: the image width in pixels.
+- `height`: the image height in pixels.
+- `backgroundColor`: the HEX value of the background color. By providing an additional transparency value, you can specify the transparency of the background. So, if you take the example above, `#ffa0d3ff` means the background is fully visible and `#ffa0d300` means the background is fully transparent.
+- `text`: the text that should be drawn in the image.
+- `fontSize`: the size of the drawn text.
+- `fontColor`: the HEX value of the text color. If you do not set this value, the text color will be the inverted value of `backgroundColor`, but since inverted grayscales might produce roughly the same color, you can also specify your own color here.
+- `jpegQuality`: of course, only useful if `type` `jpeg` is used. Is `95` by default. `1` is worst and `100` is best quality.
+- `wordWrap`: if set to true, the text will be written across the image. Useful if your text is long. Is `false` by default.
+
 ## File
 
 To return a file from disk, use the "file" response writer. There are two ways in which you can use this response writer.
