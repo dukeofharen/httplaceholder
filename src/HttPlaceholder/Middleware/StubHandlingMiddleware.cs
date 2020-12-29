@@ -37,8 +37,6 @@ namespace HttPlaceholder.Middleware
         private readonly IRequestNotify _requestNotify;
         private readonly SettingsModel _settings;
         private readonly IMapper _mapper;
-        private readonly IFileService _fileService;
-        private readonly IAssemblyService _assemblyService;
 
         public StubHandlingMiddleware(
             RequestDelegate next,
@@ -50,9 +48,7 @@ namespace HttPlaceholder.Middleware
             IStubContext stubContext,
             IStubRequestExecutor stubRequestExecutor,
             IOptions<SettingsModel> options,
-            IMapper mapper,
-            IFileService fileService,
-            IAssemblyService assemblyService)
+            IMapper mapper)
         {
             _next = next;
             _clientDataResolver = clientDataResolver;
@@ -63,8 +59,6 @@ namespace HttPlaceholder.Middleware
             _stubContext = stubContext;
             _stubRequestExecutor = stubRequestExecutor;
             _mapper = mapper;
-            _fileService = fileService;
-            _assemblyService = assemblyService;
             _settings = options.Value;
         }
 

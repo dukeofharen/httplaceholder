@@ -22,11 +22,20 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="5.0.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
+    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
     <ProjectReference Include="..\HttPlaceholder.Domain\HttPlaceholder.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Manrope-Regular.ttf" />
+    <Content Include="Manrope-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

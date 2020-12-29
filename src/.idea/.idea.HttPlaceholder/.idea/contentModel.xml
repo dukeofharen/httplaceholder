@@ -712,6 +712,7 @@
             <e p="IWritableStubSource.cs" t="Include" />
           </e>
         </e>
+        <e p="Manrope-Regular.ttf" t="Include" />
         <e p="Metadata" t="Include">
           <e p="Queries" t="Include">
             <e p="GetMetadata" t="Include">
@@ -811,6 +812,7 @@
               <e p="FileResponseWriter.cs" t="Include" />
               <e p="HeadersResponseWriter.cs" t="Include" />
               <e p="HtmlResponseWriter.cs" t="Include" />
+              <e p="ImageWriter.cs" t="Include" />
               <e p="JsonResponseWriter.cs" t="Include" />
               <e p="LineEndingResponseWriter.cs" t="Include" />
               <e p="RedirectResponseWriter.cs" t="Include" />
@@ -1006,6 +1008,7 @@
           <e p="CollectionUtilities.cs" t="Include" />
           <e p="ConsoleHelpers.cs" t="Include" />
           <e p="HashingUtilities.cs" t="Include" />
+          <e p="ImageSharpUtilities.cs" t="Include" />
           <e p="ReflectionUtilities.cs" t="Include" />
           <e p="StringHelper.cs" t="Include" />
           <e p="XmlUtilities.cs" t="Include" />
