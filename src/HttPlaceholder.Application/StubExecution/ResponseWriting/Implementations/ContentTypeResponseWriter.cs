@@ -13,7 +13,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
             }
 
-            response.Headers.Add("Content-Type", stub.Response.ContentType);
             response.Headers.AddOrReplaceCaseInsensitive("Content-Type", stub.Response.ContentType);
             return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
         }
