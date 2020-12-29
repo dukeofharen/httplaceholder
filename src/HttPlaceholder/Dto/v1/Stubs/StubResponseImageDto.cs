@@ -1,11 +1,13 @@
-﻿using YamlDotNet.Serialization;
+﻿using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Domain;
+using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Dto.v1.Stubs
 {
     /// <summary>
     /// A model for storing settings about the stub image that should be generated.
     /// </summary>
-    public class StubResponseImageDto
+    public class StubResponseImageDto : IMapFrom<StubResponseImageModel>, IMapTo<StubResponseImageModel>
     {
         public StubResponseImageDto()
         {
