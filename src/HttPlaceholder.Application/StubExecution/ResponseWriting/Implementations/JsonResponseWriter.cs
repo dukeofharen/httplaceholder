@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
@@ -17,10 +18,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
             var jsonBody = stub.Response.Json;
             response.Body = Encoding.UTF8.GetBytes(jsonBody);
-            if (!response.Headers.TryGetValue("Content-Type", out _))
-            {
-                response.Headers.Add("Content-Type", "application/json");
-            }
+            response.Headers.AddOrReplaceCaseInsensitive("Content-Type", "application/json", false);
 
             return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
         }

@@ -929,6 +929,26 @@
 			]
 		},
 		{
+			"name": "18 Content type",
+			"item": [
+				{
+					"name": "Content type",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}content-type.csv",
+							"host": [
+								"{{rootUrl}}content-type",
+								"csv"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "REST API",
 			"item": [
 				{

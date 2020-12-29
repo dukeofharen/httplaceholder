@@ -36,6 +36,7 @@ namespace HttPlaceholder.Client.Model
         /// </summary>
         /// <param name="enableDynamicMode">Gets or sets whether dynamic mode is on..</param>
         /// <param name="statusCode">Gets or sets the status code..</param>
+        /// <param name="contentType">Gets or sets the response content type..</param>
         /// <param name="text">Gets or sets the text..</param>
         /// <param name="base64">Gets or sets the base64..</param>
         /// <param name="file">Gets or sets the file..</param>
@@ -48,10 +49,11 @@ namespace HttPlaceholder.Client.Model
         /// <param name="permanentRedirect">Gets or sets the permanent redirect..</param>
         /// <param name="reverseProxy">Gets or sets the reverse proxy settings..</param>
         /// <param name="lineEndings">Gets or sets the line endings type..</param>
-        public StubResponseDto(bool? enableDynamicMode = default(bool?), int? statusCode = default(int?), string text = default(string), string base64 = default(string), string file = default(string), Dictionary<string, string> headers = default(Dictionary<string, string>), int? extraDuration = default(int?), string json = default(string), string xml = default(string), string html = default(string), string temporaryRedirect = default(string), string permanentRedirect = default(string), StubResponseReverseProxyDto reverseProxy = default(StubResponseReverseProxyDto), string lineEndings = default(string))
+        public StubResponseDto(bool? enableDynamicMode = default(bool?), int? statusCode = default(int?), string contentType = default(string), string text = default(string), string base64 = default(string), string file = default(string), Dictionary<string, string> headers = default(Dictionary<string, string>), int? extraDuration = default(int?), string json = default(string), string xml = default(string), string html = default(string), string temporaryRedirect = default(string), string permanentRedirect = default(string), StubResponseReverseProxyDto reverseProxy = default(StubResponseReverseProxyDto), string lineEndings = default(string))
         {
             this.EnableDynamicMode = enableDynamicMode;
             this.StatusCode = statusCode;
+            this.ContentType = contentType;
             this.Text = text;
             this.Base64 = base64;
             this.File = file;
@@ -79,6 +81,13 @@ namespace HttPlaceholder.Client.Model
         /// <value>Gets or sets the status code.</value>
         [DataMember(Name="statusCode", EmitDefaultValue=true)]
         public int? StatusCode { get; set; }
+
+        /// <summary>
+        /// Gets or sets the response content type.
+        /// </summary>
+        /// <value>Gets or sets the response content type.</value>
+        [DataMember(Name="contentType", EmitDefaultValue=true)]
+        public string ContentType { get; set; }
 
         /// <summary>
         /// Gets or sets the text.
@@ -174,6 +183,7 @@ namespace HttPlaceholder.Client.Model
             sb.Append("class StubResponseDto {\n");
             sb.Append("  EnableDynamicMode: ").Append(EnableDynamicMode).Append("\n");
             sb.Append("  StatusCode: ").Append(StatusCode).Append("\n");
+            sb.Append("  ContentType: ").Append(ContentType).Append("\n");
             sb.Append("  Text: ").Append(Text).Append("\n");
             sb.Append("  Base64: ").Append(Base64).Append("\n");
             sb.Append("  File: ").Append(File).Append("\n");
@@ -229,6 +239,11 @@ namespace HttPlaceholder.Client.Model
                     this.StatusCode == input.StatusCode ||
                     (this.StatusCode != null &&
                     this.StatusCode.Equals(input.StatusCode))
+                ) && 
+                (
+                    this.ContentType == input.ContentType ||
+                    (this.ContentType != null &&
+                    this.ContentType.Equals(input.ContentType))
                 ) && 
                 (
                     this.Text == input.Text ||
@@ -306,6 +321,8 @@ namespace HttPlaceholder.Client.Model
                     hashCode = hashCode * 59 + this.EnableDynamicMode.GetHashCode();
                 if (this.StatusCode != null)
                     hashCode = hashCode * 59 + this.StatusCode.GetHashCode();
+                if (this.ContentType != null)
+                    hashCode = hashCode * 59 + this.ContentType.GetHashCode();
                 if (this.Text != null)
                     hashCode = hashCode * 59 + this.Text.GetHashCode();
                 if (this.Base64 != null)
