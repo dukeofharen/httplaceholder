@@ -52,27 +52,36 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             var font = new Font(family, stubImage.FontSize);
             var parsedColor = Color.ParseHex(stubImage.BackgroundColor);
             var polygon = new Rectangle(0, 0, stubImage.Width, stubImage.Height);
+            var fontColor = !string.IsNullOrWhiteSpace(stubImage.FontColor)
+                ? Color.ParseHex(stubImage.FontColor)
+                : parsedColor.InvertColor();
             image.Mutate(i =>
-                i.Fill(parsedColor, polygon).ApplyScalingWaterMark(font, stubImage.Text, parsedColor.InvertColor(), 5,
+                i.Fill(parsedColor, polygon).ApplyScalingWaterMark(font, stubImage.Text, fontColor, 5,
                     stubImage.WordWrap));
             using var ms = new MemoryStream();
+            string contentType;
             switch (stubImage.Type)
             {
                 case Constants.BmpType:
                     await image.SaveAsBmpAsync(ms);
+                    contentType = "image/bmp";
                     break;
                 case Constants.GifType:
                     await image.SaveAsGifAsync(ms);
+                    contentType = "image/gif";
                     break;
                 case Constants.JpegType:
                     await image.SaveAsJpegAsync(ms, new JpegEncoder {Quality = stubImage.JpegQuality});
+                    contentType = "image/jpeg";
                     break;
-                case Constants.PngType:
+                default:
                     await image.SaveAsPngAsync(ms);
+                    contentType = "image/png";
                     break;
             }
 
             response.Body = ms.ToArray();
+            response.Headers.AddOrReplaceCaseInsensitive("Content-Type", contentType);
             return StubResponseWriterResultModel.IsExecuted(GetType().Name);
         }
 

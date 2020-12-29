@@ -31,6 +31,23 @@
       text: Test image PNG!
       fontSize: 7
       wordWrap: false
+
+- id: image-png-with-set-font-color
+  tenant: 19-stub-image
+  conditions:
+    method: GET
+    url:
+      path: /stub-image-font-color.png
+  response:
+    image:
+      type: png
+      width: 1024
+      height: 256
+      backgroundColor: '#f700ff'
+      fontColor: '#ffffff'
+      text: Test image PNG!
+      fontSize: 7
+      wordWrap: false
       
 - id: image-png-transparency
   tenant: 19-stub-image

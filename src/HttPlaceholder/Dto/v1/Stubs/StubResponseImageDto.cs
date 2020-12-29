@@ -46,6 +46,12 @@ namespace HttPlaceholder.Dto.v1.Stubs
         public int FontSize { get; set; } = 7;
 
         /// <summary>
+        /// Gets or sets the font color.
+        /// </summary>
+        [YamlMember(Alias = "fontColor")]
+        public string FontColor { get; set; }
+
+        /// <summary>
         /// Gets or sets the image quality in the case of JPEG image.
         /// </summary>
         [YamlMember(Alias = "jpegQuality")]

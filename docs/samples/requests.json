@@ -967,6 +967,21 @@
 					"response": []
 				},
 				{
+					"name": "Image with set font color",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}stub-image-font-color.png",
+							"host": [
+								"{{rootUrl}}stub-image-font-color",
+								"png"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "PNG",
 					"request": {
 						"method": "GET",
