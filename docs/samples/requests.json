@@ -982,6 +982,21 @@
 					"response": []
 				},
 				{
+					"name": "Image with very long text and word wrapping",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}stub-image-with-very-long-text.png",
+							"host": [
+								"{{rootUrl}}stub-image-with-very-long-text",
+								"png"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "PNG",
 					"request": {
 						"method": "GET",

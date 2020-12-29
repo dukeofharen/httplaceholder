@@ -48,7 +48,22 @@
       text: Test image PNG!
       fontSize: 7
       wordWrap: false
-      
+
+- id: image-png-with-very-long-text
+  tenant: 19-stub-image
+  conditions:
+    method: GET
+    url:
+      path: /stub-image-with-very-long-text.png
+  response:
+    image:
+      type: png
+      width: 1024
+      height: 256
+      backgroundColor: '#f700ff'
+      text: Aenean in sollicitudin lorem. Sed id vehicula augue. Suspendisse dui orci, volutpat at nisl non, euismod laoreet nisi. Aliquam libero ex, tincidunt eu ultricies vitae, vehicula et justo. Aenean mattis porttitor accumsan. Proin aliquam nisi at volutpat facilisis. Phasellus ac quam aliquam, congue nunc at, facilisis eros. Mauris quis porta nibh. Pellentesque tincidunt dapibus vestibulum. Cras volutpat volutpat ipsum, in lobortis justo ullamcorper sit amet. Donec non ante vulputate, facilisis orci at, maximus velit. Ut iaculis nulla vel sem finibus ullamcorper. Donec luctus venenatis mollis. Quisque venenatis hendrerit augue, id facilisis diam venenatis ac. Etiam volutpat augue quis blandit convallis. In accumsan eu urna vel faucibus.
+      fontSize: 7
+      wordWrap: true
 - id: image-png-transparency
   tenant: 19-stub-image
   conditions:
