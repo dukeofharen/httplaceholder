@@ -31,7 +31,7 @@ This is a shortcut for returning a JSON string. This response writer sets the "C
       path: /text.json
   response:
     statusCode: 200
-    json: {"msg": "All OK!"}
+    json: '{"msg": "All OK!"}'
 ```
 
 ## XML
