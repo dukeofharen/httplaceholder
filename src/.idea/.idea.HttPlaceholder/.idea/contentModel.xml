@@ -69,6 +69,7 @@
         <e p="StubMetadataDto.cs" t="Include" />
         <e p="StubOverviewDto.cs" t="Include" />
         <e p="StubResponseDto.cs" t="Include" />
+        <e p="StubResponseImageDto.cs" t="Include" />
         <e p="StubResponseReverseProxyDto.cs" t="Include" />
         <e p="StubResponseWriterResultDto.cs" t="Include" />
         <e p="StubUrlConditionDto.cs" t="Include" />
