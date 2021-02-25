@@ -355,7 +355,7 @@ healthchecksdb
 MigrationBackup/
 
 # JetBrains Rider
-**/.idea/
+**/.idea
 
 # Other
 dist/
