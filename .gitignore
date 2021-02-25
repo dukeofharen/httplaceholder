@@ -355,10 +355,7 @@ healthchecksdb
 MigrationBackup/
 
 # JetBrains Rider
-**/.idea/**/workspace.xml
-**/.idea/**/usage.statistics.xml
-**/.idea/**/tasks.xml
-**/.idea/**/shelf
+**/.idea/
 
 # Other
 dist/
