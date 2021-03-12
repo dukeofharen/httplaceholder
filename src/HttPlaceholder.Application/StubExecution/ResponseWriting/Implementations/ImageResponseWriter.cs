@@ -15,12 +15,12 @@ using SixLabors.ImageSharp.Processing;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
 {
-    public class ImageWriter : IResponseWriter
+    public class ImageResponseWriter : IResponseWriter
     {
         private readonly IAssemblyService _assemblyService;
         private readonly IFileService _fileService;
 
-        public ImageWriter(IAssemblyService assemblyService, IFileService fileService)
+        public ImageResponseWriter(IAssemblyService assemblyService, IFileService fileService)
         {
             _assemblyService = assemblyService;
             _fileService = fileService;

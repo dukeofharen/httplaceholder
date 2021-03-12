@@ -12,7 +12,7 @@ using SixLabors.ImageSharp;
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
 {
     [TestClass]
-    public class ImageWriterFacts
+    public class ImageResponseWriterFacts
     {
         private static readonly string _executingAssemblyPath =
             OperatingSystem.IsWindows() ? @"C:\bin\httplaceholder" : "/bin/httplaceholder";
@@ -21,7 +21,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
 
         private readonly Mock<IAssemblyService> _mockAssemblyService = new Mock<IAssemblyService>();
         private readonly Mock<IFileService> _mockFileService = new Mock<IFileService>();
-        private ImageWriter _writer;
+        private ImageResponseWriter _responseWriter;
 
         [TestInitialize]
         public void Initialize()
@@ -32,7 +32,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             _mockFileService
                 .Setup(m => m.GetTempPath())
                 .Returns(_tempFolder);
-            _writer = new ImageWriter(_mockAssemblyService.Object, _mockFileService.Object);
+            _responseWriter = new ImageResponseWriter(_mockAssemblyService.Object, _mockFileService.Object);
         }
 
         [TestMethod]
@@ -43,7 +43,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // Act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _responseWriter.WriteToResponseAsync(stub, response);
 
             // Assert
             Assert.IsFalse(result.Executed);
@@ -62,7 +62,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             var response = new ResponseModel();
 
             // Act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _responseWriter.WriteToResponseAsync(stub, response);
 
             // Assert
             Assert.IsTrue(result.Executed);
@@ -93,7 +93,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                 .Returns(cachedBytes);
 
             // Act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _responseWriter.WriteToResponseAsync(stub, response);
 
             // Assert
             Assert.IsTrue(result.Executed);
@@ -127,7 +127,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
                 .Returns(false);
 
             // Act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+            var result = await _responseWriter.WriteToResponseAsync(stub, response);
 
             // Assert
             Assert.IsTrue(result.Executed);
