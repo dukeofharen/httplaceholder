@@ -1,6 +1,5 @@
 import createInstance from "@/axios/axiosInstanceFactory";
 import yaml from "js-yaml";
-import { resources } from "@/shared/resources";
 
 const state = () => ({});
 
@@ -96,32 +95,6 @@ const actions = {
     });
   },
   /* eslint no-empty-pattern: 0 */
-  updateStub({}, payload) {
-    return new Promise((resolve, reject) => {
-      let stub;
-      if (payload.inputIsJson) {
-        stub = payload.input;
-      } else {
-        try {
-          stub = yaml.safeLoad(payload.input);
-        } catch (e) {
-          reject(e);
-          return;
-        }
-      }
-
-      if (!stub || Array.isArray(stub)) {
-        reject(resources.onlyOneStubAtATime);
-        return;
-      }
-
-      createInstance()
-        .put(`ph-api/stubs/${payload.stubId}`, stub)
-        .then(() => resolve())
-        .catch(error => reject(error));
-    });
-  },
-  /* eslint no-empty-pattern: 0 */
   createStubBasedOnRequest({}, payload) {
     return new Promise((resolve, reject) =>
       createInstance()
@@ -130,25 +103,27 @@ const actions = {
         .catch(error => reject(error))
     );
   },
-  async enableStub({}, stubId){
-    const stub = (await createInstance()
-      .get(`ph-api/stubs/${stubId}`)).data.stub;
+  async enableStub({}, stubId) {
+    const stub = (await createInstance().get(`ph-api/stubs/${stubId}`)).data
+      .stub;
     stub.enabled = true;
     return new Promise((resolve, reject) =>
       createInstance()
         .put(`ph-api/stubs/${stubId}`, stub)
         .then(() => resolve())
-        .catch(error => reject(error)));
+        .catch(error => reject(error))
+    );
   },
-  async disableStub({}, stubId){
-    const stub = (await createInstance()
-      .get(`ph-api/stubs/${stubId}`)).data.stub;
+  async disableStub({}, stubId) {
+    const stub = (await createInstance().get(`ph-api/stubs/${stubId}`)).data
+      .stub;
     stub.enabled = false;
     return new Promise((resolve, reject) =>
       createInstance()
         .put(`ph-api/stubs/${stubId}`, stub)
         .then(() => resolve())
-        .catch(error => reject(error)));
+        .catch(error => reject(error))
+    );
   }
 };
 

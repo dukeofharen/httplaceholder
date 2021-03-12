@@ -19,7 +19,7 @@
     </v-row>
     <v-row v-if="responseBodyType === responseBodyTypes.base64">
       <v-col cols="12">
-        <input type="file" name="file" ref="base64Upload" @change="upload"/>
+        <input type="file" name="file" ref="base64Upload" @change="upload" />
         <p>
           You can upload a file for use in the Base64 response.
         </p>
@@ -29,9 +29,8 @@
     <v-row v-if="responseBodyType === responseBodyTypes.base64">
       <v-col cols="12">
         <v-btn color="primary" @click="showBase64TextInput = true"
-        >Show text input
-        </v-btn
-        >
+          >Show text input
+        </v-btn>
       </v-col>
     </v-row>
     <v-row v-if="showDynamicModeRow">
@@ -122,7 +121,7 @@ export default {
         key: h.name,
         name: h.fullName
       }));
-      result.unshift({key: "default", name: ""});
+      result.unshift({ key: "default", name: "" });
       return result;
     },
     showDynamicModeRow() {

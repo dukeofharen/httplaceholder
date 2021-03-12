@@ -5,7 +5,8 @@ const elementDescriptions = {
     "A free text field where you can specify where the stub is for. It is optional.",
   priority:
     "There are cases when a request matches multiple stub. If this is the case, you can use the 'priority' element. With the priority element, you can specify which stub should be used if multiple stubs are found. The stub with the highest priority will be used. If you don't set the priority on the stub, it will be 0 by default.",
-  disable: "By setting 'enabled' to false, the stub will not be used when determining which stub should be executed for a request.",
+  disable:
+    "By setting 'enabled' to false, the stub will not be used when determining which stub should be executed for a request.",
   httpMethod:
     "This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.).",
   urlPath:
@@ -40,7 +41,8 @@ const elementDescriptions = {
   responseContentType: "This sets the Content-Type response header.",
   extraDuration:
     "Whenever you want to simulate a busy web service, you can use the 'extraDuration' response writer. You can set the number of extra milliseconds HttPlaceholder should wait and the request will actually take that much time to complete.",
-  image: "If you want to create placeholder images, use this response writer. With this response writer, JPEG, PNG, BMP and GIF images can be returned.",
+  image:
+    "If you want to create placeholder images, use this response writer. With this response writer, JPEG, PNG, BMP and GIF images can be returned.",
   redirect:
     "The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the 'temporaryRedirect' property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the 'permanentRedirect' an HTTP 301.",
   dynamicMode:
@@ -343,13 +345,13 @@ const defaultValues = {
   ],
   clientIp: "127.0.0.1",
   hostname: "httplaceholder.com",
-  jsonPath: ["$.phoneNumbers[?(@.type==\"iPhone\")]"],
+  jsonPath: ['$.phoneNumbers[?(@.type=="iPhone")]'],
   xpath: [
     {
-      queryString: "/object/a[text() = \"TEST\"]"
+      queryString: '/object/a[text() = "TEST"]'
     },
     {
-      queryString: "/object/b[text() = \"TEST\"]",
+      queryString: '/object/b[text() = "TEST"]',
       namespaces: {
         soap: "http://www.w3.org/2003/05/soap-envelope",
         m: "http://www.example.org/stock/Reddy"
