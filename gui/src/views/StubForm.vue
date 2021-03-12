@@ -122,9 +122,8 @@ export default {
         }
       } else {
         try {
-          await this.$store.dispatch("stubs/updateStub", {
-            input: this.input,
-            stubId: this.stubId
+          await this.$store.dispatch("stubs/addStubs", {
+            input: this.input
           });
           toastSuccess(resources.stubUpdatedSuccessfully.format(this.stubId));
         } catch (e) {
