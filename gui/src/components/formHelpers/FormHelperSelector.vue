@@ -214,8 +214,7 @@ export default {
             {
               title: "Image",
               subTitle: elementDescriptions.image,
-              onClick: () =>
-                this.setDefaultValue("stubForm/setDefaultImage")
+              onClick: () => this.setDefaultValue("stubForm/setDefaultImage")
             },
             {
               title: "Redirect",
