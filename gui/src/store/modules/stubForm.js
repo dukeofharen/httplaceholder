@@ -32,8 +32,11 @@ const mutations = {
   setInput(state, input) {
     state.input = input;
   },
-  clearForm(state) {
-    state.input = "";
+  clearForm(state, input) {
+    if(!input) {
+      input = "";
+    }
+    state.input = input;
     state.currentSelectedFormHelper = "";
   },
   openFormHelper(state, key) {
@@ -516,7 +519,6 @@ const getters = {
   getResponseBody(state) {
     return handle(() => {
       const parsed = parseInput(state);
-      console.log(parsed);
       if (parsed) {
         if (!parsed.response) {
           return "";

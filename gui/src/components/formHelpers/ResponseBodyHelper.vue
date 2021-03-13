@@ -70,7 +70,7 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-btn color="success" @click="insert">Insert</v-btn>
+        <v-btn color="success mr-2" @click="insert">Insert</v-btn>
         <v-btn color="error" @click="close">Close</v-btn>
       </v-col>
     </v-row>
