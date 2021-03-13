@@ -95,5 +95,20 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
         }
+
+        [DataTestMethod]
+        [DataRow("sjaak%40gmail.com")]
+        [DataRow("sjaak@gmail.com")]
+        public async Task StubIntegration_RegularGet_Query_UrlEncoded(string email)
+        {
+            // arrange
+            var url = $"{TestServer.BaseAddress}query?email={email}";
+
+            // act / assert
+            using var response = await Client.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("url-query-param-url-encoded OK", content);
+        }
     }
 }

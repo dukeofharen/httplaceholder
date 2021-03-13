@@ -88,7 +88,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using var response = await Client.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("OK", content);
+            Assert.AreEqual("form-ok OK", content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
         }
