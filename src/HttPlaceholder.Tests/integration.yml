@@ -45,6 +45,16 @@
     headers:
       Content-Type: text/plain
 
+- id: url-query-param-url-encoded
+  conditions:
+    method: GET
+    url:
+      path: /query
+      query:
+        email: sjaak@gmail.com
+  response:
+    text: url-query-param-url-encoded OK
+
 - id: auth-check
   conditions:
     method: GET
@@ -75,6 +85,16 @@
     text: '{"result": true}'
     headers:
       Content-Type: application/json
+
+- id: post-body-url-encoded
+  conditions:
+    method: POST
+    url:
+      path: /change-email
+    body:
+      - \bsjaak@gmail.com\b
+  response:
+    text: post-body-url-encoded OK
 
 - id: soap-xml
   conditions:
@@ -217,6 +237,17 @@
         value: ducoo
   response:
     text: form-ok OK
+
+- id: form-ok-url-encoded
+  conditions:
+    method: POST
+    url:
+      path: /form
+    form:
+      - key: email
+        value: sjaak@gmail.com
+  response:
+    text: form-ok-url-encoded OK
 
 - id: html
   conditions:
