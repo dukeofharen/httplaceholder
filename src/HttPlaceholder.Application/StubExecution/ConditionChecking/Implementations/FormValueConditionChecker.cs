@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Web;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -37,7 +38,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 }
 
                 validConditions += formValues
-                    .Count(value => StringHelper.IsRegexMatchOrSubstring(value, condition.Value));
+                    .Count(value => StringHelper.IsRegexMatchOrSubstring(HttpUtility.UrlDecode(value), condition.Value));
             }
 
             // If the number of succeeded conditions is equal to the actual number of conditions,
