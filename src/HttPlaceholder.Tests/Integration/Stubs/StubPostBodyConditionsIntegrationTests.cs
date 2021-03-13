@@ -45,28 +45,6 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
         }
 
-        [DataTestMethod]
-        [DataRow("sjaak%40gmail.com")]
-        [DataRow("sjaak@gmail.com")]
-        public async Task StubIntegration_RegularPost_ValidatePostBody_UrlEncodedValue_HappyFlow(string email)
-        {
-            // arrange
-            var url = $"{TestServer.BaseAddress}change-email";
-            var body = @$"{{""username"": ""{email}""}}";
-            var request = new HttpRequestMessage
-            {
-                Content = new StringContent(body),
-                Method = HttpMethod.Post,
-                RequestUri = new Uri(url)
-            };
-
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("post-body-url-encoded OK", content);
-        }
-
         [TestMethod]
         public async Task StubIntegration_RegularPost_ValidatePostBody_StubNotFound()
         {
@@ -111,31 +89,6 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             using var response = await Client.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
             Assert.AreEqual("form-ok OK", content);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
-        }
-
-        [DataTestMethod]
-        [DataRow("sjaak%40gmail.com")]
-        [DataRow("sjaak@gmail.com")]
-        public async Task StubIntegration_RegularPost_Form_UrlEncodedValue_Ok(string email)
-        {
-            // arrange
-            var url = $"{TestServer.BaseAddress}form";
-            var request = new HttpRequestMessage
-            {
-                RequestUri = new Uri(url),
-                Method = HttpMethod.Post,
-                Content = new FormUrlEncodedContent(new[]
-                {
-                    new KeyValuePair<string, string>("email", email),
-                })
-            };
-
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("form-ok-url-encoded OK", content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
         }

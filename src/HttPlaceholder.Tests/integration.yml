@@ -86,16 +86,6 @@
     headers:
       Content-Type: application/json
 
-- id: post-body-url-encoded
-  conditions:
-    method: POST
-    url:
-      path: /change-email
-    body:
-      - \bsjaak@gmail.com\b
-  response:
-    text: post-body-url-encoded OK
-
 - id: soap-xml
   conditions:
     method: POST
