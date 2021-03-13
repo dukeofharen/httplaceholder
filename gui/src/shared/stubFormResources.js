@@ -47,7 +47,8 @@ const elementDescriptions = {
     "The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the 'temporaryRedirect' property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the 'permanentRedirect' an HTTP 301.",
   dynamicMode:
     "In order to make the responses in HttPlaceholder a bit more dynamic, the 'dynamic mode' was introduced. This makes it possible to add variables to your responses that can be parsed. As of now, these variables can be used in the response body (text only) and the response headers. The only requirement is that you set this switch to on (by default, it is set to off and the variables will not be parsed).",
-  reverseProxy: "A simple reverse proxy for letting a stub call other URLs."
+  reverseProxy: "A simple reverse proxy for letting a stub call other URLs.",
+  lineEndings: "Specify whether to enforce Windows or UNIX line endings in the response."
 };
 
 const httpMethods = [
