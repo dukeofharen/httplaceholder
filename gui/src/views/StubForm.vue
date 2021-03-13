@@ -2,38 +2,54 @@
   <v-row v-shortkey="['ctrl', 's']" @shortkey="save">
     <v-col>
       <h1>{{ title }}</h1>
-      <v-card>
+      <v-card class="mt-3 mb-3">
         <v-card-text>
           Fill in the stub below in YAML format and click on "Save". For
           examples, visit
           <a
             href="https://github.com/dukeofharen/httplaceholder"
             target="_blank"
-            >https://github.com/dukeofharen/httplaceholder</a
+          >https://github.com/dukeofharen/httplaceholder</a
           >.
         </v-card-text>
       </v-card>
-      <v-card v-if="showFormHelperSelector">
+      <v-card v-if="showFormHelperSelector" class="mt-3 mb-3">
         <v-card-text>
-          <FormHelperSelector />
+          <FormHelperSelector/>
         </v-card-text>
       </v-card>
-      <v-card class="editor">
+      <v-card class="editor mt-3 mb-3">
         <v-card-actions>
           <codemirror v-model="input" :options="cmOptions"></codemirror>
         </v-card-actions>
       </v-card>
-      <v-btn color="success" @click="save">Save</v-btn>
+      <v-row>
+        <v-col cols="12">
+          <v-btn color="success mr-2" @click="save">Save</v-btn>
+          <v-btn color="error" @click="resetDialog = true">Reset</v-btn>
+        </v-col>
+      </v-row>
     </v-col>
+    <v-dialog v-model="resetDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">Reset to defaults?</v-card-title>
+        <v-card-actions>
+          <v-btn color="green darken-1" text @click="resetDialog = false"
+          >No
+          </v-btn>
+          <v-btn color="green darken-1" text @click="resetForm">Yes</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
 </template>
 
 <script>
-import { codemirror } from "vue-codemirror";
+import {codemirror} from "vue-codemirror";
 import yaml from "js-yaml";
-import { toastError, toastSuccess } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import { routeNames } from "@/router/routerConstants";
+import {toastError, toastSuccess} from "@/utils/toastUtil";
+import {resources} from "@/shared/resources";
+import {routeNames} from "@/router/routerConstants";
 import FormHelperSelector from "@/components/formHelpers/FormHelperSelector";
 
 export default {
@@ -41,6 +57,7 @@ export default {
   data() {
     return {
       stubId: null,
+      resetDialog: false,
       cmOptions: {
         tabSize: 4,
         mode: "text/x-yaml",
@@ -57,6 +74,9 @@ export default {
     if (this.darkTheme) {
       this.cmOptions.theme = "material-darker";
     }
+  },
+  beforeMount() {
+    this.$store.commit("stubForm/clearForm");
   },
   async mounted() {
     const stubId = this.$route.params.stubId;
@@ -114,7 +134,7 @@ export default {
           if (results.length === 1 && results[0].v) {
             await this.$router.push({
               name: routeNames.stubForm,
-              params: { stubId: results[0].v.stub.id }
+              params: {stubId: results[0].v.stub.id}
             });
           }
         } catch (e) {
@@ -138,15 +158,14 @@ export default {
           }
         }
       }
+    },
+    resetForm() {
+      this.resetDialog = false;
+      this.$store.commit("stubForm/clearForm", resources.defaultStub);
     }
   }
 };
 </script>
 
 <style scoped>
-/*noinspection CssUnusedSymbol*/
-.v-card {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 </style>

@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
-import { toastError } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import { defaultValues, responseBodyTypes } from "@/shared/stubFormResources";
+import {toastError} from "@/utils/toastUtil";
+import {resources} from "@/shared/resources";
+import {defaultValues, responseBodyTypes} from "@/shared/stubFormResources";
 
 const parseInput = state => {
   try {
@@ -31,6 +31,13 @@ const actions = {};
 const mutations = {
   setInput(state, input) {
     state.input = input;
+  },
+  clearForm(state, input) {
+    if(!input) {
+      input = "";
+    }
+    state.input = input;
+    state.currentSelectedFormHelper = "";
   },
   openFormHelper(state, key) {
     state.currentSelectedFormHelper = key;

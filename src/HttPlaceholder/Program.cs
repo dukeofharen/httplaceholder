@@ -26,7 +26,7 @@ namespace HttPlaceholder
             var loggingConfig = new LoggerConfiguration();
             loggingConfig = args.Any(a => _verboseArgs.Contains(a))
                 ? loggingConfig.MinimumLevel.Debug()
-                : loggingConfig.MinimumLevel.Information();
+                : loggingConfig.MinimumLevel.Warning();
             Log.Logger = loggingConfig
                 .Enrich.FromLogContext()
                 .WriteTo.Console(
