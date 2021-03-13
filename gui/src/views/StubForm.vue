@@ -58,6 +58,9 @@ export default {
       this.cmOptions.theme = "material-darker";
     }
   },
+  beforeMount(){
+    this.$store.commit("stubForm/clearForm");
+  },
   async mounted() {
     const stubId = this.$route.params.stubId;
     if (stubId) {
