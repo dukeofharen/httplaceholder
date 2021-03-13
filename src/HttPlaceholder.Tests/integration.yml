@@ -173,7 +173,7 @@
     clientIp: 127.0.0.1
   response:
     statusCode: 200
-    text: OK
+    text: client-ip-1 OK
 
 - id: client-ip-2
   conditions:
@@ -183,7 +183,7 @@
     clientIp: '127.0.0.0/29'
   response:
     statusCode: 200
-    text: OK
+    text: client-ip-2 OK
 
 - id: host
   conditions:
@@ -191,7 +191,7 @@
     host: httplaceholder.com
   response:
     statusCode: 200
-    text: OK
+    text: host OK
 
 - id: ishttps-ok
   conditions:
@@ -201,7 +201,7 @@
       isHttps: true
   response:
     statusCode: 200
-    text: OK
+    text: ishttps-ok OK
 
 - id: form-ok
   conditions:
@@ -216,7 +216,7 @@
       - key: key2
         value: ducoo
   response:
-    text: OK
+    text: form-ok OK
 
 - id: html
   conditions:
@@ -318,26 +318,26 @@
 
 - id: dynamic-local-now-example
   conditions:
-      method: GET
-      url:
-          path: /dynamic-local-now.txt
+    method: GET
+    url:
+      path: /dynamic-local-now.txt
   response:
-      enableDynamicMode: true
-      text: 'Local now: ((localnow:yyyy-MM-dd HH:mm:ss))'
-      headers:
-          X-Header: ((localnow:yyyy-MM-dd HH:mm:ss))
+    enableDynamicMode: true
+    text: 'Local now: ((localnow:yyyy-MM-dd HH:mm:ss))'
+    headers:
+      X-Header: ((localnow:yyyy-MM-dd HH:mm:ss))
   priority: 0
 
 - id: dynamic-utc-now-example
   conditions:
-      method: GET
-      url:
-          path: /dynamic-utc-now.txt
+    method: GET
+    url:
+      path: /dynamic-utc-now.txt
   response:
-      enableDynamicMode: true
-      text: 'UTC now: ((utcnow:yyyy-MM-dd HH:mm:ss))'
-      headers:
-          X-Header: ((utcnow:yyyy-MM-dd HH:mm:ss))
+    enableDynamicMode: true
+    text: 'UTC now: ((utcnow:yyyy-MM-dd HH:mm:ss))'
+    headers:
+      X-Header: ((utcnow:yyyy-MM-dd HH:mm:ss))
   priority: 0
 
 - id: proxy-test-1

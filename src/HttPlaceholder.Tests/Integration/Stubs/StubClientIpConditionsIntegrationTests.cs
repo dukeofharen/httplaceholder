@@ -32,7 +32,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using var response = await Client.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("OK", content);
+            Assert.AreEqual("client-ip-1 OK", content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
@@ -53,7 +53,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using var response = await Client.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("OK", content);
+            Assert.AreEqual("client-ip-2 OK", content);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
     }
