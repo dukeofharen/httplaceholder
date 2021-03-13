@@ -13,8 +13,13 @@ ROOT_FOLDER="$DIR/../.."
 
 echo "Determining version"
 YEAR="$(date +%Y)"
-MONTH="$(date +%m)"
+
+MONTH=$(date +%m)
+MONTH="${MONTH#0}"
+
 DAY="$(date +%d)"
+DAY="${DAY#0}"
+
 VERSION="$YEAR.$MONTH.$DAY.$BUILD_NUMBER"
 echo "Version is $VERSION"
 echo "$VERSION" > "$ROOT_FOLDER/version.txt"

@@ -27,6 +27,6 @@ dotnet pack -c Release \
     /p:Company=Ducode \
     /p:AssemblyTitle="HttPlaceholder NuGet Client" \
     /p:Description="HttPlaceholder NuGet Client" \
-    /p:Copyright="2020 Ducode" \
+    /p:Copyright="2021 Ducode" \
     /p:RepositoryUrl="https://github.com/dukeofharen/httplaceholder" \
     /p:RepositoryType=git
