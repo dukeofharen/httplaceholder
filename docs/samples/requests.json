@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e37ff568-e074-4886-b72b-a8283c3527d6",
+		"_postman_id": "0aa21603-cc79-483e-8a2f-95dd743dbad8",
 		"name": "HttPlaceholder Examples",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1597,6 +1597,24 @@
 									],
 									"path": [
 										"metadata"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET JSON schema",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/metadata/jsonSchema",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"metadata",
+										"jsonSchema"
 									]
 								}
 							},

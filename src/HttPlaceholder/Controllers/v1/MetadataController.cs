@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net.Mime;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Metadata.Queries.GetMetadata;
+using HttPlaceholder.Application.Stubs.Queries.GetJsonSchema;
 using HttPlaceholder.Dto.v1.Metadata;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Controllers.v1
 {
@@ -20,5 +23,10 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<MetadataDto>> Get() =>
             Ok(Mapper.Map<MetadataDto>(await Mediator.Send(new GetMetadataQuery())));
+
+        [HttpGet("jsonSchema")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> GetJsonSchema() =>
+            Ok(JToken.Parse(await Mediator.Send(new GetJsonSchemaQuery())));
     }
 }
