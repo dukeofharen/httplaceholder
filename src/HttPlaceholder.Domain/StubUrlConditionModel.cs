@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Domain
@@ -12,24 +13,28 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the path.
         /// </summary>
         [YamlMember(Alias = "path")]
+        [JsonProperty("path")]
         public string Path { get; set; }
 
         /// <summary>
         /// Gets or sets the query.
         /// </summary>
         [YamlMember(Alias = "query")]
+        [JsonProperty("query")]
         public IDictionary<string, string> Query { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets or sets the full path.
         /// </summary>
         [YamlMember(Alias = "fullPath")]
+        [JsonProperty("fullPath")]
         public string FullPath { get; set; }
 
         /// <summary>
         /// Gets or sets the is HTTPS.
         /// </summary>
         [YamlMember(Alias = "isHttps")]
+        [JsonProperty("isHttps")]
         public bool? IsHttps { get; set; }
     }
 }

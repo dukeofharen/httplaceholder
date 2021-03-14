@@ -1,4 +1,5 @@
-﻿using YamlDotNet.Serialization;
+﻿using Newtonsoft.Json;
+using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Domain
 {
@@ -11,12 +12,14 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the key.
         /// </summary>
         [YamlMember(Alias = "key")]
+        [JsonProperty("key")]
         public string Key { get; set; }
 
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
         [YamlMember(Alias = "value")]
+        [JsonProperty("value")]
         public string Value { get; set; }
     }
 }
