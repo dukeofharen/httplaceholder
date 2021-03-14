@@ -11,7 +11,6 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Serilog;
-using Serilog.Events;
 
 namespace HttPlaceholder
 {
@@ -19,7 +18,7 @@ namespace HttPlaceholder
     {
         private static readonly string[] _verboseArgs = {"-V", "--verbose"};
         private static readonly string[] _versionArgs = {"-v", "--version"};
-        private static string[] _helpArgs = {"-h", "--help", "-?"};
+        private static readonly string[] _helpArgs = {"-h", "--help", "-?"};
 
         public static int Main(string[] args)
         {
@@ -74,16 +73,43 @@ namespace HttPlaceholder
                 .UseKestrel(options =>
                 {
                     options.AddServerHeader = false;
-                    options.Listen(IPAddress.Any, settings.Web.HttpPort);
+                    var httpPorts = ParsePorts(settings.Web.HttpPort);
+                    foreach (var port in httpPorts)
+                    {
+                        options.Listen(IPAddress.Any, port);
+                    }
+
                     if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) &&
                         !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
                     {
-                        options.Listen(IPAddress.Any, settings.Web.HttpsPort,
-                            listenOptions => listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
+                        var httpsPorts = ParsePorts(settings.Web.HttpsPort);
+                        foreach (var port in httpsPorts)
+                        {
+                            options.Listen(IPAddress.Any, port,
+                                listenOptions =>
+                                    listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
+                        }
                     }
                 })
                 .UseIIS()
                 .Build();
+        }
+
+        private static int[] ParsePorts(string input)
+        {
+            var result = new List<int>();
+            var httpPorts = input.Split(',').Select(p => p.Trim());
+            foreach (var port in httpPorts)
+            {
+                if (!int.TryParse(port, out var parsedPort) || parsedPort < 1 || parsedPort > 65535)
+                {
+                    throw new ArgumentException($"Port '{port}' is invalid.");
+                }
+
+                result.Add(parsedPort);
+            }
+
+            return result.ToArray();
         }
 
         private static string GetManPage()
