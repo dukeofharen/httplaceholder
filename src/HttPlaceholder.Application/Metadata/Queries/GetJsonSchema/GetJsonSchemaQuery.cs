@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace HttPlaceholder.Application.Stubs.Queries.GetJsonSchema
+namespace HttPlaceholder.Application.Metadata.Queries.GetJsonSchema
 {
     public class GetJsonSchemaQuery : IRequest<string>
     {

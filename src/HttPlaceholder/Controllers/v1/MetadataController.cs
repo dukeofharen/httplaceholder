@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.Metadata.Queries.GetJsonSchema;
 using HttPlaceholder.Application.Metadata.Queries.GetMetadata;
-using HttPlaceholder.Application.Stubs.Queries.GetJsonSchema;
 using HttPlaceholder.Dto.v1.Metadata;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

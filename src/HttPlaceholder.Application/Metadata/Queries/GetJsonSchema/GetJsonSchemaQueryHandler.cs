@@ -4,7 +4,7 @@ using HttPlaceholder.Domain;
 using MediatR;
 using NJsonSchema;
 
-namespace HttPlaceholder.Application.Stubs.Queries.GetJsonSchema
+namespace HttPlaceholder.Application.Metadata.Queries.GetJsonSchema
 {
     public class GetJsonSchemaQueryHandler : IRequestHandler<GetJsonSchemaQuery, string>
     {
