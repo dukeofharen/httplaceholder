@@ -120,6 +120,12 @@ httplaceholder --port 80 --httpsPort 443 --useHttps true
 
 Defines which ports the stub should be available at. Default value of `port` (the HTTP port) is `5000` and default value of `httpsPort` is `5050`.
 
+You can define multiple ports for HttPlaceholder to listen on. To do this, separate the port numbers with ",", like this:
+
+```bash
+httplaceholder --port "80,81" --httpsPort "443,4430" --useHttps true
+```
+
 ### Request logging (optional)
 
 ```bash
@@ -160,12 +166,12 @@ If you just installed HttPlaceholder, a file called `_config.json` is available 
 {
     "apiUsername": null,
     "apiPassword": null,
-    "httpsPort": 5050,
+    "httpsPort": "5050",
     "inputFile": null,
     "oldRequestsQueueLength": 40,
     "pfxPassword": null,
     "pfxPath": null,
-    "port": 5000,
+    "port": "5000",
     "useHttps": false,
     "enableRequestLogging": true,
     "fileStorageLocation": "C:\\tmp\\storage",

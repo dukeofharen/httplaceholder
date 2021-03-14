@@ -3,9 +3,9 @@ namespace HttPlaceholder.Configuration
 {
     public class WebSettingsModel
     {
-        public int HttpsPort { get; set; }
+        public string HttpsPort { get; set; }
 
-        public int HttpPort { get; set; }
+        public string HttpPort { get; set; }
 
         public bool UseHttps { get; set; }
 
