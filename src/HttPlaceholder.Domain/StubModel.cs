@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Domain
@@ -13,6 +14,7 @@ namespace HttPlaceholder.Domain
         /// </summary>
         [YamlMember(Alias = "id")]
         [JsonProperty("id")]
+        [Required]
         public string Id { get; set; }
 
         /// <summary>
