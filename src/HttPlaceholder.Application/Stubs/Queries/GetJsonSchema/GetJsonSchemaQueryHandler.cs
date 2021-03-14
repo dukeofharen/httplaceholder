@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Stubs.Queries.GetJsonSchema
     {
         public Task<string> Handle(GetJsonSchemaQuery request, CancellationToken cancellationToken)
         {
-            var schema = JsonSchema.FromType<StubModel>();
+            var schema = request.AsArray ? JsonSchema.FromType<StubModel[]>() : JsonSchema.FromType<StubModel>();
             return Task.FromResult(schema.ToJson());
         }
     }

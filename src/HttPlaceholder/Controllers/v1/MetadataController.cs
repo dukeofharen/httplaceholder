@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using HttPlaceholder.Application.Metadata.Queries.GetMetadata;
 using HttPlaceholder.Application.Stubs.Queries.GetJsonSchema;
 using HttPlaceholder.Dto.v1.Metadata;
@@ -26,7 +25,7 @@ namespace HttPlaceholder.Controllers.v1
 
         [HttpGet("jsonSchema")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> GetJsonSchema() =>
-            Ok(JToken.Parse(await Mediator.Send(new GetJsonSchemaQuery())));
+        public async Task<ActionResult> GetJsonSchema([FromQuery]bool asArray = false) =>
+            Ok(JToken.Parse(await Mediator.Send(new GetJsonSchemaQuery(asArray))));
     }
 }
