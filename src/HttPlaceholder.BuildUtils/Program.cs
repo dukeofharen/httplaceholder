@@ -9,7 +9,7 @@ namespace HttPlaceholder.SwaggerGenerator
     {
         public static async Task Main(string[] args)
         {
-            var tools = new[] {new SwaggerGen()};
+            ITool[] tools = {new SwaggerGen(), new JsonSchemaGen()};
             var toolKeys = tools.Select(t => t.Key).ToArray();
             var toolKeyHelpString = string.Join(", ", toolKeys);
             if (!args.Any())
