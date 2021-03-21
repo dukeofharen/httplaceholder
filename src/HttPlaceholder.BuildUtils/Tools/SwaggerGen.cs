@@ -7,12 +7,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
-namespace HttPlaceholder.SwaggerGenerator
+namespace HttPlaceholder.SwaggerGenerator.Tools
 {
-    internal static class Program
+    public class SwaggerGen : ITool
     {
-        // ReSharper disable once UnusedParameter.Global
-        public static async Task Main(string[] args)
+        public string Key => "swaggergen";
+
+        public async Task ExecuteAsync(string[] args)
         {
             var pathToSave = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), "swagger.json");
             if (args.Any())
@@ -33,16 +34,17 @@ namespace HttPlaceholder.SwaggerGenerator
 
             // This program hosts HttPlaceholder in memory, retrieves the contents of the swagger.json file and saves it.
             var testServer = new TestServer(
-              new WebHostBuilder()
-               .ConfigureServices(services => Startup.ConfigureServicesStatic(services, config))
-               .Configure(appBuilder => Startup.ConfigureStatic(appBuilder, false, false)));
+                new WebHostBuilder()
+                    .ConfigureServices(services => Startup.ConfigureServicesStatic(services, config))
+                    .Configure(appBuilder => Startup.ConfigureStatic(appBuilder, false, false)));
             var client = testServer.CreateClient();
 
             // Retrieve the Swagger URL.
             using var response = await client.GetAsync("swagger/v1/swagger.json");
             if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException($"The call to the swagger.json URL failed with an HTTP '{response.StatusCode}'.");
+                throw new InvalidOperationException(
+                    $"The call to the swagger.json URL failed with an HTTP '{response.StatusCode}'.");
             }
 
             var content = await response.Content.ReadAsStringAsync();
