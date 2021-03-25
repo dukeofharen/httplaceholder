@@ -5,10 +5,10 @@
         <v-tab @click="viewRenderedBody">{{ renderedBodyTypeText }}</v-tab>
         <v-tab @click="viewRawBody">Raw</v-tab>
       </v-tabs>
-      <span v-if="showRenderedBody">
+      <span v-if="showRenderedBody" class="body">
         <pre>{{ renderedBody }}</pre>
       </span>
-      <span v-if="!showRenderedBody">{{ rawBody }}</span>
+      <span v-if="!showRenderedBody" class="body">{{ rawBody }}</span>
     </v-col>
   </v-row>
 </template>
@@ -83,6 +83,9 @@ export default {
       }
 
       return "";
+    },
+    copy() {
+
     }
   }
 };
@@ -94,5 +97,8 @@ a {
 }
 a.selected {
   font-weight: bold;
+}
+.body {
+  color: rgba(0, 0, 0, 0.6);
 }
 </style>
