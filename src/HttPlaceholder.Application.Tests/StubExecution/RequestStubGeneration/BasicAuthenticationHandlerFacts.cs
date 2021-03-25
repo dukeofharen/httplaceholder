@@ -57,6 +57,30 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         }
 
         [TestMethod]
+        public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_AuthorizationIsBearer_ShouldReturnFalse()
+        {
+            // Arrange
+            var stub = new StubModel();
+            var request = new RequestResultModel
+            {
+                RequestParameters = new RequestParametersModel
+                {
+                    Headers = new Dictionary<string, string>
+                    {
+                        { "Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" }
+                    }
+                }
+            };
+
+            // Act
+            var result = await _handler.HandleStubGenerationAsync(request, stub);
+
+            // Assert
+            Assert.IsFalse(result);
+            Assert.IsNull(stub.Conditions.BasicAuthentication);
+        }
+
+        [TestMethod]
         public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_HappyFlow()
         {
             // Arrange
