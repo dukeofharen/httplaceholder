@@ -12,7 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
         {
             var pair = request.RequestParameters.Headers.FirstOrDefault(p =>
                 p.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase));
-            if (string.IsNullOrWhiteSpace(pair.Value))
+            if (string.IsNullOrWhiteSpace(pair.Value) || !pair.Value.Trim().ToLower().StartsWith("Basic", StringComparison.OrdinalIgnoreCase))
             {
                 return Task.FromResult(false);
             }
