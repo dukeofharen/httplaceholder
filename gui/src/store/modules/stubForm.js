@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
-import {toastError} from "@/utils/toastUtil";
-import {resources} from "@/shared/resources";
-import {defaultValues, responseBodyTypes} from "@/shared/stubFormResources";
+import { toastError } from "@/utils/toastUtil";
+import { resources } from "@/shared/resources";
+import { defaultValues, responseBodyTypes } from "@/shared/stubFormResources";
 
 const parseInput = state => {
   try {
@@ -33,7 +33,7 @@ const mutations = {
     state.input = input;
   },
   clearForm(state, input) {
-    if(!input) {
+    if (!input) {
       input = "";
     }
     state.input = input;

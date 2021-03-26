@@ -7,11 +7,11 @@ import { routeNames } from "@/router/routerConstants";
 export default function handleError(error) {
   console.log(error);
   if (error) {
-    if(error.response) {
+    if (error.response) {
       const status = error.response.status;
       if (status === 401) {
         store.commit("users/storeUserToken", null);
-        router.push({name: routeNames.login});
+        router.push({ name: routeNames.login });
       } else if (status >= 500) {
         toastError(resources.somethingWentWrongServer);
       }
