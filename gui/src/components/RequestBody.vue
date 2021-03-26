@@ -9,6 +9,7 @@
         <pre>{{ renderedBody }}</pre>
       </span>
       <span v-if="!showRenderedBody" class="body">{{ rawBody }}</span>
+      <v-icon @click="copy" class="copy mt-3" title="Copy request body">mdi-content-copy</v-icon>
     </v-col>
   </v-row>
 </template>
@@ -85,7 +86,7 @@ export default {
       return "";
     },
     copy() {
-
+      alert("Copied")
     }
   }
 };
@@ -100,5 +101,8 @@ a.selected {
 }
 .body {
   color: rgba(0, 0, 0, 0.6);
+}
+.copy {
+  font-size: 2.5em;
 }
 </style>
