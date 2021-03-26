@@ -1,7 +1,7 @@
 <template>
-  <div class="form">
+  <div class="form pl-2">
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" class="pl-0">
         <p>
           Select a type of response and fill in the actual response that should
           be returned and press "Insert".
@@ -9,7 +9,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" class="pl-0">
         <v-select
           :items="responseBodyTypeSelectList"
           v-model="responseBodyType"
@@ -18,33 +18,30 @@
       </v-col>
     </v-row>
     <v-row v-if="responseBodyType === responseBodyTypes.base64">
-      <v-col cols="12">
+      <v-col cols="12" class="pl-0">
         <input type="file" name="file" ref="base64Upload" @change="upload" />
         <p>
-          You can upload a file for use in the Base64 response.
+          You can upload a <strong>file</strong> for use in the Base64 response or click on "show text input" and insert <strong>plain text</strong> that will be encoded to Base64 on inserting.
         </p>
         <v-btn color="primary" @click="uploadClick">Upload a file</v-btn>
       </v-col>
-    </v-row>
-    <v-row v-if="responseBodyType === responseBodyTypes.base64">
-      <v-col cols="12">
+      <v-col cols="12" class="pl-0">
         <v-btn color="primary" @click="showBase64TextInput = true"
           >Show text input
         </v-btn>
       </v-col>
     </v-row>
     <v-row v-if="showDynamicModeRow">
-      <v-col cols="12">
-        <p>
-          {{ elementDescriptions.dynamicMode }}
-        </p>
+      <v-col cols="12" class="pl-0">
         <v-checkbox
           v-model="enableDynamicMode"
           label="Enable dynamic mode"
           @change="changeDynamicMode"
+          :hint="elementDescriptions.dynamicMode"
+          persistent-hint
         />
       </v-col>
-      <v-col cols="12" v-if="showVariableParsers">
+      <v-col cols="12" v-if="showVariableParsers" class="pl-0">
         <v-select
           :items="variableParserSelectList"
           v-model="selectedVariableHandler"
@@ -60,7 +57,7 @@
         responseBodyType !== responseBodyTypes.base64 || showBase64TextInput
       "
     >
-      <v-col cols="12">
+      <v-col cols="12" class="pl-0">
         <v-textarea
           label="Fill in the response..."
           v-model="responseBody"
@@ -69,7 +66,7 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-col cols="12">
+      <v-col cols="12" class="pl-0">
         <v-btn color="success mr-2" @click="insert">Insert</v-btn>
         <v-btn color="error" @click="close">Close</v-btn>
       </v-col>
@@ -195,10 +192,6 @@ export default {
 .form {
   margin-left: 20px;
   margin-right: 20px;
-}
-
-.row {
-  border-bottom: 1px solid #d5d5d5;
 }
 
 input[type="file"] {
