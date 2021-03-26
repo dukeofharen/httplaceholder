@@ -273,6 +273,10 @@ export default {
   background-color: #f1f1f1;
 }
 
+.theme--dark.sub-item:hover {
+  background-color: #666666;
+}
+
 .subtitle {
   color: #909090;
 }

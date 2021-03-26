@@ -61,4 +61,7 @@ export default {
 .line-endings:hover {
   background-color: #f1f1f1;
 }
+.theme--dark .line-endings:hover {
+  background-color: #666666;
+}
 </style>

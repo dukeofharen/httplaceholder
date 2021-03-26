@@ -45,4 +45,7 @@ export default {
 .method:hover {
   background-color: #f1f1f1;
 }
+.theme--dark .method:hover {
+  background-color: #666666;
+}
 </style>

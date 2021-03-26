@@ -40,7 +40,14 @@ export default {
   padding-left: 20px;
 }
 
+.theme--dark .redirect:hover {
+  background-color: #666666;
+}
+
 .redirect:hover {
   background-color: #f1f1f1;
+}
+.theme--dark .redirect:hover {
+  background-color: #666666;
 }
 </style>
