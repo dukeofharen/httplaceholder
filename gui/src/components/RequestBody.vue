@@ -15,12 +15,16 @@
 </template>
 
 <script>
+import {toastSuccess} from "@/utils/toastUtil";
+
 const xmlType = "XML";
 const jsonType = "JSON";
 const formType = "Form";
 
 import xmlFormatter from "xml-formatter";
-import { formFormat } from "@/utils/formFormatter";
+import {formFormat} from "@/utils/formFormatter";
+import {copyTextToClipboard} from "@/utils/clipboardUtil";
+import {resources} from "@/shared/resources";
 
 export default {
   name: "requestBody",
@@ -86,7 +90,8 @@ export default {
       return "";
     },
     copy() {
-      alert("Copied")
+      copyTextToClipboard(this.rawBody)
+        .then(() => toastSuccess(resources.requestBodyCopiedToClipboard));
     }
   }
 };
@@ -96,12 +101,15 @@ export default {
 a {
   cursor: pointer;
 }
+
 a.selected {
   font-weight: bold;
 }
+
 .body {
   color: rgba(0, 0, 0, 0.6);
 }
+
 .copy {
   font-size: 2.5em;
 }
