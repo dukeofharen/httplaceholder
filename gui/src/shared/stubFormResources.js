@@ -63,6 +63,9 @@ const httpMethods = [
 
 const httpStatusCodes = [
   {
+    name: "1xx Informational"
+  },
+  {
     code: 100,
     name: "Continue"
   },
@@ -73,6 +76,9 @@ const httpStatusCodes = [
   {
     code: 102,
     name: "Processing"
+  },
+  {
+    name: "2xx Success"
   },
   {
     code: 200,
@@ -115,6 +121,9 @@ const httpStatusCodes = [
     name: "IM Used"
   },
   {
+    name: "3xx Redirect"
+  },
+  {
     code: 300,
     name: "Multiple Choices"
   },
@@ -145,6 +154,9 @@ const httpStatusCodes = [
   {
     code: 308,
     name: "Permanent Redirect"
+  },
+  {
+    name: "4xx Client error"
   },
   {
     code: 400,
@@ -265,6 +277,9 @@ const httpStatusCodes = [
   {
     code: 499,
     name: "Client Closed Request"
+  },
+  {
+    name: "5xx Server error"
   },
   {
     code: 500,
