@@ -9,22 +9,24 @@
         <pre>{{ renderedBody }}</pre>
       </span>
       <span v-if="!showRenderedBody" class="body">{{ rawBody }}</span>
-      <v-icon @click="copy" class="copy mt-3" title="Copy request body">mdi-content-copy</v-icon>
+      <v-icon @click="copy" class="copy mt-3" title="Copy request body"
+        >mdi-content-copy</v-icon
+      >
     </v-col>
   </v-row>
 </template>
 
 <script>
-import {toastSuccess} from "@/utils/toastUtil";
+import { toastSuccess } from "@/utils/toastUtil";
 
 const xmlType = "XML";
 const jsonType = "JSON";
 const formType = "Form";
 
 import xmlFormatter from "xml-formatter";
-import {formFormat} from "@/utils/formFormatter";
-import {copyTextToClipboard} from "@/utils/clipboardUtil";
-import {resources} from "@/shared/resources";
+import { formFormat } from "@/utils/formFormatter";
+import { copyTextToClipboard } from "@/utils/clipboardUtil";
+import { resources } from "@/shared/resources";
 
 export default {
   name: "requestBody",
@@ -90,8 +92,9 @@ export default {
       return "";
     },
     copy() {
-      copyTextToClipboard(this.rawBody)
-        .then(() => toastSuccess(resources.requestBodyCopiedToClipboard));
+      copyTextToClipboard(this.rawBody).then(() =>
+        toastSuccess(resources.requestBodyCopiedToClipboard)
+      );
     }
   }
 };
