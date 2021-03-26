@@ -29,7 +29,7 @@
             clearable
           ></v-select>
         </v-col>
-        <v-expansion-panels>
+        <v-expansion-panels v-model="openedStub">
           <Stub
             :overviewStub="stub"
             v-for="stub in filteredStubs"
@@ -64,6 +64,7 @@ export default {
   name: "stubs",
   data() {
     return {
+      openedStub: null,
       stubs: [],
       tenantNames: [],
       selectedTenantName: "",
@@ -128,6 +129,7 @@ export default {
     },
     async onUpdated() {
       await this.initialize();
+      this.openedStub = null;
     }
   },
   watch: {
