@@ -142,6 +142,7 @@ export default {
         body: responseBody
       });
       this.showBase64TextInput = false;
+      this.close();
     },
     close() {
       this.$store.commit("stubForm/closeFormHelper");
