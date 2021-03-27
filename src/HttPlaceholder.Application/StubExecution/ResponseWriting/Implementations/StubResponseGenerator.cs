@@ -25,7 +25,10 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             foreach (var writer in _responseWriters.OrderByDescending(w => w.Priority))
             {
                 var result = await writer.WriteToResponseAsync(stub, response);
-                requestLogger.SetResponseWriterResult(result);
+                if (result.Executed)
+                {
+                    requestLogger.SetResponseWriterResult(result);
+                }
             }
 
             return response;
