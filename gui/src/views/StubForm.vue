@@ -3,7 +3,7 @@
     <v-col>
       <h1>{{ title }}</h1>
       <v-card class="mt-3 mb-3">
-        <v-card-text>
+        <v-card-text class="ml-4">
           Fill in the stub below in YAML format and click on "Save". For
           examples, visit
           <a
@@ -13,7 +13,7 @@
           >.
         </v-card-text>
       </v-card>
-      <v-card v-if="showFormHelperSelector" class="mt-3 mb-3">
+      <v-card v-if="showFormHelperSelector" class="mt-3 mb-3 overflow-hidden">
         <v-card-text>
           <FormHelperSelector />
         </v-card-text>

@@ -1,19 +1,16 @@
 <template>
   <v-row>
     <v-col>
-      <v-list-item v-if="!showList">
-        <v-list-item-content class="helper-button" @click="doShowList">
-          <v-list-item-title
-            >Click here to add request or response value
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <template v-if="showList">
+      <v-btn @click="doShowList" v-if="!showList" color="primary" class="ml-4">Add request \ response
+        value
+      </v-btn>
+      <v-list v-if="showList">
         <v-list-group v-for="(item, index) in formHelperItems" :key="index">
           <template v-slot:activator>
-            <v-list-item-title class="main-item">{{
-              item.title
-            }}</v-list-item-title>
+            <v-list-item-title class="main-item" color="primary">{{
+                item.title
+              }}
+            </v-list-item-title>
           </template>
 
           <v-list-item
@@ -25,12 +22,13 @@
             <v-list-item-content>
               <v-list-item-title v-text="subItem.title"></v-list-item-title>
               <v-list-item-content class="subtitle">{{
-                subItem.subTitle
-              }}</v-list-item-content>
+                  subItem.subTitle
+                }}
+              </v-list-item-content>
             </v-list-item-content>
           </v-list-item>
         </v-list-group>
-      </template>
+      </v-list>
       <HttpMethodSelector
         v-if="currentSelectedFormHelper === formHelperKeys.httpMethod"
       />
@@ -74,7 +72,8 @@ export default {
     RedirectSelector,
     LineEndingSelector
   },
-  mounted() {},
+  mounted() {
+  },
   data() {
     return {
       showList: false,
@@ -274,14 +273,8 @@ export default {
   background-color: #f1f1f1;
 }
 
-.helper-button {
-  font-weight: bold;
-  cursor: pointer;
-  padding-left: 20px;
-}
-
-.helper-button:hover {
-  background-color: #f1f1f1;
+.theme--dark.sub-item:hover {
+  background-color: #666666;
 }
 
 .subtitle {

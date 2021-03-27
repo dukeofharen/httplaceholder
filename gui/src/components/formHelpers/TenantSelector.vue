@@ -1,18 +1,16 @@
 <template>
   <v-row>
     <v-col>
-      <v-list-item>
-        <v-list-item-content class="description">
-          <v-list-item-title
-            >Select a tenant below. After selecting a tenant, you can change it
-            in the YAML form below.
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+      <v-row>
+        <v-col class="ml-4">
+          Select a tenant below. After selecting a tenant, you can change it
+          in the YAML form below.
+        </v-col>
+      </v-row>
 
       <v-list-item v-for="(tenant, index) of tenantNames" :key="index">
         <v-list-item-content class="tenant" @click="tenantSelected(tenant)">
-          <v-list-item-title>{{ tenant }}</v-list-item-title>
+          <v-list-item-title class="pl-4">{{ tenant }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-col>
@@ -41,17 +39,15 @@ export default {
 </script>
 
 <style scoped>
-.description {
-  padding-left: 20px;
-}
-
 .tenant {
   font-weight: bold;
   cursor: pointer;
-  padding-left: 20px;
 }
 
 .tenant:hover {
   background-color: #f1f1f1;
+}
+.theme--dark .tenant:hover {
+  background-color: #666666;
 }
 </style>

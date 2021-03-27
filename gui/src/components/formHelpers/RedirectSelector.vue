@@ -1,17 +1,19 @@
 <template>
   <v-row>
     <v-col>
-      <v-list-item>
-        <v-list-item-content class="redirect" @click="tempRedirect">
-          <v-list-item-title>Temporary redirect</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+      <v-list>
+        <v-list-item>
+          <v-list-item-content class="redirect" @click="tempRedirect">
+            <v-list-item-title>Temporary redirect</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
-      <v-list-item>
-        <v-list-item-content class="redirect" @click="permanentRedirect">
-          <v-list-item-title>Permanent redirect</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+        <v-list-item>
+          <v-list-item-content class="redirect" @click="permanentRedirect">
+            <v-list-item-title>Permanent redirect</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </v-col>
   </v-row>
 </template>
@@ -38,7 +40,14 @@ export default {
   padding-left: 20px;
 }
 
+.theme--dark .redirect:hover {
+  background-color: #666666;
+}
+
 .redirect:hover {
   background-color: #f1f1f1;
+}
+.theme--dark .redirect:hover {
+  background-color: #666666;
 }
 </style>

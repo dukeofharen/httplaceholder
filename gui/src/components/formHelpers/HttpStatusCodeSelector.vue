@@ -1,21 +1,30 @@
 <template>
   <v-row>
     <v-col>
-      <v-list-item>
-        <v-list-item-content class="description">
-          <v-list-item-title
-            >Select an HTTP status code from the list below.</v-list-item-title
-          >
-        </v-list-item-content>
-      </v-list-item>
 
-      <v-list-item v-for="code of httpStatusCodes" :key="code.code">
+      <v-row>
+        <v-col class="ml-4">
+          Select an HTTP status code from the list below.
+        </v-col>
+      </v-row>
+
+      <v-list-item v-for="(code, index) of httpStatusCodes" :key="index">
         <v-list-item-content
+          v-if="code.code"
           class="status-code"
           @click="codeSelected(code.code)"
         >
-          <v-list-item-title
-            >{{ code.name }} - {{ code.code }}</v-list-item-title
+          <v-list-item-title class="pl-4"
+          >{{ code.name }} - {{ code.code }}
+          </v-list-item-title
+          >
+        </v-list-item-content>
+        <v-list-item-content
+          v-else
+        >
+          <v-list-item-title class="pl-4"
+          >{{ code.name }}
+          </v-list-item-title
           >
         </v-list-item-content>
       </v-list-item>
@@ -24,7 +33,7 @@
 </template>
 
 <script>
-import { httpStatusCodes } from "@/shared/stubFormResources";
+import {httpStatusCodes} from "@/shared/stubFormResources";
 
 export default {
   data() {
@@ -42,14 +51,9 @@ export default {
 </script>
 
 <style scoped>
-.description {
-  padding-left: 20px;
-}
-
 .status-code {
   font-weight: bold;
   cursor: pointer;
-  padding-left: 20px;
 }
 
 .status-code:hover {

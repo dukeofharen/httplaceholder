@@ -2,12 +2,12 @@
   <v-row>
     <v-col>
       <h1>Upload stub(s)</h1>
-      <v-card>
+      <v-card class="pt-3 pb-3 pl-4">
         <v-card-title>You can upload stubs here</v-card-title>
         <v-card-text
           >Click the button and select a .yml file with stubs from your PC.
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="ml-2">
           <input
             type="file"
             name="file"
