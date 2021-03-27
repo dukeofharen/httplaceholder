@@ -9,13 +9,13 @@
           <a
             href="https://github.com/dukeofharen/httplaceholder"
             target="_blank"
-          >https://github.com/dukeofharen/httplaceholder</a
+            >https://github.com/dukeofharen/httplaceholder</a
           >.
         </v-card-text>
       </v-card>
       <v-card v-if="showFormHelperSelector" class="mt-3 mb-3 overflow-hidden">
         <v-card-text>
-          <FormHelperSelector/>
+          <FormHelperSelector />
         </v-card-text>
       </v-card>
       <v-card class="editor mt-3 mb-3">
@@ -35,7 +35,7 @@
         <v-card-title class="headline">Reset to defaults?</v-card-title>
         <v-card-actions>
           <v-btn color="green darken-1" text @click="resetDialog = false"
-          >No
+            >No
           </v-btn>
           <v-btn color="green darken-1" text @click="resetForm">Yes</v-btn>
         </v-card-actions>
@@ -45,11 +45,11 @@
 </template>
 
 <script>
-import {codemirror} from "vue-codemirror";
+import { codemirror } from "vue-codemirror";
 import yaml from "js-yaml";
-import {toastError, toastSuccess} from "@/utils/toastUtil";
-import {resources} from "@/shared/resources";
-import {routeNames} from "@/router/routerConstants";
+import { toastError, toastSuccess } from "@/utils/toastUtil";
+import { resources } from "@/shared/resources";
+import { routeNames } from "@/router/routerConstants";
 import FormHelperSelector from "@/components/formHelpers/FormHelperSelector";
 
 export default {
@@ -134,7 +134,7 @@ export default {
           if (results.length === 1 && results[0].v) {
             await this.$router.push({
               name: routeNames.stubForm,
-              params: {stubId: results[0].v.stub.id}
+              params: { stubId: results[0].v.stub.id }
             });
           }
         } catch (e) {
@@ -167,5 +167,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

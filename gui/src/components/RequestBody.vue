@@ -5,21 +5,28 @@
         <v-tab @click="viewRenderedBody">{{ renderedBodyTypeText }}</v-tab>
         <v-tab @click="viewRawBody">Raw</v-tab>
       </v-tabs>
-      <span v-if="showRenderedBody">
+      <span v-if="showRenderedBody" class="body">
         <pre>{{ renderedBody }}</pre>
       </span>
-      <span v-if="!showRenderedBody">{{ rawBody }}</span>
+      <span v-if="!showRenderedBody" class="body">{{ rawBody }}</span>
+      <v-icon @click="copy" class="copy mt-3" title="Copy request body"
+        >mdi-content-copy</v-icon
+      >
     </v-col>
   </v-row>
 </template>
 
 <script>
+import { toastSuccess } from "@/utils/toastUtil";
+
 const xmlType = "XML";
 const jsonType = "JSON";
 const formType = "Form";
 
 import xmlFormatter from "xml-formatter";
 import { formFormat } from "@/utils/formFormatter";
+import { copyTextToClipboard } from "@/utils/clipboardUtil";
+import { resources } from "@/shared/resources";
 
 export default {
   name: "requestBody",
@@ -83,6 +90,11 @@ export default {
       }
 
       return "";
+    },
+    copy() {
+      copyTextToClipboard(this.rawBody).then(() =>
+        toastSuccess(resources.requestBodyCopiedToClipboard)
+      );
     }
   }
 };
@@ -92,7 +104,16 @@ export default {
 a {
   cursor: pointer;
 }
+
 a.selected {
   font-weight: bold;
+}
+
+.body {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.copy {
+  font-size: 2.5em;
 }
 </style>
