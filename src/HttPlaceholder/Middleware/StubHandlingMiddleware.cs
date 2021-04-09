@@ -108,7 +108,7 @@ namespace HttPlaceholder.Middleware
                 _httpContextService.SetStatusCode((int)HttpStatusCode.NotImplemented);
                 _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
                 var pageContents =
-                    StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.DisplayUrl);
+                    StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.RootUrl);
                 _httpContextService.AddHeader("Content-Type", "text/html");
                 await _httpContextService.WriteAsync(pageContents);
                 _logger.LogInformation($"Request validation exception thrown: {e.Message}");
