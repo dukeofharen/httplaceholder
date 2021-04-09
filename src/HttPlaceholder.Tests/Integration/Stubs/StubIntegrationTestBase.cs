@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -21,6 +23,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         private Mock<IWritableStubSource> _writableStubSourceMock;
         protected Mock<IDateTime> DateTimeMock;
         protected MockHttpMessageHandler MockHttp;
+        protected IList<RequestResultModel> Requests = new List<RequestResultModel>();
 
         protected void InitializeStubIntegrationTest(string yamlFileName)
         {
@@ -52,6 +55,9 @@ namespace HttPlaceholder.Tests.Integration.Stubs
                 new Mock<ILogger<YamlFileStubSource>>().Object,
                 Options);
             _writableStubSourceMock = new Mock<IWritableStubSource>();
+            _writableStubSourceMock
+                .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>()))
+                .Callback<RequestResultModel>(Requests.Add);
 
             MockHttp = new MockHttpMessageHandler();
             var mockHttpClientFactory = new Mock<IHttpClientFactory>();

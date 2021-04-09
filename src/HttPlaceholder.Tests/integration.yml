@@ -506,6 +506,17 @@
       fontSize: 7
       wordWrap: false
 
+- id: condition-priority-check
+  conditions:
+    method: GET
+    url:
+      path: /url
+      query:
+        query1: val1
+        query2: val2
+  response:
+    text: OK condition priority check!
+
 - id: file
   conditions:
     method: GET
