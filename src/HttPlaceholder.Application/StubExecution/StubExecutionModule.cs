@@ -28,7 +28,7 @@ namespace HttPlaceholder.Application.StubExecution
             // Condition checkers
             foreach (var type in AssemblyHelper.GetImplementations<IConditionChecker>(filter))
             {
-                services.AddTransient(typeof(IConditionChecker), type);
+                services.AddSingleton(typeof(IConditionChecker), type);
             }
 
             // Response writers
