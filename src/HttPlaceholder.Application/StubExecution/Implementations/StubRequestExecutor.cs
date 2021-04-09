@@ -38,11 +38,9 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         public async Task<ResponseModel> ExecuteRequestAsync()
         {
             var requestLogger = _requestLoggerFactory.GetRequestLogger();
-
             var foundStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>();
             var stubs = (await _stubContainer.GetStubsAsync()).Where(s => s.Stub.Enabled).ToArray();
             var orderedConditionCheckers = _conditionCheckers.OrderByDescending(c => c.Priority).ToArray();
-
             foreach (var fullStub in stubs)
             {
                 var stub = fullStub.Stub;
