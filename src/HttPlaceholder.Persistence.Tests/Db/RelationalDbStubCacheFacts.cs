@@ -7,6 +7,7 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Implementations;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -19,10 +20,11 @@ namespace HttPlaceholder.Persistence.Tests.Db
     {
         private readonly Mock<IQueryStore> _mockQueryStore = new();
         private readonly Mock<IDatabaseContext> _mockDatabaseContext = new();
+        private readonly Mock<ILogger<RelationalDbStubCache>> _mockLogger = new();
         private RelationalDbStubCache _cache;
 
         [TestInitialize]
-        public void Initialize() => _cache = new RelationalDbStubCache(_mockQueryStore.Object);
+        public void Initialize() => _cache = new RelationalDbStubCache(_mockQueryStore.Object, _mockLogger.Object);
 
         [TestCleanup]
         public void Cleanup()

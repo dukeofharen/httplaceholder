@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
@@ -18,10 +19,12 @@ namespace HttPlaceholder.Persistence.Db.Implementations
         internal IList<StubModel> StubCache;
 
         private readonly IQueryStore _queryStore;
+        private readonly ILogger<RelationalDbStubCache> _logger;
 
-        public RelationalDbStubCache(IQueryStore queryStore)
+        public RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalDbStubCache> logger)
         {
             _queryStore = queryStore;
+            _logger = logger;
         }
 
         public void ClearStubCache(IDatabaseContext ctx)
@@ -29,6 +32,7 @@ namespace HttPlaceholder.Persistence.Db.Implementations
             // Clear the in memory stub cache.
             lock (_cacheUpdateLock)
             {
+                _logger.LogInformation("Clearing the relational DB stub cache.");
                 StubCache = null;
                 var newId = Guid.NewGuid().ToString();
                 StubUpdateTrackingId = newId;
@@ -50,6 +54,7 @@ namespace HttPlaceholder.Persistence.Db.Implementations
                 lock (_cacheUpdateLock)
                 {
                     // ID doesn't exist yet. Create one and persist it.
+                    _logger.LogInformation("Initializing the cache, because there is no tracking ID in the database yet.");
                     var newId = Guid.NewGuid().ToString();
                     StubUpdateTrackingId = newId;
                     ctx.Execute(
@@ -61,14 +66,16 @@ namespace HttPlaceholder.Persistence.Db.Implementations
             else if (StubCache == null || StubUpdateTrackingId == null)
             {
                 // The local cache hasn't been initialized yet. Do that now.
+                _logger.LogInformation("Initializing the cache, because either the local stub cache or tracking ID is not set yet.");
                 StubUpdateTrackingId = stubUpdateTrackingId;
                 shouldUpdateCache = true;
             }
             else if (StubUpdateTrackingId != stubUpdateTrackingId)
             {
-                // ID has been changed. Update the stub cache.
                 lock (_cacheUpdateLock)
                 {
+                    // ID has been changed. Update the stub cache.
+                    _logger.LogInformation("Initializing the cache, because the tracking ID in the database has been changed.");
                     StubUpdateTrackingId = stubUpdateTrackingId;
                     shouldUpdateCache = true;
                 }
