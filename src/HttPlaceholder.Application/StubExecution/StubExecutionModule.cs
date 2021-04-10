@@ -28,25 +28,25 @@ namespace HttPlaceholder.Application.StubExecution
             // Condition checkers
             foreach (var type in AssemblyHelper.GetImplementations<IConditionChecker>(filter))
             {
-                services.AddTransient(typeof(IConditionChecker), type);
+                services.AddSingleton(typeof(IConditionChecker), type);
             }
 
             // Response writers
             foreach (var type in AssemblyHelper.GetImplementations<IResponseWriter>(filter))
             {
-                services.AddTransient(typeof(IResponseWriter), type);
+                services.AddSingleton(typeof(IResponseWriter), type);
             }
 
             // Variable handlers
             foreach (var type in AssemblyHelper.GetImplementations<IVariableHandler>(filter))
             {
-                services.AddTransient(typeof(IVariableHandler), type);
+                services.AddSingleton(typeof(IVariableHandler), type);
             }
 
             // Request stub generation
             foreach (var type in AssemblyHelper.GetImplementations<IRequestStubGenerationHandler>(filter))
             {
-                services.AddTransient(typeof(IRequestStubGenerationHandler), type);
+                services.AddSingleton(typeof(IRequestStubGenerationHandler), type);
             }
 
             return services;

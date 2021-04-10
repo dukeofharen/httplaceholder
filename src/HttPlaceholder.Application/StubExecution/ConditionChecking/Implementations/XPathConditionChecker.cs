@@ -64,5 +64,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
 
             return result;
         }
+
+        public int Priority => 0;
     }
 }

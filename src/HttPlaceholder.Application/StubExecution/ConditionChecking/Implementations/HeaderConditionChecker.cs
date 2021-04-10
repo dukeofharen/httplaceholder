@@ -53,5 +53,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 : ConditionValidationType.Invalid;
             return result;
         }
+
+        public int Priority => 8;
     }
 }

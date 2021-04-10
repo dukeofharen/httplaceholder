@@ -40,8 +40,8 @@ namespace HttPlaceholder.Utilities
 
         private static IServiceCollection AddWebInfrastructure(this IServiceCollection services)
         {
-            services.TryAddTransient<IClientDataResolver, ClientDataResolver>();
-            services.TryAddTransient<IHttpContextService, HttpContextService>();
+            services.TryAddSingleton<IClientDataResolver, ClientDataResolver>();
+            services.TryAddSingleton<IHttpContextService, HttpContextService>();
             return services;
         }
 

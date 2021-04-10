@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
 {
     public class HeaderHandler : IRequestStubGenerationHandler
     {
-        private readonly IEnumerable<string> _headersToStrip = new[] { "Postman-Token", "Host" };
+        private static readonly IEnumerable<string> _headersToStrip = new[] { "Postman-Token", "Host" };
 
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {
