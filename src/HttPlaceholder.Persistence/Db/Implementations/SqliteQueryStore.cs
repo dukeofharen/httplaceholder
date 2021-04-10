@@ -1,20 +1,9 @@
-﻿using System.Data;
-using System.Data.SQLite;
-using HttPlaceholder.Persistence.Db.Resources;
-using Microsoft.Extensions.Configuration;
+﻿using HttPlaceholder.Persistence.Db.Resources;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
 {
     internal class SqliteQueryStore : IQueryStore
     {
-        internal const string ConnectionStringKey = "Sqlite";
-        private readonly IConfiguration _configuration;
-
-        public SqliteQueryStore(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public string GetRequestsQuery => @"SELECT
   id,
   correlation_id AS CorelationId,
@@ -59,11 +48,9 @@ stub_type AS StubType
 FROM stubs
 WHERE stub_id = @StubId";
 
-        public string CleanOldRequestsQuery => @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
+        public string CleanOldRequestsQuery =>
+            @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
 
         public string MigrationsQuery => SqliteResources.MigrateScript;
-
-        public IDbConnection GetConnection() =>
-            new SQLiteConnection(_configuration.GetConnectionString(ConnectionStringKey));
     }
 }

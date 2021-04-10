@@ -21,18 +21,21 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         private readonly SettingsModel _settings;
         private readonly IQueryStore _queryStore;
+        private readonly IDbConnectionFactory _dbConnectionFactory;
 
         public RelationalDbStubSource(
             IOptions<SettingsModel> options,
-            IQueryStore queryStore)
+            IQueryStore queryStore,
+            IDbConnectionFactory dbConnectionFactory)
         {
             _settings = options.Value;
             _queryStore = queryStore;
+            _dbConnectionFactory = dbConnectionFactory;
         }
 
         public async Task AddRequestResultAsync(RequestResultModel requestResult)
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var conn = _dbConnectionFactory.GetConnection())
             {
                 var json = JsonConvert.SerializeObject(requestResult);
                 await conn.ExecuteAsync(_queryStore.AddRequestQuery,
@@ -49,7 +52,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task AddStubAsync(StubModel stub)
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var conn = _dbConnectionFactory.GetConnection())
             {
                 var json = JsonConvert.SerializeObject(stub);
                 await conn.ExecuteAsync(_queryStore.AddStubQuery,
@@ -60,7 +63,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         public async Task CleanOldRequestResultsAsync()
         {
             var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
-            using (var conn = _queryStore.GetConnection())
+            using (var conn = _dbConnectionFactory.GetConnection())
             {
                 await conn.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new {Limit = maxLength});
             }
@@ -84,7 +87,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task<RequestResultModel> GetRequestAsync(string correlationId)
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var conn = _dbConnectionFactory.GetConnection())
             {
                 var result = await conn.QueryFirstOrDefaultAsync<DbRequestModel>(_queryStore.GetRequestQuery,
                     new {CorrelationId = correlationId});
@@ -99,7 +102,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task DeleteAllRequestResultsAsync()
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var conn = _dbConnectionFactory.GetConnection())
             {
                 await conn.ExecuteAsync(_queryStore.DeleteAllRequestsQuery);
             }
@@ -107,7 +110,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task<bool> DeleteStubAsync(string stubId)
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var conn = _dbConnectionFactory.GetConnection())
             {
                 var updated = await conn.ExecuteAsync(_queryStore.DeleteStubQuery, new {StubId = stubId});
                 return updated > 0;
@@ -116,7 +119,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var conn = _dbConnectionFactory.GetConnection())
             {
                 var result = await conn.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery);
                 return result
@@ -126,7 +129,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task<IEnumerable<StubModel>> GetStubsAsync()
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var conn = _dbConnectionFactory.GetConnection())
             {
                 var queryResults = await conn.QueryAsync<DbStubModel>(_queryStore.GetStubsQuery);
                 var result = new List<StubModel>();
@@ -159,7 +162,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task<StubModel> GetStubAsync(string stubId)
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var conn = _dbConnectionFactory.GetConnection())
             {
                 var result = await conn.QueryFirstOrDefaultAsync<DbStubModel>(_queryStore.GetStubQuery,
                     new {StubId = stubId});
@@ -183,7 +186,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task PrepareStubSourceAsync()
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var conn = _dbConnectionFactory.GetConnection())
             {
                 await conn.ExecuteAsync(_queryStore.MigrationsQuery);
             }

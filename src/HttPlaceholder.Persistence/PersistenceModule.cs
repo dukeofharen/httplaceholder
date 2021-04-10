@@ -27,9 +27,9 @@ namespace HttPlaceholder.Persistence
             var settings = configuration.Get<SettingsModel>();
             var registerRelationDbStubSource = false;
             var fileStoragePath = settings?.Storage?.FileStorageLocation;
-            var mysqlConnectionString = configuration.GetConnectionString(MysqlQueryStore.ConnectionStringKey);
-            var sqliteConnectionString = configuration.GetConnectionString(SqliteQueryStore.ConnectionStringKey);
-            var sqlServerConnectionString = configuration.GetConnectionString(SqlServerQueryStore.ConnectionStringKey);
+            var mysqlConnectionString = configuration.GetConnectionString(MysqlDbConnectionFactory.ConnectionStringKey);
+            var sqliteConnectionString = configuration.GetConnectionString(SqliteDbConnectionFactory.ConnectionStringKey);
+            var sqlServerConnectionString = configuration.GetConnectionString(SqlServerDbConnectionFactory.ConnectionStringKey);
             var useInMemory = settings?.Storage?.UseInMemoryStorage ?? false;
             if (useInMemory)
             {
@@ -41,18 +41,21 @@ namespace HttPlaceholder.Persistence
                 // If "mysqlConnectionString" is set, the application should connect with a MySQL database instance and store its stuff there.
                 registerRelationDbStubSource = true;
                 services.AddSingleton<IQueryStore, MysqlQueryStore>();
+                services.AddSingleton<IDbConnectionFactory, MysqlDbConnectionFactory>();
             }
             else if (!string.IsNullOrWhiteSpace(sqliteConnectionString))
             {
                 // If "sqliteConnectionString" is set, the application should connect with a SQLite database instance and store its stuff there.
                 registerRelationDbStubSource = true;
                 services.AddSingleton<IQueryStore, SqliteQueryStore>();
+                services.AddSingleton<IDbConnectionFactory, SqliteDbConnectionFactory>();
             }
             else if (!string.IsNullOrWhiteSpace(sqlServerConnectionString))
             {
                 // If "sqlServerConnectionString" is set, the application should connect with a MS SQL Server database instance and store its stuff there.
                 registerRelationDbStubSource = true;
                 services.AddSingleton<IQueryStore, SqlServerQueryStore>();
+                services.AddSingleton<IDbConnectionFactory, SqlServerDbConnectionFactory>();
             }
             else if (!string.IsNullOrWhiteSpace(fileStoragePath))
             {

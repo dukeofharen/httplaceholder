@@ -1,14 +1,10 @@
-﻿using System.Data;
-
-namespace HttPlaceholder.Persistence.Db
+﻿namespace HttPlaceholder.Persistence.Db
 {
     /// <summary>
-    /// An interface that describes a class that returns queries and other related objects for a specific database engine.
+    /// An interface that describes a class that returns queries for a specific database engine.
     /// </summary>
     public interface IQueryStore
     {
-        IDbConnection GetConnection();
-
         string GetRequestsQuery { get; }
 
         string GetRequestQuery { get; }

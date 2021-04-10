@@ -72,10 +72,11 @@ namespace HttPlaceholder.Persistence.Tests
             _services.AddStubSources(BuildConfiguration(_args));
 
             // assert
-            Assert.AreEqual(3, _services.Count);
+            Assert.AreEqual(4, _services.Count);
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(MysqlQueryStore)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(MysqlDbConnectionFactory)));
         }
 
         [TestMethod]
@@ -88,10 +89,11 @@ namespace HttPlaceholder.Persistence.Tests
             _services.AddStubSources(BuildConfiguration(_args));
 
             // assert
-            Assert.AreEqual(3, _services.Count);
+            Assert.AreEqual(4, _services.Count);
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqliteQueryStore)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqliteDbConnectionFactory)));
         }
 
         [TestMethod]
@@ -105,10 +107,11 @@ namespace HttPlaceholder.Persistence.Tests
             _services.AddStubSources(BuildConfiguration(_args));
 
             // assert
-            Assert.AreEqual(3, _services.Count);
+            Assert.AreEqual(4, _services.Count);
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqlServerQueryStore)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqlServerDbConnectionFactory)));
         }
 
         private static IConfiguration BuildConfiguration(IDictionary<string, string> dict) =>

@@ -1,20 +1,9 @@
-﻿using System.Data;
-using System.Data.SqlClient;
-using HttPlaceholder.Persistence.Db.Resources;
-using Microsoft.Extensions.Configuration;
+﻿using HttPlaceholder.Persistence.Db.Resources;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
 {
     internal class SqlServerQueryStore : IQueryStore
     {
-        internal const string ConnectionStringKey = "SqlServer";
-        private readonly IConfiguration _configuration;
-
-        public SqlServerQueryStore(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public string GetRequestsQuery => @"SELECT
   id,
   correlation_id AS CorelationId,
@@ -63,8 +52,5 @@ WHERE stub_id = @StubId";
             @"DELETE FROM requests WHERE ID NOT IN (SELECT TOP (@Limit) ID FROM requests ORDER BY ID DESC)";
 
         public string MigrationsQuery => SqlServerResources.MigrateScript;
-
-        public IDbConnection GetConnection() =>
-            new SqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
     }
 }

@@ -1,20 +1,9 @@
-﻿using System.Data;
-using HttPlaceholder.Persistence.Db.Resources;
-using Microsoft.Extensions.Configuration;
-using MySqlConnector;
+﻿using HttPlaceholder.Persistence.Db.Resources;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
 {
     internal class MysqlQueryStore : IQueryStore
     {
-        internal const string ConnectionStringKey = "MySql";
-        private readonly IConfiguration _configuration;
-
-        public MysqlQueryStore(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public string GetRequestsQuery => @"SELECT
   id,
   correlation_id AS CorelationId,
@@ -63,8 +52,5 @@ WHERE stub_id = @StubId";
             @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
 
         public string MigrationsQuery => MysqlResources.MigrateScript;
-
-        public IDbConnection GetConnection() =>
-            new MySqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
     }
 }
