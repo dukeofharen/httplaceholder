@@ -15,25 +15,23 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class RelationalDbStubSource : IWritableStubSource
     {
-        private static readonly object _cacheUpdateLock = new object();
-        private static string _stubUpdateTrackingId;
-        private static IList<StubModel> _stubCache;
-
         private const string StubJsonType = "json";
-        private const string StubYamlType = "yaml";
 
         private readonly SettingsModel _settings;
         private readonly IQueryStore _queryStore;
         private readonly IDatabaseContextFactory _databaseContextFactory;
+        private readonly IRelationalDbStubCache _relationalDbStubCache;
 
         public RelationalDbStubSource(
             IOptions<SettingsModel> options,
             IQueryStore queryStore,
-            IDatabaseContextFactory databaseContextFactory)
+            IDatabaseContextFactory databaseContextFactory,
+            IRelationalDbStubCache relationalDbStubCache)
         {
             _settings = options.Value;
             _queryStore = queryStore;
             _databaseContextFactory = databaseContextFactory;
+            _relationalDbStubCache = relationalDbStubCache;
         }
 
         public async Task AddRequestResultAsync(RequestResultModel requestResult)
@@ -60,7 +58,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                 var json = JsonConvert.SerializeObject(stub);
                 await ctx.ExecuteAsync(_queryStore.AddStubQuery,
                     new {StubId = stub.Id, Stub = json, StubType = StubJsonType});
-                ClearStubCache(ctx);
+                _relationalDbStubCache.ClearStubCache(ctx);
             }
         }
 
@@ -113,7 +111,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
                 var updated = await ctx.ExecuteAsync(_queryStore.DeleteStubQuery, new {StubId = stubId});
-                ClearStubCache(ctx);
+                _relationalDbStubCache.ClearStubCache(ctx);
                 return updated > 0;
             }
         }
@@ -132,7 +130,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                return await GetOrUpdateStubCache(ctx);
+                return await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
             }
         }
 
@@ -145,24 +143,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                var result = await ctx.QueryFirstOrDefaultAsync<DbStubModel>(
-                    _queryStore.GetStubQuery,
-                    new {StubId = stubId});
-                if (result == null)
-                {
-                    return null;
-                }
-
-                switch (result.StubType)
-                {
-                    case StubJsonType:
-                        return JsonConvert.DeserializeObject<StubModel>(result.Stub);
-                    case StubYamlType:
-                        return YamlUtilities.Parse<StubModel>(result.Stub);
-                    default:
-                        throw new NotImplementedException(
-                            $"StubType '{result.StubType}' not supported: stub '{stubId}'.");
-                }
+                var stubs = await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
+                return stubs.FirstOrDefault(s => s.Id == stubId);
             }
         }
 
@@ -172,91 +154,6 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             {
                 await ctx.ExecuteAsync(_queryStore.MigrationsQuery);
             }
-        }
-
-        private void ClearStubCache(IDatabaseContext ctx)
-        {
-            // Clear the in memory stub cache.
-            lock (_cacheUpdateLock)
-            {
-                _stubCache = null;
-                var newId = Guid.NewGuid().ToString();
-                _stubUpdateTrackingId = newId;
-                ctx.Execute(
-                    _queryStore.UpdateStubUpdateTrackingIdQuery,
-                    new {StubUpdateTrackingId = newId});
-            }
-        }
-
-        /// <summary>
-        /// Loads the stub cache to memory if it has not been done yet, returns the current cache or updates the current cache if something has changed.
-        /// </summary>
-        /// <returns>A list of <see cref="StubModel"/>.</returns>
-        private async Task<IEnumerable<StubModel>> GetOrUpdateStubCache(IDatabaseContext ctx)
-        {
-            var shouldUpdateCache = false;
-
-            // Check if the "stub_update_tracking_id" field in the database has a new value.
-            var stubUpdateTrackingId =
-                await ctx.QueryFirstOrDefaultAsync<string>(_queryStore.GetStubUpdateTrackingIdQuery);
-            if (string.IsNullOrWhiteSpace(stubUpdateTrackingId))
-            {
-                lock (_cacheUpdateLock)
-                {
-                    // ID doesn't exist yet. Create one and persist it.
-                    var newId = Guid.NewGuid().ToString();
-                    _stubUpdateTrackingId = newId;
-                    ctx.Execute(
-                        _queryStore.InsertStubUpdateTrackingIdQuery,
-                        new {StubUpdateTrackingId = newId});
-                    shouldUpdateCache = true;
-                }
-            }
-            else if (_stubCache == null || _stubUpdateTrackingId == null)
-            {
-                // The local cache hasn't been initialized yet. Do that now.
-                _stubUpdateTrackingId = stubUpdateTrackingId;
-                shouldUpdateCache = true;
-            }
-            else if (_stubUpdateTrackingId != stubUpdateTrackingId)
-            {
-                // ID has been changed. Update the stub cache.
-                lock (_cacheUpdateLock)
-                {
-                    _stubUpdateTrackingId = stubUpdateTrackingId;
-                    shouldUpdateCache = true;
-                }
-            }
-
-            if (shouldUpdateCache)
-            {
-                lock (_cacheUpdateLock)
-                {
-                    var queryResults = ctx.Query<DbStubModel>(_queryStore.GetStubsQuery);
-                    var result = new List<StubModel>();
-                    foreach (var queryResult in queryResults)
-                    {
-                        switch (queryResult.StubType)
-                        {
-                            case StubJsonType:
-                                result.Add(JsonConvert.DeserializeObject<StubModel>(queryResult.Stub));
-                                break;
-
-                            case StubYamlType:
-                                result.Add(YamlUtilities.Parse<StubModel>(queryResult.Stub));
-                                break;
-
-                            default:
-                                throw new NotImplementedException(
-                                    $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.");
-                        }
-                    }
-
-                    _stubCache = result;
-                }
-            }
-
-            return _stubCache;
         }
     }
 }
