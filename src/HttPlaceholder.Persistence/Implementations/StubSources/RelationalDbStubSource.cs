@@ -22,15 +22,18 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         private readonly SettingsModel _settings;
         private readonly IQueryStore _queryStore;
         private readonly IDbConnectionFactory _dbConnectionFactory;
+        private readonly IDatabaseContextFactory _databaseContextFactory;
 
         public RelationalDbStubSource(
             IOptions<SettingsModel> options,
             IQueryStore queryStore,
-            IDbConnectionFactory dbConnectionFactory)
+            IDbConnectionFactory dbConnectionFactory,
+            IDatabaseContextFactory databaseContextFactory)
         {
             _settings = options.Value;
             _queryStore = queryStore;
             _dbConnectionFactory = dbConnectionFactory;
+            _databaseContextFactory = databaseContextFactory;
         }
 
         public async Task AddRequestResultAsync(RequestResultModel requestResult)

@@ -71,6 +71,7 @@ namespace HttPlaceholder.Persistence
             if (registerRelationDbStubSource)
             {
                 services.AddSingleton<IStubSource, RelationalDbStubSource>();
+                services.AddSingleton<IDatabaseContextFactory, DatabaseContextFactory>();
             }
 
             // The YAML stub source should always be registered.
