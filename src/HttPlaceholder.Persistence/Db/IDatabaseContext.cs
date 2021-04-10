@@ -11,8 +11,12 @@ namespace HttPlaceholder.Persistence.Db
     {
         Task<int> ExecuteAsync(string sql, object param = null);
 
+        int Execute(string sql, object param = null);
+
         Task<TResult> QueryFirstOrDefaultAsync<TResult>(string sql, object param = null);
 
         Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null);
+
+        IEnumerable<TResult> Query<TResult>(string sql, object param = null);
     }
 }

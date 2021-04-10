@@ -19,10 +19,14 @@ namespace HttPlaceholder.Persistence.Db.Implementations
         public async Task<int> ExecuteAsync(string sql, object param = null) =>
             await _dbConnection.ExecuteAsync(sql, param);
 
+        public int Execute(string sql, object param = null) => _dbConnection.Execute(sql, param);
+
         public async Task<TResult> QueryFirstOrDefaultAsync<TResult>(string sql, object param = null) =>
-            await _dbConnection.QueryFirstAsync<TResult>(sql, param);
+            await _dbConnection.QueryFirstOrDefaultAsync<TResult>(sql, param);
 
         public async Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null) =>
             await _dbConnection.QueryAsync<TResult>(sql, param);
+
+        public IEnumerable<TResult> Query<TResult>(string sql, object param = null) => _dbConnection.Query<TResult>(sql, param);
     }
 }

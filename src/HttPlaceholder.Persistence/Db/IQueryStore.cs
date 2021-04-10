@@ -23,6 +23,12 @@
 
         string CleanOldRequestsQuery { get; }
 
+        string GetStubUpdateTrackingIdQuery { get; }
+
+        string InsertStubUpdateTrackingIdQuery { get; }
+
+        string UpdateStubUpdateTrackingIdQuery { get; }
+
         string MigrationsQuery { get; }
     }
 }

@@ -51,6 +51,10 @@ WHERE stub_id = @StubId";
         public string CleanOldRequestsQuery =>
             @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
 
+        public string GetStubUpdateTrackingIdQuery { get; }
+        public string InsertStubUpdateTrackingIdQuery { get; }
+        public string UpdateStubUpdateTrackingIdQuery { get; }
+
         public string MigrationsQuery => SqliteResources.MigrateScript;
     }
 }
