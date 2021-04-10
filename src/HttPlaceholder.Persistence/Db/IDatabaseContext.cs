@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HttPlaceholder.Persistence.Db
 {
@@ -7,6 +9,10 @@ namespace HttPlaceholder.Persistence.Db
     /// </summary>
     public interface IDatabaseContext : IDisposable
     {
+        Task<int> ExecuteAsync(string sql, object param = null);
 
+        Task<TResult> QueryFirstOrDefaultAsync<TResult>(string sql, object param = null);
+
+        Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null);
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Threading.Tasks;
+using Dapper;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
 {
@@ -12,5 +15,14 @@ namespace HttPlaceholder.Persistence.Db.Implementations
         }
 
         public void Dispose() => _dbConnection?.Dispose();
+
+        public async Task<int> ExecuteAsync(string sql, object param = null) =>
+            await _dbConnection.ExecuteAsync(sql, param);
+
+        public async Task<TResult> QueryFirstOrDefaultAsync<TResult>(string sql, object param = null) =>
+            await _dbConnection.QueryFirstAsync<TResult>(sql, param);
+
+        public async Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null) =>
+            await _dbConnection.QueryAsync<TResult>(sql, param);
     }
 }
