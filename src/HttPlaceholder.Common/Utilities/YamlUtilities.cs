@@ -11,5 +11,11 @@ namespace HttPlaceholder.Common.Utilities
             var deserializer = new Deserializer();
             return deserializer.Deserialize<TObject>(reader);
         }
+
+        public static string Serialize(object input)
+        {
+            var serializer = new Serializer();
+            return serializer.Serialize(input);
+        }
     }
 }

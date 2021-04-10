@@ -88,14 +88,10 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                var result = await ctx.QueryFirstOrDefaultAsync<DbRequestModel>(_queryStore.GetRequestQuery,
+                var result = await ctx.QueryFirstOrDefaultAsync<DbRequestModel>(
+                    _queryStore.GetRequestQuery,
                     new {CorrelationId = correlationId});
-                if (result == null)
-                {
-                    return null;
-                }
-
-                return JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
+                return result == null ? null : JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
             }
         }
 
@@ -163,7 +159,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         {
             using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                var result = await ctx.QueryFirstOrDefaultAsync<DbStubModel>(_queryStore.GetStubQuery,
+                var result = await ctx.QueryFirstOrDefaultAsync<DbStubModel>(
+                    _queryStore.GetStubQuery,
                     new {StubId = stubId});
                 if (result == null)
                 {
