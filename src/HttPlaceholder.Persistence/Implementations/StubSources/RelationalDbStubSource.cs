@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
@@ -15,6 +13,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class RelationalDbStubSource : IWritableStubSource
     {
+        // TODO move to separate constants class.
         private const string StubJsonType = "json";
 
         private readonly SettingsModel _settings;

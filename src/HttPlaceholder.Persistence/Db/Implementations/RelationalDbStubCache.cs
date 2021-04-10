@@ -14,6 +14,8 @@ namespace HttPlaceholder.Persistence.Db.Implementations
         private const string StubYamlType = "yaml";
 
         private static readonly object _cacheUpdateLock = new object();
+
+        // TODO make these value not static.
         private static string _stubUpdateTrackingId;
         private static IList<StubModel> _stubCache;
 

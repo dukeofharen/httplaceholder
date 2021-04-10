@@ -18,16 +18,18 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
     [TestClass]
     public class RelationalDbStubSourceFacts
     {
-        private readonly SettingsModel _settings = new SettingsModel
+        private readonly SettingsModel _settings = new()
         {
             Storage = new StorageSettingsModel {OldRequestsQueueLength = 100}
         };
 
-        private readonly Mock<IQueryStore> _mockQueryStore = new Mock<IQueryStore>();
-        private readonly Mock<IDatabaseContext> _mockDatabaseContext = new Mock<IDatabaseContext>();
+        private readonly Mock<IQueryStore> _mockQueryStore = new();
+        private readonly Mock<IDatabaseContext> _mockDatabaseContext = new();
 
         private readonly Mock<IDatabaseContextFactory>
-            _mockDatabaseContextFactory = new Mock<IDatabaseContextFactory>();
+            _mockDatabaseContextFactory = new();
+
+        private readonly Mock<IRelationalDbStubCache> _mockRelationalDbStubCache = new();
 
         private RelationalDbStubSource _stubSource;
 
@@ -40,7 +42,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             _stubSource = new RelationalDbStubSource(
                 Options.Create(_settings),
                 _mockQueryStore.Object,
-                _mockDatabaseContextFactory.Object);
+                _mockDatabaseContextFactory.Object,
+                _mockRelationalDbStubCache.Object);
         }
 
         [TestCleanup]
@@ -49,6 +52,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             _mockQueryStore.VerifyAll();
             _mockDatabaseContext.VerifyAll();
             _mockDatabaseContextFactory.VerifyAll();
+            _mockRelationalDbStubCache.VerifyAll();
         }
 
         [TestMethod]
@@ -113,6 +117,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             Assert.AreEqual(stub.Id, parsedParam["StubId"].ToString());
             Assert.AreEqual(JsonConvert.SerializeObject(stub), parsedParam["Stub"].ToString());
             Assert.AreEqual("json", parsedParam["StubType"].ToString());
+
+            _mockRelationalDbStubCache.Verify(m => m.ClearStubCache(_mockDatabaseContext.Object));
         }
 
         [TestMethod]
@@ -273,6 +279,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
 
             var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
             Assert.AreEqual(stubId, parsedParam["StubId"].ToString());
+
+            _mockRelationalDbStubCache.Verify(m => m.ClearStubCache(_mockDatabaseContext.Object));
         }
 
         [TestMethod]
@@ -312,74 +320,31 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         public async Task GetStubsAsync_ShouldReturnStubsCorrectly()
         {
             // Arrange
-            var query = "GET STUBS QUERY";
-            _mockQueryStore
-                .Setup(m => m.GetStubsQuery)
-                .Returns(query);
+            var stubs = new[] {new StubModel {Id = "stub-id"}};
 
-            var stub1 = new StubModel {Id = "stub1"};
-            var stub2 = new StubModel {Id = "stub1"};
-            var stubs = new[]
-            {
-                new DbStubModel {Id = 1, Stub = JsonConvert.SerializeObject(stub1), StubType = "json"},
-                new DbStubModel {Id = 2, Stub = YamlUtilities.Serialize(stub2), StubType = "yaml"}
-            };
-            _mockDatabaseContext
-                .Setup(m => m.QueryAsync<DbStubModel>(query, null))
+            _mockRelationalDbStubCache
+                .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
                 .ReturnsAsync(stubs);
 
             // Act
-            var result = (await _stubSource.GetStubsAsync()).ToArray();
+            var result = await _stubSource.GetStubsAsync();
 
             // Assert
-            Assert.AreEqual(2, result.Length);
-            Assert.AreEqual(stub1.Id, result[0].Id);
-            Assert.AreEqual(stub2.Id, result[1].Id);
-        }
-
-        [TestMethod]
-        public async Task GetStubsAsync_UnsupportedStubType_ShouldThrowNotImplementedException()
-        {
-            // Arrange
-            var query = "GET STUBS QUERY";
-            _mockQueryStore
-                .Setup(m => m.GetStubsQuery)
-                .Returns(query);
-
-            var stubs = new[]
-            {
-                new DbStubModel {Id = 1, Stub = "XML STUB, NOT SUPPORTED BTW", StubType = "xml", StubId = "stub1"}
-            };
-            _mockDatabaseContext
-                .Setup(m => m.QueryAsync<DbStubModel>(query, null))
-                .ReturnsAsync(stubs);
-
-            // Act
-            var exception =
-                await Assert.ThrowsExceptionAsync<NotImplementedException>(() => _stubSource.GetStubsAsync());
-
-            // Assert
-            Assert.AreEqual("StubType 'xml' not supported: stub 'stub1'.", exception.Message);
+            Assert.AreEqual(stubs, result);
         }
 
         [TestMethod]
         public async Task GetStubsOverviewAsync_ShouldReturnStubsCorrectly()
         {
             // Arrange
-            var query = "GET STUBS QUERY";
-            _mockQueryStore
-                .Setup(m => m.GetStubsQuery)
-                .Returns(query);
-
-            var stub1 = new StubModel {Id = "stub1", Tenant = "tenant1", Enabled = true};
-            var stub2 = new StubModel {Id = "stub1", Tenant = "tenant2", Enabled = false};
             var stubs = new[]
             {
-                new DbStubModel {Id = 1, Stub = JsonConvert.SerializeObject(stub1), StubType = "json"},
-                new DbStubModel {Id = 2, Stub = YamlUtilities.Serialize(stub2), StubType = "yaml"}
+                new StubModel {Id = "stub-id1", Tenant = "tenant1", Enabled = true},
+                new StubModel {Id = "stub-id2", Tenant = "tenant2", Enabled = false}
             };
-            _mockDatabaseContext
-                .Setup(m => m.QueryAsync<DbStubModel>(query, null))
+
+            _mockRelationalDbStubCache
+                .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
                 .ReturnsAsync(stubs);
 
             // Act
@@ -388,131 +353,48 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             // Assert
             Assert.AreEqual(2, result.Length);
 
-            Assert.AreEqual(stub1.Id, result[0].Id);
-            Assert.AreEqual(stub1.Tenant, result[0].Tenant);
-            Assert.AreEqual(stub1.Enabled, result[0].Enabled);
+            Assert.AreEqual(stubs[0].Id, result[0].Id);
+            Assert.AreEqual(stubs[0].Tenant, result[0].Tenant);
+            Assert.AreEqual(stubs[0].Enabled, result[0].Enabled);
 
-            Assert.AreEqual(stub2.Id, result[1].Id);
-            Assert.AreEqual(stub2.Tenant, result[1].Tenant);
-            Assert.AreEqual(stub2.Enabled, result[1].Enabled);
+            Assert.AreEqual(stubs[1].Id, result[1].Id);
+            Assert.AreEqual(stubs[1].Tenant, result[1].Tenant);
+            Assert.AreEqual(stubs[1].Enabled, result[1].Enabled);
+        }
+
+        [TestMethod]
+        public async Task GetStubAsync_StubFound_ShouldReturnStub()
+        {
+            // Arrange
+            var stubId = "stub-id";
+            var cachedStubs = new[] {new StubModel {Id = "other-stub-id"}, new StubModel {Id = stubId}};
+
+            _mockRelationalDbStubCache
+                .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
+                .ReturnsAsync(cachedStubs);
+
+            // Act
+            var result = await _stubSource.GetStubAsync(stubId);
+
+            // Assert
+            Assert.AreEqual(cachedStubs[1], result);
         }
 
         [TestMethod]
         public async Task GetStubAsync_StubNotFound_ShouldReturnNull()
         {
             // Arrange
-            var query = "GET STUB QUERY";
-            _mockQueryStore
-                .Setup(m => m.GetStubQuery)
-                .Returns(query);
+            var stubs = new[] {new StubModel {Id = "stub-id"}};
 
-            object capturedParam = null;
-            _mockDatabaseContext
-                .Setup(m => m.QueryFirstOrDefaultAsync<DbStubModel>(query, It.IsAny<object>()))
-                .Callback<string, object>((_, param) => capturedParam = param)
-                .ReturnsAsync((DbStubModel)null);
-
-            var stubId = "stub-id";
+            _mockRelationalDbStubCache
+                .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
+                .ReturnsAsync(stubs);
 
             // Act
-            var result = await _stubSource.GetStubAsync(stubId);
+            var result = await _stubSource.GetStubsAsync();
 
             // Assert
-            Assert.IsNull(result);
-
-            var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
-            Assert.AreEqual(stubId, parsedParam["StubId"].ToString());
-        }
-
-        [TestMethod]
-        public async Task GetStubAsync_StubFound_StubIsJson_ShouldReturnStub()
-        {
-            // Arrange
-            var query = "GET STUB QUERY";
-            _mockQueryStore
-                .Setup(m => m.GetStubQuery)
-                .Returns(query);
-
-            var stubId = "stub-id";
-            var stub = new DbStubModel
-            {
-                Stub = JsonConvert.SerializeObject(new StubModel {Id = stubId}), StubId = stubId, StubType = "json"
-            };
-            object capturedParam = null;
-            _mockDatabaseContext
-                .Setup(m => m.QueryFirstOrDefaultAsync<DbStubModel>(query, It.IsAny<object>()))
-                .Callback<string, object>((_, param) => capturedParam = param)
-                .ReturnsAsync(stub);
-
-            // Act
-            var result = await _stubSource.GetStubAsync(stubId);
-
-            // Assert
-            Assert.AreEqual(stubId, result.Id);
-
-            var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
-            Assert.AreEqual(stubId, parsedParam["StubId"].ToString());
-        }
-
-        [TestMethod]
-        public async Task GetStubAsync_StubFound_StubIsYaml_ShouldReturnStub()
-        {
-            // Arrange
-            var query = "GET STUB QUERY";
-            _mockQueryStore
-                .Setup(m => m.GetStubQuery)
-                .Returns(query);
-
-            var stubId = "stub-id";
-            var stub = new DbStubModel
-            {
-                Stub = YamlUtilities.Serialize(new StubModel {Id = stubId}), StubId = stubId, StubType = "yaml"
-            };
-            object capturedParam = null;
-            _mockDatabaseContext
-                .Setup(m => m.QueryFirstOrDefaultAsync<DbStubModel>(query, It.IsAny<object>()))
-                .Callback<string, object>((_, param) => capturedParam = param)
-                .ReturnsAsync(stub);
-
-            // Act
-            var result = await _stubSource.GetStubAsync(stubId);
-
-            // Assert
-            Assert.AreEqual(stubId, result.Id);
-
-            var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
-            Assert.AreEqual(stubId, parsedParam["StubId"].ToString());
-        }
-
-        [TestMethod]
-        public async Task GetStubAsync_StubFound_StubTypeNotSupported_ShouldThrowNotImplementedException()
-        {
-            // Arrange
-            var query = "GET STUB QUERY";
-            _mockQueryStore
-                .Setup(m => m.GetStubQuery)
-                .Returns(query);
-
-            var stubId = "stub-id";
-            var stub = new DbStubModel
-            {
-                Stub = "XML STUB, NOT SUPPORTED BTW", StubId = stubId, StubType = "xml"
-            };
-            object capturedParam = null;
-            _mockDatabaseContext
-                .Setup(m => m.QueryFirstOrDefaultAsync<DbStubModel>(query, It.IsAny<object>()))
-                .Callback<string, object>((_, param) => capturedParam = param)
-                .ReturnsAsync(stub);
-
-            // Act
-            var exception =
-                await Assert.ThrowsExceptionAsync<NotImplementedException>(() => _stubSource.GetStubAsync(stubId));
-
-            // Assert
-            Assert.AreEqual("StubType 'xml' not supported: stub 'stub-id'.", exception.Message);
-
-            var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
-            Assert.AreEqual(stubId, parsedParam["StubId"].ToString());
+            Assert.AreEqual(stubs, result);
         }
 
         [TestMethod]
