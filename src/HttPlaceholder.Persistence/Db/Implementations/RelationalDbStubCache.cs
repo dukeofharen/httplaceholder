@@ -14,10 +14,8 @@ namespace HttPlaceholder.Persistence.Db.Implementations
         private const string StubYamlType = "yaml";
 
         private static readonly object _cacheUpdateLock = new object();
-
-        // TODO make these value not static.
-        private static string _stubUpdateTrackingId;
-        private static IList<StubModel> _stubCache;
+        internal string StubUpdateTrackingId;
+        internal IList<StubModel> StubCache;
 
         private readonly IQueryStore _queryStore;
 
@@ -31,9 +29,9 @@ namespace HttPlaceholder.Persistence.Db.Implementations
             // Clear the in memory stub cache.
             lock (_cacheUpdateLock)
             {
-                _stubCache = null;
+                StubCache = null;
                 var newId = Guid.NewGuid().ToString();
-                _stubUpdateTrackingId = newId;
+                StubUpdateTrackingId = newId;
                 ctx.Execute(
                     _queryStore.UpdateStubUpdateTrackingIdQuery,
                     new {StubUpdateTrackingId = newId});
@@ -53,25 +51,25 @@ namespace HttPlaceholder.Persistence.Db.Implementations
                 {
                     // ID doesn't exist yet. Create one and persist it.
                     var newId = Guid.NewGuid().ToString();
-                    _stubUpdateTrackingId = newId;
+                    StubUpdateTrackingId = newId;
                     ctx.Execute(
                         _queryStore.InsertStubUpdateTrackingIdQuery,
                         new {StubUpdateTrackingId = newId});
                     shouldUpdateCache = true;
                 }
             }
-            else if (_stubCache == null || _stubUpdateTrackingId == null)
+            else if (StubCache == null || StubUpdateTrackingId == null)
             {
                 // The local cache hasn't been initialized yet. Do that now.
-                _stubUpdateTrackingId = stubUpdateTrackingId;
+                StubUpdateTrackingId = stubUpdateTrackingId;
                 shouldUpdateCache = true;
             }
-            else if (_stubUpdateTrackingId != stubUpdateTrackingId)
+            else if (StubUpdateTrackingId != stubUpdateTrackingId)
             {
                 // ID has been changed. Update the stub cache.
                 lock (_cacheUpdateLock)
                 {
-                    _stubUpdateTrackingId = stubUpdateTrackingId;
+                    StubUpdateTrackingId = stubUpdateTrackingId;
                     shouldUpdateCache = true;
                 }
             }
@@ -100,11 +98,11 @@ namespace HttPlaceholder.Persistence.Db.Implementations
                         }
                     }
 
-                    _stubCache = result;
+                    StubCache = result;
                 }
             }
 
-            return _stubCache;
+            return StubCache;
         }
     }
 }
