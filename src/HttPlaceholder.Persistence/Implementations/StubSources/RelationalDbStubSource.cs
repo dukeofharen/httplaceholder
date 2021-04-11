@@ -152,6 +152,9 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
                 await ctx.ExecuteAsync(_queryStore.MigrationsQuery);
+
+                // Also initialize the cache at startup.
+                await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
             }
         }
     }

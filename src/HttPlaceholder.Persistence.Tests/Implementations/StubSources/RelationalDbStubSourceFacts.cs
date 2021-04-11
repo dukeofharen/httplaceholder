@@ -398,7 +398,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
-        public async Task PrepareStubSourceAsync_ShouldPrepareDatabase()
+        public async Task PrepareStubSourceAsync_ShouldPrepareDatabaseAndLocalCache()
         {
             // Arrange
             var query = "PREPARE STUB SOURCE QUERY";
@@ -411,6 +411,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
 
             // Assert
             _mockDatabaseContext.Verify(m => m.ExecuteAsync(query, null));
+            _mockRelationalDbStubCache.Verify(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object));
         }
     }
 }
