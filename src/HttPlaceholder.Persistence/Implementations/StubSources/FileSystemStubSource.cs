@@ -119,15 +119,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task<StubModel> GetStubAsync(string stubId)
         {
-            var path = GetStubsFolder();
-            var stubPath = Path.Combine(path, $"{stubId}.json");
-            if (!_fileService.FileExists(stubPath))
-            {
-                return Task.FromResult((StubModel)null);
-            }
-
-            var contents = _fileService.ReadAllText(stubPath);
-            return Task.FromResult(JsonConvert.DeserializeObject<StubModel>(contents));
+            var stubs = _fileSystemStubCache.GetOrUpdateStubCache();
+            return Task.FromResult(stubs.FirstOrDefault(s => s.Id == stubId));
         }
 
         public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>

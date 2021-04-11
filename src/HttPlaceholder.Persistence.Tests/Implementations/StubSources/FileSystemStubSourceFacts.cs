@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Common;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Persistence.FileStorage;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Options;
@@ -19,7 +20,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
     {
         private const string StorageFolder = @"C:\storage";
         private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
-        private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
+        private readonly Mock<IFileService> _fileServiceMock = new();
+        private readonly Mock<IFileSystemStubCache> _mockFileSystemStubCache = new();
         private FileSystemStubSource _source;
 
         [TestInitialize]
@@ -30,11 +32,16 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
 
             _source = new FileSystemStubSource(
                 _fileServiceMock.Object,
-                _options);
+                _options,
+                _mockFileSystemStubCache.Object);
         }
 
         [TestCleanup]
-        public void Cleanup() => _fileServiceMock.VerifyAll();
+        public void Cleanup()
+        {
+            _fileServiceMock.VerifyAll();
+            _mockFileSystemStubCache.VerifyAll();
+        }
 
         [TestMethod]
         public async Task AddRequestResultAsync_HappyFlow()
@@ -64,6 +71,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
 
             // act / assert
             await _source.AddStubAsync(stub);
+            _mockFileSystemStubCache.Verify(m => m.ClearStubCache());
         }
 
         [TestMethod]
@@ -142,6 +150,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
 
             // assert
             Assert.IsFalse(result);
+            _mockFileSystemStubCache.Verify(m => m.ClearStubCache(), Times.Never);
         }
 
         [TestMethod]
@@ -162,6 +171,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
 
             // assert
             Assert.IsTrue(result);
+            _mockFileSystemStubCache.Verify(m => m.ClearStubCache());
         }
 
         [TestMethod]
@@ -220,13 +230,11 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             {
                 JsonConvert.SerializeObject(new RequestResultModel
                 {
-                    CorrelationId = "request-01",
-                    RequestParameters = new RequestParametersModel()
+                    CorrelationId = "request-01", RequestParameters = new RequestParametersModel()
                 }),
                 JsonConvert.SerializeObject(new RequestResultModel
                 {
-                    CorrelationId = "request-02",
-                    RequestParameters = new RequestParametersModel()
+                    CorrelationId = "request-02", RequestParameters = new RequestParametersModel()
                 })
             };
 
@@ -246,76 +254,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             Assert.AreEqual(2, result.Length);
             Assert.AreEqual("request-01", result[0].CorrelationId);
             Assert.AreEqual("request-02", result[1].CorrelationId);
-        }
-
-        [TestMethod]
-        public async Task GetStubsAsync_HappyFlow()
-        {
-            // arrange
-            var stubsFolder = Path.Combine(StorageFolder, "stubs");
-            var files = new[] {Path.Combine(stubsFolder, "stub-01.json"), Path.Combine(stubsFolder, "stub-02.json")};
-
-            _fileServiceMock
-                .Setup(m => m.GetFiles(stubsFolder, "*.json"))
-                .Returns(files);
-
-            var stubFileContents = new[]
-            {
-                JsonConvert.SerializeObject(new StubModel {Id = "stub-01"}),
-                JsonConvert.SerializeObject(new StubModel {Id = "stub-02"})
-            };
-
-            for (var i = 0; i < files.Length; i++)
-            {
-                var file = files[i];
-                var contents = stubFileContents[i];
-                _fileServiceMock
-                    .Setup(m => m.ReadAllText(file))
-                    .Returns(contents);
-            }
-
-            // act
-            var result = (await _source.GetStubsAsync()).ToArray();
-
-            // assert
-            Assert.AreEqual(2, result.Length);
-            Assert.AreEqual("stub-01", result[0].Id);
-            Assert.AreEqual("stub-02", result[1].Id);
-        }
-
-        [TestMethod]
-        public async Task GetStubsOverviewAsync_HappyFlow()
-        {
-            // arrange
-            var stubsFolder = Path.Combine(StorageFolder, "stubs");
-            var files = new[] {Path.Combine(stubsFolder, "stub-01.json"), Path.Combine(stubsFolder, "stub-02.json")};
-
-            _fileServiceMock
-                .Setup(m => m.GetFiles(stubsFolder, "*.json"))
-                .Returns(files);
-
-            var stubFileContents = new[]
-            {
-                JsonConvert.SerializeObject(new StubModel {Id = "stub-01"}),
-                JsonConvert.SerializeObject(new StubModel {Id = "stub-02"})
-            };
-
-            for (var i = 0; i < files.Length; i++)
-            {
-                var file = files[i];
-                var contents = stubFileContents[i];
-                _fileServiceMock
-                    .Setup(m => m.ReadAllText(file))
-                    .Returns(contents);
-            }
-
-            // act
-            var result = (await _source.GetStubsOverviewAsync()).ToArray();
-
-            // assert
-            Assert.AreEqual(2, result.Length);
-            Assert.AreEqual("stub-01", result[0].Id);
-            Assert.AreEqual("stub-02", result[1].Id);
         }
 
         [TestMethod]
@@ -370,6 +308,100 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
+        public async Task GetStubsAsync_HappyFlow()
+        {
+            // Arrange
+            var stubs = new[] {new StubModel {Id = "stub1"}};
+            _mockFileSystemStubCache
+                .Setup(m => m.GetOrUpdateStubCache())
+                .Returns(stubs);
+
+            // Act
+            var result = await _source.GetStubsAsync();
+
+            // Assert
+            Assert.AreEqual(stubs, result);
+        }
+
+        [TestMethod]
+        public async Task GetStubAsync_StubFound_ShouldReturnStub()
+        {
+            // Arrange
+            var stubs = new[]
+            {
+                new StubModel {Id = "stub1"},
+                new StubModel {Id = "stub2"}
+            };
+            _mockFileSystemStubCache
+                .Setup(m => m.GetOrUpdateStubCache())
+                .Returns(stubs);
+
+            // Act
+            var result = await _source.GetStubAsync("stub2");
+
+            // Assert
+            Assert.AreEqual(stubs[1], result);
+        }
+
+        [TestMethod]
+        public async Task GetStubAsync_StubNotFound_ShouldReturnNull()
+        {
+            // Arrange
+            var stubs = new[]
+            {
+                new StubModel {Id = "stub1"},
+                new StubModel {Id = "stub2"}
+            };
+            _mockFileSystemStubCache
+                .Setup(m => m.GetOrUpdateStubCache())
+                .Returns(stubs);
+
+            // Act
+            var result = await _source.GetStubAsync("stub3");
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public async Task GetStubsOverviewAsync_HappyFlow()
+        {
+            // Arrange
+            var stubs = new[]
+            {
+                new StubModel
+                {
+                    Id = "stub1",
+                    Tenant = "tenant1",
+                    Enabled = true
+                },
+                new StubModel
+                {
+                    Id = "stub2",
+                    Tenant = "tenant2",
+                    Enabled = false
+                }
+            };
+            _mockFileSystemStubCache
+                .Setup(m => m.GetOrUpdateStubCache())
+                .Returns(stubs);
+
+            // Act
+            var result = (await _source.GetStubsOverviewAsync()).ToArray();
+
+            // Assert
+            Assert.AreEqual(2, result.Length);
+
+            Assert.AreEqual(stubs[0].Id, result[0].Id);
+            Assert.AreEqual(stubs[0].Tenant, result[0].Tenant);
+            Assert.AreEqual(stubs[0].Enabled, result[0].Enabled);
+
+            Assert.AreEqual(stubs[1].Id, result[1].Id);
+            Assert.AreEqual(stubs[1].Tenant, result[1].Tenant);
+            Assert.AreEqual(stubs[1].Enabled, result[1].Enabled);
+        }
+
+        [TestMethod]
         public async Task PrepareStubSourceAsync_HappyFlow()
         {
             // act
@@ -378,6 +410,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             // assert
             _fileServiceMock.Verify(m => m.DirectoryExists(It.IsAny<string>()), Times.Exactly(2));
             _fileServiceMock.Verify(m => m.CreateDirectory(It.IsAny<string>()), Times.Exactly(2));
+            _mockFileSystemStubCache.Verify(m => m.GetOrUpdateStubCache());
         }
     }
 }
