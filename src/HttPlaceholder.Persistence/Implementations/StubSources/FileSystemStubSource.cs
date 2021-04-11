@@ -26,7 +26,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task AddRequestResultAsync(RequestResultModel requestResult)
         {
-            var path = EnsureAndGetRequestsFolder();
+            var path = GetRequestsFolder();
             var filePath = Path.Combine(path, $"{requestResult.CorrelationId}.json");
             var contents = JsonConvert.SerializeObject(requestResult);
             _fileService.WriteAllText(filePath, contents);
@@ -35,7 +35,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task AddStubAsync(StubModel stub)
         {
-            var path = EnsureAndGetStubsFolder();
+            var path = GetStubsFolder();
             var filePath = Path.Combine(path, $"{stub.Id}.json");
             var contents = JsonConvert.SerializeObject(stub);
             _fileService.WriteAllText(filePath, contents);
@@ -60,7 +60,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task<RequestResultModel> GetRequestAsync(string correlationId)
         {
-            var path = EnsureAndGetRequestsFolder();
+            var path = GetRequestsFolder();
             var filePath = Path.Combine(path, $"{correlationId}.json");
             if (!_fileService.FileExists(filePath))
             {
@@ -73,7 +73,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task DeleteAllRequestResultsAsync()
         {
-            var path = EnsureAndGetRequestsFolder();
+            var path = GetRequestsFolder();
             var files = _fileService.GetFiles(path, "*.json");
             foreach (var filePath in files)
             {
@@ -85,7 +85,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task<bool> DeleteStubAsync(string stubId)
         {
-            var path = EnsureAndGetStubsFolder();
+            var path = GetStubsFolder();
             var filePath = Path.Combine(path, $"{stubId}.json");
             if (!_fileService.FileExists(filePath))
             {
@@ -98,7 +98,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
         {
-            var path = EnsureAndGetRequestsFolder();
+            var path = GetRequestsFolder();
             var files = _fileService.GetFiles(path, "*.json");
             var result = files
                 .Select(filePath => _fileService
@@ -110,7 +110,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task<IEnumerable<StubModel>> GetStubsAsync()
         {
-            var path = EnsureAndGetStubsFolder();
+            var path = GetStubsFolder();
             var files = _fileService.GetFiles(path, "*.json");
             var result = files
                 .Select(filePath => _fileService
@@ -122,7 +122,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task<StubModel> GetStubAsync(string stubId)
         {
-            var path = EnsureAndGetStubsFolder();
+            var path = GetStubsFolder();
             var stubPath = Path.Combine(path, $"{stubId}.json");
             if (!_fileService.FileExists(stubPath))
             {
@@ -140,7 +140,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task CleanOldRequestResultsAsync()
         {
-            var path = EnsureAndGetRequestsFolder();
+            var path = GetRequestsFolder();
             var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
             var requests = (await GetRequestResultsAsync())
                 .OrderByDescending(r => r.RequestEndTime)
@@ -154,33 +154,31 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public Task PrepareStubSourceAsync()
         {
-            EnsureAndGetRequestsFolder();
-            EnsureAndGetStubsFolder();
+            var requestsFolder = GetRequestsFolder();
+            if (!_fileService.DirectoryExists(requestsFolder))
+            {
+                _fileService.CreateDirectory(requestsFolder);
+            }
+
+            var stubsFolder = GetStubsFolder();
+            if (!_fileService.DirectoryExists(stubsFolder))
+            {
+                _fileService.CreateDirectory(stubsFolder);
+            }
+
             return Task.CompletedTask;
         }
 
-        private string EnsureAndGetStubsFolder()
+        private string GetStubsFolder()
         {
             var folder = _settings.Storage?.FileStorageLocation;
-            var path = Path.Combine(folder, "stubs");
-            if (!_fileService.DirectoryExists(path))
-            {
-                _fileService.CreateDirectory(path);
-            }
-
-            return path;
+            return Path.Combine(folder, "stubs");
         }
 
-        private string EnsureAndGetRequestsFolder()
+        private string GetRequestsFolder()
         {
             var folder = _settings.Storage?.FileStorageLocation;
-            var path = Path.Combine(folder, "requests");
-            if (!_fileService.DirectoryExists(path))
-            {
-                _fileService.CreateDirectory(path);
-            }
-
-            return path;
+            return Path.Combine(folder, "requests");
         }
     }
 }
