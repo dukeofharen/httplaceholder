@@ -13,7 +13,7 @@ namespace HttPlaceholder.TestUtilities.Options
                 Storage = new StorageSettingsModel(),
                 Web = new WebSettingsModel()
             };
-            return new OptionsMock<SettingsModel>(settings);
+            return Microsoft.Extensions.Options.Options.Create(settings);
         }
     }
 }

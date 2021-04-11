@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Implementations;
+using HttPlaceholder.Persistence.FileSystem.Implementations;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,9 +57,10 @@ namespace HttPlaceholder.Persistence.Tests
             _services.AddStubSources(BuildConfiguration(_args));
 
             // assert
-            Assert.AreEqual(2, _services.Count);
+            Assert.AreEqual(3, _services.Count);
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileSystemStubSource)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(FileSystemStubCache)));
         }
 
         [TestMethod]

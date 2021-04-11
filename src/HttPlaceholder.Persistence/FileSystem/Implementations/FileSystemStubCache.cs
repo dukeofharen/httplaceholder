@@ -79,6 +79,7 @@ namespace HttPlaceholder.Persistence.FileSystem.Implementations
             {
                 StubCache = null;
                 var newId = Guid.NewGuid().ToString();
+                StubUpdateTrackingId = newId;
                 metadata.StubUpdateTrackingId = newId;
                 _fileService.WriteAllText(
                     Path.Combine(_settings.Storage?.FileStorageLocation, Constants.MetadataFileName),
