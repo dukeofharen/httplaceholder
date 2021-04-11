@@ -41,12 +41,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             var requestsFolder = Path.Combine(StorageFolder, "requests");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(requestsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(requestsFolder));
-
             var request = new RequestResultModel {CorrelationId = "bla123"};
             var filePath = Path.Combine(requestsFolder, $"{request.CorrelationId}.json");
 
@@ -62,12 +56,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             var stubsFolder = Path.Combine(StorageFolder, "stubs");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(stubsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(stubsFolder));
-
             var stub = new StubModel {Id = "situation-01"};
             var filePath = Path.Combine(stubsFolder, $"{stub.Id}.json");
 
@@ -84,12 +72,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             // Arrange
             var correlationId = Guid.NewGuid().ToString();
             var requestsFolder = Path.Combine(StorageFolder, "requests");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(requestsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(requestsFolder));
-
             var expectedPath = Path.Combine(requestsFolder, $"{correlationId}.json");
             _fileServiceMock
                 .Setup(m => m.FileExists(expectedPath))
@@ -108,12 +90,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             // Arrange
             var correlationId = Guid.NewGuid().ToString();
             var requestsFolder = Path.Combine(StorageFolder, "requests");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(requestsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(requestsFolder));
-
             var expectedPath = Path.Combine(requestsFolder, $"{correlationId}.json");
             _fileServiceMock
                 .Setup(m => m.FileExists(expectedPath))
@@ -134,12 +110,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             var requestsFolder = Path.Combine(StorageFolder, "requests");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(requestsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(requestsFolder));
-
             var files = new[]
             {
                 Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -161,12 +131,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             var stubsFolder = Path.Combine(StorageFolder, "stubs");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(stubsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(stubsFolder));
-
             const string stubId = "situation-01";
             var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
             _fileServiceMock
@@ -185,12 +149,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             var stubsFolder = Path.Combine(StorageFolder, "stubs");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(stubsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(stubsFolder));
-
             var stubId = "situation-01";
             var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
             _fileServiceMock
@@ -211,12 +169,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             var requestsFolder = Path.Combine(StorageFolder, "requests");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(requestsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(requestsFolder));
-
             var files = new[]
             {
                 Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -255,12 +207,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             var requestsFolder = Path.Combine(StorageFolder, "requests");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(requestsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(requestsFolder));
-
             var files = new[]
             {
                 Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -307,12 +253,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             var stubsFolder = Path.Combine(StorageFolder, "stubs");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(stubsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(stubsFolder));
-
             var files = new[] {Path.Combine(stubsFolder, "stub-01.json"), Path.Combine(stubsFolder, "stub-02.json")};
 
             _fileServiceMock
@@ -348,12 +288,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             var stubsFolder = Path.Combine(StorageFolder, "stubs");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(stubsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(stubsFolder));
-
             var files = new[] {Path.Combine(stubsFolder, "stub-01.json"), Path.Combine(stubsFolder, "stub-02.json")};
 
             _fileServiceMock
@@ -389,12 +323,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         {
             // arrange
             var requestsFolder = Path.Combine(StorageFolder, "requests");
-            _fileServiceMock
-                .Setup(m => m.DirectoryExists(requestsFolder))
-                .Returns(false);
-            _fileServiceMock
-                .Setup(m => m.CreateDirectory(requestsFolder));
-
             var files = new[]
             {
                 Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json"),
