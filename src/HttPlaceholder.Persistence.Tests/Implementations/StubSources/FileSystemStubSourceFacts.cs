@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Common;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Persistence.FileStorage;
+using HttPlaceholder.Persistence.FileSystem;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Options;

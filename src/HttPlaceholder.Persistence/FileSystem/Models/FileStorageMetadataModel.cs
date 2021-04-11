@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.Persistence.FileStorage.Models
+﻿namespace HttPlaceholder.Persistence.FileSystem.Models
 {
     public class FileStorageMetadataModel
     {

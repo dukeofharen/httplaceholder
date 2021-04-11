@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using HttPlaceholder.Common;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Persistence.FileStorage.Models;
+using HttPlaceholder.Persistence.FileSystem.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Persistence.FileStorage.Implementations
+namespace HttPlaceholder.Persistence.FileSystem.Implementations
 {
     internal class FileSystemStubCache : IFileSystemStubCache
     {
