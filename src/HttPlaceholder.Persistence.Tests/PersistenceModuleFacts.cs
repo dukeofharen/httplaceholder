@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Implementations;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Configuration;
@@ -72,10 +73,13 @@ namespace HttPlaceholder.Persistence.Tests
             _services.AddStubSources(BuildConfiguration(_args));
 
             // assert
-            Assert.AreEqual(3, _services.Count);
+            Assert.AreEqual(6, _services.Count);
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(MysqlQueryStore)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(MysqlDbConnectionFactory)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(DatabaseContextFactory)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubCache)));
         }
 
         [TestMethod]
@@ -88,10 +92,13 @@ namespace HttPlaceholder.Persistence.Tests
             _services.AddStubSources(BuildConfiguration(_args));
 
             // assert
-            Assert.AreEqual(3, _services.Count);
+            Assert.AreEqual(6, _services.Count);
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqliteQueryStore)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqliteDbConnectionFactory)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(DatabaseContextFactory)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubCache)));
         }
 
         [TestMethod]
@@ -105,10 +112,13 @@ namespace HttPlaceholder.Persistence.Tests
             _services.AddStubSources(BuildConfiguration(_args));
 
             // assert
-            Assert.AreEqual(3, _services.Count);
+            Assert.AreEqual(6, _services.Count);
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(YamlFileStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubSource)));
             Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqlServerQueryStore)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(SqlServerDbConnectionFactory)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(DatabaseContextFactory)));
+            Assert.IsTrue(_services.Any(s => s.ImplementationType == typeof(RelationalDbStubCache)));
         }
 
         private static IConfiguration BuildConfiguration(IDictionary<string, string> dict) =>

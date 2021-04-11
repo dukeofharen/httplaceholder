@@ -1,20 +1,9 @@
-﻿using System.Data;
-using System.Data.SqlClient;
-using HttPlaceholder.Persistence.Db.Resources;
-using Microsoft.Extensions.Configuration;
+﻿using HttPlaceholder.Persistence.Db.Resources;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
 {
     internal class SqlServerQueryStore : IQueryStore
     {
-        internal const string ConnectionStringKey = "SqlServer";
-        private readonly IConfiguration _configuration;
-
-        public SqlServerQueryStore(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public string GetRequestsQuery => @"SELECT
   id,
   correlation_id AS CorelationId,
@@ -62,9 +51,14 @@ WHERE stub_id = @StubId";
         public string CleanOldRequestsQuery =>
             @"DELETE FROM requests WHERE ID NOT IN (SELECT TOP (@Limit) ID FROM requests ORDER BY ID DESC)";
 
-        public string MigrationsQuery => SqlServerResources.MigrateScript;
+        public string GetStubUpdateTrackingIdQuery => "SELECT stub_update_tracking_id FROM metadata";
 
-        public IDbConnection GetConnection() =>
-            new SqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
+        public string InsertStubUpdateTrackingIdQuery =>
+            "INSERT INTO metadata (stub_update_tracking_id) VALUES (@StubUpdateTrackingId)";
+
+        public string UpdateStubUpdateTrackingIdQuery =>
+            "UPDATE metadata SET stub_update_tracking_id = @StubUpdateTrackingId";
+
+        public string MigrationsQuery => SqlServerResources.MigrateScript;
     }
 }

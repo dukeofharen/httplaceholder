@@ -1,20 +1,9 @@
-﻿using System.Data;
-using HttPlaceholder.Persistence.Db.Resources;
-using Microsoft.Extensions.Configuration;
-using MySqlConnector;
+﻿using HttPlaceholder.Persistence.Db.Resources;
 
 namespace HttPlaceholder.Persistence.Db.Implementations
 {
     internal class MysqlQueryStore : IQueryStore
     {
-        internal const string ConnectionStringKey = "MySql";
-        private readonly IConfiguration _configuration;
-
-        public MysqlQueryStore(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public string GetRequestsQuery => @"SELECT
   id,
   correlation_id AS CorelationId,
@@ -62,9 +51,14 @@ WHERE stub_id = @StubId";
         public string CleanOldRequestsQuery =>
             @"DELETE FROM requests WHERE ID NOT IN (SELECT * FROM (SELECT Id FROM requests ORDER BY Id DESC LIMIT 0,@Limit) AS t1)";
 
-        public string MigrationsQuery => MysqlResources.MigrateScript;
+        public string GetStubUpdateTrackingIdQuery => @"SELECT stub_update_tracking_id FROM metadata";
 
-        public IDbConnection GetConnection() =>
-            new MySqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
+        public string InsertStubUpdateTrackingIdQuery =>
+            @"INSERT INTO metadata (stub_update_tracking_id) VALUES (@StubUpdateTrackingId)";
+
+        public string UpdateStubUpdateTrackingIdQuery =>
+            @"UPDATE metadata SET stub_update_tracking_id = @StubUpdateTrackingId";
+
+        public string MigrationsQuery => MysqlResources.MigrateScript;
     }
 }

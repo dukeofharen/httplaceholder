@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Dapper;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
@@ -16,26 +13,32 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class RelationalDbStubSource : IWritableStubSource
     {
+        // TODO move to separate constants class.
         private const string StubJsonType = "json";
-        private const string StubYamlType = "yaml";
 
         private readonly SettingsModel _settings;
         private readonly IQueryStore _queryStore;
+        private readonly IDatabaseContextFactory _databaseContextFactory;
+        private readonly IRelationalDbStubCache _relationalDbStubCache;
 
         public RelationalDbStubSource(
             IOptions<SettingsModel> options,
-            IQueryStore queryStore)
+            IQueryStore queryStore,
+            IDatabaseContextFactory databaseContextFactory,
+            IRelationalDbStubCache relationalDbStubCache)
         {
             _settings = options.Value;
             _queryStore = queryStore;
+            _databaseContextFactory = databaseContextFactory;
+            _relationalDbStubCache = relationalDbStubCache;
         }
 
         public async Task AddRequestResultAsync(RequestResultModel requestResult)
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
                 var json = JsonConvert.SerializeObject(requestResult);
-                await conn.ExecuteAsync(_queryStore.AddRequestQuery,
+                await ctx.ExecuteAsync(_queryStore.AddRequestQuery,
                     new
                     {
                         requestResult.CorrelationId,
@@ -49,20 +52,21 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task AddStubAsync(StubModel stub)
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
                 var json = JsonConvert.SerializeObject(stub);
-                await conn.ExecuteAsync(_queryStore.AddStubQuery,
+                await ctx.ExecuteAsync(_queryStore.AddStubQuery,
                     new {StubId = stub.Id, Stub = json, StubType = StubJsonType});
+                _relationalDbStubCache.ClearStubCache(ctx);
             }
         }
 
         public async Task CleanOldRequestResultsAsync()
         {
             var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
-            using (var conn = _queryStore.GetConnection())
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                await conn.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new {Limit = maxLength});
+                await ctx.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new {Limit = maxLength});
             }
         }
 
@@ -84,41 +88,38 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task<RequestResultModel> GetRequestAsync(string correlationId)
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                var result = await conn.QueryFirstOrDefaultAsync<DbRequestModel>(_queryStore.GetRequestQuery,
+                var result = await ctx.QueryFirstOrDefaultAsync<DbRequestModel>(
+                    _queryStore.GetRequestQuery,
                     new {CorrelationId = correlationId});
-                if (result == null)
-                {
-                    return null;
-                }
-
-                return JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
+                return result == null ? null : JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
             }
         }
 
         public async Task DeleteAllRequestResultsAsync()
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                await conn.ExecuteAsync(_queryStore.DeleteAllRequestsQuery);
+                await ctx.ExecuteAsync(_queryStore.DeleteAllRequestsQuery);
             }
         }
 
         public async Task<bool> DeleteStubAsync(string stubId)
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                var updated = await conn.ExecuteAsync(_queryStore.DeleteStubQuery, new {StubId = stubId});
+                var updated = await ctx.ExecuteAsync(_queryStore.DeleteStubQuery, new {StubId = stubId});
+                _relationalDbStubCache.ClearStubCache(ctx);
                 return updated > 0;
             }
         }
 
         public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                var result = await conn.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery);
+                var result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery);
                 return result
                     .Select(r => JsonConvert.DeserializeObject<RequestResultModel>(r.Json));
             }
@@ -126,66 +127,34 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task<IEnumerable<StubModel>> GetStubsAsync()
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                var queryResults = await conn.QueryAsync<DbStubModel>(_queryStore.GetStubsQuery);
-                var result = new List<StubModel>();
-                foreach (var queryResult in queryResults)
-                {
-                    switch (queryResult.StubType)
-                    {
-                        case StubJsonType:
-                            result.Add(JsonConvert.DeserializeObject<StubModel>(queryResult.Stub));
-                            break;
-
-                        case StubYamlType:
-                            result.Add(YamlUtilities.Parse<StubModel>(queryResult.Stub));
-                            break;
-
-                        default:
-                            throw new NotImplementedException(
-                                $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.");
-                    }
-                }
-
-                return result;
+                return await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
             }
         }
 
-        public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync()  =>
+        public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
             (await GetStubsAsync())
             .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
             .ToArray();
 
         public async Task<StubModel> GetStubAsync(string stubId)
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                var result = await conn.QueryFirstOrDefaultAsync<DbStubModel>(_queryStore.GetStubQuery,
-                    new {StubId = stubId});
-                if (result == null)
-                {
-                    return null;
-                }
-
-                switch (result.StubType)
-                {
-                    case StubJsonType:
-                        return JsonConvert.DeserializeObject<StubModel>(result.Stub);
-                    case StubYamlType:
-                        return YamlUtilities.Parse<StubModel>(result.Stub);
-                    default:
-                        throw new NotImplementedException(
-                            $"StubType '{result.StubType}' not supported: stub '{stubId}'.");
-                }
+                var stubs = await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
+                return stubs.FirstOrDefault(s => s.Id == stubId);
             }
         }
 
         public async Task PrepareStubSourceAsync()
         {
-            using (var conn = _queryStore.GetConnection())
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
             {
-                await conn.ExecuteAsync(_queryStore.MigrationsQuery);
+                await ctx.ExecuteAsync(_queryStore.MigrationsQuery);
+
+                // Also initialize the cache at startup.
+                await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
             }
         }
     }
