@@ -118,20 +118,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MigrateScript" xml:space="preserve">
-    <value>CREATE TABLE IF NOT EXISTS `requests` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	`correlation_id`	TEXT NOT NULL,
-	`executing_stub_id`	TEXT,
-	`request_begin_time`	TEXT NOT NULL,
-	`request_end_time`	TEXT,
-	`json`	TEXT NOT NULL
+      <value>-- Create requests table
+CREATE TABLE IF NOT EXISTS `requests` (
+	`id`	             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`correlation_id`	 TEXT NOT NULL,
+	`executing_stub_id`	 TEXT,
+	`request_begin_time` TEXT NOT NULL,
+	`request_end_time`	 TEXT,
+	`json`	             TEXT NOT NULL
 );
 
+-- Create stubs table
 CREATE TABLE IF NOT EXISTS `stubs` (
-	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`id`	    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	`stub_id`	TEXT NOT NULL UNIQUE,
-	`stub`	TEXT NOT NULL,
+	`stub`	    TEXT NOT NULL,
 	`stub_type`	TEXT NOT NULL
-);</value>
+);
+
+-- Create metadata table
+CREATE TABLE IF NOT EXISTS `metadata` (
+	`id`                      INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`stub_update_tracking_id` TEXT NOT NULL UNIQUE
+);
+
+INSERT INTO `metadata` (stub_update_tracking_id)
+SELECT 'initial_value'
+WHERE NOT EXISTS (SELECT * FROM metadata);</value>
   </data>
 </root>

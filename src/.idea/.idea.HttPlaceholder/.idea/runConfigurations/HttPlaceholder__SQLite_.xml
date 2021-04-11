@@ -5,7 +5,7 @@
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <envs>
-      <env name="sqliteConnectionString" value="Data Source=/tmp/httplaceholder.db" />
+      <env name="sqliteConnectionString" value="Data Source=$USER_HOME$/CodeMetadata/httplaceholder/httplaceholder.db" />
     </envs>
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
     <option name="USE_MONO" value="0" />
