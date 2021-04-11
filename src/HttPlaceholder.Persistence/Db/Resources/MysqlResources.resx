@@ -118,60 +118,32 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MigrateScript" xml:space="preserve">
-      <value>/*Table structure for table `requests` */
+      <value>-- Create requests table
 CREATE TABLE IF NOT EXISTS `requests` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `correlation_id` VARCHAR(100) NOT NULL,
-  `executing_stub_id` VARCHAR(100) DEFAULT NULL,
-  `request_begin_time` DATETIME NOT NULL,
-  `request_end_time` DATETIME DEFAULT NULL,
-  `json` LONGTEXT NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ix_correlation_id` (`correlation_id`),
-  KEY `ix_executing_stub_id` (`executing_stub_id`),
-  KEY `ix_request_begin_time` (`request_begin_time`),
-  KEY `ix_request_end_time` (`request_end_time`)
-) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
+	`id`	             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`correlation_id`	 TEXT NOT NULL,
+	`executing_stub_id`	 TEXT,
+	`request_begin_time` TEXT NOT NULL,
+	`request_end_time`	 TEXT,
+	`json`	             TEXT NOT NULL
+);
 
-/*Table structure for table `stubs` */
+-- Create stubs table
 CREATE TABLE IF NOT EXISTS `stubs` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `stub_id` VARCHAR(255) NOT NULL,
-  `stub` LONGTEXT NOT NULL,
-  `stub_type` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `ix_stub_id` (`stub_id`)
-) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
+	`id`	    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`stub_id`	TEXT NOT NULL UNIQUE,
+	`stub`	    TEXT NOT NULL,
+	`stub_type`	TEXT NOT NULL
+);
 
-/*Table structure for table `metadata` */
+-- Create metadata table
 CREATE TABLE IF NOT EXISTS `metadata` (
-    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-    `stub_update_tracking_id` VARCHAR(50) NOT NULL,
-    PRIMARY KEY(`id`)
-) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
+	`id`                      INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`stub_update_tracking_id` TEXT NOT NULL UNIQUE
+);
 
 INSERT INTO `metadata` (stub_update_tracking_id)
 SELECT 'initial_value'
-FROM dual
-WHERE NOT EXISTS (SELECT * FROM metadata);
-
-/*Add code for custom migrations here*/
-/*SET @dbname = DATABASE();
-SET @tablename = "stubs";
-SET @columnname = "colName";
-SET @preparedStatement = (SELECT IF(
-  (
-    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
-    WHERE
-      (table_name = @tablename)
-      AND (table_schema = @dbname)
-      AND (column_name = @columnname)
-  ) &gt; 0,
-  "SELECT 1",
-  CONCAT("ALTER TABLE ", @tablename, " ADD ", @columnname, " INT(11);")
-));
-PREPARE alterIfNotExists FROM @preparedStatement;
-EXECUTE alterIfNotExists;
-DEALLOCATE PREPARE alterIfNotExists;*/</value>
+WHERE NOT EXISTS (SELECT * FROM metadata);</value>
   </data>
 </root>
