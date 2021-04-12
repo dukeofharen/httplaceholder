@@ -3,6 +3,8 @@ using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Configuration;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Implementations;
+using HttPlaceholder.Persistence.FileSystem;
+using HttPlaceholder.Persistence.FileSystem.Implementations;
 using HttPlaceholder.Persistence.Implementations;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Configuration;
@@ -61,6 +63,7 @@ namespace HttPlaceholder.Persistence
             {
                 // If "fileStorageLocation" is set, it means HttPlaceholder should read and write files to a specific location.
                 services.AddSingleton<IStubSource, FileSystemStubSource>();
+                services.AddSingleton<IFileSystemStubCache, FileSystemStubCache>();
             }
             else
             {

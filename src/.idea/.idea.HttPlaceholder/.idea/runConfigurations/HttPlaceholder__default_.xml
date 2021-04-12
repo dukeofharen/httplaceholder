@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HttPlaceholder (default)" type="DotNetProject" factoryName=".NET Project">
-    <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net5.0/HttPlaceholder.dll" />
-    <option name="PROGRAM_PARAMETERS" value="-V --fileStorageLocation $USER_HOME$/CodeMetadata/httplaceholder" />
+    <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net5.0/HttPlaceholder" />
+    <option name="PROGRAM_PARAMETERS" value="-V --fileStorageLocation $USER_HOME$/CodeMetadata/httplaceholder/stubsRoot" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
