@@ -67,5 +67,11 @@ namespace HttPlaceholder.Domain
         /// </summary>
         [YamlMember(Alias = "host")]
         public string Host { get; set; }
+
+        /// <summary>
+        /// Gets or sets the JSON condition model.
+        /// </summary>
+        [YamlMember(Alias = "json")]
+        public StubJsonModel Json { get; set; }
     }
 }
