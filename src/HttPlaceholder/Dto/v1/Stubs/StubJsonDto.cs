@@ -26,6 +26,6 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// Gets or sets the JSON properties to check for.
         /// </summary>
         [YamlMember(Alias = "input")]
-        public IDictionary<string, object> Input { get; set; }
+        public object Input { get; set; }
     }
 }
