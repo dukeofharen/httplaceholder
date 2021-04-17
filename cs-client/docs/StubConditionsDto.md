@@ -14,6 +14,7 @@ Name | Type | Description | Notes
 **BasicAuthentication** | [**StubBasicAuthenticationDto**](StubBasicAuthenticationDto.md) | Gets or sets the basic authentication. | [optional] 
 **ClientIp** | **string** | Gets or sets the client ip. | [optional] 
 **Host** | **string** | Gets or sets the host. | [optional] 
+**Json** | [**object**](.md) | Gets or sets the JSON condition model. | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
     [TestClass]
     public class JsonPathConditionCheckerFacts
     {
-        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+        private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
         private JsonPathConditionChecker _checker;
 
         [TestInitialize]

@@ -4,14 +4,13 @@ namespace HttPlaceholder.Common.Utilities
 {
     public static class StringHelper
     {
-        public static bool IsRegexMatchOrSubstring(string fullString, string subString)
+        public static bool IsRegexMatchOrSubstring(string fullString, string subStringOrRegex)
         {
-            bool result;
-            var regex = new Regex(subString);
-            result = regex.IsMatch(fullString);
+            var regex = new Regex(subStringOrRegex);
+            var result = regex.IsMatch(fullString);
             if (!result)
             {
-                result = fullString == subString;
+                result = fullString == subStringOrRegex;
             }
 
             return result;

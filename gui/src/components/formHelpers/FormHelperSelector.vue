@@ -172,6 +172,16 @@ export default {
               onClick: () => this.setDefaultValue("stubForm/setDefaultJsonPath")
             },
             {
+              title: "JSON object",
+              subTitle: elementDescriptions.jsonObject,
+              onClick: () => this.setDefaultValue("stubForm/setDefaultJsonObject")
+            },
+            {
+              title: "JSON array",
+              subTitle: elementDescriptions.jsonArray,
+              onClick: () => this.setDefaultValue("stubForm/setDefaultJsonArray")
+            },
+            {
               title: "XPath",
               subTitle: elementDescriptions.xpath,
               onClick: () => this.setDefaultValue("stubForm/setDefaultXPath")

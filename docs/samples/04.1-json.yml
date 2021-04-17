@@ -1,0 +1,32 @@
+# Examples for using the JSON condition checker. 1 example for checking a JSON object and 1 for checking a JSON array.
+- id: json-object
+  conditions:
+    method: POST
+    json:
+      username: ^username$
+      subObject:
+        strValue: stringInput
+        boolValue: true
+        doubleValue: 1.23
+        dateTimeValue: 2021-04-16T21:23:03
+        intValue: 3
+        nullValue: null
+        arrayValue:
+          - val1
+          - subKey1: subValue1
+            subKey2: subValue2
+  response:
+    text: OK JSON OBJECT!
+
+- id: json-array
+  conditions:
+    method: POST
+    json:
+      - val1
+      - 3
+      - 1.46
+      - 2021-04-17T13:16:54
+      - stringVal: val1
+        intVal: 55
+  response:
+    text: OK JSON ARRAY!

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e37ff568-e074-4886-b72b-a8283c3527d6",
+		"_postman_id": "0aa21603-cc79-483e-8a2f-95dd743dbad8",
 		"name": "HttPlaceholder Examples",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -189,7 +189,7 @@
 			"name": "04 JSON",
 			"item": [
 				{
-					"name": "Regular",
+					"name": "JSONPath",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -206,6 +206,52 @@
 							"raw": "{{rootUrl}}users",
 							"host": [
 								"{{rootUrl}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JSON array",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    \"val1\",\n    3,\n    1.46,\n    \"2021-04-17T13:16:54\",\n    {\n        \"stringVal\": \"val1\",\n        \"intVal\": 55\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rootUrl}}json",
+							"host": [
+								"{{rootUrl}}json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JSON object",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"username\",\n  \"subObject\": {\n    \"strValue\": \"stringInput\",\n    \"boolValue\": true,\n    \"doubleValue\": 1.23,\n    \"dateTimeValue\": \"2021-04-16T21:23:03\",\n    \"intValue\": 3,\n    \"nullValue\": null,\n    \"arrayValue\": [\n      \"val1\",\n      {\n        \"subKey1\": \"subValue1\",\n        \"subKey2\": \"subValue2\"\n      }\n    ]\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{rootUrl}}json",
+							"host": [
+								"{{rootUrl}}json"
 							]
 						}
 					},
@@ -1597,6 +1643,48 @@
 									],
 									"path": [
 										"metadata"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET JSON schema",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/metadata/jsonSchema",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"metadata",
+										"jsonSchema"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET JSON array schema",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/metadata/jsonSchema?asArray=true",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"metadata",
+										"jsonSchema"
+									],
+									"query": [
+										{
+											"key": "asArray",
+											"value": "true"
+										}
 									]
 								}
 							},

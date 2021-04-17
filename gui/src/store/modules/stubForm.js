@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
-import { toastError } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import { defaultValues, responseBodyTypes } from "@/shared/stubFormResources";
+import {toastError} from "@/utils/toastUtil";
+import {resources} from "@/shared/resources";
+import {defaultValues, responseBodyTypes} from "@/shared/stubFormResources";
 
 const parseInput = state => {
   try {
@@ -251,6 +251,32 @@ const mutations = {
         parsed.conditions.jsonPath = parsed.conditions.jsonPath.concat(
           defaultValues.jsonPath
         );
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultJsonObject(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        parsed.conditions.json = defaultValues.jsonObject;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultJsonArray(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        parsed.conditions.json = defaultValues.jsonArray;
         state.input = yaml.dump(parsed);
       }
     });

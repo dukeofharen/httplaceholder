@@ -158,7 +158,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             await _context.AddStubAsync(stubToBeAdded);
 
             // assert
-            Assert.AreEqual("stub-d7c4d5ae267648eb6fdab7427d1030ac", stubToBeAdded.Id);
+            Assert.AreEqual("stub-439808dba5b50c70d7b5744258175e0f", stubToBeAdded.Id);
         }
 
         [TestMethod]

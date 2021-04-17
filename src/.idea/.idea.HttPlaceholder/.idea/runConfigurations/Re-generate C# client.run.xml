@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Re-generate C# client" type="RunNativeExe" factoryName="Native Executable">
     <option name="EXE_PATH" value="/bin/bash" />
-    <option name="PROGRAM_PARAMETERS" value="./scaffold-dotnet-client.sh &quot;$USER_HOME$/Desktop/swagger.json&quot;" />
+    <option name="PROGRAM_PARAMETERS" value="./scaffold-dotnet-client.sh &quot;$USER_HOME$/Desktop/httplaceholder-swagger.json&quot;" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../scripts/openapi" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <option name="USE_EXTERNAL_CONSOLE" value="0" />

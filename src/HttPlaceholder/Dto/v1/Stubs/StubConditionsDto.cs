@@ -72,5 +72,11 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// </summary>
         [YamlMember(Alias = "host")]
         public string Host { get; set; }
+
+        /// <summary>
+        /// Gets or sets the JSON condition model.
+        /// </summary>
+        [YamlMember(Alias = "json")]
+        public object Json { get; set; }
     }
 }
