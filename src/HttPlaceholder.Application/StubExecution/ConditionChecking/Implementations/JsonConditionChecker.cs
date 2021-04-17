@@ -120,7 +120,13 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                     from obj in objList
                     where CheckSubmittedJson(configuredObj, obj, logging)
                     select configuredObj).Count();
-            return passedConditionCount == objList.Count;
+            var passed = passedConditionCount == objList.Count;
+            if (!passed)
+            {
+                logging.Add($"Number of passed condition in posted list ({passedConditionCount}) doesn't match number of configured items in stub ({list.Count}).");
+            }
+
+            return passed;
         }
 
         private bool HandleString(string text, JToken jToken, IList<string> logging)
