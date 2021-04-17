@@ -44,7 +44,8 @@ namespace HttPlaceholder.Client.Model
         /// <param name="basicAuthentication">Gets or sets the basic authentication..</param>
         /// <param name="clientIp">Gets or sets the client ip..</param>
         /// <param name="host">Gets or sets the host..</param>
-        public StubConditionsDto(string method = default(string), StubUrlConditionDto url = default(StubUrlConditionDto), List<string> body = default(List<string>), List<StubFormDto> form = default(List<StubFormDto>), Dictionary<string, string> headers = default(Dictionary<string, string>), List<StubXpathDto> xpath = default(List<StubXpathDto>), List<string> jsonPath = default(List<string>), StubBasicAuthenticationDto basicAuthentication = default(StubBasicAuthenticationDto), string clientIp = default(string), string host = default(string))
+        /// <param name="json">Gets or sets the JSON condition model..</param>
+        public StubConditionsDto(string method = default(string), StubUrlConditionDto url = default(StubUrlConditionDto), List<string> body = default(List<string>), List<StubFormDto> form = default(List<StubFormDto>), Dictionary<string, string> headers = default(Dictionary<string, string>), List<StubXpathDto> xpath = default(List<StubXpathDto>), List<string> jsonPath = default(List<string>), StubBasicAuthenticationDto basicAuthentication = default(StubBasicAuthenticationDto), string clientIp = default(string), string host = default(string), object json = default(object))
         {
             this.Method = method;
             this.Url = url;
@@ -56,6 +57,7 @@ namespace HttPlaceholder.Client.Model
             this.BasicAuthentication = basicAuthentication;
             this.ClientIp = clientIp;
             this.Host = host;
+            this.Json = json;
         }
         
         /// <summary>
@@ -129,6 +131,13 @@ namespace HttPlaceholder.Client.Model
         public string Host { get; set; }
 
         /// <summary>
+        /// Gets or sets the JSON condition model.
+        /// </summary>
+        /// <value>Gets or sets the JSON condition model.</value>
+        [DataMember(Name="json", EmitDefaultValue=true)]
+        public object Json { get; set; }
+
+        /// <summary>
         /// Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
@@ -146,6 +155,7 @@ namespace HttPlaceholder.Client.Model
             sb.Append("  BasicAuthentication: ").Append(BasicAuthentication).Append("\n");
             sb.Append("  ClientIp: ").Append(ClientIp).Append("\n");
             sb.Append("  Host: ").Append(Host).Append("\n");
+            sb.Append("  Json: ").Append(Json).Append("\n");
             sb.Append("}\n");
             return sb.ToString();
         }
@@ -234,6 +244,11 @@ namespace HttPlaceholder.Client.Model
                     this.Host == input.Host ||
                     (this.Host != null &&
                     this.Host.Equals(input.Host))
+                ) && 
+                (
+                    this.Json == input.Json ||
+                    (this.Json != null &&
+                    this.Json.Equals(input.Json))
                 );
         }
 
@@ -266,6 +281,8 @@ namespace HttPlaceholder.Client.Model
                     hashCode = hashCode * 59 + this.ClientIp.GetHashCode();
                 if (this.Host != null)
                     hashCode = hashCode * 59 + this.Host.GetHashCode();
+                if (this.Json != null)
+                    hashCode = hashCode * 59 + this.Json.GetHashCode();
                 return hashCode;
             }
         }
