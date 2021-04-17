@@ -41,7 +41,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
 
         public int Priority => 1;
 
-        private bool CheckSubmittedJson(object input, JToken jToken, IList<string> logResults)
+        private bool CheckSubmittedJson(object input, JToken jToken, List<string> logResults)
         {
             var jtType = jToken.Type;
             if (
@@ -60,15 +60,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 case string text:
                     return HandleString(text, jToken, logResults);
                 default:
-                    // TODO log when not supported
+                    logResults.Add($"Type for input '{input}' ({input.GetType()}) is not supported.");
                     return false;
             }
         }
 
-        private bool HandleObject(IDictionary<object, object> obj, JToken jToken, IList<string> logging)
+        private bool HandleObject(IDictionary<object, object> obj, JToken jToken, List<string> logging)
         {
             if (jToken.Type != JTokenType.Object)
             {
+                logging.Add($"Passed item is of type '{jToken.Type}', but Object was expected.");
                 return false;
             }
 
@@ -100,10 +101,11 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             return true;
         }
 
-        private bool HandleList(IList<object> list, JToken jToken, IList<string> logging)
+        private bool HandleList(List<object> list, JToken jToken, List<string> logging)
         {
             if (jToken.Type != JTokenType.Array)
             {
+                logging.Add($"Passed item is of type '{jToken.Type}', but Array was expected.");
                 return false;
             }
 
@@ -115,21 +117,25 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 return false;
             }
 
+            // Create a temp list for logging the list results. If the request passes, the logging is
+            var tempListLogging = new List<string>();
             var passedConditionCount =
                 (from configuredObj in list
                     from obj in objList
-                    where CheckSubmittedJson(configuredObj, obj, logging)
+                    where CheckSubmittedJson(configuredObj, obj, tempListLogging)
                     select configuredObj).Count();
             var passed = passedConditionCount == objList.Count;
             if (!passed)
             {
-                logging.Add($"Number of passed condition in posted list ({passedConditionCount}) doesn't match number of configured items in stub ({list.Count}).");
+                logging.Add(
+                    $"Number of passed condition in posted list ({passedConditionCount}) doesn't match number of configured items in stub ({list.Count}).");
+                logging.AddRange(tempListLogging);
             }
 
             return passed;
         }
 
-        private bool HandleString(string text, JToken jToken, IList<string> logging)
+        private bool HandleString(string text, JToken jToken, List<string> logging)
         {
             switch (jToken.Type)
             {
