@@ -46,7 +46,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using var response = await Client.GetAsync(url);
             var content = await response.Content.ReadAsByteArrayAsync();
-            Assert.AreEqual(75583, content.Length);
+            Assert.AreEqual(632, content.Length);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
 
