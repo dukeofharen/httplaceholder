@@ -43,6 +43,14 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
 
         private bool CheckSubmittedJson(object input, JToken jToken, IList<string> logResults)
         {
+            var jtType = jToken.Type;
+            if (
+                jtType is JTokenType.Null or JTokenType.None or JTokenType.Undefined &&
+                input == null)
+            {
+                return true;
+            }
+
             switch (input)
             {
                 case List<object> list:
@@ -65,6 +73,13 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             }
 
             var objDict = jToken.ToObject<Dictionary<string, JToken>>();
+            if (objDict.Count < obj.Count)
+            {
+                logging.Add(
+                    $"Number of elements in posted object ({objDict.Count}) is smaller than the number of configured properties in the stub ({obj.Count}).");
+                return false;
+            }
+
             foreach (var pair in obj)
             {
                 var foundValue = objDict.FirstOrDefault(o => o.Key.Equals(pair.Key));
@@ -92,7 +107,20 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 return false;
             }
 
-            return true;
+            var objList = jToken.ToObject<List<JToken>>();
+            if (objList.Count < list.Count)
+            {
+                logging.Add(
+                    $"Number of elements in posted list ({objList.Count}) is smaller than the number of configured properties in the stub ({list.Count}).");
+                return false;
+            }
+
+            var passedConditionCount =
+                (from configuredObj in list
+                    from obj in objList
+                    where CheckSubmittedJson(configuredObj, obj, logging)
+                    select configuredObj).Count();
+            return passedConditionCount == objList.Count;
         }
 
         private bool HandleString(string text, JToken jToken, IList<string> logging)
@@ -126,12 +154,21 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                     return false;
 
                 case JTokenType.Integer:
-                    if (int.TryParse(text, out var parsedInt))
+                    if (long.TryParse(text, out var parsedInt))
                     {
-                        return parsedInt == (int)((JValue)jToken).Value;
+                        return parsedInt == (long)((JValue)jToken).Value;
                     }
 
                     logging.Add($"Value '{text}' not recognized as valid int.");
+                    return false;
+
+                case JTokenType.Date:
+                    if (DateTime.TryParse(text, out var parsedDate))
+                    {
+                        return parsedDate == (DateTime)((JValue)jToken).Value;
+                    }
+
+                    logging.Add($"Value '{text}' not recognized as valid date/time.");
                     return false;
 
                 default:
