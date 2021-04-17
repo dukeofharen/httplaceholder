@@ -72,6 +72,6 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the JSON condition model.
         /// </summary>
         [YamlMember(Alias = "json")]
-        public StubJsonModel Json { get; set; }
+        public object Json { get; set; }
     }
 }

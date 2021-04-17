@@ -21,8 +21,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
         {
             var result = new ConditionCheckResultModel();
-            var jsonConditions = conditions?.Json;
-            if (jsonConditions == null)
+            if (conditions?.Json == null)
             {
                 return result;
             }
@@ -30,8 +29,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             var body = _httpContextService.GetBody();
             var jToken = JToken.Parse(body);
             var logResults = new List<string>();
-            var input = jsonConditions.Input;
-            result.ConditionValidation = CheckSubmittedJson(input, jToken, logResults)
+            result.ConditionValidation = CheckSubmittedJson(conditions.Json, jToken, logResults)
                 ? ConditionValidationType.Valid
                 : ConditionValidationType.Invalid;
             result.Log = string.Join(Environment.NewLine, logResults);

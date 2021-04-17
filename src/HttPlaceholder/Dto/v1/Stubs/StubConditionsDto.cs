@@ -77,6 +77,6 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// Gets or sets the JSON condition model.
         /// </summary>
         [YamlMember(Alias = "json")]
-        public StubJsonDto Json { get; set; }
+        public object Json { get; set; }
     }
 }
