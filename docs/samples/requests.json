@@ -212,7 +212,7 @@
 					"response": []
 				},
 				{
-					"name": "JSON object",
+					"name": "JSON array",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -235,7 +235,7 @@
 					"response": []
 				},
 				{
-					"name": "JSON array",
+					"name": "JSON object",
 					"request": {
 						"method": "POST",
 						"header": [],

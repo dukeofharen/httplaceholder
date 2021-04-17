@@ -360,6 +360,87 @@ It is possible to check if a hostname in a request is correct. This condition ca
     text: OK
 ```
 
+## JSON
+
+The JSON condition checker can be used to check if the posted JSON is posted according to your specified conditions. You can specify both an array or an object as input for the condition. When checking for string values in a JSON property, HttPlaceholder will use regular expressions to check if the condition is OK.
+
+```yml
+- id: json-object
+  conditions:
+    method: POST
+    json:
+      username: ^username$
+      subObject:
+        strValue: stringInput
+        boolValue: true
+        doubleValue: 1.23
+        dateTimeValue: 2021-04-16T21:23:03
+        intValue: 3
+        nullValue: null
+        arrayValue:
+          - val1
+          - subKey1: subValue1
+            subKey2: subValue2
+  response:
+    text: OK JSON OBJECT!
+```
+
+**Correct request**
+- Method: POST
+- URL: http://localhost:5000
+- Body:
+```json
+{
+  "username": "username",
+  "subObject": {
+    "strValue": "stringInput",
+    "boolValue": true,
+    "doubleValue": 1.23,
+    "dateTimeValue": "2021-04-16T21:23:03",
+    "intValue": 3,
+    "nullValue": null,
+    "arrayValue": [
+      "val1",
+      {
+        "subKey1": "subValue1",
+        "subKey2": "subValue2"
+      }
+    ]
+  }
+}
+```
+
+```yml
+- id: json-array
+  conditions:
+    method: POST
+    json:
+      - val1
+      - 3
+      - 1.46
+      - 2021-04-17T13:16:54
+      - stringVal: val1
+        intVal: 55
+  response:
+    text: OK JSON ARRAY!
+```
+
+**Correct request**
+- Method: POST
+- URL: http://localhost:5000
+- Body:
+```json
+[
+    "val1",
+    3,
+    1.46,
+    "2021-04-17T13:16:54",
+    {
+        "stringVal": "val1",
+        "intVal": 55
+    }
+]
+```
 ## JSONPath
 
 Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions.
