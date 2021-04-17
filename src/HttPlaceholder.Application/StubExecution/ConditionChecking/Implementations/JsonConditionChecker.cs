@@ -26,10 +26,12 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 return result;
             }
 
+            var convertedJsonConditions = ConvertJsonConditions(conditions.Json);
+
             var body = _httpContextService.GetBody();
             var jToken = JToken.Parse(body);
             var logResults = new List<string>();
-            result.ConditionValidation = CheckSubmittedJson(conditions.Json, jToken, logResults)
+            result.ConditionValidation = CheckSubmittedJson(convertedJsonConditions, jToken, logResults)
                 ? ConditionValidationType.Valid
                 : ConditionValidationType.Invalid;
             result.Log = string.Join(Environment.NewLine, logResults);
@@ -185,6 +187,51 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                     logging.Add($"JSON token type '{jToken.Type}' not supported!");
                     return false;
             }
+        }
+
+        /// <summary>
+        /// Sadly, this method is needed, because YamlDotNet and Newtonsoft.Json both deserialize the JSON condition to another data types.
+        /// By calling this method, we are sure that the data is always in the correct format when running this condition checker.
+        /// </summary>
+        /// <returns>The converted JSON conditions.</returns>
+        private object ConvertJsonConditions(object conditions)
+        {
+            if (conditions == null)
+            {
+                return null;
+            }
+
+            if (conditions is IDictionary<object, object> or IList<object> or string)
+            {
+                // Input is already OK, return it directly.
+                return conditions;
+            }
+
+            if (conditions is JArray jArray)
+            {
+                var list = jArray.ToObject<List<object>>();
+                var result = new List<object>();
+                foreach (var item in list)
+                {
+                    result.Add(ConvertJsonConditions(item));
+                }
+
+                return result;
+            }
+
+            if (conditions is JObject jObject)
+            {
+                var dict = jObject.ToObject<Dictionary<object, object>>();
+                var result = new Dictionary<object, object>();
+                foreach (var pair in dict)
+                {
+                    result.Add(pair.Key.ToString(), ConvertJsonConditions(pair.Value));
+                }
+
+                return result;
+            }
+
+            return conditions.ToString();
         }
     }
 }
