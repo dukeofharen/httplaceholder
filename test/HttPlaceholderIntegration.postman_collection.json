@@ -47,1876 +47,2724 @@
 					"name": "1. Add stubs",
 					"item": [
 						{
-							"name": "0. Fallback",
-							"protocolProfileBehavior": {
-								"disabledSystemHeaders": {
-									"content-type": true
-								}
-							},
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "text/yaml",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 0-fallback\npriority: -1\ntenant: integration\nresponse:\n  text: OK FALLBACK"
+							"name": "1. Stubs for request conditions",
+							"item": [
+								{
+									"name": "0. Fallback",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 0-fallback\npriority: -1\ntenant: integration\nresponse:\n  text: OK FALLBACK"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
+								{
+									"name": "1.1. Get with path, query and headers",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 1.1-get-path-query-and-headers\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /get\n    query:\n      q1: val1\n      q2: val2\n  headers:\n    X-Header-1: value1\n    X-Header-2: value2\nresponse:\n  text: OK PATH, QUERY AND HEADERS"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "1.2. Get with full path",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 1.2-get-with-full-path\ntenant: integration\nconditions:\n  method: GET\n  url:\n    fullPath: /fullPath?q1=val1&q2=val2\nresponse:\n  text: OK FULL PATH"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Post with body condition checkers",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 2-post-and-check-body\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post\n  body:\n    - \\bvalue1\\b\n    - \\bvalue2\\b\nresponse:\n  text: OK POST AND CHECK BODY"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3. XPath with namespaces specified",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 3-xml-with-namespaces-specified\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-xml-with-namespaces\n  headers:\n    Content-Type: application/soap+xml; charset=utf-8\n  xpath:\n    - queryString: /soap:Envelope/soap:Body/m:GetUser/m:Username[text() = 'user1']\n      namespaces:\n        soap: http://www.w3.org/2003/05/soap-envelope\n        m: http://www.example.org/stock/GetUser\nresponse:\n  text: OK XML WITH NAMESPACES SPECIFIED"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "4. XPath without namespaces specified",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 4-xml-without-namespaces-specified\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-xml-without-namespaces\n  headers:\n    Content-Type: application/soap+xml; charset=utf-8\n  xpath:\n    - queryString: /soap:Envelope/soap:Body/m:GetUser/m:Username[text() = 'user1']\nresponse:\n  text: OK XML WITHOUT NAMESPACES SPECIFIED"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "5. Post with JSON object checker",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 5-post-with-json-object-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-json-object-checker\n  json:\n    strValue: stringInput\n    boolValue: true\n    doubleValue: 1.23\n    dateTimeValue: 2021-04-18T13:14:10\n    intValue: 4\n    nullValue: null\n    subObject:\n      subObjKey1: subVal1\n      subObjKey2: subVal2\n    arrayValue:\n      - val1\n      - val2\n      - subKey1: subVal1\n        subKey2: subVal2\nresponse:\n  text: OK POST WITH JSON OBJECT CHECKER"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "6. Post with JSON array checker",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 6-post-with-json-array-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-json-array-checker\n  json:\n    - stringInput\n    - true\n    - 1.23\n    - 2021-04-18T13:14:10\n    - 4\n    - subObjKey1: subVal1\n      subObjKey2: subVal2\n    - - val1\n      - val2\n      - subKey1: subVal1\n        subKey2: subVal2\nresponse:\n  text: OK POST WITH JSON ARRAY CHECKER"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "7. Post with JSONPath checker",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 7-post-with-jsonpath-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-jsonpath-checker\n  headers:\n    Content-Type: application/json\n  jsonPath:\n    - \"$.phoneNumbers[?(@.type=='iPhone')]\"\nresponse:\n  text: OK WITH JSONPATH CHECKER"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "8. Get with basic authentication",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 8-get-with-basic-auth\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /basic-auth\n  basicAuthentication:\n    username: user1\n    password: 'Secret1!'\nresponse:\n  text: OK BASIC AUTH"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "9. Get with client IP check",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 9-get-with-client-ip-check\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /single-client-ip\n  clientIp: 11.22.33.44\nresponse:\n  text: OK CLIENT IP CHECK"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "10. Get with client IP range",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 10-get-with-client-ip-range\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /client-ip-range\n  clientIp: 11.22.33.00/30\nresponse:\n  text: OK CLIENT IP CHECK RANGE"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "11. Get with hostname",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 11-get-with-hostname\ntenant: integration\nconditions:\n  url:\n    path: /get-with-hostname\n  method: GET\n  host: httplaceholder.local\nresponse:\n  text: OK HOSTNAME"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "12.1. Priority scenario 1",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 12.1-priority-1\ntenant: integration\npriority: 1\nconditions:\n  url:\n    path: /priority\n  method: GET\nresponse:\n  text: OK PRIO 1"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "12.2. Priority scenario 2",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 12.1-priority-2\ntenant: integration\npriority: 2\nconditions:\n  url:\n    path: /priority\n  method: GET\nresponse:\n  text: OK PRIO 2"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "13. Post with form",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 13-post-with-form\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-form\n  form:\n    - key: key1\n      value: val1\n    - key: key2\n      value: val2-1\n    - key: key2\n      value: val2-2\nresponse:\n  text: OK FORM"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "14. Get with HTTPS",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 14-get-with-https\ntenant: 11-ishttps\nconditions:\n  method: GET\n  url:\n    path: /ishttps\n    isHttps: true\nresponse:\n  text: OK HTTPS"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						},
 						{
-							"name": "1.1. Get with path, query and headers",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "text/yaml",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 1.1-get-path-query-and-headers\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /get\n    query:\n      q1: val1\n      q2: val2\n  headers:\n    X-Header-1: value1\n    X-Header-2: value2\nresponse:\n  text: OK PATH, QUERY AND HEADERS"
+							"name": "2. Stubs for response writers",
+							"item": [
+								{
+									"name": "1. Slow request",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 1-slow-request\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /slow-request\nresponse:\n  extraDuration: 1000\n  text: OK SLOW REQUEST"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "1.2. Get with full path",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "text/yaml",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 1.2-get-with-full-path\ntenant: integration\nconditions:\n  method: GET\n  url:\n    fullPath: /fullPath?q1=val1&q2=val2\nresponse:\n  text: OK FULL PATH"
+								{
+									"name": "2.1. Temporary redirect",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 2.1-temporary-redirect\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/temp-redirect$\nresponse:\n  temporaryRedirect: {{rootUrl}}temp-redirect-location"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "2. Post with body condition checkers",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "text/yaml",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 2-post-and-check-body\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post\n  body:\n    - \\bvalue1\\b\n    - \\bvalue2\\b\nresponse:\n  text: OK POST AND CHECK BODY"
+								{
+									"name": "2.2. Temporary redirect location",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 2.2-temporary-redirect-location\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/temp-redirect-location$\nresponse:\n  text: OK TEMP REDIRECT"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3. XPath with namespaces specified",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "text/yaml",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 3-xml-with-namespaces-specified\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-xml-with-namespaces\n  headers:\n    Content-Type: application/soap+xml; charset=utf-8\n  xpath:\n    - queryString: /soap:Envelope/soap:Body/m:GetUser/m:Username[text() = 'user1']\n      namespaces:\n        soap: http://www.w3.org/2003/05/soap-envelope\n        m: http://www.example.org/stock/GetUser\nresponse:\n  text: OK XML WITH NAMESPACES SPECIFIED"
+								{
+									"name": "2.3. Permanent redirect",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 2.3-permanent-redirect\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/permanent-redirect$\nresponse:\n  permanentRedirect: {{rootUrl}}permanent-redirect-location"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "4. XPath without namespaces specified",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 4-xml-without-namespaces-specified\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-xml-without-namespaces\n  headers:\n    Content-Type: application/soap+xml; charset=utf-8\n  xpath:\n    - queryString: /soap:Envelope/soap:Body/m:GetUser/m:Username[text() = 'user1']\nresponse:\n  text: OK XML WITHOUT NAMESPACES SPECIFIED"
+								{
+									"name": "2.4. Permanent redirect location",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 2.4-permanent-redirect-location\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/permanent-redirect-location$\nresponse:\n  text: OK PERMANENT REDIRECT"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "5. Post with JSON object checker",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 5-post-with-json-object-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-json-object-checker\n  json:\n    strValue: stringInput\n    boolValue: true\n    doubleValue: 1.23\n    dateTimeValue: 2021-04-18T13:14:10\n    intValue: 4\n    nullValue: null\n    subObject:\n      subObjKey1: subVal1\n      subObjKey2: subVal2\n    arrayValue:\n      - val1\n      - val2\n      - subKey1: subVal1\n        subKey2: subVal2\nresponse:\n  text: OK POST WITH JSON OBJECT CHECKER"
+								{
+									"name": "3.1. Text response type",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 3.1-text-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/text-response-type$\nresponse:\n  text: OK TEXT RESPONSE"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "6. Post with JSON array checker",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 6-post-with-json-array-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-json-array-checker\n  json:\n    - stringInput\n    - true\n    - 1.23\n    - 2021-04-18T13:14:10\n    - 4\n    - subObjKey1: subVal1\n      subObjKey2: subVal2\n    - - val1\n      - val2\n      - subKey1: subVal1\n        subKey2: subVal2\nresponse:\n  text: OK POST WITH JSON ARRAY CHECKER"
+								{
+									"name": "3.2. JSON response type",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 3.2-json-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/json-response-type$\nresponse:\n  json: |\n    {\n        \"key1\": \"val1\"\n    }"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "7. Post with JSONPath checker",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 7-post-with-jsonpath-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-jsonpath-checker\n  headers:\n    Content-Type: application/json\n  jsonPath:\n    - \"$.phoneNumbers[?(@.type=='iPhone')]\"\nresponse:\n  text: OK WITH JSONPATH CHECKER"
+								{
+									"name": "3.3. XML response type",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 3.3-xml-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/xml-response-type$\nresponse:\n  xml: <xml>value</xml>"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "8. Get with basic authentication",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 8-get-with-basic-auth\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /basic-auth\n  basicAuthentication:\n    username: user1\n    password: 'Secret1!'\nresponse:\n  text: OK BASIC AUTH"
+								{
+									"name": "3.4. HTML response type",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 3.4-html-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/html-response-type$\nresponse:\n  html: <html>value</html>"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "9. Get with client IP check",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 9-get-with-client-ip-check\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /single-client-ip\n  clientIp: 11.22.33.44\nresponse:\n  text: OK CLIENT IP CHECK"
+								{
+									"name": "4. Status code",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 4-status-code\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/status-code$\nresponse:\n  statusCode: 401\n  text: UNAUTHORIZED!"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "10. Get with client IP range",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 10-get-with-client-ip-range\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /client-ip-range\n  clientIp: 11.22.33.00/30\nresponse:\n  text: OK CLIENT IP CHECK RANGE"
+								{
+									"name": "5. Response headers",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 5-response-headers\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/response-headers$\nresponse:\n  text: OK RESPONSE HEADERS\n  headers:\n    X-Header-1: val1\n    X-Header-2: val2"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "11. Get with hostname",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 11-get-with-hostname\ntenant: integration\nconditions:\n  url:\n    path: /get-with-hostname\n  method: GET\n  host: httplaceholder.local\nresponse:\n  text: OK HOSTNAME"
+								{
+									"name": "6.1. Image png",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 6.1-image-png\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.png\nresponse:\n  image:\n    type: png\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "12.1. Priority scenario 1",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 12.1-priority-1\ntenant: integration\npriority: 1\nconditions:\n  url:\n    path: /priority\n  method: GET\nresponse:\n  text: OK PRIO 1"
+								{
+									"name": "6.2. Image bmp",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 6.2-image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.bmp\nresponse:\n  image:\n    type: bmp\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "12.2. Priority scenario 2",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 12.1-priority-2\ntenant: integration\npriority: 2\nconditions:\n  url:\n    path: /priority\n  method: GET\nresponse:\n  text: OK PRIO 2"
+								{
+									"name": "6.3. Image jpg",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 6.3-image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.jpg\nresponse:\n  image:\n    type: jpeg\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
+								{
+									"name": "6.4. Image gif",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: 6.4-image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.gif\nresponse:\n  image:\n    type: gif\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
-						},
-						{
-							"name": "13. Post with form",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 13-post-with-form\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-form\n  form:\n    - key: key1\n      value: val1\n    - key: key2\n      value: val2-1\n    - key: key2\n      value: val2-2\nresponse:\n  text: OK FORM"
-								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "14. Get with HTTPS",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: 14-get-with-https\ntenant: 11-ishttps\nconditions:\n  method: GET\n  url:\n    path: /ishttps\n    isHttps: true\nresponse:\n  text: OK HTTPS"
-								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
+							]
 						}
 					]
 				}
 			]
 		},
 		{
-			"name": "1. Test with conditions",
+			"name": "1. Tests",
 			"item": [
 				{
-					"name": "0. General",
+					"name": "1. Test with conditions",
 					"item": [
 						{
-							"name": "1. Test fallback",
-							"event": [
+							"name": "0. General",
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}urlthatisnotmapped",
-									"host": [
-										"{{rootUrl}}urlthatisnotmapped"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "1. Path",
-					"item": [
-						{
-							"name": "1. Test get with path, query and headers",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK PATH, QUERY AND HEADERS\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Header-1",
-										"value": " value1",
-										"type": "text"
+									"name": "1. Test fallback",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}urlthatisnotmapped",
+											"host": [
+												"{{rootUrl}}urlthatisnotmapped"
+											]
+										}
 									},
-									{
-										"key": "X-Header-2",
-										"value": " value2",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{rootUrl}}get?q1=val1&q2=val2",
-									"host": [
-										"{{rootUrl}}get"
-									],
-									"query": [
-										{
-											"key": "q1",
-											"value": "val1"
-										},
-										{
-											"key": "q2",
-											"value": "val2"
-										}
-									]
+									"response": []
 								}
-							},
-							"response": []
+							]
 						},
 						{
-							"name": "2. Test get with path, query and headers: path is incorrect",
-							"event": [
+							"name": "1. Path",
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
+									"name": "1. Test get with path, query and headers",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK PATH, QUERY AND HEADERS\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Header-1",
+												"value": " value1",
+												"type": "text"
+											},
+											{
+												"key": "X-Header-2",
+												"value": " value2",
+												"type": "text"
+											}
 										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Header-1",
-										"type": "text",
-										"value": "value1"
+										"url": {
+											"raw": "{{rootUrl}}get?q1=val1&q2=val2",
+											"host": [
+												"{{rootUrl}}get"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val2"
+												}
+											]
+										}
 									},
-									{
-										"key": "X-Header-2",
-										"type": "text",
-										"value": "value2"
-									}
-								],
-								"url": {
-									"raw": "{{rootUrl}}post?q1=val1&q2=val2",
-									"host": [
-										"{{rootUrl}}post"
-									],
-									"query": [
-										{
-											"key": "q1",
-											"value": "val1"
-										},
-										{
-											"key": "q2",
-											"value": "val2"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3. Test get with path, query and headers: query is incorrect",
-							"event": [
+									"response": []
+								},
 								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
+									"name": "2. Test get with path, query and headers: path is incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Header-1",
+												"type": "text",
+												"value": "value1"
+											},
+											{
+												"key": "X-Header-2",
+												"type": "text",
+												"value": "value2"
+											}
 										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Header-1",
-										"type": "text",
-										"value": "value1"
+										"url": {
+											"raw": "{{rootUrl}}post?q1=val1&q2=val2",
+											"host": [
+												"{{rootUrl}}post"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val2"
+												}
+											]
+										}
 									},
-									{
-										"key": "X-Header-2",
-										"type": "text",
-										"value": "value2"
-									}
-								],
-								"url": {
-									"raw": "{{rootUrl}}get?q1=val1&q2=val3",
-									"host": [
-										"{{rootUrl}}get"
-									],
-									"query": [
-										{
-											"key": "q1",
-											"value": "val1"
-										},
-										{
-											"key": "q2",
-											"value": "val3"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "4. Test get with path, query and headers: header is incorrect",
-							"event": [
+									"response": []
+								},
 								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
+									"name": "3. Test get with path, query and headers: query is incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Header-1",
+												"type": "text",
+												"value": "value1"
+											},
+											{
+												"key": "X-Header-2",
+												"type": "text",
+												"value": "value2"
+											}
 										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Header-1",
-										"type": "text",
-										"value": "value3"
+										"url": {
+											"raw": "{{rootUrl}}get?q1=val1&q2=val3",
+											"host": [
+												"{{rootUrl}}get"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val3"
+												}
+											]
+										}
 									},
-									{
-										"key": "X-Header-2",
-										"type": "text",
-										"value": "value2"
-									}
-								],
-								"url": {
-									"raw": "{{rootUrl}}get?q1=val1&q2=val2",
-									"host": [
-										"{{rootUrl}}get"
+									"response": []
+								},
+								{
+									"name": "4. Test get with path, query and headers: header is incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
 									],
-									"query": [
-										{
-											"key": "q1",
-											"value": "val1"
-										},
-										{
-											"key": "q2",
-											"value": "val2"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "5. Test get with full path",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FULL PATH\");",
-											"});"
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Header-1",
+												"type": "text",
+												"value": "value3"
+											},
+											{
+												"key": "X-Header-2",
+												"type": "text",
+												"value": "value2"
+											}
 										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}fullPath?q1=val1&q2=val2",
-									"host": [
-										"{{rootUrl}}fullPath"
+										"url": {
+											"raw": "{{rootUrl}}get?q1=val1&q2=val2",
+											"host": [
+												"{{rootUrl}}get"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "5. Test get with full path",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FULL PATH\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
 									],
-									"query": [
-										{
-											"key": "q1",
-											"value": "val1"
-										},
-										{
-											"key": "q2",
-											"value": "val2"
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}fullPath?q1=val1&q2=val2",
+											"host": [
+												"{{rootUrl}}fullPath"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val2"
+												}
+											]
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "6. Test get with full path: path incorrect",
-							"event": [
+									},
+									"response": []
+								},
 								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}fullPath?q1=val1&q2=val3",
-									"host": [
-										"{{rootUrl}}fullPath"
+									"name": "6. Test get with full path: path incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
 									],
-									"query": [
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}fullPath?q1=val1&q2=val3",
+											"host": [
+												"{{rootUrl}}fullPath"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val3"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "2. Post with body",
+							"item": [
+								{
+									"name": "1. Test post with body condition checkers",
+									"event": [
 										{
-											"key": "q1",
-											"value": "val1"
-										},
-										{
-											"key": "q2",
-											"value": "val3"
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK POST AND CHECK BODY\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
 										}
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "2. Post with body",
-					"item": [
-						{
-							"name": "1. Test post with body condition checkers",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK POST AND CHECK BODY\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "value1\nvalue2"
-								},
-								"url": {
-									"raw": "{{rootUrl}}post",
-									"host": [
-										"{{rootUrl}}post"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "2. Test post with body condition checkers: posted value incorrect",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "value3\nvalue2"
-								},
-								"url": {
-									"raw": "{{rootUrl}}post",
-									"host": [
-										"{{rootUrl}}post"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3. Test post with body condition checkers: method is incorrect",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "value1\nvalue2"
-								},
-								"url": {
-									"raw": "{{rootUrl}}post",
-									"host": [
-										"{{rootUrl}}post"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "3. XML",
-					"item": [
-						{
-							"name": "1. Test XMLPath with namespaces",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK XML WITH NAMESPACES SPECIFIED\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/soap+xml; charset=utf-8",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "<?xml version=\"1.0\"?>\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" \n    xmlns:m=\"http://www.example.org/stock/GetUser\">\n    <soap:Header></soap:Header>\n    <soap:Body>\n        <m:GetUser>\n            <m:Username>user1</m:Username>\n        </m:GetUser>\n    </soap:Body>\n</soap:Envelope>",
-									"options": {
-										"raw": {
-											"language": "xml"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-xml-with-namespaces",
-									"host": [
-										"{{rootUrl}}post-xml-with-namespaces"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "2. Test XMLPath with namespaces: XPath incorrect",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/soap+xml; charset=utf-8"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "<?xml version=\"1.0\"?>\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" \n    xmlns:m=\"http://www.example.org/stock/GetUser\">\n    <soap:Header></soap:Header>\n    <soap:Body>\n        <m:GetUser>\n            <m:Username>user2</m:Username>\n        </m:GetUser>\n    </soap:Body>\n</soap:Envelope>",
-									"options": {
-										"raw": {
-											"language": "xml"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-xml-with-namespaces",
-									"host": [
-										"{{rootUrl}}post-xml-with-namespaces"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3. Test XMLPath without namespaces",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK XML WITHOUT NAMESPACES SPECIFIED\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/soap+xml; charset=utf-8",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "<?xml version=\"1.0\"?>\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" \n    xmlns:m=\"http://www.example.org/stock/GetUser\">\n    <soap:Header></soap:Header>\n    <soap:Body>\n        <m:GetUser>\n            <m:Username>user1</m:Username>\n        </m:GetUser>\n    </soap:Body>\n</soap:Envelope>",
-									"options": {
-										"raw": {
-											"language": "xml"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-xml-without-namespaces",
-									"host": [
-										"{{rootUrl}}post-xml-without-namespaces"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "4. Test XMLPath without namespaces: XPath incorrect",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "application/soap+xml; charset=utf-8"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "<?xml version=\"1.0\"?>\n<soap:Envelope>\n    <soap:Header></soap:Header>\n    <soap:Body>\n        <m:GetUser>\n            <m:Username>user2</m:Username>\n        </m:GetUser>\n    </soap:Body>\n</soap:Envelope>",
-									"options": {
-										"raw": {
-											"language": "xml"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-xml-without-namespaces",
-									"host": [
-										"{{rootUrl}}post-xml-without-namespaces"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "4. JSON",
-					"item": [
-						{
-							"name": "1. Test POST JSON object",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK POST WITH JSON OBJECT CHECKER\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"strValue\": \"stringInput\",\n    \"boolValue\": true,\n    \"doubleValue\": 1.23,\n    \"dateTimeValue\": \"2021-04-18T13:14:10\",\n    \"intValue\": 4,\n    \"nullValue\": null,\n    \"subObject\": {\n        \"subObjKey1\": \"subVal1\",\n        \"subObjKey2\": \"subVal2\"\n    },\n    \"arrayValue\": [\n        \"val1\",\n        \"val2\",\n        {\n            \"subKey1\": \"subVal1\",\n            \"subKey2\": \"subVal2\"\n        }\n    ]\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-with-json-object-checker",
-									"host": [
-										"{{rootUrl}}post-with-json-object-checker"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "2. Test POST JSON object: JSON is incorrect",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"strValue\": \"stringInput\",\n    \"boolValue\": true,\n    \"doubleValue\": 1.23,\n    \"dateTimeValue\": \"2021-04-18T13:14:10\",\n    \"intValue\": 4,\n    \"nullValue\": null,\n    \"subObject\": {\n        \"subObjKey1\": \"subVal1\",\n        \"subObjKey2\": \"subVal2\"\n    },\n    \"arrayValue\": [\n        \"val1\",\n        \"val2\",\n        {\n            \"subKey1\": \"subVal3\",\n            \"subKey2\": \"subVal2\"\n        }\n    ]\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-with-json-object-checker",
-									"host": [
-										"{{rootUrl}}post-with-json-object-checker"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3. Test POST JSON array",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK POST WITH JSON ARRAY CHECKER\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "[\n    \"stringInput\",\n    true,\n    1.23,\n    \"2021-04-18T13:14:10\",\n    4,\n    {\n        \"subObjKey1\": \"subVal1\",\n        \"subObjKey2\": \"subVal2\"\n    },\n    [\n        \"val1\",\n        \"val2\",\n        {\n            \"subKey1\": \"subVal1\",\n            \"subKey2\": \"subVal2\"\n        }\n    ]\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-with-json-array-checker",
-									"host": [
-										"{{rootUrl}}post-with-json-array-checker"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "4. Test POST JSON array: JSON is incorrect",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "[\n    \"stringInput\",\n    true,\n    1.23,\n    \"2021-04-18T13:14:11\",\n    4,\n    {\n        \"subObjKey1\": \"subVal1\",\n        \"subObjKey2\": \"subVal2\"\n    },\n    [\n        \"val1\",\n        \"val2\",\n        {\n            \"subKey1\": \"subVal1\",\n            \"subKey2\": \"subVal2\"\n        }\n    ]\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-with-json-array-checker",
-									"host": [
-										"{{rootUrl}}post-with-json-array-checker"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "5. Test POST with JSONPath checker",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK WITH JSONPATH CHECKER\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"phoneNumbers\": [\n        {\n            \"type\": \"iPhone\",\n            \"number\": \"0123-4567-8888\"\n        },\n        {\n            \"type\": \"home\",\n            \"number\": \"0123-4567-8910\"\n        }\n    ]\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-with-jsonpath-checker",
-									"host": [
-										"{{rootUrl}}post-with-jsonpath-checker"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "6. Test POST with JSONPath checker: JSON invalid",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n    \"phoneNumbers\": [\n        {\n            \"type\": \"Android\",\n            \"number\": \"0123-4567-8888\"\n        },\n        {\n            \"type\": \"home\",\n            \"number\": \"0123-4567-8910\"\n        }\n    ]\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-with-jsonpath-checker",
-									"host": [
-										"{{rootUrl}}post-with-jsonpath-checker"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "5. Authentication",
-					"item": [
-						{
-							"name": "1. Test GET with basic authentication",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK BASIC AUTH\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "basic",
-									"basic": [
-										{
-											"key": "password",
-											"value": "Secret1!",
-											"type": "string"
-										},
-										{
-											"key": "username",
-											"value": "user1",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}basic-auth",
-									"host": [
-										"{{rootUrl}}basic-auth"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "2. Test GET with basic authentication: invalid credentials",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "basic",
-									"basic": [
-										{
-											"key": "password",
-											"value": "wrongpassword",
-											"type": "string"
-										},
-										{
-											"key": "username",
-											"value": "user1",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}basic-auth",
-									"host": [
-										"{{rootUrl}}basic-auth"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "6. Client IP",
-					"item": [
-						{
-							"name": "1. Test GET with client IP check",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK CLIENT IP CHECK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Forwarded-For",
-										"value": "11.22.33.44",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{rootUrl}}single-client-ip",
-									"host": [
-										"{{rootUrl}}single-client-ip"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "2. Test GET with client IP check: IP incorrect",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Forwarded-For",
-										"type": "text",
-										"value": "11.22.33.55"
-									}
-								],
-								"url": {
-									"raw": "{{rootUrl}}single-client-ip",
-									"host": [
-										"{{rootUrl}}single-client-ip"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3. Test GET with client IP range check",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK CLIENT IP CHECK RANGE\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Forwarded-For",
-										"type": "text",
-										"value": "11.22.33.3"
-									}
-								],
-								"url": {
-									"raw": "{{rootUrl}}client-ip-range",
-									"host": [
-										"{{rootUrl}}client-ip-range"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "4. Test GET with client IP range check: IP incorrect",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "X-Forwarded-For",
-										"type": "text",
-										"value": "11.22.33.4"
-									}
-								],
-								"url": {
-									"raw": "{{rootUrl}}client-ip-range",
-									"host": [
-										"{{rootUrl}}client-ip-range"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "7. Hostname",
-					"item": [
-						{
-							"name": "1. Test GET with hostname",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK HOSTNAME\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Host",
-										"value": "httplaceholder.local",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{rootUrl}}get-with-hostname",
-									"host": [
-										"{{rootUrl}}get-with-hostname"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "2. Test GET with hostname: hostname incorrect",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Host",
-										"type": "text",
-										"value": "incorrect.local"
-									}
-								],
-								"url": {
-									"raw": "{{rootUrl}}get-with-hostname",
-									"host": [
-										"{{rootUrl}}get-with-hostname"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "8. Priority",
-					"item": [
-						{
-							"name": "1. Test GET with priority",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK PRIO 2\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}priority",
-									"host": [
-										"{{rootUrl}}priority"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "9. Form",
-					"item": [
-						{
-							"name": "1. Test POST with form data",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FORM\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "key1",
-											"value": "val1",
-											"type": "text"
-										},
-										{
-											"key": "key2",
-											"value": "val2-1",
-											"type": "text"
-										},
-										{
-											"key": "key2",
-											"value": "val2-2",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-with-form",
-									"host": [
-										"{{rootUrl}}post-with-form"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "2. Test POST with form data: incorrect form data",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
-										{
-											"key": "key1",
-											"value": "val1",
-											"type": "text"
-										},
-										{
-											"key": "key2",
-											"value": "val2-1",
-											"type": "text"
-										},
-										{
-											"key": "key2",
-											"value": "val2-3",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{rootUrl}}post-with-form",
-									"host": [
-										"{{rootUrl}}post-with-form"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "10. HTTPS",
-					"item": [
-						{
-							"name": "1. Test GET with HTTPS",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK HTTPS\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrlHttps}}ishttps",
-									"host": [
-										"{{rootUrlHttps}}ishttps"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "2. Test GET with HTTPS: not HTTPS",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}ishttps",
-									"host": [
-										"{{rootUrl}}ishttps"
-									]
-								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "11. Enable/disable",
-					"item": [
-						{
-							"name": "1. Add \"enabled\" stub",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: enable-disable-stub\nenabled: true\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /enabled-or-disabled\nresponse:\n  text: OK STUB IS ENABLED"
-								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
 									],
-									"path": [
-										"stubs"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "2. Call GET: stub is enabled",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK STUB IS ENABLED\");",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}enabled-or-disabled",
-									"host": [
-										"{{rootUrl}}enabled-or-disabled"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "3. Disable stub",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"type": "text",
-										"value": "text/yaml"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "id: enable-disable-stub\nenabled: false\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /enabled-or-disabled\nresponse:\n  text: OK STUB IS ENABLED"
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "value1\nvalue2"
+										},
+										"url": {
+											"raw": "{{rootUrl}}post",
+											"host": [
+												"{{rootUrl}}post"
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{rootUrl}}ph-api/stubs",
-									"host": [
-										"{{rootUrl}}ph-api"
+								{
+									"name": "2. Test post with body condition checkers: posted value incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
 									],
-									"path": [
-										"stubs"
-									]
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "value3\nvalue2"
+										},
+										"url": {
+											"raw": "{{rootUrl}}post",
+											"host": [
+												"{{rootUrl}}post"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3. Test post with body condition checkers: method is incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "value1\nvalue2"
+										},
+										"url": {
+											"raw": "{{rootUrl}}post",
+											"host": [
+												"{{rootUrl}}post"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
 						},
 						{
-							"name": "4. Call GET: stub is disabled",
-							"event": [
+							"name": "3. XML",
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Body is correct\", function () {",
-											"    pm.response.to.have.body(\"OK FALLBACK\");",
-											"});"
+									"name": "1. Test XMLPath with namespaces",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK XML WITH NAMESPACES SPECIFIED\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/soap+xml; charset=utf-8",
+												"type": "text"
+											}
 										],
-										"type": "text/javascript"
-									}
+										"body": {
+											"mode": "raw",
+											"raw": "<?xml version=\"1.0\"?>\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" \n    xmlns:m=\"http://www.example.org/stock/GetUser\">\n    <soap:Header></soap:Header>\n    <soap:Body>\n        <m:GetUser>\n            <m:Username>user1</m:Username>\n        </m:GetUser>\n    </soap:Body>\n</soap:Envelope>",
+											"options": {
+												"raw": {
+													"language": "xml"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-xml-with-namespaces",
+											"host": [
+												"{{rootUrl}}post-xml-with-namespaces"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Test XMLPath with namespaces: XPath incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/soap+xml; charset=utf-8"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "<?xml version=\"1.0\"?>\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" \n    xmlns:m=\"http://www.example.org/stock/GetUser\">\n    <soap:Header></soap:Header>\n    <soap:Body>\n        <m:GetUser>\n            <m:Username>user2</m:Username>\n        </m:GetUser>\n    </soap:Body>\n</soap:Envelope>",
+											"options": {
+												"raw": {
+													"language": "xml"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-xml-with-namespaces",
+											"host": [
+												"{{rootUrl}}post-xml-with-namespaces"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3. Test XMLPath without namespaces",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK XML WITHOUT NAMESPACES SPECIFIED\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/soap+xml; charset=utf-8",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "<?xml version=\"1.0\"?>\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" \n    xmlns:m=\"http://www.example.org/stock/GetUser\">\n    <soap:Header></soap:Header>\n    <soap:Body>\n        <m:GetUser>\n            <m:Username>user1</m:Username>\n        </m:GetUser>\n    </soap:Body>\n</soap:Envelope>",
+											"options": {
+												"raw": {
+													"language": "xml"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-xml-without-namespaces",
+											"host": [
+												"{{rootUrl}}post-xml-without-namespaces"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "4. Test XMLPath without namespaces: XPath incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/soap+xml; charset=utf-8"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "<?xml version=\"1.0\"?>\n<soap:Envelope>\n    <soap:Header></soap:Header>\n    <soap:Body>\n        <m:GetUser>\n            <m:Username>user2</m:Username>\n        </m:GetUser>\n    </soap:Body>\n</soap:Envelope>",
+											"options": {
+												"raw": {
+													"language": "xml"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-xml-without-namespaces",
+											"host": [
+												"{{rootUrl}}post-xml-without-namespaces"
+											]
+										}
+									},
+									"response": []
 								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}enabled-or-disabled",
-									"host": [
-										"{{rootUrl}}enabled-or-disabled"
-									]
+							]
+						},
+						{
+							"name": "4. JSON",
+							"item": [
+								{
+									"name": "1. Test POST JSON object",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK POST WITH JSON OBJECT CHECKER\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"strValue\": \"stringInput\",\n    \"boolValue\": true,\n    \"doubleValue\": 1.23,\n    \"dateTimeValue\": \"2021-04-18T13:14:10\",\n    \"intValue\": 4,\n    \"nullValue\": null,\n    \"subObject\": {\n        \"subObjKey1\": \"subVal1\",\n        \"subObjKey2\": \"subVal2\"\n    },\n    \"arrayValue\": [\n        \"val1\",\n        \"val2\",\n        {\n            \"subKey1\": \"subVal1\",\n            \"subKey2\": \"subVal2\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-json-object-checker",
+											"host": [
+												"{{rootUrl}}post-with-json-object-checker"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Test POST JSON object: JSON is incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"strValue\": \"stringInput\",\n    \"boolValue\": true,\n    \"doubleValue\": 1.23,\n    \"dateTimeValue\": \"2021-04-18T13:14:10\",\n    \"intValue\": 4,\n    \"nullValue\": null,\n    \"subObject\": {\n        \"subObjKey1\": \"subVal1\",\n        \"subObjKey2\": \"subVal2\"\n    },\n    \"arrayValue\": [\n        \"val1\",\n        \"val2\",\n        {\n            \"subKey1\": \"subVal3\",\n            \"subKey2\": \"subVal2\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-json-object-checker",
+											"host": [
+												"{{rootUrl}}post-with-json-object-checker"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3. Test POST JSON array",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK POST WITH JSON ARRAY CHECKER\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    \"stringInput\",\n    true,\n    1.23,\n    \"2021-04-18T13:14:10\",\n    4,\n    {\n        \"subObjKey1\": \"subVal1\",\n        \"subObjKey2\": \"subVal2\"\n    },\n    [\n        \"val1\",\n        \"val2\",\n        {\n            \"subKey1\": \"subVal1\",\n            \"subKey2\": \"subVal2\"\n        }\n    ]\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-json-array-checker",
+											"host": [
+												"{{rootUrl}}post-with-json-array-checker"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "4. Test POST JSON array: JSON is incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    \"stringInput\",\n    true,\n    1.23,\n    \"2021-04-18T13:14:11\",\n    4,\n    {\n        \"subObjKey1\": \"subVal1\",\n        \"subObjKey2\": \"subVal2\"\n    },\n    [\n        \"val1\",\n        \"val2\",\n        {\n            \"subKey1\": \"subVal1\",\n            \"subKey2\": \"subVal2\"\n        }\n    ]\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-json-array-checker",
+											"host": [
+												"{{rootUrl}}post-with-json-array-checker"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "5. Test POST with JSONPath checker",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK WITH JSONPATH CHECKER\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"phoneNumbers\": [\n        {\n            \"type\": \"iPhone\",\n            \"number\": \"0123-4567-8888\"\n        },\n        {\n            \"type\": \"home\",\n            \"number\": \"0123-4567-8910\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-jsonpath-checker",
+											"host": [
+												"{{rootUrl}}post-with-jsonpath-checker"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "6. Test POST with JSONPath checker: JSON invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"phoneNumbers\": [\n        {\n            \"type\": \"Android\",\n            \"number\": \"0123-4567-8888\"\n        },\n        {\n            \"type\": \"home\",\n            \"number\": \"0123-4567-8910\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-jsonpath-checker",
+											"host": [
+												"{{rootUrl}}post-with-jsonpath-checker"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							]
+						},
+						{
+							"name": "5. Authentication",
+							"item": [
+								{
+									"name": "1. Test GET with basic authentication",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK BASIC AUTH\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "Secret1!",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "user1",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}basic-auth",
+											"host": [
+												"{{rootUrl}}basic-auth"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Test GET with basic authentication: invalid credentials",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "basic",
+											"basic": [
+												{
+													"key": "password",
+													"value": "wrongpassword",
+													"type": "string"
+												},
+												{
+													"key": "username",
+													"value": "user1",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}basic-auth",
+											"host": [
+												"{{rootUrl}}basic-auth"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "6. Client IP",
+							"item": [
+								{
+									"name": "1. Test GET with client IP check",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK CLIENT IP CHECK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Forwarded-For",
+												"value": "11.22.33.44",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}single-client-ip",
+											"host": [
+												"{{rootUrl}}single-client-ip"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Test GET with client IP check: IP incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Forwarded-For",
+												"type": "text",
+												"value": "11.22.33.55"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}single-client-ip",
+											"host": [
+												"{{rootUrl}}single-client-ip"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3. Test GET with client IP range check",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK CLIENT IP CHECK RANGE\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Forwarded-For",
+												"type": "text",
+												"value": "11.22.33.3"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}client-ip-range",
+											"host": [
+												"{{rootUrl}}client-ip-range"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "4. Test GET with client IP range check: IP incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Forwarded-For",
+												"type": "text",
+												"value": "11.22.33.4"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}client-ip-range",
+											"host": [
+												"{{rootUrl}}client-ip-range"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "7. Hostname",
+							"item": [
+								{
+									"name": "1. Test GET with hostname",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK HOSTNAME\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Host",
+												"value": "httplaceholder.local",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}get-with-hostname",
+											"host": [
+												"{{rootUrl}}get-with-hostname"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Test GET with hostname: hostname incorrect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Host",
+												"type": "text",
+												"value": "incorrect.local"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}get-with-hostname",
+											"host": [
+												"{{rootUrl}}get-with-hostname"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "8. Priority",
+							"item": [
+								{
+									"name": "1. Test GET with priority",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK PRIO 2\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}priority",
+											"host": [
+												"{{rootUrl}}priority"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "9. Form",
+							"item": [
+								{
+									"name": "1. Test POST with form data",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FORM\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "key1",
+													"value": "val1",
+													"type": "text"
+												},
+												{
+													"key": "key2",
+													"value": "val2-1",
+													"type": "text"
+												},
+												{
+													"key": "key2",
+													"value": "val2-2",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-form",
+											"host": [
+												"{{rootUrl}}post-with-form"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Test POST with form data: incorrect form data",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "key1",
+													"value": "val1",
+													"type": "text"
+												},
+												{
+													"key": "key2",
+													"value": "val2-1",
+													"type": "text"
+												},
+												{
+													"key": "key2",
+													"value": "val2-3",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-form",
+											"host": [
+												"{{rootUrl}}post-with-form"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "10. HTTPS",
+							"item": [
+								{
+									"name": "1. Test GET with HTTPS",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK HTTPS\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrlHttps}}ishttps",
+											"host": [
+												"{{rootUrlHttps}}ishttps"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Test GET with HTTPS: not HTTPS",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ishttps",
+											"host": [
+												"{{rootUrl}}ishttps"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "11. Enable/disable",
+							"item": [
+								{
+									"name": "1. Add \"enabled\" stub",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: enable-disable-stub\nenabled: true\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /enabled-or-disabled\nresponse:\n  text: OK STUB IS ENABLED"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Call GET: stub is enabled",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK STUB IS ENABLED\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}enabled-or-disabled",
+											"host": [
+												"{{rootUrl}}enabled-or-disabled"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3. Disable stub",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: enable-disable-stub\nenabled: false\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /enabled-or-disabled\nresponse:\n  text: OK STUB IS ENABLED"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "4. Call GET: stub is disabled",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}enabled-or-disabled",
+											"host": [
+												"{{rootUrl}}enabled-or-disabled"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "2. Test with responses",
+					"item": [
+						{
+							"name": "1. Slow request",
+							"item": [
+								{
+									"name": "1. Slow request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK SLOW REQUEST\");",
+													"});",
+													"",
+													"pm.test(\"Request is very slow\", function() {",
+													"    pm.expect(pm.response.responseTime).to.be.greaterThan(1000);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}slow-request",
+											"host": [
+												"{{rootUrl}}slow-request"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "2. Redirects",
+							"item": [
+								{
+									"name": "1. Temp redirect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK TEMP REDIRECT\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}temp-redirect",
+											"host": [
+												"{{rootUrl}}temp-redirect"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Permanent redirect",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK PERMANENT REDIRECT\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}permanent-redirect",
+											"host": [
+												"{{rootUrl}}permanent-redirect"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "3. Response types",
+							"item": [
+								{
+									"name": "1. Text response type",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK TEXT RESPONSE\");",
+													"});",
+													"pm.test(\"Content-Type is text/plain\", function () {",
+													"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"text/plain\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}text-response-type",
+											"host": [
+												"{{rootUrl}}text-response-type"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. JSON response type",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"JSON is correct\", function () {",
+													"    const json = pm.response.json();",
+													"    pm.expect(json.key1).to.eql(\"val1\");",
+													"});",
+													"pm.test(\"Content-Type is application/json\", function () {",
+													"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"application/json\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}json-response-type",
+											"host": [
+												"{{rootUrl}}json-response-type"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3. XML response type",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"XML is correct\", function () {",
+													"    pm.response.to.have.body(\"<xml>value</xml>\");",
+													"});",
+													"pm.test(\"Content-Type is text/xml\", function () {",
+													"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"text/xml\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}xml-response-type",
+											"host": [
+												"{{rootUrl}}xml-response-type"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "4. HTML response type",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"HTML is correct\", function () {",
+													"    pm.response.to.have.body(\"<html>value</html>\");",
+													"});",
+													"pm.test(\"Content-Type is text/html\", function () {",
+													"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"text/html\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}html-response-type",
+											"host": [
+												"{{rootUrl}}html-response-type"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "4. Status code",
+							"item": [
+								{
+									"name": "1. Status code",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"UNAUTHORIZED!\");",
+													"});",
+													"",
+													"pm.test(\"Status code is 401\", function () {",
+													"    pm.response.to.have.status(401);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}status-code",
+											"host": [
+												"{{rootUrl}}status-code"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "5. Response headers",
+							"item": [
+								{
+									"name": "1. Response headers",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK RESPONSE HEADERS\");",
+													"});",
+													"",
+													"pm.test(\"Contains correct response headers\", function () {",
+													"    pm.expect(pm.response.headers.get('X-Header-1')).to.eql(\"val1\");",
+													"    pm.expect(pm.response.headers.get('X-Header-2')).to.eql(\"val2\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}response-headers",
+											"host": [
+												"{{rootUrl}}response-headers"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "6. Images",
+							"item": [
+								{
+									"name": "1. Image png",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response contains image\", function() {",
+													"    pm.expect(pm.response.responseSize).to.be.greaterThan(0);",
+													"});",
+													"",
+													"pm.test(\"Contains correct content type header\", function () {",
+													"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"image/png\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}image.png",
+											"host": [
+												"{{rootUrl}}image",
+												"png"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "2. Image bmp",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response contains image\", function() {",
+													"    pm.expect(pm.response.responseSize).to.be.greaterThan(0);",
+													"});",
+													"",
+													"pm.test(\"Contains correct content type header\", function () {",
+													"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"image/bmp\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}image.bmp",
+											"host": [
+												"{{rootUrl}}image",
+												"bmp"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3. Image jpg",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response contains image\", function() {",
+													"    pm.expect(pm.response.responseSize).to.be.greaterThan(0);",
+													"});",
+													"",
+													"pm.test(\"Contains correct content type header\", function () {",
+													"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"image/jpeg\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}image.jpg",
+											"host": [
+												"{{rootUrl}}image",
+												"jpg"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "4. Image gif",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Response contains image\", function() {",
+													"    pm.expect(pm.response.responseSize).to.be.greaterThan(0);",
+													"});",
+													"",
+													"pm.test(\"Contains correct content type header\", function () {",
+													"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(\"image/gif\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}image.gif",
+											"host": [
+												"{{rootUrl}}image",
+												"gif"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				}
 			]
-		},
-		{
-			"name": "2. Test with responses",
-			"item": []
 		}
 	],
 	"event": [
