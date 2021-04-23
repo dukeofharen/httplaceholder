@@ -2468,7 +2468,7 @@
 									"response": []
 								},
 								{
-									"name": "Test esponse headers",
+									"name": "Test response headers",
 									"event": [
 										{
 											"listen": "test",
@@ -2848,6 +2848,70 @@
 											"raw": "{{rootUrl}}windows-line-endings",
 											"host": [
 												"{{rootUrl}}windows-line-endings"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "8. Dynamic mode",
+							"item": [
+								{
+									"name": "[Create stub] UUID",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-uuid\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /uuid\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Uuid: ((uuid))\n  text: ((uuid))"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test UUID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const uuidRegex = /\\b[0-9a-f]{8}\\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\\b[0-9a-f]{12}\\b/",
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.expect(pm.response.text()).to.match(uuidRegex);",
+													"});",
+													"",
+													"pm.test(\"Contains correct header\", function () {",
+													"    pm.expect(pm.response.headers.get('X-Uuid')).to.match(uuidRegex);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}uuid",
+											"host": [
+												"{{rootUrl}}uuid"
 											]
 										}
 									},
