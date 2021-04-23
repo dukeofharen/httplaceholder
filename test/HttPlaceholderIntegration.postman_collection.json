@@ -2871,7 +2871,34 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: dynamic-mode-uuid\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /uuid\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Uuid: ((uuid))\n  text: ((uuid))"
+											"raw": "id: dynamic-mode-uuid\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /dynamic-mode-uuid\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Uuid: ((uuid))\n  text: ((uuid))"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Query string",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-query-string\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /dynamic-mode-query-string\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-QueryString: 'Query string header: ((query:q1))'\n  text: 'Query string: ((query:q2))'"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2909,9 +2936,50 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{rootUrl}}uuid",
+											"raw": "{{rootUrl}}dynamic-mode-uuid",
 											"host": [
-												"{{rootUrl}}uuid"
+												"{{rootUrl}}dynamic-mode-uuid"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test query string",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"Query string: val2\");",
+													"});",
+													"",
+													"pm.test(\"Content-Type is present\", function () {",
+													"    pm.expect(pm.response.headers.get('X-QueryString')).is.eq(\"Query string header: val1\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-query-string?q1=val1&q2=val2",
+											"host": [
+												"{{rootUrl}}dynamic-mode-query-string"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val2"
+												}
 											]
 										}
 									},
