@@ -1952,7 +1952,7 @@
 													"});",
 													"",
 													"pm.test(\"Request is very slow\", function() {",
-													"    pm.expect(pm.response.responseTime).to.be.greaterThan(1000);",
+													"    pm.expect(pm.response.responseTime).to.be.gte(1000);",
 													"});"
 												],
 												"type": "text/javascript"
