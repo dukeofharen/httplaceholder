@@ -67,7 +67,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 0-fallback\npriority: -1\ntenant: integration\nresponse:\n  text: OK FALLBACK"
+											"raw": "id: fallback\npriority: -1\ntenant: integration\nresponse:\n  text: OK FALLBACK"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -126,7 +126,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 1.1-get-path-query-and-headers\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /get\n    query:\n      q1: val1\n      q2: val2\n  headers:\n    X-Header-1: value1\n    X-Header-2: value2\nresponse:\n  text: OK PATH, QUERY AND HEADERS"
+											"raw": "id: get-path-query-and-headers\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /get\n    query:\n      q1: val1\n      q2: val2\n  headers:\n    X-Header-1: value1\n    X-Header-2: value2\nresponse:\n  text: OK PATH, QUERY AND HEADERS"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -153,7 +153,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 1.2-get-with-full-path\ntenant: integration\nconditions:\n  method: GET\n  url:\n    fullPath: /fullPath?q1=val1&q2=val2\nresponse:\n  text: OK FULL PATH"
+											"raw": "id: get-with-full-path\ntenant: integration\nconditions:\n  method: GET\n  url:\n    fullPath: /fullPath?q1=val1&q2=val2\nresponse:\n  text: OK FULL PATH"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -451,7 +451,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 2-post-and-check-body\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post\n  body:\n    - \\bvalue1\\b\n    - \\bvalue2\\b\nresponse:\n  text: OK POST AND CHECK BODY"
+											"raw": "id: post-and-check-body\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post\n  body:\n    - \\bvalue1\\b\n    - \\bvalue2\\b\nresponse:\n  text: OK POST AND CHECK BODY"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -576,7 +576,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 3-xml-with-namespaces-specified\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-xml-with-namespaces\n  headers:\n    Content-Type: application/soap+xml; charset=utf-8\n  xpath:\n    - queryString: /soap:Envelope/soap:Body/m:GetUser/m:Username[text() = 'user1']\n      namespaces:\n        soap: http://www.w3.org/2003/05/soap-envelope\n        m: http://www.example.org/stock/GetUser\nresponse:\n  text: OK XML WITH NAMESPACES SPECIFIED"
+											"raw": "id: xml-with-namespaces-specified\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-xml-with-namespaces\n  headers:\n    Content-Type: application/soap+xml; charset=utf-8\n  xpath:\n    - queryString: /soap:Envelope/soap:Body/m:GetUser/m:Username[text() = 'user1']\n      namespaces:\n        soap: http://www.w3.org/2003/05/soap-envelope\n        m: http://www.example.org/stock/GetUser\nresponse:\n  text: OK XML WITH NAMESPACES SPECIFIED"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -603,7 +603,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 4-xml-without-namespaces-specified\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-xml-without-namespaces\n  headers:\n    Content-Type: application/soap+xml; charset=utf-8\n  xpath:\n    - queryString: /soap:Envelope/soap:Body/m:GetUser/m:Username[text() = 'user1']\nresponse:\n  text: OK XML WITHOUT NAMESPACES SPECIFIED"
+											"raw": "id: xml-without-namespaces-specified\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-xml-without-namespaces\n  headers:\n    Content-Type: application/soap+xml; charset=utf-8\n  xpath:\n    - queryString: /soap:Envelope/soap:Body/m:GetUser/m:Username[text() = 'user1']\nresponse:\n  text: OK XML WITHOUT NAMESPACES SPECIFIED"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -803,7 +803,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 5-post-with-json-object-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-json-object-checker\n  json:\n    strValue: stringInput\n    boolValue: true\n    doubleValue: 1.23\n    dateTimeValue: 2021-04-18T13:14:10\n    intValue: 4\n    nullValue: null\n    subObject:\n      subObjKey1: subVal1\n      subObjKey2: subVal2\n    arrayValue:\n      - val1\n      - val2\n      - subKey1: subVal1\n        subKey2: subVal2\nresponse:\n  text: OK POST WITH JSON OBJECT CHECKER"
+											"raw": "id: post-with-json-object-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-json-object-checker\n  json:\n    strValue: stringInput\n    boolValue: true\n    doubleValue: 1.23\n    dateTimeValue: 2021-04-18T13:14:10\n    intValue: 4\n    nullValue: null\n    subObject:\n      subObjKey1: subVal1\n      subObjKey2: subVal2\n    arrayValue:\n      - val1\n      - val2\n      - subKey1: subVal1\n        subKey2: subVal2\nresponse:\n  text: OK POST WITH JSON OBJECT CHECKER"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -830,7 +830,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 6-post-with-json-array-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-json-array-checker\n  json:\n    - stringInput\n    - true\n    - 1.23\n    - 2021-04-18T13:14:10\n    - 4\n    - subObjKey1: subVal1\n      subObjKey2: subVal2\n    - - val1\n      - val2\n      - subKey1: subVal1\n        subKey2: subVal2\nresponse:\n  text: OK POST WITH JSON ARRAY CHECKER"
+											"raw": "id: post-with-json-array-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-json-array-checker\n  json:\n    - stringInput\n    - true\n    - 1.23\n    - 2021-04-18T13:14:10\n    - 4\n    - subObjKey1: subVal1\n      subObjKey2: subVal2\n    - - val1\n      - val2\n      - subKey1: subVal1\n        subKey2: subVal2\nresponse:\n  text: OK POST WITH JSON ARRAY CHECKER"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -857,7 +857,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 7-post-with-jsonpath-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-jsonpath-checker\n  headers:\n    Content-Type: application/json\n  jsonPath:\n    - \"$.phoneNumbers[?(@.type=='iPhone')]\"\nresponse:\n  text: OK WITH JSONPATH CHECKER"
+											"raw": "id: post-with-jsonpath-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-jsonpath-checker\n  headers:\n    Content-Type: application/json\n  jsonPath:\n    - \"$.phoneNumbers[?(@.type=='iPhone')]\"\nresponse:\n  text: OK WITH JSONPATH CHECKER"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1105,7 +1105,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 8-get-with-basic-auth\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /basic-auth\n  basicAuthentication:\n    username: user1\n    password: 'Secret1!'\nresponse:\n  text: OK BASIC AUTH"
+											"raw": "id: get-with-basic-auth\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /basic-auth\n  basicAuthentication:\n    username: user1\n    password: 'Secret1!'\nresponse:\n  text: OK BASIC AUTH"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1221,7 +1221,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 9-get-with-client-ip-check\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /single-client-ip\n  clientIp: 11.22.33.44\nresponse:\n  text: OK CLIENT IP CHECK"
+											"raw": "id: get-with-client-ip-check\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /single-client-ip\n  clientIp: 11.22.33.44\nresponse:\n  text: OK CLIENT IP CHECK"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1248,7 +1248,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 10-get-with-client-ip-range\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /client-ip-range\n  clientIp: 11.22.33.00/30\nresponse:\n  text: OK CLIENT IP CHECK RANGE"
+											"raw": "id: get-with-client-ip-range\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /client-ip-range\n  clientIp: 11.22.33.00/30\nresponse:\n  text: OK CLIENT IP CHECK RANGE"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1412,7 +1412,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 11-get-with-hostname\ntenant: integration\nconditions:\n  url:\n    path: /get-with-hostname\n  method: GET\n  host: httplaceholder.local\nresponse:\n  text: OK HOSTNAME"
+											"raw": "id: get-with-hostname\ntenant: integration\nconditions:\n  url:\n    path: /get-with-hostname\n  method: GET\n  host: httplaceholder.local\nresponse:\n  text: OK HOSTNAME"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1510,7 +1510,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 12.1-priority-1\ntenant: integration\npriority: 1\nconditions:\n  url:\n    path: /priority\n  method: GET\nresponse:\n  text: OK PRIO 1"
+											"raw": "id: priority-1\ntenant: integration\npriority: 1\nconditions:\n  url:\n    path: /priority\n  method: GET\nresponse:\n  text: OK PRIO 1"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1537,7 +1537,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 12.1-priority-2\ntenant: integration\npriority: 2\nconditions:\n  url:\n    path: /priority\n  method: GET\nresponse:\n  text: OK PRIO 2"
+											"raw": "id: priority-2\ntenant: integration\npriority: 2\nconditions:\n  url:\n    path: /priority\n  method: GET\nresponse:\n  text: OK PRIO 2"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1596,7 +1596,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 13-post-with-form\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-form\n  form:\n    - key: key1\n      value: val1\n    - key: key2\n      value: val2-1\n    - key: key2\n      value: val2-2\nresponse:\n  text: OK FORM"
+											"raw": "id: post-with-form\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-form\n  form:\n    - key: key1\n      value: val1\n    - key: key2\n      value: val2-1\n    - key: key2\n      value: val2-2\nresponse:\n  text: OK FORM"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1722,7 +1722,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 14-get-with-https\ntenant: 11-ishttps\nconditions:\n  method: GET\n  url:\n    path: /ishttps\n    isHttps: true\nresponse:\n  text: OK HTTPS"
+											"raw": "id: get-with-https\ntenant: 11-ishttps\nconditions:\n  method: GET\n  url:\n    path: /ishttps\n    isHttps: true\nresponse:\n  text: OK HTTPS"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1926,7 +1926,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 1-slow-request\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /slow-request\nresponse:\n  extraDuration: 1000\n  text: OK SLOW REQUEST"
+											"raw": "id: slow-request\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /slow-request\nresponse:\n  extraDuration: 1000\n  text: OK SLOW REQUEST"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1989,7 +1989,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 2.1-temporary-redirect\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/temp-redirect$\nresponse:\n  temporaryRedirect: {{rootUrl}}temp-redirect-location"
+											"raw": "id: temporary-redirect\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/temp-redirect$\nresponse:\n  temporaryRedirect: {{rootUrl}}temp-redirect-location"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2016,7 +2016,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 2.2-temporary-redirect-location\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/temp-redirect-location$\nresponse:\n  text: OK TEMP REDIRECT"
+											"raw": "id: temporary-redirect-location\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/temp-redirect-location$\nresponse:\n  text: OK TEMP REDIRECT"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2043,7 +2043,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 2.3-permanent-redirect\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/permanent-redirect$\nresponse:\n  permanentRedirect: {{rootUrl}}permanent-redirect-location"
+											"raw": "id: permanent-redirect\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/permanent-redirect$\nresponse:\n  permanentRedirect: {{rootUrl}}permanent-redirect-location"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2070,7 +2070,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 2.4-permanent-redirect-location\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/permanent-redirect-location$\nresponse:\n  text: OK PERMANENT REDIRECT"
+											"raw": "id: permanent-redirect-location\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/permanent-redirect-location$\nresponse:\n  text: OK PERMANENT REDIRECT"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2156,7 +2156,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 3.1-text-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/text-response-type$\nresponse:\n  text: OK TEXT RESPONSE"
+											"raw": "id: text-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/text-response-type$\nresponse:\n  text: OK TEXT RESPONSE"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2183,7 +2183,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 3.2-json-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/json-response-type$\nresponse:\n  json: |\n    {\n        \"key1\": \"val1\"\n    }"
+											"raw": "id: json-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/json-response-type$\nresponse:\n  json: |\n    {\n        \"key1\": \"val1\"\n    }"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2210,7 +2210,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 3.3-xml-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/xml-response-type$\nresponse:\n  xml: <xml>value</xml>"
+											"raw": "id: xml-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/xml-response-type$\nresponse:\n  xml: <xml>value</xml>"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2237,7 +2237,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 3.4-html-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/html-response-type$\nresponse:\n  html: <html>value</html>"
+											"raw": "id: html-response-type\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/html-response-type$\nresponse:\n  html: <html>value</html>"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2390,7 +2390,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 4-status-code\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/status-code$\nresponse:\n  statusCode: 401\n  text: UNAUTHORIZED!"
+											"raw": "id: status-code\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/status-code$\nresponse:\n  statusCode: 401\n  text: UNAUTHORIZED!"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2453,7 +2453,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 5-response-headers\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/response-headers$\nresponse:\n  text: OK RESPONSE HEADERS\n  headers:\n    X-Header-1: val1\n    X-Header-2: val2"
+											"raw": "id: response-headers\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: ^/response-headers$\nresponse:\n  text: OK RESPONSE HEADERS\n  headers:\n    X-Header-1: val1\n    X-Header-2: val2"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2517,7 +2517,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 6.1-image-png\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.png\nresponse:\n  image:\n    type: png\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
+											"raw": "id: image-png\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.png\nresponse:\n  image:\n    type: png\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2544,7 +2544,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 6.2-image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.bmp\nresponse:\n  image:\n    type: bmp\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
+											"raw": "id: image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.bmp\nresponse:\n  image:\n    type: bmp\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2571,7 +2571,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 6.3-image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.jpg\nresponse:\n  image:\n    type: jpeg\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
+											"raw": "id: image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.jpg\nresponse:\n  image:\n    type: jpeg\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2598,7 +2598,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: 6.4-image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.gif\nresponse:\n  image:\n    type: gif\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
+											"raw": "id: image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.gif\nresponse:\n  image:\n    type: gif\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2735,6 +2735,119 @@
 											"host": [
 												"{{rootUrl}}image",
 												"gif"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "7. Line endings",
+							"item": [
+								{
+									"name": "[Create stub] Unix line endings",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: unix-line-endings\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /unix-line-endings\nresponse:\n  lineEndings: unix\n  text: |\n    text\n    with\n    unix\n    line\n    endings"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Windows line endings",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: windows-line-endings\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /windows-line-endings\nresponse:\n  lineEndings: windows\n  text: |\n    text\n    with\n    windows\n    line\n    endings"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test Unix line endings",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"text\\nwith\\nunix\\nline\\nendings\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}unix-line-endings",
+											"host": [
+												"{{rootUrl}}unix-line-endings"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test Windows line endings",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"text\\r\\nwith\\r\\nwindows\\r\\nline\\r\\nendings\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}windows-line-endings",
+											"host": [
+												"{{rootUrl}}windows-line-endings"
 											]
 										}
 									},
