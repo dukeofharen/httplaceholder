@@ -2571,7 +2571,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.jpg\nresponse:\n  image:\n    type: jpeg\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
+											"raw": "id: image-jpg\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.jpg\nresponse:\n  image:\n    type: jpeg\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2598,7 +2598,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: image-bmp\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.gif\nresponse:\n  image:\n    type: gif\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
+											"raw": "id: image-gif\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /image.gif\nresponse:\n  image:\n    type: gif\n    width: 1024\n    height: 256\n    backgroundColor: '#ffa0d3'\n    text: Placeholder text that will be drawn in the image\n    fontSize: 10\n    jpegQuality: 95\n    wordWrap: false"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
