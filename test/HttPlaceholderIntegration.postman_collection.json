@@ -2913,6 +2913,168 @@
 									"response": []
 								},
 								{
+									"name": "[Create stub] Request headers",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-request-headers\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /dynamic-mode-request-headers\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-RequestHeader: 'Request header in header: ((request_header:X-Header-1))'\n  text: 'Request header: ((request_header:X-Header-2))'"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Form post",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-form-post\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /dynamic-mode-form-post\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-FormPost: 'Header form post: ((form_post:var1))'\n  text: 'Form post: ((form_post:var2))'"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Request body",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-request-body\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /dynamic-mode-request-body\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-RequestBody: 'Header request body: ((request_body))'\n  text: 'Request body: ((request_body))'"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Display URL",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-display-url\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /dynamic-mode-display-url\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-DisplayUrl: 'Header display url: ((display_url))'\n  text: 'Display url: ((display_url))'"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Client IP",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-client-ip\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /dynamic-mode-client-ip\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-ClientIp: 'Header client ip: ((client_ip))'\n  text: 'Client ip: ((client_ip))'"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Date/time",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-date-time\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /dynamic-mode-date-time\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-DateTime: ((utcnow:yyyy-MM-dd HH:mm:ss))\n  text: ((localnow:yyyy-MM-dd HH:mm:ss))"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Test UUID",
 									"event": [
 										{
@@ -2955,7 +3117,7 @@
 													"    pm.response.to.have.body(\"Query string: val2\");",
 													"});",
 													"",
-													"pm.test(\"Content-Type is present\", function () {",
+													"pm.test(\"Header is correct\", function () {",
 													"    pm.expect(pm.response.headers.get('X-QueryString')).is.eq(\"Query string header: val1\");",
 													"});"
 												],
@@ -2980,6 +3142,279 @@
 													"key": "q2",
 													"value": "val2"
 												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test request headers",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"Request header: val2\");",
+													"});",
+													"",
+													"pm.test(\"Header is correct\", function () {",
+													"    pm.expect(pm.response.headers.get('X-RequestHeader')).is.eq(\"Request header in header: val1\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Header-1",
+												"type": "text",
+												"value": "val1"
+											},
+											{
+												"key": "X-Header-2",
+												"type": "text",
+												"value": "val2"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-request-headers",
+											"host": [
+												"{{rootUrl}}dynamic-mode-request-headers"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test form post",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"Form post: val2\");",
+													"});",
+													"",
+													"pm.test(\"Header is correct\", function () {",
+													"    pm.expect(pm.response.headers.get('X-FormPost')).is.eq(\"Header form post: val1\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Header-1",
+												"type": "text",
+												"value": "val1"
+											},
+											{
+												"key": "X-Header-2",
+												"type": "text",
+												"value": "val2"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "var1",
+													"value": "val1",
+													"type": "text"
+												},
+												{
+													"key": "var2",
+													"value": "val2",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-form-post",
+											"host": [
+												"{{rootUrl}}dynamic-mode-form-post"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test request body",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"Request body: the posted body\");",
+													"});",
+													"",
+													"pm.test(\"Header is correct\", function () {",
+													"    pm.expect(pm.response.headers.get('X-RequestBody')).is.eq(\"Header request body: the posted body\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "X-Header-1",
+												"type": "text",
+												"value": "val1"
+											},
+											{
+												"key": "X-Header-2",
+												"type": "text",
+												"value": "val2"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "the posted body"
+										},
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-request-body",
+											"host": [
+												"{{rootUrl}}dynamic-mode-request-body"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test display URL",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const expectedDisplayUrl = pm.collectionVariables.get(\"rootUrl\") + \"dynamic-mode-display-url?q1=var1&q2=var2\";",
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"Display url: \" + expectedDisplayUrl);",
+													"});",
+													"",
+													"pm.test(\"Header is correct\", function () {",
+													"    pm.expect(pm.response.headers.get('X-DisplayUrl')).is.eq(\"Header display url: \" + expectedDisplayUrl);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Header-1",
+												"type": "text",
+												"value": "val1"
+											},
+											{
+												"key": "X-Header-2",
+												"type": "text",
+												"value": "val2"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-display-url?q1=var1&q2=var2",
+											"host": [
+												"{{rootUrl}}dynamic-mode-display-url"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "var1"
+												},
+												{
+													"key": "q2",
+													"value": "var2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test client IP",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"Client ip: 11.22.33.44\");",
+													"});",
+													"",
+													"pm.test(\"Header is correct\", function () {",
+													"    pm.expect(pm.response.headers.get('X-ClientIp')).is.eq(\"Header client ip: 11.22.33.44\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Forwarded-For",
+												"value": "11.22.33.44",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-client-ip",
+											"host": [
+												"{{rootUrl}}dynamic-mode-client-ip"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test date/time",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const dateTimeRegex = /\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}/",
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.expect(pm.response.text()).to.match(dateTimeRegex);",
+													"});",
+													"",
+													"pm.test(\"Contains correct header\", function () {",
+													"    pm.expect(pm.response.headers.get('X-DateTime')).to.match(dateTimeRegex);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Forwarded-For",
+												"type": "text",
+												"value": "11.22.33.44"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-date-time",
+											"host": [
+												"{{rootUrl}}dynamic-mode-date-time"
 											]
 										}
 									},
