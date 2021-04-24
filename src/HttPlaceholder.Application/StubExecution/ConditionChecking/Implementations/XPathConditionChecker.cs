@@ -48,10 +48,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 }
 
                 var elements = doc.SelectNodes(condition.QueryString, nsManager);
-                if (elements != null && elements.Count == 0)
+                if (elements is {Count: 0})
                 {
                     // No suitable XML results found.
-                    result.Log = $"No suitable XML results found with XPath query {condition}.";
+                    result.Log = $"No suitable XML results found with XPath query {condition.QueryString}.";
                     break;
                 }
 
