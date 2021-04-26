@@ -15,10 +15,6 @@ namespace HttPlaceholder.Application
 
             // Add MediatR
             services.AddMediatR(currentAssembly);
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
-
-            // Add fluent validations
-            services.AddValidatorsFromAssemblies(new[] {currentAssembly});
 
             // Add other modules
             services.AddStubExecutionModule();
