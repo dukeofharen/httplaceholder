@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Configuration;
+﻿using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.TestUtilities.Options

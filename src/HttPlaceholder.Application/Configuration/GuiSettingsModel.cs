@@ -1,4 +1,4 @@
-namespace HttPlaceholder.Configuration
+namespace HttPlaceholder.Application.Configuration
 {
     public class GuiSettingsModel
     {

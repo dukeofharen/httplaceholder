@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using HttPlaceholder.Application;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Authorization;

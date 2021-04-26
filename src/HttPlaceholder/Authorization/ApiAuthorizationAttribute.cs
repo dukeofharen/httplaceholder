@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Configuration;
 using Microsoft.AspNetCore.Mvc;

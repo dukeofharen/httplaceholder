@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using HttPlaceholder.Configuration.Attributes;
+using HttPlaceholder.Application.Configuration.Attributes;
 
-namespace HttPlaceholder.Configuration
+namespace HttPlaceholder.Application.Configuration
 {
     public static class ConfigKeys
     {

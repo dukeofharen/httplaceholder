@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HttPlaceholder.Configuration.Attributes
+namespace HttPlaceholder.Application.Configuration.Attributes
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class ConfigKeyAttribute : Attribute

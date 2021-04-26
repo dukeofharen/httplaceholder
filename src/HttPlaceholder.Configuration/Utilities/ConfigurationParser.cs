@@ -4,9 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Attributes;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Configuration.Attributes;
 using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
 
