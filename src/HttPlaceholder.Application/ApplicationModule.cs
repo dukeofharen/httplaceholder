@@ -1,6 +1,4 @@
 ﻿using System.Net.Http;
-using FluentValidation;
-using HttPlaceholder.Application.Infrastructure.MediatR;
 using HttPlaceholder.Application.StubExecution;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
