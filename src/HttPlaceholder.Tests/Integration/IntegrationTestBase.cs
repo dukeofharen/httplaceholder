@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.TestUtilities.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;

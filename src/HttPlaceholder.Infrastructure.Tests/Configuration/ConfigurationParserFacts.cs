@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -183,7 +184,7 @@ namespace HttPlaceholder.Infrastructure.Tests.Configuration
         public void DefaultValues_ShouldBeSetCorrectly()
         {
             // Act
-            var result = _parser.ParseConfiguration(new string[0]);
+            var result = _parser.ParseConfiguration(Array.Empty<string>());
 
             // Assert
             Assert.AreEqual("5000", result["Web:HttpPort"]);

@@ -2,7 +2,6 @@
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 

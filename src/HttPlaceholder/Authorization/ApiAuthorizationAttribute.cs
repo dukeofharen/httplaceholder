@@ -5,7 +5,6 @@ using System.Security.Claims;
 using System.Text;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Authentication;
-using HttPlaceholder.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;

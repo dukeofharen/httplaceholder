@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Authorization.Implementations;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.TestUtilities.Http;
 using HttPlaceholder.TestUtilities.Options;
 using Microsoft.AspNetCore.Http;

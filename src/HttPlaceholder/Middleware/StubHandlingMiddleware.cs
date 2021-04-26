@@ -8,8 +8,6 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Common;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Resources;

@@ -1,19 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Validation;
 using HttPlaceholder.Common.Validation;
 using HttPlaceholder.Domain;
+using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     internal class StubModelValidator : IStubModelValidator
     {
         private readonly IModelValidator _modelValidator;
+        private readonly SettingsModel _settings;
 
-        public StubModelValidator(IModelValidator modelValidator)
+        public StubModelValidator(
+            IModelValidator modelValidator,
+            IOptions<SettingsModel> options)
         {
             _modelValidator = modelValidator;
+            _settings = options.Value;
         }
 
         public IEnumerable<string> ValidateStubModel(StubModel stub)
@@ -21,6 +27,14 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             var validationResults = _modelValidator.ValidateModel(stub);
             var result = new List<string>();
             HandleValidationResult(result, validationResults);
+
+            // Validate other settings here.
+            var extraDurationMillis = stub?.Response?.ExtraDuration ?? 0;
+            var allowedMillis = _settings.Stub.MaximumExtraDurationMillis;
+            if (extraDurationMillis > 0 && extraDurationMillis > allowedMillis)
+            {
+                result.Add($"Value for 'ExtraDuration' cannot be higher than '{allowedMillis}'.");
+            }
 
             return result;
         }

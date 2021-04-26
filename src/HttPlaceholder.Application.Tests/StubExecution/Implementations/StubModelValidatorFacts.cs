@@ -1,7 +1,9 @@
 ﻿using System.Linq;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Implementations;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
@@ -9,7 +11,16 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
     [TestClass]
     public class StubModelValidatorFacts
     {
-        private readonly StubModelValidator _validator = new StubModelValidator(new ModelValidator());
+        private readonly SettingsModel _settings = new SettingsModel
+        {
+            Stub = new StubSettingsModel()
+        };
+
+        private StubModelValidator _validator;
+
+        [TestInitialize]
+        public void Initialize() =>
+            _validator = new StubModelValidator(new ModelValidator(), Options.Create(_settings));
 
         [TestMethod]
         public void ValidateStubModel_IdNotSet_ShouldReturnError()
@@ -37,39 +48,47 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             Assert.IsTrue(result.Any(r => r == "The Response field is required."));
         }
 
-        [TestMethod]
-        public void ValidateStubModel_ValidateStatusCodes()
+        [DataTestMethod]
+        [DataRow(99, false)]
+        [DataRow(100, true)]
+        [DataRow(200, true)]
+        [DataRow(599, true)]
+        [DataRow(600, false)]
+        [DataRow(601, false)]
+        public void ValidateStubModel_ValidateStatusCodes(int statusCode, bool shouldSucceed)
         {
-            // Not using DataTestMethod because it barely works in Rider.
-            (int statusCode, bool shouldSucceed)[] testData =
-            {
-                (99, false), (100, true), (200, true), (599, true), (600, false), (601, false)
-            };
-            foreach (var value in testData)
-            {
-                // Arrange
-                var model = new StubModel
-                {
-                    Id = "stub-1", Response = new StubResponseModel {StatusCode = value.statusCode}
-                };
+            // Arrange
+            var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {StatusCode = statusCode}};
 
-                // Act
-                var result = _validator.ValidateStubModel(model);
+            // Act
+            var result = _validator.ValidateStubModel(model);
 
-                // Assert
-                if (value.shouldSucceed)
-                {
-                    Assert.IsFalse(
-                        result.Any(r => r == "Field 'StatusCode' should be between '100' and '599'."),
-                        $"Assertion failed for status code {value.statusCode}. Error messages: {string.Join(", ", result)}");
-                }
-                else
-                {
-                    Assert.IsTrue(
-                        result.Any(r => r == "Field 'StatusCode' should be between '100' and '599'."),
-                        $"Assertion failed for status code {value.statusCode}. Error messages: {string.Join(", ", result)}");
-                }
-            }
+            // Assert
+            Assert.AreEqual(
+                !shouldSucceed,
+                result.Any(r => r == "Field 'StatusCode' should be between '100' and '599'."),
+                $"Actual error messages: {string.Join(", ", result)}");
+        }
+
+        [DataTestMethod]
+        [DataRow(10, 10, true)]
+        [DataRow(10, 9, true)]
+        [DataRow(10, 11, false)]
+        [DataRow(10, null, true)]
+        public void ValidateStubModel_ValidateExtraDurationMillis(int configuredMillis, int? stubMillis, bool shouldSucceed)
+        {
+            // Arrange
+            _settings.Stub.MaximumExtraDurationMillis = configuredMillis;
+            var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {ExtraDuration = stubMillis}};
+
+            // Act
+            var result = _validator.ValidateStubModel(model);
+
+            // Assert
+            Assert.AreEqual(
+                !shouldSucceed,
+                result.Any(r => r == $"Value for 'ExtraDuration' cannot be higher than '{configuredMillis}'."),
+                $"Actual error messages: {string.Join(", ", result)}");
         }
     }
 }
