@@ -28,6 +28,7 @@ namespace HttPlaceholder.Domain
         /// </summary>
         [YamlMember(Alias = "response")]
         [Required]
+        [ValidateObject]
         public StubResponseModel Response { get; set; } = new StubResponseModel();
 
         /// <summary>
