@@ -2,9 +2,6 @@
 using HttPlaceholder.Domain;
 using YamlDotNet.Serialization;
 
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable UnusedMember.Global
-
 namespace HttPlaceholder.Dto.v1.Stubs
 {
     /// <summary>

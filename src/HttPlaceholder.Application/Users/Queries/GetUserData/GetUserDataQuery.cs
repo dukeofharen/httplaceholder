@@ -10,7 +10,6 @@ namespace HttPlaceholder.Application.Users.Queries.GetUserData
             Username = username;
         }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Username { get; }
     }
 }

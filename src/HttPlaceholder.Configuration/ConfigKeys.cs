@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using HttPlaceholder.Configuration.Attributes;
-// ReSharper disable UnusedMember.Global
 
 namespace HttPlaceholder.Configuration
 {

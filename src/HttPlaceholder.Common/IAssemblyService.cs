@@ -1,4 +1,3 @@
-// ReSharper disable UnusedMember.Global
 namespace HttPlaceholder.Common
 {
     public interface IAssemblyService

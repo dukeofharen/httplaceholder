@@ -1,5 +1,4 @@
 ﻿using System;
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace HttPlaceholder.Configuration.Attributes
 {

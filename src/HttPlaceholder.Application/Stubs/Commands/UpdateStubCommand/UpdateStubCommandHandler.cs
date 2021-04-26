@@ -5,7 +5,6 @@ using MediatR;
 
 namespace HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand
 {
-    // ReSharper disable once UnusedType.Global
     public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
     {
         private readonly IStubContext _stubContext;

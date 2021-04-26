@@ -15,8 +15,6 @@ using HttPlaceholder.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-// ReSharper disable InconsistentNaming
-
 namespace HttPlaceholder.Controllers.v1
 {
     /// <summary>

@@ -10,7 +10,6 @@ namespace HttPlaceholder.Application.Requests.Commands.CreateStubForRequest
             CorrelationId = correlationId;
         }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string CorrelationId { get; }
     }
 }

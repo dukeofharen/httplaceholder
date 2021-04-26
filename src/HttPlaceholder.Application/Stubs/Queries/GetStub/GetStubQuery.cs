@@ -10,7 +10,6 @@ namespace HttPlaceholder.Application.Stubs.Queries.GetStub
             StubId = stubId;
         }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string StubId { get; }
     }
 }

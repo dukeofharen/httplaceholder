@@ -77,7 +77,6 @@ namespace HttPlaceholder.Utilities
             });
         }
 
-        // ReSharper disable once UnusedMethodReturnValue.Global
         public static IApplicationBuilder PreloadStubs(this IApplicationBuilder app, bool preloadStubs)
         {
             if (!preloadStubs)

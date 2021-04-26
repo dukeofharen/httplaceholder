@@ -2,9 +2,6 @@
 using HttPlaceholder.Domain;
 using YamlDotNet.Serialization;
 
-// ReSharper disable ClassNeverInstantiated.Global
-// ReSharper disable UnusedMember.Global
-
 namespace HttPlaceholder.Dto.v1.Stubs
 {
     /// <summary>
@@ -16,7 +13,6 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// Gets or sets the identifier.
         /// </summary>
         [YamlMember(Alias = "id")]
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Id { get; set; }
 
         /// <summary>

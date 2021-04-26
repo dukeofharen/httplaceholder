@@ -6,7 +6,6 @@ using MediatR;
 
 namespace HttPlaceholder.Application.Tenants.Queries.GetTenantNames
 {
-    // ReSharper disable once UnusedType.Global
     public class GetTenantNamesQueryHandler : IRequestHandler<GetTenantNamesQuery, IEnumerable<string>>
     {
         private readonly IStubContext _stubContext;

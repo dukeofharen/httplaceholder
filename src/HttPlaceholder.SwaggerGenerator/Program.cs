@@ -11,7 +11,6 @@ namespace HttPlaceholder.SwaggerGenerator
 {
     internal static class Program
     {
-        // ReSharper disable once UnusedParameter.Global
         public static async Task Main(string[] args)
         {
             var pathToSave = Path.Combine(AssemblyHelper.GetCallingAssemblyRootPath(), "swagger.json");

@@ -19,7 +19,6 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class StubHandlingMiddleware
     {
         private static readonly string[] _segmentsToIgnore =
@@ -62,7 +61,6 @@ namespace HttPlaceholder.Middleware
             _settings = options.Value;
         }
 
-        // ReSharper disable once UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
             var path = _httpContextService.Path;

@@ -9,7 +9,6 @@ using MediatR;
 
 namespace HttPlaceholder.Application.Users.Queries.GetUserData
 {
-    // ReSharper disable once UnusedType.Global
     public class GetUserDataQueryHandler : IRequestHandler<GetUserDataQuery, UserModel>
     {
         private readonly IUserContext _userContext;

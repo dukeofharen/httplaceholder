@@ -9,7 +9,6 @@ namespace HttPlaceholder.Application.Tenants.Commands.DeleteStubsInTenant
             Tenant = tenant;
         }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Tenant { get; }
     }
 }

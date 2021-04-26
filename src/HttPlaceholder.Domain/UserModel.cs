@@ -8,7 +8,6 @@
         /// <summary>
         /// Gets or sets the username.
         /// </summary>
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Username { get; set; }
     }
 }

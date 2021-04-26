@@ -13,7 +13,6 @@ namespace HttPlaceholder.Application.StubExecution
 {
     public static class StubExecutionModule
     {
-        // ReSharper disable once UnusedMethodReturnValue.Global
         public static IServiceCollection AddStubExecutionModule(this IServiceCollection services)
         {
             services.AddSingleton<IFinalStubDeterminer, FinalStubDeterminer>();
