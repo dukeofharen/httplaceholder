@@ -11,7 +11,7 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Configuration.Utilities
+namespace HttPlaceholder.Infrastructure.Configuration
 {
     public class ConfigurationParser
     {

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.FileSystem.Models;
 using Microsoft.Extensions.Logging;

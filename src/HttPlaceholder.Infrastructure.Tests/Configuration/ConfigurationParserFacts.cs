@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using HttPlaceholder.Common;
-using HttPlaceholder.Configuration.Utilities;
+using HttPlaceholder.Infrastructure.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
