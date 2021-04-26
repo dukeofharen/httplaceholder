@@ -36,22 +36,22 @@ namespace HttPlaceholder.Controllers.v1
         /// </summary>
         /// <returns>All stubs in the tenant.</returns>
         [HttpGet]
-        [Route("{Tenant}/stubs")]
+        [Route("{tenant}/stubs")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll([FromRoute]GetStubsInTenantQuery query) =>
-            Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(query)));
+        public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll([FromRoute] string tenant) =>
+            Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(new GetStubsInTenantQuery(tenant))));
 
         /// <summary>
         /// Deletes all stubs in a specific tenant.
         /// </summary>
         /// <returns>OK, but no content</returns>
         [HttpDelete]
-        [Route("{Tenant}/stubs")]
+        [Route("{tenant}/stubs")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> DeleteAll([FromRoute]DeleteStubsInTenantCommand command)
+        public async Task<IActionResult> DeleteAll([FromRoute] string tenant)
         {
-            await Mediator.Send(command);
+            await Mediator.Send(new DeleteStubsInTenantCommand(tenant));
             return NoContent();
         }
 
@@ -60,16 +60,16 @@ namespace HttPlaceholder.Controllers.v1
         /// If a stub that is currently available in a tenant isn't sent in the request,
         /// it will be deleted.
         /// </summary>
-        /// <param name="Tenant"></param>
+        /// <param name="tenant"></param>
         /// <param name="stubs"></param>
         /// <returns>OK, but no content</returns>
         [HttpPut]
-        [Route("{Tenant}/stubs")]
+        [Route("{tenant}/stubs")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> UpdateAll(string Tenant, [FromBody]IEnumerable<StubDto> stubs)
+        public async Task<IActionResult> UpdateAll([FromRoute] string tenant, [FromBody] IEnumerable<StubDto> stubs)
         {
-            await Mediator.Send(new UpdateStubsInTenantCommand { Tenant = Tenant, Stubs = Mapper.Map<IEnumerable<StubModel>>(stubs) });
+            await Mediator.Send(new UpdateStubsInTenantCommand(Mapper.Map<IEnumerable<StubModel>>(stubs), tenant));
             return NoContent();
         }
     }

@@ -6,7 +6,12 @@ namespace HttPlaceholder.Application.Tenants.Queries.GetStubsInTenant
 {
     public class GetStubsInTenantQuery : IRequest<IEnumerable<FullStubModel>>
     {
+        public GetStubsInTenantQuery(string tenant)
+        {
+            Tenant = tenant;
+        }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public string Tenant { get; set; }
+        public string Tenant { get; }
     }
 }

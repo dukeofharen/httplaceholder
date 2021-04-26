@@ -19,10 +19,10 @@ namespace HttPlaceholder.Controllers.v1
         /// </summary>
         /// <returns>The User.</returns>
         [HttpGet]
-        [Route("{Username}")]
+        [Route("{username}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<UserDto>> Get([FromRoute]GetUserDataQuery query) =>
-            Ok(Mapper.Map<UserDto>(await Mediator.Send(query)));
+        public async Task<ActionResult<UserDto>> Get([FromRoute] string username) =>
+            Ok(Mapper.Map<UserDto>(await Mediator.Send(new GetUserDataQuery(username))));
     }
 }

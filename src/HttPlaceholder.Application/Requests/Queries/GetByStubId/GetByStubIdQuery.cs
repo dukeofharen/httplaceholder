@@ -6,7 +6,12 @@ namespace HttPlaceholder.Application.Requests.Queries.GetByStubId
 {
     public class GetByStubIdQuery : IRequest<IEnumerable<RequestResultModel>>
     {
+        public GetByStubIdQuery(string stubId)
+        {
+            StubId = stubId;
+        }
+
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public string StubId { get; set; }
+        public string StubId { get; }
     }
 }

@@ -5,8 +5,14 @@ namespace HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand
 {
     public class UpdateStubCommand : IRequest
     {
-        public string StubId { get; set; }
+        public UpdateStubCommand(string stubId, StubModel stub)
+        {
+            StubId = stubId;
+            Stub = stub;
+        }
 
-        public StubModel Stub { get; set; }
+        public string StubId { get; }
+
+        public StubModel Stub { get; }
     }
 }
