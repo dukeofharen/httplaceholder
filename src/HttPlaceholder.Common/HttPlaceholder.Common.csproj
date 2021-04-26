@@ -17,8 +17,4 @@
         <PackageReference Include="YamlDotNet" Version="9.1.4" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Validation" />
-    </ItemGroup>
-
 </Project>

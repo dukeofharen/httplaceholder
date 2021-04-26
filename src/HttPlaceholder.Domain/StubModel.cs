@@ -1,4 +1,6 @@
-﻿using YamlDotNet.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using HttPlaceholder.Common.Validation;
+using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Domain
 {
@@ -11,18 +13,21 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the identifier.
         /// </summary>
         [YamlMember(Alias = "id")]
+        [Required]
         public string Id { get; set; }
 
         /// <summary>
         /// Gets or sets the conditions.
         /// </summary>
         [YamlMember(Alias = "conditions")]
+        [ValidateObject]
         public StubConditionsModel Conditions { get; set; } = new StubConditionsModel();
 
         /// <summary>
         /// Gets or sets the response.
         /// </summary>
         [YamlMember(Alias = "response")]
+        [Required]
         public StubResponseModel Response { get; set; } = new StubResponseModel();
 
         /// <summary>
