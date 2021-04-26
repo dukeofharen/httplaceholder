@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.FileSystem;
 using Microsoft.Extensions.Options;

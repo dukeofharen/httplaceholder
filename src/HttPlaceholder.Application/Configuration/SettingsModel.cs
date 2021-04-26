@@ -9,5 +9,7 @@
         public StorageSettingsModel Storage { get; set; }
 
         public GuiSettingsModel Gui { get; set; }
+
+        public StubSettingsModel Stub { get; set; }
     }
 }

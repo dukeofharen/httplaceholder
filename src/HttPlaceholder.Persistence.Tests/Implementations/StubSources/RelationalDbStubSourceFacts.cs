@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;

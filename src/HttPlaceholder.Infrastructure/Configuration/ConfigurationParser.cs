@@ -82,6 +82,7 @@ namespace HttPlaceholder.Infrastructure.Configuration
             argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, true);
             argsDictionary.EnsureEntryExists(ConfigKeys.EnableUserInterface, true);
             argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, 40);
+            argsDictionary.EnsureEntryExists(ConfigKeys.MaximumExtraDurationMillisKey, 60000);
 
             // Determine and set file storage location.
             string fileStorageLocation = null;

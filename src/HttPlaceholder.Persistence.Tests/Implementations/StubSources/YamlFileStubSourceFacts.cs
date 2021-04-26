@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Logging;

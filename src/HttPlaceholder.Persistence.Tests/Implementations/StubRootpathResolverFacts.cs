@@ -2,7 +2,6 @@
 using System.Runtime.InteropServices;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Persistence.Implementations;
 using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Options;
