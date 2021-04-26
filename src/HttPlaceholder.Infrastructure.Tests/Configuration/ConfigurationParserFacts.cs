@@ -7,7 +7,7 @@ using HttPlaceholder.Configuration.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Configuration.Tests.Utilities
+namespace HttPlaceholder.Infrastructure.Tests.Configuration
 {
     [TestClass]
     public class ConfigurationParserFacts
