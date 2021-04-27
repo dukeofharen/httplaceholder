@@ -99,6 +99,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the line endings type.
         /// </summary>
         [YamlMember(Alias = "lineEndings")]
+        [AnyOfFollowing(LineEndingType.Unix, LineEndingType.Windows)]
         public LineEndingType? LineEndings { get; set; }
 
         /// <summary>

@@ -109,7 +109,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             // Assert
             Assert.AreEqual(
                 !shouldSucceed,
-                result.Any(r => r == $"Value for 'LineEndings' should be any of the following values: Windows, Unix."),
+                result.Any(r => r == "Value for 'LineEndings' should be any of the following values: Unix, Windows."),
                 $"Actual error messages: {string.Join(", ", result)}");
         }
     }
