@@ -14,7 +14,7 @@
         <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
         <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-        <PackageReference Include="YamlDotNet" Version="9.1.4" />
+        <PackageReference Include="YamlDotNet" Version="11.1.1" />
     </ItemGroup>
 
 </Project>

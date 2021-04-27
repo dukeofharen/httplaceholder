@@ -4,10 +4,6 @@
     {
         public static string[] InputFileSeparators = {"%%", ","};
 
-        // Line endings
-        public const string WindowsLineEndingType = "windows";
-        public const string UnixLineEndingType = "unix";
-
         // Images
         public const string JpegType = "jpeg";
         public const string PngType = "png";

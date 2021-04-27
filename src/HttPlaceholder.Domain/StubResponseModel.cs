@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Common.Validation;
+using HttPlaceholder.Domain.Enums;
 using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Domain
@@ -98,7 +99,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the line endings type.
         /// </summary>
         [YamlMember(Alias = "lineEndings")]
-        public string LineEndings { get; set; }
+        public LineEndingType? LineEndings { get; set; }
 
         /// <summary>
         /// Gets or sets the stub image.
