@@ -1,11 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Enums;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -28,20 +27,13 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            if (stub.Response?.Image == null)
+            var imgDefinition = stub.Response?.Image;
+            if (imgDefinition == null || imgDefinition.Type == ResponseImageType.NotSet)
             {
                 return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
             }
 
             var stubImage = stub.Response.Image;
-            var type = stubImage.Type;
-            if (!Constants.AllowedImageTypes.Any(t =>
-                string.Equals(t, type, StringComparison.OrdinalIgnoreCase)))
-            {
-                return StubResponseWriterResultModel.IsExecuted(GetType().Name,
-                    $"Type '{type}' not allowed for stub image generation. Possibilities: {string.Join(", ", Constants.AllowedImageTypes)}");
-            }
-
             response.Headers.AddOrReplaceCaseInsensitive("Content-Type", stubImage.ContentTypeHeaderValue);
 
             var cacheFilePath = Path.Combine(_fileService.GetTempPath(), $"{stubImage.Hash}.bin");
@@ -75,13 +67,13 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 using var ms = new MemoryStream();
                 switch (stubImage.Type)
                 {
-                    case Constants.BmpType:
+                    case ResponseImageType.Bmp:
                         await image.SaveAsBmpAsync(ms);
                         break;
-                    case Constants.GifType:
+                    case ResponseImageType.Gif:
                         await image.SaveAsGifAsync(ms);
                         break;
-                    case Constants.JpegType:
+                    case ResponseImageType.Jpeg:
                         await image.SaveAsJpegAsync(ms, new JpegEncoder {Quality = stubImage.JpegQuality});
                         break;
                     default:
@@ -97,6 +89,6 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             return StubResponseWriterResultModel.IsExecuted(GetType().Name);
         }
 
-        public int Priority { get; } = -11;
+        public int Priority => -11;
     }
 }

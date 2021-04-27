@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain.Enums;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 
@@ -13,7 +14,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the image type. Possibilities: jpeg, png, bmp and gif.
         /// </summary>
         [YamlMember(Alias = "type")]
-        public string Type { get; set; } = "png";
+        public ResponseImageType? Type { get; set; }
 
         /// <summary>
         /// Gets or sets the image width in pixels.
@@ -71,11 +72,11 @@ namespace HttPlaceholder.Domain
             {
                 switch (Type)
                 {
-                    case Constants.BmpType:
+                    case ResponseImageType.Bmp:
                         return "image/bmp";
-                    case Constants.GifType:
+                    case ResponseImageType.Gif:
                         return "image/gif";
-                    case Constants.JpegType:
+                    case ResponseImageType.Jpeg:
                         return "image/jpeg";
                     default:
                         return "image/png";

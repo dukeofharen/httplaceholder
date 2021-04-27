@@ -1,5 +1,6 @@
 ﻿using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Enums;
 using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Dto.v1.Stubs
@@ -13,7 +14,7 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// Gets or sets the image type. Possibilities: jpeg, png, bmp and gif.
         /// </summary>
         [YamlMember(Alias = "type")]
-        public string Type { get; set; } = "png";
+        public ResponseImageType? Type { get; set; }
 
         /// <summary>
         /// Gets or sets the image width in pixels.
