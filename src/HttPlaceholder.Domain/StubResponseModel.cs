@@ -106,6 +106,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the stub image.
         /// </summary>
         [YamlMember(Alias = "image")]
+        [ValidateObject]
         public StubResponseImageModel Image { get; set; }
     }
 }

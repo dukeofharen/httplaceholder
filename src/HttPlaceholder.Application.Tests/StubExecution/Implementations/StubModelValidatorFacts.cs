@@ -12,10 +12,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
     [TestClass]
     public class StubModelValidatorFacts
     {
-        private readonly SettingsModel _settings = new SettingsModel
-        {
-            Stub = new StubSettingsModel()
-        };
+        private readonly SettingsModel _settings = new() {Stub = new StubSettingsModel()};
 
         private StubModelValidator _validator;
 
@@ -76,7 +73,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         [DataRow(10, 9, true)]
         [DataRow(10, 11, false)]
         [DataRow(10, null, true)]
-        public void ValidateStubModel_ValidateExtraDurationMillis(int configuredMillis, int? stubMillis, bool shouldSucceed)
+        public void ValidateStubModel_ValidateExtraDurationMillis(int configuredMillis, int? stubMillis,
+            bool shouldSucceed)
         {
             // Arrange
             _settings.Stub.MaximumExtraDurationMillis = configuredMillis;
@@ -110,6 +108,90 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             Assert.AreEqual(
                 !shouldSucceed,
                 result.Any(r => r == "Value for 'LineEndings' should be any of the following values: Unix, Windows."),
+                $"Actual error messages: {string.Join(", ", result)}");
+        }
+
+        [DataTestMethod]
+        [DataRow("#000000", true)]
+        [DataRow("#0000FF", true)]
+        [DataRow("#FFFFFF", true)]
+        [DataRow("#0000ff", true)]
+        [DataRow("#999999", true)]
+        [DataRow("#0000fg", false)]
+        [DataRow("#0000fff", false)]
+        public void ValidateStubModel_ValidateImageBackgroundColor(string colorHexCode, bool shouldSucceed)
+        {
+            // Arrange
+            var model = new StubModel
+            {
+                Id = "stub-1",
+                Response = new StubResponseModel
+                {
+                    Image = new StubResponseImageModel {BackgroundColor = colorHexCode}
+                }
+            };
+
+            // Act
+            var result = _validator.ValidateStubModel(model);
+
+            // Assert
+            Assert.AreEqual(
+                !shouldSucceed,
+                result.Any(r =>
+                    r == "Field 'BackgroundColor' should be filled with a valid hex color code (e.g. '#1234AF')."),
+                $"Actual error messages: {string.Join(", ", result)}");
+        }
+
+        [DataTestMethod]
+        [DataRow("#000000", true)]
+        [DataRow("#0000FF", true)]
+        [DataRow("#FFFFFF", true)]
+        [DataRow("#0000ff", true)]
+        [DataRow("#999999", true)]
+        [DataRow("#0000fg", false)]
+        [DataRow("#0000fff", false)]
+        public void ValidateStubModel_ValidateImageFontColor(string colorHexCode, bool shouldSucceed)
+        {
+            // Arrange
+            var model = new StubModel
+            {
+                Id = "stub-1",
+                Response = new StubResponseModel {Image = new StubResponseImageModel {FontColor = colorHexCode}}
+            };
+
+            // Act
+            var result = _validator.ValidateStubModel(model);
+
+            // Assert
+            Assert.AreEqual(
+                !shouldSucceed,
+                result.Any(r =>
+                    r == "Field 'FontColor' should be filled with a valid hex color code (e.g. '#1234AF')."),
+                $"Actual error messages: {string.Join(", ", result)}");
+        }
+
+        [DataTestMethod]
+        [DataRow(1, true)]
+        [DataRow(100, true)]
+        [DataRow(0, false)]
+        [DataRow(-1, false)]
+        [DataRow(101, false)]
+        public void ValidateStubModel_ValidateJpegQuality(int jpegQuality, bool shouldSucceed)
+        {
+            // Arrange
+            var model = new StubModel
+            {
+                Id = "stub-1",
+                Response = new StubResponseModel {Image = new StubResponseImageModel {JpegQuality = jpegQuality}}
+            };
+
+            // Act
+            var result = _validator.ValidateStubModel(model);
+
+            // Assert
+            Assert.AreEqual(
+                !shouldSucceed,
+                result.Any(r => r == "Field 'JpegQuality' should be between '1' and '100'."),
                 $"Actual error messages: {string.Join(", ", result)}");
         }
     }

@@ -10,6 +10,10 @@ namespace HttPlaceholder.Common.Validation
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var results = new List<ValidationResult>();
+            if (value == null)
+            {
+                return ValidationResult.Success;
+            }
 
             if (value is IEnumerable enumerable)
             {
