@@ -2,6 +2,7 @@
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Infrastructure.Implementations;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -88,6 +89,27 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             Assert.AreEqual(
                 !shouldSucceed,
                 result.Any(r => r == $"Value for 'ExtraDuration' cannot be higher than '{configuredMillis}'."),
+                $"Actual error messages: {string.Join(", ", result)}");
+        }
+
+        [DataTestMethod]
+        [DataRow(LineEndingType.Unix, true)]
+        [DataRow(LineEndingType.Windows, true)]
+        [DataRow(null, true)]
+        [DataRow(LineEndingType.NotSet, false)]
+        [DataRow((LineEndingType)5, false)]
+        public void ValidateStubModel_ValidateLineEndings(LineEndingType? lineEndingType, bool shouldSucceed)
+        {
+            // Arrange
+            var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {LineEndings = lineEndingType}};
+
+            // Act
+            var result = _validator.ValidateStubModel(model);
+
+            // Assert
+            Assert.AreEqual(
+                !shouldSucceed,
+                result.Any(r => r == $"Value for 'LineEndings' should be any of the following values: Windows, Unix."),
                 $"Actual error messages: {string.Join(", ", result)}");
         }
     }
