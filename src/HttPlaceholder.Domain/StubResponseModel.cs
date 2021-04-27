@@ -20,7 +20,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the status code.
         /// </summary>
         [YamlMember(Alias = "statusCode")]
-        [Between(100, 600)]
+        [Between(100, 600, allowDefault: true)]
         public int? StatusCode { get; set; }
 
         /// <summary>

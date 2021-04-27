@@ -7,17 +7,24 @@ namespace HttPlaceholder.Common.Validation
         private readonly int _minValue;
         private readonly int _maxValue;
         private readonly bool _including;
+        private readonly bool _allowDefault;
 
-        public BetweenAttribute(int minValue, int maxValue, bool including = false)
+        public BetweenAttribute(int minValue, int maxValue, bool including = false, bool allowDefault = false)
         {
             _minValue = minValue;
             _maxValue = maxValue;
             _including = including;
+            _allowDefault = allowDefault;
         }
 
         public override bool IsValid(object value)
         {
             var castedValue = (int?)value;
+            if (_allowDefault && castedValue == 0)
+            {
+                return true;
+            }
+
             return castedValue >= _minValue && (_including ? castedValue <= _maxValue : castedValue < _maxValue);
         }
 
