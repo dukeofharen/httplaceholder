@@ -47,6 +47,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         }
 
         [DataTestMethod]
+        [DataRow(0, true)]
         [DataRow(99, false)]
         [DataRow(100, true)]
         [DataRow(200, true)]
