@@ -39,14 +39,14 @@ namespace HttPlaceholder.Controllers.v1
         /// Updates a given stub.
         /// </summary>
         /// <param name="stub">The posted stub.</param>
-        /// <param name="StubId">The stub ID.</param>
+        /// <param name="stubId">The stub ID.</param>
         /// <returns>OK, but no content returned</returns>
-        [HttpPut("{StubId}")]
+        [HttpPut("{stubId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult> Update([FromBody] StubDto stub, string StubId)
+        public async Task<ActionResult> Update([FromBody] StubDto stub, string stubId)
         {
-            await Mediator.Send(new UpdateStubCommand(StubId, Mapper.Map<StubModel>(stub)));
+            await Mediator.Send(new UpdateStubCommand(stubId, Mapper.Map<StubModel>(stub)));
             return NoContent();
         }
 
