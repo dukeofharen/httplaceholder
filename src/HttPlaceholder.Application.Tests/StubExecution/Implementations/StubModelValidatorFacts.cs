@@ -47,6 +47,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         }
 
         [DataTestMethod]
+        [DataRow(null, true)]
         [DataRow(0, true)]
         [DataRow(99, false)]
         [DataRow(100, true)]
@@ -54,7 +55,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         [DataRow(599, true)]
         [DataRow(600, false)]
         [DataRow(601, false)]
-        public void ValidateStubModel_ValidateStatusCodes(int statusCode, bool shouldSucceed)
+        public void ValidateStubModel_ValidateStatusCodes(int? statusCode, bool shouldSucceed)
         {
             // Arrange
             var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {StatusCode = statusCode}};

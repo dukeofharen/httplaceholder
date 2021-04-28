@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Logging;
@@ -15,8 +17,9 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
     public class YamlFileStubSourceFacts
     {
         private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
-        private readonly Mock<ILogger<YamlFileStubSource>> _loggerMock = new Mock<ILogger<YamlFileStubSource>>();
-        private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
+        private readonly Mock<ILogger<YamlFileStubSource>> _loggerMock = new();
+        private readonly Mock<IFileService> _fileServiceMock = new();
+        private readonly Mock<IStubModelValidator> _stubModelValidatorMock = new();
         private YamlFileStubSource _source;
 
         [TestInitialize]
@@ -24,13 +27,15 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             _source = new YamlFileStubSource(
                 _fileServiceMock.Object,
                 _loggerMock.Object,
-                _options);
+                _options,
+                _stubModelValidatorMock.Object);
 
         [TestCleanup]
         public void Cleanup()
         {
             _loggerMock.VerifyAll();
             _fileServiceMock.VerifyAll();
+            _stubModelValidatorMock.VerifyAll();
         }
 
         [TestMethod]
@@ -91,7 +96,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         [DataTestMethod]
         [DataRow(",")]
         [DataRow("%%")]
-        public async Task YamlFileStubSource_GetStubsAsync_InputFileSet_ShouldReadFilesFromThatDirectory(string separator)
+        public async Task YamlFileStubSource_GetStubsAsync_InputFileSet_ShouldReadFilesFromThatDirectory(
+            string separator)
         {
             // arrange
             var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
@@ -175,6 +181,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             Assert.AreEqual("situation-01", ids[0]);
             Assert.AreEqual("situation-02", ids[1]);
             Assert.AreEqual("situation-post-01", ids[2]);
+            _stubModelValidatorMock.Verify(m => m.ValidateStubModel(It.IsAny<StubModel>()), Times.Exactly(3));
         }
 
         [TestMethod]

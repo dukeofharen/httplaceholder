@@ -20,7 +20,7 @@ namespace HttPlaceholder.Common.Validation
         public override bool IsValid(object value)
         {
             var castedValue = (int?)value;
-            if (_allowDefault && castedValue == 0)
+            if (_allowDefault && (castedValue == 0 || castedValue == null))
             {
                 return true;
             }
