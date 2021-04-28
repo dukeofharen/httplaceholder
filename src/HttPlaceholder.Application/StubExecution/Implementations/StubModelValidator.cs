@@ -30,7 +30,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 
             // Validate other settings here.
             var extraDurationMillis = stub?.Response?.ExtraDuration ?? 0;
-            var allowedMillis = _settings.Stub.MaximumExtraDurationMillis;
+            var allowedMillis = _settings.Stub?.MaximumExtraDurationMillis;
             if (extraDurationMillis > 0 && extraDurationMillis > allowedMillis)
             {
                 result.Add($"Value for 'ExtraDuration' cannot be higher than '{allowedMillis}'.");
