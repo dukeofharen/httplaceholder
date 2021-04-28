@@ -28,6 +28,7 @@ sudo killall HttPlaceholder
 # Run HttPlaceholder tests for in SQLite configuration.
 echo "Testing HttPlaceholder with in SQLite configuration"
 SQLITE_PATH="/tmp/httplaceholder_stubs.db"
+sudo rm $SQLITE_PATH
 dotnet run -p $HTTPL_ROOT_DIR --sqliteConnectionString "Data Source=$SQLITE_PATH" > $DIR/logs.txt 2>&1 &
 sleep 5
 newman run $POSTMAN_PATH --insecure
