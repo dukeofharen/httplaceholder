@@ -11,5 +11,7 @@ namespace HttPlaceholder.Application.Exceptions
         {
             ValidationErrors = validationErrors;
         }
+
+        public override string Message => $"Validation failed:\n{string.Join("\n", ValidationErrors)}";
     }
 }

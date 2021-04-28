@@ -111,7 +111,11 @@ response:
         public async Task RestApiIntegration_Stub_Add_Json_StubIdAlreadyExistsInReadOnlySource_ShouldReturn409()
         {
             // arrange
-            var stub = new StubDto {Id = "situation-01"};
+            var stub = new StubDto
+            {
+                Id = "situation-01",
+                Response = new StubResponseDto()
+            };
 
             var existingStub = new StubModel {Id = "situation-01"};
             ReadOnlyStubSource
