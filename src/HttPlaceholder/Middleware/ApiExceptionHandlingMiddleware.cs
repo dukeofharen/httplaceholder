@@ -34,6 +34,11 @@ namespace HttPlaceholder.Middleware
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 }
+                catch (ValidationException ex)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    await context.Response.WriteAsJsonAsync(ex.ValidationErrors);
+                }
             }
             else
             {
