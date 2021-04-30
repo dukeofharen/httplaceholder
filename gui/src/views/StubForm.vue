@@ -128,7 +128,8 @@ export default {
                 resources.stubAddedSuccessfully.format(result.v.stub.id)
               );
             } else if (result.e) {
-              toastError(resources.stubNotAdded.format(result.e.stubId));
+              console.log(result.e);
+              toastError(resources.stubNotAdded.format(result.e.stubId || ""));
             }
           }
           if (results.length === 1 && results[0].v) {
