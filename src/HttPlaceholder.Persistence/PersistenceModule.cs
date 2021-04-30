@@ -1,6 +1,6 @@
-﻿using HttPlaceholder.Application.Interfaces.Persistence;
+﻿using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Implementations;
 using HttPlaceholder.Persistence.FileSystem;
@@ -23,7 +23,6 @@ namespace HttPlaceholder.Persistence
             return services;
         }
 
-        // ReSharper disable once UnusedMethodReturnValue.Global
         public static IServiceCollection AddStubSources(this IServiceCollection services, IConfiguration configuration)
         {
             var settings = configuration.Get<SettingsModel>();

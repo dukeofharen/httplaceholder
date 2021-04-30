@@ -1,7 +1,6 @@
 ﻿using System;
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace HttPlaceholder.Configuration.Attributes
+namespace HttPlaceholder.Application.Configuration.Attributes
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class ConfigKeyAttribute : Attribute

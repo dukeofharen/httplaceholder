@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using HttPlaceholder.Configuration.Attributes;
-// ReSharper disable UnusedMember.Global
+using HttPlaceholder.Application.Configuration.Attributes;
 
-namespace HttPlaceholder.Configuration
+namespace HttPlaceholder.Application.Configuration
 {
     public static class ConfigKeys
     {
@@ -107,6 +106,12 @@ namespace HttPlaceholder.Configuration
             ConfigPath = "Gui:EnableUserInterface",
             IsBoolValue = true)]
         public const string EnableUserInterface = "enableUserInterface";
+
+        [ConfigKey(
+            Description = "the number of milliseconds the 'extraDuration' response writer can make a request wait at most. Defaults to 1 minute (60.000 millis).",
+            Example = "60000",
+            ConfigPath = "Stub:MaximumExtraDurationMillis")]
+        public const string MaximumExtraDurationMillisKey = "maximumExtraDurationMillisKey";
 
         [ConfigKey(
             Description = "the location of the config.json file. This JSON file contains all possible configuration settings and a default value per setting. You can copy this file to any location on your PC. Don't put the config file in the installation folder, because these files will be overwritten when an update is installed.",

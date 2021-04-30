@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Http;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -53,7 +54,8 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             _stubSource = new YamlFileStubSource(
                 FileServiceMock.Object,
                 new Mock<ILogger<YamlFileStubSource>>().Object,
-                Options);
+                Options,
+                new Mock<IStubModelValidator>().Object);
             _writableStubSourceMock = new Mock<IWritableStubSource>();
             _writableStubSourceMock
                 .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>()))

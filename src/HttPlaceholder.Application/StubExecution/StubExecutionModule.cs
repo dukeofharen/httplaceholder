@@ -13,14 +13,14 @@ namespace HttPlaceholder.Application.StubExecution
 {
     public static class StubExecutionModule
     {
-        // ReSharper disable once UnusedMethodReturnValue.Global
         public static IServiceCollection AddStubExecutionModule(this IServiceCollection services)
         {
             services.AddSingleton<IFinalStubDeterminer, FinalStubDeterminer>();
-            services.AddSingleton<IRequestLoggerFactory, RequestLoggerFactory>();
             services.AddSingleton<IStubRequestExecutor, StubRequestExecutor>();
             services.AddSingleton<IStubResponseGenerator, StubResponseGenerator>();
+            services.AddSingleton<IRequestLoggerFactory, RequestLoggerFactory>();
             services.AddSingleton<IRequestStubGenerator, RequestStubGenerator>();
+            services.AddSingleton<IStubModelValidator, StubModelValidator>();
             services.AddSingleton<IVariableParser, VariableParser>();
 
             const string filter = "HttPlaceholder";

@@ -63,13 +63,12 @@ namespace HttPlaceholder.Controllers.v1
 
         /// <summary>
         /// An endpoint which accepts the correlation ID of a request made earlier.
-        /// HttPlaceholder will create a stub based on this request for you to tweak lateron.
+        /// HttPlaceholder will create a stub based on this request for you to tweak later on.
         /// </summary>
         /// <returns>OK, with the generated stub</returns>
-        [HttpPost("{CorrelationId}/stubs")]
+        [HttpPost("{correlationId}/stubs")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<FullStubDto>> CreateStubForRequest(
-            [FromRoute] CreateStubForRequestCommand command) =>
-            Mapper.Map<FullStubDto>(await Mediator.Send(command));
+        public async Task<ActionResult<FullStubDto>> CreateStubForRequest([FromRoute] string correlationId) =>
+            Mapper.Map<FullStubDto>(await Mediator.Send(new CreateStubForRequestCommand(correlationId)));
     }
 }

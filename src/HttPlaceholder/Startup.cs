@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using HttPlaceholder.Configuration;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs.Implementations;
 using HttPlaceholder.Utilities;
@@ -25,7 +25,6 @@ namespace HttPlaceholder
         public void ConfigureServices(IServiceCollection services) =>
             ConfigureServicesStatic(services, Configuration);
 
-        // ReSharper disable once UnusedParameter.Global
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
             ConfigureStatic(app, true, Configuration?.Get<SettingsModel>()?.Gui?.EnableUserInterface == true);
 

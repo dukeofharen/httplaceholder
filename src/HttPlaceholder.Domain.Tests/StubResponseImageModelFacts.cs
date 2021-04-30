@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using HttPlaceholder.Domain.Enums;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Domain.Tests
 {
@@ -13,7 +14,7 @@ namespace HttPlaceholder.Domain.Tests
             {
                 Height = 512,
                 Text = "Test text",
-                Type = "jpeg",
+                Type = ResponseImageType.Jpeg,
                 Width = 1024,
                 BackgroundColor = "#FFFFFF",
                 FontColor = "#000000",
@@ -23,15 +24,17 @@ namespace HttPlaceholder.Domain.Tests
             };
 
             // Act / Assert
-            Assert.AreEqual("f015841bcda9c4b75cdbe54795251bfa", model.Hash);
+            Assert.AreEqual("9c2627f4f6cec8843c224a40fc4614a8", model.Hash);
         }
 
         [DataTestMethod]
-        [DataRow("jpeg", "image/jpeg")]
-        [DataRow("png", "image/png")]
-        [DataRow("bmp", "image/bmp")]
-        [DataRow("gif", "image/gif")]
-        public void ContentTypeHeaderValue_ShouldBeConvertedCorrectly(string type, string mimeType)
+        [DataRow(ResponseImageType.Jpeg, "image/jpeg")]
+        [DataRow(ResponseImageType.Png, "image/png")]
+        [DataRow(ResponseImageType.NotSet, "image/png")]
+        [DataRow(null, "image/png")]
+        [DataRow(ResponseImageType.Bmp, "image/bmp")]
+        [DataRow(ResponseImageType.Gif, "image/gif")]
+        public void ContentTypeHeaderValue_ShouldBeConvertedCorrectly(ResponseImageType? type, string mimeType)
         {
             // Arrange
             var model = new StubResponseImageModel {Type = type};

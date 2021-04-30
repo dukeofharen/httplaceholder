@@ -8,8 +8,6 @@ using HttPlaceholder.Domain;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-// ReSharper disable UnusedType.Global
-
 namespace HttPlaceholder.Application.Metadata.Queries.GetMetadata
 {
     public class GetMetadataQueryHandler : IRequestHandler<GetMetadataQuery, MetadataModel>

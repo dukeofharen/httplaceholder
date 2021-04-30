@@ -3513,6 +3513,130 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "3. Test with API",
+					"item": [
+						{
+							"name": "1. Add stub",
+							"item": [
+								{
+									"name": "Add stub with validation error",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const result = pm.response.json();",
+													"",
+													"pm.test(\"Has correct validation errors\", function () {",
+													"    pm.expect(result.length).to.be.eq(2);",
+													"    pm.expect(result[0]).to.be.eq(\"The Id field is required.\");",
+													"    pm.expect(result[1]).to.be.eq(\"Field 'StatusCode' should be between '100' and '599'.\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "tenant: integration\nconditions:\n  method: GET\n  url:\n    path: /bla\nresponse:\n  statusCode: 600"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs/stub-1",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs",
+												"stub-1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "2. Update stub",
+							"item": [
+								{
+									"name": "Update stub with validation error",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const result = pm.response.json();",
+													"",
+													"pm.test(\"Has correct validation errors\", function () {",
+													"    pm.expect(result.length).to.be.eq(2);",
+													"    pm.expect(result[0]).to.be.eq(\"The Id field is required.\");",
+													"    pm.expect(result[1]).to.be.eq(\"Field 'StatusCode' should be between '100' and '599'.\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "tenant: integration\nconditions:\n  method: GET\n  url:\n    path: /bla\nresponse:\n  statusCode: 600"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						}
+					]
 				}
 			]
 		}

@@ -1,12 +1,11 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
-using AutoMapper;
 using HttPlaceholder.Application;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Infrastructure;
 using HttPlaceholder.Infrastructure.Web;
@@ -77,7 +76,6 @@ namespace HttPlaceholder.Utilities
             });
         }
 
-        // ReSharper disable once UnusedMethodReturnValue.Global
         public static IApplicationBuilder PreloadStubs(this IApplicationBuilder app, bool preloadStubs)
         {
             if (!preloadStubs)

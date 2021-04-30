@@ -2,8 +2,8 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.FileSystem;
 using HttPlaceholder.Persistence.Implementations.StubSources;

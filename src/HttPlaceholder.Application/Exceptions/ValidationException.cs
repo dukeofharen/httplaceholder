@@ -1,31 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using FluentValidation.Results;
 
 namespace HttPlaceholder.Application.Exceptions
 {
-    [Serializable]
     public class ValidationException : Exception
     {
-        public ValidationException(IEnumerable<string> failures)
+        public IEnumerable<string> ValidationErrors { get; }
+
+        public ValidationException(IEnumerable<string> validationErrors)
         {
-            Failures = failures;
+            ValidationErrors = validationErrors;
         }
 
-        public ValidationException(IEnumerable<ValidationFailure> failures)
-        {
-            Failures = failures
-                .Select(f => f.ErrorMessage)
-                .ToArray();
-        }
-
-        protected ValidationException(SerializationInfo serializationInfo, StreamingContext streamingContext) :
-            base(serializationInfo, streamingContext)
-        {
-        }
-
-        public IEnumerable<string> Failures { get; }
+        public override string Message => $"Validation failed:\n{string.Join("\n", ValidationErrors)}";
     }
 }

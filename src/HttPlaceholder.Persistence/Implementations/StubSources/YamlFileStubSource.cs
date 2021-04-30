@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -17,21 +18,24 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 {
     internal class YamlFileStubSource : IStubSource
     {
-        private static string[] _extensions = {".yml", ".yaml"};
+        private static readonly string[] _extensions = {".yml", ".yaml"};
 
         private IEnumerable<StubModel> _stubs;
         private DateTime _stubLoadDateTime;
         private readonly ILogger<YamlFileStubSource> _logger;
         private readonly IFileService _fileService;
         private readonly SettingsModel _settings;
+        private readonly IStubModelValidator _stubModelValidator;
 
         public YamlFileStubSource(
             IFileService fileService,
             ILogger<YamlFileStubSource> logger,
-            IOptions<SettingsModel> options)
+            IOptions<SettingsModel> options,
+            IStubModelValidator stubModelValidator)
         {
             _fileService = fileService;
             _logger = logger;
+            _stubModelValidator = stubModelValidator;
             _settings = options.Value;
         }
 
@@ -97,7 +101,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                             stubs = new[] {YamlUtilities.Parse<StubModel>(input)};
                         }
 
-                        EnsureStubsHaveId(stubs);
+                        ParseAndValidateStubs(stubs);
                         result.AddRange(stubs);
                         _stubLoadDateTime = DateTime.UtcNow;
                     }
@@ -132,18 +136,24 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
         private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
             files.Max(f => _fileService.GetModicationDateTime(f));
 
-        private static void EnsureStubsHaveId(IEnumerable<StubModel> stubs)
+        private void ParseAndValidateStubs(IEnumerable<StubModel> stubs)
         {
             foreach (var stub in stubs)
             {
-                if (!string.IsNullOrWhiteSpace(stub.Id))
+                if (string.IsNullOrWhiteSpace(stub.Id))
                 {
-                    continue;
+                    // If no ID is set, calculate a unique ID based on the stub contents.
+                    var contents = JsonConvert.SerializeObject(stub);
+                    stub.Id = HashingUtilities.GetMd5String(contents);
                 }
 
-                // If no ID is set, calculate a unique ID based on the stub contents.
-                var contents = JsonConvert.SerializeObject(stub);
-                stub.Id = HashingUtilities.GetMd5String(contents);
+                var results = _stubModelValidator.ValidateStubModel(stub);
+                if (results.Any())
+                {
+                    results = results.Select(r => $"- {r}").ToArray();
+                    _logger.LogWarning(
+                        $"Validation warnings encountered for stub '{stub.Id}':\n{string.Join("\n", results)}");
+                }
             }
         }
 

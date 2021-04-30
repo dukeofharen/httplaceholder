@@ -8,9 +8,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
-// ReSharper disable UnassignedGetOnlyAutoProperty
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
 
 namespace HttPlaceholder.TestUtilities.Http
 {

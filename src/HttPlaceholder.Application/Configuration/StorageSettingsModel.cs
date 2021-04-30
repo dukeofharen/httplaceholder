@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.Configuration
+﻿namespace HttPlaceholder.Application.Configuration
 {
     public class StorageSettingsModel
     {
@@ -6,7 +6,6 @@
 
         public int OldRequestsQueueLength { get; set; } = 40;
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public bool EnableRequestLogging { get; set; }
 
         public string FileStorageLocation { get; set; }

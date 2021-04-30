@@ -3,17 +3,15 @@ using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations;
 using HttPlaceholder.Domain;
-using Microsoft.Extensions.Logging;
+using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
 {
     [TestClass]
     public class LineEndingResponseWriterFacts
     {
-        private readonly LineEndingResponseWriter _writer =
-            new LineEndingResponseWriter(new Mock<ILogger<LineEndingResponseWriter>>().Object);
+        private readonly LineEndingResponseWriter _writer = new();
 
         [TestMethod]
         public async Task WriteToResponseAsync_LineEndingsNotSet_ShouldReturnNotExecuted()
@@ -33,7 +31,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task WriteToResponseAsync_Unix_ShouldReturnUnixLineEndings()
         {
             // Arrange
-            var stub = new StubModel {Response = new StubResponseModel {LineEndings = "unix"}};
+            var stub = new StubModel {Response = new StubResponseModel {LineEndings = LineEndingType.Unix}};
             var response = new ResponseModel {Body = Encoding.UTF8.GetBytes("the\r\ncontent\r\n")};
 
             // Act
@@ -49,7 +47,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         public async Task WriteToResponseAsync_Windows_ShouldReturnWindowsLineEndings()
         {
             // Arrange
-            var stub = new StubModel {Response = new StubResponseModel {LineEndings = "windows"}};
+            var stub = new StubModel {Response = new StubResponseModel {LineEndings = LineEndingType.Windows}};
             var response = new ResponseModel {Body = Encoding.UTF8.GetBytes("the\ncontent\n")};
 
             // Act
@@ -67,7 +65,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             // Arrange
             var stub = new StubModel
             {
-                Response = new StubResponseModel {LineEndings = "unknown", Text = "the\ncontent\n"}
+                Response = new StubResponseModel {LineEndings = (LineEndingType)5, Text = "the\ncontent\n"}
             };
             var response = new ResponseModel();
 
@@ -77,7 +75,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             // Assert
             Assert.IsTrue(result.Executed);
             Assert.IsNull(response.Body);
-            Assert.AreEqual("Line ending type 'unknown' is not supported. Options are 'unix' and 'windows'.",
+            Assert.AreEqual("Line ending type '5' is not supported. Options are 'Unix' and 'Windows'.",
                 result.Log);
         }
 
@@ -89,7 +87,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
             {
                 Response = new StubResponseModel
                 {
-                    LineEndings = "unknown", Base64 = Convert.ToBase64String(new byte[] {1, 2, 3})
+                    LineEndings = LineEndingType.Windows, Base64 = Convert.ToBase64String(new byte[] {1, 2, 3})
                 }
             };
             var response = new ResponseModel {BodyIsBinary = true};

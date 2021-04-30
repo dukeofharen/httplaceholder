@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HttPlaceholder.Common.Validation;
 using HttPlaceholder.Domain.Enums;
 using YamlDotNet.Serialization;
 
@@ -19,6 +20,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the status code.
         /// </summary>
         [YamlMember(Alias = "statusCode")]
+        [Between(100, 600, allowDefault: true)]
         public int? StatusCode { get; set; }
 
         /// <summary>
@@ -97,12 +99,14 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the line endings type.
         /// </summary>
         [YamlMember(Alias = "lineEndings")]
-        public string LineEndings { get; set; }
+        [AnyOfFollowing(LineEndingType.Unix, LineEndingType.Windows)]
+        public LineEndingType? LineEndings { get; set; }
 
         /// <summary>
         /// Gets or sets the stub image.
         /// </summary>
         [YamlMember(Alias = "image")]
+        [ValidateObject]
         public StubResponseImageModel Image { get; set; }
     }
 }

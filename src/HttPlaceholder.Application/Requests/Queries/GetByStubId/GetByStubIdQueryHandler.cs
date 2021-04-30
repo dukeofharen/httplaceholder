@@ -7,7 +7,6 @@ using MediatR;
 
 namespace HttPlaceholder.Application.Requests.Queries.GetByStubId
 {
-    // ReSharper disable once UnusedType.Global
     public class GetByStubIdQueryHandler : IRequestHandler<GetByStubIdQuery, IEnumerable<RequestResultModel>>
     {
         private readonly IStubContext _stubContext;

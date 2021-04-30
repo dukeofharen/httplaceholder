@@ -8,7 +8,6 @@ namespace HttPlaceholder.Hubs.Implementations
     /// <summary>
     /// The request SignalR hub.
     /// </summary>
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class RequestHub : Hub
     {
         private readonly ILoginService _loginService;

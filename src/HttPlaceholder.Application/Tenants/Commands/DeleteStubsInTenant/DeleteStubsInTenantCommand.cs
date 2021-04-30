@@ -4,7 +4,11 @@ namespace HttPlaceholder.Application.Tenants.Commands.DeleteStubsInTenant
 {
     public class DeleteStubsInTenantCommand : IRequest
     {
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public string Tenant { get; set; }
+        public DeleteStubsInTenantCommand(string tenant)
+        {
+            Tenant = tenant;
+        }
+
+        public string Tenant { get; }
     }
 }

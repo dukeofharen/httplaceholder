@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using HttPlaceholder.Common;
-using HttPlaceholder.Configuration.Utilities;
+using HttPlaceholder.Infrastructure.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Configuration.Tests.Utilities
+namespace HttPlaceholder.Infrastructure.Tests.Configuration
 {
     [TestClass]
     public class ConfigurationParserFacts
@@ -183,7 +184,7 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
         public void DefaultValues_ShouldBeSetCorrectly()
         {
             // Act
-            var result = _parser.ParseConfiguration(new string[0]);
+            var result = _parser.ParseConfiguration(Array.Empty<string>());
 
             // Assert
             Assert.AreEqual("5000", result["Web:HttpPort"]);
@@ -193,6 +194,7 @@ namespace HttPlaceholder.Configuration.Tests.Utilities
             Assert.AreEqual("True", result["Web:UseHttps"]);
             Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
             Assert.AreEqual("40", result["Storage:OldRequestsQueueLength"]);
+            Assert.AreEqual("60000", result["Stub:MaximumExtraDurationMillis"]);
         }
 
         [DataTestMethod]

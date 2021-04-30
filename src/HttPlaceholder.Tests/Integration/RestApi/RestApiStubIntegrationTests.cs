@@ -108,10 +108,45 @@ response:
         }
 
         [TestMethod]
+        public async Task RestApiIntegration_Stub_Add_ValidationError_ShouldReturn400()
+        {
+            // arrange
+            var url = $"{TestServer.BaseAddress}ph-api/stubs";
+            const string body = @"{
+  ""response"": {
+    ""statusCode"": 200,
+    ""text"": ""{\n  \""\""first_name\""\"": \""\""John\""\""\n}\n"",
+    ""headers"": {
+      ""Content-Type"": ""application/json""
+    }
+  }
+}";
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(url),
+                Content = new StringContent(body, Encoding.UTF8, "application/json")
+            };
+
+            // act / assert
+            using var response = await Client.SendAsync(request);
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+
+            var content = await response.Content.ReadAsStringAsync();
+            var errors = JsonConvert.DeserializeObject<string[]>(content);
+            Assert.AreEqual(1, errors.Length);
+            Assert.AreEqual("The Id field is required.", errors[0]);
+        }
+
+        [TestMethod]
         public async Task RestApiIntegration_Stub_Add_Json_StubIdAlreadyExistsInReadOnlySource_ShouldReturn409()
         {
             // arrange
-            var stub = new StubDto {Id = "situation-01"};
+            var stub = new StubDto
+            {
+                Id = "situation-01",
+                Response = new StubResponseDto()
+            };
 
             var existingStub = new StubModel {Id = "situation-01"};
             ReadOnlyStubSource

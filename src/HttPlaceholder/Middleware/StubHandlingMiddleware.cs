@@ -4,11 +4,10 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Common;
-using HttPlaceholder.Configuration;
 using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Resources;
@@ -19,7 +18,6 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public class StubHandlingMiddleware
     {
         private static readonly string[] _segmentsToIgnore =
@@ -62,7 +60,6 @@ namespace HttPlaceholder.Middleware
             _settings = options.Value;
         }
 
-        // ReSharper disable once UnusedMember.Global
         public async Task Invoke(HttpContext context)
         {
             var path = _httpContextService.Path;

@@ -13,7 +13,6 @@ namespace HttPlaceholder.TestUtilities.Http
             }
         }
 
-        // ReSharper disable once UnassignedGetOnlyAutoProperty
         public new ICollection<string> Keys { get; }
     }
 }

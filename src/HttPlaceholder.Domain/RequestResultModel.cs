@@ -21,13 +21,11 @@ namespace HttPlaceholder.Domain
         /// <summary>
         /// Gets or sets the stub execution results.
         /// </summary>
-        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public IList<StubExecutionResultModel> StubExecutionResults { get; set; } = new List<StubExecutionResultModel>();
 
         /// <summary>
         /// Gets or sets the stub response writer results.
         /// </summary>
-        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public IList<StubResponseWriterResultModel> StubResponseWriterResults { get; set; } = new List<StubResponseWriterResultModel>();
 
         /// <summary>

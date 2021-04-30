@@ -1,4 +1,4 @@
-﻿namespace HttPlaceholder.Configuration
+﻿namespace HttPlaceholder.Application.Configuration
 {
     public class SettingsModel
     {
@@ -8,7 +8,8 @@
 
         public StorageSettingsModel Storage { get; set; }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public GuiSettingsModel Gui { get; set; }
+
+        public StubSettingsModel Stub { get; set; }
     }
 }

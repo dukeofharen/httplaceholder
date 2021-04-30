@@ -5,6 +5,7 @@ using HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SixLabors.ImageSharp;
@@ -52,32 +53,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         }
 
         [TestMethod]
-        public async Task WriteToResponseAsync_TypeNotAllowed_ShouldReturnExecutedWithLogLine()
-        {
-            // Arrange
-            var stub = new StubModel {Response = new StubResponseModel {Image = new StubResponseImageModel
-            {
-                Type = "unknown"
-            }}};
-            var response = new ResponseModel();
-
-            // Act
-            var result = await _responseWriter.WriteToResponseAsync(stub, response);
-
-            // Assert
-            Assert.IsTrue(result.Executed);
-            Assert.AreEqual(0, response.Headers.Count);
-            Assert.AreEqual(null, response.Body);
-            Assert.AreEqual("Type 'unknown' not allowed for stub image generation. Possibilities: jpeg, png, bmp, gif", result.Log);
-        }
-
-        [TestMethod]
         public async Task WriteToResponseAsync_FileIsCached_ShouldReturnCachedFile()
         {
             // Arrange
             var stub = new StubModel {Response = new StubResponseModel {Image = new StubResponseImageModel
             {
-                Type = "jpeg",
+                Type = ResponseImageType.Jpeg,
                 Height = 512,
                 Width = 512
             }}};
@@ -102,11 +83,11 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
         }
 
         [DataTestMethod]
-        [DataRow("jpeg", "image/jpeg")]
-        [DataRow("png", "image/png")]
-        [DataRow("bmp", "image/bmp")]
-        [DataRow("gif", "image/gif")]
-        public async Task WriteToResponseAsync_AllFileTypes(string type, string expectedContentType)
+        [DataRow(ResponseImageType.Jpeg, "image/jpeg")]
+        [DataRow(ResponseImageType.Png, "image/png")]
+        [DataRow(ResponseImageType.Bmp, "image/bmp")]
+        [DataRow(ResponseImageType.Gif, "image/gif")]
+        public async Task WriteToResponseAsync_AllFileTypes(ResponseImageType? type, string expectedContentType)
         {
             // Arrange
             var stub = new StubModel {Response = new StubResponseModel {Image = new StubResponseImageModel

@@ -2,27 +2,21 @@
 using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Enums;
 using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations
 {
     public class LineEndingResponseWriter : IResponseWriter
     {
-        private readonly ILogger<LineEndingResponseWriter> _logger;
-
-        public LineEndingResponseWriter(ILogger<LineEndingResponseWriter> logger)
-        {
-            _logger = logger;
-        }
-
         public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
         {
-            if (string.IsNullOrWhiteSpace(stub.Response.LineEndings))
+            var lineEndings = stub.Response.LineEndings;
+            if (lineEndings is null or LineEndingType.NotSet)
             {
                 return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
             }
 
-            var lineEndings = stub.Response.LineEndings;
             var log = string.Empty;
             if (response.BodyIsBinary)
             {
@@ -30,21 +24,18 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
             }
             else
             {
-                if (string.Equals(lineEndings, Constants.UnixLineEndingType, StringComparison.OrdinalIgnoreCase))
+                switch (lineEndings)
                 {
-                    response.Body = ReplaceLineEndings(response.Body, "\n");
-                }
-                else if (string.Equals(
-                    lineEndings,
-                    Constants.WindowsLineEndingType,
-                    StringComparison.OrdinalIgnoreCase))
-                {
-                    response.Body = ReplaceLineEndings(response.Body, "\r\n");
-                }
-                else
-                {
-                    log =
-                        $"Line ending type '{lineEndings}' is not supported. Options are '{Constants.UnixLineEndingType}' and '{Constants.WindowsLineEndingType}'.";
+                    case LineEndingType.Unix:
+                        response.Body = ReplaceLineEndings(response.Body, "\n");
+                        break;
+                    case LineEndingType.Windows:
+                        response.Body = ReplaceLineEndings(response.Body, "\r\n");
+                        break;
+                    default:
+                        log =
+                            $"Line ending type '{lineEndings}' is not supported. Options are '{LineEndingType.Unix}' and '{LineEndingType.Windows}'.";
+                        break;
                 }
             }
 

@@ -15,8 +15,6 @@ using HttPlaceholder.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-// ReSharper disable InconsistentNaming
-
 namespace HttPlaceholder.Controllers.v1
 {
     /// <summary>
@@ -35,21 +33,20 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<FullStubDto>> Add([FromBody] StubDto stub) =>
-            Ok(await Mediator.Send(new AddStubCommand {Stub = Mapper.Map<StubModel>(stub)}));
+            Ok(await Mediator.Send(new AddStubCommand(Mapper.Map<StubModel>(stub))));
 
         /// <summary>
         /// Updates a given stub.
         /// </summary>
         /// <param name="stub">The posted stub.</param>
-        /// <param name="StubId">The stub ID.</param>
+        /// <param name="stubId">The stub ID.</param>
         /// <returns>OK, but no content returned</returns>
-        [HttpPut("{StubId}")]
+        [HttpPut("{stubId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult> Update([FromBody] StubDto stub, string StubId)
+        public async Task<ActionResult> Update([FromBody] StubDto stub, string stubId)
         {
-            var command = new UpdateStubCommand {StubId = StubId, Stub = Mapper.Map<StubModel>(stub)};
-            await Mediator.Send(command);
+            await Mediator.Send(new UpdateStubCommand(stubId, Mapper.Map<StubModel>(stub)));
             return NoContent();
         }
 
@@ -76,34 +73,34 @@ namespace HttPlaceholder.Controllers.v1
         /// </summary>
         /// <returns>request results for the given stubId</returns>
         [HttpGet]
-        [Route("{StubId}/requests")]
+        [Route("{stubId}/requests")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetRequestsByStubId([FromRoute]GetByStubIdQuery query) =>
-            Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(query)));
+        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetRequestsByStubId([FromRoute]string stubId) =>
+            Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(new GetByStubIdQuery(stubId))));
 
         /// <summary>
         /// Get a specific stub by stub identifier.
         /// </summary>
         /// <returns>The stub.</returns>
         [HttpGet]
-        [Route("{StubId}")]
+        [Route("{stubId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<FullStubDto>> Get([FromRoute] GetStubQuery query) =>
-            Ok(Mapper.Map<FullStubDto>(await Mediator.Send(query)));
+        public async Task<ActionResult<FullStubDto>> Get([FromRoute] string stubId) =>
+            Ok(Mapper.Map<FullStubDto>(await Mediator.Send(new GetStubQuery(stubId))));
 
         /// <summary>
         /// Delete a specific stub by stub identifier.
         /// </summary>
         /// <returns>OK, but not content</returns>
         [HttpDelete]
-        [Route("{StubId}")]
+        [Route("{stubId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Delete([FromRoute] DeleteStubCommand command)
+        public async Task<ActionResult> Delete([FromRoute] string stubId)
         {
-            await Mediator.Send(command);
+            await Mediator.Send(new DeleteStubCommand(stubId));
             return NoContent();
         }
 

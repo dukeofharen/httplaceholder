@@ -6,7 +6,6 @@ using MediatR;
 
 namespace HttPlaceholder.Application.Requests.Commands.CreateStubForRequest
 {
-    // ReSharper disable once UnusedType.Global
     public class CreateStubForRequestCommandHandler : IRequestHandler<CreateStubForRequestCommand, FullStubModel>
     {
         private readonly IRequestStubGenerator _requestStubGenerator;

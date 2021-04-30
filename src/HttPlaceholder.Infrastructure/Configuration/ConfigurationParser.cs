@@ -4,13 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Attributes;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Configuration.Attributes;
 using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Configuration.Utilities
+namespace HttPlaceholder.Infrastructure.Configuration
 {
     public class ConfigurationParser
     {
@@ -81,6 +82,7 @@ namespace HttPlaceholder.Configuration.Utilities
             argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, true);
             argsDictionary.EnsureEntryExists(ConfigKeys.EnableUserInterface, true);
             argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, 40);
+            argsDictionary.EnsureEntryExists(ConfigKeys.MaximumExtraDurationMillisKey, 60000);
 
             // Determine and set file storage location.
             string fileStorageLocation = null;
