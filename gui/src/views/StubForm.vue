@@ -9,13 +9,13 @@
           <a
             href="https://github.com/dukeofharen/httplaceholder"
             target="_blank"
-            >https://github.com/dukeofharen/httplaceholder</a
+          >https://github.com/dukeofharen/httplaceholder</a
           >.
         </v-card-text>
       </v-card>
       <v-card v-if="showFormHelperSelector" class="mt-3 mb-3 overflow-hidden">
         <v-card-text>
-          <FormHelperSelector />
+          <FormHelperSelector/>
         </v-card-text>
       </v-card>
       <v-card class="editor mt-3 mb-3">
@@ -35,7 +35,7 @@
         <v-card-title class="headline">Reset to defaults?</v-card-title>
         <v-card-actions>
           <v-btn color="green darken-1" text @click="resetDialog = false"
-            >No
+          >No
           </v-btn>
           <v-btn color="green darken-1" text @click="resetForm">Yes</v-btn>
         </v-card-actions>
@@ -45,11 +45,11 @@
 </template>
 
 <script>
-import { codemirror } from "vue-codemirror";
+import {codemirror} from "vue-codemirror";
 import yaml from "js-yaml";
-import { toastError, toastSuccess } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import { routeNames } from "@/router/routerConstants";
+import {toastError, toastSuccess} from "@/utils/toastUtil";
+import {resources} from "@/shared/resources";
+import {routeNames} from "@/router/routerConstants";
 import FormHelperSelector from "@/components/formHelpers/FormHelperSelector";
 
 export default {
@@ -117,47 +117,38 @@ export default {
   },
   methods: {
     async save() {
-      if (this.newStub) {
-        try {
-          const results = await this.$store.dispatch("stubs/addStubs", {
-            input: this.input
-          });
-          for (let result of results) {
-            if (result.v) {
+      try {
+        const results = await this.$store.dispatch("stubs/addStubs", {
+          input: this.input
+        });
+        for (let result of results) {
+          if (result.v) {
+            if (this.newStub) {
               toastSuccess(
                 resources.stubAddedSuccessfully.format(result.v.stub.id)
               );
-            } else if (result.e) {
-              console.log(result.e);
-              toastError(resources.stubNotAdded.format(result.e.stubId || ""));
-            }
-          }
-          if (results.length === 1 && results[0].v) {
-            await this.$router.push({
-              name: routeNames.stubForm,
-              params: { stubId: results[0].v.stub.id }
-            });
-          }
-        } catch (e) {
-          toastError(e);
-        }
-      } else {
-        try {
-          await this.$store.dispatch("stubs/addStubs", {
-            input: this.input
-          });
-          toastSuccess(resources.stubUpdatedSuccessfully.format(this.stubId));
-        } catch (e) {
-          if (e.response) {
-            if (e.response.status === 409) {
-              toastError(resources.stubAlreadyAdded.format(this.stubId));
             } else {
-              toastError(resources.stubNotAdded.format(this.stubId));
+              toastSuccess(resources.stubUpdatedSuccessfully.format(this.stubId));
             }
-          } else {
-            toastError(e);
+          } else if (result.e) {
+            if (result.e.error) {
+              if (result.e.error.response.status === 409) {
+                toastError(resources.stubAlreadyAdded.format(result.e.stubId));
+              } else if(result.e.error.response.status !== 400)  {
+                toastError(resources.stubNotAdded.format(result.e.stubId));
+              }
+            }
           }
         }
+
+        if (results.length === 1 && results[0].v && !this.stubId) {
+          await this.$router.push({
+            name: routeNames.stubForm,
+            params: {stubId: results[0].v.stub.id}
+          });
+        }
+      } catch (e) {
+        toastError(e);
       }
     },
     resetForm() {
