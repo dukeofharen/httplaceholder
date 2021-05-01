@@ -31,6 +31,7 @@ namespace HttPlaceholder.Controllers.v1
         /// <returns>OK, with the created stub</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<FullStubDto>> Add([FromBody] StubDto stub) =>
             Ok(await Mediator.Send(new AddStubCommand(Mapper.Map<StubModel>(stub))));
@@ -43,6 +44,7 @@ namespace HttPlaceholder.Controllers.v1
         /// <returns>OK, but no content returned</returns>
         [HttpPut("{stubId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult> Update([FromBody] StubDto stub, string stubId)
         {

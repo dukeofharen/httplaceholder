@@ -92,17 +92,17 @@ build-tool:
       - dist
     expire_in: 1 week
 
-build-nuget-client:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-nuget-client.sh
-    - ./scripts/build/build-nuget-client.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
+#build-nuget-client:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-nuget-client.sh
+#    - ./scripts/build/build-nuget-client.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
 
 create-open-api-file:
   image: $DOTNET_IMAGE
