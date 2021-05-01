@@ -158,6 +158,18 @@ httplaceholder --enableUserInterface false
 
 If this property is set to false, the user interface won't appear when you go to http://httplaceholderhost:port/ph-ui. This might be handy in situations where you only want to deploy the HttPlaceholder application as API / stub engine. 
 
+### Stub validation configuration
+
+Here are several settings you can tweak for the stub validation when adding stubs as .yaml files or through the API.
+
+#### Maximum duration for "extraDuration"
+
+```bash
+httplaceholder --maximumExtraDurationMillisKey 10000
+```
+
+This property can be used to configure how many milliseconds the "extraDuration" response writer (see [responses](RESPONSE.md)) can take. The default value is 60.000 (so 1 minute).
+
 ### Config JSON location
 
 If you just installed HttPlaceholder, a file called `_config.json` is available in the installation folder. This JSON file contains all possible configuration settings and a default value per setting. You can copy this file to any location on your PC. Don't put the config file in the installation folder, because these files will be overwritten when an update is installed.
