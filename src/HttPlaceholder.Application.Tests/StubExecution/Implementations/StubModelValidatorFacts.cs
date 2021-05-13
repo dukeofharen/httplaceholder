@@ -120,7 +120,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         [DataRow("#0000ff", true)]
         [DataRow("#999999", true)]
         [DataRow("#0000fg", false)]
-        [DataRow("#0000fff", false)]
+        [DataRow("#0000fff", true)]
+        [DataRow("#0000ffg", false)]
         public void ValidateStubModel_ValidateImageBackgroundColor(string colorHexCode, bool shouldSucceed)
         {
             // Arrange
@@ -151,7 +152,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         [DataRow("#0000ff", true)]
         [DataRow("#999999", true)]
         [DataRow("#0000fg", false)]
-        [DataRow("#0000fff", false)]
+        [DataRow("#0000fff", true)]
+        [DataRow("#0000ffg", false)]
         public void ValidateStubModel_ValidateImageFontColor(string colorHexCode, bool shouldSucceed)
         {
             // Arrange
