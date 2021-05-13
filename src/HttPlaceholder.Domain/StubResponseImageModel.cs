@@ -12,7 +12,7 @@ namespace HttPlaceholder.Domain
     /// </summary>
     public class StubResponseImageModel
     {
-        private const string ColorRegex = "^#[A-Fa-f0-9]{6}$";
+        private const string ColorRegex = "^#[A-Fa-f0-9]{6,8}$";
 
         /// <summary>
         /// Gets or sets the image type. Possibilities: jpeg, png, bmp and gif.

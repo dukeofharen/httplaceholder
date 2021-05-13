@@ -39,6 +39,49 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         }
 
         [TestMethod]
+        public void XPathConditionChecker_Validate_StubsFound_XmlIsCorrupt_ShouldReturnInvalid()
+        {
+            // arrange
+            const string body = @"<?xml version=""1.0""?>
+<soap:Envelope>
+  <soap:Header>
+  </soap:Header>
+  <soap:Body>
+    <m:GetStockPrice>
+      <m:StockName>Umbrella</m:StockName>
+      <m:Description>An umbrella</m:Description>
+    </m:GetStockPrice>
+  </soap:Body>
+</soap:Envelope>";
+            var conditions = new StubConditionsModel
+            {
+                Xpath = new[]
+                {
+                    new StubXpathModel
+                    {
+                        QueryString = "/soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'Shades']",
+                        Namespaces = new Dictionary<string, string>
+                        {
+                            { "soap", "http://www.w3.org/2003/05/soap-envelope" },
+                            { "m", "http://www.example.org/stock/Reddy" }
+                        }
+                    }
+                }
+            };
+
+            _httpContextServiceMock
+                .Setup(m => m.GetBody())
+                .Returns(body);
+
+            // act
+            var result = _checker.Validate("id", conditions);
+
+            // assert
+            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+            Assert.AreEqual("'soap' is an undeclared prefix. Line 2, position 2.", result.Log);
+        }
+
+        [TestMethod]
         public void XPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
         {
             // arrange

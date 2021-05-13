@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using System;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -34,6 +35,34 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
 
             // assert
             Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+        }
+
+        [TestMethod]
+        public void FormValueConditionChecker_Validate_FormInputIsCorrupt_ShouldReturnInvalid()
+        {
+            // arrange
+            var conditions = new StubConditionsModel
+            {
+                Form = new[]
+                {
+                    new StubFormModel
+                    {
+                        Key = "key1",
+                        Value = "value1"
+                    }
+                }
+            };
+
+            _httpContextServiceMock
+                .Setup(m => m.GetFormValues())
+                .Throws(new InvalidOperationException("Incorrect Content-Type: application/json"));
+
+            // act
+            var result = _checker.Validate("id", conditions);
+
+            // assert
+            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+            Assert.AreEqual("Incorrect Content-Type: application/json", result.Log);
         }
 
         [TestMethod]

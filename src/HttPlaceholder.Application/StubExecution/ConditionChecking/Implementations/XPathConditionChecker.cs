@@ -28,39 +28,49 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
 
             var validXpaths = 0;
             var body = _httpContextService.GetBody();
-            var doc = new XmlDocument();
-            doc.LoadXml(body);
-            foreach (var condition in xpathConditions)
+            try
             {
-                var nsManager = new XmlNamespaceManager(doc.NameTable);
-                var namespaces = condition.Namespaces;
-                if (namespaces != null)
+                var doc = new XmlDocument();
+                doc.LoadXml(body);
+                foreach (var condition in xpathConditions)
                 {
-                    foreach (var ns in namespaces)
+                    var nsManager = new XmlNamespaceManager(doc.NameTable);
+                    var namespaces = condition.Namespaces;
+                    if (namespaces != null)
                     {
-                        nsManager.AddNamespace(ns.Key, ns.Value);
+                        foreach (var ns in namespaces)
+                        {
+                            nsManager.AddNamespace(ns.Key, ns.Value);
+                        }
                     }
-                }
-                else
-                {
-                    // If no namespaces are defined, check the XML namespaces with a regex.
-                    nsManager.ParseBodyAndAssignNamespaces(body);
+                    else
+                    {
+                        // If no namespaces are defined, check the XML namespaces with a regex.
+                        nsManager.ParseBodyAndAssignNamespaces(body);
+                    }
+
+                    var elements = doc.SelectNodes(condition.QueryString, nsManager);
+                    if (elements is {Count: 0})
+                    {
+                        // No suitable XML results found.
+                        result.Log = $"No suitable XML results found with XPath query {condition.QueryString}.";
+                        break;
+                    }
+
+                    validXpaths++;
                 }
 
-                var elements = doc.SelectNodes(condition.QueryString, nsManager);
-                if (elements is {Count: 0})
-                {
-                    // No suitable XML results found.
-                    result.Log = $"No suitable XML results found with XPath query {condition.QueryString}.";
-                    break;
-                }
-
-                validXpaths++;
+                // If the number of succeeded conditions is equal to the actual number of conditions,
+                // the header condition is passed and the stub ID is passed to the result.
+                result.ConditionValidation = validXpaths == xpathConditions.Length
+                    ? ConditionValidationType.Valid
+                    : ConditionValidationType.Invalid;
             }
-
-            // If the number of succeeded conditions is equal to the actual number of conditions,
-            // the header condition is passed and the stub ID is passed to the result.
-            result.ConditionValidation = validXpaths == xpathConditions.Length ? ConditionValidationType.Valid : ConditionValidationType.Invalid;
+            catch (XmlException ex)
+            {
+                result.ConditionValidation = ConditionValidationType.Invalid;
+                result.Log = ex.Message;
+            }
 
             return result;
         }

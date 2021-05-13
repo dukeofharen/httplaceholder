@@ -85,6 +85,27 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         }
 
         [TestMethod]
+        public void Validate_ConditionsObject_JsonIsCorrupt_ShouldReturnInvalid()
+        {
+            // Arrange
+            var jsonConditions = CreateObjectStubConditions();
+            ((IDictionary<object, object>)jsonConditions["subObject"])["intValue"] = "4";
+
+            var conditions = new StubConditionsModel {Json = jsonConditions};
+
+            _mockHttpContextService
+                .Setup(m => m.GetBody())
+                .Returns("JSON IS CORRUPT!!!");
+
+            // Act
+            var result = _checker.Validate("stub1", conditions);
+
+            // Assert
+            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+            Assert.AreEqual("Unexpected character encountered while parsing value: J. Path '', line 0, position 0.", result.Log);
+        }
+
+        [TestMethod]
         public void Validate_ConditionsObject_JsonIsIncorrect_ShouldReturnInvalid()
         {
             // Arrange

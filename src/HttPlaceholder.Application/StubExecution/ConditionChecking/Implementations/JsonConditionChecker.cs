@@ -5,6 +5,7 @@ using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations
@@ -29,12 +30,20 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             var convertedJsonConditions = ConvertJsonConditions(conditions.Json);
 
             var body = _httpContextService.GetBody();
-            var jToken = JToken.Parse(body);
-            var logResults = new List<string>();
-            result.ConditionValidation = CheckSubmittedJson(convertedJsonConditions, jToken, logResults)
-                ? ConditionValidationType.Valid
-                : ConditionValidationType.Invalid;
-            result.Log = string.Join(Environment.NewLine, logResults);
+            try
+            {
+                var jToken = JToken.Parse(body);
+                var logResults = new List<string>();
+                result.ConditionValidation = CheckSubmittedJson(convertedJsonConditions, jToken, logResults)
+                    ? ConditionValidationType.Valid
+                    : ConditionValidationType.Invalid;
+                result.Log = string.Join(Environment.NewLine, logResults);
+            }
+            catch (JsonReaderException ex)
+            {
+                result.ConditionValidation = ConditionValidationType.Invalid;
+                result.Log = ex.Message;
+            }
 
             return result;
         }

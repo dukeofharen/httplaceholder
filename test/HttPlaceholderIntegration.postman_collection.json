@@ -769,7 +769,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "<?xml version=\"1.0\"?>\n<soap:Envelope>\n    <soap:Header></soap:Header>\n    <soap:Body>\n        <m:GetUser>\n            <m:Username>user2</m:Username>\n        </m:GetUser>\n    </soap:Body>\n</soap:Envelope>",
+											"raw": "<?xml version=\"1.0\"?>\n<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" \n    xmlns:m=\"http://www.example.org/stock/GetUser\">\n    <soap:Header></soap:Header>\n    <soap:Body>\n        <m:GetUser>\n            <m:Username>user2</m:Username>\n        </m:GetUser>\n    </soap:Body>\n</soap:Envelope>",
 											"options": {
 												"raw": {
 													"language": "xml"
