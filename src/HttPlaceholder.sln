@@ -52,6 +52,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Common.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Domain.Tests", "HttPlaceholder.Domain.Tests\HttPlaceholder.Domain.Tests.csproj", "{A020F166-1DDE-4929-938F-93DFCDDD27F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Client", "HttPlaceholder.Client\HttPlaceholder.Client.csproj", "{17A2B14F-7AFB-4BB3-817B-E5C0FFE0882E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +145,12 @@ Global
 		{A020F166-1DDE-4929-938F-93DFCDDD27F2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A020F166-1DDE-4929-938F-93DFCDDD27F2}.Tool|Any CPU.ActiveCfg = Debug|Any CPU
 		{A020F166-1DDE-4929-938F-93DFCDDD27F2}.Tool|Any CPU.Build.0 = Debug|Any CPU
+		{17A2B14F-7AFB-4BB3-817B-E5C0FFE0882E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17A2B14F-7AFB-4BB3-817B-E5C0FFE0882E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17A2B14F-7AFB-4BB3-817B-E5C0FFE0882E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17A2B14F-7AFB-4BB3-817B-E5C0FFE0882E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17A2B14F-7AFB-4BB3-817B-E5C0FFE0882E}.Tool|Any CPU.ActiveCfg = Debug|Any CPU
+		{17A2B14F-7AFB-4BB3-817B-E5C0FFE0882E}.Tool|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -166,6 +174,7 @@ Global
 		{7A443534-C454-4DF9-816D-A7A0BF1E9184} = {287482AF-3481-44F5-B4D3-F17589B9261C}
 		{4DA53660-BEB0-442C-8349-A013A2E56196} = {287482AF-3481-44F5-B4D3-F17589B9261C}
 		{A020F166-1DDE-4929-938F-93DFCDDD27F2} = {287482AF-3481-44F5-B4D3-F17589B9261C}
+		{17A2B14F-7AFB-4BB3-817B-E5C0FFE0882E} = {BA04C59E-2413-4460-85FC-DE322A1CBF02}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B07D99A8-ABA7-4A66-9BA2-37E64043B834}
