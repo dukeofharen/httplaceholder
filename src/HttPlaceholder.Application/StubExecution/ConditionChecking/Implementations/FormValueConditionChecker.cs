@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
@@ -25,32 +26,41 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 return result;
             }
 
-            var form = _httpContextService.GetFormValues();
-            var validConditions = 0;
-            foreach (var condition in formConditions)
+            try
             {
-                var (formKey, formValues) = form.FirstOrDefault(f => f.Item1 == condition.Key);
-                if (formKey == null)
+                var form = _httpContextService.GetFormValues();
+                var validConditions = 0;
+                foreach (var condition in formConditions)
                 {
-                    result.ConditionValidation = ConditionValidationType.Invalid;
-                    result.Log = $"No form value with key '{condition.Key}' found.";
-                    break;
+                    var (formKey, formValues) = form.FirstOrDefault(f => f.Item1 == condition.Key);
+                    if (formKey == null)
+                    {
+                        result.ConditionValidation = ConditionValidationType.Invalid;
+                        result.Log = $"No form value with key '{condition.Key}' found.";
+                        break;
+                    }
+
+                    validConditions += formValues
+                        .Count(value =>
+                            StringHelper.IsRegexMatchOrSubstring(HttpUtility.UrlDecode(value), condition.Value));
                 }
 
-                validConditions += formValues
-                    .Count(value => StringHelper.IsRegexMatchOrSubstring(HttpUtility.UrlDecode(value), condition.Value));
+                // If the number of succeeded conditions is equal to the actual number of conditions,
+                // the form condition is passed and the stub ID is passed to the result.
+                if (validConditions == formConditions.Length)
+                {
+                    result.ConditionValidation = ConditionValidationType.Valid;
+                }
+                else
+                {
+                    result.Log =
+                        $"Number of configured form conditions: '{formConditions.Length}'; number of passed form conditions: '{validConditions}'";
+                    result.ConditionValidation = ConditionValidationType.Invalid;
+                }
             }
-
-            // If the number of succeeded conditions is equal to the actual number of conditions,
-            // the form condition is passed and the stub ID is passed to the result.
-            if (validConditions == formConditions.Length)
+            catch (InvalidOperationException ex)
             {
-                result.ConditionValidation = ConditionValidationType.Valid;
-            }
-            else
-            {
-                result.Log =
-                    $"Number of configured form conditions: '{formConditions.Length}'; number of passed form conditions: '{validConditions}'";
+                result.Log = ex.Message;
                 result.ConditionValidation = ConditionValidationType.Invalid;
             }
 

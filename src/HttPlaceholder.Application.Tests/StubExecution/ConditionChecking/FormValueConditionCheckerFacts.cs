@@ -62,6 +62,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
 
             // assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+            Assert.AreEqual("Incorrect Content-Type: application/json", result.Log);
         }
 
         [TestMethod]

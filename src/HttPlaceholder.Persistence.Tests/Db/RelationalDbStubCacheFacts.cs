@@ -34,7 +34,7 @@ namespace HttPlaceholder.Persistence.Tests.Db
         }
 
         [TestMethod]
-        public async Task ClearStubCache_ShouldClearCacheAndUpdateTrackingId()
+        public void ClearStubCache_ShouldClearCacheAndUpdateTrackingId()
         {
             // Arrange
             var originalId = Guid.NewGuid().ToString();
