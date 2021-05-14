@@ -1,6 +1,7 @@
 ﻿using System;
 using HttPlaceholder.Client.Configuration;
 using HttPlaceholder.Client.Implementations;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Client
@@ -12,10 +13,10 @@ namespace HttPlaceholder.Client
     {
         public static IServiceCollection AddHttPlaceholderClient(
             this IServiceCollection serviceCollection,
-            Action<HttPlaceholderClientConfiguration> configureAction = null)
+            IConfiguration clientConfigSection)
         {
-            var config = new HttPlaceholderClientConfiguration();
-            configureAction?.Invoke(config);
+            serviceCollection.Configure<HttPlaceholderClientConfiguration>(clientConfigSection);
+            var config = clientConfigSection.Get<HttPlaceholderClientConfiguration>();
             if (string.IsNullOrWhiteSpace(config.RootUrl))
             {
                 throw new ArgumentException(
