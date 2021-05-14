@@ -30,6 +30,17 @@ namespace HttPlaceholder.Client.Implementations
             return JsonConvert.DeserializeObject<MetadataDto>(content);
         }
 
-        public Task<IEnumerable<RequestResultDto>> GetAllRequestsAsync() => throw new System.NotImplementedException();
+        public async Task<IEnumerable<RequestResultDto>> GetAllRequestsAsync()
+        {
+            using var response = await _httpClient.GetAsync("/ph-api/requests");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(
+                    $"Status code '{(int)response.StatusCode}' returned by HttPlaceholder with message '{content}'");
+            }
+
+            return JsonConvert.DeserializeObject<IEnumerable<RequestResultDto>>(content);
+        }
     }
 }

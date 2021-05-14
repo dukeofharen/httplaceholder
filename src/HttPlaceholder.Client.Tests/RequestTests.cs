@@ -107,10 +107,10 @@ namespace HttPlaceholder.Client.Tests
             Assert.AreEqual(1, result.Length);
 
             var request = result.Single();
-            Assert.AreEqual("bec89e6a-9bee-4565-bccb-09f0a3363eee", request);
+            Assert.AreEqual("bec89e6a-9bee-4565-bccb-09f0a3363eee", request.CorrelationId);
             Assert.AreEqual("POST", request.RequestParameters.Method);
             Assert.AreEqual(8, request.RequestParameters.Headers.Count);
-            Assert.AreEqual("PostmanRuntime/7.26.8", request.RequestParameters.Headers["Content-Type"]);
+            Assert.AreEqual("PostmanRuntime/7.26.8", request.RequestParameters.Headers["User-Agent"]);
             Assert.AreEqual(2, request.StubExecutionResults.Count);
             Assert.AreEqual("xml-without-namespaces-specified", request.ExecutingStubId);
 
