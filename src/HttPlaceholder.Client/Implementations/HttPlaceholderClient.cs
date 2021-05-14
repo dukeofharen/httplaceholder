@@ -42,5 +42,7 @@ namespace HttPlaceholder.Client.Implementations
 
             return JsonConvert.DeserializeObject<IEnumerable<RequestResultDto>>(content);
         }
+
+        public Task<IEnumerable<RequestOverviewDto>> GetRequestOverviewAsync() => throw new System.NotImplementedException();
     }
 }
