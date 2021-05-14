@@ -9,7 +9,7 @@ using RichardSzalay.MockHttp;
 namespace HttPlaceholder.Client.Tests
 {
     [TestClass]
-    public class MetadataTests
+    public class MetadataTests : BaseTest
     {
         private const string MetadataResponse = @"{
     ""version"": ""2019.8.24.1234"",
@@ -31,20 +31,14 @@ namespace HttPlaceholder.Client.Tests
         }
     ]
 }";
-        private const string BaseUrl = "http://localhost:5000/";
-        private readonly MockHttpMessageHandler _mockHttp = new();
-
-        [TestCleanup]
-        public void Cleanup() => _mockHttp.VerifyNoOutstandingExpectation();
 
         [TestMethod]
         public async Task GetMetadataAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            _mockHttp
+            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/metadata")
-                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!");
-            var client = new HttPlaceholderClient(_mockHttp.ToHttpClient());
+                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
             // Act
             var exception =
@@ -59,10 +53,9 @@ namespace HttPlaceholder.Client.Tests
         public async Task GetMetadataAsync_ShouldReturnMetadata()
         {
             // Arrange
-            _mockHttp
+            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/metadata")
-                .Respond("application/json", MetadataResponse);
-            var client = new HttPlaceholderClient(_mockHttp.ToHttpClient());
+                .Respond("application/json", MetadataResponse)));
 
             // Act
             var result = await client.GetMetadataAsync();
