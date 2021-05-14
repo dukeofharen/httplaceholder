@@ -23,6 +23,8 @@ namespace HttPlaceholder.Client
                     $"No value set for {nameof(config.RootUrl)} in HttPlaceholder configuration.");
             }
 
+            // TODO assert "/" at end of root URL.
+
             serviceCollection.AddHttpClient<IHttPlaceholderClient, HttPlaceholderClient>(client =>
                 client.BaseAddress = new Uri(config.RootUrl));
             return serviceCollection;
