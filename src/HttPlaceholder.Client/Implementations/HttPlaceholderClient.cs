@@ -1,6 +1,8 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Metadata;
+using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Exceptions;
 using Newtonsoft.Json;
 
@@ -27,5 +29,7 @@ namespace HttPlaceholder.Client.Implementations
 
             return JsonConvert.DeserializeObject<MetadataDto>(content);
         }
+
+        public Task<IEnumerable<RequestResultDto>> GetAllRequestsAsync() => throw new System.NotImplementedException();
     }
 }

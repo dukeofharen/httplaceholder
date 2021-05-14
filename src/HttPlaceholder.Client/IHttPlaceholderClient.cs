@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Metadata;
+using HttPlaceholder.Client.Dto.Requests;
 
 namespace HttPlaceholder.Client
 {
@@ -13,5 +15,11 @@ namespace HttPlaceholder.Client
         /// </summary>
         /// <returns>The metadata.</returns>
         Task<MetadataDto> GetMetadataAsync();
+
+        /// <summary>
+        /// Retrieves all requests made to HttPlaceholder.
+        /// </summary>
+        /// <returns>The requests.</returns>
+        Task<IEnumerable<RequestResultDto>> GetAllRequestsAsync();
     }
 }
