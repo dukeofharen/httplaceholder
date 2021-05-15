@@ -102,7 +102,8 @@ namespace HttPlaceholder.Client.Implementations
         public async Task<FullStubDto> CreateStubAsync(StubDto stub)
         {
             using var response =
-                await _httpClient.PostAsync($"/ph-api/stubs", new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, JsonContentType));
+                await _httpClient.PostAsync($"/ph-api/stubs",
+                    new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, JsonContentType));
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -116,7 +117,8 @@ namespace HttPlaceholder.Client.Implementations
         public async Task UpdateStubAsync(StubDto stub, string stubId)
         {
             using var response =
-                await _httpClient.PutAsync($"/ph-api/stubs/{stubId}", new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, JsonContentType));
+                await _httpClient.PutAsync($"/ph-api/stubs/{stubId}",
+                    new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, JsonContentType));
             if (!response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -236,6 +238,15 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
-        public Task UpdateAllStubsByTenantAsync(string tenant, IEnumerable<StubDto> stubs) => throw new System.NotImplementedException();
+        public async Task UpdateAllStubsByTenantAsync(string tenant, IEnumerable<StubDto> stubs)
+        {
+            using var response = await _httpClient.PutAsync($"/ph-api/tenants/{tenant}/stubs",
+                new StringContent(JsonConvert.SerializeObject(stubs), Encoding.UTF8, JsonContentType));
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+        }
     }
 }

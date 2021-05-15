@@ -39,7 +39,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
                 .When(HttpMethod.Put, $"{BaseUrl}ph-api/tenants/{tenant}/stubs")
                 .WithPartialContent("stub1")
                 .WithPartialContent("stub2")
-                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
+                .Respond(HttpStatusCode.NoContent)));
 
             var input = new[] {new StubDto {Id = "stub1"}, new StubDto {Id = "stub2"}};
 
