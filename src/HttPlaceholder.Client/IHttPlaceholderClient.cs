@@ -98,5 +98,11 @@ namespace HttPlaceholder.Client
         /// Delete all stubs.
         /// </summary>
         Task DeleteAllStubAsync();
+
+        /// <summary>
+        /// Get all tenant names.
+        /// </summary>
+        /// <returns>A list of tenant names.</returns>
+        Task<IEnumerable<string>> GetTenantNamesAsync();
     }
 }

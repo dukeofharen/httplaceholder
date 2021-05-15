@@ -197,5 +197,8 @@ namespace HttPlaceholder.Client.Implementations
                 throw new HttPlaceholderClientException(response.StatusCode, content);
             }
         }
+
+        /// <inheritdoc />
+        public Task<IEnumerable<string>> GetTenantNamesAsync() => throw new System.NotImplementedException();
     }
 }
