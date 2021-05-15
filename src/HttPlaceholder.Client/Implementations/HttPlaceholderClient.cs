@@ -176,6 +176,15 @@ namespace HttPlaceholder.Client.Implementations
             return JsonConvert.DeserializeObject<FullStubDto>(content);
         }
 
-        public Task DeleteStubAsync(string stubId) => throw new System.NotImplementedException();
+        /// <inheritdoc />
+        public async Task DeleteStubAsync(string stubId)
+        {
+            using var response = await _httpClient.DeleteAsync($"/ph-api/stubs/{stubId}");
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+        }
     }
 }
