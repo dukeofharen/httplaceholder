@@ -55,5 +55,7 @@ namespace HttPlaceholder.Client.Implementations
 
             return JsonConvert.DeserializeObject<IEnumerable<RequestOverviewDto>>(content);
         }
+
+        public Task<RequestResultDto> GetRequestAsync(string correlationId) => throw new System.NotImplementedException();
     }
 }

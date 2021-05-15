@@ -4,7 +4,7 @@ using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Client.Tests
 {
-    public abstract class BaseTest
+    public abstract class BaseClientTest
     {
         protected const string BaseUrl = "http://localhost:5000/";
         private readonly MockHttpMessageHandler _mockHttp = new();

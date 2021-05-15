@@ -27,5 +27,12 @@ namespace HttPlaceholder.Client
         /// </summary>
         /// <returns>The request overview.</returns>
         Task<IEnumerable<RequestOverviewDto>> GetRequestOverviewAsync();
+
+        /// <summary>
+        /// Retrieves a request by correlation ID.
+        /// </summary>
+        /// <param name="correlationId">The request correlation ID.</param>
+        /// <returns>The request.</returns>
+        Task<RequestResultDto> GetRequestAsync(string correlationId);
     }
 }
