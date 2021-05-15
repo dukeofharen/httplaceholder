@@ -113,6 +113,15 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
-        public Task UpdateStubAsync(StubDto stub, string stubId) => throw new System.NotImplementedException();
+        public async Task UpdateStubAsync(StubDto stub, string stubId)
+        {
+            using var response =
+                await _httpClient.PutAsync($"/ph-api/stubs/{stubId}", new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, JsonContentType));
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+        }
     }
 }
