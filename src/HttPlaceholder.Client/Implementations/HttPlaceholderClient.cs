@@ -3,12 +3,13 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
+using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Exceptions;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Client.Implementations
 {
-
+    /// <inheritdoc />
     public class HttPlaceholderClient : IHttPlaceholderClient
     {
         private readonly HttpClient _httpClient;
@@ -18,6 +19,7 @@ namespace HttPlaceholder.Client.Implementations
             _httpClient = httpClient;
         }
 
+        /// <inheritdoc />
         public async Task<MetadataDto> GetMetadataAsync()
         {
             using var response = await _httpClient.GetAsync("/ph-api/metadata");
@@ -30,6 +32,7 @@ namespace HttPlaceholder.Client.Implementations
             return JsonConvert.DeserializeObject<MetadataDto>(content);
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<RequestResultDto>> GetAllRequestsAsync()
         {
             using var response = await _httpClient.GetAsync("/ph-api/requests");
@@ -42,6 +45,7 @@ namespace HttPlaceholder.Client.Implementations
             return JsonConvert.DeserializeObject<IEnumerable<RequestResultDto>>(content);
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<RequestOverviewDto>> GetRequestOverviewAsync()
         {
             using var response = await _httpClient.GetAsync("/ph-api/requests/overview");
@@ -54,6 +58,7 @@ namespace HttPlaceholder.Client.Implementations
             return JsonConvert.DeserializeObject<IEnumerable<RequestOverviewDto>>(content);
         }
 
+        /// <inheritdoc />
         public async Task<RequestResultDto> GetRequestAsync(string correlationId)
         {
             using var response = await _httpClient.GetAsync($"/ph-api/requests/{correlationId}");
@@ -66,6 +71,7 @@ namespace HttPlaceholder.Client.Implementations
             return JsonConvert.DeserializeObject<RequestResultDto>(content);
         }
 
+        /// <inheritdoc />
         public async Task DeleteAllRequestsAsync()
         {
             using var response = await _httpClient.DeleteAsync("/ph-api/requests");
@@ -75,5 +81,8 @@ namespace HttPlaceholder.Client.Implementations
                 throw new HttPlaceholderClientException(response.StatusCode, content);
             }
         }
+
+        /// <inheritdoc />
+        public Task<FullStubDto> CreateStubForRequestAsync(string correlationId) => throw new System.NotImplementedException();
     }
 }

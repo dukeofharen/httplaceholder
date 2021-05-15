@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
+using HttPlaceholder.Client.Dto.Stubs;
 
 namespace HttPlaceholder.Client
 {
@@ -39,5 +40,12 @@ namespace HttPlaceholder.Client
         /// Deletes all requests.
         /// </summary>
         Task DeleteAllRequestsAsync();
+
+        /// <summary>
+        /// Create a stub based on a specific request.
+        /// </summary>
+        /// <param name="correlationId">The correlation ID of the request to create a stub for.</param>
+        /// <returns>The created stub.</returns>
+        Task<FullStubDto> CreateStubForRequestAsync(string correlationId);
     }
 }

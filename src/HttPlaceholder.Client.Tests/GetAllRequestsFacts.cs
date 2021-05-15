@@ -9,7 +9,7 @@ using RichardSzalay.MockHttp;
 namespace HttPlaceholder.Client.Tests
 {
     [TestClass]
-    public class GetAllRequestsClientTests : BaseClientTest
+    public class GetAllRequestsFacts : BaseClientTest
     {
         private const string AllRequestsResponse = @"[
     {
