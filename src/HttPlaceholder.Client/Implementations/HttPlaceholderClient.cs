@@ -251,6 +251,16 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
-        public Task<UserDto> GetUserAsync(string username) => throw new System.NotImplementedException();
+        public async Task<UserDto> GetUserAsync(string username)
+        {
+            using var response = await _httpClient.GetAsync($"/ph-api/users/{username}");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<UserDto>(content);
+        }
     }
 }
