@@ -34,5 +34,10 @@ namespace HttPlaceholder.Client
         /// <param name="correlationId">The request correlation ID.</param>
         /// <returns>The request.</returns>
         Task<RequestResultDto> GetRequestAsync(string correlationId);
+
+        /// <summary>
+        /// Deletes all requests.
+        /// </summary>
+        Task DeleteAllRequestsAsync();
     }
 }

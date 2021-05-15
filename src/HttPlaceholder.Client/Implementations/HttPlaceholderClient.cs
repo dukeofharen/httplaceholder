@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Client.Implementations
 {
+
     public class HttPlaceholderClient : IHttPlaceholderClient
     {
         private readonly HttpClient _httpClient;
@@ -64,5 +65,7 @@ namespace HttPlaceholder.Client.Implementations
 
             return JsonConvert.DeserializeObject<RequestResultDto>(content);
         }
+
+        public Task DeleteAllRequestsAsync() => throw new System.NotImplementedException();
     }
 }
