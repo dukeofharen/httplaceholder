@@ -73,5 +73,12 @@ namespace HttPlaceholder.Client
         /// </summary>
         /// <returns>All stubs as overview.</returns>
         Task<IEnumerable<FullStubOverviewDto>> GetStubOverviewAsync();
+
+        /// <summary>
+        /// Get all requests based on stub ID.
+        /// </summary>
+        /// <param name="stubId">The stub ID.</param>
+        /// <returns>The requests.</returns>
+        Task<IEnumerable<RequestResultDto>> GetRequestsByStubIdAsync(string stubId);
     }
 }
