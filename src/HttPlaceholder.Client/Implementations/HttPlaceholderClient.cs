@@ -199,6 +199,16 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
-        public Task<IEnumerable<string>> GetTenantNamesAsync() => throw new System.NotImplementedException();
+        public async Task<IEnumerable<string>> GetTenantNamesAsync()
+        {
+            using var response = await _httpClient.GetAsync("/ph-api/tenants");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<IEnumerable<string>>(content);
+        }
     }
 }

@@ -40,10 +40,10 @@ namespace HttPlaceholder.Client.Tests
             // Arrange
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/tenants")
-                .Respond("text/plain", GetTenantNamesResponse)));
+                .Respond("application/json", GetTenantNamesResponse)));
 
             // Act
-            var result = (await client.GetStubOverviewAsync()).ToArray();
+            var result = (await client.GetTenantNamesAsync()).ToArray();
 
             // Assert
             Assert.AreEqual(2, result.Length);
