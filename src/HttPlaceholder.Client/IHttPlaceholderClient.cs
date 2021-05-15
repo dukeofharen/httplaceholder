@@ -67,5 +67,11 @@ namespace HttPlaceholder.Client
         /// </summary>
         /// <returns>A list of all stubs.</returns>
         Task<IEnumerable<FullStubDto>> GetAllStubsAsync();
+
+        /// <summary>
+        /// Get all stubs as overview.
+        /// </summary>
+        /// <returns>All stubs as overview.</returns>
+        Task<IEnumerable<FullStubOverviewDto>> GetStubOverviewAsync();
     }
 }

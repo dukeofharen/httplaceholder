@@ -124,6 +124,7 @@ namespace HttPlaceholder.Client.Implementations
             }
         }
 
+        /// <inheritdoc />
         public async Task<IEnumerable<FullStubDto>> GetAllStubsAsync()
         {
             using var response = await _httpClient.GetAsync($"/ph-api/stubs");
@@ -135,5 +136,8 @@ namespace HttPlaceholder.Client.Implementations
 
             return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
         }
+
+        /// <inheritdoc />
+        public Task<IEnumerable<FullStubOverviewDto>> GetStubOverviewAsync() => throw new System.NotImplementedException();
     }
 }
