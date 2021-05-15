@@ -66,6 +66,14 @@ namespace HttPlaceholder.Client.Implementations
             return JsonConvert.DeserializeObject<RequestResultDto>(content);
         }
 
-        public Task DeleteAllRequestsAsync() => throw new System.NotImplementedException();
+        public async Task DeleteAllRequestsAsync()
+        {
+            using var response = await _httpClient.DeleteAsync("/ph-api/requests");
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+        }
     }
 }

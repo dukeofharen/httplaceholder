@@ -21,7 +21,7 @@ namespace HttPlaceholder.Client.Tests
 
             // Act
             var exception =
-                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.GetAllRequestsAsync());
+                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.DeleteAllRequestsAsync());
 
             // Assert
             Assert.AreEqual($"Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -37,7 +37,7 @@ namespace HttPlaceholder.Client.Tests
                 .Respond(HttpStatusCode.NoContent)));
 
             // Act / Assert
-            await client.GetAllRequestsAsync();
+            await client.DeleteAllRequestsAsync();
         }
     }
 }
