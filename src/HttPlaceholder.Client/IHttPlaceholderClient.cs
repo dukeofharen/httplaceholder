@@ -104,5 +104,12 @@ namespace HttPlaceholder.Client
         /// </summary>
         /// <returns>A list of tenant names.</returns>
         Task<IEnumerable<string>> GetTenantNamesAsync();
+
+        /// <summary>
+        /// Get all stubs belonging to a specific tenant.
+        /// </summary>
+        /// <param name="tenant">The tenant.</param>
+        /// <returns>The stubs.</returns>
+        Task<IEnumerable<FullStubDto>> GetStubsByTenantAsync(string tenant);
     }
 }
