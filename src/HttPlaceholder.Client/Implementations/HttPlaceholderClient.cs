@@ -188,6 +188,14 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
-        public Task DeleteAllStubAsync() => throw new System.NotImplementedException();
+        public async Task DeleteAllStubAsync()
+        {
+            using var response = await _httpClient.DeleteAsync("/ph-api/stubs");
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+        }
     }
 }
