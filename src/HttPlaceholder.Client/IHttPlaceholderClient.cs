@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Dto.Stubs;
+using HttPlaceholder.Client.Dto.Users;
 
 namespace HttPlaceholder.Client
 {
@@ -124,5 +125,12 @@ namespace HttPlaceholder.Client
         /// <param name="tenant">The tenant.</param>
         /// <param name="stubs">The stubs.</param>
         Task UpdateAllStubsByTenantAsync(string tenant, IEnumerable<StubDto> stubs);
+
+        /// <summary>
+        /// Get the current user by username.
+        /// </summary>
+        /// <param name="username">The username.</param>
+        /// <returns>The user.</returns>
+        Task<UserDto> GetUserAsync(string username);
     }
 }

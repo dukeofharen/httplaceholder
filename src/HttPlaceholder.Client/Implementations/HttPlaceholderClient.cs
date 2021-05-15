@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Dto.Stubs;
+using HttPlaceholder.Client.Dto.Users;
 using HttPlaceholder.Client.Exceptions;
 using Newtonsoft.Json;
 
@@ -248,5 +249,8 @@ namespace HttPlaceholder.Client.Implementations
                 throw new HttPlaceholderClientException(response.StatusCode, content);
             }
         }
+
+        /// <inheritdoc />
+        public Task<UserDto> GetUserAsync(string username) => throw new System.NotImplementedException();
     }
 }
