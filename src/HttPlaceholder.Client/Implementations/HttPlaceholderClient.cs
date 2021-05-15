@@ -56,6 +56,17 @@ namespace HttPlaceholder.Client.Implementations
             return JsonConvert.DeserializeObject<IEnumerable<RequestOverviewDto>>(content);
         }
 
-        public Task<RequestResultDto> GetRequestAsync(string correlationId) => throw new System.NotImplementedException();
+        public async Task<RequestResultDto> GetRequestAsync(string correlationId)
+        {
+            using var response = await _httpClient.GetAsync($"/ph-api/requests/{correlationId}");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(
+                    $"Status code '{(int)response.StatusCode}' returned by HttPlaceholder with message '{content}'");
+            }
+
+            return JsonConvert.DeserializeObject<RequestResultDto>(content);
+        }
     }
 }
