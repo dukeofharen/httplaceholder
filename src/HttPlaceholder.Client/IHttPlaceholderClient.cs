@@ -61,5 +61,11 @@ namespace HttPlaceholder.Client
         /// <param name="stub">The new stub contents.</param>
         /// <param name="stubId">The ID of the stub to update.</param>
         Task UpdateStubAsync(StubDto stub, string stubId);
+
+        /// <summary>
+        /// Get all stubs.
+        /// </summary>
+        /// <returns>A list of all stubs.</returns>
+        Task<IEnumerable<FullStubDto>> GetAllStubsAsync();
     }
 }

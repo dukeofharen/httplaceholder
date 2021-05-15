@@ -123,5 +123,7 @@ namespace HttPlaceholder.Client.Implementations
                 throw new HttPlaceholderClientException(response.StatusCode, content);
             }
         }
+
+        public Task<IEnumerable<FullStubDto>> GetAllStubsAsync() => throw new System.NotImplementedException();
     }
 }
