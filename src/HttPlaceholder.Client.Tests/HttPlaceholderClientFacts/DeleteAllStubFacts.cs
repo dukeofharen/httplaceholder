@@ -1,29 +1,28 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Exceptions;
+using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests.HttPlaceholderClient
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
 {
     [TestClass]
-    public class DeleteAllStubsByTenantFacts : BaseClientTest
+    public class DeleteAllStubFacts : BaseClientTest
     {
         [TestMethod]
         public async Task DeleteAllStubAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var tenant = "01-get";
-            var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When(HttpMethod.Delete, $"{BaseUrl}ph-api/tenants/{tenant}/stubs")
+            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+                .When(HttpMethod.Delete, $"{BaseUrl}ph-api/stubs")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
             // Act
             var exception =
                 await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                    client.DeleteAllStubsByTenantAsync(tenant));
+                    client.DeleteAllStubAsync());
 
             // Assert
             Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -31,16 +30,15 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClient
         }
 
         [TestMethod]
-        public async Task DeleteAllStubAsync_ShouldDeleteStubs()
+        public async Task DeleteAllStubsAsync_ShouldDeleteAllStubs()
         {
             // Arrange
-            var tenant = "01-get";
-            var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When(HttpMethod.Delete, $"{BaseUrl}ph-api/tenants/{tenant}/stubs")
+            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+                .When(HttpMethod.Delete, $"{BaseUrl}ph-api/stubs")
                 .Respond(HttpStatusCode.NoContent)));
 
             // Act / Assert
-            await client.DeleteAllStubsByTenantAsync(tenant);
+            await client.DeleteAllStubAsync();
         }
     }
 }

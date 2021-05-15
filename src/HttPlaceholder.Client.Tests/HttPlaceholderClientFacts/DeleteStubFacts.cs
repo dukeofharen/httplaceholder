@@ -2,10 +2,11 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Exceptions;
+using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests.HttPlaceholderClient
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
 {
     [TestClass]
     public class DeleteStubFacts : BaseClientTest
@@ -15,7 +16,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClient
         {
             // Arrange
             var stubId = "fallback";
-            var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
+            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Delete, $"{BaseUrl}ph-api/stubs/{stubId}")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
@@ -34,7 +35,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClient
         {
             // Arrange
             var stubId = "fallback";
-            var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
+            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Delete, $"{BaseUrl}ph-api/stubs/{stubId}")
                 .Respond(HttpStatusCode.NoContent)));
 

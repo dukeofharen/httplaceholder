@@ -3,7 +3,7 @@ using System.Net.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests.HttPlaceholderClient
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
 {
     public abstract class BaseClientTest
     {
