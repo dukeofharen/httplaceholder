@@ -9,7 +9,7 @@ using RichardSzalay.MockHttp;
 namespace HttPlaceholder.Client.Tests
 {
     [TestClass]
-    public class MetadataTests : BaseTest
+    public class GetMetadataFacts : BaseTest
     {
         private const string MetadataResponse = @"{
     ""version"": ""2019.8.24.1234"",
