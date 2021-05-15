@@ -124,6 +124,16 @@ namespace HttPlaceholder.Client.Implementations
             }
         }
 
-        public Task<IEnumerable<FullStubDto>> GetAllStubsAsync() => throw new System.NotImplementedException();
+        public async Task<IEnumerable<FullStubDto>> GetAllStubsAsync()
+        {
+            using var response = await _httpClient.GetAsync($"/ph-api/stubs");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
+        }
     }
 }
