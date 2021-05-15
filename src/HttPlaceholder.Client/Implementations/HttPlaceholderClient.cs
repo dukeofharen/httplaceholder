@@ -175,5 +175,7 @@ namespace HttPlaceholder.Client.Implementations
 
             return JsonConvert.DeserializeObject<FullStubDto>(content);
         }
+
+        public Task DeleteStubAsync(string stubId) => throw new System.NotImplementedException();
     }
 }

@@ -87,5 +87,11 @@ namespace HttPlaceholder.Client
         /// <param name="stubId">The stub ID.</param>
         /// <returns>The stub.</returns>
         Task<FullStubDto> GetStubAsync(string stubId);
+
+        /// <summary>
+        /// Delete a specific stub.
+        /// </summary>
+        /// <param name="stubId">The stub ID.</param>
+        Task DeleteStubAsync(string stubId);
     }
 }
