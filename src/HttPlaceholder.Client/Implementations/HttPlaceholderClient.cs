@@ -111,5 +111,8 @@ namespace HttPlaceholder.Client.Implementations
 
             return JsonConvert.DeserializeObject<FullStubDto>(content);
         }
+
+        /// <inheritdoc />
+        public Task UpdateStubAsync(StubDto stub, string stubId) => throw new System.NotImplementedException();
     }
 }
