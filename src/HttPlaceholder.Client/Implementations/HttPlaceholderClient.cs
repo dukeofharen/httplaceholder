@@ -83,6 +83,16 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
-        public Task<FullStubDto> CreateStubForRequestAsync(string correlationId) => throw new System.NotImplementedException();
+        public async Task<FullStubDto> CreateStubForRequestAsync(string correlationId)
+        {
+            using var response = await _httpClient.PostAsync($"/ph-api/requests/{correlationId}/stubs", new StringContent(""));
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<FullStubDto>(content);
+        }
     }
 }
