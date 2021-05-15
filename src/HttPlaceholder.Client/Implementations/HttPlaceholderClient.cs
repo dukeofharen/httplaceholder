@@ -223,5 +223,8 @@ namespace HttPlaceholder.Client.Implementations
 
             return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
         }
+
+        /// <inheritdoc />
+        public Task DeleteAllStubsByTenantAsync(string tenant) => throw new System.NotImplementedException();
     }
 }
