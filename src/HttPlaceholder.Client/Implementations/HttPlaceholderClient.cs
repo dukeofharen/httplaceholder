@@ -23,8 +23,7 @@ namespace HttPlaceholder.Client.Implementations
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttPlaceholderClientException(
-                    $"Status code '{(int)response.StatusCode}' returned by HttPlaceholder with message '{content}'");
+                throw new HttPlaceholderClientException(response.StatusCode, content);
             }
 
             return JsonConvert.DeserializeObject<MetadataDto>(content);
@@ -36,8 +35,7 @@ namespace HttPlaceholder.Client.Implementations
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttPlaceholderClientException(
-                    $"Status code '{(int)response.StatusCode}' returned by HttPlaceholder with message '{content}'");
+                throw new HttPlaceholderClientException(response.StatusCode, content);
             }
 
             return JsonConvert.DeserializeObject<IEnumerable<RequestResultDto>>(content);
@@ -49,8 +47,7 @@ namespace HttPlaceholder.Client.Implementations
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttPlaceholderClientException(
-                    $"Status code '{(int)response.StatusCode}' returned by HttPlaceholder with message '{content}'");
+                throw new HttPlaceholderClientException(response.StatusCode, content);
             }
 
             return JsonConvert.DeserializeObject<IEnumerable<RequestOverviewDto>>(content);
@@ -62,8 +59,7 @@ namespace HttPlaceholder.Client.Implementations
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
-                throw new HttPlaceholderClientException(
-                    $"Status code '{(int)response.StatusCode}' returned by HttPlaceholder with message '{content}'");
+                throw new HttPlaceholderClientException(response.StatusCode, content);
             }
 
             return JsonConvert.DeserializeObject<RequestResultDto>(content);
