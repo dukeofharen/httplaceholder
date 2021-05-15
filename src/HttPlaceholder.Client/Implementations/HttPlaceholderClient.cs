@@ -225,6 +225,14 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
-        public Task DeleteAllStubsByTenantAsync(string tenant) => throw new System.NotImplementedException();
+        public async Task DeleteAllStubsByTenantAsync(string tenant)
+        {
+            using var response = await _httpClient.DeleteAsync($"/ph-api/tenants/{tenant}/stubs");
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+        }
     }
 }

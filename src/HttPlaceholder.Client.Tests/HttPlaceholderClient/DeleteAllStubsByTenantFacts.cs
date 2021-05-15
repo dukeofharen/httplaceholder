@@ -37,7 +37,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClient
             var tenant = "01-get";
             var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Delete, $"{BaseUrl}ph-api/tenants/{tenant}/stubs")
-                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
+                .Respond(HttpStatusCode.NoContent)));
 
             // Act / Assert
             await client.DeleteAllStubsByTenantAsync(tenant);
