@@ -2,11 +2,10 @@
 using System.Net;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Exceptions;
-using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClient
 {
     [TestClass]
     public class GetAllRequestsFacts : BaseClientTest
@@ -81,7 +80,7 @@ namespace HttPlaceholder.Client.Tests
         public async Task GetAllRequestsAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/requests")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
@@ -98,7 +97,7 @@ namespace HttPlaceholder.Client.Tests
         public async Task GetAllRequestsAsync_ShouldReturnAllRequests()
         {
             // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/requests")
                 .Respond("application/json", AllRequestsResponse)));
 

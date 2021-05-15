@@ -3,11 +3,10 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Exceptions;
-using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClient
 {
     [TestClass]
     public class GetAllStubsFacts : BaseClientTest
@@ -63,7 +62,7 @@ namespace HttPlaceholder.Client.Tests
         public async Task GetAllStubsAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Get, $"{BaseUrl}ph-api/stubs")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
@@ -80,7 +79,7 @@ namespace HttPlaceholder.Client.Tests
         public async Task GetAllStubsAsync_ShouldReturnAllStubs()
         {
             // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Get, $"{BaseUrl}ph-api/stubs")
                 .Respond("application/json", GetAllStubsResponse)));
 

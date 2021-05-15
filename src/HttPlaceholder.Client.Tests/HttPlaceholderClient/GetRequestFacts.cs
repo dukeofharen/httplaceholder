@@ -2,11 +2,10 @@
 using System.Net;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Exceptions;
-using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClient
 {
     [TestClass]
     public class GetRequestFacts : BaseClientTest
@@ -63,7 +62,7 @@ namespace HttPlaceholder.Client.Tests
         {
             // Arrange
             var correlationId = "bec89e6a-9bee-4565-bccb-09f0a3363eee";
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/requests/{correlationId}")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
@@ -81,7 +80,7 @@ namespace HttPlaceholder.Client.Tests
         {
             // Arrange
             var correlationId = "bec89e6a-9bee-4565-bccb-09f0a3363eee";
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            var client = new Implementations.HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/requests/{correlationId}")
                 .Respond("application/json", RequestResponse)));
 
