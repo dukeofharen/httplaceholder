@@ -234,5 +234,8 @@ namespace HttPlaceholder.Client.Implementations
                 throw new HttPlaceholderClientException(response.StatusCode, content);
             }
         }
+
+        /// <inheritdoc />
+        public Task UpdateAllStubsByTenantAsync(string tenant, IEnumerable<StubDto> stubs) => throw new System.NotImplementedException();
     }
 }

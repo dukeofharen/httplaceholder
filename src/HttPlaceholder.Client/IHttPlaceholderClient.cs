@@ -117,5 +117,12 @@ namespace HttPlaceholder.Client
         /// </summary>
         /// <param name="tenant">The tenant.</param>
         Task DeleteAllStubsByTenantAsync(string tenant);
+
+        /// <summary>
+        /// Update all stubs belonging to a specific tenant.
+        /// </summary>
+        /// <param name="tenant">The tenant.</param>
+        /// <param name="stubs">The stubs.</param>
+        Task UpdateAllStubsByTenantAsync(string tenant, IEnumerable<StubDto> stubs);
     }
 }
