@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
@@ -12,6 +13,7 @@ namespace HttPlaceholder.Client.Implementations
     /// <inheritdoc />
     public class HttPlaceholderClient : IHttPlaceholderClient
     {
+        private const string JsonContentType = "application/json";
         private readonly HttpClient _httpClient;
 
         public HttPlaceholderClient(HttpClient httpClient)
@@ -85,7 +87,8 @@ namespace HttPlaceholder.Client.Implementations
         /// <inheritdoc />
         public async Task<FullStubDto> CreateStubForRequestAsync(string correlationId)
         {
-            using var response = await _httpClient.PostAsync($"/ph-api/requests/{correlationId}/stubs", new StringContent(""));
+            using var response =
+                await _httpClient.PostAsync($"/ph-api/requests/{correlationId}/stubs", new StringContent(""));
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -96,6 +99,17 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
-        public Task<FullStubDto> CreateStubAsync(StubDto stub) => throw new System.NotImplementedException();
+        public async Task<FullStubDto> CreateStubAsync(StubDto stub)
+        {
+            using var response =
+                await _httpClient.PostAsync($"/ph-api/stubs", new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, JsonContentType));
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<FullStubDto>(content);
+        }
     }
 }

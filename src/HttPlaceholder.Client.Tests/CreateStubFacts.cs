@@ -63,7 +63,7 @@ namespace HttPlaceholder.Client.Tests
                 .When(HttpMethod.Post, $"{BaseUrl}ph-api/stubs")
                 .WithPartialContent("test-situation")
                 .WithPartialContent("GET")
-                .WithPartialContent("Ok my dude!")
+                .WithPartialContent("OK my dude!")
                 .Respond("application/json", CreateStubResponse)));
             var input = new StubDto
             {
