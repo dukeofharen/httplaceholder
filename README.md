@@ -100,4 +100,4 @@ Go to `http://localhost:5000/ph-ui`, you will get to the management interface to
 * [Management interface](docs/UI.md)
 
 # Tools 🛠
-* [HttPlaceholder REST API client for .NET](docs/NUGETCLIENT.md)
+* [HttPlaceholder REST API client for .NET](docs/DOTNET_CLIENT.md)
