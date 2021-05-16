@@ -191,7 +191,7 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
-        public async Task DeleteAllStubAsync()
+        public async Task DeleteAllStubsAsync()
         {
             using var response = await _httpClient.DeleteAsync("/ph-api/stubs");
             if (!response.IsSuccessStatusCode)

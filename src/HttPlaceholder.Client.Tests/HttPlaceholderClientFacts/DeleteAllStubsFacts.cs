@@ -9,10 +9,10 @@ using RichardSzalay.MockHttp;
 namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
 {
     [TestClass]
-    public class DeleteAllStubFacts : BaseClientTest
+    public class DeleteAllStubsFacts : BaseClientTest
     {
         [TestMethod]
-        public async Task DeleteAllStubAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
+        public async Task DeleteAllStubs_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
@@ -22,7 +22,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
             // Act
             var exception =
                 await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                    client.DeleteAllStubAsync());
+                    client.DeleteAllStubsAsync());
 
             // Assert
             Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -30,7 +30,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         }
 
         [TestMethod]
-        public async Task DeleteAllStubsAsync_ShouldDeleteAllStubs()
+        public async Task DeleteAllStubs_ShouldDeleteAllStubs()
         {
             // Arrange
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
@@ -38,7 +38,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
                 .Respond(HttpStatusCode.NoContent)));
 
             // Act / Assert
-            await client.DeleteAllStubAsync();
+            await client.DeleteAllStubsAsync();
         }
     }
 }
