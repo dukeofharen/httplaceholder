@@ -4,6 +4,9 @@ using HttPlaceholder.Client.Dto.Stubs;
 
 namespace HttPlaceholder.Client.StubConditionBuilders
 {
+    /// <summary>
+    /// Class for building the stub conditions.
+    /// </summary>
     public sealed class StubConditionBuilder
     {
         private readonly StubConditionsDto _conditions = new StubConditionsDto();
@@ -12,7 +15,7 @@ namespace HttPlaceholder.Client.StubConditionBuilders
         {
         }
 
-        public StubConditionBuilder Begin() => new StubConditionBuilder();
+        public static StubConditionBuilder Begin() => new();
 
         public StubConditionBuilder WithHttpMethod(string method)
         {

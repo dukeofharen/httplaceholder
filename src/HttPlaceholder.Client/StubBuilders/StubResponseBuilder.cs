@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Client.StubResponseBuilders
 {
+    /// <summary>
+    /// Class for building the stub response.
+    /// </summary>
     public sealed class StubResponseBuilder
     {
         private readonly StubResponseDto _response = new();
@@ -14,6 +17,8 @@ namespace HttPlaceholder.Client.StubResponseBuilders
         private StubResponseBuilder()
         {
         }
+
+        public static StubResponseBuilder Begin() => new();
 
         public StubResponseBuilder WithHttpStatusCode(int statusCode)
         {
