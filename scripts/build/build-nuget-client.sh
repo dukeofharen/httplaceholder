@@ -17,7 +17,7 @@ DIST_DIR=$ROOT_DIR/dist
 mkdir $DIST_DIR
 
 # Pack tool
-cd $ROOT_DIR/cs-client/src/HttPlaceholder.Client
+cd $ROOT_DIR/src/HttPlaceholder.Client
 dotnet pack -c Release \
     -o $DIST_DIR \
     /p:Version=$VERSION \
