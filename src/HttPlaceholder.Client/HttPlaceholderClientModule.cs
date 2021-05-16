@@ -2,6 +2,7 @@
 using System.Text;
 using HttPlaceholder.Client.Configuration;
 using HttPlaceholder.Client.Implementations;
+using HttPlaceholder.Client.Utilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +19,7 @@ namespace HttPlaceholder.Client
         {
             serviceCollection.Configure<HttPlaceholderClientConfiguration>(clientConfigSection);
             var config = clientConfigSection.Get<HttPlaceholderClientConfiguration>();
-            ValidateConfiguration(config);
+            config.Validate();
             return serviceCollection.RegisterHttpClient(config);
         }
 
@@ -28,7 +29,7 @@ namespace HttPlaceholder.Client
         {
             var config = new HttPlaceholderClientConfiguration();
             configAction?.Invoke(config);
-            ValidateConfiguration(config);
+            config.Validate();
             return serviceCollection.RegisterHttpClient(config);
         }
 
@@ -36,25 +37,8 @@ namespace HttPlaceholder.Client
             this IServiceCollection serviceCollection,
             HttPlaceholderClientConfiguration config)
         {
-            serviceCollection.AddHttpClient<IHttPlaceholderClient, HttPlaceholderClient>(client =>
-            {
-                client.BaseAddress = new Uri(config.RootUrl);
-                if (!string.IsNullOrWhiteSpace(config.Username) && !string.IsNullOrWhiteSpace(config.Password))
-                {
-                    var auth = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{config.Username}:{config.Password}"));
-                    client.DefaultRequestHeaders.Add("Authorization", $"Basic {auth}");
-                }
-            });
+            serviceCollection.AddHttpClient<IHttPlaceholderClient, HttPlaceholderClient>(client => client.ApplyConfiguration(config));
             return serviceCollection;
-        }
-
-        private static void ValidateConfiguration(HttPlaceholderClientConfiguration config)
-        {
-            if (string.IsNullOrWhiteSpace(config.RootUrl))
-            {
-                throw new ArgumentException(
-                    $"No value set for {nameof(config.RootUrl)} in HttPlaceholder configuration.");
-            }
         }
     }
 }
