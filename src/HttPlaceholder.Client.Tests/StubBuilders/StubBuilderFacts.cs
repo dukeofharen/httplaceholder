@@ -143,21 +143,5 @@ namespace HttPlaceholder.Client.Tests.StubBuilders
             // Assert
             Assert.IsNotNull(stub.Response);
         }
-
-        [TestMethod]
-        public void WithMultipleParamsSet()
-        {
-            // Act
-            var stub = StubBuilder.Begin()
-                .WithId("stub1")
-                .WithTenant("tenant1")
-                .IsEnabled()
-                .Build();
-
-            // Assert
-            Assert.AreEqual("stub1", stub.Id);
-            Assert.AreEqual("tenant1", stub.Tenant);
-            Assert.IsTrue(stub.Enabled);
-        }
     }
 }

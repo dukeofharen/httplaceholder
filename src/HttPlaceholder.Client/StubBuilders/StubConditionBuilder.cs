@@ -9,7 +9,7 @@ namespace HttPlaceholder.Client.StubConditionBuilders
     /// </summary>
     public sealed class StubConditionBuilder
     {
-        private readonly StubConditionsDto _conditions = new StubConditionsDto();
+        private readonly StubConditionsDto _conditions = new();
 
         private StubConditionBuilder()
         {
