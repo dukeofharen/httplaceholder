@@ -8,9 +8,9 @@ namespace HttPlaceholder.Client.Utilities
     /// <summary>
     /// Static class for providing extra functionality for <see cref="HttpClient"/>.
     /// </summary>
-    public static class HttpClientExtensions
+    internal static class HttpClientExtensions
     {
-        public static void ApplyConfiguration(this HttpClient httpClient, HttPlaceholderClientConfiguration config)
+        internal static void ApplyConfiguration(this HttpClient httpClient, HttPlaceholderClientConfiguration config)
         {
             httpClient.BaseAddress = new Uri(config.RootUrl);
             if (!string.IsNullOrWhiteSpace(config.Username) && !string.IsNullOrWhiteSpace(config.Password))

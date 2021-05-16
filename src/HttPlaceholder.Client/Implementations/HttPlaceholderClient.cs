@@ -24,6 +24,8 @@ namespace HttPlaceholder.Client.Implementations
             _httpClient = httpClient;
         }
 
+        internal HttpClient HttpClient => _httpClient;
+
         /// <inheritdoc />
         public async Task<MetadataDto> GetMetadataAsync()
         {
