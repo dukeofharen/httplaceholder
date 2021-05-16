@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.Implementations;
+using HttPlaceholder.Client.StubBuilders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
@@ -79,6 +80,26 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
                 },
                 Response = new StubResponseDto {StatusCode = 200, Text = "OK my dude!"}
             };
+
+            // Act
+            var result = await client.CreateStubAsync(input);
+
+            // Assert
+            Assert.IsNotNull(result.Stub);
+            Assert.IsNotNull(result.Metadata);
+            Assert.AreEqual("test-situation", result.Stub.Id);
+            Assert.AreEqual("GET", result.Stub.Conditions.Method);
+        }
+
+        [TestMethod]
+        public async Task CreateStubAsync_Builder_ShouldCreateStub()
+        {
+            // Arrange
+            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+                .When(HttpMethod.Post, $"{BaseUrl}ph-api/stubs")
+                .WithPartialContent("stub123")
+                .Respond("application/json", CreateStubResponse)));
+            var input = StubBuilder.Begin().WithId("stub123");
 
             // Act
             var result = await client.CreateStubAsync(input);
