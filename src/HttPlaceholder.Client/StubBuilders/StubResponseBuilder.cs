@@ -5,7 +5,7 @@ using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Stubs;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Client.StubResponseBuilders
+namespace HttPlaceholder.Client.StubBuilders
 {
     /// <summary>
     /// Class for building the stub response.

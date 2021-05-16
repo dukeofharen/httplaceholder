@@ -6,7 +6,6 @@ using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.Implementations;
 using HttPlaceholder.Client.StubBuilders;
-using HttPlaceholder.Client.StubResponseBuilders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 

@@ -2,7 +2,7 @@
 using System.Net.Http;
 using HttPlaceholder.Client.Dto.Stubs;
 
-namespace HttPlaceholder.Client.StubConditionBuilders
+namespace HttPlaceholder.Client.StubBuilders
 {
     /// <summary>
     /// Class for building the stub conditions.

@@ -1,8 +1,6 @@
 ﻿using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.StubBuilders;
-using HttPlaceholder.Client.StubConditionBuilders;
-using HttPlaceholder.Client.StubResponseBuilders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Client.Tests.StubBuilders

@@ -1,7 +1,5 @@
 ﻿using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Stubs;
-using HttPlaceholder.Client.StubConditionBuilders;
-using HttPlaceholder.Client.StubResponseBuilders;
 
 namespace HttPlaceholder.Client.StubBuilders
 {

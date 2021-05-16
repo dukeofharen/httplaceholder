@@ -4,8 +4,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.StubBuilders;
-using HttPlaceholder.Client.StubConditionBuilders;
-using HttPlaceholder.Client.StubResponseBuilders;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Client.Examples
