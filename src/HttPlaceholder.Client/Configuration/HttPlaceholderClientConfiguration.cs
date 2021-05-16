@@ -11,12 +11,10 @@ namespace HttPlaceholder.Client.Configuration
             get => _rootUrl;
             set
             {
-                if (value.EndsWith("/"))
+                if (!string.IsNullOrWhiteSpace(value))
                 {
-                    _rootUrl = value;
+                    _rootUrl = value.EndsWith("/") ? value : $"{value}/";
                 }
-
-                _rootUrl = $"{value}/";
             }
         }
 
