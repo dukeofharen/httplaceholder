@@ -74,9 +74,9 @@ namespace HttPlaceholder.Persistence.FileSystem.Implementations
         {
             // Clear the in memory stub cache.
             _logger.LogInformation("Clearing the file system stub cache.");
-            var metadata = EnsureAndGetMetadata();
             lock (_cacheUpdateLock)
             {
+                var metadata = EnsureAndGetMetadata();
                 StubCache = null;
                 var newId = Guid.NewGuid().ToString();
                 StubUpdateTrackingId = newId;
@@ -97,12 +97,14 @@ namespace HttPlaceholder.Persistence.FileSystem.Implementations
                 lock (_cacheUpdateLock)
                 {
                     model = new FileStorageMetadataModel {StubUpdateTrackingId = Guid.NewGuid().ToString()};
+                    _logger.LogWarning($"File not found.");
                     _fileService.WriteAllText(path, JsonConvert.SerializeObject(model));
                 }
             }
             else
             {
                 var contents = _fileService.ReadAllText(path);
+                _logger.LogWarning($"File found; contents: {contents}");
                 model = JsonConvert.DeserializeObject<FileStorageMetadataModel>(contents);
             }
 

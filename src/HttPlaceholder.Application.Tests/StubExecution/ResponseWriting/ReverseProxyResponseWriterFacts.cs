@@ -16,8 +16,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class ReverseProxyResponseWriterFacts
     {
-        private readonly Mock<IHttpClientFactory> _mockHttpClientFactory = new Mock<IHttpClientFactory>();
-        private readonly Mock<IHttpContextService> _mockHttpContextService = new Mock<IHttpContextService>();
+        private readonly Mock<IHttpClientFactory> _mockHttpClientFactory = new();
+        private readonly Mock<IHttpContextService> _mockHttpContextService = new();
         private ReverseProxyResponseWriter _writer;
 
         [TestInitialize]
