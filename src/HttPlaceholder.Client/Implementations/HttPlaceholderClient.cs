@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Dto.Users;
 using HttPlaceholder.Client.Exceptions;
+using HttPlaceholder.Client.StubBuilders;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Client.Implementations
@@ -115,6 +117,9 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
+        public Task<FullStubDto> CreateStubAsync(StubBuilder stubBuilder) => CreateStubAsync(stubBuilder.Build());
+
+        /// <inheritdoc />
         public async Task UpdateStubAsync(StubDto stub, string stubId)
         {
             using var response =
@@ -126,6 +131,10 @@ namespace HttPlaceholder.Client.Implementations
                 throw new HttPlaceholderClientException(response.StatusCode, content);
             }
         }
+
+        /// <inheritdoc />
+        public Task UpdateStubAsync(StubBuilder stubBuilder, string stubId) =>
+            UpdateStubAsync(stubBuilder.Build(), stubId);
 
         /// <inheritdoc />
         public async Task<IEnumerable<FullStubDto>> GetAllStubsAsync()
@@ -249,6 +258,10 @@ namespace HttPlaceholder.Client.Implementations
                 throw new HttPlaceholderClientException(response.StatusCode, content);
             }
         }
+
+        /// <inheritdoc />
+        public Task UpdateAllStubsByTenantAsync(string tenant, IEnumerable<StubBuilder> stubBuilders) =>
+            UpdateAllStubsByTenantAsync(tenant, stubBuilders.Select(b => b.Build()));
 
         /// <inheritdoc />
         public async Task<UserDto> GetUserAsync(string username)

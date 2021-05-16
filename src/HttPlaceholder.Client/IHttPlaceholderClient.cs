@@ -4,6 +4,7 @@ using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Dto.Users;
+using HttPlaceholder.Client.StubBuilders;
 
 namespace HttPlaceholder.Client
 {
@@ -57,11 +58,25 @@ namespace HttPlaceholder.Client
         Task<FullStubDto> CreateStubAsync(StubDto stub);
 
         /// <summary>
+        /// Create a new stub.
+        /// </summary>
+        /// <param name="stubBuilder">The stub to add.</param>
+        /// <returns>The created stub.</returns>
+        Task<FullStubDto> CreateStubAsync(StubBuilder stubBuilder);
+
+        /// <summary>
         /// Update an existing stub.
         /// </summary>
         /// <param name="stub">The new stub contents.</param>
         /// <param name="stubId">The ID of the stub to update.</param>
         Task UpdateStubAsync(StubDto stub, string stubId);
+
+        /// <summary>
+        /// Update an existing stub.
+        /// </summary>
+        /// <param name="stubBuilder">The new stub contents.</param>
+        /// <param name="stubId">The ID of the stub to update.</param>
+        Task UpdateStubAsync(StubBuilder stubBuilder, string stubId);
 
         /// <summary>
         /// Get all stubs.
@@ -125,6 +140,13 @@ namespace HttPlaceholder.Client
         /// <param name="tenant">The tenant.</param>
         /// <param name="stubs">The stubs.</param>
         Task UpdateAllStubsByTenantAsync(string tenant, IEnumerable<StubDto> stubs);
+
+        /// <summary>
+        /// Update all stubs belonging to a specific tenant.
+        /// </summary>
+        /// <param name="tenant">The tenant.</param>
+        /// <param name="stubBuilders">The stubs.</param>
+        Task UpdateAllStubsByTenantAsync(string tenant, IEnumerable<StubBuilder> stubBuilders);
 
         /// <summary>
         /// Get the current user by username.
