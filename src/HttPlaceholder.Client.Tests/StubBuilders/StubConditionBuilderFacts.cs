@@ -55,7 +55,7 @@ namespace HttPlaceholder.Client.Tests.StubBuilders
                 .Build();
 
             // Assert
-            Assert.AreEqual(2, conditions.Url.Query.Count());
+            Assert.AreEqual(2, conditions.Url.Query.Count);
             Assert.AreEqual("val1", conditions.Url.Query["q1"]);
             Assert.AreEqual("val2", conditions.Url.Query["q2"]);
         }
@@ -142,7 +142,7 @@ namespace HttPlaceholder.Client.Tests.StubBuilders
                 .Build();
 
             // Assert
-            Assert.AreEqual(2, conditions.Headers.Count());
+            Assert.AreEqual(2, conditions.Headers.Count);
             Assert.AreEqual("val1", conditions.Headers["X-Header-1"]);
             Assert.AreEqual("val2", conditions.Headers["X-Header-2"]);
         }

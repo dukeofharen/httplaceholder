@@ -15,7 +15,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task DeleteStubAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var stubId = "fallback";
+            const string stubId = "fallback";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Delete, $"{BaseUrl}ph-api/stubs/{stubId}")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
@@ -34,7 +34,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task DeleteStubAsync_ShouldDeleteStub()
         {
             // Arrange
-            var stubId = "fallback";
+            const string stubId = "fallback";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Delete, $"{BaseUrl}ph-api/stubs/{stubId}")
                 .Respond(HttpStatusCode.NoContent)));

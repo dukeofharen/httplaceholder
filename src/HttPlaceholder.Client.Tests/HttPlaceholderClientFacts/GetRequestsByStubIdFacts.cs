@@ -59,7 +59,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task GetRequestsByStubIdAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var stubId = "fallback";
+            const string stubId = "fallback";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/stubs/{stubId}/requests")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
@@ -70,7 +70,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
                     client.GetRequestsByStubIdAsync(stubId));
 
             // Assert
-            Assert.AreEqual($"Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
                 exception.Message);
         }
 
@@ -78,7 +78,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task GetRequestsByStubIdAsync_ShouldReturnRequests()
         {
             // Arrange
-            var stubId = "fallback";
+            const string stubId = "fallback";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/stubs/{stubId}/requests")
                 .Respond("application/json", GetRequestsResponse)));

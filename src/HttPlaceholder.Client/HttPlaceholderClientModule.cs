@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using HttPlaceholder.Client.Configuration;
 using HttPlaceholder.Client.Implementations;
 using HttPlaceholder.Client.Utilities;

@@ -14,7 +14,7 @@ namespace HttPlaceholder.Client.StubBuilders
         {
         }
 
-        public static StubBuilder Begin() => new StubBuilder();
+        public static StubBuilder Begin() => new();
 
         public StubBuilder WithId(string id)
         {

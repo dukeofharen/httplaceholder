@@ -72,7 +72,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task GetStubsByTenantAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var tenant = "01-get";
+            const string tenant = "01-get";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/tenants/{tenant}/stubs")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
@@ -83,7 +83,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
                     client.GetStubsByTenantAsync(tenant));
 
             // Assert
-            Assert.AreEqual($"Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
                 exception.Message);
         }
 
@@ -91,7 +91,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task GetStubsByTenantAsync_ShouldReturnStubs()
         {
             // Arrange
-            var tenant = "01-get";
+            const string tenant = "01-get";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/tenants/{tenant}/stubs")
                 .Respond("application/json", GetStubsResponse)));

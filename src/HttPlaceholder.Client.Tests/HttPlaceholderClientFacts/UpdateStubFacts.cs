@@ -18,7 +18,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task UpdateStubAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var stubId = "stub-id";
+            const string stubId = "stub-id";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Put, $"{BaseUrl}ph-api/stubs/{stubId}")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
@@ -28,7 +28,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
                 await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.UpdateStubAsync(new StubDto(), stubId));
 
             // Assert
-            Assert.AreEqual($"Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
                 exception.Message);
         }
 
@@ -36,7 +36,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task UpdateStubAsync_ShouldUpdateStub()
         {
             // Arrange
-            var stubId = "stub-id";
+            const string stubId = "stub-id";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Put, $"{BaseUrl}ph-api/stubs/{stubId}")
                 .WithPartialContent("test-situation")
@@ -67,7 +67,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task UpdateStubAsync_Builder_ShouldUpdateStub()
         {
             // Arrange
-            var stubId = "stub-id";
+            const string stubId = "stub-id";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Put, $"{BaseUrl}ph-api/stubs/{stubId}")
                 .WithPartialContent("OK my dude!")

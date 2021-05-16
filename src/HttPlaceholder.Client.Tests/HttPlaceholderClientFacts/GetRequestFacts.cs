@@ -62,7 +62,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task GetRequestAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var correlationId = "bec89e6a-9bee-4565-bccb-09f0a3363eee";
+            const string correlationId = "bec89e6a-9bee-4565-bccb-09f0a3363eee";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/requests/{correlationId}")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
@@ -80,7 +80,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task GetRequestAsync_ShouldReturnRequest()
         {
             // Arrange
-            var correlationId = "bec89e6a-9bee-4565-bccb-09f0a3363eee";
+            const string correlationId = "bec89e6a-9bee-4565-bccb-09f0a3363eee";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/requests/{correlationId}")
                 .Respond("application/json", RequestResponse)));

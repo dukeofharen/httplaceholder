@@ -48,7 +48,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task CreateStubForRequestAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
+            const string correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Post, $"{BaseUrl}ph-api/requests/{correlationId}/stubs")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
@@ -58,7 +58,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
                 await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.CreateStubForRequestAsync(correlationId));
 
             // Assert
-            Assert.AreEqual($"Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
                 exception.Message);
         }
 
@@ -66,7 +66,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task CreateStubForRequestAsync_ShouldCreateStub()
         {
             // Arrange
-            var correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
+            const string correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Post, $"{BaseUrl}ph-api/requests/{correlationId}/stubs")
                 .Respond("application/json", CreateStubResult)));

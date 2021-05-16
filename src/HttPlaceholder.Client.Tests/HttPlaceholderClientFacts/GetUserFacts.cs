@@ -18,7 +18,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task GetRequestAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var username = "user";
+            const string username = "user";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/users/{username}")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
@@ -36,7 +36,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task GetRequestAsync_ShouldReturnUser()
         {
             // Arrange
-            var username = "user";
+            const string username = "user";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When($"{BaseUrl}ph-api/users/{username}")
                 .Respond("application/json", GetUserResponse)));

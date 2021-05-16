@@ -30,7 +30,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
                     client.GetTenantNamesAsync());
 
             // Assert
-            Assert.AreEqual($"Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
                 exception.Message);
         }
 

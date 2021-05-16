@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Stubs;
@@ -17,17 +18,17 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task UpdateAllStubsByTenantAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var tenant = "01-get";
+            const string tenant = "01-get";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Put, $"{BaseUrl}ph-api/tenants/{tenant}/stubs")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
             // Act
             var exception =
-                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.UpdateAllStubsByTenantAsync(tenant, new StubDto[0]));
+                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.UpdateAllStubsByTenantAsync(tenant, Array.Empty<StubDto>()));
 
             // Assert
-            Assert.AreEqual($"Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
                 exception.Message);
         }
 
@@ -35,7 +36,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task UpdateAllStubsByTenantAsync_ShouldUpdateStubs()
         {
             // Arrange
-            var tenant = "01-get";
+            const string tenant = "01-get";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Put, $"{BaseUrl}ph-api/tenants/{tenant}/stubs")
                 .WithPartialContent("stub1")
@@ -52,7 +53,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task UpdateAllStubsByTenantAsync_Builder_ShouldUpdateStubs()
         {
             // Arrange
-            var tenant = "01-get";
+            const string tenant = "01-get";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Put, $"{BaseUrl}ph-api/tenants/{tenant}/stubs")
                 .WithPartialContent("stub1")

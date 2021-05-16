@@ -17,7 +17,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
             _mockHttp.VerifyNoOutstandingRequest();
         }
 
-        public HttpClient CreateHttpClient(Action<MockHttpMessageHandler> mockHttpAction = null)
+        protected HttpClient CreateHttpClient(Action<MockHttpMessageHandler> mockHttpAction = null)
         {
             mockHttpAction?.Invoke(_mockHttp);
             var httpClient = _mockHttp.ToHttpClient();

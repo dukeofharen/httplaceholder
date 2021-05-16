@@ -90,7 +90,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
                 await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.GetAllRequestsAsync());
 
             // Assert
-            Assert.AreEqual($"Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
                 exception.Message);
         }
 

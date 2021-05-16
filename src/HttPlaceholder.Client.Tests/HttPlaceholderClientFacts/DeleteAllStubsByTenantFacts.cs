@@ -15,7 +15,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task DeleteAllStubAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
         {
             // Arrange
-            var tenant = "01-get";
+            const string tenant = "01-get";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Delete, $"{BaseUrl}ph-api/tenants/{tenant}/stubs")
                 .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
@@ -34,7 +34,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
         public async Task DeleteAllStubAsync_ShouldDeleteStubs()
         {
             // Arrange
-            var tenant = "01-get";
+            const string tenant = "01-get";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Delete, $"{BaseUrl}ph-api/tenants/{tenant}/stubs")
                 .Respond(HttpStatusCode.NoContent)));
