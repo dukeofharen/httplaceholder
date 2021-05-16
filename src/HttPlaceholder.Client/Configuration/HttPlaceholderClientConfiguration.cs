@@ -2,7 +2,21 @@
 {
     public class HttPlaceholderClientConfiguration
     {
-        public string RootUrl { get; set; }
+        private string _rootUrl;
+
+        public string RootUrl
+        {
+            get => _rootUrl;
+            set
+            {
+                if (value.EndsWith("/"))
+                {
+                    _rootUrl = value;
+                }
+
+                _rootUrl = $"{value}/";
+            }
+        }
 
         public string Username { get; set; }
 
