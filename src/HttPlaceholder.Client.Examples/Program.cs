@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Stubs;
+using HttPlaceholder.Client.StubBuilders;
+using HttPlaceholder.Client.StubConditionBuilders;
+using HttPlaceholder.Client.StubResponseBuilders;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Client.Examples
@@ -44,6 +48,16 @@ namespace HttPlaceholder.Client.Examples
                 {
                     Id = "test-stub-123", Response = new StubResponseDto {Text = "Let's go yeah!"}
                 });
+
+                // Create stub using a builder.
+                var createdStubFromBuilder = await client.CreateStubAsync(StubBuilder.Begin()
+                    .WithId("test-stub-124")
+                    .WithTenant("tenant1")
+                    .WithConditions(StubConditionBuilder.Begin()
+                        .WithPath("/test-path")
+                        .WithHttpMethod(HttpMethod.Get))
+                    .WithResponse(StubResponseBuilder.Begin()
+                        .WithJsonBody(new {key1 = "val1", key2 = "val2"})));
 
                 // Update stub.
                 await client.UpdateStubAsync(
