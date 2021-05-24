@@ -1649,42 +1649,19 @@
 							"response": []
 						},
 						{
-							"name": "GET JSON schema",
+							"name": "GET check \"Authentication\" feature",
 							"request": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{rootUrl}}ph-api/metadata/jsonSchema",
+									"raw": "{{rootUrl}}ph-api/metadata/features/authentication",
 									"host": [
 										"{{rootUrl}}ph-api"
 									],
 									"path": [
 										"metadata",
-										"jsonSchema"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GET JSON array schema",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{rootUrl}}ph-api/metadata/jsonSchema?asArray=true",
-									"host": [
-										"{{rootUrl}}ph-api"
-									],
-									"path": [
-										"metadata",
-										"jsonSchema"
-									],
-									"query": [
-										{
-											"key": "asArray",
-											"value": "true"
-										}
+										"features",
+										"authentication"
 									]
 								}
 							},
