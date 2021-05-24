@@ -1,5 +1,7 @@
 <template>
-  <span v-bind:class="className">{{ method }}</span>
+  <span v-bind:class="className"
+    ><strong>{{ method }}</strong></span
+  >
 </template>
 
 <script>
@@ -12,21 +14,55 @@ export default {
     };
   },
   created() {
-    if (this.method === "GET") {
-      this.className = "green";
-    } else if (this.method === "POST") {
-      this.className = "blue";
-    } else if (this.method === "PUT") {
-      this.className = "orange";
-    } else if (this.method === "DELETE") {
-      this.className = "yellow";
-    } else if (this.method === "OPTIONS") {
-      this.className = "purple";
-    } else if (this.method === "PATCH") {
-      this.className = "pink";
+    let className = "";
+    switch (this.method) {
+      case "GET":
+        className = "method-get";
+        break;
+      case "POST":
+        className = "method-post";
+        break;
+      case "PUT":
+        className = "method-put";
+        break;
+      case "DELETE":
+        className = "method-delete";
+        break;
+      case "OPTIONS":
+        className = "method-options";
+        break;
+      case "PATCH":
+        className = "method-patch";
+        break;
     }
+
+    this.className = className;
   }
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.method-get {
+  color: #006909;
+}
+
+.method-post {
+  color: #0006a1;
+}
+
+.method-put {
+  color: #894e00;
+}
+
+.method-delete {
+  color: #9e981a;
+}
+
+.method-options {
+  color: #5e0097;
+}
+
+.method-patch {
+  color: #8d0c95;
+}
+</style>

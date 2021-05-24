@@ -2,7 +2,7 @@
   <v-expansion-panel>
     <v-expansion-panel-header @click="loadRequest">
       <span>
-        <strong>{{ overviewRequest.method }}</strong>
+        <strong><HttpMethod :method="overviewRequest.method" /> </strong>
         {{ overviewRequest.url }}
         <span>(</span>
         <strong>
@@ -225,6 +225,7 @@
 <script>
 import RequestBody from "@/components/RequestBody";
 import Bool from "@/components/Bool";
+import HttpMethod from "@/components/HttpMethod";
 import { parseUrl } from "@/utils/urlFunctions";
 import { toastError, toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
@@ -257,7 +258,8 @@ export default {
   },
   components: {
     RequestBody,
-    Bool
+    Bool,
+    HttpMethod
   },
   computed: {
     orderedStubExecutionResults() {
