@@ -18,7 +18,8 @@ const getUser = (username, password, commit) => {
 };
 
 const state = () => ({
-  userToken: token || ""
+  userToken: token || "",
+  authRequired: false
 });
 
 const actions = {
@@ -29,12 +30,12 @@ const actions = {
       getUser(username, password, commit)
         .then(() => {
           // No authentication on endpoint, so no login required.
-          resolve(false);
+          commit("storeAuthRequired", false);
         })
         .catch(error => {
           // Authentication required, so show login screen.
           if (error.response.status === 401) {
-            resolve(true);
+            commit("storeAuthRequired", true);
           } else {
             reject(error);
           }
@@ -58,6 +59,9 @@ const mutations = {
     } else {
       saveUserToken(token);
     }
+  },
+  storeAuthRequired(state, authRequired) {
+    state.authRequired = authRequired;
   }
 };
 
@@ -67,6 +71,9 @@ const getters = {
   },
   getUserToken(state) {
     return state.userToken;
+  },
+  getAuthRequired(state) {
+    return state.authRequired;
   }
 };
 

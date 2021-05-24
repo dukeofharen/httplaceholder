@@ -14,6 +14,9 @@ const mutations = {
     state.settings.darkTheme = darkTheme;
     setDarkThemeEnabled(darkTheme);
   },
+  setDrawerState(state, drawerState) {
+    state.drawer = drawerState;
+  },
   flipDrawerIsOpen(state) {
     state.drawer = !state.drawer;
   }
