@@ -16,6 +16,7 @@ import { routeNames } from "@/router/routerConstants";
 import { getDarkThemeEnabled } from "@/utils/sessionUtil";
 import MenuBar from "@/components/navigation/MenuBar";
 import NavDrawer from "@/components/navigation/NavDrawer";
+import router from "@/router";
 
 export default {
   name: "app",
@@ -27,8 +28,11 @@ export default {
     this.metadata = await this.$store.dispatch("metadata/getMetadata");
     document.title = `HttPlaceholder - v${this.metadata.version}`;
 
-    if (!this.authenticated) {
-      await this.$store.dispatch("users/ensureAuthenticated");
+    const authEnabled = await this.$store.dispatch(
+      "metadata/checkAuthenticationIsEnabled"
+    );
+    if (!this.$store.getters["users/getAuthenticated"] && authEnabled) {
+      await router.push({ name: routeNames.login });
     }
   },
   data() {
@@ -37,9 +41,6 @@ export default {
     };
   },
   computed: {
-    authenticated() {
-      return this.$store.getters["users/getAuthenticated"];
-    },
     darkTheme() {
       return this.$store.getters["general/getDarkTheme"];
     }

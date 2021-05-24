@@ -18,30 +18,10 @@ const getUser = (username, password, commit) => {
 };
 
 const state = () => ({
-  userToken: token || "",
-  authRequired: false
+  userToken: token || ""
 });
 
 const actions = {
-  ensureAuthenticated({ commit }) {
-    let username = "testUser";
-    let password = "testPassword";
-    return new Promise((resolve, reject) =>
-      getUser(username, password, commit)
-        .then(() => {
-          // No authentication on endpoint, so no login required.
-          commit("storeAuthRequired", false);
-        })
-        .catch(error => {
-          // Authentication required, so show login screen.
-          if (error.response.status === 401) {
-            commit("storeAuthRequired", true);
-          } else {
-            reject(error);
-          }
-        })
-    );
-  },
   authenticate({ commit }, payload) {
     return new Promise((resolve, reject) =>
       getUser(payload.username, payload.password, commit)
@@ -71,9 +51,6 @@ const getters = {
   },
   getUserToken(state) {
     return state.userToken;
-  },
-  getAuthRequired(state) {
-    return state.authRequired;
   }
 };
 

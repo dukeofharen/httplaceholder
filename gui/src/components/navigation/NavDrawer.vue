@@ -75,10 +75,13 @@ export default {
   },
   computed: {
     authenticated() {
-      return this.$store.getters["users/getAuthenticated"];
+      return (
+        !this.$store.getters["metadata/getAuthenticationEnabled"] ||
+        this.$store.getters["users/getAuthenticated"]
+      );
     },
     authRequired() {
-      return this.$store.getters["users/getAuthRequired"];
+      return this.$store.getters["metadata/getAuthenticationEnabled"];
     },
     drawer: {
       get() {
