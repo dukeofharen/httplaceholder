@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import Request from "@/components/Request";
+import Request from "@/components/requests/Request";
 import { HubConnectionBuilder } from "@aspnet/signalr";
 import { toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";

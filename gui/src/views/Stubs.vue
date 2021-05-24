@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import Stub from "@/components/Stub";
+import Stub from "@/components/stubs/Stub";
 import { toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
 

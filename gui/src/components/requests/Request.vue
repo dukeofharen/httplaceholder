@@ -223,9 +223,9 @@
 </template>
 
 <script>
-import RequestBody from "@/components/RequestBody";
-import Bool from "@/components/Bool";
-import HttpMethod from "@/components/HttpMethod";
+import RequestBody from "@/components/requests/RequestBody";
+import Bool from "@/components/requests/Bool";
+import HttpMethod from "@/components/requests/HttpMethod";
 import { parseUrl } from "@/utils/urlFunctions";
 import { toastError, toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
