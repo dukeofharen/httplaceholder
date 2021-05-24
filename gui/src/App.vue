@@ -2,7 +2,7 @@
   <v-app id="keep">
     <v-app-bar app clipped-left color="blue-grey darken-4">
       <v-app-bar-nav-icon
-        @click="drawer = !drawer"
+        @click="flipDrawerIsOpen"
         color="white"
       ></v-app-bar-nav-icon>
       <span class="title ml-3 mr-5"
@@ -41,8 +41,8 @@
               <v-icon>mdi-plus</v-icon>
             </v-list-item-action>
             <v-list-item-title class="grey--text"
-              >Upload stubs</v-list-item-title
-            >
+              >Upload stubs
+            </v-list-item-title>
           </v-list-item>
           <v-list-item
             v-if="authenticated"
@@ -106,7 +106,6 @@ export default {
   },
   data() {
     return {
-      drawer: true,
       authRequired: false,
       routeNames
     };
@@ -117,6 +116,9 @@ export default {
     },
     darkTheme() {
       return this.$store.getters["general/getDarkTheme"];
+    },
+    drawer() {
+      return this.$store.getters["general/getDrawerIsOpen"];
     }
   },
   methods: {
@@ -129,6 +131,9 @@ export default {
       if (darkThemeEnabled) {
         this.$store.commit("general/storeDarkTheme", darkThemeEnabled);
       }
+    },
+    flipDrawerIsOpen() {
+      this.$store.commit("general/flipDrawerIsOpen");
     }
   },
   watch: {
