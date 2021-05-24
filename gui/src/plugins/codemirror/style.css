@@ -12,10 +12,6 @@
     border-right: 0 !important;
 }
 
-.toast {
-    font-family: "Roboto", sans-serif;
-}
-
 /* CodeMirror dark mode override */
 .cm-s-material-darker.CodeMirror {
     background-color: #424242 !important;

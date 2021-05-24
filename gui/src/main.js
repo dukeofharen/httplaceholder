@@ -7,35 +7,19 @@ import "./registerServiceWorker";
 // Fonts
 import "typeface-roboto";
 
-// Styles
-import "@/css/style.css";
-
-// VueShortkey
-import VueShortKey from "vue-shortkey";
-
-// CodeMirror
-import VueCodemirror from "vue-codemirror";
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/yaml/yaml.js";
-import "@/css/material-darker.css";
-
-// Toastr
-import "toastr/build/toastr.css";
-
-// Filters
-import "./filters/yaml";
-import "./filters/datetime";
-import "./filters/decimal";
-
+// Overrides
 import "./utils/stringFormat";
 
-import store from "./store";
-import vuetify from "./plugins/vuetify";
+// Plugins
+import "@/plugins/toastr";
+import "@/plugins/filters";
+import "@/plugins/codemirror";
+import "@/plugins/shortkey";
+import vuetify from "@/plugins/vuetify";
+
+import store from "@/store";
 
 Vue.config.productionTip = false;
-
-Vue.use(VueCodemirror);
-Vue.use(VueShortKey);
 
 new Vue({
   store,
