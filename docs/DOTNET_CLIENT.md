@@ -27,7 +27,7 @@ public void ConfigureServices(IServiceCollection services)
     services.AddHttPlaceholderClient(config => 
     {
         config.RootUrl = "http://localhost:5000/"; // The HttPlaceholder root URL.
-        config.Username = "username"; // The HttPlaceholder root URL.
+        config.Username = "username"; // Optionally set the authentication.
         config.Password = "password";
     })
 }
@@ -45,7 +45,7 @@ If you do not use .NET Core or the .NET Core dependency container, use this meth
 var config = new HttPlaceholderClientConfiguration
 {
     RootUrl = "http://localhost:5000", // The HttPlaceholder root URL.
-    Username = "username",// The HttPlaceholder root URL.
+    Username = "username", // Optionally set the authentication.
     Password = "password"
 };
 var client = HttPlaceholderClientFactory.CreateHttPlaceholderClient(config);

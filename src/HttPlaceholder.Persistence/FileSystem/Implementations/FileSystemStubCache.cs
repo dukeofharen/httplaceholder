@@ -97,14 +97,12 @@ namespace HttPlaceholder.Persistence.FileSystem.Implementations
                 lock (_cacheUpdateLock)
                 {
                     model = new FileStorageMetadataModel {StubUpdateTrackingId = Guid.NewGuid().ToString()};
-                    _logger.LogWarning($"File not found.");
                     _fileService.WriteAllText(path, JsonConvert.SerializeObject(model));
                 }
             }
             else
             {
                 var contents = _fileService.ReadAllText(path);
-                _logger.LogWarning($"File found; contents: {contents}");
                 model = JsonConvert.DeserializeObject<FileStorageMetadataModel>(contents);
             }
 
