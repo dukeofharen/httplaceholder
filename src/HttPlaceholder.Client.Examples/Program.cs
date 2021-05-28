@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.StubBuilders;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,9 @@ namespace HttPlaceholder.Client.Examples
 
                 // Get the metadata.
                 var metadata = await client.GetMetadataAsync();
+
+                // Check if a feature is enabled.
+                var authEnabled = await client.CheckFeatureAsync(FeatureFlagType.Authentication);
 
                 // Get all requests.
                 var allRequests = await client.GetAllRequestsAsync();

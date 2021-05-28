@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Dto.Stubs;
@@ -18,6 +19,13 @@ namespace HttPlaceholder.Client
         /// </summary>
         /// <returns>The metadata.</returns>
         Task<MetadataDto> GetMetadataAsync();
+
+        /// <summary>
+        /// Check whether a specific feature is enabled or not.
+        /// </summary>
+        /// <param name="featureFlag">The feature flag to check.</param>
+        /// <returns>True when the feature is enabled; false otherwise.</returns>
+        Task<bool> CheckFeatureAsync(FeatureFlagType featureFlag);
 
         /// <summary>
         /// Retrieves all requests made to HttPlaceholder.
