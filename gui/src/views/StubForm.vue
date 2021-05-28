@@ -9,18 +9,54 @@
           <a
             href="https://github.com/dukeofharen/httplaceholder"
             target="_blank"
-          >https://github.com/dukeofharen/httplaceholder</a
+            >https://github.com/dukeofharen/httplaceholder</a
           >.
         </v-card-text>
       </v-card>
       <v-card v-if="showFormHelperSelector" class="mt-3 mb-3 overflow-hidden">
         <v-card-text>
-          <FormHelperSelector/>
+          <FormHelperSelector />
+        </v-card-text>
+      </v-card>
+      <v-card class="mt-3 mb-3">
+        <v-card-text>
+          <v-row>
+            <v-col class="ml-4 mr-2">
+              <v-btn
+                @click="editor = editorType.codemirror"
+                class="mr-2"
+                :color="editor === editorType.codemirror ? 'primary' : ''"
+                small
+                outlined
+                >Editor with highlighting
+              </v-btn>
+              <v-btn
+                @click="editor = editorType.simple"
+                :color="editor === editorType.simple ? 'primary' : ''"
+                small
+                outlined
+                >Simple editor</v-btn
+              >
+            </v-col>
+          </v-row>
         </v-card-text>
       </v-card>
       <v-card class="editor mt-3 mb-3">
         <v-card-actions>
-          <codemirror v-model="input" :options="cmOptions"></codemirror>
+          <codemirror
+            v-model="input"
+            :options="cmOptions"
+            v-if="
+              editor === editorType.notSet || editor === editorType.codemirror
+            "
+          ></codemirror>
+          <v-textarea
+            v-model="input"
+            rows="11"
+            v-if="editor === editorType.simple"
+            wrap="soft"
+            class="simple-editor"
+          ></v-textarea>
         </v-card-actions>
       </v-card>
       <v-row>
@@ -35,7 +71,7 @@
         <v-card-title class="headline">Reset to defaults?</v-card-title>
         <v-card-actions>
           <v-btn color="green darken-1" text @click="resetDialog = false"
-          >No
+            >No
           </v-btn>
           <v-btn color="green darken-1" text @click="resetForm">Yes</v-btn>
         </v-card-actions>
@@ -45,12 +81,18 @@
 </template>
 
 <script>
-import {codemirror} from "vue-codemirror";
+import { codemirror } from "vue-codemirror";
 import yaml from "js-yaml";
-import {toastError, toastSuccess} from "@/utils/toastUtil";
-import {resources} from "@/shared/resources";
-import {routeNames} from "@/router/routerConstants";
+import { toastError, toastSuccess } from "@/utils/toastUtil";
+import { resources } from "@/shared/resources";
+import { routeNames } from "@/router/routerConstants";
 import FormHelperSelector from "@/components/formHelpers/FormHelperSelector";
+
+const editorType = {
+  notSet: "notSet",
+  simple: "simple",
+  codemirror: "codemirror"
+};
 
 export default {
   name: "stubForm",
@@ -58,6 +100,8 @@ export default {
     return {
       stubId: null,
       resetDialog: false,
+      editorType,
+      editor: editorType.notSet,
       cmOptions: {
         tabSize: 4,
         mode: "text/x-yaml",
@@ -86,6 +130,8 @@ export default {
         stubId
       });
       const input = yaml.dump(fullStub.stub);
+      this.editor =
+        input.length >= 1500 ? editorType.simple : editorType.codemirror;
       await this.$store.commit("stubForm/setInput", input);
     } else {
       this.stubId = null;
@@ -128,13 +174,15 @@ export default {
                 resources.stubAddedSuccessfully.format(result.v.stub.id)
               );
             } else {
-              toastSuccess(resources.stubUpdatedSuccessfully.format(this.stubId));
+              toastSuccess(
+                resources.stubUpdatedSuccessfully.format(this.stubId)
+              );
             }
           } else if (result.e) {
             if (result.e.error) {
               if (result.e.error.response.status === 409) {
                 toastError(resources.stubAlreadyAdded.format(result.e.stubId));
-              } else if(result.e.error.response.status !== 400)  {
+              } else if (result.e.error.response.status !== 400) {
                 toastError(resources.stubNotAdded.format(result.e.stubId));
               }
             }
@@ -144,7 +192,7 @@ export default {
         if (results.length === 1 && results[0].v && !this.stubId) {
           await this.$router.push({
             name: routeNames.stubForm,
-            params: {stubId: results[0].v.stub.id}
+            params: { stubId: results[0].v.stub.id }
           });
         }
       } catch (e) {
@@ -159,4 +207,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style>
+.simple-editor textarea {
+  white-space: pre;
+  overflow-wrap: normal;
+  overflow-x: scroll;
+}
+</style>
