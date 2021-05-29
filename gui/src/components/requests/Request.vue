@@ -45,36 +45,16 @@
           <RequestHeaders :requestParameters="request.requestParameters" />
         </v-col>
 
+        <v-col cols="12" v-if="showQueryParameters">
+          <span class="label">Query parameters</span>
+          <QueryParams :requestParameters="request.requestParameters" />
+        </v-col>
+
         <v-col cols="12" v-if="request.requestParameters.body">
           <span class="label">Body</span>
           <RequestBody :requestParameters="request.requestParameters" />
         </v-col>
       </v-row>
-      <!--      <v-list-item>-->
-      <!--        <v-list-item-content>-->
-      <!--          <v-list-item-title>Headers</v-list-item-title>-->
-      <!--          <v-list-item-subtitle>-->
-      <!--            <span-->
-      <!--              v-for="(value, key) in request.requestParameters.headers"-->
-      <!--              :key="key"-->
-      <!--            >-->
-      <!--              {{ key }}: {{ value }}-->
-      <!--              <br />-->
-      <!--            </span>-->
-      <!--          </v-list-item-subtitle>-->
-      <!--        </v-list-item-content>-->
-      <!--      </v-list-item>-->
-      <!--      <v-list-item v-if="showQueryParameters">-->
-      <!--        <v-list-item-content>-->
-      <!--          <v-list-item-title>Query parameters</v-list-item-title>-->
-      <!--          <v-list-item-subtitle>-->
-      <!--            <span v-for="(value, key) in queryParameters" :key="key">-->
-      <!--              {{ key }}: {{ value }}-->
-      <!--              <br />-->
-      <!--            </span>-->
-      <!--          </v-list-item-subtitle>-->
-      <!--        </v-list-item-content>-->
-      <!--      </v-list-item>-->
       <!--      <v-list-item>-->
       <!--        <v-list-item-content>-->
       <!--          <v-list-item-title>Correlation ID</v-list-item-title>-->
@@ -227,7 +207,7 @@ import RequestBody from "@/components/requests/RequestBody";
 import Bool from "@/components/requests/Bool";
 import HttpMethod from "@/components/requests/HttpMethod";
 import RequestHeaders from "@/components/requests/RequestHeaders";
-import { parseUrl } from "@/utils/urlFunctions";
+import QueryParams from "@/components/requests/QueryParams";
 import { toastError, toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
 import { routeNames } from "@/router/routerConstants";
@@ -261,7 +241,8 @@ export default {
     RequestBody,
     Bool,
     HttpMethod,
-    RequestHeaders
+    RequestHeaders,
+    QueryParams
   },
   computed: {
     orderedStubExecutionResults() {
@@ -289,11 +270,8 @@ export default {
       const to = new Date(this.overviewRequest.requestEndTime);
       return to.getTime() - from.getTime();
     },
-    queryParameters() {
-      return parseUrl(this.request.requestParameters.url);
-    },
     showQueryParameters() {
-      return Object.keys(this.queryParameters).length > 0;
+      return this.request.requestParameters.url.includes("?");
     }
   },
   methods: {

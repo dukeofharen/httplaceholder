@@ -2,7 +2,7 @@
   <v-simple-table dense>
     <template v-slot:default>
       <tbody>
-        <tr v-for="(value, key) in requestParameters.headers">
+        <tr v-for="(value, key) in queryParameters">
           <td class="pl-0">{{ key }}</td>
           <td class="value">{{ value }}</td>
         </tr>
@@ -12,9 +12,16 @@
 </template>
 
 <script>
+import { parseUrl } from "@/utils/urlFunctions";
+
 export default {
-  name: "RequestHeaders",
-  props: ["requestParameters"]
+  name: "QueryParams",
+  props: ["requestParameters"],
+  computed: {
+    queryParameters() {
+      return parseUrl(this.requestParameters.url);
+    }
+  }
 };
 </script>
 
