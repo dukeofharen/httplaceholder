@@ -55,19 +55,22 @@
           <span>{{ request.correlationId }}</span>
         </v-col>
 
+        <v-col cols="12" v-if="request.executingStubId">
+          <span class="label">Executed stub</span>
+          <router-link
+            :to="{
+              name: 'stubs',
+              query: { searchTerm: request.executingStubId }
+            }"
+            >{{ request.executingStubId }}
+          </router-link>
+        </v-col>
+
         <v-col cols="12" v-if="request.requestParameters.body">
           <span class="label">Body</span>
           <RequestBody :requestParameters="request.requestParameters" />
         </v-col>
       </v-row>
-      <!--      <v-list-item>-->
-      <!--        <v-list-item-content>-->
-      <!--          <v-list-item-title>Correlation ID</v-list-item-title>-->
-      <!--          <v-list-item-subtitle-->
-      <!--            >{{ request.correlationId }}-->
-      <!--          </v-list-item-subtitle>-->
-      <!--        </v-list-item-content>-->
-      <!--      </v-list-item>-->
       <!--      <v-list-item>-->
       <!--        <v-list-item-content>-->
       <!--          <v-list-item-title>Executed stub</v-list-item-title>-->
