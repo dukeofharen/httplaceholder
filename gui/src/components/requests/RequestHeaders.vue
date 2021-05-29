@@ -3,7 +3,7 @@
     <template v-slot:default>
       <tbody>
         <tr v-for="(value, key) in requestParameters.headers">
-          <td>{{ key }}</td>
+          <td class="pl-0">{{ key }}</td>
           <td>{{ value }}</td>
         </tr>
       </tbody>
@@ -18,4 +18,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+tbody tr:hover {
+  background-color: transparent !important;
+}
+</style>
