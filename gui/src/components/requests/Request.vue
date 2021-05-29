@@ -66,36 +66,19 @@
           </router-link>
         </v-col>
 
+        <v-col cols="12" v-if="request.stubTenant">
+          <span class="label">Stub tenant (category)</span>
+          <router-link
+            :to="{ name: 'stubs', query: { stubTenant: request.stubTenant } }"
+            >{{ request.stubTenant }}
+          </router-link>
+        </v-col>
+
         <v-col cols="12" v-if="request.requestParameters.body">
           <span class="label">Body</span>
           <RequestBody :requestParameters="request.requestParameters" />
         </v-col>
       </v-row>
-      <!--      <v-list-item>-->
-      <!--        <v-list-item-content>-->
-      <!--          <v-list-item-title>Executed stub</v-list-item-title>-->
-      <!--          <v-list-item-subtitle>-->
-      <!--            <router-link-->
-      <!--              :to="{-->
-      <!--                name: 'stubs',-->
-      <!--                query: { searchTerm: request.executingStubId }-->
-      <!--              }"-->
-      <!--              >{{ request.executingStubId }}-->
-      <!--            </router-link>-->
-      <!--          </v-list-item-subtitle>-->
-      <!--        </v-list-item-content>-->
-      <!--      </v-list-item>-->
-      <!--      <v-list-item>-->
-      <!--        <v-list-item-content>-->
-      <!--          <v-list-item-title>Stub tenant (category)</v-list-item-title>-->
-      <!--          <v-list-item-subtitle>-->
-      <!--            <router-link-->
-      <!--              :to="{ name: 'stubs', query: { stubTenant: request.stubTenant } }"-->
-      <!--              >{{ request.stubTenant }}-->
-      <!--            </router-link>-->
-      <!--          </v-list-item-subtitle>-->
-      <!--        </v-list-item-content>-->
-      <!--      </v-list-item>-->
       <!--      <v-list-item>-->
       <!--        <v-list-item-content>-->
       <!--          <v-list-item-title>Request time</v-list-item-title>-->
