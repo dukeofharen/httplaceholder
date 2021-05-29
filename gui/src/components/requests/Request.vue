@@ -74,6 +74,14 @@
           </router-link>
         </v-col>
 
+        <v-col cols="12">
+          <span class="label">Request time</span>
+          <span
+            >{{ overviewRequest.requestEndTime | datetime }} (it took
+            <em>{{ duration | decimal }}</em> ms)</span
+          >
+        </v-col>
+
         <v-col cols="12" v-if="request.requestParameters.body">
           <span class="label">Body</span>
           <RequestBody :requestParameters="request.requestParameters" />
