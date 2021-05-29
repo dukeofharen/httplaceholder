@@ -130,6 +130,8 @@ export default {
         stubId
       });
       const input = yaml.dump(fullStub.stub);
+
+      // If the stub is too large, codemirror will struggle with editing. Switch to a simple editor in that case.
       this.editor =
         input.length >= 1500 ? editorType.simple : editorType.codemirror;
       await this.$store.commit("stubForm/setInput", input);

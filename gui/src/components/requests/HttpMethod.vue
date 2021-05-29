@@ -47,7 +47,7 @@ export default {
 }
 
 .method-post {
-  color: #0006a1;
+  color: #5c61ff;
 }
 
 .method-put {
