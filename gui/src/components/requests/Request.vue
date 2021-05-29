@@ -50,6 +50,11 @@
           <QueryParams :requestParameters="request.requestParameters" />
         </v-col>
 
+        <v-col cols="12">
+          <span class="label">Correlation ID</span>
+          <span>{{ request.correlationId }}</span>
+        </v-col>
+
         <v-col cols="12" v-if="request.requestParameters.body">
           <span class="label">Body</span>
           <RequestBody :requestParameters="request.requestParameters" />
