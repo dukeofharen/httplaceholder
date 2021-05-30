@@ -2,10 +2,6 @@
   <v-row>
     <v-col>
       <div class="code-block">
-        <!--        <v-tabs v-if="renderedBodyTypeText">-->
-        <!--          <v-tab @click="viewRenderedBody">{{ renderedBodyTypeText }}</v-tab>-->
-        <!--          <v-tab @click="viewRawBody">Raw</v-tab>-->
-        <!--        </v-tabs>-->
         <v-row>
           <v-col cols="12" v-if="renderedBodyTypeText">
             <v-btn
@@ -25,13 +21,13 @@
             </v-btn>
           </v-col>
 
-          <v-col v-if="showRenderedBody" cols="12">
+          <v-col v-if="showRenderedBody" cols="12" class="scroll-vertical">
             <span class="body">
               <pre>{{ renderedBody }}</pre>
             </span>
           </v-col>
 
-          <v-col v-if="!showRenderedBody" cols="12">
+          <v-col v-if="!showRenderedBody" cols="12" class="scroll-vertical">
             <span class="body">{{ rawBody }}</span>
           </v-col>
 
@@ -152,5 +148,10 @@ a.selected {
 .copy {
   font-size: 2.5em;
   color: #ffffff;
+}
+
+.scroll-vertical {
+  max-height: 500px;
+  overflow-y: scroll;
 }
 </style>
