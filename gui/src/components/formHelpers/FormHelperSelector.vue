@@ -1,15 +1,14 @@
 <template>
   <v-row>
     <v-col>
-      <v-btn @click="doShowList" v-if="!showList" color="primary" class="ml-4">Add request \ response
-        value
+      <v-btn @click="doShowList" v-if="!showList" color="primary" class="ml-4"
+        >Add request \ response value
       </v-btn>
       <v-list v-if="showList">
         <v-list-group v-for="(item, index) in formHelperItems" :key="index">
           <template v-slot:activator>
-            <v-list-item-title class="main-item" color="primary">{{
-                item.title
-              }}
+            <v-list-item-title class="main-item" color="primary"
+              >{{ item.title }}
             </v-list-item-title>
           </template>
 
@@ -21,9 +20,8 @@
           >
             <v-list-item-content>
               <v-list-item-title v-text="subItem.title"></v-list-item-title>
-              <v-list-item-content class="subtitle">{{
-                  subItem.subTitle
-                }}
+              <v-list-item-content class="subtitle"
+                >{{ subItem.subTitle }}
               </v-list-item-content>
             </v-list-item-content>
           </v-list-item>
@@ -72,8 +70,7 @@ export default {
     RedirectSelector,
     LineEndingSelector
   },
-  mounted() {
-  },
+  mounted() {},
   data() {
     return {
       showList: false,
@@ -174,12 +171,14 @@ export default {
             {
               title: "JSON object",
               subTitle: elementDescriptions.jsonObject,
-              onClick: () => this.setDefaultValue("stubForm/setDefaultJsonObject")
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultJsonObject")
             },
             {
               title: "JSON array",
               subTitle: elementDescriptions.jsonArray,
-              onClick: () => this.setDefaultValue("stubForm/setDefaultJsonArray")
+              onClick: () =>
+                this.setDefaultValue("stubForm/setDefaultJsonArray")
             },
             {
               title: "XPath",

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Dto.v1.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -17,7 +18,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public void Cleanup() => CleanupRestApiIntegrationTest();
 
         [TestMethod]
-        public async Task RestApiIntegration_Metadata_Get_CredentialsAreCorrect_UsernameMatches_ShouldReturn200()
+        public async Task RestApiIntegration_Metadata_Get_ShouldReturn200()
         {
             // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "/ph-api/metadata")
@@ -33,6 +34,25 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             // Assert
             Assert.IsFalse(string.IsNullOrWhiteSpace(metadata.Version));
             Assert.AreEqual(10, metadata.VariableHandlers.Count());
+        }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Metadata_Get_CheckFeature_ShouldReturn200()
+        {
+            // Arrange
+            var request = new HttpRequestMessage(HttpMethod.Get, "/ph-api/metadata/features/authentication")
+            {
+                Headers = {{"Accept", "application/json"}}
+            };
+
+            // Act
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<FeatureResultDto>(content);
+
+            // Assert
+            Assert.IsFalse(result.Enabled);
+            Assert.AreEqual(FeatureFlagType.Authentication, result.FeatureFlag);
         }
     }
 }

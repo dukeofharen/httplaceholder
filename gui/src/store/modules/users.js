@@ -22,25 +22,6 @@ const state = () => ({
 });
 
 const actions = {
-  ensureAuthenticated({ commit }) {
-    let username = "testUser";
-    let password = "testPassword";
-    return new Promise((resolve, reject) =>
-      getUser(username, password, commit)
-        .then(() => {
-          // No authentication on endpoint, so no login required.
-          resolve(false);
-        })
-        .catch(error => {
-          // Authentication required, so show login screen.
-          if (error.response.status === 401) {
-            resolve(true);
-          } else {
-            reject(error);
-          }
-        })
-    );
-  },
   authenticate({ commit }, payload) {
     return new Promise((resolve, reject) =>
       getUser(payload.username, payload.password, commit)
@@ -58,6 +39,9 @@ const mutations = {
     } else {
       saveUserToken(token);
     }
+  },
+  storeAuthRequired(state, authRequired) {
+    state.authRequired = authRequired;
   }
 };
 

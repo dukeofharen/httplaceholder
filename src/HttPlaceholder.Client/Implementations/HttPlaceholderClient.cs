@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Dto.Stubs;
@@ -36,6 +37,20 @@ namespace HttPlaceholder.Client.Implementations
             }
 
             return JsonConvert.DeserializeObject<MetadataDto>(content);
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> CheckFeatureAsync(FeatureFlagType featureFlag)
+        {
+            using var response = await HttpClient.GetAsync($"/ph-api/metadata/features/{featureFlag.ToString().ToLower()}");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            var result = JsonConvert.DeserializeObject<FeatureResultDto>(content);
+            return result.Enabled;
         }
 
         /// <inheritdoc />

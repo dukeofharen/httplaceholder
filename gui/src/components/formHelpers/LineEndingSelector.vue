@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import {lineEndingTypes} from "@/shared/stubFormResources";
+import { lineEndingTypes } from "@/shared/stubFormResources";
 
 export default {
   data() {

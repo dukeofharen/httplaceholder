@@ -1,17 +1,43 @@
 <template>
   <v-row>
     <v-col>
-      <v-tabs v-if="renderedBodyTypeText">
-        <v-tab @click="viewRenderedBody">{{ renderedBodyTypeText }}</v-tab>
-        <v-tab @click="viewRawBody">Raw</v-tab>
-      </v-tabs>
-      <span v-if="showRenderedBody" class="body">
-        <pre>{{ renderedBody }}</pre>
-      </span>
-      <span v-if="!showRenderedBody" class="body">{{ rawBody }}</span>
-      <v-icon @click="copy" class="copy mt-3" title="Copy request body"
-        >mdi-content-copy</v-icon
-      >
+      <div class="code-block">
+        <v-row>
+          <v-col cols="12" v-if="renderedBodyTypeText">
+            <v-btn
+              @click="viewRenderedBody"
+              :color="showRenderedBody ? 'primary' : 'white'"
+              class="mr-2"
+              small
+              outlined
+              >{{ renderedBodyTypeText }}
+            </v-btn>
+            <v-btn
+              @click="viewRawBody"
+              :color="!showRenderedBody ? 'primary' : 'white'"
+              small
+              outlined
+              >Raw
+            </v-btn>
+          </v-col>
+
+          <v-col v-if="showRenderedBody" cols="12" class="scroll-vertical">
+            <span class="body">
+              <pre>{{ renderedBody }}</pre>
+            </span>
+          </v-col>
+
+          <v-col v-if="!showRenderedBody" cols="12" class="scroll-vertical">
+            <span class="body">{{ rawBody }}</span>
+          </v-col>
+
+          <v-col cols="12">
+            <v-icon @click="copy" class="copy mt-3" title="Copy request body"
+              >mdi-content-copy
+            </v-icon>
+          </v-col>
+        </v-row>
+      </div>
     </v-col>
   </v-row>
 </template>
@@ -77,7 +103,10 @@ export default {
     },
     renderBody() {
       if (this.renderedBodyTypeText === xmlType) {
-        return xmlFormatter(this.requestParameters.body);
+        return xmlFormatter(this.requestParameters.body, {
+          lineSeparator: "\n",
+          indentation: "  "
+        });
       } else if (this.renderedBodyTypeText === jsonType) {
         try {
           let json = JSON.parse(this.requestParameters.body);
@@ -109,11 +138,20 @@ a.selected {
   font-weight: bold;
 }
 
-.body {
-  color: rgba(0, 0, 0, 0.6);
+.code-block {
+  background-color: #353535;
+  color: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
 }
 
 .copy {
   font-size: 2.5em;
+  color: #ffffff;
+}
+
+.scroll-vertical {
+  max-height: 500px;
+  overflow-y: scroll;
 }
 </style>

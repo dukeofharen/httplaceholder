@@ -21,7 +21,10 @@
       <v-col cols="12" class="pl-0">
         <input type="file" name="file" ref="base64Upload" @change="upload" />
         <p>
-          You can upload a <strong>file</strong> for use in the Base64 response or click on "show text input" and insert <strong>plain text</strong> that will be encoded to Base64 on inserting.
+          You can upload a <strong>file</strong> for use in the Base64 response
+          or click on "show text input" and insert
+          <strong>plain text</strong> that will be encoded to Base64 on
+          inserting.
         </p>
         <v-btn color="primary" @click="uploadClick">Upload a file</v-btn>
       </v-col>

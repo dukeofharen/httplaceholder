@@ -1,0 +1,15 @@
+#toast-container {
+  margin-top: 10px;
+}
+
+#toast-container > div{
+  opacity: 0.95;
+}
+
+#toast-container .toast {
+  font-size: 18px;
+}
+
+.toast {
+  font-family: "Roboto", sans-serif;
+}
