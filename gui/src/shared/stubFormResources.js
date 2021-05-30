@@ -25,8 +25,10 @@ const elementDescriptions = {
     "Using the XPath condition checker, you can check the posted XML body to see if it contains the correct elements. It is possible to add multiple conditions. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.\n\nIt is also possible to (pre)-set the XML namespaces of a posted XML body. If no namespaces are set in the stub, HttPlaceholder will try to fetch the namespaces itself using a regular expression.",
   jsonPath:
     "Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions. Add one condition per line.",
-  jsonObject: "Using the JSON condition checker, you can check whether a posted JSON object contains the correct elements.",
-  jsonArray: "Using the JSON condition checker, you can check whether a posted JSON array contains the correct elements.",
+  jsonObject:
+    "Using the JSON condition checker, you can check whether a posted JSON object contains the correct elements.",
+  jsonArray:
+    "Using the JSON condition checker, you can check whether a posted JSON array contains the correct elements.",
   basicAuthentication:
     "This condition checker can check whether the sent basic authentication matches with the data in the stub.",
   clientIp:
@@ -366,19 +368,16 @@ const defaultValues = {
   hostname: "httplaceholder.com",
   jsonPath: ['$.phoneNumbers[?(@.type=="iPhone")]'],
   jsonObject: {
-    "stringValue": "text",
-    "intValue": 3,
-    "array": [
-      "value1",
-      "value2"
-    ]
+    stringValue: "text",
+    intValue: 3,
+    array: ["value1", "value2"]
   },
   jsonArray: [
     "value1",
     3,
     {
-      "key1": "value1",
-      "key2": 1.45
+      key1: "value1",
+      key2: 1.45
     }
   ],
   xpath: [

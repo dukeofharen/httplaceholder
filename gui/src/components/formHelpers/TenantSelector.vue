@@ -3,8 +3,8 @@
     <v-col>
       <v-row>
         <v-col class="ml-4">
-          Select a tenant below. After selecting a tenant, you can change it
-          in the YAML form below.
+          Select a tenant below. After selecting a tenant, you can change it in
+          the YAML form below.
         </v-col>
       </v-row>
 

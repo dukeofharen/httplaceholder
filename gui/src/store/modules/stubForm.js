@@ -1,7 +1,7 @@
 import yaml from "js-yaml";
-import {toastError} from "@/utils/toastUtil";
-import {resources} from "@/shared/resources";
-import {defaultValues, responseBodyTypes} from "@/shared/stubFormResources";
+import { toastError } from "@/utils/toastUtil";
+import { resources } from "@/shared/resources";
+import { defaultValues, responseBodyTypes } from "@/shared/stubFormResources";
 
 const parseInput = state => {
   try {

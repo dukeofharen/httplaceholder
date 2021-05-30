@@ -4,7 +4,7 @@
       <h1>Download all stubs</h1>
       <v-card class="mt-3 mb-3">
         <v-card-text class="ml-4"
-        >This page displays all stubs currently present in HttPlaceholder. You
+          >This page displays all stubs currently present in HttPlaceholder. You
           can copy this string and put it in a .yml file on your PC for local
           development or directly download the file.
         </v-card-text>
@@ -43,8 +43,8 @@
 
 <script>
 import yaml from "js-yaml";
-import {resources} from "@/shared/resources";
-import {downloadBlob} from "@/utils/downloadHelper";
+import { resources } from "@/shared/resources";
+import { downloadBlob } from "@/utils/downloadHelper";
 
 export default {
   name: "addStub",

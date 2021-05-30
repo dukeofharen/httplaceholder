@@ -1,7 +1,6 @@
 <template>
   <v-row>
     <v-col>
-
       <v-row>
         <v-col class="ml-4">
           Select an HTTP status code from the list below.
@@ -15,17 +14,11 @@
           @click="codeSelected(code.code)"
         >
           <v-list-item-title class="pl-4"
-          >{{ code.name }} - {{ code.code }}
-          </v-list-item-title
-          >
+            >{{ code.name }} - {{ code.code }}
+          </v-list-item-title>
         </v-list-item-content>
-        <v-list-item-content
-          v-else
-        >
-          <v-list-item-title class="pl-4"
-          >{{ code.name }}
-          </v-list-item-title
-          >
+        <v-list-item-content v-else>
+          <v-list-item-title class="pl-4">{{ code.name }} </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-col>
@@ -33,7 +26,7 @@
 </template>
 
 <script>
-import {httpStatusCodes} from "@/shared/stubFormResources";
+import { httpStatusCodes } from "@/shared/stubFormResources";
 
 export default {
   data() {

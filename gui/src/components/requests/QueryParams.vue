@@ -7,7 +7,7 @@
       <v-simple-table dense>
         <template v-slot:default>
           <tbody>
-            <tr v-for="(value, key) in queryParameters">
+            <tr v-for="(value, key) in queryParameters" :key="key">
               <td class="pl-0">{{ key }}</td>
               <td class="value">{{ value }}</td>
             </tr>

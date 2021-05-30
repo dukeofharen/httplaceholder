@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {httpMethods} from "@/shared/stubFormResources";
+import { httpMethods } from "@/shared/stubFormResources";
 
 export default {
   data() {
