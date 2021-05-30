@@ -91,7 +91,7 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
             const string correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
             var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
                 .When(HttpMethod.Post, $"{BaseUrl}ph-api/requests/{correlationId}/stubs")
-                .WithContent(@"{""doNotCreateStub"": true}")
+                .WithContent(@"{""DoNotCreateStub"":true}")
                 .Respond("application/json", CreateStubResult)));
 
             // Act

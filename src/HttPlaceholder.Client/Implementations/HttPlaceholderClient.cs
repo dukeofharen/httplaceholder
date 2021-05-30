@@ -108,8 +108,7 @@ namespace HttPlaceholder.Client.Implementations
         public async Task<FullStubDto> CreateStubForRequestAsync(string correlationId,
             CreateStubForRequestInputDto input = null)
         {
-            var body = "";
-            // var body = input == null ? "{}" : JsonConvert.SerializeObject(input);
+            var body = input == null ? "{}" : JsonConvert.SerializeObject(input);
             using var response =
                 await HttpClient.PostAsync($"/ph-api/requests/{correlationId}/stubs",
                     new StringContent(body, Encoding.UTF8, JsonContentType));
