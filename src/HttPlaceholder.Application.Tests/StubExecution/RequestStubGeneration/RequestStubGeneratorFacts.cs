@@ -105,7 +105,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             var expectedId = "generated-f5e68719af81c867c462aba4a32d4302";
 
             // Act
-            var result = await _generator.GenerateStubBasedOnRequestAsync("2", false);
+            var result = await _generator.GenerateStubBasedOnRequestAsync("2", true);
 
             // Assert
             _mockHandler1.Verify(m => m.HandleStubGenerationAsync(requests[1], It.IsAny<StubModel>()));
