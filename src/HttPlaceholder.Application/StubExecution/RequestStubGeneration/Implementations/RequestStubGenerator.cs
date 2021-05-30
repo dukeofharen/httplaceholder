@@ -25,7 +25,8 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             _logger = logger;
         }
 
-        public async Task<FullStubModel> GenerateStubBasedOnRequestAsync(string requestCorrelationId)
+        public async Task<FullStubModel> GenerateStubBasedOnRequestAsync(string requestCorrelationId,
+            bool doNotCreateStub)
         {
             _logger.LogInformation($"Creating stub based on request with corr.ID '{requestCorrelationId}'.");
 
@@ -50,8 +51,18 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             // Generate an ID based on the created stub.
             var contents = JsonConvert.SerializeObject(stub);
             stub.Id = "generated-" + HashingUtilities.GetMd5String(contents);
-            await _stubContext.DeleteStubAsync(stub.Id);
-            var result = await _stubContext.AddStubAsync(stub);
+
+            FullStubModel result;
+            if (doNotCreateStub)
+            {
+                result = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
+            }
+            else
+            {
+                await _stubContext.DeleteStubAsync(stub.Id);
+                result = await _stubContext.AddStubAsync(stub);
+            }
+
             _logger.LogInformation($"Stub with ID '{stub.Id}' generated!");
 
             return result;

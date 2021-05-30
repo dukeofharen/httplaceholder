@@ -35,8 +35,8 @@
                 :color="editor === editorType.simple ? 'primary' : ''"
                 small
                 outlined
-                >Simple editor</v-btn
-              >
+                >Simple editor
+              </v-btn>
             </v-col>
           </v-row>
         </v-card-text>
@@ -86,6 +86,10 @@ import yaml from "js-yaml";
 import { toastError, toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
 import { routeNames } from "@/router/routerConstants";
+import {
+  getIntermediateStub,
+  clearIntermediateStub
+} from "@/utils/sessionUtil";
 import FormHelperSelector from "@/components/formHelpers/FormHelperSelector";
 
 const editorType = {
@@ -137,7 +141,15 @@ export default {
       await this.$store.commit("stubForm/setInput", input);
     } else {
       this.stubId = null;
-      const input = resources.defaultStub;
+      let input;
+      const intermediateStub = getIntermediateStub();
+      if (intermediateStub) {
+        input = intermediateStub;
+        clearIntermediateStub();
+      } else {
+        input = resources.defaultStub;
+      }
+
       await this.$store.commit("stubForm/setInput", input);
     }
   },

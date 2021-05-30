@@ -1,4 +1,5 @@
 export const sessionKeys = {
   userToken: "userToken",
-  darkTheme: "darkTheme"
+  darkTheme: "darkTheme",
+  intermediateStub: "intermediateStub"
 };

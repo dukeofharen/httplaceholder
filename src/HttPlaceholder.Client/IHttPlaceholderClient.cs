@@ -55,8 +55,9 @@ namespace HttPlaceholder.Client
         /// Create a stub based on a specific request.
         /// </summary>
         /// <param name="correlationId">The correlation ID of the request to create a stub for.</param>
+        /// <param name="input">The input for specifying the options for the stub.</param>
         /// <returns>The created stub.</returns>
-        Task<FullStubDto> CreateStubForRequestAsync(string correlationId);
+        Task<FullStubDto> CreateStubForRequestAsync(string correlationId, CreateStubForRequestInputDto input = null);
 
         /// <summary>
         /// Create a new stub.

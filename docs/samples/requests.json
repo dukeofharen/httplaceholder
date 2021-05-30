@@ -1251,16 +1251,49 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": ""
+									"raw": "{\n    \"doNotCreateStub\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
 								},
 								"url": {
-									"raw": "{{rootUrl}}ph-api/requests/4d9347e9-38f7-4efa-baf5-ae3a73cc68a7/stubs",
+									"raw": "{{rootUrl}}ph-api/requests/edd7a398-9576-424e-ad36-de0abec153bd/stubs",
 									"host": [
 										"{{rootUrl}}ph-api"
 									],
 									"path": [
 										"requests",
-										"4d9347e9-38f7-4efa-baf5-ae3a73cc68a7",
+										"edd7a398-9576-424e-ad36-de0abec153bd",
+										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST create stub by existing request: only return stub",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"doNotCreateStub\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests/edd7a398-9576-424e-ad36-de0abec153bd/stubs",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests",
+										"edd7a398-9576-424e-ad36-de0abec153bd",
 										"stubs"
 									]
 								}

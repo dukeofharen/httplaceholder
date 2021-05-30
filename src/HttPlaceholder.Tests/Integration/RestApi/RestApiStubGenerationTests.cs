@@ -4,7 +4,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Dto.v1.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi
 {
@@ -29,7 +31,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 .Setup(m => m.GetHost())
                 .Returns("localhost");
 
-            // Do a call to a non-existant stub
+            // Do a call to a non-existent stub
             var response = await Client.SendAsync(CreateTestStubRequest());
             var correlationId = response.Headers.Single(h => h.Key == "X-HttPlaceholder-Correlation").Value.Single();
 
@@ -38,7 +40,8 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var apiRequest = new HttpRequestMessage
             {
                 RequestUri = new Uri(url),
-                Method = HttpMethod.Post
+                Method = HttpMethod.Post,
+                Content = new StringContent("{}", Encoding.UTF8, "application/json")
             };
             response = await Client.SendAsync(apiRequest);
             response.EnsureSuccessStatusCode();
@@ -70,6 +73,37 @@ namespace HttPlaceholder.Tests.Integration.RestApi
 
             Assert.AreEqual("duco", addedStub.Conditions.BasicAuthentication.Username);
             Assert.AreEqual("pass", addedStub.Conditions.BasicAuthentication.Password);
+        }
+
+        [TestMethod]
+        public async Task RestApiIntegration_StubGeneration_HappyFlow_OnlyReturnStub()
+        {
+            // Arrange
+            ClientDataResolverMock
+                .Setup(m => m.GetClientIp())
+                .Returns("127.0.0.1");
+
+            ClientDataResolverMock
+                .Setup(m => m.GetHost())
+                .Returns("localhost");
+
+            // Do a call to a non-existent stub
+            var response = await Client.SendAsync(CreateTestStubRequest());
+            var correlationId = response.Headers.Single(h => h.Key == "X-HttPlaceholder-Correlation").Value.Single();
+
+            // Register a new stub for the failed request
+            var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
+            var apiRequest = new HttpRequestMessage
+            {
+                RequestUri = new Uri(url),
+                Method = HttpMethod.Post,
+                Content = new StringContent(JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}), Encoding.UTF8, "application/json")
+            };
+            response = await Client.SendAsync(apiRequest);
+            response.EnsureSuccessStatusCode();
+
+            // Check that the stub is not added to the stub source.
+            Assert.AreEqual(0, StubSource.StubModels.Count);
         }
 
         private HttpRequestMessage CreateTestStubRequest()

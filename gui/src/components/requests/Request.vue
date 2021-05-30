@@ -116,10 +116,12 @@ import RequestHeaders from "@/components/requests/RequestHeaders";
 import QueryParams from "@/components/requests/QueryParams";
 import StubExecutionResults from "@/components/requests/StubExecutionResults";
 import ResponseWriterResults from "@/components/requests/ResponseWriterResults";
-import { toastError, toastSuccess } from "@/utils/toastUtil";
+import { toastError } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
 import { routeNames } from "@/router/routerConstants";
+import { setIntermediateStub } from "@/utils/sessionUtil";
 import moment from "moment";
+import yaml from "js-yaml";
 
 export default {
   name: "request",
@@ -168,14 +170,14 @@ export default {
         const fullStub = await this.$store.dispatch(
           "stubs/createStubBasedOnRequest",
           {
-            correlationId: this.request.correlationId
+            correlationId: this.request.correlationId,
+            doNotCreateStub: true
           }
         );
-        const stub = fullStub.stub;
-        toastSuccess(resources.stubAddedSuccessfully.format(stub.id));
+        const stubYaml = yaml.dump(fullStub.stub);
+        setIntermediateStub(stubYaml);
         await this.$router.push({
-          name: routeNames.stubForm,
-          params: { stubId: stub.id }
+          name: routeNames.stubForm
         });
       } catch (e) {
         toastError(resources.stubNotAddedGeneric);

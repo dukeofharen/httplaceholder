@@ -18,6 +18,6 @@ namespace HttPlaceholder.Application.Requests.Commands.CreateStubForRequest
         public async Task<FullStubModel> Handle(
             CreateStubForRequestCommand request,
             CancellationToken cancellationToken) =>
-            await _requestStubGenerator.GenerateStubBasedOnRequestAsync(request.CorrelationId);
+            await _requestStubGenerator.GenerateStubBasedOnRequestAsync(request.CorrelationId, request.DoNotCreateStub);
     }
 }
