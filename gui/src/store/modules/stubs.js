@@ -98,7 +98,10 @@ const actions = {
   createStubBasedOnRequest({}, payload) {
     return new Promise((resolve, reject) =>
       createInstance()
-        .post(`ph-api/requests/${payload.correlationId}/stubs`, "")
+        .post(`ph-api/requests/${payload.correlationId}/stubs`, {
+          doNotCreateStub:
+            payload.doNotCreateStub !== null ? payload.doNotCreateStub : false
+        })
         .then(response => resolve(response.data))
         .catch(error => reject(error))
     );

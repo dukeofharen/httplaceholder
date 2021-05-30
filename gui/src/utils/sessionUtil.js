@@ -20,3 +20,15 @@ export function getDarkThemeEnabled() {
 export function setDarkThemeEnabled(enabled) {
   setSession(sessionKeys.darkTheme, enabled);
 }
+
+export function getIntermediateStub() {
+  return getSession(sessionKeys.intermediateStub);
+}
+
+export function setIntermediateStub(stub) {
+  setSession(sessionKeys.intermediateStub, stub);
+}
+
+export function clearIntermediateStub() {
+  removeSession(sessionKeys.intermediateStub);
+}
