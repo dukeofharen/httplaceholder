@@ -42,7 +42,8 @@ namespace HttPlaceholder.Client.Implementations
         /// <inheritdoc />
         public async Task<bool> CheckFeatureAsync(FeatureFlagType featureFlag)
         {
-            using var response = await HttpClient.GetAsync($"/ph-api/metadata/features/{featureFlag.ToString().ToLower()}");
+            using var response =
+                await HttpClient.GetAsync($"/ph-api/metadata/features/{featureFlag.ToString().ToLower()}");
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
@@ -104,10 +105,14 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
-        public async Task<FullStubDto> CreateStubForRequestAsync(string correlationId)
+        public async Task<FullStubDto> CreateStubForRequestAsync(string correlationId,
+            CreateStubForRequestInputDto input = null)
         {
+            var body = "";
+            // var body = input == null ? "{}" : JsonConvert.SerializeObject(input);
             using var response =
-                await HttpClient.PostAsync($"/ph-api/requests/{correlationId}/stubs", new StringContent(""));
+                await HttpClient.PostAsync($"/ph-api/requests/{correlationId}/stubs",
+                    new StringContent(body, Encoding.UTF8, JsonContentType));
             var content = await response.Content.ReadAsStringAsync();
             if (!response.IsSuccessStatusCode)
             {
