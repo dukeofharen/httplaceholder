@@ -5,6 +5,6 @@ namespace HttPlaceholder.Application.StubExecution
 {
     public interface IRequestStubGenerator
     {
-        Task<FullStubModel> GenerateStubBasedOnRequestAsync(string requestCorrelationId);
+        Task<FullStubModel> GenerateStubBasedOnRequestAsync(string requestCorrelationId, bool doNotCreateStub);
     }
 }

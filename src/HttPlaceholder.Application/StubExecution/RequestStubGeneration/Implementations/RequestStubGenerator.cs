@@ -25,7 +25,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             _logger = logger;
         }
 
-        public async Task<FullStubModel> GenerateStubBasedOnRequestAsync(string requestCorrelationId)
+        public async Task<FullStubModel> GenerateStubBasedOnRequestAsync(string requestCorrelationId, bool doNotCreateStub)
         {
             _logger.LogInformation($"Creating stub based on request with corr.ID '{requestCorrelationId}'.");
 
