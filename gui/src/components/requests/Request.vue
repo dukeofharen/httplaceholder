@@ -41,16 +41,6 @@
         </v-col>
 
         <v-col cols="12">
-          <span class="label">Headers</span>
-          <RequestHeaders :requestParameters="request.requestParameters" />
-        </v-col>
-
-        <v-col cols="12" v-if="showQueryParameters">
-          <span class="label">Query parameters</span>
-          <QueryParams :requestParameters="request.requestParameters" />
-        </v-col>
-
-        <v-col cols="12">
           <span class="label">Correlation ID</span>
           <span>{{ request.correlationId }}</span>
         </v-col>
@@ -82,121 +72,38 @@
           >
         </v-col>
 
+        <v-col cols="12">
+          <v-expansion-panels>
+            <RequestHeaders :requestParameters="request.requestParameters" />
+          </v-expansion-panels>
+          <v-expansion-panels>
+            <QueryParams
+              v-if="showQueryParameters"
+              :requestParameters="request.requestParameters"
+            />
+          </v-expansion-panels>
+        </v-col>
+
         <v-col cols="12" v-if="request.requestParameters.body">
           <span class="label">Body</span>
           <RequestBody :requestParameters="request.requestParameters" />
         </v-col>
+
+        <v-col cols="12">
+          <v-expansion-panels>
+            <StubExecutionResults
+              v-if="request.stubExecutionResults.length"
+              :request="request"
+            />
+          </v-expansion-panels>
+          <v-expansion-panels>
+            <ResponseWriterResults
+              v-if="request.stubResponseWriterResults.length"
+              :request="request"
+            />
+          </v-expansion-panels>
+        </v-col>
       </v-row>
-      <!--      <v-list-item>-->
-      <!--        <v-list-item-content>-->
-      <!--          <v-list-item-title>Request time</v-list-item-title>-->
-      <!--          <v-list-item-subtitle-->
-      <!--            >{{ overviewRequest.requestEndTime | datetime }} (it took-->
-      <!--            <em>{{ duration | decimal }}</em> ms)-->
-      <!--          </v-list-item-subtitle>-->
-      <!--        </v-list-item-content>-->
-      <!--      </v-list-item>-->
-      <!--      <v-expansion-panels>-->
-      <!--        <v-expansion-panel v-if="orderedStubExecutionResults.length">-->
-      <!--          <v-expansion-panel-header>-->
-      <!--            <strong>Stub execution results</strong>-->
-      <!--          </v-expansion-panel-header>-->
-      <!--          <v-expansion-panel-content>-->
-      <!--            <v-expansion-panels>-->
-      <!--              <v-expansion-panel-->
-      <!--                v-for="(result, key) in orderedStubExecutionResults"-->
-      <!--                :key="key"-->
-      <!--              >-->
-      <!--                <v-expansion-panel-header>-->
-      <!--                  <strong>-->
-      <!--                    <span>{{ result.stubId }}</span>-->
-      <!--                    <span>&nbsp;</span>-->
-      <!--                    <span>(</span>-->
-      <!--                    <span>-->
-      <!--                      <Bool-->
-      <!--                        v-bind:bool="result.passed"-->
-      <!--                        trueText="passed"-->
-      <!--                        falseText="not passed"-->
-      <!--                      />-->
-      <!--                    </span>-->
-      <!--                    <span>)</span>-->
-      <!--                  </strong>-->
-      <!--                </v-expansion-panel-header>-->
-      <!--                <v-expansion-panel-content>-->
-      <!--                  <div v-if="result.conditions.length > 0">-->
-      <!--                    <h2>Executed conditions</h2>-->
-      <!--                    <div-->
-      <!--                      v-for="(condition, key) in result.conditions"-->
-      <!--                      :key="key"-->
-      <!--                    >-->
-      <!--                      <v-list-item>-->
-      <!--                        <v-list-item-content>-->
-      <!--                          <v-list-item-title>Checker name</v-list-item-title>-->
-      <!--                          <v-list-item-subtitle-->
-      <!--                            >{{ condition.checkerName }}-->
-      <!--                          </v-list-item-subtitle>-->
-      <!--                        </v-list-item-content>-->
-      <!--                      </v-list-item>-->
-      <!--                      <v-list-item>-->
-      <!--                        <v-list-item-content>-->
-      <!--                          <v-list-item-title-->
-      <!--                            >Condition validation-->
-      <!--                          </v-list-item-title>-->
-      <!--                          <v-list-item-subtitle>-->
-      <!--                            <Bool-->
-      <!--                              v-bind:bool="-->
-      <!--                                condition.conditionValidation ===-->
-      <!--                                  conditionValidationType.Valid-->
-      <!--                              "-->
-      <!--                              trueText="passed"-->
-      <!--                              falseText="not passed"-->
-      <!--                            />-->
-      <!--                          </v-list-item-subtitle>-->
-      <!--                        </v-list-item-content>-->
-      <!--                      </v-list-item>-->
-      <!--                      <v-list-item v-if="condition.log">-->
-      <!--                        <v-list-item-content>-->
-      <!--                          <v-list-item-title>Log</v-list-item-title>-->
-      <!--                          <v-list-item-subtitle-->
-      <!--                            >{{ condition.log }}-->
-      <!--                          </v-list-item-subtitle>-->
-      <!--                        </v-list-item-content>-->
-      <!--                      </v-list-item>-->
-      <!--                      <v-divider></v-divider>-->
-      <!--                    </div>-->
-      <!--                  </div>-->
-      <!--                </v-expansion-panel-content>-->
-      <!--              </v-expansion-panel>-->
-      <!--            </v-expansion-panels>-->
-      <!--          </v-expansion-panel-content>-->
-      <!--        </v-expansion-panel>-->
-      <!--        <v-expansion-panel v-if="orderedStubResponseWriterResults.length">-->
-      <!--          <v-expansion-panel-header>-->
-      <!--            <strong>Response writer results</strong>-->
-      <!--          </v-expansion-panel-header>-->
-      <!--          <v-expansion-panel-content>-->
-      <!--            <v-list-item-->
-      <!--              v-for="(result, key) in orderedStubResponseWriterResults"-->
-      <!--              :key="key"-->
-      <!--            >-->
-      <!--              <v-list-item-content>-->
-      <!--                <v-list-item-title-->
-      <!--                  >{{ result.responseWriterName }}-->
-      <!--                </v-list-item-title>-->
-      <!--                <v-list-item-subtitle>-->
-      <!--                  <Bool-->
-      <!--                    v-bind:bool="result.executed"-->
-      <!--                    trueText="executed"-->
-      <!--                    falseText="not executed"-->
-      <!--                  />-->
-      <!--                  <br />-->
-      <!--                  <span v-if="result.log">{{ result.log }}</span>-->
-      <!--                </v-list-item-subtitle>-->
-      <!--              </v-list-item-content>-->
-      <!--            </v-list-item>-->
-      <!--          </v-expansion-panel-content>-->
-      <!--        </v-expansion-panel>-->
-      <!--      </v-expansion-panels>-->
     </v-expansion-panel-content>
   </v-expansion-panel>
 </template>
@@ -207,10 +114,11 @@ import Bool from "@/components/requests/Bool";
 import HttpMethod from "@/components/requests/HttpMethod";
 import RequestHeaders from "@/components/requests/RequestHeaders";
 import QueryParams from "@/components/requests/QueryParams";
+import StubExecutionResults from "@/components/requests/StubExecutionResults";
+import ResponseWriterResults from "@/components/requests/ResponseWriterResults";
 import { toastError, toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
 import { routeNames } from "@/router/routerConstants";
-import { conditionValidationType } from "@/shared/resources";
 import moment from "moment";
 
 export default {
@@ -218,7 +126,6 @@ export default {
   props: ["overviewRequest"],
   data() {
     return {
-      conditionValidationType,
       refreshTimeFromInterval: null,
       request: null,
       timeFrom: null
@@ -237,6 +144,8 @@ export default {
     }
   },
   components: {
+    StubExecutionResults,
+    ResponseWriterResults,
     RequestBody,
     Bool,
     HttpMethod,
@@ -244,26 +153,6 @@ export default {
     QueryParams
   },
   computed: {
-    orderedStubExecutionResults() {
-      const compare = a => {
-        if (a.passed) return -1;
-        if (!a.passed) return 1;
-        return 0;
-      };
-      const results = this.request.stubExecutionResults;
-      results.sort(compare);
-      return results;
-    },
-    orderedStubResponseWriterResults() {
-      const compare = a => {
-        if (a.executed) return -1;
-        if (!a.executed) return 1;
-        return 0;
-      };
-      const results = this.request.stubResponseWriterResults;
-      results.sort(compare);
-      return results;
-    },
     duration() {
       const from = new Date(this.overviewRequest.requestBeginTime);
       const to = new Date(this.overviewRequest.requestEndTime);
