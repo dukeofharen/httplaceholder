@@ -35,6 +35,7 @@
           v-for="request in filteredRequests"
           :key="request.correlationId"
           :overviewRequest="request"
+          v-on:updated="onUpdated"
         ></Request>
       </v-expansion-panels>
       <v-dialog v-model="deleteAllDialog" max-width="290">
@@ -141,6 +142,9 @@ export default {
         .start()
         .then(() => {})
         .catch(err => console.error(err.toString()));
+    },
+    async onUpdated() {
+      await this.initialize();
     }
   },
   watch: {

@@ -27,6 +27,14 @@ const actions = {
         .then(() => resolve())
         .catch(error => reject(error))
     );
+  },
+  deleteRequest({}, correlationId) {
+    return new Promise((resolve, reject) =>
+      createInstance()
+        .delete(`ph-api/requests/${correlationId}`)
+        .then(response => resolve(response.data))
+        .catch(error => reject(error))
+    );
   }
 };
 
