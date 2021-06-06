@@ -36,6 +36,8 @@ namespace HttPlaceholder.Application.StubExecution
 
         Task DeleteAllRequestResultsAsync();
 
+        Task<bool> DeleteRequestAsync(string correlationId);
+
         Task<IEnumerable<string>> GetTenantNamesAsync();
 
         Task PrepareAsync();

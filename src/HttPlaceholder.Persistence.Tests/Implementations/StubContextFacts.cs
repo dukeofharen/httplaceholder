@@ -377,6 +377,26 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
+        public async Task DeleteRequestAsync_HappyFlow()
+        {
+            // arrange
+            var correlationId = Guid.NewGuid().ToString();
+            var stubSource = new Mock<IWritableStubSource>();
+            stubSource
+                .Setup(m => m.DeleteRequestAsync(correlationId))
+                .ReturnsAsync(true);
+
+            _stubSources.Add(stubSource.Object);
+
+            // act
+            var result = await _context.DeleteRequestAsync(correlationId);
+
+            // assert
+            Assert.IsTrue(result);
+            stubSource.Verify(m => m.DeleteRequestAsync(correlationId));
+        }
+
+        [TestMethod]
         public async Task DeleteAllStubsAsync_Tenant_HappyFlow()
         {
             // arrange
