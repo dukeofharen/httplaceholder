@@ -107,6 +107,9 @@ namespace HttPlaceholder.Client.Examples
 
                 // Delete all requests.
                 // await client.DeleteAllRequestsAsync();
+
+                // Delete request.
+                await client.DeleteRequestAsync("6c449313-9871-4d1a-84ab-61f604667a06");
             }
             catch (Exception ex)
             {
