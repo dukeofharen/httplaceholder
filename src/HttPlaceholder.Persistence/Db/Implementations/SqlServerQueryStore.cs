@@ -25,6 +25,8 @@ WHERE correlation_id = @CorrelationId";
 
         public string DeleteAllRequestsQuery => @"DELETE FROM requests";
 
+        public string DeleteRequestQuery => @"DELETE FROM requests WHERE correlation_id = @CorrelationId";
+
         public string AddRequestQuery => @"INSERT INTO requests
 (correlation_id, executing_stub_id, request_begin_time, request_end_time, json)
 VALUES (@CorrelationId, @ExecutingStubid, @RequestBeginTime, @RequestEndTime, @Json)";

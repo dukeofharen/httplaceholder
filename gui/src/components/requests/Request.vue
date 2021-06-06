@@ -26,7 +26,14 @@
             @click="createStub"
             title="Create a stub based on the request parameters of this request"
             color="success"
+            class="mr-2"
             >Create stub
+          </v-btn>
+          <v-btn
+            @click="deleteRequest"
+            title="Delete this request"
+            color="error"
+            >Delete request
           </v-btn>
         </v-col>
 
@@ -116,7 +123,7 @@ import RequestHeaders from "@/components/requests/RequestHeaders";
 import QueryParams from "@/components/requests/QueryParams";
 import StubExecutionResults from "@/components/requests/StubExecutionResults";
 import ResponseWriterResults from "@/components/requests/ResponseWriterResults";
-import { toastError } from "@/utils/toastUtil";
+import { toastError, toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
 import { routeNames } from "@/router/routerConstants";
 import { setIntermediateStub } from "@/utils/sessionUtil";
@@ -195,6 +202,19 @@ export default {
             if (e.response.status === 404) {
               toastError(resources.requestNotFoundAnymore);
             }
+          }
+        }
+      }
+    },
+    async deleteRequest() {
+      try {
+        await this.$store.dispatch("requests/deleteRequest", this.request.correlationId);
+        toastSuccess(resources.requestDeletedSuccessfully);
+        this.$emit("updated", this.fullStub);
+      } catch(e) {
+        if (e.response) {
+          if (e.response.status === 404) {
+            toastError(resources.requestNotFoundAnymore);
           }
         }
       }

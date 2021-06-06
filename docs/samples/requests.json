@@ -1147,6 +1147,43 @@
 							"response": []
 						},
 						{
+							"name": "DELETE request",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests/edd7a398-9576-424e-ad36-de0abec153bd",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests",
+										"edd7a398-9576-424e-ad36-de0abec153bd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "GET all",
 							"request": {
 								"auth": {

@@ -251,6 +251,58 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             _mockDatabaseContext.Verify(m => m.ExecuteAsync(query, null));
         }
 
+        [TestMethod]
+        public async Task DeleteRequestAsync_NoRecordsUpdated_ShouldReturnFalse()
+        {
+            // Arrange
+            var correlationId = Guid.NewGuid().ToString();
+            var query = "DELETE REQUEST QUERY";
+            _mockQueryStore
+                .Setup(m => m.DeleteRequestQuery)
+                .Returns(query);
+
+            object capturedParam = null;
+            _mockDatabaseContext
+                .Setup(m => m.ExecuteAsync(query, It.IsAny<object>()))
+                .Callback<string, object>((_, param) => capturedParam = param)
+                .ReturnsAsync(0);
+
+            // Act
+            var result = await _stubSource.DeleteRequestAsync(correlationId);
+
+            // Assert
+            Assert.IsFalse(result);
+
+            var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
+            Assert.AreEqual(correlationId, parsedParam["CorrelationId"].ToString());
+        }
+
+        [TestMethod]
+        public async Task DeleteRequestAsync_RecordsUpdated_ShouldReturnTrue()
+        {
+            // Arrange
+            var correlationId = Guid.NewGuid().ToString();
+            var query = "DELETE REQUEST QUERY";
+            _mockQueryStore
+                .Setup(m => m.DeleteRequestQuery)
+                .Returns(query);
+
+            object capturedParam = null;
+            _mockDatabaseContext
+                .Setup(m => m.ExecuteAsync(query, It.IsAny<object>()))
+                .Callback<string, object>((_, param) => capturedParam = param)
+                .ReturnsAsync(1);
+
+            // Act
+            var result = await _stubSource.DeleteRequestAsync(correlationId);
+
+            // Assert
+            Assert.IsTrue(result);
+
+            var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
+            Assert.AreEqual(correlationId, parsedParam["CorrelationId"].ToString());
+        }
+
         [DataTestMethod]
         [DataRow(1, true)]
         [DataRow(0, false)]

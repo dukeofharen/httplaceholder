@@ -135,6 +135,50 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
         }
 
         [TestMethod]
+        public async Task DeleteRequestAsync_RequestDoesntExist_ShouldReturnFalse()
+        {
+            // Arrange
+            var correlationId = Guid.NewGuid().ToString();
+            var expectedPath = Path.Combine(
+                _options.Value.Storage.FileStorageLocation,
+                Constants.RequestsFolderName,
+                $"{correlationId}.json");
+
+            _fileServiceMock
+                .Setup(m => m.FileExists(expectedPath))
+                .Returns(false);
+
+            // Act
+            var result = await _source.DeleteRequestAsync(correlationId);
+
+            // Assert
+            Assert.IsFalse(result);
+            _fileServiceMock.Verify(m => m.DeleteFile(It.IsAny<string>()), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteRequestAsync_RequestExists_ShouldDeleteFileAndReturnTrue()
+        {
+            // Arrange
+            var correlationId = Guid.NewGuid().ToString();
+            var expectedPath = Path.Combine(
+                _options.Value.Storage.FileStorageLocation,
+                Constants.RequestsFolderName,
+                $"{correlationId}.json");
+
+            _fileServiceMock
+                .Setup(m => m.FileExists(expectedPath))
+                .Returns(true);
+
+            // Act
+            var result = await _source.DeleteRequestAsync(correlationId);
+
+            // Assert
+            Assert.IsTrue(result);
+            _fileServiceMock.Verify(m => m.DeleteFile(expectedPath));
+        }
+
+        [TestMethod]
         public async Task DeleteStubAsync_StubDoesntExist_ShouldReturnFalse()
         {
             // arrange
@@ -151,6 +195,25 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources
             // assert
             Assert.IsFalse(result);
             _mockFileSystemStubCache.Verify(m => m.ClearStubCache(), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task DeleteStubAsync_RequestExist_ShouldDeleteRequestAndReturnTrue()
+        {
+            // arrange
+            var stubsFolder = Path.Combine(StorageFolder, "stubs");
+            const string stubId = "situation-01";
+            var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
+            _fileServiceMock
+                .Setup(m => m.FileExists(filePath))
+                .Returns(true);
+
+            // act
+            var result = await _source.DeleteStubAsync(stubId);
+
+            // assert
+            Assert.IsTrue(result);
+            _mockFileSystemStubCache.Verify(m => m.ClearStubCache());
         }
 
         [TestMethod]

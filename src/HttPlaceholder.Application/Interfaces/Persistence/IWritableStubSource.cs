@@ -20,6 +20,8 @@ namespace HttPlaceholder.Application.Interfaces.Persistence
 
         Task DeleteAllRequestResultsAsync();
 
+        Task<bool> DeleteRequestAsync(string correlationId);
+
         Task CleanOldRequestResultsAsync();
     }
 }

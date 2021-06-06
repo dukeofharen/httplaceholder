@@ -105,6 +105,18 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
+        public async Task DeleteRequestAsync(string correlationId)
+        {
+            using var response =
+                await HttpClient.DeleteAsync($"/ph-api/requests/{correlationId}");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+        }
+
+        /// <inheritdoc />
         public async Task<FullStubDto> CreateStubForRequestAsync(string correlationId,
             CreateStubForRequestInputDto input = null)
         {

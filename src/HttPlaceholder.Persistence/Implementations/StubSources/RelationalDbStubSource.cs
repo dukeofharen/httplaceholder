@@ -61,6 +61,15 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
+        public async Task<bool> DeleteRequestAsync(string correlationId)
+        {
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
+            {
+                var updatedRows = await ctx.ExecuteAsync(_queryStore.DeleteRequestQuery, new{CorrelationId = correlationId});
+                return updatedRows > 0;
+            }
+        }
+
         public async Task CleanOldRequestResultsAsync()
         {
             var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;

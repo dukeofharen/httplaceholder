@@ -181,6 +181,12 @@ namespace HttPlaceholder.Persistence.Implementations
             await source.DeleteAllRequestResultsAsync();
         }
 
+        public async Task<bool> DeleteRequestAsync(string correlationId)
+        {
+            var source = GetWritableStubSource();
+            return await source.DeleteRequestAsync(correlationId);
+        }
+
         public async Task<IEnumerable<string>> GetTenantNamesAsync() =>
             (await GetStubsAsync())
             .Select(s => s.Stub.Tenant)

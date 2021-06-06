@@ -100,5 +100,40 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             Assert.AreEqual(1, result.Length);
             Assert.AreEqual("stub1", result.First().ExecutingStubId);
         }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Request_DeleteAllRequests()
+        {
+            // Perform a few requests.
+            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
+            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
+
+            // Act
+            using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/requests");
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            Assert.AreEqual(0, StubSource.RequestResultModels.Count);
+        }
+
+        [TestMethod]
+        public async Task RestApiIntegration_Request_DeleteRequest()
+        {
+            // Perform a few requests.
+            var request1 =
+                new RequestResultModel {ExecutingStubId = "stub1", CorrelationId = Guid.NewGuid().ToString()};
+            var request2 =
+                new RequestResultModel {ExecutingStubId = "stub2", CorrelationId = Guid.NewGuid().ToString()};
+            StubSource.RequestResultModels.Add(request1);
+            StubSource.RequestResultModels.Add(request2);
+
+            // Act
+            using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/requests/{request2.CorrelationId}");
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            Assert.AreEqual(1, StubSource.RequestResultModels.Count);
+            Assert.IsTrue(StubSource.RequestResultModels.Any(r => r.CorrelationId == request1.CorrelationId));
+        }
     }
 }

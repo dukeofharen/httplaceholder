@@ -2,6 +2,7 @@ const resources = {
   somethingWentWrongServer: "Something went wrong while contacting the server.",
   credentialsIncorrect: "The credentials are incorrect.",
   requestsDeletedSuccessfully: "The requests were deleted successfully.",
+  requestDeletedSuccessfully: "The request was deleted successfully.",
   stubAddedSuccessfully: "Stub with ID '{0}' was added successfully.",
   stubUpdatedSuccessfully: "Stub with ID '{0}' was updated successfully.",
   stubDeletedSuccessfully: "Stub with ID '{0}' was deleted successfully.",

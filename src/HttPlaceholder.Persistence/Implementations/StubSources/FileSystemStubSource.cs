@@ -88,6 +88,19 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             return Task.CompletedTask;
         }
 
+        public Task<bool> DeleteRequestAsync(string correlationId)
+        {
+            var path = GetRequestsFolder();
+            var filePath = Path.Combine(path, $"{correlationId}.json");
+            if (!_fileService.FileExists(filePath))
+            {
+                return Task.FromResult(false);
+            }
+
+            _fileService.DeleteFile(filePath);
+            return Task.FromResult(true);
+        }
+
         public Task<bool> DeleteStubAsync(string stubId)
         {
             var path = GetStubsFolder();
