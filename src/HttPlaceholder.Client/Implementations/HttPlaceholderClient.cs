@@ -105,6 +105,9 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
+        public Task DeleteRequestAsync(string correlationId) => throw new System.NotImplementedException();
+
+        /// <inheritdoc />
         public async Task<FullStubDto> CreateStubForRequestAsync(string correlationId,
             CreateStubForRequestInputDto input = null)
         {

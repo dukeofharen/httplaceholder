@@ -52,6 +52,12 @@ namespace HttPlaceholder.Client
         Task DeleteAllRequestsAsync();
 
         /// <summary>
+        /// Deletes a specific request.
+        /// </summary>
+        /// <param name="correlationId">The request correlation ID.</param>
+        Task DeleteRequestAsync(string correlationId);
+
+        /// <summary>
         /// Create a stub based on a specific request.
         /// </summary>
         /// <param name="correlationId">The correlation ID of the request to create a stub for.</param>
