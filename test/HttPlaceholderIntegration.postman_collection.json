@@ -3635,6 +3635,98 @@
 									}
 								}
 							]
+						},
+						{
+							"name": "3. Delete request",
+							"item": [
+								{
+									"name": "Do request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.globals.set(\"correlationId\", pm.response.headers.get('x-httplaceholder-correlation'));"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}some-request",
+											"host": [
+												"{{rootUrl}}some-request"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete request: expect 204",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/requests/{{correlationId}}",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"requests",
+												"{{correlationId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete request: expect 404",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {",
+													"    pm.response.to.have.status(404);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/requests/{{correlationId}}",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"requests",
+												"{{correlationId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				}
