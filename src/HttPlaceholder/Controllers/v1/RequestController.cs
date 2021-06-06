@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
 using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
+using HttPlaceholder.Application.Requests.Commands.DeleteRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetRequest;
 using HttPlaceholder.Application.Requests.Queries.GetRequestsOverview;
@@ -59,6 +60,19 @@ namespace HttPlaceholder.Controllers.v1
         public async Task<ActionResult> DeleteAll()
         {
             await Mediator.Send(new DeleteAllRequestsCommand());
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Delete a specific request.
+        /// </summary>
+        /// <param name="correlationId">The ID of the request to delete.</param>
+        /// <returns>OK, but no content returned</returns>
+        [HttpDelete("{correlationId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> DeleteRequest(string correlationId)
+        {
+            await Mediator.Send(new DeleteRequestCommand(correlationId));
             return NoContent();
         }
 
