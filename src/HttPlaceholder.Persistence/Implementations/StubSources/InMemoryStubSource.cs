@@ -73,6 +73,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
+        public Task<bool> DeleteRequestAsync(string correlationId) => throw new System.NotImplementedException();
+
         public Task<bool> DeleteStubAsync(string stubId)
         {
             lock (_lock)

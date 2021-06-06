@@ -61,6 +61,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
+        public Task<bool> DeleteRequestAsync(string correlationId) => throw new System.NotImplementedException();
+
         public async Task CleanOldRequestResultsAsync()
         {
             var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
