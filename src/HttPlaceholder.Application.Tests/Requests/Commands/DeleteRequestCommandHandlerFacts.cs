@@ -25,11 +25,15 @@ namespace HttPlaceholder.Application.Tests.Requests.Commands
         {
             // Arrange
             var request = new DeleteRequestCommand(Guid.NewGuid().ToString());
+            _mockStubContext
+                .Setup(m => m.DeleteRequestAsync(request.CorrelationId))
+                .ReturnsAsync(true);
 
             // Act
-            await _handler.Handle(request, CancellationToken.None);
+            var result = await _handler.Handle(request, CancellationToken.None);
 
             // Assert
+            Assert.IsTrue(result);
             _mockStubContext.Verify(m => m.DeleteRequestAsync(request.CorrelationId));
 ;        }
     }

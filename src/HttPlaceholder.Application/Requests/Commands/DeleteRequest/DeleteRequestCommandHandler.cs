@@ -5,7 +5,7 @@ using MediatR;
 
 namespace HttPlaceholder.Application.Requests.Commands.DeleteRequest
 {
-    public class DeleteRequestCommandHandler : IRequestHandler<DeleteRequestCommand>
+    public class DeleteRequestCommandHandler : IRequestHandler<DeleteRequestCommand, bool>
     {
         private readonly IStubContext _stubContext;
 
@@ -14,6 +14,7 @@ namespace HttPlaceholder.Application.Requests.Commands.DeleteRequest
             _stubContext = stubContext;
         }
 
-        public Task<Unit> Handle(DeleteRequestCommand request, CancellationToken cancellationToken) => throw new System.NotImplementedException();
+        public async Task<bool> Handle(DeleteRequestCommand request, CancellationToken cancellationToken) =>
+            await _stubContext.DeleteRequestAsync(request.CorrelationId);
     }
 }

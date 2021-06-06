@@ -2,7 +2,7 @@
 
 namespace HttPlaceholder.Application.Requests.Commands.DeleteRequest
 {
-    public class DeleteRequestCommand : IRequest
+    public class DeleteRequestCommand : IRequest<bool>
     {
         public DeleteRequestCommand(string correlationId)
         {
