@@ -61,7 +61,14 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             }
         }
 
-        public Task<bool> DeleteRequestAsync(string correlationId) => throw new System.NotImplementedException();
+        public async Task<bool> DeleteRequestAsync(string correlationId)
+        {
+            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
+            {
+                var updatedRows = await ctx.ExecuteAsync(_queryStore.DeleteRequestQuery, new{CorrelationId = correlationId});
+                return updatedRows > 0;
+            }
+        }
 
         public async Task CleanOldRequestResultsAsync()
         {

@@ -11,6 +11,8 @@
 
         string DeleteAllRequestsQuery { get; }
 
+        string DeleteRequestQuery { get; }
+
         string AddRequestQuery { get; }
 
         string AddStubQuery { get; }
