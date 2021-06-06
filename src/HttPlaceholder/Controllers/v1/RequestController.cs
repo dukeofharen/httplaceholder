@@ -72,8 +72,8 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteRequest(string correlationId)
         {
-            await Mediator.Send(new DeleteRequestCommand(correlationId));
-            return NoContent();
+            var result = await Mediator.Send(new DeleteRequestCommand(correlationId));
+            return result ? NoContent() : NotFound();
         }
 
         /// <summary>
