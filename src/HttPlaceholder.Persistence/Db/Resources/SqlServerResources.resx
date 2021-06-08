@@ -164,11 +164,13 @@ BEGIN
     ) ON [PRIMARY];
 END;
 
+-- Insert initial data in the metadata table
 IF (SELECT COUNT(*) FROM [dbo].[metadata]) = 0
 BEGIN
     INSERT INTO [dbo].[metadata] (stub_update_tracking_id) VALUES ('initial_value');
 END;
 
-</value>
+-- Modify executing_stub_id column in requests table
+ALTER TABLE [dbo].[requests] ALTER COLUMN executing_stub_id [nvarchar](255) NULL;</value>
   </data>
 </root>
