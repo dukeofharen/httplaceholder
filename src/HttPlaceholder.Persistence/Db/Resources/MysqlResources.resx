@@ -156,7 +156,7 @@ SELECT 'initial_value'
 FROM dual
 WHERE NOT EXISTS (SELECT * FROM metadata);
 
-/*Modify stub_id column in requests table*/
+/*Modify executing_stub_id column in requests table*/
 ALTER TABLE requests MODIFY `executing_stub_id` VARCHAR(255) DEFAULT NULL;
 
 /*Add code for custom migrations here*/
