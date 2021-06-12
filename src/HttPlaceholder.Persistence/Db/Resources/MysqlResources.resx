@@ -150,10 +150,14 @@ CREATE TABLE IF NOT EXISTS `metadata` (
     PRIMARY KEY(`id`)
 ) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
 
+/*Insert initial data in the metadata table*/
 INSERT INTO `metadata` (stub_update_tracking_id)
 SELECT 'initial_value'
 FROM dual
 WHERE NOT EXISTS (SELECT * FROM metadata);
+
+/*Modify executing_stub_id column in requests table*/
+ALTER TABLE requests MODIFY `executing_stub_id` VARCHAR(255) DEFAULT NULL;
 
 /*Add code for custom migrations here*/
 /*SET @dbname = DATABASE();
