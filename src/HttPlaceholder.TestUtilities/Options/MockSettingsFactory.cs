@@ -11,7 +11,9 @@ namespace HttPlaceholder.TestUtilities.Options
             {
                 Authentication = new AuthenticationSettingsModel(),
                 Storage = new StorageSettingsModel(),
-                Web = new WebSettingsModel()
+                Web = new WebSettingsModel(),
+                Gui = new GuiSettingsModel(),
+                Stub = new StubSettingsModel()
             };
             return Microsoft.Extensions.Options.Options.Create(settings);
         }
