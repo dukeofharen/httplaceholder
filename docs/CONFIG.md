@@ -156,7 +156,17 @@ If this property is set to false, no detailed request logging will be written to
 httplaceholder --enableUserInterface false
 ```
 
-If this property is set to false, the user interface won't appear when you go to http://httplaceholderhost:port/ph-ui. This might be handy in situations where you only want to deploy the HttPlaceholder application as API / stub engine. 
+If this property is set to false, the user interface won't appear when you go to http://httplaceholderhost:port/ph-ui. This might be handy in situations where you only want to deploy the HttPlaceholder application as API / stub engine.
+
+### Enable healthcheck on root URL
+
+```bash
+httplaceholder --healthcheckOnRootUrl
+```
+
+Whenever this setting is enabled, the root URL of HttPlaceholder (e.g. `http://httplaceholder/`) will always return HTTP 200 and the text "OK", which means no stubs are executed.
+
+This option is built because when HttPlaceholder is for example deployed to a clode and runs behind an API gateway, the API gateway may periodically call the root URL for health checking purposes. When HttPlaceholder stores its data in a (serverless) database, it means the database never sleeps and this may cost a lot of money. Enabling this option prevents that.
 
 ### Stub validation configuration
 
@@ -191,7 +201,9 @@ If you just installed HttPlaceholder, a file called `_config.json` is available 
     "sqliteConnectionString": "Data Source=C:\\tmp\\httplaceholder.db",
     "sqlServerConnectionString": "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123",
     "useInMemoryStorage": false,
-    "enableUserInterface": true
+    "enableUserInterface": true,
+    "maximumExtraDurationMillisKey": 60000,
+    "healthcheckOnRootUrl": false
 }
 ```
 
