@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -106,6 +107,8 @@ namespace HttPlaceholder.Infrastructure.Web
             var httpContext = _httpContextAccessor.HttpContext;
             httpContext.Response.StatusCode = statusCode;
         }
+
+        public void SetStatusCode(HttpStatusCode statusCode) => SetStatusCode((int)statusCode);
 
         public void AddHeader(string key, StringValues values)
         {

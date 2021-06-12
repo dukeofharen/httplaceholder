@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
 
@@ -33,6 +34,8 @@ namespace HttPlaceholder.Application.Interfaces.Http
       (string, StringValues)[] GetFormValues();
 
       void SetStatusCode(int statusCode);
+
+      void SetStatusCode(HttpStatusCode statusCode);
 
       void AddHeader(string key, StringValues values);
 
