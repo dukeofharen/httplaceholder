@@ -116,7 +116,7 @@ namespace HttPlaceholder.Application.Configuration
         [ConfigKey(
             Description = @"whether the root URL of HttPlaceholder (so ""/"") can be configured as stub or always returns 200 OK. Defaults to false.",
             Example = "true",
-            ConfigPath = "StubSettingsModel:HealthcheckOnRootUrl",
+            ConfigPath = "Stub:HealthcheckOnRootUrl",
             IsBoolValue = true)]
         public const string HealthcheckOnRootUrl = "healthcheckOnRootUrl";
 
