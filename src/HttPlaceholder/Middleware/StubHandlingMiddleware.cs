@@ -63,6 +63,13 @@ namespace HttPlaceholder.Middleware
         public async Task Invoke(HttpContext context)
         {
             var path = _httpContextService.Path;
+            if (_settings?.Stub?.HealthcheckOnRootUrl == true && path == "/")
+            {
+                _httpContextService.SetStatusCode(HttpStatusCode.OK);
+                await _httpContextService.WriteAsync("OK");
+                return;
+            }
+
             if (_segmentsToIgnore.Any(s => path.Contains(s, StringComparison.OrdinalIgnoreCase)))
             {
                 await _next(context);
@@ -102,7 +109,7 @@ namespace HttPlaceholder.Middleware
             }
             catch (RequestValidationException e)
             {
-                _httpContextService.SetStatusCode((int)HttpStatusCode.NotImplemented);
+                _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
                 _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
                 var pageContents =
                     StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.RootUrl);
@@ -112,7 +119,7 @@ namespace HttPlaceholder.Middleware
             }
             catch (Exception e)
             {
-                _httpContextService.SetStatusCode((int)HttpStatusCode.InternalServerError);
+                _httpContextService.SetStatusCode(HttpStatusCode.InternalServerError);
                 _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
                 _logger.LogWarning($"Unexpected exception thrown: {e}");
             }

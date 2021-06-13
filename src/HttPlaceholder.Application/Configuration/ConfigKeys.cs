@@ -114,6 +114,13 @@ namespace HttPlaceholder.Application.Configuration
         public const string MaximumExtraDurationMillisKey = "maximumExtraDurationMillisKey";
 
         [ConfigKey(
+            Description = @"whether the root URL of HttPlaceholder (so ""/"") can be configured as stub or always returns 200 OK. Defaults to false.",
+            Example = "true",
+            ConfigPath = "Stub:HealthcheckOnRootUrl",
+            IsBoolValue = true)]
+        public const string HealthcheckOnRootUrl = "healthcheckOnRootUrl";
+
+        [ConfigKey(
             Description = "the location of the config.json file. This JSON file contains all possible configuration settings and a default value per setting. You can copy this file to any location on your PC. Don't put the config file in the installation folder, because these files will be overwritten when an update is installed.",
             Example = @"F:\httplaceholder\config.json")]
         public const string ConfigJsonLocationKey = "configJsonLocation";

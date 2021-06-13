@@ -3,5 +3,7 @@
     public class StubSettingsModel
     {
         public int MaximumExtraDurationMillis { get; set; }
+
+        public bool HealthcheckOnRootUrl { get; set; }
     }
 }
