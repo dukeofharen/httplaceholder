@@ -166,7 +166,7 @@ httplaceholder --healthcheckOnRootUrl
 
 Whenever this setting is enabled, the root URL of HttPlaceholder (e.g. `http://httplaceholder/`) will always return HTTP 200 and the text "OK", which means no stubs are executed.
 
-This option is built because when HttPlaceholder is for example deployed to a clode and runs behind an API gateway, the API gateway may periodically call the root URL for health checking purposes. When HttPlaceholder stores its data in a (serverless) database, it means the database never sleeps and this may cost a lot of money. Enabling this option prevents that.
+This option is built because when HttPlaceholder is for example deployed to a cloud and runs behind an API gateway, the API gateway may periodically call the root URL for health checking purposes. When HttPlaceholder stores its data in a (serverless) database, it means the database never sleeps and this may cost a lot of money. Enabling this option prevents that.
 
 ### Stub validation configuration
 
