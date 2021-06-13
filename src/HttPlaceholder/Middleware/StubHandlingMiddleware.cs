@@ -63,7 +63,7 @@ namespace HttPlaceholder.Middleware
         public async Task Invoke(HttpContext context)
         {
             var path = _httpContextService.Path;
-            if (_settings?.Stub.HealthcheckOnRootUrl == true && path == "/")
+            if (_settings?.Stub?.HealthcheckOnRootUrl == true && path == "/")
             {
                 _httpContextService.SetStatusCode(HttpStatusCode.OK);
                 await _httpContextService.WriteAsync("OK");
