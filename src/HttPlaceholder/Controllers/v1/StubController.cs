@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Requests.Queries.GetByStubId;
 using HttPlaceholder.Application.Stubs.Commands.AddStub;
+using HttPlaceholder.Application.Stubs.Commands.AddStubs;
 using HttPlaceholder.Application.Stubs.Commands.DeleteAllStubs;
 using HttPlaceholder.Application.Stubs.Commands.DeleteStub;
 using HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
@@ -27,7 +28,7 @@ namespace HttPlaceholder.Controllers.v1
         /// <summary>
         /// Adds a new stub.
         /// </summary>
-        /// <param name="stub"></param>
+        /// <param name="stub">The posted stub</param>
         /// <returns>OK, with the created stub</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -35,6 +36,17 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<FullStubDto>> Add([FromBody] StubDto stub) =>
             Ok(await Mediator.Send(new AddStubCommand(Mapper.Map<StubModel>(stub))));
+
+        /// <summary>
+        /// Adds multiple new stubs.
+        /// </summary>
+        /// <param name="stubs">The posted stubs.</param>
+        /// <returns>OK, with the created stubs</returns>
+        [HttpPost("multiple")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IEnumerable<FullStubDto>>> AddMultiple([FromBody] IEnumerable<StubDto> stubs) =>
+            Ok(await Mediator.Send(new AddStubsCommand(Mapper.Map<IEnumerable<StubModel>>(stubs))));
 
         /// <summary>
         /// Updates a given stub.

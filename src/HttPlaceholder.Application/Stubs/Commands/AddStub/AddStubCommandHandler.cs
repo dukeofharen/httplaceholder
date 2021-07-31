@@ -21,7 +21,7 @@ namespace HttPlaceholder.Application.Stubs.Commands.AddStub
 
         public async Task<FullStubModel> Handle(AddStubCommand request, CancellationToken cancellationToken)
         {
-            var validationResults = _stubModelValidator.ValidateStubModel(request.Stub);
+            var validationResults = (_stubModelValidator.ValidateStubModel(request.Stub)).ToArray();
             if (validationResults.Any())
             {
                 throw new ValidationException(validationResults);
