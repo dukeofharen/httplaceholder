@@ -21,7 +21,8 @@ namespace HttPlaceholder.Application.Stubs.Commands.AddStubs
             _stubModelValidator = stubModelValidator;
         }
 
-        public async Task<IEnumerable<FullStubModel>> Handle(AddStubsCommand request,
+        public async Task<IEnumerable<FullStubModel>> Handle(
+            AddStubsCommand request,
             CancellationToken cancellationToken)
         {
             if (request.Stubs == null || !request.Stubs.Any())
@@ -32,9 +33,13 @@ namespace HttPlaceholder.Application.Stubs.Commands.AddStubs
             // Validate posted stubs.
             var stubsToAdd = request.Stubs.ToArray();
             var validationResults = stubsToAdd
-                .Select(s => (s, _stubModelValidator.ValidateStubModel(s)))
                 .SelectMany(s =>
-                    !string.IsNullOrWhiteSpace(s.Item1.Id) ? s.Item2.Select(v => $"{s.Item1.Id}: {v}") : s.Item2)
+                {
+                    var validation = _stubModelValidator.ValidateStubModel(s);
+                    return !string.IsNullOrWhiteSpace(s.Id)
+                        ? validation.Select(v => $"{s.Id}: {v}")
+                        : validation;
+                })
                 .ToArray();
             if (validationResults.Any())
             {
