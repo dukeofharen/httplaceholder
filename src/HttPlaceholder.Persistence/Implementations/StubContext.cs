@@ -20,8 +20,9 @@ namespace HttPlaceholder.Persistence.Implementations
             _stubSources = stubSources;
         }
 
-        public async Task<IEnumerable<FullStubModel>> GetStubsAsync() =>
-            await GetStubsAsync(false);
+        public async Task<IEnumerable<FullStubModel>> GetStubsAsync() => await GetStubsAsync(false);
+
+        public async Task<IEnumerable<FullStubModel>> GetStubsFromReadOnlySourcesAsync() => await GetStubsAsync(true);
 
         public async Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant)
         {

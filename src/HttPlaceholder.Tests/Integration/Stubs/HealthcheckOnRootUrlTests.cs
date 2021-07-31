@@ -36,7 +36,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         }
 
         [TestMethod]
-        public async Task StubIntegration_HealthcheckOnRootUrl_NotRootUrlCalled_ShouldNotExecuteStubs()
+        public async Task StubIntegration_HealthcheckOnRootUrl_NotRootUrlCalled_ShouldExecuteStubs()
         {
             // Arrange
             var url = $"{BaseAddress}some-url";

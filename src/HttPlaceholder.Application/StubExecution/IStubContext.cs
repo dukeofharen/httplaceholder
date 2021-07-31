@@ -8,6 +8,8 @@ namespace HttPlaceholder.Application.StubExecution
     {
         Task<IEnumerable<FullStubModel>> GetStubsAsync();
 
+        Task<IEnumerable<FullStubModel>> GetStubsFromReadOnlySourcesAsync();
+
         Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant);
 
         Task<IEnumerable<FullStubOverviewModel>> GetStubsOverviewAsync();
