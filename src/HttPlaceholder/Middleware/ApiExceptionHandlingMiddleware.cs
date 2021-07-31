@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,11 @@ namespace HttPlaceholder.Middleware
                 catch (ForbiddenException)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                }
+                catch (ArgumentException ex)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    await context.Response.WriteAsJsonAsync(new string[] {ex.Message});
                 }
                 catch (ValidationException ex)
                 {
