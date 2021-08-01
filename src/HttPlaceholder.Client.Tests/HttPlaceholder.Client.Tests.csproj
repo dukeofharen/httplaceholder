@@ -22,4 +22,8 @@
       <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="HttPlaceholderClientFacts\DeleteAllStubsByTenantFacts.cs" />
+    </ItemGroup>
+
 </Project>
