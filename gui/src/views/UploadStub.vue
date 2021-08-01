@@ -51,25 +51,17 @@ export default {
       for (let file of validFiles) {
         let reader = new FileReader();
         reader.onload = e => {
-          this.addStubsInternal(e.target.result);
+          this.addStubsInternal(e.target.result, file.name);
         };
         reader.readAsText(file);
       }
     },
-    async addStubsInternal(input) {
+    async addStubsInternal(input, filename) {
       try {
-        const results = await this.$store.dispatch("stubs/addStubs", {
+        await this.$store.dispatch("stubs/addStubs", {
           input
         });
-        for (let result of results) {
-          if (result.v) {
-            toastSuccess(
-              resources.stubAddedSuccessfully.format(result.v.stub.id)
-            );
-          } else if (result.e) {
-            toastError(resources.stubNotAdded.format(result.e.stubId));
-          }
-        }
+        toastSuccess(resources.stubsInFileAddedSuccessfully.format(filename));
       } catch (e) {
         toastError(e);
       }

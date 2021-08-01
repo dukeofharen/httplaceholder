@@ -48,7 +48,6 @@ const actions = {
   },
   /* eslint no-empty-pattern: 0 */
   addStubs({}, payload) {
-    /* eslint no-async-promise-executor: 0 */
     return new Promise(async (resolve, reject) => {
       let stubsArray;
       let parsedObject;
@@ -69,29 +68,11 @@ const actions = {
         stubsArray = parsedObject;
       }
 
-      // Source: https://stackoverflow.com/questions/31424561/wait-until-all-promises-complete-even-if-some-rejected (Benjamin Gruenbaum)
-      const reflect = p =>
-        p.then(
-          v => ({ v, status: "fulfilled" }),
-          e => ({ e, status: "rejected" })
-        );
-
-      const promises = [];
-      for (let index in stubsArray) {
-        let stub = stubsArray[index];
-        promises.push(
-          new Promise((resolve, reject) =>
-            createInstance()
-              .post("ph-api/stubs", stub)
-              .then(r => r.data)
-              .then(result => resolve(result))
-              .catch(error => reject({ error, stubId: stub.id }))
-          )
-        );
-      }
-
-      const results = await Promise.all(promises.map(reflect));
-      resolve(results);
+      createInstance()
+        .post("ph-api/stubs/multiple", stubsArray)
+        .then(r => r.data)
+        .then(result => resolve(result))
+        .catch(error => reject(error));
     });
   },
   /* eslint no-empty-pattern: 0 */
