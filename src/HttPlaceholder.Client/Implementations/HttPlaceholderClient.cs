@@ -152,6 +152,18 @@ namespace HttPlaceholder.Client.Implementations
         public Task<FullStubDto> CreateStubAsync(StubBuilder stubBuilder) => CreateStubAsync(stubBuilder.Build());
 
         /// <inheritdoc />
+        public Task<IEnumerable<FullStubDto>> CreateStubsAsync(IEnumerable<StubDto> stubs) => throw new System.NotImplementedException();
+
+        /// <inheritdoc />
+        public Task<IEnumerable<FullStubDto>> CreateStubsAsync(IEnumerable<StubBuilder> stubs) => throw new System.NotImplementedException();
+
+        /// <inheritdoc />
+        public Task<IEnumerable<FullStubDto>> CreateStubsAsync(params StubDto[] stubs) => throw new System.NotImplementedException();
+
+        /// <inheritdoc />
+        public Task<IEnumerable<FullStubDto>> CreateStubsAsync(params StubBuilder[] stubs) => throw new System.NotImplementedException();
+
+        /// <inheritdoc />
         public async Task UpdateStubAsync(StubDto stub, string stubId)
         {
             using var response =
