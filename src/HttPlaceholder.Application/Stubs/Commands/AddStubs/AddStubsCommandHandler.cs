@@ -72,6 +72,8 @@ namespace HttPlaceholder.Application.Stubs.Commands.AddStubs
             var result = new List<FullStubModel>();
             foreach (var stub in stubsToAdd)
             {
+                // First, delete existing stub with same ID.
+                await _stubContext.DeleteStubAsync(stub.Id);
                 result.Add(await _stubContext.AddStubAsync(stub));
             }
 

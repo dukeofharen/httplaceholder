@@ -143,6 +143,8 @@ namespace HttPlaceholder.Application.Tests.Stubs.Commands
             Assert.AreEqual(2, result.Length);
             Assert.AreEqual(stubResult1, result[0]);
             Assert.AreEqual(stubResult2, result[1]);
+            stubContextMock.Verify(m => m.DeleteStubAsync(stub1.Id));
+            stubContextMock.Verify(m => m.DeleteStubAsync(stub2.Id));
         }
     }
 }
