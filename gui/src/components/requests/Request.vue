@@ -208,10 +208,13 @@ export default {
     },
     async deleteRequest() {
       try {
-        await this.$store.dispatch("requests/deleteRequest", this.request.correlationId);
+        await this.$store.dispatch(
+          "requests/deleteRequest",
+          this.request.correlationId
+        );
         toastSuccess(resources.requestDeletedSuccessfully);
         this.$emit("updated", this.fullStub);
-      } catch(e) {
+      } catch (e) {
         if (e.response) {
           if (e.response.status === 404) {
             toastError(resources.requestNotFoundAnymore);

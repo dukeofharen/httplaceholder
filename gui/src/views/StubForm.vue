@@ -85,7 +85,6 @@ import { codemirror } from "vue-codemirror";
 import yaml from "js-yaml";
 import { toastError, toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
-import { routeNames } from "@/router/routerConstants";
 import {
   getIntermediateStub,
   clearIntermediateStub
@@ -178,7 +177,7 @@ export default {
   methods: {
     async save() {
       try {
-        const results = await this.$store.dispatch("stubs/addStubs", {
+        await this.$store.dispatch("stubs/addStubs", {
           input: this.input
         });
         if (this.newStub) {

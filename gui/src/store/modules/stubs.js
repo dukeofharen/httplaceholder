@@ -48,7 +48,7 @@ const actions = {
   },
   /* eslint no-empty-pattern: 0 */
   addStubs({}, payload) {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       let stubsArray;
       let parsedObject;
       if (payload.inputIsJson) {
