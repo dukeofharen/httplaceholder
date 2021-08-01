@@ -61,6 +61,11 @@ namespace HttPlaceholder.Client.Examples
                     .WithResponse(StubResponseBuilder.Begin()
                         .WithJsonBody(new {key1 = "val1", key2 = "val2"})));
 
+                // Create multiple stubs.
+                var createdStubs= await client.CreateStubsAsync(
+                    new StubDto {Id = "test-stub-1", Response = new StubResponseDto {Text = "Let's go yeah!"}},
+                    new StubDto {Id = "test-stub-2", Response = new StubResponseDto {Text = "Let's go yeah!"}});
+
                 // Update stub.
                 await client.UpdateStubAsync(
                     new StubDto {Id = "test-stub-123", Response = new StubResponseDto {Text = "Let's go yeah!!"}},
