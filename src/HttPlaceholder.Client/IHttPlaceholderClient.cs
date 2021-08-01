@@ -80,6 +80,34 @@ namespace HttPlaceholder.Client
         Task<FullStubDto> CreateStubAsync(StubBuilder stubBuilder);
 
         /// <summary>
+        /// Creates at least one new stub.
+        /// </summary>
+        /// <param name="stubs">The stubs to add.</param>
+        /// <returns>The created stubs.</returns>
+        Task<IEnumerable<FullStubDto>> CreateStubsAsync(IEnumerable<StubDto> stubs);
+
+        /// <summary>
+        /// Creates at least one new stub.
+        /// </summary>
+        /// <param name="stubs">The stubs to add.</param>
+        /// <returns>The created stubs.</returns>
+        Task<IEnumerable<FullStubDto>> CreateStubsAsync(IEnumerable<StubBuilder> stubs);
+
+        /// <summary>
+        /// Creates at least one new stub.
+        /// </summary>
+        /// <param name="stubs">The stubs to add.</param>
+        /// <returns>The created stubs.</returns>
+        Task<IEnumerable<FullStubDto>> CreateStubsAsync(params StubDto[] stubs);
+
+        /// <summary>
+        /// Creates at least one new stub.
+        /// </summary>
+        /// <param name="stubs">The stubs to add.</param>
+        /// <returns>The created stubs.</returns>
+        Task<IEnumerable<FullStubDto>> CreateStubsAsync(params StubBuilder[] stubs);
+
+        /// <summary>
         /// Update an existing stub.
         /// </summary>
         /// <param name="stub">The new stub contents.</param>

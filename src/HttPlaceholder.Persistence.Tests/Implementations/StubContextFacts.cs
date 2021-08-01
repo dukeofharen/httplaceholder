@@ -136,32 +136,6 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
         }
 
         [TestMethod]
-        public async Task AddStubAsync_NoIdSet_ShouldAssignHashedStubAsId()
-        {
-            // arrange
-            var stubToBeAdded = new StubModel {Conditions = new StubConditionsModel {Body = new[] {"test"}}};
-            var stubSource = new Mock<IWritableStubSource>();
-            stubSource
-                .Setup(m => m.AddStubAsync(stubToBeAdded))
-                .Returns(Task.CompletedTask);
-
-            var stub = new StubModel {Id = "existing-stub"};
-            var readOnlyStubSource = new Mock<IStubSource>();
-            readOnlyStubSource
-                .Setup(m => m.GetStubsAsync())
-                .ReturnsAsync(new[] {stub});
-
-            _stubSources.Add(stubSource.Object);
-            _stubSources.Add(readOnlyStubSource.Object);
-
-            // act
-            await _context.AddStubAsync(stubToBeAdded);
-
-            // assert
-            Assert.AreEqual("stub-439808dba5b50c70d7b5744258175e0f", stubToBeAdded.Id);
-        }
-
-        [TestMethod]
         public async Task AddStubAsync_HappyFlow()
         {
             // arrange

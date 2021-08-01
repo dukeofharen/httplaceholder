@@ -152,6 +152,32 @@ namespace HttPlaceholder.Client.Implementations
         public Task<FullStubDto> CreateStubAsync(StubBuilder stubBuilder) => CreateStubAsync(stubBuilder.Build());
 
         /// <inheritdoc />
+        public async Task<IEnumerable<FullStubDto>> CreateStubsAsync(IEnumerable<StubDto> stubs)
+        {
+            using var response =
+                await HttpClient.PostAsync("/ph-api/stubs/multiple",
+                    new StringContent(JsonConvert.SerializeObject(stubs), Encoding.UTF8, JsonContentType));
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
+        }
+
+        /// <inheritdoc />
+        public Task<IEnumerable<FullStubDto>> CreateStubsAsync(IEnumerable<StubBuilder> stubs) =>
+            CreateStubsAsync(stubs.Select(s => s.Build()));
+
+        /// <inheritdoc />
+        public Task<IEnumerable<FullStubDto>> CreateStubsAsync(params StubDto[] stubs) => CreateStubsAsync(stubs.AsEnumerable());
+
+        /// <inheritdoc />
+        public Task<IEnumerable<FullStubDto>> CreateStubsAsync(params StubBuilder[] stubs) =>
+            CreateStubsAsync(stubs.AsEnumerable());
+
+        /// <inheritdoc />
         public async Task UpdateStubAsync(StubDto stub, string stubId)
         {
             using var response =

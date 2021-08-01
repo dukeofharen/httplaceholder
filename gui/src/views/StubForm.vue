@@ -85,7 +85,6 @@ import { codemirror } from "vue-codemirror";
 import yaml from "js-yaml";
 import { toastError, toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
-import { routeNames } from "@/router/routerConstants";
 import {
   getIntermediateStub,
   clearIntermediateStub
@@ -178,36 +177,13 @@ export default {
   methods: {
     async save() {
       try {
-        const results = await this.$store.dispatch("stubs/addStubs", {
+        await this.$store.dispatch("stubs/addStubs", {
           input: this.input
         });
-        for (let result of results) {
-          if (result.v) {
-            if (this.newStub) {
-              toastSuccess(
-                resources.stubAddedSuccessfully.format(result.v.stub.id)
-              );
-            } else {
-              toastSuccess(
-                resources.stubUpdatedSuccessfully.format(this.stubId)
-              );
-            }
-          } else if (result.e) {
-            if (result.e.error) {
-              if (result.e.error.response.status === 409) {
-                toastError(resources.stubAlreadyAdded.format(result.e.stubId));
-              } else if (result.e.error.response.status !== 400) {
-                toastError(resources.stubNotAdded.format(result.e.stubId));
-              }
-            }
-          }
-        }
-
-        if (results.length === 1 && results[0].v && !this.stubId) {
-          await this.$router.push({
-            name: routeNames.stubForm,
-            params: { stubId: results[0].v.stub.id }
-          });
+        if (this.newStub) {
+          toastSuccess(resources.stubsAddedSuccessfully);
+        } else {
+          toastSuccess(resources.stubUpdatedSuccessfully.format(this.stubId));
         }
       } catch (e) {
         toastError(e);

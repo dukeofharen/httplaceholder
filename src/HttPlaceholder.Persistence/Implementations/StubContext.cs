@@ -20,8 +20,9 @@ namespace HttPlaceholder.Persistence.Implementations
             _stubSources = stubSources;
         }
 
-        public async Task<IEnumerable<FullStubModel>> GetStubsAsync() =>
-            await GetStubsAsync(false);
+        public async Task<IEnumerable<FullStubModel>> GetStubsAsync() => await GetStubsAsync(false);
+
+        public async Task<IEnumerable<FullStubModel>> GetStubsFromReadOnlySourcesAsync() => await GetStubsAsync(true);
 
         public async Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant)
         {
@@ -49,13 +50,6 @@ namespace HttPlaceholder.Persistence.Implementations
 
         public async Task<FullStubModel> AddStubAsync(StubModel stub)
         {
-            if (string.IsNullOrWhiteSpace(stub.Id))
-            {
-                // If no ID is sent, create one here.
-                var id = HashingUtilities.GetMd5String(JsonConvert.SerializeObject(stub));
-                stub.Id = $"stub-{id}";
-            }
-
             // Check that a stub with the new ID isn't already added to a readonly stub source.
             var stubs = await GetStubsAsync(true);
             if (stubs.Any(s => string.Equals(stub.Id, s.Stub.Id, StringComparison.OrdinalIgnoreCase)))

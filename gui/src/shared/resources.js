@@ -4,6 +4,8 @@ const resources = {
   requestsDeletedSuccessfully: "The requests were deleted successfully.",
   requestDeletedSuccessfully: "The request was deleted successfully.",
   stubAddedSuccessfully: "Stub with ID '{0}' was added successfully.",
+  stubsAddedSuccessfully: "Stubs were added successfully.",
+  stubsInFileAddedSuccessfully: "Stubs in file '{0}' were added successfully.",
   stubUpdatedSuccessfully: "Stub with ID '{0}' was updated successfully.",
   stubDeletedSuccessfully: "Stub with ID '{0}' was deleted successfully.",
   stubsDeletedSuccessfully: "All stubs deleted successfully.",

@@ -108,6 +108,63 @@ response:
         }
 
         [TestMethod]
+        public async Task RestApiIntegration_Stub_AddMultiple_Json()
+        {
+            // arrange
+            var url = $"{TestServer.BaseAddress}ph-api/stubs/multiple";
+            const string body = @"[
+    {
+        ""id"": ""test-situation1"",
+        ""conditions"": {
+            ""method"": ""GET"",
+            ""url"": {
+                ""path"": ""/testtesttest1"",
+                ""query"": {
+                    ""id"": ""13""
+                }
+            }
+        },
+        ""response"": {
+            ""statusCode"": 200,
+            ""text"": ""OK my dude! 1""
+        }
+    },
+    {
+        ""id"": ""test-situation2"",
+        ""conditions"": {
+            ""method"": ""GET"",
+            ""url"": {
+                ""path"": ""/testtesttest2"",
+                ""query"": {
+                    ""id"": ""13""
+                }
+            }
+        },
+        ""response"": {
+            ""statusCode"": 200,
+            ""text"": ""OK my dude! 2""
+        }
+    }
+]";
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri(url),
+                Content = new StringContent(body, Encoding.UTF8, "application/json")
+            };
+
+            // act / assert
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.IsTrue(content.Contains("test-situation1"));
+            Assert.IsTrue(content.Contains("test-situation2"));
+            Assert.IsTrue(response.IsSuccessStatusCode);
+            Assert.AreEqual(2, StubSource.StubModels.Count);
+            Assert.AreEqual("test-situation1", StubSource.StubModels.ElementAt(0).Id);
+            Assert.AreEqual("test-situation2", StubSource.StubModels.ElementAt(1).Id);
+        }
+
+        [TestMethod]
         public async Task RestApiIntegration_Stub_Add_ValidationError_ShouldReturn400()
         {
             // arrange
