@@ -25,6 +25,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         [DataRow("ph-api/stubs/stub-123/requests", "GET", true, false)]
         [DataRow("ph-api/requests/babceb20-d386-4741-8006-67cbccf33810/stubs", "POST", true, false)]
         [DataRow("ph-api/stubs", "POST", true, false)]
+        [DataRow("ph-api/stubs/multiple", "POST", true, true)]
         [DataRow("ph-api/stubs", "GET", true, false)]
         [DataRow("ph-api/stubs/overview", "GET", true, false)]
         [DataRow("ph-api/stubs", "DELETE", true, false)]
