@@ -445,6 +445,8 @@ The JSON condition checker can be used to check if the posted JSON is posted acc
 
 Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions.
 
+**Using a string array**
+
 ```yml
 - id: jpath-test
   conditions:
@@ -457,12 +459,48 @@ Using the JSONPath condition checker, you can check the posted JSON body to see 
     statusCode: 204
 ```
 
+**Specifying the expected value separately**
+
+This condition can be used with regular expressions if needed.
+
+```yml
+- id: jpath-test
+  conditions:
+    method: PUT
+    url:
+      path: /users
+    jsonPath:
+      - query: $.phoneNumbers[0].type
+        expectedValue: iPhone
+  response:
+    statusCode: 204
+```
+
+**Specifying the expected value separately and a single JSONPath string**
+
+Both JSONPath condition types can be combined.
+
+```yml
+- id: jpath-test
+  conditions:
+    method: PUT
+    url:
+      path: /users
+    jsonPath:
+      - $.name
+      - query: $.phoneNumbers[0].type
+        expectedValue: iPhone
+  response:
+    statusCode: 204
+```
+
 **Correct request**
 - Method: PUT
 - URL: http://localhost:5000/users
 - Body:
 ```json
 {
+    "name": "John",
 	"phoneNumbers": [{
 		"type": "iPhone",
 		"number": "0123-4567-8888"
