@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -29,15 +31,43 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             var jsonObject = JObject.Parse(body);
             foreach (var condition in jsonPathConditions)
             {
-                var elements = jsonObject.SelectToken(condition);
-                if (elements == null)
+                if (condition is string conditionString)
                 {
-                    // No suitable JSON results found.
-                    result.Log = $"No suitable JSON results found with JSONPath query '{condition}'.";
-                    break;
-                }
+                    var elements = jsonObject.SelectToken(conditionString);
+                    if (elements == null)
+                    {
+                        // No suitable JSON results found.
+                        result.Log = $"No suitable JSON results found with JSONPath query '{condition}'.";
+                        break;
+                    }
 
-                validJsonPaths++;
+                    validJsonPaths++;
+                }
+                else
+                {
+                    StubJsonPathModel jsonPathCondition;
+                    if (condition is JObject conditionObject)
+                    {
+                        jsonPathCondition = conditionObject.ToObject<StubJsonPathModel>();
+                    }
+                    else if (condition is Dictionary<string, string> conditionDict)
+                    {
+                        jsonPathCondition = new StubJsonPathModel
+                        {
+                            Query = conditionDict.ContainsKey("query")
+                                ? conditionDict["query"]
+                                : throw new InvalidOperationException($"Value 'query' not set for JSONPath condition for stub with ID '{stubId}'."),
+                            ExpectedValue = conditionDict.ContainsKey("expectedValue")
+                                ? conditionDict["expectedValue"]
+                                : string.Empty
+                        };
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException(
+                            $"Can't determine the type of the JSONPath condition for stub with ID '{stubId}'.");
+                    }
+                }
             }
 
             // If the number of succeeded conditions is equal to the actual number of conditions,
