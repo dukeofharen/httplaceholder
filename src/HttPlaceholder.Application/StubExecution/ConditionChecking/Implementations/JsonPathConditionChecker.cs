@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Newtonsoft.Json.Linq;
@@ -37,7 +38,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                     if (elements == null)
                     {
                         // No suitable JSON results found.
-                        result.Log = $"No suitable JSON results found with JSONPath query '{condition}'.";
+                        result.Log = $"No suitable JSON results found with JSONPath query '{conditionString}'.";
                         break;
                     }
 
@@ -50,15 +51,16 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                     {
                         jsonPathCondition = conditionObject.ToObject<StubJsonPathModel>();
                     }
-                    else if (condition is Dictionary<string, string> conditionDict)
+                    else if (condition is Dictionary<object, object> conditionDict)
                     {
                         jsonPathCondition = new StubJsonPathModel
                         {
                             Query = conditionDict.ContainsKey("query")
-                                ? conditionDict["query"]
-                                : throw new InvalidOperationException($"Value 'query' not set for JSONPath condition for stub with ID '{stubId}'."),
+                                ? conditionDict["query"].ToString()
+                                : throw new InvalidOperationException(
+                                    $"Value 'query' not set for JSONPath condition for stub with ID '{stubId}'."),
                             ExpectedValue = conditionDict.ContainsKey("expectedValue")
-                                ? conditionDict["expectedValue"]
+                                ? conditionDict["expectedValue"].ToString()
                                 : string.Empty
                         };
                     }
@@ -67,6 +69,47 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                         throw new InvalidOperationException(
                             $"Can't determine the type of the JSONPath condition for stub with ID '{stubId}'.");
                     }
+
+                    var passed = false;
+                    if (jsonPathCondition != null)
+                    {
+                        var elements = jsonObject.SelectToken(jsonPathCondition.Query);
+                        if (elements != null)
+                        {
+                            string foundValue;
+                            if (elements is JValue jValue)
+                            {
+                                foundValue = jValue.ToString();
+                            }
+                            else if (elements is JArray jArray && jArray.Any())
+                            {
+                                foundValue = elements.FirstOrDefault().ToString();
+                            }
+                            else
+                            {
+                                throw new InvalidOperationException($"JSON type '{elements.GetType()}' not supported.");
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(jsonPathCondition.ExpectedValue))
+                            {
+                                passed = StringHelper.IsRegexMatchOrSubstring(
+                                    foundValue,
+                                    jsonPathCondition.ExpectedValue);
+                            }
+                            else
+                            {
+                                passed = true;
+                            }
+                        }
+                    }
+
+                    if (!passed)
+                    {
+                        result.Log =
+                            $"No suitable JSON results found with JSONPath query '{jsonPathCondition.ExpectedValue}'.";
+                    }
+
+                    validJsonPaths += passed ? 1 : 0;
                 }
             }
 
