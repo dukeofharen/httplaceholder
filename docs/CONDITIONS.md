@@ -461,11 +461,11 @@ Using the JSONPath condition checker, you can check the posted JSON body to see 
 
 **Specifying the expected value separately**
 
-This condition can be used with regular expressions if needed.
+The `expectedValue` variable of this condition can be used with regular expressions if needed.
 
 ```yml
 - id: jpath-test
-  conditions:
+  conditions:This
     method: PUT
     url:
       path: /users
