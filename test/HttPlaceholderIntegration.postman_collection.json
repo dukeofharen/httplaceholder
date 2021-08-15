@@ -788,7 +788,246 @@
 							]
 						},
 						{
-							"name": "4. JSON",
+							"name": "4. JSONPath",
+							"item": [
+								{
+									"name": "[Create stub] Post with text JSONPath checker",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: post-with-text-jsonpath-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-text-jsonpath-checker\n  headers:\n    Content-Type: application/json\n  jsonPath:\n    - \"$.phoneNumbers[?(@.type=='iPhone')]\"\nresponse:\n  text: OK WITH JSONPATH TEXT CHECKER"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Post with text and object JSONPath checker",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: post-with-text-and-object-jsonpath-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-text-and-object-jsonpath-checker\n  headers:\n    Content-Type: application/json\n  jsonPath:\n    - '$.people[0].age'\n    - query: '$.people[0].firstName'\n      expectedValue: 'John'\nresponse:\n  text: OK WITH JSONPATH TEXT AND OBJECT CHECKER"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test POST with text JSONPath checker",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK WITH JSONPATH TEXT CHECKER\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"phoneNumbers\": [\n        {\n            \"type\": \"iPhone\",\n            \"number\": \"0123-4567-8888\"\n        },\n        {\n            \"type\": \"home\",\n            \"number\": \"0123-4567-8910\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-text-jsonpath-checker",
+											"host": [
+												"{{rootUrl}}post-with-text-jsonpath-checker"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test POST with text JSONPath checker: JSON invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"phoneNumbers\": [\n        {\n            \"type\": \"Android\",\n            \"number\": \"0123-4567-8888\"\n        },\n        {\n            \"type\": \"home\",\n            \"number\": \"0123-4567-8910\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-text-jsonpath-checker",
+											"host": [
+												"{{rootUrl}}post-with-text-jsonpath-checker"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test POST with text and object JSONPath checker",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK WITH JSONPATH TEXT AND OBJECT CHECKER\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"people\": [\n    {\n      \"firstName\": \"John\",\n      \"age\": 29,\n      \"achievements\": [\n        {\n          \"name\": \"Just an average guy\"\n        }\n      ]\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-text-and-object-jsonpath-checker",
+											"host": [
+												"{{rootUrl}}post-with-text-and-object-jsonpath-checker"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test POST with text and object JSONPath checker: text checker invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"people\": [\n    {\n      \"firstName\": \"John\",\n      \"achievements\": [\n        {\n          \"name\": \"Just an average guy\"\n        }\n      ]\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-text-and-object-jsonpath-checker",
+											"host": [
+												"{{rootUrl}}post-with-text-and-object-jsonpath-checker"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test POST with text and object JSONPath checker: object checker invalid",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"people\": [\n    {\n      \"firstName\": \"Marc\",\n      \"age\": 29,\n      \"achievements\": [\n        {\n          \"name\": \"Just an average guy\"\n        }\n      ]\n    }\n  ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-text-and-object-jsonpath-checker",
+											"host": [
+												"{{rootUrl}}post-with-text-and-object-jsonpath-checker"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "5. JSON",
 							"item": [
 								{
 									"name": "[Create stub] Post with JSON object checker",
@@ -831,33 +1070,6 @@
 										"body": {
 											"mode": "raw",
 											"raw": "id: post-with-json-array-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-json-array-checker\n  json:\n    - stringInput\n    - true\n    - 1.23\n    - 2021-04-18T13:14:10\n    - 4\n    - subObjKey1: subVal1\n      subObjKey2: subVal2\n    - - val1\n      - val2\n      - subKey1: subVal1\n        subKey2: subVal2\nresponse:\n  text: OK POST WITH JSON ARRAY CHECKER"
-										},
-										"url": {
-											"raw": "{{rootUrl}}ph-api/stubs",
-											"host": [
-												"{{rootUrl}}ph-api"
-											],
-											"path": [
-												"stubs"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "[Create stub] Post with JSONPath checker",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "text/yaml"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "id: post-with-jsonpath-checker\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /post-with-jsonpath-checker\n  headers:\n    Content-Type: application/json\n  jsonPath:\n    - \"$.phoneNumbers[?(@.type=='iPhone')]\"\nresponse:\n  text: OK WITH JSONPATH CHECKER"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -1014,83 +1226,11 @@
 										}
 									},
 									"response": []
-								},
-								{
-									"name": "Test POST with JSONPath checker",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Body is correct\", function () {",
-													"    pm.response.to.have.body(\"OK WITH JSONPATH CHECKER\");",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"phoneNumbers\": [\n        {\n            \"type\": \"iPhone\",\n            \"number\": \"0123-4567-8888\"\n        },\n        {\n            \"type\": \"home\",\n            \"number\": \"0123-4567-8910\"\n        }\n    ]\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{rootUrl}}post-with-jsonpath-checker",
-											"host": [
-												"{{rootUrl}}post-with-jsonpath-checker"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Test POST with JSONPath checker: JSON invalid",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Body is correct\", function () {",
-													"    pm.response.to.have.body(\"OK FALLBACK\");",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\n    \"phoneNumbers\": [\n        {\n            \"type\": \"Android\",\n            \"number\": \"0123-4567-8888\"\n        },\n        {\n            \"type\": \"home\",\n            \"number\": \"0123-4567-8910\"\n        }\n    ]\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{rootUrl}}post-with-jsonpath-checker",
-											"host": [
-												"{{rootUrl}}post-with-jsonpath-checker"
-											]
-										}
-									},
-									"response": []
 								}
 							]
 						},
 						{
-							"name": "5. Authentication",
+							"name": "6. Authentication",
 							"item": [
 								{
 									"name": "[Create stub] Get with basic authentication",
@@ -1206,7 +1346,7 @@
 							]
 						},
 						{
-							"name": "6. Client IP",
+							"name": "7. Client IP",
 							"item": [
 								{
 									"name": "[Create stub] Get with client IP check",
@@ -1397,7 +1537,7 @@
 							]
 						},
 						{
-							"name": "7. Hostname",
+							"name": "8. Hostname",
 							"item": [
 								{
 									"name": "[Create stub] Get with hostname",
@@ -1495,7 +1635,7 @@
 							]
 						},
 						{
-							"name": "8. Priority",
+							"name": "9. Priority",
 							"item": [
 								{
 									"name": "[Create stub] Priority scenario 1",
@@ -1581,7 +1721,7 @@
 							]
 						},
 						{
-							"name": "9. Form",
+							"name": "10. Form",
 							"item": [
 								{
 									"name": "[Create stub] Post with form",
@@ -1707,7 +1847,7 @@
 							]
 						},
 						{
-							"name": "10. HTTPS",
+							"name": "11. HTTPS",
 							"item": [
 								{
 									"name": "[Create stub] Get with HTTPS",
@@ -1793,7 +1933,7 @@
 							]
 						},
 						{
-							"name": "11. Enable/disable",
+							"name": "12. Enable/disable",
 							"item": [
 								{
 									"name": "[Create stub] Add \"enabled\" stub",
