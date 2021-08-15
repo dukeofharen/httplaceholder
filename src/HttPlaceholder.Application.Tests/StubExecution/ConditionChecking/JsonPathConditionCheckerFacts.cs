@@ -6,6 +6,7 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.AutoMock;
+using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
 {
@@ -127,9 +128,9 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 {
                     new Dictionary<object, object>
                     {
-                        {"query", "$.people[0].firstName"},
-                        {"expectedValue", "John"}
-                    }, "$.people[0].achievements[?(@.name=='Man of the year')]"
+                        {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
+                    },
+                    "$.people[0].achievements[?(@.name=='Man of the year')]"
                 }
             };
 
@@ -166,9 +167,9 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 {
                     new Dictionary<object, object>
                     {
-                        {"query", "$.people[0].firstName"},
-                        {"expectedValue", "John"}
-                    }, "$.people[0].achievements[?(@.name=='Man of the year')]"
+                        {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
+                    },
+                    "$.people[0].achievements[?(@.name=='Man of the year')]"
                 }
             };
 
@@ -205,9 +206,9 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 {
                     new Dictionary<object, object>
                     {
-                        {"query", "$.people[0].firstName"},
-                        {"expectedValue", "John"}
-                    }, "$.people[0].achievements[?(@.name=='Man of the year')]"
+                        {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
+                    },
+                    "$.people[0].achievements[?(@.name=='Man of the year')]"
                 }
             };
 
@@ -244,18 +245,13 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 {
                     new Dictionary<object, object>
                     {
-                        {"query", "$.people[0].firstName"},
-                        {"expectedValue", "John"}
+                        {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
                     },
                     new Dictionary<object, object>
                     {
-                        {"query", "$.people[0].achievements[0].name"},
-                        {"expectedValue", "Man of the year"}
+                        {"query", "$.people[0].achievements[0].name"}, {"expectedValue", "Man of the year"}
                     },
-                    new Dictionary<object, object>
-                    {
-                        {"query", "$.people[0].age"}
-                    }
+                    new Dictionary<object, object> {{"query", "$.people[0].age"}}
                 }
             };
 
@@ -293,18 +289,13 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 {
                     new Dictionary<object, object>
                     {
-                        {"query", "$.people[0].firstName"},
-                        {"expectedValue", "John"}
+                        {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
                     },
                     new Dictionary<object, object>
                     {
-                        {"query", "$.people[0].achievements[0].name"},
-                        {"expectedValue", "Man of the year"}
+                        {"query", "$.people[0].achievements[0].name"}, {"expectedValue", "Man of the year"}
                     },
-                    new Dictionary<object, object>
-                    {
-                        {"query", "$.people[0].age"}
-                    }
+                    new Dictionary<object, object> {{"query", "$.people[0].age"}}
                 }
             };
 
@@ -326,6 +317,132 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+        }
+
+        [TestMethod]
+        public void ConvertFoundValue_TokenIsJValue_ShouldReturnValueCorrectly()
+        {
+            // Arrange
+            var jValue = JValue.CreateString("value");
+
+            // Act
+            var result = JsonPathConditionChecker.ConvertFoundValue(jValue);
+
+            // Assert
+            Assert.AreEqual("value", result);
+        }
+
+        [TestMethod]
+        public void ConvertFoundValue_TokenIsJArray_ArrayHasValues_ShouldReturnValueCorrectly()
+        {
+            // Arrange
+            var jArray = JArray.FromObject(new[] {"val1", "val2"});
+
+            // Act
+            var result = JsonPathConditionChecker.ConvertFoundValue(jArray);
+
+            // Assert
+            Assert.AreEqual("val1", result);
+        }
+
+        [TestMethod]
+        public void ConvertFoundValue_TokenIsJArray_ArrayHasNoValues_ShouldReturnEmptyString()
+        {
+            // Arrange
+            var jArray = JArray.FromObject(Array.Empty<string>());
+
+            // Act
+            var result = JsonPathConditionChecker.ConvertFoundValue(jArray);
+
+            // Assert
+            Assert.AreEqual(string.Empty, result);
+        }
+
+        [TestMethod]
+        public void ConvertFoundValue_TokenIsJObject_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var jObject = JObject.FromObject(new { });
+
+            // Act
+            var exception =
+                Assert.ThrowsException<InvalidOperationException>(() =>
+                    JsonPathConditionChecker.ConvertFoundValue(jObject));
+
+            // Assert
+            Assert.AreEqual("JSON type 'Newtonsoft.Json.Linq.JObject' not supported.", exception.Message);
+        }
+
+        [TestMethod]
+        public void ConvertJsonPathCondition_InputIsJObject_ShouldReturnStubJsonPathModelCorrectly()
+        {
+            // Arrange
+            var input = JObject.FromObject(new {query = "jpath query", expectedValue = "expected value"});
+
+            // Act
+            var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
+
+            // Assert
+            Assert.AreEqual("jpath query", result.Query);
+            Assert.AreEqual("expected value", result.ExpectedValue);
+        }
+
+        [TestMethod]
+        public void ConvertJsonPathCondition_InputIsObjectDictionary_ShouldReturnStubJsonPathModelCorrectly()
+        {
+            // Arrange
+            var input = new Dictionary<object, object> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
+
+            // Act
+            var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
+
+            // Assert
+            Assert.AreEqual("jpath query", result.Query);
+            Assert.AreEqual("expected value", result.ExpectedValue);
+        }
+
+        [TestMethod]
+        public void ConvertJsonPathCondition_InputIsStringDictionary_ShouldReturnStubJsonPathModelCorrectly()
+        {
+            // Arrange
+            var input = new Dictionary<string, string> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
+
+            // Act
+            var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
+
+            // Assert
+            Assert.AreEqual("jpath query", result.Query);
+            Assert.AreEqual("expected value", result.ExpectedValue);
+        }
+
+        [TestMethod]
+        public void ConvertJsonPathCondition_InputIsUnknown_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var input = new object();
+
+            // Act
+            var exception = Assert.ThrowsException<InvalidOperationException>(() =>
+                JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input));
+
+            // Assert
+            Assert.AreEqual("Can't determine the type of the JSONPath condition for stub with ID 'stubId'.",
+                exception.Message);
+        }
+
+        [TestMethod]
+        public void ConvertJsonPathCondition_QueryIsNotSet_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var input = new Dictionary<object, object> {{"query", string.Empty}, {"expectedValue", "expected value"}};
+
+            // Act
+            var exception = Assert.ThrowsException<InvalidOperationException>(() =>
+                JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input));
+
+            // Assert
+            Assert.AreEqual("Value 'query' not set for JSONPath condition for stub with ID 'stubId'.",
+                exception.Message);
         }
     }
 }

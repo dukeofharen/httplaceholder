@@ -48,22 +48,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 else
                 {
                     // Condition is an object, so first convert the condition to a StubJsonPathModel before executing the condition checker.
-                    var jsonPathCondition = condition switch
-                    {
-                        JObject conditionObject => conditionObject.ToObject<StubJsonPathModel>(),
-                        Dictionary<object, object> conditionDict => new StubJsonPathModel
-                        {
-                            Query = conditionDict.ContainsKey("query")
-                                ? conditionDict["query"].ToString()
-                                : throw new InvalidOperationException(
-                                    $"Value 'query' not set for JSONPath condition for stub with ID '{stubId}'."),
-                            ExpectedValue = conditionDict.ContainsKey("expectedValue")
-                                ? conditionDict["expectedValue"].ToString()
-                                : string.Empty
-                        },
-                        _ => throw new InvalidOperationException(
-                            $"Can't determine the type of the JSONPath condition for stub with ID '{stubId}'.")
-                    };
+                    var jsonPathCondition = ConvertJsonPathCondition(stubId, condition);
 
                     var passed = false;
                     if (jsonPathCondition != null)
@@ -72,13 +57,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                         if (elements != null)
                         {
                             // Retrieve the value from the JSONPath result.
-                            var foundValue = elements switch
-                            {
-                                JValue jValue => jValue.ToString(),
-                                JArray jArray when jArray.Any() => jArray.First().ToString(),
-                                _ => throw new InvalidOperationException(
-                                    $"JSON type '{elements.GetType()}' not supported.")
-                            };
+                            var foundValue = ConvertFoundValue(elements);
 
                             // If a value is set for the condition, check if the found JSONPath value matches the value in the condition.
                             passed = string.IsNullOrWhiteSpace(jsonPathCondition.ExpectedValue) ||
@@ -104,6 +83,50 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 : ConditionValidationType.Invalid;
 
             return result;
+        }
+
+        internal static string ConvertFoundValue(JToken jToken)
+        {
+            var foundValue = jToken switch
+            {
+                JValue jValue => jValue.ToString(),
+                JArray jArray when jArray.Any() => jArray.First().ToString(),
+                JArray jArray when !jArray.Any() => string.Empty,
+                _ => throw new InvalidOperationException(
+                    $"JSON type '{jToken.GetType()}' not supported.")
+            };
+            return foundValue;
+        }
+
+        internal static StubJsonPathModel ConvertJsonPathCondition(string stubId, object condition)
+        {
+            static StubJsonPathModel ParseDict(IReadOnlyDictionary<object, object> conditionDict) =>
+                new StubJsonPathModel
+                {
+                    Query = conditionDict.ContainsKey("query")
+                        ? conditionDict["query"].ToString()
+                        : string.Empty,
+                    ExpectedValue = conditionDict.ContainsKey("expectedValue")
+                        ? conditionDict["expectedValue"].ToString()
+                        : string.Empty
+                };
+
+            var jsonPathCondition = condition switch
+            {
+                JObject conditionObject => conditionObject.ToObject<StubJsonPathModel>(),
+                Dictionary<object, object> conditionDict => ParseDict(conditionDict),
+                Dictionary<string, string> conditionDict => ParseDict(
+                    conditionDict.ToDictionary(d => (object)d.Key, d => (object)d.Value)),
+                _ => throw new InvalidOperationException(
+                    $"Can't determine the type of the JSONPath condition for stub with ID '{stubId}'.")
+            };
+            if (string.IsNullOrWhiteSpace(jsonPathCondition.Query))
+            {
+                throw new InvalidOperationException(
+                    $"Value 'query' not set for JSONPath condition for stub with ID '{stubId}'.");
+            }
+
+            return jsonPathCondition;
         }
 
         public int Priority => 0;
