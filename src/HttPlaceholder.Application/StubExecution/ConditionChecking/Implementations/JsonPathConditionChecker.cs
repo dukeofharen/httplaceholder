@@ -34,6 +34,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             {
                 if (condition is string conditionString)
                 {
+                    // Condition is a string, so perform plain text JSONPath condition check.
                     var elements = jsonObject.SelectToken(conditionString);
                     if (elements == null)
                     {
@@ -46,14 +47,11 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 }
                 else
                 {
-                    StubJsonPathModel jsonPathCondition;
-                    if (condition is JObject conditionObject)
+                    // Condition is an object, so first convert the condition to a StubJsonPathModel before executing the condition checker.
+                    var jsonPathCondition = condition switch
                     {
-                        jsonPathCondition = conditionObject.ToObject<StubJsonPathModel>();
-                    }
-                    else if (condition is Dictionary<object, object> conditionDict)
-                    {
-                        jsonPathCondition = new StubJsonPathModel
+                        JObject conditionObject => conditionObject.ToObject<StubJsonPathModel>(),
+                        Dictionary<object, object> conditionDict => new StubJsonPathModel
                         {
                             Query = conditionDict.ContainsKey("query")
                                 ? conditionDict["query"].ToString()
@@ -62,13 +60,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                             ExpectedValue = conditionDict.ContainsKey("expectedValue")
                                 ? conditionDict["expectedValue"].ToString()
                                 : string.Empty
-                        };
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException(
-                            $"Can't determine the type of the JSONPath condition for stub with ID '{stubId}'.");
-                    }
+                        },
+                        _ => throw new InvalidOperationException(
+                            $"Can't determine the type of the JSONPath condition for stub with ID '{stubId}'.")
+                    };
 
                     var passed = false;
                     if (jsonPathCondition != null)
@@ -76,37 +71,26 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                         var elements = jsonObject.SelectToken(jsonPathCondition.Query);
                         if (elements != null)
                         {
-                            string foundValue;
-                            if (elements is JValue jValue)
+                            // Retrieve the value from the JSONPath result.
+                            var foundValue = elements switch
                             {
-                                foundValue = jValue.ToString();
-                            }
-                            else if (elements is JArray jArray && jArray.Any())
-                            {
-                                foundValue = elements.FirstOrDefault().ToString();
-                            }
-                            else
-                            {
-                                throw new InvalidOperationException($"JSON type '{elements.GetType()}' not supported.");
-                            }
+                                JValue jValue => jValue.ToString(),
+                                JArray jArray when jArray.Any() => jArray.First().ToString(),
+                                _ => throw new InvalidOperationException(
+                                    $"JSON type '{elements.GetType()}' not supported.")
+                            };
 
-                            if (!string.IsNullOrWhiteSpace(jsonPathCondition.ExpectedValue))
-                            {
-                                passed = StringHelper.IsRegexMatchOrSubstring(
-                                    foundValue,
-                                    jsonPathCondition.ExpectedValue);
-                            }
-                            else
-                            {
-                                passed = true;
-                            }
+                            // If a value is set for the condition, check if the found JSONPath value matches the value in the condition.
+                            passed = string.IsNullOrWhiteSpace(jsonPathCondition.ExpectedValue) ||
+                                     StringHelper.IsRegexMatchOrSubstring(
+                                         foundValue,
+                                         jsonPathCondition.ExpectedValue);
                         }
                     }
 
                     if (!passed)
                     {
-                        result.Log =
-                            $"No suitable JSON results found with JSONPath query '{jsonPathCondition.ExpectedValue}'.";
+                        result.Log = "No suitable JSON results found.";
                     }
 
                     validJsonPaths += passed ? 1 : 0;
