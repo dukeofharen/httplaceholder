@@ -48,7 +48,7 @@ namespace HttPlaceholder.Domain
         /// Gets or sets the json path.
         /// </summary>
         [YamlMember(Alias = "jsonPath")]
-        public IEnumerable<string> JsonPath { get; set; }
+        public IEnumerable<object> JsonPath { get; set; }
 
         /// <summary>
         /// Gets or sets the basic authentication.

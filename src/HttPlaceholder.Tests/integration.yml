@@ -147,7 +147,7 @@
     statusCode: 200
     xml: <result>OK</result>
 
-- id: jpath-test
+- id: jpath-string-test
   conditions:
     method: PUT
     url:
@@ -157,7 +157,20 @@
     jsonPath:
       - "$.phoneNumbers[?(@.type=='iPhone')]"
   response:
-    statusCode: 204
+    text: jpath-string-test-ok
+
+- id: jpath-object-test
+  conditions:
+    method: PUT
+    url:
+      path: /users
+    headers:
+      Content-Type: application/json
+    jsonPath:
+      - query: '$.people[0].firstName'
+        expectedValue: John
+  response:
+    text: jpath-object-test-ok
 
 - id: temp-redirect
   conditions:

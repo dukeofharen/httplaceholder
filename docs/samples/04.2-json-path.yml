@@ -1,5 +1,5 @@
 # A simple JSON path setup.
-- id: jpath-test
+- id: jpath-test-1
   tenant: 04-json
   conditions:
     method: PUT
@@ -9,5 +9,35 @@
       Content-Type: application/json
     jsonPath:
       - "$.phoneNumbers[?(@.type=='iPhone')]"
+  response:
+    statusCode: 204
+
+- id: jpath-test-2
+  tenant: 04-json
+  conditions:
+    method: PUT
+    url:
+      path: /users
+    headers:
+      Content-Type: application/json
+    jsonPath:
+      - query: $.phoneNumbers[0].type
+        expectedValue: home
+  response:
+    statusCode: 204
+
+- id: jpath-test-3
+  tenant: 04-json
+  conditions:
+    method: PUT
+    url:
+      path: /users
+    headers:
+      Content-Type: application/json
+    jsonPath:
+      - "$.phoneNumbers[?(@.type=='iPhone')]"
+      - query: $.firstName
+        expectedValue: John
+      
   response:
     statusCode: 204

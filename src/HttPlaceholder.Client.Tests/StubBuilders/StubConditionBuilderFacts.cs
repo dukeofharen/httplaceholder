@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.StubBuilders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -174,14 +175,17 @@ namespace HttPlaceholder.Client.Tests.StubBuilders
             // Act
             var conditions = StubConditionBuilder.Begin()
                 .WithJsonPathCondition("jsonpath1")
-                .WithJsonPathCondition("jsonpath2")
+                .WithJsonPathCondition("jsonpath2", "value2")
                 .Build();
 
             // Assert
             Assert.AreEqual(2, conditions.JsonPath.Count());
 
             Assert.AreEqual("jsonpath1", conditions.JsonPath.ElementAt(0));
-            Assert.AreEqual("jsonpath2", conditions.JsonPath.ElementAt(1));
+
+            var stubJsonPathModel = (StubJsonPathModel)conditions.JsonPath.ElementAt(1);
+            Assert.AreEqual("jsonpath2", stubJsonPathModel.Query);
+            Assert.AreEqual("value2", stubJsonPathModel.ExpectedValue);
         }
 
         [TestMethod]

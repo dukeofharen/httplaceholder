@@ -189,7 +189,7 @@
 			"name": "04 JSON",
 			"item": [
 				{
-					"name": "JSONPath",
+					"name": "JSONPath 1",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -200,7 +200,53 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"iPhone\",\r\n            \"number\": \"0123-4567-8888\"\r\n        },\r\n        {\r\n            \"type\": \"home\",\r\n            \"number\": \"0123-4567-8910\"\r\n        }\r\n    ]\r\n}"
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"iPhone\",\r\n            \"number\": \"0123-4567-8888\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}users",
+							"host": [
+								"{{rootUrl}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JSONPath 2",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"home\",\r\n            \"number\": \"0123-4567-8910\"\r\n        }\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{rootUrl}}users",
+							"host": [
+								"{{rootUrl}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "JSONPath 3",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"doe\",\r\n    \"age\": 26,\r\n    \"address\": {\r\n        \"streetAddress\": \"naist street\",\r\n        \"city\": \"Nara\",\r\n        \"postalCode\": \"630-0192\"\r\n    },\r\n    \"phoneNumbers\": [\r\n        {\r\n            \"type\": \"iPhone\",\r\n            \"number\": \"0123-4567-8910\"\r\n        }\r\n    ]\r\n}"
 						},
 						"url": {
 							"raw": "{{rootUrl}}users",
@@ -1422,6 +1468,50 @@
 									],
 									"path": [
 										"stubs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST new stub (multiple)",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "[\r\n    {\r\n        \"id\": \"test-situation1\",\r\n        \"conditions\": {\r\n            \"method\": \"GET\",\r\n            \"url\": {\r\n                \"path\": \"/testtesttest1\",\r\n                \"query\": {\r\n                    \"id\": \"13\"\r\n                }\r\n            }\r\n        },\r\n        \"response\": {\r\n            \"statusCode\": 200,\r\n            \"text\": \"OK my dude! 1\"\r\n        }\r\n    },\r\n    {\r\n        \"id\": \"test-situation2\",\r\n        \"conditions\": {\r\n            \"method\": \"GET\",\r\n            \"url\": {\r\n                \"path\": \"/testtesttest2\",\r\n                \"query\": {\r\n                    \"id\": \"13\"\r\n                }\r\n            }\r\n        },\r\n        \"response\": {\r\n            \"statusCode\": 200,\r\n            \"text\": \"OK my dude! 2\"\r\n        }\r\n    }\r\n]"
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/stubs/multiple",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"stubs",
+										"multiple"
 									]
 								}
 							},

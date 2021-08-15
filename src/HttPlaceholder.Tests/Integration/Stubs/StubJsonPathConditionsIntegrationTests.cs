@@ -17,7 +17,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs
         public void Cleanup() => CleanupIntegrationTest();
 
         [TestMethod]
-        public async Task StubIntegration_RegularPut_Json_ValidateJsonPath_HappyFlow()
+        public async Task StubIntegration_RegularPut_JsonPathText_ValidateJsonPath_HappyFlow()
         {
             // arrange
             var url = $"{TestServer.BaseAddress}users";
@@ -51,12 +51,12 @@ namespace HttPlaceholder.Tests.Integration.Stubs
             // act / assert
             using var response = await Client.SendAsync(request);
             var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-            Assert.IsTrue(string.IsNullOrEmpty(content));
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("jpath-string-test-ok", content);
         }
 
         [TestMethod]
-        public async Task StubIntegration_RegularPut_Json_ValidateJsonPath_StubNotFound()
+        public async Task StubIntegration_RegularPut_JsonPathText_ValidateJsonPath_StubNotFound()
         {
             // arrange
             var url = $"{TestServer.BaseAddress}users";
@@ -80,6 +80,60 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     }
   ]
 }";
+            var request = new HttpRequestMessage
+            {
+                Content = new StringContent(body, Encoding.UTF8, "application/json"),
+                Method = HttpMethod.Put,
+                RequestUri = new Uri(url)
+            };
+
+            // act / assert
+            using var response = await Client.SendAsync(request);
+            Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task StubIntegration_RegularPut_JsonPathObject_ValidateJsonPath_HappyFlow()
+        {
+            // arrange
+            var url = $"{TestServer.BaseAddress}users";
+            const string body = @"{""people"": [{
+  ""firstName"": ""John"",
+  ""age"": 29,
+  ""achievements"": [
+    {
+      ""name"": ""Just an average guy""
+    }
+  ]
+}]}";
+            var request = new HttpRequestMessage
+            {
+                Content = new StringContent(body, Encoding.UTF8, "application/json"),
+                Method = HttpMethod.Put,
+                RequestUri = new Uri(url)
+            };
+
+            // act / assert
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("jpath-object-test-ok", content);
+        }
+
+        [TestMethod]
+        public async Task StubIntegration_RegularPut_JsonPathObject_ValidateJsonPath_StubNotFound()
+        {
+            // arrange
+            var url = $"{TestServer.BaseAddress}users";
+            const string body = @"{""people"": [{
+  ""firstName"": ""Marc"",
+  ""age"": 29,
+  ""achievements"": [
+    {
+      ""name"": ""Just an average guy""
+    }
+  ]
+}]}";
             var request = new HttpRequestMessage
             {
                 Content = new StringContent(body, Encoding.UTF8, "application/json"),
