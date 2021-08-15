@@ -366,7 +366,12 @@ const defaultValues = {
   ],
   clientIp: "127.0.0.1",
   hostname: "httplaceholder.com",
-  jsonPath: ['$.phoneNumbers[?(@.type=="iPhone")]'],
+  jsonPath: [
+    {
+      query: "$.people[0].name",
+      expectedValue: "John"
+    }
+  ],
   jsonObject: {
     stringValue: "text",
     intValue: 3,
