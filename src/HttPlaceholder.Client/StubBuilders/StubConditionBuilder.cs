@@ -101,22 +101,21 @@ namespace HttPlaceholder.Client.StubBuilders
             return this;
         }
 
-        public StubConditionBuilder WithJsonPathCondition(string jsonPath)
+        public StubConditionBuilder WithJsonPathCondition(string query, string expectedValue = null)
         {
             var jsonpathConditions = _conditions.JsonPath != null
-                ? (List<string>)_conditions.JsonPath
-                : new List<string>();
-            jsonpathConditions.Add(jsonPath);
+                ? (List<object>)_conditions.JsonPath
+                : new List<object>();
+            jsonpathConditions.Add(!string.IsNullOrWhiteSpace(expectedValue)
+                ? new StubJsonPathModel {Query = query, ExpectedValue = expectedValue}
+                : query);
             _conditions.JsonPath = jsonpathConditions;
             return this;
         }
 
         public StubConditionBuilder WithBasicAuthentication(string username, string password)
         {
-            _conditions.BasicAuthentication = new StubBasicAuthenticationDto
-            {
-                Username = username, Password = password
-            };
+            _conditions.BasicAuthentication = new StubBasicAuthenticationDto {Username = username, Password = password};
             return this;
         }
 
