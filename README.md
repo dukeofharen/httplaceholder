@@ -1,6 +1,6 @@
 # HttPlaceholder
 
-<img src="media/logo_single.png" alt="HttPlaceholder" width="150"/>
+![HttPlaceholder](media/logo_single_small.png)
 
 | | |
 | --- | --- |

@@ -13,7 +13,7 @@
   <a href="https://github.com/dukeofharen/httplaceholder/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
   ·
   <a href="https://github.com/dukeofharen/httplaceholder/issues/new?assignees=&labels=enhancement&template=02_FEATURE_REQUEST.md&title=feat%3A+">Request a Feature</a>
-  .<a href="https://github.com/dukeofharen/httplaceholder/discussions">Ask a Question</a>
+  . <a href="https://github.com/dukeofharen/httplaceholder/discussions">Ask a Question</a>
 </div>
 
 <div align="center">
@@ -30,10 +30,10 @@
 <summary>Table of Contents</summary>
 
 - [About](#about)
-  - [Built With](#built-with)
+    - [Built With](#built-with)
 - [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
 - [Usage](#usage)
 - [Roadmap](#roadmap)
 - [Support](#support)
@@ -42,7 +42,6 @@
 - [Authors & contributors](#authors--contributors)
 - [Security](#security)
 - [License](#license)
-- [Acknowledgements](#acknowledgements)
 
 </details>
 
@@ -50,12 +49,17 @@
 
 ## About
 
-> **[?]**
-> Provide general information about your project here.
-> What problem does it (intend to) solve?
-> What is the purpose of your project?
-> Why did you undertake it?
-> You don't have to answer all the questions - just the ones relevant to your project.
+HttPlaceholder lets you stub away any HTTP webservice.
+
+It was thought up while I was working at a company which had many interconnected webservices. The development process
+was very painful, because it meant all the other webservices should also be started on my local dev PC, or I had to use
+the "development" environment, which did not work for half of the time. HttPlaceholder fills this gap nicely.
+
+HttPlaceholder:
+
+* can easily be installed on your dev PC.
+* can be used to easily create stubs, either as separate YAML files, through the API or through the user interface.
+* can easily be hosted on any server.
 
 <details>
 <summary>Screenshots</summary>
@@ -72,39 +76,84 @@
 
 ### Built With
 
-> **[?]**
-> Please provide the technologies that are used in the project.
+- [.NET 5](https://dotnet.microsoft.com/apps/aspnet)
+- [Vue.js](https://vuejs.org/)
+- [Vuetify](https://vuetifyjs.com/en/)
 
 ## Getting Started
 
 ### Prerequisites
 
-> **[?]**
-> What are the project requirements/dependencies?
+Linux, Windows and Mac are supported.
 
 ### Installation
 
-> **[?]**
-> Proceed to describe how to install and get started with the project.
+**Install on Windows**
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/Install-Windows.ps1'))
+```
+
+**Install on Linux**
+
+```bash
+curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-linux.sh | sudo bash
+```
+
+**Install on Mac**
+
+```bash
+curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | sudo bash
+```
 
 ## Usage
 
-> **[?]**
-> How does one go about using it?
-> Provide various use cases and code examples here.
+- Install HttPlaceholder (see [Installation](#installation)).
+- Create a new .yaml file (e.g. `stub.yaml`).
+- Copy and paste these contents:
+
+```yml
+- id: situation-01
+  conditions:
+    method: GET
+    url:
+      path: /users
+      query:
+        id: 12
+        filter: first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "John"
+      }
+    headers:
+      Content-Type: application/json
+```
+
+- Open the terminal in the folder you've added the `stub.yaml` file and run the following command: `httplaceholder`.
+  HttPlaceholder will now start and will load the stubs in the current folder.
+  ![](img/httplaceholder_running.png)
+  
+- Perform a specific HTTP call to HttPlaceholder so your provided response will be returned.
+  - For Linux / Mac (cURL needs to be installed): `curl "http://localhost:5000/users?id=12&filter=first_name" -D-`
+  - For Windows (uses Powershell): `(Invoke-WebRequest "http://localhost:5000/users?id=12&filter=first_name").RawContent`
+  
+- You can view and inspect the performed requests in the user interface at <http://localhost:5000/ph-ui>.
+![](img/request_in_ui.png)
 
 ## Roadmap
 
-See the [open issues](https://github.com/dukeofharen/httplaceholder/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/dukeofharen/httplaceholder/issues) for a list of proposed features (and known
+issues).
 
-- [Top Feature Requests](https://github.com/dukeofharen/httplaceholder/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
-- [Top Bugs](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
+- [Top Feature Requests](https://github.com/dukeofharen/httplaceholder/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (
+  Add your votes using the 👍 reaction)
+- [Top Bugs](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (
+  Add your votes using the 👍 reaction)
 - [Newest Bugs](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
 
 ## Support
-
-> **[?]**
-> Provide additional ways to contact the project maintainer/maintainers.
 
 Reach out to the maintainer at one of the following places:
 
@@ -116,14 +165,14 @@ Reach out to the maintainer at one of the following places:
 If you want to say **thank you** or/and support active development of HttPlaceholder:
 
 - Add a [GitHub Star](https://github.com/dukeofharen/httplaceholder) to the project.
-- Tweet about the HttPlaceholder on your Twitter.
-- Write interesting articles about the project on [Dev.to](https://dev.to/), [Medium](https://medium.com/) or personal blog.
-
-Together, we can make HttPlaceholder **better**!
+- Tweet about HttPlaceholder on your Twitter.
+- Send me an email :) (see my [GitHub Profile](https://github.com/dukeofharen)).
 
 ## Contributing
 
-First off, thanks for taking the time to contribute! Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make will benefit everybody else and are **greatly appreciated**.
+First off, thanks for taking the time to contribute! Contributions are what make the open-source community such an
+amazing place to learn, inspire, and create. Any contributions you make will benefit everybody else and are **greatly
+appreciated**.
 
 We have set up a separate document containing our [contribution guidelines](docs/CONTRIBUTING.md).
 
@@ -133,12 +182,13 @@ Thank you for being involved!
 
 The original setup of this repository is by [dukeofharen](https://github.com/dukeofharen).
 
-For a full list of all authors and contributors, check [the contributor's page](https://github.com/dukeofharen/httplaceholder/contributors).
+For a full list of all authors and contributors,
+check [the contributor's page](https://github.com/dukeofharen/httplaceholder/contributors).
 
 ## Security
 
-HttPlaceholder follows good practices of security, but 100% security can't be granted in software.
-HttPlaceholder is provided **"as is"** without any **warranty**. Use at your own risk.
+HttPlaceholder follows good practices of security, but 100% security can't be granted in software. HttPlaceholder is
+provided **"as is"** without any **warranty**. Use at your own risk.
 
 _For more info, please refer to the [security](docs/SECURITY.md)._
 
@@ -147,9 +197,3 @@ _For more info, please refer to the [security](docs/SECURITY.md)._
 This project is licensed under the **MIT license**.
 
 See [LICENSE](LICENSE) for more information.
-
-## Acknowledgements
-
-> **[?]**
-> If your work was funded by any organization or institution, acknowledge their support here.
-> In addition, if your work relies on other software libraries, or was inspired by looking at other work, it is appropriate to acknowledge this intellectual debt too.
