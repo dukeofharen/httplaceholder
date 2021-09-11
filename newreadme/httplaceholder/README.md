@@ -7,8 +7,6 @@
 <div align="center">
   HttPlaceholder
   <br />
-  <a href="#about"><strong>Explore the screenshots »</strong></a>
-  <br />
   <br />
   <a href="https://github.com/dukeofharen/httplaceholder/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
   ·
@@ -23,6 +21,7 @@
 
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg?style=flat-square)](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22)
 [![code with hearth by dukeofharen](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-dukeofharen-ff1414.svg?style=flat-square)](https://github.com/dukeofharen)
+[![pipeline status](https://gitlab.com/ducode/httplaceholder/badges/master/pipeline.svg)](https://gitlab.com/ducode/httplaceholder/-/commits/master)
 
 </div>
 
@@ -62,19 +61,7 @@ HttPlaceholder:
 * can easily be installed on your dev PC.
 * can be used to easily create stubs, either as separate YAML files, through the API or through the user interface.
 * can easily be hosted on any server.
-
-<details>
-<summary>Screenshots</summary>
-<br>
-
-> **[?]**
-> Please provide your screenshots here.
-
-|                               Home Page                               |                               Login Page                               |
-| :-------------------------------------------------------------------: | :--------------------------------------------------------------------: |
-| <img src="docs/images/screenshot.png" title="Home Page" width="100%"> | <img src="docs/images/screenshot.png" title="Login Page" width="100%"> |
-
-</details>
+* can use many different HTTP condition checkers and response writers to make your HTTP stubs as specific as you need.
 
 ### Built With
 
