@@ -33,6 +33,7 @@
 - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
+    - [Example](#example)
 - [Getting started](#getting-started)
 - [Documentation](#documentation)
     - [Tools](#tools)
@@ -95,7 +96,7 @@ curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scr
 curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | sudo bash
 ```
 
-## Getting started
+### Example
 
 - Install HttPlaceholder (see [Installation](#installation)).
 - Create a new .yaml file (e.g. `stub.yaml`).
