@@ -2,6 +2,33 @@
 
 Whenever HttPlaceholder receives a request, all the conditions of all stubs are checked to see which stub corresponds to the sent request. There are condition checkers for example the URL, posted data etc. This page explains more.
 
+<details open="open">
+<summary>Table of Contents</summary>
+
+- [General](#general)
+- [Description](#description)
+- [Enabled](#enabled)
+- [Priority](#priority)
+- [URI](#uri)
+  - [Path](#path)
+  - [Full path](#full-path)
+  - [Query string](#query-string)
+  - [Is HTTPS](#is-https)
+- [HTTP method](#method)
+- [Security](#security)
+  - [Basic authentication](#basic-authentication)
+- [HTTP headers](#header)
+- [Request body](#request-body)
+  - [Raw body](#raw-body)
+  - [Form](#form)
+  - [JSON](#json)
+  - [JSONPath](#jsonpath)
+  - [XPath](#xpath)
+- [Client IP validation](#client-ip-validation)
+- [Hostname](#hostname)
+
+</details>
+
 ## General
 
 Under the "conditions" element, you describe how the request should look like. If the incoming request matches the conditions, the [response](RESPONSE.md) will be returned.
@@ -91,7 +118,9 @@ There are cases when a request matches multiple stub. If this is the case, you c
 
 In the scenario above, if you got to url `http://httplaceholder/users`, both stubs will be matched. Because the priority of the fallback stub is -1, the other stub will be used instead.
 
-## Path
+## URI
+
+### Path
 
 The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions.
 
@@ -126,7 +155,7 @@ The path condition is used to check a part of the URL path (so the part after ht
 - Method: GET
 - URL: http://localhost:5000/users
 
-## Full path
+### Full path
 
 This condition checker looks a lot like the path checker, but this checker also checks extra URL parameters, like the query string. The condition can both check on substring and regular expressions.
 
@@ -145,7 +174,7 @@ This condition checker looks a lot like the path checker, but this checker also 
 - Method: GET
 - URL: http://localhost:5000/users?filter=first_name
 
-## Query string
+### Query string
 
 This condition checker can check the query string in a name-value collection like way. The condition can both check on substring and regular expressions.
 
@@ -166,24 +195,7 @@ This condition checker can check the query string in a name-value collection lik
 - Method: GET
 - URL: http://localhost:5000/anyPath?id=14&filter=last_name
 
-## Method
-
-This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.).
-
-```yml
-- id: situation-01
-  conditions:
-    method: GET
-  response:
-    statusCode: 200
-    text: OK
-```
-
-**Correct request**
-- Method: GET
-- URL: http://localhost:5000/anyPath
-
-## Is HTTPS
+### Is HTTPS
 
 This condition checker can be used to verify if a request uses HTTPS or not. To configure HttPlaceholder with HTTPS, read [configuration](CONFIG.md) (hint: it's not hard at all).
 
@@ -203,7 +215,26 @@ This condition checker can be used to verify if a request uses HTTPS or not. To 
 - Method: GET
 - URL: https://localhost:5050/anyPath
 
-## Basic authentication
+## Method
+
+This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.).
+
+```yml
+- id: situation-01
+  conditions:
+    method: GET
+  response:
+    statusCode: 200
+    text: OK
+```
+
+**Correct request**
+- Method: GET
+- URL: http://localhost:5000/anyPath
+
+## Security
+
+### Basic authentication
 
 This condition checker can check whether the sent basic authentication matches with the data in the stub.
 
@@ -246,7 +277,9 @@ This condition checker can check whether the sent headers match with the headers
 - Headers:
     - X-Api-Key: secret123
 
-## Body
+## Request body
+
+### Raw body
 
 This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions.
 
@@ -276,7 +309,7 @@ This condition checker can check whether the posted body corresponds to the give
 {"username": "john"}
 ```
 
-## Form
+### Form
 
 The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions.
 
@@ -305,62 +338,7 @@ The form value condition checker can check whether the posted form values corres
 key1=sjaak&key2=bob&key2=ducoo
 ```
 
-## Client IP validation
-
-It is also possible to set a condition to check the the client IP. A condition can be set for a single IP address or a whole IP range.
-
-```yml
-# Client IP address validation on a single IP address
-- id: client-ip-1
-  conditions:
-    method: GET
-    url:
-      path: /client-ip-1
-    clientIp: 127.0.0.1
-  response:
-    statusCode: 200
-    text: OK
-```
-
-```yml
-# Client IP address validation on an IP range
-- id: client-ip-2
-  conditions:
-    method: GET
-    url:
-      path: /client-ip-2
-    clientIp: '127.0.0.0/29'
-  response:
-    statusCode: 200
-    text: OK
-```
-
-## Hostname
-
-It is possible to check if a hostname in a request is correct. This condition can be used with regular expressions if needed.
-
-```yml
-# Check the hostname on full name.
-- id: host-1
-  conditions:
-    method: GET
-    host: httplaceholder.com
-  response:
-    statusCode: 200
-    text: OK
-```
-
-```yml
-- id: host-2
-  conditions:
-    method: GET
-    host: http(.*)
-  response:
-    statusCode: 200
-    text: OK
-```
-
-## JSON
+### JSON
 
 The JSON condition checker can be used to check if the posted JSON is posted according to your specified conditions. You can specify both an array or an object as input for the condition. When checking for string values in a JSON property, HttPlaceholder will use regular expressions to check if the condition is OK.
 
@@ -441,7 +419,7 @@ The JSON condition checker can be used to check if the posted JSON is posted acc
     }
 ]
 ```
-## JSONPath
+### JSONPath
 
 Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions.
 
@@ -511,7 +489,7 @@ Both JSONPath condition types can be combined.
 }
 ```
 
-## XPath
+### XPath
 
 Using the XPath condition checker, you can check the posted XML body to see if it contains the correct elements. It is possible to add multiple conditions.
 
@@ -558,8 +536,63 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
 - Method: POST
 - URL: http://localhost:5000/thingy
 - Headers:
-    - Content-Type: application/soap+xml; charset=utf-8
+  - Content-Type: application/soap+xml; charset=utf-8
 - Body:
 ```xml
 <?xml version="1.0"?><object><a>TEST</a><b>TEST2</b></object>
+```
+
+## Client IP validation
+
+It is also possible to set a condition to check the the client IP. A condition can be set for a single IP address or a whole IP range.
+
+```yml
+# Client IP address validation on a single IP address
+- id: client-ip-1
+  conditions:
+    method: GET
+    url:
+      path: /client-ip-1
+    clientIp: 127.0.0.1
+  response:
+    statusCode: 200
+    text: OK
+```
+
+```yml
+# Client IP address validation on an IP range
+- id: client-ip-2
+  conditions:
+    method: GET
+    url:
+      path: /client-ip-2
+    clientIp: '127.0.0.0/29'
+  response:
+    statusCode: 200
+    text: OK
+```
+
+## Hostname
+
+It is possible to check if a hostname in a request is correct. This condition can be used with regular expressions if needed.
+
+```yml
+# Check the hostname on full name.
+- id: host-1
+  conditions:
+    method: GET
+    host: httplaceholder.com
+  response:
+    statusCode: 200
+    text: OK
+```
+
+```yml
+- id: host-2
+  conditions:
+    method: GET
+    host: http(.*)
+  response:
+    statusCode: 200
+    text: OK
 ```

@@ -2,7 +2,40 @@
 
 If a request succeeds and a stub is found, the configured response will be returned. There are several "response writers" within HttPlaceholder which can be used to arrange your response. These will be explained on this page.
 
-## Text
+<details open="open">
+<summary>Table of Contents</summary>
+
+- [Response body](#response-body)
+    - [Text](#text)
+    - [JSON](#json)
+    - [XML](#xml)
+    - [HTML](#html)
+    - [Base64](#base64)
+- [Status code](#status-code)
+- [Response headers](#headers)
+- [Content type](#content-type)
+- [Files](#files)
+    - [Image](#image)
+    - [File](#file)
+- [Extra duration](#extra-duration)
+- [Permanent and temporary redirects](#permanent-and-temporary-redirects)
+- [Line endings](#update-line-endings)
+- [Dynamic mode](#dynamic-mode)
+    - [Query string](#query-string)
+    - [UUID](#uuid)
+    - [Request headers](#request-headers)
+    - [Posted form values](#form-post)
+    - [Request body](#request-body)
+    - [Display URL](#display-url)
+    - [Client IP](#client-ip)
+    - [Local and UTC date & time](#local-and-utc-date--time)
+    - [Reverse proxy](#reverse-proxylocal-and-utc-date--time)
+
+</details>
+
+## Response body
+
+### Text
 
 To return a plain text respone, use the "text" response writer. If no Content-Type header is set, the header will be set to "text/plain";
 
@@ -19,7 +52,7 @@ To return a plain text respone, use the "text" response writer. If no Content-Ty
       Content-Type: text/plain
 ```
 
-## JSON
+### JSON
 
 This is a shortcut for returning a JSON string. This response writer sets the "Content-Type" header to "application/json".
 
@@ -34,7 +67,7 @@ This is a shortcut for returning a JSON string. This response writer sets the "C
     json: '{"msg": "All OK!"}'
 ```
 
-## XML
+### XML
 
 This is a shortcut for returning an XML string. This response writer sets the "Content-Type" header to "text/xml".
 
@@ -49,7 +82,7 @@ This is a shortcut for returning an XML string. This response writer sets the "C
     xml: <xml></xml>
 ```
 
-## HTML
+### HTML
 
 This is a shortcut for returning an HTML string. This response writer sets the "Content-Type" header to "text/html".
 
@@ -73,6 +106,24 @@ This is a shortcut for returning an HTML string. This response writer sets the "
           </p>
         </body>
       </html>
+```
+
+## Base64
+
+You can also specify a base64 string which should be decoded and returned by HttPlaceholder. You can use this if you want to encode a binary and paste it in your script.
+
+```yml
+- id: base64-example
+  conditions:
+    method: GET
+    url:
+      path: /text.txt
+  response:
+    statusCode: 200
+    base64: SXQgd29ya3Mh
+    headers:
+      Content-Type: text/plain
+      X-Correlation: correlation_id
 ```
 
 ## Status code
@@ -126,7 +177,9 @@ Instead of setting a header with the content type, you can also use the `content
     contentType: text/csv
 ```
 
-## Image
+## Files
+
+### Image
 
 It is possible for HttPlaceholder to generate stub images. This can be done by setting the `image` response writer. This writer is built using the amazing [ImageSharp](https://docs.sixlabors.com/) library. Here is an example:
 
@@ -164,11 +217,11 @@ The following properties can be set for the `image` response writer:
 - `jpegQuality`: of course, only useful if `type` `jpeg` is used. Is `95` by default. `1` is worst and `100` is best quality.
 - `wordWrap`: if set to true, the text will be written across the image. Useful if your text is long. Is `false` by default.
 
-## File
+### File
 
 To return a file from disk, use the "file" response writer. There are two ways in which you can use this response writer.
 
-### Scenario 1
+#### Scenario 1
 
 If you don't specify the full path, HttPlaceholder will look in the same folder where your .yml file resides.
 
@@ -185,7 +238,7 @@ If you don't specify the full path, HttPlaceholder will look in the same folder 
       Content-Type: image/jpeg
 ```
 
-### Scenario 2
+#### Scenario 2
 
 You can also use the full path to a file.
 
@@ -200,24 +253,6 @@ You can also use the full path to a file.
     file: C:\files\cat_file.jpg
     headers:
       Content-Type: image/jpeg
-```
-
-## Base64
-
-You can also specify a base64 string which should be decoded and returned by HttPlaceholder. You can use this if you want to encode a binary and paste it in your script.
-
-```yml
-- id: base64-example
-  conditions:
-    method: GET
-    url:
-      path: /text.txt
-  response:
-    statusCode: 200
-    base64: SXQgd29ya3Mh
-    headers:
-      Content-Type: text/plain
-      X-Correlation: correlation_id
 ```
 
 ## Extra duration
