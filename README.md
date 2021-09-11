@@ -33,7 +33,7 @@
 - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
-- [Usage](#usage)
+- [Getting started](#getting-started)
 - [Documentation](#documentation)
     - [Tools](#tools)
 - [Roadmap](#roadmap)
@@ -95,11 +95,11 @@ curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scr
 curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | sudo bash
 ```
 
-## Usage
+## Getting started
 
 - Install HttPlaceholder (see [Installation](#installation)).
 - Create a new .yaml file (e.g. `stub.yaml`).
-- Copy and paste these contents:
+- Copy and paste these contents in your new file:
 
 ```yml
 - id: situation-01
@@ -130,6 +130,8 @@ curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scr
   
 - You can view and inspect the performed requests in the user interface at <http://localhost:5000/ph-ui>.
 ![](docs/img/request_in_ui.png)
+  
+For more sophisticated examples, go to the page [samples](docs/SAMPLES.md) to view samples for all supported HTTP condition checkers and response writers.
 
 ## Documentation
 
