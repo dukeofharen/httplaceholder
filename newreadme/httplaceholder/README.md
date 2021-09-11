@@ -35,6 +35,8 @@
     - [Prerequisites](#prerequisites)
     - [Installation](#installation)
 - [Usage](#usage)
+- [Documentation](#documentation)
+    - [Tools](#tools)
 - [Roadmap](#roadmap)
 - [Support](#support)
 - [Project assistance](#project-assistance)
@@ -141,6 +143,24 @@ curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scr
   
 - You can view and inspect the performed requests in the user interface at <http://localhost:5000/ph-ui>.
 ![](img/request_in_ui.png)
+
+## Documentation
+
+* [Installation](docs/INSTALL.md)
+  * [Windows (and IIS)](docs/INSTALL-WINDOWS.md)
+  * [Linux](docs/INSTALL-LINUX.md)
+  * [Mac](docs/INSTALL-MAC.md)
+  * [Docker](docs/INSTALL-DOCKER.md)
+* [Getting started](docs/GETTING-STARTED.md)
+* [Stub samples](docs/SAMPLES.md)
+* [HttPlaceholder REST API](docs/API.md)
+* [Configuration](docs/CONFIG.md)
+* [Request conditions explained](docs/CONDITIONS.md)
+* [Response definitions explained](docs/RESPONSE.md)
+* [Management interface](docs/UI.md)
+
+### Tools
+* [HttPlaceholder REST API client for .NET](docs/DOTNET_CLIENT.md)
 
 ## Roadmap
 
