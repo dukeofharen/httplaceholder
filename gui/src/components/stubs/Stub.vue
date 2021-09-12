@@ -20,6 +20,9 @@
             }"
             >View requests
           </v-btn>
+          <v-btn color="success" title="Duplicate this stub" @click="duplicate"
+            >Duplicate stub
+          </v-btn>
           <v-btn
             color="success"
             v-if="!fullStub.metadata.readOnly"
@@ -65,6 +68,9 @@
 import { toastSuccess } from "@/utils/toastUtil";
 import { resources } from "@/shared/resources";
 import { routeNames } from "@/router/routerConstants";
+import { setIntermediateStub } from "@/utils/sessionUtil";
+import yaml from "js-yaml";
+import moment from "moment";
 
 export default {
   name: "stub",
@@ -101,6 +107,17 @@ export default {
 
       this.$emit("updated", this.fullStub);
       await this.loadStub(true);
+    },
+    async duplicate() {
+      if (this.fullStub && this.fullStub.stub) {
+        const stub = this.fullStub.stub;
+        const now = moment();
+        stub.id = `${stub.id}_${now.format("yyyy-MM-DD_HH-mm-ss")}`;
+        setIntermediateStub(yaml.safeDump(this.fullStub.stub));
+        await this.$router.push({
+          name: routeNames.stubForm
+        });
+      }
     }
   }
 };
