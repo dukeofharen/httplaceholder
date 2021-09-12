@@ -76,7 +76,7 @@ export default {
     Stub
   },
   async created() {
-    await this.initialize();
+    await this.initialize(true);
   },
   computed: {
     filteredStubs() {
@@ -107,7 +107,7 @@ export default {
     }
   },
   methods: {
-    async initialize() {
+    async initialize(initSearch) {
       const getStubsPromise = this.$store.dispatch("stubs/getStubsOverview");
       const getTenantNamesPromise = this.$store.dispatch(
         "tenants/getTenantNames"
@@ -115,7 +115,9 @@ export default {
       this.stubs = await getStubsPromise;
       this.tenantNames = await getTenantNamesPromise;
 
-      this.initializeSearch();
+      if (initSearch) {
+        this.initializeSearch();
+      }
     },
     initializeSearch() {
       this.searchTerm = this.$route.query.searchTerm;
