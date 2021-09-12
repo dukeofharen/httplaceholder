@@ -96,6 +96,12 @@ curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scr
 curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | sudo bash
 ```
 
+**Install as .NET tool**
+
+```bash
+dotnet tool install --global httplaceholder
+```
+
 ### Example
 
 - Install HttPlaceholder (see [Installation](#installation)).
