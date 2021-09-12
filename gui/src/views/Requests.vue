@@ -80,7 +80,7 @@ export default {
   },
   async created() {
     this.initializeSignalR();
-    await this.initialize();
+    await this.initialize(true);
   },
   destroyed() {
     this.connection.stop();
@@ -109,7 +109,7 @@ export default {
     }
   },
   methods: {
-    async initialize() {
+    async initialize(initSearch) {
       const getRequestsPromise = this.$store.dispatch(
         "requests/getRequestsOverview"
       );
@@ -119,7 +119,9 @@ export default {
       this.requests = await getRequestsPromise;
       this.tenantNames = await getTenantNamesPromise;
 
-      this.initializeSearch();
+      if (initSearch) {
+        this.initializeSearch();
+      }
     },
     initializeSearch() {
       this.searchTerm = this.$route.query.searchTerm;
