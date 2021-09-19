@@ -1,15 +1,19 @@
 <template>
-  <NavbarTop />
   <div class="container-fluid">
-    <router-view />
+    <div class="row flex-nowrap">
+      <Sidebar />
+      <div class="col py-3">
+        <router-view />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import NavbarTop from "@/components/NavbarTop";
+import Sidebar from "@/components/Sidebar";
 
 export default {
-  components: { NavbarTop },
+  components: { Sidebar },
 };
 </script>
 
