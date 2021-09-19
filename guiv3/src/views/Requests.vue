@@ -5,7 +5,7 @@
       <Request
         v-for="request of requests"
         :key="request.correlationId"
-        :request="request"
+        :overview-request="request"
         :accordion-id="accordionId"
       />
     </div>

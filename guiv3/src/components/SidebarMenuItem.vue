@@ -36,6 +36,6 @@ export default {
 <style lang="scss" scoped>
 .menu-item-title {
   position: relative;
-  bottom: 2px;
+  bottom: 1px;
 }
 </style>

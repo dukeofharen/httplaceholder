@@ -4,6 +4,7 @@
 // Default variable overrides
 $body-bg: #fff;
 $body-color: #111;
+$accordion-button-active-color: initial;
 
 // Required
 @import "node_modules/bootstrap/scss/variables";
@@ -13,10 +14,10 @@ $body-color: #111;
 $theme-colors: (
         "primary":    $primary,
         "secondary":  $gray-500,
-        "success":    $success,
+        "success":    $green-700,
         "info":       $info,
         "warning":    $warning,
-        "danger":     $danger,
+        "danger":     $red-700,
         "light":      $light,
         "dark":       $dark
 );
