@@ -2,11 +2,13 @@
   <li class="nav-item">
     <router-link
       :to="{ name: routeName }"
-      class="nav-link align-middle px-0"
+      class="nav-link align-middle px-0 link-secondary"
       :title="title"
     >
-      <i class="fs-4" :class="'bi-' + icon"></i>
-      <span class="ms-3 d-none d-sm-inline menu-item-title">{{ title }}</span>
+      <i class="fs-5" :class="'bi-' + icon"></i>
+      <span class="ms-4 d-none d-sm-inline menu-item-title fs-6">{{
+        title
+      }}</span>
     </router-link>
   </li>
 </template>
@@ -34,6 +36,6 @@ export default {
 <style lang="scss" scoped>
 .menu-item-title {
   position: relative;
-  bottom: 3px;
+  bottom: 2px;
 }
 </style>

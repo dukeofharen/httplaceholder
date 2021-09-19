@@ -9,6 +9,18 @@ $body-color: #111;
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 
+// Custom color definitions
+$theme-colors: (
+        "primary":    $primary,
+        "secondary":  $gray-500,
+        "success":    $success,
+        "info":       $info,
+        "warning":    $warning,
+        "danger":     $danger,
+        "light":      $light,
+        "dark":       $dark
+);
+
 // Other imports
 @import "node_modules/bootstrap/scss/reboot";
 @import "node_modules/bootstrap/scss/bootstrap-grid";
