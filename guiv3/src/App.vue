@@ -1,7 +1,19 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
+  <NavbarTop />
   <router-view />
 </template>
+
+<script>
+import NavbarTop from "@/components/NavbarTop";
+
+export default {
+  components: { NavbarTop },
+};
+</script>
+
+<style lang="scss">
+body {
+  margin: 0;
+  padding: 0;
+}
+</style>
