@@ -36,37 +36,43 @@
         id="menu"
       >
         <li class="nav-item">
-          <a href="#" class="nav-link align-middle px-0">
+          <a href="#" class="nav-link align-middle px-0" title="Requests">
             <i class="fs-4 bi-eye"></i>
             <span class="ms-3 d-none d-sm-inline">Requests</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link align-middle px-0">
+          <a href="#" class="nav-link align-middle px-0" title="Stubs">
             <i class="fs-4 bi-code-slash"></i>
             <span class="ms-3 d-none d-sm-inline">Stubs</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link align-middle px-0">
+          <a href="#" class="nav-link align-middle px-0" title="Add stubs">
             <i class="fs-4 bi-plus"></i>
             <span class="ms-3 d-none d-sm-inline">Add stubs</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link align-middle px-0">
+          <a href="#" class="nav-link align-middle px-0" title="Upload stubs">
             <i class="fs-4 bi-upload"></i>
-            <span class="ms-3 d-none d-sm-inline">Add stubs</span>
+            <span class="ms-3 d-none d-sm-inline">Upload stubs</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link align-middle px-0">
+          <a href="#" class="nav-link align-middle px-0" title="Download stubs">
             <i class="fs-4 bi-download"></i>
             <span class="ms-3 d-none d-sm-inline">Download stubs</span>
           </a>
         </li>
         <li class="nav-item">
-          <a href="#" class="nav-link align-middle px-0">
+          <a href="#" class="nav-link align-middle px-0" title="Settings">
+            <i class="fs-4 bi-wrench"></i>
+            <span class="ms-3 d-none d-sm-inline">Settings</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link align-middle px-0" title="Log out">
             <i class="fs-4 bi-box-arrow-left"></i>
             <span class="ms-3 d-none d-sm-inline">Log out</span>
           </a>
