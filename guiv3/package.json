@@ -35,6 +35,7 @@
     "eslint-plugin-vue": "^7.0.0",
     "prettier": "^2.2.1",
     "sass": "^1.26.5",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "typeface-roboto": "^1.1.13"
   }
 }

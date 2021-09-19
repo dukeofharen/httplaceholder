@@ -3,8 +3,6 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
-
-// Plugins
-import "@/plugins/bootstrap";
+import "@/plugins";
 
 createApp(App).use(store).use(router).mount("#app");
