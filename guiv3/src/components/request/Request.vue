@@ -34,7 +34,7 @@
       :data-bs-parent="'#' + accordionId"
     >
       <div class="accordion-body">
-        <RequestDetails :request="{}" />
+        <RequestDetails :request="request" />
       </div>
     </div>
   </div>
@@ -77,7 +77,7 @@ export default {
     // Data
     const timeFromNow = ref(getTimeFromNow());
     const refreshTimeFromNowInterval = ref(null);
-    const request = ref(null);
+    const request = ref({});
 
     // Lifecycle
     onMounted(() => {
@@ -93,7 +93,7 @@ export default {
 
     // Methods
     const loadRequest = async () => {
-      if (!request.value) {
+      if (Object.keys(request.value).length === 0) {
         request.value = await store.dispatch(
           "requests/getRequest",
           correlationId()
