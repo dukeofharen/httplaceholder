@@ -1,3 +1,14 @@
+// Required
+@import "node_modules/bootstrap/scss/functions";
+
+// Default variable overrides
+$body-bg: #000;
+$body-color: #111;
+
+// Required
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
+// Other imports
 @import "node_modules/bootstrap/scss/bootstrap-grid";
-@import "node_modules/bootstrap/scss/nav";
 @import "node_modules/bootstrap/scss/navbar";
