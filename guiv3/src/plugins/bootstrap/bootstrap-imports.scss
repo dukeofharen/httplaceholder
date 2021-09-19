@@ -22,9 +22,4 @@ $theme-colors: (
 );
 
 // Other imports
-@import "node_modules/bootstrap/scss/reboot";
-@import "node_modules/bootstrap/scss/bootstrap-grid";
-@import "node_modules/bootstrap/scss/nav";
-@import "node_modules/bootstrap/scss/dropdown";
-@import "node_modules/bootstrap/scss/navbar";
-@import "node_modules/bootstrap/scss/bootstrap-utilities";
+@import "node_modules/bootstrap/scss/bootstrap";
