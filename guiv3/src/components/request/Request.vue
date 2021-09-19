@@ -8,6 +8,7 @@
         :data-bs-target="'#' + contentId"
         aria-expanded="false"
         :aria-controls="contentId"
+        @click="showDetails"
       >
         <span>
           <Method :method="overviewRequest.method" />
@@ -33,7 +34,7 @@
       :data-bs-parent="'#' + accordionId"
     >
       <div class="accordion-body">
-        {{ overviewRequest }}
+        <RequestDetails :request="{}" />
       </div>
     </div>
   </div>
@@ -41,12 +42,14 @@
 
 <script>
 import { computed, ref, onMounted, onUnmounted } from "vue";
+import { useStore } from "vuex";
 import { formatDateTime, formatFromNow } from "@/utils/datetime";
 import Method from "@/components/request/Method";
+import RequestDetails from "@/components/request/RequestDetails";
 
 export default {
   name: "Request",
-  components: { Method },
+  components: { Method, RequestDetails },
   props: {
     overviewRequest: {
       type: Object,
@@ -58,6 +61,8 @@ export default {
     },
   },
   setup(props) {
+    const store = useStore();
+
     // Functions
     const getRequestTime = () => props.overviewRequest.requestEndTime;
     const correlationId = () => props.overviewRequest.correlationId;
@@ -72,6 +77,7 @@ export default {
     // Data
     const timeFromNow = ref(getTimeFromNow());
     const refreshTimeFromNowInterval = ref(null);
+    const request = ref(null);
 
     // Lifecycle
     onMounted(() => {
@@ -85,6 +91,19 @@ export default {
       }
     });
 
+    // Methods
+    const loadRequest = async () => {
+      if (!request.value) {
+        request.value = await store.dispatch(
+          "requests/getRequest",
+          correlationId()
+        );
+      }
+    };
+    const showDetails = async () => {
+      await loadRequest();
+    };
+
     return {
       headingId,
       contentId,
@@ -92,6 +111,9 @@ export default {
       requestDateTime,
       timeFromNow,
       refreshTimeFromNowInterval,
+      request,
+      loadRequest,
+      showDetails,
     };
   },
 };
