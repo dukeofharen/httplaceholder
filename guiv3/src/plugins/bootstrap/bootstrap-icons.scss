@@ -1,0 +1,8 @@
+.bi-eye::before {
+  background-image: url('~bootstrap-icons/icons/eye.svg');
+  display: inline-block;
+  content: "";
+  vertical-align: -.125em;
+  background-repeat: no-repeat;
+  background-size: 1rem 1rem;
+}
