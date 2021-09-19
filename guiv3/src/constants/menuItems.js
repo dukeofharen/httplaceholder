@@ -3,37 +3,37 @@ export default function getMenuItems() {
     {
       title: "Requests",
       icon: "eye",
-      routeName: "About",
+      routeName: "Requests",
     },
     {
       title: "Stubs",
       icon: "code-slash",
-      routeName: "About",
+      routeName: "Requests",
     },
     {
       title: "Add stubs",
       icon: "plus",
-      routeName: "About",
+      routeName: "Requests",
     },
     {
       title: "Upload stubs",
       icon: "upload",
-      routeName: "About",
+      routeName: "Requests",
     },
     {
       title: "Download stubs",
       icon: "download",
-      routeName: "About",
+      routeName: "Requests",
     },
     {
       title: "Settings",
       icon: "wrench",
-      routeName: "About",
+      routeName: "Requests",
     },
     {
       title: "Log out",
       icon: "box-arrow-left",
-      routeName: "About",
+      routeName: "Requests",
     },
   ];
 }
