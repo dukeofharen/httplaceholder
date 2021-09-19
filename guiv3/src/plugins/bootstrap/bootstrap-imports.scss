@@ -2,7 +2,7 @@
 @import "node_modules/bootstrap/scss/functions";
 
 // Default variable overrides
-$body-bg: #000;
+$body-bg: #fff;
 $body-color: #111;
 
 // Required
@@ -10,6 +10,9 @@ $body-color: #111;
 @import "node_modules/bootstrap/scss/mixins";
 
 // Other imports
+@import "node_modules/bootstrap/scss/reboot";
 @import "node_modules/bootstrap/scss/bootstrap-grid";
+@import "node_modules/bootstrap/scss/nav";
+@import "node_modules/bootstrap/scss/dropdown";
 @import "node_modules/bootstrap/scss/navbar";
 @import "node_modules/bootstrap/scss/bootstrap-utilities";

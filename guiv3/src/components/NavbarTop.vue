@@ -1,10 +1,9 @@
 <template>
-  <nav class="navbar navbar-light bg-primary">
+  <nav class="navbar navbar-light bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <img
           src="../assets/logo-white_small.png"
-          alt=""
           class="d-inline-block align-text-top logo"
         />
       </a>
