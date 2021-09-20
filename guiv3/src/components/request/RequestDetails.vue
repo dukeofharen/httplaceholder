@@ -23,12 +23,17 @@
         <!-- TODO Add router link here -->
         <span>{{ request.stubTenant }}</span>
       </div>
+      <div class="col-md-12 mb-3">
+        <label>Request time</label>
+        <span>{{ requestTime }} (it took {{ duration }} ms)</span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { computed } from "vue";
+import { formatDateTime, getDuration } from "@/utils/datetime";
 
 export default {
   name: "RequestDetails",
@@ -43,8 +48,15 @@ export default {
     const requestParams = computed(
       () => props.request?.requestParameters || {}
     );
+    const requestTime = computed(() =>
+      formatDateTime(requestParams.value.requestEndTime)
+    );
+    const duration = computed(() => {
+      const req = props.request;
+      return getDuration(req.requestBeginTime, req.requestEndTime);
+    });
 
-    return { requestParams };
+    return { requestParams, requestTime, duration };
   },
 };
 </script>
