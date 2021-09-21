@@ -27,6 +27,14 @@
         <label>Request time</label>
         <span>{{ requestTime }} (it took {{ duration }} ms)</span>
       </div>
+      <div class="col-md-12 mb-3">
+        <div class="accordion" :id="headerAndQueryAccordionId">
+          <RequestHeaders
+            :accordion-id="headerAndQueryAccordionId"
+            :request="request"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -34,9 +42,11 @@
 <script>
 import { computed } from "vue";
 import { formatDateTime, getDuration } from "@/utils/datetime";
+import RequestHeaders from "@/components/request/RequestHeaders";
 
 export default {
   name: "RequestDetails",
+  components: { RequestHeaders },
   props: {
     request: {
       type: Object,
@@ -44,6 +54,9 @@ export default {
     },
   },
   setup(props) {
+    // Data
+    const headerAndQueryAccordionId = "headers-query-accordion";
+
     // Computed
     const requestParams = computed(
       () => props.request?.requestParameters || {}
@@ -56,7 +69,7 @@ export default {
       return getDuration(req.requestBeginTime, req.requestEndTime);
     });
 
-    return { requestParams, requestTime, duration };
+    return { requestParams, requestTime, duration, headerAndQueryAccordionId };
   },
 };
 </script>
