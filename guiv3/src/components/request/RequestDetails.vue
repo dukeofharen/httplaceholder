@@ -33,6 +33,11 @@
             :accordion-id="headerAndQueryAccordionId"
             :request="request"
           />
+          <QueryParams
+            v-if="showQueryParameters"
+            :accordion-id="headerAndQueryAccordionId"
+            :request="request"
+          />
         </div>
       </div>
     </div>
@@ -43,10 +48,11 @@
 import { computed } from "vue";
 import { formatDateTime, getDuration } from "@/utils/datetime";
 import RequestHeaders from "@/components/request/RequestHeaders";
+import QueryParams from "@/components/request/QueryParams";
 
 export default {
   name: "RequestDetails",
-  components: { RequestHeaders },
+  components: { RequestHeaders, QueryParams },
   props: {
     request: {
       type: Object,
@@ -68,8 +74,17 @@ export default {
       const req = props.request;
       return getDuration(req.requestBeginTime, req.requestEndTime);
     });
+    const showQueryParameters = computed(
+      () => requestParams.value?.url?.includes("?") || false
+    );
 
-    return { requestParams, requestTime, duration, headerAndQueryAccordionId };
+    return {
+      requestParams,
+      requestTime,
+      duration,
+      headerAndQueryAccordionId,
+      showQueryParameters,
+    };
   },
 };
 </script>
