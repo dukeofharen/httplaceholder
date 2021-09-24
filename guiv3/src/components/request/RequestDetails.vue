@@ -40,16 +40,19 @@
           />
         </div>
       </div>
-      <div class="col-md-12">
+      <div v-if="showResults" class="col-md-12">
         <div class="accordion" :id="resultsAccordionId">
           <StubExecutionResults
-            v-if="
-              request.stubExecutionResults &&
-              request.stubExecutionResults.length
-            "
+            v-if="showStubExecutionResults"
             :accordion-id="resultsAccordionId"
             :correlation-id="request.correlationId"
             :stub-execution-results="request.stubExecutionResults"
+          />
+          <ResponseWriterResults
+            v-if="showStubResponseWriterResults"
+            :accordion-id="resultsAccordionId"
+            :correlation-id="request.correlationId"
+            :stub-response-writer-results="request.stubResponseWriterResults"
           />
         </div>
       </div>
@@ -63,10 +66,16 @@ import { formatDateTime, getDuration } from "@/utils/datetime";
 import RequestHeaders from "@/components/request/RequestHeaders";
 import QueryParams from "@/components/request/QueryParams";
 import StubExecutionResults from "@/components/request/StubExecutionResults";
+import ResponseWriterResults from "@/components/request/ResponseWriterResults";
 
 export default {
   name: "RequestDetails",
-  components: { StubExecutionResults, RequestHeaders, QueryParams },
+  components: {
+    StubExecutionResults,
+    RequestHeaders,
+    QueryParams,
+    ResponseWriterResults,
+  },
   props: {
     request: {
       type: Object,
@@ -93,6 +102,21 @@ export default {
       () => requestParams.value?.url?.includes("?") || false
     );
 
+    const showStubExecutionResults = computed(
+      () =>
+        props.request.stubExecutionResults &&
+        props.request.stubExecutionResults.length
+    );
+    const showStubResponseWriterResults = computed(
+      () =>
+        props.request.stubResponseWriterResults &&
+        props.request.stubResponseWriterResults.length
+    );
+    const showResults = computed(
+      () =>
+        showStubExecutionResults.value && showStubResponseWriterResults.value
+    );
+
     return {
       requestParams,
       requestTime,
@@ -100,6 +124,9 @@ export default {
       headerAndQueryAccordionId,
       resultsAccordionId,
       showQueryParameters,
+      showStubExecutionResults,
+      showStubResponseWriterResults,
+      showResults,
     };
   },
 };
