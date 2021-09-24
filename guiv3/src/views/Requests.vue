@@ -120,7 +120,7 @@ export default {
     const filteredRequests = computed(() => {
       let result = requests.value;
       if (urlStubIdFilter.value) {
-        const searchTerm = urlStubIdFilter.value.toLowerCase();
+        const searchTerm = urlStubIdFilter.value.toLowerCase().trim();
         result = result.filter((r) => {
           const stubId = r.executingStubId
             ? r.executingStubId.toLowerCase()
