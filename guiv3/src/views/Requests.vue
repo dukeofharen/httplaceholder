@@ -28,7 +28,7 @@
           title="Reset"
           @click="urlStubIdFilter = ''"
         >
-          X
+          <em class="bi-x"></em>
         </button>
       </div>
       <div v-if="tenants.length" class="input-group">
@@ -44,7 +44,7 @@
           title="Reset"
           @click="selectedTenantName = ''"
         >
-          X
+          <em class="bi-x"></em>
         </button>
       </div>
     </div>
