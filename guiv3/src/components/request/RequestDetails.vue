@@ -40,6 +40,19 @@
           />
         </div>
       </div>
+      <div class="col-md-12">
+        <div class="accordion" :id="resultsAccordionId">
+          <StubExecutionResults
+            v-if="
+              request.stubExecutionResults &&
+              request.stubExecutionResults.length
+            "
+            :accordion-id="resultsAccordionId"
+            :correlation-id="request.correlationId"
+            :stub-execution-results="request.stubExecutionResults"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -49,10 +62,11 @@ import { computed } from "vue";
 import { formatDateTime, getDuration } from "@/utils/datetime";
 import RequestHeaders from "@/components/request/RequestHeaders";
 import QueryParams from "@/components/request/QueryParams";
+import StubExecutionResults from "@/components/request/StubExecutionResults";
 
 export default {
   name: "RequestDetails",
-  components: { RequestHeaders, QueryParams },
+  components: { StubExecutionResults, RequestHeaders, QueryParams },
   props: {
     request: {
       type: Object,
@@ -62,6 +76,7 @@ export default {
   setup(props) {
     // Data
     const headerAndQueryAccordionId = "headers-query-accordion";
+    const resultsAccordionId = "results-accordion";
 
     // Computed
     const requestParams = computed(
@@ -83,6 +98,7 @@ export default {
       requestTime,
       duration,
       headerAndQueryAccordionId,
+      resultsAccordionId,
       showQueryParameters,
     };
   },
