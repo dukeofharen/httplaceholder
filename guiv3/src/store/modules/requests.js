@@ -1,4 +1,4 @@
-import { get } from "@/utils/api";
+import { del, get } from "@/utils/api";
 
 const state = () => ({});
 
@@ -10,6 +10,11 @@ const actions = {
   },
   getRequest(_, correlationId) {
     return get(`/ph-api/requests/${correlationId}`)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
+  clearRequests() {
+    return del("/ph-api/requests")
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
