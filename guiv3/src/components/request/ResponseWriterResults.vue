@@ -23,9 +23,10 @@
           <li
             v-for="result of stubResponseWriterResults"
             :key="result.responseWriterName"
-            class="list-group-item fw-bold"
+            class="list-group-item"
           >
-            {{ result.responseWriterName }}
+            <label class="fw-bold">{{ result.responseWriterName }}</label>
+            <div v-if="result.log">{{ result.log }}</div>
           </li>
         </ul>
       </div>
@@ -66,4 +67,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+label {
+  display: block;
+}
+</style>
