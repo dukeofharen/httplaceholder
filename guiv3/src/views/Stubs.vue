@@ -57,15 +57,17 @@
       </div>
     </div>
 
-    <div class="accordion" :id="accordionId">
-      <Stub
-        v-for="stub of filteredStubs"
-        :key="stub.stub.id"
-        :overview-stub="stub"
-        :accordion-id="accordionId"
-        @deleted="loadData"
-      />
-    </div>
+    <accordion>
+      <template v-slot:default>
+        <Stub
+          v-for="stub of filteredStubs"
+          :key="stub.stub.id"
+          :overview-stub="stub"
+          :accordion-id="accordionId"
+          @deleted="loadData"
+        />
+      </template>
+    </accordion>
   </div>
 </template>
 
@@ -76,10 +78,11 @@ import { computed, onMounted, ref } from "vue";
 import Stub from "@/components/stub/Stub";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
+import Accordion from "@/components/bootstrap/Accordion";
 
 export default {
   name: "Stubs",
-  components: { Stub },
+  components: { Accordion, Stub },
   setup() {
     const store = useStore();
     const route = useRoute();

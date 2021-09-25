@@ -1,6 +1,6 @@
 <template>
   <div class="accordion" id="accordion">
-    <slot name="accordion-items"></slot>
+    <slot></slot>
   </div>
 </template>
 

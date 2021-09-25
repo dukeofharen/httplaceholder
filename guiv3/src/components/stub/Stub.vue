@@ -1,27 +1,12 @@
 <template>
-  <div class="accordion-item">
-    <h2 class="accordion-header" :id="headingId">
-      <button
-        class="accordion-button collapsed"
-        type="button"
-        data-bs-toggle="collapse"
-        :data-bs-target="'#' + contentId"
-        aria-expanded="false"
-        :aria-controls="contentId"
-        @click="showDetails"
-      >
-        <span :class="{ disabled: !enabled }">
-          {{ id }}
-        </span>
-      </button>
-    </h2>
-    <div
-      :id="contentId"
-      class="accordion-collapse collapse"
-      :aria-labelledby="headingId"
-      :data-bs-parent="'#' + accordionId"
-    >
-      <div v-if="fullStub" class="accordion-body">
+  <accordion-item @opened="showDetails">
+    <template v-slot:button-text>
+      <span :class="{ disabled: !enabled }">
+        {{ id }}
+      </span>
+    </template>
+    <template v-slot:accordion-body>
+      <div v-if="fullStub">
         <div class="row mb-3">
           <div class="col-md-12">
             <router-link
@@ -78,8 +63,8 @@
         </div>
         <pre>{{ stubYaml }}</pre>
       </div>
-    </div>
-  </div>
+    </template>
+  </accordion-item>
 </template>
 
 <script>
@@ -88,16 +73,14 @@ import { useStore } from "vuex";
 import yaml from "js-yaml";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
+import AccordionItem from "@/components/bootstrap/AccordionItem";
 
 export default {
   name: "Stub",
+  components: { AccordionItem },
   props: {
     overviewStub: {
       type: Object,
-      required: true,
-    },
-    accordionId: {
-      type: String,
       required: true,
     },
   },
@@ -114,8 +97,6 @@ export default {
     const showDeleteModal = ref(false);
 
     // Computed
-    const headingId = computed(() => `stubheading-${getStubId()}`);
-    const contentId = computed(() => `stubcontent-${getStubId()}`);
     const stubYaml = computed(() => {
       if (!fullStub.value) {
         return "";
@@ -156,8 +137,6 @@ export default {
     };
 
     return {
-      headingId,
-      contentId,
       showDetails,
       fullStub,
       stubYaml,

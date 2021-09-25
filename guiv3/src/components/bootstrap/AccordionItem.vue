@@ -23,13 +23,18 @@ import { ref } from "vue";
 
 export default {
   name: "AccordionItem",
-  setup() {
+  setup(_, { emit }) {
     // Data
     const opened = ref(false);
 
     // Methods
     const toggle = () => {
       opened.value = !opened.value;
+      if (opened.value) {
+        emit("opened");
+      } else {
+        emit("closed");
+      }
     };
 
     return { opened, toggle };
