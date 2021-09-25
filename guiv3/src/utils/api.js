@@ -19,6 +19,26 @@ const handleResponse = (response) => {
   return isJson ? response.json() : response.text();
 };
 
+const prepareRequest = (input) => {
+  switch (typeof input) {
+    case "string":
+      return {
+        body: input,
+        contentType: "text/plain",
+      };
+    case "object":
+      return {
+        body: JSON.stringify(input),
+        contentType: "application/json",
+      };
+    default:
+      return {
+        body: "",
+        contentType: "",
+      };
+  }
+};
+
 export function get(url, options) {
   options = options || {};
   return fetch(url, {
@@ -32,5 +52,19 @@ export function del(url, options) {
   return fetch(url, {
     method: "delete",
     headers: options.headers || {},
+  }).then(handleResponse);
+}
+
+export function put(url, body, options) {
+  const preparedRequest = prepareRequest(body);
+  options = options || {};
+  const headers = Object.assign(
+    { "content-type": preparedRequest.contentType },
+    options.headers || {}
+  );
+  return fetch(url, {
+    method: "put",
+    headers: headers,
+    body: preparedRequest.body,
   }).then(handleResponse);
 }

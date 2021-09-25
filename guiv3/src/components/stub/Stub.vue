@@ -11,7 +11,7 @@
         @click="showDetails"
       >
         <span>
-          {{ overviewStub.stub.id }}
+          {{ overviewStubValue.stub.id }}
         </span>
       </button>
     </h2>
@@ -29,9 +29,9 @@
               title="View all requests made for this stub"
               :to="{
                 name: 'Requests',
-                query: { filter: overviewStub.stub.id },
+                query: { filter: overviewStubValue.stub.id },
               }"
-              >View requests</router-link
+              >Requests</router-link
             >
             <button
               class="btn btn-success btn-sm me-2"
@@ -46,10 +46,18 @@
               title="Update this stub"
               :to="{
                 name: 'StubForm',
-                params: { stubId: overviewStub.stub.id },
+                params: { stubId: overviewStubValue.stub.id },
               }"
               >Update</router-link
             >
+            <button
+              v-if="!isReadOnly"
+              class="btn btn-success btn-sm me-2"
+              :title="enableDisableTitle"
+              @click="enableOrDisable"
+            >
+              {{ enableDisableText }}
+            </button>
           </div>
         </div>
         <pre>{{ stubYaml }}</pre>
@@ -80,8 +88,10 @@ export default {
 
     // Functions
     const getStubId = () => props.overviewStub.stub.id;
+    const isEnabled = () => props.overviewStub.stub.enabled;
 
     // Data
+    const overviewStubValue = ref(props.overviewStub);
     const fullStub = ref(null);
 
     // Computed
@@ -97,6 +107,12 @@ export default {
     const isReadOnly = computed(() =>
       fullStub.value ? fullStub.value.metadata.readOnly : true
     );
+    const enableDisableTitle = computed(
+      () => `${isEnabled() ? "Disable" : "Enable"} stub`
+    );
+    const enableDisableText = computed(() =>
+      isEnabled() ? "Disable" : "Enable"
+    );
 
     // Methods
     const showDetails = async () => {
@@ -105,6 +121,11 @@ export default {
       }
     };
     const duplicate = () => alert("TODO"); // TODO
+    const enableOrDisable = async () => {
+      const enabled = await store.dispatch("stubs/flipEnabled", getStubId());
+      fullStub.value.stub.enabled = enabled;
+      overviewStubValue.value.stub.enabled = enabled;
+    };
 
     return {
       headingId,
@@ -114,6 +135,10 @@ export default {
       stubYaml,
       duplicate,
       isReadOnly,
+      enableOrDisable,
+      enableDisableTitle,
+      enableDisableText,
+      overviewStubValue,
     };
   },
 };
