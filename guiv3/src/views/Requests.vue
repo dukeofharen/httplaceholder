@@ -5,17 +5,20 @@
       <button type="button" class="btn btn-success me-2" @click="loadRequests">
         Refresh
       </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        @click="showDeleteAllRequestsModal = true"
+      >
+        Delete all requests
+      </button>
       <modal
         title="Delete all requests?"
         bodyText="The requests can't be recovered."
         :yes-click-function="deleteAllRequests"
-      >
-        <template v-slot:modalbutton>
-          <button type="button" class="btn btn-danger">
-            Delete all requests
-          </button>
-        </template>
-      </modal>
+        :show-modal="showDeleteAllRequestsModal"
+        @close="showDeleteAllRequestsModal = false"
+      />
     </div>
     <div class="col-md-12 mb-3">
       <div class="input-group mb-3">
@@ -83,6 +86,7 @@ export default {
     const tenants = ref([]);
     const urlStubIdFilter = ref(route.query.filter || "");
     const selectedTenantName = ref("");
+    const showDeleteAllRequestsModal = ref(false);
 
     // Computed
     const filteredRequests = computed(() => {
@@ -136,6 +140,7 @@ export default {
       filteredRequests,
       tenants,
       selectedTenantName,
+      showDeleteAllRequestsModal,
     };
   },
 };
