@@ -8,7 +8,7 @@ export default function getMenuItems() {
     {
       title: "Stubs",
       icon: "code-slash",
-      routeName: "Home",
+      routeName: "Stubs",
     },
     {
       title: "Add stubs",
