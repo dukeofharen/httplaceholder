@@ -22,6 +22,41 @@
       />
     </div>
 
+    <div class="col-md-12 mb-3">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Filter on stub ID or URL..."
+          v-model="urlStubIdFilter"
+        />
+        <button
+          class="btn btn-outline-danger fw-bold"
+          type="button"
+          title="Reset"
+          @click="urlStubIdFilter = ''"
+        >
+          <em class="bi-x"></em>
+        </button>
+      </div>
+      <div v-if="tenants.length" class="input-group">
+        <select class="form-select" v-model="selectedTenantName">
+          <option value="" selected>
+            Select stub tenant / category name...
+          </option>
+          <option v-for="tenant of tenants" :key="tenant">{{ tenant }}</option>
+        </select>
+        <button
+          class="btn btn-outline-danger fw-bold"
+          type="button"
+          title="Reset"
+          @click="selectedTenantName = ''"
+        >
+          <em class="bi-x"></em>
+        </button>
+      </div>
+    </div>
+
     <div class="accordion" :id="accordionId">
       <Stub
         v-for="stub of filteredStubs"
@@ -36,6 +71,7 @@
 
 <script>
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 import Stub from "@/components/stub/Stub";
 import toastr from "toastr";
@@ -46,11 +82,15 @@ export default {
   components: { Stub },
   setup() {
     const store = useStore();
+    const route = useRoute();
 
     // Data
     const accordionId = "stubs-accordion";
     const stubs = ref([]);
     const showDeleteAllStubsModal = ref(false);
+    const tenants = ref([]);
+    const urlStubIdFilter = ref(route.query.filter || "");
+    const selectedTenantName = ref("");
 
     // Computed
     const filteredStubs = computed(() => {
@@ -61,6 +101,19 @@ export default {
         return 0;
       };
 
+      if (urlStubIdFilter.value) {
+        stubsResult = stubsResult.filter((s) => {
+          const stubId = s.stub.id.toLowerCase();
+          return stubId && stubId.includes(urlStubIdFilter.value);
+        });
+      }
+
+      if (selectedTenantName.value) {
+        stubsResult = stubsResult.filter(
+          (s) => s.stub.tenant === selectedTenantName.value
+        );
+      }
+
       stubsResult.sort(compare);
       return stubsResult;
     });
@@ -69,8 +122,11 @@ export default {
     const loadStubs = async () => {
       stubs.value = await store.dispatch("stubs/getStubsOverview");
     };
+    const loadTenantNames = async () => {
+      tenants.value = await store.dispatch("tenants/getTenantNames");
+    };
     const loadData = async () => {
-      await Promise.all([loadStubs()]);
+      await Promise.all([loadStubs(), loadTenantNames()]);
     };
     const deleteAllStubs = async () => {
       await store.dispatch("stubs/deleteStubs");
@@ -88,6 +144,9 @@ export default {
       loadData,
       showDeleteAllStubsModal,
       deleteAllStubs,
+      tenants,
+      urlStubIdFilter,
+      selectedTenantName,
     };
   },
 };
