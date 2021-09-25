@@ -1,4 +1,4 @@
-import { get, put } from "@/utils/api";
+import { del, get, put } from "@/utils/api";
 
 const state = () => ({});
 
@@ -22,6 +22,11 @@ const actions = {
     stub.enabled = !stub.enabled;
     await put(`/ph-api/stubs/${stubId}`, stub);
     return stub.enabled;
+  },
+  deleteStub(_, stubId) {
+    return del(`/ph-api/stubs/${stubId}`)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
   },
 };
 

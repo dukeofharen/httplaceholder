@@ -58,6 +58,22 @@
             >
               {{ enableDisableText }}
             </button>
+            <button
+              v-if="!isReadOnly"
+              class="btn btn-danger btn-sm me-2"
+              title="Delete the stub"
+              @click="showDeleteModal = true"
+            >
+              Delete
+            </button>
+            <modal
+              v-if="!isReadOnly"
+              :title="deleteStubTitle"
+              bodyText="The stub can't be recovered."
+              :yes-click-function="deleteStub"
+              :show-modal="showDeleteModal"
+              @close="showDeleteModal = false"
+            />
           </div>
         </div>
         <pre>{{ stubYaml }}</pre>
@@ -70,6 +86,8 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import yaml from "js-yaml";
+import toastr from "toastr";
+import { resources } from "@/constants/resources";
 
 export default {
   name: "Stub",
@@ -93,6 +111,7 @@ export default {
     // Data
     const overviewStubValue = ref(props.overviewStub);
     const fullStub = ref(null);
+    const showDeleteModal = ref(false);
 
     // Computed
     const headingId = computed(() => `stubheading-${getStubId()}`);
@@ -113,6 +132,7 @@ export default {
     const enableDisableText = computed(() =>
       isEnabled() ? "Disable" : "Enable"
     );
+    const deleteStubTitle = computed(() => `Delete stub '${getStubId()}'?`);
 
     // Methods
     const showDetails = async () => {
@@ -125,6 +145,12 @@ export default {
       const enabled = await store.dispatch("stubs/flipEnabled", getStubId());
       fullStub.value.stub.enabled = enabled;
       overviewStubValue.value.stub.enabled = enabled;
+    };
+    const deleteStub = async () => {
+      await store.dispatch("stubs/deleteStub", getStubId());
+      toastr.success(resources.stubDeletedSuccessfully);
+      showDeleteModal.value = false;
+      // TODO refresh
     };
 
     return {
@@ -139,6 +165,9 @@ export default {
       enableDisableTitle,
       enableDisableText,
       overviewStubValue,
+      deleteStub,
+      deleteStubTitle,
+      showDeleteModal,
     };
   },
 };

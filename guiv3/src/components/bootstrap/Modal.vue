@@ -1,5 +1,4 @@
 <template>
-  <slot name="modalbutton"></slot>
   <div class="modal fade" tabindex="-1" ref="modal">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -30,7 +29,7 @@
 
 <script>
 import { Modal } from "bootstrap";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 export default {
   name: "Modal",
@@ -51,6 +50,10 @@ export default {
       type: String,
       default: "No",
     },
+    showModal: {
+      type: Boolean,
+      default: false,
+    },
     yesClickFunction: {
       type: Function,
     },
@@ -58,12 +61,12 @@ export default {
       type: Function,
     },
   },
-  setup(props, { slots }) {
+  setup(props, { emit }) {
     // Template refs
     const modal = ref(null);
 
     // Functions
-    const toggleModal = () => {
+    const showModal = () => {
       const currentModal = Modal.getOrCreateInstance(modal.value);
       currentModal.show();
     };
@@ -90,10 +93,24 @@ export default {
 
     // Lifecycle
     onMounted(() => {
-      const button = slots.modalbutton()[0].el;
-      button.addEventListener("click", () => {
-        toggleModal();
+      if (props.showModal) {
+        showModal();
+      } else {
+        hideModal();
+      }
+
+      modal.value.addEventListener("hidden.bs.modal", () => {
+        emit("close");
       });
+    });
+
+    // Watch
+    watch(props, (newProps) => {
+      if (newProps.showModal) {
+        showModal();
+      } else {
+        hideModal();
+      }
     });
 
     return { onYesClick, onNoClick, modal };
