@@ -10,8 +10,8 @@
         :aria-controls="contentId"
         @click="showDetails"
       >
-        <span :class="{ disabled: !overviewStubValue.stub.enabled }">
-          {{ overviewStubValue.stub.id }}
+        <span :class="{ disabled: !enabled }">
+          {{ id }}
         </span>
       </button>
     </h2>
@@ -29,7 +29,7 @@
               title="View all requests made for this stub"
               :to="{
                 name: 'Requests',
-                query: { filter: overviewStubValue.stub.id },
+                query: { filter: id },
               }"
               >Requests</router-link
             >
@@ -46,7 +46,7 @@
               title="Update this stub"
               :to="{
                 name: 'StubForm',
-                params: { stubId: overviewStubValue.stub.id },
+                params: { stubId: id },
               }"
               >Update</router-link
             >
@@ -132,7 +132,9 @@ export default {
     const enableDisableText = computed(() =>
       isEnabled() ? "Disable" : "Enable"
     );
+    const enabled = computed(() => isEnabled());
     const deleteStubTitle = computed(() => `Delete stub '${getStubId()}'?`);
+    const id = computed(() => overviewStubValue.value.stub.id);
 
     // Methods
     const showDetails = async () => {
@@ -168,6 +170,8 @@ export default {
       deleteStub,
       deleteStubTitle,
       showDeleteModal,
+      id,
+      enabled,
     };
   },
 };
