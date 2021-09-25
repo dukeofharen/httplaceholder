@@ -10,7 +10,7 @@
         :aria-controls="contentId"
         @click="showDetails"
       >
-        <span>
+        <span :class="{ disabled: !overviewStubValue.stub.enabled }">
           {{ overviewStubValue.stub.id }}
         </span>
       </button>
@@ -173,4 +173,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.disabled {
+  color: #969696;
+}
+</style>
