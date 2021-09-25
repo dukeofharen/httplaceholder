@@ -4,5 +4,8 @@ import "@/registerServiceWorker";
 import router from "@/router";
 import store from "@/store";
 import "@/plugins";
+import registerGlobalComponents from "@/plugins/global-components";
 
-createApp(App).use(store).use(router).mount("#app");
+const vueApp = createApp(App).use(store).use(router);
+registerGlobalComponents(vueApp);
+vueApp.mount("#app");

@@ -5,14 +5,16 @@
       <button type="button" class="btn btn-success me-2" @click="loadRequests">
         Refresh
       </button>
-      <button
-        type="button"
-        class="btn btn-danger"
-        data-bs-toggle="modal"
-        data-bs-target="#deleteRequestsModal"
+      <modal
+        title="Delete all requests?"
+        bodyText="The requests can't be recovered."
       >
-        Delete all requests
-      </button>
+        <template v-slot:modalbutton>
+          <button type="button" class="btn btn-danger">
+            Delete all requests
+          </button>
+        </template>
+      </modal>
     </div>
     <div class="col-md-12 mb-3">
       <div class="input-group mb-3">
@@ -55,43 +57,6 @@
         :overview-request="request"
         :accordion-id="accordionId"
       />
-    </div>
-    <div
-      class="modal fade"
-      id="deleteRequestsModal"
-      tabindex="-1"
-      aria-labelledby="deleteRequestsModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteRequestsModalLabel">
-              Delete all requests?
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body">The requests can't be recovered.</div>
-          <div class="modal-footer">
-            <button type="button" class="btn" data-bs-dismiss="modal">
-              No
-            </button>
-            <button
-              type="button"
-              class="btn btn-danger"
-              @click="deleteAllRequests"
-              data-bs-dismiss="modal"
-            >
-              Yes
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
