@@ -5,7 +5,7 @@
     <div class="accordion" :id="accordionId">
       <Stub
         v-for="stub of filteredStubs"
-        :key="stub.stubId"
+        :key="stub.stub.id"
         :overview-stub="stub"
         :accordion-id="accordionId"
         @deleted="loadData"
@@ -44,7 +44,6 @@ export default {
 
     // Methods
     const loadStubs = async () => {
-      stubs.value = [];
       stubs.value = await store.dispatch("stubs/getStubsOverview");
       console.log(JSON.stringify(stubs.value));
     };
