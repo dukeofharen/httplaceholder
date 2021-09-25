@@ -28,6 +28,11 @@ const actions = {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
+  deleteStubs() {
+    return del("/ph-api/stubs")
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };
 
 const mutations = {};
