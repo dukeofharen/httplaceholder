@@ -63,7 +63,6 @@
           v-for="stub of filteredStubs"
           :key="stub.stub.id"
           :overview-stub="stub"
-          :accordion-id="accordionId"
           @deleted="loadData"
         />
       </template>
@@ -88,7 +87,6 @@ export default {
     const route = useRoute();
 
     // Data
-    const accordionId = "stubs-accordion";
     const stubs = ref([]);
     const showDeleteAllStubsModal = ref(false);
     const tenants = ref([]);
@@ -141,7 +139,6 @@ export default {
     onMounted(async () => await loadData());
 
     return {
-      accordionId,
       stubs,
       filteredStubs,
       loadData,
