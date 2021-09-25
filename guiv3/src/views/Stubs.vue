@@ -90,7 +90,7 @@ export default {
     const showDeleteAllStubsModal = ref(false);
     const tenants = ref([]);
     const urlStubIdFilter = ref(route.query.filter || "");
-    const selectedTenantName = ref("");
+    const selectedTenantName = ref(route.query.tenant || "");
 
     // Computed
     const filteredStubs = computed(() => {

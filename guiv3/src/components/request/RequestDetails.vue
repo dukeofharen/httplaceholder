@@ -15,13 +15,17 @@
       </div>
       <div class="col-md-12 mb-3">
         <label>Executed stub</label>
-        <!-- TODO Add router link here -->
-        <span>{{ request.executingStubId }}</span>
+        <router-link
+          :to="{ name: 'Stubs', query: { filter: request.executingStubId } }"
+          >{{ request.executingStubId }}</router-link
+        >
       </div>
       <div class="col-md-12 mb-3">
         <label>Stub tenant (category)</label>
-        <!-- TODO Add router link here -->
-        <span>{{ request.stubTenant }}</span>
+        <router-link
+          :to="{ name: 'Stubs', query: { tenant: request.stubTenant } }"
+          >{{ request.stubTenant }}</router-link
+        >
       </div>
       <div class="col-md-12 mb-3">
         <label>Request time</label>
