@@ -101,7 +101,7 @@ export default {
       required: true,
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore();
 
     // Functions
@@ -150,7 +150,7 @@ export default {
       await store.dispatch("stubs/deleteStub", getStubId());
       toastr.success(resources.stubDeletedSuccessfully);
       showDeleteModal.value = false;
-      // TODO refresh
+      emit("deleted");
     };
 
     return {

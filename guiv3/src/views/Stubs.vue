@@ -8,6 +8,7 @@
         :key="stub.stubId"
         :overview-stub="stub"
         :accordion-id="accordionId"
+        @deleted="loadData"
       />
     </div>
   </div>
@@ -43,13 +44,18 @@ export default {
 
     // Methods
     const loadStubs = async () => {
+      stubs.value = [];
       stubs.value = await store.dispatch("stubs/getStubsOverview");
+      console.log(JSON.stringify(stubs.value));
+    };
+    const loadData = async () => {
+      await Promise.all([loadStubs()]);
     };
 
     // Lifecycle
-    onMounted(async () => await loadStubs());
+    onMounted(async () => await loadData());
 
-    return { accordionId, stubs, filteredStubs };
+    return { accordionId, stubs, filteredStubs, loadData };
   },
 };
 </script>
