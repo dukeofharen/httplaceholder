@@ -25,13 +25,30 @@
         <div class="row mb-3">
           <div class="col-md-12">
             <router-link
-              class="btn btn-success btn-sm"
+              class="btn btn-success btn-sm me-2"
               title="View all requests made for this stub"
               :to="{
                 name: 'Requests',
                 query: { filter: overviewStub.stub.id },
               }"
               >View requests</router-link
+            >
+            <button
+              class="btn btn-success btn-sm me-2"
+              title="Duplicate this stub"
+              @click="duplicate"
+            >
+              Duplicate
+            </button>
+            <router-link
+              v-if="!isReadOnly"
+              class="btn btn-success btn-sm me-2"
+              title="Update this stub"
+              :to="{
+                name: 'StubForm',
+                params: { stubId: overviewStub.stub.id },
+              }"
+              >Update</router-link
             >
           </div>
         </div>
@@ -77,6 +94,9 @@ export default {
 
       return yaml.dump(fullStub.value.stub);
     });
+    const isReadOnly = computed(() =>
+      fullStub.value ? fullStub.value.metadata.readOnly : true
+    );
 
     // Methods
     const showDetails = async () => {
@@ -84,8 +104,17 @@ export default {
         fullStub.value = await store.dispatch("stubs/getStub", getStubId());
       }
     };
+    const duplicate = () => alert("TODO"); // TODO
 
-    return { headingId, contentId, showDetails, fullStub, stubYaml };
+    return {
+      headingId,
+      contentId,
+      showDetails,
+      fullStub,
+      stubYaml,
+      duplicate,
+      isReadOnly,
+    };
   },
 };
 </script>

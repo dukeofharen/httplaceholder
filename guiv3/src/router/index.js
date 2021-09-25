@@ -19,6 +19,12 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "stubs" */ "../views/Stubs.vue"),
   },
+  {
+    path: "/stubForm/:stubId?",
+    name: "StubForm",
+    component: () =>
+      import(/* webpackChunkName: "stubForm" */ "../views/StubForm.vue"),
+  },
 ];
 
 const router = createRouter({
