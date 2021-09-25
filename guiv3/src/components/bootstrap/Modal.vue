@@ -1,6 +1,6 @@
 <template>
   <slot name="modalbutton"></slot>
-  <div class="modal" tabindex="-1" ref="modal">
+  <div class="modal fade" tabindex="-1" ref="modal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
