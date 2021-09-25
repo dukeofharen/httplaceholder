@@ -22,6 +22,19 @@
       :data-bs-parent="'#' + accordionId"
     >
       <div v-if="fullStub" class="accordion-body">
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <router-link
+              class="btn btn-success btn-sm"
+              title="View all requests made for this stub"
+              :to="{
+                name: 'Requests',
+                query: { filter: overviewStub.stub.id },
+              }"
+              >View requests</router-link
+            >
+          </div>
+        </div>
         <pre>{{ stubYaml }}</pre>
       </div>
     </div>

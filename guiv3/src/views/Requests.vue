@@ -98,6 +98,7 @@
 
 <script>
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 import Request from "@/components/request/Request";
 import { resources } from "@/constants/resources";
@@ -108,12 +109,13 @@ export default {
   components: { Request },
   setup() {
     const store = useStore();
+    const route = useRoute();
 
     // Data
     const accordionId = "requests-accordion";
     const requests = ref([]);
     const tenants = ref([]);
-    const urlStubIdFilter = ref("");
+    const urlStubIdFilter = ref(route.query.filter || "");
     const selectedTenantName = ref("");
 
     // Computed
