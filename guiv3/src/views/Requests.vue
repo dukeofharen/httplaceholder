@@ -8,6 +8,7 @@
       <modal
         title="Delete all requests?"
         bodyText="The requests can't be recovered."
+        :yes-click-function="deleteAllRequests"
       >
         <template v-slot:modalbutton>
           <button type="button" class="btn btn-danger">

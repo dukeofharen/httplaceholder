@@ -16,14 +16,10 @@
           <p>{{ bodyText }}</p>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
+          <button type="button" class="btn btn-secondary" @click="onNoClick">
             {{ noText }}
           </button>
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          <button type="button" class="btn btn-primary" @click="onYesClick">
             {{ yesText }}
           </button>
         </div>
@@ -68,12 +64,12 @@ export default {
 
     // Functions
     const toggleModal = () => {
-      const currentModal = new Modal(modal.value);
-      currentModal.toggle();
+      const currentModal = Modal.getOrCreateInstance(modal.value);
+      currentModal.show();
     };
     const hideModal = () => {
-      const currentModal = new Modal(modal.value);
-      currentModal.toggle();
+      const currentModal = Modal.getOrCreateInstance(modal.value);
+      currentModal.hide();
     };
 
     // Methods
