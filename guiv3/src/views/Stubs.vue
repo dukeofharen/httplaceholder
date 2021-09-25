@@ -4,7 +4,7 @@
 
     <div class="accordion" :id="accordionId">
       <Stub
-        v-for="stub of stubs"
+        v-for="stub of filteredStubs"
         :key="stub.stubId"
         :overview-stub="stub"
         :accordion-id="accordionId"
@@ -15,7 +15,7 @@
 
 <script>
 import { useStore } from "vuex";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import Stub from "@/components/stub/Stub";
 
 export default {
@@ -28,6 +28,19 @@ export default {
     const accordionId = "stubs-accordion";
     const stubs = ref([]);
 
+    // Computed
+    const filteredStubs = computed(() => {
+      let stubsResult = stubs.value;
+      const compare = (a, b) => {
+        if (a.stub.id < b.stub.id) return -1;
+        if (a.stub.id > b.stub.id) return 1;
+        return 0;
+      };
+
+      stubsResult.sort(compare);
+      return stubsResult;
+    });
+
     // Methods
     const loadStubs = async () => {
       stubs.value = await store.dispatch("stubs/getStubsOverview");
@@ -36,7 +49,7 @@ export default {
     // Lifecycle
     onMounted(async () => await loadStubs());
 
-    return { accordionId, stubs };
+    return { accordionId, stubs, filteredStubs };
   },
 };
 </script>
