@@ -1,4 +1,5 @@
-import { del, get, put } from "@/utils/api";
+import { del, get, put, post } from "@/utils/api";
+import yaml from "js-yaml";
 
 const state = () => ({});
 
@@ -30,6 +31,15 @@ const actions = {
   },
   deleteStubs() {
     return del("/ph-api/stubs")
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
+  addStubs(_, input) {
+    const parsedObject = yaml.load(input);
+    const stubsArray = Array.isArray(parsedObject)
+      ? parsedObject
+      : [parsedObject];
+    return post("/ph-api/stubs/multiple", stubsArray)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },

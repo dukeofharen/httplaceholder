@@ -11,7 +11,7 @@
             aria-label="Close"
           ></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" v-if="bodyText">
           <p>{{ bodyText }}</p>
         </div>
         <div class="modal-footer">
@@ -40,7 +40,6 @@ export default {
     },
     bodyText: {
       type: String,
-      required: true,
     },
     yesText: {
       type: String,

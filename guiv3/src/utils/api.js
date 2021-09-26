@@ -64,7 +64,21 @@ export function put(url, body, options) {
   );
   return fetch(url, {
     method: "put",
-    headers: headers,
+    headers,
     body: preparedRequest.body,
   }).then(handleResponse);
+}
+
+export function post(url, body, options) {
+  const preparedRequest = prepareRequest(body);
+  options = options || {};
+  const headers = Object.assign(
+    { "content-type": preparedRequest.contentType },
+    options.headers || {}
+  );
+  return fetch(url, {
+    method: "post",
+    headers,
+    body: preparedRequest.body,
+  });
 }

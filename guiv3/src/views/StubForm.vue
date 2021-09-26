@@ -14,15 +14,35 @@
   <div class="row">
     <div class="col-md-12">
       <codemirror v-model="input" :options="cmOptions" />
-      {{ input }}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-success me-2" @click="save">Save</button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        @click="showResetModal = true"
+      >
+        Reset
+      </button>
+      <modal
+        title="Reset to defaults?"
+        :yes-click-function="reset"
+        :show-modal="showResetModal"
+        @close="showResetModal = false"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { useRoute } from "vue-router";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
+import { resources } from "@/constants/resources";
+import toastr from "toastr";
 
 export default {
   name: "StubForm",
@@ -32,7 +52,7 @@ export default {
 
     // Data
     const stubId = ref(route.params.stubId);
-    // const input = ref(""); // TODO move this to store lateron.
+    const showResetModal = ref(false);
     const cmOptions = {
       tabSize: 4,
       mode: "text/x-yaml",
@@ -48,7 +68,44 @@ export default {
       set: (value) => store.commit("stubForm/setInput", value),
     });
 
-    return { stubId, newStub, title, input, cmOptions };
+    // Methods
+    const save = async () => {
+      try {
+        await store.dispatch("stubs/addStubs", input.value);
+        if (newStub.value) {
+          toastr.success(resources.stubsAddedSuccessfully);
+        } else {
+          toastr.success(resources.stubUpdatedSuccessfully);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    const reset = () => {
+      input.value = resources.defaultStub;
+    };
+
+    // TODO reset button
+    // TODO save button
+    // TODO intermediate stub
+    // TODO check HTTP 400 situations
+    // Lifecycle
+    onMounted(async () => {
+      if (newStub.value) {
+        input.value = resources.defaultStub;
+      }
+    });
+
+    return {
+      stubId,
+      newStub,
+      title,
+      input,
+      cmOptions,
+      save,
+      showResetModal,
+      reset,
+    };
   },
 };
 </script>
