@@ -1,50 +1,30 @@
 <template>
-  <div class="accordion-item">
-    <h2 class="accordion-header" :id="headingId">
-      <button
-        class="accordion-button collapsed"
-        type="button"
-        data-bs-toggle="collapse"
-        :data-bs-target="'#' + contentId"
-        aria-expanded="false"
-        :aria-controls="contentId"
-      >
-        Stub execution results
-      </button>
-    </h2>
-    <div
-      :id="contentId"
-      class="accordion-collapse collapse"
-      :aria-labelledby="headingId"
-      :data-bs-parent="'#' + accordionId"
-    >
-      <div class="accordion-body">
-        <div class="accordion" :id="subAccordionId">
-          <StubExecutionResult
-            v-for="result of orderedStubExecutionResults"
-            :key="result.stubId"
-            :accordion-id="subAccordionId"
-            :correlation-id="correlationId"
-            :result="result"
-          />
-        </div>
+  <accordion-item>
+    <template v-slot:button-text>Stub execution results</template>
+    <template v-slot:accordion-body>
+      <accordion> </accordion>
+      <div class="accordion">
+        <StubExecutionResult
+          v-for="result of orderedStubExecutionResults"
+          :key="result.stubId"
+          :correlation-id="correlationId"
+          :result="result"
+        />
       </div>
-    </div>
-  </div>
+    </template>
+  </accordion-item>
 </template>
 
 <script>
 import { computed } from "vue";
 import StubExecutionResult from "@/components/request/StubExecutionResult";
+import AccordionItem from "@/components/bootstrap/AccordionItem";
+import Accordion from "@/components/bootstrap/Accordion";
 
 export default {
   name: "StubExecutionResults",
-  components: { StubExecutionResult },
+  components: { Accordion, AccordionItem, StubExecutionResult },
   props: {
-    accordionId: {
-      type: String,
-      required: true,
-    },
     correlationId: {
       type: String,
       required: true,
@@ -56,15 +36,6 @@ export default {
   },
   setup(props) {
     // Computed
-    const headingId = computed(
-      () => `stubexecutionresults_heading-${props.correlationId}`
-    );
-    const contentId = computed(
-      () => `stubexecutionresults_content-${props.correlationId}`
-    );
-    const subAccordionId = computed(
-      () => `stub-execution-results_${props.correlationId}`
-    );
     const orderedStubExecutionResults = computed(() => {
       const compare = (a) => {
         if (a.passed) return -1;
@@ -77,9 +48,6 @@ export default {
     });
 
     return {
-      headingId,
-      contentId,
-      subAccordionId,
       orderedStubExecutionResults,
     };
   },

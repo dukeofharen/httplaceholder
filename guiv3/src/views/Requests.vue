@@ -54,14 +54,13 @@
         </button>
       </div>
     </div>
-    <div class="accordion" :id="accordionId">
+    <accordion>
       <Request
         v-for="request of filteredRequests"
         :key="request.correlationId"
         :overview-request="request"
-        :accordion-id="accordionId"
       />
-    </div>
+    </accordion>
   </div>
 </template>
 
@@ -81,7 +80,6 @@ export default {
     const route = useRoute();
 
     // Data
-    const accordionId = "requests-accordion";
     const requests = ref([]);
     const tenants = ref([]);
     const urlStubIdFilter = ref(route.query.filter || "");
@@ -133,7 +131,6 @@ export default {
 
     return {
       requests,
-      accordionId,
       loadRequests,
       deleteAllRequests,
       urlStubIdFilter,

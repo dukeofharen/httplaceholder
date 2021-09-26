@@ -1,74 +1,58 @@
 <template>
-  <div class="accordion-item">
-    <h2 class="accordion-header" :id="headingId">
-      <button
-        class="accordion-button collapsed"
-        type="button"
-        data-bs-toggle="collapse"
-        :data-bs-target="'#' + contentId"
-        aria-expanded="false"
-        :aria-controls="contentId"
+  <accordion-item>
+    <template v-slot:button-text>
+      <span>{{ result.stubId }}</span>
+      <span>&nbsp;</span>
+      <span>(</span>
+      <span
+        class="fw-bold"
+        :class="{
+          'text-success': result.passed,
+          'text-danger': !result.passed,
+        }"
+        >{{ result.passed ? "passed" : "not passed" }}</span
       >
-        <span>{{ result.stubId }}</span>
-        <span>&nbsp;</span>
-        <span>(</span>
-        <span
-          class="fw-bold"
-          :class="{
-            'text-success': result.passed,
-            'text-danger': !result.passed,
-          }"
-          >{{ result.passed ? "passed" : "not passed" }}</span
-        >
-        <span>)</span>
-      </button>
-    </h2>
-    <div
-      :id="contentId"
-      class="accordion-collapse collapse"
-      :aria-labelledby="headingId"
-      :data-bs-parent="'#' + accordionId"
-    >
-      <div v-if="result.conditions.length" class="accordion-body">
-        <div
-          v-for="condition of result.conditions"
-          :key="condition.checkerName"
-        >
-          <label class="fw-bold">{{ condition.checkerName }}</label>
-          <div
-            :class="{
-              'text-success':
-                condition.conditionValidation === conditionValidationType.Valid,
-              'text-danger':
-                condition.conditionValidation ===
-                conditionValidationType.Invalid,
-            }"
-          >
-            {{
-              condition.conditionValidation === conditionValidationType.Valid
-                ? "passed"
-                : "not passed"
-            }}
-          </div>
-          <div v-if="condition.log">{{ condition.log }}</div>
-          <hr />
-        </div>
+      <span>)</span>
+    </template>
+    <template v-slot:accordion-body>
+      <div v-if="!result.conditions.length">
+        No condition checkers executed for this stub.
       </div>
-    </div>
-  </div>
+      <div
+        v-else
+        v-for="condition of result.conditions"
+        :key="condition.checkerName"
+      >
+        <label class="fw-bold">{{ condition.checkerName }}</label>
+        <div
+          :class="{
+            'text-success':
+              condition.conditionValidation === conditionValidationType.Valid,
+            'text-danger':
+              condition.conditionValidation === conditionValidationType.Invalid,
+          }"
+        >
+          {{
+            condition.conditionValidation === conditionValidationType.Valid
+              ? "passed"
+              : "not passed"
+          }}
+        </div>
+        <div v-if="condition.log">{{ condition.log }}</div>
+        <hr />
+      </div>
+    </template>
+  </accordion-item>
 </template>
 
 <script>
-import { computed } from "vue";
 import { conditionValidationType } from "@/constants/conditionValidationType";
+import AccordionItem from "@/components/bootstrap/AccordionItem";
 
 export default {
   name: "StubExecutionResult",
+  components: { AccordionItem },
   props: {
-    accordionId: {
-      type: String,
-      required: true,
-    },
     correlationId: {
       type: String,
       required: true,
@@ -78,18 +62,8 @@ export default {
       required: true,
     },
   },
-  setup(props) {
-    // Computed
-    const headingId = computed(
-      () =>
-        `stubexecutionresults_heading-${props.result.stubId}-${props.correlationId}`
-    );
-    const contentId = computed(
-      () =>
-        `stubexecutionresults_content-${props.result.stubId}-${props.correlationId}`
-    );
-
-    return { headingId, contentId, conditionValidationType };
+  setup() {
+    return { conditionValidationType };
   },
 };
 </script>

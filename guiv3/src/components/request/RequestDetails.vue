@@ -32,29 +32,22 @@
         <span>{{ requestTime }} (it took {{ duration }} ms)</span>
       </div>
       <div class="col-md-12 mb-3">
-        <div class="accordion" :id="headerAndQueryAccordionId">
-          <RequestHeaders
-            :accordion-id="headerAndQueryAccordionId"
-            :request="request"
-          />
-          <QueryParams
-            v-if="showQueryParameters"
-            :accordion-id="headerAndQueryAccordionId"
-            :request="request"
-          />
+        <accordion> </accordion>
+        <div class="accordion">
+          <RequestHeaders :request="request" />
+          <QueryParams v-if="showQueryParameters" :request="request" />
         </div>
       </div>
       <div v-if="showResults" class="col-md-12">
-        <div class="accordion" :id="resultsAccordionId">
+        <accordion> </accordion>
+        <div class="accordion">
           <StubExecutionResults
             v-if="showStubExecutionResults"
-            :accordion-id="resultsAccordionId"
             :correlation-id="request.correlationId"
             :stub-execution-results="request.stubExecutionResults"
           />
           <ResponseWriterResults
             v-if="showStubResponseWriterResults"
-            :accordion-id="resultsAccordionId"
             :correlation-id="request.correlationId"
             :stub-response-writer-results="request.stubResponseWriterResults"
           />
@@ -71,10 +64,12 @@ import RequestHeaders from "@/components/request/RequestHeaders";
 import QueryParams from "@/components/request/QueryParams";
 import StubExecutionResults from "@/components/request/StubExecutionResults";
 import ResponseWriterResults from "@/components/request/ResponseWriterResults";
+import Accordion from "@/components/bootstrap/Accordion";
 
 export default {
   name: "RequestDetails",
   components: {
+    Accordion,
     StubExecutionResults,
     RequestHeaders,
     QueryParams,
@@ -87,10 +82,6 @@ export default {
     },
   },
   setup(props) {
-    // Data
-    const headerAndQueryAccordionId = "headers-query-accordion";
-    const resultsAccordionId = "results-accordion";
-
     // Computed
     const requestParams = computed(
       () => props.request?.requestParameters || {}
@@ -118,15 +109,13 @@ export default {
     );
     const showResults = computed(
       () =>
-        showStubExecutionResults.value && showStubResponseWriterResults.value
+        showStubExecutionResults.value || showStubResponseWriterResults.value
     );
 
     return {
       requestParams,
       requestTime,
       duration,
-      headerAndQueryAccordionId,
-      resultsAccordionId,
       showQueryParameters,
       showStubExecutionResults,
       showStubResponseWriterResults,

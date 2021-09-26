@@ -28,7 +28,7 @@ export default {
   props: {
     opened: {
       type: Boolean,
-      default: false,
+      default: null,
     },
   },
   setup(props, { emit }) {
@@ -37,14 +37,20 @@ export default {
 
     // Methods
     const toggle = () => {
-      emit("buttonClicked");
-      // TODO
-      // opened.value = !opened.value;
-      // if (opened.value) {
-      //   emit("opened");
-      // } else {
-      //   emit("closed");
-      // }
+      if (props.opened !== null) {
+        emit("buttonClicked");
+      } else {
+        if (openedValue.value === null) {
+          openedValue.value = true;
+        } else {
+          openedValue.value = !openedValue.value;
+          if (openedValue.value) {
+            emit("opened");
+          } else {
+            emit("closed");
+          }
+        }
+      }
     };
 
     watch(props, (newProps) => (openedValue.value = newProps.opened));

@@ -58,14 +58,12 @@
     </div>
 
     <accordion>
-      <template v-slot:default>
-        <Stub
-          v-for="stub of filteredStubs"
-          :key="stub.stub.id"
-          :overview-stub="stub"
-          @deleted="loadData"
-        />
-      </template>
+      <Stub
+        v-for="stub of filteredStubs"
+        :key="stub.stub.id"
+        :overview-stub="stub"
+        @deleted="loadData"
+      />
     </accordion>
   </div>
 </template>
