@@ -59,6 +59,7 @@
         v-for="request of filteredRequests"
         :key="request.correlationId"
         :overview-request="request"
+        @deleted="loadRequests"
       />
     </accordion>
   </div>

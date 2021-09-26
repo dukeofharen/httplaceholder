@@ -18,6 +18,24 @@
       </span>
     </template>
     <template v-slot:accordion-body>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <button
+            class="btn btn-success btn-sm me-2"
+            @click="createStub"
+            title="Create a stub based on the request parameters of this request"
+          >
+            Create stub
+          </button>
+          <button
+            class="btn btn-danger btn-sm"
+            @click="deleteRequest"
+            title="Delete this request"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
       <RequestDetails :request="request" />
     </template>
   </accordion-item>
@@ -26,10 +44,16 @@
 <script>
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
+import toastr from "toastr";
 import { formatDateTime, formatFromNow } from "@/utils/datetime";
+import { handleHttpError } from "@/utils/error";
+import { setIntermediateStub } from "@/utils/session";
 import Method from "@/components/request/Method";
 import RequestDetails from "@/components/request/RequestDetails";
 import AccordionItem from "@/components/bootstrap/AccordionItem";
+import { resources } from "@/constants/resources";
+import yaml from "js-yaml";
+import { useRouter } from "vue-router";
 
 export default {
   name: "Request",
@@ -40,8 +64,9 @@ export default {
       required: true,
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     const store = useStore();
+    const router = useRouter();
 
     // Functions
     const getRequestTime = () => props.overviewRequest.requestEndTime;
@@ -82,6 +107,23 @@ export default {
         accordionOpened.value = !accordionOpened.value;
       }
     };
+    const createStub = async () => {
+      const fullStub = await store.dispatch("stubs/createStubBasedOnRequest", {
+        correlationId: correlationId(),
+        doNotCreateStub: true,
+      });
+      setIntermediateStub(yaml.dump(fullStub.stub));
+      await router.push({ name: "StubForm" });
+    };
+    const deleteRequest = async () => {
+      try {
+        await store.dispatch("requests/deleteRequest", correlationId());
+        toastr.success(resources.requestDeletedSuccessfully);
+        emit("deleted");
+      } catch (e) {
+        handleHttpError(e);
+      }
+    };
 
     return {
       executed: executed(),
@@ -91,6 +133,8 @@ export default {
       request,
       showDetails,
       accordionOpened,
+      createStub,
+      deleteRequest,
     };
   },
 };

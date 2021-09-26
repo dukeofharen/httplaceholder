@@ -43,6 +43,14 @@ const actions = {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
+  createStubBasedOnRequest(_, payload) {
+    return post(`/ph-api/requests/${payload.correlationId}/stubs`, {
+      doNotCreateStub:
+        payload.doNotCreateStub !== null ? payload.doNotCreateStub : false,
+    })
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };
 
 const mutations = {};

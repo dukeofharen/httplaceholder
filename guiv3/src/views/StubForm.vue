@@ -45,6 +45,7 @@ import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import toastr from "toastr";
 import yaml from "js-yaml";
+import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";
 
 export default {
   name: "StubForm",
@@ -89,16 +90,19 @@ export default {
     };
     const reset = () => {
       input.value = resources.defaultStub;
+      stubId.value = "";
     };
 
-    // TODO reset button
-    // TODO save button
-    // TODO intermediate stub
-    // TODO check HTTP 400 situations
     // Lifecycle
     onMounted(async () => {
       if (newStub.value) {
-        input.value = resources.defaultStub;
+        const intermediateStub = getIntermediateStub();
+        if (intermediateStub) {
+          input.value = intermediateStub;
+          clearIntermediateStub();
+        } else {
+          input.value = resources.defaultStub;
+        }
       } else {
         const fullStub = await store.dispatch("stubs/getStub", stubId.value);
         input.value = yaml.dump(fullStub.stub);

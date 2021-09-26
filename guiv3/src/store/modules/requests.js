@@ -18,6 +18,11 @@ const actions = {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
+  deleteRequest(_, correlationId) {
+    return del(`/ph-api/requests/${correlationId}`)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };
 
 const mutations = {};
