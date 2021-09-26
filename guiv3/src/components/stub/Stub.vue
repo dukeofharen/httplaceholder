@@ -1,5 +1,5 @@
 <template>
-  <accordion-item @opened="showDetails">
+  <accordion-item @buttonClicked="showDetails" :opened="accordionOpened">
     <template v-slot:button-text>
       <span :class="{ disabled: !enabled }">
         {{ id }}
@@ -95,6 +95,7 @@ export default {
     const overviewStubValue = ref(props.overviewStub);
     const fullStub = ref(null);
     const showDeleteModal = ref(false);
+    const accordionOpened = ref(false);
 
     // Computed
     const stubYaml = computed(() => {
@@ -121,6 +122,11 @@ export default {
     const showDetails = async () => {
       if (!fullStub.value) {
         fullStub.value = await store.dispatch("stubs/getStub", getStubId());
+
+        // Sadly, when doing this without the timeout, it does the slide down incorrect.
+        setTimeout(() => (accordionOpened.value = true), 1);
+      } else {
+        accordionOpened.value = !accordionOpened.value;
       }
     };
     const duplicate = () => alert("TODO"); // TODO
@@ -151,6 +157,7 @@ export default {
       showDeleteModal,
       id,
       enabled,
+      accordionOpened,
     };
   },
 };

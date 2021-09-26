@@ -3,41 +3,53 @@
     <h2 class="accordion-header">
       <button
         class="accordion-button"
-        :class="{ collapsed: !opened }"
+        :class="{ collapsed: !openedValue }"
         type="button"
         @click="toggle"
       >
         <slot name="button-text"></slot>
       </button>
     </h2>
-    <div class="accordion-collapse collapse" :class="{ show: opened }">
-      <div class="accordion-body">
-        <slot name="accordion-body"></slot>
+    <slide-up-down v-model="openedValue" :duration="300">
+      <div class="accordion-collapse collapse show">
+        <div class="accordion-body">
+          <slot name="accordion-body"></slot>
+        </div>
       </div>
-    </div>
+    </slide-up-down>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 export default {
   name: "AccordionItem",
-  setup(_, { emit }) {
+  props: {
+    opened: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props, { emit }) {
     // Data
-    const opened = ref(false);
+    const openedValue = ref(props.opened);
 
     // Methods
     const toggle = () => {
-      opened.value = !opened.value;
-      if (opened.value) {
-        emit("opened");
-      } else {
-        emit("closed");
-      }
+      emit("buttonClicked");
+      // TODO
+      // opened.value = !opened.value;
+      // if (opened.value) {
+      //   emit("opened");
+      // } else {
+      //   emit("closed");
+      // }
     };
 
-    return { opened, toggle };
+    watch(props, (newProps) => (openedValue.value = newProps.opened));
+
+    return { openedValue, toggle };
   },
 };
 </script>
