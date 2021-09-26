@@ -30,13 +30,12 @@ export default {
 
     // Watch
     watch(props, (newProps) => {
-      if (cmInstance) {
+      if (cmInstance && cmInstance.getValue() !== newProps.modelValue) {
         cmInstance.setValue(newProps.modelValue);
       }
     });
 
     // Lifecycle
-    // TODO on destroy
     onMounted(() => {
       cmInstance = CodeMirror.fromTextArea(editor.value, props.options);
       cmInstance.on("change", () =>
