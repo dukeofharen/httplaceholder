@@ -13,7 +13,7 @@ export default function getMenuItems() {
     {
       title: "Add stubs",
       icon: "plus",
-      routeName: "Requests",
+      routeName: "StubForm",
     },
     {
       title: "Upload stubs",
