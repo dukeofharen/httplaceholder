@@ -1,9 +1,9 @@
 <template>
-  <textarea ref="editor"></textarea>
+  <textarea ref="editor" v-model="contents"></textarea>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import CodeMirror from "codemirror";
 
 export default {
@@ -18,22 +18,30 @@ export default {
       default: () => {},
     },
   },
-  setup(props) {
+  setup(props, { emit }) {
     // Refs
     const editor = ref(null);
 
     // Data
     const contents = ref(props.modelValue);
 
+    // Variables
+    let cmInstance;
+
     // Watch
-    // watch(contents, (newContents) => {
-    //   emit("update:modelValue", newContents);
-    // });
+    watch(props, (newProps) => {
+      if (cmInstance) {
+        cmInstance.setValue(newProps.modelValue);
+      }
+    });
 
     // Lifecycle
     // TODO on destroy
     onMounted(() => {
-      CodeMirror.fromTextArea(editor.value, props.options);
+      cmInstance = CodeMirror.fromTextArea(editor.value, props.options);
+      cmInstance.on("change", () =>
+        emit("update:modelValue", cmInstance.getValue())
+      );
     });
 
     return { contents, editor };
