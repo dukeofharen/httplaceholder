@@ -1,4 +1,4 @@
-const handleResponse = (response) => {
+const handleResponse = async (response) => {
   const headers = {};
   for (let header of response.headers.entries()) {
     headers[header[0]] = header[1];
@@ -12,7 +12,8 @@ const handleResponse = (response) => {
 
   if (!response.ok) {
     const error = new Error(response.statusText);
-    error.json = isJson ? response.json() : response.text();
+    error.body = isJson ? await response.json() : await response.text();
+    error.status = response.status;
     throw error;
   }
 
@@ -80,5 +81,5 @@ export function post(url, body, options) {
     method: "post",
     headers,
     body: preparedRequest.body,
-  });
+  }).then(handleResponse);
 }

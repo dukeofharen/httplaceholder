@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row mt-2">
     <div class="col-md-12">
       <button class="btn btn-success me-2" @click="save">Save</button>
       <button
@@ -42,7 +42,9 @@ import { useRoute } from "vue-router";
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { resources } from "@/constants/resources";
+import { handleHttpError } from "@/utils/error";
 import toastr from "toastr";
+import yaml from "js-yaml";
 
 export default {
   name: "StubForm",
@@ -71,14 +73,18 @@ export default {
     // Methods
     const save = async () => {
       try {
-        await store.dispatch("stubs/addStubs", input.value);
-        if (newStub.value) {
-          toastr.success(resources.stubsAddedSuccessfully);
-        } else {
-          toastr.success(resources.stubUpdatedSuccessfully);
+        const result = await store.dispatch("stubs/addStubs", input.value);
+        if (result.length === 1) {
+          stubId.value = result[0].stub.id;
         }
+
+        toastr.success(
+          newStub.value
+            ? resources.stubsAddedSuccessfully
+            : resources.stubUpdatedSuccessfully
+        );
       } catch (e) {
-        console.log(e);
+        handleHttpError(e);
       }
     };
     const reset = () => {
@@ -93,6 +99,9 @@ export default {
     onMounted(async () => {
       if (newStub.value) {
         input.value = resources.defaultStub;
+      } else {
+        const fullStub = await store.dispatch("stubs/getStub", stubId.value);
+        input.value = yaml.dump(fullStub.stub);
       }
     });
 
