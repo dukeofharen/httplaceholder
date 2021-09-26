@@ -13,6 +13,12 @@
 
   <div class="row">
     <div class="col-md-12">
+      <FormHelperSelector />
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
       <codemirror v-model="input" :options="cmOptions" />
     </div>
   </div>
@@ -46,9 +52,11 @@ import { handleHttpError } from "@/utils/error";
 import toastr from "toastr";
 import yaml from "js-yaml";
 import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";
+import FormHelperSelector from "@/components/stub/FormHelperSelector";
 
 export default {
   name: "StubForm",
+  components: { FormHelperSelector },
   setup() {
     const route = useRoute();
     const store = useStore();
