@@ -31,6 +31,9 @@
       <HttpMethodSelector
         v-if="currentSelectedFormHelper === formHelperKeys.httpMethod"
       />
+      <TenantSelector
+        v-if="currentSelectedFormHelper === formHelperKeys.tenant"
+      />
     </div>
   </div>
 </template>
@@ -43,10 +46,11 @@ import {
 } from "@/constants/stubFormResources";
 import { useStore } from "vuex";
 import HttpMethodSelector from "@/components/stub/HttpMethodSelector";
+import TenantSelector from "@/components/stub/TenantSelector";
 
 export default {
   name: "FormHelperSelector",
-  components: { HttpMethodSelector },
+  components: { TenantSelector, HttpMethodSelector },
   setup() {
     const store = useStore();
 
