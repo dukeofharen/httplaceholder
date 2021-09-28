@@ -6,6 +6,7 @@ export const resources = {
   stubsDeletedSuccessfully: "All stubs deleted successfully.",
   stubsAddedSuccessfully: "Stubs were added successfully.",
   stubUpdatedSuccessfully: "Stub was updated successfully.",
+  errorDuringParsingOfYaml: "Something went wrong while parsing the YAML: {0}",
   defaultStub: `id: unique-stub-id
 description: A description for the stub.
 conditions:

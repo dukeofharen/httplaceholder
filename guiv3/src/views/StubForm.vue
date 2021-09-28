@@ -11,13 +11,9 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <FormHelperSelector />
-    </div>
-  </div>
+  <FormHelperSelector />
 
-  <div class="row">
+  <div class="row mt-2">
     <div class="col-md-12">
       <codemirror v-model="input" :options="cmOptions" />
     </div>

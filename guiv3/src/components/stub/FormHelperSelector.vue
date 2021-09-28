@@ -1,39 +1,52 @@
 <template>
-  <accordion>
-    <accordion-item
-      v-for="(item, index) in formHelperItems"
-      :key="index"
-      :opened="item.opened"
-      @buttonClicked="item.opened = !item.opened"
-    >
-      <template v-slot:button-text>{{ item.title }}</template>
-      <template v-slot:accordion-body>
-        <div class="list-group">
-          <button
-            v-for="(subItem, index) in item.subItems"
-            :key="index"
-            class="list-group-item list-group-item-action"
-            @click="subItem.onClick"
-          >
-            <label>{{ subItem.title }}</label>
-            <span class="subtitle text-secondary">{{ subItem.subTitle }}</span>
-          </button>
-        </div>
-      </template>
-    </accordion-item>
-  </accordion>
+  <div class="row">
+    <div class="col-md-12">
+      <accordion>
+        <accordion-item
+          v-for="(item, index) in formHelperItems"
+          :key="index"
+          :opened="item.opened"
+          @buttonClicked="item.opened = !item.opened"
+        >
+          <template v-slot:button-text>{{ item.title }}</template>
+          <template v-slot:accordion-body>
+            <div class="list-group">
+              <button
+                v-for="(subItem, index) in item.subItems"
+                :key="index"
+                class="list-group-item list-group-item-action"
+                @click="subItem.onClick"
+              >
+                <label>{{ subItem.title }}</label>
+                <span class="subtitle text-secondary">{{
+                  subItem.subTitle
+                }}</span>
+              </button>
+            </div>
+          </template>
+        </accordion-item>
+      </accordion>
+    </div>
+    <div v-if="currentSelectedFormHelper" class="col-md-12 mt-2">
+      <HttpMethodSelector
+        v-if="currentSelectedFormHelper === formHelperKeys.httpMethod"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import {
   elementDescriptions,
   formHelperKeys,
 } from "@/constants/stubFormResources";
 import { useStore } from "vuex";
+import HttpMethodSelector from "@/components/stub/HttpMethodSelector";
 
 export default {
   name: "FormHelperSelector",
+  components: { HttpMethodSelector },
   setup() {
     const store = useStore();
 
@@ -218,7 +231,18 @@ export default {
       store.commit("stubForm/openFormHelper", key);
     };
 
-    return { formHelperItems, setDefaultValue, openFormHelper, formHelperKeys };
+    // Computed
+    const currentSelectedFormHelper = computed(
+      () => store.getters["stubForm/getCurrentSelectedFormHelper"]
+    );
+
+    return {
+      formHelperItems,
+      setDefaultValue,
+      openFormHelper,
+      formHelperKeys,
+      currentSelectedFormHelper,
+    };
   },
 };
 </script>
