@@ -34,6 +34,9 @@
       <TenantSelector
         v-if="currentSelectedFormHelper === formHelperKeys.tenant"
       />
+      <HttpStatusCodeSelector
+        v-if="currentSelectedFormHelper === formHelperKeys.statusCode"
+      />
     </div>
   </div>
 </template>
@@ -47,10 +50,11 @@ import {
 import { useStore } from "vuex";
 import HttpMethodSelector from "@/components/stub/HttpMethodSelector";
 import TenantSelector from "@/components/stub/TenantSelector";
+import HttpStatusCodeSelector from "@/components/stub/HttpStatusCodeSelector";
 
 export default {
   name: "FormHelperSelector",
-  components: { TenantSelector, HttpMethodSelector },
+  components: { HttpStatusCodeSelector, TenantSelector, HttpMethodSelector },
   setup() {
     const store = useStore();
 
