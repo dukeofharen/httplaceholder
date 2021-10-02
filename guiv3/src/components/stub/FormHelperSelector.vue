@@ -42,6 +42,9 @@
           <ResponseBodyHelper
             v-if="currentSelectedFormHelper === formHelperKeys.responseBody"
           />
+          <RedirectSelector
+            v-if="currentSelectedFormHelper === formHelperKeys.redirect"
+          />
         </div>
       </div>
     </div>
@@ -59,10 +62,12 @@ import HttpMethodSelector from "@/components/stub/HttpMethodSelector";
 import TenantSelector from "@/components/stub/TenantSelector";
 import HttpStatusCodeSelector from "@/components/stub/HttpStatusCodeSelector";
 import ResponseBodyHelper from "@/components/stub/ResponseBodyHelper";
+import RedirectSelector from "@/components/stub/RedirectSelector";
 
 export default {
   name: "FormHelperSelector",
   components: {
+    RedirectSelector,
     ResponseBodyHelper,
     HttpStatusCodeSelector,
     TenantSelector,
