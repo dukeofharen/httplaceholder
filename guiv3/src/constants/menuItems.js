@@ -16,11 +16,6 @@ export default function getMenuItems() {
       routeName: "StubForm",
     },
     {
-      title: "Upload stubs",
-      icon: "upload",
-      routeName: "Requests",
-    },
-    {
       title: "Settings",
       icon: "wrench",
       routeName: "Requests",
