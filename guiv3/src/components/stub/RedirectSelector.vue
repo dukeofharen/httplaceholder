@@ -1,8 +1,8 @@
 <template>
   <div class="list-group">
     <button
-      v-for="item of items"
-      :key="item.key"
+      v-for="(item, index) of items"
+      :key="index"
       class="list-group-item list-group-item-action fw-bold"
       @click="item.onSelected"
     >
@@ -22,7 +22,6 @@ export default {
     // Data
     const items = [
       {
-        key: "temp",
         name: "Temporary redirect",
         onSelected: () => {
           store.commit("stubForm/setDefaultTempRedirect");
@@ -30,7 +29,6 @@ export default {
         },
       },
       {
-        key: "permanent",
         name: "Permanent redirect",
         onSelected: () => {
           store.commit("stubForm/setDefaultPermanentRedirect");

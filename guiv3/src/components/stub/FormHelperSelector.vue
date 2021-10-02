@@ -45,6 +45,9 @@
           <RedirectSelector
             v-if="currentSelectedFormHelper === formHelperKeys.redirect"
           />
+          <LineEndingSelector
+            v-if="currentSelectedFormHelper === formHelperKeys.lineEndings"
+          />
         </div>
       </div>
     </div>
@@ -63,10 +66,12 @@ import TenantSelector from "@/components/stub/TenantSelector";
 import HttpStatusCodeSelector from "@/components/stub/HttpStatusCodeSelector";
 import ResponseBodyHelper from "@/components/stub/ResponseBodyHelper";
 import RedirectSelector from "@/components/stub/RedirectSelector";
+import LineEndingSelector from "@/components/stub/LineEndingSelector";
 
 export default {
   name: "FormHelperSelector",
   components: {
+    LineEndingSelector,
     RedirectSelector,
     ResponseBodyHelper,
     HttpStatusCodeSelector,
