@@ -27,16 +27,23 @@
         </accordion-item>
       </accordion>
     </div>
-    <div v-if="currentSelectedFormHelper" class="col-md-12 mt-2">
-      <HttpMethodSelector
-        v-if="currentSelectedFormHelper === formHelperKeys.httpMethod"
-      />
-      <TenantSelector
-        v-if="currentSelectedFormHelper === formHelperKeys.tenant"
-      />
-      <HttpStatusCodeSelector
-        v-if="currentSelectedFormHelper === formHelperKeys.statusCode"
-      />
+    <div v-if="currentSelectedFormHelper" class="col-md-12">
+      <div class="card mt-3">
+        <div class="card-body">
+          <HttpMethodSelector
+            v-if="currentSelectedFormHelper === formHelperKeys.httpMethod"
+          />
+          <TenantSelector
+            v-if="currentSelectedFormHelper === formHelperKeys.tenant"
+          />
+          <HttpStatusCodeSelector
+            v-if="currentSelectedFormHelper === formHelperKeys.statusCode"
+          />
+          <ResponseBodyHelper
+            v-if="currentSelectedFormHelper === formHelperKeys.responseBody"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -51,10 +58,16 @@ import { useStore } from "vuex";
 import HttpMethodSelector from "@/components/stub/HttpMethodSelector";
 import TenantSelector from "@/components/stub/TenantSelector";
 import HttpStatusCodeSelector from "@/components/stub/HttpStatusCodeSelector";
+import ResponseBodyHelper from "@/components/stub/ResponseBodyHelper";
 
 export default {
   name: "FormHelperSelector",
-  components: { HttpStatusCodeSelector, TenantSelector, HttpMethodSelector },
+  components: {
+    ResponseBodyHelper,
+    HttpStatusCodeSelector,
+    TenantSelector,
+    HttpMethodSelector,
+  },
   setup() {
     const store = useStore();
 

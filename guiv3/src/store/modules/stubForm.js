@@ -370,27 +370,24 @@ const mutations = {
       }
     });
   },
-  setResponseContentType() {
-    //(state, contentType) {
+  setResponseContentType(state, contentType) {
     handle(() => {
-      // TODO do NOT use the header but the separate response writer
-      // const parsed = parseInput(state);
-      // if (parsed) {
-      //   if (!parsed.response) {
-      //     parsed.response = {};
-      //   }
-      //
-      //   if (!parsed.response.headers) {
-      //     parsed.response.headers = {};
-      //   }
-      //
-      //   const key = Object.keys(parsed.response.headers).find(
-      //     (k) => k.toLowerCase().trim() === "content-type"
-      //   );
-      //   delete parsed.response.headers[key];
-      //   parsed.response.headers["Content-Type"] = contentType;
-      //   state.input = yaml.dump(parsed);
-      // }
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        if (parsed.response.headers) {
+          const key = Object.keys(parsed.response.headers).find(
+            (k) => k.toLowerCase().trim() === "content-type"
+          );
+          delete parsed.response.headers[key];
+        }
+
+        parsed.response.contentType = contentType;
+        state.input = yaml.dump(parsed);
+      }
     });
   },
   setDefaultResponseHeaders(state) {
@@ -539,6 +536,60 @@ const getters = {
   },
   getCurrentSelectedFormHelper(state) {
     return state.currentSelectedFormHelper;
+  },
+  getResponseBodyType(state) {
+    return handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          return responseBodyTypes.text;
+        }
+
+        const res = parsed.response;
+        if (res.text) {
+          return responseBodyTypes.text;
+        } else if (res.json) {
+          return responseBodyTypes.json;
+        } else if (res.xml) {
+          return responseBodyTypes.xml;
+        } else if (res.html) {
+          return responseBodyTypes.html;
+        } else if (res.base64) {
+          return responseBodyTypes.base64;
+        }
+      }
+
+      return responseBodyTypes.text;
+    });
+  },
+  getResponseBody(state) {
+    return handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          return "";
+        }
+
+        const res = parsed.response;
+        return res.text || res.json || res.xml || res.html || res.base64 || "";
+      }
+
+      return "";
+    });
+  },
+  getDynamicMode(state) {
+    return handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          return false;
+        }
+
+        return parsed.response.enableDynamicMode || false;
+      }
+
+      return false;
+    });
   },
 };
 
