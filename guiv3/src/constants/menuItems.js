@@ -18,7 +18,7 @@ export default function getMenuItems() {
     {
       title: "Settings",
       icon: "wrench",
-      routeName: "Requests",
+      routeName: "Settings",
     },
     {
       title: "Log out",

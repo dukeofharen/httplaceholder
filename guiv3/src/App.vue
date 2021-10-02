@@ -11,9 +11,37 @@
 
 <script>
 import Sidebar from "@/components/Sidebar";
+import { useStore } from "vuex";
+import { computed, onMounted, watch } from "vue";
+import { getDarkThemeEnabled } from "@/utils/session";
 
 export default {
   components: { Sidebar },
+  setup() {
+    const store = useStore();
+
+    // Computed
+    const darkTheme = computed(() => store.getters["general/getDarkTheme"]);
+
+    // Watch
+    watch(darkTheme, (darkTheme) => {
+      const bodyElement = document.body;
+      const className = "dark-theme";
+      if (darkTheme) {
+        bodyElement.classList.add(className);
+      } else {
+        bodyElement.classList.remove(className);
+      }
+    });
+
+    // Lifecycle
+    onMounted(() => {
+      const darkThemeEnabled = getDarkThemeEnabled();
+      if (darkThemeEnabled) {
+        store.commit("general/storeDarkTheme", darkThemeEnabled);
+      }
+    });
+  },
 };
 </script>
 

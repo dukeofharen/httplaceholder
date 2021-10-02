@@ -12,3 +12,11 @@ export function setIntermediateStub(stub) {
 export function clearIntermediateStub() {
   removeSession(sessionKeys.intermediateStub);
 }
+
+export function getDarkThemeEnabled() {
+  return getSession(sessionKeys.darkTheme);
+}
+
+export function setDarkThemeEnabled(enabled) {
+  setSession(sessionKeys.darkTheme, enabled);
+}
