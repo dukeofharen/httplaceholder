@@ -99,8 +99,8 @@ export default {
       stubId.value = "";
     };
     const checkSave = async (e) => {
-      e.preventDefault();
       if (e.ctrlKey && e.key === "s") {
+        e.preventDefault();
         await save();
       }
     };
