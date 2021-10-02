@@ -6,6 +6,16 @@
       <button type="button" class="btn btn-success me-2" @click="loadData">
         Refresh
       </button>
+      <router-link :to="{ name: 'StubForm' }" class="btn btn-success me-2"
+        >Add stubs</router-link
+      >
+      <button
+        class="btn btn-success me-2"
+        @click="download"
+        title="Download the (filtered) stubs as YAML file."
+      >
+        Download stubs as YAML
+      </button>
       <button
         type="button"
         class="btn btn-danger"
@@ -76,6 +86,9 @@ import Stub from "@/components/stub/Stub";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import Accordion from "@/components/bootstrap/Accordion";
+import yaml from "js-yaml";
+import { handleHttpError } from "@/utils/error";
+import { downloadBlob } from "@/utils/download";
 
 export default {
   name: "Stubs",
@@ -91,9 +104,9 @@ export default {
     const urlStubIdFilter = ref(route.query.filter || "");
     const selectedTenantName = ref(route.query.tenant || "");
 
-    // Computed
-    const filteredStubs = computed(() => {
-      let stubsResult = stubs.value;
+    // Functions
+    const filterStubs = (input) => {
+      let stubsResult = input;
       const compare = (a, b) => {
         if (a.stub.id < b.stub.id) return -1;
         if (a.stub.id > b.stub.id) return 1;
@@ -115,7 +128,10 @@ export default {
 
       stubsResult.sort(compare);
       return stubsResult;
-    });
+    };
+
+    // Computed
+    const filteredStubs = computed(() => filterStubs(stubs.value));
 
     // Methods
     const loadStubs = async () => {
@@ -132,6 +148,19 @@ export default {
       toastr.success(resources.stubsDeletedSuccessfully);
       await loadData();
     };
+    const download = async () => {
+      try {
+        const stubs = filterStubs(await store.dispatch("stubs/getStubs")).map(
+          (fs) => fs.stub
+        );
+        const downloadString = `${resources.downloadStubsHeader}\n${yaml.dump(
+          stubs
+        )}`;
+        downloadBlob("stubs.yml", downloadString);
+      } catch (e) {
+        handleHttpError(e);
+      }
+    };
 
     // Lifecycle
     onMounted(async () => await loadData());
@@ -145,6 +174,7 @@ export default {
       tenants,
       urlStubIdFilter,
       selectedTenantName,
+      download,
     };
   },
 };

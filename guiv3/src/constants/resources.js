@@ -13,4 +13,6 @@ conditions:
   method: GET
 response:
   text: OK!`,
+  downloadStubsHeader:
+    "# This .yml file was created with HttPlaceholder. For more information, go to http://httplaceholder.com.",
 };

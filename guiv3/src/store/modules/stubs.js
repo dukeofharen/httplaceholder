@@ -18,6 +18,11 @@ const actions = {
   getStub(_, stubId) {
     return getStub(stubId);
   },
+  getStubs() {
+    return get("/ph-api/stubs")
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
   async flipEnabled(_, stubId) {
     const stub = (await getStub(stubId)).stub;
     stub.enabled = !stub.enabled;

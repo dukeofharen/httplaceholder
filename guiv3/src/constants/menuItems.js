@@ -21,11 +21,6 @@ export default function getMenuItems() {
       routeName: "Requests",
     },
     {
-      title: "Download stubs",
-      icon: "download",
-      routeName: "Requests",
-    },
-    {
       title: "Settings",
       icon: "wrench",
       routeName: "Requests",
