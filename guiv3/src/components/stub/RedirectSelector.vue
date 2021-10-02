@@ -1,16 +1,12 @@
 <template>
   <div class="list-group">
     <button
+      v-for="item of items"
+      :key="item.key"
       class="list-group-item list-group-item-action fw-bold"
-      @click="tempRedirect"
+      @click="item.onSelected"
     >
-      Temporary redirect
-    </button>
-    <button
-      class="list-group-item list-group-item-action fw-bold"
-      @click="permanentRedirect"
-    >
-      Permanent redirect
+      {{ item.name }}
     </button>
   </div>
 </template>
@@ -23,17 +19,27 @@ export default {
   setup() {
     const store = useStore();
 
-    // Methods
-    const tempRedirect = () => {
-      store.commit("stubForm/setDefaultTempRedirect");
-      store.commit("stubForm/closeFormHelper");
-    };
-    const permanentRedirect = () => {
-      store.commit("stubForm/setDefaultPermanentRedirect");
-      store.commit("stubForm/closeFormHelper");
-    };
+    // Data
+    const items = [
+      {
+        key: "temp",
+        name: "Temporary redirect",
+        onSelected: () => {
+          store.commit("stubForm/setDefaultTempRedirect");
+          store.commit("stubForm/closeFormHelper");
+        },
+      },
+      {
+        key: "permanent",
+        name: "Permanent redirect",
+        onSelected: () => {
+          store.commit("stubForm/setDefaultPermanentRedirect");
+          store.commit("stubForm/closeFormHelper");
+        },
+      },
+    ];
 
-    return { tempRedirect, permanentRedirect };
+    return { items };
   },
 };
 </script>
