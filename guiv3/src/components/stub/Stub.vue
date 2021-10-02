@@ -74,6 +74,9 @@ import yaml from "js-yaml";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import AccordionItem from "@/components/bootstrap/AccordionItem";
+import { setIntermediateStub } from "@/utils/session";
+import { useRouter } from "vue-router";
+import dayjs from "dayjs";
 
 export default {
   name: "Stub",
@@ -86,6 +89,7 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore();
+    const router = useRouter();
 
     // Functions
     const getStubId = () => props.overviewStub.stub.id;
@@ -129,7 +133,14 @@ export default {
         accordionOpened.value = !accordionOpened.value;
       }
     };
-    const duplicate = () => alert("TODO"); // TODO
+    const duplicate = async () => {
+      if (fullStub.value && fullStub.value.stub) {
+        const stub = fullStub.value.stub;
+        stub.id = `${stub.id}_${dayjs().format("YYYY-MM-DD_HH-mm-ss")}`;
+        setIntermediateStub(yaml.dump(stub));
+        await router.push({ name: "StubForm" });
+      }
+    };
     const enableOrDisable = async () => {
       const enabled = await store.dispatch("stubs/flipEnabled", getStubId());
       fullStub.value.stub.enabled = enabled;
