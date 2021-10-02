@@ -16,6 +16,7 @@
       >
         Download stubs as YAML
       </button>
+      <UploadStubs class="me-2" @uploaded="loadData" />
       <button
         type="button"
         class="btn btn-danger"
@@ -85,14 +86,14 @@ import { computed, onMounted, ref } from "vue";
 import Stub from "@/components/stub/Stub";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
-import Accordion from "@/components/bootstrap/Accordion";
 import yaml from "js-yaml";
 import { handleHttpError } from "@/utils/error";
 import { downloadBlob } from "@/utils/download";
+import UploadStubs from "@/components/stub/UploadStubs";
 
 export default {
   name: "Stubs",
-  components: { Accordion, Stub },
+  components: { Stub, UploadStubs },
   setup() {
     const store = useStore();
     const route = useRoute();
