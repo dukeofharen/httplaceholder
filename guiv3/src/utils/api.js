@@ -1,3 +1,5 @@
+const beforeSendHandlers = [];
+
 const handleResponse = async (response) => {
   const headers = {};
   for (let header of response.headers.entries()) {
@@ -40,20 +42,34 @@ const prepareRequest = (input) => {
   }
 };
 
+const handleBeforeSend = (url, request) => {
+  for (const handler of beforeSendHandlers) {
+    handler(url, request);
+  }
+};
+
+export function addBeforeSendHandler(action) {
+  beforeSendHandlers.push(action);
+}
+
 export function get(url, options) {
   options = options || {};
-  return fetch(url, {
+  const request = {
     method: "get",
     headers: options.headers || {},
-  }).then(handleResponse);
+  };
+  handleBeforeSend(url, request);
+  return fetch(url, request).then(handleResponse);
 }
 
 export function del(url, options) {
   options = options || {};
-  return fetch(url, {
+  const request = {
     method: "delete",
     headers: options.headers || {},
-  }).then(handleResponse);
+  };
+  handleBeforeSend(url, request);
+  return fetch(url, request).then(handleResponse);
 }
 
 export function put(url, body, options) {
@@ -63,11 +79,13 @@ export function put(url, body, options) {
     { "content-type": preparedRequest.contentType },
     options.headers || {}
   );
-  return fetch(url, {
+  const request = {
     method: "put",
     headers,
     body: preparedRequest.body,
-  }).then(handleResponse);
+  };
+  handleBeforeSend(url, request);
+  return fetch(url, request).then(handleResponse);
 }
 
 export function post(url, body, options) {
@@ -77,9 +95,11 @@ export function post(url, body, options) {
     { "content-type": preparedRequest.contentType },
     options.headers || {}
   );
-  return fetch(url, {
+  const request = {
     method: "post",
     headers,
     body: preparedRequest.body,
-  }).then(handleResponse);
+  };
+  handleBeforeSend(url, request);
+  return fetch(url, request).then(handleResponse);
 }

@@ -1,3 +1,4 @@
+import "./api";
 import "./bootstrap";
 import "./codemirror";
 import "./dayjs";
