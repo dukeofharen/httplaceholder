@@ -16,6 +16,7 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@microsoft/signalr": "^5.0.10",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
     "@vue/cli-plugin-pwa": "~4.5.0",

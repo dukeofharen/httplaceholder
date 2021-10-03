@@ -1,5 +1,13 @@
 module.exports = {
   devServer: {
-    proxy: "http://localhost:5000",
+    proxy: {
+      "/ph-api": {
+        target: "http://localhost:5000",
+      },
+      "/requestHub": {
+        target: "http://localhost:5000",
+        ws: true,
+      },
+    },
   },
 };

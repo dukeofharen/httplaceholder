@@ -72,6 +72,7 @@ import { computed, onMounted, ref } from "vue";
 import Request from "@/components/request/Request";
 import { resources } from "@/constants/resources";
 import toastr from "toastr";
+import { HubConnectionBuilder } from "@microsoft/signalr";
 
 export default {
   name: "Requests",
@@ -86,6 +87,21 @@ export default {
     const urlStubIdFilter = ref(route.query.filter || "");
     const selectedTenantName = ref("");
     const showDeleteAllRequestsModal = ref(false);
+    let signalrConnection = null;
+
+    // Functions
+    const initializeSignalR = () => {
+      signalrConnection = new HubConnectionBuilder()
+        .withUrl("/requestHub")
+        .build();
+      signalrConnection.on("RequestReceived", (request) =>
+        requests.value.unshift(request)
+      );
+      signalrConnection
+        .start()
+        .then(() => {})
+        .catch((err) => console.log(err.toString()));
+    };
 
     // Computed
     const filteredRequests = computed(() => {
@@ -126,9 +142,10 @@ export default {
     };
 
     // Lifecycle
-    onMounted(
-      async () => await Promise.all([loadRequests(), loadTenantNames()])
-    );
+    onMounted(async () => {
+      await Promise.all([loadRequests(), loadTenantNames()]);
+      initializeSignalR();
+    });
 
     return {
       requests,
