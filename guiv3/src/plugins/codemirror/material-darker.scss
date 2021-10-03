@@ -4,13 +4,18 @@
   Website:    https://material-theme.site/
 */
 
+// Required
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
 .cm-s-material-darker.CodeMirror {
     background-color: #212121;
     color: #EEFFFF;
 }
 
 .cm-s-material-darker .CodeMirror-gutters {
-    background: #212121;
+    background-color: $gray-900;
     color: #545454;
     border: none;
 }

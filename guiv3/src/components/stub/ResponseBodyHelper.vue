@@ -227,6 +227,5 @@ input[type="file"] {
 
 .hint {
   font-size: 0.9em;
-  color: #444444;
 }
 </style>

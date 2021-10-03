@@ -60,4 +60,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.accordion-button::after {
+  background-image: none;
+}
+</style>

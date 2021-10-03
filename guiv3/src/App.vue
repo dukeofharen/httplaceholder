@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row flex-nowrap">
       <Sidebar />
-      <div class="col py-3">
+      <div class="col py-3 main-body">
         <router-view />
       </div>
     </div>

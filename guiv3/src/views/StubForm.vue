@@ -43,7 +43,7 @@
 
 <script>
 import { useRoute } from "vue-router";
-import { computed, onMounted, ref } from "vue";
+import { computed, onBeforeMount, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
@@ -106,7 +106,13 @@ export default {
     };
 
     // Lifecycle
+    onBeforeMount(() => {
+      if (store.getters["general/getDarkTheme"]) {
+        cmOptions.theme = "material-darker";
+      }
+    });
     onMounted(async () => {
+      store.commit("stubForm/closeFormHelper");
       if (newStub.value) {
         const intermediateStub = getIntermediateStub();
         if (intermediateStub) {
