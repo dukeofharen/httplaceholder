@@ -55,6 +55,9 @@
 .dark-theme .modal-content {
   background-color: $gray-900;
 }
+.dark-theme .modal-content .btn.btn-secondary {
+  color: $gray-900;
+}
 
 // Cards
 .dark-theme .card-body {
