@@ -25,12 +25,12 @@ set-version:
       - version.txt
     expire_in: 1 week
 
-test:
-  image: $DOTNET_IMAGE
-  stage: test
-  script:
-    - cd src
-    - dotnet test
+#test:
+#  image: $DOTNET_IMAGE
+#  stage: test
+#  script:
+#    - cd src
+#    - dotnet test
 
 build-ui:
   image: $NODE_IMAGE
