@@ -61,7 +61,7 @@
             />
           </div>
         </div>
-        <pre>{{ stubYaml }}</pre>
+        <pre ref="codeBlock">{{ stubYaml }}</pre>
       </div>
     </template>
   </accordion-item>
@@ -72,6 +72,7 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import yaml from "js-yaml";
 import toastr from "toastr";
+import hljs from "highlight.js/lib/core";
 import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
 import { useRouter } from "vue-router";
@@ -89,6 +90,9 @@ export default {
   setup(props, { emit }) {
     const store = useStore();
     const router = useRouter();
+
+    // Refs
+    const codeBlock = ref(null);
 
     // Functions
     const getStubId = () => props.overviewStub.stub.id;
@@ -128,7 +132,10 @@ export default {
           fullStub.value = await store.dispatch("stubs/getStub", getStubId());
 
           // Sadly, when doing this without the timeout, it does the slide down incorrect.
-          setTimeout(() => (accordionOpened.value = true), 1);
+          setTimeout(() => {
+            accordionOpened.value = true;
+            hljs.highlightElement(codeBlock.value);
+          }, 1);
         } catch (e) {
           handleHttpError(e);
         }
@@ -180,6 +187,7 @@ export default {
       id,
       enabled,
       accordionOpened,
+      codeBlock,
     };
   },
 };

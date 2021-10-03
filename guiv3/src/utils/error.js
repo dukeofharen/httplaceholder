@@ -24,6 +24,7 @@ export function handleHttpError(error) {
   if (result) {
     toastr.error(result);
   } else {
+    console.log(error);
     toastr.error(resources.somethingWentWrongServer);
   }
 }

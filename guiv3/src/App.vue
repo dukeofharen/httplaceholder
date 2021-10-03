@@ -28,11 +28,14 @@ export default {
     // Watch
     watch(darkTheme, (darkTheme) => {
       const bodyElement = document.body;
-      const className = "dark-theme";
+      const darkName = "dark-theme";
+      const lightName = "light-theme";
       if (darkTheme) {
-        bodyElement.classList.add(className);
+        bodyElement.classList.remove(lightName);
+        bodyElement.classList.add(darkName);
       } else {
-        bodyElement.classList.remove(className);
+        bodyElement.classList.remove(darkName);
+        bodyElement.classList.add(lightName);
       }
     });
 
