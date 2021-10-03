@@ -14,6 +14,7 @@ export const resources = {
     "These files you are trying to upload have an incorrect extension: {0}.",
   onlyUploadYmlFiles:
     "Make sure to only upload files with the 'yml' or 'yaml' extension.",
+  credentialsIncorrect: "The credentials are incorrect.",
   defaultStub: `id: unique-stub-id
 description: A description for the stub.
 conditions:

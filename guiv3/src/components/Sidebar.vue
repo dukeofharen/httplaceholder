@@ -38,9 +38,7 @@
         <SidebarMenuItem
           v-for="item of menuItems"
           :key="item.title"
-          :title="item.title"
-          :icon="item.icon"
-          :route-name="item.routeName"
+          :item="item"
         />
       </ul>
     </div>
@@ -49,14 +47,71 @@
 
 <script>
 import SidebarMenuItem from "@/components/SidebarMenuItem";
-import getMenuItems from "@/constants/menuItems";
+import { computed } from "vue";
+import { useStore } from "vuex";
+import router from "@/router";
 
 export default {
   name: "Sidebar",
   components: { SidebarMenuItem },
   setup() {
+    const store = useStore();
+
+    // Data
+    const plainMenuItems = [
+      {
+        title: "Requests",
+        icon: "eye",
+        routeName: "Requests",
+        hideWhenAuthEnabledAndNotLoggedIn: true,
+      },
+      {
+        title: "Stubs",
+        icon: "code-slash",
+        routeName: "Stubs",
+        hideWhenAuthEnabledAndNotLoggedIn: true,
+      },
+      {
+        title: "Add stubs",
+        icon: "plus",
+        routeName: "StubForm",
+        hideWhenAuthEnabledAndNotLoggedIn: true,
+      },
+      {
+        title: "Settings",
+        icon: "wrench",
+        routeName: "Settings",
+        hideWhenAuthEnabledAndNotLoggedIn: true,
+      },
+      {
+        title: "Log out",
+        icon: "box-arrow-left",
+        onlyShowWhenLoggedInAndAuthEnabled: true,
+        onClick: async () => {
+          store.commit("users/logOut");
+          await router.push({ name: "Login" });
+        },
+      },
+    ];
+
+    // Computed
+    const menuItems = computed(() => {
+      const isAuthenticated = store.getters["users/getAuthenticated"];
+      const authEnabled = store.getters["metadata/authenticationEnabled"];
+      return plainMenuItems.filter(
+        (i) =>
+          (i.onlyShowWhenLoggedInAndAuthEnabled &&
+            isAuthenticated &&
+            authEnabled) ||
+          (i.hideWhenAuthEnabledAndNotLoggedIn &&
+            authEnabled &&
+            isAuthenticated) ||
+          (i.hideWhenAuthEnabledAndNotLoggedIn && !authEnabled)
+      );
+    });
+
     return {
-      menuItems: getMenuItems(),
+      menuItems: menuItems,
     };
   },
 };

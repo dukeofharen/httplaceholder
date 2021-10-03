@@ -1,4 +1,10 @@
-import { getSession, removeSession, setSession } from "@/utils/storage";
+import {
+  getLocal,
+  getSession,
+  removeSession,
+  setLocal,
+  setSession,
+} from "@/utils/storage";
 import { sessionKeys } from "@/constants/sessionKeys";
 
 export function getIntermediateStub() {
@@ -14,9 +20,21 @@ export function clearIntermediateStub() {
 }
 
 export function getDarkThemeEnabled() {
-  return getSession(sessionKeys.darkTheme);
+  return getLocal(sessionKeys.darkTheme);
 }
 
 export function setDarkThemeEnabled(enabled) {
-  setSession(sessionKeys.darkTheme, enabled);
+  setLocal(sessionKeys.darkTheme, enabled);
+}
+
+export function getUserToken() {
+  return getSession(sessionKeys.userToken);
+}
+
+export function clearUserToken() {
+  removeSession(sessionKeys.userToken);
+}
+
+export function saveUserToken(token) {
+  setSession(sessionKeys.userToken, token);
 }

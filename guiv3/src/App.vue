@@ -14,11 +14,13 @@ import Sidebar from "@/components/Sidebar";
 import { useStore } from "vuex";
 import { computed, onMounted, watch } from "vue";
 import { getDarkThemeEnabled } from "@/utils/session";
+import { useRouter } from "vue-router";
 
 export default {
   components: { Sidebar },
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     // Computed
     const darkTheme = computed(() => store.getters["general/getDarkTheme"]);
@@ -35,10 +37,17 @@ export default {
     });
 
     // Lifecycle
-    onMounted(() => {
+    onMounted(async () => {
       const darkThemeEnabled = getDarkThemeEnabled();
       if (darkThemeEnabled) {
         store.commit("general/storeDarkTheme", darkThemeEnabled);
+      }
+
+      const authEnabled = await store.dispatch(
+        "metadata/checkAuthenticationIsEnabled"
+      );
+      if (!store.getters["users/getAuthenticated"] && authEnabled) {
+        await router.push({ name: "Login" });
       }
     });
   },

@@ -1,4 +1,5 @@
 import { get } from "@/utils/api";
+import { FeatureFlagType } from "@/constants/featureFlagType";
 
 const state = () => ({
   metadata: {
@@ -7,6 +8,8 @@ const state = () => ({
   },
   authenticationEnabled: false,
 });
+
+const checkFeature = (feature) => get(`/ph-api/metadata/features/${feature}`);
 
 const actions = {
   getMetadata(store) {
@@ -17,15 +20,28 @@ const actions = {
       })
       .catch((error) => Promise.reject(error));
   },
+  async checkAuthenticationIsEnabled(store) {
+    const authEnabled = (await checkFeature(FeatureFlagType.Authentication))
+      .enabled;
+    store.commit("storeAuthenticationEnabled", authEnabled);
+    return authEnabled;
+  },
 };
 
 const mutations = {
   storeMetadata(state, metadata) {
     state.metadata = metadata;
   },
+  storeAuthenticationEnabled(state, enabled) {
+    state.authenticationEnabled = enabled;
+  },
 };
 
-const getters = {};
+const getters = {
+  authenticationEnabled(state) {
+    return state.authenticationEnabled;
+  },
+};
 
 export default {
   namespaced: true,

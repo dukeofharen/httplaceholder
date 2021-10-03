@@ -1,15 +1,26 @@
 <template>
   <li class="nav-item">
     <router-link
-      :to="{ name: routeName }"
+      v-if="item.routeName"
+      :to="{ name: item.routeName }"
       class="nav-link align-middle px-0 link-secondary"
-      :title="title"
+      :title="item.title"
     >
-      <i class="fs-5" :class="'bi-' + icon"></i>
+      <i class="fs-5" :class="'bi-' + item.icon"></i>
       <span class="ms-4 d-none d-sm-inline menu-item-title fs-6">{{
-        title
+        item.title
       }}</span>
     </router-link>
+    <a
+      v-if="item.onClick"
+      @click="item.onClick"
+      class="nav-link align-middle px-0 link-secondary"
+      :title="item.title"
+      ><i class="fs-5" :class="'bi-' + item.icon"></i>
+      <span class="ms-4 d-none d-sm-inline menu-item-title fs-6">{{
+        item.title
+      }}</span></a
+    >
   </li>
 </template>
 
@@ -17,16 +28,8 @@
 export default {
   name: "SidebarMenuItem",
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    icon: {
-      type: String,
-      required: true,
-    },
-    routeName: {
-      type: String,
+    item: {
+      type: Object,
       required: true,
     },
   },
@@ -37,5 +40,8 @@ export default {
 .menu-item-title {
   position: relative;
   bottom: 1px;
+}
+.nav-link {
+  cursor: pointer;
 }
 </style>

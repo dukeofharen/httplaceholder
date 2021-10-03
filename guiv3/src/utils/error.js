@@ -3,6 +3,11 @@ import { resources } from "@/constants/resources";
 
 export function handleHttpError(error) {
   let result;
+  if (error.status === 401) {
+    // Let the application handle the 401s itself.
+    return;
+  }
+
   if (error.status === 400) {
     if (Array.isArray(error.body)) {
       result = "<ul>";
