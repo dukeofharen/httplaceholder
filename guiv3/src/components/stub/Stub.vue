@@ -61,7 +61,7 @@
             />
           </div>
         </div>
-        <pre ref="codeBlock">{{ stubYaml }}</pre>
+        <pre ref="codeBlock" class="language-yaml">{{ stubYaml }}</pre>
       </div>
     </template>
   </accordion-item>
