@@ -10,7 +10,7 @@
 @import "node_modules/bootstrap/scss/mixins";
 
 .cm-s-material-darker.CodeMirror {
-    background-color: #212121;
+    background-color: $gray-900;
     color: #EEFFFF;
 }
 
@@ -23,7 +23,7 @@
 .cm-s-material-darker .CodeMirror-guttermarker,
 .cm-s-material-darker .CodeMirror-guttermarker-subtle,
 .cm-s-material-darker .CodeMirror-linenumber {
-    color: #545454;
+    color: $white;
 }
 
 .cm-s-material-darker .CodeMirror-cursor {

@@ -14,13 +14,13 @@
 
     <FormHelperSelector v-if="showFormHelperSelector" />
 
-    <div class="row mt-2">
+    <div class="row mt-3">
       <div class="col-md-12">
         <codemirror v-model="input" :options="cmOptions" />
       </div>
     </div>
 
-    <div class="row mt-2">
+    <div class="row mt-3">
       <div class="col-md-12">
         <button class="btn btn-success me-2" @click="save">Save</button>
         <button

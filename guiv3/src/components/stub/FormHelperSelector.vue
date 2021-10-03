@@ -1,5 +1,12 @@
 <template>
-  <div class="row">
+  <div class="row mt-3" v-if="!showAccordion">
+    <div class="col-md-12">
+      <button class="btn btn-outline-primary" @click="showAccordion = true">
+        Add request / response value
+      </button>
+    </div>
+  </div>
+  <div class="row mt-3" v-if="showAccordion">
     <div class="col-md-12">
       <accordion>
         <accordion-item
@@ -27,8 +34,10 @@
         </accordion-item>
       </accordion>
     </div>
-    <div v-if="currentSelectedFormHelper" class="col-md-12">
-      <div class="card mt-3">
+  </div>
+  <div v-if="currentSelectedFormHelper" class="row mt-3">
+    <div class="col-md-12">
+      <div class="card">
         <div class="card-body">
           <HttpMethodSelector
             v-if="currentSelectedFormHelper === formHelperKeys.httpMethod"
@@ -55,7 +64,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import {
   elementDescriptions,
   formHelperKeys,
@@ -82,6 +91,7 @@ export default {
     const store = useStore();
 
     // Data
+    const showAccordion = ref(false);
     const formHelperItems = ref([
       {
         title: "Add general information",
@@ -256,6 +266,7 @@ export default {
     const setDefaultValue = (mutationName) => {
       closeAccordions();
       store.commit(mutationName);
+      showAccordion.value = false;
     };
     const openFormHelper = (key) => {
       closeAccordions();
@@ -267,12 +278,20 @@ export default {
       () => store.getters["stubForm/getCurrentSelectedFormHelper"]
     );
 
+    // Watch
+    watch(currentSelectedFormHelper, (formHelper) => {
+      if (!formHelper) {
+        showAccordion.value = false;
+      }
+    });
+
     return {
       formHelperItems,
       setDefaultValue,
       openFormHelper,
       formHelperKeys,
       currentSelectedFormHelper,
+      showAccordion,
     };
   },
 };
