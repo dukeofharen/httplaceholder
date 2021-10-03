@@ -77,6 +77,7 @@ import AccordionItem from "@/components/bootstrap/AccordionItem";
 import { setIntermediateStub } from "@/utils/session";
 import { useRouter } from "vue-router";
 import dayjs from "dayjs";
+import { handleHttpError } from "@/utils/error";
 
 export default {
   name: "Stub",
@@ -125,10 +126,14 @@ export default {
     // Methods
     const showDetails = async () => {
       if (!fullStub.value) {
-        fullStub.value = await store.dispatch("stubs/getStub", getStubId());
+        try {
+          fullStub.value = await store.dispatch("stubs/getStub", getStubId());
 
-        // Sadly, when doing this without the timeout, it does the slide down incorrect.
-        setTimeout(() => (accordionOpened.value = true), 1);
+          // Sadly, when doing this without the timeout, it does the slide down incorrect.
+          setTimeout(() => (accordionOpened.value = true), 1);
+        } catch (e) {
+          handleHttpError(e);
+        }
       } else {
         accordionOpened.value = !accordionOpened.value;
       }
@@ -142,15 +147,23 @@ export default {
       }
     };
     const enableOrDisable = async () => {
-      const enabled = await store.dispatch("stubs/flipEnabled", getStubId());
-      fullStub.value.stub.enabled = enabled;
-      overviewStubValue.value.stub.enabled = enabled;
+      try {
+        const enabled = await store.dispatch("stubs/flipEnabled", getStubId());
+        fullStub.value.stub.enabled = enabled;
+        overviewStubValue.value.stub.enabled = enabled;
+      } catch (e) {
+        handleHttpError(e);
+      }
     };
     const deleteStub = async () => {
-      await store.dispatch("stubs/deleteStub", getStubId());
-      toastr.success(resources.stubDeletedSuccessfully);
-      showDeleteModal.value = false;
-      emit("deleted");
+      try {
+        await store.dispatch("stubs/deleteStub", getStubId());
+        toastr.success(resources.stubDeletedSuccessfully);
+        showDeleteModal.value = false;
+        emit("deleted");
+      } catch (e) {
+        handleHttpError(e);
+      }
     };
 
     return {

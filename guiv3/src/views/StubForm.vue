@@ -122,8 +122,12 @@ export default {
           input.value = resources.defaultStub;
         }
       } else {
-        const fullStub = await store.dispatch("stubs/getStub", stubId.value);
-        input.value = yaml.dump(fullStub.stub);
+        try {
+          const fullStub = await store.dispatch("stubs/getStub", stubId.value);
+          input.value = yaml.dump(fullStub.stub);
+        } catch (e) {
+          handleHttpError(e);
+        }
       }
     });
 

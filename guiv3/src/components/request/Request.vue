@@ -98,22 +98,33 @@ export default {
     // Methods
     const showDetails = async () => {
       if (Object.keys(request.value).length === 0) {
-        request.value = await store.dispatch(
-          "requests/getRequest",
-          correlationId()
-        );
-        accordionOpened.value = true;
+        try {
+          request.value = await store.dispatch(
+            "requests/getRequest",
+            correlationId()
+          );
+          accordionOpened.value = true;
+        } catch (e) {
+          handleHttpError(e);
+        }
       } else {
         accordionOpened.value = !accordionOpened.value;
       }
     };
     const createStub = async () => {
-      const fullStub = await store.dispatch("stubs/createStubBasedOnRequest", {
-        correlationId: correlationId(),
-        doNotCreateStub: true,
-      });
-      setIntermediateStub(yaml.dump(fullStub.stub));
-      await router.push({ name: "StubForm" });
+      try {
+        const fullStub = await store.dispatch(
+          "stubs/createStubBasedOnRequest",
+          {
+            correlationId: correlationId(),
+            doNotCreateStub: true,
+          }
+        );
+        setIntermediateStub(yaml.dump(fullStub.stub));
+        await router.push({ name: "StubForm" });
+      } catch (e) {
+        handleHttpError(e);
+      }
     };
     const deleteRequest = async () => {
       try {

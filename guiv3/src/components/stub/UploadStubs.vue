@@ -19,6 +19,7 @@ import { getExtension } from "@/utils/file";
 import { resources } from "@/constants/resources";
 import toastr from "toastr";
 import { useStore } from "vuex";
+import { handleHttpError } from "@/utils/error";
 
 export default {
   name: "UploadStubs",
@@ -47,7 +48,7 @@ export default {
           emit("uploaded");
         }, 200);
       } catch (e) {
-        toastr.error(e);
+        handleHttpError(e);
       }
     };
     const loadTextFromFile = (ev) => {
@@ -70,7 +71,11 @@ export default {
       for (let file of validFiles) {
         let reader = new FileReader();
         reader.onload = async (e) => {
-          await addStubs(e.target.result, file.name);
+          try {
+            await addStubs(e.target.result, file.name);
+          } catch (e) {
+            handleHttpError(e);
+          }
         };
         reader.readAsText(file);
       }

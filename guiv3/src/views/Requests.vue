@@ -73,6 +73,7 @@ import Request from "@/components/request/Request";
 import { resources } from "@/constants/resources";
 import toastr from "toastr";
 import { HubConnectionBuilder } from "@microsoft/signalr";
+import { handleHttpError } from "@/utils/error";
 
 export default {
   name: "Requests",
@@ -130,15 +131,27 @@ export default {
 
     // Methods
     const loadRequests = async () => {
-      requests.value = await store.dispatch("requests/getRequestsOverview");
+      try {
+        requests.value = await store.dispatch("requests/getRequestsOverview");
+      } catch (e) {
+        handleHttpError(e);
+      }
     };
     const loadTenantNames = async () => {
-      tenants.value = await store.dispatch("tenants/getTenantNames");
+      try {
+        tenants.value = await store.dispatch("tenants/getTenantNames");
+      } catch (e) {
+        handleHttpError(e);
+      }
     };
     const deleteAllRequests = async () => {
-      await store.dispatch("requests/clearRequests");
-      toastr.success(resources.requestsDeletedSuccessfully);
-      await loadRequests();
+      try {
+        await store.dispatch("requests/clearRequests");
+        toastr.success(resources.requestsDeletedSuccessfully);
+        await loadRequests();
+      } catch (e) {
+        handleHttpError(e);
+      }
     };
 
     // Lifecycle

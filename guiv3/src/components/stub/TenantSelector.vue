@@ -14,6 +14,7 @@
 <script>
 import { useStore } from "vuex";
 import { onMounted, ref } from "vue";
+import { handleHttpError } from "@/utils/error";
 
 export default {
   name: "TenantSelector",
@@ -31,9 +32,15 @@ export default {
 
     // Lifecycle
     onMounted(async () => {
-      const tenantNamesResult = await store.dispatch("tenants/getTenantNames");
-      tenantNamesResult.unshift("Default tenant");
-      tenantNames.value = tenantNamesResult;
+      try {
+        const tenantNamesResult = await store.dispatch(
+          "tenants/getTenantNames"
+        );
+        tenantNamesResult.unshift("Default tenant");
+        tenantNames.value = tenantNamesResult;
+      } catch (e) {
+        handleHttpError(e);
+      }
     });
 
     return { tenantNames, tenantSelected };

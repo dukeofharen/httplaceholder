@@ -136,18 +136,30 @@ export default {
 
     // Methods
     const loadStubs = async () => {
-      stubs.value = await store.dispatch("stubs/getStubsOverview");
+      try {
+        stubs.value = await store.dispatch("stubs/getStubsOverview");
+      } catch (e) {
+        handleHttpError(e);
+      }
     };
     const loadTenantNames = async () => {
-      tenants.value = await store.dispatch("tenants/getTenantNames");
+      try {
+        tenants.value = await store.dispatch("tenants/getTenantNames");
+      } catch (e) {
+        handleHttpError(e);
+      }
     };
     const loadData = async () => {
       await Promise.all([loadStubs(), loadTenantNames()]);
     };
     const deleteAllStubs = async () => {
-      await store.dispatch("stubs/deleteStubs");
-      toastr.success(resources.stubsDeletedSuccessfully);
-      await loadData();
+      try {
+        await store.dispatch("stubs/deleteStubs");
+        toastr.success(resources.stubsDeletedSuccessfully);
+        await loadData();
+      } catch (e) {
+        handleHttpError(e);
+      }
     };
     const download = async () => {
       try {

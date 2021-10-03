@@ -85,6 +85,7 @@ import {
 } from "@/constants/stubFormResources";
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
+import { handleHttpError } from "@/utils/error";
 
 export default {
   name: "ResponseBodyHelper",
@@ -192,7 +193,11 @@ export default {
       }
 
       responseBody.value = currentResponseBody;
-      metadata.value = await store.dispatch("metadata/getMetadata");
+      try {
+        metadata.value = await store.dispatch("metadata/getMetadata");
+      } catch (e) {
+        handleHttpError(e);
+      }
       enableDynamicMode.value = store.getters["stubForm/getDynamicMode"];
     });
 
