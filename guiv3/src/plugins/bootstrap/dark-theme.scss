@@ -9,6 +9,10 @@
   color: $gray-400;
 }
 
+.dark-theme .btn {
+  color: $gray-400;
+}
+
 // Forms
 .dark-theme input.form-control, .dark-theme select.form-select {
   background-color: $gray-900;

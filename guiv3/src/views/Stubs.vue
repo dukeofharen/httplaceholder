@@ -42,7 +42,7 @@
           v-model="urlStubIdFilter"
         />
         <button
-          class="btn btn-outline-danger fw-bold"
+          class="btn btn-danger fw-bold"
           type="button"
           title="Reset"
           @click="urlStubIdFilter = ''"
@@ -58,7 +58,7 @@
           <option v-for="tenant of tenants" :key="tenant">{{ tenant }}</option>
         </select>
         <button
-          class="btn btn-outline-danger fw-bold"
+          class="btn btn-danger fw-bold"
           type="button"
           title="Reset"
           @click="selectedTenantName = ''"

@@ -8,6 +8,8 @@ export const resources = {
   stubUpdatedSuccessfully: "Stub was updated successfully.",
   stubsInFileAddedSuccessfully: "Stubs in file '{0}' were added successfully.",
   errorDuringParsingOfYaml: "Something went wrong while parsing the YAML: {0}",
+  requestBodyCopiedToClipboard:
+    "Request body successfully copied to clipboard.",
   uploadInvalidFiles:
     "These files you are trying to upload have an incorrect extension: {0}.",
   onlyUploadYmlFiles:

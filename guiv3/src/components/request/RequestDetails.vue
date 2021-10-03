@@ -38,6 +38,10 @@
           <QueryParams v-if="showQueryParameters" :request="request" />
         </div>
       </div>
+      <div class="col-md-12 mb-3" v-if="showRequestBody">
+        <label>Request body</label>
+        <RequestBody :request="request" />
+      </div>
       <div v-if="showResults" class="col-md-12">
         <accordion> </accordion>
         <div class="accordion">
@@ -65,10 +69,12 @@ import QueryParams from "@/components/request/QueryParams";
 import StubExecutionResults from "@/components/request/StubExecutionResults";
 import ResponseWriterResults from "@/components/request/ResponseWriterResults";
 import Accordion from "@/components/bootstrap/Accordion";
+import RequestBody from "@/components/request/RequestBody";
 
 export default {
   name: "RequestDetails",
   components: {
+    RequestBody,
     Accordion,
     StubExecutionResults,
     RequestHeaders,
@@ -96,7 +102,7 @@ export default {
     const showQueryParameters = computed(
       () => requestParams.value?.url?.includes("?") || false
     );
-
+    const showRequestBody = computed(() => requestParams.value?.body || false);
     const showStubExecutionResults = computed(
       () =>
         props.request.stubExecutionResults &&
@@ -120,6 +126,7 @@ export default {
       showStubExecutionResults,
       showStubResponseWriterResults,
       showResults,
+      showRequestBody,
     };
   },
 };

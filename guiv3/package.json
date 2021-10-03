@@ -41,6 +41,7 @@
     "sass-loader": "^8.0.2",
     "toastr": "^2.1.4",
     "typeface-roboto": "^1.1.13",
-    "vue3-slide-up-down": "^1.2.3"
+    "vue3-slide-up-down": "^1.2.3",
+    "xml-formatter": "^2.4.1"
   }
 }
