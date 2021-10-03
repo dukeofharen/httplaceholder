@@ -339,8 +339,6 @@ ASALocalRun/
 .mfractor/
 
 # Other
-src/HttPlaceholder/gui
-!src/HttPlaceholder/gui/.guiwillbeplacedhere
 .vagrant
 *.swp
 launchSettings.json
