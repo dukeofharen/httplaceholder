@@ -68,7 +68,7 @@
 <script>
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import Request from "@/components/request/Request";
 import { resources } from "@/constants/resources";
 import toastr from "toastr";
@@ -158,6 +158,11 @@ export default {
     onMounted(async () => {
       await Promise.all([loadRequests(), loadTenantNames()]);
       initializeSignalR();
+    });
+    onUnmounted(() => {
+      if (signalrConnection) {
+        signalrConnection.stop();
+      }
     });
 
     return {
