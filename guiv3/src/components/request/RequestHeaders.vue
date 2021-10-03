@@ -16,11 +16,9 @@
 
 <script>
 import { computed } from "vue";
-import AccordionItem from "@/components/bootstrap/AccordionItem";
 
 export default {
   name: "RequestHeaders",
-  components: { AccordionItem },
   props: {
     request: {
       type: Object,

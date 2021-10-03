@@ -47,11 +47,9 @@
 
 <script>
 import { conditionValidationType } from "@/constants/conditionValidationType";
-import AccordionItem from "@/components/bootstrap/AccordionItem";
 
 export default {
   name: "StubExecutionResult",
-  components: { AccordionItem },
   props: {
     correlationId: {
       type: String,

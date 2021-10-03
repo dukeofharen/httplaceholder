@@ -32,7 +32,6 @@
         <span>{{ requestTime }} (it took {{ duration }} ms)</span>
       </div>
       <div class="col-md-12 mb-3">
-        <accordion> </accordion>
         <div class="accordion">
           <RequestHeaders :request="request" />
           <QueryParams v-if="showQueryParameters" :request="request" />
@@ -43,7 +42,6 @@
         <RequestBody :request="request" />
       </div>
       <div v-if="showResults" class="col-md-12">
-        <accordion> </accordion>
         <div class="accordion">
           <StubExecutionResults
             v-if="showStubExecutionResults"
@@ -68,14 +66,12 @@ import RequestHeaders from "@/components/request/RequestHeaders";
 import QueryParams from "@/components/request/QueryParams";
 import StubExecutionResults from "@/components/request/StubExecutionResults";
 import ResponseWriterResults from "@/components/request/ResponseWriterResults";
-import Accordion from "@/components/bootstrap/Accordion";
 import RequestBody from "@/components/request/RequestBody";
 
 export default {
   name: "RequestDetails",
   components: {
     RequestBody,
-    Accordion,
     StubExecutionResults,
     RequestHeaders,
     QueryParams,

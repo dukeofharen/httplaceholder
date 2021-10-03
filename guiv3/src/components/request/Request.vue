@@ -50,14 +50,13 @@ import { handleHttpError } from "@/utils/error";
 import { setIntermediateStub } from "@/utils/session";
 import Method from "@/components/request/Method";
 import RequestDetails from "@/components/request/RequestDetails";
-import AccordionItem from "@/components/bootstrap/AccordionItem";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { useRouter } from "vue-router";
 
 export default {
   name: "Request",
-  components: { AccordionItem, Method, RequestDetails },
+  components: { Method, RequestDetails },
   props: {
     overviewRequest: {
       type: Object,

@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <FormHelperSelector />
+    <FormHelperSelector v-if="showFormHelperSelector" />
 
     <div class="row mt-2">
       <div class="col-md-12">
@@ -76,6 +76,9 @@ export default {
       get: () => store.getters["stubForm/getInput"],
       set: (value) => store.commit("stubForm/setInput", value),
     });
+    const showFormHelperSelector = computed(
+      () => input.value.indexOf("- ") !== 0
+    );
 
     // Methods
     const save = async () => {
@@ -141,6 +144,7 @@ export default {
       showResetModal,
       reset,
       checkSave,
+      showFormHelperSelector,
     };
   },
 };

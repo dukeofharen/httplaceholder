@@ -17,11 +17,9 @@
 <script>
 import { computed } from "vue";
 import { parseUrl } from "@/utils/url";
-import AccordionItem from "@/components/bootstrap/AccordionItem";
 
 export default {
   name: "QueryParams",
-  components: { AccordionItem },
   props: {
     request: {
       type: Object,

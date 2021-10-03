@@ -17,11 +17,8 @@
 </template>
 
 <script>
-import AccordionItem from "@/components/bootstrap/AccordionItem";
-
 export default {
   name: "ResponseWriterResults",
-  components: { AccordionItem },
   props: {
     correlationId: {
       type: String,

@@ -73,7 +73,6 @@ import { useStore } from "vuex";
 import yaml from "js-yaml";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
-import AccordionItem from "@/components/bootstrap/AccordionItem";
 import { setIntermediateStub } from "@/utils/session";
 import { useRouter } from "vue-router";
 import dayjs from "dayjs";
@@ -81,7 +80,6 @@ import { handleHttpError } from "@/utils/error";
 
 export default {
   name: "Stub",
-  components: { AccordionItem },
   props: {
     overviewStub: {
       type: Object,

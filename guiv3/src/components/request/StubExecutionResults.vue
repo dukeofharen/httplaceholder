@@ -2,7 +2,6 @@
   <accordion-item>
     <template v-slot:button-text>Stub execution results</template>
     <template v-slot:accordion-body>
-      <accordion> </accordion>
       <div class="accordion">
         <StubExecutionResult
           v-for="result of orderedStubExecutionResults"
@@ -18,12 +17,10 @@
 <script>
 import { computed } from "vue";
 import StubExecutionResult from "@/components/request/StubExecutionResult";
-import AccordionItem from "@/components/bootstrap/AccordionItem";
-import Accordion from "@/components/bootstrap/Accordion";
 
 export default {
   name: "StubExecutionResults",
-  components: { Accordion, AccordionItem, StubExecutionResult },
+  components: { StubExecutionResult },
   props: {
     correlationId: {
       type: String,
