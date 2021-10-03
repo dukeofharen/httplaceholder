@@ -97,6 +97,13 @@ export default {
     // Functions
     const getStubId = () => props.overviewStub.stub.id;
     const isEnabled = () => props.overviewStub.stub.enabled;
+    const initHljs = () => {
+      setTimeout(() => {
+        if (codeBlock.value) {
+          hljs.highlightElement(codeBlock.value);
+        }
+      }, 10);
+    };
 
     // Data
     const overviewStubValue = ref(props.overviewStub);
@@ -130,12 +137,10 @@ export default {
       if (!fullStub.value) {
         try {
           fullStub.value = await store.dispatch("stubs/getStub", getStubId());
+          initHljs();
 
           // Sadly, when doing this without the timeout, it does the slide down incorrect.
-          setTimeout(() => {
-            accordionOpened.value = true;
-            hljs.highlightElement(codeBlock.value);
-          }, 1);
+          setTimeout(() => (accordionOpened.value = true), 1);
         } catch (e) {
           handleHttpError(e);
         }
@@ -156,6 +161,7 @@ export default {
         const enabled = await store.dispatch("stubs/flipEnabled", getStubId());
         fullStub.value.stub.enabled = enabled;
         overviewStubValue.value.stub.enabled = enabled;
+        initHljs();
       } catch (e) {
         handleHttpError(e);
       }
