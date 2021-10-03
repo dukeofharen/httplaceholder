@@ -22,11 +22,8 @@ export default {
     const store = useStore();
     const router = useRouter();
 
-    // Computed
-    const darkTheme = computed(() => store.getters["general/getDarkTheme"]);
-
-    // Watch
-    watch(darkTheme, (darkTheme) => {
+    // Functions
+    const setDarkTheme = (darkTheme) => {
       const bodyElement = document.body;
       const darkName = "dark-theme";
       const lightName = "light-theme";
@@ -37,11 +34,18 @@ export default {
         bodyElement.classList.remove(darkName);
         bodyElement.classList.add(lightName);
       }
-    });
+    };
+
+    // Computed
+    const darkTheme = computed(() => store.getters["general/getDarkTheme"]);
+
+    // Watch
+    watch(darkTheme, (darkTheme) => setDarkTheme(darkTheme));
 
     // Lifecycle
     onMounted(async () => {
       const darkThemeEnabled = getDarkThemeEnabled();
+      setDarkTheme(darkThemeEnabled);
       if (darkThemeEnabled) {
         store.commit("general/storeDarkTheme", darkThemeEnabled);
       }
