@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common.Utilities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -34,7 +35,7 @@ namespace HttPlaceholder.SwaggerGenerator
             var testServer = new TestServer(
               new WebHostBuilder()
                .ConfigureServices(services => Startup.ConfigureServicesStatic(services, config))
-               .Configure(appBuilder => Startup.ConfigureStatic(appBuilder, false, false)));
+               .Configure(appBuilder => Startup.ConfigureStatic(appBuilder, false, config.Get<SettingsModel>())));
             var client = testServer.CreateClient();
 
             // Retrieve the Swagger URL.

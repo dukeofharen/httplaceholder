@@ -34,7 +34,7 @@ You can add a single stub here or you can provide multiple stubs in YAML format.
 
 ![](img/stub_add_yaml_helpers.png)
 
-You can also click on "Click here to add request or response value" so you can see what kind of values you can use in your request conditions and response definitions and insert them.
+You can also click on "Add request / response value" so you can see what kind of values you can use in your request conditions and response definitions and insert them.
 
 ### Uploading stubs
 

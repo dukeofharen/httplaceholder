@@ -39,7 +39,7 @@ namespace HttPlaceholder.Authorization.Implementations
             _httpContextAccessor.HttpContext.Response.Cookies.Append(
                 CookieKeys.LoginCookieKey,
                 CreateHash(username, password),
-                new CookieOptions { HttpOnly = true });
+                new CookieOptions { HttpOnly = false, SameSite = SameSiteMode.Lax});
 
         private static string CreateHash(string username, string password) =>
             HashingUtilities.GetSha512String($"{Salt}:{username}:{password}");

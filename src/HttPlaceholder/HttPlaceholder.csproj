@@ -55,10 +55,10 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-        <Content Update="gui\*.json">
+        <None Update="gui\**\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <None Update="gui\**">
+        </None>
+        <None Update="guiv3\**\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <Content Include="ph-static\**\*.*">

@@ -195,6 +195,7 @@ namespace HttPlaceholder.Infrastructure.Tests.Configuration
             Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
             Assert.AreEqual("40", result["Storage:OldRequestsQueueLength"]);
             Assert.AreEqual("60000", result["Stub:MaximumExtraDurationMillis"]);
+            Assert.AreEqual("False", result["Gui:UseNewUi"]);
         }
 
         [DataTestMethod]

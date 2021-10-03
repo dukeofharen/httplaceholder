@@ -44,14 +44,15 @@ namespace HttPlaceholder.Utilities
             return services;
         }
 
-        public static IApplicationBuilder UseGui(this IApplicationBuilder app, bool loadStaticFiles)
+        public static IApplicationBuilder UseGui(this IApplicationBuilder app, bool loadStaticFiles, bool useNewUi)
         {
             if (!loadStaticFiles)
             {
                 return app;
             }
 
-            var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/gui";
+            var subPath = useNewUi ? "guiv3" : "gui";
+            var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/{subPath}";
             if (Directory.Exists(path))
             {
                 app.UseFileServer(new FileServerOptions

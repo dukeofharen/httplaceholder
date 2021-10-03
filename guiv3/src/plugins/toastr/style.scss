@@ -1,0 +1,30 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+
+#toast-container {
+    margin-top: 10px;
+}
+
+#toast-container > div{
+    opacity: 0.95;
+}
+
+#toast-container .toast {
+    font-size: 18px;
+}
+
+.toast {
+    font-family: "Roboto", sans-serif;
+}
+
+.toast-success {
+    background-color: $green-700;
+}
+
+.toast-error {
+    background-color: $red-700;
+}
+
+.toast-warning {
+    background-color: $orange-700;
+}

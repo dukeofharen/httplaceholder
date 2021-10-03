@@ -26,15 +26,17 @@ namespace HttPlaceholder
             ConfigureServicesStatic(services, Configuration);
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
-            ConfigureStatic(app, true, Configuration?.Get<SettingsModel>()?.Gui?.EnableUserInterface == true);
+            ConfigureStatic(app, true, Configuration?.Get<SettingsModel>());
 
-        public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, bool loadStaticFiles)
+        public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, SettingsModel settings)
         {
+            var enableUserInterface = settings?.Gui?.EnableUserInterface == true;
+            var useNewUi = settings?.Gui?.UseNewUi == true;
             app
                 .UseHttPlaceholder()
                 .UseOpenApi()
                 .UseSwaggerUi3()
-                .UseGui(loadStaticFiles)
+                .UseGui(enableUserInterface, useNewUi)
                 .UsePhStatic()
                 .PreloadStubs(preloadStubs);
             app
