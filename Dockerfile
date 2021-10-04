@@ -12,11 +12,19 @@ WORKDIR /app
 COPY . ./
 RUN cd gui && npm install && npm run build
 
+# Build new UI
+FROM node:14.0.0 AS new-gui-build-env
+WORKDIR /app
+
+COPY . ./
+RUN cd guiv3 && npm install && npm run build
+
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/sdk:5.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 COPY --from=gui-build-env /app/gui/dist ./gui
+COPY --from=new-gui-build-env /app/gui/dist ./guiv3
 ENV inputFile=/var/httplaceholder
 RUN mkdir /var/httplaceholder
 ENTRYPOINT ["dotnet", "HttPlaceholder.dll", "-V"]
