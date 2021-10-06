@@ -1,15 +1,8 @@
 <template>
   <div class="col-auto col-md-3 col-xl-2 px-md-2 px-0 bg-dark">
+    <!--    TODO show small logo in mobile mode-->
     <div
-      class="
-        d-flex
-        flex-column
-        align-items-center align-items-md-start
-        px-3
-        pt-2
-        text-white
-        min-vh-100
-      "
+      class="d-flex flex-column align-items-stretch flex-shrink-0 min-vh-100"
     >
       <a
         href="/"
@@ -26,21 +19,24 @@
           ><img src="@/assets/logo-white_small.png" alt=""
         /></span>
       </a>
-      <ul
-        class="
-          nav nav-pills
-          flex-column
-          mb-md-auto mb-0
-          align-items-center align-items-sm-start
-        "
-        id="menu"
-      >
+      <div class="list-group list-group-flush">
         <SidebarMenuItem
           v-for="item of menuItems"
           :key="item.title"
           :item="item"
         />
-      </ul>
+      </div>
+      <!--      <ul-->
+      <!--        class="-->
+      <!--          nav nav-pills-->
+      <!--          flex-column-->
+      <!--          mb-md-auto mb-0-->
+      <!--          align-items-center align-items-sm-start-->
+      <!--        "-->
+      <!--        id="menu"-->
+      <!--      >-->
+      <!--        -->
+      <!--      </ul>-->
     </div>
   </div>
 </template>
