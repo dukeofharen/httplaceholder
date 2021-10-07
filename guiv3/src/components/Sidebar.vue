@@ -13,10 +13,15 @@
           mb-md-0
           me-md-auto
           text-white text-decoration-none
+          justify-content-center
+          mt-1
         "
       >
         <span class="fs-5 d-none d-md-inline logo"
           ><img src="@/assets/logo-white_small.png" alt=""
+        /></span>
+        <span class="fs-5 d-inline d-md-none logo"
+          ><img src="@/assets/logo-white_small_square.png" alt=""
         /></span>
       </a>
       <div class="list-group list-group-flush">
