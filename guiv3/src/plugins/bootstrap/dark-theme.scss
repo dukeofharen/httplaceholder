@@ -14,7 +14,7 @@
 }
 
 // Forms
-.dark-theme input.form-control, .dark-theme select.form-select {
+.dark-theme input.form-control, .dark-theme select.form-select, .dark-theme textarea.form-control {
   background-color: $gray-900;
   color: $gray-400;
   border-color: $gray-700;
@@ -55,6 +55,7 @@
 .dark-theme .modal-content {
   background-color: $gray-900;
 }
+
 .dark-theme .modal-content .btn.btn-secondary {
   color: $gray-900;
 }
@@ -63,6 +64,7 @@
 .dark-theme .card-body {
   background-color: $gray-900;
 }
+
 .dark-theme .card {
   border-color: $gray-700;
 }
