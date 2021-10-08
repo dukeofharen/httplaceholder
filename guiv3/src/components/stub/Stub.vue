@@ -4,6 +4,7 @@
       <span :class="{ disabled: !enabled }">
         {{ id }}
       </span>
+      <span v-if="!enabled" class="disabled">&nbsp;(disabled)</span>
     </template>
     <template v-slot:accordion-body>
       <div v-if="fullStub">
