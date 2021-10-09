@@ -103,7 +103,7 @@ export default {
     // Data
     const responseBodyType = ref("");
     const responseBody = ref("");
-    const enableDynamicMode = ref(false);
+    const enableDynamicMode = ref(null);
     const showBase64TextInput = ref(false);
     const responseBodyTypeItems = Object.keys(responseBodyTypes).map(
       (k) => responseBodyTypes[k]

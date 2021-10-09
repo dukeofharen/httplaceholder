@@ -475,7 +475,12 @@ const mutations = {
           parsed.response = {};
         }
 
-        parsed.response.enableDynamicMode = value;
+        if (value) {
+          parsed.response.enableDynamicMode = value;
+        } else {
+          delete parsed.response.enableDynamicMode;
+        }
+
         state.input = yaml.dump(parsed);
       }
     });
