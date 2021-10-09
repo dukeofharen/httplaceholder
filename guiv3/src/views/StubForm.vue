@@ -50,7 +50,9 @@ import { handleHttpError } from "@/utils/error";
 import toastr from "toastr";
 import yaml from "js-yaml";
 import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";
+import { shouldSave } from "@/utils/event";
 import FormHelperSelector from "@/components/stub/FormHelperSelector";
+import { formHelperKeys } from "@/constants/stubFormResources";
 
 export default {
   name: "StubForm",
@@ -79,6 +81,9 @@ export default {
     const showFormHelperSelector = computed(
       () => input.value.indexOf("- ") !== 0
     );
+    const currentSelectedFormHelper = computed(
+      () => store.getters["stubForm/getCurrentSelectedFormHelper"]
+    );
 
     // Methods
     const save = async () => {
@@ -102,7 +107,10 @@ export default {
       stubId.value = "";
     };
     const checkSave = async (e) => {
-      if (e.ctrlKey && (e.key === "s" || e.key === "Enter")) {
+      if (
+        shouldSave(e) &&
+        currentSelectedFormHelper.value !== formHelperKeys.responseBody
+      ) {
         e.preventDefault();
         await save();
       }
