@@ -27,12 +27,13 @@
 </template>
 
 <script>
-import { useRoute } from "vue-router";
-import { computed, onBeforeMount, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { computed, onBeforeMount, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
+import toastr from "toastr";
 import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";
 import FormHelperSelector from "@/components/stub/FormHelperSelector";
 import StubFormButtons from "@/components/stub/StubFormButtons";
@@ -42,6 +43,7 @@ export default {
   components: { FormHelperSelector, StubFormButtons },
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const store = useStore();
 
     // Data
@@ -64,13 +66,8 @@ export default {
       () => input.value.indexOf("- ") !== 0
     );
 
-    // Lifecycle
-    onBeforeMount(() => {
-      if (store.getters["general/getDarkTheme"]) {
-        cmOptions.theme = "material-darker";
-      }
-    });
-    onMounted(async () => {
+    // Functions
+    const initialize = async () => {
       store.commit("stubForm/closeFormHelper");
       if (newStub.value) {
         const intermediateStub = getIntermediateStub();
@@ -85,9 +82,27 @@ export default {
           const fullStub = await store.dispatch("stubs/getStub", stubId.value);
           input.value = yaml.dump(fullStub.stub);
         } catch (e) {
-          handleHttpError(e);
+          if (e.status === 404) {
+            toastr.error(resources.stubNotFound.format(stubId.value));
+            await router.push({ name: "StubForm" });
+          } else {
+            handleHttpError(e);
+          }
         }
       }
+    };
+
+    // Lifecycle
+    onBeforeMount(() => {
+      if (store.getters["general/getDarkTheme"]) {
+        cmOptions.theme = "material-darker";
+      }
+    });
+    onMounted(async () => await initialize());
+
+    // Watch
+    watch(stubId, async () => {
+      await initialize();
     });
 
     return {

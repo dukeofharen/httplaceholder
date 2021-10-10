@@ -57,9 +57,10 @@ export default {
     );
 
     // Methods
-    const reset = () => {
+    const reset = async () => {
       input.value = resources.defaultStub;
       emit("update:modelValue", "");
+      await router.push({ name: "StubForm" });
     };
     const addStub = async () => {
       try {
@@ -117,10 +118,7 @@ export default {
     };
 
     // Lifecycle
-    const keydownEventListener = async (e) => {
-      console.log("StubFormButtons");
-      await checkSave(e);
-    };
+    const keydownEventListener = async (e) => await checkSave(e);
     onMounted(() => document.addEventListener("keydown", keydownEventListener));
     onUnmounted(() =>
       document.removeEventListener("keydown", keydownEventListener)
