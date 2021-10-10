@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { computed, onBeforeMount, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { resources } from "@/constants/resources";
@@ -59,6 +59,7 @@ export default {
   components: { FormHelperSelector },
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const store = useStore();
 
     // Data
@@ -91,6 +92,12 @@ export default {
         const result = await store.dispatch("stubs/addStubs", input.value);
         if (result.length === 1) {
           stubId.value = result[0].stub.id;
+          if (route.params.stubId !== stubId.value) {
+            await router.push({
+              name: "StubForm",
+              params: { stubId: stubId.value },
+            });
+          }
         }
 
         toastr.success(
