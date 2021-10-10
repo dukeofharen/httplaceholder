@@ -26,6 +26,7 @@ const handle = (func) => {
 
 const state = () => ({
   input: "",
+  inputHasMultipleStubs: false,
   currentSelectedFormHelper: "",
 });
 
@@ -40,6 +41,7 @@ const mutations = {
   },
   setInput(state, input) {
     state.input = input;
+    state.inputHasMultipleStubs = input.indexOf("- ") === 0;
   },
   setDefaultDescription(state) {
     handle(() => {
@@ -595,6 +597,19 @@ const getters = {
 
       return false;
     });
+  },
+  getStubId(state) {
+    return handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        return parsed.id;
+      }
+
+      return "";
+    });
+  },
+  getInputHasMultipleStubs(state) {
+    return state.inputHasMultipleStubs;
   },
 };
 
