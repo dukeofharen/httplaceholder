@@ -1,38 +1,37 @@
 <template>
-  <div class="row mt-3" v-if="!showAccordion">
+  <div class="row mt-3" v-if="!showFormHelperItems">
     <div class="col-md-12">
-      <button class="btn btn-outline-primary" @click="showAccordion = true">
+      <button class="btn btn-outline-primary" @click="openFormHelperList">
         Add request / response value
       </button>
     </div>
   </div>
-  <div class="row mt-3" v-if="showAccordion">
+  <div class="row mt-3" v-if="showFormHelperItems">
     <div class="col-md-12">
-      <accordion>
-        <accordion-item
-          v-for="(item, index) in formHelperItems"
-          :key="index"
-          :opened="item.opened"
-          @buttonClicked="item.opened = !item.opened"
-        >
-          <template v-slot:button-text>{{ item.title }}</template>
-          <template v-slot:accordion-body>
-            <div class="list-group">
-              <button
-                v-for="(subItem, index) in item.subItems"
-                :key="index"
-                class="list-group-item list-group-item-action"
-                @click="subItem.onClick"
-              >
-                <label>{{ subItem.title }}</label>
-                <span class="subtitle text-secondary">{{
-                  subItem.subTitle
-                }}</span>
-              </button>
-            </div>
-          </template>
-        </accordion-item>
-      </accordion>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Filter form helpers..."
+          v-model="formHelperFilter"
+          ref="formHelperFilterInput"
+        />
+      </div>
+      <div class="list-group">
+        <template v-for="(item, index) in filteredStubFormHelpers" :key="index">
+          <div v-if="item.isMainItem" class="list-group-item fw-bold fs-4">
+            {{ item.title }}
+          </div>
+          <button
+            v-else
+            class="list-group-item list-group-item-action"
+            @click="onFormHelperItemClick(item)"
+          >
+            <label class="fw-bold">{{ item.title }}</label>
+            <span class="subtitle">{{ item.subTitle }}</span>
+          </button>
+        </template>
+      </div>
     </div>
   </div>
   <div v-if="currentSelectedFormHelper" class="row mt-3">
@@ -65,10 +64,7 @@
 
 <script>
 import { computed, ref, watch } from "vue";
-import {
-  elementDescriptions,
-  formHelperKeys,
-} from "@/constants/stubFormResources";
+import { formHelperKeys, stubFormHelpers } from "@/constants/stubFormResources";
 import { useStore } from "vuex";
 import HttpMethodSelector from "@/components/stub/HttpMethodSelector";
 import TenantSelector from "@/components/stub/TenantSelector";
@@ -90,208 +86,69 @@ export default {
   setup() {
     const store = useStore();
 
-    // Data
-    const showAccordion = ref(false);
-    const formHelperItems = ref([
-      {
-        title: "Add general information",
-        opened: false,
-        subItems: [
-          {
-            title: "Description",
-            subTitle: elementDescriptions.description,
-            onClick: () => setDefaultValue("stubForm/setDefaultDescription"),
-          },
-          {
-            title: "Priority",
-            subTitle: elementDescriptions.priority,
-            onClick: () => setDefaultValue("stubForm/setDefaultPriority"),
-          },
-          {
-            title: "Disable stub",
-            subTitle: elementDescriptions.disable,
-            onClick: () => setDefaultValue("stubForm/setStubDisabled"),
-          },
-          {
-            title: "Tenant",
-            subTitle: elementDescriptions.tenant,
-            onClick: () => openFormHelper(formHelperKeys.tenant),
-          },
-        ],
-      },
-      {
-        title: "Add request condition",
-        opened: false,
-        subItems: [
-          {
-            title: "HTTP method",
-            subTitle: elementDescriptions.httpMethod,
-            onClick: () => openFormHelper(formHelperKeys.httpMethod),
-          },
-          {
-            title: "URL path",
-            subTitle: elementDescriptions.urlPath,
-            onClick: () => setDefaultValue("stubForm/setDefaultPath"),
-          },
-          {
-            title: "Full path",
-            subTitle: elementDescriptions.fullPath,
-            onClick: () => setDefaultValue("stubForm/setDefaultFullPath"),
-          },
-          {
-            title: "Query string",
-            subTitle: elementDescriptions.queryString,
-            onClick: () => setDefaultValue("stubForm/setDefaultQuery"),
-          },
-          {
-            title: "HTTPS",
-            subTitle: elementDescriptions.isHttps,
-            onClick: () => setDefaultValue("stubForm/setDefaultIsHttps"),
-          },
-          {
-            title: "Basic authentication",
-            subTitle: elementDescriptions.basicAuthentication,
-            onClick: () => setDefaultValue("stubForm/setDefaultBasicAuth"),
-          },
-          {
-            title: "Headers",
-            subTitle: elementDescriptions.headers,
-            onClick: () => setDefaultValue("stubForm/setDefaultRequestHeaders"),
-          },
-          {
-            title: "Body",
-            subTitle: elementDescriptions.body,
-            onClick: () => setDefaultValue("stubForm/setDefaultRequestBody"),
-          },
-          {
-            title: "Form body",
-            subTitle: elementDescriptions.formBody,
-            onClick: () => setDefaultValue("stubForm/setDefaultFormBody"),
-          },
-          {
-            title: "Client IP",
-            subTitle: elementDescriptions.clientIp,
-            onClick: () => setDefaultValue("stubForm/setDefaultClientIp"),
-          },
-          {
-            title: "Hostname",
-            subTitle: elementDescriptions.hostname,
-            onClick: () => setDefaultValue("stubForm/setDefaultHostname"),
-          },
-          {
-            title: "JSONPath",
-            subTitle: elementDescriptions.jsonPath,
-            onClick: () => setDefaultValue("stubForm/setDefaultJsonPath"),
-          },
-          {
-            title: "JSON object",
-            subTitle: elementDescriptions.jsonObject,
-            onClick: () => setDefaultValue("stubForm/setDefaultJsonObject"),
-          },
-          {
-            title: "JSON array",
-            subTitle: elementDescriptions.jsonArray,
-            onClick: () => setDefaultValue("stubForm/setDefaultJsonArray"),
-          },
-          {
-            title: "XPath",
-            subTitle: elementDescriptions.xpath,
-            onClick: () => setDefaultValue("stubForm/setDefaultXPath"),
-          },
-        ],
-      },
-      {
-        title: "Add response definition",
-        opened: false,
-        subItems: [
-          {
-            title: "HTTP status code",
-            subTitle: elementDescriptions.statusCode,
-            onClick: () => openFormHelper(formHelperKeys.statusCode),
-          },
-          {
-            title: "Response body",
-            subTitle: elementDescriptions.responseBody,
-            onClick: () => openFormHelper(formHelperKeys.responseBody),
-          },
-          {
-            title: "Response headers",
-            subTitle: elementDescriptions.responseHeaders,
-            onClick: () =>
-              setDefaultValue("stubForm/setDefaultResponseHeaders"),
-          },
-          {
-            title: "Content type",
-            subTitle: elementDescriptions.responseContentType,
-            onClick: () =>
-              setDefaultValue("stubForm/setDefaultResponseContentType"),
-          },
-          {
-            title: "Extra duration",
-            subTitle: elementDescriptions.extraDuration,
-            onClick: () => setDefaultValue("stubForm/setDefaultExtraDuration"),
-          },
-          {
-            title: "Image",
-            subTitle: elementDescriptions.image,
-            onClick: () => setDefaultValue("stubForm/setDefaultImage"),
-          },
-          {
-            title: "Redirect",
-            subTitle: elementDescriptions.redirect,
-            onClick: () => openFormHelper(formHelperKeys.redirect),
-          },
-          {
-            title: "Line endings",
-            subTitle: elementDescriptions.lineEndings,
-            onClick: () => openFormHelper(formHelperKeys.lineEndings),
-          },
-          {
-            title: "Reverse proxy",
-            subTitle: elementDescriptions.reverseProxy,
-            onClick: () => setDefaultValue("stubForm/setDefaultReverseProxy"),
-          },
-        ],
-      },
-    ]);
+    // Refs
+    const formHelperFilterInput = ref(null);
 
-    // Functions
-    const closeAccordions = () => {
-      for (const item of formHelperItems.value) {
-        item.opened = false;
-      }
-    };
+    // Data
+    const showFormHelperItems = ref(false);
+    const formHelperItems = ref();
+    const formHelperFilter = ref("");
 
     // Methods
-    const setDefaultValue = (mutationName) => {
-      closeAccordions();
-      store.commit(mutationName);
-      showAccordion.value = false;
+    const onFormHelperItemClick = (item) => {
+      if (item.defaultValueMutation) {
+        store.commit(item.defaultValueMutation);
+      } else if (item.formHelperToOpen) {
+        store.commit("stubForm/openFormHelper", item.formHelperToOpen);
+      }
+
+      showFormHelperItems.value = false;
     };
-    const openFormHelper = (key) => {
-      closeAccordions();
-      store.commit("stubForm/openFormHelper", key);
+    const openFormHelperList = () => {
+      showFormHelperItems.value = true;
+      setTimeout(() => {
+        if (formHelperFilterInput.value) {
+          formHelperFilterInput.value.focus();
+        }
+      }, 10);
     };
 
     // Computed
     const currentSelectedFormHelper = computed(
       () => store.getters["stubForm/getCurrentSelectedFormHelper"]
     );
+    const filteredStubFormHelpers = computed(() => {
+      if (!formHelperFilter.value) {
+        return stubFormHelpers;
+      }
+      return stubFormHelpers.filter((h) => {
+        if (h.isMainItem) {
+          return true;
+        }
+
+        return h.title
+          .toLowerCase()
+          .includes(formHelperFilter.value.toLowerCase());
+      });
+    });
 
     // Watch
     watch(currentSelectedFormHelper, (formHelper) => {
       if (!formHelper) {
-        showAccordion.value = false;
+        showFormHelperItems.value = false;
       }
     });
 
     return {
       formHelperItems,
-      setDefaultValue,
-      openFormHelper,
       formHelperKeys,
       currentSelectedFormHelper,
-      showAccordion,
+      showFormHelperItems,
+      filteredStubFormHelpers,
+      onFormHelperItemClick,
+      formHelperFilter,
+      formHelperFilterInput,
+      openFormHelperList,
     };
   },
 };
