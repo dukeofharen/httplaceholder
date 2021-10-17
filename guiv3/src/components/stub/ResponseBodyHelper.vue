@@ -86,7 +86,6 @@ import {
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
-import { shouldSave } from "@/utils/event";
 
 export default {
   name: "ResponseBodyHelper",
@@ -184,12 +183,6 @@ export default {
       showBase64TextInput.value = false;
       close();
     };
-    const checkSave = async (e) => {
-      if (shouldSave(e)) {
-        e.preventDefault();
-        insert();
-      }
-    };
 
     // Lifecycle
     onMounted(async () => {
@@ -227,7 +220,6 @@ export default {
       insert,
       insertVariableHandler,
       responseBodyField,
-      checkSave,
     };
   },
 };
