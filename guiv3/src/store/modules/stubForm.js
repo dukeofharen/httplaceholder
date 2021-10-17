@@ -41,7 +41,7 @@ const mutations = {
   },
   setInput(state, input) {
     state.input = input;
-    state.inputHasMultipleStubs = input.indexOf("- ") === 0;
+    state.inputHasMultipleStubs = /^-/gm.test(input);
   },
   setDefaultDescription(state) {
     handle(() => {

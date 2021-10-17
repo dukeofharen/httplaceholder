@@ -63,7 +63,7 @@ export default {
       set: (value) => store.commit("stubForm/setInput", value),
     });
     const showFormHelperSelector = computed(
-      () => input.value.indexOf("- ") !== 0
+      () => !store.getters["stubForm/getInputHasMultipleStubs"]
     );
 
     // Functions
