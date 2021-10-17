@@ -1,6 +1,5 @@
 <template>
   <div class="col-auto col-md-3 col-xl-2 px-md-2 px-0 bg-dark">
-    <!--    TODO show small logo in mobile mode-->
     <div
       class="d-flex flex-column align-items-stretch flex-shrink-0 min-vh-100"
     >
