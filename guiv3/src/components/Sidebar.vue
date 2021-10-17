@@ -30,17 +30,6 @@
           :item="item"
         />
       </div>
-      <!--      <ul-->
-      <!--        class="-->
-      <!--          nav nav-pills-->
-      <!--          flex-column-->
-      <!--          mb-md-auto mb-0-->
-      <!--          align-items-center align-items-sm-start-->
-      <!--        "-->
-      <!--        id="menu"-->
-      <!--      >-->
-      <!--        -->
-      <!--      </ul>-->
     </div>
   </div>
 </template>
