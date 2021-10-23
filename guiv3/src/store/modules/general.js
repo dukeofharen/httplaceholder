@@ -24,6 +24,9 @@ const getters = {
   getDarkTheme(state) {
     return state.settings.darkTheme;
   },
+  getSaveSearchFilters(state) {
+    return state.settings.saveSearchFilters;
+  },
 };
 
 export default {

@@ -39,19 +39,19 @@
           type="text"
           class="form-control"
           placeholder="Filter on stub ID or URL..."
-          v-model="urlStubIdFilter"
+          v-model="filter.urlStubIdFilter"
         />
         <button
           class="btn btn-danger fw-bold"
           type="button"
           title="Reset"
-          @click="urlStubIdFilter = ''"
+          @click="filter.urlStubIdFilter = ''"
         >
           <em class="bi-x"></em>
         </button>
       </div>
       <div v-if="tenants.length" class="input-group">
-        <select class="form-select" v-model="selectedTenantName">
+        <select class="form-select" v-model="filter.selectedTenantName">
           <option value="" selected>
             Select stub tenant / category name...
           </option>
@@ -61,7 +61,7 @@
           class="btn btn-danger fw-bold"
           type="button"
           title="Reset"
-          @click="selectedTenantName = ''"
+          @click="filter.selectedTenantName = ''"
         >
           <em class="bi-x"></em>
         </button>
@@ -82,13 +82,14 @@
 <script>
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import Stub from "@/components/stub/Stub";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { handleHttpError } from "@/utils/error";
 import { downloadBlob } from "@/utils/download";
+import { getStubFilterForm, setStubFilterForm } from "@/utils/session";
 import UploadStubs from "@/components/stub/UploadStubs";
 
 export default {
@@ -102,8 +103,18 @@ export default {
     const stubs = ref([]);
     const showDeleteAllStubsModal = ref(false);
     const tenants = ref([]);
-    const urlStubIdFilter = ref(route.query.filter || "");
-    const selectedTenantName = ref(route.query.tenant || "");
+
+    const saveSearchFilters = store.getters["general/getSaveSearchFilters"];
+    let savedFilter = {};
+    if (saveSearchFilters) {
+      savedFilter = getStubFilterForm() || {};
+    }
+
+    const filter = ref({
+      urlStubIdFilter: route.query.filter || savedFilter.urlStubIdFilter || "",
+      selectedTenantName:
+        route.query.tenant || savedFilter.selectedTenantName || "",
+    });
 
     // Functions
     const filterStubs = (input) => {
@@ -114,16 +125,16 @@ export default {
         return 0;
       };
 
-      if (urlStubIdFilter.value) {
+      if (filter.value.urlStubIdFilter) {
         stubsResult = stubsResult.filter((s) => {
           const stubId = s.stub.id.toLowerCase();
-          return stubId && stubId.includes(urlStubIdFilter.value);
+          return stubId && stubId.includes(filter.value.urlStubIdFilter);
         });
       }
 
-      if (selectedTenantName.value) {
+      if (filter.value.selectedTenantName) {
         stubsResult = stubsResult.filter(
-          (s) => s.stub.tenant === selectedTenantName.value
+          (s) => s.stub.tenant === filter.value.selectedTenantName
         );
       }
 
@@ -174,6 +185,14 @@ export default {
         handleHttpError(e);
       }
     };
+    const filterChanged = () => {
+      if (store.getters["general/getSaveSearchFilters"]) {
+        setStubFilterForm(filter.value);
+      }
+    };
+
+    // Watch
+    watch(filter, () => filterChanged(), { deep: true });
 
     // Lifecycle
     onMounted(async () => await loadData());
@@ -185,8 +204,7 @@ export default {
       showDeleteAllStubsModal,
       deleteAllStubs,
       tenants,
-      urlStubIdFilter,
-      selectedTenantName,
+      filter,
       download,
     };
   },

@@ -38,3 +38,11 @@ export function clearUserToken() {
 export function saveUserToken(token) {
   setSession(sessionKeys.userToken, token);
 }
+
+export function setStubFilterForm(filter) {
+  setSession(sessionKeys.stubsFilter, filter);
+}
+
+export function getStubFilterForm() {
+  return getSession(sessionKeys.stubsFilter);
+}
