@@ -19,12 +19,12 @@ export function clearIntermediateStub() {
   removeSession(sessionKeys.intermediateStub);
 }
 
-export function getDarkThemeEnabled() {
-  return getLocal(sessionKeys.darkTheme);
+export function getSettings() {
+  return getLocal(sessionKeys.settings);
 }
 
-export function setDarkThemeEnabled(enabled) {
-  setLocal(sessionKeys.darkTheme, enabled);
+export function setSettings(settings) {
+  setLocal(sessionKeys.settings, settings);
 }
 
 export function getUserToken() {
@@ -37,4 +37,20 @@ export function clearUserToken() {
 
 export function saveUserToken(token) {
   setSession(sessionKeys.userToken, token);
+}
+
+export function setStubFilterForm(filter) {
+  setSession(sessionKeys.stubsFilter, filter);
+}
+
+export function getStubFilterForm() {
+  return getSession(sessionKeys.stubsFilter);
+}
+
+export function setRequestFilterForm(filter) {
+  setSession(sessionKeys.requestsFilter, filter);
+}
+
+export function getRequestFilterForm() {
+  return getSession(sessionKeys.requestsFilter);
 }

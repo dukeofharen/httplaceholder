@@ -1,5 +1,7 @@
 export const sessionKeys = {
   intermediateStub: "intermediateStub",
-  darkTheme: "darkTheme",
+  settings: "settings",
   userToken: "userToken",
+  stubsFilter: "stubsFilter",
+  requestsFilter: "requestsFilter",
 };
