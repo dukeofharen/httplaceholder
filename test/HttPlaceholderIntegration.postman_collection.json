@@ -3215,6 +3215,33 @@
 									"response": []
 								},
 								{
+									"name": "[Create stub] JSONPath",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-jsonpath\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path: /dynamic-mode-jsonpath\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Value: ((jsonpath:$.values[1].title))\n  text: ((jsonpath:$.values[1].title))"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Test UUID",
 									"event": [
 										{
@@ -3555,6 +3582,46 @@
 											"raw": "{{rootUrl}}dynamic-mode-date-time",
 											"host": [
 												"{{rootUrl}}dynamic-mode-date-time"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test JSONPath",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"Value2\");",
+													"});",
+													"",
+													"pm.test(\"Header is correct\", function () {",
+													"    pm.expect(pm.response.headers.get('X-Value')).is.eq(\"Value2\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"values\": [\n        {\n            \"title\": \"Value1\"\n        },\n        {\n            \"title\": \"Value2\"\n        }\n    ]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-jsonpath",
+											"host": [
+												"{{rootUrl}}dynamic-mode-jsonpath"
 											]
 										}
 									},
