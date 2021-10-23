@@ -15,7 +15,20 @@
         <label class="form-check-label" for="darkTheme">Dark theme</label>
       </div>
     </div>
-    <div class="col-md-12"></div>
+    <div class="col-md-12">
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="saveSearchFilters"
+          v-model="settings.saveSearchFilters"
+          @change="saveSettings"
+        />
+        <label class="form-check-label" for="saveSearchFilters"
+          >Persist search filters on stubs and request screens</label
+        >
+      </div>
+    </div>
   </div>
 </template>
 
