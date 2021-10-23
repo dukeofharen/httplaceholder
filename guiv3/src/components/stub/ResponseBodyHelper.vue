@@ -220,6 +220,7 @@ export default {
       insert,
       insertVariableHandler,
       responseBodyField,
+      close,
     };
   },
 };
