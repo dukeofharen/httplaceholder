@@ -1,5 +1,6 @@
 # The request headers as defined in the variables will be parsed in the response.
 - id: dynamic-request-header-example
+  tenant: 14-dynamic
   conditions:
     method: GET
     url:

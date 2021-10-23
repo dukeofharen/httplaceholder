@@ -1,5 +1,6 @@
 # The client IP of the requester is written to the response.
 - id: dynamic-client-ip-example
+  tenant: 14-dynamic
   conditions:
     method: GET
     url:

@@ -1,5 +1,6 @@
 # This stub reads query paramters from the request and parses them in the response.
 - id: dynamic-query-example-txt
+  tenant: 14-dynamic
   conditions:
     method: GET
     url:
@@ -12,6 +13,7 @@
 
 # This stub does the same, but writes the query URL encoded.
 - id: dynamic-encoded-query-example-txt
+  tenant: 14-dynamic
   conditions:
     method: GET
     url:

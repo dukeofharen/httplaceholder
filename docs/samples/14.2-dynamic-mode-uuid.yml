@@ -1,5 +1,6 @@
 # Random UUIDs will be inserted in the response of this stub.
 - id: dynamic-uuid-example
+  tenant: 14-dynamic
   conditions:
     method: GET
     url:

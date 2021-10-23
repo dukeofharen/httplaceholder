@@ -1,5 +1,6 @@
 # The display URL of the current request is written to the response.
 - id: dynamic-display-url-example
+  tenant: 14-dynamic
   conditions:
     method: GET
     url:
