@@ -22,15 +22,15 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
 
         public string Parse(string input, IEnumerable<Match> matches)
         {
-            var enumerable = matches as Match[] ?? matches.ToArray();
-            if (!enumerable.Any())
+            var matchArray = matches as Match[] ?? matches.ToArray();
+            if (!matchArray.Any())
             {
                 return input;
             }
 
             var body = _httpContextService.GetBody();
 
-            return enumerable
+            return matchArray
                 .Where(match => match.Groups.Count >= 2)
                 .Aggregate(input, (current, match) => current.Replace(match.Value, body));
         }
