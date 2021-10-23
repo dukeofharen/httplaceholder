@@ -19,7 +19,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
 
         private static readonly string[] _excludedResponseHeaderNames =
         {
-            "x-httplaceholder-correlation", "transfer-encoding"
+            "x-httplaceholder-correlation", "transfer-encoding", "content-length"
         };
 
         private readonly IHttpClientFactory _httpClientFactory;
@@ -127,7 +127,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriting.Implementatio
                 .ToArray();
             foreach (var header in responseHeaders)
             {
-                response.Headers.Add(header.Key, header.Value);
+                response.Headers.AddOrReplaceCaseInsensitive(header.Key, header.Value);
             }
 
             response.StatusCode = (int)responseMessage.StatusCode;
