@@ -5,6 +5,7 @@ using System.Net;
 using System.Text;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Configuration;
 using HttPlaceholder.Resources;
 using Microsoft.AspNetCore;
@@ -87,20 +88,39 @@ namespace HttPlaceholder.Utilities
         {
             options.AddServerHeader = false;
             var httpPorts = ParsePorts(settings.Web.HttpPort);
-            foreach (var port in httpPorts)
+            if (httpPorts.Length == 1 && httpPorts[0] == Constants.DefaultHttpPort &&
+                TcpUtilities.PortIsTaken(httpPorts[0]))
             {
-                options.Listen(IPAddress.Any, port);
+                var freePort = TcpUtilities.GetNextFreeTcpPort();
+                options.Listen(IPAddress.Any, freePort);
+            }
+            else
+            {
+                foreach (var port in httpPorts)
+                {
+                    options.Listen(IPAddress.Any, port);
+                }
             }
 
             if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) &&
                 !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
             {
                 var httpsPorts = ParsePorts(settings.Web.HttpsPort);
-                foreach (var port in httpsPorts)
+                if (httpsPorts.Length == 1 && httpsPorts[0] == Constants.DefaultHttpsPort && TcpUtilities.PortIsTaken(httpsPorts[0]))
                 {
-                    options.Listen(IPAddress.Any, port,
+                    var freePort = TcpUtilities.GetNextFreeTcpPort();
+                    options.Listen(IPAddress.Any, freePort,
                         listenOptions =>
                             listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
+                }
+                else
+                {
+                    foreach (var port in httpsPorts)
+                    {
+                        options.Listen(IPAddress.Any, port,
+                            listenOptions =>
+                                listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
+                    }
                 }
             }
         }
@@ -137,7 +157,7 @@ namespace HttPlaceholder.Utilities
             return builder.ToString();
         }
 
-        private static IEnumerable<int> ParsePorts(string input)
+        private static int[] ParsePorts(string input)
         {
             var result = new List<int>();
             var httpPorts = input.Split(',').Select(p => p.Trim());
