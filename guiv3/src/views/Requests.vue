@@ -125,8 +125,11 @@ export default {
             ? r.executingStubId.toLowerCase()
             : "";
           const url = r.url.toLowerCase();
+          const correlationId = (r.correlationId || "").toLowerCase();
           return (
-            (stubId && stubId.includes(searchTerm)) || url.includes(searchTerm)
+            (stubId && stubId.includes(searchTerm)) ||
+            url.includes(searchTerm) ||
+            correlationId === searchTerm
           );
         });
       }
