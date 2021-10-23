@@ -1,0 +1,13 @@
+# Response variable handler for parsing request body as JSON, looking up the value using JSONPath and include the found value in the response body.
+- id: dynamic-mode-jsonpath
+  tenant: 14-dynamic
+  conditions:
+    method: POST
+    url:
+      path: /dynamic-mode-jsonpath.txt
+  response:
+    enableDynamicMode: true
+    text: ((jsonpath:$.values[1].title))
+    headers:
+      X-Value: ((jsonpath:$.values[0].title))
+  priority: 0

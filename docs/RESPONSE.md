@@ -29,7 +29,8 @@ If a request succeeds and a stub is found, the configured response will be retur
     - [Display URL](#display-url)
     - [Client IP](#client-ip)
     - [Local and UTC date & time](#local-and-utc-date--time)
-    - [Reverse proxy](#reverse-proxylocal-and-utc-date--time)
+    - [Reverse proxy](#reverse-proxy)
+    - [JSONPath](#jsonpath)
 
 </details>
 
@@ -603,6 +604,57 @@ Local now: 2019-08-21 21:13:59
 ```
 
 For both `localnow` and `utcnow`, you can optionally provide a date format. Since HttPlaceholder is a .NET application, you can use all DateTime format strings supported by .NET. For information on all formatting strings, read https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings.
+
+### JSONPath
+
+This body parser can be used to query a value from the posted JSON using JSONPath and insert it in the response body or headers.
+
+```yaml
+id: dynamic-mode-jsonpath
+tenant: 14-dynamic
+conditions:
+  method: POST
+  url:
+    path: /dynamic-mode-jsonpath.txt
+response:
+  enableDynamicMode: true
+  text: ((jsonpath:$.values[1].title))
+  headers:
+    X-Value: ((jsonpath:$.values[0].title))
+priority: 0
+```
+
+**URL**
+
+```
+http://localhost:5000/dynamic-mode-jsonpath.txt
+```
+
+**Method**
+
+```
+POST
+```
+
+**Posted body**
+
+```json
+{
+    "values": [
+        {
+            "title": "Value1"
+        },
+        {
+            "title": "Value2"
+        }
+    ]
+}
+```
+
+The response will look like this:
+```
+Value2
+```
 
 ## Reverse proxy
 

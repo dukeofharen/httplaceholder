@@ -868,6 +868,35 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "9 JSONPath",
+					"item": [
+						{
+							"name": "JSONPath",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"values\": [\n        {\n            \"title\": \"Value1\"\n        },\n        {\n            \"title\": \"Value2\"\n        }\n    ]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{rootUrl}}dynamic-mode-jsonpath.txt",
+									"host": [
+										"{{rootUrl}}dynamic-mode-jsonpath",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},

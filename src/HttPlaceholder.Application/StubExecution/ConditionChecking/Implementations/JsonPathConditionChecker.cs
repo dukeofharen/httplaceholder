@@ -57,7 +57,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                         if (elements != null)
                         {
                             // Retrieve the value from the JSONPath result.
-                            var foundValue = ConvertFoundValue(elements);
+                            var foundValue = JsonUtilities.ConvertFoundValue(elements);
 
                             // If a value is set for the condition, check if the found JSONPath value matches the value in the condition.
                             passed = string.IsNullOrWhiteSpace(jsonPathCondition.ExpectedValue) ||
@@ -83,19 +83,6 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 : ConditionValidationType.Invalid;
 
             return result;
-        }
-
-        internal static string ConvertFoundValue(JToken jToken)
-        {
-            var foundValue = jToken switch
-            {
-                JValue jValue => jValue.ToString(),
-                JArray jArray when jArray.Any() => jArray.First().ToString(),
-                JArray jArray when !jArray.Any() => string.Empty,
-                _ => throw new InvalidOperationException(
-                    $"JSON type '{jToken.GetType()}' not supported.")
-            };
-            return foundValue;
         }
 
         internal static StubJsonPathModel ConvertJsonPathCondition(string stubId, object condition)

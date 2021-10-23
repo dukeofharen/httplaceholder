@@ -1,5 +1,6 @@
 # The full posted content will be written to the response.
 - id: dynamic-request-body-example
+  tenant: 14-dynamic
   conditions:
     method: POST
     url:

@@ -374,6 +374,17 @@
       X-Header: ((utcnow:yyyy-MM-dd HH:mm:ss))
   priority: 0
 
+- id: dynamic-mode-jsonpath
+  conditions:
+    method: POST
+    url:
+      path: /dynamic-mode-jsonpath.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Value: '((jsonpath:$.values[0].title))'
+    text: 'JSONPath result: ((jsonpath:$.values[1].title))'
+
 - id: proxy-test-1
   conditions:
     method: GET
