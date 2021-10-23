@@ -1,15 +1,21 @@
 <template>
   <h1>Settings</h1>
 
-  <div class="form-check">
-    <input
-      class="form-check-input"
-      type="checkbox"
-      id="darkTheme"
-      v-model="darkMode"
-      @change="darkModeChanged"
-    />
-    <label class="form-check-label" for="darkTheme">Dark theme</label>
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Features</h2>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="darkTheme"
+          v-model="settings.darkTheme"
+          @change="saveSettings"
+        />
+        <label class="form-check-label" for="darkTheme">Dark theme</label>
+      </div>
+    </div>
+    <div class="col-md-12"></div>
   </div>
 </template>
 
@@ -23,14 +29,14 @@ export default {
     const store = useStore();
 
     // Data
-    const darkMode = ref(store.getters["general/getDarkTheme"]);
+    const settings = ref(store.getters["general/getSettings"]);
 
     // Methods
-    const darkModeChanged = () => {
-      store.commit("general/storeDarkTheme", darkMode.value);
+    const saveSettings = () => {
+      store.commit("general/storeSettings", settings.value);
     };
 
-    return { darkMode, darkModeChanged };
+    return { settings, saveSettings };
   },
 };
 </script>

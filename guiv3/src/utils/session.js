@@ -19,12 +19,12 @@ export function clearIntermediateStub() {
   removeSession(sessionKeys.intermediateStub);
 }
 
-export function getDarkThemeEnabled() {
-  return getLocal(sessionKeys.darkTheme);
+export function getSettings() {
+  return getLocal(sessionKeys.settings);
 }
 
-export function setDarkThemeEnabled(enabled) {
-  setLocal(sessionKeys.darkTheme, enabled);
+export function setSettings(settings) {
+  setLocal(sessionKeys.settings, settings);
 }
 
 export function getUserToken() {

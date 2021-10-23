@@ -1,21 +1,26 @@
-import { setDarkThemeEnabled } from "@/utils/session";
+import { setSettings, getSettings } from "@/utils/session";
 
+const savedSettings = getSettings();
 const state = () => ({
   settings: {
-    darkTheme: false,
+    darkTheme: savedSettings?.darkTheme || false,
+    saveSearchFilters: savedSettings?.saveSearchFilters || true,
   },
 });
 
 const actions = {};
 
 const mutations = {
-  storeDarkTheme(state, darkTheme) {
-    state.settings.darkTheme = darkTheme;
-    setDarkThemeEnabled(darkTheme);
+  storeSettings(state, settings) {
+    state.settings = settings;
+    setSettings(settings);
   },
 };
 
 const getters = {
+  getSettings(state) {
+    return state.settings;
+  },
   getDarkTheme(state) {
     return state.settings.darkTheme;
   },

@@ -13,7 +13,6 @@
 import Sidebar from "@/components/Sidebar";
 import { useStore } from "vuex";
 import { computed, onMounted, watch } from "vue";
-import { getDarkThemeEnabled } from "@/utils/session";
 import { useRouter } from "vue-router";
 
 export default {
@@ -44,7 +43,7 @@ export default {
 
     // Lifecycle
     onMounted(async () => {
-      const darkThemeEnabled = getDarkThemeEnabled();
+      const darkThemeEnabled = store.getters["general/getDarkTheme"];
       setDarkTheme(darkThemeEnabled);
       if (darkThemeEnabled) {
         store.commit("general/storeDarkTheme", darkThemeEnabled);
