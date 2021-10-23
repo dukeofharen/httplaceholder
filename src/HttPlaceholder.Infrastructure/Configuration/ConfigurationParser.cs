@@ -10,6 +10,7 @@ using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
+using static HttPlaceholder.Domain.Constants;
 
 namespace HttPlaceholder.Infrastructure.Configuration
 {
@@ -74,16 +75,16 @@ namespace HttPlaceholder.Infrastructure.Configuration
 
         private void EnsureDefaultValuesAreAdded(IDictionary<string, string> argsDictionary)
         {
-            argsDictionary.EnsureEntryExists(ConfigKeys.PortKey, 5000);
+            argsDictionary.EnsureEntryExists(ConfigKeys.PortKey, DefaultHttpPort);
             argsDictionary.EnsureEntryExists(ConfigKeys.PfxPathKey,
-                Path.Combine(AssemblyHelper.GetEntryAssemblyRootPath(), "key.pfx"));
-            argsDictionary.EnsureEntryExists(ConfigKeys.PfxPasswordKey, "1234");
-            argsDictionary.EnsureEntryExists(ConfigKeys.HttpsPortKey, 5050);
-            argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, true);
-            argsDictionary.EnsureEntryExists(ConfigKeys.EnableUserInterface, true);
-            argsDictionary.EnsureEntryExists(ConfigKeys.UseNewUi, false);
-            argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, 40);
-            argsDictionary.EnsureEntryExists(ConfigKeys.MaximumExtraDurationMillisKey, 60000);
+                Path.Combine(AssemblyHelper.GetEntryAssemblyRootPath(), DefaultPfxPath));
+            argsDictionary.EnsureEntryExists(ConfigKeys.PfxPasswordKey, DefaultPfxPassword);
+            argsDictionary.EnsureEntryExists(ConfigKeys.HttpsPortKey, DefaultHttpsPort);
+            argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, UseHttps);
+            argsDictionary.EnsureEntryExists(ConfigKeys.EnableUserInterface, EnableUserInterface);
+            argsDictionary.EnsureEntryExists(ConfigKeys.UseNewUi, UseNewUi);
+            argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, DefaultOldRequestsQueueLength);
+            argsDictionary.EnsureEntryExists(ConfigKeys.MaximumExtraDurationMillisKey, DefaultMaximumExtraDuration);
 
             // Determine and set file storage location.
             string fileStorageLocation = null;
