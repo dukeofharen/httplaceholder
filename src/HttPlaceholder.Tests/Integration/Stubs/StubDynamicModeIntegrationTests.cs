@@ -215,5 +215,35 @@ namespace HttPlaceholder.Tests.Integration.Stubs
 
             Assert.AreEqual(expectedDateTime, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
         }
+
+        [TestMethod]
+        public async Task StubIntegration_RegularPost_Dynamic_JsonPath()
+        {
+            // arrange
+            const string expectedResult = "JSONPath result: Value2";
+            var url = $"{TestServer.BaseAddress}dynamic-mode-jsonpath.txt";
+            const string body = @"{
+    ""values"": [
+        {
+            ""title"": ""Value1""
+        },
+        {
+            ""title"": ""Value2""
+        }
+    ]
+}";
+
+            var request = new HttpRequestMessage(HttpMethod.Post, url)
+            {
+                Content = new StringContent(body)
+            };
+
+            // act / assert
+            using var response = await Client.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual(expectedResult, content);
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("Value1", response.Headers.Single(h => h.Key == "X-Value").Value.Single());
+        }
     }
 }
