@@ -3,4 +3,5 @@ export const sessionKeys = {
   settings: "settings",
   userToken: "userToken",
   stubsFilter: "stubsFilter",
+  requestsFilter: "requestsFilter",
 };

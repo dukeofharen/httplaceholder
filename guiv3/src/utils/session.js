@@ -46,3 +46,11 @@ export function setStubFilterForm(filter) {
 export function getStubFilterForm() {
   return getSession(sessionKeys.stubsFilter);
 }
+
+export function setRequestFilterForm(filter) {
+  setSession(sessionKeys.requestsFilter, filter);
+}
+
+export function getRequestFilterForm() {
+  return getSession(sessionKeys.requestsFilter);
+}

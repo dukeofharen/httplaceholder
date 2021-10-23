@@ -26,19 +26,19 @@
           type="text"
           class="form-control"
           placeholder="Filter on stub ID or URL..."
-          v-model="urlStubIdFilter"
+          v-model="filter.urlStubIdFilter"
         />
         <button
           class="btn btn-danger fw-bold"
           type="button"
           title="Reset"
-          @click="urlStubIdFilter = ''"
+          @click="filter.urlStubIdFilter = ''"
         >
           <em class="bi-x"></em>
         </button>
       </div>
       <div v-if="tenants.length" class="input-group">
-        <select class="form-select" v-model="selectedTenantName">
+        <select class="form-select" v-model="filter.selectedTenantName">
           <option value="" selected>
             Select stub tenant / category name...
           </option>
@@ -48,7 +48,7 @@
           class="btn btn-danger fw-bold"
           type="button"
           title="Reset"
-          @click="selectedTenantName = ''"
+          @click="filter.selectedTenantName = ''"
         >
           <em class="bi-x"></em>
         </button>
@@ -68,12 +68,13 @@
 <script>
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import Request from "@/components/request/Request";
 import { resources } from "@/constants/resources";
 import toastr from "toastr";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { handleHttpError } from "@/utils/error";
+import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
 
 export default {
   name: "Requests",
@@ -85,10 +86,20 @@ export default {
     // Data
     const requests = ref([]);
     const tenants = ref([]);
-    const urlStubIdFilter = ref(route.query.filter || "");
-    const selectedTenantName = ref("");
     const showDeleteAllRequestsModal = ref(false);
     let signalrConnection = null;
+
+    const saveSearchFilters = store.getters["general/getSaveSearchFilters"];
+    let savedFilter = {};
+    if (saveSearchFilters) {
+      savedFilter = getRequestFilterForm() || {};
+    }
+
+    const filter = ref({
+      urlStubIdFilter: route.query.filter || savedFilter.urlStubIdFilter || "",
+      selectedTenantName:
+        route.query.tenant || savedFilter.selectedTenantName || "",
+    });
 
     // Functions
     const initializeSignalR = () => {
@@ -107,8 +118,8 @@ export default {
     // Computed
     const filteredRequests = computed(() => {
       let result = requests.value;
-      if (urlStubIdFilter.value) {
-        const searchTerm = urlStubIdFilter.value.toLowerCase().trim();
+      if (filter.value.urlStubIdFilter) {
+        const searchTerm = filter.value.urlStubIdFilter.toLowerCase().trim();
         result = result.filter((r) => {
           const stubId = r.executingStubId
             ? r.executingStubId.toLowerCase()
@@ -120,9 +131,9 @@ export default {
         });
       }
 
-      if (selectedTenantName.value) {
+      if (filter.value.selectedTenantName) {
         result = result.filter(
-          (r) => r.stubTenant === selectedTenantName.value
+          (r) => r.stubTenant === filter.value.selectedTenantName
         );
       }
 
@@ -153,6 +164,14 @@ export default {
         handleHttpError(e);
       }
     };
+    const filterChanged = () => {
+      if (store.getters["general/getSaveSearchFilters"]) {
+        setRequestFilterForm(filter.value);
+      }
+    };
+
+    // Watch
+    watch(filter, () => filterChanged(), { deep: true });
 
     // Lifecycle
     onMounted(async () => {
@@ -169,10 +188,9 @@ export default {
       requests,
       loadRequests,
       deleteAllRequests,
-      urlStubIdFilter,
       filteredRequests,
       tenants,
-      selectedTenantName,
+      filter,
       showDeleteAllRequestsModal,
     };
   },
