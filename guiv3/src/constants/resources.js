@@ -6,6 +6,7 @@ export const resources = {
   stubsDeletedSuccessfully: "All stubs deleted successfully.",
   stubsAddedSuccessfully: "Stubs were added successfully.",
   stubUpdatedSuccessfully: "Stub was updated successfully.",
+  stubNotFound: "Stub with ID {0} was not found.",
   stubsInFileAddedSuccessfully: "Stubs in file '{0}' were added successfully.",
   errorDuringParsingOfYaml: "Something went wrong while parsing the YAML: {0}",
   requestBodyCopiedToClipboard:

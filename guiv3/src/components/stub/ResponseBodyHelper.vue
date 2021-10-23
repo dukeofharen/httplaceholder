@@ -5,7 +5,7 @@
   </div>
 
   <div class="mt-3">
-    <select class="form-control" v-model="responseBodyType">
+    <select class="form-select" v-model="responseBodyType">
       <option value="">Select a response type...</option>
       <option v-for="item in responseBodyTypeItems" :key="item" :value="item">
         {{ item }}
@@ -45,7 +45,7 @@
     </div>
     <div v-if="showVariableParsers" class="mt-2">
       <select
-        class="form-control"
+        class="form-select"
         v-model="selectedVariableHandler"
         @change="insertVariableHandler"
       >
@@ -99,7 +99,7 @@ export default {
     // Data
     const responseBodyType = ref("");
     const responseBody = ref("");
-    const enableDynamicMode = ref(false);
+    const enableDynamicMode = ref(null);
     const showBase64TextInput = ref(false);
     const responseBodyTypeItems = Object.keys(responseBodyTypes).map(
       (k) => responseBodyTypes[k]

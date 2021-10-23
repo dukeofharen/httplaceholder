@@ -1,27 +1,22 @@
 <template>
-  <li class="nav-item">
-    <router-link
-      v-if="item.routeName"
-      :to="{ name: item.routeName }"
-      class="nav-link align-middle px-0 link-secondary"
-      :title="item.title"
-    >
-      <i class="fs-5" :class="'bi-' + item.icon"></i>
-      <span class="ms-4 d-none d-sm-inline menu-item-title fs-6">{{
-        item.title
-      }}</span>
-    </router-link>
-    <a
-      v-if="item.onClick"
-      @click="item.onClick"
-      class="nav-link align-middle px-0 link-secondary"
-      :title="item.title"
-      ><i class="fs-5" :class="'bi-' + item.icon"></i>
-      <span class="ms-4 d-none d-sm-inline menu-item-title fs-6">{{
-        item.title
-      }}</span></a
-    >
-  </li>
+  <router-link
+    v-if="item.routeName"
+    :to="{ name: item.routeName }"
+    class="list-group-item list-group-item-action menu-item"
+    :title="item.title"
+  >
+    <i class="fs-5" :class="'bi-' + item.icon"></i>
+    <strong class="mb-1 d-none d-sm-inline ms-3">{{ item.title }}</strong>
+  </router-link>
+  <a
+    v-if="item.onClick"
+    class="list-group-item list-group-item-action menu-item"
+    :title="item.title"
+    @click="item.onClick"
+  >
+    <i class="fs-5" :class="'bi-' + item.icon"></i>
+    <strong class="mb-1 d-none d-sm-inline ms-3">{{ item.title }}</strong>
+  </a>
 </template>
 
 <script>
@@ -37,11 +32,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.menu-item-title {
-  position: relative;
-  bottom: 1px;
-}
-.nav-link {
+// Required
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
+.menu-item {
   cursor: pointer;
+}
+
+.list-group .list-group-item {
+  background-color: $gray-900;
+  color: $gray-400;
+  border-color: $gray-700;
 }
 </style>

@@ -427,6 +427,161 @@ const lineEndingTypes = {
   unix: "unix",
 };
 
+const stubFormHelpers = [
+  {
+    title: "Add general information",
+    isMainItem: true,
+  },
+  {
+    title: "Description",
+    subTitle: elementDescriptions.description,
+    defaultValueMutation: "stubForm/setDefaultDescription",
+  },
+  {
+    title: "Priority",
+    subTitle: elementDescriptions.priority,
+    defaultValueMutation: "stubForm/setDefaultPriority",
+  },
+  {
+    title: "Disable stub",
+    subTitle: elementDescriptions.disable,
+    defaultValueMutation: "stubForm/setStubDisabled",
+  },
+  {
+    title: "Tenant",
+    subTitle: elementDescriptions.tenant,
+    formHelperToOpen: formHelperKeys.tenant,
+  },
+  {
+    title: "Add request condition",
+    isMainItem: true,
+  },
+  {
+    title: "HTTP method",
+    subTitle: elementDescriptions.httpMethod,
+    formHelperToOpen: formHelperKeys.httpMethod,
+  },
+  {
+    title: "URL path",
+    subTitle: elementDescriptions.urlPath,
+    defaultValueMutation: "stubForm/setDefaultPath",
+  },
+  {
+    title: "Full path",
+    subTitle: elementDescriptions.fullPath,
+    defaultValueMutation: "stubForm/setDefaultFullPath",
+  },
+  {
+    title: "Query string",
+    subTitle: elementDescriptions.queryString,
+    defaultValueMutation: "stubForm/setDefaultQuery",
+  },
+  {
+    title: "HTTPS",
+    subTitle: elementDescriptions.isHttps,
+    defaultValueMutation: "stubForm/setDefaultIsHttps",
+  },
+  {
+    title: "Basic authentication",
+    subTitle: elementDescriptions.basicAuthentication,
+    defaultValueMutation: "stubForm/setDefaultBasicAuth",
+  },
+  {
+    title: "Headers",
+    subTitle: elementDescriptions.headers,
+    defaultValueMutation: "stubForm/setDefaultRequestHeaders",
+  },
+  {
+    title: "Body",
+    subTitle: elementDescriptions.body,
+    defaultValueMutation: "stubForm/setDefaultRequestBody",
+  },
+  {
+    title: "Form body",
+    subTitle: elementDescriptions.formBody,
+    defaultValueMutation: "stubForm/setDefaultFormBody",
+  },
+  {
+    title: "Client IP",
+    subTitle: elementDescriptions.clientIp,
+    defaultValueMutation: "stubForm/setDefaultClientIp",
+  },
+  {
+    title: "Hostname",
+    subTitle: elementDescriptions.hostname,
+    defaultValueMutation: "stubForm/setDefaultHostname",
+  },
+  {
+    title: "JSONPath",
+    subTitle: elementDescriptions.jsonPath,
+    defaultValueMutation: "stubForm/setDefaultJsonPath",
+  },
+  {
+    title: "JSON object",
+    subTitle: elementDescriptions.jsonObject,
+    defaultValueMutation: "stubForm/setDefaultJsonObject",
+  },
+  {
+    title: "JSON array",
+    subTitle: elementDescriptions.jsonArray,
+    defaultValueMutation: "stubForm/setDefaultJsonArray",
+  },
+  {
+    title: "XPath",
+    subTitle: elementDescriptions.xpath,
+    defaultValueMutation: "stubForm/setDefaultXPath",
+  },
+  {
+    title: "Add response definition",
+    isMainItem: true,
+  },
+  {
+    title: "HTTP status code",
+    subTitle: elementDescriptions.statusCode,
+    formHelperToOpen: formHelperKeys.statusCode,
+  },
+  {
+    title: "Response body",
+    subTitle: elementDescriptions.responseBody,
+    formHelperToOpen: formHelperKeys.responseBody,
+  },
+  {
+    title: "Response headers",
+    subTitle: elementDescriptions.responseHeaders,
+    defaultValueMutation: "stubForm/setDefaultResponseHeaders",
+  },
+  {
+    title: "Content type",
+    subTitle: elementDescriptions.responseContentType,
+    defaultValueMutation: "stubForm/setDefaultResponseContentType",
+  },
+  {
+    title: "Extra duration",
+    subTitle: elementDescriptions.extraDuration,
+    defaultValueMutation: "stubForm/setDefaultExtraDuration",
+  },
+  {
+    title: "Image",
+    subTitle: elementDescriptions.image,
+    defaultValueMutation: "stubForm/setDefaultImage",
+  },
+  {
+    title: "Redirect",
+    subTitle: elementDescriptions.redirect,
+    formHelperToOpen: formHelperKeys.redirect,
+  },
+  {
+    title: "Line endings",
+    subTitle: elementDescriptions.lineEndings,
+    formHelperToOpen: formHelperKeys.lineEndings,
+  },
+  {
+    title: "Reverse proxy",
+    subTitle: elementDescriptions.reverseProxy,
+    defaultValueMutation: "stubForm/setDefaultReverseProxy",
+  },
+];
+
 export {
   elementDescriptions,
   httpMethods,
@@ -435,4 +590,5 @@ export {
   formHelperKeys,
   responseBodyTypes,
   lineEndingTypes,
+  stubFormHelpers,
 };

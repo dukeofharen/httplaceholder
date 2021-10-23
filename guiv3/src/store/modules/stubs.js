@@ -48,6 +48,12 @@ const actions = {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
+  updateStub(_, payload) {
+    const parsedObject = yaml.load(payload.input);
+    return put(`/ph-api/stubs/${payload.stubId}`, parsedObject)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
   createStubBasedOnRequest(_, payload) {
     return post(`/ph-api/requests/${payload.correlationId}/stubs`, {
       doNotCreateStub:
