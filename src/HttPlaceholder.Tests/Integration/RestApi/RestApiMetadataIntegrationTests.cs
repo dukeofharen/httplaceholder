@@ -33,7 +33,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
 
             // Assert
             Assert.IsFalse(string.IsNullOrWhiteSpace(metadata.Version));
-            Assert.AreEqual(10, metadata.VariableHandlers.Count());
+            Assert.AreEqual(11, metadata.VariableHandlers.Count());
         }
 
         [TestMethod]
