@@ -36,26 +36,27 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
                 return input;
             }
 
+            var body = _httpContextService.GetBody();
+            JObject jsonObject = null;
             try
             {
-                var body = _httpContextService.GetBody();
-                var jsonObject = JObject.Parse(body);
-                return matchArray
-                    .Where(match => match.Groups.Count >= 2)
-                    .Aggregate(input,
-                        (current, match) => current.Replace(match.Value, GetJsonPathValue(match, jsonObject)));
+                jsonObject = JObject.Parse(body);
             }
             catch (JsonException je)
             {
                 _logger.LogInformation("Exception occurred while trying to parse response body as JSON.", je);
-                return input;
             }
+
+            return matchArray
+                .Where(match => match.Groups.Count >= 2)
+                .Aggregate(input,
+                    (current, match) => current.Replace(match.Value, GetJsonPathValue(match, jsonObject)));
         }
 
         private string GetJsonPathValue(Match match, JToken token)
         {
             var jsonPathQuery = match.Groups[2].Value;
-            var foundValue = token.SelectToken(jsonPathQuery);
+            var foundValue = token?.SelectToken(jsonPathQuery);
             return foundValue != null ? JsonUtilities.ConvertFoundValue(foundValue) : string.Empty;
         }
     }
