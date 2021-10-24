@@ -26,10 +26,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         }
 
         [TestMethod]
-        public void Parse_HasMatches_JsonIsCorrupt_ShouldReturnInputAsIs()
+        public void Parse_HasMatches_JsonIsCorrupt_ShouldReplaceVariablesWithEmptyString()
         {
             // Arrange
-            const string input = "((jsonpath:$.values[1].title))";
+            const string input = "((jsonpath:$.values[0].title)) ((jsonpath:$.values[1].title))";
 
             var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
             mockHttpContextService
@@ -43,7 +43,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
             var result = handler.Parse(input, matches);
 
             // Assert
-            Assert.AreEqual(input, result);
+            Assert.AreEqual(" ", result);
         }
 
         [TestMethod]
