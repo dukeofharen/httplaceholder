@@ -18,6 +18,7 @@ namespace HttPlaceholder.Persistence
         {
             services.AddSingleton<IStubContext, StubContext>();
             services.AddSingleton<IStubRootPathResolver, StubRootPathResolver>();
+            services.AddSingleton<IScenarioStateStore, ScenarioStateStore>();
 
             services.AddStubSources(configuration);
             return services;
