@@ -18,6 +18,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         private readonly IRequestLoggerFactory _requestLoggerFactory;
         private readonly IStubContext _stubContainer;
         private readonly IStubResponseGenerator _stubResponseGenerator;
+        private readonly IScenarioService _scenarioService;
 
         public StubRequestExecutor(
             IEnumerable<IConditionChecker> conditionCheckers,
@@ -25,7 +26,8 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             ILogger<StubRequestExecutor> logger,
             IRequestLoggerFactory requestLoggerFactory,
             IStubContext stubContainer,
-            IStubResponseGenerator stubResponseGenerator)
+            IStubResponseGenerator stubResponseGenerator,
+            IScenarioService scenarioService)
         {
             _conditionCheckers = conditionCheckers;
             _finalStubDeterminer = finalStubDeterminer;
@@ -33,6 +35,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             _requestLoggerFactory = requestLoggerFactory;
             _stubContainer = stubContainer;
             _stubResponseGenerator = stubResponseGenerator;
+            _scenarioService = scenarioService;
         }
 
         public async Task<ResponseModel> ExecuteRequestAsync()
@@ -87,6 +90,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             }
 
             var finalStub = _finalStubDeterminer.DetermineFinalStub(foundStubs);
+            _scenarioService.IncreaseHitCount(finalStub.Scenario);
             requestLogger.SetExecutingStubId(finalStub.Id);
             var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub);
             return response;

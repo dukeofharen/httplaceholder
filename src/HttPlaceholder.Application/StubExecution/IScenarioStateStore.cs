@@ -1,6 +1,6 @@
 ﻿using HttPlaceholder.Domain.Entities;
 
-namespace HttPlaceholder.Persistence.Db
+namespace HttPlaceholder.Application.StubExecution
 {
     /// <summary>
     /// Defines a class that is used to keep track of the different scenario states.

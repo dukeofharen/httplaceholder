@@ -1,6 +1,7 @@
-﻿using HttPlaceholder.Domain.Entities;
+﻿using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Domain.Entities;
 
-namespace HttPlaceholder.Persistence.Db.Implementations
+namespace HttPlaceholder.Persistence.Implementations
 {
     /// <inheritdoc />
     internal class ScenarioStateStore : IScenarioStateStore

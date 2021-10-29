@@ -39,5 +39,10 @@
         /// Gets or sets whether this stub is enabled or not.
         /// </summary>
         public bool Enabled { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the scenario the stub is executed under.
+        /// </summary>
+        public string Scenario { get; set; }
     }
 }
