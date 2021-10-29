@@ -1,4 +1,6 @@
-﻿namespace HttPlaceholder.Application.StubExecution.Implementations
+﻿using HttPlaceholder.Domain.Entities;
+
+namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     /// <inheritdoc />
     internal class ScenarioService : IScenarioService
@@ -20,7 +22,10 @@
 
             lock (_scenarioStateStore.GetScenarioLock(scenario))
             {
-                var scenarioState = _scenarioStateStore.GetScenario(scenario);
+                var scenarioState = _scenarioStateStore.GetScenario(scenario) ??
+                                     _scenarioStateStore.AddScenario(
+                                        scenario,
+                                        new ScenarioStateModel(scenario));
                 scenarioState.HitCount++;
                 _scenarioStateStore.UpdateScenario(scenario, scenarioState);
             }

@@ -5,6 +5,15 @@
     /// </summary>
     public class ScenarioStateModel
     {
+        public ScenarioStateModel()
+        {
+        }
+
+        public ScenarioStateModel(string scenario)
+        {
+            Scenario = scenario.ToLower();
+        }
+
         /// <summary>
         /// Gets or sets the scenario name.
         /// </summary>
@@ -13,7 +22,7 @@
         /// <summary>
         /// Gets or sets the state the scenario is in.
         /// </summary>
-        public string State { get; set; }
+        public string State { get; set; } = Constants.DefaultScenarioState;
 
         /// <summary>
         /// Gets or sets the number of times the scenario has been hit.

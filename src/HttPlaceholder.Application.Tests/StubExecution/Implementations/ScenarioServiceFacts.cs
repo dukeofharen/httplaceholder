@@ -30,7 +30,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         }
 
         [TestMethod]
-        public void IncreaseHitCount_ScenarioIsNotEmpty_ShouldIncreaseHitCount()
+        public void IncreaseHitCount_ScenarioIsNotEmpty_ScenarioIsFound_ShouldIncreaseHitCount()
         {
             // Arrange
             var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
@@ -58,6 +58,48 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             // Assert
             Assert.IsNotNull(capturedScenarioStateModel);
             Assert.AreEqual(3, capturedScenarioStateModel.HitCount);
+        }
+
+        [TestMethod]
+        public void IncreaseHitCount_ScenarioIsNotEmpty_ScenarioIsNotFound_ShouldCreateScenarioAndIncreaseHitCount()
+        {
+            // Arrange
+            var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+            var service = _mocker.CreateInstance<ScenarioService>();
+
+            var scenario = "SCENARIO-1";
+
+            scenarioStateStoreMock
+                .Setup(m => m.GetScenarioLock(scenario))
+                .Returns(new object());
+
+            scenarioStateStoreMock
+                .Setup(m => m.GetScenario(scenario))
+                .Returns((ScenarioStateModel)null);
+
+            ScenarioStateModel capturedCreatedScenarioStateModel = null;
+            scenarioStateStoreMock
+                .Setup(m => m.AddScenario(scenario, It.IsAny<ScenarioStateModel>()))
+                .Callback<string, ScenarioStateModel>((_, ssm) => capturedCreatedScenarioStateModel = ssm)
+                .Returns<string, ScenarioStateModel>((_, ssm) => ssm);
+
+            ScenarioStateModel capturedScenarioStateModel = null;
+            scenarioStateStoreMock
+                .Setup(m => m.UpdateScenario(scenario, It.IsAny<ScenarioStateModel>()))
+                .Callback<string, ScenarioStateModel>((_, ssm) => capturedScenarioStateModel = ssm);
+
+            // Act
+            service.IncreaseHitCount(scenario);
+
+            // Assert
+            Assert.IsNotNull(capturedCreatedScenarioStateModel);
+            Assert.IsNotNull(capturedScenarioStateModel);
+            Assert.AreEqual(1, capturedCreatedScenarioStateModel.HitCount);
+            Assert.AreEqual("Start", capturedCreatedScenarioStateModel.State);
+            Assert.AreEqual(scenario.ToLower(), capturedCreatedScenarioStateModel.Scenario);
+            Assert.AreEqual(1, capturedScenarioStateModel.HitCount);
+            Assert.AreEqual("Start", capturedScenarioStateModel.State);
+            Assert.AreEqual(scenario.ToLower(), capturedScenarioStateModel.Scenario);
         }
     }
 }
