@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Domain.Entities;
+﻿using System;
+using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.StubExecution
 {
@@ -15,7 +16,7 @@ namespace HttPlaceholder.Application.StubExecution
         ScenarioStateModel GetScenario(string scenario);
 
         /// <summary>
-        /// Adds a scenario.
+        /// Adds a scenario. Throws <see cref="InvalidOperationException"/> if scenario is already present.
         /// </summary>
         /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
         /// <param name="scenarioStateModel">The scenario to add.</param>
@@ -26,7 +27,7 @@ namespace HttPlaceholder.Application.StubExecution
         /// Updates a scenario
         /// </summary>
         /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
-        /// <param name="scenarioStateModel">The scenario to add.</param>
+        /// <param name="scenarioStateModel">The new scenario contents.</param>
         void UpdateScenario(string scenario, ScenarioStateModel scenarioStateModel);
 
         /// <summary>
@@ -36,11 +37,5 @@ namespace HttPlaceholder.Application.StubExecution
         /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
         /// <returns>A scenario lock.</returns>
         object GetScenarioLock(string scenario);
-
-        /// <summary>
-        /// Deletes a specific scenario.
-        /// </summary>
-        /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
-        void DeleteScenario(string scenario);
     }
 }

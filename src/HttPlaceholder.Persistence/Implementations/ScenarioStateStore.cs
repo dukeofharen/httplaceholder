@@ -1,4 +1,6 @@
-﻿using HttPlaceholder.Application.StubExecution;
+﻿using System;
+using System.Collections.Concurrent;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Persistence.Implementations
@@ -6,19 +8,73 @@ namespace HttPlaceholder.Persistence.Implementations
     /// <inheritdoc />
     internal class ScenarioStateStore : IScenarioStateStore
     {
-        /// <inheritdoc />
-        public ScenarioStateModel GetScenario(string scenario) => throw new System.NotImplementedException();
+        internal readonly ConcurrentDictionary<string, ScenarioStateModel> Scenarios = new();
+        internal readonly ConcurrentDictionary<string, object> ScenarioLocks = new();
 
         /// <inheritdoc />
-        public ScenarioStateModel AddScenario(string scenario, ScenarioStateModel scenarioStateModel) => throw new System.NotImplementedException();
+        public ScenarioStateModel GetScenario(string scenario)
+        {
+            if (string.IsNullOrWhiteSpace(scenario))
+            {
+                return null;
+            }
+
+            var lookupKey = scenario.ToLower();
+            return !Scenarios.ContainsKey(lookupKey) ? null : CopyScenarioStateModel(Scenarios[lookupKey]);
+        }
 
         /// <inheritdoc />
-        public void UpdateScenario(string scenario, ScenarioStateModel scenarioStateModel) => throw new System.NotImplementedException();
+        public ScenarioStateModel AddScenario(string scenario, ScenarioStateModel scenarioStateModel)
+        {
+            var lookupKey = scenario.ToLower();
+            var scenarioToAdd = CopyScenarioStateModel(scenarioStateModel);
+            if (!Scenarios.TryAdd(lookupKey, scenarioToAdd))
+            {
+                throw new InvalidOperationException($"Scenario state with key '{lookupKey}' already exists.");
+            }
+
+            return scenarioToAdd;
+        }
 
         /// <inheritdoc />
-        public object GetScenarioLock(string scenario) => throw new System.NotImplementedException();
+        public void UpdateScenario(string scenario, ScenarioStateModel scenarioStateModel)
+        {
+            var lookupKey = scenario.ToLower();
+            if (!Scenarios.ContainsKey(lookupKey))
+            {
+                return;
+            }
+
+            var existingScenarioState = Scenarios[lookupKey];
+            var newScenarioState = CopyScenarioStateModel(scenarioStateModel);
+            if (!Scenarios.TryUpdate(lookupKey, newScenarioState, existingScenarioState))
+            {
+                throw new InvalidOperationException(
+                    $"Something went wrong with updating scenario with key '{lookupKey}'.");
+            }
+        }
 
         /// <inheritdoc />
-        public void DeleteScenario(string scenario) => throw new System.NotImplementedException();
+        public object GetScenarioLock(string scenario)
+        {
+            var lookupKey = scenario.ToLower();
+            if (ScenarioLocks.ContainsKey(lookupKey))
+            {
+                return ScenarioLocks[lookupKey];
+            }
+
+            var scenarioLock = new object();
+            if (!ScenarioLocks.TryAdd(lookupKey, scenarioLock))
+            {
+                throw new InvalidOperationException($"Could not add scenario lock for scenario '{lookupKey}'.");
+            }
+
+            return scenarioLock;
+        }
+
+        private static ScenarioStateModel CopyScenarioStateModel(ScenarioStateModel input) => new ScenarioStateModel
+        {
+            Scenario = input.Scenario, State = input.State, HitCount = input.HitCount
+        };
     }
 }
