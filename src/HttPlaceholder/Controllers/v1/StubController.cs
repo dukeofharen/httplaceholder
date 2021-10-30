@@ -35,7 +35,7 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<ActionResult<FullStubDto>> Add([FromBody] StubDto stub) =>
-            Ok(await Mediator.Send(new AddStubCommand(Mapper.Map<StubModel>(stub))));
+            Ok(Mapper.Map<FullStubDto>(await Mediator.Send(new AddStubCommand(Mapper.Map<StubModel>(stub)))));
 
         /// <summary>
         /// Adds multiple new stubs.
@@ -46,7 +46,8 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<IEnumerable<FullStubDto>>> AddMultiple([FromBody] IEnumerable<StubDto> stubs) =>
-            Ok(await Mediator.Send(new AddStubsCommand(Mapper.Map<IEnumerable<StubModel>>(stubs))));
+            Ok(Mapper.Map<IEnumerable<FullStubDto>>(
+                await Mediator.Send(new AddStubsCommand(Mapper.Map<IEnumerable<StubModel>>(stubs)))));
 
         /// <summary>
         /// Updates a given stub.
@@ -89,7 +90,7 @@ namespace HttPlaceholder.Controllers.v1
         [HttpGet]
         [Route("{stubId}/requests")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetRequestsByStubId([FromRoute]string stubId) =>
+        public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetRequestsByStubId([FromRoute] string stubId) =>
             Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(new GetByStubIdQuery(stubId))));
 
         /// <summary>
