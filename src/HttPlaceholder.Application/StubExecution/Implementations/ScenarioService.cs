@@ -29,6 +29,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             }
         }
 
+        /// <inheritdoc />
         public int? GetHitCount(string scenario)
         {
             if (string.IsNullOrWhiteSpace(scenario))
@@ -43,7 +44,11 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             }
         }
 
+        /// <inheritdoc />
         public IEnumerable<ScenarioStateModel> GetAllScenarios() => _scenarioStateStore.GetAllScenarios();
+
+        /// <inheritdoc />
+        public ScenarioStateModel GetScenario(string scenario) => _scenarioStateStore.GetScenario(scenario);
 
         private ScenarioStateModel GetOrAddScenarioState(string scenario) =>
             _scenarioStateStore.GetScenario(scenario) ??

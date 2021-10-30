@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Scenarios.Queries.GetAllScenarios;
+using HttPlaceholder.Application.Scenarios.Queries.GetScenario;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Dto.v1.Scenarios;
 using Microsoft.AspNetCore.Http;
@@ -23,5 +24,11 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ScenarioStateDto>>> GetAllScenarioStates() =>
             Ok(Mapper.Map<IEnumerable<ScenarioStateDto>>(await Mediator.Send(new GetAllScenariosQuery())));
+
+        [HttpGet("{scenario}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<ScenarioStateDto>> GetScenario([FromRoute] string scenario) =>
+            Ok(Mapper.Map<ScenarioStateDto>(await Mediator.Send(new GetScenarioQuery(scenario))));
     }
 }

@@ -158,5 +158,25 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             // Assert
             Assert.AreEqual(scenarios, result);
         }
+
+        [TestMethod]
+        public void GetScenario_HappyFlow()
+        {
+            // Arrange
+            var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+            var service = _mocker.CreateInstance<ScenarioService>();
+
+            const string scenarioName = "scenario-1";
+            var scenario = new ScenarioStateModel(scenarioName);
+            scenarioStateStoreMock
+                .Setup(m => m.GetScenario(scenarioName))
+                .Returns(scenario);
+
+            // Act
+            var result = service.GetScenario(scenarioName);
+
+            // Assert
+            Assert.AreEqual(scenario, result);
+        }
     }
 }

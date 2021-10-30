@@ -11,6 +11,10 @@ namespace HttPlaceholder.Application.Exceptions
         {
         }
 
+        public NotFoundException(string message) : base(message)
+        {
+        }
+
         protected NotFoundException(SerializationInfo serializationInfo, StreamingContext streamingContext) :
             base(serializationInfo, streamingContext)
         {

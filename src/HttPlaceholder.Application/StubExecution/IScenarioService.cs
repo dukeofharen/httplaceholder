@@ -26,5 +26,12 @@ namespace HttPlaceholder.Application.StubExecution
         /// </summary>
         /// <returns>A list of all <see cref="ScenarioStateModel"/>.</returns>
         IEnumerable<ScenarioStateModel> GetAllScenarios();
+
+        /// <summary>
+        /// Returns a specific scenario. Is case insensitive.
+        /// </summary>
+        /// <param name="scenario">The scenario name.</param>
+        /// <returns>The <see cref="ScenarioStateModel"/> or null if the scenario was not found.</returns>
+        ScenarioStateModel GetScenario(string scenario);
     }
 }
