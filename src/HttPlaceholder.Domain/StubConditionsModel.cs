@@ -73,5 +73,11 @@ namespace HttPlaceholder.Domain
         /// </summary>
         [YamlMember(Alias = "json")]
         public object Json { get; set; }
+
+        /// <summary>
+        /// Gets or sets the scenario conditions model.
+        /// </summary>
+        [YamlMember(Alias = "scenario")]
+        public StubConditionScenarioModel Scenario { get; set; }
     }
 }
