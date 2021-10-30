@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.StubExecution
@@ -37,5 +38,11 @@ namespace HttPlaceholder.Application.StubExecution
         /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
         /// <returns>A scenario lock.</returns>
         object GetScenarioLock(string scenario);
+
+        /// <summary>
+        /// Retrieves a list of all scenarios.
+        /// </summary>
+        /// <returns>A list of <see cref="ScenarioStateModel"/>.</returns>
+        IEnumerable<ScenarioStateModel> GetAllScenarios();
     }
 }

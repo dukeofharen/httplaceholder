@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain.Entities;
 
@@ -71,6 +73,9 @@ namespace HttPlaceholder.Persistence.Implementations
 
             return scenarioLock;
         }
+
+        /// <inheritdoc />
+        public IEnumerable<ScenarioStateModel> GetAllScenarios() => Scenarios.Values.Select(CopyScenarioStateModel);
 
         private static ScenarioStateModel CopyScenarioStateModel(ScenarioStateModel input) => new ScenarioStateModel
         {

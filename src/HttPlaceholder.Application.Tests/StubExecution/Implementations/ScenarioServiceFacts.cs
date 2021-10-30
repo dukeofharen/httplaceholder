@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.StubExecution;
+﻿using System;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Domain.Entities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -137,6 +138,25 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 
             // Assert
             Assert.AreEqual(2, result);
+        }
+
+        [TestMethod]
+        public void GetAllScenarios_HappyFlow()
+        {
+            // Arrange
+            var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+            var service = _mocker.CreateInstance<ScenarioService>();
+
+            var scenarios = Array.Empty<ScenarioStateModel>();
+            scenarioStateStoreMock
+                .Setup(m => m.GetAllScenarios())
+                .Returns(scenarios);
+
+            // Act
+            var result = service.GetAllScenarios();
+
+            // Assert
+            Assert.AreEqual(scenarios, result);
         }
     }
 }

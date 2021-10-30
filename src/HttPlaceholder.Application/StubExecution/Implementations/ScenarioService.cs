@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Domain.Entities;
+﻿using System.Collections.Generic;
+using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations
 {
@@ -41,6 +42,8 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                 return scenarioState.HitCount;
             }
         }
+
+        public IEnumerable<ScenarioStateModel> GetAllScenarios() => _scenarioStateStore.GetAllScenarios();
 
         private ScenarioStateModel GetOrAddScenarioState(string scenario) =>
             _scenarioStateStore.GetScenario(scenario) ??

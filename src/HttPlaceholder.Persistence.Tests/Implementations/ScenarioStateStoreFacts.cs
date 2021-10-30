@@ -201,6 +201,29 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             Assert.AreEqual(result1, result2);
         }
 
+        [TestMethod]
+        public void GetAllScenarios_HappyFlow()
+        {
+            // Arrange
+            var scenario1 = new ScenarioStateModel {Scenario = "scenario1", State = "state1", HitCount = 2};
+            var scenario2 = new ScenarioStateModel {Scenario = "scenario2", State = "state2", HitCount = 3};
+            Assert.IsTrue(_store.Scenarios.TryAdd(scenario1.Scenario, scenario1));
+            Assert.IsTrue(_store.Scenarios.TryAdd(scenario2.Scenario, scenario2));
+
+            // Act
+            var result = _store.GetAllScenarios().ToArray();
+
+            // Assert
+            Assert.AreEqual(2, result.Length);
+            var scenarioResult1 = result.Single(s => s.Scenario == scenario1.Scenario);
+            var scenarioResult2 = result.Single(s => s.Scenario == scenario2.Scenario);
+
+            Assert.AreNotEqual(scenarioResult1, scenario1);
+            Assert.AreNotEqual(scenarioResult2, scenario2);
+            AssertScenarioStatesAreEqual(scenarioResult1, scenario1);
+            AssertScenarioStatesAreEqual(scenarioResult2, scenario2);
+        }
+
         private static void AssertScenarioStatesAreEqual(ScenarioStateModel actual, ScenarioStateModel expected)
         {
             Assert.IsNotNull(actual);
