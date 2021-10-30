@@ -19,15 +19,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             _httpContextService = httpContextService;
         }
 
-        public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
+        public ConditionCheckResultModel Validate(StubModel stub)
         {
             var result = new ConditionCheckResultModel();
-            if (conditions?.Json == null)
+            if (stub.Conditions?.Json == null)
             {
                 return result;
             }
 
-            var convertedJsonConditions = ConvertJsonConditions(conditions.Json);
+            var convertedJsonConditions = ConvertJsonConditions(stub.Conditions.Json);
 
             var body = _httpContextService.GetBody();
             try

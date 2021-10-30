@@ -24,11 +24,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             // Arrange
             var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
 
-            var stubId = "stub1";
             var conditions = new StubConditionsModel {JsonPath = null};
 
             // Act
-            var result = checker.Validate(stubId, conditions);
+            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -40,11 +39,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             // Arrange
             var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
 
-            var stubId = "stub1";
             var conditions = new StubConditionsModel {JsonPath = Array.Empty<object>()};
 
             // Act
-            var result = checker.Validate(stubId, conditions);
+            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -57,7 +55,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
             var httpMock = _mocker.GetMock<IHttpContextService>();
 
-            var stubId = "stub1";
             var conditions = new StubConditionsModel
             {
                 JsonPath = new[] {"$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]"}
@@ -76,7 +73,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(json);
 
             // Act
-            var result = checker.Validate(stubId, conditions);
+            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -89,7 +86,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
             var httpMock = _mocker.GetMock<IHttpContextService>();
 
-            var stubId = "stub1";
             var conditions = new StubConditionsModel
             {
                 JsonPath = new[] {"$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]"}
@@ -108,7 +104,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(json);
 
             // Act
-            var result = checker.Validate(stubId, conditions);
+            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -121,7 +117,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
             var httpMock = _mocker.GetMock<IHttpContextService>();
 
-            var stubId = "stub1";
             var conditions = new StubConditionsModel
             {
                 JsonPath = new object[]
@@ -147,7 +142,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(json);
 
             // Act
-            var result = checker.Validate(stubId, conditions);
+            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -160,7 +155,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
             var httpMock = _mocker.GetMock<IHttpContextService>();
 
-            var stubId = "stub1";
             var conditions = new StubConditionsModel
             {
                 JsonPath = new object[]
@@ -186,7 +180,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(json);
 
             // Act
-            var result = checker.Validate(stubId, conditions);
+            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -199,7 +193,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
             var httpMock = _mocker.GetMock<IHttpContextService>();
 
-            var stubId = "stub1";
             var conditions = new StubConditionsModel
             {
                 JsonPath = new object[]
@@ -225,7 +218,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(json);
 
             // Act
-            var result = checker.Validate(stubId, conditions);
+            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -238,7 +231,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
             var httpMock = _mocker.GetMock<IHttpContextService>();
 
-            var stubId = "stub1";
             var conditions = new StubConditionsModel
             {
                 JsonPath = new object[]
@@ -269,7 +261,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(json);
 
             // Act
-            var result = checker.Validate(stubId, conditions);
+            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -282,7 +274,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
             var httpMock = _mocker.GetMock<IHttpContextService>();
 
-            var stubId = "stub1";
             var conditions = new StubConditionsModel
             {
                 JsonPath = new object[]
@@ -313,7 +304,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(json);
 
             // Act
-            var result = checker.Validate(stubId, conditions);
+            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);

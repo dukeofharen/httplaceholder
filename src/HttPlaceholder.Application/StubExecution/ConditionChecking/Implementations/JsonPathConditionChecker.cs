@@ -18,10 +18,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             _httpContextService = httpContextService;
         }
 
-        public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
+        public ConditionCheckResultModel Validate(StubModel stub)
         {
             var result = new ConditionCheckResultModel();
-            var jsonPathConditions = conditions?.JsonPath?.ToArray();
+            var jsonPathConditions = stub.Conditions?.JsonPath?.ToArray();
             if (jsonPathConditions == null || jsonPathConditions?.Any() != true)
             {
                 return result;
@@ -48,7 +48,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 else
                 {
                     // Condition is an object, so first convert the condition to a StubJsonPathModel before executing the condition checker.
-                    var jsonPathCondition = ConvertJsonPathCondition(stubId, condition);
+                    var jsonPathCondition = ConvertJsonPathCondition(stub.Id, condition);
 
                     var passed = false;
                     if (jsonPathCondition != null)

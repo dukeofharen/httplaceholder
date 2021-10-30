@@ -14,10 +14,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             _clientDataResolver = clientDataResolver;
         }
 
-        public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
+        public ConditionCheckResultModel Validate(StubModel stub)
         {
             var result = new ConditionCheckResultModel();
-            var hostCondition = conditions?.Host;
+            var hostCondition = stub.Conditions?.Host;
             if (hostCondition == null)
             {
                 return result;

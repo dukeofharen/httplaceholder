@@ -15,10 +15,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             _httpContextService = httpContextService;
         }
 
-        public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
+        public ConditionCheckResultModel Validate(StubModel stub)
         {
             var result = new ConditionCheckResultModel();
-            var basicAuthenticationCondition = conditions?.BasicAuthentication;
+            var basicAuthenticationCondition = stub.Conditions?.BasicAuthentication;
             if (basicAuthenticationCondition == null ||
                 (string.IsNullOrWhiteSpace(basicAuthenticationCondition.Username) &&
                  string.IsNullOrWhiteSpace(basicAuthenticationCondition.Password)))
@@ -42,13 +42,13 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 var expectedAuthorizationHeader = $"Basic {expectedBase64UsernamePassword}";
                 if (expectedAuthorizationHeader == authorization)
                 {
-                    result.Log = $"Basic authentication condition passed for stub '{stubId}'.";
+                    result.Log = $"Basic authentication condition passed for stub '{stub.Id}'.";
                     result.ConditionValidation = ConditionValidationType.Valid;
                 }
                 else
                 {
                     result.Log =
-                        $"Basic authentication condition failed for stub '{stubId}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.";
+                        $"Basic authentication condition failed for stub '{stub.Id}'. Expected '{expectedAuthorizationHeader}' but found '{authorization}'.";
                     result.ConditionValidation = ConditionValidationType.Invalid;
                 }
             }

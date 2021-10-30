@@ -72,7 +72,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
                 .Callback<StubModel>(stub => actualStub = stub)
                 .ReturnsAsync(expectedStub);
 
-            var expectedId = "generated-fc2a6c1f0bb2079f53524343edba8a64";
+            const string expectedId = "generated-14f0aa252fcbb2c08c727cb560bc0ce3";
 
             // Act
             var result = await _generator.GenerateStubBasedOnRequestAsync("2", false);
@@ -102,7 +102,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
                 .Setup(m => m.GetRequestResultsAsync())
                 .ReturnsAsync(requests);
 
-            var expectedId = "generated-fc2a6c1f0bb2079f53524343edba8a64";
+            var expectedId = "generated-14f0aa252fcbb2c08c727cb560bc0ce3";
 
             // Act
             var result = await _generator.GenerateStubBasedOnRequestAsync("2", true);

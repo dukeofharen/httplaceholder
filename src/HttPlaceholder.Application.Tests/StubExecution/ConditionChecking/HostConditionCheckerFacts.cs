@@ -29,7 +29,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             };
 
             // act
-            var result = _checker.Validate("id", conditions);
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // assert
             Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -50,7 +50,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                .Returns(host);
 
             // act
-            var result = _checker.Validate("id", conditions);
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -71,7 +71,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                .Returns(host);
 
             // act
-            var result = _checker.Validate("id", conditions);
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // assert
             Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -92,7 +92,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                .Returns(host);
 
             // act
-            var result = _checker.Validate("id", conditions);
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // assert
             Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

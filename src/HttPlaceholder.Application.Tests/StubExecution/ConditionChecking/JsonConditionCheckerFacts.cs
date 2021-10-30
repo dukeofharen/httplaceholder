@@ -59,7 +59,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             var conditions = new StubConditionsModel {Json = null};
 
             // Act
-            var result = _checker.Validate("stub1", conditions);
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -77,7 +77,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(PostedObjectJson);
 
             // Act
-            var result = _checker.Validate("stub1", conditions);
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -98,7 +98,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns("JSON IS CORRUPT!!!");
 
             // Act
-            var result = _checker.Validate("stub1", conditions);
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -119,7 +119,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(PostedObjectJson);
 
             // Act
-            var result = _checker.Validate("stub1", conditions);
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -137,7 +137,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(PostedArrayJson);
 
             // Act
-            var result = _checker.Validate("stub1", conditions);
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -158,7 +158,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
                 .Returns(PostedArrayJson);
 
             // Act
-            var result = _checker.Validate("stub1", conditions);
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);

@@ -67,7 +67,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
             var service = _mocker.CreateInstance<ScenarioService>();
 
-            var scenario = "SCENARIO-1";
+            const string scenario = "SCENARIO-1";
 
             scenarioStateStoreMock
                 .Setup(m => m.GetScenarioLock(scenario))
@@ -100,6 +100,43 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             Assert.AreEqual(1, capturedScenarioStateModel.HitCount);
             Assert.AreEqual("Start", capturedScenarioStateModel.State);
             Assert.AreEqual(scenario.ToLower(), capturedScenarioStateModel.Scenario);
+        }
+
+        [TestMethod]
+        public void GetHitCount_ScenarioNotSet_ShouldReturnNull()
+        {
+            // Arrange
+            var service = _mocker.CreateInstance<ScenarioService>();
+
+            // Act
+            var result = service.GetHitCount(string.Empty);
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void GetHitCount_ScenarioSet_ShouldReturnHitCount()
+        {
+            // Arrange
+            var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+            var service = _mocker.CreateInstance<ScenarioService>();
+            const string scenario = "SCENARIO-1";
+
+            scenarioStateStoreMock
+                .Setup(m => m.GetScenarioLock(scenario))
+                .Returns(new object());
+
+            var scenarioState = new ScenarioStateModel {Scenario = scenario, HitCount = 2};
+            scenarioStateStoreMock
+                .Setup(m => m.GetScenario(scenario))
+                .Returns(scenarioState);
+
+            // Act
+            var result = service.GetHitCount(scenario);
+
+            // Assert
+            Assert.AreEqual(2, result);
         }
     }
 }

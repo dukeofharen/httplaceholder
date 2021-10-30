@@ -52,7 +52,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                     var validationResults = new List<ConditionCheckResultModel>();
                     foreach (var checker in orderedConditionCheckers)
                     {
-                        var validationResult = checker.Validate(stub.Id, stub.Conditions);
+                        var validationResult = checker.Validate(stub);
                         validationResult.CheckerName = checker.GetType().Name;
                         validationResults.Add(validationResult);
                         if (validationResult.ConditionValidation == ConditionValidationType.Invalid)

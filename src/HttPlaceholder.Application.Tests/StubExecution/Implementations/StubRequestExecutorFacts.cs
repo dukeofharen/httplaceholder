@@ -18,37 +18,19 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
     [TestClass]
     public class StubRequestExecutorFacts
     {
-        private readonly Mock<IConditionChecker> _conditionCheckerMock1 = new Mock<IConditionChecker>();
-        private readonly Mock<IConditionChecker> _conditionCheckerMock2 = new Mock<IConditionChecker>();
+        private readonly Mock<IConditionChecker> _conditionCheckerMock1 = new();
+        private readonly Mock<IConditionChecker> _conditionCheckerMock2 = new();
         private readonly AutoMocker _mocker = new();
 
-        private readonly FullStubModel _stub1 = new FullStubModel
+        private readonly FullStubModel _stub1 = new()
         {
-            Stub = new StubModel
-            {
-                Id = Guid.NewGuid().ToString(), Conditions = new StubConditionsModel(), Priority = -1, Scenario = "scenario-1"
-            },
+            Stub = new StubModel(),
             Metadata = new StubMetadataModel()
         };
 
-        private readonly FullStubModel _stub2 = new FullStubModel
+        private readonly FullStubModel _stub2 = new()
         {
-            Stub = new StubModel
-            {
-                Id = Guid.NewGuid().ToString(), Conditions = new StubConditionsModel(), Priority = 0, Scenario = "scenario-1"
-            },
-            Metadata = new StubMetadataModel()
-        };
-
-        private readonly FullStubModel _stub3 = new FullStubModel
-        {
-            Stub = new StubModel
-            {
-                Id = Guid.NewGuid().ToString(),
-                Conditions = new StubConditionsModel(),
-                Priority = 0,
-                Enabled = false
-            },
+            Stub = new StubModel(),
             Metadata = new StubMetadataModel()
         };
 
@@ -64,7 +46,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var stubContextMock = _mocker.GetMock<IStubContext>();
             stubContextMock
                 .Setup(m => m.GetStubsAsync())
-                .ReturnsAsync(new[] {_stub1, _stub2, _stub3});
+                .ReturnsAsync(new[] {_stub1, _stub2});
         }
 
         [TestCleanup]
@@ -75,10 +57,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         {
             // arrange
             _conditionCheckerMock1
-                .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
+                .Setup(m => m.Validate(It.IsAny<StubModel>()))
                 .Returns(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Invalid});
             _conditionCheckerMock2
-                .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
+                .Setup(m => m.Validate(It.IsAny<StubModel>()))
                 .Returns(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Invalid});
 
             var executor = _mocker.CreateInstance<StubRequestExecutor>();
@@ -98,11 +80,11 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var expectedResponseModel = new ResponseModel();
 
             _conditionCheckerMock1
-                .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
+                .Setup(m => m.Validate(It.IsAny<StubModel>()))
                 .Returns(
                     () => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.NotExecuted});
             _conditionCheckerMock2
-                .Setup(m => m.Validate(It.IsAny<string>(), It.IsAny<StubConditionsModel>()))
+                .Setup(m => m.Validate(It.IsAny<StubModel>()))
                 .Returns(
                     () => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.NotExecuted});
 
@@ -134,17 +116,17 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var expectedResponseModel = new ResponseModel();
 
             _conditionCheckerMock1
-                .Setup(m => m.Validate(_stub1.Stub.Id, _stub1.Stub.Conditions))
+                .Setup(m => m.Validate(_stub1.Stub))
                 .Returns(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
             _conditionCheckerMock2
-                .Setup(m => m.Validate(_stub1.Stub.Id, _stub1.Stub.Conditions))
+                .Setup(m => m.Validate(_stub1.Stub))
                 .Returns(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
 
             _conditionCheckerMock1
-                .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.Conditions))
+                .Setup(m => m.Validate(_stub2.Stub))
                 .Returns(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
             _conditionCheckerMock2
-                .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.Conditions))
+                .Setup(m => m.Validate(_stub2.Stub))
                 .Returns(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
 
             var finalStubDeterminerMock = _mocker.GetMock<IFinalStubDeterminer>();
@@ -174,17 +156,17 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             // arrange
             var expectedResponseModel = new ResponseModel();
             _conditionCheckerMock1
-                .Setup(m => m.Validate(_stub1.Stub.Id, _stub1.Stub.Conditions))
+                .Setup(m => m.Validate(_stub1.Stub))
                 .Returns(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Invalid});
             _conditionCheckerMock2
-                .Setup(m => m.Validate(_stub1.Stub.Id, _stub1.Stub.Conditions))
+                .Setup(m => m.Validate(_stub1.Stub))
                 .Returns(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Invalid});
 
             _conditionCheckerMock1
-                .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.Conditions))
+                .Setup(m => m.Validate(_stub2.Stub))
                 .Returns(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
             _conditionCheckerMock2
-                .Setup(m => m.Validate(_stub2.Stub.Id, _stub2.Stub.Conditions))
+                .Setup(m => m.Validate(_stub2.Stub))
                 .Returns(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
 
             var finalStubDeterminerMock = _mocker.GetMock<IFinalStubDeterminer>();
@@ -206,8 +188,6 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 
             // assert
             Assert.AreEqual(expectedResponseModel, response);
-            _conditionCheckerMock1
-                .Verify(m => m.Validate(_stub3.Stub.Id, It.IsAny<StubConditionsModel>()), Times.Never);
 
             _mocker.GetMock<IScenarioService>().Verify(m => m.IncreaseHitCount(_stub2.Stub.Scenario));
         }

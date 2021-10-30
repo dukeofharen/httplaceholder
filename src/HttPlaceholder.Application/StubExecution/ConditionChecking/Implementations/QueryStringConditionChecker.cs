@@ -15,10 +15,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             _httpContextService = httpContextService;
         }
 
-        public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
+        public ConditionCheckResultModel Validate(StubModel stub)
         {
             var result = new ConditionCheckResultModel();
-            var queryStringConditions = conditions?.Url?.Query;
+            var queryStringConditions = stub.Conditions?.Url?.Query;
             if (queryStringConditions == null || queryStringConditions?.Any() != true)
             {
                 return result;

@@ -14,10 +14,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             _httpContextService = httpContextService;
         }
 
-        public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
+        public ConditionCheckResultModel Validate(StubModel stub)
         {
             var result = new ConditionCheckResultModel();
-            var fullPathCondition = conditions?.Url?.FullPath;
+            var fullPathCondition = stub.Conditions?.Url?.FullPath;
             if (string.IsNullOrEmpty(fullPathCondition))
             {
                 return result;
