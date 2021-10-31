@@ -72,6 +72,20 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             }
         }
 
+        /// <inheritdoc />
+        public bool DeleteScenario(string scenario)
+        {
+            if (string.IsNullOrWhiteSpace(scenario))
+            {
+                return false;
+            }
+
+            lock (_scenarioStateStore.GetScenarioLock(scenario))
+            {
+                return _scenarioStateStore.DeleteScenario(scenario);
+            }
+        }
+
         private ScenarioStateModel GetOrAddScenarioState(string scenario) =>
             _scenarioStateStore.GetScenario(scenario) ??
             _scenarioStateStore.AddScenario(

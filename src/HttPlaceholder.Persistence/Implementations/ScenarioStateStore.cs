@@ -77,6 +77,19 @@ namespace HttPlaceholder.Persistence.Implementations
         /// <inheritdoc />
         public IEnumerable<ScenarioStateModel> GetAllScenarios() => Scenarios.Values.Select(CopyScenarioStateModel);
 
+        /// <inheritdoc />
+        public bool DeleteScenario(string scenario)
+        {
+            if (string.IsNullOrWhiteSpace(scenario))
+            {
+                return false;
+            }
+
+            var lookupKey = scenario.ToLower();
+            ScenarioLocks.TryRemove(lookupKey, out _);
+            return Scenarios.TryRemove(lookupKey, out _);
+        }
+
         private static ScenarioStateModel CopyScenarioStateModel(ScenarioStateModel input) => new ScenarioStateModel
         {
             Scenario = input.Scenario, State = input.State, HitCount = input.HitCount

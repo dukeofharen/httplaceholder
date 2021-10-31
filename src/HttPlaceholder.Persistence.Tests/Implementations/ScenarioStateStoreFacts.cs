@@ -224,6 +224,74 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             AssertScenarioStatesAreEqual(scenarioResult2, scenario2);
         }
 
+        [TestMethod]
+        public void DeleteScenario_ScenarioNotSet_ShouldNotDeleteScenario()
+        {
+            // Arrange
+            const string scenario = "scenario-1";
+            Assert.IsTrue(_store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
+            Assert.IsTrue(_store.ScenarioLocks.TryAdd(scenario, new object()));
+
+            // Act
+            var result = _store.DeleteScenario(null);
+
+            // Assert
+            Assert.IsFalse(result);
+            Assert.IsTrue(_store.Scenarios.Any());
+            Assert.IsTrue(_store.ScenarioLocks.Any());
+        }
+
+        [TestMethod]
+        public void DeleteScenario_ScenarioFound_ShouldReturnTrue()
+        {
+            // Arrange
+            const string scenario = "scenario-1";
+            Assert.IsTrue(_store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
+            Assert.IsTrue(_store.ScenarioLocks.TryAdd(scenario, new object()));
+
+            // Act
+            var result = _store.DeleteScenario(scenario);
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsFalse(_store.Scenarios.Any());
+            Assert.IsFalse(_store.ScenarioLocks.Any());
+        }
+
+        [TestMethod]
+        public void DeleteScenario_ScenarioNotFound_ShouldReturnFalse()
+        {
+            // Arrange
+            const string scenario = "scenario-1";
+            Assert.IsTrue(_store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
+            Assert.IsTrue(_store.ScenarioLocks.TryAdd(scenario, new object()));
+
+            // Act
+            var result = _store.DeleteScenario("scenario-2");
+
+            // Assert
+            Assert.IsFalse(result);
+            Assert.IsTrue(_store.Scenarios.Any());
+            Assert.IsTrue(_store.ScenarioLocks.Any());
+        }
+
+        [TestMethod]
+        public void DeleteScenario_CaseInsensitivityCheck()
+        {
+            // Arrange
+            const string scenario = "scenario-1";
+            Assert.IsTrue(_store.Scenarios.TryAdd(scenario, new ScenarioStateModel()));
+            Assert.IsTrue(_store.ScenarioLocks.TryAdd(scenario, new object()));
+
+            // Act
+            var result = _store.DeleteScenario(scenario.ToUpper());
+
+            // Assert
+            Assert.IsTrue(result);
+            Assert.IsFalse(_store.Scenarios.Any());
+            Assert.IsFalse(_store.ScenarioLocks.Any());
+        }
+
         private static void AssertScenarioStatesAreEqual(ScenarioStateModel actual, ScenarioStateModel expected)
         {
             Assert.IsNotNull(actual);

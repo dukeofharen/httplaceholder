@@ -256,5 +256,43 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input), Times.Never);
             scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input));
         }
+
+        [TestMethod]
+        public void DeleteScenario_ScenarioNotSet_ShouldReturnFalse()
+        {
+            // Arrange
+            var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+            var service = _mocker.CreateInstance<ScenarioService>();
+
+            // Act
+            var result = service.DeleteScenario(string.Empty);
+
+            // Assert
+            Assert.IsFalse(result);
+            scenarioStateStoreMock.Verify(m => m.GetScenarioLock(It.IsAny<string>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void DeleteScenario_ScenarioSet_ShouldDeleteScenario()
+        {
+            // Arrange
+            var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+            var service = _mocker.CreateInstance<ScenarioService>();
+            const string scenarioName = "scenario-1";
+
+            scenarioStateStoreMock
+                .Setup(m => m.GetScenarioLock(scenarioName))
+                .Returns(new object());
+
+            scenarioStateStoreMock
+                .Setup(m => m.DeleteScenario(scenarioName))
+                .Returns(true);
+
+            // Act
+            var result = service.DeleteScenario(scenarioName);
+
+            // Assert
+            Assert.IsTrue(result);
+        }
     }
 }

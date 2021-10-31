@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
 using HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 using HttPlaceholder.Application.Scenarios.Queries.GetAllScenarios;
 using HttPlaceholder.Application.Scenarios.Queries.GetScenario;
@@ -52,6 +53,20 @@ namespace HttPlaceholder.Controllers.v1
         {
             var input = Mapper.MapAndSet<ScenarioStateModel>(scenarioState, _ => _.Scenario = scenario);
             await Mediator.Send(new SetScenarioCommand(input, scenario));
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes / clears a scenario.
+        /// </summary>
+        /// <param name="scenario">The scenario name.</param>
+        /// <returns>No content.</returns>
+        [HttpDelete("{scenario}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteScenario([FromRoute] string scenario)
+        {
+            await Mediator.Send(new DeleteScenarioCommand(scenario));
             return NoContent();
         }
     }

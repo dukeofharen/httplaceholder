@@ -44,5 +44,12 @@ namespace HttPlaceholder.Application.StubExecution
         /// </summary>
         /// <returns>A list of <see cref="ScenarioStateModel"/>.</returns>
         IEnumerable<ScenarioStateModel> GetAllScenarios();
+
+        /// <summary>
+        /// Deletes a given scenario.
+        /// </summary>
+        /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
+        /// <returns>True if scenario was found and deleted; false otherwise.</returns>
+        bool DeleteScenario(string scenario);
     }
 }

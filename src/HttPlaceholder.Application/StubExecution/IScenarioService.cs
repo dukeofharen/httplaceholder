@@ -40,5 +40,12 @@ namespace HttPlaceholder.Application.StubExecution
         /// <param name="scenario">The scenario name.</param>
         /// <param name="scenarioState">The scenario state.</param>
         void SetScenario(string scenario, ScenarioStateModel scenarioState);
+
+        /// <summary>
+        /// Clears a scenario state.
+        /// </summary>
+        /// <param name="scenario">The scenario name.</param>
+        /// <returns>True if scenario was found and deleted; false otherwise.</returns>
+        bool DeleteScenario(string scenario);
     }
 }
