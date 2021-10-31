@@ -22,7 +22,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             }
 
             var scenario = stub.Scenario;
-            var actualHitCount = _scenarioService.GetHitCount(scenario);
+            var rawHitCount = _scenarioService.GetHitCount(scenario);
+            var actualHitCount = rawHitCount + 1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
             if (actualHitCount == null)
             {
                 result.Log = "No hit count could be found.";

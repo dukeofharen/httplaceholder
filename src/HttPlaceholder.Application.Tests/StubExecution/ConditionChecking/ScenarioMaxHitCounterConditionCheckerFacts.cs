@@ -59,7 +59,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
             scenarioServiceMock
                 .Setup(m => m.GetHitCount(stub.Scenario))
-                .Returns(3);
+                .Returns(2);
 
             // Act
             var result = checker.Validate(stub);
@@ -79,7 +79,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
             var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
             scenarioServiceMock
                 .Setup(m => m.GetHitCount(stub.Scenario))
-                .Returns(2);
+                .Returns(1);
 
             // Act
             var result = checker.Validate(stub);
