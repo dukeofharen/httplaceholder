@@ -33,5 +33,12 @@ namespace HttPlaceholder.Application.StubExecution
         /// <param name="scenario">The scenario name.</param>
         /// <returns>The <see cref="ScenarioStateModel"/> or null if the scenario was not found.</returns>
         ScenarioStateModel GetScenario(string scenario);
+
+        /// <summary>
+        /// Sets the scenario state. Adds the scenario if it does not exist yet.
+        /// </summary>
+        /// <param name="scenario">The scenario name.</param>
+        /// <param name="scenarioState">The scenario state.</param>
+        void SetScenario(string scenario, ScenarioStateModel scenarioState);
     }
 }

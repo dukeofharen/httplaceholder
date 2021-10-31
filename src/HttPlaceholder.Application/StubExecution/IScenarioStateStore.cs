@@ -25,7 +25,7 @@ namespace HttPlaceholder.Application.StubExecution
         ScenarioStateModel AddScenario(string scenario, ScenarioStateModel scenarioStateModel);
 
         /// <summary>
-        /// Updates a scenario
+        /// Updates a scenario.
         /// </summary>
         /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
         /// <param name="scenarioStateModel">The new scenario contents.</param>

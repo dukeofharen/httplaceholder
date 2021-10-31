@@ -50,6 +50,28 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         /// <inheritdoc />
         public ScenarioStateModel GetScenario(string scenario) => _scenarioStateStore.GetScenario(scenario);
 
+        /// <inheritdoc />
+        public void SetScenario(string scenario, ScenarioStateModel scenarioState)
+        {
+            if (string.IsNullOrWhiteSpace(scenario) || scenarioState == null)
+            {
+                return;
+            }
+
+            lock (_scenarioStateStore.GetScenarioLock(scenario))
+            {
+                var existingScenario = _scenarioStateStore.GetScenario(scenario);
+                if (existingScenario == null)
+                {
+                    _scenarioStateStore.AddScenario(scenario, scenarioState);
+                }
+                else
+                {
+                    _scenarioStateStore.UpdateScenario(scenario, scenarioState);
+                }
+            }
+        }
+
         private ScenarioStateModel GetOrAddScenarioState(string scenario) =>
             _scenarioStateStore.GetScenario(scenario) ??
             _scenarioStateStore.AddScenario(
