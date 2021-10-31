@@ -294,5 +294,19 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             // Assert
             Assert.IsTrue(result);
         }
+
+        [TestMethod]
+        public void DeleteAllScenarios_HappyFlow()
+        {
+            // Arrange
+            var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+            var service = _mocker.CreateInstance<ScenarioService>();
+
+            // Act
+            service.DeleteAllScenarios();
+
+            // Assert
+            scenarioStateStoreMock.Verify(m => m.DeleteAllScenarios());
+        }
     }
 }

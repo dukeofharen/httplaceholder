@@ -86,6 +86,9 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             }
         }
 
+        /// <inheritdoc />
+        public void DeleteAllScenarios() => _scenarioStateStore.DeleteAllScenarios();
+
         private ScenarioStateModel GetOrAddScenarioState(string scenario) =>
             _scenarioStateStore.GetScenario(scenario) ??
             _scenarioStateStore.AddScenario(

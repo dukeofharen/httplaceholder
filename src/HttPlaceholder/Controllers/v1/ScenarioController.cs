@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios;
 using HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
 using HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 using HttPlaceholder.Application.Scenarios.Queries.GetAllScenarios;
@@ -67,6 +68,18 @@ namespace HttPlaceholder.Controllers.v1
         public async Task<ActionResult> DeleteScenario([FromRoute] string scenario)
         {
             await Mediator.Send(new DeleteScenarioCommand(scenario));
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Deletes all scenarios.
+        /// </summary>
+        /// <returns>No content.</returns>
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<ActionResult> DeleteAllScenarios()
+        {
+            await Mediator.Send(new DeleteAllScenariosCommand());
             return NoContent();
         }
     }

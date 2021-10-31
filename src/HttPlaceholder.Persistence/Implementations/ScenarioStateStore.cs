@@ -90,6 +90,13 @@ namespace HttPlaceholder.Persistence.Implementations
             return Scenarios.TryRemove(lookupKey, out _);
         }
 
+        /// <inheritdoc />
+        public void DeleteAllScenarios()
+        {
+            Scenarios.Clear();
+            ScenarioLocks.Clear();
+        }
+
         private static ScenarioStateModel CopyScenarioStateModel(ScenarioStateModel input) => new ScenarioStateModel
         {
             Scenario = input.Scenario, State = input.State, HitCount = input.HitCount

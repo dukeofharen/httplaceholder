@@ -292,6 +292,21 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             Assert.IsFalse(_store.ScenarioLocks.Any());
         }
 
+        [TestMethod]
+        public void DeleteAllScenarios_HappyFlow()
+        {
+            // Arrange
+            Assert.IsTrue(_store.Scenarios.TryAdd("scenario-1", new ScenarioStateModel()));
+            Assert.IsTrue(_store.ScenarioLocks.TryAdd("scenario-1", new object()));
+
+            // Act
+            _store.DeleteAllScenarios();
+
+            // Assert
+            Assert.IsFalse(_store.Scenarios.Any());
+            Assert.IsFalse(_store.ScenarioLocks.Any());
+        }
+
         private static void AssertScenarioStatesAreEqual(ScenarioStateModel actual, ScenarioStateModel expected)
         {
             Assert.IsNotNull(actual);

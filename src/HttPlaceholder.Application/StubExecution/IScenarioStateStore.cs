@@ -51,5 +51,10 @@ namespace HttPlaceholder.Application.StubExecution
         /// <param name="scenario">The scenario name. The scenario name is case insensitive.</param>
         /// <returns>True if scenario was found and deleted; false otherwise.</returns>
         bool DeleteScenario(string scenario);
+
+        /// <summary>
+        /// Deletes all scenarios.
+        /// </summary>
+        void DeleteAllScenarios();
     }
 }
