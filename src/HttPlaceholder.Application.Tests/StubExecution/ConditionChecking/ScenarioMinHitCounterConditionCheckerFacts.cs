@@ -8,7 +8,7 @@ using Moq.AutoMock;
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
 {
     [TestClass]
-    public class ScenarioHitCounterConditionCheckerFacts
+    public class ScenarioMinHitCounterConditionCheckerFacts
     {
         private readonly AutoMocker _mocker = new();
 
@@ -20,7 +20,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         {
             // Arrange
             var stub = CreateStub(null, "min-hits");
-            var checker = _mocker.CreateInstance<ScenarioHitCounterConditionChecker>();
+            var checker = _mocker.CreateInstance<ScenarioMinHitCounterConditionChecker>();
 
             // Act
             var result = checker.Validate(stub);
@@ -34,7 +34,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         {
             // Arrange
             var stub = CreateStub(1, "min-hits");
-            var checker = _mocker.CreateInstance<ScenarioHitCounterConditionChecker>();
+            var checker = _mocker.CreateInstance<ScenarioMinHitCounterConditionChecker>();
 
             var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
             scenarioServiceMock
@@ -54,7 +54,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         {
             // Arrange
             var stub = CreateStub(3, "min-hits");
-            var checker = _mocker.CreateInstance<ScenarioHitCounterConditionChecker>();
+            var checker = _mocker.CreateInstance<ScenarioMinHitCounterConditionChecker>();
 
             var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
             scenarioServiceMock
@@ -74,7 +74,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         {
             // Arrange
             var stub = CreateStub(3, "min-hits");
-            var checker = _mocker.CreateInstance<ScenarioHitCounterConditionChecker>();
+            var checker = _mocker.CreateInstance<ScenarioMinHitCounterConditionChecker>();
 
             var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
             scenarioServiceMock
