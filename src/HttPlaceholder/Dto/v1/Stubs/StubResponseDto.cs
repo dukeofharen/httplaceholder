@@ -106,5 +106,11 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// </summary>
         [YamlMember(Alias = "image")]
         public StubResponseImageDto Image { get; set; }
+
+        /// <summary>
+        /// Gets or sets the response scenario variables.
+        /// </summary>
+        [YamlMember(Alias = "scenario")]
+        public StubResponseScenarioDto Scenario { get; set; }
     }
 }

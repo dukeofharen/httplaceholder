@@ -108,5 +108,11 @@ namespace HttPlaceholder.Domain
         [YamlMember(Alias = "image")]
         [ValidateObject]
         public StubResponseImageModel Image { get; set; }
+
+        /// <summary>
+        /// Gets or sets the response scenario variables.
+        /// </summary>
+        [YamlMember(Alias = "scenario")]
+        public StubResponseScenarioModel Scenario { get; set; }
     }
 }

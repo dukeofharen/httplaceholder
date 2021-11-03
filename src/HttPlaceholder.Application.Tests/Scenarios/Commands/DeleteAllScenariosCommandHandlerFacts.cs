@@ -23,7 +23,7 @@ namespace HttPlaceholder.Application.Tests.Scenarios.Commands
             var handler = _mocker.CreateInstance<DeleteAllScenariosCommandHandler>();
 
             // Act
-            handler.Handle(new DeleteAllScenariosCommand(), CancellationToken.None);
+            await handler.Handle(new DeleteAllScenariosCommand(), CancellationToken.None);
 
             // Assert
             scenarioServiceMock.Verify(m => m.DeleteAllScenarios());

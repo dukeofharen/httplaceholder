@@ -3,7 +3,7 @@
 namespace HttPlaceholder.Domain
 {
     /// <summary>
-    /// A model for storing all scenario conditions for a stub
+    /// A model for storing all scenario conditions for a stub.
     /// </summary>
     public class StubConditionScenarioModel
     {
