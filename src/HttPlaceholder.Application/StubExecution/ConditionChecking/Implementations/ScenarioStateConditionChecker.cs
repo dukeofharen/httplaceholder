@@ -1,5 +1,6 @@
 ﻿using System;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations
@@ -23,13 +24,14 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 return result;
             }
 
-            var scenarioState = _scenarioService.GetScenario(stub.Scenario);
-            if (string.IsNullOrWhiteSpace(scenarioState?.State))
+            var scenarioState = _scenarioService.GetScenario(scenario);
+            if (scenarioState == null)
             {
-                result.Log = $"No scenario state found for scenario '{stub.Scenario}'.";
-                result.ConditionValidation = ConditionValidationType.Invalid;
+                scenarioState = new ScenarioStateModel(scenario);
+                _scenarioService.SetScenario(scenario, scenarioState);
             }
-            else if (!string.Equals(scenarioState.State.Trim(), state.Trim(), StringComparison.OrdinalIgnoreCase))
+
+            if (!string.Equals(scenarioState.State.Trim(), state.Trim(), StringComparison.OrdinalIgnoreCase))
             {
                 result.Log =
                     $"Scenario '{stub.Scenario}' is in state '{scenarioState.State}', but '{state}' was expected.";

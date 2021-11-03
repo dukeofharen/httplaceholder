@@ -4,6 +4,7 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
@@ -47,7 +48,29 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
         }
 
         [TestMethod]
-        public void Validate_ScenarioStateNotSet_ShouldReturnInvalid()
+        public void Validate_ScenarioStateNotSet_ShouldAddScenario_InitialState_ShouldReturnValid()
+        {
+            // Arrange
+            const string scenario = "scenario-1";
+            const string state = Constants.DefaultScenarioState;
+            var stub = CreateStub(scenario, state);
+
+            var checker = _mocker.CreateInstance<ScenarioStateConditionChecker>();
+            var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
+            scenarioServiceMock
+                .Setup(m => m.GetScenario(scenario))
+                .Returns((ScenarioStateModel)null);
+
+            // Act
+            var result = checker.Validate(stub);
+
+            // Assert
+            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+            scenarioServiceMock.Verify(m => m.SetScenario(scenario, It.IsAny<ScenarioStateModel>()));
+        }
+
+        [TestMethod]
+        public void Validate_ScenarioStateNotSet_ShouldAddScenario_NonInitialState_ShouldReturnInvalid()
         {
             // Arrange
             const string scenario = "scenario-1";
@@ -65,7 +88,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionChecking
 
             // Assert
             Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-            Assert.AreEqual("No scenario state found for scenario 'scenario-1'.", result.Log);
+            Assert.AreEqual("Scenario 'scenario-1' is in state 'Start', but 'state-1' was expected.", result.Log);
+            scenarioServiceMock.Verify(m => m.SetScenario(scenario, It.IsAny<ScenarioStateModel>()));
         }
 
         [TestMethod]
