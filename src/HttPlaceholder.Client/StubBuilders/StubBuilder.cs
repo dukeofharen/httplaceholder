@@ -58,6 +58,12 @@ namespace HttPlaceholder.Client.StubBuilders
             return this;
         }
 
+        public StubBuilder InScenario(string scenario)
+        {
+            _stub.Scenario = scenario;
+            return this;
+        }
+
         public StubBuilder WithConditions(StubConditionsDto conditions)
         {
             _stub.Conditions = conditions;

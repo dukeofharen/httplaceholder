@@ -93,6 +93,19 @@ namespace HttPlaceholder.Client.Tests.StubBuilders
         }
 
         [TestMethod]
+        public void InScenario()
+        {
+            // Act
+            const string scenario = "scenario-1";
+            var stub = StubBuilder.Begin()
+                .InScenario(scenario)
+                .Build();
+
+            // Assert
+            Assert.AreEqual(scenario, stub.Scenario);
+        }
+
+        [TestMethod]
         public void WithConditionsAsDto()
         {
             // Act

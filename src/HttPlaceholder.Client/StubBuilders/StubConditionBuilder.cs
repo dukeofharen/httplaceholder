@@ -149,8 +149,38 @@ namespace HttPlaceholder.Client.StubBuilders
             return this;
         }
 
+        public StubConditionBuilder ScenarioHasAtLeastXHits(int minHits)
+        {
+            EnsureScenarioConditions();
+            _conditions.Scenario.MinHits = minHits;
+            return this;
+        }
+
+        public StubConditionBuilder ScenarioHasAtMostXHits(int maxHits)
+        {
+            EnsureScenarioConditions();
+            _conditions.Scenario.MaxHits = maxHits;
+            return this;
+        }
+
+        public StubConditionBuilder ScenarioHasExactlyXHits(int exactHits)
+        {
+            EnsureScenarioConditions();
+            _conditions.Scenario.ExactHits = exactHits;
+            return this;
+        }
+
+        public StubConditionBuilder ScenarioHasState(string state)
+        {
+            EnsureScenarioConditions();
+            _conditions.Scenario.ScenarioState = state;
+            return this;
+        }
+
         public StubConditionsDto Build() => _conditions;
 
         private void EnsureUrlConditions() => _conditions.Url ??= new StubUrlConditionDto();
+
+        private void EnsureScenarioConditions() => _conditions.Scenario ??= new StubConditionScenarioDto();
     }
 }

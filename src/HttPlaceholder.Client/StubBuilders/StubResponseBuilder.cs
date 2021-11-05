@@ -171,6 +171,22 @@ namespace HttPlaceholder.Client.StubBuilders
             return this;
         }
 
+        public StubResponseBuilder ShouldClearScenario()
+        {
+            EnsureScenarioDto();
+            _response.Scenario.ClearState = true;
+            return this;
+        }
+
+        public StubResponseBuilder SetScenarioStateTo(string state)
+        {
+            EnsureScenarioDto();
+            _response.Scenario.SetScenarioState = state;
+            return this;
+        }
+
         public StubResponseDto Build() => _response;
+
+        private void EnsureScenarioDto() => _response.Scenario ??= new StubResponseScenarioDto();
     }
 }

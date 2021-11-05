@@ -295,5 +295,29 @@ namespace HttPlaceholder.Client.Tests.StubBuilders
             Assert.IsTrue(response.Image.WordWrap);
             Assert.AreEqual(96, response.Image.JpegQuality);
         }
+
+        [TestMethod]
+        public void ShouldClearScenario()
+        {
+            // Act
+            var response = StubResponseBuilder.Begin()
+                .ShouldClearScenario()
+                .Build();
+
+            // Assert
+            Assert.IsTrue(response.Scenario.ClearState);
+        }
+
+        [TestMethod]
+        public void SetScenarioStateTo()
+        {
+            // Act
+            var response = StubResponseBuilder.Begin()
+                .SetScenarioStateTo("new-state")
+                .Build();
+
+            // Assert
+            Assert.AreEqual("new-state", response.Scenario.SetScenarioState);
+        }
     }
 }
