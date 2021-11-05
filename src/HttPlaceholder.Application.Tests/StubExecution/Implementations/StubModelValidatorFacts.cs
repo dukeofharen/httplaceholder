@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Domain;
@@ -202,17 +203,20 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
         [DataTestMethod]
         [DataRow("scenario-1", 1, 1, null, null, null, null, "minHits and maxHits can not be equal.")]
         [DataRow("scenario-1", 1, 0, null, null, null, null, "maxHits can not be lower than minHits.")]
-        [DataRow("scenario-1", 1, 2, 1, null, "new-state", true,
-            "setScenarioState and clearState can not both be set at the same time.")]
-        [DataRow("scenario-1", null, null, null, null, null, null,
+        [DataRow("scenario-1", 1, null, 1, null, null, null,
             "exactHits can not be set if minHits and maxHits are set.")]
+        [DataRow("scenario-1", null, 1, 1, null, null, null,
+            "exactHits can not be set if minHits and maxHits are set.")]
+        [DataRow("scenario-1", null, null, null, null, "new-state", true,
+            "setScenarioState and clearState can not both be set at the same time.")]
+        [DataRow("scenario-1", null, null, null, null, "new-state", false, null)]
         [DataRow(null, 1, null, null, null, null, null,
             "Scenario condition checkers and response writers can not be set if no 'scenario' is provided.")]
         [DataRow(null, null, 1, null, null, null, null,
             "Scenario condition checkers and response writers can not be set if no 'scenario' is provided.")]
         [DataRow(null, null, null, 1, null, null, null,
             "Scenario condition checkers and response writers can not be set if no 'scenario' is provided.")]
-        [DataRow(null, null, null, null, "state", null, null,
+        [DataRow(null, null, null, null, "new-state", null, null,
             "Scenario condition checkers and response writers can not be set if no 'scenario' is provided.")]
         [DataRow(null, null, null, null, null, "new-state", null,
             "Scenario condition checkers and response writers can not be set if no 'scenario' is provided.")]
@@ -234,6 +238,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             // Arrange
             var model = new StubModel
             {
+                Id = "stub-id",
                 Scenario = scenario,
                 Conditions = new StubConditionsModel
                 {
@@ -242,28 +247,27 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
                         MinHits = minHits,
                         MaxHits = maxHits,
                         ExactHits = exactHits,
-                        ScenarioState = scenario
+                        ScenarioState = scenarioState
                     }
                 },
                 Response = new StubResponseModel
                 {
                     Scenario = new StubResponseScenarioModel
                     {
-                        ClearState = clearState,
-                        SetScenarioState = setScenarioState
+                        ClearState = clearState, SetScenarioState = setScenarioState
                     }
                 }
             };
 
             // Arrange
-            var result = _validator.ValidateStubModel(model);
+            var result = _validator.ValidateStubModel(model).ToArray();
             if (expectedError == null)
             {
-                Assert.IsFalse(result.Any());
+                Assert.IsFalse(result.Any(), $"No validation errors expected, but got at least one: {string.Join(Environment.NewLine, result)}");
             }
             else
             {
-                Assert.AreEqual(result.Single(), expectedError);
+                Assert.AreEqual(result.First(), expectedError);
             }
         }
     }
