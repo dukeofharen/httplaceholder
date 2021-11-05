@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
+using HttPlaceholder.Client.Dto.Scenarios;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Dto.Users;
 using HttPlaceholder.Client.StubBuilders;
@@ -197,5 +198,36 @@ namespace HttPlaceholder.Client
         /// <param name="username">The username.</param>
         /// <returns>The user.</returns>
         Task<UserDto> GetUserAsync(string username);
+
+        /// <summary>
+        /// Gets the states of all scenarios.
+        /// </summary>
+        /// <returns>The scenario states.</returns>
+        Task<IEnumerable<ScenarioStateDto>> GetAllScenarioStatesAsync();
+
+        /// <summary>
+        /// Gets the state of a specific scenario.
+        /// </summary>
+        /// <param name="scenario">The scenario name.</param>
+        /// <returns>The scenario state.</returns>
+        Task<ScenarioStateDto> GetScenarioStateAsync(string scenario);
+
+        /// <summary>
+        /// Sets the scenario state to a new value.
+        /// </summary>
+        /// <param name="scenario">The scenario name.</param>
+        /// <param name="input">The new state.</param>
+        Task SetScenarioAsync(string scenario, ScenarioStateInputDto input);
+
+        /// <summary>
+        /// Deletes / clears a scenario.
+        /// </summary>
+        /// <param name="scenario">The scenario name.</param>
+        Task DeleteScenarioAsync(string scenario);
+
+        /// <summary>
+        /// Deletes all scenarios.
+        /// </summary>
+        Task DeleteAllScenariosAsync();
     }
 }

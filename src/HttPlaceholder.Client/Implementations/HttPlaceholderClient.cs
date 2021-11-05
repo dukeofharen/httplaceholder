@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
+using HttPlaceholder.Client.Dto.Scenarios;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Dto.Users;
 using HttPlaceholder.Client.Exceptions;
@@ -171,7 +172,8 @@ namespace HttPlaceholder.Client.Implementations
             CreateStubsAsync(stubs.Select(s => s.Build()));
 
         /// <inheritdoc />
-        public Task<IEnumerable<FullStubDto>> CreateStubsAsync(params StubDto[] stubs) => CreateStubsAsync(stubs.AsEnumerable());
+        public Task<IEnumerable<FullStubDto>> CreateStubsAsync(params StubDto[] stubs) =>
+            CreateStubsAsync(stubs.AsEnumerable());
 
         /// <inheritdoc />
         public Task<IEnumerable<FullStubDto>> CreateStubsAsync(params StubBuilder[] stubs) =>
@@ -332,6 +334,66 @@ namespace HttPlaceholder.Client.Implementations
             }
 
             return JsonConvert.DeserializeObject<UserDto>(content);
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<ScenarioStateDto>> GetAllScenarioStatesAsync()
+        {
+            using var response = await HttpClient.GetAsync("/ph-api/scenarios");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<IEnumerable<ScenarioStateDto>>(content);
+        }
+
+        /// <inheritdoc />
+        public async Task<ScenarioStateDto> GetScenarioStateAsync(string scenario)
+        {
+            using var response = await HttpClient.GetAsync($"/ph-api/scenarios/{scenario}");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<ScenarioStateDto>(content);
+        }
+
+        /// <inheritdoc />
+        public async Task SetScenarioAsync(string scenario, ScenarioStateInputDto input)
+        {
+            using var response = await HttpClient.PutAsync($"/ph-api/scenarios/{scenario}",
+                new StringContent(JsonConvert.SerializeObject(input), Encoding.UTF8, JsonContentType));
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteScenarioAsync(string scenario)
+        {
+            using var response = await HttpClient.DeleteAsync($"/ph-api/scenarios/{scenario}");
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteAllScenariosAsync()
+        {
+            using var response = await HttpClient.DeleteAsync("/ph-api/scenarios");
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
         }
     }
 }
