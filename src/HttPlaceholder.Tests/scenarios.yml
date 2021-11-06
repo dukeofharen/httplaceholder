@@ -1,0 +1,79 @@
+- id: scenario-min-max-hits-only-get
+  scenario: min-max-hits
+  conditions:
+    method: GET
+    url:
+      path: /scenario-min-max-hits
+  response:
+    text: Ok, hits are increased
+
+- id: scenario-min-max-hits-goal-reached
+  scenario: min-max-hits
+  conditions:
+    method: GET
+    url:
+      path: /scenario-min-max-hits
+    scenario:
+      minHits: 2
+      maxHits: 4
+  response:
+    text: Ok, hit goal is reached :)
+
+- id: scenario-exact-hits-only-get
+  scenario: exact-hits
+  conditions:
+    method: GET
+    url:
+      path: /scenario-exact-hits
+  response:
+    text: Ok, hits are increased
+
+- id: scenario-exact-hits-goal-reached
+  scenario: exact-hits
+  conditions:
+    method: GET
+    url:
+      path: /scenario-exact-hits
+    scenario:
+      exactHits: 2
+  response:
+    text: Ok, exact hit goal is reached :)
+
+- id: scenario-first-state
+  scenario: states
+  conditions:
+    method: GET
+    url:
+      path: /scenario-state
+    scenario:
+      scenarioState: Start
+  response:
+    text: Ok, scenario is now set to state-1
+    scenario:
+      setScenarioState: state-1
+
+- id: scenario-second-state
+  scenario: states
+  conditions:
+    method: GET
+    url:
+      path: /scenario-state
+    scenario:
+      scenarioState: state-1
+  response:
+    text: Ok, scenario is now set to state-2
+    scenario:
+      setScenarioState: state-2
+
+- id: scenario-clear-state
+  scenario: states
+  conditions:
+    method: GET
+    url:
+      path: /scenario-state
+    scenario:
+      scenarioState: state-2
+  response:
+    text: Ok, scenario is set to its original state
+    scenario:
+      clearState: true
