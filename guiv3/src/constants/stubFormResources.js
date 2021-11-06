@@ -55,6 +55,12 @@ const elementDescriptions = {
   reverseProxy: "A simple reverse proxy for letting a stub call other URLs.",
   lineEndings:
     "Specify whether to enforce Windows or UNIX line endings in the response.",
+  minHits:
+    "Specifies the minimum amount of hits (inclusive) that any stub under the same scenario should be hit.",
+  maxHits:
+    "Specifies the maximum amount of hits (exclusive) that any stub under the same scenario should be hit.",
+  exactHits:
+    "Specifies the exact amount of hits that any stub under the same scenario should be hit.",
 };
 
 const httpMethods = [
@@ -405,6 +411,9 @@ const defaultValues = {
     fontSize: 10,
     wordWrap: false,
   },
+  minHits: 1,
+  maxHits: 2,
+  exactHits: 3,
 };
 
 const formHelperKeys = {
@@ -538,6 +547,21 @@ const stubFormHelpers = [
     title: "XPath",
     subTitle: elementDescriptions.xpath,
     defaultValueMutation: "stubForm/setDefaultXPath",
+  },
+  {
+    title: "Scenario min hit counter",
+    subTitle: elementDescriptions.minHits,
+    defaultValueMutation: "stubForm/setDefaultMinHits",
+  },
+  {
+    title: "Scenario max hit counter",
+    subTitle: elementDescriptions.maxHits,
+    defaultValueMutation: "stubForm/setDefaultMaxHits",
+  },
+  {
+    title: "Scenario exact hit counter",
+    subTitle: elementDescriptions.exactHits,
+    defaultValueMutation: "stubForm/setDefaultExactHits",
   },
   {
     title: "Add response definition",

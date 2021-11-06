@@ -544,6 +544,57 @@ const mutations = {
       }
     });
   },
+  setDefaultMinHits(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.minHits = defaultValues.minHits;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultMaxHits(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.maxHits = defaultValues.maxHits;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultExactHits(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.exactHits = defaultValues.exactHits;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
 };
 
 const getters = {
