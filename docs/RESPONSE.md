@@ -20,6 +20,9 @@ If a request succeeds and a stub is found, the configured response will be retur
 - [Extra duration](#extra-duration)
 - [Permanent and temporary redirects](#permanent-and-temporary-redirects)
 - [Line endings](#update-line-endings)
+- [Scenario](#scenario)
+    - [Set scenario state](#set-scenario-state)
+    - [Clear state](#clear-state)
 - [Dynamic mode](#dynamic-mode)
     - [Query string](#query-string)
     - [UUID](#uuid)
@@ -343,6 +346,52 @@ In some cases, you might want to enforce which types of line endings are returne
       line
       endings
 ```
+
+## Scenario
+
+For more explanation about scenarios, go to [conditions](CONDITIONS.md). There are 2 response writers that are available for working with scenarios.
+
+### Set scenario state
+
+This response writer can be used to set the scenario state of the scenario that the stub is part of, to another value. Here is an example:
+
+```yaml
+id: scenario-state
+scenario: scenario-state
+conditions:
+  method: GET
+  url:
+    path: /state-check
+  scenario:
+    scenarioState: Start
+response:
+  text: OK, scenario is in state 'Start' and will be set to 'state-2'
+  scenario:
+    setScenarioState: state-2
+```
+
+In this case, the scenario state of scenario `scenario-state` will be set to `state-2` after the stub has been executed.
+
+### Clear state
+
+Sometimes, you'll want to reset the state of a scenario to its original values. By setting the `clearState` variable to `true`, the values will be reset (both the hit counts and the state text). Here is an example:
+
+```yaml
+id: scenario-state
+scenario: scenario-state
+conditions:
+  method: GET
+  url:
+    path: /state-check
+  scenario:
+    scenarioState: state-2
+response:
+  text: OK, scenario is in state 'state-2' and will be reset
+  scenario:
+    clearState: true
+```
+
+If this stub is hit, the hit count will be reset to 0 and the scenario state will be set to `Start` (the default state text for a scenario).
 
 ## Dynamic mode
 
