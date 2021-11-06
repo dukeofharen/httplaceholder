@@ -595,6 +595,58 @@ const mutations = {
       }
     });
   },
+  setDefaultScenarioState(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.scenarioState = defaultValues.scenarioState;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setClearState(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        if (!parsed.response.scenario) {
+          parsed.response.scenario = {};
+        }
+
+        parsed.response.scenario.clearState = true;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultNewScenarioState(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        if (!parsed.response.scenario) {
+          parsed.response.scenario = {};
+        }
+
+        parsed.response.scenario.setScenarioState =
+          defaultValues.newScenarioState;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
 };
 
 const getters = {

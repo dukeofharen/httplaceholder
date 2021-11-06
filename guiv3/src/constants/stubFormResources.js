@@ -61,6 +61,11 @@ const elementDescriptions = {
     "Specifies the maximum amount of hits (exclusive) that any stub under the same scenario should be hit.",
   exactHits:
     "Specifies the exact amount of hits that any stub under the same scenario should be hit.",
+  scenarioState: "Specifies the state the scenario should be in.",
+  clearState:
+    "Specifies that when the stub is hit, the scenario (both the state and hit counter) should be reset to its original values.",
+  newScenarioState:
+    "Specifies the new scenario state the scenario should be in when the stub is hit.",
 };
 
 const httpMethods = [
@@ -414,6 +419,8 @@ const defaultValues = {
   minHits: 1,
   maxHits: 2,
   exactHits: 3,
+  scenarioState: "new-state",
+  newScenarioState: "new-state",
 };
 
 const formHelperKeys = {
@@ -564,6 +571,11 @@ const stubFormHelpers = [
     defaultValueMutation: "stubForm/setDefaultExactHits",
   },
   {
+    title: "Scenario state check",
+    subTitle: elementDescriptions.scenarioState,
+    defaultValueMutation: "stubForm/setDefaultScenarioState",
+  },
+  {
     title: "Add response definition",
     isMainItem: true,
   },
@@ -611,6 +623,16 @@ const stubFormHelpers = [
     title: "Reverse proxy",
     subTitle: elementDescriptions.reverseProxy,
     defaultValueMutation: "stubForm/setDefaultReverseProxy",
+  },
+  {
+    title: "Clear scenario state",
+    subTitle: elementDescriptions.clearState,
+    defaultValueMutation: "stubForm/setClearState",
+  },
+  {
+    title: "Set new scenario state",
+    subTitle: elementDescriptions.newScenarioState,
+    defaultValueMutation: "stubForm/setDefaultNewScenarioState",
   },
 ];
 
