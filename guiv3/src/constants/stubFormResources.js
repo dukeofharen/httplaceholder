@@ -1,6 +1,8 @@
 const elementDescriptions = {
   tenant:
     "The stub also has a 'tenant' field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant).",
+  scenario:
+    "The stub has a 'scenario' field which can optionally be filled in. When filling in this variable, stubs that have the same scenario value can be used to have stateful behavior. It is, for example, possible to use a condition checker to see if the scenario has been hit at least an x amount of times or if the scenario is in a specific state.",
   description:
     "A free text field where you can specify where the stub is for. It is optional.",
   priority:
@@ -412,6 +414,7 @@ const formHelperKeys = {
   responseBody: "responseBody",
   redirect: "redirect",
   lineEndings: "lineEndings",
+  scenario: "scenario",
 };
 
 const responseBodyTypes = {
@@ -451,6 +454,11 @@ const stubFormHelpers = [
     title: "Tenant",
     subTitle: elementDescriptions.tenant,
     formHelperToOpen: formHelperKeys.tenant,
+  },
+  {
+    title: "Scenario",
+    subTitle: elementDescriptions.scenario,
+    formHelperToOpen: formHelperKeys.scenario,
   },
   {
     title: "Add request condition",

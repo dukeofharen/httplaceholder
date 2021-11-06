@@ -320,6 +320,15 @@ const mutations = {
       }
     });
   },
+  setScenario(state, scenario) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        parsed.scenario = scenario;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
   setStatusCode(state, code) {
     handle(() => {
       const parsed = parseInput(state);
