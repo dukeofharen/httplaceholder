@@ -262,5 +262,53 @@ namespace HttPlaceholder.Client.Tests.StubBuilders
             // Assert
             Assert.AreEqual(array, conditions.Json);
         }
+
+        [TestMethod]
+        public void ScenarioHasAtLeastXHits()
+        {
+            // Act
+            var conditions = StubConditionBuilder.Begin()
+                .ScenarioHasAtLeastXHits(2)
+                .Build();
+
+            // Assert
+            Assert.AreEqual(2, conditions.Scenario.MinHits);
+        }
+
+        [TestMethod]
+        public void ScenarioHasAtMostXHits()
+        {
+            // Act
+            var conditions = StubConditionBuilder.Begin()
+                .ScenarioHasAtMostXHits(2)
+                .Build();
+
+            // Assert
+            Assert.AreEqual(2, conditions.Scenario.MaxHits);
+        }
+
+        [TestMethod]
+        public void ScenarioHasExactlyXHits()
+        {
+            // Act
+            var conditions = StubConditionBuilder.Begin()
+                .ScenarioHasExactlyXHits(2)
+                .Build();
+
+            // Assert
+            Assert.AreEqual(2, conditions.Scenario.ExactHits);
+        }
+
+        [TestMethod]
+        public void ScenarioHasState()
+        {
+            // Act
+            var conditions = StubConditionBuilder.Begin()
+                .ScenarioHasState("new-state")
+                .Build();
+
+            // Assert
+            Assert.AreEqual("new-state", conditions.Scenario.ScenarioState);
+        }
     }
 }

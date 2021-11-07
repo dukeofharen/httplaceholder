@@ -61,5 +61,10 @@ namespace HttPlaceholder.Client.Dto.Stubs
         /// Gets or sets the JSON condition model.
         /// </summary>
         public object Json { get; set; }
+
+        /// <summary>
+        /// Gets or sets the scenario conditions model.
+        /// </summary>
+        public StubConditionScenarioDto Scenario { get; set; }
     }
 }

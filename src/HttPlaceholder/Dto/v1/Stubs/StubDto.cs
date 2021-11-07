@@ -50,5 +50,11 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// </summary>
         [YamlMember(Alias = "enabled")]
         public bool Enabled { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets the scenario the stub is executed under.
+        /// </summary>
+        [YamlMember(Alias = "scenario")]
+        public string Scenario { get; set; }
     }
 }

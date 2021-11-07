@@ -17,10 +17,10 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
             _httpContextService = httpContextService;
         }
 
-        public ConditionCheckResultModel Validate(string stubId, StubConditionsModel conditions)
+        public ConditionCheckResultModel Validate(StubModel stub)
         {
             var result = new ConditionCheckResultModel();
-            var xpathConditions = conditions?.Xpath?.ToArray() ?? new StubXpathModel[0];
+            var xpathConditions = stub.Conditions?.Xpath?.ToArray() ?? new StubXpathModel[0];
             if (!xpathConditions.Any())
             {
                 return result;

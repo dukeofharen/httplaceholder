@@ -1,0 +1,76 @@
+# The following stubs do a check based on the number of hits of the scenario.
+
+# Whenever the minimum number of hits is reached, the scenario will be reset to its original state.
+- id: min-hits
+  tenant: 20.1-scenario-hit-counter
+  scenario: min
+  conditions:
+    method: GET
+    url:
+      path: /min-hits
+  response:
+    text: OK, number of hits increased
+
+- id: min-hits-clear
+  tenant: 20.1-scenario-hit-counter
+  scenario: min
+  conditions:
+    method: GET
+    url:
+      path: /min-hits
+    scenario:
+      minHits: 3
+  response:
+    text: OK, min hits reached. Clearing state.
+    scenario:
+      clearState: true
+      
+# Whenever the maximum number of hits is reached, the scenario will be reset to its original state.
+- id: max-hits
+  tenant: 20.1-scenario-hit-counter
+  scenario: max
+  conditions:
+    method: GET
+    url:
+      path: /max-hits
+    scenario:
+      maxHits: 3
+  response:
+    text: OK, number of hits increased
+
+- id: max-hits-clear
+  tenant: 20.1-scenario-hit-counter
+  scenario: max
+  conditions:
+    method: GET
+    url:
+      path: /max-hits
+  response:
+    text: OK, max hits reached. Clearing state.
+    scenario:
+      clearState: true
+
+# Whenever the exact number of hits is reached, the scenario will be reset to its original state.
+- id: exact-hits
+  tenant: 20.1-scenario-hit-counter
+  scenario: exact
+  conditions:
+    method: GET
+    url:
+      path: /exact-hits
+  response:
+    text: OK, number of hits increased
+
+- id: exact-hits-clear
+  tenant: 20.1-scenario-hit-counter
+  scenario: exact
+  conditions:
+    method: GET
+    url:
+      path: /exact-hits
+    scenario:
+      exactHits: 3
+  response:
+    text: OK, exact hits reached. Clearing state.
+    scenario:
+      clearState: true

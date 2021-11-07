@@ -8,6 +8,9 @@ Whenever HttPlaceholder receives a request, all the conditions of all stubs are 
 - [General](#general)
 - [Description](#description)
 - [Enabled](#enabled)
+- [Scenario](#scenario)
+  - [Hit counter checking](#hit-counter-checking)
+  - [State checking](#state-checking)
 - [Priority](#priority)
 - [URI](#uri)
   - [Path](#path)
@@ -92,6 +95,94 @@ Describes whether the stub is enabled or not. If no `enabled` field is provided,
   response:
     text: This stub is disabled.
 ```
+
+## Scenario
+
+Scenarios make it possible to make stubs stateful. When you assign a scenario to a stub, a hit counter will be kept for the scenario and it is also possible to assign a state to a scenario. The default state of a scenario is "Start". Right now, the scenario state is only kept in memory, which means that when the application is restarted, all the states will be reset.
+
+The scenario state can be set either to response writers (see [response](RESPONSE.md)) or by calling the [API](API.md).
+
+The scenario makes it possible to configure your stubs to return different responses on the same request.
+
+```yaml
+- id: scenario-test
+  scenario: scenario-name
+  conditions:
+    url:
+      path: /the-url
+  response:
+    text: OK!
+```
+
+### Hit counter checking
+
+Whenever a stub that is attached to a scenario is hit, the hit counter for that scenario will be increased. This makes it possible to create stubs that check the hit counter of the scenario it is in. Here is an example:
+
+```yaml
+- id: min-hits
+  scenario: min
+  conditions:
+    method: GET
+    url:
+      path: /min-hits
+  response:
+    text: OK, number of hits increased
+
+- id: min-hits-clear
+  scenario: min
+  conditions:
+    method: GET
+    url:
+      path: /min-hits
+    scenario:
+      minHits: 3
+  response:
+    text: OK, min hits reached. Clearing state.
+    scenario:
+      clearState: true
+```
+
+In this example, both stubs are part of the `min` scenario. Whenever the `/min-hits` URL is called, the hit counter of the scenario will be increased. Whenever the scenario has at least 3 hits, the `min-hits-clear` stub will be executed. The `clearState` response writer makes sure the scenario is reset (so the counter is reset to 0). For more information about that, click [here](RESPONSE.md).
+
+Under the `conditions.scenario` option, you have 3 options for hit counter checking:
+
+- `minHits`: the minimum number of (inclusive) hits a scenario should have been called.
+- `maxHits`: the maximum number of (exclusive) hits a scenario should have been called.
+- `exactHits`: the exact number of hits a scenario should have been called.
+
+### State checking
+
+A scenario can be in a specific state. A state is represented as a simple string value. Here is an example:
+
+```yaml
+- id: scenario-state-1
+  scenario: scenario-state
+  conditions:
+    method: GET
+    url:
+      path: /state-check
+    scenario:
+      scenarioState: Start
+  response:
+    text: OK, scenario is in state 'Start'
+    scenario:
+      setScenarioState: state-2
+
+- id: scenario-state-2
+  scenario: scenario-state
+  conditions:
+    method: GET
+    url:
+      path: /state-check
+    scenario:
+      scenarioState: state-2
+  response:
+    text: OK, scenario is in state 'state-2'. Resetting to default.
+    scenario:
+      clearState: true
+```
+
+In this example, both stubs are part of the `scenario-state` scenario. Whenever the `/state-check` URL is called, HttPlaceholder will (in this case) check the current state (a fresh scenario state is always `Start`). If the stub is hit, the scenario state will be set to `state-2` by the `setScenarioState` response writer (see [response](RESPONSE.md)). Whenever the same URL is called again, the second stub will be hit and after that the scenario state will be reset to its default values.
 
 ## Priority
 

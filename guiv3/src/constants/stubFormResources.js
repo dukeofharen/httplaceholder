@@ -1,6 +1,8 @@
 const elementDescriptions = {
   tenant:
     "The stub also has a 'tenant' field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant).",
+  scenario:
+    "The stub has a 'scenario' field which can optionally be filled in. When filling in this variable, stubs that have the same scenario value can be used to have stateful behavior. It is, for example, possible to use a condition checker to see if the scenario has been hit at least an x amount of times or if the scenario is in a specific state.",
   description:
     "A free text field where you can specify where the stub is for. It is optional.",
   priority:
@@ -53,6 +55,17 @@ const elementDescriptions = {
   reverseProxy: "A simple reverse proxy for letting a stub call other URLs.",
   lineEndings:
     "Specify whether to enforce Windows or UNIX line endings in the response.",
+  minHits:
+    "Specifies the minimum amount of hits (inclusive) that any stub under the same scenario should be hit.",
+  maxHits:
+    "Specifies the maximum amount of hits (exclusive) that any stub under the same scenario should be hit.",
+  exactHits:
+    "Specifies the exact amount of hits that any stub under the same scenario should be hit.",
+  scenarioState: "Specifies the state the scenario should be in.",
+  clearState:
+    "Specifies that when the stub is hit, the scenario (both the state and hit counter) should be reset to its original values.",
+  newScenarioState:
+    "Specifies the new scenario state the scenario should be in when the stub is hit.",
 };
 
 const httpMethods = [
@@ -403,6 +416,11 @@ const defaultValues = {
     fontSize: 10,
     wordWrap: false,
   },
+  minHits: 1,
+  maxHits: 2,
+  exactHits: 3,
+  scenarioState: "new-state",
+  newScenarioState: "new-state",
 };
 
 const formHelperKeys = {
@@ -412,6 +430,7 @@ const formHelperKeys = {
   responseBody: "responseBody",
   redirect: "redirect",
   lineEndings: "lineEndings",
+  scenario: "scenario",
 };
 
 const responseBodyTypes = {
@@ -451,6 +470,11 @@ const stubFormHelpers = [
     title: "Tenant",
     subTitle: elementDescriptions.tenant,
     formHelperToOpen: formHelperKeys.tenant,
+  },
+  {
+    title: "Scenario",
+    subTitle: elementDescriptions.scenario,
+    formHelperToOpen: formHelperKeys.scenario,
   },
   {
     title: "Add request condition",
@@ -532,6 +556,26 @@ const stubFormHelpers = [
     defaultValueMutation: "stubForm/setDefaultXPath",
   },
   {
+    title: "Scenario min hit counter",
+    subTitle: elementDescriptions.minHits,
+    defaultValueMutation: "stubForm/setDefaultMinHits",
+  },
+  {
+    title: "Scenario max hit counter",
+    subTitle: elementDescriptions.maxHits,
+    defaultValueMutation: "stubForm/setDefaultMaxHits",
+  },
+  {
+    title: "Scenario exact hit counter",
+    subTitle: elementDescriptions.exactHits,
+    defaultValueMutation: "stubForm/setDefaultExactHits",
+  },
+  {
+    title: "Scenario state check",
+    subTitle: elementDescriptions.scenarioState,
+    defaultValueMutation: "stubForm/setDefaultScenarioState",
+  },
+  {
     title: "Add response definition",
     isMainItem: true,
   },
@@ -579,6 +623,16 @@ const stubFormHelpers = [
     title: "Reverse proxy",
     subTitle: elementDescriptions.reverseProxy,
     defaultValueMutation: "stubForm/setDefaultReverseProxy",
+  },
+  {
+    title: "Clear scenario state",
+    subTitle: elementDescriptions.clearState,
+    defaultValueMutation: "stubForm/setClearState",
+  },
+  {
+    title: "Set new scenario state",
+    subTitle: elementDescriptions.newScenarioState,
+    defaultValueMutation: "stubForm/setDefaultNewScenarioState",
   },
 ];
 

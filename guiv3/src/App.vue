@@ -45,10 +45,6 @@ export default {
     onMounted(async () => {
       const darkThemeEnabled = store.getters["general/getDarkTheme"];
       setDarkTheme(darkThemeEnabled);
-      if (darkThemeEnabled) {
-        store.commit("general/storeDarkTheme", darkThemeEnabled);
-      }
-
       store
         .dispatch("metadata/getMetadata")
         .then((m) => (document.title = `HttPlaceholder - v${m.version}`));

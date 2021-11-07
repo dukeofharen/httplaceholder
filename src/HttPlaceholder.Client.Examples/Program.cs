@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Enums;
+using HttPlaceholder.Client.Dto.Scenarios;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.StubBuilders;
 using Microsoft.Extensions.DependencyInjection;
@@ -115,6 +116,22 @@ namespace HttPlaceholder.Client.Examples
 
                 // Delete request.
                 await client.DeleteRequestAsync("6c449313-9871-4d1a-84ab-61f604667a06");
+
+                // Set scenario.
+                await client.SetScenarioAsync("scenario-1",
+                    new ScenarioStateInputDto {State = "new-state", HitCount = 1});
+
+                // Get scenario.
+                var scenarioState = await client.GetScenarioStateAsync("scenario-1");
+
+                // Get all scenarios.
+                var allScenarioStates = await client.GetAllScenarioStatesAsync();
+
+                // Delete scenario state.
+                await client.DeleteScenarioAsync("scenario-1");
+
+                // Delete all scenario states.
+                await client.DeleteAllScenariosAsync();
             }
             catch (Exception ex)
             {

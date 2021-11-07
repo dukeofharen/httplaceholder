@@ -2044,6 +2044,556 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "13. Scenarios with hit counter",
+							"item": [
+								{
+									"name": "Reset scenarios",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-min-hits-only-get\nscenario: min-hits\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /scenario-min-hits\nresponse:\n  text: OK HITS ARE INCREASED (MIN HITS)"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add stub in \"min-hits\" scenario",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-min-hits-only-get\nscenario: min-hits\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /scenario-min-hits\nresponse:\n  text: OK HITS ARE INCREASED (MIN HITS)"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add stub with \"minHits\" check",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-min-hits\nscenario: min-hits\ntenant: integration\nconditions:\n  method: GET\n  scenario:\n    minHits: 2\n  url:\n    path: /scenario-min-hits\nresponse:\n  text: OK MIN HITS IS REACHED"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add stub in \"max-hits\" scenario",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-max-hits-only-get\nscenario: max-hits\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /scenario-max-hits\nresponse:\n  text: OK MAX HITS EXCEEDED"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add stub with \"maxHits\" check",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-max-hits\nscenario: max-hits\ntenant: integration\nconditions:\n  method: GET\n  scenario:\n    maxHits: 2\n  url:\n    path: /scenario-max-hits\nresponse:\n  text: OK MAX HITS"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add stub in \"exact-hits\" scenario",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-exact-hits-only-get\nscenario: exact-hits\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /scenario-exact-hits\nresponse:\n  text: OK EXACT HITS CONDITION NOT MET"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add stub with \"exactHits\" check",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-exact-hits\nscenario: exact-hits\ntenant: integration\nconditions:\n  method: GET\n  scenario:\n    exactHits: 2\n  url:\n    path: /scenario-exact-hits\nresponse:\n  text: OK EXACT HITS MET"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test get: min hit count not reached yet",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK HITS ARE INCREASED (MIN HITS)\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}scenario-min-hits",
+											"host": [
+												"{{rootUrl}}scenario-min-hits"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test get: min hit count reached",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK MIN HITS IS REACHED\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}scenario-min-hits",
+											"host": [
+												"{{rootUrl}}scenario-min-hits"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test get: max hit count not reached yet",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK MAX HITS\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}scenario-max-hits",
+											"host": [
+												"{{rootUrl}}scenario-max-hits"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test get: max hit count exceeded",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK MAX HITS EXCEEDED\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}scenario-max-hits",
+											"host": [
+												"{{rootUrl}}scenario-max-hits"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test get: exact hits not met",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK EXACT HITS CONDITION NOT MET\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}scenario-exact-hits",
+											"host": [
+												"{{rootUrl}}scenario-exact-hits"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test get: exact hits met",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK EXACT HITS MET\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}scenario-exact-hits",
+											"host": [
+												"{{rootUrl}}scenario-exact-hits"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test get: exact hits not met",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK EXACT HITS CONDITION NOT MET\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}scenario-exact-hits",
+											"host": [
+												"{{rootUrl}}scenario-exact-hits"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "14. Scenarios with state checking",
+							"item": [
+								{
+									"name": "Reset scenarios",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-min-hits-only-get\nscenario: min-hits\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /scenario-min-hits\nresponse:\n  text: OK HITS ARE INCREASED (MIN HITS)"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add first state checking stub",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-state-checking-1\nscenario: state-checking\ntenant: integration\nconditions:\n  method: GET\n  scenario:\n    scenarioState: Start\n  url:\n    path: /state-checking\nresponse:\n  text: OK STATE IS STARTED"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add second state checking stub",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-state-checking-2\nscenario: state-checking\ntenant: integration\nconditions:\n  method: GET\n  scenario:\n    scenarioState: state-1\n  url:\n    path: /state-checking\nresponse:\n  text: OK STATE IS STATE 1"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test: first state",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK STATE IS STARTED\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}state-checking",
+											"host": [
+												"{{rootUrl}}state-checking"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Set scenario to another state",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"state\": \"state-1\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios/state-checking",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios",
+												"state-checking"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test: second state",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK STATE IS STATE 1\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}state-checking",
+											"host": [
+												"{{rootUrl}}state-checking"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				},
@@ -3718,6 +4268,200 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "10. Scenario state",
+							"item": [
+								{
+									"name": "Reset scenarios",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-min-hits-only-get\nscenario: min-hits\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /scenario-min-hits\nresponse:\n  text: OK HITS ARE INCREASED (MIN HITS)"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add stub that sets state",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-state-updating-1\nscenario: state-updating\ntenant: integration\nconditions:\n  method: GET\n  scenario:\n    scenarioState: Start\n  url:\n    path: /state-updating\nresponse:\n  text: OK STATE IS UPDATED\n  scenario:\n    setScenarioState: NewState"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add stub that clears state",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: scenario-state-updating-2\nscenario: state-updating\ntenant: integration\nconditions:\n  method: GET\n  scenario:\n    scenarioState: NewState\n  url:\n    path: /state-updating\nresponse:\n  text: OK STATE IS CLEARED\n  scenario:\n    clearState: true"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "First request: state is updated",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK STATE IS UPDATED\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}state-updating",
+											"host": [
+												"{{rootUrl}}state-updating"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Second request: state is cleared",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK STATE IS CLEARED\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}state-updating",
+											"host": [
+												"{{rootUrl}}state-updating"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Third request: state is updated",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK STATE IS UPDATED\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}state-updating",
+											"host": [
+												"{{rootUrl}}state-updating"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Fourth request: state is cleared",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK STATE IS CLEARED\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}state-updating",
+											"host": [
+												"{{rootUrl}}state-updating"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				},
@@ -3928,6 +4672,305 @@
 											"path": [
 												"requests",
 												"{{correlationId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "4. Scenarios",
+							"item": [
+								{
+									"name": "Reset scenarios",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"state\": \"new\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get scenario: not found",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {",
+													"    pm.response.to.have.status(404);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios/scenario-1",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios",
+												"scenario-1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Set scenario",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"state\": \"new-state\",\n    \"hitCount\": 10\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios/scenario-1",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios",
+												"scenario-1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get scenario: found",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"var jsonData = pm.response.json();",
+													"pm.test(\"Check scenario name\", function () {",
+													"    pm.expect(jsonData.scenario).to.eql(\"scenario-1\");",
+													"});",
+													"pm.test(\"Check scenario state\", function () {",
+													"    pm.expect(jsonData.state).to.eql(\"new-state\");",
+													"});",
+													"pm.test(\"Check scenario hit count\", function () {",
+													"    pm.expect(jsonData.hitCount).to.eql(10);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios/scenario-1",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios",
+												"scenario-1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get all scenarios: has 1 result",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"var jsonData = pm.response.json();",
+													"pm.test(\"Has exactly 1 element\", function () {",
+													"    pm.expect(jsonData.length).to.eql(1);",
+													"});",
+													"pm.test(\"Check scenario name\", function () {",
+													"    pm.expect(jsonData[0].scenario).to.eql(\"scenario-1\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete scenario",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios/scenario-1",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios",
+												"scenario-1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete scenario: not found",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 404\", function () {",
+													"    pm.response.to.have.status(404);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios/scenario-1",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios",
+												"scenario-1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get all scenarios: has no results",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"var jsonData = pm.response.json();",
+													"pm.test(\"Has exactly 1 element\", function () {",
+													"    pm.expect(jsonData.length).to.eql(0);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios"
 											]
 										}
 									},

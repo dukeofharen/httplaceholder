@@ -1,0 +1,43 @@
+# The following stubs do set the scenario state and also check the scenario state.
+
+- id: scenario-state-1
+  tenant: 20.2-state-checking
+  scenario: scenario-state
+  conditions:
+    method: GET
+    url:
+      path: /state-check
+    scenario:
+      scenarioState: Start
+  response:
+    text: OK, scenario is in state 'Start'
+    scenario:
+      setScenarioState: state-2
+
+- id: scenario-state-2
+  tenant: 20.2-state-checking
+  scenario: scenario-state
+  conditions:
+    method: GET
+    url:
+      path: /state-check
+    scenario:
+      scenarioState: state-2
+  response:
+    text: OK, scenario is in state 'state-2'
+    scenario:
+      setScenarioState: state-3
+
+- id: scenario-state-3
+  tenant: 20.2-state-checking
+  scenario: scenario-state
+  conditions:
+    method: GET
+    url:
+      path: /state-check
+    scenario:
+      scenarioState: state-3
+  response:
+    text: OK, scenario is in state 'state-3' and will be reset to its original values
+    scenario:
+      clearState: true

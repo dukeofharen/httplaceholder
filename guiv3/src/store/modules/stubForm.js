@@ -320,6 +320,15 @@ const mutations = {
       }
     });
   },
+  setScenario(state, scenario) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        parsed.scenario = scenario;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
   setStatusCode(state, code) {
     handle(() => {
       const parsed = parseInput(state);
@@ -531,6 +540,109 @@ const mutations = {
         }
 
         parsed.response.image = defaultValues.image;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultMinHits(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.minHits = defaultValues.minHits;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultMaxHits(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.maxHits = defaultValues.maxHits;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultExactHits(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.exactHits = defaultValues.exactHits;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultScenarioState(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.scenarioState = defaultValues.scenarioState;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setClearState(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        if (!parsed.response.scenario) {
+          parsed.response.scenario = {};
+        }
+
+        parsed.response.scenario.clearState = true;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultNewScenarioState(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        if (!parsed.response.scenario) {
+          parsed.response.scenario = {};
+        }
+
+        parsed.response.scenario.setScenarioState =
+          defaultValues.newScenarioState;
         state.input = yaml.dump(parsed);
       }
     });

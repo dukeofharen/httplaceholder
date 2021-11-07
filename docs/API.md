@@ -27,3 +27,15 @@ A simple collection to check whether a given user is valid or not.
 ### Tenants
 
 Tenants allow you to group your stubs. When you've assigned a "tenant" field to your stub (see [conditions](CONDITIONS.md) for more information), you can perform batch operations on a larger set of stubs. The tenants endpoint helps you with this.
+
+### Scenarios
+
+Scenarios allow you to enable stateful behavior in your stubs. A stub can be put under 1 scenario and 1 scenario can contain many stubs. A scenario has the following variables:
+* Hit counter: the number of times a stub that falls under a specific scenario has been hit.
+* State: a state, represented as a simple string. The starting state of a scenario is `Start`.
+
+The scenarios can be set by using the stub condition checkers and response writers or by using the API.
+
+The scenarios are only stored in memory for the time being, so restarting HttPlaceholder resets the scenarios.
+
+To read more about scenarios, go to [conditions](CONDITIONS.md) or [response](RESPONSE.md).

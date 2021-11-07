@@ -87,5 +87,10 @@ namespace HttPlaceholder.Client.Dto.Stubs
         /// Gets or sets the stub image.
         /// </summary>
         public StubResponseImageDto Image { get; set; }
+
+        /// <summary>
+        /// Gets or sets the response scenario variables.
+        /// </summary>
+        public StubResponseScenarioDto Scenario { get; set; }
     }
 }

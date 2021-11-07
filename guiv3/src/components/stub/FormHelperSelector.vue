@@ -56,6 +56,9 @@
           <LineEndingSelector
             v-if="currentSelectedFormHelper === formHelperKeys.lineEndings"
           />
+          <ScenarioSelector
+            v-if="currentSelectedFormHelper === formHelperKeys.scenario"
+          />
         </div>
       </div>
     </div>
@@ -72,6 +75,7 @@ import HttpStatusCodeSelector from "@/components/stub/HttpStatusCodeSelector";
 import ResponseBodyHelper from "@/components/stub/ResponseBodyHelper";
 import RedirectSelector from "@/components/stub/RedirectSelector";
 import LineEndingSelector from "@/components/stub/LineEndingSelector";
+import ScenarioSelector from "@/components/stub/ScenarioSelector";
 
 export default {
   name: "FormHelperSelector",
@@ -82,6 +86,7 @@ export default {
     HttpStatusCodeSelector,
     TenantSelector,
     HttpMethodSelector,
+    ScenarioSelector,
   },
   setup() {
     const store = useStore();

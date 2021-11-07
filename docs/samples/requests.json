@@ -1180,6 +1180,67 @@
 			]
 		},
 		{
+			"name": "20 Scenarios",
+			"item": [
+				{
+					"name": "Min hits: do request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}min-hits",
+							"host": [
+								"{{rootUrl}}min-hits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Max hits: do request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}max-hits",
+							"host": [
+								"{{rootUrl}}max-hits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Exact hits: do request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}exact-hits",
+							"host": [
+								"{{rootUrl}}exact-hits"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Scenario state checking: do request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}state-check",
+							"host": [
+								"{{rootUrl}}state-check"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "REST API",
 			"item": [
 				{
@@ -2039,6 +2100,183 @@
 									"path": [
 										"users",
 										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Scenarios",
+					"item": [
+						{
+							"name": "GET all scenarios",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/scenarios",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"scenarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET scenario",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/scenarios/scenario-name",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"scenarios",
+										"scenario-name"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT set scenario",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"state\": \"Ohio\",\n    \"hitCount\": 10000\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/scenarios/scenario-name",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"scenarios",
+										"scenario-name"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE scenario",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/scenarios/scenario-name",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"scenarios",
+										"scenario-name"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE all scenarios",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/scenarios",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"scenarios"
 									]
 								}
 							},

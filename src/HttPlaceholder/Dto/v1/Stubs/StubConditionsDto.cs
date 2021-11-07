@@ -75,5 +75,11 @@ namespace HttPlaceholder.Dto.v1.Stubs
         /// </summary>
         [YamlMember(Alias = "json")]
         public object Json { get; set; }
+
+        /// <summary>
+        /// Gets or sets the scenario conditions model.
+        /// </summary>
+        [YamlMember(Alias = "scenario")]
+        public StubConditionScenarioDto Scenario { get; set; }
     }
 }
