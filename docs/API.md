@@ -36,4 +36,6 @@ Scenarios allow you to enable stateful behavior in your stubs. A stub can be put
 
 The scenarios can be set by using the stub condition checkers and response writers or by using the API.
 
+The scenarios are only stored in memory for the time being, so restarting HttPlaceholder resets the scenarios.
+
 To read more about scenarios, go to [conditions](CONDITIONS.md) or [response](RESPONSE.md).
