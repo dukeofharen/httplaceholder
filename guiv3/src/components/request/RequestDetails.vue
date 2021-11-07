@@ -89,7 +89,7 @@ export default {
       () => props.request?.requestParameters || {}
     );
     const requestTime = computed(() =>
-      formatDateTime(requestParams.value.requestEndTime)
+      formatDateTime(props.request.requestEndTime)
     );
     const duration = computed(() => {
       const req = props.request;
