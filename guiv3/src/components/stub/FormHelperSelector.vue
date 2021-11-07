@@ -12,9 +12,10 @@
         <input
           type="text"
           class="form-control"
-          placeholder="Filter form helpers..."
+          placeholder="Filter form helpers (press 'Escape' to close)..."
           v-model="formHelperFilter"
           ref="formHelperFilterInput"
+          @keyup.esc="closeFormHelperAndList"
         />
       </div>
       <div class="list-group">
@@ -117,6 +118,11 @@ export default {
         }
       }, 10);
     };
+    const closeFormHelperAndList = () => {
+      formHelperFilter.value = "";
+      store.commit("stubForm/closeFormHelper");
+      showFormHelperItems.value = false;
+    };
 
     // Computed
     const currentSelectedFormHelper = computed(
@@ -154,6 +160,7 @@ export default {
       formHelperFilter,
       formHelperFilterInput,
       openFormHelperList,
+      closeFormHelperAndList,
     };
   },
 };
