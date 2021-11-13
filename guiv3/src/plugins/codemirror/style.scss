@@ -2,6 +2,10 @@
 @import "~bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 
+.CodeMirror {
+    resize: vertical;
+}
+
 @include media-breakpoint-up(sm) {
     .CodeMirror {
         width: 362px;
