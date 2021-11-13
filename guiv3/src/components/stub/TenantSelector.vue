@@ -12,7 +12,7 @@
         Add
       </button>
     </div>
-    <div class="col-md-12 mt-3" v-if="tenantNames">
+    <div class="col-md-12 mt-3" v-if="tenantNames.length">
       <strong>Select existing tenant</strong>
       <div class="list-group mt-2">
         <button
