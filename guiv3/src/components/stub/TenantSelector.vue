@@ -1,13 +1,30 @@
 <template>
-  <div class="list-group">
-    <button
-      v-for="(tenant, index) of tenantNames"
-      :key="index"
-      class="list-group-item list-group-item-action fw-bold"
-      @click="tenantSelected(tenant)"
-    >
-      {{ tenant }}
-    </button>
+  <div class="row">
+    <div class="col-md-12">
+      <strong>Insert new tenant name</strong>
+      <input
+        type="text"
+        class="form-control mt-2"
+        v-model="tenant"
+        @keyup.enter="tenantSelected(tenant)"
+      />
+      <button class="btn btn-success mt-2" @click="tenantSelected(tenant)">
+        Add
+      </button>
+    </div>
+    <div class="col-md-12 mt-3" v-if="tenantNames">
+      <strong>Select existing tenant</strong>
+      <div class="list-group mt-2">
+        <button
+          v-for="(tenant, index) of tenantNames"
+          :key="index"
+          class="list-group-item list-group-item-action fw-bold"
+          @click="tenantSelected(tenant)"
+        >
+          {{ tenant }}
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -23,6 +40,7 @@ export default {
 
     // Data
     const tenantNames = ref([]);
+    const tenant = ref("");
 
     // Methods
     const tenantSelected = (tenant) => {
@@ -33,17 +51,13 @@ export default {
     // Lifecycle
     onMounted(async () => {
       try {
-        const tenantNamesResult = await store.dispatch(
-          "tenants/getTenantNames"
-        );
-        tenantNamesResult.unshift("Default tenant");
-        tenantNames.value = tenantNamesResult;
+        tenantNames.value = await store.dispatch("tenants/getTenantNames");
       } catch (e) {
         handleHttpError(e);
       }
     });
 
-    return { tenantNames, tenantSelected };
+    return { tenantNames, tenantSelected, tenant };
   },
 };
 </script>
