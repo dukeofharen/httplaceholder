@@ -41,6 +41,13 @@ export default {
       cmInstance.on("change", () =>
         emit("update:modelValue", cmInstance.getValue())
       );
+      cmInstance.setOption("extraKeys", {
+        Tab: (cm) => {
+          // Make sure inserts spaces instead of tabs.
+          const spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+          cm.replaceSelection(spaces);
+        },
+      });
     });
 
     return { contents, editor };
