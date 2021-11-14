@@ -37,6 +37,9 @@ cp -r $INSTALL_SCRIPT_DIR/. $BIN_DIR
 # Rename web.config
 mv $BIN_DIR/web.config $BIN_DIR/_web.config
 
+# Copy docs
+cp -r $ROOT_DIR/docs $BIN_DIR
+
 # Archive binaries
 cd $BIN_DIR
 zip -r $DIST_DIR/httplaceholder_win-x64.zip .
