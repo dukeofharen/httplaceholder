@@ -34,6 +34,9 @@ cp -r $ROOT_DIR/guiv3/dist/. $BIN_DIR/guiv3
 # Copy install scripts to dist dir
 cp -r $INSTALL_SCRIPT_DIR/. $BIN_DIR
 
+# Copy docs
+cp -r $ROOT_DIR/docs $BIN_DIR
+
 # Archive binaries
 cd $BIN_DIR
 tar -czvf $DIST_DIR/httplaceholder_osx-x64.tar.gz .

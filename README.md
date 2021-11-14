@@ -163,10 +163,8 @@ For more sophisticated examples, go to the page [samples](docs/SAMPLES.md) to vi
 See the [open issues](https://github.com/dukeofharen/httplaceholder/issues) for a list of proposed features (and known
 issues).
 
-- [Top Feature Requests](https://github.com/dukeofharen/httplaceholder/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (
-  Add your votes using the 👍 reaction)
-- [Top Bugs](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (
-  Add your votes using the 👍 reaction)
+- [Top Feature Requests](https://github.com/dukeofharen/httplaceholder/issues?q=label%3Aenhancement+is%3Aopen+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
+- [Top Bugs](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aissue+is%3Aopen+label%3Abug+sort%3Areactions-%2B1-desc) (Add your votes using the 👍 reaction)
 - [Newest Bugs](https://github.com/dukeofharen/httplaceholder/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
 
 ## Support
@@ -182,7 +180,7 @@ If you want to say **thank you** or/and support active development of HttPlaceho
 
 - Add a [GitHub Star](https://github.com/dukeofharen/httplaceholder) to the project.
 - Tweet about HttPlaceholder on your Twitter.
-- Send me an email :) (see my [GitHub Profile](https://github.com/dukeofharen)).
+- Send me an email (see my [GitHub Profile](https://github.com/dukeofharen)).
 
 ## Contributing
 
