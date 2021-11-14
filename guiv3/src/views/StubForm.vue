@@ -43,7 +43,11 @@
       <codemirror v-model="input" :options="cmOptions" />
     </div>
     <div class="col-md-12" v-if="editorType === editorTypes.simple">
-      <textarea class="form-control" v-model="input"></textarea>
+      <textarea
+        class="form-control"
+        v-model="input"
+        @keydown.tab="simpleEditorTabPress"
+      ></textarea>
     </div>
   </div>
 
@@ -150,6 +154,16 @@ export default {
       await initialize();
     });
 
+    // Methods
+    const simpleEditorTabPress = (e) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const textarea = e.target;
+        const [start, end] = [textarea.selectionStart, textarea.selectionEnd];
+        textarea.setRangeText("  ", start, end, "end");
+      }
+    };
+
     return {
       stubId,
       newStub,
@@ -160,6 +174,7 @@ export default {
       editorTypes,
       selectedEditorType,
       editorType,
+      simpleEditorTabPress,
     };
   },
 };
