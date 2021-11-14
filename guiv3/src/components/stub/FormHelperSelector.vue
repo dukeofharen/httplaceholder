@@ -77,6 +77,7 @@ import ResponseBodyHelper from "@/components/stub/ResponseBodyHelper";
 import RedirectSelector from "@/components/stub/RedirectSelector";
 import LineEndingSelector from "@/components/stub/LineEndingSelector";
 import ScenarioSelector from "@/components/stub/ScenarioSelector";
+import { useRoute } from "vue-router";
 
 export default {
   name: "FormHelperSelector",
@@ -91,6 +92,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const route = useRoute();
 
     // Refs
     const formHelperFilterInput = ref(null);
@@ -149,6 +151,10 @@ export default {
         showFormHelperItems.value = false;
       }
     });
+    watch(
+      () => route.params,
+      () => closeFormHelperAndList()
+    );
 
     return {
       formHelperItems,
