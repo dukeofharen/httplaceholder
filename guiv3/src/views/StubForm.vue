@@ -43,11 +43,7 @@
       <codemirror v-model="input" :options="cmOptions" />
     </div>
     <div class="col-md-12" v-if="editorType === editorTypes.simple">
-      <textarea
-        class="form-control"
-        v-model="input"
-        @keydown.tab="simpleEditorTabPress"
-      ></textarea>
+      <simple-editor v-model="input" />
     </div>
   </div>
 
@@ -70,6 +66,7 @@ import toastr from "toastr";
 import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";
 import FormHelperSelector from "@/components/stub/FormHelperSelector";
 import StubFormButtons from "@/components/stub/StubFormButtons";
+import SimpleEditor from "@/components/simpleEditor/SimpleEditor";
 
 const editorTypes = {
   none: "none",
@@ -79,7 +76,7 @@ const editorTypes = {
 
 export default {
   name: "StubForm",
-  components: { FormHelperSelector, StubFormButtons },
+  components: { SimpleEditor, FormHelperSelector, StubFormButtons },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -154,16 +151,6 @@ export default {
       await initialize();
     });
 
-    // Methods
-    const simpleEditorTabPress = (e) => {
-      if (e.key === "Tab") {
-        e.preventDefault();
-        const textarea = e.target;
-        const [start, end] = [textarea.selectionStart, textarea.selectionEnd];
-        textarea.setRangeText("  ", start, end, "end");
-      }
-    };
-
     return {
       stubId,
       newStub,
@@ -174,18 +161,9 @@ export default {
       editorTypes,
       selectedEditorType,
       editorType,
-      simpleEditorTabPress,
     };
   },
 };
 </script>
 
-<style scoped>
-textarea {
-  font-family: monospace;
-  white-space: pre;
-  overflow-wrap: normal;
-  overflow-x: scroll;
-  min-height: 300px;
-}
-</style>
+<style scoped></style>
