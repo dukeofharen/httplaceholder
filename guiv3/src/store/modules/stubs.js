@@ -29,6 +29,18 @@ const actions = {
     await put(`/ph-api/stubs/${stubId}`, stub);
     return stub.enabled;
   },
+  async enableStub(_, stubId) {
+    const stub = (await getStub(stubId)).stub;
+    stub.enabled = true;
+    await put(`/ph-api/stubs/${stubId}`, stub);
+    return stub.enabled;
+  },
+  async disableStub(_, stubId) {
+    const stub = (await getStub(stubId)).stub;
+    stub.enabled = false;
+    await put(`/ph-api/stubs/${stubId}`, stub);
+    return stub.enabled;
+  },
   deleteStub(_, stubId) {
     return del(`/ph-api/stubs/${stubId}`)
       .then((response) => Promise.resolve(response))

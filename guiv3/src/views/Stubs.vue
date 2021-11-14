@@ -34,6 +34,38 @@
     </div>
 
     <div class="col-md-12 mb-3">
+      <button
+        class="btn btn-outline-success btn-sm me-2"
+        title="Disable the current selection of stubs"
+        @click="showDisableStubsModal = true"
+      >
+        Disable stubs
+      </button>
+      <modal
+        title="Disable the current filtered stubs?"
+        bodyText="Only the stubs currently visible in the list will be disabled."
+        :yes-click-function="disableStubs"
+        :show-modal="showDisableStubsModal"
+        @close="showDisableStubsModal = false"
+      />
+
+      <button
+        class="btn btn-outline-success btn-sm"
+        title="Enable the current selection of stubs"
+        @click="showEnableStubsModal = true"
+      >
+        Enable stubs
+      </button>
+      <modal
+        title="Enable the current filtered stubs?"
+        bodyText="Only the stubs currently visible in the list will be enabled."
+        :yes-click-function="enableStubs"
+        :show-modal="showEnableStubsModal"
+        @close="showEnableStubsModal = false"
+      />
+    </div>
+
+    <div class="col-md-12 mb-3">
       <div class="input-group mb-3">
         <input
           type="text"
@@ -103,6 +135,8 @@ export default {
     const stubs = ref([]);
     const showDeleteAllStubsModal = ref(false);
     const tenants = ref([]);
+    const showDisableStubsModal = ref(false);
+    const showEnableStubsModal = ref(false);
 
     const saveSearchFilters = store.getters["general/getSaveSearchFilters"];
     let savedFilter = {};
@@ -148,6 +182,7 @@ export default {
     // Methods
     const loadStubs = async () => {
       try {
+        stubs.value = [];
         stubs.value = await store.dispatch("stubs/getStubsOverview");
       } catch (e) {
         handleHttpError(e);
@@ -171,6 +206,42 @@ export default {
       } catch (e) {
         handleHttpError(e);
       }
+    };
+    const disableStubs = async () => {
+      const disableStub = async (stubIdToDisable) => {
+        try {
+          await store.dispatch("stubs/disableStub", stubIdToDisable);
+        } catch (e) {
+          handleHttpError(e);
+        }
+      };
+      const stubIds = filteredStubs.value.map((fs) => fs.stub.id);
+      const promises = [];
+      for (const stubId of stubIds) {
+        promises.push(disableStub(stubId));
+      }
+
+      await Promise.all(promises);
+      toastr.success(resources.stubsDisabledSuccessfully);
+      await loadData();
+    };
+    const enableStubs = async () => {
+      const enableStub = async (stubIdToEnable) => {
+        try {
+          await store.dispatch("stubs/enableStub", stubIdToEnable);
+        } catch (e) {
+          handleHttpError(e);
+        }
+      };
+      const stubIds = filteredStubs.value.map((fs) => fs.stub.id);
+      const promises = [];
+      for (const stubId of stubIds) {
+        promises.push(enableStub(stubId));
+      }
+
+      await Promise.all(promises);
+      toastr.success(resources.stubsEnabledSuccessfully);
+      await loadData();
     };
     const download = async () => {
       try {
@@ -206,6 +277,10 @@ export default {
       tenants,
       filter,
       download,
+      showDisableStubsModal,
+      disableStubs,
+      enableStubs,
+      showEnableStubsModal,
     };
   },
 };
