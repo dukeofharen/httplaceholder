@@ -12,12 +12,12 @@ namespace HttPlaceholder.Dto.v1.Scenarios
         /// <summary>
         /// Gets or sets the state the scenario is in.
         /// </summary>
-        public string State { get; set; }
+        public string State { get; init; }
 
         /// <summary>
         /// Gets or sets the number of times the scenario has been hit.
         /// </summary>
-        public int HitCount { get; set; }
+        public int HitCount { get; init; } = -1;
 
         public void CreateMappings(Profile configuration) => configuration
             .CreateMap<ScenarioStateInputDto, ScenarioStateModel>()

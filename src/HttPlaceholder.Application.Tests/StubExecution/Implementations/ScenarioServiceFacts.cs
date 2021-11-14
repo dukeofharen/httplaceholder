@@ -43,7 +43,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
                 .Setup(m => m.GetScenarioLock(scenario))
                 .Returns(new object());
 
-            var scenarioState = new ScenarioStateModel {Scenario = scenario, HitCount = 2};
+            var scenarioState = new ScenarioStateModel { Scenario = scenario, HitCount = 2 };
             scenarioStateStoreMock
                 .Setup(m => m.GetScenario(scenario))
                 .Returns(scenarioState);
@@ -128,7 +128,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
                 .Setup(m => m.GetScenarioLock(scenario))
                 .Returns(new object());
 
-            var scenarioState = new ScenarioStateModel {Scenario = scenario, HitCount = 2};
+            var scenarioState = new ScenarioStateModel { Scenario = scenario, HitCount = 2 };
             scenarioStateStoreMock
                 .Setup(m => m.GetScenario(scenario))
                 .Returns(scenarioState);
@@ -255,6 +255,62 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             // Assert
             scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input), Times.Never);
             scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input));
+        }
+
+        [TestMethod]
+        public void
+            SetScenario_ScenarioExists_ProvidedScenarioHitCountIsNotSet_ShouldUpdateScenarioWithExistingHitCount()
+        {
+            // Arrange
+            var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+            var service = _mocker.CreateInstance<ScenarioService>();
+
+            const string scenarioName = "scenario-1";
+            var input = new ScenarioStateModel { HitCount = -1 };
+
+            scenarioStateStoreMock
+                .Setup(m => m.GetScenarioLock(scenarioName))
+                .Returns(new object());
+
+            scenarioStateStoreMock
+                .Setup(m => m.GetScenario(scenarioName))
+                .Returns(new ScenarioStateModel { HitCount = 11 });
+
+            // Act
+            service.SetScenario(scenarioName, input);
+
+            // Assert
+            scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input), Times.Never);
+            scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input));
+            Assert.AreEqual(11, input.HitCount);
+        }
+
+        [TestMethod]
+        public void
+            SetScenario_ScenarioExists_ProvidedScenarioStateIsNotSet_ShouldUpdateScenarioWithExistingState()
+        {
+            // Arrange
+            var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+            var service = _mocker.CreateInstance<ScenarioService>();
+
+            const string scenarioName = "scenario-1";
+            var input = new ScenarioStateModel { State = null };
+
+            scenarioStateStoreMock
+                .Setup(m => m.GetScenarioLock(scenarioName))
+                .Returns(new object());
+
+            scenarioStateStoreMock
+                .Setup(m => m.GetScenario(scenarioName))
+                .Returns(new ScenarioStateModel { State = "current-state" });
+
+            // Act
+            service.SetScenario(scenarioName, input);
+
+            // Assert
+            scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input), Times.Never);
+            scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input));
+            Assert.AreEqual("current-state", input.State);
         }
 
         [TestMethod]

@@ -67,6 +67,16 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                 }
                 else
                 {
+                    if (scenarioState.HitCount == -1)
+                    {
+                        scenarioState.HitCount = existingScenario.HitCount;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(scenarioState.State))
+                    {
+                        scenarioState.State = existingScenario.State;
+                    }
+
                     _scenarioStateStore.UpdateScenario(scenario, scenarioState);
                 }
             }

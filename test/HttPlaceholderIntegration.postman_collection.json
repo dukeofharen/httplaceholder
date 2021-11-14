@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "47c38a34-d790-47d7-bfc5-92a6865cb267",
+		"_postman_id": "051ed9ed-5049-4e6e-92fc-be8b0b498b45",
 		"name": "HttPlaceholder Integration",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -4769,13 +4769,7 @@
 									],
 									"request": {
 										"method": "PUT",
-										"header": [
-											{
-												"key": "Content-Type",
-												"type": "text",
-												"value": "text/yaml"
-											}
-										],
+										"header": [],
 										"body": {
 											"mode": "raw",
 											"raw": "{\n    \"state\": \"new-state\",\n    \"hitCount\": 10\n}",
@@ -4975,6 +4969,540 @@
 										}
 									},
 									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "4. Separate tests",
+					"item": [
+						{
+							"name": "Scenarios",
+							"item": [
+								{
+									"name": "Bugfix: do not set \"hit count\" to 0",
+									"item": [
+										{
+											"name": "Reset scenarios",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 204\", function () {",
+															"    pm.response.to.have.status(204);",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"state\": \"new\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Set scenario: hit count is set",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 204\", function () {",
+															"    pm.response.to.have.status(204);",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"state\": \"new-state\",\n    \"hitCount\": 10\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios/scenario-1",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios",
+														"scenario-1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Set scenario: hit count is not set",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 204\", function () {",
+															"    pm.response.to.have.status(204);",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "text/yaml"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"state\": \"another-new-state\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios/scenario-1",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios",
+														"scenario-1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Get scenario: hit count is still the same",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {",
+															"    pm.response.to.have.status(200);",
+															"});",
+															"",
+															"var jsonData = pm.response.json();",
+															"pm.test(\"Check scenario name\", function () {",
+															"    pm.expect(jsonData.scenario).to.eql(\"scenario-1\");",
+															"});",
+															"pm.test(\"Check scenario state\", function () {",
+															"    pm.expect(jsonData.state).to.eql(\"another-new-state\");",
+															"});",
+															"pm.test(\"Check scenario hit count\", function () {",
+															"    pm.expect(jsonData.hitCount).to.eql(10);",
+															"});",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios/scenario-1",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios",
+														"scenario-1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Set scenario: hit count is set",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 204\", function () {",
+															"    pm.response.to.have.status(204);",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "text/yaml"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"state\": \"another-new-state\",\n    \"hitCount\": 11\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios/scenario-1",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios",
+														"scenario-1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Get scenario: hit count is updated",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {",
+															"    pm.response.to.have.status(200);",
+															"});",
+															"",
+															"var jsonData = pm.response.json();",
+															"pm.test(\"Check scenario name\", function () {",
+															"    pm.expect(jsonData.scenario).to.eql(\"scenario-1\");",
+															"});",
+															"pm.test(\"Check scenario state\", function () {",
+															"    pm.expect(jsonData.state).to.eql(\"another-new-state\");",
+															"});",
+															"pm.test(\"Check scenario hit count\", function () {",
+															"    pm.expect(jsonData.hitCount).to.eql(11);",
+															"});",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios/scenario-1",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios",
+														"scenario-1"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Bugfix: do not clear \"state\"",
+									"item": [
+										{
+											"name": "Reset scenarios",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 204\", function () {",
+															"    pm.response.to.have.status(204);",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"state\": \"new\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Set scenario: state is set",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 204\", function () {",
+															"    pm.response.to.have.status(204);",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"state\": \"new-state\",\n    \"hitCount\": 10\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios/scenario-2",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios",
+														"scenario-2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Set scenario: state is not set",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 204\", function () {",
+															"    pm.response.to.have.status(204);",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "text/yaml"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"hitCount\": 10\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios/scenario-2",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios",
+														"scenario-2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Get scenario: state is still the same",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {",
+															"    pm.response.to.have.status(200);",
+															"});",
+															"",
+															"var jsonData = pm.response.json();",
+															"pm.test(\"Check scenario name\", function () {",
+															"    pm.expect(jsonData.scenario).to.eql(\"scenario-2\");",
+															"});",
+															"pm.test(\"Check scenario state\", function () {",
+															"    pm.expect(jsonData.state).to.eql(\"new-state\");",
+															"});",
+															"pm.test(\"Check scenario hit count\", function () {",
+															"    pm.expect(jsonData.hitCount).to.eql(10);",
+															"});",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios/scenario-2",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios",
+														"scenario-2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Set scenario: state is set",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 204\", function () {",
+															"    pm.response.to.have.status(204);",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"type": "text",
+														"value": "text/yaml"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"state\": \"another-new-state\",\n    \"hitCount\": 11\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios/scenario-2",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios",
+														"scenario-2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Get scenario: state is updated",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 200\", function () {",
+															"    pm.response.to.have.status(200);",
+															"});",
+															"",
+															"var jsonData = pm.response.json();",
+															"pm.test(\"Check scenario name\", function () {",
+															"    pm.expect(jsonData.scenario).to.eql(\"scenario-2\");",
+															"});",
+															"pm.test(\"Check scenario state\", function () {",
+															"    pm.expect(jsonData.state).to.eql(\"another-new-state\");",
+															"});",
+															"pm.test(\"Check scenario hit count\", function () {",
+															"    pm.expect(jsonData.hitCount).to.eql(11);",
+															"});",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{rootUrl}}ph-api/scenarios/scenario-2",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"scenarios",
+														"scenario-2"
+													]
+												}
+											},
+											"response": []
+										}
+									]
 								}
 							]
 						}
