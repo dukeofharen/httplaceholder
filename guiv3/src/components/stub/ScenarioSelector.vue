@@ -1,13 +1,30 @@
 <template>
-  <div class="list-group">
-    <button
-      v-for="(scenario, index) of scenarios"
-      :key="index"
-      class="list-group-item list-group-item-action fw-bold"
-      @click="scenarioSelected(scenario)"
-    >
-      {{ scenario }}
-    </button>
+  <div class="row">
+    <div class="col-md-12">
+      <strong>Insert new scenario name</strong>
+      <input
+        type="text"
+        class="form-control mt-2"
+        v-model="scenario"
+        @keyup.enter="scenarioSelected(scenario)"
+      />
+      <button class="btn btn-success mt-2" @click="scenarioSelected(scenario)">
+        Add
+      </button>
+    </div>
+    <div class="col-md-12 mt-3" v-if="scenarios.length">
+      <strong>Select existing scenario</strong>
+      <div class="list-group mt-2">
+        <button
+          v-for="(scenario, index) of scenarios"
+          :key="index"
+          class="list-group-item list-group-item-action fw-bold"
+          @click="scenarioSelected(scenario)"
+        >
+          {{ scenario }}
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -23,6 +40,7 @@ export default {
 
     // Data
     const scenarios = ref([]);
+    const scenario = ref([]);
 
     // Methods
     const scenarioSelected = (scenario) => {
@@ -37,14 +55,13 @@ export default {
           await store.dispatch("scenarios/getAllScenarios")
         ).map((s) => s.scenario);
         scenariosResult.sort();
-        scenariosResult.unshift("default");
         scenarios.value = scenariosResult;
       } catch (e) {
         handleHttpError(e);
       }
     });
 
-    return { scenarios, scenarioSelected };
+    return { scenarios, scenarioSelected, scenario };
   },
 };
 </script>

@@ -15,7 +15,35 @@
 
   <div class="row mt-3">
     <div class="col-md-12">
+      <button
+        class="btn btn-outline btn-sm me-2"
+        :class="{
+          'btn-outline-success': editorType === editorTypes.codemirror,
+        }"
+        @click="selectedEditorType = editorTypes.codemirror"
+        title="Use advanced editor for editing the stub. The editor has code highlighting but is not suited for updating large stubs."
+      >
+        Advanced editor
+      </button>
+      <button
+        class="btn btn-outline btn-sm"
+        :class="{
+          'btn-outline-success': editorType === editorTypes.simple,
+        }"
+        @click="selectedEditorType = editorTypes.simple"
+        title="Use simple editor for editing the stub. The editor has no code highlighting but is suited for updating large stubs."
+      >
+        Simple editor
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-12" v-if="editorType === editorTypes.codemirror">
       <codemirror v-model="input" :options="cmOptions" />
+    </div>
+    <div class="col-md-12" v-if="editorType === editorTypes.simple">
+      <simple-editor v-model="input" />
     </div>
   </div>
 
@@ -28,19 +56,27 @@
 
 <script>
 import { useRoute, useRouter } from "vue-router";
-import { computed, onBeforeMount, onMounted, watch } from "vue";
+import { computed, onBeforeMount, onMounted, watch, ref } from "vue";
 import { useStore } from "vuex";
 import { resources } from "@/constants/resources";
+import { simpleEditorThreshold } from "@/constants/technical";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
 import toastr from "toastr";
 import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";
 import FormHelperSelector from "@/components/stub/FormHelperSelector";
 import StubFormButtons from "@/components/stub/StubFormButtons";
+import SimpleEditor from "@/components/simpleEditor/SimpleEditor";
+
+const editorTypes = {
+  none: "none",
+  codemirror: "codemirror",
+  simple: "simple",
+};
 
 export default {
   name: "StubForm",
-  components: { FormHelperSelector, StubFormButtons },
+  components: { SimpleEditor, FormHelperSelector, StubFormButtons },
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -53,6 +89,7 @@ export default {
       lineNumbers: true,
       line: true,
     };
+    const selectedEditorType = ref(editorTypes.none);
 
     // Computed
     const stubId = computed(() => route.params.stubId);
@@ -65,6 +102,15 @@ export default {
     const showFormHelperSelector = computed(
       () => !store.getters["stubForm/getInputHasMultipleStubs"]
     );
+    const editorType = computed(() => {
+      if (selectedEditorType.value !== editorTypes.none) {
+        return selectedEditorType.value;
+      }
+
+      return store.getters["stubForm/getInputLength"] > simpleEditorThreshold
+        ? editorTypes.simple
+        : editorTypes.codemirror;
+    });
 
     // Functions
     const initialize = async () => {
@@ -112,6 +158,9 @@ export default {
       input,
       cmOptions,
       showFormHelperSelector,
+      editorTypes,
+      selectedEditorType,
+      editorType,
     };
   },
 };

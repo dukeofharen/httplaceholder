@@ -653,6 +653,9 @@ const getters = {
   getInput(state) {
     return state.input;
   },
+  getInputLength(state) {
+    return state.input.length;
+  },
   getCurrentSelectedFormHelper(state) {
     return state.currentSelectedFormHelper;
   },
