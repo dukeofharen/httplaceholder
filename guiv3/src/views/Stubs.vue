@@ -50,7 +50,7 @@
       />
 
       <button
-        class="btn btn-outline-success btn-sm"
+        class="btn btn-outline-success btn-sm me-2"
         title="Enable the current selection of stubs"
         @click="showEnableStubsModal = true"
       >
@@ -62,6 +62,21 @@
         :yes-click-function="enableStubs"
         :show-modal="showEnableStubsModal"
         @close="showEnableStubsModal = false"
+      />
+
+      <button
+        class="btn btn-outline-success btn-sm me-2"
+        title="Delete the current selection of stubs"
+        @click="showDeleteStubsModal = true"
+      >
+        Delete stubs
+      </button>
+      <modal
+        title="Delete the current filtered stubs?"
+        bodyText="The stubs can't be recovered. Only the stubs currently visible in the list will be deleted."
+        :yes-click-function="deleteStubs"
+        :show-modal="showDeleteStubsModal"
+        @close="showDeleteStubsModal = false"
       />
     </div>
 
@@ -137,6 +152,7 @@ export default {
     const tenants = ref([]);
     const showDisableStubsModal = ref(false);
     const showEnableStubsModal = ref(false);
+    const showDeleteStubsModal = ref(false);
 
     const saveSearchFilters = store.getters["general/getSaveSearchFilters"];
     let savedFilter = {};
@@ -243,6 +259,24 @@ export default {
       toastr.success(resources.stubsEnabledSuccessfully);
       await loadData();
     };
+    const deleteStubs = async () => {
+      const deleteStub = async (stubIdToDelete) => {
+        try {
+          await store.dispatch("stubs/deleteStub", stubIdToDelete);
+        } catch (e) {
+          handleHttpError(e);
+        }
+      };
+      const stubIds = filteredStubs.value.map((fs) => fs.stub.id);
+      const promises = [];
+      for (const stubId of stubIds) {
+        promises.push(deleteStub(stubId));
+      }
+
+      await Promise.all(promises);
+      toastr.success(resources.filteredStubsDeletedSuccessfully);
+      await loadData();
+    };
     const download = async () => {
       try {
         const stubs = filterStubs(await store.dispatch("stubs/getStubs")).map(
@@ -281,6 +315,8 @@ export default {
       disableStubs,
       enableStubs,
       showEnableStubsModal,
+      showDeleteStubsModal,
+      deleteStubs,
     };
   },
 };

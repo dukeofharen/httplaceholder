@@ -8,6 +8,7 @@ export const resources = {
   stubUpdatedSuccessfully: "Stub was updated successfully.",
   stubsDisabledSuccessfully: "Stubs were disabled successfully.",
   stubsEnabledSuccessfully: "Stubs were enabled successfully.",
+  filteredStubsDeletedSuccessfully: "Stubs were deleted successfully.",
   stubNotFound: "Stub with ID {0} was not found.",
   stubsInFileAddedSuccessfully: "Stubs in file '{0}' were added successfully.",
   errorDuringParsingOfYaml: "Something went wrong while parsing the YAML: {0}",
