@@ -147,7 +147,6 @@ For more sophisticated examples, go to the page [samples](docs/SAMPLES.md) to vi
   * [Linux](docs/INSTALL-LINUX.md)
   * [Mac](docs/INSTALL-MAC.md)
   * [Docker](docs/INSTALL-DOCKER.md)
-* [Getting started](docs/GETTING-STARTED.md)
 * [Stub samples](docs/SAMPLES.md)
 * [HttPlaceholder REST API](docs/API.md)
 * [Configuration](docs/CONFIG.md)
