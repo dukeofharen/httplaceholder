@@ -13,7 +13,7 @@ TODO expand UI_NEW
   - [Hosting](#hosting)
 - [Getting started](#getting-started)
 - [Request conditions](#request-conditions)
-  - [General](#general)
+  - [General](#general-stub-info)
   - [Description](#description)
   - [Enabled](#enabled)
   - [Scenario](#request-scenario)
@@ -288,7 +288,7 @@ For more sophisticated examples, go to the page [samples](#samples) to view samp
 
 Whenever HttPlaceholder receives a request, all the conditions of all stubs are checked to see which stub corresponds to the sent request. There are condition checkers for example the URL, posted data etc. This page explains more.
 
-## General
+## General stub info
 
 Under the "conditions" element, you describe how the request should look like. If the incoming request matches the conditions, the [response](#response-writers) will be returned.
 
@@ -2022,7 +2022,7 @@ client instances.
 
 All methods exposed by the API are available in the client and you can build stub models by using a stub model builder.
 
-### Getting started
+### Getting started with the .NET client
 
 You can see some examples in the following
 project: https://github.com/dukeofharen/httplaceholder/tree/master/src/HttPlaceholder.Client.Examples.
