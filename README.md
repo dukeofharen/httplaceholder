@@ -142,8 +142,6 @@ For more sophisticated examples, go to the [samples](docs/SAMPLES.md) to view sa
 
 ## Documentation
 
-* [Stub samples](docs/SAMPLES.md)
-* [Management interface](docs/UI.md)
 
 ### Tools
 * [HttPlaceholder REST API client for .NET](docs/DOTNET_CLIENT.md)
