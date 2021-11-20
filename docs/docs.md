@@ -24,7 +24,7 @@ TODO spell checking
     - [Full path](#full-path)
     - [Query string](#query-string)
     - [Is HTTPS](#is-https)
-  - [HTTP method](#request-headers)
+  - [HTTP method](#method)
   - [Security](#security)
     - [Basic authentication](#basic-authentication)
   - [HTTP headers](#request-headers)
@@ -58,7 +58,7 @@ TODO spell checking
   - [Dynamic mode](#dynamic-mode)
     - [Query string](#query-string-parser)
     - [UUID](#uuid)
-    - [Request headers](#request-headers)
+    - [Request headers](#request-headers-parser)
     - [Posted form values](#form-post)
     - [Request body](#request-body-parser)
     - [Display URL](#display-url)
@@ -66,6 +66,7 @@ TODO spell checking
     - [Local and UTC date & time](#local-and-utc-date--time)
     - [JSONPath](#jsonpath-parser)
   - [Reverse proxy](#reverse-proxy)
+- [REST API](#rest-api)
 
 # Installation
 
@@ -283,7 +284,7 @@ Whenever HttPlaceholder receives a request, all the conditions of all stubs are 
 
 ## General
 
-Under the "conditions" element, you describe how the request should look like. If the incoming request matches the conditions, the [response](RESPONSE.md) will be returned.
+Under the "conditions" element, you describe how the request should look like. If the incoming request matches the conditions, the [response](#response-writers) will be returned.
 
 ```yml
 - id: situation-03
@@ -1370,7 +1371,7 @@ The UUID parser makes it possible to insert a random UUID to the response.
 
 If you go to `http://localhost:5000/dynamic-uuid.txt`, you will retrieve random UUID as response content and a random UUID in the `X-Header` response header.
 
-### Request headers
+### Request headers parser
 
 The request headers parser makes it possible to write request header values to the response.
 
@@ -1635,3 +1636,43 @@ The variable `appendPath` is set to true (which is, by default, set to false by 
 Also, the variable `appendQueryString` is set to true (which is by default false). Like the name says, it appends the query string of the request to HttPlaceholder to the reverse proxy request. For example, let's say you make a request to `http://localhost:5000/todos?key=val`, then HttPlaceholder will make a request to `https://jsonplaceholder.typicode.com/todos?key=val`.
 
 Finally, there is also a reverse proxy setting called `replaceRootUrl` (which is by default false). If this is set to true, any reference of `https://jsonplaceholder.typicode.com` (so the **root** URL of your reverse proxy URL) will be replaced by the root URL of HttPlaceholder (e.g. `http://localhost:5000`). The replacing will be done in the reverse proxy response body and response headers.
+
+# REST API
+
+Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](configuration)). The REST API gives you access to four collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection and scenario collection.
+
+Click [here](https://github.com/dukeofharen/httplaceholder/releases/latest) if you want the swagger.json file. Using this swagger.json file, you can easily create a REST client for your favourite programming language (e.g. using a tool like [autorest](https://github.com/Azure/autorest)).
+
+The [Postman collection](samples/requests.json) also contains REST API examples.
+
+The REST API accepts both JSON and YAML strings (when doing a POST or PUT). If you want to post a YAML string, set the `Content-Type` header to `application/x-yaml`, if you want to post a JSON string, set the `Content-Type` header to `application/json`. If you do a request where you expect a textual response, set the `Accept` header to `application/x-yaml` if you want to get YAML or `application/json` if you want to get JSON.
+
+If you have enabled authentication (see [config](CONFIG.md) for more information), you also need to provide an `Authorization` header with the correct basic authentication. So if, for example, the username is `user` and the password is `pass`, the following value should be used for the `Authorization` header: `Basic dXNlcjpwYXNz`. For every call in the REST API, a `401 Unauthorized` is returned if the authentication is incorrect.
+
+## Stubs
+
+A stub is a combination of condition checkers and response writers that will be executed when a valid request is sent.
+
+## Requests
+
+Any kind of HTTP request that is made against HttPlaceholder. Also requests where no stub could be matched are saved, because you might want to create a stub based on that request.
+
+## Users
+
+A simple collection to check whether a given user is valid or not.
+
+## Tenants
+
+Tenants allow you to group your stubs. When you've assigned a "tenant" field to your stub (see [conditions](#request-conditions) for more information), you can perform batch operations on a larger set of stubs. The tenants endpoint helps you with this.
+
+## Scenarios
+
+Scenarios allow you to enable stateful behavior in your stubs. A stub can be put under 1 scenario and 1 scenario can contain many stubs. A scenario has the following variables:
+* Hit counter: the number of times a stub that falls under a specific scenario has been hit.
+* State: a state, represented as a simple string. The starting state of a scenario is `Start`.
+
+The scenarios can be set by using the stub condition checkers and response writers or by using the API.
+
+The scenarios are only stored in memory for the time being, so restarting HttPlaceholder resets the scenarios.
+
+To read more about scenarios, go to [conditions](#request-scenario) or [response](#scenario).
