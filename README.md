@@ -138,20 +138,11 @@ dotnet tool install --global httplaceholder
 - You can view and inspect the performed requests in the user interface at <http://localhost:5000/ph-ui>.
 ![](docs/img/request_in_ui.png)
   
-For more sophisticated examples, go to the page [samples](docs/SAMPLES.md) to view samples for all supported HTTP condition checkers and response writers.
+For more sophisticated examples, go to the [samples](docs/SAMPLES.md) to view samples for all supported HTTP condition checkers and response writers.
 
 ## Documentation
 
-* [Installation](docs/INSTALL.md)
-  * [Windows (and IIS)](docs/INSTALL-WINDOWS.md)
-  * [Linux](docs/INSTALL-LINUX.md)
-  * [Mac](docs/INSTALL-MAC.md)
-  * [Docker](docs/INSTALL-DOCKER.md)
 * [Stub samples](docs/SAMPLES.md)
-* [HttPlaceholder REST API](docs/API.md)
-* [Configuration](docs/CONFIG.md)
-* [Request conditions explained](docs/CONDITIONS.md)
-* [Response definitions explained](docs/RESPONSE.md)
 * [Management interface](docs/UI.md)
 
 ### Tools
