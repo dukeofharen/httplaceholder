@@ -1,4 +1,3 @@
-TODO Replace .md references
 TODO spell checking
 TODO new screenshots for UI_NEW
 TODO expand UI_NEW
@@ -127,7 +126,7 @@ If you've completed the steps above, execute the following steps:
 </configuration>
 ```
 
-In the example above, all the standard output logging will be written to a file and HttPlaceholder is configured to store its data in a SQLite database (all the configuration values are explained [here](CONFIG.md)). While this seems like a nice solution, if you have multiple configuration items, it might be better if you create a separate `config.json` file and point to that file in your `web.config`. You then might have these two files:
+In the example above, all the standard output logging will be written to a file and HttPlaceholder is configured to store its data in a SQLite database (all the configuration values are explained [here](#configuration)). While this seems like a nice solution, if you have multiple configuration items, it might be better if you create a separate `config.json` file and point to that file in your `web.config`. You then might have these two files:
 
 *config.json*
 ```
@@ -212,7 +211,7 @@ HttPlaceholder can now be reached on `http://localhost:5000` (or `http://localho
 
 ### Docker configuration
 
-The Docker container uses the configuration values as specified [here](CONFIG.md). Here is an example of starting the HttPlaceholder container with different ports for HTTP and HTTPS:
+The Docker container uses the configuration values as specified [here](#configuration). Here is an example of starting the HttPlaceholder container with different ports for HTTP and HTTPS:
 
 `docker run -p 8080:8080 -p 4430:4430 --env port=8080 --env httpsPort=4430 dukeofharen/httplaceholder:latest`
 
@@ -318,9 +317,9 @@ This example uses both conditions. This means that when:
 - A query string with name "id" and value "15" is sent.
 - A query string with name "filter" and value "last_name" is sent.
 
-If all these conditions match, the response as defined under the "response" element is returned. For more information about the response element, you can read more [here](RESPONSE.md).
+If all these conditions match, the response as defined under the "response" element is returned. For more information about the response element, you can read more [here](#response-writers).
 
-The stub also has a "tenant" field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant). To learn more about tenants, go to [API](API.md).
+The stub also has a "tenant" field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant). To learn more about tenants, go to [REST API](#rest-api).
 
 ## Description
 
@@ -357,7 +356,7 @@ Describes whether the stub is enabled or not. If no `enabled` field is provided,
 
 Scenarios make it possible to make stubs stateful. When you assign a scenario to a stub, a hit counter will be kept for the scenario and it is also possible to assign a state to a scenario. The default state of a scenario is "Start". Right now, the scenario state is only kept in memory, which means that when the application is restarted, all the states will be reset.
 
-The scenario state can be set either to response writers (see [response](RESPONSE.md)) or by calling the [API](API.md).
+The scenario state can be set either to response writers (see [response](#scenario)) or by calling the [REST API](#rest-api).
 
 The scenario makes it possible to configure your stubs to return different responses on the same request.
 
@@ -399,7 +398,7 @@ Whenever a stub that is attached to a scenario is hit, the hit counter for that 
       clearState: true
 ```
 
-In this example, both stubs are part of the `min` scenario. Whenever the `/min-hits` URL is called, the hit counter of the scenario will be increased. Whenever the scenario has at least 3 hits, the `min-hits-clear` stub will be executed. The `clearState` response writer makes sure the scenario is reset (so the counter is reset to 0). For more information about that, click [here](RESPONSE.md).
+In this example, both stubs are part of the `min` scenario. Whenever the `/min-hits` URL is called, the hit counter of the scenario will be increased. Whenever the scenario has at least 3 hits, the `min-hits-clear` stub will be executed. The `clearState` response writer makes sure the scenario is reset (so the counter is reset to 0). For more information about that, click [here](#scenario).
 
 Under the `conditions.scenario` option, you have 3 options for hit counter checking:
 
@@ -439,7 +438,7 @@ A scenario can be in a specific state. A state is represented as a simple string
       clearState: true
 ```
 
-In this example, both stubs are part of the `scenario-state` scenario. Whenever the `/state-check` URL is called, HttPlaceholder will (in this case) check the current state (a fresh scenario state is always `Start`). If the stub is hit, the scenario state will be set to `state-2` by the `setScenarioState` response writer (see [response](RESPONSE.md)). Whenever the same URL is called again, the second stub will be hit and after that the scenario state will be reset to its default values.
+In this example, both stubs are part of the `scenario-state` scenario. Whenever the `/state-check` URL is called, HttPlaceholder will (in this case) check the current state (a fresh scenario state is always `Start`). If the stub is hit, the scenario state will be set to `state-2` by the `setScenarioState` response writer (see [response](#scenario)). Whenever the same URL is called again, the second stub will be hit and after that the scenario state will be reset to its default values.
 
 ## Priority
 
@@ -545,7 +544,7 @@ This condition checker can check the query string in a name-value collection lik
 
 ### Is HTTPS
 
-This condition checker can be used to verify if a request uses HTTPS or not. To configure HttPlaceholder with HTTPS, read [configuration](CONFIG.md) (hint: it's not hard at all).
+This condition checker can be used to verify if a request uses HTTPS or not. To configure HttPlaceholder with HTTPS, read [configuration](#configuration).
 
 ```yml
 - id: ishttps-ok
@@ -1261,7 +1260,7 @@ In some cases, you might want to enforce which types of line endings are returne
 
 ## Scenario
 
-For more explanation about scenarios, go to [conditions](CONDITIONS.md). There are 2 response writers that are available for working with scenarios.
+For more explanation about scenarios, go to [conditions](#request-scenario). There are 2 response writers that are available for working with scenarios.
 
 ### Set scenario state
 
@@ -1654,7 +1653,7 @@ The [Postman collection](samples/requests.json) also contains REST API examples.
 
 The REST API accepts both JSON and YAML strings (when doing a POST or PUT). If you want to post a YAML string, set the `Content-Type` header to `application/x-yaml`, if you want to post a JSON string, set the `Content-Type` header to `application/json`. If you do a request where you expect a textual response, set the `Accept` header to `application/x-yaml` if you want to get YAML or `application/json` if you want to get JSON.
 
-If you have enabled authentication (see [config](CONFIG.md) for more information), you also need to provide an `Authorization` header with the correct basic authentication. So if, for example, the username is `user` and the password is `pass`, the following value should be used for the `Authorization` header: `Basic dXNlcjpwYXNz`. For every call in the REST API, a `401 Unauthorized` is returned if the authentication is incorrect.
+If you have enabled authentication (see [config](#configuration) for more information), you also need to provide an `Authorization` header with the correct basic authentication. So if, for example, the username is `user` and the password is `pass`, the following value should be used for the `Authorization` header: `Basic dXNlcjpwYXNz`. For every call in the REST API, a `401 Unauthorized` is returned if the authentication is incorrect.
 
 ## Stubs
 
@@ -1872,7 +1871,7 @@ Here are several settings you can tweak for the stub validation when adding stub
 httplaceholder --maximumExtraDurationMillisKey 10000
 ```
 
-This property can be used to configure how many milliseconds the "extraDuration" response writer (see [responses](RESPONSE.md)) can take. The default value is 60.000 (so 1 minute).
+This property can be used to configure how many milliseconds the "extraDuration" response writer (see [responses](#extra-duration)) can take. The default value is 60.000 (so 1 minute).
 
 ### Config JSON location
 
@@ -1964,11 +1963,11 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 
 # Management interface
 
-Besides being an HTTP stub and having a REST API to configure the stubs, HttPlaceholder also has a user interface to manage HttPlaceholder. This user interface talks to the [REST API](API.md).
+Besides being an HTTP stub and having a REST API to configure the stubs, HttPlaceholder also has a user interface to manage HttPlaceholder. This user interface talks to the [REST API](#rest-api).
 
 ## How to get there
 
-When you run the stub, you can just go to `http://placeholder/ph-ui`. If you've secured the API with [basic authentication](CONFIG.md), you need to log in first.
+When you run the stub, you can just go to `http://placeholder/ph-ui`. If you've secured the API with [basic authentication](#configuration), you need to log in first.
 
 ## Requests
 
