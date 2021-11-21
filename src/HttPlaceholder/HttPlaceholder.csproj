@@ -58,9 +58,6 @@
         <None Update="gui\**\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="guiv3\**\*.*">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
         <Content Include="ph-static\**\*.*">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

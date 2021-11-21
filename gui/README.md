@@ -1,4 +1,4 @@
-# guiv3
+# HttPlaceholder GUI
 
 ## Project setup
 ```

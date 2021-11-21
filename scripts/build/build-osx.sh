@@ -29,7 +29,6 @@ dotnet publish --configuration=release \
     
 # Copy GUI to dist dir
 cp -r $ROOT_DIR/gui/dist/. $BIN_DIR/gui
-cp -r $ROOT_DIR/guiv3/dist/. $BIN_DIR/guiv3
 
 # Copy install scripts to dist dir
 cp -r $INSTALL_SCRIPT_DIR/. $BIN_DIR

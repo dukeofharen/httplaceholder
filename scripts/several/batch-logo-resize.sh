@@ -3,7 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 MEDIA_ROOT="$DIR/../../media"
 BASE_LOGO="$MEDIA_ROOT/logo_square.png"
-PUBLIC_ROOT="$DIR/../../guiv3/public"
+PUBLIC_ROOT="$DIR/../../gui/public"
 
 # Android
 convert "$BASE_LOGO" -resize 192x192 "$PUBLIC_ROOT/img/icons/android-chrome-192x192.png"
