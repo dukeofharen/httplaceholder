@@ -85,14 +85,14 @@
         <input
           type="text"
           class="form-control"
-          placeholder="Filter on stub ID or URL..."
-          v-model="filter.urlStubIdFilter"
+          placeholder="Filter on stub ID..."
+          v-model="filter.stubFilter"
         />
         <button
           class="btn btn-danger fw-bold"
           type="button"
           title="Reset"
-          @click="filter.urlStubIdFilter = ''"
+          @click="filter.stubFilter = ''"
         >
           <em class="bi-x"></em>
         </button>
@@ -161,7 +161,7 @@ export default {
     }
 
     const filter = ref({
-      urlStubIdFilter: route.query.filter || savedFilter.urlStubIdFilter || "",
+      stubFilter: route.query.filter || savedFilter.stubFilter || "",
       selectedTenantName:
         route.query.tenant || savedFilter.selectedTenantName || "",
     });
@@ -175,10 +175,10 @@ export default {
         return 0;
       };
 
-      if (filter.value.urlStubIdFilter) {
+      if (filter.value.stubFilter) {
         stubsResult = stubsResult.filter((s) => {
           const stubId = s.stub.id.toLowerCase();
-          return stubId && stubId.includes(filter.value.urlStubIdFilter);
+          return stubId && stubId.includes(filter.value.stubFilter);
         });
       }
 

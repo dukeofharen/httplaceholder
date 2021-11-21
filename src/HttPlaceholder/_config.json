@@ -15,6 +15,7 @@
     "sqlServerConnectionString": "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123",
     "useInMemoryStorage": false,
     "enableUserInterface": true,
+    "useNewUi": false,
     "maximumExtraDurationMillisKey": 60000,
     "healthcheckOnRootUrl": false
 }

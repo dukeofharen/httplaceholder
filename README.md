@@ -5,7 +5,8 @@
 </h1>
 
 <div align="center">
-  HttPlaceholder
+  HttPlaceholder<br />
+  <em>Quickly stub away any HTTP service.</em>
   <br />
   <br />
   <a href="https://github.com/dukeofharen/httplaceholder/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
@@ -68,7 +69,9 @@ HttPlaceholder:
 
 - [.NET 5](https://dotnet.microsoft.com/apps/aspnet)
 - [Vue.js](https://vuejs.org/)
-- [Vuetify](https://vuetifyjs.com/en/)
+- [Bootstrap](https://getbootstrap.com/)
+- [CodeMirror](https://codemirror.net/)
+- [ImageSharp](https://sixlabors.com/products/imagesharp/)
 
 ## Getting Started
 
@@ -132,31 +135,37 @@ dotnet tool install --global httplaceholder
   ![](docs/img/httplaceholder_running.png)
   
 - Perform a specific HTTP call to HttPlaceholder so your provided response will be returned.
-  - For Linux / Mac (cURL needs to be installed): `curl "http://localhost:5000/users?id=12&filter=first_name" -D-`
-  - For Windows (uses Powershell): `(Invoke-WebRequest "http://localhost:5000/users?id=12&filter=first_name").RawContent`
+  - For Linux / Mac (cURL needs to be installed):
+  ```bash
+  curl "http://localhost:5000/users?id=12&filter=first_name" -D-
+  ```
+  - For Windows (uses Powershell):
+  ```powershell
+  (Invoke-WebRequest "http://localhost:5000/users?id=12&filter=first_name").RawContent
+  ```
   
 - You can view and inspect the performed requests in the user interface at <http://localhost:5000/ph-ui>.
 ![](docs/img/request_in_ui.png)
   
-For more sophisticated examples, go to the page [samples](docs/SAMPLES.md) to view samples for all supported HTTP condition checkers and response writers.
+For more sophisticated examples, go to the [samples](docs/docs.md#samples) to view samples for all supported HTTP condition checkers and response writers.
 
 ## Documentation
 
-* [Installation](docs/INSTALL.md)
-  * [Windows (and IIS)](docs/INSTALL-WINDOWS.md)
-  * [Linux](docs/INSTALL-LINUX.md)
-  * [Mac](docs/INSTALL-MAC.md)
-  * [Docker](docs/INSTALL-DOCKER.md)
-* [Getting started](docs/GETTING-STARTED.md)
-* [Stub samples](docs/SAMPLES.md)
-* [HttPlaceholder REST API](docs/API.md)
-* [Configuration](docs/CONFIG.md)
-* [Request conditions explained](docs/CONDITIONS.md)
-* [Response definitions explained](docs/RESPONSE.md)
-* [Management interface](docs/UI.md)
+- [Installation](docs/docs.md#installation)
+  - [Windows](docs/docs.md#windows)
+  - [Linux](docs/docs.md#linux)
+  - [Mac](docs/docs.md#mac)
+  - [Docker](docs/docs.md#docker)
+- [Getting started](docs/docs.md#getting-started)
+- [Stub samples](docs/docs.md#samples)
+- [REST API](docs/docs.md#rest-api)
+- [Configuration](docs/docs.md#configuration)
+- [Request conditions](docs/docs.md#request-conditions)
+- [Response writers](docs/docs.md#response-writers)
+- [Management interface](docs/docs.md#management-interface)
 
 ### Tools
-* [HttPlaceholder REST API client for .NET](docs/DOTNET_CLIENT.md)
+* [HttPlaceholder REST API client for .NET](docs/docs.md#httplaceholder-rest-api-client-for-net)
 
 ## Roadmap
 
