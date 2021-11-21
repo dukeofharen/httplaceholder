@@ -1845,14 +1845,6 @@ httplaceholder --enableUserInterface false
 
 If this property is set to false, the user interface won't appear when you go to http://httplaceholderhost:port/ph-ui. This might be handy in situations where you only want to deploy the HttPlaceholder application as API / stub engine.
 
-### Enable or disable new user interface (optional)
-
-A new user interface has been written using Vue 3 and plain Bootstrap. Currently, this new user interface is turned off by default, but can be turned on using this config flag.
-
-```bash
-httplaceholder --useNewUi true
-```
-
 ### Enable health check on root URL (optional)
 
 ```bash
@@ -1897,7 +1889,6 @@ If you just installed HttPlaceholder, a file called `_config.json` is available 
     "sqlServerConnectionString": "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123",
     "useInMemoryStorage": false,
     "enableUserInterface": true,
-    "useNewUi": false,
     "maximumExtraDurationMillisKey": 60000,
     "healthcheckOnRootUrl": false
 }

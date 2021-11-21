@@ -31,12 +31,11 @@ namespace HttPlaceholder
         public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, SettingsModel settings)
         {
             var enableUserInterface = settings?.Gui?.EnableUserInterface == true;
-            var useNewUi = settings?.Gui?.UseNewUi == true;
             app
                 .UseHttPlaceholder()
                 .UseOpenApi()
                 .UseSwaggerUi3()
-                .UseGui(enableUserInterface, useNewUi)
+                .UseGui(enableUserInterface)
                 .UsePhStatic()
                 .PreloadStubs(preloadStubs);
             app

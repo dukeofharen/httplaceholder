@@ -16,7 +16,6 @@
         public const string DefaultPfxPassword = "1234";
         public const bool UseHttps = true;
         public const bool EnableUserInterface = true;
-        public const bool UseNewUi = false;
         public const int DefaultOldRequestsQueueLength = 40;
         public const int DefaultMaximumExtraDuration = 60000;
 

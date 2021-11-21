@@ -115,13 +115,6 @@ namespace HttPlaceholder.Application.Configuration
         public const string EnableUserInterface = "enableUserInterface";
 
         [ConfigKey(
-            Description = "whether the new user interface (built in Vue 3) should be used. (default false)",
-            Example = "true",
-            ConfigPath = "Gui:UseNewUi",
-            IsBoolValue = true)]
-        public const string UseNewUi = "useNewUi";
-
-        [ConfigKey(
             Description =
                 "the number of milliseconds the 'extraDuration' response writer can make a request wait at most. Defaults to 1 minute (60.000 millis).",
             Example = "60000",
