@@ -272,8 +272,14 @@ HttPlaceholder supports HTTPS. See [configuration](#configuration) for more info
   ![](img/httplaceholder_running.png)
 
 - Perform a specific HTTP call to HttPlaceholder so your provided response will be returned.
-  - For Linux / Mac (cURL needs to be installed): `curl "http://localhost:5000/users?id=12&filter=first_name" -D-`
-  - For Windows (uses Powershell): `(Invoke-WebRequest "http://localhost:5000/users?id=12&filter=first_name").RawContent`
+  - For Linux / Mac (cURL needs to be installed):
+  ```bash
+  curl "http://localhost:5000/users?id=12&filter=first_name" -D-
+  ```
+  - For Windows (uses Powershell):
+  ```powershell
+  (Invoke-WebRequest "http://localhost:5000/users?id=12&filter=first_name").RawContent
+  ```
 
 - You can view and inspect the performed requests in the user interface at <http://localhost:5000/ph-ui>.
   ![](img/request_in_ui.png)
