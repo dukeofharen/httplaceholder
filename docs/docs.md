@@ -1,4 +1,3 @@
-TODO spell checking
 TODO new screenshots for UI_NEW
 TODO expand UI_NEW
 
@@ -952,7 +951,7 @@ If a request succeeds and a stub is found, the configured response will be retur
 
 ### Text response
 
-To return a plain text respone, use the "text" response writer. If no Content-Type header is set, the header will be set to "text/plain";
+To return a plain text response, use the "text" response writer. If no Content-Type header is set, the header will be set to "text/plain";
 
 ```yml
 - id: situation-03
@@ -1128,7 +1127,7 @@ The following properties can be set for the `image` response writer:
 - `backgroundColor`: the HEX value of the background color. By providing an additional transparency value, you can specify the transparency of the background. So, if you take the example above, `#ffa0d3ff` means the background is fully visible and `#ffa0d300` means the background is fully transparent.
 - `text`: the text that should be drawn in the image.
 - `fontSize`: the size of the drawn text.
-- `fontColor`: the HEX value of the text color. If you do not set this value, the text color will be the inverted value of `backgroundColor`, but since inverted grayscales might produce roughly the same color, you can also specify your own color here.
+- `fontColor`: the HEX value of the text color. If you do not set this value, the text color will be the inverted value of `backgroundColor`, but since inverted grayscale might produce roughly the same color, you can also specify your own color here.
 - `jpegQuality`: of course, only useful if `type` `jpeg` is used. Is `95` by default. `1` is worst and `100` is best quality.
 - `wordWrap`: if set to true, the text will be written across the image. Useful if your text is long. Is `false` by default.
 
@@ -1340,7 +1339,7 @@ The query string parser makes it possible to write request query string paramete
     text: ((query:response_text))
 ```
 
-Let's say you make the request `http://localhost:5000/dynamic-query.txt?response_text=RESPONSE!&response_header=HEADER!`. `((query:response_header))` will be replaced with `RESPONSE!` and `((query:response_text))` will be replaced with `HEADER!`. If no matching query paramter was found, the variable will be filled with an empty string.
+Let's say you make the request `http://localhost:5000/dynamic-query.txt?response_text=RESPONSE!&response_header=HEADER!`. `((query:response_header))` will be replaced with `RESPONSE!` and `((query:response_text))` will be replaced with `HEADER!`. If no matching query parameter was found, the variable will be filled with an empty string.
 
 ```yml
 - id: dynamic-encoded-query-example-txt
@@ -1645,7 +1644,7 @@ Finally, there is also a reverse proxy setting called `replaceRootUrl` (which is
 
 # REST API
 
-Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](configuration)). The REST API gives you access to four collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection and scenario collection.
+Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to four collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection and scenario collection.
 
 Click [here](https://github.com/dukeofharen/httplaceholder/releases/latest) if you want the swagger.json file. Using this swagger.json file, you can easily create a REST client for your favourite programming language (e.g. using a tool like [autorest](https://github.com/Azure/autorest)).
 
@@ -1851,7 +1850,7 @@ A new user interface has been written using Vue 3 and plain Bootstrap. Currently
 httplaceholder --useNewUi true
 ```
 
-### Enable healthcheck on root URL
+### Enable health check on root URL
 
 ```bash
 httplaceholder --healthcheckOnRootUrl
@@ -1935,7 +1934,7 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * File examples: [.yml](samples/05-base64-file.yml)
 * Basic authentication examples: [.yml](samples/06-basic-auth.yml)
 * Slow response examples: [.yml](samples/07-slow-response.yml)
-* Simple website examle: [.yml](samples/simple-site.yml)
+* Simple website example: [.yml](samples/simple-site.yml)
 * Temporary and permanent redirects: [.yml](samples/08-redirect.yml)
 * Validation on client IP: [.yml](samples/09-client-ip.yml)
 * Check on hostname: [.yml](samples/10-hostname.yml)
