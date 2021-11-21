@@ -6,7 +6,7 @@
 
 <div align="center">
   HttPlaceholder<br />
-  Quickly stub away any HTTP service.
+  <em>Quickly stub away any HTTP service.</em>
   <br />
   <br />
   <a href="https://github.com/dukeofharen/httplaceholder/issues/new?assignees=&labels=bug&template=01_BUG_REPORT.md&title=bug%3A+">Report a Bug</a>
