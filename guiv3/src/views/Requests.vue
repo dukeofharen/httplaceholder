@@ -25,7 +25,7 @@
         <input
           type="text"
           class="form-control"
-          placeholder="Filter on stub ID or URL..."
+          placeholder="Filter on stub ID, request ID or URL..."
           v-model="filter.urlStubIdFilter"
         />
         <button

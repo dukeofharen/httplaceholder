@@ -1,6 +1,3 @@
-TODO new screenshots for UI_NEW
-TODO expand UI_NEW
-
 # HttPlaceholder documentation
 
 - [Installation](#installation)
@@ -1972,15 +1969,52 @@ When you run the stub, you can just go to `http://placeholder/ph-ui`. If you've 
 
 On the requests page you can see all requests made to HttPlaceholder. It will show which URL was called and if a valid stub was found for the requests. You can also open a specific request and view the details of this request.
 
-![](img/requests_details_new.png)
+![](img/ui/requests_overview.png)
 
-You can also delete all requests here and filter all requests by a search term or tenant (category).
+You have several options here.
+
+- Refresh: fetches the requests from HttPlaceholder.
+- Delete all requests: as the name says, deletes all the requests from HttPlaceholder.
+- Filter on stub ID, request ID or URL: a filter search box where you can filter requests either on the executed stub ID, the request correlation ID or the URL.
+- Tenant / category name: a filter for filtering requests that are part of a specific tenant (see [tenants](#tenants)).
+
+### Request details
+
+When clicking on any of the requests, the request details will be displayed. You can view the actual request being made; the URL, the headers, the query parameters, the stubs that are matched etc.
+
+![](img/ui/request_details.png)
+
+You have several options here.
+
+- Create stub: This action allows you to create a stub based on the request. By clicking "Create stub", a stub form will be opened with prefilled request conditions based on this specific request. This allows you to quickly create a new stub for a situation where there is no stub yet.
+- Delete: deletes the current request
 
 ## Stubs
 
 On the stubs page you can see all stubs configured in HttPlaceholder. When you click on a stub, you'll see the stub configuration in YAML.
 
-![](img/stubs_details_new.png)
+![](img/ui/stubs_details.png)
+
+You have several options here.
+
+- Refresh: retrieves all stubs from HttPlaceholder.
+- Add stubs: opens a form where you can create new stubs.
+- Download stubs as YAML: downloads the current filtered selection of stubs as a YAML file. When no filter is provided, all stubs are downloaded.
+- Upload stubs: allows you to upload multiple YAML stub files.
+- Delete all stubs: as the name suggests, deletes ALL stubs from HttPlaceholder.
+- Disable stubs: disables the current filtered selection of stubs. If no filter is specified, all stubs are disabled.
+- Enable stubs: enables the current filtered selection of stubs. If no filter is specified, all stubs are enabled.
+- Delete stubs: deletes the current filtered selection of stubs. If no filter is specified, all stubs are deleted.
+- Filter on stub ID: filters the stub list on stub ID.
+- Tenant / category name: a filter for filtering stubs that are part of a specific tenant (see [tenants](#tenants)).
+
+When clicking on a stub, the stub YAML will be opened and you have a few more stub actions to work with.
+
+- Requests: shows the requests made for this stub.
+- Duplicate: copies the contents of the stub and opens them in a new form so you can create a new stub based on this stub.
+- Update: opens a form to update this stub.
+- Disable / enable: disables or enables this stub.
+- Delete: deletes this stub.
 
 ## Add stub(s)
 
@@ -1990,21 +2024,32 @@ You can add stubs in one of three ways: either by filling in the stub YAML, by f
 
 Click on the "Add stubs" button in the sidebar.
 
-![](img/stub_add_yaml_new.png)
+![](img/ui/stub_add_yaml.png)
 
 You can add a single stub here or you can provide multiple stubs in YAML format.
 
-![](img/stub_add_yaml_helpers_new.png)
+![](img/ui/stub_add_yaml_helpers.png)
 
 You can also click on "Add request / response value" so you can see what kind of values you can use in your request conditions and response definitions and insert them.
+
+Besides this, you can also choose between using the "Advanced editor" (based on [CodeMirror](https://codemirror.net/)) and "Simple editor". A simple editor was added because CodeMirror is not really suited for updating large stubs.
 
 ### Uploading stubs
 
 On the "Stubs" page, select the "Upload stubs" button.
 
-![](img/stub_upload_new.png)
+![](img/ui/stub_upload.png)
 
 You can select one or multiple .yaml files from your PC. The stubs will then be added to HttPlaceholder.
+
+## Settings
+
+On the settings page you can configure all kinds of settings for HttPlaceholder (only frontend settings for now).
+
+![](img/ui/settings.png)
+
+- Dark theme: turns the dark theme on or off.
+- Persist search filters on stubs and request screens: when this option is on, the filters on the stubs and is persisted between page navigations.
 
 # Tools and client libraries
 
