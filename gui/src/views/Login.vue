@@ -1,69 +1,88 @@
 <template>
-  <v-row v-on:keyup.enter="logIn">
-    <v-col>
-      <v-card class="elevation-12">
-        <v-card-text>
-          <v-form>
-            <v-text-field
-              label="Login"
-              name="login"
-              prepend-icon="mdi-account"
-              type="text"
-              v-model="username"
-            ></v-text-field>
-            <v-text-field
-              id="password"
-              label="Password"
-              name="password"
-              prepend-icon="mdi-lock"
-              type="password"
-              v-model="password"
-            ></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" @click="logIn">Login</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+  <div @keyup.enter="logIn">
+    <h1>Log in</h1>
+
+    <div class="row">
+      <div class="col-md-12 input-group">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Username"
+          v-model="username"
+        />
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-12 input-group">
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Password"
+          v-model="password"
+        />
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <button
+          class="btn btn-primary"
+          @click="logIn"
+          :disabled="!buttonEnabled"
+        >
+          Log in
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { toastError } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import { routeNames } from "@/router/routerConstants";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+import toastr from "toastr";
+import { resources } from "@/constants/resources";
+import { handleHttpError } from "@/utils/error";
+import { useRouter } from "vue-router";
 
 export default {
-  name: "login",
-  data() {
-    return {
-      username: "",
-      password: ""
-    };
-  },
-  methods: {
-    async logIn() {
-      if (this.username && this.password) {
-        try {
-          await this.$store.dispatch("users/authenticate", {
-            username: this.username,
-            password: this.password
-          });
-          await this.$router.push({ name: routeNames.requests });
-        } catch (e) {
-          if (e.response.status === 401) {
-            toastError(resources.credentialsIncorrect);
-          }
+  name: "Login",
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+
+    // Data
+    const username = ref("");
+    const password = ref("");
+
+    // Computed
+    const buttonEnabled = computed(() => !!username.value && !!password.value);
+
+    // Methods
+    const logIn = async () => {
+      if (!buttonEnabled.value) {
+        return;
+      }
+
+      try {
+        await store.dispatch("users/authenticate", {
+          username: username.value,
+          password: password.value,
+        });
+        await router.push({ name: "Requests" });
+      } catch (e) {
+        if (e.status === 401) {
+          toastr.error(resources.credentialsIncorrect);
+        } else {
+          handleHttpError(e);
         }
       }
-    }
-  }
+    };
+
+    return { username, password, logIn, buttonEnabled };
+  },
 };
 </script>
 
-<style scoped>
-.input-group input {
-  border-left: 0;
-}
-</style>
+<style scoped></style>

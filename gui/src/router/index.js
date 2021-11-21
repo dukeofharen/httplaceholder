@@ -1,59 +1,57 @@
-import Vue from "vue";
-import Router from "vue-router";
-import { routeNames } from "@/router/routerConstants";
+import { createRouter, createWebHashHistory } from "vue-router";
+import store from "@/store";
 
-Vue.use(Router);
+const routes = [
+  {
+    path: "/",
+    name: "Home",
+    redirect: "/requests",
+  },
+  {
+    path: "/requests",
+    name: "Requests",
+    component: () =>
+      import(/* webpackChunkName: "requests" */ "../views/Requests.vue"),
+  },
+  {
+    path: "/stubs",
+    name: "Stubs",
+    component: () =>
+      import(/* webpackChunkName: "stubs" */ "../views/Stubs.vue"),
+  },
+  {
+    path: "/stubForm/:stubId?",
+    name: "StubForm",
+    component: () =>
+      import(/* webpackChunkName: "stubForm" */ "../views/StubForm.vue"),
+  },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: () =>
+      import(/* webpackChunkName: "settings" */ "../views/Settings.vue"),
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+  },
+];
 
-export default new Router({
-  routes: [
-    {
-      path: "/",
-      name: routeNames.home,
-      redirect: { name: "requests" }
-    },
-    {
-      path: "/requests",
-      name: routeNames.requests,
-      component: () =>
-        import(/* webpackChunkName: "requests" */ "@/views/Requests.vue")
-    },
-    {
-      path: "/stubs",
-      name: routeNames.stubs,
-      component: () =>
-        import(/* webpackChunkName: "stubs" */ "@/views/Stubs.vue")
-    },
-    {
-      path: "/login",
-      name: routeNames.login,
-      component: () =>
-        import(/* webpackChunkName: "login" */ "@/views/Login.vue")
-    },
-    {
-      path: "/uploadStub",
-      name: routeNames.uploadStub,
-      component: () =>
-        import(/* webpackChunkName: "addStub" */ "@/views/UploadStub.vue")
-    },
-    {
-      path: "/stubForm/:stubId?",
-      name: routeNames.stubForm,
-      component: () =>
-        import(/* webpackChunkName: "stubForm" */ "@/views/StubForm.vue")
-    },
-    {
-      path: "/downloadStubs",
-      name: routeNames.downloadStubs,
-      component: () =>
-        import(
-          /* webpackChunkName: "downloadStubs" */ "@/views/DownloadStubs.vue"
-        )
-    },
-    {
-      path: "/settings",
-      name: routeNames.settings,
-      component: () =>
-        import(/* webpackChunkName: "settings" */ "@/views/Settings.vue")
-    }
-  ]
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes,
 });
+
+router.beforeEach((to, _, next) => {
+  const authEnabled = store.getters["metadata/authenticationEnabled"];
+  const authenticated = store.getters["users/getAuthenticated"];
+  if (authEnabled && !authenticated && to.name !== "Login") {
+    next({ name: "Login" });
+  } else {
+    next();
+  }
+});
+
+export default router;

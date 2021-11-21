@@ -1,45 +1,31 @@
-import createInstance from "@/axios/axiosInstanceFactory";
-import { FeatureFlagType } from "@/models/enums/featureFlagType";
+import { get } from "@/utils/api";
+import { FeatureFlagType } from "@/constants/featureFlagType";
 
 const state = () => ({
   metadata: {
     version: "",
-    variableHandlers: []
+    variableHandlers: [],
   },
-  authenticationEnabled: false
+  authenticationEnabled: false,
 });
 
-const checkFeature = feature =>
-  new Promise((resolve, reject) =>
-    createInstance()
-      .get(`ph-api/metadata/features/${feature}`)
-      .then(response => {
-        resolve(response.data);
-      })
-      .catch(error => reject(error))
-  );
+const checkFeature = (feature) => get(`/ph-api/metadata/features/${feature}`);
 
 const actions = {
   getMetadata(store) {
-    return new Promise((resolve, reject) =>
-      createInstance()
-        .get("ph-api/metadata")
-        .then(response => {
-          resolve(response.data);
-          store.commit("storeMetadata", response.data);
-        })
-        .catch(error => reject(error))
-    );
-  },
-  async featureIsEnabled(store, feature) {
-    return (await checkFeature(feature)).enabled;
+    return get("/ph-api/metadata")
+      .then((response) => {
+        store.commit("storeMetadata", response);
+        return Promise.resolve(response);
+      })
+      .catch((error) => Promise.reject(error));
   },
   async checkAuthenticationIsEnabled(store) {
-    store.commit(
-      "storeAuthenticationEnabled",
-      (await checkFeature(FeatureFlagType.Authentication)).enabled
-    );
-  }
+    const authEnabled = (await checkFeature(FeatureFlagType.Authentication))
+      .enabled;
+    store.commit("storeAuthenticationEnabled", authEnabled);
+    return authEnabled;
+  },
 };
 
 const mutations = {
@@ -48,13 +34,13 @@ const mutations = {
   },
   storeAuthenticationEnabled(state, enabled) {
     state.authenticationEnabled = enabled;
-  }
+  },
 };
 
 const getters = {
-  getAuthenticationEnabled(state) {
+  authenticationEnabled(state) {
     return state.authenticationEnabled;
-  }
+  },
 };
 
 export default {
@@ -62,5 +48,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

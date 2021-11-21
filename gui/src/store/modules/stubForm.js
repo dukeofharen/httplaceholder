@@ -1,49 +1,47 @@
 import yaml from "js-yaml";
-import { toastError } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import { defaultValues, responseBodyTypes } from "@/shared/stubFormResources";
+import toastr from "toastr";
+import { resources } from "@/constants/resources";
+import {
+  defaultValues,
+  responseBodyTypes,
+} from "@/constants/stubFormResources";
 
-const parseInput = state => {
+const parseInput = (state) => {
   try {
     return yaml.load(state.input);
   } catch (e) {
-    toastError(resources.errorDuringParsingOfYaml.format(e));
+    toastr.error(resources.errorDuringParsingOfYaml.format(e));
     return null;
   }
 };
 
-const handle = func => {
+const handle = (func) => {
   try {
     return func();
   } catch (e) {
-    toastError(resources.errorDuringParsingOfYaml.format(e));
+    toastr.error(resources.errorDuringParsingOfYaml.format(e));
     return null;
   }
 };
 
 const state = () => ({
   input: "",
-  currentSelectedFormHelper: ""
+  inputHasMultipleStubs: false,
+  currentSelectedFormHelper: "",
 });
 
 const actions = {};
 
 const mutations = {
-  setInput(state, input) {
-    state.input = input;
-  },
-  clearForm(state, input) {
-    if (!input) {
-      input = "";
-    }
-    state.input = input;
-    state.currentSelectedFormHelper = "";
-  },
   openFormHelper(state, key) {
     state.currentSelectedFormHelper = key;
   },
   closeFormHelper(state) {
     state.currentSelectedFormHelper = "";
+  },
+  setInput(state, input) {
+    state.input = input;
+    state.inputHasMultipleStubs = /^-/gm.test(input);
   },
   setDefaultDescription(state) {
     handle(() => {
@@ -115,7 +113,7 @@ const mutations = {
 
         parsed.conditions.url.query = {
           ...parsed.conditions.url.query,
-          ...defaultValues.query
+          ...defaultValues.query,
         };
         state.input = yaml.dump(parsed);
       }
@@ -166,7 +164,7 @@ const mutations = {
 
         parsed.conditions.headers = {
           ...parsed.conditions.headers,
-          ...defaultValues.requestHeaders
+          ...defaultValues.requestHeaders,
         };
         state.input = yaml.dump(parsed);
       }
@@ -322,6 +320,15 @@ const mutations = {
       }
     });
   },
+  setScenario(state, scenario) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        parsed.scenario = scenario;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
   setStatusCode(state, code) {
     handle(() => {
       const parsed = parseInput(state);
@@ -382,15 +389,14 @@ const mutations = {
           parsed.response = {};
         }
 
-        if (!parsed.response.headers) {
-          parsed.response.headers = {};
+        if (parsed.response.headers) {
+          const key = Object.keys(parsed.response.headers).find(
+            (k) => k.toLowerCase().trim() === "content-type"
+          );
+          delete parsed.response.headers[key];
         }
 
-        const key = Object.keys(parsed.response.headers).find(
-          k => k.toLowerCase().trim() === "content-type"
-        );
-        delete parsed.response.headers[key];
-        parsed.response.headers["Content-Type"] = contentType;
+        parsed.response.contentType = contentType;
         state.input = yaml.dump(parsed);
       }
     });
@@ -409,7 +415,7 @@ const mutations = {
 
         parsed.response.headers = {
           ...parsed.response.headers,
-          ...defaultValues.responseHeaders
+          ...defaultValues.responseHeaders,
         };
         state.input = yaml.dump(parsed);
       }
@@ -480,7 +486,12 @@ const mutations = {
           parsed.response = {};
         }
 
-        parsed.response.enableDynamicMode = value;
+        if (value) {
+          parsed.response.enableDynamicMode = value;
+        } else {
+          delete parsed.response.enableDynamicMode;
+        }
+
         state.input = yaml.dump(parsed);
       }
     });
@@ -532,30 +543,121 @@ const mutations = {
         state.input = yaml.dump(parsed);
       }
     });
-  }
+  },
+  setDefaultMinHits(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.minHits = defaultValues.minHits;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultMaxHits(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.maxHits = defaultValues.maxHits;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultExactHits(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.exactHits = defaultValues.exactHits;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultScenarioState(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.conditions) {
+          parsed.conditions = {};
+        }
+
+        if (!parsed.conditions.scenario) {
+          parsed.conditions.scenario = {};
+        }
+
+        parsed.conditions.scenario.scenarioState = defaultValues.scenarioState;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setClearState(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        if (!parsed.response.scenario) {
+          parsed.response.scenario = {};
+        }
+
+        parsed.response.scenario.clearState = true;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
+  setDefaultNewScenarioState(state) {
+    handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          parsed.response = {};
+        }
+
+        if (!parsed.response.scenario) {
+          parsed.response.scenario = {};
+        }
+
+        parsed.response.scenario.setScenarioState =
+          defaultValues.newScenarioState;
+        state.input = yaml.dump(parsed);
+      }
+    });
+  },
 };
 
 const getters = {
   getInput(state) {
     return state.input;
   },
+  getInputLength(state) {
+    return state.input.length;
+  },
   getCurrentSelectedFormHelper(state) {
     return state.currentSelectedFormHelper;
-  },
-  getResponseBody(state) {
-    return handle(() => {
-      const parsed = parseInput(state);
-      if (parsed) {
-        if (!parsed.response) {
-          return "";
-        }
-
-        const res = parsed.response;
-        return res.text || res.json || res.xml || res.html || res.base64 || "";
-      }
-
-      return "";
-    });
   },
   getResponseBodyType(state) {
     return handle(() => {
@@ -582,6 +684,21 @@ const getters = {
       return responseBodyTypes.text;
     });
   },
+  getResponseBody(state) {
+    return handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        if (!parsed.response) {
+          return "";
+        }
+
+        const res = parsed.response;
+        return res.text || res.json || res.xml || res.html || res.base64 || "";
+      }
+
+      return "";
+    });
+  },
   getDynamicMode(state) {
     return handle(() => {
       const parsed = parseInput(state);
@@ -595,7 +712,20 @@ const getters = {
 
       return false;
     });
-  }
+  },
+  getStubId(state) {
+    return handle(() => {
+      const parsed = parseInput(state);
+      if (parsed) {
+        return parsed.id;
+      }
+
+      return "";
+    });
+  },
+  getInputHasMultipleStubs(state) {
+    return state.inputHasMultipleStubs;
+  },
 };
 
 export default {
@@ -603,5 +733,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

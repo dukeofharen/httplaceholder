@@ -1,34 +1,26 @@
-import createInstance from "@/axios/axiosInstanceFactory";
-import {
-  clearUserToken,
-  getUserToken,
-  saveUserToken
-} from "@/utils/sessionUtil";
+import { clearUserToken, getUserToken, saveUserToken } from "@/utils/session";
+import { get } from "@/utils/api";
 
 const token = getUserToken();
 const getUser = (username, password, commit) => {
   const token = btoa(`${username}:${password}`);
-  return createInstance()
-    .get(`ph-api/users/${username}`, {
-      headers: {
-        Authorization: `Basic ${token}`
-      }
-    })
-    .then(() => commit("storeUserToken", token));
+  return get(`/ph-api/users/${username}`, {
+    headers: {
+      Authorization: `Basic ${token}`,
+    },
+  }).then(() => commit("storeUserToken", token));
 };
 
 const state = () => ({
-  userToken: token || ""
+  userToken: token || "",
 });
 
 const actions = {
   authenticate({ commit }, payload) {
-    return new Promise((resolve, reject) =>
-      getUser(payload.username, payload.password, commit)
-        .then(() => resolve())
-        .catch(error => reject(error))
-    );
-  }
+    return getUser(payload.username, payload.password, commit)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };
 
 const mutations = {
@@ -40,9 +32,13 @@ const mutations = {
       saveUserToken(token);
     }
   },
-  storeAuthRequired(state, authRequired) {
-    state.authRequired = authRequired;
-  }
+  logOut(state) {
+    clearUserToken();
+    state.userToken = null;
+    document.cookie = `HttPlaceholderLoggedin=;expires=${new Date(
+      0
+    ).toUTCString()}`;
+  },
 };
 
 const getters = {
@@ -51,7 +47,7 @@ const getters = {
   },
   getUserToken(state) {
     return state.userToken;
-  }
+  },
 };
 
 export default {
@@ -59,5 +55,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

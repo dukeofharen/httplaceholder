@@ -1,65 +1,69 @@
 <template>
-  <v-app id="keep">
-    <MenuBar />
-    <NavDrawer />
-
-    <v-main>
-      <v-container fluid class="lighten-4">
-        <router-view :key="$route.fullPath"></router-view>
-      </v-container>
-    </v-main>
-  </v-app>
+  <div class="container-fluid">
+    <div class="row flex-nowrap">
+      <Sidebar />
+      <div class="col py-3 main-body">
+        <router-view />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import { routeNames } from "@/router/routerConstants";
-import { getDarkThemeEnabled } from "@/utils/sessionUtil";
-import MenuBar from "@/components/navigation/MenuBar";
-import NavDrawer from "@/components/navigation/NavDrawer";
-import router from "@/router";
+import Sidebar from "@/components/Sidebar";
+import { useStore } from "vuex";
+import { computed, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
-  name: "app",
-  components: { NavDrawer, MenuBar },
-  beforeMount() {
-    this.setTheme();
-  },
-  async created() {
-    this.metadata = await this.$store.dispatch("metadata/getMetadata");
-    document.title = `HttPlaceholder - v${this.metadata.version}`;
+  components: { Sidebar },
+  setup() {
+    const store = useStore();
+    const router = useRouter();
 
-    const authEnabled = await this.$store.dispatch(
-      "metadata/checkAuthenticationIsEnabled"
-    );
-    if (!this.$store.getters["users/getAuthenticated"] && authEnabled) {
-      await router.push({ name: routeNames.login });
-    }
-  },
-  data() {
-    return {
-      routeNames
-    };
-  },
-  computed: {
-    darkTheme() {
-      return this.$store.getters["general/getDarkTheme"];
-    }
-  },
-  methods: {
-    setTheme() {
-      const darkThemeEnabled = getDarkThemeEnabled();
-      if (darkThemeEnabled) {
-        this.$store.commit("general/storeDarkTheme", darkThemeEnabled);
+    // Functions
+    const setDarkTheme = (darkTheme) => {
+      const bodyElement = document.body;
+      const darkName = "dark-theme";
+      const lightName = "light-theme";
+      if (darkTheme) {
+        bodyElement.classList.remove(lightName);
+        bodyElement.classList.add(darkName);
+      } else {
+        bodyElement.classList.remove(darkName);
+        bodyElement.classList.add(lightName);
       }
-    },
-    flipDrawerIsOpen() {
-      this.$store.commit("general/flipDrawerIsOpen");
-    }
+    };
+
+    // Computed
+    const darkTheme = computed(() => store.getters["general/getDarkTheme"]);
+
+    // Watch
+    watch(darkTheme, (darkTheme) => setDarkTheme(darkTheme));
+
+    // Lifecycle
+    onMounted(async () => {
+      const darkThemeEnabled = store.getters["general/getDarkTheme"];
+      setDarkTheme(darkThemeEnabled);
+      store
+        .dispatch("metadata/getMetadata")
+        .then((m) => (document.title = `HttPlaceholder - v${m.version}`));
+
+      const authEnabled = await store.dispatch(
+        "metadata/checkAuthenticationIsEnabled"
+      );
+      if (!store.getters["users/getAuthenticated"] && authEnabled) {
+        await router.push({ name: "Login" });
+      }
+    });
   },
-  watch: {
-    darkTheme(darkTheme) {
-      this.$vuetify.theme.dark = darkTheme;
-    }
-  }
 };
 </script>
+
+<style lang="scss">
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif !important;
+}
+</style>

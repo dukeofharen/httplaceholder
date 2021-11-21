@@ -18,9 +18,7 @@ mkdir $DIST_DIR
 
 # Copy GUI to src dir
 cp -r $ROOT_DIR/gui/dist/. $ROOT_DIR/src/HttPlaceholder/gui
-cp -r $ROOT_DIR/guiv3/dist/. $ROOT_DIR/src/HttPlaceholder/guiv3
 rm $ROOT_DIR/src/HttPlaceholder/gui/.guiwillbeplacedhere
-rm $ROOT_DIR/src/HttPlaceholder/guiv3/.guiwillbeplacedhere
 
 # Pack tool
 cd src/HttPlaceholder

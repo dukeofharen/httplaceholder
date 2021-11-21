@@ -1,165 +1,203 @@
 <template>
-  <v-row>
-    <v-col>
-      <h1>Requests</h1>
-      <v-row>
-        <v-col class="buttons">
-          <v-btn title="Refresh" @click="initialize" color="success"
-            >Refresh
-          </v-btn>
-          <v-btn
-            title="Delete all requests"
-            @click.stop="deleteAllDialog = true"
-            color="error"
-            >Delete all requests
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-text-field
-            v-model="searchTerm"
-            placeholder="Filter on stub ID or URL..."
-            clearable
-          ></v-text-field>
-          <v-select
-            :items="tenantNames"
-            placeholder="Select stub tenant / category name for the stubs you would like to see the requests for..."
-            v-model="selectedTenantName"
-            clearable
-          ></v-select>
-        </v-col>
-      </v-row>
-      <v-expansion-panels>
-        <Request
-          v-for="request in filteredRequests"
-          :key="request.correlationId"
-          :overviewRequest="request"
-          v-on:updated="onUpdated"
-        ></Request>
-      </v-expansion-panels>
-      <v-dialog v-model="deleteAllDialog" max-width="290">
-        <v-card>
-          <v-card-title class="headline">Delete all requests?</v-card-title>
-          <v-card-text>The requests can't be recovered.</v-card-text>
-          <v-card-actions>
-            <div class="flex-grow-1"></div>
-            <v-btn color="green darken-1" text @click="deleteAllDialog = false"
-              >No
-            </v-btn>
-            <v-btn color="green darken-1" text @click="deleteAllRequests"
-              >Yes
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-col>
-  </v-row>
+  <div>
+    <h1>Requests</h1>
+    <div class="col-md-12 mb-3">
+      <button type="button" class="btn btn-success me-2" @click="loadRequests">
+        Refresh
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger"
+        @click="showDeleteAllRequestsModal = true"
+      >
+        Delete all requests
+      </button>
+      <modal
+        title="Delete all requests?"
+        bodyText="The requests can't be recovered."
+        :yes-click-function="deleteAllRequests"
+        :show-modal="showDeleteAllRequestsModal"
+        @close="showDeleteAllRequestsModal = false"
+      />
+    </div>
+    <div class="col-md-12 mb-3">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Filter on stub ID, request ID or URL..."
+          v-model="filter.urlStubIdFilter"
+        />
+        <button
+          class="btn btn-danger fw-bold"
+          type="button"
+          title="Reset"
+          @click="filter.urlStubIdFilter = ''"
+        >
+          <em class="bi-x"></em>
+        </button>
+      </div>
+      <div v-if="tenants.length" class="input-group">
+        <select class="form-select" v-model="filter.selectedTenantName">
+          <option value="" selected>
+            Select stub tenant / category name...
+          </option>
+          <option v-for="tenant of tenants" :key="tenant">{{ tenant }}</option>
+        </select>
+        <button
+          class="btn btn-danger fw-bold"
+          type="button"
+          title="Reset"
+          @click="filter.selectedTenantName = ''"
+        >
+          <em class="bi-x"></em>
+        </button>
+      </div>
+    </div>
+    <accordion>
+      <Request
+        v-for="request of filteredRequests"
+        :key="request.correlationId"
+        :overview-request="request"
+        @deleted="loadRequests"
+      />
+    </accordion>
+  </div>
 </template>
 
 <script>
-import Request from "@/components/requests/Request";
-import { HubConnectionBuilder } from "@aspnet/signalr";
-import { toastSuccess } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import Request from "@/components/request/Request";
+import { resources } from "@/constants/resources";
+import toastr from "toastr";
+import { HubConnectionBuilder } from "@microsoft/signalr";
+import { handleHttpError } from "@/utils/error";
+import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
 
 export default {
-  name: "requests",
-  data() {
-    return {
-      requests: [],
-      tenantNames: [],
-      searchTerm: "",
-      selectedTenantName: "",
-      connection: {},
-      deleteAllDialog: false
+  name: "Requests",
+  components: { Request },
+  setup() {
+    const store = useStore();
+    const route = useRoute();
+
+    // Data
+    const requests = ref([]);
+    const tenants = ref([]);
+    const showDeleteAllRequestsModal = ref(false);
+    let signalrConnection = null;
+
+    const saveSearchFilters = store.getters["general/getSaveSearchFilters"];
+    let savedFilter = {};
+    if (saveSearchFilters) {
+      savedFilter = getRequestFilterForm() || {};
+    }
+
+    const filter = ref({
+      urlStubIdFilter: route.query.filter || savedFilter.urlStubIdFilter || "",
+      selectedTenantName:
+        route.query.tenant || savedFilter.selectedTenantName || "",
+    });
+
+    // Functions
+    const initializeSignalR = () => {
+      signalrConnection = new HubConnectionBuilder()
+        .withUrl("/requestHub")
+        .build();
+      signalrConnection.on("RequestReceived", (request) =>
+        requests.value.unshift(request)
+      );
+      signalrConnection
+        .start()
+        .then(() => {})
+        .catch((err) => console.log(err.toString()));
     };
-  },
-  components: {
-    Request
-  },
-  async created() {
-    this.initializeSignalR();
-    await this.initialize(true);
-  },
-  destroyed() {
-    this.connection.stop();
-  },
-  computed: {
-    filteredRequests() {
-      let result = this.requests;
-      if (this.searchTerm) {
-        result = result.filter(r => {
-          const searchTerm = this.searchTerm.toLowerCase();
+
+    // Computed
+    const filteredRequests = computed(() => {
+      let result = requests.value;
+      if (filter.value.urlStubIdFilter) {
+        const searchTerm = filter.value.urlStubIdFilter.toLowerCase().trim();
+        result = result.filter((r) => {
           const stubId = r.executingStubId
             ? r.executingStubId.toLowerCase()
             : "";
           const url = r.url.toLowerCase();
+          const correlationId = (r.correlationId || "").toLowerCase();
           return (
-            (stubId && stubId.includes(searchTerm)) || url.includes(searchTerm)
+            (stubId && stubId.includes(searchTerm)) ||
+            url.includes(searchTerm) ||
+            correlationId === searchTerm
           );
         });
       }
 
-      if (this.selectedTenantName) {
-        result = result.filter(r => r.stubTenant === this.selectedTenantName);
+      if (filter.value.selectedTenantName) {
+        result = result.filter(
+          (r) => r.stubTenant === filter.value.selectedTenantName
+        );
       }
 
       return result;
-    }
-  },
-  methods: {
-    async initialize(initSearch) {
-      const getRequestsPromise = this.$store.dispatch(
-        "requests/getRequestsOverview"
-      );
-      const getTenantNamesPromise = this.$store.dispatch(
-        "tenants/getTenantNames"
-      );
-      this.requests = await getRequestsPromise;
-      this.tenantNames = await getTenantNamesPromise;
+    });
 
-      if (initSearch) {
-        this.initializeSearch();
+    // Methods
+    const loadRequests = async () => {
+      try {
+        requests.value = await store.dispatch("requests/getRequestsOverview");
+      } catch (e) {
+        handleHttpError(e);
       }
-    },
-    initializeSearch() {
-      this.searchTerm = this.$route.query.searchTerm;
-      this.selectedTenantName = this.$route.query.stubTenant;
-    },
-    async deleteAllRequests() {
-      this.deleteAllDialog = false;
-      await this.$store.dispatch("requests/clearRequests");
-      toastSuccess(resources.requestsDeletedSuccessfully);
-      this.requests = [];
-    },
-    initializeSignalR() {
-      this.connection = new HubConnectionBuilder()
-        .withUrl("/requestHub")
-        .build();
-      this.connection.on("RequestReceived", request =>
-        this.requests.unshift(request)
-      );
-      this.connection
-        .start()
-        .then(() => {})
-        .catch(err => console.error(err.toString()));
-    },
-    async onUpdated() {
-      await this.initialize();
-    }
+    };
+    const loadTenantNames = async () => {
+      try {
+        tenants.value = await store.dispatch("tenants/getTenantNames");
+      } catch (e) {
+        handleHttpError(e);
+      }
+    };
+    const deleteAllRequests = async () => {
+      try {
+        await store.dispatch("requests/clearRequests");
+        toastr.success(resources.requestsDeletedSuccessfully);
+        await loadRequests();
+      } catch (e) {
+        handleHttpError(e);
+      }
+    };
+    const filterChanged = () => {
+      if (store.getters["general/getSaveSearchFilters"]) {
+        setRequestFilterForm(filter.value);
+      }
+    };
+
+    // Watch
+    watch(filter, () => filterChanged(), { deep: true });
+
+    // Lifecycle
+    onMounted(async () => {
+      await Promise.all([loadRequests(), loadTenantNames()]);
+      initializeSignalR();
+    });
+    onUnmounted(() => {
+      if (signalrConnection) {
+        signalrConnection.stop();
+      }
+    });
+
+    return {
+      requests,
+      loadRequests,
+      deleteAllRequests,
+      filteredRequests,
+      tenants,
+      filter,
+      showDeleteAllRequestsModal,
+    };
   },
-  watch: {
-    $route() {
-      this.initializeSearch();
-    }
-  }
 };
 </script>
 
-<style scoped>
-.buttons > button {
-  margin-right: 10px;
-  margin-top: 10px;
-}
-</style>
+<style scoped></style>

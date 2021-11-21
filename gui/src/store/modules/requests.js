@@ -1,41 +1,28 @@
-import createInstance from "@/axios/axiosInstanceFactory";
+import { del, get } from "@/utils/api";
 
 const state = () => ({});
 
 const actions = {
   getRequestsOverview() {
-    return new Promise((resolve, reject) =>
-      createInstance()
-        .get("ph-api/requests/overview")
-        .then(response => resolve(response.data))
-        .catch(error => reject(error))
-    );
+    return get("/ph-api/requests/overview")
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
   },
-  /* eslint no-empty-pattern: 0 */
-  getRequest({}, correlationId) {
-    return new Promise((resolve, reject) =>
-      createInstance()
-        .get(`ph-api/requests/${correlationId}`)
-        .then(response => resolve(response.data))
-        .catch(error => reject(error))
-    );
+  getRequest(_, correlationId) {
+    return get(`/ph-api/requests/${correlationId}`)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
   },
   clearRequests() {
-    return new Promise((resolve, reject) =>
-      createInstance()
-        .delete("ph-api/requests")
-        .then(() => resolve())
-        .catch(error => reject(error))
-    );
+    return del("/ph-api/requests")
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
   },
-  deleteRequest({}, correlationId) {
-    return new Promise((resolve, reject) =>
-      createInstance()
-        .delete(`ph-api/requests/${correlationId}`)
-        .then(response => resolve(response.data))
-        .catch(error => reject(error))
-    );
-  }
+  deleteRequest(_, correlationId) {
+    return del(`/ph-api/requests/${correlationId}`)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };
 
 const mutations = {};
@@ -47,5 +34,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

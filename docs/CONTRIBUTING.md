@@ -29,7 +29,7 @@ To set up a development environment, please follow these steps:
 ### Setting up development environment for the user interface
 
 1. Make sure [Node.js](https://nodejs.org/en/) is installed.
-1. In your terminal, go to the folder `gui` (the "classic" UI that will be deprecated soon) or the `guiv3` folder (the new Vue 3 UI).
+1. In your terminal, go to the folder `gui` folder.
 1. Execute the command `npm install`. This will download all necessary packages for the frontend application.
 1. When everything is downloaded, executed the command `npm run serve`. The application will be built and can be reached on <http://localhost:9999> ("classic" UI) or <http://localhost:10001> (new UI).
 1. When developing, make sure HttPlaceholder itself is also running (see the previous paragraph).

@@ -1,34 +1,32 @@
-import { setDarkThemeEnabled } from "@/utils/sessionUtil";
+import { setSettings, getSettings } from "@/utils/session";
 
+const savedSettings = getSettings();
 const state = () => ({
   settings: {
-    darkTheme: false
+    darkTheme: savedSettings?.darkTheme || false,
+    saveSearchFilters: savedSettings?.saveSearchFilters || true,
   },
-  drawer: true
 });
 
 const actions = {};
 
 const mutations = {
-  storeDarkTheme(state, darkTheme) {
-    state.settings.darkTheme = darkTheme;
-    setDarkThemeEnabled(darkTheme);
+  storeSettings(state, settings) {
+    state.settings = settings;
+    setSettings(settings);
   },
-  setDrawerState(state, drawerState) {
-    state.drawer = drawerState;
-  },
-  flipDrawerIsOpen(state) {
-    state.drawer = !state.drawer;
-  }
 };
 
 const getters = {
+  getSettings(state) {
+    return state.settings;
+  },
   getDarkTheme(state) {
     return state.settings.darkTheme;
   },
-  getDrawerIsOpen(state) {
-    return state.drawer;
-  }
+  getSaveSearchFilters(state) {
+    return state.settings.saveSearchFilters;
+  },
 };
 
 export default {
@@ -36,5 +34,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

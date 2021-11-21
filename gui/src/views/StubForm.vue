@@ -1,206 +1,169 @@
 <template>
-  <v-row v-shortkey="['ctrl', 's']" @shortkey="save">
-    <v-col>
-      <h1>{{ title }}</h1>
-      <v-card class="mt-3 mb-3">
-        <v-card-text class="ml-4">
-          Fill in the stub below in YAML format and click on "Save". For
-          examples, visit
-          <a
-            href="https://github.com/dukeofharen/httplaceholder"
-            target="_blank"
-            >https://github.com/dukeofharen/httplaceholder</a
-          >.
-        </v-card-text>
-      </v-card>
-      <v-card v-if="showFormHelperSelector" class="mt-3 mb-3 overflow-hidden">
-        <v-card-text>
-          <FormHelperSelector />
-        </v-card-text>
-      </v-card>
-      <v-card class="mt-3 mb-3">
-        <v-card-text>
-          <v-row>
-            <v-col class="ml-4 mr-2">
-              <v-btn
-                @click="editor = editorType.codemirror"
-                class="mr-2"
-                :color="editor === editorType.codemirror ? 'primary' : ''"
-                small
-                outlined
-                >Editor with highlighting
-              </v-btn>
-              <v-btn
-                @click="editor = editorType.simple"
-                :color="editor === editorType.simple ? 'primary' : ''"
-                small
-                outlined
-                >Simple editor
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-      <v-card class="editor mt-3 mb-3">
-        <v-card-actions>
-          <codemirror
-            v-model="input"
-            :options="cmOptions"
-            v-if="
-              editor === editorType.notSet || editor === editorType.codemirror
-            "
-          ></codemirror>
-          <v-textarea
-            v-model="input"
-            rows="11"
-            v-if="editor === editorType.simple"
-            wrap="soft"
-            class="simple-editor"
-          ></v-textarea>
-        </v-card-actions>
-      </v-card>
-      <v-row>
-        <v-col cols="12">
-          <v-btn color="success mr-2" @click="save">Save</v-btn>
-          <v-btn color="error" @click="resetDialog = true">Reset</v-btn>
-        </v-col>
-      </v-row>
-    </v-col>
-    <v-dialog v-model="resetDialog" max-width="290">
-      <v-card>
-        <v-card-title class="headline">Reset to defaults?</v-card-title>
-        <v-card-actions>
-          <v-btn color="green darken-1" text @click="resetDialog = false"
-            >No
-          </v-btn>
-          <v-btn color="green darken-1" text @click="resetForm">Yes</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-row>
+  <h1>{{ title }}</h1>
+
+  <div class="row">
+    <div class="col-md-12">
+      Fill in the stub below in YAML format and click on "Save". For examples,
+      visit
+      <a href="https://github.com/dukeofharen/httplaceholder" target="_blank"
+        >https://github.com/dukeofharen/httplaceholder</a
+      >.
+    </div>
+  </div>
+
+  <FormHelperSelector v-if="showFormHelperSelector" />
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <button
+        class="btn btn-outline btn-sm me-2"
+        :class="{
+          'btn-outline-success': editorType === editorTypes.codemirror,
+        }"
+        @click="selectedEditorType = editorTypes.codemirror"
+        title="Use advanced editor for editing the stub. The editor has code highlighting but is not suited for updating large stubs."
+      >
+        Advanced editor
+      </button>
+      <button
+        class="btn btn-outline btn-sm"
+        :class="{
+          'btn-outline-success': editorType === editorTypes.simple,
+        }"
+        @click="selectedEditorType = editorTypes.simple"
+        title="Use simple editor for editing the stub. The editor has no code highlighting but is suited for updating large stubs."
+      >
+        Simple editor
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-12" v-if="editorType === editorTypes.codemirror">
+      <codemirror v-model="input" :options="cmOptions" />
+    </div>
+    <div class="col-md-12" v-if="editorType === editorTypes.simple">
+      <simple-editor v-model="input" />
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-md-12">
+      <StubFormButtons v-model="stubId" />
+    </div>
+  </div>
 </template>
 
 <script>
-import { codemirror } from "vue-codemirror";
+import { useRoute, useRouter } from "vue-router";
+import { computed, onBeforeMount, onMounted, watch, ref } from "vue";
+import { useStore } from "vuex";
+import { resources } from "@/constants/resources";
+import { simpleEditorThreshold } from "@/constants/technical";
+import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
-import { toastError, toastSuccess } from "@/utils/toastUtil";
-import { resources } from "@/shared/resources";
-import {
-  getIntermediateStub,
-  clearIntermediateStub
-} from "@/utils/sessionUtil";
-import FormHelperSelector from "@/components/formHelpers/FormHelperSelector";
+import toastr from "toastr";
+import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";
+import FormHelperSelector from "@/components/stub/FormHelperSelector";
+import StubFormButtons from "@/components/stub/StubFormButtons";
+import SimpleEditor from "@/components/simpleEditor/SimpleEditor";
 
-const editorType = {
-  notSet: "notSet",
+const editorTypes = {
+  none: "none",
+  codemirror: "codemirror",
   simple: "simple",
-  codemirror: "codemirror"
 };
 
 export default {
-  name: "stubForm",
-  data() {
-    return {
-      stubId: null,
-      resetDialog: false,
-      editorType,
-      editor: editorType.notSet,
-      cmOptions: {
-        tabSize: 4,
-        mode: "text/x-yaml",
-        lineNumbers: true,
-        line: true
+  name: "StubForm",
+  components: { SimpleEditor, FormHelperSelector, StubFormButtons },
+  setup() {
+    const route = useRoute();
+    const router = useRouter();
+    const store = useStore();
+
+    // Data
+    const cmOptions = {
+      tabSize: 4,
+      mode: "text/x-yaml",
+      lineNumbers: true,
+      line: true,
+    };
+    const selectedEditorType = ref(editorTypes.none);
+
+    // Computed
+    const stubId = computed(() => route.params.stubId);
+    const newStub = computed(() => !route.params.stubId);
+    const title = computed(() => (newStub.value ? "Add stub" : "Update stub"));
+    const input = computed({
+      get: () => store.getters["stubForm/getInput"],
+      set: (value) => store.commit("stubForm/setInput", value),
+    });
+    const showFormHelperSelector = computed(
+      () => !store.getters["stubForm/getInputHasMultipleStubs"]
+    );
+    const editorType = computed(() => {
+      if (selectedEditorType.value !== editorTypes.none) {
+        return selectedEditorType.value;
+      }
+
+      return store.getters["stubForm/getInputLength"] > simpleEditorThreshold
+        ? editorTypes.simple
+        : editorTypes.codemirror;
+    });
+
+    // Functions
+    const initialize = async () => {
+      store.commit("stubForm/closeFormHelper");
+      if (newStub.value) {
+        const intermediateStub = getIntermediateStub();
+        if (intermediateStub) {
+          input.value = intermediateStub;
+          clearIntermediateStub();
+        } else {
+          input.value = resources.defaultStub;
+        }
+      } else {
+        try {
+          const fullStub = await store.dispatch("stubs/getStub", stubId.value);
+          input.value = yaml.dump(fullStub.stub);
+        } catch (e) {
+          if (e.status === 404) {
+            toastr.error(resources.stubNotFound.format(stubId.value));
+            await router.push({ name: "StubForm" });
+          } else {
+            handleHttpError(e);
+          }
+        }
       }
     };
-  },
-  components: {
-    codemirror,
-    FormHelperSelector
-  },
-  created() {
-    if (this.darkTheme) {
-      this.cmOptions.theme = "material-darker";
-    }
-  },
-  beforeMount() {
-    this.$store.commit("stubForm/clearForm");
-  },
-  async mounted() {
-    const stubId = this.$route.params.stubId;
-    if (stubId) {
-      this.stubId = stubId;
-      const fullStub = await this.$store.dispatch("stubs/getStub", {
-        stubId
-      });
-      const input = yaml.dump(fullStub.stub);
 
-      // If the stub is too large, codemirror will struggle with editing. Switch to a simple editor in that case.
-      this.editor =
-        input.length >= 1500 ? editorType.simple : editorType.codemirror;
-      await this.$store.commit("stubForm/setInput", input);
-    } else {
-      this.stubId = null;
-      let input;
-      const intermediateStub = getIntermediateStub();
-      if (intermediateStub) {
-        input = intermediateStub;
-        clearIntermediateStub();
-      } else {
-        input = resources.defaultStub;
+    // Lifecycle
+    onBeforeMount(() => {
+      if (store.getters["general/getDarkTheme"]) {
+        cmOptions.theme = "material-darker";
       }
+    });
+    onMounted(async () => await initialize());
 
-      await this.$store.commit("stubForm/setInput", input);
-    }
+    // Watch
+    watch(stubId, async () => {
+      await initialize();
+    });
+
+    return {
+      stubId,
+      newStub,
+      title,
+      input,
+      cmOptions,
+      showFormHelperSelector,
+      editorTypes,
+      selectedEditorType,
+      editorType,
+    };
   },
-  computed: {
-    darkTheme() {
-      return this.$store.getters["general/getDarkTheme"];
-    },
-    newStub() {
-      return !this.stubId;
-    },
-    title() {
-      return this.newStub ? "Add stub(s)" : "Update stub";
-    },
-    input: {
-      get() {
-        return this.$store.getters["stubForm/getInput"];
-      },
-      set(value) {
-        this.$store.commit("stubForm/setInput", value);
-      }
-    },
-    showFormHelperSelector() {
-      return this.input.indexOf("- ") !== 0;
-    }
-  },
-  methods: {
-    async save() {
-      try {
-        await this.$store.dispatch("stubs/addStubs", {
-          input: this.input
-        });
-        if (this.newStub) {
-          toastSuccess(resources.stubsAddedSuccessfully);
-        } else {
-          toastSuccess(resources.stubUpdatedSuccessfully.format(this.stubId));
-        }
-      } catch (e) {
-        toastError(e);
-      }
-    },
-    resetForm() {
-      this.resetDialog = false;
-      this.$store.commit("stubForm/clearForm", resources.defaultStub);
-    }
-  }
 };
 </script>
 
-<style>
-.simple-editor textarea {
-  white-space: pre;
-  overflow-wrap: normal;
-  overflow-x: scroll;
-}
-</style>
+<style scoped></style>

@@ -1,29 +1,11 @@
-// General
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import "./registerServiceWorker";
-
-// Fonts
-import "typeface-roboto";
-
-// Overrides
-import "./utils/stringFormat";
-
-// Plugins
-import "@/plugins/toastr";
-import "@/plugins/filters";
-import "@/plugins/codemirror";
-import "@/plugins/shortkey";
-import vuetify from "@/plugins/vuetify";
-
+import { createApp } from "vue";
+import App from "@/App.vue";
+import "@/registerServiceWorker";
+import router from "@/router";
 import store from "@/store";
+import "@/plugins";
+import registerGlobalComponents from "@/plugins/global-components";
 
-Vue.config.productionTip = false;
-
-new Vue({
-  store,
-  router,
-  vuetify,
-  render: h => h(App)
-}).$mount("#app");
+const vueApp = createApp(App).use(store).use(router);
+registerGlobalComponents(vueApp);
+vueApp.mount("#app");

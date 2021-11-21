@@ -1,16 +1,13 @@
-import createInstance from "@/axios/axiosInstanceFactory";
+import { get } from "@/utils/api";
 
 const state = () => ({});
 
 const actions = {
   getTenantNames() {
-    return new Promise((resolve, reject) =>
-      createInstance()
-        .get("ph-api/tenants")
-        .then(response => resolve(response.data))
-        .catch(error => reject(error))
-    );
-  }
+    return get("/ph-api/tenants")
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };
 
 const mutations = {};
@@ -22,5 +19,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };
