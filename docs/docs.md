@@ -1911,7 +1911,7 @@ httplaceholder --configJsonLocation F:\httplaceholder\config.json
 
 # Samples
 
-This paragraph contains links to several example .yml files to try for yourself. You can download the corresponding PostMan collection [here](samples/requests.json).
+This paragraph contains links to several example .yml files to try for yourself. You can download the corresponding Postman collection [here](samples/requests.json).
 
 ## How to run the samples
 
