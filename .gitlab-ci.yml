@@ -43,17 +43,6 @@ build-ui:
       - gui/dist
     expire_in: 1 week
 
-build-ui-new:
-  image: $NODE_IMAGE
-  stage: build-ui
-  script:
-    - chmod +x ./scripts/build/build-ui-new.sh
-    - sh ./scripts/build/build-ui-new.sh
-  artifacts:
-    paths:
-      - guiv3/dist
-    expire_in: 1 week
-
 build-windows:
   image: $DOTNET_IMAGE
   stage: build-server
