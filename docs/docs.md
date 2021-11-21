@@ -284,11 +284,11 @@ HttPlaceholder supports HTTPS. See [configuration](#configuration) for more info
 - You can view and inspect the performed requests in the user interface at <http://localhost:5000/ph-ui>.
   ![](img/request_in_ui.png)
 
-For more sophisticated examples, go to the page [samples](#samples) to view samples for all supported HTTP condition checkers and response writers.
+For more sophisticated examples, go to the paragraph [samples](#samples) to view samples for all supported HTTP condition checkers and response writers.
 
 # Request conditions
 
-Whenever HttPlaceholder receives a request, all the conditions of all stubs are checked to see which stub corresponds to the sent request. There are condition checkers for example the URL, posted data etc. This page explains more.
+Whenever HttPlaceholder receives a request, all the conditions of all stubs are checked to see which stub corresponds to the sent request. There are condition checkers for example the URL, posted data etc. This paragraph explains more.
 
 ## General stub info
 
@@ -948,7 +948,7 @@ It is possible to check if a hostname in a request is correct. This condition ca
 
 # Response writers
 
-If a request succeeds and a stub is found, the configured response will be returned. There are several "response writers" within HttPlaceholder which can be used to arrange your response. These will be explained on this page.
+If a request succeeds and a stub is found, the configured response will be returned. There are several "response writers" within HttPlaceholder which can be used to arrange your response. These will be explained in this paragraph.
 
 ## Response body
 
@@ -1911,7 +1911,7 @@ httplaceholder --configJsonLocation F:\httplaceholder\config.json
 
 # Samples
 
-This page contains links to several example .yml files to try for yourself. You can download the corresponding PostMan collection [here](samples/requests.json).
+This paragraph contains links to several example .yml files to try for yourself. You can download the corresponding PostMan collection [here](samples/requests.json).
 
 ## How to run the samples
 
