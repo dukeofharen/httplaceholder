@@ -69,7 +69,9 @@ HttPlaceholder:
 
 - [.NET 5](https://dotnet.microsoft.com/apps/aspnet)
 - [Vue.js](https://vuejs.org/)
-- [Vuetify](https://vuetifyjs.com/en/)
+- [Bootstrap](https://getbootstrap.com/)
+- [CodeMirror](https://codemirror.net/)
+- [ImageSharp](https://sixlabors.com/products/imagesharp/)
 
 ## Getting Started
 

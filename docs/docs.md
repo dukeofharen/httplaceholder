@@ -41,7 +41,7 @@
     - [HTML](#html-response)
     - [Base64](#base64-response)
   - [Status code](#status-code)
-  - [Response headers](#headers)
+  - [Response headers](#response-headers)
   - [Content type](#content-type)
   - [Files](#files)
     - [Image](#image)
@@ -851,7 +851,7 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
   conditions:
     method: POST
     url:
-      path: /thingy
+      path: /xpath-test
     headers:
       Content-Type: application/soap+xml; charset=utf-8
     xpath:
@@ -868,7 +868,7 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
   conditions:
     method: POST
     url:
-      path: /thingy
+      path: /xpath-test
     headers:
       Content-Type: application/soap+xml; charset=utf-8
     xpath:
@@ -885,7 +885,7 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
 
 **Correct request**
 - Method: POST
-- URL: http://localhost:5000/thingy
+- URL: http://localhost:5000/xpath-test
 - Headers:
   - Content-Type: application/soap+xml; charset=utf-8
 - Body:
@@ -967,8 +967,6 @@ To return a plain text response, use the "text" response writer. If no Content-T
   response:
     statusCode: 200
     text: It works!
-    headers:
-      Content-Type: text/plain
 ```
 
 ### JSON response
@@ -1062,7 +1060,7 @@ To set the HTTP status code of a response, use the "statusCode" response writer.
       Content-Type: text/plain
 ```
 
-## Headers
+## Response headers
 
 To return a set of HTTP headers with your response, use the "headers" response writer.
 
@@ -1791,7 +1789,7 @@ HttPlaceholder has functionality to save all requests and stubs to a Microsoft S
 httplaceholder --useHttps true
 ```
 
-Whether to also use HTTPS. Possible values: `true` or `false`. Default: `false`
+Whether to also use HTTPS. Possible values: `true` or `false`. Default: `true`
 
 ### HTTPS certificates (optional)
 
@@ -1839,7 +1837,7 @@ httplaceholder --enableRequestLogging false
 
 If this property is set to false, no detailed request logging will be written to the terminal anymore. Default: true.
 
-### Enable or disable user interface
+### Enable or disable user interface (optional)
 
 ```bash
 httplaceholder --enableUserInterface false
@@ -1847,7 +1845,7 @@ httplaceholder --enableUserInterface false
 
 If this property is set to false, the user interface won't appear when you go to http://httplaceholderhost:port/ph-ui. This might be handy in situations where you only want to deploy the HttPlaceholder application as API / stub engine.
 
-### Enable or disable new user interface
+### Enable or disable new user interface (optional)
 
 A new user interface has been written using Vue 3 and plain Bootstrap. Currently, this new user interface is turned off by default, but can be turned on using this config flag.
 
@@ -1855,7 +1853,7 @@ A new user interface has been written using Vue 3 and plain Bootstrap. Currently
 httplaceholder --useNewUi true
 ```
 
-### Enable health check on root URL
+### Enable health check on root URL (optional)
 
 ```bash
 httplaceholder --healthcheckOnRootUrl
@@ -1869,7 +1867,7 @@ This option is built because when HttPlaceholder is for example deployed to a cl
 
 Here are several settings you can tweak for the stub validation when adding stubs as .yaml files or through the API.
 
-#### Maximum duration for "extraDuration"
+#### Maximum duration for "extraDuration" (optional)
 
 ```bash
 httplaceholder --maximumExtraDurationMillisKey 10000
