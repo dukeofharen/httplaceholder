@@ -356,7 +356,7 @@ Describes whether the stub is enabled or not. If no `enabled` field is provided,
 
 ## Request scenario
 
-Scenarios make it possible to make stubs stateful. When you assign a scenario to a stub, a hit counter will be kept for the scenario and it is also possible to assign a state to a scenario. The default state of a scenario is "Start". Right now, the scenario state is only kept in memory, which means that when the application is restarted, all the states will be reset.
+Scenarios make it possible to make stubs stateful. When you assign a scenario to a stub, a hit counter will be kept for the scenario and it is also possible to assign a state to a scenario. The default state of a scenario is "Start". Right now, the scenario state is only kept in memory, which means that when the application is restarted, all the scenarios will be reset.
 
 The scenario state can be set either to response writers (see [response](#scenario)) or by calling the [REST API](#rest-api).
 
@@ -691,6 +691,8 @@ key1=sjaak&key2=bob&key2=ducoo
 
 The JSON condition checker can be used to check if the posted JSON is posted according to your specified conditions. You can specify both an array or an object as input for the condition. When checking for string values in a JSON property, HttPlaceholder will use regular expressions to check if the condition is OK.
 
+**Correct request (JSON object)**
+
 ```yml
 - id: json-object
   conditions:
@@ -712,7 +714,6 @@ The JSON condition checker can be used to check if the posted JSON is posted acc
     text: OK JSON OBJECT!
 ```
 
-**Correct request**
 - Method: POST
 - URL: http://localhost:5000
 - Body:
@@ -737,6 +738,8 @@ The JSON condition checker can be used to check if the posted JSON is posted acc
 }
 ```
 
+**Correct request (JSON array)**
+
 ```yml
 - id: json-array
   conditions:
@@ -752,7 +755,6 @@ The JSON condition checker can be used to check if the posted JSON is posted acc
     text: OK JSON ARRAY!
 ```
 
-**Correct request**
 - Method: POST
 - URL: http://localhost:5000
 - Body:
