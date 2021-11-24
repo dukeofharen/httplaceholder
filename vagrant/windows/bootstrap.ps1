@@ -42,9 +42,14 @@ Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpRedirect
 Enable-WindowsOptionalFeature -Online -FeatureName IIS-ApplicationDevelopment
 
 # Install dependencies
-& choco install dotnet-windowshosting -y
-& choco install dotnet-sdk -y
-& choco install nodejs -y
+& choco install dotnet-windowshosting --version=5.0.12 -y
+& choco install dotnet-sdk --version=5.0.403 -y
+& choco install nodejs --version=16.13.0 -y
+
+# Add Nuget source.
+# For some inexplicable reason, the NuGet source is not added when the SDK is installed, so we do it here.
+Write-Host "Adding Nuget source"
+& dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org
 
 # Set correct path
 $env:PATH = "C:\Program Files\nodejs;C:\Program Files\dotnet;$($env:PATH)"
