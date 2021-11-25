@@ -16,7 +16,7 @@ apt install -y dotnet-sdk-5.0
 NODE_BIN_PATH=/bin/node
 if [ ! -f "$NODE_BIN_PATH" ]; then
     echo "Node not installled; installing now."
-    wget https://nodejs.org/dist/v12.18.2/node-v12.18.2-linux-x64.tar.xz -O node-12.18.2.tar.xz
+    wget https://nodejs.org/dist/v16.13.0/node-v16.13.0-linux-x64.tar.xz -O node.tar.xz
     NODE_EXTRACT_PATH=/opt/node
     if [ -d "$NODE_EXTRACT_PATH" ]; then
         echo "Deleting path $NODE_EXTRACT_PATH"
@@ -24,10 +24,10 @@ if [ ! -f "$NODE_BIN_PATH" ]; then
     fi
     
     mkdir $NODE_EXTRACT_PATH
-    tar -xf node-12.18.2.tar.xz -C $NODE_EXTRACT_PATH
-    ln -sf /opt/node/node-v12.18.2-linux-x64/bin/node /bin/node
-    ln -sf /opt/node/node-v12.18.2-linux-x64/lib/node_modules/npm/bin/npm-cli.js /bin/npm
-    ln -sf /opt/node/node-v12.18.2-linux-x64/lib/node_modules/npm/bin/npx-cli.js /bin/npx
+    tar -xf node.tar.xz -C $NODE_EXTRACT_PATH
+    ln -sf /opt/node/node-v16.13.0-linux-x64/bin/node /bin/node
+    ln -sf /opt/node/node-v16.13.0-linux-x64/lib/node_modules/npm/bin/npm-cli.js /bin/npm
+    ln -sf /opt/node/node-v16.13.0-linux-x64/lib/node_modules/npm/bin/npx-cli.js /bin/npx
 fi
 
 # Creating HttPlaceholder folder
