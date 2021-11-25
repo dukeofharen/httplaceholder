@@ -9,6 +9,7 @@ services:
       - stubs:/var/stubs
     ports:
       - "8080:5000"
+      - "4430:5050"
 
 volumes:
   stubs:
