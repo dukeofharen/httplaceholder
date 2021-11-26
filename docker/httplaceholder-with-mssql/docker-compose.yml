@@ -19,7 +19,7 @@ services:
     ports:
       - 1433:1433
     volumes:
-      - httplaceholder_mssql_data:/var/opt/mssql
+      - mssql_data:/var/opt/mssql
       - ./initscripts:/usr/local/bin/initscripts
     command: /bin/bash /usr/local/bin/initscripts/entrypoint.sh
 

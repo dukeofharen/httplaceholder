@@ -11,7 +11,7 @@ services:
       - 5000:5000
     restart: on-failure
   mysql:
-    image: mysql:8
+    image: mysql:5
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: httplaceholder
@@ -20,7 +20,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - httplaceholder_mysql_data:/var/lib/mysql
+      - mysql5_data:/var/lib/mysql
 
 volumes:
-  mysql_data:
+  mysql5_data:
