@@ -1687,7 +1687,7 @@ This paragraph contains all command line arguments supported by HttPlaceholder. 
 
 ### Verbose output
 
-If you want some more logging, append `-V` or `--verbose` as argument.
+If you want some more logging, append `-V` or `--verbose` as argument. You can also set environment value `verbose` to `true` to enable verbose logging.
 
 ```bash
 httplaceholder --verbose
