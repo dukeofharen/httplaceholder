@@ -19,4 +19,4 @@ COPY --from=build-env /app/out .
 COPY --from=gui-build-env /app/gui/dist ./gui
 ENV inputFile=/var/httplaceholder
 RUN mkdir /var/httplaceholder
-ENTRYPOINT ["dotnet", "HttPlaceholder.dll", "-V"]
+ENTRYPOINT ["dotnet", "HttPlaceholder.dll"]

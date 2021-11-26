@@ -18,14 +18,17 @@ namespace HttPlaceholder.Utilities
 {
     public static class ProgramUtilities
     {
-        private static readonly string[] _verboseArgs = {"-V", "--verbose"};
-        private static readonly string[] _versionArgs = {"-v", "--version"};
-        private static readonly string[] _helpArgs = {"-h", "--help", "-?"};
+        private static readonly string[] _verboseArgs = { "-V", "--verbose" };
+        private static readonly string[] _versionArgs = { "-v", "--version" };
+        private static readonly string[] _helpArgs = { "-h", "--help", "-?" };
 
         public static void ConfigureLogging(IEnumerable<string> args)
         {
+            var env = Environment.GetEnvironmentVariable("verbose");
+            var verbose = args.Any(_verboseArgs.Contains) ||
+                          string.Equals(env, "true", StringComparison.OrdinalIgnoreCase);
             var loggingConfig = new LoggerConfiguration();
-            loggingConfig = args.Any(_verboseArgs.Contains)
+            loggingConfig = verbose
                 ? loggingConfig.MinimumLevel.Debug()
                 : loggingConfig.MinimumLevel.Warning();
             Log.Logger = loggingConfig
@@ -122,6 +125,9 @@ namespace HttPlaceholder.Utilities
         private static string GetManPage()
         {
             var builder = new StringBuilder();
+            builder.AppendLine(ManPage.ExplanationHeader);
+            builder.AppendLine();
+
             foreach (var constant in ConfigurationParser.GetConfigKeyMetadata())
             {
                 builder.AppendLine($"--{constant.Key}: {constant.Description} (e.g. {constant.Example})");

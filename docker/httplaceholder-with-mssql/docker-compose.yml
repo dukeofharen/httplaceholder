@@ -7,6 +7,7 @@ services:
     image: dukeofharen/httplaceholder:latest
     environment:
       sqlServerConnectionString: 'Server=mssql,1433;Database=httplaceholder;User Id=sa;Password=Password123!'
+      verbose: 'true'
     ports:
       - 5000:5000
     restart: on-failure
