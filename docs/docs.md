@@ -213,13 +213,7 @@ The Docker container uses the configuration values as specified [here](#configur
 
 ### Docker Compose examples
 
-In the links below, you'll find several hosting scenario's written for Docker Compose. If you want to run any of these examples on your PC, open your terminal, go to one of the folders that contain a `docker-compose.yml` example and run `docker-compose up`.
-
-- [Hosting with file storage](https://github.com/dukeofharen/httplaceholder/tree/master/docker/httplaceholder-with-file-storage)
-- [Hosting with SQL Server](https://github.com/dukeofharen/httplaceholder/tree/master/docker/httplaceholder-with-mssql)
-- [Hosting with MySQL](https://github.com/dukeofharen/httplaceholder/tree/master/docker/httplaceholder-with-mysql)
-- [Hosting with SQLite](https://github.com/dukeofharen/httplaceholder/tree/master/docker/httplaceholder-with-sqlite)
-- [Hosting with .yml stub files](https://github.com/dukeofharen/httplaceholder/tree/master/docker/httplaceholder-with-stub-files)
+[Here](https://github.com/dukeofharen/httplaceholder/tree/master/docker) you can find a few Docker Compose examples how you can run HttPlaceholder using Docker.
 
 ## Hosting
 
