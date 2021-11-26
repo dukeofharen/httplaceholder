@@ -122,6 +122,9 @@ namespace HttPlaceholder.Utilities
         private static string GetManPage()
         {
             var builder = new StringBuilder();
+            builder.AppendLine(ManPage.ExplanationHeader);
+            builder.AppendLine();
+
             foreach (var constant in ConfigurationParser.GetConfigKeyMetadata())
             {
                 builder.AppendLine($"--{constant.Key}: {constant.Description} (e.g. {constant.Example})");
