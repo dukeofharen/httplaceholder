@@ -1,0 +1,26 @@
+# A Docker Compose example that starts HttPlaceholder with a MySQL database, so all stubs (that are made through the UI or API) and requests are saved to the database.
+version: '3.8'
+services:
+  httplaceholder:
+    depends_on:
+      - mariadb
+    image: dukeofharen/httplaceholder:latest
+    environment:
+      mysqlConnectionString: 'Server=mariadb;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true'
+    ports:
+      - 5000:5000
+    restart: on-failure
+  mariadb:
+    image: mariadb:10
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: httplaceholder
+      MYSQL_USER: httplaceholder
+      MYSQL_PASSWORD: httplaceholder
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+volumes:
+  mariadb_data:
