@@ -6,6 +6,7 @@ services:
     environment:
       inputFile: '/etc/httplaceholder'
       useInMemoryStorage: 'true'
+      verbose: 'true'
     ports:
       - 5000:5000
     restart: on-failure
