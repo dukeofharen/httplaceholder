@@ -1,4 +1,4 @@
-﻿using HttPlaceholder.Application.StubExecution.ConditionChecking;
+﻿using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.RequestStubGeneration;
 using HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations;
