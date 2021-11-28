@@ -5,6 +5,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
 {
     internal class BodyHandler : IRequestStubGenerationHandler
     {
+        /// <inheritdoc />
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {
             if (string.IsNullOrWhiteSpace(request.RequestParameters.Body))
@@ -16,6 +17,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             return Task.FromResult(true);
         }
 
+        /// <inheritdoc />
         public int Priority => 1;
     }
 }

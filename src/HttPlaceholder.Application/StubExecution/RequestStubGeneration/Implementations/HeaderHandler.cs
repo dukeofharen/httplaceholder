@@ -7,10 +7,12 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
 {
+    /// <inheritdoc />
     public class HeaderHandler : IRequestStubGenerationHandler
     {
         private static readonly IEnumerable<string> _headersToStrip = new[] { "Postman-Token", "Host" };
 
+        /// <inheritdoc />
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {
             if (!request.RequestParameters.Headers.Any())
@@ -26,6 +28,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             return Task.FromResult(true);
         }
 
+        /// <inheritdoc />
         public int Priority => 1;
     }
 }

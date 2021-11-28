@@ -6,8 +6,10 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
 {
+    /// <inheritdoc />
     public class BasicAuthenticationHandler : IRequestStubGenerationHandler
     {
+        /// <inheritdoc />
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {
             var pair = request.RequestParameters.Headers.FirstOrDefault(p =>
@@ -40,6 +42,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             return Task.FromResult(true);
         }
 
+        /// <inheritdoc />
         public int Priority => 0;
     }
 }

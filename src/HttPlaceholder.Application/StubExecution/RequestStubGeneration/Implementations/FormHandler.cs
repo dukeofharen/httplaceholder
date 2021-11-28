@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
 {
+    /// <inheritdoc />
     internal class FormHandler : IRequestStubGenerationHandler
     {
+        /// <inheritdoc />
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {
             var pair = request.RequestParameters.Headers.FirstOrDefault(p =>
@@ -37,6 +39,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             return Task.FromResult(true);
         }
 
+        /// <inheritdoc />
         public int Priority => 0;
     }
 }

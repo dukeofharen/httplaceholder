@@ -4,8 +4,10 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
 {
+    /// <inheritdoc />
     internal class MethodHandler : IRequestStubGenerationHandler
     {
+        /// <inheritdoc />
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {
             if (string.IsNullOrWhiteSpace(request.RequestParameters.Method))
@@ -17,6 +19,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             return Task.FromResult(true);
         }
 
+        /// <inheritdoc />
         public int Priority => 0;
     }
 }
