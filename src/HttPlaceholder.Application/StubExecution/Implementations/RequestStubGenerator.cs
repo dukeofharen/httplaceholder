@@ -49,9 +49,9 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             var stub = new StubModel();
             foreach (var handler in _handlers.OrderByDescending(w => w.Priority))
             {
+                var request = _mapper.Map<HttpRequestModel>(requestResult.RequestParameters);
                 var executed =
-                    await handler.HandleStubGenerationAsync(
-                        _mapper.Map<HttpRequestModel>(requestResult.RequestParameters), stub.Conditions);
+                    await handler.HandleStubGenerationAsync(request, stub.Conditions);
                 _logger.LogInformation($"Handler '{handler.GetType().Name}'" + (executed ? " executed" : "") + ".");
             }
 

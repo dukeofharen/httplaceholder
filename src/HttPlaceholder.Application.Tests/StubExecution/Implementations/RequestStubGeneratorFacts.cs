@@ -64,14 +64,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var mockStubContext = _mocker.GetMock<IStubContext>();
             var generator = _mocker.CreateInstance<RequestStubGenerator>();
 
-            var mappedRequest1 = new HttpRequestModel();
-            var mappedRequest2 = new HttpRequestModel();
+            var mappedRequest = new HttpRequestModel();
             mockMapper
-                .Setup(m => m.Map<HttpRequestModel>(requests[0]))
-                .Returns(mappedRequest1);
-            mockMapper
-                .Setup(m => m.Map<HttpRequestModel>(requests[1]))
-                .Returns(mappedRequest2);
+                .Setup(m => m.Map<HttpRequestModel>(requests[1].RequestParameters))
+                .Returns(mappedRequest);
 
             mockStubContext
                 .Setup(m => m.GetRequestResultsAsync())
@@ -90,8 +86,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var result = await generator.GenerateStubBasedOnRequestAsync("2", false);
 
             // Assert
-            _mockHandler1.Verify(m => m.HandleStubGenerationAsync(mappedRequest1, It.IsAny<StubConditionsModel>()));
-            _mockHandler2.Verify(m => m.HandleStubGenerationAsync(mappedRequest1, It.IsAny<StubConditionsModel>()));
+            _mockHandler1.Verify(m => m.HandleStubGenerationAsync(mappedRequest, It.IsAny<StubConditionsModel>()));
+            _mockHandler2.Verify(m => m.HandleStubGenerationAsync(mappedRequest, It.IsAny<StubConditionsModel>()));
 
             mockStubContext.Verify(m => m.DeleteStubAsync(expectedId));
 
@@ -107,21 +103,17 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             // Arrange
             var requests = new[]
             {
-                new RequestResultModel {CorrelationId = "1"}, new RequestResultModel {CorrelationId = "2"},
+                new RequestResultModel {CorrelationId = "1", RequestParameters = new RequestParametersModel()}, new RequestResultModel {CorrelationId = "2", RequestParameters = new RequestParametersModel()}
             };
 
             var mockMapper = _mocker.GetMock<IMapper>();
             var mockStubContext = _mocker.GetMock<IStubContext>();
             var generator = _mocker.CreateInstance<RequestStubGenerator>();
 
-            var mappedRequest1 = new HttpRequestModel();
-            var mappedRequest2 = new HttpRequestModel();
+            var mappedRequest = new HttpRequestModel();
             mockMapper
-                .Setup(m => m.Map<HttpRequestModel>(requests[0]))
-                .Returns(mappedRequest1);
-            mockMapper
-                .Setup(m => m.Map<HttpRequestModel>(requests[1]))
-                .Returns(mappedRequest2);
+                .Setup(m => m.Map<HttpRequestModel>(requests[1].RequestParameters))
+                .Returns(mappedRequest);
 
             mockStubContext
                 .Setup(m => m.GetRequestResultsAsync())
@@ -133,8 +125,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var result = await generator.GenerateStubBasedOnRequestAsync("2", true);
 
             // Assert
-            _mockHandler1.Verify(m => m.HandleStubGenerationAsync(mappedRequest1, It.IsAny<StubConditionsModel>()));
-            _mockHandler2.Verify(m => m.HandleStubGenerationAsync(mappedRequest1, It.IsAny<StubConditionsModel>()));
+            _mockHandler1.Verify(m => m.HandleStubGenerationAsync(mappedRequest, It.IsAny<StubConditionsModel>()));
+            _mockHandler2.Verify(m => m.HandleStubGenerationAsync(mappedRequest, It.IsAny<StubConditionsModel>()));
 
             mockStubContext.Verify(m => m.DeleteStubAsync(expectedId), Times.Never);
             mockStubContext.Verify(m => m.AddStubAsync(It.IsAny<StubModel>()), Times.Never);
