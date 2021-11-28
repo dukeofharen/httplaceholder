@@ -20,13 +20,13 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
                 return Task.FromResult(false);
             }
 
-            if (!contentType.Equals("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase))
+            if (!contentType.StartsWith("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase))
             {
                 return Task.FromResult(false);
             }
 
             // If the body condition is already set, clear it here.
-            stub.Conditions.Body = new string[0];
+            stub.Conditions.Body = Array.Empty<string>();
 
             var reader = new FormReader(request.RequestParameters.Body);
             var form = reader.ReadForm();

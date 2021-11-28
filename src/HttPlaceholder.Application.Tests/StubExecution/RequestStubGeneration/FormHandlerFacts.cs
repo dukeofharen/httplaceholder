@@ -55,11 +55,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             Assert.IsFalse(stub.Conditions.Headers.Any());
         }
 
-        [TestMethod]
-        public async Task FormHandler_HandleStubGenerationAsync_HappyFlow()
+        [DataTestMethod]
+        [DataRow("application/x-www-form-urlencoded")]
+        [DataRow("application/x-www-form-urlencoded; charset=UTF-8")]
+        public async Task FormHandler_HandleStubGenerationAsync_HappyFlow(string contentType)
         {
             // Arrange
-            const string contentType = "application/x-www-form-urlencoded";
             const string form = "form1=val1&form2=val2";
             var request = new RequestResultModel
             {

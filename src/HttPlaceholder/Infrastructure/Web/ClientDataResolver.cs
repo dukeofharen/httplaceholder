@@ -38,7 +38,6 @@ namespace HttPlaceholder.Infrastructure.Web
             string forwardedFor = value;
             var parts = forwardedFor.Split(new[] {", "}, StringSplitOptions.None);
             return parts.First();
-
         }
 
         public string GetHost()
