@@ -3,6 +3,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration
 {
+    /// <summary>
+    /// Describes a class that is being used to set stub conditions based on a given HTTP request.
+    /// </summary>
     public interface IRequestStubGenerationHandler
     {
         /// <summary>

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
 {
+    /// <inheritdoc />
     internal class RequestStubGenerator : IRequestStubGenerator
     {
         private readonly ILogger<RequestStubGenerator> _logger;
@@ -25,6 +26,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
             _logger = logger;
         }
 
+        /// <inheritdoc />
         public async Task<FullStubModel> GenerateStubBasedOnRequestAsync(string requestCorrelationId,
             bool doNotCreateStub)
         {
