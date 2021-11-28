@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace HttPlaceholder.Controllers.v1
 {
     /// <summary>
-    /// Controller for request
+    /// Controller for requests.
     /// </summary>
     [Route("ph-api/requests")]
     [ApiAuthorization]

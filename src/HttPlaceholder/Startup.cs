@@ -55,7 +55,14 @@ namespace HttPlaceholder
                 .AddNewtonsoftJson(o => o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddApplicationPart(Assembly.GetExecutingAssembly());
-            services.Configure<MvcOptions>(o => o.AddYamlFormatting());
+            services.Configure<MvcOptions>(o =>
+            {
+                o.RespectBrowserAcceptHeader = true;
+                o.ReturnHttpNotAcceptable = true;
+                o
+                    .AddYamlFormatting()
+                    .AddPlainTextFormatting();
+            });
             services
                 .AddHttPlaceholder(configuration)
                 .AddHttpContextAccessor()
