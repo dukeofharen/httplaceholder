@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -10,16 +11,16 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
     internal class QueryParamHandler : IRequestToStubConditionsHandler
     {
         /// <inheritdoc />
-        public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
+        public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
         {
-            var uri = new Uri(request.RequestParameters.Url);
+            var uri = new Uri(request.Url);
             var query = QueryHelpers.ParseQuery(uri.Query);
             if (!query.Any())
             {
                 return Task.FromResult(false);
             }
 
-            stub.Conditions.Url.Query = query.ToDictionary(q => q.Key, q => q.Value.ToString());
+            conditions.Url.Query = query.ToDictionary(q => q.Key, q => q.Value.ToString());
             return Task.FromResult(true);
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.WebUtilities;
 
@@ -10,9 +11,9 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
     internal class FormHandler : IRequestToStubConditionsHandler
     {
         /// <inheritdoc />
-        public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
+        public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
         {
-            var pair = request.RequestParameters.Headers.FirstOrDefault(p =>
+            var pair = request.Headers.FirstOrDefault(p =>
                 p.Key.Equals("Content-Type", StringComparison.OrdinalIgnoreCase));
             var contentType = pair.Value;
             if (string.IsNullOrWhiteSpace(contentType))
@@ -26,11 +27,11 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
             }
 
             // If the body condition is already set, clear it here.
-            stub.Conditions.Body = Array.Empty<string>();
+            conditions.Body = Array.Empty<string>();
 
-            var reader = new FormReader(request.RequestParameters.Body);
+            var reader = new FormReader(request.Body);
             var form = reader.ReadForm();
-            stub.Conditions.Form = form.Select(f => new StubFormModel
+            conditions.Form = form.Select(f => new StubFormModel
             {
                 Key = f.Key,
                 Value = f.Value

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
@@ -7,9 +8,9 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
     public class ClientIpHandler : IRequestToStubConditionsHandler
     {
         /// <inheritdoc />
-        public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
+        public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
         {
-            stub.Conditions.ClientIp = request.RequestParameters.ClientIp;
+            conditions.ClientIp = request.ClientIp;
             return Task.FromResult(true);
         }
 

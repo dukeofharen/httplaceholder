@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -9,21 +10,18 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
     [TestClass]
     public class MethodHandlerFacts
     {
-        private readonly MethodHandler _handler = new MethodHandler();
+        private readonly MethodHandler _handler = new();
 
         [TestMethod]
         public async Task MethodHandler_HandleStubGenerationAsync_MethodNotSet_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var request = new RequestResultModel
-            {
-                RequestParameters = new RequestParametersModel {Method = string.Empty}
-            };
-            var stub = new StubModel();
+            var request = new HttpRequestModel { Method = string.Empty };
+            var conditions = new StubConditionsModel();
 
             // Act / Assert
             await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
-                _handler.HandleStubGenerationAsync(request, stub));
+                _handler.HandleStubGenerationAsync(request, conditions));
         }
 
         [TestMethod]
@@ -31,18 +29,15 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         {
             // Arrange
             const string method = "GET";
-            var request = new RequestResultModel
-            {
-                RequestParameters = new RequestParametersModel {Method = method}
-            };
-            var stub = new StubModel();
+            var request = new HttpRequestModel { Method = method };
+            var conditions = new StubConditionsModel();
 
             // Act
-            var result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
             // Assert
             Assert.IsTrue(result);
-            Assert.AreEqual(method, stub.Conditions.Method);
+            Assert.AreEqual(method, conditions.Method);
         }
     }
 }

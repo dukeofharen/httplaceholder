@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
@@ -10,9 +11,9 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
     public class BasicAuthenticationHandler : IRequestToStubConditionsHandler
     {
         /// <inheritdoc />
-        public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
+        public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
         {
-            var pair = request.RequestParameters.Headers.FirstOrDefault(p =>
+            var pair = request.Headers.FirstOrDefault(p =>
                 p.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase));
             if (string.IsNullOrWhiteSpace(pair.Value) || !pair.Value.Trim().ToLower().StartsWith("Basic", StringComparison.OrdinalIgnoreCase))
             {
@@ -28,14 +29,14 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
                 return Task.FromResult(false);
             }
 
-            stub.Conditions.BasicAuthentication = new StubBasicAuthenticationModel
+            conditions.BasicAuthentication = new StubBasicAuthenticationModel
             {
                 Username = parts[0],
                 Password = parts[1]
             };
 
             // Make sure the original Authorization header is removed here.
-            stub.Conditions.Headers = stub.Conditions.Headers
+            conditions.Headers = conditions.Headers
                 .Where(h => !h.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase))
                 .ToDictionary(d => d.Key, d => d.Value);
 

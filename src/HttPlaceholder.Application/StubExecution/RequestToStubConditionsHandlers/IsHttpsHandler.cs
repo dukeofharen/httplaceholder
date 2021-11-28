@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
@@ -8,14 +9,14 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
     internal class IsHttpsHandler : IRequestToStubConditionsHandler
     {
         /// <inheritdoc />
-        public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
+        public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
         {
-            if (!request.RequestParameters.Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+            if (!request.Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
             {
                 return Task.FromResult(false);
             }
 
-            stub.Conditions.Url.IsHttps = true;
+            conditions.Url.IsHttps = true;
             return Task.FromResult(true);
         }
 

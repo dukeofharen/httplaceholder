@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -16,15 +18,18 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         private readonly ILogger<RequestStubGenerator> _logger;
         private readonly IStubContext _stubContext;
         private readonly IEnumerable<IRequestToStubConditionsHandler> _handlers;
+        private readonly IMapper _mapper;
 
         public RequestStubGenerator(
             IStubContext stubContext,
             IEnumerable<IRequestToStubConditionsHandler> handlers,
-            ILogger<RequestStubGenerator> logger)
+            ILogger<RequestStubGenerator> logger,
+            IMapper mapper)
         {
             _stubContext = stubContext;
             _handlers = handlers;
             _logger = logger;
+            _mapper = mapper;
         }
 
         /// <inheritdoc />
@@ -44,7 +49,9 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             var stub = new StubModel();
             foreach (var handler in _handlers.OrderByDescending(w => w.Priority))
             {
-                var executed = await handler.HandleStubGenerationAsync(requestResult, stub);
+                var executed =
+                    await handler.HandleStubGenerationAsync(
+                        _mapper.Map<HttpRequestModel>(requestResult.RequestParameters), stub.Conditions);
                 _logger.LogInformation($"Handler '{handler.GetType().Name}'" + (executed ? " executed" : "") + ".");
             }
 
@@ -58,7 +65,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             FullStubModel result;
             if (doNotCreateStub)
             {
-                result = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
+                result = new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
             }
             else
             {

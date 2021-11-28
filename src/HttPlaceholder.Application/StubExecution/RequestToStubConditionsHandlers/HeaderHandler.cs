@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
@@ -13,16 +14,16 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
         private static readonly IEnumerable<string> _headersToStrip = new[] { "Postman-Token", "Host" };
 
         /// <inheritdoc />
-        public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
+        public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
         {
-            if (!request.RequestParameters.Headers.Any())
+            if (!request.Headers.Any())
             {
                 return Task.FromResult(false);
             }
 
             // Do a Regex escape here, if we don do this it might give some strange results lateron
             // and filter some headers out.
-            stub.Conditions.Headers = request.RequestParameters.Headers
+            conditions.Headers = request.Headers
                 .Where(h => !_headersToStrip.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
                 .ToDictionary(d => d.Key, d => Regex.Escape(d.Value));
             return Task.FromResult(true);

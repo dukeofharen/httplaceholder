@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,36 +15,30 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         public async Task IsHttpsHandler_HandleStubGenerationAsync_NoHttps_ShouldNotSetIsHttps()
         {
             // Arrange
-            var request = new RequestResultModel
-            {
-                RequestParameters = new RequestParametersModel {Url = "http://httplaceholder.com"}
-            };
-            var stub = new StubModel();
+            var request = new HttpRequestModel { Url = "http://httplaceholder.com" };
+            var conditions = new StubConditionsModel();
 
             // Act
-            var result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
             // Assert
             Assert.IsFalse(result);
-            Assert.IsFalse(stub.Conditions.Url.IsHttps.HasValue);
+            Assert.IsFalse(conditions.Url.IsHttps.HasValue);
         }
 
         [TestMethod]
         public async Task IsHttpsHandler_HandleStubGenerationAsync_Https_ShouldSetToTrue()
         {
             // Arrange
-            var request = new RequestResultModel
-            {
-                RequestParameters = new RequestParametersModel {Url = "https://httplaceholder.com"}
-            };
-            var stub = new StubModel();
+            var request = new HttpRequestModel { Url = "https://httplaceholder.com" };
+            var conditions = new StubConditionsModel();
 
             // Act
-            var result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
             // Assert
             Assert.IsTrue(result);
-            Assert.IsTrue(stub.Conditions.Url.IsHttps.HasValue && stub.Conditions.Url.IsHttps.Value);
+            Assert.IsTrue(conditions.Url.IsHttps.HasValue && conditions.Url.IsHttps.Value);
         }
     }
 }

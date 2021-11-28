@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
@@ -8,16 +9,16 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
     public class HostHandler : IRequestToStubConditionsHandler
     {
         /// <inheritdoc />
-        public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
+        public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
         {
-            var uri = new Uri(request.RequestParameters.Url);
+            var uri = new Uri(request.Url);
             var host = uri.Host;
             if (uri.Port != 80 && uri.Port != 443)
             {
                 host += $":{uri.Port}";
             }
 
-            stub.Conditions.Host = host;
+            conditions.Host = host;
             return Task.FromResult(true);
         }
 
