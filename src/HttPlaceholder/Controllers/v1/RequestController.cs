@@ -83,10 +83,11 @@ namespace HttPlaceholder.Controllers.v1
         /// <returns>OK, with the generated stub</returns>
         [HttpPost("{correlationId}/stubs")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<FullStubDto>> CreateStubForRequest(
             [FromRoute] string correlationId,
             [FromBody] CreateStubForRequestInputDto input) =>
-            Mapper.Map<FullStubDto>(
-                await Mediator.Send(new CreateStubForRequestCommand(correlationId, input?.DoNotCreateStub ?? false)));
+            Ok(Mapper.Map<FullStubDto>(
+                await Mediator.Send(new CreateStubForRequestCommand(correlationId, input?.DoNotCreateStub ?? false))));
     }
 }

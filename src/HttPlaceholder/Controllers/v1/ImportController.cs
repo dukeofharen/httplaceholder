@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Import.Commands;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,10 +25,10 @@ namespace HttPlaceholder.Controllers.v1
         /// <returns>OK, with the generated stubs.</returns>
         [HttpPost("curl")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<FullStubModel>>> CreateCurlStubs([FromBody] string input, [FromQuery]bool doNotCreateStub)
-        {
-            await Task.CompletedTask;
-            throw new NotImplementedException();
-        }
+        public async Task<ActionResult<IEnumerable<FullStubDto>>> CreateCurlStubs(
+            [FromBody] string input,
+            [FromQuery] bool doNotCreateStub) =>
+            Ok(Mapper.Map<IEnumerable<FullStubModel>>(
+                await Mediator.Send(new CreateCurlStubCommand(input, doNotCreateStub))));
     }
 }
