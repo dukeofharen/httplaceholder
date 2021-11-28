@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations;
+using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -9,21 +10,21 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
     [TestClass]
     public class BodyHandlerFacts
     {
-        private readonly BodyHandler _handler = new BodyHandler();
+        private readonly BodyHandler _handler = new();
 
         [TestMethod]
         public async Task BodyHandler_HandleStubGenerationAsync_BodyNotSetOnRequest_ShouldReturnFalse()
         {
             // Arrange
-            var request = new RequestResultModel {RequestParameters = new RequestParametersModel {Body = string.Empty}};
-            var stub = new StubModel();
+            var request = new HttpRequestModel { Body = string.Empty };
+            var conditions = new StubConditionsModel();
 
             // Act
-            var result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
             // Assert
             Assert.IsFalse(result);
-            Assert.IsNull(stub.Conditions.Body);
+            Assert.IsNull(conditions.Body);
         }
 
         [TestMethod]
@@ -31,15 +32,15 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         {
             // Arrange
             const string body = "POSTED!";
-            var request = new RequestResultModel {RequestParameters = new RequestParametersModel {Body = body}};
-            var stub = new StubModel();
+            var request = new HttpRequestModel { Body = body };
+            var conditions = new StubConditionsModel();
 
             // Act
-            var result = await _handler.HandleStubGenerationAsync(request, stub);
+            var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
             // Assert
             Assert.IsTrue(result);
-            Assert.AreEqual(body, stub.Conditions.Body.Single());
+            Assert.AreEqual(body, conditions.Body.Single());
         }
     }
 }
