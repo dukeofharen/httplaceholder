@@ -1,8 +1,7 @@
 ﻿using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
-using HttPlaceholder.Application.StubExecution.ResponseWriting;
-using HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations;
+using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Application.StubExecution.VariableHandling;
 using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
 using HttPlaceholder.Common.Utilities;
