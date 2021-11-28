@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using MediatR;
 
@@ -9,10 +9,15 @@ namespace HttPlaceholder.Application.Import.Commands
 {
     public class CreateCurlStubCommandHandler : IRequestHandler<CreateCurlStubCommand, IEnumerable<FullStubModel>>
     {
-        public Task<IEnumerable<FullStubModel>> Handle(CreateCurlStubCommand request,
-            CancellationToken cancellationToken)
+        private readonly ICurlStubGenerator _curlStubGenerator;
+
+        public CreateCurlStubCommandHandler(ICurlStubGenerator curlStubGenerator)
         {
-            throw new NotImplementedException();
+            _curlStubGenerator = curlStubGenerator;
         }
+
+        public Task<IEnumerable<FullStubModel>> Handle(CreateCurlStubCommand request,
+            CancellationToken cancellationToken) =>
+            Task.FromResult(_curlStubGenerator.GenerateCurlStubs(request.CurlCommand, request.DoNotCreateStub));
     }
 }
