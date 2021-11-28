@@ -3,7 +3,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
 
-namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers
 {
     public class EncodedQueryStringResponseVariableParsingHandler : IResponseVariableParsingHandler
     {

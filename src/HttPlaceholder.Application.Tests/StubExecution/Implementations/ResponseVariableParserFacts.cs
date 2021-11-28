@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Match = System.Text.RegularExpressions.Match;

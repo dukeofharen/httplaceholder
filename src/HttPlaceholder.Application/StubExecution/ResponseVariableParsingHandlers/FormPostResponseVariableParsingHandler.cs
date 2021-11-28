@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.Extensions.Primitives;
 
-namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers
 {
     public class FormPostResponseVariableParsingHandler : IResponseVariableParsingHandler
     {

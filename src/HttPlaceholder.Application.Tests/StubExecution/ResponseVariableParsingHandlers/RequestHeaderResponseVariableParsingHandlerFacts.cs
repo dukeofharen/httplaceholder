@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

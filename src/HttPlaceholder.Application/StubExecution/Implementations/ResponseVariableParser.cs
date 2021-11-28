@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
-using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations
 {

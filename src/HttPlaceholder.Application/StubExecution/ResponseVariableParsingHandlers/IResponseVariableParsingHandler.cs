@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers
 {
     public interface IResponseVariableParsingHandler
     {

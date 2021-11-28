@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Common;
 
-namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers
 {
     public class LocalNowResponseVariableParsingHandler : IResponseVariableParsingHandler
     {

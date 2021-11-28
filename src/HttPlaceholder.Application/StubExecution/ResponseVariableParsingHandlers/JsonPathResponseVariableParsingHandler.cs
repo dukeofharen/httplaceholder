@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers
 {
     public class JsonPathResponseVariableParsingHandler : IResponseVariableParsingHandler
     {

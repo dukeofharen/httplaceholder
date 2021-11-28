@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers
 {

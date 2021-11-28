@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 
-namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers
 {
     public class RequestHeaderResponseVariableParsingHandler : IResponseVariableParsingHandler
     {

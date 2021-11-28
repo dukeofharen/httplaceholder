@@ -1,7 +1,7 @@
 ﻿using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
-using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common.Utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,13 +35,13 @@ namespace HttPlaceholder.Application.StubExecution
                 services.AddSingleton(typeof(IResponseWriter), type);
             }
 
-            // Variable handlers
+            // Response variable parsing handlers
             foreach (var type in AssemblyHelper.GetImplementations<IResponseVariableParsingHandler>(filter))
             {
                 services.AddSingleton(typeof(IResponseVariableParsingHandler), type);
             }
 
-            // Request stub generation
+            // Request to stub conditions handlers
             foreach (var type in AssemblyHelper.GetImplementations<IRequestToStubConditionsHandler>(filter))
             {
                 services.AddSingleton(typeof(IRequestToStubConditionsHandler), type);
