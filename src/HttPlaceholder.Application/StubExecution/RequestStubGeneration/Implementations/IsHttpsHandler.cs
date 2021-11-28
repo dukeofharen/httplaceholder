@@ -10,8 +10,12 @@ namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Impleme
         /// <inheritdoc />
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)
         {
-            stub.Conditions.Url.IsHttps =
-                request.RequestParameters.Url.StartsWith("https", StringComparison.OrdinalIgnoreCase);
+            if (!request.RequestParameters.Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
+            {
+                return Task.FromResult(false);
+            }
+
+            stub.Conditions.Url.IsHttps = true;
             return Task.FromResult(true);
         }
 

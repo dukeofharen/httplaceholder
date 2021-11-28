@@ -8,10 +8,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
     [TestClass]
     public class IsHttpsHandlerFacts
     {
-        private readonly IsHttpsHandler _handler = new IsHttpsHandler();
+        private readonly IsHttpsHandler _handler = new();
 
         [TestMethod]
-        public async Task IsHttpsHandler_HandleStubGenerationAsync_NoHttps_ShouldSetToFalse()
+        public async Task IsHttpsHandler_HandleStubGenerationAsync_NoHttps_ShouldNotSetIsHttps()
         {
             // Arrange
             var request = new RequestResultModel
@@ -24,8 +24,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
             var result = await _handler.HandleStubGenerationAsync(request, stub);
 
             // Assert
-            Assert.IsTrue(result);
-            Assert.IsFalse(stub.Conditions.Url.IsHttps.HasValue && stub.Conditions.Url.IsHttps.Value);
+            Assert.IsFalse(result);
+            Assert.IsFalse(stub.Conditions.Url.IsHttps.HasValue);
         }
 
         [TestMethod]
