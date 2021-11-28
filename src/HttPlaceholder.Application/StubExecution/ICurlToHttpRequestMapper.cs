@@ -13,7 +13,7 @@ namespace HttPlaceholder.Application.StubExecution
         /// Converts one or multiple cURL commands to <see cref="HttpRequestModel"/>.
         /// </summary>
         /// <param name="commands">The cURL command(s).</param>
-        /// <returns>A list of <see cref="StubModel"/>.</returns>
-        IEnumerable<StubModel> MapCurlCommandsToHttpRequest(string commands);
+        /// <returns>A list of <see cref="HttpRequestModel"/>.</returns>
+        IEnumerable<HttpRequestModel> MapCurlCommandsToHttpRequest(string commands);
     }
 }

@@ -16,8 +16,8 @@ namespace HttPlaceholder.Application.Import.Commands
             _curlStubGenerator = curlStubGenerator;
         }
 
-        public Task<IEnumerable<FullStubModel>> Handle(CreateCurlStubCommand request,
+        public async Task<IEnumerable<FullStubModel>> Handle(CreateCurlStubCommand request,
             CancellationToken cancellationToken) =>
-            Task.FromResult(_curlStubGenerator.GenerateCurlStubs(request.CurlCommand, request.DoNotCreateStub));
+            await _curlStubGenerator.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub);
     }
 }

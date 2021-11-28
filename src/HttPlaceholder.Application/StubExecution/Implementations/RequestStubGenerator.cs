@@ -36,7 +36,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             string requestCorrelationId,
             bool doNotCreateStub)
         {
-            _logger.LogInformation($"Creating stub based on request with corr.ID '{requestCorrelationId}'.");
+            _logger.LogDebug($"Creating stub based on request with corr.ID '{requestCorrelationId}'.");
             var requestResult = await _stubContext.GetRequestResultAsync(requestCorrelationId);
             if (requestResult == null)
             {

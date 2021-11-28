@@ -4,6 +4,7 @@ using HttPlaceholder.Application.Import.Commands;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Import.Commands
@@ -26,8 +27,8 @@ namespace HttPlaceholder.Application.Tests.Import.Commands
             var request = new CreateCurlStubCommand("curl bladibla", true);
             var expectedResult = new[] { new FullStubModel() };
             curlStubGeneratorMock
-                .Setup(m => m.GenerateCurlStubs(request.CurlCommand, request.DoNotCreateStub))
-                .Returns(expectedResult);
+                .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub))
+                .ReturnsAsync(expectedResult);
 
             // Act
             var result = await handler.Handle(request, CancellationToken.None);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution
@@ -14,6 +15,6 @@ namespace HttPlaceholder.Application.StubExecution
         /// <param name="input">The cURL command(s).</param>
         /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
         /// <returns>A list of created stubs.</returns>
-        IEnumerable<FullStubModel> GenerateCurlStubs(string input, bool doNotCreateStub);
+        Task<IEnumerable<FullStubModel>> GenerateCurlStubsAsync(string input, bool doNotCreateStub);
     }
 }
