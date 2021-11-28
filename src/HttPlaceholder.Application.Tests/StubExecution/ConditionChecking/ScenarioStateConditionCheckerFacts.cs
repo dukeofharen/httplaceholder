@@ -1,5 +1,5 @@
 ﻿using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations;
+using HttPlaceholder.Application.StubExecution.ConditionChecking;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Domain.Enums;

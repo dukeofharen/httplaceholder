@@ -1,5 +1,5 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations;
+using HttPlaceholder.Application.StubExecution.ConditionChecking;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

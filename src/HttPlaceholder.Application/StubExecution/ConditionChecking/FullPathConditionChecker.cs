@@ -1,15 +1,15 @@
-﻿using System;
-using HttPlaceholder.Application.Interfaces.Http;
+﻿using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
-namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations
+namespace HttPlaceholder.Application.StubExecution.ConditionChecking
 {
-    public class MethodConditionChecker : IConditionChecker
+    public class FullPathConditionChecker : IConditionChecker
     {
         private readonly IHttpContextService _httpContextService;
 
-        public MethodConditionChecker(IHttpContextService httpContextService)
+        public FullPathConditionChecker(IHttpContextService httpContextService)
         {
             _httpContextService = httpContextService;
         }
@@ -17,27 +17,27 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         public ConditionCheckResultModel Validate(StubModel stub)
         {
             var result = new ConditionCheckResultModel();
-            var methodCondition = stub.Conditions?.Method;
-            if (string.IsNullOrEmpty(methodCondition))
+            var fullPathCondition = stub.Conditions?.Url?.FullPath;
+            if (string.IsNullOrEmpty(fullPathCondition))
             {
                 return result;
             }
 
-            var method = _httpContextService.Method;
-            if (string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase))
+            var path = _httpContextService.FullPath;
+            if (StringHelper.IsRegexMatchOrSubstring(path, fullPathCondition))
             {
                 // The path matches the provided regex. Add the stub ID to the resulting list.
                 result.ConditionValidation = ConditionValidationType.Valid;
             }
             else
             {
-                result.Log = $"Condition '{methodCondition}' did not pass for request.";
+                result.Log = $"Condition '{fullPathCondition}' did not pass for request.";
                 result.ConditionValidation = ConditionValidationType.Invalid;
             }
 
             return result;
         }
 
-        public int Priority => 10;
+        public int Priority => 9;
     }
 }

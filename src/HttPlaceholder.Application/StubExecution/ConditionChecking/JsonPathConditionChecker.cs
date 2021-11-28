@@ -7,7 +7,7 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Newtonsoft.Json.Linq;
 
-namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations
+namespace HttPlaceholder.Application.StubExecution.ConditionChecking
 {
     public class JsonPathConditionChecker : IConditionChecker
     {

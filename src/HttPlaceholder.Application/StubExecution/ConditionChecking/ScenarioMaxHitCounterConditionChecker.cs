@@ -1,13 +1,13 @@
 ﻿using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
-namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations
+namespace HttPlaceholder.Application.StubExecution.ConditionChecking
 {
-    public class ScenarioMinHitCounterConditionChecker : IConditionChecker
+    public class ScenarioMaxHitCounterConditionChecker : IConditionChecker
     {
         private readonly IScenarioService _scenarioService;
 
-        public ScenarioMinHitCounterConditionChecker(IScenarioService scenarioService)
+        public ScenarioMaxHitCounterConditionChecker(IScenarioService scenarioService)
         {
             _scenarioService = scenarioService;
         }
@@ -15,8 +15,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
         public ConditionCheckResultModel Validate(StubModel stub)
         {
             var result = new ConditionCheckResultModel();
-            var minHits = stub.Conditions?.Scenario?.MinHits;
-            if (minHits == null)
+            var maxHits = stub.Conditions?.Scenario?.MaxHits;
+            if (maxHits == null)
             {
                 return result;
             }
@@ -29,13 +29,13 @@ namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementat
                 result.Log = "No hit count could be found.";
                 result.ConditionValidation = ConditionValidationType.Invalid;
             }
-            else if (actualHitCount < minHits)
+            else if (actualHitCount >= maxHits)
             {
                 result.Log =
-                    $"Scenario '{scenario}' should have at least '{minHits}' hits, but only '{actualHitCount}' hits were counted.";
+                    $"Scenario '{scenario}' should have less than '{maxHits}' hits, but '{actualHitCount}' hits were counted.";
                 result.ConditionValidation = ConditionValidationType.Invalid;
             }
-            else if (actualHitCount >= minHits)
+            else if (actualHitCount < maxHits)
             {
                 result.ConditionValidation = ConditionValidationType.Valid;
             }

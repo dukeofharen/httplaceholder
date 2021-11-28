@@ -3,7 +3,7 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Domain.Enums;
 
-namespace HttPlaceholder.Application.StubExecution.ConditionChecking.Implementations
+namespace HttPlaceholder.Application.StubExecution.ConditionChecking
 {
     public class ScenarioStateConditionChecker : IConditionChecker
     {
