@@ -37,10 +37,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             bool doNotCreateStub)
         {
             _logger.LogInformation($"Creating stub based on request with corr.ID '{requestCorrelationId}'.");
-
-            // TODO lateron, when the querying is fixed, only query for one request result.
-            var requestResults = await _stubContext.GetRequestResultsAsync();
-            var requestResult = requestResults.FirstOrDefault(r => r.CorrelationId == requestCorrelationId);
+            var requestResult = await _stubContext.GetRequestResultAsync(requestCorrelationId);
             if (requestResult == null)
             {
                 throw new NotFoundException(nameof(RequestResultModel), requestCorrelationId);

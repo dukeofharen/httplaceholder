@@ -44,19 +44,16 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 
             const string expectedStubId = "generated-0876599ae8c21242dd796e82c89217ee";
 
-            var requests = new[]
-            {
-                new RequestResultModel { CorrelationId = "1", RequestParameters = new RequestParametersModel() },
-                new RequestResultModel { CorrelationId = "2", RequestParameters = new RequestParametersModel() }
-            };
+            var request =
+                new RequestResultModel { CorrelationId = "2", RequestParameters = new RequestParametersModel() };
 
             stubContextMock
-                .Setup(m => m.GetRequestResultsAsync())
-                .ReturnsAsync(requests);
+                .Setup(m => m.GetRequestResultAsync("2"))
+                .ReturnsAsync(request);
 
             var mappedRequest = new HttpRequestModel();
             mapperMock
-                .Setup(m => m.Map<HttpRequestModel>(requests[1].RequestParameters))
+                .Setup(m => m.Map<HttpRequestModel>(request.RequestParameters))
                 .Returns(mappedRequest);
 
             var conditions = new StubConditionsModel();
@@ -88,19 +85,16 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 
             const string expectedStubId = "generated-0876599ae8c21242dd796e82c89217ee";
 
-            var requests = new[]
-            {
-                new RequestResultModel { CorrelationId = "1", RequestParameters = new RequestParametersModel() },
-                new RequestResultModel { CorrelationId = "2", RequestParameters = new RequestParametersModel() }
-            };
+            var request =
+                new RequestResultModel { CorrelationId = "2", RequestParameters = new RequestParametersModel() };
 
             stubContextMock
-                .Setup(m => m.GetRequestResultsAsync())
-                .ReturnsAsync(requests);
+                .Setup(m => m.GetRequestResultAsync("2"))
+                .ReturnsAsync(request);
 
             var mappedRequest = new HttpRequestModel();
             mapperMock
-                .Setup(m => m.Map<HttpRequestModel>(requests[1].RequestParameters))
+                .Setup(m => m.Map<HttpRequestModel>(request.RequestParameters))
                 .Returns(mappedRequest);
 
             var conditions = new StubConditionsModel();
