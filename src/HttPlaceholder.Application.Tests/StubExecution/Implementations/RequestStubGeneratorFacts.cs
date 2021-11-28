@@ -1,22 +1,22 @@
 ﻿using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Application.StubExecution.RequestStubGeneration;
-using HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations;
+using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
+namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 {
     [TestClass]
     public class RequestStubGeneratorFacts
     {
         private readonly Mock<ILogger<RequestStubGenerator>> _mockLogger = new();
         private readonly Mock<IStubContext> _mockStubContext = new();
-        private readonly Mock<IRequestStubGenerationHandler> _mockHandler1 = new();
-        private readonly Mock<IRequestStubGenerationHandler> _mockHandler2 = new();
+        private readonly Mock<IRequestToStubConditionsHandler> _mockHandler1 = new();
+        private readonly Mock<IRequestToStubConditionsHandler> _mockHandler2 = new();
         private RequestStubGenerator _generator;
 
         [TestInitialize]

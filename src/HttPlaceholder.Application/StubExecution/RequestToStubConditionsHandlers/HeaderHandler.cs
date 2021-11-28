@@ -5,10 +5,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
+namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
 {
     /// <inheritdoc />
-    public class HeaderHandler : IRequestStubGenerationHandler
+    public class HeaderHandler : IRequestToStubConditionsHandler
     {
         private static readonly IEnumerable<string> _headersToStrip = new[] { "Postman-Token", "Host" };
 

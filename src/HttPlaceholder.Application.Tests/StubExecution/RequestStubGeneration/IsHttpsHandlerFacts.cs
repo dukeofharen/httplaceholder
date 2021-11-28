@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations;
+using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
+namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
 {
     /// <inheritdoc />
-    internal class QueryParamHandler : IRequestStubGenerationHandler
+    internal class QueryParamHandler : IRequestToStubConditionsHandler
     {
         /// <inheritdoc />
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)

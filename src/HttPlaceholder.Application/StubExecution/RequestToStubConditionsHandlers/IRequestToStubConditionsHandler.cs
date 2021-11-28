@@ -1,12 +1,12 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration
+namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
 {
     /// <summary>
     /// Describes a class that is being used to set stub conditions based on a given HTTP request.
     /// </summary>
-    public interface IRequestStubGenerationHandler
+    public interface IRequestToStubConditionsHandler
     {
         /// <summary>
         /// Handles the generation of a stub based on a request.

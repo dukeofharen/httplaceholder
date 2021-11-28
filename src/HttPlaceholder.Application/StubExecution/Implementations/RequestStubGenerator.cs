@@ -2,23 +2,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
+namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     /// <inheritdoc />
     internal class RequestStubGenerator : IRequestStubGenerator
     {
         private readonly ILogger<RequestStubGenerator> _logger;
         private readonly IStubContext _stubContext;
-        private readonly IEnumerable<IRequestStubGenerationHandler> _handlers;
+        private readonly IEnumerable<IRequestToStubConditionsHandler> _handlers;
 
         public RequestStubGenerator(
             IStubContext stubContext,
-            IEnumerable<IRequestStubGenerationHandler> handlers,
+            IEnumerable<IRequestToStubConditionsHandler> handlers,
             ILogger<RequestStubGenerator> logger)
         {
             _stubContext = stubContext;

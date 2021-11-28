@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
+namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
 {
-    internal class BodyHandler : IRequestStubGenerationHandler
+    internal class BodyHandler : IRequestToStubConditionsHandler
     {
         /// <inheritdoc />
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)

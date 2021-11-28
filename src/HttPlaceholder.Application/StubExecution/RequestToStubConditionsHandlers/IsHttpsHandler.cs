@@ -2,10 +2,10 @@ using System;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations
+namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
 {
     /// <inheritdoc />
-    internal class IsHttpsHandler : IRequestStubGenerationHandler
+    internal class IsHttpsHandler : IRequestToStubConditionsHandler
     {
         /// <inheritdoc />
         public Task<bool> HandleStubGenerationAsync(RequestResultModel request, StubModel stub)

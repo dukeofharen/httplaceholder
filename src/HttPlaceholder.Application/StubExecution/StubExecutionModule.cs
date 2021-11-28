@@ -1,7 +1,6 @@
 ﻿using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Application.StubExecution.RequestStubGeneration;
-using HttPlaceholder.Application.StubExecution.RequestStubGeneration.Implementations;
+using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Application.StubExecution.ResponseWriting;
 using HttPlaceholder.Application.StubExecution.ResponseWriting.Implementations;
 using HttPlaceholder.Application.StubExecution.VariableHandling;
@@ -45,9 +44,9 @@ namespace HttPlaceholder.Application.StubExecution
             }
 
             // Request stub generation
-            foreach (var type in AssemblyHelper.GetImplementations<IRequestStubGenerationHandler>(filter))
+            foreach (var type in AssemblyHelper.GetImplementations<IRequestToStubConditionsHandler>(filter))
             {
-                services.AddSingleton(typeof(IRequestStubGenerationHandler), type);
+                services.AddSingleton(typeof(IRequestToStubConditionsHandler), type);
             }
 
             return services;
