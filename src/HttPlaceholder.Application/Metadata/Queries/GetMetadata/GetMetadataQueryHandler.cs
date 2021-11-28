@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.VariableHandling;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using MediatR;
@@ -25,7 +25,7 @@ namespace HttPlaceholder.Application.Metadata.Queries.GetMetadata
 
         public Task<MetadataModel> Handle(GetMetadataQuery request, CancellationToken cancellationToken)
         {
-            var handlers = _serviceProvider.GetServices<IVariableHandler>();
+            var handlers = _serviceProvider.GetServices<IResponseVariableParsingHandler>();
             var result = new MetadataModel
             {
                 Version = _assemblyService.GetAssemblyVersion(),

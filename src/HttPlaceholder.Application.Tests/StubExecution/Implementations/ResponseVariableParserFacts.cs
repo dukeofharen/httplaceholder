@@ -1,24 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using HttPlaceholder.Application.StubExecution.VariableHandling;
-using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
+using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Match = System.Text.RegularExpressions.Match;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
+namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 {
     [TestClass]
-    public class VariableParserFacts
+    public class ResponseVariableParserFacts
     {
-        private readonly Mock<IVariableHandler> _handler1 = new Mock<IVariableHandler>();
-        private readonly Mock<IVariableHandler> _handler2 = new Mock<IVariableHandler>();
-        private VariableParser _parser;
+        private readonly Mock<IResponseVariableParsingHandler> _handler1 = new Mock<IResponseVariableParsingHandler>();
+        private readonly Mock<IResponseVariableParsingHandler> _handler2 = new Mock<IResponseVariableParsingHandler>();
+        private ResponseVariableParser _parser;
 
         [TestInitialize]
         public void Initialize()
         {
-            _parser = new VariableParser(new[]
+            _parser = new ResponseVariableParser(new[]
             {
                 _handler1.Object,
                 _handler2.Object

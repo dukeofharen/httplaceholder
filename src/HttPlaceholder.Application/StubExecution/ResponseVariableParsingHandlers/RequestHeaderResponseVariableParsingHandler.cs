@@ -3,13 +3,13 @@ using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 
-namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
 {
-    public class RequestHeaderVariableHandler : IVariableHandler
+    public class RequestHeaderResponseVariableParsingHandler : IResponseVariableParsingHandler
     {
         private readonly IHttpContextService _httpContextService;
 
-        public RequestHeaderVariableHandler(IHttpContextService httpContextService)
+        public RequestHeaderResponseVariableParsingHandler(IHttpContextService httpContextService)
         {
             _httpContextService = httpContextService;
         }

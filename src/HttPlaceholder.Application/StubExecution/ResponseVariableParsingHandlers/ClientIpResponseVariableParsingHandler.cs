@@ -2,14 +2,15 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
 
-namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers
 {
-    public class ClientIpVariableHandler : IVariableHandler
+    public class ClientIpResponseVariableParsingHandler : IResponseVariableParsingHandler
     {
         private readonly IClientDataResolver _clientDataResolver;
 
-        public ClientIpVariableHandler(IClientDataResolver clientDataResolver)
+        public ClientIpResponseVariableParsingHandler(IClientDataResolver clientDataResolver)
         {
             _clientDataResolver = clientDataResolver;
         }

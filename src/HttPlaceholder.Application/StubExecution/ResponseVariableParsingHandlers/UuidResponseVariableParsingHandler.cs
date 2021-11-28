@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
 {
-    public class UuidVariableHandler : IVariableHandler
+    public class UuidResponseVariableParsingHandler : IResponseVariableParsingHandler
     {
         public string Name => "uuid";
 

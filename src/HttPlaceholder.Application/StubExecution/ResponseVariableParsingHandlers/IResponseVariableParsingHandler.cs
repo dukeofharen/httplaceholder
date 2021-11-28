@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace HttPlaceholder.Application.StubExecution.VariableHandling
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
 {
-    public interface IVariableHandler
+    public interface IResponseVariableParsingHandler
     {
         string Name { get; }
 

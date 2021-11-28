@@ -5,13 +5,13 @@ using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.Extensions.Primitives;
 
-namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
 {
-    public class FormPostVariableHandler : IVariableHandler
+    public class FormPostResponseVariableParsingHandler : IResponseVariableParsingHandler
     {
         private readonly IHttpContextService _httpContextService;
 
-        public FormPostVariableHandler(IHttpContextService httpContextService)
+        public FormPostResponseVariableParsingHandler(IHttpContextService httpContextService)
         {
             _httpContextService = httpContextService;
         }

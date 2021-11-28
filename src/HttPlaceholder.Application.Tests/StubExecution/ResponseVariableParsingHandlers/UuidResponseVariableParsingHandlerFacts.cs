@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq;
-using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
+using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers
 {
     [TestClass]
-    public class UuidVariableHandlerFacts
+    public class UuidResponseVariableParsingHandlerFacts
     {
-        private readonly UuidVariableHandler _handler = new UuidVariableHandler();
+        private readonly UuidResponseVariableParsingHandler _parsingHandler = new UuidResponseVariableParsingHandler();
 
         [TestMethod]
         public void UuidVariableHandler_Parse_HappyFlow()
@@ -17,8 +18,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
             const string input = "((uuid)) ((uuid:nonsense))";
 
             // act
-            var matches = VariableParser.VarRegex.Matches(input);
-            var result = _handler.Parse(input, matches);
+            var matches = ResponseVariableParser.VarRegex.Matches(input);
+            var result = _parsingHandler.Parse(input, matches);
 
             // assert
             var parts = result.Split(' ');

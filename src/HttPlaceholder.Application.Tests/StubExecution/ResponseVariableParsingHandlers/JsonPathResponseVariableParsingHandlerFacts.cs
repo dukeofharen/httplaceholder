@@ -1,12 +1,13 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
+using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.AutoMock;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers
 {
     [TestClass]
-    public class JsonPathVariableHandlerFacts
+    public class JsonPathResponseVariableParsingHandlerFacts
     {
         private readonly AutoMocker _mocker = new();
 
@@ -15,10 +16,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
         {
             // Arrange
             const string input = "input";
-            var handler = _mocker.CreateInstance<JsonPathVariableHandler>();
+            var handler = _mocker.CreateInstance<JsonPathResponseVariableParsingHandler>();
 
             // Act
-            var matches = VariableParser.VarRegex.Matches(input);
+            var matches = ResponseVariableParser.VarRegex.Matches(input);
             var result = handler.Parse(input, matches);
 
             // Assert
@@ -36,10 +37,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
                 .Setup(m => m.GetBody())
                 .Returns("wrong json");
 
-            var handler = _mocker.CreateInstance<JsonPathVariableHandler>();
+            var handler = _mocker.CreateInstance<JsonPathResponseVariableParsingHandler>();
 
             // Act
-            var matches = VariableParser.VarRegex.Matches(input);
+            var matches = ResponseVariableParser.VarRegex.Matches(input);
             var result = handler.Parse(input, matches);
 
             // Assert
@@ -66,10 +67,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
     ]
 }");
 
-            var handler = _mocker.CreateInstance<JsonPathVariableHandler>();
+            var handler = _mocker.CreateInstance<JsonPathResponseVariableParsingHandler>();
 
             // Act
-            var matches = VariableParser.VarRegex.Matches(input);
+            var matches = ResponseVariableParser.VarRegex.Matches(input);
             var result = handler.Parse(input, matches);
 
             // Assert

@@ -1,23 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
 
-namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
 {
-    public class QueryStringVariableHandler : IVariableHandler
+    public class EncodedQueryStringResponseVariableParsingHandler : IResponseVariableParsingHandler
     {
         private readonly IHttpContextService _httpContextService;
 
-        public QueryStringVariableHandler(IHttpContextService httpContextService)
+        public EncodedQueryStringResponseVariableParsingHandler(IHttpContextService httpContextService)
         {
             _httpContextService = httpContextService;
         }
 
-        public string Name => "query";
+        public string Name => "query_encoded";
 
-        public string FullName => "Query string variable handler";
+        public string FullName => "URL encoded query string variable handler";
 
-        public string Example => "((query:query_string_key))";
+        public string Example => "((query_encoded:query_string_key))";
 
         public string Parse(string input, IEnumerable<Match> matches)
         {
@@ -32,6 +33,7 @@ namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementati
                 var queryStringName = match.Groups[2].Value;
                 queryDict.TryGetValue(queryStringName, out var replaceValue);
 
+                replaceValue = WebUtility.UrlEncode(replaceValue);
                 input = input.Replace(match.Value, replaceValue);
             }
 

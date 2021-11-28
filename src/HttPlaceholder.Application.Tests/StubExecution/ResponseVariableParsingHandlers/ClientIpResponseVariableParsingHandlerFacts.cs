@@ -1,18 +1,19 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
+using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers
 {
     [TestClass]
-    public class ClientIpVariableHandlerFacts
+    public class ClientIpResponseVariableParsingHandlerFacts
     {
         private readonly Mock<IClientDataResolver> _clientIpResolverMock = new Mock<IClientDataResolver>();
-        private ClientIpVariableHandler _handler;
+        private ClientIpResponseVariableParsingHandler _parsingHandler;
 
         [TestInitialize]
-        public void Initialize() => _handler = new ClientIpVariableHandler(_clientIpResolverMock.Object);
+        public void Initialize() => _parsingHandler = new ClientIpResponseVariableParsingHandler(_clientIpResolverMock.Object);
 
         [TestCleanup]
         public void Cleanup() => _clientIpResolverMock.VerifyAll();
@@ -31,8 +32,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
                 .Returns(ip);
 
             // act
-            var matches = VariableParser.VarRegex.Matches(input);
-            var result = _handler.Parse(input, matches);
+            var matches = ResponseVariableParser.VarRegex.Matches(input);
+            var result = _parsingHandler.Parse(input, matches);
 
             // assert
             Assert.AreEqual(expectedResult, result);

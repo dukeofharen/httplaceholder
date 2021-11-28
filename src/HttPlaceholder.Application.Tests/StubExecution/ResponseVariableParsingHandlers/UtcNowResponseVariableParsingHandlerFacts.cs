@@ -1,18 +1,19 @@
 using System;
 using System.Globalization;
-using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
+using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
 using HttPlaceholder.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers
 {
     [TestClass]
-    public class UtcNowVariableHandlerFacts
+    public class UtcNowResponseVariableParsingHandlerFacts
     {
         private static readonly DateTime _now = new DateTime(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
         private readonly Mock<IDateTime> _dateTimeMock = new Mock<IDateTime>();
-        private UtcNowVariableHandler _handler;
+        private UtcNowResponseVariableParsingHandler _parsingHandler;
 
         [TestInitialize]
         public void Initialize()
@@ -21,7 +22,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
                 .Setup(m => m.UtcNow)
                 .Returns(_now);
 
-            _handler = new UtcNowVariableHandler(_dateTimeMock.Object);
+            _parsingHandler = new UtcNowResponseVariableParsingHandler(_dateTimeMock.Object);
         }
 
         [TestCleanup]
@@ -34,8 +35,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
             const string input = "((utcnow:dd-MM-yyyy HH:mm:ss))";
 
             // Act
-            var matches = VariableParser.VarRegex.Matches(input);
-            var result = _handler.Parse(input, matches);
+            var matches = ResponseVariableParser.VarRegex.Matches(input);
+            var result = _parsingHandler.Parse(input, matches);
 
             // Assert
             Assert.AreEqual("21-08-2019 20:29:17", result);
@@ -48,8 +49,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
             const string input = "((utcnow))";
 
             // Act
-            var matches = VariableParser.VarRegex.Matches(input);
-            var result = _handler.Parse(input, matches);
+            var matches = ResponseVariableParser.VarRegex.Matches(input);
+            var result = _parsingHandler.Parse(input, matches);
 
             // Assert
             Assert.AreEqual(_now.ToString(CultureInfo.InvariantCulture), result);

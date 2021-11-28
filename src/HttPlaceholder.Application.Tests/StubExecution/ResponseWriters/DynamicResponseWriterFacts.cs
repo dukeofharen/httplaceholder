@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Application.StubExecution.VariableHandling;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -11,7 +11,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
     [TestClass]
     public class DynamicResponseWriterFacts
     {
-        private readonly Mock<IVariableParser> _variableParserMock = new Mock<IVariableParser>();
+        private readonly Mock<IResponseVariableParser> _variableParserMock = new Mock<IResponseVariableParser>();
         private DynamicResponseWriter _writer;
 
         [TestInitialize]

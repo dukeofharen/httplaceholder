@@ -1,18 +1,17 @@
 ﻿using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.VariableHandling;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters
 {
     public class DynamicResponseWriter : IResponseWriter
     {
-        private readonly IVariableParser _variableParser;
+        private readonly IResponseVariableParser _responseVariableParser;
 
-        public DynamicResponseWriter(IVariableParser variableParser)
+        public DynamicResponseWriter(IResponseVariableParser responseVariableParser)
         {
-            _variableParser = variableParser;
+            _responseVariableParser = responseVariableParser;
         }
 
         public int Priority => -10;
@@ -28,7 +27,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters
             // Try to parse and replace the variables in the body.
             if (!response.BodyIsBinary && response.Body != null)
             {
-                var parsedBody = _variableParser.Parse(Encoding.UTF8.GetString(response.Body));
+                var parsedBody = _responseVariableParser.Parse(Encoding.UTF8.GetString(response.Body));
                 response.Body = Encoding.UTF8.GetBytes(parsedBody);
             }
 
@@ -36,7 +35,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters
             var keys = response.Headers.Keys.ToArray();
             foreach (var key in keys)
             {
-                response.Headers[key] = _variableParser.Parse(response.Headers[key]);
+                response.Headers[key] = _responseVariableParser.Parse(response.Headers[key]);
             }
 
             return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));

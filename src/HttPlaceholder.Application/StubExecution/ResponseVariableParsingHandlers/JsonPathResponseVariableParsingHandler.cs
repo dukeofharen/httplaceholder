@@ -7,16 +7,16 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
 {
-    public class JsonPathVariableHandler : IVariableHandler
+    public class JsonPathResponseVariableParsingHandler : IResponseVariableParsingHandler
     {
         private readonly IHttpContextService _httpContextService;
-        private readonly ILogger<JsonPathVariableHandler> _logger;
+        private readonly ILogger<JsonPathResponseVariableParsingHandler> _logger;
 
-        public JsonPathVariableHandler(
+        public JsonPathResponseVariableParsingHandler(
             IHttpContextService httpContextService,
-            ILogger<JsonPathVariableHandler> logger)
+            ILogger<JsonPathResponseVariableParsingHandler> logger)
         {
             _httpContextService = httpContextService;
             _logger = logger;

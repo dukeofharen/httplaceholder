@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Application.StubExecution.VariableHandling.Implementations;
+using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers
 {
     [TestClass]
-    public class RequestHeaderVariableHandlerFacts
+    public class RequestHeaderResponseVariableParsingHandlerFacts
     {
         private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
-        private RequestHeaderVariableHandler _handler;
+        private RequestHeaderResponseVariableParsingHandler _parsingHandler;
 
         [TestInitialize]
-        public void Initialize() => _handler = new RequestHeaderVariableHandler(_httpContextServiceMock.Object);
+        public void Initialize() => _parsingHandler = new RequestHeaderResponseVariableParsingHandler(_httpContextServiceMock.Object);
 
         [TestCleanup]
         public void Cleanup() => _httpContextServiceMock.VerifyAll();
@@ -36,8 +37,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.VariableHandling
                 .Returns(headerDict);
 
             // act
-            var matches = VariableParser.VarRegex.Matches(input);
-            var result = _handler.Parse(input, matches);
+            var matches = ResponseVariableParser.VarRegex.Matches(input);
+            var result = _parsingHandler.Parse(input, matches);
 
             // assert
             Assert.AreEqual(expectedResult, result);

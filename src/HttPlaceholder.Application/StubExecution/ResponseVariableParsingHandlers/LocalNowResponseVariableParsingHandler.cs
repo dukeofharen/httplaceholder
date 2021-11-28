@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Common;
 
-namespace HttPlaceholder.Application.StubExecution.VariableHandling.Implementations
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandler
 {
-    public class LocalNowVariableHandler : IVariableHandler
+    public class LocalNowResponseVariableParsingHandler : IResponseVariableParsingHandler
     {
         private readonly IDateTime _dateTime;
 
-        public LocalNowVariableHandler(IDateTime dateTime)
+        public LocalNowResponseVariableParsingHandler(IDateTime dateTime)
         {
             _dateTime = dateTime;
         }
