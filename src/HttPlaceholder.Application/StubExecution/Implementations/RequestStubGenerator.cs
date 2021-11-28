@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution.Models;
-using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
@@ -17,23 +16,24 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
     {
         private readonly ILogger<RequestStubGenerator> _logger;
         private readonly IStubContext _stubContext;
-        private readonly IEnumerable<IRequestToStubConditionsHandler> _handlers;
         private readonly IMapper _mapper;
+        private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
 
         public RequestStubGenerator(
             IStubContext stubContext,
-            IEnumerable<IRequestToStubConditionsHandler> handlers,
             ILogger<RequestStubGenerator> logger,
-            IMapper mapper)
+            IMapper mapper,
+            IHttpRequestToConditionsService httpRequestToConditionsService)
         {
             _stubContext = stubContext;
-            _handlers = handlers;
             _logger = logger;
             _mapper = mapper;
+            _httpRequestToConditionsService = httpRequestToConditionsService;
         }
 
         /// <inheritdoc />
-        public async Task<FullStubModel> GenerateStubBasedOnRequestAsync(string requestCorrelationId,
+        public async Task<FullStubModel> GenerateStubBasedOnRequestAsync(
+            string requestCorrelationId,
             bool doNotCreateStub)
         {
             _logger.LogInformation($"Creating stub based on request with corr.ID '{requestCorrelationId}'.");
@@ -46,17 +46,12 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                 throw new NotFoundException(nameof(RequestResultModel), requestCorrelationId);
             }
 
-            var stub = new StubModel();
-            foreach (var handler in _handlers.OrderByDescending(w => w.Priority))
+            var request = _mapper.Map<HttpRequestModel>(requestResult.RequestParameters);
+            var stub = new StubModel
             {
-                var request = _mapper.Map<HttpRequestModel>(requestResult.RequestParameters);
-                var executed =
-                    await handler.HandleStubGenerationAsync(request, stub.Conditions);
-                _logger.LogInformation($"Handler '{handler.GetType().Name}'" + (executed ? " executed" : "") + ".");
-            }
-
-            // Set a default response
-            stub.Response.Text = "OK!";
+                Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request),
+                Response = { Text = "OK!" }
+            };
 
             // Generate an ID based on the created stub.
             var contents = JsonConvert.SerializeObject(stub);
