@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.AutoMock;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
 {
     [TestClass]
     public class SetScenarioStateResponseWriterFacts

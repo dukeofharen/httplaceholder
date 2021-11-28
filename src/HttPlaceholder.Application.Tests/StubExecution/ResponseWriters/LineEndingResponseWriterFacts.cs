@@ -6,7 +6,7 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
 {
     [TestClass]
     public class LineEndingResponseWriterFacts

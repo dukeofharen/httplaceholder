@@ -5,7 +5,7 @@ using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
 {
     [TestClass]
     public class HtmlResponseWriterFacts

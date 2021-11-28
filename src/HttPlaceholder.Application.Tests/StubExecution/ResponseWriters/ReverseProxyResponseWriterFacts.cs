@@ -11,7 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
 {
     [TestClass]
     public class ReverseProxyResponseWriterFacts

@@ -7,7 +7,7 @@ using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriting
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
 {
     [TestClass]
     public class FileResponseWriterFacts
