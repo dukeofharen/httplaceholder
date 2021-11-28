@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HttPlaceholder.Application.StubExecution.Models;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations
@@ -8,7 +7,9 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
     internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
     {
         /// <inheritdoc/>
-        public IEnumerable<HttpRequestModel> MapCurlCommandsToHttpRequest(string commands) =>
-            throw new NotImplementedException();
+        public IEnumerable<HttpRequestModel> MapCurlCommandsToHttpRequest(string commands)
+        {
+            return null;
+        }
     }
 }

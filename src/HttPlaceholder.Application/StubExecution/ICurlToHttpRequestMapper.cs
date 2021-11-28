@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.StubExecution.Models;
-using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution
 {
