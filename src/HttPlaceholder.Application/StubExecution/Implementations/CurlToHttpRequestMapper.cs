@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using HttPlaceholder.Application.StubExecution.Models;
 using Microsoft.Extensions.Logging;
 
@@ -10,6 +11,11 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
     /// <inheritdoc/>
     internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
     {
+        private static readonly Regex _urlRegex =
+            new(
+                @"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)",
+                RegexOptions.Compiled);
+
         private readonly ILogger<CurlToHttpRequestMapper> _logger;
 
         public CurlToHttpRequestMapper(ILogger<CurlToHttpRequestMapper> logger)
@@ -22,7 +28,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         {
             var result = new List<HttpRequestModel>();
             HttpRequestModel request = null;
-            var parts = commands.Split(' ');
+            var parts = commands.Trim().Split(' ');
             if (parts.Length == 0)
             {
                 _logger.LogDebug("cURL ommand string is empty, so not extracting request.");
@@ -64,10 +70,26 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                     continue;
                 }
 
-                // TODO check if "-X"
-                // TODO check if "-H"
-                // TODO check if "--data-raw"
-                // TODO regex to check if part is URL
+                if (string.IsNullOrWhiteSpace(request.Body) && part == "--data-raw")
+                {
+                    var body = ParseBody(i, parts);
+                    request.Body = body.body;
+                    i = body.newNeedle;
+                    continue;
+                }
+
+                // TODO add logging
+                // TODO check "--compressed" (sets Accept-Encoding header to "deflate, gzip, br" apparently)
+                if (string.IsNullOrWhiteSpace(request.Url) && _urlRegex.IsMatch(part))
+                {
+                    var matches = _urlRegex.Matches(part).Cast<Match>().ToArray();
+                    if (matches.Length == 1)
+                    {
+                        request.Url = matches[0].Value;
+                    }
+
+                    continue;
+                }
             }
 
             return result;
@@ -107,6 +129,58 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 
             headerBuilder.Replace(escapedBoundaryCharacter, boundaryCharacter.ToString());
             return (key, headerBuilder.ToString(), counter);
+        }
+
+        private static (string body, int newNeedle) ParseBody(int needle, string[] parts)
+        {
+            var boundaryCharacter = parts[needle + 1][0];
+            var escapedBoundaryCharacter = $@"\{boundaryCharacter}";
+
+            bool PartStartsWithBoundaryChar(string part) =>
+                part[0] == boundaryCharacter && !part.StartsWith(escapedBoundaryCharacter);
+
+            bool PartEndsWithBoundaryChar(string part) => part[part.Length - 1] == boundaryCharacter &&
+                                                          !part.EndsWith(escapedBoundaryCharacter);
+
+            var bodyBuilder = new StringBuilder(); // Hah nice
+            var counter = needle + 1;
+            while (true)
+            {
+                if (counter >= parts.Length)
+                {
+                    break;
+                }
+
+                var part = parts[counter];
+                if (PartStartsWithBoundaryChar(part) && PartEndsWithBoundaryChar(part))
+                {
+                    // This body consists of one part. Just strip the boundary characters and we're good to go.
+                    bodyBuilder.Append(new string(part.ToCharArray().Skip(1).Take(part.Length - 2).ToArray()));
+                    break;
+                }
+
+                if (PartStartsWithBoundaryChar(part))
+                {
+                    // The first part is found. Remove the boundary character and continue.
+                    bodyBuilder.Append(new string(part.ToCharArray().Skip(1).ToArray()));
+                }
+                else if (PartEndsWithBoundaryChar(part))
+                {
+                    // The last part is found. Append it and break.
+                    bodyBuilder.Append(new string(part.ToCharArray().Take(part.Length - 1).ToArray()));
+                    break;
+                }
+                else
+                {
+                    // Some part within.
+                    bodyBuilder.Append(part).Append(" ");
+                }
+
+                counter++;
+            }
+
+            bodyBuilder.Replace(escapedBoundaryCharacter, boundaryCharacter.ToString());
+            return (bodyBuilder.ToString(), counter);
         }
     }
 }

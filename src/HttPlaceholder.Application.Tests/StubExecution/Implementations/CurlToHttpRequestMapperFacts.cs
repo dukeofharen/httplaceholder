@@ -29,8 +29,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
 
             var request = result[0];
             Assert.AreEqual("POST", request.Method);
-            // Assert.AreEqual("https://api.site.com/api/v1/users/authenticate", request.Url);
-            // Assert.AreEqual("{}", request.Body);
+            Assert.AreEqual("https://api.site.com/api/v1/users/authenticate", request.Url);
+            Assert.AreEqual("{}", request.Body);
             Assert.AreEqual(13, request.Headers.Count);
 
             var headers = request.Headers;
