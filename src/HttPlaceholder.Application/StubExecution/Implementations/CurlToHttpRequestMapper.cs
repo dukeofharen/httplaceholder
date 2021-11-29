@@ -26,6 +26,13 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         /// <inheritdoc/>
         public IEnumerable<HttpRequestModel> MapCurlCommandsToHttpRequest(string commands)
         {
+            void SetMethod(HttpRequestModel httpRequestModel)
+            {
+                // If no specific HTTP method has been provided to cURL and the request has no body,
+                // the method will be GET, otherwise it will be POST.
+                httpRequestModel.Method = httpRequestModel.Body == null ? "GET" : "POST";
+            }
+
             var result = new List<HttpRequestModel>();
             HttpRequestModel request = null;
             var parts = commands.Trim().Split(' ');
@@ -44,8 +51,18 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             for (var i = 0; i < parts.Length; i++)
             {
                 var part = parts[i];
+                if (string.IsNullOrWhiteSpace(part))
+                {
+                    continue;
+                }
+
                 if (IsCurl(part))
                 {
+                    if (request != null)
+                    {
+                        SetMethod(request);
+                    }
+
                     request = new HttpRequestModel();
                     result.Add(request);
                     continue;
@@ -90,6 +107,11 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 
                     continue;
                 }
+            }
+
+            foreach (var item in result.Where(r => r.Method == null))
+            {
+                SetMethod(item);
             }
 
             return result;
