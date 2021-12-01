@@ -29,7 +29,8 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers
             foreach (var condition in headerConditions)
             {
                 // Check whether the condition header is available in the actual headers.
-                if (!headers.TryGetValue(condition.Key, out var headerValue))
+                var headerValue = headers.CaseInsensitiveSearch(condition.Key);
+                if (string.IsNullOrWhiteSpace(headerValue))
                 {
                     continue;
                 }

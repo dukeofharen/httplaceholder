@@ -23,7 +23,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
         public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
         [TestMethod]
-        public void HeaderConditionCheckerValidateAsync_StubsFound_ButNoQueryStringConditions_ShouldReturnNotExecuted()
+        public void HeaderConditionCheckerValidateAsync_StubsFound_ButNoHeaderConditions_ShouldReturnNotExecuted()
         {
             // arrange
             var conditions = new StubConditionsModel
@@ -145,6 +145,35 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
             _httpContextServiceMock
                .Setup(m => m.GetHeaders())
                .Returns(headers);
+
+            // act
+            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+
+            // assert
+            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+        }
+
+        [TestMethod]
+        public void HeaderConditionCheckerValidateAsync_StubsFound_HappyFlow_CaseInsensitiveCheck()
+        {
+            // arrange
+            var headers = new Dictionary<string, string>
+            {
+                { "X-Api-Key", "123abc" },
+                { "X-Another-Secret", "blaaaaah 123" }
+            };
+            var conditions = new StubConditionsModel
+            {
+                Headers = new Dictionary<string, string>
+                {
+                    {"x-api-key", "123abc"},
+                    {"x-another-secret", @"\bblaaaaah\b"}
+                }
+            };
+
+            _httpContextServiceMock
+                .Setup(m => m.GetHeaders())
+                .Returns(headers);
 
             // act
             var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
