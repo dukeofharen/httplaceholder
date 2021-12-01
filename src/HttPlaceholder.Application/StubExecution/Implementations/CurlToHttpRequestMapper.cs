@@ -75,7 +75,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 
                 if (part == "-X")
                 {
-                    request.Method = parts[i + 1];
+                    request.Method = ParseRequestMethod(parts, i);
                     continue;
                 }
 
@@ -115,6 +115,18 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             }
 
             return result;
+        }
+
+        private static string ParseRequestMethod(string[] parts, int needle)
+        {
+            var method = parts[needle + 1];
+            var firstChar = method.ToCharArray()[0];
+            if (!char.IsLetter(firstChar))
+            {
+                method = method.Trim(firstChar);
+            }
+
+            return method;
         }
 
         private static bool IsCurl(string part) => string.Equals(part, "curl", StringComparison.OrdinalIgnoreCase);
