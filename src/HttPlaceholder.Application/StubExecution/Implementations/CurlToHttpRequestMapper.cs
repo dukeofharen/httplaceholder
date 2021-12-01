@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.StubExecution.Models;
+using HttPlaceholder.Common.Utilities;
 using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations
@@ -95,8 +96,16 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                     continue;
                 }
 
-                // TODO add logging
-                // TODO check "--compressed" (sets Accept-Encoding header to "deflate, gzip, br" apparently)
+                if (part == "--compressed")
+                {
+                    if (string.IsNullOrWhiteSpace(request.Headers.CaseInsensitiveSearch("Accept-Encoding")))
+                    {
+                        request.Headers.Add("Accept-Encoding", "deflate, gzip, br");
+                    }
+
+                    continue;
+                }
+
                 if (string.IsNullOrWhiteSpace(request.Url) && _urlRegex.IsMatch(part))
                 {
                     var matches = _urlRegex.Matches(part).Cast<Match>().ToArray();
@@ -166,7 +175,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             }
 
             headerBuilder.Replace(escapedBoundaryCharacter, boundaryCharacter.ToString());
-            return (key, headerBuilder.ToString(), counter);
+            return (key, headerBuilder.ToString(), counter - 1);
         }
 
         private static (string body, int newNeedle) ParseBody(int needle, string[] parts)
