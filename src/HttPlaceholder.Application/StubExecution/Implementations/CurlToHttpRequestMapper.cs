@@ -13,7 +13,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
     {
         private static readonly Regex _urlRegex =
             new(
-                @"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)",
+                @"https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}(\.[a-zA-Z0-9()]{1,6})?\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)",
                 RegexOptions.Compiled);
 
         private readonly ILogger<CurlToHttpRequestMapper> _logger;
@@ -179,9 +179,11 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             var escapedBoundaryCharacter = $@"\{boundaryCharacter}";
 
             bool PartStartsWithBoundaryChar(string part) =>
-                part[0] == boundaryCharacter && !part.StartsWith(escapedBoundaryCharacter);
+                !string.IsNullOrWhiteSpace(part) && part[0] == boundaryCharacter &&
+                !part.StartsWith(escapedBoundaryCharacter);
 
-            bool PartEndsWithBoundaryChar(string part) => part[part.Length - 1] == boundaryCharacter &&
+            bool PartEndsWithBoundaryChar(string part) => !string.IsNullOrWhiteSpace(part) &&
+                                                          part[part.Length - 1] == boundaryCharacter &&
                                                           !part.EndsWith(escapedBoundaryCharacter);
 
             var bodyBuilder = new StringBuilder(); // Hah nice

@@ -194,5 +194,26 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             Assert.AreEqual("site.com", headers3["authority"]);
             Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=", headers3["cookie"]);
         }
+
+        [TestMethod]
+        public void MapCurlCommandsToHttpRequest_ChromeOnUbuntuMultiline()
+        {
+            // Arrange
+            var mapper = _mocker.CreateInstance<CurlToHttpRequestMapper>();
+            var command = File.ReadAllText("Resources/cURL/chrome_on_linux_body_multiline.txt");
+
+            // Act
+            var result = mapper.MapCurlCommandsToHttpRequest(command).ToArray();
+
+            // Assert
+            var request = result[0];
+            Assert.AreEqual("POST", request.Method);
+            Assert.AreEqual("http://localhost:5000/moi-wiebe", request.Url);
+            Assert.AreEqual(@"{\n  ""stringValue"": ""text"",\n  ""intValue"": 3\n}", request.Body);
+
+            var headers = request.Headers;
+            Assert.AreEqual(1, headers.Count);
+            Assert.AreEqual("keep-alive", headers["Connection"]);
+        }
     }
 }
