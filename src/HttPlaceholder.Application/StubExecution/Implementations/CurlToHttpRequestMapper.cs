@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common.Utilities;
 using Microsoft.Extensions.Logging;
@@ -34,96 +35,107 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                 httpRequestModel.Method = httpRequestModel.Body == null ? "GET" : "POST";
             }
 
-            var result = new List<HttpRequestModel>();
-            HttpRequestModel request = null;
-            var parts = commands.Trim().Split(new[] { " ", "\r\n", "\n" }, StringSplitOptions.None);
-            if (parts.Length == 0)
+            try
             {
-                _logger.LogDebug("cURL ommand string is empty, so not extracting request.");
+                var result = new List<HttpRequestModel>();
+                HttpRequestModel request = null;
+                var parts = commands.Trim().Split(new[] { " ", "\r\n", "\n" }, StringSplitOptions.None);
+                if (parts.Length == 0)
+                {
+                    _logger.LogDebug("cURL ommand string is empty, so not extracting request.");
+                    return result;
+                }
+
+                if (!IsCurl(parts[0]))
+                {
+                    _logger.LogDebug("Command is not a cURL command, so not extracting request.");
+                    return result;
+                }
+
+                for (var i = 0; i < parts.Length; i++)
+                {
+                    var part = parts[i];
+                    if (string.IsNullOrWhiteSpace(part))
+                    {
+                        continue;
+                    }
+
+                    if (IsCurl(part))
+                    {
+                        if (request != null)
+                        {
+                            SetMethod(request);
+                        }
+
+                        request = new HttpRequestModel();
+                        result.Add(request);
+                        continue;
+                    }
+
+                    if (request == null)
+                    {
+                        continue;
+                    }
+
+                    if (part == "-X")
+                    {
+                        request.Method = ParseRequestMethod(parts, i);
+                        continue;
+                    }
+
+                    if (part == "-H")
+                    {
+                        var header = ParseHeader(i, parts);
+                        request.Headers.Add(header.key, header.value);
+                        i = header.newNeedle;
+                        continue;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(request.Body) && part == "--data-raw")
+                    {
+                        var body = ParseBody(i, parts);
+                        request.Body = body.body;
+                        i = body.newNeedle;
+                        continue;
+                    }
+
+                    if (part == "--compressed")
+                    {
+                        if (string.IsNullOrWhiteSpace(request.Headers.CaseInsensitiveSearch("Accept-Encoding")))
+                        {
+                            request.Headers.Add("Accept-Encoding", "deflate, gzip, br");
+                        }
+
+                        continue;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(request.Url) && _urlRegex.IsMatch(part))
+                    {
+                        var matches = _urlRegex.Matches(part).Cast<Match>().ToArray();
+                        if (matches.Length == 1)
+                        {
+                            request.Url = matches[0].Value;
+                        }
+
+                        continue;
+                    }
+                }
+
+                foreach (var item in result.Where(r => r.Method == null))
+                {
+                    SetMethod(item);
+                }
+
                 return result;
             }
-
-            if (!IsCurl(parts[0]))
+            catch (Exception ex)
             {
-                _logger.LogDebug("Command is not a cURL command, so not extracting request.");
-                return result;
+                _logger.LogWarning(ex, "Exception occurred while trying to parse cURL commands.");
+                throw new ValidationException(new[]
+                {
+                    $"Exception occurred while trying to parse cURL commands: {ex.Message}"
+                });
             }
-
-            for (var i = 0; i < parts.Length; i++)
-            {
-                var part = parts[i];
-                if (string.IsNullOrWhiteSpace(part))
-                {
-                    continue;
-                }
-
-                if (IsCurl(part))
-                {
-                    if (request != null)
-                    {
-                        SetMethod(request);
-                    }
-
-                    request = new HttpRequestModel();
-                    result.Add(request);
-                    continue;
-                }
-
-                if (request == null)
-                {
-                    continue;
-                }
-
-                if (part == "-X")
-                {
-                    request.Method = ParseRequestMethod(parts, i);
-                    continue;
-                }
-
-                if (part == "-H")
-                {
-                    var header = ParseHeader(i, parts);
-                    request.Headers.Add(header.key, header.value);
-                    i = header.newNeedle;
-                    continue;
-                }
-
-                if (string.IsNullOrWhiteSpace(request.Body) && part == "--data-raw")
-                {
-                    var body = ParseBody(i, parts);
-                    request.Body = body.body;
-                    i = body.newNeedle;
-                    continue;
-                }
-
-                if (part == "--compressed")
-                {
-                    if (string.IsNullOrWhiteSpace(request.Headers.CaseInsensitiveSearch("Accept-Encoding")))
-                    {
-                        request.Headers.Add("Accept-Encoding", "deflate, gzip, br");
-                    }
-
-                    continue;
-                }
-
-                if (string.IsNullOrWhiteSpace(request.Url) && _urlRegex.IsMatch(part))
-                {
-                    var matches = _urlRegex.Matches(part).Cast<Match>().ToArray();
-                    if (matches.Length == 1)
-                    {
-                        request.Url = matches[0].Value;
-                    }
-
-                    continue;
-                }
-            }
-
-            foreach (var item in result.Where(r => r.Method == null))
-            {
-                SetMethod(item);
-            }
-
-            return result;
         }
 
         private static string ParseRequestMethod(string[] parts, int needle)
