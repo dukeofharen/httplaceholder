@@ -35,7 +35,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 
             var result = new List<HttpRequestModel>();
             HttpRequestModel request = null;
-            var parts = commands.Trim().Split(' ');
+            var parts = commands.Trim().Split(new[] { " ", "\r\n", "\n" }, StringSplitOptions.None);
             if (parts.Length == 0)
             {
                 _logger.LogDebug("cURL ommand string is empty, so not extracting request.");

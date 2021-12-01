@@ -153,5 +153,46 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             Assert.AreEqual("empty", headers["sec-fetch-dest"]);
             Assert.AreEqual("en-US,en;q=0.9,nl;q=0.8", headers["accept-language"]);
         }
+
+        [TestMethod]
+        public void MapCurlCommandsToHttpRequest_ChromeOnUbuntuMultiple()
+        {
+            // Arrange
+            var mapper = _mocker.CreateInstance<CurlToHttpRequestMapper>();
+            var command = File.ReadAllText("Resources/cURL/chrome_on_ubuntu_multiple_curls.txt");
+
+            // Act
+            var result = mapper.MapCurlCommandsToHttpRequest(command).ToArray();
+
+            // Assert
+            Assert.AreEqual(3, result.Length);
+
+            var req1 = result[0];
+            Assert.AreEqual("GET", req1.Method);
+            Assert.AreEqual("https://site.com/_nuxt/fonts/fa-solid-900.3eb06c7.woff2", req1.Url);
+
+            var headers1 = req1.Headers;
+            Assert.AreEqual(1, headers1.Count);
+            Assert.AreEqual("https://site.com", headers1["Origin"]);
+
+            var req2 = result[1];
+            Assert.AreEqual("GET", req2.Method);
+            Assert.AreEqual("https://site.com/_nuxt/css/4cda201.css", req2.Url);
+
+            var headers2 = req2.Headers;
+            Assert.AreEqual(3, headers2.Count);
+            Assert.AreEqual("site.com", headers2["authority"]);
+            Assert.AreEqual("en-US,en;q=0.9,nl;q=0.8", headers2["accept-language"]);
+            Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=", headers2["cookie"]);
+
+            var req3 = result[2];
+            Assert.AreEqual("GET", req3.Method);
+            Assert.AreEqual("https://site.com/_nuxt/1d6c3a9.js", req3.Url);
+
+            var headers3 = req3.Headers;
+            Assert.AreEqual(2, headers3.Count);
+            Assert.AreEqual("site.com", headers3["authority"]);
+            Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=", headers3["cookie"]);
+        }
     }
 }
