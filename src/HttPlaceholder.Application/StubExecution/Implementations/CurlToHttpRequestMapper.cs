@@ -155,7 +155,15 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 
         private static (string body, int newNeedle) ParseBody(int needle, string[] parts)
         {
-            var boundaryCharacter = parts[needle + 1][0];
+            var extractedParts = parts.Skip(needle + 1).ToArray();
+            var boundaryCharacter = extractedParts[0][0];
+            if (boundaryCharacter == '$')
+            {
+                // Apparently, in some cases, a "$" is prefixed before the actual body, so we need to strip it before determining the actual boundary character.
+                extractedParts[0] = extractedParts[0].TrimStart('$');
+                boundaryCharacter = extractedParts[0][0];
+            }
+
             var escapedBoundaryCharacter = $@"\{boundaryCharacter}";
 
             bool PartStartsWithBoundaryChar(string part) =>
@@ -165,15 +173,15 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                                                           !part.EndsWith(escapedBoundaryCharacter);
 
             var bodyBuilder = new StringBuilder(); // Hah nice
-            var counter = needle + 1;
+            var counter = 0;
             while (true)
             {
-                if (counter >= parts.Length)
+                if (counter >= extractedParts.Length)
                 {
                     break;
                 }
 
-                var part = parts[counter];
+                var part = extractedParts[counter];
                 if (PartStartsWithBoundaryChar(part) && PartEndsWithBoundaryChar(part))
                 {
                     // This body consists of one part. Just strip the boundary characters and we're good to go.
@@ -184,7 +192,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                 if (PartStartsWithBoundaryChar(part))
                 {
                     // The first part is found. Remove the boundary character and continue.
-                    bodyBuilder.Append(new string(part.ToCharArray().Skip(1).ToArray()));
+                    bodyBuilder.Append(new string(part.ToCharArray().Skip(1).ToArray())).Append(" ");
                 }
                 else if (PartEndsWithBoundaryChar(part))
                 {
@@ -202,7 +210,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             }
 
             bodyBuilder.Replace(escapedBoundaryCharacter, boundaryCharacter.ToString());
-            return (bodyBuilder.ToString(), counter);
+            return (bodyBuilder.ToString(), needle + counter);
         }
     }
 }
