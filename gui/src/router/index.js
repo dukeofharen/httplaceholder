@@ -26,6 +26,12 @@ const routes = [
       import(/* webpackChunkName: "stubForm" */ "../views/StubForm.vue"),
   },
   {
+    path: "/importStubs",
+    name: "ImportStubs",
+    component: () =>
+      import(/* webpackChunkName: "importStubs" */ "../views/ImportStubs.vue"),
+  },
+  {
     path: "/settings",
     name: "Settings",
     component: () =>
