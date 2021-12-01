@@ -141,7 +141,13 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             while (true)
             {
                 var part = parts[counter];
-                if (part[0] == boundaryCharacter && !part.StartsWith(escapedBoundaryCharacter))
+                counter++;
+                if (string.IsNullOrEmpty(part))
+                {
+                    continue;
+                }
+
+                if (part[0] == boundaryCharacter && !part.StartsWith(escapedBoundaryCharacter) && part.EndsWith(":"))
                 {
                     // The first part in a header string is the key.
                     key = new string(part.ToCharArray().Skip(1).ToArray()).TrimEnd(':');
@@ -157,8 +163,6 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                     // Some part within.
                     headerBuilder.Append(part).Append(" ");
                 }
-
-                counter++;
             }
 
             headerBuilder.Replace(escapedBoundaryCharacter, boundaryCharacter.ToString());
