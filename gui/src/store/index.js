@@ -1,5 +1,6 @@
 import { createStore } from "vuex";
 import general from "@/store/modules/general";
+import importModule from "@/store/modules/import";
 import metadata from "@/store/modules/metadata";
 import requests from "@/store/modules/requests";
 import scenarios from "@/store/modules/scenarios";
@@ -11,6 +12,7 @@ import users from "@/store/modules/users";
 export default createStore({
   modules: {
     general,
+    importModule,
     metadata,
     requests,
     scenarios,

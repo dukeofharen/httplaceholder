@@ -21,11 +21,15 @@
       </div>
       <UploadStubs @uploaded="stubsUploaded" />
     </div>
+    <div class="col-md-12 mt-3" v-if="selectedTab === tabs.importCurl">
+      <ImportCurl />
+    </div>
   </div>
 </template>
 
 <script>
 import UploadStubs from "@/components/stub/UploadStubs";
+import ImportCurl from "@/components/stub/ImportCurl";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -41,7 +45,7 @@ const tabNames = {
 
 export default {
   name: "ImportStubs",
-  components: { UploadStubs },
+  components: { UploadStubs, ImportCurl },
   setup() {
     const router = useRouter();
 

@@ -30,7 +30,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
         /// <inheritdoc />
         public async Task<IEnumerable<FullStubModel>> GenerateCurlStubsAsync(string input, bool doNotCreateStub)
         {
-            _logger.LogDebug("Creating stubs based on cURL command {}.", input);
+            _logger.LogDebug($"Creating stubs based on cURL command {input}.");
             var requests = _curlToHttpRequestMapper.MapCurlCommandsToHttpRequest(input);
             var results = new List<FullStubModel>();
             foreach (var request in requests)
