@@ -1,27 +1,31 @@
 <template>
-  <div class="mb-2">
-    Using this form, you can create stubs based on cURL commands. You can either
-    use a cURL command you have lying around or you can copy/paste a cURL
-    command from the developer console from your browser.
-  </div>
-  <div class="mb-2" v-if="!stubsYaml">
-    <textarea class="form-control" v-model="curlInput"></textarea>
-  </div>
-  <div v-if="!stubsYaml" class="mb-2">
-    <button class="btn btn-success" @click="importCommands">
-      Import cURL command(s)
-    </button>
-  </div>
-  <div v-if="stubsYaml" class="mb-2">The following stubs will be added.</div>
-  <div v-if="stubsYaml" class="mb-2">
-    <button class="btn btn-success me-2" @click="saveStubs">Save stubs</button>
-    <button class="btn btn-success me-2" @click="editBeforeSaving">
-      Edit stubs before saving
-    </button>
-    <button class="btn btn-danger me-2" @click="reset">Reset</button>
-  </div>
-  <div v-if="stubsYaml" class="mb-2">
-    <pre ref="codeBlock" class="language-yaml">{{ stubsYaml }}</pre>
+  <div @keydown="handleSave">
+    <div class="mb-2">
+      Using this form, you can create stubs based on cURL commands. You can
+      either use a cURL command you have lying around or you can copy/paste a
+      cURL command from the developer console from your browser.
+    </div>
+    <div class="mb-2" v-if="!stubsYaml">
+      <textarea class="form-control" v-model="curlInput"></textarea>
+    </div>
+    <div v-if="!stubsYaml" class="mb-2">
+      <button class="btn btn-success" @click="importCommands">
+        Import cURL command(s)
+      </button>
+    </div>
+    <div v-if="stubsYaml" class="mb-2">The following stubs will be added.</div>
+    <div v-if="stubsYaml" class="mb-2">
+      <button class="btn btn-success me-2" @click="saveStubs">
+        Save stubs
+      </button>
+      <button class="btn btn-success me-2" @click="editBeforeSaving">
+        Edit stubs before saving
+      </button>
+      <button class="btn btn-danger me-2" @click="reset">Reset</button>
+    </div>
+    <div v-if="stubsYaml" class="mb-2">
+      <pre ref="codeBlock" class="language-yaml">{{ stubsYaml }}</pre>
+    </div>
   </div>
 </template>
 
@@ -35,6 +39,7 @@ import router from "@/router";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
+import { shouldSave } from "@/utils/event";
 
 export default {
   name: "ImportCurl",
@@ -86,6 +91,16 @@ export default {
       curlInput.value = "";
       stubsYaml.value = "";
     };
+    const handleSave = async (e) => {
+      if (shouldSave(e)) {
+        e.preventDefault();
+        if (!stubsYaml.value) {
+          await importCommands();
+        } else {
+          await saveStubs();
+        }
+      }
+    };
 
     return {
       curlInput,
@@ -95,6 +110,7 @@ export default {
       saveStubs,
       editBeforeSaving,
       reset,
+      handleSave,
     };
   },
 };
