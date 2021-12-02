@@ -1,36 +1,32 @@
 <template>
-  <div @keydown="handleSave">
-    <div class="mb-2">
-      Using this form, you can create stubs based on cURL commands. You can
-      either use a cURL command you have lying around or you can copy/paste a
-      cURL command from the developer console from your browser.
-    </div>
-    <div class="mb-2" v-if="!stubsYaml">
-      <textarea class="form-control" v-model="curlInput"></textarea>
-    </div>
-    <div v-if="!stubsYaml" class="mb-2">
-      <button class="btn btn-success" @click="importCommands">
-        Import cURL command(s)
-      </button>
-    </div>
-    <div v-if="stubsYaml" class="mb-2">The following stubs will be added.</div>
-    <div v-if="stubsYaml" class="mb-2">
-      <button class="btn btn-success me-2" @click="saveStubs">
-        Save stubs
-      </button>
-      <button class="btn btn-success me-2" @click="editBeforeSaving">
-        Edit stubs before saving
-      </button>
-      <button class="btn btn-danger me-2" @click="reset">Reset</button>
-    </div>
-    <div v-if="stubsYaml" class="mb-2">
-      <pre ref="codeBlock" class="language-yaml">{{ stubsYaml }}</pre>
-    </div>
+  <div class="mb-2">
+    Using this form, you can create stubs based on cURL commands. You can either
+    use a cURL command you have lying around or you can copy/paste a cURL
+    command from the developer console from your browser.
+  </div>
+  <div class="mb-2" v-if="!stubsYaml">
+    <textarea class="form-control" v-model="curlInput"></textarea>
+  </div>
+  <div v-if="!stubsYaml" class="mb-2">
+    <button class="btn btn-success" @click="importCommands">
+      Import cURL command(s)
+    </button>
+  </div>
+  <div v-if="stubsYaml" class="mb-2">The following stubs will be added.</div>
+  <div v-if="stubsYaml" class="mb-2">
+    <button class="btn btn-success me-2" @click="saveStubs">Save stubs</button>
+    <button class="btn btn-success me-2" @click="editBeforeSaving">
+      Edit stubs before saving
+    </button>
+    <button class="btn btn-danger me-2" @click="reset">Reset</button>
+  </div>
+  <div v-if="stubsYaml" class="mb-2">
+    <pre ref="codeBlock" class="language-yaml">{{ stubsYaml }}</pre>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
@@ -101,6 +97,13 @@ export default {
         }
       }
     };
+
+    // Lifecycle
+    const keydownEventListener = async (e) => await handleSave(e);
+    onMounted(() => document.addEventListener("keydown", keydownEventListener));
+    onUnmounted(() =>
+      document.removeEventListener("keydown", keydownEventListener)
+    );
 
     return {
       curlInput,
