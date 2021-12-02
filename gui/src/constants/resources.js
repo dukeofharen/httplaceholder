@@ -11,6 +11,8 @@ export const resources = {
   filteredStubsDeletedSuccessfully: "Stubs were deleted successfully.",
   stubNotFound: "Stub with ID {0} was not found.",
   stubsInFileAddedSuccessfully: "Stubs in file '{0}' were added successfully.",
+  noCurlStubsFound:
+    "No stubs could be determined from the cURL command(s). This might mean that you did not provide valid input.",
   errorDuringParsingOfYaml: "Something went wrong while parsing the YAML: {0}",
   requestBodyCopiedToClipboard:
     "Request body successfully copied to clipboard.",

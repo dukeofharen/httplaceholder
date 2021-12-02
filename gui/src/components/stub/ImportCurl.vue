@@ -8,7 +8,11 @@
     <textarea class="form-control" v-model="curlInput"></textarea>
   </div>
   <div v-if="!stubsYaml" class="mb-2">
-    <button class="btn btn-success" @click="importCommands">
+    <button
+      class="btn btn-success"
+      @click="importCommands"
+      :disabled="!importButtonEnabled"
+    >
       Import cURL command(s)
     </button>
   </div>
@@ -26,7 +30,7 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
@@ -49,6 +53,9 @@ export default {
     const curlInput = ref("");
     const stubsYaml = ref("");
 
+    // Computed
+    const importButtonEnabled = computed(() => !!curlInput.value);
+
     // Methods
     const importCommands = async () => {
       try {
@@ -56,6 +63,11 @@ export default {
           commands: curlInput.value,
           doNotCreateStub: true,
         });
+        if (!result.length) {
+          toastr.error(resources.noCurlStubsFound);
+          return;
+        }
+
         const filteredResult = result.map((r) => r.stub);
         stubsYaml.value = yaml.dump(filteredResult);
         setTimeout(() => {
@@ -114,6 +126,7 @@ export default {
       editBeforeSaving,
       reset,
       handleSave,
+      importButtonEnabled,
     };
   },
 };
