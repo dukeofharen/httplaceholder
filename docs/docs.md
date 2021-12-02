@@ -1685,6 +1685,10 @@ The scenarios are only stored in memory for the time being, so restarting HttPla
 
 To read more about scenarios, go to [conditions](#request-scenario) or [response](#scenario).
 
+## Import
+
+The import collection is used to be able to import all kinds of data in HttPlaceholder.
+
 # Configuration
 
 This paragraph contains all command line arguments supported by HttPlaceholder. Configuration can be set using command line arguments, a configuration file or environment variables.
