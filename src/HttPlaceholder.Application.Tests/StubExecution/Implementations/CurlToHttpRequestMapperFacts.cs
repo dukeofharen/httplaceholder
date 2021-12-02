@@ -253,5 +253,24 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var headers2 = req2.Headers;
             Assert.AreEqual("application/x-www-form-urlencoded", headers2["Content-Type"]);
         }
+
+        [TestMethod]
+        public void MapCurlCommandsToHttpRequest_BasicAuthFlag()
+        {
+            // Arrange
+            var mapper = _mocker.CreateInstance<CurlToHttpRequestMapper>();
+            var command = File.ReadAllText("Resources/cURL/curl_with_basic_auth.txt");
+
+            // Act
+            var result = mapper.MapCurlCommandsToHttpRequest(command).ToArray();
+
+            // Assert
+            Assert.AreEqual(1, result.Length);
+
+            var req1 = result[0];
+            Assert.AreEqual("GET", req1.Method);
+            Assert.AreEqual("https://api.site.com/request-path", req1.Url);
+            Assert.AreEqual("Basic dXNlcjpwYXNz", req1.Headers["Authorization"]);
+        }
     }
 }

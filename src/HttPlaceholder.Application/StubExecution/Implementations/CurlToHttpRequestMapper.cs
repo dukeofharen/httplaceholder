@@ -111,6 +111,15 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                         continue;
                     }
 
+                    if (part is "-u" or "--user")
+                    {
+                        var auth = ParseBasicAuthFlag(parts, i);
+                        if (!string.IsNullOrWhiteSpace(auth))
+                        {
+                            request.Headers.AddOrReplaceCaseInsensitive("Authorization", auth);
+                        }
+                    }
+
                     if (part == "--compressed")
                     {
                         if (string.IsNullOrWhiteSpace(request.Headers.CaseInsensitiveSearch("Accept-Encoding")))
@@ -160,6 +169,21 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
             }
 
             return method;
+        }
+
+        private static string ParseBasicAuthFlag(string[] parts, int needle)
+        {
+            var auth = parts[needle + 1];
+            var firstChar = auth.ToCharArray()[0];
+            if (!char.IsLetter(firstChar))
+            {
+                auth = auth.Trim(firstChar);
+            }
+
+            var authParts = auth.Split(':');
+            return authParts.Length != 2
+                ? string.Empty
+                : $"Basic {Convert.ToBase64String(Encoding.UTF8.GetBytes($"{authParts[0]}:{authParts[1]}"))}";
         }
 
         private static bool IsCurl(string part) => string.Equals(part, "curl", StringComparison.OrdinalIgnoreCase);
