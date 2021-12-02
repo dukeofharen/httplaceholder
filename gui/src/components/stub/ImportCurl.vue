@@ -15,10 +15,18 @@
   <div v-if="howToOpen">
     <div class="row">
       <div class="col-md-12">
-        You can copy/paste a cURL command from your browser. In most popular web
-        browsers, you can do this by going to the developer tools, going to the
-        "Network" tab and selecting the request where you would like to have the
-        cURL request for.
+        <p>
+          You can copy/paste a cURL command from your browser. In most popular
+          web browsers, you can do this by going to the developer tools, going
+          to the "Network" tab and selecting the request where you would like to
+          have the cURL request for.
+        </p>
+        <p>
+          When copying cURL requests from a browser on Windows, make sure you
+          select "Copy as cURL (bash)" or "Copy all as cURL (bash)" on Chrome or
+          "Copy as cURL (POSIX)" in Firefox. The Windows formatting of cURL
+          commands is currently not supported in HttPlaceholder.
+        </p>
       </div>
     </div>
     <div class="row mb-2">
