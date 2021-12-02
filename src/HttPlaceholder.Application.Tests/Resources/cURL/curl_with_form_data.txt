@@ -1,0 +1,6 @@
+curl 'https://api.site.com/request-path' \
+  -F 'param1=value1&param2=value2' \
+  --compressed ;
+curl 'https://api.site.com/request-path' \
+  -d 'param1=value1&param2=value2' \
+  --compressed

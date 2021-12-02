@@ -21,7 +21,8 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
                 return Task.FromResult(false);
             }
 
-            if (!contentType.StartsWith("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase))
+            var supportedContentTypes = new[] { "application/x-www-form-urlencoded", "multipart/form-data" };
+            if (!supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)))
             {
                 return Task.FromResult(false);
             }

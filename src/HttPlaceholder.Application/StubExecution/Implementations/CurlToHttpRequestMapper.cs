@@ -85,17 +85,29 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 
                     if (part == "-H")
                     {
-                        var header = ParseHeader(i, parts);
-                        request.Headers.Add(header.key, header.value);
-                        i = header.newNeedle;
+                        var (key, value, newNeedle) = ParseHeader(i, parts);
+                        request.Headers.Add(key, value);
+                        i = newNeedle;
                         continue;
                     }
 
-                    if (string.IsNullOrWhiteSpace(request.Body) && part == "--data-raw")
+                    if (string.IsNullOrWhiteSpace(request.Body) &&
+                        part is "--data-raw" or "-F" or "--form" or "-d" or "--data")
                     {
-                        var body = ParseBody(i, parts);
-                        request.Body = body.body;
-                        i = body.newNeedle;
+                        switch (part)
+                        {
+                            case "-F" or "--form":
+                                request.Headers.AddOrReplaceCaseInsensitive("Content-Type", "multipart/form-data");
+                                break;
+                            case "-d" or "--data":
+                                request.Headers.AddOrReplaceCaseInsensitive("Content-Type",
+                                    "application/x-www-form-urlencoded");
+                                break;
+                        }
+
+                        var (body, newNeedle) = ParseBody(i, parts);
+                        request.Body = body;
+                        i = newNeedle;
                         continue;
                     }
 

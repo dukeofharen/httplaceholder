@@ -223,5 +223,35 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             Assert.AreEqual("keep-alive", headers["Connection"]);
             Assert.AreEqual("deflate, gzip, br", headers["Accept-Encoding"]);
         }
+
+        [TestMethod]
+        public void MapCurlCommandsToHttpRequest_FormData()
+        {
+            // Arrange
+            var mapper = _mocker.CreateInstance<CurlToHttpRequestMapper>();
+            var command = File.ReadAllText("Resources/cURL/curl_with_form_data.txt");
+
+            // Act
+            var result = mapper.MapCurlCommandsToHttpRequest(command).ToArray();
+
+            // Assert
+            Assert.AreEqual(2, result.Length);
+
+            var req1 = result[0];
+            Assert.AreEqual("POST", req1.Method);
+            Assert.AreEqual("https://api.site.com/request-path", req1.Url);
+            Assert.AreEqual("param1=value1&param2=value2", req1.Body);
+
+            var headers1 = req1.Headers;
+            Assert.AreEqual("multipart/form-data", headers1["Content-Type"]);
+
+            var req2 = result[1];
+            Assert.AreEqual("POST", req2.Method);
+            Assert.AreEqual("https://api.site.com/request-path", req2.Url);
+            Assert.AreEqual("param1=value1&param2=value2", req2.Body);
+
+            var headers2 = req2.Headers;
+            Assert.AreEqual("application/x-www-form-urlencoded", headers2["Content-Type"]);
+        }
     }
 }

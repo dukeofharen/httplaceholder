@@ -6763,7 +6763,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "curl 'https://api.site.com/request-path' \\\n  -F 'param1=value1&param2=value2'\n  --compressed"
+													"raw": "curl 'https://api.site.com/request-path' \\\n  -F 'param1=value1&param2=value2' \\\n  --compressed"
 												},
 												"url": {
 													"raw": "{{rootUrl}}ph-api/import/curl",
@@ -6808,7 +6808,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "curl 'https://api.site.com/request-path' \\\n  -d 'param1=value1&param2=value2'\n  --compressed"
+													"raw": "curl 'https://api.site.com/request-path' \\\n  -d 'param1=value1&param2=value2' \\\n  --compressed"
 												},
 												"url": {
 													"raw": "{{rootUrl}}ph-api/import/curl",
