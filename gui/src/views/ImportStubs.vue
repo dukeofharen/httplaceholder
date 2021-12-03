@@ -10,7 +10,7 @@
           'btn-outline-success': selectedTab !== tab,
           'btn-success': selectedTab === tab,
         }"
-        @click="selectedTab = tab"
+        @click="changeTab(tab)"
       >
         {{ tabNames[tab] }}
       </button>
@@ -31,7 +31,7 @@
 import UploadStubs from "@/components/stub/UploadStubs";
 import ImportCurl from "@/components/stub/ImportCurl";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const tabs = {
   uploadStubs: "uploadStubs",
@@ -48,14 +48,19 @@ export default {
   components: { UploadStubs, ImportCurl },
   setup() {
     const router = useRouter();
+    const route = useRoute();
 
     // Data
-    const selectedTab = ref(tabs.uploadStubs);
+    const selectedTab = ref(route.query.tab || tabs.uploadStubs);
 
     // Methods
     const stubsUploaded = async () => await router.push({ name: "Stubs" });
+    const changeTab = async (tab) => {
+      selectedTab.value = tab;
+      await router.push({ name: "ImportStubs", query: { tab } });
+    };
 
-    return { tabs, tabNames, selectedTab, stubsUploaded };
+    return { tabs, tabNames, selectedTab, stubsUploaded, changeTab };
   },
 };
 </script>
