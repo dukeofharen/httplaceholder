@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
 using HttPlaceholder.Application;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -56,9 +55,7 @@ namespace HttPlaceholder.Utilities
             {
                 app.UseFileServer(new FileServerOptions
                 {
-                    EnableDefaultFiles = true,
-                    FileProvider = new PhysicalFileProvider(path),
-                    RequestPath = "/ph-ui"
+                    EnableDefaultFiles = true, FileProvider = new PhysicalFileProvider(path), RequestPath = "/ph-ui"
                 });
             }
 
@@ -70,9 +67,7 @@ namespace HttPlaceholder.Utilities
             var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/ph-static";
             return app.UseFileServer(new FileServerOptions
             {
-                EnableDefaultFiles = true,
-                FileProvider = new PhysicalFileProvider(path),
-                RequestPath = "/ph-static"
+                EnableDefaultFiles = true, FileProvider = new PhysicalFileProvider(path), RequestPath = "/ph-static"
             });
         }
 
@@ -85,7 +80,7 @@ namespace HttPlaceholder.Utilities
 
             // Check if the stubs can be loaded.
             var stubContainer = app.ApplicationServices.GetService<IStubContext>();
-            Task.Run(() => stubContainer.PrepareAsync()).GetAwaiter().GetResult();
+            stubContainer?.PrepareAsync().GetAwaiter().GetResult();
 
             return app;
         }

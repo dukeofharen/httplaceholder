@@ -42,10 +42,11 @@ namespace HttPlaceholder.Utilities
         public static void HandleCommands(IEnumerable<string> args)
         {
             var version = AssemblyHelper.GetAssemblyVersion();
-            HandleArgument(() => Console.WriteLine(version), args, _versionArgs);
+            var argsArray = args as string[] ?? args.ToArray();
+            HandleArgument(() => Console.WriteLine(version), argsArray, _versionArgs);
 
             Console.WriteLine(ManPage.VersionHeader, version, DateTime.Now.Year);
-            HandleArgument(() => Console.WriteLine(GetManPage()), args, _helpArgs);
+            HandleArgument(() => Console.WriteLine(GetManPage()), argsArray, _helpArgs);
         }
 
         public static IWebHost BuildWebHost(string[] args)

@@ -44,7 +44,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
             }
             catch (JsonException je)
             {
-                _logger.LogInformation("Exception occurred while trying to parse response body as JSON.", je);
+                _logger.LogInformation($"Exception occurred while trying to parse response body as JSON: {je}");
             }
 
             return matchArray

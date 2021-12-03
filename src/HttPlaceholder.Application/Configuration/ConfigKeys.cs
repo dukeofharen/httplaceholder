@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using HttPlaceholder.Application.Configuration.Attributes;
+﻿using HttPlaceholder.Application.Configuration.Attributes;
 
 namespace HttPlaceholder.Application.Configuration
 {

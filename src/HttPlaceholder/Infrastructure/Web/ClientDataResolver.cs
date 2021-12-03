@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -35,7 +34,7 @@ namespace HttPlaceholder.Infrastructure.Web
 
             // TODO in a later stage, check the reverse proxy against a list of "safe" proxy IPs.
             string forwardedFor = value;
-            var parts = forwardedFor.Split(new[] {", "}, StringSplitOptions.None);
+            var parts = forwardedFor.Split(new[] { ", " }, StringSplitOptions.None);
             return parts.First();
         }
 

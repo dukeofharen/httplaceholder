@@ -2,7 +2,6 @@ using System;
 using AutoMapper;
 using HttPlaceholder.Application.Interfaces.Mappings;
 using HttPlaceholder.Domain;
-using NJsonSchema.Infrastructure;
 
 namespace HttPlaceholder.Dto.v1.Requests
 {

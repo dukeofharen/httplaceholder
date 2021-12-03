@@ -11,7 +11,6 @@ using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace HttPlaceholder.Controllers.v1
 {
@@ -49,7 +48,8 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<RequestResultDto>> GetRequest([FromRoute] string correlationId) =>
-            Ok(Mapper.Map<RequestResultDto>(await Mediator.Send(new GetRequestQuery {CorrelationId = correlationId})));
+            Ok(Mapper.Map<RequestResultDto>(
+                await Mediator.Send(new GetRequestQuery { CorrelationId = correlationId })));
 
         /// <summary>
         /// Delete all requests. This call flushes all the requests.

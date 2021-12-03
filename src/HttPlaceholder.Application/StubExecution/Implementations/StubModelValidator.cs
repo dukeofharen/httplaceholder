@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Interfaces.Validation;
+using HttPlaceholder.Common;
 using HttPlaceholder.Common.Validation;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;

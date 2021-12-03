@@ -147,7 +147,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
                     stub.Id = HashingUtilities.GetMd5String(contents);
                 }
 
-                var results = _stubModelValidator.ValidateStubModel(stub);
+                var results = _stubModelValidator.ValidateStubModel(stub).ToArray();
                 if (results.Any())
                 {
                     results = results.Select(r => $"- {r}").ToArray();

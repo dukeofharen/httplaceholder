@@ -137,8 +137,6 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
                         {
                             request.Url = matches[0].Value;
                         }
-
-                        continue;
                     }
                 }
 

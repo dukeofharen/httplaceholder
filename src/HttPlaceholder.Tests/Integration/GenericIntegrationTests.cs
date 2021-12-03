@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -18,10 +17,7 @@ namespace HttPlaceholder.Tests.Integration
         public void Initialize()
         {
             _stubSource = new InMemoryStubSource(Options);
-            InitializeIntegrationTest(new (Type, object)[]
-            {
-            ( typeof(IStubSource), _stubSource )
-            });
+            InitializeIntegrationTest(new (Type, object)[] { (typeof(IStubSource), _stubSource) });
         }
 
         [TestCleanup]
@@ -33,11 +29,7 @@ namespace HttPlaceholder.Tests.Integration
             // arrange
             var url = $"{TestServer.BaseAddress}swagger/index.html";
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
             // act / assert
             using var response = await Client.SendAsync(request);
@@ -50,11 +42,7 @@ namespace HttPlaceholder.Tests.Integration
             // arrange
             var url = $"{TestServer.BaseAddress}swagger/v1/swagger.json";
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
             // act / assert
             using var response = await Client.SendAsync(request);
@@ -69,11 +57,7 @@ namespace HttPlaceholder.Tests.Integration
             // arrange
             var url = $"{TestServer.BaseAddress}ph-ui";
 
-            var request = new HttpRequestMessage
-            {
-                Method = HttpMethod.Get,
-                RequestUri = new Uri(url)
-            };
+            var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
 
             // act / assert
             using var response = await Client.SendAsync(request);

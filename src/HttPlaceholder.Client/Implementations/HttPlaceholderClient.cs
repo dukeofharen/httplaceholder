@@ -53,7 +53,7 @@ namespace HttPlaceholder.Client.Implementations
             }
 
             var result = JsonConvert.DeserializeObject<FeatureResultDto>(content);
-            return result.Enabled;
+            return result is { Enabled: true };
         }
 
         /// <inheritdoc />

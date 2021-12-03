@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -126,7 +125,7 @@ namespace HttPlaceholder.Middleware
 
             var loggingResult = requestLogger.GetResult();
             var jsonLoggingResult = JObject.FromObject(loggingResult);
-            var enableRequestLogging = _settings.Storage?.EnableRequestLogging ?? false;
+            var enableRequestLogging = _settings?.Storage?.EnableRequestLogging ?? false;
             if (enableRequestLogging)
             {
                 _logger.LogInformation(jsonLoggingResult.ToString());

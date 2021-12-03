@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Stubs;
-using HttPlaceholder.TestUtilities.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
@@ -46,7 +44,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = tenant
             });
 
-            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+            var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
             // act / assert
@@ -82,7 +80,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = tenant
             });
 
-            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+            var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert
@@ -148,14 +146,14 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 new StubDto
                 {
                     Id = "test-123",
-                    Conditions = new StubConditionsDto {Method = "GET"},
-                    Response = new StubResponseDto {Text = "OK"}
+                    Conditions = new StubConditionsDto { Method = "GET" },
+                    Response = new StubResponseDto { Text = "OK" }
                 },
                 new StubDto
                 {
                     Id = "test-789",
-                    Conditions = new StubConditionsDto {Method = "POST"},
-                    Response = new StubResponseDto {Text = "OK"}
+                    Conditions = new StubConditionsDto { Method = "POST" },
+                    Response = new StubResponseDto { Text = "OK" }
                 }
             };
 
@@ -196,7 +194,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
                 Tenant = "tenant1"
             });
 
-            var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
+            var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // act / assert

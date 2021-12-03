@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using HttPlaceholder.Common;
@@ -28,7 +27,8 @@ namespace HttPlaceholder.Infrastructure.Implementations
 
         public DateTime GetLastWriteTime(string path) => File.GetLastWriteTime(path);
 
-        public bool IsDirectory(string path) => (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
+        public bool IsDirectory(string path) =>
+            (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
 
         public string[] GetFiles(string path, string searchPattern) => Directory.GetFiles(path, searchPattern);
 

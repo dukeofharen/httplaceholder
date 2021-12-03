@@ -227,7 +227,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
             };
             mockHttp
                 .When("http://example.com")
-                .Respond(r =>
+                .Respond(_ =>
                 {
                     var msg = new HttpResponseMessage(HttpStatusCode.OK)
                     {

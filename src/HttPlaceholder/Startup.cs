@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+﻿using System.Reflection;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs.Implementations;

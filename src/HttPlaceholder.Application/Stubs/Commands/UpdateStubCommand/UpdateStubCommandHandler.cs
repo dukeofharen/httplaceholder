@@ -20,7 +20,7 @@ namespace HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand
 
         public async Task<Unit> Handle(UpdateStubCommand request, CancellationToken cancellationToken)
         {
-            var validationResults = _stubModelValidator.ValidateStubModel(request.Stub);
+            var validationResults = _stubModelValidator.ValidateStubModel(request.Stub).ToArray();
             if (validationResults.Any())
             {
                 throw new ValidationException(validationResults);

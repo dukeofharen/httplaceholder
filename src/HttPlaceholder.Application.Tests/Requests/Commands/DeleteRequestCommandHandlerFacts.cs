@@ -35,6 +35,6 @@ namespace HttPlaceholder.Application.Tests.Requests.Commands
             // Assert
             Assert.IsTrue(result);
             _mockStubContext.Verify(m => m.DeleteRequestAsync(request.CorrelationId));
-;        }
+        }
     }
 }

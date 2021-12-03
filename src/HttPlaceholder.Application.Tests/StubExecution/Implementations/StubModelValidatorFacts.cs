@@ -62,7 +62,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {StatusCode = statusCode}};
 
             // Act
-            var result = _validator.ValidateStubModel(model);
+            var result = _validator.ValidateStubModel(model).ToArray();
 
             // Assert
             Assert.AreEqual(
@@ -84,7 +84,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {ExtraDuration = stubMillis}};
 
             // Act
-            var result = _validator.ValidateStubModel(model);
+            var result = _validator.ValidateStubModel(model).ToArray();
 
             // Assert
             Assert.AreEqual(
@@ -105,7 +105,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {LineEndings = lineEndingType}};
 
             // Act
-            var result = _validator.ValidateStubModel(model);
+            var result = _validator.ValidateStubModel(model).ToArray();
 
             // Assert
             Assert.AreEqual(
@@ -136,7 +136,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             };
 
             // Act
-            var result = _validator.ValidateStubModel(model);
+            var result = _validator.ValidateStubModel(model).ToArray();
 
             // Assert
             Assert.AreEqual(
@@ -165,7 +165,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             };
 
             // Act
-            var result = _validator.ValidateStubModel(model);
+            var result = _validator.ValidateStubModel(model).ToArray();
 
             // Assert
             Assert.AreEqual(
@@ -191,7 +191,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             };
 
             // Act
-            var result = _validator.ValidateStubModel(model);
+            var result = _validator.ValidateStubModel(model).ToArray();
 
             // Assert
             Assert.AreEqual(

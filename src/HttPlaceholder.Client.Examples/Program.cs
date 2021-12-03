@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Client.Examples
 {
-    static class Program
+    internal static class Program
     {
         private static async Task Main(string[] args)
         {
