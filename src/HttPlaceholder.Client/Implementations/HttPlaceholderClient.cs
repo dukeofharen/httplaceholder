@@ -401,7 +401,7 @@ namespace HttPlaceholder.Client.Implementations
         public async Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub)
         {
             using var response = await HttpClient.PostAsync(
-                "/ph-api/import/curl",
+                $"/ph-api/import/curl?doNotCreateStub={doNotCreateStub}",
                 new StringContent(input,
                     Encoding.UTF8,
                     TextContentType));
