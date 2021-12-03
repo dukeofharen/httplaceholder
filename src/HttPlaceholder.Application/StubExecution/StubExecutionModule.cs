@@ -20,6 +20,9 @@ namespace HttPlaceholder.Application.StubExecution
             services.AddSingleton<IStubModelValidator, StubModelValidator>();
             services.AddSingleton<IResponseVariableParser, ResponseVariableParser>();
             services.AddSingleton<IScenarioService, ScenarioService>();
+            services.AddSingleton<ICurlStubGenerator, CurlStubGenerator>();
+            services.AddSingleton<ICurlToHttpRequestMapper, CurlToHttpRequestMapper>();
+            services.AddSingleton<IHttpRequestToConditionsService, HttpRequestToConditionsService>();
 
             const string filter = "HttPlaceholder";
 

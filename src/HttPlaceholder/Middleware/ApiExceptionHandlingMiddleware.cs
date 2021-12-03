@@ -17,7 +17,7 @@ namespace HttPlaceholder.Middleware
 
         public async Task Invoke(HttpContext context)
         {
-            if (context.Request.Path.Value.Contains("ph-api/"))
+            if (context?.Request.Path.Value?.Contains("ph-api/") == true)
             {
                 try
                 {
@@ -38,7 +38,7 @@ namespace HttPlaceholder.Middleware
                 catch (ArgumentException ex)
                 {
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    await context.Response.WriteAsJsonAsync(new string[] {ex.Message});
+                    await context.Response.WriteAsJsonAsync(new[] { ex.Message });
                 }
                 catch (ValidationException ex)
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
@@ -47,7 +48,7 @@ namespace HttPlaceholder.Application.Tests.Stubs.Commands
                     _handler.Handle(request, CancellationToken.None));
 
             // Assert
-            Assert.AreEqual(errors, exception.ValidationErrors);
+            Assert.AreEqual(errors.Single(), exception.ValidationErrors.Single());
             _mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id), Times.Never);
             _mockStubContext.Verify(m => m.DeleteStubAsync(request.StubId), Times.Never);
             _mockStubContext.Verify(m => m.AddStubAsync(stub), Times.Never);

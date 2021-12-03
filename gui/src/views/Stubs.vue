@@ -16,7 +16,9 @@
       >
         Download stubs as YAML
       </button>
-      <UploadStubs class="me-2" @uploaded="loadData" />
+      <router-link :to="{ name: 'ImportStubs' }" class="btn btn-success me-2"
+        >Import stubs</router-link
+      >
       <button
         type="button"
         class="btn btn-danger"
@@ -137,11 +139,10 @@ import yaml from "js-yaml";
 import { handleHttpError } from "@/utils/error";
 import { downloadBlob } from "@/utils/download";
 import { getStubFilterForm, setStubFilterForm } from "@/utils/session";
-import UploadStubs from "@/components/stub/UploadStubs";
 
 export default {
   name: "Stubs",
-  components: { Stub, UploadStubs },
+  components: { Stub },
   setup() {
     const store = useStore();
     const route = useRoute();

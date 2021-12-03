@@ -24,4 +24,11 @@
         <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Resources\cURL\*" />
+      <Content Include="Resources\cURL\*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

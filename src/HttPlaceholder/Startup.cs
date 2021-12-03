@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+﻿using System.Reflection;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs.Implementations;
@@ -47,7 +46,6 @@ namespace HttPlaceholder
                 });
         }
 
-        [SuppressMessage("SonarQube", "S4792")]
         public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration)
         {
             services
@@ -55,7 +53,14 @@ namespace HttPlaceholder
                 .AddNewtonsoftJson(o => o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddApplicationPart(Assembly.GetExecutingAssembly());
-            services.Configure<MvcOptions>(o => o.AddYamlFormatting());
+            services.Configure<MvcOptions>(o =>
+            {
+                o.RespectBrowserAcceptHeader = true;
+                o.ReturnHttpNotAcceptable = true;
+                o
+                    .AddYamlFormatting()
+                    .AddPlainTextFormatting();
+            });
             services
                 .AddHttPlaceholder(configuration)
                 .AddHttpContextAccessor()

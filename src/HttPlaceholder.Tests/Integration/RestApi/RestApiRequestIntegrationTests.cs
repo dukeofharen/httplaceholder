@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Requests;
-using HttPlaceholder.TestUtilities.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -25,7 +23,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // Arrange
             var correlation = Guid.NewGuid().ToString();
-            StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+            StubSource.RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
 
             // Act
             using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests");
@@ -33,6 +31,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var result = JsonConvert.DeserializeObject<RequestResultDto[]>(content);
 
             // Assert
+            Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Length);
             Assert.AreEqual(correlation, result.First().CorrelationId);
         }
@@ -42,7 +41,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // Arrange
             var correlation = Guid.NewGuid().ToString();
-            StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+            StubSource.RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
 
             // Act
             using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}1");
@@ -56,7 +55,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // Arrange
             var correlation = Guid.NewGuid().ToString();
-            StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+            StubSource.RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
 
             // Act
             using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}");
@@ -64,6 +63,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var result = JsonConvert.DeserializeObject<RequestResultDto>(content);
 
             // Assert
+            Assert.IsNotNull(result);
             Assert.AreEqual(correlation, result.CorrelationId);
         }
 
@@ -72,7 +72,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // Arrange
             var correlation = Guid.NewGuid().ToString();
-            StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
+            StubSource.RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
 
             // Act
             using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/overview");
@@ -80,6 +80,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var result = JsonConvert.DeserializeObject<RequestOverviewDto[]>(content);
 
             // Assert
+            Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Length);
             Assert.AreEqual(correlation, result.First().CorrelationId);
         }
@@ -88,8 +89,8 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Request_GetByStubId()
         {
             // Arrange
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
+            StubSource.RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub2" });
+            StubSource.RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub1" });
 
             // Act
             using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/stubs/stub1/requests");
@@ -97,6 +98,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi
             var result = JsonConvert.DeserializeObject<RequestResultDto[]>(content);
 
             // Assert
+            Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Length);
             Assert.AreEqual("stub1", result.First().ExecutingStubId);
         }
@@ -105,8 +107,8 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         public async Task RestApiIntegration_Request_DeleteAllRequests()
         {
             // Perform a few requests.
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
-            StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
+            StubSource.RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub2" });
+            StubSource.RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub1" });
 
             // Act
             using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/requests");
@@ -121,14 +123,15 @@ namespace HttPlaceholder.Tests.Integration.RestApi
         {
             // Perform a few requests.
             var request1 =
-                new RequestResultModel {ExecutingStubId = "stub1", CorrelationId = Guid.NewGuid().ToString()};
+                new RequestResultModel { ExecutingStubId = "stub1", CorrelationId = Guid.NewGuid().ToString() };
             var request2 =
-                new RequestResultModel {ExecutingStubId = "stub2", CorrelationId = Guid.NewGuid().ToString()};
+                new RequestResultModel { ExecutingStubId = "stub2", CorrelationId = Guid.NewGuid().ToString() };
             StubSource.RequestResultModels.Add(request1);
             StubSource.RequestResultModels.Add(request2);
 
             // Act
-            using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/requests/{request2.CorrelationId}");
+            using var response =
+                await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/requests/{request2.CorrelationId}");
 
             // Assert
             response.EnsureSuccessStatusCode();

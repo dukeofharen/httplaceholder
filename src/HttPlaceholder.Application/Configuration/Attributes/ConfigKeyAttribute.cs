@@ -11,6 +11,6 @@ namespace HttPlaceholder.Application.Configuration.Attributes
 
         public string ConfigPath { get; set; }
 
-        public bool IsBoolValue { get; set; } = false;
+        public bool IsBoolValue { get; set; }
     }
 }

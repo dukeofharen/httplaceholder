@@ -475,10 +475,10 @@ namespace HttPlaceholder.Persistence.Tests.Implementations
             _stubSources.Add(stubSource.Object);
 
             // act
-            var result = await _context.GetTenantNamesAsync();
+            var result = (await _context.GetTenantNamesAsync()).ToArray();
 
             // assert
-            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(2, result.Length);
             Assert.AreEqual("tenant-1", result.ElementAt(0));
             Assert.AreEqual("tenant-2", result.ElementAt(1));
         }

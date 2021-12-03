@@ -19,6 +19,7 @@ namespace HttPlaceholder.Client.Implementations
     public class HttPlaceholderClient : IHttPlaceholderClient
     {
         private const string JsonContentType = "application/json";
+        private const string TextContentType = "text/plain";
 
         public HttPlaceholderClient(HttpClient httpClient)
         {
@@ -52,7 +53,7 @@ namespace HttPlaceholder.Client.Implementations
             }
 
             var result = JsonConvert.DeserializeObject<FeatureResultDto>(content);
-            return result.Enabled;
+            return result is { Enabled: true };
         }
 
         /// <inheritdoc />
@@ -394,6 +395,23 @@ namespace HttPlaceholder.Client.Implementations
                 var content = await response.Content.ReadAsStringAsync();
                 throw new HttPlaceholderClientException(response.StatusCode, content);
             }
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub)
+        {
+            using var response = await HttpClient.PostAsync(
+                $"/ph-api/import/curl?doNotCreateStub={doNotCreateStub}",
+                new StringContent(input,
+                    Encoding.UTF8,
+                    TextContentType));
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
         }
     }
 }

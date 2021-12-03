@@ -19,7 +19,7 @@ namespace HttPlaceholder.Application
             services.AddHttpClient("proxy").ConfigureHttpMessageHandlerBuilder(h =>
                 h.PrimaryHandler = new HttpClientHandler
                 {
-                    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                    ServerCertificateCustomValidationCallback = (_, _, _, _) => true
                 });
 
             return services;

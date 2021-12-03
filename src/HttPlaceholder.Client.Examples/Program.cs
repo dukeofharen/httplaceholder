@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Client.Examples
 {
-    static class Program
+    internal static class Program
     {
         private static async Task Main(string[] args)
         {
@@ -132,6 +132,43 @@ namespace HttPlaceholder.Client.Examples
 
                 // Delete all scenario states.
                 await client.DeleteAllScenariosAsync();
+
+                // Create stubs based on cURL commands.
+                var commands = @"curl 'https://site.com/_nuxt/fonts/fa-solid-900.3eb06c7.woff2' \
+  -H 'sec-ch-ua: "" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""' \
+  -H 'Referer: ' \
+  -H 'Origin: https://site.com' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
+  -H 'sec-ch-ua-platform: ""Linux""' \
+  --compressed ;
+curl 'https://site.com/_nuxt/css/4cda201.css' \
+  -H 'authority: site.com' \
+  -H 'sec-ch-ua: "" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
+  -H 'sec-ch-ua-platform: ""Linux""' \
+  -H 'accept: text/css,*/*;q=0.1' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'sec-fetch-mode: no-cors' \
+  -H 'sec-fetch-dest: style' \
+  -H 'accept-language: en-US,en;q=0.9,nl;q=0.8' \
+  -H 'cookie: Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=' \
+  --compressed ;
+curl 'https://site.com/_nuxt/1d6c3a9.js' \
+  -H 'authority: site.com' \
+  -H 'sec-ch-ua: "" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \
+  -H 'sec-ch-ua-platform: ""Linux""' \
+  -H 'accept: */*' \
+  -H 'sec-fetch-site: same-origin' \
+  -H 'sec-fetch-mode: no-cors' \
+  -H 'sec-fetch-dest: script' \
+  -H 'accept-language: en-US,en;q=0.9,nl;q=0.8' \
+  -H 'cookie: Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=' \
+  --compressed";
+                var curlCommandResult = await client.CreateCurlStubsAsync(commands, false);
             }
             catch (Exception ex)
             {

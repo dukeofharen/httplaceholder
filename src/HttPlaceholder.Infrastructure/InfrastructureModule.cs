@@ -1,5 +1,4 @@
-﻿using HttPlaceholder.Application.Interfaces.Validation;
-using HttPlaceholder.Common;
+﻿using HttPlaceholder.Common;
 using HttPlaceholder.Infrastructure.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;

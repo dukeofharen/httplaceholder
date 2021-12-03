@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Persistence.Db;
 
-namespace HttPlaceholder.Persistence
+namespace HttPlaceholder.Persistence.Db
 {
     /// <summary>
     /// Describes a class which is used to keep track of the stub cache and invalidation.

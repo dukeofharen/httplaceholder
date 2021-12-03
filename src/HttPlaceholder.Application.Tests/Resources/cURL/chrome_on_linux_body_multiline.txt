@@ -1,0 +1,4 @@
+curl 'http://localhost:5000/moi-wiebe' \
+  -H 'Connection: keep-alive' \
+  --data-raw $'{\n  "stringValue": "text",\n  "intValue": 3\n}' \
+  --compressed

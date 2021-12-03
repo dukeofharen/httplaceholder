@@ -11,12 +11,11 @@ using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace HttPlaceholder.Controllers.v1
 {
     /// <summary>
-    /// Controller for request
+    /// Controller for requests.
     /// </summary>
     [Route("ph-api/requests")]
     [ApiAuthorization]
@@ -49,7 +48,8 @@ namespace HttPlaceholder.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<RequestResultDto>> GetRequest([FromRoute] string correlationId) =>
-            Ok(Mapper.Map<RequestResultDto>(await Mediator.Send(new GetRequestQuery {CorrelationId = correlationId})));
+            Ok(Mapper.Map<RequestResultDto>(
+                await Mediator.Send(new GetRequestQuery { CorrelationId = correlationId })));
 
         /// <summary>
         /// Delete all requests. This call flushes all the requests.
@@ -83,10 +83,11 @@ namespace HttPlaceholder.Controllers.v1
         /// <returns>OK, with the generated stub</returns>
         [HttpPost("{correlationId}/stubs")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<FullStubDto>> CreateStubForRequest(
             [FromRoute] string correlationId,
             [FromBody] CreateStubForRequestInputDto input) =>
-            Mapper.Map<FullStubDto>(
-                await Mediator.Send(new CreateStubForRequestCommand(correlationId, input?.DoNotCreateStub ?? false)));
+            Ok(Mapper.Map<FullStubDto>(
+                await Mediator.Send(new CreateStubForRequestCommand(correlationId, input?.DoNotCreateStub ?? false))));
     }
 }

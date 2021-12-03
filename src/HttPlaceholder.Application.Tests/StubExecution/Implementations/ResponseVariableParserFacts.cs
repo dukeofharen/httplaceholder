@@ -50,11 +50,11 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
             _handler1
                 .Setup(m =>
                 m.Parse(input, It.Is<IEnumerable<Match>>(matches => matches.Any(match => match.Groups[2].Value == "value1" || match.Groups[2].Value == "bla"))))
-                .Returns<string, IEnumerable<Match>>((r, m) => r);
+                .Returns<string, IEnumerable<Match>>((r, _) => r);
             _handler2
                .Setup(m =>
                m.Parse(input, It.Is<IEnumerable<Match>>(matches => matches.Any(match => string.IsNullOrWhiteSpace(match.Groups[2].Value)))))
-               .Returns<string, IEnumerable<Match>>((r, m) => r);
+               .Returns<string, IEnumerable<Match>>((r, _) => r);
 
             // act
             var result = _parser.Parse(input);

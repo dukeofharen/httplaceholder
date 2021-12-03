@@ -6322,6 +6322,596 @@
 									]
 								}
 							]
+						},
+						{
+							"name": "6. Stub generation based on cURL command",
+							"item": [
+								{
+									"name": "Setup",
+									"item": [
+										{
+											"name": "Remove old stubs",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Status code is 204\", function () {",
+															"    pm.response.to.have.status(204);",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{rootUrl}}ph-api/stubs",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"stubs"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Basic auth",
+									"item": [
+										{
+											"name": "Import cURL (header)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check basic auth\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const basicAuth = jsonData[0].stub.conditions.basicAuthentication;",
+															"    pm.expect(basicAuth.username).to.eql(\"user\");",
+															"    pm.expect(basicAuth.password).to.eql(\"pass\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/api/v1/users/authenticate' \\\n  -H 'authorization: Basic dXNlcjpwYXNz' \\\n  --data-raw '{}' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Import cURL (basic auth flag)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check basic auth\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const basicAuth = jsonData[0].stub.conditions.basicAuthentication;",
+															"    pm.expect(basicAuth.username).to.eql(\"user\");",
+															"    pm.expect(basicAuth.password).to.eql(\"pass\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/api/v1/users/authenticate' \\\n  -u 'user:pass' \\\n  --data-raw '{}' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Request body",
+									"item": [
+										{
+											"name": "Import cURL",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check request body\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const body = jsonData[0].stub.conditions.body;",
+															"    pm.expect(body.length).to.eql(1);",
+															"    pm.expect(body[0]).to.eql(\"Some request body\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path' \\\n  -H 'Content-Type: text/plain' \\\n  --data-raw 'Some request body' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Request headers",
+									"item": [
+										{
+											"name": "Import cURL",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check request headers\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const headers = jsonData[0].stub.conditions.headers;",
+															"    pm.expect(Object.keys(headers).length).to.eql(3);",
+															"    pm.expect(headers[\"X-Header1\"]).to.eql(\"value\\\\ 1\");",
+															"    pm.expect(headers[\"X-Header2\"]).to.eql(\"value\\\\ 2\");",
+															"    pm.expect(headers[\"Accept-Encoding\"]).to.eql(\"deflate,\\\\ gzip,\\\\ br\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path' \\\n  -H 'X-Header1: value 1' \\\n  -H 'X-Header2: value 2' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Host",
+									"item": [
+										{
+											"name": "Import cURL",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check host\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const host = jsonData[0].stub.conditions.host;",
+															"    pm.expect(host).to.eql(\"api.site.com\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "HTTPS",
+									"item": [
+										{
+											"name": "Import cURL",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check HTTPS\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const isHttps = jsonData[0].stub.conditions.url.isHttps;",
+															"    pm.expect(isHttps).to.eql(true);",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "HTTP method",
+									"item": [
+										{
+											"name": "Import cURL (POST implicit)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check implicit POST\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const method = jsonData[0].stub.conditions.method;",
+															"    pm.expect(method).to.eql(\"POST\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path' \\\n  --data-raw '{}' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Import cURL (GET implicit)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check implicit GET\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const method = jsonData[0].stub.conditions.method;",
+															"    pm.expect(method).to.eql(\"GET\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Import cURL (PUT explicit)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check explicit PUT\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const method = jsonData[0].stub.conditions.method;",
+															"    pm.expect(method).to.eql(\"PUT\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path' \\\n  -X 'PUT' \\\n  --data-raw '{}' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Form data",
+									"item": [
+										{
+											"name": "Import cURL (multipart)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check form data\", function () {",
+															"    const jsonData = pm.response.json();",
+															"",
+															"    const contentType = jsonData[0].stub.conditions.headers['Content-Type'];",
+															"    pm.expect(contentType).to.eql(\"multipart/form-data\");",
+															"",
+															"    const form = jsonData[0].stub.conditions.form;",
+															"    pm.expect(form.length).to.eql(2);",
+															"    pm.expect(form[0].key).to.eql(\"param1\");",
+															"    pm.expect(form[0].value).to.eql(\"value1\");",
+															"    pm.expect(form[1].key).to.eql(\"param2\");",
+															"    pm.expect(form[1].value).to.eql(\"value2\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path' \\\n  -F 'param1=value1&param2=value2' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Import cURL (form encoded)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check form data\", function () {",
+															"    const jsonData = pm.response.json();",
+															"",
+															"    const contentType = jsonData[0].stub.conditions.headers['Content-Type'];",
+															"    pm.expect(contentType).to.eql(\"application/x-www-form-urlencoded\");",
+															"",
+															"    const form = jsonData[0].stub.conditions.form;",
+															"    pm.expect(form.length).to.eql(2);",
+															"    pm.expect(form[0].key).to.eql(\"param1\");",
+															"    pm.expect(form[0].value).to.eql(\"value1\");",
+															"    pm.expect(form[1].key).to.eql(\"param2\");",
+															"    pm.expect(form[1].value).to.eql(\"value2\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path' \\\n  -d 'param1=value1&param2=value2' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Path",
+									"item": [
+										{
+											"name": "Import cURL",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check path\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const path = jsonData[0].stub.conditions.url.path;",
+															"    pm.expect(path).to.eql(\"/request-path\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Query params",
+									"item": [
+										{
+											"name": "Import cURL",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Check query params\", function () {",
+															"    const jsonData = pm.response.json();",
+															"    const query = jsonData[0].stub.conditions.url.query;",
+															"    pm.expect(Object.keys(query).length).to.eql(2);",
+															"    pm.expect(query.param1).to.eql(\"val1\");",
+															"    pm.expect(query.param2).to.eql(\"val2\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "curl 'https://api.site.com/request-path?param1=val1&param2=val2' \\\n  --compressed"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/import/curl",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"import",
+														"curl"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
 						}
 					]
 				},

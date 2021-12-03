@@ -229,5 +229,13 @@ namespace HttPlaceholder.Client
         /// Deletes all scenarios.
         /// </summary>
         Task DeleteAllScenariosAsync();
+
+        /// <summary>
+        /// Creates stubs based on cURL commands.
+        /// </summary>
+        /// <param name="input">The cURL command(s).</param>
+        /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
+        /// <returns>The created stubs.</returns>
+        Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub);
     }
 }

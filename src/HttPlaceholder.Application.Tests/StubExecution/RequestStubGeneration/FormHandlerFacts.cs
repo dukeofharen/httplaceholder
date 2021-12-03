@@ -50,6 +50,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
         [DataTestMethod]
         [DataRow("application/x-www-form-urlencoded")]
         [DataRow("application/x-www-form-urlencoded; charset=UTF-8")]
+        [DataRow("multipart/form-data")]
+        [DataRow("multipart/form-data; charset=UTF-8")]
         public async Task FormHandler_HandleStubGenerationAsync_HappyFlow(string contentType)
         {
             // Arrange

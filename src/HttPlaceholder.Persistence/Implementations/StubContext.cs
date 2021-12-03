@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
-using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Implementations
 {
@@ -40,7 +38,7 @@ namespace HttPlaceholder.Persistence.Implementations
                 var stubs = await source.GetStubsOverviewAsync();
                 var fullStubModels = stubs.Select(s => new FullStubOverviewModel
                 {
-                    Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
+                    Stub = s, Metadata = new StubMetadataModel { ReadOnly = stubSourceIsReadOnly }
                 });
                 result.AddRange(fullStubModels);
             }
@@ -59,7 +57,7 @@ namespace HttPlaceholder.Persistence.Implementations
 
             var source = GetWritableStubSource();
             await source.AddStubAsync(stub);
-            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = false}};
+            return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel { ReadOnly = false } };
         }
 
         public async Task<bool> DeleteStubAsync(string stubId) =>
@@ -90,7 +88,8 @@ namespace HttPlaceholder.Persistence.Implementations
         public async Task UpdateAllStubs(string tenant, IEnumerable<StubModel> stubs)
         {
             var source = GetWritableStubSource();
-            var stubIds = stubs
+            var stubArray = stubs as StubModel[] ?? stubs.ToArray();
+            var stubIds = stubArray
                 .Select(s => s.Id)
                 .Distinct();
             var existingStubs = (await source.GetStubsAsync())
@@ -105,7 +104,7 @@ namespace HttPlaceholder.Persistence.Implementations
             }
 
             // Make sure the new selection of stubs all have the new tenant and add them to the stub source.
-            foreach (var stub in stubs)
+            foreach (var stub in stubArray)
             {
                 stub.Tenant = tenant;
                 await source.AddStubAsync(stub);
@@ -122,7 +121,8 @@ namespace HttPlaceholder.Persistence.Implementations
                 {
                     result = new FullStubModel
                     {
-                        Stub = stub, Metadata = new StubMetadataModel {ReadOnly = !(source is IWritableStubSource)}
+                        Stub = stub,
+                        Metadata = new StubMetadataModel { ReadOnly = !(source is IWritableStubSource) }
                     };
                     break;
                 }
@@ -212,7 +212,7 @@ namespace HttPlaceholder.Persistence.Implementations
                 var stubs = await source.GetStubsAsync();
                 var fullStubModels = stubs.Select(s => new FullStubModel
                 {
-                    Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
+                    Stub = s, Metadata = new StubMetadataModel { ReadOnly = stubSourceIsReadOnly }
                 });
                 result.AddRange(fullStubModels);
             }

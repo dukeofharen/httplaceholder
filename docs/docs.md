@@ -67,6 +67,12 @@
 - [Configuration](#configuration)
 - [Samples](#samples)
 - [Management interface](#management-interface)
+  - [How to get there](#how-to-get-there)
+  - [Requests page](#requests-page)
+  - [Stubs page](#stubs-page)
+  - [Import stubs](#import-stubs)
+  - [Add stub(s) form](#add-stubs-form)
+  - [Settings page](#settings-page)
 - [Tools and client libraries](#tools-and-client-libraries)
   - [HttPlaceholder REST API client for .NET](#httplaceholder-rest-api-client-for-net)
 
@@ -1679,6 +1685,10 @@ The scenarios are only stored in memory for the time being, so restarting HttPla
 
 To read more about scenarios, go to [conditions](#request-scenario) or [response](#scenario).
 
+## Import
+
+The import collection is used to be able to import all kinds of data in HttPlaceholder.
+
 # Configuration
 
 This paragraph contains all command line arguments supported by HttPlaceholder. Configuration can be set using command line arguments, a configuration file or environment variables.
@@ -1956,7 +1966,7 @@ Besides being an HTTP stub and having a REST API to configure the stubs, HttPlac
 
 When you run the stub, you can just go to `http://placeholder/ph-ui`. If you've secured the API with [basic authentication](#configuration), you need to log in first.
 
-## Requests
+## Requests page
 
 On the requests page you can see all requests made to HttPlaceholder. It will show which URL was called and if a valid stub was found for the requests. You can also open a specific request and view the details of this request.
 
@@ -1980,7 +1990,7 @@ You have several options here.
 - Create stub: This action allows you to create a stub based on the request. By clicking "Create stub", a stub form will be opened with prefilled request conditions based on this specific request. This allows you to quickly create a new stub for a situation where there is no stub yet.
 - Delete: deletes the current request
 
-## Stubs
+## Stubs page
 
 On the stubs page you can see all stubs configured in HttPlaceholder. When you click on a stub, you'll see the stub configuration in YAML.
 
@@ -1991,7 +2001,7 @@ You have several options here.
 - Refresh: retrieves all stubs from HttPlaceholder.
 - Add stubs: opens a form where you can create new stubs.
 - Download stubs as YAML: downloads the current filtered selection of stubs as a YAML file. When no filter is provided, all stubs are downloaded.
-- Upload stubs: allows you to upload multiple YAML stub files.
+- Import stubs: allows you to upload multiple YAML stub files or add stubs in other kinds of ways.
 - Delete all stubs: as the name suggests, deletes ALL stubs from HttPlaceholder.
 - Disable stubs: disables the current filtered selection of stubs. If no filter is specified, all stubs are disabled.
 - Enable stubs: enables the current filtered selection of stubs. If no filter is specified, all stubs are enabled.
@@ -2007,7 +2017,51 @@ When clicking on a stub, the stub YAML will be opened and you have a few more st
 - Disable / enable: disables or enables this stub.
 - Delete: deletes this stub.
 
-## Add stub(s)
+## Import stubs
+
+This page allows you to add stubs in different kinds of ways.
+
+### Upload stubs
+
+![](img/ui/stub_upload.png)
+
+On this page, you can upload stubs you have saved on your PC in YAML format. You can select one or multiple stubs for uploading.
+
+### Import cURL commands
+
+On this page, you can create new stubs based on cURL commands. You can, for example, use cURL commands you have lying around or you can copy/paste cURL commands from your browser.
+
+![](img/ui/stub_curl_form.png)
+_On this form, you can import one or multiple cURL commands._
+
+![](img/ui/stub_curl_form_review.png)
+_When pressing the "Import cURL command(s)" button, you will see the stubs that will be added. You will have the option to directly save the stubs, edit the stubs before saving or resetting and starting over._
+
+#### Copying cURL command(s) from browser
+
+Copying cURL commands from browsers is easy and supported in all major browsers (e.g. Firefox, Chrome, Edge etc.). In general, you open the developer console of your browser, go to the "Network" tab and select the command where you would like to copy the cURl command for.
+
+**Firefox**
+
+![](img/ui/curl_copy_firefox.png)
+
+**Chrome**
+
+![](img/ui/curl_copy_chrome.png)
+
+Chrome also allows you to copy cURL commands for all requests in the network tab.
+
+**Windows**
+
+When copying cURL requests from a browser on Windows, make sure you select "Copy as cURL (bash)" or "Copy all as cURL (bash)" on Chrome or "Copy as cURL (POSIX)" in Firefox. The Windows formatting of cURL commands is currently not supported in HttPlaceholder.
+
+![](img/ui/curl_copy_firefox_windows.png)
+_Copy as cURL in Firefox on Windows_
+
+![](img/ui/curl_copy_chrome_windows.png)
+_Copy as cURL in Chrome on Windows_
+
+## Add stub(s) form
 
 You can add stubs in one of three ways: either by filling in the stub YAML, by filling in a form or by uploading a YAML file from your PC.
 
@@ -2025,15 +2079,7 @@ You can also click on "Add request / response value" so you can see what kind of
 
 Besides this, you can also choose between using the "Advanced editor" (based on [CodeMirror](https://codemirror.net/)) and "Simple editor". A simple editor was added because CodeMirror is not really suited for updating large stubs.
 
-### Uploading stubs
-
-On the "Stubs" page, select the "Upload stubs" button.
-
-![](img/ui/stub_upload.png)
-
-You can select one or multiple .yaml files from your PC. The stubs will then be added to HttPlaceholder.
-
-## Settings
+## Settings page
 
 On the settings page you can configure all kinds of settings for HttPlaceholder (only frontend settings for now).
 

@@ -27,7 +27,7 @@ namespace HttPlaceholder.Application.StubExecution.Models
         /// <summary>
         /// Gets or sets the headers.
         /// </summary>
-        public IDictionary<string, string> Headers { get; set; }
+        public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
         /// Gets or sets the client ip.

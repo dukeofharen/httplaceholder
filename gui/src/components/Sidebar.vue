@@ -67,6 +67,12 @@ export default {
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
+        title: "Import stubs",
+        icon: "arrow-down-short",
+        routeName: "ImportStubs",
+        hideWhenAuthEnabledAndNotLoggedIn: true,
+      },
+      {
         title: "Settings",
         icon: "wrench",
         routeName: "Settings",
