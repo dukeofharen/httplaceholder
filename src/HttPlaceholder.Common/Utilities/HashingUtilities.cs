@@ -7,7 +7,6 @@ namespace HttPlaceholder.Common.Utilities
 {
     public static class HashingUtilities
     {
-        [SuppressMessage("SonarQube", "S4790", Justification = "Not used for security related stuff.")]
         public static string GetMd5String(string input)
         {
             using (var md5 = MD5.Create())

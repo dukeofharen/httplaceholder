@@ -14,7 +14,6 @@ namespace HttPlaceholder.Infrastructure.Web
         private const string ForwardedProtoKey = "X-Forwarded-Proto";
 
         // I've seen Nginx use this IP when reverse proxying. .NET loopback check doesn't recognize this IP as loopback IP.
-        [SuppressMessage("SonarQube", "S1313", Justification = "Unrecognized loopback IP")]
         private static IPAddress NginxProxyIp { get; } = IPAddress.Parse("::ffff:127.0.0.1");
         private readonly IHttpContextAccessor _httpContextAccessor;
 

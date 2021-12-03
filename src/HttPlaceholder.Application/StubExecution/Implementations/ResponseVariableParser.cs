@@ -9,7 +9,6 @@ namespace HttPlaceholder.Application.StubExecution.Implementations
 {
     public class ResponseVariableParser : IResponseVariableParser
     {
-        [SuppressMessage("SonarQube", "S4784", Justification = "Added a timeout, SonarQube still nags.")]
         public static Regex VarRegex { get; } = new Regex(
             @"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)",
             RegexOptions.Compiled,

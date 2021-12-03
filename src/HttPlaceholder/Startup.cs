@@ -47,7 +47,6 @@ namespace HttPlaceholder
                 });
         }
 
-        [SuppressMessage("SonarQube", "S4792")]
         public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration)
         {
             services
