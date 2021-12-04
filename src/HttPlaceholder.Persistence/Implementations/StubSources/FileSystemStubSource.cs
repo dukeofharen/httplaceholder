@@ -141,7 +141,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             .Select(s => new StubOverviewModel { Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled })
             .ToArray();
 
-        public async Task CleanOldRequestResultsAsync()
+        public Task CleanOldRequestResultsAsync()
         {
             // TODO make this thread safe. What if multiple instances of HttPlaceholder are running?
             var path = GetRequestsFolder();
@@ -155,6 +155,8 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
             {
                 _fileService.DeleteFile(filePath.path);
             }
+
+            return Task.CompletedTask;
         }
 
         public Task PrepareStubSourceAsync()
