@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:5
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: httplaceholder
+      MYSQL_USER: httplaceholder
+      MYSQL_PASSWORD: httplaceholder
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql5_data:/var/lib/mysql
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: Password123!
+      MSSQL_PID: Developer
+    ports:
+      - 1433:1433
+    volumes:
+      - mssql_data:/var/opt/mssql
+      - ./mssql_initscripts:/usr/local/bin/initscripts
+    command: /bin/bash /usr/local/bin/initscripts/entrypoint.sh
+
+volumes:
+  mysql5_data:
+  mssql_data:
