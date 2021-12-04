@@ -138,20 +138,22 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources
 
         public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
             (await GetStubsAsync())
-            .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
+            .Select(s => new StubOverviewModel { Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled })
             .ToArray();
 
         public async Task CleanOldRequestResultsAsync()
         {
+            // TODO make this thread safe. What if multiple instances of HttPlaceholder are running?
             var path = GetRequestsFolder();
             var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
-            var requests = (await GetRequestResultsAsync())
-                .OrderByDescending(r => r.RequestEndTime)
+            var filePaths = _fileService.GetFiles(path, "*.json");
+            var filePathsAndDates = filePaths
+                .Select(p => (path: p, lastWriteTime: _fileService.GetLastWriteTime(p)))
+                .OrderByDescending(t => t.lastWriteTime)
                 .Skip(maxLength);
-            foreach (var request in requests)
+            foreach (var filePath in filePathsAndDates)
             {
-                var filePath = Path.Combine(path, $"{request.CorrelationId}.json");
-                _fileService.DeleteFile(filePath);
+                _fileService.DeleteFile(filePath.path);
             }
         }
 
