@@ -1,3 +1,13 @@
+[1.0.0]
+- Changed release of HttPlaceholder to determine version based on the latest version in the changelog instead of on the current date (https://github.com/dukeofharen/httplaceholder/pull/201).
+- Disable verbose logging in HttPlaceholder Docker image by default (https://github.com/dukeofharen/httplaceholder/pull/195).
+- Add possibility to create stubs based on cURL commands (https://github.com/dukeofharen/httplaceholder/issues/197).
+- Made a change in cleaning old request if file storage is used (https://github.com/dukeofharen/httplaceholder/pull/199).
+- Fix in simple stub editor. Copy/paste and deletion of whole words (Ctrl + Backspace) now lead to correct stub input (https://github.com/dukeofharen/httplaceholder/pull/200).
+
+# BREAKING CHANGES
+- The verbose logging is turned off by default for the HttPlaceholder Docker image. If you relied on the verbose logging, you have to provide the `verbose` environment value with value `true` now.
+
 [2021.11.25.434]
 - Added possibility to resize stub editor panel (https://github.com/dukeofharen/httplaceholder/issues/185)
 - Added separate editor for editing large stubs (simple editor) (https://github.com/dukeofharen/httplaceholder/issues/186)
