@@ -68,7 +68,7 @@ export default {
       },
       {
         title: "Import stubs",
-        icon: "arrow-down-short",
+        icon: "arrow-up-short",
         routeName: "ImportStubs",
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
