@@ -32,7 +32,7 @@ export default {
       }
     };
     const contentsChanged = () => {
-      emit("update:modelValue", contents.value);
+      setTimeout(() => emit("update:modelValue", contents.value), 10);
     };
 
     // Watch
