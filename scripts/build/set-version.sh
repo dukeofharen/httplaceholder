@@ -10,16 +10,10 @@ set -u
 BUILD_NUMBER="$1"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_FOLDER="$DIR/../.."
+CHANGELOG_PATH="$ROOT_FOLDER/CHANGELOG"
 
 echo "Determining version"
-YEAR="$(date +%Y)"
-
-MONTH=$(date +%m)
-MONTH="${MONTH#0}"
-
-DAY="$(date +%d)"
-DAY="${DAY#0}"
-
-VERSION="$YEAR.$MONTH.$DAY.$BUILD_NUMBER"
+BASE_VERSION=$(head -n 1 $CHANGELOG_PATH | sed 's/\[//' | sed 's/\]//')
+VERSION="$BASE_VERSION.$1"
 echo "Version is $VERSION"
 echo "$VERSION" > "$ROOT_FOLDER/version.txt"
