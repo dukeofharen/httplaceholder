@@ -81,6 +81,8 @@ Linux, Windows and Mac are supported.
 
 ### Installation
 
+Follow these steps to install / update HttPlaceholder. If you update HttPlaceholder, make sure to read the [changelog](CHANGELOG) to see if there are no breaking changes.
+
 **Install on Windows**
 
 ```powershell

@@ -7,6 +7,7 @@
 
 # BREAKING CHANGES
 - The verbose logging is turned off by default for the HttPlaceholder Docker image. If you relied on the verbose logging, you have to provide the `verbose` environment value with value `true` now.
+- Releases are now done based on the version in the CHANGELOG file instead of on the date the release was made.
 
 [2021.11.25.434]
 - Added possibility to resize stub editor panel (https://github.com/dukeofharen/httplaceholder/issues/185)
