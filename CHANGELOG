@@ -1,0 +1,282 @@
+[1.0.0]
+- Changed release of HttPlaceholder to determine version based on the latest version in the changelog instead of on the current date (https://github.com/dukeofharen/httplaceholder/pull/201).
+- Disable verbose logging in HttPlaceholder Docker image by default (https://github.com/dukeofharen/httplaceholder/pull/195).
+- Add possibility to create stubs based on cURL commands (https://github.com/dukeofharen/httplaceholder/issues/197).
+- Made a change in cleaning old request if file storage is used (https://github.com/dukeofharen/httplaceholder/pull/199).
+- Fix in simple stub editor. Copy/paste and deletion of whole words (Ctrl + Backspace) now lead to correct stub input (https://github.com/dukeofharen/httplaceholder/pull/200).
+
+# BREAKING CHANGES
+- The verbose logging is turned off by default for the HttPlaceholder Docker image. If you relied on the verbose logging, you have to provide the `verbose` environment value with value `true` now.
+- Releases are now done based on the version in the CHANGELOG file instead of on the date the release was made.
+
+[2021.11.25.434]
+- Added possibility to resize stub editor panel (https://github.com/dukeofharen/httplaceholder/issues/185)
+- Added separate editor for editing large stubs (simple editor) (https://github.com/dukeofharen/httplaceholder/issues/186)
+- Insert spaces when pressing tab in the stub editor (https://github.com/dukeofharen/httplaceholder/issues/186)
+- Added separate text boxes for tenant helper and scenario helper in stub form helpers (https://github.com/dukeofharen/httplaceholder/issues/186)
+- Only update state / hit count through scenario API if those values are actually set (https://github.com/dukeofharen/httplaceholder/issues/184)
+- Added separate "enable stubs", "disable stubs" and "delete stubs" button to only update the currently filtered stubs in the user interface (https://github.com/dukeofharen/httplaceholder/issues/188)
+- Copy docs to release folder so they are released together with the HttPlaceholder binaries (https://github.com/dukeofharen/httplaceholder/issues/189)
+- Updated docs: merged all docs into one document and made many other small changes (https://github.com/dukeofharen/httplaceholder/issues/190)
+- Removed old UI from code base (https://github.com/dukeofharen/httplaceholder/issues/191)
+- Updated and fixed Vagrant boxes (https://github.com/dukeofharen/httplaceholder/issues/192)
+- Updated Dockerfile: use .NET runtime image instead of SDK image and use Node.js 16 (LTS) (https://github.com/dukeofharen/httplaceholder/issues/193)
+
+[2021.11.7.392]
+- Implemented stateful behavior in HttPlaceholder for stubs: https://github.com/dukeofharen/httplaceholder/issues/179
+- Several UI changes: https://github.com/dukeofharen/httplaceholder/issues/169
+- When default HTTP(S) port is taken, pick another random one: https://github.com/dukeofharen/httplaceholder/issues/171
+- Strip "Content-Length" header in reverse proxy response writer: https://github.com/dukeofharen/httplaceholder/issues/172
+- Add JSONPath variable handler: https://github.com/dukeofharen/httplaceholder/issues/174
+- Fixed "close button" in response body helper in UI: https://github.com/dukeofharen/httplaceholder/issues/175
+- Persist stub and request filter states across screens in UI: https://github.com/dukeofharen/httplaceholder/issues/176
+- Show correct request time in UI: https://github.com/dukeofharen/httplaceholder/issues/180
+- Close form helper list on escape press: https://github.com/dukeofharen/httplaceholder/issues/181
+
+[2021.10.4.342]
+- Upgraded UI to Vue 3 (https://github.com/dukeofharen/httplaceholder/issues/164). When starting HttPlaceholder, the old UI is still served. You can force the new UI by providing "--useNewUi true" to the command line arguments (see https://github.com/dukeofharen/httplaceholder/blob/master/docs/CONFIG.md).
+
+[2021.8.15.305]
+- Updated JSONPath condition checker so query and expected value can be split in 2 separate declarations (https://github.com/dukeofharen/httplaceholder/issues/153).
+- Updated NuGet packages.
+
+[2021.6.13.293]
+- Added feature for deleting single request.
+- Fix in database schema (https://github.com/dukeofharen/httplaceholder/issues/147).
+- Added possibility for enabling health check on root URL (https://github.com/dukeofharen/httplaceholder/issues/142).
+- Several UI refactorings.
+
+[2021.5.16.265]
+- Added completely new .NET client for HttPlaceholder API.
+- Don't log warnings which aren't actually warnings.
+
+[2021.5.1.256]
+- Added "json" (not JSONPath) condition checker.
+- Added integration tests with Postman.
+- Added stub validation for stubs added as .yaml files or through API.
+
+[2021.4.11.234]
+- Implemented several performance improvements. 
+   - If a condition checker fails for a stub, do not execute the other condition checkers.
+   - Order condition checkers by priority. The quickest condition checkers are executed before the more complex ones.
+- Added caching mechanism for use together with a relational database (MySQL, SQLite or MS SQL Server). The caching is implemented in such a way that whenever you run multiple instances of HttPlaceholder and you update stubs on one instance, the cache on the other instaces will also be invalidated so you don't have stale caches in the other instances.
+
+[2021.3.27.223]
+- Fixed multiple issues in UI.
+- Fixed bug in generating stub based on request in BasicAuthenticationHandler.
+- Made it possible to run HttPlaceholder on multiple HTTP(S) ports.
+
+[2021.3.13.194]
+- Upgraded NuGet packages.
+- Fixed "feature" where stub with old ID was deleted when the ID of the stub was changed.
+
+[2020.12.29.179]
+- Added response writer for creating stub images.
+- Added response writer for content type.
+- Updated Docker image so it has a default value for "inputFile"
+- Added possibility for disabling stub.
+- Added some text that will be shown when HTTP 501 is returned if no stub was found.
+
+[2020.12.22.151]
+- Deleted full stub form and added form helper to the stub YAML form (https://github.com/dukeofharen/httplaceholder/issues/57).
+- Added possibility to enforce Windows or Unix line endings (https://github.com/dukeofharen/httplaceholder/issues/55).
+- Fixed bug where finding a file would not work if multiple stub paths are provided (https://github.com/dukeofharen/httplaceholder/issues/50).
+- Use "," for separator for "inputFile" (https://github.com/dukeofharen/httplaceholder/issues/53).
+- Made configJsonLocation case insensitive (https://github.com/dukeofharen/httplaceholder/issues/47).
+
+[2020.12.11.114]
+- Fixed the previous bugged release. For some reason, the build succeeded, but the dotnet publish command resulted in an error. I've added additional error handling and fixed the actual build, so it (hopefully) never happens again.
+
+[2020.11.20.108]
+- Removed negative conditions from HttPlaceholder. They are not refined enough.
+- The search functionality in the UI is now case insensitive.
+- Return 501 (Not Implemented) instead of 500 (Internal Server Error) if no stub was configured for the request.
+- Added lazy loading for requests and stubs in the user interface.
+- Updated to .NET 5 and upgraded all NuGet packages.
+
+[2020.08.23.62]
+- Added reverse proxy response writer.
+- REST API now returns JSON responses by default instead of YAML.
+
+[2020.8.8.156]
+- Added a complete form to the UI for adding stubs.
+
+[2020.7.6.155]
+- Fixed issue with IIS hosting.
+
+[2020.4.19.150]
+- Project upgrade to .NET Core 3.1.
+- Upgrade and several bug fixes of user interface.
+- Fixed login issues for UI.
+- Make all config settings case insensitive.
+- Allow command line arguments without values (e.g. you can now do "httplaceholder --usehttps" instead of "httplaceholder --usehttps true")
+- Fixed issue where PowerShell would append double quotes to "inputFile" property when starting HttPlaceholder.
+- Added SSL private key installation scripts for Windows, Linux and Mac.
+- Also allow YAML stub files which are not in the form of an array.
+
+[2019.9.29.149]
+- Complete rewrite of UI to material design.
+- Added stub examples to UI to insert when adding new stub.
+
+[2019.9.25.148]
+- Upgrade to ASP.NET Core 3.0
+- If a collection is not set in a REST API post or put call, don't return the AutoMapper default of the collection (empty collection instead of null) after performing a GET.
+- Added a possibility for disabling the user interface.
+- Added some documentation about reverse proxies and fixed the displayed hostname in UI after a request through a reverse proxy is made to Httplaceholder.
+- It is possible to configure the application using environment variables now.
+
+[2019.9.9.142]
+- Made it possible to see stubs and requests made for a specific tenant / category.
+- Made it possible to download all stubs within a specific tenant / category.
+- Did a SonarQube analysis and fixed some issues.
+
+[2019.8.24.141]
+- Added stub generation based on request.
+- Refactored build procedure.
+- Added "pretty print" for posted form values.
+- Several bug fixes.
+- Added response variable parsers for local and UTC date & time.
+- Added update stub and delete all stubs call.
+
+[2019.6.2.127]
+- Complete restructure of .NET application.
+
+[2019.5.31.126]
+- Added SignalR to automatically refresh GUI if there are new requests.
+- Change logo in dark and light mode.
+- (Sadly) stupid bug fix to fix the integration unit tests. See https://github.com/microsoft/vstest/issues/2008
+- Description for all API endpoints for Swagger file.
+
+[2019.4.16.123]
+- Fixed Windows installer
+- Added possibility for adding description to stub
+- Show query parameters in UI
+- Fixed stub download from UI
+
+[2019.2.23.111]
+- Added the possibility to store your stubs and requests in a MySQL, SQLite or Microsoft SQL Server database.
+- Added a way to make responses more dynamic by adding the possibility to use variable handlers (see https://github.com/dukeofharen/httplaceholder/blob/master/docs/RESPONSE.md).
+- Added --configJsonLocation parameter for specifying the location to the config.json file yourself.
+- Made HttPlaceholder cross-platform (it now runs on Windows, Linux and Mac OS).
+
+[2019.2.2.108-beta]
+- Updated scripts to also build binaries for cross platform usage.
+- Added storage provider for SQLite.
+- Added storage provider for Microsoft SQL Server.
+
+[2019.2.1.103-beta]
+- Added several response variable handlers.
+
+[2019.1.17.100-beta]
+- Dynamic mode: possibility to add variables to responses.
+
+[2019.1.5.98-beta]
+- Added connection to MySQL database.
+
+[2018.12.24.95]
+- Pack HttPlaceholder as dotnet global tool.
+
+[2018.12.22.92]
+- Upgrade to .NET Core 2.2 and added custom NuGet package for HttPlaceholder.
+
+[2018.12.16.87]
+- Added light and dark theme
+- Added fancier confirm dialogs
+- Added button for downloading stubs as .yml file
+- Add / update stub when pressing Ctrl + S
+- Fix problem with metadata in stub model
+- Added possibility of deleting all stubs (from writable stub source) from within UI
+- Don't show logout button if authentication is not required.
+- Updated Ducode.Essentials references to NuGet packages.
+- Added logout functionality.
+- Added another separation character for multiple input files
+- Added "Delete stub" button to UI
+
+[2018.12.14.85-beta]
+- Fix problem with metadata in stub model.
+
+[2018.12.10.83-beta]
+- Added possibility of deleting all stubs (from writable stub source) from within UI.
+
+[2018.12.7.81-beta]
+- Don't show logout button if authentication is not required.
+- Updated Ducode.Essentials references to NuGet packages.
+
+[2018.11.30.77-beta]
+- Added logout functionality.
+
+[2018.11.30.75-beta]
+- Added another separation character for multiple input files.
+
+[2018.11.13.74-beta]
+- Replaced console functions with Ducode.Essentials equivalents.
+
+[2018.11.7.73-beta]
+- Fixed application.
+
+[2018.11.7.72-beta]
+- Moved a lot of generic code to Ducode.Essentials repository.
+
+[2018.11.2.68]
+- Fixed problem that YAML files wouldn't be loaded from the HttPlaceholder startup directory if --inputFile wasn't set.
+
+[2018.11.2.71-beta]
+- Added "Delete stub" button to UI.
+
+[2018.11.2.70-beta]
+- Added controller for retrieving metadata and show version in UI.
+
+[2018.11.2.69-beta]
+- Append version to installer when building.
+
+[0.4.0.56]
+- Rebuilt AddStub screen as code editor.
+- Added all available pages to navigation bar.
+
+[0.4.0.54]
+- Fixed caching issue in API.
+- Added possibility to assign tenants to stubs and added API endpoints for tenants.
+- Added logic for determining which stub to choose if multiple conflicting stubs are found.
+- It is now possible to add a stub without any conditions.
+- Stub priority is 0 by default.
+- Added page in UI to download all stubs.
+
+[0.4.0.45]
+- Implemented file storage; stubs are written to disk when they are added through the API and requests are also added to disk whenever a URL is called.
+- Added several UI changes for management UI.
+- Added login form to UI; shown when authentication is enabled on API.
+- Added priority to stubs so HttPlaceholder can decide which stub to use if multiple stubs are found for one request.
+- Added condition checker for form values.
+
+[0.3.0.35]
+- Added UI written with Vue.js for administering HttPlaceholder.
+
+[0.2.0.27]
+- Re-added lost private key for HTTPS
+- Added condition checker for hostname
+- Added HTML response writer
+- Added "is HTTPS" condition checker
+
+[0.2.0.16]
+- Upgrade to .NET Core 2.1
+- Added command line option to disable detailed request logging on the command line.
+- Added response writer for JSON.
+- Added response writer for XML.
+- Added shorthand response writers for easy temporary and permanent redirects.
+- Greatly improved request logging.
+- Updated XPath condition checker so .NET's XPath implementation doesn't complain anymore if no namespaces are configured for an XML file that does have namespaces (some Regex trickery).
+- Added condition checker for checking client IP address.
+- Updated project so hosting in IIS through the .NET Core Hosting Bundle is now possible and also added installation instructions for this hosting scenario.
+- Added a separate config.json file which can be used instead of providing command line arguments.
+
+[0.1.0.8]
+- Lots and lots of refactorings.
+- Added several new condition checkers.
+- Added several new response writers.
+
+[0.0.1.4-beta]
+- Improved logging.
+- If multiple stubs are found, the first one is returned.
+- Made it possible to set the HTTP port the application is assigned.
+- Added X-Placeholder-Correlation header to every response.
+- Added the possibility to add a file as response to the stub YAML file.
