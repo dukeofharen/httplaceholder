@@ -47,8 +47,7 @@ $changelogForVersion = [string]::Join("`n", $changelogLines)
 $tagName = "v$version"
 $release = @{ tag_name = $tagName; target_commitish = $commitHash; name = $tagName; body = $changelogForVersion; draft = $true }
 $releaseJson = ConvertTo-Json $release
-# $releaseUrl = "https://api.github.com/repos/$owner/$repo/releases"
-$releaseUrl = "http://localhost:5000/repos/$owner/$repo/releases"
+$releaseUrl = "https://api.github.com/repos/$owner/$repo/releases"
 $createReleaseResponse = Invoke-WebRequest -Uri $releaseUrl`
     -Method Post `
     -Body $releaseJson `
