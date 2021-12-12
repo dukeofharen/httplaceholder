@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <h1>Scenarios</h1>
-    <div class="col-md-12">
-      <div class="list-group">
-        <button
-          v-for="scenario of filteredScenarios"
-          :key="scenario.scenario"
-          class="list-group-item list-group-item-action"
-        >
-          <span class="fw-bold">{{ scenario.scenario }}</span
-          ><br />
-          State: {{ scenario.state }}<br />
-          Hit count: {{ scenario.hitCount }}
-        </button>
-      </div>
+  <h1>Scenarios</h1>
+  <div class="col-md-12">
+    <div class="list-group">
+      <router-link
+        v-for="scenario of filteredScenarios"
+        :key="scenario.scenario"
+        class="list-group-item list-group-item-action"
+        :to="{
+          name: 'ScenarioForm',
+          params: { scenario: scenario.scenario },
+        }"
+      >
+        <span class="fw-bold">{{ scenario.scenario }}</span
+        ><br />
+        State: {{ scenario.state }}<br />
+        Hit count: {{ scenario.hitCount }}
+      </router-link>
     </div>
   </div>
 </template>
@@ -21,6 +23,7 @@
 <script>
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
+import { handleHttpError } from "@/utils/error";
 
 export default {
   name: "Scenarios",
@@ -44,7 +47,11 @@ export default {
 
     // Lifecycle
     onMounted(async () => {
-      scenarios.value = await store.dispatch("scenarios/getAllScenarios");
+      try {
+        scenarios.value = await store.dispatch("scenarios/getAllScenarios");
+      } catch (e) {
+        handleHttpError(e);
+      }
     });
 
     return { scenarios, filteredScenarios };
