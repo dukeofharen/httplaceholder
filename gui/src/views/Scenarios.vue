@@ -3,8 +3,8 @@
 
   <div class="col-md-12 mb-3">
     <router-link class="btn btn-success me-2" :to="{ name: 'ScenarioForm' }"
-      >Add scenario</router-link
-    >
+      >Add scenario
+    </router-link>
     <button class="btn btn-danger" @click="clearAllScenariosModal = true">
       Clear all scenarios
     </button>
@@ -18,22 +18,37 @@
   </div>
 
   <div class="col-md-12">
-    <div class="list-group">
-      <router-link
+    <ul class="list-group">
+      <li
         v-for="scenario of filteredScenarios"
         :key="scenario.scenario"
         class="list-group-item list-group-item-action"
-        :to="{
-          name: 'ScenarioForm',
-          params: { scenario: scenario.scenario },
-        }"
       >
-        <span class="fw-bold">{{ scenario.scenario }}</span
-        ><br />
-        State: {{ scenario.state }}<br />
-        Hit count: {{ scenario.hitCount }}
-      </router-link>
-    </div>
+        <div>
+          <span class="fw-bold">{{ scenario.scenario }}</span
+          ><br />
+          State: {{ scenario.state }}<br />
+          Hit count: {{ scenario.hitCount }}
+        </div>
+        <div>
+          <router-link
+            class="btn btn-success btn-sm me-2"
+            :to="{
+              name: 'ScenarioForm',
+              params: { scenario: scenario.scenario },
+            }"
+          >
+            Update
+          </router-link>
+          <button
+            class="btn btn-danger btn-sm"
+            @click="deleteScenario(scenario.scenario)"
+          >
+            Delete
+          </button>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -82,6 +97,15 @@ export default {
         handleHttpError(e);
       }
     };
+    const deleteScenario = async (scenario) => {
+      try {
+        await store.dispatch("scenarios/deleteScenario", scenario);
+        toastr.success(resources.scenarioDeletedSuccessfully);
+        await loadScenarios();
+      } catch (e) {
+        handleHttpError(e);
+      }
+    };
 
     // Lifecycle
     onMounted(async () => await loadScenarios());
@@ -91,6 +115,7 @@ export default {
       filteredScenarios,
       clearAllScenariosModal,
       clearAllScenarios,
+      deleteScenario,
     };
   },
 };

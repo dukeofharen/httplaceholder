@@ -74,6 +74,10 @@ export default {
     // Methods
     const save = async () => {
       try {
+        if (!scenarioForm.value.hitCount) {
+          scenarioForm.value.hitCount = 0;
+        }
+
         await store.dispatch("scenarios/setScenario", scenarioForm.value);
         toastr.success(resources.scenarioSetSuccessfully);
         await router.push({ name: "Scenarios" });

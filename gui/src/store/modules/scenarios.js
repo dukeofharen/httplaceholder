@@ -23,6 +23,11 @@ const actions = {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
+  deleteScenario(_, scenario) {
+    return del(`/ph-api/scenarios/${scenario}`)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };
 
 const mutations = {};
