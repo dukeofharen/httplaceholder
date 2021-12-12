@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution;
@@ -84,7 +85,7 @@ public class YamlFileStubSourceFacts
 
         _fileServiceMock
             .Setup(m => m.GetFiles(currentDirectory, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
-            .Returns(new string[0]);
+            .Returns(Array.Empty<string>());
 
         // act
         var result = await _source.GetStubsAsync();

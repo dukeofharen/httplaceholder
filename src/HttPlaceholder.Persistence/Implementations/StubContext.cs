@@ -34,7 +34,7 @@ internal class StubContext : IStubContext
         var result = new List<FullStubOverviewModel>();
         foreach (var source in _stubSources)
         {
-            var stubSourceIsReadOnly = !(source is IWritableStubSource);
+            var stubSourceIsReadOnly = source is not IWritableStubSource;
             var stubs = await source.GetStubsOverviewAsync();
             var fullStubModels = stubs.Select(s => new FullStubOverviewModel
             {
@@ -122,7 +122,7 @@ internal class StubContext : IStubContext
                 result = new FullStubModel
                 {
                     Stub = stub,
-                    Metadata = new StubMetadataModel { ReadOnly = !(source is IWritableStubSource) }
+                    Metadata = new StubMetadataModel { ReadOnly = source is not IWritableStubSource }
                 };
                 break;
             }
@@ -201,14 +201,14 @@ internal class StubContext : IStubContext
         (IWritableStubSource)_stubSources.Single(s => s is IWritableStubSource);
 
     private IEnumerable<IStubSource> GetReadOnlyStubSources() =>
-        _stubSources.Where(s => !(s is IWritableStubSource));
+        _stubSources.Where(s => s is not IWritableStubSource);
 
     private async Task<IEnumerable<FullStubModel>> GetStubsAsync(bool readOnly)
     {
         var result = new List<FullStubModel>();
         foreach (var source in readOnly ? GetReadOnlyStubSources() : _stubSources)
         {
-            var stubSourceIsReadOnly = !(source is IWritableStubSource);
+            var stubSourceIsReadOnly = source is not IWritableStubSource;
             var stubs = await source.GetStubsAsync();
             var fullStubModels = stubs.Select(s => new FullStubModel
             {

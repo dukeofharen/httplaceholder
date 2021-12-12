@@ -37,7 +37,7 @@ public class ScenarioServiceFacts
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
         var service = _mocker.CreateInstance<ScenarioService>();
 
-        var scenario = "scenario-1";
+        const string scenario = "scenario-1";
 
         scenarioStateStoreMock
             .Setup(m => m.GetScenarioLock(scenario))

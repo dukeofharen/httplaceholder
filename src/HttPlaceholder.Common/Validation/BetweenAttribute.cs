@@ -20,7 +20,7 @@ public class BetweenAttribute : ValidationAttribute
     public override bool IsValid(object value)
     {
         var castedValue = (int?)value;
-        if (_allowDefault && (castedValue == 0 || castedValue == null))
+        if (_allowDefault && castedValue is 0 or null)
         {
             return true;
         }

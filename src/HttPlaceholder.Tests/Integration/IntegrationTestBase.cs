@@ -26,9 +26,9 @@ public abstract class IntegrationTestBase
 
     protected void InitializeIntegrationTest((Type, object)[] servicesToReplace = null, IEnumerable<IStubSource> stubSources = null)
     {
-        servicesToReplace ??= new (Type, object)[0];
+        servicesToReplace ??= Array.Empty<(Type, object)>();
         servicesToReplace = servicesToReplace.Concat(new (Type, object)[] { (typeof(IOptions<SettingsModel>), Options) }).ToArray();
-        stubSources ??= new IStubSource[0];
+        stubSources ??= Array.Empty<IStubSource>();
         var config = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string>
             {

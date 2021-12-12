@@ -25,7 +25,7 @@ public class ClientIpResponseVariableParsingHandlerFacts
         const string input = "IP: ((client_ip))";
         const string ip = "11.22.33.44";
 
-        var expectedResult = $"IP: {ip}";
+        const string expectedResult = $"IP: {ip}";
 
         _clientIpResolverMock
             .Setup(m => m.GetClientIp())

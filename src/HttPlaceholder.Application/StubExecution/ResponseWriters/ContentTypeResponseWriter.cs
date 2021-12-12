@@ -17,5 +17,5 @@ public class ContentTypeResponseWriter : IResponseWriter
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }
 
-    public int Priority { get; } = -11;
+    public int Priority => -11;
 }

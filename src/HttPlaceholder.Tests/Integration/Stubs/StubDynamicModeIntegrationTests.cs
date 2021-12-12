@@ -148,7 +148,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         // arrange
         const string ip = "11.22.33.44";
         var url = $"{TestServer.BaseAddress}dynamic-client-ip.txt";
-        var expectedResult = $"IP: {ip}";
+        const string expectedResult = $"IP: {ip}";
 
         ClientIpResolverMock
             .Setup(m => m.GetClientIp())
@@ -172,7 +172,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         // arrange
         var url = $"{TestServer.BaseAddress}dynamic-local-now.txt";
         const string expectedDateTime = "2019-08-21 20:41:51";
-        var expectedResult = $"Local now: {expectedDateTime}";
+        const string expectedResult = $"Local now: {expectedDateTime}";
 
         var now = new DateTime(2019, 8, 21, 20, 41, 51, DateTimeKind.Local);
         DateTimeMock
@@ -197,7 +197,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         // arrange
         var url = $"{TestServer.BaseAddress}dynamic-utc-now.txt";
         const string expectedDateTime = "2019-08-21 20:41:51";
-        var expectedResult = $"UTC now: {expectedDateTime}";
+        const string expectedResult = $"UTC now: {expectedDateTime}";
 
         var now = new DateTime(2019, 8, 21, 20, 41, 51, DateTimeKind.Utc);
         DateTimeMock

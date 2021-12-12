@@ -25,7 +25,7 @@ public class DisplayUrlResponseVariableParsingHandlerFacts
         const string input = "URL: ((display_url))";
         const string url = "http://localhost:5000/test.txt?var1=value1&var2=value2";
 
-        var expectedResult = $"URL: {url}";
+        const string expectedResult = $"URL: {url}";
 
         _httpContextServiceMock
             .Setup(m => m.DisplayUrl)

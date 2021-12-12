@@ -18,17 +18,12 @@ public class FeatureIsEnabledQueryHandler : IRequestHandler<FeatureIsEnabledQuer
         _settings = options.Value;
     }
 
-    public Task<FeatureResultModel> Handle(FeatureIsEnabledQuery request, CancellationToken cancellationToken)
-    {
-        switch (request.FeatureFlag)
+    public Task<FeatureResultModel> Handle(FeatureIsEnabledQuery request, CancellationToken cancellationToken) =>
+        request.FeatureFlag switch
         {
-            case FeatureFlagType.Authentication:
-                return Task.FromResult(new FeatureResultModel(request.FeatureFlag,
-                    _settings.Authentication != null &&
-                    !string.IsNullOrWhiteSpace(_settings.Authentication.ApiUsername) &&
-                    !string.IsNullOrWhiteSpace(_settings.Authentication.ApiPassword)));
-            default:
-                throw new NotImplementedException($"Feature flag '{request.FeatureFlag}' not supported.");
-        }
-    }
+            FeatureFlagType.Authentication => Task.FromResult(new FeatureResultModel(request.FeatureFlag,
+                _settings.Authentication != null && !string.IsNullOrWhiteSpace(_settings.Authentication.ApiUsername) &&
+                !string.IsNullOrWhiteSpace(_settings.Authentication.ApiPassword))),
+            _ => throw new NotImplementedException($"Feature flag '{request.FeatureFlag}' not supported.")
+        };
 }

@@ -18,7 +18,7 @@ public class StubJsonConditionsIntegrationTests : StubIntegrationTestBase
     public async Task StubIntegration_Json_Object_Valid()
     {
         // Arrange
-        var jsonToPost = @"{
+        const string jsonToPost = @"{
   ""username"": ""username"",
   ""subObject"": {
     ""strValue"": ""stringInput"",
@@ -55,7 +55,7 @@ public class StubJsonConditionsIntegrationTests : StubIntegrationTestBase
     public async Task StubIntegration_Json_Object_Invalid()
     {
         // Arrange
-        var jsonToPost = @"{
+        const string jsonToPost = @"{
   ""username"": ""username"",
   ""subObject"": {
     ""strValue"": ""stringInput"",
@@ -89,7 +89,7 @@ public class StubJsonConditionsIntegrationTests : StubIntegrationTestBase
     public async Task StubIntegration_Json_Array_Valid()
     {
         // Arrange
-        var jsonToPost = @"[
+        const string jsonToPost = @"[
     ""val1"",
     3,
     1.46,
@@ -118,7 +118,7 @@ public class StubJsonConditionsIntegrationTests : StubIntegrationTestBase
     public async Task StubIntegration_Json_Array_Invalid()
     {
         // Arrange
-        var jsonToPost = @"[
+        const string jsonToPost = @"[
     ""val1"",
     3,
     1.48,

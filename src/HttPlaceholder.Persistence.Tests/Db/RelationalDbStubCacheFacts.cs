@@ -41,7 +41,7 @@ public class RelationalDbStubCacheFacts
         _cache.StubUpdateTrackingId = originalId;
         _cache.StubCache = new List<StubModel>();
 
-        var query = "UPDATE TRACKING ID QUERY";
+        const string query = "UPDATE TRACKING ID QUERY";
         _mockQueryStore
             .Setup(m => m.UpdateStubUpdateTrackingIdQuery)
             .Returns(query);
@@ -69,7 +69,7 @@ public class RelationalDbStubCacheFacts
     public async Task GetOrUpdateStubCache_TrackingIdNotSetYet_ShouldInitCache()
     {
         // Arrange
-        var query = "GET TRACKING ID QUERY";
+        const string query = "GET TRACKING ID QUERY";
         _mockQueryStore
             .Setup(m => m.GetStubUpdateTrackingIdQuery)
             .Returns(query);
@@ -106,7 +106,7 @@ public class RelationalDbStubCacheFacts
     public async Task GetOrUpdateStubCache_StubCacheIsNull_ShouldInitCache()
     {
         // Arrange
-        var query = "GET TRACKING ID QUERY";
+        const string query = "GET TRACKING ID QUERY";
         _mockQueryStore
             .Setup(m => m.GetStubUpdateTrackingIdQuery)
             .Returns(query);
@@ -132,7 +132,7 @@ public class RelationalDbStubCacheFacts
         var oldTrackingId = Guid.NewGuid().ToString();
         _cache.StubUpdateTrackingId = oldTrackingId;
 
-        var query = "GET TRACKING ID QUERY";
+        const string query = "GET TRACKING ID QUERY";
         _mockQueryStore
             .Setup(m => m.GetStubUpdateTrackingIdQuery)
             .Returns(query);
@@ -158,12 +158,12 @@ public class RelationalDbStubCacheFacts
         var oldTrackingId = Guid.NewGuid().ToString();
         _cache.StubUpdateTrackingId = oldTrackingId;
 
-        var query = "GET TRACKING ID QUERY";
+        const string query = "GET TRACKING ID QUERY";
         _mockQueryStore
             .Setup(m => m.GetStubUpdateTrackingIdQuery)
             .Returns(query);
 
-        var getStubsQuery = "GET STUBS QUERY";
+        const string getStubsQuery = "GET STUBS QUERY";
         _mockQueryStore
             .Setup(m => m.GetStubsQuery)
             .Returns(getStubsQuery);
@@ -211,12 +211,12 @@ public class RelationalDbStubCacheFacts
         var oldTrackingId = Guid.NewGuid().ToString();
         _cache.StubUpdateTrackingId = oldTrackingId;
 
-        var query = "GET TRACKING ID QUERY";
+        const string query = "GET TRACKING ID QUERY";
         _mockQueryStore
             .Setup(m => m.GetStubUpdateTrackingIdQuery)
             .Returns(query);
 
-        var getStubsQuery = "GET STUBS QUERY";
+        const string getStubsQuery = "GET STUBS QUERY";
         _mockQueryStore
             .Setup(m => m.GetStubsQuery)
             .Returns(getStubsQuery);
@@ -250,7 +250,7 @@ public class RelationalDbStubCacheFacts
         var oldTrackingId = Guid.NewGuid().ToString();
         _cache.StubUpdateTrackingId = oldTrackingId;
 
-        var query = "GET TRACKING ID QUERY";
+        const string query = "GET TRACKING ID QUERY";
         _mockQueryStore
             .Setup(m => m.GetStubUpdateTrackingIdQuery)
             .Returns(query);

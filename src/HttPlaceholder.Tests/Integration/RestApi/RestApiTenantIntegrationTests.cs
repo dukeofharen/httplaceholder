@@ -55,7 +55,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
         var reader = new StringReader(content);
         var deserializer = new Deserializer();
         var stubs = deserializer.Deserialize<FullStubDto[]>(reader);
-        Assert.AreEqual(1, stubs.Count());
+        Assert.AreEqual(1, stubs.Length);
         Assert.AreEqual("test-456", stubs.Single().Stub.Id);
     }
 
@@ -89,7 +89,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
 
         var content = await response.Content.ReadAsStringAsync();
         var stubs = JsonConvert.DeserializeObject<FullStubDto[]>(content);
-        Assert.AreEqual(1, stubs.Count());
+        Assert.AreEqual(1, stubs.Length);
         Assert.AreEqual("test-456", stubs.Single().Stub.Id);
     }
 

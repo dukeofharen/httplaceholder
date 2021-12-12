@@ -246,7 +246,7 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var stubsFolder = Path.Combine(StorageFolder, "stubs");
-        var stubId = "situation-01";
+        const string stubId = "situation-01";
         var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -376,7 +376,7 @@ public class FileSystemStubSourceFacts
         var fileDateTimeMapping = new[]
         {
             (files[0], DateTime.Now.AddSeconds(-2)), (files[1], DateTime.Now.AddSeconds(-3)),
-            (files[2], DateTime.Now.AddSeconds(-1)),
+            (files[2], DateTime.Now.AddSeconds(-1))
         };
         foreach (var (path, lastWriteDateTime) in fileDateTimeMapping)
         {

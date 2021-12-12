@@ -144,7 +144,7 @@ public class JsonConditionChecker : IConditionChecker
         return passed;
     }
 
-    private bool HandleString(string text, JToken jToken, List<string> logging)
+    private static bool HandleString(string text, JToken jToken, List<string> logging)
     {
         switch (jToken.Type)
         {
@@ -203,43 +203,27 @@ public class JsonConditionChecker : IConditionChecker
     /// By calling this method, we are sure that the data is always in the correct format when running this condition checker.
     /// </summary>
     /// <returns>The converted JSON conditions.</returns>
-    private object ConvertJsonConditions(object conditions)
+    private static object ConvertJsonConditions(object conditions)
     {
-        if (conditions == null)
+        switch (conditions)
         {
-            return null;
-        }
-
-        if (conditions is IDictionary<object, object> or IList<object> or string)
-        {
-            // Input is already OK, return it directly.
-            return conditions;
-        }
-
-        if (conditions is JArray jArray)
-        {
-            var list = jArray.ToObject<List<object>>();
-            var result = new List<object>();
-            foreach (var item in list)
+            case null:
+                return null;
+            case IDictionary<object, object> or IList<object> or string:
+                // Input is already OK, return it directly.
+                return conditions;
+            case JArray jArray:
             {
-                result.Add(ConvertJsonConditions(item));
+                var list = jArray.ToObject<List<object>>();
+                return list.Select(ConvertJsonConditions).ToList();
             }
-
-            return result;
-        }
-
-        if (conditions is JObject jObject)
-        {
-            var dict = jObject.ToObject<Dictionary<object, object>>();
-            var result = new Dictionary<object, object>();
-            foreach (var pair in dict)
+            case JObject jObject:
             {
-                result.Add(pair.Key.ToString(), ConvertJsonConditions(pair.Value));
+                var dict = jObject.ToObject<Dictionary<object, object>>();
+                return dict.ToDictionary<KeyValuePair<object, object>, object, object>(pair => pair.Key.ToString(), pair => ConvertJsonConditions(pair.Value));
             }
-
-            return result;
+            default:
+                return conditions.ToString();
         }
-
-        return conditions.ToString();
     }
 }

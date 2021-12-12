@@ -64,7 +64,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}todoitems/todos";
-        var postContent = "this is the content";
+        const string postContent = "this is the content";
         var request = new HttpRequestMessage
         {
             RequestUri = new Uri(url),

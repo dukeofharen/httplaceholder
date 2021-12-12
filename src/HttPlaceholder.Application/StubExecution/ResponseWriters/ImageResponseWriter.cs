@@ -47,7 +47,7 @@ public class ImageResponseWriter : IResponseWriter
             var collection = new FontCollection();
             collection.Install(Path.Combine(_assemblyService.GetExecutingAssemblyRootPath(),
                 "Manrope-Regular.ttf"));
-            var fontFamilyName = "Manrope";
+            const string fontFamilyName = "Manrope";
             if (!collection.TryFind(fontFamilyName, out var family))
             {
                 throw new RequestValidationException($"Font family '{fontFamilyName}' not found!");

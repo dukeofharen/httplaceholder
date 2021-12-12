@@ -75,21 +75,12 @@ public class StubResponseImageModel
 
     [JsonIgnore] public string Hash => HashingUtilities.GetMd5String(JsonConvert.SerializeObject(this));
 
-    public string ContentTypeHeaderValue
-    {
-        get
+    public string ContentTypeHeaderValue =>
+        Type switch
         {
-            switch (Type)
-            {
-                case ResponseImageType.Bmp:
-                    return "image/bmp";
-                case ResponseImageType.Gif:
-                    return "image/gif";
-                case ResponseImageType.Jpeg:
-                    return "image/jpeg";
-                default:
-                    return "image/png";
-            }
-        }
-    }
+            ResponseImageType.Bmp => "image/bmp",
+            ResponseImageType.Gif => "image/gif",
+            ResponseImageType.Jpeg => "image/jpeg",
+            _ => "image/png"
+        };
 }

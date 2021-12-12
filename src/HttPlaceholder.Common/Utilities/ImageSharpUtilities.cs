@@ -32,19 +32,19 @@ public static class ImageSharpUtilities
         Color color,
         float padding)
     {
-        var imgSize = processingContext.GetCurrentSize();
+        var (width, height) = processingContext.GetCurrentSize();
 
         // measure the text size
         var size = TextMeasurer.Measure(text, new RendererOptions(font));
 
         //find out how much we need to scale the text to fill the space (up or down)
-        var scalingFactor = Math.Min(imgSize.Width / size.Width, imgSize.Height / size.Height);
+        var scalingFactor = Math.Min(width / size.Width, height / size.Height);
 
         //create a new font
         var scaledFont = new Font(font, scalingFactor * font.Size);
 
-        var center = new PointF(imgSize.Width / 2, imgSize.Height / 2);
-        var textGraphicOptions = new TextGraphicsOptions()
+        var center = new PointF(width / 2, height / 2);
+        var textGraphicOptions = new TextGraphicsOptions
         {
             TextOptions =
             {
@@ -90,7 +90,7 @@ public static class ImageSharpUtilities
             {
                 if (isTooSmall)
                 {
-                    scaleFactor = scaleFactor / 2;
+                    scaleFactor /= 2;
                 }
 
                 scaledFont = new Font(scaledFont, scaledFont.Size - scaleFactor);
@@ -101,7 +101,7 @@ public static class ImageSharpUtilities
             {
                 if (!isTooSmall)
                 {
-                    scaleFactor = scaleFactor / 2;
+                    scaleFactor /= 2;
                 }
 
                 scaledFont = new Font(scaledFont, scaledFont.Size + scaleFactor);

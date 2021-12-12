@@ -53,7 +53,7 @@ public class JsonPathResponseVariableParsingHandler : IResponseVariableParsingHa
                 (current, match) => current.Replace(match.Value, GetJsonPathValue(match, jsonObject)));
     }
 
-    private string GetJsonPathValue(Match match, JToken token)
+    private static string GetJsonPathValue(Match match, JToken token)
     {
         var jsonPathQuery = match.Groups[2].Value;
         var foundValue = token?.SelectToken(jsonPathQuery);

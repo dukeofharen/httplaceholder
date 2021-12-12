@@ -19,7 +19,7 @@ public class RelationalDbStubSourceFacts
 {
     private readonly SettingsModel _settings = new()
     {
-        Storage = new StorageSettingsModel {OldRequestsQueueLength = 100}
+        Storage = new StorageSettingsModel { OldRequestsQueueLength = 100 }
     };
 
     private readonly Mock<IQueryStore> _mockQueryStore = new();
@@ -58,7 +58,7 @@ public class RelationalDbStubSourceFacts
     public async Task AddRequestResultAsync_ShouldAddRequestSuccessfully()
     {
         // Arrange
-        var query = "ADD REQUEST QUERY";
+        const string query = "ADD REQUEST QUERY";
         _mockQueryStore
             .Setup(m => m.AddRequestQuery)
             .Returns(query);
@@ -94,7 +94,7 @@ public class RelationalDbStubSourceFacts
     public async Task AddStubAsync_ShouldAddStubSuccessfully()
     {
         // Arrange
-        var query = "ADD STUB QUERY";
+        const string query = "ADD STUB QUERY";
         _mockQueryStore
             .Setup(m => m.AddStubQuery)
             .Returns(query);
@@ -105,7 +105,7 @@ public class RelationalDbStubSourceFacts
             .Callback<string, object>((_, param) => capturedParam = param)
             .ReturnsAsync(1);
 
-        var stub = new StubModel {Id = "stub-id"};
+        var stub = new StubModel { Id = "stub-id" };
 
         // Act
         await _stubSource.AddStubAsync(stub);
@@ -124,7 +124,7 @@ public class RelationalDbStubSourceFacts
     public async Task CleanOldRequestResultsAsync_ShouldCleanOldRequests()
     {
         // Arrange
-        var query = "CLEAN REQUESTS QUERY";
+        const string query = "CLEAN REQUESTS QUERY";
         _mockQueryStore
             .Setup(m => m.CleanOldRequestsQuery)
             .Returns(query);
@@ -148,21 +148,21 @@ public class RelationalDbStubSourceFacts
     public async Task GetRequestResultsOverviewAsync_ShouldReturnRequestsSuccessfully()
     {
         // Arrange
-        var query = "GET REQUESTS QUERY";
+        const string query = "GET REQUESTS QUERY";
         _mockQueryStore
             .Setup(m => m.GetRequestsQuery)
             .Returns(query);
 
         var request1 = new RequestResultModel
         {
-            RequestParameters = new RequestParametersModel {Method = "GET", Url = "http://localhost:5000",},
+            RequestParameters = new RequestParametersModel { Method = "GET", Url = "http://localhost:5000" },
             CorrelationId = Guid.NewGuid().ToString(),
             StubTenant = "tenant-name",
             ExecutingStubId = "stub1",
             RequestBeginTime = DateTime.Today,
             RequestEndTime = DateTime.Today.AddSeconds(2)
         };
-        var requests = new[] {new DbRequestModel {Json = JsonConvert.SerializeObject(request1)}};
+        var requests = new[] { new DbRequestModel { Json = JsonConvert.SerializeObject(request1) } };
         _mockDatabaseContext
             .Setup(m => m.QueryAsync<DbRequestModel>(query, null))
             .ReturnsAsync(requests);
@@ -186,13 +186,13 @@ public class RelationalDbStubSourceFacts
     public async Task GetRequestAsync_RequestFound_ShouldReturnRequestSuccessfully()
     {
         // Arrange
-        var query = "GET REQUEST QUERY";
+        const string query = "GET REQUEST QUERY";
         _mockQueryStore
             .Setup(m => m.GetRequestQuery)
             .Returns(query);
 
         var correlationIdInput = Guid.NewGuid().ToString();
-        var request = new DbRequestModel {Json = $@"{{""CorrelationId"": ""{correlationIdInput}""}}"};
+        var request = new DbRequestModel { Json = $@"{{""CorrelationId"": ""{correlationIdInput}""}}" };
         object capturedParam = null;
         _mockDatabaseContext
             .Setup(m => m.QueryFirstOrDefaultAsync<DbRequestModel>(query, It.IsAny<object>()))
@@ -213,7 +213,7 @@ public class RelationalDbStubSourceFacts
     public async Task GetRequestAsync_RequestNotFound_ShouldReturnNull()
     {
         // Arrange
-        var query = "GET REQUEST QUERY";
+        const string query = "GET REQUEST QUERY";
         _mockQueryStore
             .Setup(m => m.GetRequestQuery)
             .Returns(query);
@@ -239,7 +239,7 @@ public class RelationalDbStubSourceFacts
     public async Task DeleteAllRequestResultsAsync_ShouldDeleteRequestsSuccessfully()
     {
         // Arrange
-        var query = "DELETE REQUESTS QUERY";
+        const string query = "DELETE REQUESTS QUERY";
         _mockQueryStore
             .Setup(m => m.DeleteAllRequestsQuery)
             .Returns(query);
@@ -256,7 +256,7 @@ public class RelationalDbStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var query = "DELETE REQUEST QUERY";
+        const string query = "DELETE REQUEST QUERY";
         _mockQueryStore
             .Setup(m => m.DeleteRequestQuery)
             .Returns(query);
@@ -282,7 +282,7 @@ public class RelationalDbStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var query = "DELETE REQUEST QUERY";
+        const string query = "DELETE REQUEST QUERY";
         _mockQueryStore
             .Setup(m => m.DeleteRequestQuery)
             .Returns(query);
@@ -309,7 +309,7 @@ public class RelationalDbStubSourceFacts
     public async Task DeleteStubAsync_ShouldDeleteStub(int numberOfRecordsUpdated, bool expectedResult)
     {
         // Arrange
-        var query = "DELETE STUB QUERY";
+        const string query = "DELETE STUB QUERY";
         _mockQueryStore
             .Setup(m => m.DeleteStubQuery)
             .Returns(query);
@@ -320,7 +320,7 @@ public class RelationalDbStubSourceFacts
             .Callback<string, object>((_, param) => capturedParam = param)
             .ReturnsAsync(numberOfRecordsUpdated);
 
-        var stubId = "stub";
+        const string stubId = "stub";
 
         // Act
         var result = await _stubSource.DeleteStubAsync(stubId);
@@ -338,7 +338,7 @@ public class RelationalDbStubSourceFacts
     public async Task GetRequestResultsAsync_ShouldReturnRequestsSuccessfully()
     {
         // Arrange
-        var query = "GET REQUESTS QUERY";
+        const string query = "GET REQUESTS QUERY";
         _mockQueryStore
             .Setup(m => m.GetRequestsQuery)
             .Returns(query);
@@ -371,7 +371,7 @@ public class RelationalDbStubSourceFacts
     public async Task GetStubsAsync_ShouldReturnStubsCorrectly()
     {
         // Arrange
-        var stubs = new[] {new StubModel {Id = "stub-id"}};
+        var stubs = new[] { new StubModel { Id = "stub-id" } };
 
         _mockRelationalDbStubCache
             .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
@@ -390,8 +390,8 @@ public class RelationalDbStubSourceFacts
         // Arrange
         var stubs = new[]
         {
-            new StubModel {Id = "stub-id1", Tenant = "tenant1", Enabled = true},
-            new StubModel {Id = "stub-id2", Tenant = "tenant2", Enabled = false}
+            new StubModel { Id = "stub-id1", Tenant = "tenant1", Enabled = true },
+            new StubModel { Id = "stub-id2", Tenant = "tenant2", Enabled = false }
         };
 
         _mockRelationalDbStubCache
@@ -417,8 +417,8 @@ public class RelationalDbStubSourceFacts
     public async Task GetStubAsync_StubFound_ShouldReturnStub()
     {
         // Arrange
-        var stubId = "stub-id";
-        var cachedStubs = new[] {new StubModel {Id = "other-stub-id"}, new StubModel {Id = stubId}};
+        const string stubId = "stub-id";
+        var cachedStubs = new[] { new StubModel { Id = "other-stub-id" }, new StubModel { Id = stubId } };
 
         _mockRelationalDbStubCache
             .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
@@ -435,7 +435,7 @@ public class RelationalDbStubSourceFacts
     public async Task GetStubAsync_StubNotFound_ShouldReturnNull()
     {
         // Arrange
-        var stubs = new[] {new StubModel {Id = "stub-id"}};
+        var stubs = new[] { new StubModel { Id = "stub-id" } };
 
         _mockRelationalDbStubCache
             .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
@@ -452,7 +452,7 @@ public class RelationalDbStubSourceFacts
     public async Task PrepareStubSourceAsync_ShouldPrepareDatabaseAndLocalCache()
     {
         // Arrange
-        var query = "PREPARE STUB SOURCE QUERY";
+        const string query = "PREPARE STUB SOURCE QUERY";
         _mockQueryStore
             .Setup(m => m.MigrationsQuery)
             .Returns(query);

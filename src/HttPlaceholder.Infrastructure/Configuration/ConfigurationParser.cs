@@ -89,7 +89,7 @@ public class ConfigurationParser
         string fileStorageLocation = null;
         var windowsProfilePath = _envService.GetEnvironmentVariable("USERPROFILE");
         var unixProfilePath = _envService.GetEnvironmentVariable("HOME");
-        var stubFolderName = ".httplaceholder";
+        const string stubFolderName = ".httplaceholder";
         if (_envService.IsOs(OSPlatform.Windows) && _fileService.DirectoryExists(windowsProfilePath))
         {
             fileStorageLocation = $"{windowsProfilePath}\\{stubFolderName}";

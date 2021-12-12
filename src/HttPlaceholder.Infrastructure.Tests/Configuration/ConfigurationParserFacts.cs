@@ -156,7 +156,7 @@ public class ConfigurationParserFacts
     {
         // Arrange
         const string path = "/tmp/config.json";
-        var args = new string[0];
+        var args = Array.Empty<string>();
         var envVars = new Dictionary<string, string> {{"configjsonlocation", path}};
 
         _envServiceMock
@@ -226,7 +226,7 @@ public class ConfigurationParserFacts
         _envServiceMock.Setup(m => m.GetEnvironmentVariable("HOME")).Returns(userHomeFolder);
 
         // Act
-        var result = _parser.ParseConfiguration(new string[0]);
+        var result = _parser.ParseConfiguration(Array.Empty<string>());
 
         // Assert
         const string key = "Storage:FileStorageLocation";

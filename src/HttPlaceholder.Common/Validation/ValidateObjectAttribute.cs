@@ -10,23 +10,26 @@ public class ValidateObjectAttribute : ValidationAttribute
     protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
         var results = new List<ValidationResult>();
-        if (value == null)
+        switch (value)
         {
-            return ValidationResult.Success;
-        }
-
-        if (value is IEnumerable enumerable)
-        {
-            foreach (var subObject in enumerable)
+            case null:
+                return ValidationResult.Success;
+            case IEnumerable enumerable:
             {
-                var context = new ValidationContext(subObject, null, null);
-                Validator.TryValidateObject(subObject, context, results, true);
+                foreach (var subObject in enumerable)
+                {
+                    var context = new ValidationContext(subObject, null, null);
+                    Validator.TryValidateObject(subObject, context, results, true);
+                }
+
+                break;
             }
-        }
-        else
-        {
-            var context = new ValidationContext(value, null, null);
-            Validator.TryValidateObject(value, context, results, true);
+            default:
+            {
+                var context = new ValidationContext(value, null, null);
+                Validator.TryValidateObject(value, context, results, true);
+                break;
+            }
         }
 
         if (results.Count != 0)

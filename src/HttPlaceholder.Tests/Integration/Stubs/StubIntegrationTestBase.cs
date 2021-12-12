@@ -72,7 +72,7 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             {
                 (typeof(IClientDataResolver), ClientIpResolverMock.Object),
                 (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object),
-                (typeof(IHttpClientFactory), mockHttpClientFactory.Object),
+                (typeof(IHttpClientFactory), mockHttpClientFactory.Object)
             }, new IStubSource[] {_stubSource, _writableStubSourceMock.Object});
     }
 }

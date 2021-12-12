@@ -233,9 +233,9 @@ public class ReverseProxyResponseWriterFacts
                 {
                     Content = new StringContent("OK", Encoding.UTF8, "text/plain")
                 };
-                foreach (var header in responseHeaders)
+                foreach (var (key, value) in responseHeaders)
                 {
-                    msg.Headers.Add(header.Key, header.Value);
+                    msg.Headers.Add(key, value);
                 }
 
                 return msg;
@@ -279,7 +279,7 @@ public class ReverseProxyResponseWriterFacts
             .Setup(m => m.Method)
             .Returns("POST");
 
-        var body = "{\"key\": \"val\"}";
+        const string body = "{\"key\": \"val\"}";
         _mockHttpContextService
             .Setup(m => m.GetBodyAsBytes())
             .Returns(Encoding.UTF8.GetBytes(body));
@@ -331,7 +331,7 @@ public class ReverseProxyResponseWriterFacts
             .Setup(m => m.Method)
             .Returns("POST");
 
-        var body = "{\"key\": \"val\"}";
+        const string body = "{\"key\": \"val\"}";
         _mockHttpContextService
             .Setup(m => m.GetBodyAsBytes())
             .Returns(Encoding.UTF8.GetBytes(body));

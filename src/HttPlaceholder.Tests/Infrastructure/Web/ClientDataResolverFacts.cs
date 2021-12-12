@@ -96,7 +96,7 @@ public class ClientIpResolverFacts
         const string loopbackIp = "127.0.0.1";
         _mockContext.SetIp(loopbackIp);
 
-        var forwardedHost = "httplaceholder.com";
+        const string forwardedHost = "httplaceholder.com";
         _mockContext.Request.Headers.Add("X-Forwarded-Host", forwardedHost);
 
         // Act
@@ -116,7 +116,7 @@ public class ClientIpResolverFacts
         const string forwardedHost = "httplaceholder.com";
         _mockContext.Request.Headers.Add("X-Forwarded-Host", forwardedHost);
 
-        var actualHost = "localhost";
+        const string actualHost = "localhost";
         _mockContext.SetHost(actualHost);
 
         // Act
@@ -147,7 +147,7 @@ public class ClientIpResolverFacts
     public void ClientDataResolver_IsHttps_IpIsLoopback_ForwardedHeaderSet_Https_ShouldReturnTrue()
     {
         // Arrange
-        var loopbackIp = "127.0.0.1";
+        const string loopbackIp = "127.0.0.1";
         _mockContext.SetIp(loopbackIp);
 
         _mockContext.Request.Headers.Add("X-Forwarded-Proto", "https");
