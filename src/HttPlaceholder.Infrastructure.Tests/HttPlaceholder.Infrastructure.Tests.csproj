@@ -8,22 +8,22 @@
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors/>
+        <WarningsAsErrors />
     </PropertyGroup>
 
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0"/>
-        <PackageReference Include="MSTest.TestAdapter" Version="2.2.5"/>
-        <PackageReference Include="MSTest.TestFramework" Version="2.2.5"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+        <PackageReference Include="MSTest.TestAdapter" Version="2.2.8" />
+        <PackageReference Include="MSTest.TestFramework" Version="2.2.8" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj"/>
-        <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj"/>
+        <ProjectReference Include="..\HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj" />
+        <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
     </ItemGroup>
 
 </Project>
