@@ -1,5 +1,22 @@
 <template>
   <h1>Scenarios</h1>
+
+  <div class="col-md-12 mb-3">
+    <router-link class="btn btn-success me-2" :to="{ name: 'ScenarioForm' }"
+      >Add scenario</router-link
+    >
+    <button class="btn btn-danger" @click="clearAllScenariosModal = true">
+      Clear all scenarios
+    </button>
+    <modal
+      title="Clear all scenarios?"
+      bodyText="The scenarios can't be recovered."
+      :yes-click-function="clearAllScenarios"
+      :show-modal="clearAllScenariosModal"
+      @close="clearAllScenariosModal = false"
+    />
+  </div>
+
   <div class="col-md-12">
     <div class="list-group">
       <router-link
@@ -24,6 +41,8 @@
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
+import toastr from "toastr";
+import { resources } from "@/constants/resources";
 
 export default {
   name: "Scenarios",
@@ -32,6 +51,7 @@ export default {
 
     // Data
     const scenarios = ref([]);
+    const clearAllScenariosModal = ref(false);
 
     // Computed
     const filteredScenarios = computed(() => {
@@ -45,16 +65,33 @@ export default {
       return scenariosResult;
     });
 
-    // Lifecycle
-    onMounted(async () => {
+    // Methods
+    const loadScenarios = async () => {
       try {
         scenarios.value = await store.dispatch("scenarios/getAllScenarios");
       } catch (e) {
         handleHttpError(e);
       }
-    });
+    };
+    const clearAllScenarios = async () => {
+      try {
+        await store.dispatch("scenarios/deleteAllScenarios");
+        toastr.success(resources.scenariosDeletedSuccessfully);
+        await loadScenarios();
+      } catch (e) {
+        handleHttpError(e);
+      }
+    };
 
-    return { scenarios, filteredScenarios };
+    // Lifecycle
+    onMounted(async () => await loadScenarios());
+
+    return {
+      scenarios,
+      filteredScenarios,
+      clearAllScenariosModal,
+      clearAllScenarios,
+    };
   },
 };
 </script>

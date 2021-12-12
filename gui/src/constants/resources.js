@@ -12,6 +12,7 @@ export const resources = {
   stubNotFound: "Stub with ID {0} was not found.",
   stubsInFileAddedSuccessfully: "Stubs in file '{0}' were added successfully.",
   scenarioSetSuccessfully: "The scenario values were set successfully.",
+  scenariosDeletedSuccessfully: "The scenarios were deleted successfully.",
   noCurlStubsFound:
     "No stubs could be determined from the cURL command(s). This might mean that you did not provide valid input.",
   errorDuringParsingOfYaml: "Something went wrong while parsing the YAML: {0}",
