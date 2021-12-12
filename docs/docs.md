@@ -72,6 +72,7 @@
   - [Stubs page](#stubs-page)
   - [Import stubs](#import-stubs)
   - [Add stub(s) form](#add-stubs-form)
+  - [Scenarios](#scenarios-page)
   - [Settings page](#settings-page)
 - [Tools and client libraries](#tools-and-client-libraries)
   - [HttPlaceholder REST API client for .NET](#httplaceholder-rest-api-client-for-net)
@@ -2017,6 +2018,7 @@ When clicking on a stub, the stub YAML will be opened and you have a few more st
 - Duplicate: copies the contents of the stub and opens them in a new form so you can create a new stub based on this stub.
 - Update: opens a form to update this stub.
 - Disable / enable: disables or enables this stub.
+- Set scenario: opens a form where you can update the variables of the scenario that is linked to this stub. Only available if a scenario has been set on the stub. For more information, read [request scenario](#request-scenario) or [scenario](#scenario).
 - Delete: deletes this stub.
 
 ## Import stubs
@@ -2058,9 +2060,11 @@ Chrome also allows you to copy cURL commands for all requests in the network tab
 When copying cURL requests from a browser on Windows, make sure you select "Copy as cURL (bash)" or "Copy all as cURL (bash)" on Chrome or "Copy as cURL (POSIX)" in Firefox. The Windows formatting of cURL commands is currently not supported in HttPlaceholder.
 
 ![](img/ui/curl_copy_firefox_windows.png)
+
 _Copy as cURL in Firefox on Windows_
 
 ![](img/ui/curl_copy_chrome_windows.png)
+
 _Copy as cURL in Chrome on Windows_
 
 ## Add stub(s) form
@@ -2080,6 +2084,34 @@ You can add a single stub here or you can provide multiple stubs in YAML format.
 You can also click on "Add request / response value" so you can see what kind of values you can use in your request conditions and response definitions and insert them.
 
 Besides this, you can also choose between using the "Advanced editor" (based on [CodeMirror](https://codemirror.net/)) and "Simple editor". A simple editor was added because CodeMirror is not really suited for updating large stubs.
+
+## Scenarios page
+
+For more information about scenarios, go to [request scenario](#request-scenario) or [scenario](#scenario). In short, this page and form allows you to view the scenarios that are currently in use and add new scenarios and update existing ones.
+
+![](img/ui/scenario_overview.png)
+
+You have several options here.
+
+- Add scenario: opens a form where you can add a new scenario.
+- Clear all scenarios: like the name says, deletes all the existing scenarios.
+
+Per scenario, you also have a few options:
+
+- Update: opens a form to update this specific scenario.
+- Delete: deletes this specific scenario.
+
+### Scenario form
+
+![](img/ui/scenario_form_empty.png)
+
+On this form, you can add a new scenario or update an existing scenario. You have a few fields here.
+
+- Scenario: the scenario name.
+- State: the state the scenario is currently in (just a piece of text).
+- Hit count: the number of hits a stub under this scenario has been hit.
+
+![](img/ui/scenario_form_filled.png)
 
 ## Settings page
 

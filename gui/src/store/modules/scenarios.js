@@ -1,10 +1,30 @@
-import { get } from "@/utils/api";
+import { get, put, del } from "@/utils/api";
 
 const state = () => ({});
 
 const actions = {
   getAllScenarios() {
     return get("/ph-api/scenarios")
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
+  getScenario(_, scenario) {
+    return get(`/ph-api/scenarios/${scenario}`)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
+  setScenario(_, scenario) {
+    return put(`/ph-api/scenarios/${scenario.scenario}`, scenario)
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
+  deleteAllScenarios() {
+    return del("/ph-api/scenarios")
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
+  deleteScenario(_, scenario) {
+    return del(`/ph-api/scenarios/${scenario}`)
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
