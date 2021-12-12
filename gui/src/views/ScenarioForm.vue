@@ -96,6 +96,10 @@ export default {
     const keydownEventListener = async (e) => await checkSave(e);
     onMounted(async () => {
       document.addEventListener("keydown", keydownEventListener);
+      if (scenarioName.value) {
+        scenarioForm.value.scenario = scenarioName.value;
+      }
+
       if (!newScenario.value) {
         try {
           scenarioForm.value = await store.dispatch(
@@ -103,7 +107,9 @@ export default {
             scenarioName.value
           );
         } catch (e) {
-          handleHttpError(e);
+          if (e.status !== 404) {
+            handleHttpError(e);
+          }
         }
       }
     });

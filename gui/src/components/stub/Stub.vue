@@ -17,8 +17,8 @@
                 name: 'Requests',
                 query: { filter: id },
               }"
-              >Requests</router-link
-            >
+              >Requests
+            </router-link>
             <button
               class="btn btn-success btn-sm me-2"
               title="Duplicate this stub"
@@ -34,8 +34,8 @@
                 name: 'StubForm',
                 params: { stubId: id },
               }"
-              >Update</router-link
-            >
+              >Update
+            </router-link>
             <button
               v-if="!isReadOnly"
               class="btn btn-success btn-sm me-2"
@@ -44,6 +44,12 @@
             >
               {{ enableDisableText }}
             </button>
+            <router-link
+              v-if="hasScenario"
+              class="btn btn-success btn-sm me-2"
+              :to="{ name: 'ScenarioForm', params: { scenario: scenario } }"
+              >Set scenario</router-link
+            >
             <button
               v-if="!isReadOnly"
               class="btn btn-danger btn-sm me-2"
@@ -120,6 +126,16 @@ export default {
 
       return yaml.dump(fullStub.value.stub);
     });
+    const scenario = computed(() => {
+      if (!fullStub.value) {
+        return null;
+      }
+
+      return fullStub.value.stub.scenario;
+    });
+    const hasScenario = computed(() => {
+      return !!scenario.value;
+    });
     const isReadOnly = computed(() =>
       fullStub.value ? fullStub.value.metadata.readOnly : true
     );
@@ -138,6 +154,7 @@ export default {
       if (!fullStub.value) {
         try {
           fullStub.value = await store.dispatch("stubs/getStub", getStubId());
+          console.log(JSON.stringify(fullStub.value));
           initHljs();
 
           // Sadly, when doing this without the timeout, it does the slide down incorrect.
@@ -195,6 +212,8 @@ export default {
       enabled,
       accordionOpened,
       codeBlock,
+      hasScenario,
+      scenario,
     };
   },
 };
