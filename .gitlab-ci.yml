@@ -4,7 +4,6 @@ variables:
   DOTNET_IMAGE: mcr.microsoft.com/dotnet/sdk:6.0
   NODE_IMAGE: node:lts-alpine3.9
   DOCKER_IMAGE: docker:latest
-  WINE_IMAGE: scottyhardy/docker-wine:latest
 
 stages:
   - prepare-version
