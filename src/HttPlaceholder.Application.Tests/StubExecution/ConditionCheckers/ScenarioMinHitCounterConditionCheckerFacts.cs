@@ -89,7 +89,7 @@ public class ScenarioMinHitCounterConditionCheckerFacts
     }
 
     private static StubModel CreateStub(int? minHits, string scenario) =>
-        new StubModel
+        new()
         {
             Scenario = scenario,
             Conditions = new StubConditionsModel {Scenario = new StubConditionScenarioModel {MinHits = minHits}}

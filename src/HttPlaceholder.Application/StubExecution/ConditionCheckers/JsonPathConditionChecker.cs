@@ -88,7 +88,7 @@ public class JsonPathConditionChecker : IConditionChecker
     internal static StubJsonPathModel ConvertJsonPathCondition(string stubId, object condition)
     {
         static StubJsonPathModel ParseDict(IReadOnlyDictionary<object, object> conditionDict) =>
-            new StubJsonPathModel
+            new()
             {
                 Query = conditionDict.ContainsKey("query")
                     ? conditionDict["query"].ToString()

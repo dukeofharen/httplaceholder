@@ -48,7 +48,7 @@ public class ValidateObjectAttribute : ValidationAttribute
 
 public class CompositeValidationResult : ValidationResult
 {
-    private readonly List<ValidationResult> _results = new List<ValidationResult>();
+    private readonly List<ValidationResult> _results = new();
 
     public IEnumerable<ValidationResult> Results => _results;
 

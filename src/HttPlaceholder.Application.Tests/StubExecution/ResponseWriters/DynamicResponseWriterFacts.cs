@@ -11,7 +11,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 [TestClass]
 public class DynamicResponseWriterFacts
 {
-    private readonly Mock<IResponseVariableParser> _variableParserMock = new Mock<IResponseVariableParser>();
+    private readonly Mock<IResponseVariableParser> _variableParserMock = new();
     private DynamicResponseWriter _writer;
 
     [TestInitialize]

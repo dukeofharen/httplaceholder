@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 public class ResponseVariableParser : IResponseVariableParser
 {
-    public static Regex VarRegex { get; } = new Regex(
+    public static Regex VarRegex { get; } = new(
         @"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)",
         RegexOptions.Compiled,
         TimeSpan.FromSeconds(10));

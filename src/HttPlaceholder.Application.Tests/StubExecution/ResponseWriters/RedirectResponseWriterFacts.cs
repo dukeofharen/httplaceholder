@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 [TestClass]
 public class RedirectResponseWriterFacts
 {
-    private readonly RedirectResponseWriter _writer = new RedirectResponseWriter();
+    private readonly RedirectResponseWriter _writer = new();
 
     [TestMethod]
     public async Task RedirectResponseWriter_WriteToResponseAsync_NoRedirectSet_ShouldContinue()

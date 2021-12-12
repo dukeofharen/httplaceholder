@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 [TestClass]
 public class FullPathConditionCheckerFacts
 {
-    private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+    private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
     private FullPathConditionChecker _checker;
 
     [TestInitialize]

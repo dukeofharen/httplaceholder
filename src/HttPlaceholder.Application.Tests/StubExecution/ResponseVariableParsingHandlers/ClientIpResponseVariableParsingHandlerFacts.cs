@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsing
 [TestClass]
 public class ClientIpResponseVariableParsingHandlerFacts
 {
-    private readonly Mock<IClientDataResolver> _clientIpResolverMock = new Mock<IClientDataResolver>();
+    private readonly Mock<IClientDataResolver> _clientIpResolverMock = new();
     private ClientIpResponseVariableParsingHandler _parsingHandler;
 
     [TestInitialize]

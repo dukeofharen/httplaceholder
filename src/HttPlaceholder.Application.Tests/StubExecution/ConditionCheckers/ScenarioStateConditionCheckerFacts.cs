@@ -148,7 +148,7 @@ public class ScenarioStateConditionCheckerFacts
     }
 
     private static StubModel CreateStub(string scenario, string state) =>
-        new StubModel
+        new()
         {
             Scenario = scenario,
             Conditions = new StubConditionsModel

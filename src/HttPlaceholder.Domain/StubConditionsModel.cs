@@ -18,7 +18,7 @@ public class StubConditionsModel
     /// Gets or sets the URL.
     /// </summary>
     [YamlMember(Alias = "url")]
-    public StubUrlConditionModel Url { get; set; } = new StubUrlConditionModel();
+    public StubUrlConditionModel Url { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the body.

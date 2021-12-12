@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsing
 [TestClass]
 public class FormPostResponseVariableParsingHandlerFacts
 {
-    private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+    private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
     private FormPostResponseVariableParsingHandler _parsingHandler;
 
     [TestInitialize]

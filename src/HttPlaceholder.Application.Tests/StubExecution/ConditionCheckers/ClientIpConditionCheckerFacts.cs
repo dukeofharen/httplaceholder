@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 [TestClass]
 public class ClientIpConditionCheckerFacts
 {
-    private readonly Mock<IClientDataResolver> _clientIpResolverMock = new Mock<IClientDataResolver>();
+    private readonly Mock<IClientDataResolver> _clientIpResolverMock = new();
     private ClientIpConditionChecker _checker;
 
     [TestInitialize]

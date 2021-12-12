@@ -7,7 +7,7 @@ namespace HttPlaceholder.TestUtilities.Http;
 
 internal class MockTempDataDictionaryFactory : ITempDataDictionaryFactory
 {
-    private readonly TempDataDictionary _tempDataDictionary = new TempDataDictionary();
+    private readonly TempDataDictionary _tempDataDictionary = new();
 
     public ITempDataDictionary GetTempData(HttpContext context) => _tempDataDictionary;
 

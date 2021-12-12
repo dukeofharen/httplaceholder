@@ -8,7 +8,7 @@ namespace HttPlaceholder.Tests.Integration.RestApi;
 
 public abstract class RestApiIntegrationTestBase : IntegrationTestBase
 {
-    protected readonly Mock<IClientDataResolver> ClientDataResolverMock = new Mock<IClientDataResolver>();
+    protected readonly Mock<IClientDataResolver> ClientDataResolverMock = new();
     internal InMemoryStubSource StubSource;
     protected Mock<IStubSource> ReadOnlyStubSource;
 

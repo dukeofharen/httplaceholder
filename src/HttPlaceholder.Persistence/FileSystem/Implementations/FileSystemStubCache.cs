@@ -14,7 +14,7 @@ namespace HttPlaceholder.Persistence.FileSystem.Implementations;
 
 internal class FileSystemStubCache : IFileSystemStubCache
 {
-    private static readonly object _cacheUpdateLock = new object();
+    private static readonly object _cacheUpdateLock = new();
     internal string StubUpdateTrackingId;
     internal IList<StubModel> StubCache;
 

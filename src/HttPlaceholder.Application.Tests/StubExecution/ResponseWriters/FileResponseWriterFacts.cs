@@ -12,8 +12,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 [TestClass]
 public class FileResponseWriterFacts
 {
-    private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
-    private readonly Mock<IStubRootPathResolver> _stubRootPathResolverMock = new Mock<IStubRootPathResolver>();
+    private readonly Mock<IFileService> _fileServiceMock = new();
+    private readonly Mock<IStubRootPathResolver> _stubRootPathResolverMock = new();
     private FileResponseWriter _writer;
 
     [TestInitialize]

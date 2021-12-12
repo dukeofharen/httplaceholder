@@ -13,8 +13,8 @@ namespace HttPlaceholder.Tests.Authorization;
 [TestClass]
 public class LoginServiceFacts
 {
-    private readonly Dictionary<string, string> _cookies = new Dictionary<string, string>();
-    private readonly MockHttpContext _mockHttpContext = new MockHttpContext();
+    private readonly Dictionary<string, string> _cookies = new();
+    private readonly MockHttpContext _mockHttpContext = new();
     private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
     private LoginService _service;
 

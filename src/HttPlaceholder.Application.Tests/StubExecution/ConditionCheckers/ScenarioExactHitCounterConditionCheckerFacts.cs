@@ -90,7 +90,7 @@ public class ScenarioExactHitCounterConditionCheckerFacts
     }
 
     private static StubModel CreateStub(int? exactHits, string scenario) =>
-        new StubModel
+        new()
         {
             Scenario = scenario,
             Conditions = new StubConditionsModel {Scenario = new StubConditionScenarioModel {ExactHits = exactHits}}

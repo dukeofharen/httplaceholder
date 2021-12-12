@@ -13,7 +13,7 @@ namespace HttPlaceholder.Application.Tests.Requests.Queries;
 [TestClass]
 public class GetRequestQueryHandlerFacts
 {
-    private readonly Mock<IStubContext> _mockStubContext = new Mock<IStubContext>();
+    private readonly Mock<IStubContext> _mockStubContext = new();
     private GetRequestQueryHandler _handler;
 
     [TestInitialize]

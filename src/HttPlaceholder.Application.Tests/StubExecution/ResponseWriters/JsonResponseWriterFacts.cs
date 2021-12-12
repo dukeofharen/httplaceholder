@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 [TestClass]
 public class JsonResponseWriterFacts
 {
-    private readonly JsonResponseWriter _writer = new JsonResponseWriter();
+    private readonly JsonResponseWriter _writer = new();
 
     [TestMethod]
     public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()

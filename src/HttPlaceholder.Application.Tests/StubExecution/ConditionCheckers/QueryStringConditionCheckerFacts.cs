@@ -11,7 +11,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 [TestClass]
 public class QueryStringConditionCheckerFacts
 {
-    private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+    private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
     private QueryStringConditionChecker _checker;
 
     [TestInitialize]

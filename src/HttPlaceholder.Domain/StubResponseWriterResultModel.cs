@@ -21,11 +21,11 @@ public class StubResponseWriterResultModel
     public string Log { get; set; }
 
     public static StubResponseWriterResultModel IsNotExecuted(string responseWriterName) =>
-        new StubResponseWriterResultModel {Executed = false, ResponseWriterName = responseWriterName};
+        new() {Executed = false, ResponseWriterName = responseWriterName};
 
     public static StubResponseWriterResultModel IsExecuted(string responseWriterName) =>
-        new StubResponseWriterResultModel {Executed = true, ResponseWriterName = responseWriterName};
+        new() {Executed = true, ResponseWriterName = responseWriterName};
 
     public static StubResponseWriterResultModel IsExecuted(string responseWriterName, string log) =>
-        new StubResponseWriterResultModel {Executed = true, ResponseWriterName = responseWriterName, Log = log};
+        new() {Executed = true, ResponseWriterName = responseWriterName, Log = log};
 }

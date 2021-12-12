@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 [TestClass]
 public class Base64ResponseWriterFacts
 {
-    private readonly Base64ResponseWriter _writer = new Base64ResponseWriter();
+    private readonly Base64ResponseWriter _writer = new();
 
     [TestMethod]
     public async Task Base64ResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()

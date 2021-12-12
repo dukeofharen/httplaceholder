@@ -97,7 +97,7 @@ internal class ScenarioStateStore : IScenarioStateStore
         ScenarioLocks.Clear();
     }
 
-    private static ScenarioStateModel CopyScenarioStateModel(ScenarioStateModel input) => new ScenarioStateModel
+    private static ScenarioStateModel CopyScenarioStateModel(ScenarioStateModel input) => new()
     {
         Scenario = input.Scenario, State = input.State, HitCount = input.HitCount
     };

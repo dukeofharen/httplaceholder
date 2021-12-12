@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 [TestClass]
 public class ContentTypeResponseWriterFacts
 {
-    private readonly ContentTypeResponseWriter _writer = new ContentTypeResponseWriter();
+    private readonly ContentTypeResponseWriter _writer = new();
 
     [TestMethod]
     public async Task WriteToResponseAsync_NoValueSetInStub_ShouldNotExecuteResponseWriter()

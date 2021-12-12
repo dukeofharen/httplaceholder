@@ -12,7 +12,7 @@ namespace HttPlaceholder.Application.Tests.Metadata.FeatureIsEnabled;
 [TestClass]
 public class FeatureIsEnabledQueryHandlerFacts
 {
-    private readonly SettingsModel _settings = new SettingsModel();
+    private readonly SettingsModel _settings = new();
     private FeatureIsEnabledQueryHandler _handler;
 
     [TestInitialize]

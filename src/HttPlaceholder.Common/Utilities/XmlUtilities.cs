@@ -5,7 +5,7 @@ namespace HttPlaceholder.Common.Utilities;
 
 public static class XmlUtilities
 {
-    private static Regex NamespaceRegex { get; } = new Regex("xmlns:(.*?)=\"(.*?)\"", RegexOptions.Compiled);
+    private static Regex NamespaceRegex { get; } = new("xmlns:(.*?)=\"(.*?)\"", RegexOptions.Compiled);
 
     public static void ParseBodyAndAssignNamespaces(this XmlNamespaceManager nsManager, string body)
     {

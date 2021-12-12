@@ -89,7 +89,7 @@ public class ScenarioMaxHitCounterConditionCheckerFacts
     }
 
     private static StubModel CreateStub(int? maxHits, string scenario) =>
-        new StubModel
+        new()
         {
             Scenario = scenario,
             Conditions = new StubConditionsModel {Scenario = new StubConditionScenarioModel {MaxHits = maxHits}}

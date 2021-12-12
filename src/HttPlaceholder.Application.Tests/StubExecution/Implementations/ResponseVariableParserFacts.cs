@@ -11,8 +11,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 [TestClass]
 public class ResponseVariableParserFacts
 {
-    private readonly Mock<IResponseVariableParsingHandler> _handler1 = new Mock<IResponseVariableParsingHandler>();
-    private readonly Mock<IResponseVariableParsingHandler> _handler2 = new Mock<IResponseVariableParsingHandler>();
+    private readonly Mock<IResponseVariableParsingHandler> _handler1 = new();
+    private readonly Mock<IResponseVariableParsingHandler> _handler2 = new();
     private ResponseVariableParser _parser;
 
     [TestInitialize]

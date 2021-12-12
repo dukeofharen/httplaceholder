@@ -11,8 +11,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsing
 [TestClass]
 public class LocalNowResponseVariableParsingHandlerFacts
 {
-    private static readonly DateTime _now = new DateTime(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
-    private readonly Mock<IDateTime> _dateTimeMock = new Mock<IDateTime>();
+    private static readonly DateTime _now = new(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
+    private readonly Mock<IDateTime> _dateTimeMock = new();
     private LocalNowResponseVariableParsingHandler _parsingHandler;
 
     [TestInitialize]

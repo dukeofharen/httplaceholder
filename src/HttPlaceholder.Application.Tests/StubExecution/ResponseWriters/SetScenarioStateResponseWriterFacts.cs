@@ -112,7 +112,7 @@ public class SetScenarioStateResponseWriterFacts
     }
 
     private static StubModel CreateStub(string scenario, string setScenarioState) =>
-        new StubModel
+        new()
         {
             Scenario = scenario,
             Response = new StubResponseModel

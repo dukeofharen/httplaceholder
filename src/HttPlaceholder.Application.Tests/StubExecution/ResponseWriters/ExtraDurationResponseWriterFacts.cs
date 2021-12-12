@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 [TestClass]
 public class ExtraDurationResponseWriterFacts
 {
-    private readonly Mock<IAsyncService> _asyncServiceMock = new Mock<IAsyncService>();
+    private readonly Mock<IAsyncService> _asyncServiceMock = new();
     private ExtraDurationResponseWriter _writer;
 
     [TestInitialize]

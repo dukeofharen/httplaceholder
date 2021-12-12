@@ -14,7 +14,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 public class RequestLoggerFacts
 {
     private readonly DateTime _utcNow = DateTime.UtcNow;
-    private readonly Mock<IDateTime> _dateTimeMock = new Mock<IDateTime>();
+    private readonly Mock<IDateTime> _dateTimeMock = new();
     private RequestLogger _logger;
 
     [TestInitialize]

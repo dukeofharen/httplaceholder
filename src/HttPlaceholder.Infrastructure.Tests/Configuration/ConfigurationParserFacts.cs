@@ -27,8 +27,8 @@ public class ConfigurationParserFacts
     ""enableUserInterface"": false
 }";
 
-    private readonly Mock<IEnvService> _envServiceMock = new Mock<IEnvService>();
-    private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
+    private readonly Mock<IEnvService> _envServiceMock = new();
+    private readonly Mock<IFileService> _fileServiceMock = new();
     private ConfigurationParser _parser;
 
     [TestInitialize]

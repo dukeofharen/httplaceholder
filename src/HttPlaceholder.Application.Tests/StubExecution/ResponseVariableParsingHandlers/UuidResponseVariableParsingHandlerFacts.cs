@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsing
 [TestClass]
 public class UuidResponseVariableParsingHandlerFacts
 {
-    private readonly UuidResponseVariableParsingHandler _parsingHandler = new UuidResponseVariableParsingHandler();
+    private readonly UuidResponseVariableParsingHandler _parsingHandler = new();
 
     [TestMethod]
     public void UuidVariableHandler_Parse_HappyFlow()

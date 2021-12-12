@@ -21,7 +21,7 @@ public class StubModel
     /// </summary>
     [YamlMember(Alias = "conditions")]
     [ValidateObject]
-    public StubConditionsModel Conditions { get; set; } = new StubConditionsModel();
+    public StubConditionsModel Conditions { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the response.
@@ -29,7 +29,7 @@ public class StubModel
     [YamlMember(Alias = "response")]
     [Required]
     [ValidateObject]
-    public StubResponseModel Response { get; set; } = new StubResponseModel();
+    public StubResponseModel Response { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the priority.

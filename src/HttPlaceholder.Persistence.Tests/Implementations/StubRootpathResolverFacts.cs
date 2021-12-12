@@ -14,8 +14,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations;
 public class StubRootPathResolverFacts
 {
     private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
-    private readonly Mock<IAssemblyService> _assemblyServiceMock = new Mock<IAssemblyService>();
-    private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
+    private readonly Mock<IAssemblyService> _assemblyServiceMock = new();
+    private readonly Mock<IFileService> _fileServiceMock = new();
     private StubRootPathResolver _resolver;
 
     [TestInitialize]

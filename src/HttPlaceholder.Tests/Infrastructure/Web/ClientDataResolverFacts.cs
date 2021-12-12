@@ -9,7 +9,7 @@ namespace HttPlaceholder.Tests.Infrastructure.Web;
 [TestClass]
 public class ClientIpResolverFacts
 {
-    private readonly MockHttpContext _mockContext = new MockHttpContext();
+    private readonly MockHttpContext _mockContext = new();
     private ClientDataResolver _resolver;
 
     [TestInitialize]

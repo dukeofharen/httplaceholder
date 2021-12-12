@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 [TestClass]
 public class HtmlResponseWriterFacts
 {
-    private readonly HtmlResponseWriter _writer = new HtmlResponseWriter();
+    private readonly HtmlResponseWriter _writer = new();
 
     [TestMethod]
     public async Task HtmlResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()

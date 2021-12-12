@@ -10,9 +10,9 @@ internal class MockSession : ISession
 {
     private readonly IDictionary<string, byte[]> _dictionary = new Dictionary<string, byte[]>();
 
-    public Task LoadAsync(CancellationToken cancellationToken = new CancellationToken()) => throw new NotImplementedException();
+    public Task LoadAsync(CancellationToken cancellationToken = new()) => throw new NotImplementedException();
 
-    public Task CommitAsync(CancellationToken cancellationToken = new CancellationToken()) => throw new NotImplementedException();
+    public Task CommitAsync(CancellationToken cancellationToken = new()) => throw new NotImplementedException();
 
     public bool TryGetValue(string key, out byte[] value) => _dictionary.TryGetValue(key, out value);
 

@@ -20,8 +20,8 @@ public class ImageResponseWriterFacts
 
     private static readonly string _tempFolder = OperatingSystem.IsWindows() ? @"C:\temp" : "/tmp";
 
-    private readonly Mock<IAssemblyService> _mockAssemblyService = new Mock<IAssemblyService>();
-    private readonly Mock<IFileService> _mockFileService = new Mock<IFileService>();
+    private readonly Mock<IAssemblyService> _mockAssemblyService = new();
+    private readonly Mock<IFileService> _mockFileService = new();
     private ImageResponseWriter _responseWriter;
 
     [TestInitialize]

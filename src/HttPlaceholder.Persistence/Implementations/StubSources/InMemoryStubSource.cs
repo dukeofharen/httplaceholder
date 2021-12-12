@@ -10,7 +10,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
 internal class InMemoryStubSource : IWritableStubSource
 {
-    private static readonly object _lock = new object();
+    private static readonly object _lock = new();
 
     private readonly SettingsModel _settings;
 

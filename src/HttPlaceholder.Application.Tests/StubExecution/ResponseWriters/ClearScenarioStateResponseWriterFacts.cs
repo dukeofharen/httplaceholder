@@ -86,7 +86,7 @@ public class ClearScenarioStateResponseWriterFacts
     }
 
     private static StubModel CreateStub(string scenario, bool? clearState) =>
-        new StubModel
+        new()
         {
             Scenario = scenario,
             Response = new StubResponseModel

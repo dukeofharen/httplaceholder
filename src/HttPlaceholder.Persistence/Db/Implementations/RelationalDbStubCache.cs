@@ -14,7 +14,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
     private const string StubJsonType = "json";
     private const string StubYamlType = "yaml";
 
-    private static readonly object _cacheUpdateLock = new object();
+    private static readonly object _cacheUpdateLock = new();
     internal string StubUpdateTrackingId;
     internal IList<StubModel> StubCache;
 
