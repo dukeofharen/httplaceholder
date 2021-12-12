@@ -51,7 +51,6 @@ namespace HttPlaceholder
             services
                 .AddMvc()
                 .AddNewtonsoftJson(o => o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddApplicationPart(Assembly.GetExecutingAssembly());
             services.Configure<MvcOptions>(o =>
             {
