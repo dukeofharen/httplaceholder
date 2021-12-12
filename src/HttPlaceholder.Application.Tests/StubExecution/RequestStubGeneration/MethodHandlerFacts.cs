@@ -5,39 +5,38 @@ using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
+namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration;
+
+[TestClass]
+public class MethodHandlerFacts
 {
-    [TestClass]
-    public class MethodHandlerFacts
+    private readonly MethodHandler _handler = new();
+
+    [TestMethod]
+    public async Task MethodHandler_HandleStubGenerationAsync_MethodNotSet_ShouldThrowInvalidOperationException()
     {
-        private readonly MethodHandler _handler = new();
+        // Arrange
+        var request = new HttpRequestModel { Method = string.Empty };
+        var conditions = new StubConditionsModel();
 
-        [TestMethod]
-        public async Task MethodHandler_HandleStubGenerationAsync_MethodNotSet_ShouldThrowInvalidOperationException()
-        {
-            // Arrange
-            var request = new HttpRequestModel { Method = string.Empty };
-            var conditions = new StubConditionsModel();
+        // Act / Assert
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+            _handler.HandleStubGenerationAsync(request, conditions));
+    }
 
-            // Act / Assert
-            await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
-                _handler.HandleStubGenerationAsync(request, conditions));
-        }
+    [TestMethod]
+    public async Task MethodHandler_HandleStubGenerationAsync_HappyFlow()
+    {
+        // Arrange
+        const string method = "GET";
+        var request = new HttpRequestModel { Method = method };
+        var conditions = new StubConditionsModel();
 
-        [TestMethod]
-        public async Task MethodHandler_HandleStubGenerationAsync_HappyFlow()
-        {
-            // Arrange
-            const string method = "GET";
-            var request = new HttpRequestModel { Method = method };
-            var conditions = new StubConditionsModel();
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
-            // Act
-            var result = await _handler.HandleStubGenerationAsync(request, conditions);
-
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreEqual(method, conditions.Method);
-        }
+        // Assert
+        Assert.IsTrue(result);
+        Assert.AreEqual(method, conditions.Method);
     }
 }

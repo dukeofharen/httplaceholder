@@ -1,10 +1,9 @@
-﻿namespace HttPlaceholder.Client.Dto.Enums
+﻿namespace HttPlaceholder.Client.Dto.Enums;
+
+public enum PriorityType
 {
-    public enum PriorityType
-    {
-        Default = 0,
-        Low = -1,
-        Medium = 5,
-        High = 10
-    }
+    Default = 0,
+    Low = -1,
+    Medium = 5,
+    High = 10
 }

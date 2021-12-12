@@ -4,61 +4,60 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using YamlDotNet.Serialization;
 
-namespace HttPlaceholder.Formatters
+namespace HttPlaceholder.Formatters;
+
+/// <summary>
+/// Source: https://github.com/fiyazbinhasan/CoreFormatters
+/// </summary>
+public class YamlInputFormatter : TextInputFormatter
 {
+    private readonly IDeserializer _deserializer;
+
     /// <summary>
-    /// Source: https://github.com/fiyazbinhasan/CoreFormatters
+    ///
     /// </summary>
-    public class YamlInputFormatter : TextInputFormatter
+    /// <param name="deserializer"></param>
+    public YamlInputFormatter(IDeserializer deserializer)
     {
-        private readonly IDeserializer _deserializer;
+        _deserializer = deserializer;
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="deserializer"></param>
-        public YamlInputFormatter(IDeserializer deserializer)
+        SupportedEncodings.Add(Encoding.UTF8);
+        SupportedEncodings.Add(Encoding.Unicode);
+        SupportedMediaTypes.Add(MediaTypeHeaderValues.ApplicationYaml);
+        SupportedMediaTypes.Add(MediaTypeHeaderValues.TextYaml);
+    }
+
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="encoding"></param>
+    /// <returns></returns>
+    public override Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
+    {
+        if (context == null)
         {
-            _deserializer = deserializer;
-
-            SupportedEncodings.Add(Encoding.UTF8);
-            SupportedEncodings.Add(Encoding.Unicode);
-            SupportedMediaTypes.Add(MediaTypeHeaderValues.ApplicationYaml);
-            SupportedMediaTypes.Add(MediaTypeHeaderValues.TextYaml);
+            throw new ArgumentNullException(nameof(context));
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="context"></param>
-        /// <param name="encoding"></param>
-        /// <returns></returns>
-        public override Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
+        if (encoding == null)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
+            throw new ArgumentNullException(nameof(encoding));
+        }
 
-            if (encoding == null)
-            {
-                throw new ArgumentNullException(nameof(encoding));
-            }
+        var request = context.HttpContext.Request;
 
-            var request = context.HttpContext.Request;
+        using var streamReader = context.ReaderFactory(request.Body, encoding);
+        var type = context.ModelType;
 
-            using var streamReader = context.ReaderFactory(request.Body, encoding);
-            var type = context.ModelType;
-
-            try
-            {
-                var model = _deserializer.Deserialize(streamReader, type);
-                return InputFormatterResult.SuccessAsync(model);
-            }
-            catch (Exception)
-            {
-                return InputFormatterResult.FailureAsync();
-            }
+        try
+        {
+            var model = _deserializer.Deserialize(streamReader, type);
+            return InputFormatterResult.SuccessAsync(model);
+        }
+        catch (Exception)
+        {
+            return InputFormatterResult.FailureAsync();
         }
     }
 }

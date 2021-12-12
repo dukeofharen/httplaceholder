@@ -9,75 +9,74 @@ using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.Stubs.Commands
+namespace HttPlaceholder.Application.Tests.Stubs.Commands;
+
+[TestClass]
+public class AddStubCommandHandlerFacts
 {
-    [TestClass]
-    public class AddStubCommandHandlerFacts
+    private readonly Mock<IStubContext> _mockStubContext = new();
+    private readonly Mock<IStubModelValidator> _mockStubModelValidator = new();
+    private AddStubCommandHandler _handler;
+
+    [TestInitialize]
+    public void Initialize() =>
+        _handler = new AddStubCommandHandler(_mockStubContext.Object, _mockStubModelValidator.Object);
+
+    [TestCleanup]
+    public void Cleanup()
     {
-        private readonly Mock<IStubContext> _mockStubContext = new();
-        private readonly Mock<IStubModelValidator> _mockStubModelValidator = new();
-        private AddStubCommandHandler _handler;
+        _mockStubContext.VerifyAll();
+        _mockStubModelValidator.VerifyAll();
+    }
 
-        [TestInitialize]
-        public void Initialize() =>
-            _handler = new AddStubCommandHandler(_mockStubContext.Object, _mockStubModelValidator.Object);
+    [TestMethod]
+    public async Task Handle_HasValidationErrors_ShouldThrowValidationException()
+    {
+        // Arrange
+        var stub = new StubModel {Id = "stub1"};
+        var request = new AddStubCommand(stub);
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            _mockStubContext.VerifyAll();
-            _mockStubModelValidator.VerifyAll();
-        }
+        var errors = new[] {"error1"};
 
-        [TestMethod]
-        public async Task Handle_HasValidationErrors_ShouldThrowValidationException()
-        {
-            // Arrange
-            var stub = new StubModel {Id = "stub1"};
-            var request = new AddStubCommand(stub);
+        _mockStubModelValidator
+            .Setup(m => m.ValidateStubModel(stub))
+            .Returns(errors);
 
-            var errors = new[] {"error1"};
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<ValidationException>(() =>
+                _handler.Handle(request, CancellationToken.None));
 
-            _mockStubModelValidator
-                .Setup(m => m.ValidateStubModel(stub))
-                .Returns(errors);
+        // Assert
+        Assert.AreEqual(errors.Single(), exception.ValidationErrors.Single());
+        _mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id), Times.Never);
+        _mockStubContext.Verify(m => m.AddStubAsync(stub), Times.Never);
+    }
 
-            // Act
-            var exception =
-                await Assert.ThrowsExceptionAsync<ValidationException>(() =>
-                    _handler.Handle(request, CancellationToken.None));
+    [TestMethod]
+    public async Task Handle_NoValidationErrors_ShouldAddStub()
+    {
+        // Arrange
+        var stub = new StubModel {Id = "stub1"};
+        var request = new AddStubCommand(stub);
 
-            // Assert
-            Assert.AreEqual(errors.Single(), exception.ValidationErrors.Single());
-            _mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id), Times.Never);
-            _mockStubContext.Verify(m => m.AddStubAsync(stub), Times.Never);
-        }
+        var errors = Array.Empty<string>();
 
-        [TestMethod]
-        public async Task Handle_NoValidationErrors_ShouldAddStub()
-        {
-            // Arrange
-            var stub = new StubModel {Id = "stub1"};
-            var request = new AddStubCommand(stub);
+        _mockStubModelValidator
+            .Setup(m => m.ValidateStubModel(stub))
+            .Returns(errors);
 
-            var errors = Array.Empty<string>();
+        var fullStub = new FullStubModel();
+        _mockStubContext
+            .Setup(m => m.AddStubAsync(stub))
+            .ReturnsAsync(fullStub);
 
-            _mockStubModelValidator
-                .Setup(m => m.ValidateStubModel(stub))
-                .Returns(errors);
+        // Act
+        var result = await _handler.Handle(request, CancellationToken.None);
 
-            var fullStub = new FullStubModel();
-            _mockStubContext
-                .Setup(m => m.AddStubAsync(stub))
-                .ReturnsAsync(fullStub);
-
-            // Act
-            var result = await _handler.Handle(request, CancellationToken.None);
-
-            // Assert
-            Assert.AreEqual(fullStub, result);
-            _mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id), Times.Once);
-            _mockStubContext.Verify(m => m.AddStubAsync(stub), Times.Once);
-        }
+        // Assert
+        Assert.AreEqual(fullStub, result);
+        _mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id), Times.Once);
+        _mockStubContext.Verify(m => m.AddStubAsync(stub), Times.Once);
     }
 }

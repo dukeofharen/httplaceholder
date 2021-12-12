@@ -8,120 +8,119 @@ using HttPlaceholder.Dto.v1.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Tests.Integration.RestApi
+namespace HttPlaceholder.Tests.Integration.RestApi;
+
+[TestClass]
+public class RestApiStubGenerationTests : RestApiIntegrationTestBase
 {
-    [TestClass]
-    public class RestApiStubGenerationTests : RestApiIntegrationTestBase
+    [TestInitialize]
+    public void Initialize() => InitializeRestApiIntegrationTest();
+
+    [TestCleanup]
+    public void Cleanup() => CleanupRestApiIntegrationTest();
+
+    [TestMethod]
+    public async Task RestApiIntegration_StubGeneration_HappyFlow()
     {
-        [TestInitialize]
-        public void Initialize() => InitializeRestApiIntegrationTest();
+        // Arrange
+        ClientDataResolverMock
+            .Setup(m => m.GetClientIp())
+            .Returns("127.0.0.1");
 
-        [TestCleanup]
-        public void Cleanup() => CleanupRestApiIntegrationTest();
+        ClientDataResolverMock
+            .Setup(m => m.GetHost())
+            .Returns("localhost");
 
-        [TestMethod]
-        public async Task RestApiIntegration_StubGeneration_HappyFlow()
+        // Do a call to a non-existent stub
+        var response = await Client.SendAsync(CreateTestStubRequest());
+        var correlationId = response.Headers.Single(h => h.Key == "X-HttPlaceholder-Correlation").Value.Single();
+
+        // Register a new stub for the failed request
+        var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
+        var apiRequest = new HttpRequestMessage
         {
-            // Arrange
-            ClientDataResolverMock
-                .Setup(m => m.GetClientIp())
-                .Returns("127.0.0.1");
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Post,
+            Content = new StringContent("{}", Encoding.UTF8, "application/json")
+        };
+        response = await Client.SendAsync(apiRequest);
+        response.EnsureSuccessStatusCode();
 
-            ClientDataResolverMock
-                .Setup(m => m.GetHost())
-                .Returns("localhost");
+        // Do the original stub request again; it should succeed now
+        response = await Client.SendAsync(CreateTestStubRequest());
+        response.EnsureSuccessStatusCode();
 
-            // Do a call to a non-existent stub
-            var response = await Client.SendAsync(CreateTestStubRequest());
-            var correlationId = response.Headers.Single(h => h.Key == "X-HttPlaceholder-Correlation").Value.Single();
+        // Check the actual added stub
+        var addedStub = StubSource.StubModels.Single();
+        Assert.AreEqual("/test123", addedStub.Conditions.Url.Path);
 
-            // Register a new stub for the failed request
-            var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
-            var apiRequest = new HttpRequestMessage
-            {
-                RequestUri = new Uri(url),
-                Method = HttpMethod.Post,
-                Content = new StringContent("{}", Encoding.UTF8, "application/json")
-            };
-            response = await Client.SendAsync(apiRequest);
-            response.EnsureSuccessStatusCode();
+        Assert.AreEqual("val1", addedStub.Conditions.Url.Query["query1"]);
+        Assert.AreEqual("val2", addedStub.Conditions.Url.Query["query2"]);
 
-            // Do the original stub request again; it should succeed now
-            response = await Client.SendAsync(CreateTestStubRequest());
-            response.EnsureSuccessStatusCode();
+        Assert.AreEqual("POST", addedStub.Conditions.Method);
 
-            // Check the actual added stub
-            var addedStub = StubSource.StubModels.Single();
-            Assert.AreEqual("/test123", addedStub.Conditions.Url.Path);
+        var formDict = addedStub.Conditions.Form.ToDictionary(f => f.Key, f => f.Value);
+        Assert.AreEqual("val1", formDict["form1"]);
+        Assert.AreEqual("val2", formDict["form2"]);
 
-            Assert.AreEqual("val1", addedStub.Conditions.Url.Query["query1"]);
-            Assert.AreEqual("val2", addedStub.Conditions.Url.Query["query2"]);
+        Assert.AreEqual("abc123", addedStub.Conditions.Headers["X-Api-Key"]);
 
-            Assert.AreEqual("POST", addedStub.Conditions.Method);
+        Assert.AreEqual("127.0.0.1", addedStub.Conditions.ClientIp);
 
-            var formDict = addedStub.Conditions.Form.ToDictionary(f => f.Key, f => f.Value);
-            Assert.AreEqual("val1", formDict["form1"]);
-            Assert.AreEqual("val2", formDict["form2"]);
+        Assert.IsFalse(addedStub.Conditions.Url.IsHttps.HasValue &&addedStub.Conditions.Url.IsHttps.Value);
 
-            Assert.AreEqual("abc123", addedStub.Conditions.Headers["X-Api-Key"]);
+        Assert.AreEqual("localhost", addedStub.Conditions.Host);
 
-            Assert.AreEqual("127.0.0.1", addedStub.Conditions.ClientIp);
+        Assert.AreEqual("duco", addedStub.Conditions.BasicAuthentication.Username);
+        Assert.AreEqual("pass", addedStub.Conditions.BasicAuthentication.Password);
+    }
 
-            Assert.IsFalse(addedStub.Conditions.Url.IsHttps.HasValue &&addedStub.Conditions.Url.IsHttps.Value);
+    [TestMethod]
+    public async Task RestApiIntegration_StubGeneration_HappyFlow_OnlyReturnStub()
+    {
+        // Arrange
+        ClientDataResolverMock
+            .Setup(m => m.GetClientIp())
+            .Returns("127.0.0.1");
 
-            Assert.AreEqual("localhost", addedStub.Conditions.Host);
+        ClientDataResolverMock
+            .Setup(m => m.GetHost())
+            .Returns("localhost");
 
-            Assert.AreEqual("duco", addedStub.Conditions.BasicAuthentication.Username);
-            Assert.AreEqual("pass", addedStub.Conditions.BasicAuthentication.Password);
-        }
+        // Do a call to a non-existent stub
+        var response = await Client.SendAsync(CreateTestStubRequest());
+        var correlationId = response.Headers.Single(h => h.Key == "X-HttPlaceholder-Correlation").Value.Single();
 
-        [TestMethod]
-        public async Task RestApiIntegration_StubGeneration_HappyFlow_OnlyReturnStub()
+        // Register a new stub for the failed request
+        var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
+        var apiRequest = new HttpRequestMessage
         {
-            // Arrange
-            ClientDataResolverMock
-                .Setup(m => m.GetClientIp())
-                .Returns("127.0.0.1");
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Post,
+            Content = new StringContent(JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}), Encoding.UTF8, "application/json")
+        };
+        response = await Client.SendAsync(apiRequest);
+        response.EnsureSuccessStatusCode();
 
-            ClientDataResolverMock
-                .Setup(m => m.GetHost())
-                .Returns("localhost");
+        // Check that the stub is not added to the stub source.
+        Assert.AreEqual(0, StubSource.StubModels.Count);
+    }
 
-            // Do a call to a non-existent stub
-            var response = await Client.SendAsync(CreateTestStubRequest());
-            var correlationId = response.Headers.Single(h => h.Key == "X-HttPlaceholder-Correlation").Value.Single();
-
-            // Register a new stub for the failed request
-            var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
-            var apiRequest = new HttpRequestMessage
-            {
-                RequestUri = new Uri(url),
-                Method = HttpMethod.Post,
-                Content = new StringContent(JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}), Encoding.UTF8, "application/json")
-            };
-            response = await Client.SendAsync(apiRequest);
-            response.EnsureSuccessStatusCode();
-
-            // Check that the stub is not added to the stub source.
-            Assert.AreEqual(0, StubSource.StubModels.Count);
-        }
-
-        private HttpRequestMessage CreateTestStubRequest()
+    private HttpRequestMessage CreateTestStubRequest()
+    {
+        var clientRequest = new HttpRequestMessage
         {
-            var clientRequest = new HttpRequestMessage
+            RequestUri = new Uri($"{BaseAddress}test123?query1=val1&query2=val2"),
+            Method = HttpMethod.Post,
+            Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                RequestUri = new Uri($"{BaseAddress}test123?query1=val1&query2=val2"),
-                Method = HttpMethod.Post,
-                Content = new FormUrlEncodedContent(new Dictionary<string, string>
-                {
-                    {"form1", "val1"}, {"form2", "val2"}
-                })
-            };
-            clientRequest.Headers.Add("X-Api-Key", "abc123");
+                {"form1", "val1"}, {"form2", "val2"}
+            })
+        };
+        clientRequest.Headers.Add("X-Api-Key", "abc123");
 
-            var auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("duco:pass"));
-            clientRequest.Headers.Add("Authorization", auth);
-            return clientRequest;
-        }
+        var auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("duco:pass"));
+        clientRequest.Headers.Add("Authorization", auth);
+        return clientRequest;
     }
 }

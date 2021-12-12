@@ -1,7 +1,6 @@
-﻿namespace HttPlaceholder.Application.StubExecution
+﻿namespace HttPlaceholder.Application.StubExecution;
+
+public interface IResponseVariableParser
 {
-    public interface IResponseVariableParser
-    {
-        string Parse(string input);
-    }
+    string Parse(string input);
 }

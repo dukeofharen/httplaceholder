@@ -2,13 +2,12 @@
 using AutoMapper;
 using HttPlaceholder.Application.Infrastructure.AutoMapper;
 
-namespace HttPlaceholder.Infrastructure.AutoMapper
+namespace HttPlaceholder.Infrastructure.AutoMapper;
+
+public class WebAutoMapperProfile : Profile
 {
-    public class WebAutoMapperProfile : Profile
+    public WebAutoMapperProfile()
     {
-        public WebAutoMapperProfile()
-        {
-            this.InitializeProfile(Assembly.GetExecutingAssembly());
-        }
+        this.InitializeProfile(Assembly.GetExecutingAssembly());
     }
 }

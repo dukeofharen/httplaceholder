@@ -1,15 +1,14 @@
 ﻿using HttPlaceholder.Domain.Entities;
 using MediatR;
 
-namespace HttPlaceholder.Application.Scenarios.Queries.GetScenario
-{
-    public class GetScenarioQuery : IRequest<ScenarioStateModel>
-    {
-        public GetScenarioQuery(string scenario)
-        {
-            Scenario = scenario;
-        }
+namespace HttPlaceholder.Application.Scenarios.Queries.GetScenario;
 
-        public string Scenario { get; }
+public class GetScenarioQuery : IRequest<ScenarioStateModel>
+{
+    public GetScenarioQuery(string scenario)
+    {
+        Scenario = scenario;
     }
+
+    public string Scenario { get; }
 }

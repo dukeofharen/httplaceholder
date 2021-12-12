@@ -1,9 +1,8 @@
-﻿namespace HttPlaceholder.Application.Configuration
-{
-    public class AuthenticationSettingsModel
-    {
-        public string ApiUsername { get; set; }
+﻿namespace HttPlaceholder.Application.Configuration;
 
-        public string ApiPassword { get; set; }
-    }
+public class AuthenticationSettingsModel
+{
+    public string ApiUsername { get; set; }
+
+    public string ApiPassword { get; set; }
 }

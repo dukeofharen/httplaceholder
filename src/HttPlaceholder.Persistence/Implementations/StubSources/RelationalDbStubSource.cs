@@ -9,162 +9,161 @@ using HttPlaceholder.Persistence.Db;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder.Persistence.Implementations.StubSources
+namespace HttPlaceholder.Persistence.Implementations.StubSources;
+
+internal class RelationalDbStubSource : IWritableStubSource
 {
-    internal class RelationalDbStubSource : IWritableStubSource
+    // TODO move to separate constants class.
+    private const string StubJsonType = "json";
+
+    private readonly SettingsModel _settings;
+    private readonly IQueryStore _queryStore;
+    private readonly IDatabaseContextFactory _databaseContextFactory;
+    private readonly IRelationalDbStubCache _relationalDbStubCache;
+
+    public RelationalDbStubSource(
+        IOptions<SettingsModel> options,
+        IQueryStore queryStore,
+        IDatabaseContextFactory databaseContextFactory,
+        IRelationalDbStubCache relationalDbStubCache)
     {
-        // TODO move to separate constants class.
-        private const string StubJsonType = "json";
+        _settings = options.Value;
+        _queryStore = queryStore;
+        _databaseContextFactory = databaseContextFactory;
+        _relationalDbStubCache = relationalDbStubCache;
+    }
 
-        private readonly SettingsModel _settings;
-        private readonly IQueryStore _queryStore;
-        private readonly IDatabaseContextFactory _databaseContextFactory;
-        private readonly IRelationalDbStubCache _relationalDbStubCache;
-
-        public RelationalDbStubSource(
-            IOptions<SettingsModel> options,
-            IQueryStore queryStore,
-            IDatabaseContextFactory databaseContextFactory,
-            IRelationalDbStubCache relationalDbStubCache)
+    public async Task AddRequestResultAsync(RequestResultModel requestResult)
+    {
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
         {
-            _settings = options.Value;
-            _queryStore = queryStore;
-            _databaseContextFactory = databaseContextFactory;
-            _relationalDbStubCache = relationalDbStubCache;
+            var json = JsonConvert.SerializeObject(requestResult);
+            await ctx.ExecuteAsync(_queryStore.AddRequestQuery,
+                new
+                {
+                    requestResult.CorrelationId,
+                    requestResult.ExecutingStubId,
+                    requestResult.RequestBeginTime,
+                    requestResult.RequestEndTime,
+                    Json = json
+                });
         }
+    }
 
-        public async Task AddRequestResultAsync(RequestResultModel requestResult)
+    public async Task AddStubAsync(StubModel stub)
+    {
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
         {
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                var json = JsonConvert.SerializeObject(requestResult);
-                await ctx.ExecuteAsync(_queryStore.AddRequestQuery,
-                    new
-                    {
-                        requestResult.CorrelationId,
-                        requestResult.ExecutingStubId,
-                        requestResult.RequestBeginTime,
-                        requestResult.RequestEndTime,
-                        Json = json
-                    });
-            }
+            var json = JsonConvert.SerializeObject(stub);
+            await ctx.ExecuteAsync(_queryStore.AddStubQuery,
+                new {StubId = stub.Id, Stub = json, StubType = StubJsonType});
+            _relationalDbStubCache.ClearStubCache(ctx);
         }
+    }
 
-        public async Task AddStubAsync(StubModel stub)
+    public async Task<bool> DeleteRequestAsync(string correlationId)
+    {
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
         {
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                var json = JsonConvert.SerializeObject(stub);
-                await ctx.ExecuteAsync(_queryStore.AddStubQuery,
-                    new {StubId = stub.Id, Stub = json, StubType = StubJsonType});
-                _relationalDbStubCache.ClearStubCache(ctx);
-            }
+            var updatedRows = await ctx.ExecuteAsync(_queryStore.DeleteRequestQuery, new{CorrelationId = correlationId});
+            return updatedRows > 0;
         }
+    }
 
-        public async Task<bool> DeleteRequestAsync(string correlationId)
+    public async Task CleanOldRequestResultsAsync()
+    {
+        var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
         {
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                var updatedRows = await ctx.ExecuteAsync(_queryStore.DeleteRequestQuery, new{CorrelationId = correlationId});
-                return updatedRows > 0;
-            }
+            await ctx.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new {Limit = maxLength});
         }
+    }
 
-        public async Task CleanOldRequestResultsAsync()
+    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
+    {
+        // This method is not optimized right now.
+        var requests = await GetRequestResultsAsync();
+        return requests.Select(r => new RequestOverviewModel
         {
-            var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                await ctx.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new {Limit = maxLength});
-            }
+            Method = r.RequestParameters.Method,
+            Url = r.RequestParameters.Url,
+            CorrelationId = r.CorrelationId,
+            StubTenant = r.StubTenant,
+            ExecutingStubId = r.ExecutingStubId,
+            RequestBeginTime = r.RequestBeginTime,
+            RequestEndTime = r.RequestEndTime
+        }).ToArray();
+    }
+
+    public async Task<RequestResultModel> GetRequestAsync(string correlationId)
+    {
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
+        {
+            var result = await ctx.QueryFirstOrDefaultAsync<DbRequestModel>(
+                _queryStore.GetRequestQuery,
+                new {CorrelationId = correlationId});
+            return result == null ? null : JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
         }
+    }
 
-        public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
+    public async Task DeleteAllRequestResultsAsync()
+    {
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
         {
-            // This method is not optimized right now.
-            var requests = await GetRequestResultsAsync();
-            return requests.Select(r => new RequestOverviewModel
-            {
-                Method = r.RequestParameters.Method,
-                Url = r.RequestParameters.Url,
-                CorrelationId = r.CorrelationId,
-                StubTenant = r.StubTenant,
-                ExecutingStubId = r.ExecutingStubId,
-                RequestBeginTime = r.RequestBeginTime,
-                RequestEndTime = r.RequestEndTime
-            }).ToArray();
+            await ctx.ExecuteAsync(_queryStore.DeleteAllRequestsQuery);
         }
+    }
 
-        public async Task<RequestResultModel> GetRequestAsync(string correlationId)
+    public async Task<bool> DeleteStubAsync(string stubId)
+    {
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
         {
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                var result = await ctx.QueryFirstOrDefaultAsync<DbRequestModel>(
-                    _queryStore.GetRequestQuery,
-                    new {CorrelationId = correlationId});
-                return result == null ? null : JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
-            }
+            var updated = await ctx.ExecuteAsync(_queryStore.DeleteStubQuery, new {StubId = stubId});
+            _relationalDbStubCache.ClearStubCache(ctx);
+            return updated > 0;
         }
+    }
 
-        public async Task DeleteAllRequestResultsAsync()
+    public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
+    {
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
         {
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                await ctx.ExecuteAsync(_queryStore.DeleteAllRequestsQuery);
-            }
+            var result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery);
+            return result
+                .Select(r => JsonConvert.DeserializeObject<RequestResultModel>(r.Json));
         }
+    }
 
-        public async Task<bool> DeleteStubAsync(string stubId)
+    public async Task<IEnumerable<StubModel>> GetStubsAsync()
+    {
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
         {
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                var updated = await ctx.ExecuteAsync(_queryStore.DeleteStubQuery, new {StubId = stubId});
-                _relationalDbStubCache.ClearStubCache(ctx);
-                return updated > 0;
-            }
+            return await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
         }
+    }
 
-        public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
+    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
+        (await GetStubsAsync())
+        .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
+        .ToArray();
+
+    public async Task<StubModel> GetStubAsync(string stubId)
+    {
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
         {
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                var result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery);
-                return result
-                    .Select(r => JsonConvert.DeserializeObject<RequestResultModel>(r.Json));
-            }
+            var stubs = await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
+            return stubs.FirstOrDefault(s => s.Id == stubId);
         }
+    }
 
-        public async Task<IEnumerable<StubModel>> GetStubsAsync()
+    public async Task PrepareStubSourceAsync()
+    {
+        using (var ctx = _databaseContextFactory.CreateDatabaseContext())
         {
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                return await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
-            }
-        }
+            await ctx.ExecuteAsync(_queryStore.MigrationsQuery);
 
-        public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
-            (await GetStubsAsync())
-            .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
-            .ToArray();
-
-        public async Task<StubModel> GetStubAsync(string stubId)
-        {
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                var stubs = await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
-                return stubs.FirstOrDefault(s => s.Id == stubId);
-            }
-        }
-
-        public async Task PrepareStubSourceAsync()
-        {
-            using (var ctx = _databaseContextFactory.CreateDatabaseContext())
-            {
-                await ctx.ExecuteAsync(_queryStore.MigrationsQuery);
-
-                // Also initialize the cache at startup.
-                await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
-            }
+            // Also initialize the cache at startup.
+            await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
         }
     }
 }

@@ -3,41 +3,40 @@ using System.Net;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
 
-namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers
+namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
+
+public class EncodedQueryStringResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
-    public class EncodedQueryStringResponseVariableParsingHandler : IResponseVariableParsingHandler
+    private readonly IHttpContextService _httpContextService;
+
+    public EncodedQueryStringResponseVariableParsingHandler(IHttpContextService httpContextService)
     {
-        private readonly IHttpContextService _httpContextService;
+        _httpContextService = httpContextService;
+    }
 
-        public EncodedQueryStringResponseVariableParsingHandler(IHttpContextService httpContextService)
+    public string Name => "query_encoded";
+
+    public string FullName => "URL encoded query string variable handler";
+
+    public string Example => "((query_encoded:query_string_key))";
+
+    public string Parse(string input, IEnumerable<Match> matches)
+    {
+        var queryDict = _httpContextService.GetQueryStringDictionary();
+        foreach (var match in matches)
         {
-            _httpContextService = httpContextService;
-        }
-
-        public string Name => "query_encoded";
-
-        public string FullName => "URL encoded query string variable handler";
-
-        public string Example => "((query_encoded:query_string_key))";
-
-        public string Parse(string input, IEnumerable<Match> matches)
-        {
-            var queryDict = _httpContextService.GetQueryStringDictionary();
-            foreach (var match in matches)
+            if (match.Groups.Count != 3)
             {
-                if (match.Groups.Count != 3)
-                {
-                    continue;
-                }
-
-                var queryStringName = match.Groups[2].Value;
-                queryDict.TryGetValue(queryStringName, out var replaceValue);
-
-                replaceValue = WebUtility.UrlEncode(replaceValue);
-                input = input.Replace(match.Value, replaceValue);
+                continue;
             }
 
-            return input;
+            var queryStringName = match.Groups[2].Value;
+            queryDict.TryGetValue(queryStringName, out var replaceValue);
+
+            replaceValue = WebUtility.UrlEncode(replaceValue);
+            input = input.Replace(match.Value, replaceValue);
         }
+
+        return input;
     }
 }

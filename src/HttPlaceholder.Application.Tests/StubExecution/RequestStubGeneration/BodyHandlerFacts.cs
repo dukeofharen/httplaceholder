@@ -5,42 +5,41 @@ using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
+namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration;
+
+[TestClass]
+public class BodyHandlerFacts
 {
-    [TestClass]
-    public class BodyHandlerFacts
+    private readonly BodyHandler _handler = new();
+
+    [TestMethod]
+    public async Task BodyHandler_HandleStubGenerationAsync_BodyNotSetOnRequest_ShouldReturnFalse()
     {
-        private readonly BodyHandler _handler = new();
+        // Arrange
+        var request = new HttpRequestModel { Body = string.Empty };
+        var conditions = new StubConditionsModel();
 
-        [TestMethod]
-        public async Task BodyHandler_HandleStubGenerationAsync_BodyNotSetOnRequest_ShouldReturnFalse()
-        {
-            // Arrange
-            var request = new HttpRequestModel { Body = string.Empty };
-            var conditions = new StubConditionsModel();
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
-            // Act
-            var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        // Assert
+        Assert.IsFalse(result);
+        Assert.IsNull(conditions.Body);
+    }
 
-            // Assert
-            Assert.IsFalse(result);
-            Assert.IsNull(conditions.Body);
-        }
+    [TestMethod]
+    public async Task BodyHandler_HandleStubGenerationAsync_HappyFlow()
+    {
+        // Arrange
+        const string body = "POSTED!";
+        var request = new HttpRequestModel { Body = body };
+        var conditions = new StubConditionsModel();
 
-        [TestMethod]
-        public async Task BodyHandler_HandleStubGenerationAsync_HappyFlow()
-        {
-            // Arrange
-            const string body = "POSTED!";
-            var request = new HttpRequestModel { Body = body };
-            var conditions = new StubConditionsModel();
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
-            // Act
-            var result = await _handler.HandleStubGenerationAsync(request, conditions);
-
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreEqual(body, conditions.Body.Single());
-        }
+        // Assert
+        Assert.IsTrue(result);
+        Assert.AreEqual(body, conditions.Body.Single());
     }
 }

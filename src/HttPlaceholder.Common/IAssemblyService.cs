@@ -1,13 +1,12 @@
-namespace HttPlaceholder.Common
+namespace HttPlaceholder.Common;
+
+public interface IAssemblyService
 {
-    public interface IAssemblyService
-    {
-        string GetEntryAssemblyRootPath();
+    string GetEntryAssemblyRootPath();
 
-        string GetExecutingAssemblyRootPath();
+    string GetExecutingAssemblyRootPath();
 
-        string GetAssemblyVersion();
+    string GetAssemblyVersion();
 
-        string GetCallingAssemblyRootPath();
-    }
+    string GetCallingAssemblyRootPath();
 }

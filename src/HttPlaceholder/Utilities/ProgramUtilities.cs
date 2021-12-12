@@ -14,181 +14,180 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 
-namespace HttPlaceholder.Utilities
+namespace HttPlaceholder.Utilities;
+
+public static class ProgramUtilities
 {
-    public static class ProgramUtilities
+    private static readonly string[] _verboseArgs = { "-V", "--verbose" };
+    private static readonly string[] _versionArgs = { "-v", "--version" };
+    private static readonly string[] _helpArgs = { "-h", "--help", "-?" };
+
+    public static void ConfigureLogging(IEnumerable<string> args)
     {
-        private static readonly string[] _verboseArgs = { "-V", "--verbose" };
-        private static readonly string[] _versionArgs = { "-v", "--version" };
-        private static readonly string[] _helpArgs = { "-h", "--help", "-?" };
+        var env = Environment.GetEnvironmentVariable("verbose");
+        var verbose = args.Any(_verboseArgs.Contains) ||
+                      string.Equals(env, "true", StringComparison.OrdinalIgnoreCase);
+        var loggingConfig = new LoggerConfiguration();
+        loggingConfig = verbose
+            ? loggingConfig.MinimumLevel.Debug()
+            : loggingConfig.MinimumLevel.Warning();
+        Log.Logger = loggingConfig
+            .Enrich.FromLogContext()
+            .WriteTo.Console(
+                outputTemplate:
+                "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+            .CreateLogger();
+    }
 
-        public static void ConfigureLogging(IEnumerable<string> args)
+    public static void HandleCommands(IEnumerable<string> args)
+    {
+        var version = AssemblyHelper.GetAssemblyVersion();
+        var argsArray = args as string[] ?? args.ToArray();
+        HandleArgument(() => Console.WriteLine(version), argsArray, _versionArgs);
+
+        Console.WriteLine(ManPage.VersionHeader, version, DateTime.Now.Year);
+        HandleArgument(() => Console.WriteLine(GetManPage()), argsArray, _helpArgs);
+    }
+
+    public static IWebHost BuildWebHost(string[] args)
+    {
+        var configParser = new ConfigurationParser();
+        var argsDictionary = configParser.ParseConfiguration(args);
+        var settings = DeserializeSettings(argsDictionary);
+
+        HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary, args)), args, _verboseArgs,
+            false);
+
+        return WebHost.CreateDefaultBuilder(args)
+            .UseSerilog()
+            .ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(argsDictionary))
+            .UseStartup<Startup>()
+            .UseKestrel(options => ConfigureKestrel(options, settings))
+            .UseIIS()
+            .Build();
+    }
+
+    private static string GetVerbosePage(IDictionary<string, string> argsDictionary, string[] args)
+    {
+        var builder = new StringBuilder();
+        builder.AppendLine($"Provided command line arguments: {string.Join(" ", args)}");
+        builder.AppendLine("Configuration that will be used by HttPlaceholder:");
+        foreach (var (key, value) in argsDictionary)
         {
-            var env = Environment.GetEnvironmentVariable("verbose");
-            var verbose = args.Any(_verboseArgs.Contains) ||
-                          string.Equals(env, "true", StringComparison.OrdinalIgnoreCase);
-            var loggingConfig = new LoggerConfiguration();
-            loggingConfig = verbose
-                ? loggingConfig.MinimumLevel.Debug()
-                : loggingConfig.MinimumLevel.Warning();
-            Log.Logger = loggingConfig
-                .Enrich.FromLogContext()
-                .WriteTo.Console(
-                    outputTemplate:
-                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-                .CreateLogger();
+            builder.AppendLine($"--{key}: {value}");
         }
 
-        public static void HandleCommands(IEnumerable<string> args)
-        {
-            var version = AssemblyHelper.GetAssemblyVersion();
-            var argsArray = args as string[] ?? args.ToArray();
-            HandleArgument(() => Console.WriteLine(version), argsArray, _versionArgs);
+        return builder.ToString();
+    }
 
-            Console.WriteLine(ManPage.VersionHeader, version, DateTime.Now.Year);
-            HandleArgument(() => Console.WriteLine(GetManPage()), argsArray, _helpArgs);
+    private static void HandleArgument(
+        Action action,
+        IEnumerable<string> args,
+        IEnumerable<string> argKeys,
+        bool exit = true)
+    {
+        if (!args.Any(argKeys.Contains))
+        {
+            return;
         }
 
-        public static IWebHost BuildWebHost(string[] args)
+        action();
+        if (exit)
         {
-            var configParser = new ConfigurationParser();
-            var argsDictionary = configParser.ParseConfiguration(args);
-            var settings = DeserializeSettings(argsDictionary);
+            Environment.Exit(0);
+        }
+    }
 
-            HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary, args)), args, _verboseArgs,
-                false);
+    private static SettingsModel DeserializeSettings(IDictionary<string, string> args)
+    {
+        var builder = new ConfigurationBuilder();
+        builder.AddInMemoryCollection(args);
+        var config = builder.Build();
+        return config.Get<SettingsModel>();
+    }
 
-            return WebHost.CreateDefaultBuilder(args)
-                .UseSerilog()
-                .ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(argsDictionary))
-                .UseStartup<Startup>()
-                .UseKestrel(options => ConfigureKestrel(options, settings))
-                .UseIIS()
-                .Build();
+    private static void ConfigureKestrel(KestrelServerOptions options, SettingsModel settings)
+    {
+        options.AddServerHeader = false;
+        var (httpPorts, httpsPorts) = GetPorts(settings);
+        foreach (var port in httpPorts)
+        {
+            options.Listen(IPAddress.Any, port);
         }
 
-        private static string GetVerbosePage(IDictionary<string, string> argsDictionary, string[] args)
+        foreach (var port in httpsPorts)
         {
-            var builder = new StringBuilder();
-            builder.AppendLine($"Provided command line arguments: {string.Join(" ", args)}");
-            builder.AppendLine("Configuration that will be used by HttPlaceholder:");
-            foreach (var (key, value) in argsDictionary)
+            options.Listen(IPAddress.Any, port,
+                listenOptions =>
+                    listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
+        }
+    }
+
+    private static string GetManPage()
+    {
+        var builder = new StringBuilder();
+        builder.AppendLine(ManPage.ExplanationHeader);
+        builder.AppendLine();
+
+        foreach (var constant in ConfigurationParser.GetConfigKeyMetadata())
+        {
+            builder.AppendLine($"--{constant.Key}: {constant.Description} (e.g. {constant.Example})");
+        }
+
+        builder.AppendLine();
+        builder.AppendLine(ManPage.CmdExample);
+
+        return builder.ToString();
+    }
+
+    private static int[] ParsePorts(string input)
+    {
+        var result = new List<int>();
+        var httpPorts = input.Split(',').Select(p => p.Trim());
+        foreach (var port in httpPorts)
+        {
+            if (!int.TryParse(port, out var parsedPort) || parsedPort is < 1 or > 65535)
             {
-                builder.AppendLine($"--{key}: {value}");
+                throw new ArgumentException($"Port '{port}' is invalid.");
             }
 
-            return builder.ToString();
+            result.Add(parsedPort);
         }
 
-        private static void HandleArgument(
-            Action action,
-            IEnumerable<string> args,
-            IEnumerable<string> argKeys,
-            bool exit = true)
-        {
-            if (!args.Any(argKeys.Contains))
-            {
-                return;
-            }
+        return result.ToArray();
+    }
 
-            action();
-            if (exit)
-            {
-                Environment.Exit(0);
-            }
+    private static (IEnumerable<int> httpPorts, IEnumerable<int> httpsPorts) GetPorts(SettingsModel settings)
+    {
+        var httpPortsResult = new List<int>();
+        var httpsPortsResult = new List<int>();
+
+        var httpPorts = ParsePorts(settings.Web.HttpPort);
+        if (httpPorts.Length == 1 && httpPorts[0] == Constants.DefaultHttpPort &&
+            TcpUtilities.PortIsTaken(httpPorts[0]))
+        {
+            httpPortsResult.Add(TcpUtilities.GetNextFreeTcpPort());
+        }
+        else
+        {
+            httpPortsResult.AddRange(httpPorts);
         }
 
-        private static SettingsModel DeserializeSettings(IDictionary<string, string> args)
+        if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) &&
+            !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
         {
-            var builder = new ConfigurationBuilder();
-            builder.AddInMemoryCollection(args);
-            var config = builder.Build();
-            return config.Get<SettingsModel>();
-        }
-
-        private static void ConfigureKestrel(KestrelServerOptions options, SettingsModel settings)
-        {
-            options.AddServerHeader = false;
-            var (httpPorts, httpsPorts) = GetPorts(settings);
-            foreach (var port in httpPorts)
+            var httpsPorts = ParsePorts(settings.Web.HttpsPort);
+            if (httpsPorts.Length == 1 && httpsPorts[0] == Constants.DefaultHttpsPort &&
+                TcpUtilities.PortIsTaken(httpsPorts[0]))
             {
-                options.Listen(IPAddress.Any, port);
-            }
-
-            foreach (var port in httpsPorts)
-            {
-                options.Listen(IPAddress.Any, port,
-                    listenOptions =>
-                        listenOptions.UseHttps(settings.Web.PfxPath, settings.Web.PfxPassword));
-            }
-        }
-
-        private static string GetManPage()
-        {
-            var builder = new StringBuilder();
-            builder.AppendLine(ManPage.ExplanationHeader);
-            builder.AppendLine();
-
-            foreach (var constant in ConfigurationParser.GetConfigKeyMetadata())
-            {
-                builder.AppendLine($"--{constant.Key}: {constant.Description} (e.g. {constant.Example})");
-            }
-
-            builder.AppendLine();
-            builder.AppendLine(ManPage.CmdExample);
-
-            return builder.ToString();
-        }
-
-        private static int[] ParsePorts(string input)
-        {
-            var result = new List<int>();
-            var httpPorts = input.Split(',').Select(p => p.Trim());
-            foreach (var port in httpPorts)
-            {
-                if (!int.TryParse(port, out var parsedPort) || parsedPort is < 1 or > 65535)
-                {
-                    throw new ArgumentException($"Port '{port}' is invalid.");
-                }
-
-                result.Add(parsedPort);
-            }
-
-            return result.ToArray();
-        }
-
-        private static (IEnumerable<int> httpPorts, IEnumerable<int> httpsPorts) GetPorts(SettingsModel settings)
-        {
-            var httpPortsResult = new List<int>();
-            var httpsPortsResult = new List<int>();
-
-            var httpPorts = ParsePorts(settings.Web.HttpPort);
-            if (httpPorts.Length == 1 && httpPorts[0] == Constants.DefaultHttpPort &&
-                TcpUtilities.PortIsTaken(httpPorts[0]))
-            {
-                httpPortsResult.Add(TcpUtilities.GetNextFreeTcpPort());
+                httpsPortsResult.Add(TcpUtilities.GetNextFreeTcpPort());
             }
             else
             {
-                httpPortsResult.AddRange(httpPorts);
+                httpsPortsResult.AddRange(httpsPorts);
             }
-
-            if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) &&
-                !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
-            {
-                var httpsPorts = ParsePorts(settings.Web.HttpsPort);
-                if (httpsPorts.Length == 1 && httpsPorts[0] == Constants.DefaultHttpsPort &&
-                    TcpUtilities.PortIsTaken(httpsPorts[0]))
-                {
-                    httpsPortsResult.Add(TcpUtilities.GetNextFreeTcpPort());
-                }
-                else
-                {
-                    httpsPortsResult.AddRange(httpsPorts);
-                }
-            }
-
-            return (httpPortsResult, httpsPortsResult);
         }
+
+        return (httpPortsResult, httpsPortsResult);
     }
 }

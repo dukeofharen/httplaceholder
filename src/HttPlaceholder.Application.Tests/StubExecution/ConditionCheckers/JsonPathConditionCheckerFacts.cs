@@ -8,59 +8,59 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.AutoMock;
 using Newtonsoft.Json.Linq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
+namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
+
+[TestClass]
+public class JsonPathConditionCheckerFacts
 {
-    [TestClass]
-    public class JsonPathConditionCheckerFacts
+    private readonly AutoMocker _mocker = new();
+
+    [TestCleanup]
+    public void Cleanup() => _mocker.VerifyAll();
+
+    [TestMethod]
+    public void Validate_JsonPathConditionsNull_ShouldReturnDefaultResult()
     {
-        private readonly AutoMocker _mocker = new();
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
 
-        [TestCleanup]
-        public void Cleanup() => _mocker.VerifyAll();
+        var conditions = new StubConditionsModel {JsonPath = null};
 
-        [TestMethod]
-        public void Validate_JsonPathConditionsNull_ShouldReturnDefaultResult()
+        // Act
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+
+        // Assert
+        Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+    }
+
+    [TestMethod]
+    public void Validate_JsonPathConditionsEmpty_ShouldReturnDefaultResult()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
+
+        var conditions = new StubConditionsModel {JsonPath = Array.Empty<object>()};
+
+        // Act
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+
+        // Assert
+        Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+    }
+
+    [TestMethod]
+    public void Validate_OnlyTextBasedConditions_CorrectJson_ShouldPass()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
+        var httpMock = _mocker.GetMock<IHttpContextService>();
+
+        var conditions = new StubConditionsModel
         {
-            // Arrange
-            var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
+            JsonPath = new[] {"$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]"}
+        };
 
-            var conditions = new StubConditionsModel {JsonPath = null};
-
-            // Act
-            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
-
-            // Assert
-            Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
-        }
-
-        [TestMethod]
-        public void Validate_JsonPathConditionsEmpty_ShouldReturnDefaultResult()
-        {
-            // Arrange
-            var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
-
-            var conditions = new StubConditionsModel {JsonPath = Array.Empty<object>()};
-
-            // Act
-            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
-
-            // Assert
-            Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
-        }
-
-        [TestMethod]
-        public void Validate_OnlyTextBasedConditions_CorrectJson_ShouldPass()
-        {
-            // Arrange
-            var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
-            var httpMock = _mocker.GetMock<IHttpContextService>();
-
-            var conditions = new StubConditionsModel
-            {
-                JsonPath = new[] {"$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]"}
-            };
-
-            const string json = @"{""people"": [{
+        const string json = @"{""people"": [{
   ""firstName"": ""John"",
   ""achievements"": [
     {
@@ -68,30 +68,30 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
     }
   ]
 }]}";
-            httpMock
-                .Setup(m => m.GetBody())
-                .Returns(json);
+        httpMock
+            .Setup(m => m.GetBody())
+            .Returns(json);
 
-            // Act
-            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // Assert
-            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        }
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void Validate_OnlyTextBasedConditions_IncorrectJson_ShouldFail()
+    [TestMethod]
+    public void Validate_OnlyTextBasedConditions_IncorrectJson_ShouldFail()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
+        var httpMock = _mocker.GetMock<IHttpContextService>();
+
+        var conditions = new StubConditionsModel
         {
-            // Arrange
-            var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
-            var httpMock = _mocker.GetMock<IHttpContextService>();
+            JsonPath = new[] {"$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]"}
+        };
 
-            var conditions = new StubConditionsModel
-            {
-                JsonPath = new[] {"$.people[0].firstName", "$.people[0].achievements[?(@.name=='Man of the year')]"}
-            };
-
-            const string json = @"{""people"": [{
+        const string json = @"{""people"": [{
   ""firstName"": ""John"",
   ""achievements"": [
     {
@@ -99,37 +99,37 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
     }
   ]
 }]}";
-            httpMock
-                .Setup(m => m.GetBody())
-                .Returns(json);
+        httpMock
+            .Setup(m => m.GetBody())
+            .Returns(json);
 
-            // Act
-            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // Assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void Validate_TextAndObjectBased_CorrectJson_ShouldPass()
+    [TestMethod]
+    public void Validate_TextAndObjectBased_CorrectJson_ShouldPass()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
+        var httpMock = _mocker.GetMock<IHttpContextService>();
+
+        var conditions = new StubConditionsModel
         {
-            // Arrange
-            var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
-            var httpMock = _mocker.GetMock<IHttpContextService>();
-
-            var conditions = new StubConditionsModel
+            JsonPath = new object[]
             {
-                JsonPath = new object[]
+                new Dictionary<object, object>
                 {
-                    new Dictionary<object, object>
-                    {
-                        {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
-                    },
-                    "$.people[0].achievements[?(@.name=='Man of the year')]"
-                }
-            };
+                    {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
+                },
+                "$.people[0].achievements[?(@.name=='Man of the year')]"
+            }
+        };
 
-            const string json = @"{""people"": [{
+        const string json = @"{""people"": [{
   ""firstName"": ""John"",
   ""achievements"": [
     {
@@ -137,37 +137,37 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
     }
   ]
 }]}";
-            httpMock
-                .Setup(m => m.GetBody())
-                .Returns(json);
+        httpMock
+            .Setup(m => m.GetBody())
+            .Returns(json);
 
-            // Act
-            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // Assert
-            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        }
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void Validate_TextAndObjectBased_IncorrectJson_TextFails_ShouldFail()
+    [TestMethod]
+    public void Validate_TextAndObjectBased_IncorrectJson_TextFails_ShouldFail()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
+        var httpMock = _mocker.GetMock<IHttpContextService>();
+
+        var conditions = new StubConditionsModel
         {
-            // Arrange
-            var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
-            var httpMock = _mocker.GetMock<IHttpContextService>();
-
-            var conditions = new StubConditionsModel
+            JsonPath = new object[]
             {
-                JsonPath = new object[]
+                new Dictionary<object, object>
                 {
-                    new Dictionary<object, object>
-                    {
-                        {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
-                    },
-                    "$.people[0].achievements[?(@.name=='Man of the year')]"
-                }
-            };
+                    {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
+                },
+                "$.people[0].achievements[?(@.name=='Man of the year')]"
+            }
+        };
 
-            const string json = @"{""people"": [{
+        const string json = @"{""people"": [{
   ""firstName"": ""John"",
   ""achievements"": [
     {
@@ -175,37 +175,37 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
     }
   ]
 }]}";
-            httpMock
-                .Setup(m => m.GetBody())
-                .Returns(json);
+        httpMock
+            .Setup(m => m.GetBody())
+            .Returns(json);
 
-            // Act
-            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // Assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void Validate_TextAndObjectBased_IncorrectJson_ObjectFails_ShouldFail()
+    [TestMethod]
+    public void Validate_TextAndObjectBased_IncorrectJson_ObjectFails_ShouldFail()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
+        var httpMock = _mocker.GetMock<IHttpContextService>();
+
+        var conditions = new StubConditionsModel
         {
-            // Arrange
-            var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
-            var httpMock = _mocker.GetMock<IHttpContextService>();
-
-            var conditions = new StubConditionsModel
+            JsonPath = new object[]
             {
-                JsonPath = new object[]
+                new Dictionary<object, object>
                 {
-                    new Dictionary<object, object>
-                    {
-                        {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
-                    },
-                    "$.people[0].achievements[?(@.name=='Man of the year')]"
-                }
-            };
+                    {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
+                },
+                "$.people[0].achievements[?(@.name=='Man of the year')]"
+            }
+        };
 
-            const string json = @"{""people"": [{
+        const string json = @"{""people"": [{
   ""firstName"": ""Marc"",
   ""achievements"": [
     {
@@ -213,41 +213,41 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
     }
   ]
 }]}";
-            httpMock
-                .Setup(m => m.GetBody())
-                .Returns(json);
+        httpMock
+            .Setup(m => m.GetBody())
+            .Returns(json);
 
-            // Act
-            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // Assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void Validate_ObjectBased_CorrectJson_ShouldPass()
+    [TestMethod]
+    public void Validate_ObjectBased_CorrectJson_ShouldPass()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
+        var httpMock = _mocker.GetMock<IHttpContextService>();
+
+        var conditions = new StubConditionsModel
         {
-            // Arrange
-            var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
-            var httpMock = _mocker.GetMock<IHttpContextService>();
-
-            var conditions = new StubConditionsModel
+            JsonPath = new object[]
             {
-                JsonPath = new object[]
+                new Dictionary<object, object>
                 {
-                    new Dictionary<object, object>
-                    {
-                        {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
-                    },
-                    new Dictionary<object, object>
-                    {
-                        {"query", "$.people[0].achievements[0].name"}, {"expectedValue", "Man of the year"}
-                    },
-                    new Dictionary<object, object> {{"query", "$.people[0].age"}}
-                }
-            };
+                    {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
+                },
+                new Dictionary<object, object>
+                {
+                    {"query", "$.people[0].achievements[0].name"}, {"expectedValue", "Man of the year"}
+                },
+                new Dictionary<object, object> {{"query", "$.people[0].age"}}
+            }
+        };
 
-            const string json = @"{""people"": [{
+        const string json = @"{""people"": [{
   ""firstName"": ""John"",
   ""age"": 29,
   ""achievements"": [
@@ -256,41 +256,41 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
     }
   ]
 }]}";
-            httpMock
-                .Setup(m => m.GetBody())
-                .Returns(json);
+        httpMock
+            .Setup(m => m.GetBody())
+            .Returns(json);
 
-            // Act
-            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // Assert
-            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        }
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void Validate_ObjectBased_IncorrectJson_ShouldFail()
+    [TestMethod]
+    public void Validate_ObjectBased_IncorrectJson_ShouldFail()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
+        var httpMock = _mocker.GetMock<IHttpContextService>();
+
+        var conditions = new StubConditionsModel
         {
-            // Arrange
-            var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
-            var httpMock = _mocker.GetMock<IHttpContextService>();
-
-            var conditions = new StubConditionsModel
+            JsonPath = new object[]
             {
-                JsonPath = new object[]
+                new Dictionary<object, object>
                 {
-                    new Dictionary<object, object>
-                    {
-                        {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
-                    },
-                    new Dictionary<object, object>
-                    {
-                        {"query", "$.people[0].achievements[0].name"}, {"expectedValue", "Man of the year"}
-                    },
-                    new Dictionary<object, object> {{"query", "$.people[0].age"}}
-                }
-            };
+                    {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
+                },
+                new Dictionary<object, object>
+                {
+                    {"query", "$.people[0].achievements[0].name"}, {"expectedValue", "Man of the year"}
+                },
+                new Dictionary<object, object> {{"query", "$.people[0].age"}}
+            }
+        };
 
-            const string json = @"{""people"": [{
+        const string json = @"{""people"": [{
   ""firstName"": ""John"",
   ""age"": 29,
   ""achievements"": [
@@ -299,87 +299,86 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
     }
   ]
 }]}";
-            httpMock
-                .Setup(m => m.GetBody())
-                .Returns(json);
+        httpMock
+            .Setup(m => m.GetBody())
+            .Returns(json);
 
-            // Act
-            var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // Assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void ConvertJsonPathCondition_InputIsJObject_ShouldReturnStubJsonPathModelCorrectly()
-        {
-            // Arrange
-            var input = JObject.FromObject(new {query = "jpath query", expectedValue = "expected value"});
+    [TestMethod]
+    public void ConvertJsonPathCondition_InputIsJObject_ShouldReturnStubJsonPathModelCorrectly()
+    {
+        // Arrange
+        var input = JObject.FromObject(new {query = "jpath query", expectedValue = "expected value"});
 
-            // Act
-            var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
+        // Act
+        var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
 
-            // Assert
-            Assert.AreEqual("jpath query", result.Query);
-            Assert.AreEqual("expected value", result.ExpectedValue);
-        }
+        // Assert
+        Assert.AreEqual("jpath query", result.Query);
+        Assert.AreEqual("expected value", result.ExpectedValue);
+    }
 
-        [TestMethod]
-        public void ConvertJsonPathCondition_InputIsObjectDictionary_ShouldReturnStubJsonPathModelCorrectly()
-        {
-            // Arrange
-            var input = new Dictionary<object, object> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
+    [TestMethod]
+    public void ConvertJsonPathCondition_InputIsObjectDictionary_ShouldReturnStubJsonPathModelCorrectly()
+    {
+        // Arrange
+        var input = new Dictionary<object, object> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
 
-            // Act
-            var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
+        // Act
+        var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
 
-            // Assert
-            Assert.AreEqual("jpath query", result.Query);
-            Assert.AreEqual("expected value", result.ExpectedValue);
-        }
+        // Assert
+        Assert.AreEqual("jpath query", result.Query);
+        Assert.AreEqual("expected value", result.ExpectedValue);
+    }
 
-        [TestMethod]
-        public void ConvertJsonPathCondition_InputIsStringDictionary_ShouldReturnStubJsonPathModelCorrectly()
-        {
-            // Arrange
-            var input = new Dictionary<string, string> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
+    [TestMethod]
+    public void ConvertJsonPathCondition_InputIsStringDictionary_ShouldReturnStubJsonPathModelCorrectly()
+    {
+        // Arrange
+        var input = new Dictionary<string, string> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
 
-            // Act
-            var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
+        // Act
+        var result = JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input);
 
-            // Assert
-            Assert.AreEqual("jpath query", result.Query);
-            Assert.AreEqual("expected value", result.ExpectedValue);
-        }
+        // Assert
+        Assert.AreEqual("jpath query", result.Query);
+        Assert.AreEqual("expected value", result.ExpectedValue);
+    }
 
-        [TestMethod]
-        public void ConvertJsonPathCondition_InputIsUnknown_ShouldThrowInvalidOperationException()
-        {
-            // Arrange
-            var input = new object();
+    [TestMethod]
+    public void ConvertJsonPathCondition_InputIsUnknown_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var input = new object();
 
-            // Act
-            var exception = Assert.ThrowsException<InvalidOperationException>(() =>
-                JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input));
+        // Act
+        var exception = Assert.ThrowsException<InvalidOperationException>(() =>
+            JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input));
 
-            // Assert
-            Assert.AreEqual("Can't determine the type of the JSONPath condition for stub with ID 'stubId'.",
-                exception.Message);
-        }
+        // Assert
+        Assert.AreEqual("Can't determine the type of the JSONPath condition for stub with ID 'stubId'.",
+            exception.Message);
+    }
 
-        [TestMethod]
-        public void ConvertJsonPathCondition_QueryIsNotSet_ShouldThrowInvalidOperationException()
-        {
-            // Arrange
-            var input = new Dictionary<object, object> {{"query", string.Empty}, {"expectedValue", "expected value"}};
+    [TestMethod]
+    public void ConvertJsonPathCondition_QueryIsNotSet_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var input = new Dictionary<object, object> {{"query", string.Empty}, {"expectedValue", "expected value"}};
 
-            // Act
-            var exception = Assert.ThrowsException<InvalidOperationException>(() =>
-                JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input));
+        // Act
+        var exception = Assert.ThrowsException<InvalidOperationException>(() =>
+            JsonPathConditionChecker.ConvertJsonPathCondition("stubId", input));
 
-            // Assert
-            Assert.AreEqual("Value 'query' not set for JSONPath condition for stub with ID 'stubId'.",
-                exception.Message);
-        }
+        // Assert
+        Assert.AreEqual("Value 'query' not set for JSONPath condition for stub with ID 'stubId'.",
+            exception.Message);
     }
 }

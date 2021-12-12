@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution
+namespace HttPlaceholder.Application.StubExecution;
+
+public interface IFinalStubDeterminer
 {
-    public interface IFinalStubDeterminer
-    {
-        StubModel DetermineFinalStub(IEnumerable<(StubModel, IEnumerable<ConditionCheckResultModel>)> matchedStubs);
-    }
+    StubModel DetermineFinalStub(IEnumerable<(StubModel, IEnumerable<ConditionCheckResultModel>)> matchedStubs);
 }

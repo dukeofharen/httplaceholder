@@ -5,26 +5,25 @@ using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
+namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
+
+/// <inheritdoc />
+internal class QueryParamHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />
-    internal class QueryParamHandler : IRequestToStubConditionsHandler
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
     {
-        /// <inheritdoc />
-        public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
+        var uri = new Uri(request.Url);
+        var query = QueryHelpers.ParseQuery(uri.Query);
+        if (!query.Any())
         {
-            var uri = new Uri(request.Url);
-            var query = QueryHelpers.ParseQuery(uri.Query);
-            if (!query.Any())
-            {
-                return Task.FromResult(false);
-            }
-
-            conditions.Url.Query = query.ToDictionary(q => q.Key, q => q.Value.ToString());
-            return Task.FromResult(true);
+            return Task.FromResult(false);
         }
 
-        /// <inheritdoc />
-        public int Priority => 0;
+        conditions.Url.Query = query.ToDictionary(q => q.Key, q => q.Value.ToString());
+        return Task.FromResult(true);
     }
+
+    /// <inheritdoc />
+    public int Priority => 0;
 }

@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace HttPlaceholder.Common
-{
-    public interface IDateTime
-    {
-        DateTime Now { get; }
+namespace HttPlaceholder.Common;
 
-        DateTime UtcNow { get; }
-    }
+public interface IDateTime
+{
+    DateTime Now { get; }
+
+    DateTime UtcNow { get; }
 }

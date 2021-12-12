@@ -6,12 +6,12 @@ using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
+
+[TestClass]
+public class GetMetadataFacts : BaseClientTest
 {
-    [TestClass]
-    public class GetMetadataFacts : BaseClientTest
-    {
-        private const string MetadataResponse = @"{
+    private const string MetadataResponse = @"{
     ""version"": ""2019.8.24.1234"",
     ""variableHandlers"": [
         {
@@ -32,42 +32,41 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
     ]
 }";
 
-        [TestMethod]
-        public async Task GetMetadataAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
-        {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When($"{BaseUrl}ph-api/metadata")
-                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
+    [TestMethod]
+    public async Task GetMetadataAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When($"{BaseUrl}ph-api/metadata")
+            .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
-            // Act
-            var exception =
-                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.GetMetadataAsync());
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.GetMetadataAsync());
 
-            // Assert
-            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
-                exception.Message);
-        }
+        // Assert
+        Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            exception.Message);
+    }
 
-        [TestMethod]
-        public async Task GetMetadataAsync_ShouldReturnMetadata()
-        {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When($"{BaseUrl}ph-api/metadata")
-                .Respond("application/json", MetadataResponse)));
+    [TestMethod]
+    public async Task GetMetadataAsync_ShouldReturnMetadata()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When($"{BaseUrl}ph-api/metadata")
+            .Respond("application/json", MetadataResponse)));
 
-            // Act
-            var result = await client.GetMetadataAsync();
+        // Act
+        var result = await client.GetMetadataAsync();
 
-            // Assert
-            Assert.AreEqual("2019.8.24.1234", result.Version);
+        // Assert
+        Assert.AreEqual("2019.8.24.1234", result.Version);
 
-            var variableHandlers = result.VariableHandlers.ToArray();
-            Assert.AreEqual(3, variableHandlers.Length);
-            Assert.AreEqual("client_ip", variableHandlers[0].Name);
-            Assert.AreEqual("Client IP variable handler", variableHandlers[0].FullName);
-            Assert.AreEqual("((client_ip))", variableHandlers[0].Example);
-        }
+        var variableHandlers = result.VariableHandlers.ToArray();
+        Assert.AreEqual(3, variableHandlers.Length);
+        Assert.AreEqual("client_ip", variableHandlers[0].Name);
+        Assert.AreEqual("Client IP variable handler", variableHandlers[0].FullName);
+        Assert.AreEqual("((client_ip))", variableHandlers[0].Example);
     }
 }

@@ -1,11 +1,10 @@
-namespace HttPlaceholder.Application.Interfaces.Http
+namespace HttPlaceholder.Application.Interfaces.Http;
+
+public interface IClientDataResolver
 {
-    public interface IClientDataResolver
-    {
-        string GetClientIp();
+    string GetClientIp();
 
-        string GetHost();
+    string GetHost();
 
-        bool IsHttps();
-    }
+    bool IsHttps();
 }

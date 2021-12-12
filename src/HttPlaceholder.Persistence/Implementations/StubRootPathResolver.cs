@@ -7,37 +7,36 @@ using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.Persistence.Implementations
+namespace HttPlaceholder.Persistence.Implementations;
+
+internal class StubRootPathResolver : IStubRootPathResolver
 {
-    internal class StubRootPathResolver : IStubRootPathResolver
+    private readonly IAssemblyService _assemblyService;
+    private readonly SettingsModel _settings;
+    private readonly IFileService _fileService;
+
+    public StubRootPathResolver(
+        IAssemblyService assemblyService,
+        IFileService fileService,
+        IOptions<SettingsModel> options)
     {
-        private readonly IAssemblyService _assemblyService;
-        private readonly SettingsModel _settings;
-        private readonly IFileService _fileService;
+        _assemblyService = assemblyService;
+        _fileService = fileService;
+        _settings = options.Value;
+    }
 
-        public StubRootPathResolver(
-            IAssemblyService assemblyService,
-            IFileService fileService,
-            IOptions<SettingsModel> options)
+    public string[] GetStubRootPaths()
+    {
+        // First, check the "inputFile" configuration property and extract the directory of this folder.
+        var inputFile = _settings.Storage?.InputFile;
+        if (inputFile != null)
         {
-            _assemblyService = assemblyService;
-            _fileService = fileService;
-            _settings = options.Value;
+            return inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
+                .Select(f => _fileService.IsDirectory(f) ? f : Path.GetDirectoryName(f))
+                .ToArray();
         }
 
-        public string[] GetStubRootPaths()
-        {
-            // First, check the "inputFile" configuration property and extract the directory of this folder.
-            var inputFile = _settings.Storage?.InputFile;
-            if (inputFile != null)
-            {
-                return inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
-                    .Select(f => _fileService.IsDirectory(f) ? f : Path.GetDirectoryName(f))
-                    .ToArray();
-            }
-
-            // If no input file was provided, return the assembly path instead.
-            return new[] {_assemblyService.GetEntryAssemblyRootPath()};
-        }
+        // If no input file was provided, return the assembly path instead.
+        return new[] {_assemblyService.GetEntryAssemblyRootPath()};
     }
 }

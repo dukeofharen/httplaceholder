@@ -6,12 +6,12 @@ using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
+
+[TestClass]
+public class GetAllRequestsFacts : BaseClientTest
 {
-    [TestClass]
-    public class GetAllRequestsFacts : BaseClientTest
-    {
-        private const string AllRequestsResponse = @"[
+    private const string AllRequestsResponse = @"[
     {
         ""correlationId"": ""bec89e6a-9bee-4565-bccb-09f0a3363eee"",
         ""requestParameters"": {
@@ -77,51 +77,50 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
 
 
 
-        [TestMethod]
-        public async Task GetAllRequestsAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
-        {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When($"{BaseUrl}ph-api/requests")
-                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
+    [TestMethod]
+    public async Task GetAllRequestsAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When($"{BaseUrl}ph-api/requests")
+            .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
-            // Act
-            var exception =
-                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.GetAllRequestsAsync());
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.GetAllRequestsAsync());
 
-            // Assert
-            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
-                exception.Message);
-        }
+        // Assert
+        Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            exception.Message);
+    }
 
-        [TestMethod]
-        public async Task GetAllRequestsAsync_ShouldReturnAllRequests()
-        {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When($"{BaseUrl}ph-api/requests")
-                .Respond("application/json", AllRequestsResponse)));
+    [TestMethod]
+    public async Task GetAllRequestsAsync_ShouldReturnAllRequests()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When($"{BaseUrl}ph-api/requests")
+            .Respond("application/json", AllRequestsResponse)));
 
-            // Act
-            var result = (await client.GetAllRequestsAsync()).ToArray();
+        // Act
+        var result = (await client.GetAllRequestsAsync()).ToArray();
 
-            // Assert
-            Assert.AreEqual(1, result.Length);
+        // Assert
+        Assert.AreEqual(1, result.Length);
 
-            var request = result.Single();
-            Assert.AreEqual("bec89e6a-9bee-4565-bccb-09f0a3363eee", request.CorrelationId);
-            Assert.AreEqual("POST", request.RequestParameters.Method);
-            Assert.AreEqual(8, request.RequestParameters.Headers.Count);
-            Assert.AreEqual("PostmanRuntime/7.26.8", request.RequestParameters.Headers["User-Agent"]);
-            Assert.AreEqual(2, request.StubExecutionResults.Count);
-            Assert.AreEqual("xml-without-namespaces-specified", request.ExecutingStubId);
+        var request = result.Single();
+        Assert.AreEqual("bec89e6a-9bee-4565-bccb-09f0a3363eee", request.CorrelationId);
+        Assert.AreEqual("POST", request.RequestParameters.Method);
+        Assert.AreEqual(8, request.RequestParameters.Headers.Count);
+        Assert.AreEqual("PostmanRuntime/7.26.8", request.RequestParameters.Headers["User-Agent"]);
+        Assert.AreEqual(2, request.StubExecutionResults.Count);
+        Assert.AreEqual("xml-without-namespaces-specified", request.ExecutingStubId);
 
-            var stubExecutionResult = request.StubExecutionResults[0];
-            Assert.AreEqual("post-with-json-object-checker", stubExecutionResult.StubId);
-            Assert.AreEqual("MethodConditionChecker", stubExecutionResult.Conditions.ElementAt(0).CheckerName);
+        var stubExecutionResult = request.StubExecutionResults[0];
+        Assert.AreEqual("post-with-json-object-checker", stubExecutionResult.StubId);
+        Assert.AreEqual("MethodConditionChecker", stubExecutionResult.Conditions.ElementAt(0).CheckerName);
 
-            Assert.AreEqual(2, request.StubResponseWriterResults.Count);
-            Assert.AreEqual("StatusCodeResponseWriter", request.StubResponseWriterResults[0].ResponseWriterName);
-        }
+        Assert.AreEqual(2, request.StubResponseWriterResults.Count);
+        Assert.AreEqual("StatusCodeResponseWriter", request.StubResponseWriterResults[0].ResponseWriterName);
     }
 }

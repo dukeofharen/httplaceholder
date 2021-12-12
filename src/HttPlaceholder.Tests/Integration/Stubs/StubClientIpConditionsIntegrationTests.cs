@@ -4,57 +4,56 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Tests.Integration.Stubs
+namespace HttPlaceholder.Tests.Integration.Stubs;
+
+[TestClass]
+public class StubClientIpConditionsIntegrationTests : StubIntegrationTestBase
 {
-    [TestClass]
-    public class StubClientIpConditionsIntegrationTests : StubIntegrationTestBase
+    [TestInitialize]
+    public void Initialize() => InitializeStubIntegrationTest("integration.yml");
+
+    [TestCleanup]
+    public void Cleanup() => CleanupIntegrationTest();
+
+    [TestMethod]
+    public async Task StubIntegration_RegularGet_ClientIp_SingleAddress()
     {
-        [TestInitialize]
-        public void Initialize() => InitializeStubIntegrationTest("integration.yml");
-
-        [TestCleanup]
-        public void Cleanup() => CleanupIntegrationTest();
-
-        [TestMethod]
-        public async Task StubIntegration_RegularGet_ClientIp_SingleAddress()
+        // arrange
+        var url = $"{TestServer.BaseAddress}client-ip-1";
+        var request = new HttpRequestMessage
         {
-            // arrange
-            var url = $"{TestServer.BaseAddress}client-ip-1";
-            var request = new HttpRequestMessage
-            {
-                RequestUri = new Uri(url)
-            };
+            RequestUri = new Uri(url)
+        };
 
-            ClientIpResolverMock
-                .Setup(m => m.GetClientIp())
-                .Returns("127.0.0.1");
+        ClientIpResolverMock
+            .Setup(m => m.GetClientIp())
+            .Returns("127.0.0.1");
 
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("client-ip-1 OK", content);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        }
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual("client-ip-1 OK", content);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+    }
 
-        [TestMethod]
-        public async Task StubIntegration_RegularGet_ClientIp_IpRange()
+    [TestMethod]
+    public async Task StubIntegration_RegularGet_ClientIp_IpRange()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}client-ip-2";
+        var request = new HttpRequestMessage
         {
-            // arrange
-            var url = $"{TestServer.BaseAddress}client-ip-2";
-            var request = new HttpRequestMessage
-            {
-                RequestUri = new Uri(url)
-            };
+            RequestUri = new Uri(url)
+        };
 
-            ClientIpResolverMock
-                .Setup(m => m.GetClientIp())
-                .Returns("127.0.0.5");
+        ClientIpResolverMock
+            .Setup(m => m.GetClientIp())
+            .Returns("127.0.0.5");
 
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("client-ip-2 OK", content);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        }
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual("client-ip-2 OK", content);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     }
 }

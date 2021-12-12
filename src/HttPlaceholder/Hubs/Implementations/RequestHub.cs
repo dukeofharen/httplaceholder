@@ -3,28 +3,27 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using Microsoft.AspNetCore.SignalR;
 
-namespace HttPlaceholder.Hubs.Implementations
+namespace HttPlaceholder.Hubs.Implementations;
+
+/// <summary>
+/// The request SignalR hub.
+/// </summary>
+public class RequestHub : Hub
 {
-    /// <summary>
-    /// The request SignalR hub.
-    /// </summary>
-    public class RequestHub : Hub
+    private readonly ILoginService _loginService;
+
+    public RequestHub(ILoginService loginService)
     {
-        private readonly ILoginService _loginService;
+        _loginService = loginService;
+    }
 
-        public RequestHub(ILoginService loginService)
+    public override Task OnConnectedAsync()
+    {
+        if (!_loginService.CheckLoginCookie())
         {
-            _loginService = loginService;
+            throw new InvalidOperationException("NOT AUTHORIZED!");
         }
 
-        public override Task OnConnectedAsync()
-        {
-            if (!_loginService.CheckLoginCookie())
-            {
-                throw new InvalidOperationException("NOT AUTHORIZED!");
-            }
-
-            return base.OnConnectedAsync();
-        }
+        return base.OnConnectedAsync();
     }
 }

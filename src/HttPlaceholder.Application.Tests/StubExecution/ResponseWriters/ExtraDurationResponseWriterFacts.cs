@@ -5,64 +5,63 @@ using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
+
+[TestClass]
+public class ExtraDurationResponseWriterFacts
 {
-    [TestClass]
-    public class ExtraDurationResponseWriterFacts
+    private readonly Mock<IAsyncService> _asyncServiceMock = new Mock<IAsyncService>();
+    private ExtraDurationResponseWriter _writer;
+
+    [TestInitialize]
+    public void Initialize() =>
+        _writer = new ExtraDurationResponseWriter(
+            _asyncServiceMock.Object);
+
+    [TestCleanup]
+    public void Cleanup() => _asyncServiceMock.VerifyAll();
+
+    [TestMethod]
+    public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
-        private readonly Mock<IAsyncService> _asyncServiceMock = new Mock<IAsyncService>();
-        private ExtraDurationResponseWriter _writer;
-
-        [TestInitialize]
-        public void Initialize() =>
-            _writer = new ExtraDurationResponseWriter(
-                _asyncServiceMock.Object);
-
-        [TestCleanup]
-        public void Cleanup() => _asyncServiceMock.VerifyAll();
-
-        [TestMethod]
-        public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
+        // arrange
+        var stub = new StubModel
         {
-            // arrange
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    ExtraDuration = null
-                }
-            };
+                ExtraDuration = null
+            }
+        };
 
-            var response = new ResponseModel();
+        var response = new ResponseModel();
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsFalse(result.Executed);
-            _asyncServiceMock.Verify(m => m.DelayAsync(It.IsAny<int>()), Times.Never);
-        }
+        // assert
+        Assert.IsFalse(result.Executed);
+        _asyncServiceMock.Verify(m => m.DelayAsync(It.IsAny<int>()), Times.Never);
+    }
 
-        [TestMethod]
-        public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow()
+    [TestMethod]
+    public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow()
+    {
+        // arrange
+        var stub = new StubModel
         {
-            // arrange
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    ExtraDuration = 10
-                }
-            };
+                ExtraDuration = 10
+            }
+        };
 
-            var response = new ResponseModel();
+        var response = new ResponseModel();
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsTrue(result.Executed);
-            _asyncServiceMock.Verify(m => m.DelayAsync(stub.Response.ExtraDuration.Value), Times.Once);
-        }
+        // assert
+        Assert.IsTrue(result.Executed);
+        _asyncServiceMock.Verify(m => m.DelayAsync(stub.Response.ExtraDuration.Value), Times.Once);
     }
 }

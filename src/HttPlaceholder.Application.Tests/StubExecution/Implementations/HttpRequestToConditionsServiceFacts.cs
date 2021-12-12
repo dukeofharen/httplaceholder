@@ -7,35 +7,34 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.AutoMock;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.Implementations
+namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
+
+[TestClass]
+public class HttpRequestToConditionsServiceFacts
 {
-    [TestClass]
-    public class HttpRequestToConditionsServiceFacts
-    {
-        private readonly AutoMocker _mocker = new();
-        private readonly Mock<IRequestToStubConditionsHandler> _handlerMock1 = new();
-        private readonly Mock<IRequestToStubConditionsHandler> _handlerMock2 = new();
+    private readonly AutoMocker _mocker = new();
+    private readonly Mock<IRequestToStubConditionsHandler> _handlerMock1 = new();
+    private readonly Mock<IRequestToStubConditionsHandler> _handlerMock2 = new();
 
-        [TestInitialize]
-        public void Initialize() =>
-            _mocker.Use<IEnumerable<IRequestToStubConditionsHandler>>(new[]
-            {
-                _handlerMock1.Object, _handlerMock2.Object
-            });
-
-        [TestMethod]
-        public async Task ConvertToConditionsAsync_HappyFlow()
+    [TestInitialize]
+    public void Initialize() =>
+        _mocker.Use<IEnumerable<IRequestToStubConditionsHandler>>(new[]
         {
-            // Arrange
-            var service = _mocker.CreateInstance<HttpRequestToConditionsService>();
-            var request = new HttpRequestModel();
+            _handlerMock1.Object, _handlerMock2.Object
+        });
 
-            // Act
-            var result = await service.ConvertToConditionsAsync(request);
+    [TestMethod]
+    public async Task ConvertToConditionsAsync_HappyFlow()
+    {
+        // Arrange
+        var service = _mocker.CreateInstance<HttpRequestToConditionsService>();
+        var request = new HttpRequestModel();
 
-            // Assert
-            _handlerMock1.Verify(m => m.HandleStubGenerationAsync(request, result));
-            _handlerMock2.Verify(m => m.HandleStubGenerationAsync(request, result));
-        }
+        // Act
+        var result = await service.ConvertToConditionsAsync(request);
+
+        // Assert
+        _handlerMock1.Verify(m => m.HandleStubGenerationAsync(request, result));
+        _handlerMock2.Verify(m => m.HandleStubGenerationAsync(request, result));
     }
 }

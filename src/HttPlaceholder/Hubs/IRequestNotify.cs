@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using HttPlaceholder.Dto.v1.Requests;
 
-namespace HttPlaceholder.Hubs
+namespace HttPlaceholder.Hubs;
+
+public interface IRequestNotify
 {
-    public interface IRequestNotify
-    {
-        Task NewRequestReceivedAsync(RequestOverviewDto request);
-    }
+    Task NewRequestReceivedAsync(RequestOverviewDto request);
 }

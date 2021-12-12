@@ -8,30 +8,29 @@ using HttPlaceholder.Domain;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HttPlaceholder.Application.Metadata.Queries.GetMetadata
+namespace HttPlaceholder.Application.Metadata.Queries.GetMetadata;
+
+public class GetMetadataQueryHandler : IRequestHandler<GetMetadataQuery, MetadataModel>
 {
-    public class GetMetadataQueryHandler : IRequestHandler<GetMetadataQuery, MetadataModel>
+    private readonly IAssemblyService _assemblyService;
+    private readonly IServiceProvider _serviceProvider;
+
+    public GetMetadataQueryHandler(
+        IAssemblyService assemblyService,
+        IServiceProvider serviceProvider)
     {
-        private readonly IAssemblyService _assemblyService;
-        private readonly IServiceProvider _serviceProvider;
+        _assemblyService = assemblyService;
+        _serviceProvider = serviceProvider;
+    }
 
-        public GetMetadataQueryHandler(
-            IAssemblyService assemblyService,
-            IServiceProvider serviceProvider)
+    public Task<MetadataModel> Handle(GetMetadataQuery request, CancellationToken cancellationToken)
+    {
+        var handlers = _serviceProvider.GetServices<IResponseVariableParsingHandler>();
+        var result = new MetadataModel
         {
-            _assemblyService = assemblyService;
-            _serviceProvider = serviceProvider;
-        }
-
-        public Task<MetadataModel> Handle(GetMetadataQuery request, CancellationToken cancellationToken)
-        {
-            var handlers = _serviceProvider.GetServices<IResponseVariableParsingHandler>();
-            var result = new MetadataModel
-            {
-                Version = _assemblyService.GetAssemblyVersion(),
-                VariableHandlers = handlers.Select(h => new VariableHandlerModel(h.Name, h.FullName, h.Example))
-            };
-            return Task.FromResult(result);
-        }
+            Version = _assemblyService.GetAssemblyVersion(),
+            VariableHandlers = handlers.Select(h => new VariableHandlerModel(h.Name, h.FullName, h.Example))
+        };
+        return Task.FromResult(result);
     }
 }

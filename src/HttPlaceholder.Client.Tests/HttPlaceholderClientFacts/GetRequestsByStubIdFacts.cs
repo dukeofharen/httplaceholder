@@ -6,12 +6,12 @@ using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
+
+[TestClass]
+public class GetRequestsByStubIdFacts : BaseClientTest
 {
-    [TestClass]
-    public class GetRequestsByStubIdFacts : BaseClientTest
-    {
-        private const string GetRequestsResponse = @"[
+    private const string GetRequestsResponse = @"[
     {
         ""correlationId"": ""95890e55-0be2-4c40-9046-7c7b291693ce"",
         ""requestParameters"": {
@@ -55,42 +55,41 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
     }
 ]";
 
-        [TestMethod]
-        public async Task GetRequestsByStubIdAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
-        {
-            // Arrange
-            const string stubId = "fallback";
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When($"{BaseUrl}ph-api/stubs/{stubId}/requests")
-                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
+    [TestMethod]
+    public async Task GetRequestsByStubIdAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
+    {
+        // Arrange
+        const string stubId = "fallback";
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When($"{BaseUrl}ph-api/stubs/{stubId}/requests")
+            .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
-            // Act
-            var exception =
-                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                    client.GetRequestsByStubIdAsync(stubId));
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
+                client.GetRequestsByStubIdAsync(stubId));
 
-            // Assert
-            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
-                exception.Message);
-        }
+        // Assert
+        Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            exception.Message);
+    }
 
-        [TestMethod]
-        public async Task GetRequestsByStubIdAsync_ShouldReturnRequests()
-        {
-            // Arrange
-            const string stubId = "fallback";
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When($"{BaseUrl}ph-api/stubs/{stubId}/requests")
-                .Respond("application/json", GetRequestsResponse)));
+    [TestMethod]
+    public async Task GetRequestsByStubIdAsync_ShouldReturnRequests()
+    {
+        // Arrange
+        const string stubId = "fallback";
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When($"{BaseUrl}ph-api/stubs/{stubId}/requests")
+            .Respond("application/json", GetRequestsResponse)));
 
-            // Act
-            var result = (await client.GetRequestsByStubIdAsync(stubId)).ToArray();
+        // Act
+        var result = (await client.GetRequestsByStubIdAsync(stubId)).ToArray();
 
-            // Assert
-            Assert.AreEqual(1, result.Length);
+        // Assert
+        Assert.AreEqual(1, result.Length);
 
-            var request = result.Single();
-            Assert.AreEqual("95890e55-0be2-4c40-9046-7c7b291693ce", request.CorrelationId);
-        }
+        var request = result.Single();
+        Assert.AreEqual("95890e55-0be2-4c40-9046-7c7b291693ce", request.CorrelationId);
     }
 }

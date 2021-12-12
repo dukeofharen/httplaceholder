@@ -1,8 +1,7 @@
 using MediatR;
 
-namespace HttPlaceholder.Application.Stubs.Commands.DeleteAllStubs
+namespace HttPlaceholder.Application.Stubs.Commands.DeleteAllStubs;
+
+public class DeleteAllStubsCommand : IRequest
 {
-    public class DeleteAllStubsCommand : IRequest
-    {
-    }
 }

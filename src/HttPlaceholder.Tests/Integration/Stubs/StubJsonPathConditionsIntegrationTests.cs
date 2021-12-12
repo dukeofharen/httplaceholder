@@ -5,23 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Tests.Integration.Stubs
+namespace HttPlaceholder.Tests.Integration.Stubs;
+
+[TestClass]
+public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
 {
-    [TestClass]
-    public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
+    [TestInitialize]
+    public void Initialize() => InitializeStubIntegrationTest("integration.yml");
+
+    [TestCleanup]
+    public void Cleanup() => CleanupIntegrationTest();
+
+    [TestMethod]
+    public async Task StubIntegration_RegularPut_JsonPathText_ValidateJsonPath_HappyFlow()
     {
-        [TestInitialize]
-        public void Initialize() => InitializeStubIntegrationTest("integration.yml");
-
-        [TestCleanup]
-        public void Cleanup() => CleanupIntegrationTest();
-
-        [TestMethod]
-        public async Task StubIntegration_RegularPut_JsonPathText_ValidateJsonPath_HappyFlow()
-        {
-            // arrange
-            var url = $"{TestServer.BaseAddress}users";
-            const string body = @"{
+        // arrange
+        var url = $"{TestServer.BaseAddress}users";
+        const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -41,26 +41,26 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     }
   ]
 }";
-            var request = new HttpRequestMessage
-            {
-                Content = new StringContent(body, Encoding.UTF8, "application/json"),
-                Method = HttpMethod.Put,
-                RequestUri = new Uri(url)
-            };
-
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual("jpath-string-test-ok", content);
-        }
-
-        [TestMethod]
-        public async Task StubIntegration_RegularPut_JsonPathText_ValidateJsonPath_StubNotFound()
+        var request = new HttpRequestMessage
         {
-            // arrange
-            var url = $"{TestServer.BaseAddress}users";
-            const string body = @"{
+            Content = new StringContent(body, Encoding.UTF8, "application/json"),
+            Method = HttpMethod.Put,
+            RequestUri = new Uri(url)
+        };
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual("jpath-string-test-ok", content);
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_RegularPut_JsonPathText_ValidateJsonPath_StubNotFound()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}users";
+        const string body = @"{
   ""firstName"": ""John"",
   ""lastName"" : ""doe"",
   ""age""      : 26,
@@ -80,24 +80,24 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     }
   ]
 }";
-            var request = new HttpRequestMessage
-            {
-                Content = new StringContent(body, Encoding.UTF8, "application/json"),
-                Method = HttpMethod.Put,
-                RequestUri = new Uri(url)
-            };
-
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
-        }
-
-        [TestMethod]
-        public async Task StubIntegration_RegularPut_JsonPathObject_ValidateJsonPath_HappyFlow()
+        var request = new HttpRequestMessage
         {
-            // arrange
-            var url = $"{TestServer.BaseAddress}users";
-            const string body = @"{""people"": [{
+            Content = new StringContent(body, Encoding.UTF8, "application/json"),
+            Method = HttpMethod.Put,
+            RequestUri = new Uri(url)
+        };
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_RegularPut_JsonPathObject_ValidateJsonPath_HappyFlow()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}users";
+        const string body = @"{""people"": [{
   ""firstName"": ""John"",
   ""age"": 29,
   ""achievements"": [
@@ -106,26 +106,26 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     }
   ]
 }]}";
-            var request = new HttpRequestMessage
-            {
-                Content = new StringContent(body, Encoding.UTF8, "application/json"),
-                Method = HttpMethod.Put,
-                RequestUri = new Uri(url)
-            };
-
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual("jpath-object-test-ok", content);
-        }
-
-        [TestMethod]
-        public async Task StubIntegration_RegularPut_JsonPathObject_ValidateJsonPath_StubNotFound()
+        var request = new HttpRequestMessage
         {
-            // arrange
-            var url = $"{TestServer.BaseAddress}users";
-            const string body = @"{""people"": [{
+            Content = new StringContent(body, Encoding.UTF8, "application/json"),
+            Method = HttpMethod.Put,
+            RequestUri = new Uri(url)
+        };
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual("jpath-object-test-ok", content);
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_RegularPut_JsonPathObject_ValidateJsonPath_StubNotFound()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}users";
+        const string body = @"{""people"": [{
   ""firstName"": ""Marc"",
   ""age"": 29,
   ""achievements"": [
@@ -134,16 +134,15 @@ namespace HttPlaceholder.Tests.Integration.Stubs
     }
   ]
 }]}";
-            var request = new HttpRequestMessage
-            {
-                Content = new StringContent(body, Encoding.UTF8, "application/json"),
-                Method = HttpMethod.Put,
-                RequestUri = new Uri(url)
-            };
+        var request = new HttpRequestMessage
+        {
+            Content = new StringContent(body, Encoding.UTF8, "application/json"),
+            Method = HttpMethod.Put,
+            RequestUri = new Uri(url)
+        };
 
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
-        }
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
     }
 }

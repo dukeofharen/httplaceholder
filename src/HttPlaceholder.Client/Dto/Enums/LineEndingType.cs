@@ -1,23 +1,22 @@
-﻿namespace HttPlaceholder.Client.Dto.Enums
+﻿namespace HttPlaceholder.Client.Dto.Enums;
+
+/// <summary>
+/// Specifies the line ending type for a response.
+/// </summary>
+public enum LineEndingType
 {
     /// <summary>
-    /// Specifies the line ending type for a response.
+    /// Not set.
     /// </summary>
-    public enum LineEndingType
-    {
-        /// <summary>
-        /// Not set.
-        /// </summary>
-        NotSet,
+    NotSet,
 
-        /// <summary>
-        /// Use Windows line endings (CR/NL).
-        /// </summary>
-        Windows,
+    /// <summary>
+    /// Use Windows line endings (CR/NL).
+    /// </summary>
+    Windows,
 
-        /// <summary>
-        /// Use Unix line endings (NL).
-        /// </summary>
-        Unix
-    }
+    /// <summary>
+    /// Use Unix line endings (NL).
+    /// </summary>
+    Unix
 }

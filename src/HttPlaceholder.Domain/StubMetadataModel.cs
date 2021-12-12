@@ -1,13 +1,12 @@
-﻿namespace HttPlaceholder.Domain
+﻿namespace HttPlaceholder.Domain;
+
+/// <summary>
+/// A model for storing metadata of a stub.
+/// </summary>
+public class StubMetadataModel
 {
     /// <summary>
-    /// A model for storing metadata of a stub.
+    /// Gets or sets a value indicating whether [read only].
     /// </summary>
-    public class StubMetadataModel
-    {
-        /// <summary>
-        /// Gets or sets a value indicating whether [read only].
-        /// </summary>
-        public bool ReadOnly { get; set; }
-    }
+    public bool ReadOnly { get; set; }
 }

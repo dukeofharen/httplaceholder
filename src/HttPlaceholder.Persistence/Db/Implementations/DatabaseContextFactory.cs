@@ -1,14 +1,13 @@
-﻿namespace HttPlaceholder.Persistence.Db.Implementations
+﻿namespace HttPlaceholder.Persistence.Db.Implementations;
+
+internal class DatabaseContextFactory : IDatabaseContextFactory
 {
-    internal class DatabaseContextFactory : IDatabaseContextFactory
+    private readonly IDbConnectionFactory _dbConnectionFactory;
+
+    public DatabaseContextFactory(IDbConnectionFactory dbConnectionFactory)
     {
-        private readonly IDbConnectionFactory _dbConnectionFactory;
-
-        public DatabaseContextFactory(IDbConnectionFactory dbConnectionFactory)
-        {
-            _dbConnectionFactory = dbConnectionFactory;
-        }
-
-        public IDatabaseContext CreateDatabaseContext() => new DatabaseContext(_dbConnectionFactory.GetConnection());
+        _dbConnectionFactory = dbConnectionFactory;
     }
+
+    public IDatabaseContext CreateDatabaseContext() => new DatabaseContext(_dbConnectionFactory.GetConnection());
 }

@@ -5,84 +5,83 @@ using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
+
+[TestClass]
+public class TextResponseWriterFacts
 {
-    [TestClass]
-    public class TextResponseWriterFacts
+    private readonly TextResponseWriter _writer = new TextResponseWriter();
+
+    [TestMethod]
+    public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
-        private readonly TextResponseWriter _writer = new TextResponseWriter();
-
-        [TestMethod]
-        public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
+        // arrange
+        var stub = new StubModel
         {
-            // arrange
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    Text = null
-                }
-            };
+                Text = null
+            }
+        };
 
-            var response = new ResponseModel();
+        var response = new ResponseModel();
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsFalse(result.Executed);
-            Assert.IsNull(response.Body);
-        }
+        // assert
+        Assert.IsFalse(result.Executed);
+        Assert.IsNull(response.Body);
+    }
 
-        [TestMethod]
-        public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow()
+    [TestMethod]
+    public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow()
+    {
+        // arrange
+        const string text = "bla123";
+        var expectedBody = Encoding.UTF8.GetBytes(text);
+        var stub = new StubModel
         {
-            // arrange
-            const string text = "bla123";
-            var expectedBody = Encoding.UTF8.GetBytes(text);
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    Text = text
-                }
-            };
+                Text = text
+            }
+        };
 
-            var response = new ResponseModel();
+        var response = new ResponseModel();
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsTrue(result.Executed);
-            Assert.IsTrue(expectedBody.SequenceEqual(response.Body));
-            Assert.AreEqual("text/plain", response.Headers["Content-Type"]);
-        }
+        // assert
+        Assert.IsTrue(result.Executed);
+        Assert.IsTrue(expectedBody.SequenceEqual(response.Body));
+        Assert.AreEqual("text/plain", response.Headers["Content-Type"]);
+    }
 
-        [TestMethod]
-        public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
+    [TestMethod]
+    public async Task TextResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
+    {
+        // arrange
+        const string text = "bla123";
+        var expectedBody = Encoding.UTF8.GetBytes(text);
+        var stub = new StubModel
         {
-            // arrange
-            const string text = "bla123";
-            var expectedBody = Encoding.UTF8.GetBytes(text);
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    Text = text
-                }
-            };
+                Text = text
+            }
+        };
 
-            var response = new ResponseModel();
-            response.Headers.Add("Content-Type", "text/xml");
+        var response = new ResponseModel();
+        response.Headers.Add("Content-Type", "text/xml");
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsTrue(result.Executed);
-            Assert.IsTrue(expectedBody.SequenceEqual(response.Body));
-            Assert.AreEqual("text/xml", response.Headers["Content-Type"]);
-        }
+        // assert
+        Assert.IsTrue(result.Executed);
+        Assert.IsTrue(expectedBody.SequenceEqual(response.Body));
+        Assert.AreEqual("text/xml", response.Headers["Content-Type"]);
     }
 }

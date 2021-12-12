@@ -10,61 +10,60 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
-namespace HttPlaceholder
+namespace HttPlaceholder;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        Configuration = configuration;
+    }
 
-        private IConfiguration Configuration { get; }
+    private IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services) =>
-            ConfigureServicesStatic(services, Configuration);
+    public void ConfigureServices(IServiceCollection services) =>
+        ConfigureServicesStatic(services, Configuration);
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
-            ConfigureStatic(app, true, Configuration?.Get<SettingsModel>());
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
+        ConfigureStatic(app, true, Configuration?.Get<SettingsModel>());
 
-        public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, SettingsModel settings)
-        {
-            var enableUserInterface = settings?.Gui?.EnableUserInterface == true;
-            app
-                .UseHttPlaceholder()
-                .UseOpenApi()
-                .UseSwaggerUi3()
-                .UseGui(enableUserInterface)
-                .UsePhStatic()
-                .PreloadStubs(preloadStubs);
-            app
-                .UseRouting()
-                .UseEndpoints(options =>
-                {
-                    options.MapHub<RequestHub>("/requestHub");
-                    options.MapControllers();
-                });
-        }
-
-        public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration)
-        {
-            services
-                .AddMvc()
-                .AddNewtonsoftJson(o => o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
-                .AddApplicationPart(Assembly.GetExecutingAssembly());
-            services.Configure<MvcOptions>(o =>
+    public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, SettingsModel settings)
+    {
+        var enableUserInterface = settings?.Gui?.EnableUserInterface == true;
+        app
+            .UseHttPlaceholder()
+            .UseOpenApi()
+            .UseSwaggerUi3()
+            .UseGui(enableUserInterface)
+            .UsePhStatic()
+            .PreloadStubs(preloadStubs);
+        app
+            .UseRouting()
+            .UseEndpoints(options =>
             {
-                o.RespectBrowserAcceptHeader = true;
-                o.ReturnHttpNotAcceptable = true;
-                o
-                    .AddYamlFormatting()
-                    .AddPlainTextFormatting();
+                options.MapHub<RequestHub>("/requestHub");
+                options.MapControllers();
             });
-            services
-                .AddHttPlaceholder(configuration)
-                .AddHttpContextAccessor()
-                .AddLogging()
-                .AddOpenApiDocument(c => c.Title = "HttPlaceholder API");
-        }
+    }
+
+    public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration)
+    {
+        services
+            .AddMvc()
+            .AddNewtonsoftJson(o => o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
+            .AddApplicationPart(Assembly.GetExecutingAssembly());
+        services.Configure<MvcOptions>(o =>
+        {
+            o.RespectBrowserAcceptHeader = true;
+            o.ReturnHttpNotAcceptable = true;
+            o
+                .AddYamlFormatting()
+                .AddPlainTextFormatting();
+        });
+        services
+            .AddHttPlaceholder(configuration)
+            .AddHttpContextAccessor()
+            .AddLogging()
+            .AddOpenApiDocument(c => c.Title = "HttPlaceholder API");
     }
 }

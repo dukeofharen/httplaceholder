@@ -5,135 +5,134 @@ using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
+namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
+
+[TestClass]
+public class BodyConditionCheckerFacts
 {
-    [TestClass]
-    public class BodyConditionCheckerFacts
+    private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+    private BodyConditionChecker _checker;
+
+    [TestInitialize]
+    public void Initialize() =>
+        _checker = new BodyConditionChecker(
+            _httpContextServiceMock.Object);
+
+    [TestCleanup]
+    public void Cleanup() => _httpContextServiceMock.VerifyAll();
+
+    [TestMethod]
+    public void BodyConditionChecker_Validate_StubsFound_ButNoBodyConditions_ShouldReturnNotExecuted()
     {
-        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
-        private BodyConditionChecker _checker;
-
-        [TestInitialize]
-        public void Initialize() =>
-            _checker = new BodyConditionChecker(
-                _httpContextServiceMock.Object);
-
-        [TestCleanup]
-        public void Cleanup() => _httpContextServiceMock.VerifyAll();
-
-        [TestMethod]
-        public void BodyConditionChecker_Validate_StubsFound_ButNoBodyConditions_ShouldReturnNotExecuted()
+        // arrange
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            var conditions = new StubConditionsModel
-            {
-                Body = null
-            };
+            Body = null
+        };
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void BodyConditionChecker_Validate_StubsFound_AllBodyConditionsIncorrect_ShouldReturnInvalid()
+    [TestMethod]
+    public void BodyConditionChecker_Validate_StubsFound_AllBodyConditionsIncorrect_ShouldReturnInvalid()
+    {
+        // arrange
+        const string body = "this is a test";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string body = "this is a test";
-            var conditions = new StubConditionsModel
+            Body = new[]
             {
-                Body = new[]
-                  {
-                  @"\bthat\b",
-                  @"\btree\b"
-               }
-            };
+                @"\bthat\b",
+                @"\btree\b"
+            }
+        };
 
-            _httpContextServiceMock
-               .Setup(m => m.GetBody())
-               .Returns(body);
+        _httpContextServiceMock
+            .Setup(m => m.GetBody())
+            .Returns(body);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void BodyConditionChecker_Validate_StubsFound_OnlyOneBodyConditionCorrect_ShouldReturnInvalid()
+    [TestMethod]
+    public void BodyConditionChecker_Validate_StubsFound_OnlyOneBodyConditionCorrect_ShouldReturnInvalid()
+    {
+        // arrange
+        const string body = "this is a test";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string body = "this is a test";
-            var conditions = new StubConditionsModel
+            Body = new[]
             {
-                Body = new[]
-                  {
-                  @"\bthis\b",
-                  @"\btree\b"
-               }
-            };
+                @"\bthis\b",
+                @"\btree\b"
+            }
+        };
 
-            _httpContextServiceMock
-               .Setup(m => m.GetBody())
-               .Returns(body);
+        _httpContextServiceMock
+            .Setup(m => m.GetBody())
+            .Returns(body);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void BodyConditionChecker_Validate_StubsFound_HappyFlow_FullText()
+    [TestMethod]
+    public void BodyConditionChecker_Validate_StubsFound_HappyFlow_FullText()
+    {
+        // arrange
+        const string body = "this is a test";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string body = "this is a test";
-            var conditions = new StubConditionsModel
+            Body = new[]
             {
-                Body = new[]
-                  {
-                  "this is a test"
-               }
-            };
+                "this is a test"
+            }
+        };
 
-            _httpContextServiceMock
-               .Setup(m => m.GetBody())
-               .Returns(body);
+        _httpContextServiceMock
+            .Setup(m => m.GetBody())
+            .Returns(body);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void BodyConditionChecker_Validate_StubsFound_HappyFlow_Regex()
+    [TestMethod]
+    public void BodyConditionChecker_Validate_StubsFound_HappyFlow_Regex()
+    {
+        // arrange
+        const string body = "this is a test";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string body = "this is a test";
-            var conditions = new StubConditionsModel
+            Body = new[]
             {
-                Body = new[]
-                  {
-                  @"\bthis\b",
-                  @"\btest\b"
-               }
-            };
+                @"\bthis\b",
+                @"\btest\b"
+            }
+        };
 
-            _httpContextServiceMock
-               .Setup(m => m.GetBody())
-               .Returns(body);
+        _httpContextServiceMock
+            .Setup(m => m.GetBody())
+            .Returns(body);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 }

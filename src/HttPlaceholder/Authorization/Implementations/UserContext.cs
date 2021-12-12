@@ -2,17 +2,16 @@
 using HttPlaceholder.Application.Interfaces.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace HttPlaceholder.Authorization.Implementations
+namespace HttPlaceholder.Authorization.Implementations;
+
+public class UserContext : IUserContext
 {
-    public class UserContext : IUserContext
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public UserContext(IHttpContextAccessor httpContextAccessor)
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public UserContext(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        public ClaimsPrincipal User => _httpContextAccessor.HttpContext.User;
+        _httpContextAccessor = httpContextAccessor;
     }
+
+    public ClaimsPrincipal User => _httpContextAccessor.HttpContext.User;
 }

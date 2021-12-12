@@ -7,29 +7,28 @@ using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Domain;
 using MediatR;
 
-namespace HttPlaceholder.Application.Users.Queries.GetUserData
+namespace HttPlaceholder.Application.Users.Queries.GetUserData;
+
+public class GetUserDataQueryHandler : IRequestHandler<GetUserDataQuery, UserModel>
 {
-    public class GetUserDataQueryHandler : IRequestHandler<GetUserDataQuery, UserModel>
+    private readonly IUserContext _userContext;
+
+    public GetUserDataQueryHandler(IUserContext userContext)
     {
-        private readonly IUserContext _userContext;
+        _userContext = userContext;
+    }
 
-        public GetUserDataQueryHandler(IUserContext userContext)
+    public Task<UserModel> Handle(GetUserDataQuery request, CancellationToken cancellationToken)
+    {
+        var nameClaim = _userContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
+        if (!string.IsNullOrWhiteSpace(nameClaim?.Value) && request.Username != nameClaim.Value)
         {
-            _userContext = userContext;
+            throw new ForbiddenException();
         }
 
-        public Task<UserModel> Handle(GetUserDataQuery request, CancellationToken cancellationToken)
+        return Task.FromResult(new UserModel
         {
-            var nameClaim = _userContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name);
-            if (!string.IsNullOrWhiteSpace(nameClaim?.Value) && request.Username != nameClaim.Value)
-            {
-                throw new ForbiddenException();
-            }
-
-            return Task.FromResult(new UserModel
-            {
-                Username = request.Username
-            });
-        }
+            Username = request.Username
+        });
     }
 }

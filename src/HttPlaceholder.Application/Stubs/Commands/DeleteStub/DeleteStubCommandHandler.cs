@@ -5,25 +5,24 @@ using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using MediatR;
 
-namespace HttPlaceholder.Application.Stubs.Commands.DeleteStub
+namespace HttPlaceholder.Application.Stubs.Commands.DeleteStub;
+
+public class DeleteStubCommandHandler : IRequestHandler<DeleteStubCommand>
 {
-    public class DeleteStubCommandHandler : IRequestHandler<DeleteStubCommand>
+    private readonly IStubContext _stubContext;
+
+    public DeleteStubCommandHandler(IStubContext stubContext)
     {
-        private readonly IStubContext _stubContext;
+        _stubContext = stubContext;
+    }
 
-        public DeleteStubCommandHandler(IStubContext stubContext)
+    public async Task<Unit> Handle(DeleteStubCommand request, CancellationToken cancellationToken)
+    {
+        if (!await _stubContext.DeleteStubAsync(request.StubId))
         {
-            _stubContext = stubContext;
+            throw new NotFoundException(nameof(StubModel), request.StubId);
         }
 
-        public async Task<Unit> Handle(DeleteStubCommand request, CancellationToken cancellationToken)
-        {
-            if (!await _stubContext.DeleteStubAsync(request.StubId))
-            {
-                throw new NotFoundException(nameof(StubModel), request.StubId);
-            }
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

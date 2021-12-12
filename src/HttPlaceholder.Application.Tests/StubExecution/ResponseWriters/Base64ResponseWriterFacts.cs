@@ -5,57 +5,56 @@ using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
+
+[TestClass]
+public class Base64ResponseWriterFacts
 {
-    [TestClass]
-    public class Base64ResponseWriterFacts
+    private readonly Base64ResponseWriter _writer = new Base64ResponseWriter();
+
+    [TestMethod]
+    public async Task Base64ResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
-        private readonly Base64ResponseWriter _writer = new Base64ResponseWriter();
-
-        [TestMethod]
-        public async Task Base64ResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
+        // arrange
+        var stub = new StubModel
         {
-            // arrange
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    Base64 = null
-                }
-            };
+                Base64 = null
+            }
+        };
 
-            var response = new ResponseModel();
+        var response = new ResponseModel();
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsFalse(result.Executed);
-            Assert.IsNull(response.Body);
-        }
+        // assert
+        Assert.IsFalse(result.Executed);
+        Assert.IsNull(response.Body);
+    }
 
-        [TestMethod]
-        public async Task Base64ResponseWriter_WriteToResponseAsync_HappyFlow()
+    [TestMethod]
+    public async Task Base64ResponseWriter_WriteToResponseAsync_HappyFlow()
+    {
+        // arrange
+        var expectedBytes = Encoding.UTF8.GetBytes("TEST!!1!");
+
+        var stub = new StubModel
         {
-            // arrange
-            var expectedBytes = Encoding.UTF8.GetBytes("TEST!!1!");
-
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    Base64 = "VEVTVCEhMSE="
-                }
-            };
+                Base64 = "VEVTVCEhMSE="
+            }
+        };
 
-            var response = new ResponseModel();
+        var response = new ResponseModel();
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsTrue(result.Executed);
-            Assert.IsTrue(expectedBytes.SequenceEqual(response.Body));
-        }
+        // assert
+        Assert.IsTrue(result.Executed);
+        Assert.IsTrue(expectedBytes.SequenceEqual(response.Body));
     }
 }

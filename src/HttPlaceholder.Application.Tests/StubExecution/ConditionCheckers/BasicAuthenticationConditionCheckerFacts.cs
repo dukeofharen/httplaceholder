@@ -6,126 +6,125 @@ using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
+namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
+
+[TestClass]
+public class BasicAuthenticationConditionCheckerFacts
 {
-    [TestClass]
-    public class BasicAuthenticationConditionCheckerFacts
+    private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+    private BasicAuthenticationConditionChecker _checker;
+
+    [TestInitialize]
+    public void Initialize() =>
+        _checker = new BasicAuthenticationConditionChecker(
+            _httpContextServiceMock.Object);
+
+    [TestCleanup]
+    public void Cleanup() => _httpContextServiceMock.VerifyAll();
+
+    [TestMethod]
+    public void
+        BasicAuthenticationConditionChecker_Validate_StubsFound_ButNoBasicAuthenticationCondition_ShouldReturnNotExecuted()
     {
-        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
-        private BasicAuthenticationConditionChecker _checker;
+        // arrange
+        var conditions = new StubConditionsModel {BasicAuthentication = null};
 
-        [TestInitialize]
-        public void Initialize() =>
-            _checker = new BasicAuthenticationConditionChecker(
-                _httpContextServiceMock.Object);
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-        [TestCleanup]
-        public void Cleanup() => _httpContextServiceMock.VerifyAll();
+        // assert
+        Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void
-            BasicAuthenticationConditionChecker_Validate_StubsFound_ButNoBasicAuthenticationCondition_ShouldReturnNotExecuted()
+    [TestMethod]
+    public void
+        BasicAuthenticationConditionChecker_Validate_StubsFound_NoUsernameAndPasswordSet_ShouldReturnNotExecuted()
+    {
+        // arrange
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            var conditions = new StubConditionsModel {BasicAuthentication = null};
+            BasicAuthentication = new StubBasicAuthenticationModel {Username = null, Password = null}
+        };
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void
-            BasicAuthenticationConditionChecker_Validate_StubsFound_NoUsernameAndPasswordSet_ShouldReturnNotExecuted()
+    [TestMethod]
+    public void BasicAuthenticationConditionChecker_Validate_NoAuthorizationHeader_ShouldReturnInvalid()
+    {
+        // arrange
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            var conditions = new StubConditionsModel
+            BasicAuthentication = new StubBasicAuthenticationModel
             {
-                BasicAuthentication = new StubBasicAuthenticationModel {Username = null, Password = null}
-            };
+                Username = "username", Password = "password"
+            }
+        };
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var headers = new Dictionary<string, string> {{"X-Api-Key", "1"}};
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
-        }
+        _httpContextServiceMock
+            .Setup(m => m.GetHeaders())
+            .Returns(headers);
 
-        [TestMethod]
-        public void BasicAuthenticationConditionChecker_Validate_NoAuthorizationHeader_ShouldReturnInvalid()
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+
+        // assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
+
+    [TestMethod]
+    public void BasicAuthenticationConditionChecker_Validate_BasicAuthenticationIncorrect_ShouldReturnInvalid()
+    {
+        // arrange
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            var conditions = new StubConditionsModel
+            BasicAuthentication = new StubBasicAuthenticationModel
             {
-                BasicAuthentication = new StubBasicAuthenticationModel
-                {
-                    Username = "username", Password = "password"
-                }
-            };
+                Username = "username", Password = "password"
+            }
+        };
 
-            var headers = new Dictionary<string, string> {{"X-Api-Key", "1"}};
+        var headers = new Dictionary<string, string> {{"Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmRk"}};
 
-            _httpContextServiceMock
-                .Setup(m => m.GetHeaders())
-                .Returns(headers);
+        _httpContextServiceMock
+            .Setup(m => m.GetHeaders())
+            .Returns(headers);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void BasicAuthenticationConditionChecker_Validate_BasicAuthenticationIncorrect_ShouldReturnInvalid()
+    [TestMethod]
+    public void BasicAuthenticationConditionChecker_Validate_HappyFlow()
+    {
+        // arrange
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            var conditions = new StubConditionsModel
+            BasicAuthentication = new StubBasicAuthenticationModel
             {
-                BasicAuthentication = new StubBasicAuthenticationModel
-                {
-                    Username = "username", Password = "password"
-                }
-            };
+                Username = "username", Password = "password"
+            }
+        };
 
-            var headers = new Dictionary<string, string> {{"Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmRk"}};
+        var headers = new Dictionary<string, string> {{"Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmQ="}};
 
-            _httpContextServiceMock
-                .Setup(m => m.GetHeaders())
-                .Returns(headers);
+        _httpContextServiceMock
+            .Setup(m => m.GetHeaders())
+            .Returns(headers);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
-
-        [TestMethod]
-        public void BasicAuthenticationConditionChecker_Validate_HappyFlow()
-        {
-            // arrange
-            var conditions = new StubConditionsModel
-            {
-                BasicAuthentication = new StubBasicAuthenticationModel
-                {
-                    Username = "username", Password = "password"
-                }
-            };
-
-            var headers = new Dictionary<string, string> {{"Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmQ="}};
-
-            _httpContextServiceMock
-                .Setup(m => m.GetHeaders())
-                .Returns(headers);
-
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
-
-            // assert
-            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 }

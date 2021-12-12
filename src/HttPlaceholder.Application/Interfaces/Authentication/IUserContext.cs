@@ -1,9 +1,8 @@
 ﻿using System.Security.Claims;
 
-namespace HttPlaceholder.Application.Interfaces.Authentication
+namespace HttPlaceholder.Application.Interfaces.Authentication;
+
+public interface IUserContext
 {
-    public interface IUserContext
-    {
-        ClaimsPrincipal User { get; }
-    }
+    ClaimsPrincipal User { get; }
 }

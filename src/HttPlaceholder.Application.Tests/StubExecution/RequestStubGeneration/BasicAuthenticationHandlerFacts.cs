@@ -8,100 +8,99 @@ using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
+namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration;
+
+[TestClass]
+public class BasicAuthenticationHandlerFacts
 {
-    [TestClass]
-    public class BasicAuthenticationHandlerFacts
+    private readonly BasicAuthenticationHandler _handler = new();
+
+    [TestMethod]
+    public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_AuthorizationHeaderNotSet_ShouldReturnFalse()
     {
-        private readonly BasicAuthenticationHandler _handler = new();
+        // Arrange
+        var conditions = new StubConditionsModel();
+        var request = new HttpRequestModel { Headers = new Dictionary<string, string>() };
 
-        [TestMethod]
-        public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_AuthorizationHeaderNotSet_ShouldReturnFalse()
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+
+        // Assert
+        Assert.IsFalse(result);
+        Assert.IsNull(conditions.BasicAuthentication);
+    }
+
+    [TestMethod]
+    public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_AuthorizationWithout2Parts_ShouldReturnFalse()
+    {
+        // Arrange
+        var conditions = new StubConditionsModel();
+        var request = new HttpRequestModel
         {
-            // Arrange
-            var conditions = new StubConditionsModel();
-            var request = new HttpRequestModel { Headers = new Dictionary<string, string>() };
-
-            // Act
-            var result = await _handler.HandleStubGenerationAsync(request, conditions);
-
-            // Assert
-            Assert.IsFalse(result);
-            Assert.IsNull(conditions.BasicAuthentication);
-        }
-
-        [TestMethod]
-        public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_AuthorizationWithout2Parts_ShouldReturnFalse()
-        {
-            // Arrange
-            var conditions = new StubConditionsModel();
-            var request = new HttpRequestModel
+            Headers = new Dictionary<string, string>
             {
-                Headers = new Dictionary<string, string>
                 {
-                    {
-                        "Authorization",
-                        "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("user:pass:rubble"))
-                    }
+                    "Authorization",
+                    "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes("user:pass:rubble"))
                 }
-            };
+            }
+        };
 
-            // Act
-            var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
-            // Assert
-            Assert.IsFalse(result);
-            Assert.IsNull(conditions.BasicAuthentication);
-        }
+        // Assert
+        Assert.IsFalse(result);
+        Assert.IsNull(conditions.BasicAuthentication);
+    }
 
-        [TestMethod]
-        public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_AuthorizationIsBearer_ShouldReturnFalse()
+    [TestMethod]
+    public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_AuthorizationIsBearer_ShouldReturnFalse()
+    {
+        // Arrange
+        var conditions = new StubConditionsModel();
+        var request = new HttpRequestModel
         {
-            // Arrange
-            var conditions = new StubConditionsModel();
-            var request = new HttpRequestModel
+            Headers = new Dictionary<string, string>
             {
-                Headers = new Dictionary<string, string>
                 {
-                    {
-                        "Authorization",
-                        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-                    }
+                    "Authorization",
+                    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
                 }
-            };
+            }
+        };
 
-            // Act
-            var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
-            // Assert
-            Assert.IsFalse(result);
-            Assert.IsNull(conditions.BasicAuthentication);
-        }
+        // Assert
+        Assert.IsFalse(result);
+        Assert.IsNull(conditions.BasicAuthentication);
+    }
 
-        [TestMethod]
-        public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_HappyFlow()
+    [TestMethod]
+    public async Task BasicAuthenticationHandler_HandleStubGenerationAsync_HappyFlow()
+    {
+        // Arrange
+        const string username = "httplaceholder";
+        const string password = "secret";
+        var auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
+        var conditions = new StubConditionsModel
         {
-            // Arrange
-            const string username = "httplaceholder";
-            const string password = "secret";
-            var auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
-            var conditions = new StubConditionsModel
-            {
-                Headers = new Dictionary<string, string> {{"Authorization", auth}}
-            };
-            var request = new HttpRequestModel
-            {
-                Headers = new Dictionary<string, string> { { "Authorization", auth } }
-            };
+            Headers = new Dictionary<string, string> {{"Authorization", auth}}
+        };
+        var request = new HttpRequestModel
+        {
+            Headers = new Dictionary<string, string> { { "Authorization", auth } }
+        };
 
-            // Act
-            var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, conditions);
 
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreEqual(username, conditions.BasicAuthentication.Username);
-            Assert.AreEqual(password, conditions.BasicAuthentication.Password);
-            Assert.IsFalse(conditions.Headers.Any());
-        }
+        // Assert
+        Assert.IsTrue(result);
+        Assert.AreEqual(username, conditions.BasicAuthentication.Username);
+        Assert.AreEqual(password, conditions.BasicAuthentication.Password);
+        Assert.IsFalse(conditions.Headers.Any());
     }
 }

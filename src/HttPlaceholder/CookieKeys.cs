@@ -1,7 +1,6 @@
-﻿namespace HttPlaceholder
+﻿namespace HttPlaceholder;
+
+public static class CookieKeys
 {
-    public static class CookieKeys
-    {
-        public const string LoginCookieKey = "HttPlaceholderLoggedin";
-    }
+    public const string LoginCookieKey = "HttPlaceholderLoggedin";
 }

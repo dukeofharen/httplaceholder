@@ -1,7 +1,6 @@
-﻿namespace HttPlaceholder.Application.Interfaces.Persistence
+﻿namespace HttPlaceholder.Application.Interfaces.Persistence;
+
+public interface IStubRootPathResolver
 {
-    public interface IStubRootPathResolver
-    {
-        string[] GetStubRootPaths();
-    }
+    string[] GetStubRootPaths();
 }

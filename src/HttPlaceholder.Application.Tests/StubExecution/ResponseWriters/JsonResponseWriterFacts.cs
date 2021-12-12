@@ -5,84 +5,83 @@ using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
+
+[TestClass]
+public class JsonResponseWriterFacts
 {
-    [TestClass]
-    public class JsonResponseWriterFacts
+    private readonly JsonResponseWriter _writer = new JsonResponseWriter();
+
+    [TestMethod]
+    public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
-        private readonly JsonResponseWriter _writer = new JsonResponseWriter();
-
-        [TestMethod]
-        public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
+        // arrange
+        var stub = new StubModel
         {
-            // arrange
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    Json = null
-                }
-            };
+                Json = null
+            }
+        };
 
-            var response = new ResponseModel();
+        var response = new ResponseModel();
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsFalse(result.Executed);
-            Assert.IsNull(response.Body);
-        }
+        // assert
+        Assert.IsFalse(result.Executed);
+        Assert.IsNull(response.Body);
+    }
 
-        [TestMethod]
-        public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow()
+    [TestMethod]
+    public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow()
+    {
+        // arrange
+        const string responseText = "{}";
+        var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
+        var stub = new StubModel
         {
-            // arrange
-            const string responseText = "{}";
-            var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    Json = responseText
-                }
-            };
+                Json = responseText
+            }
+        };
 
-            var response = new ResponseModel();
+        var response = new ResponseModel();
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsTrue(result.Executed);
-            Assert.IsTrue(expectedResponseBytes.SequenceEqual(expectedResponseBytes));
-            Assert.AreEqual("application/json", response.Headers["Content-Type"]);
-        }
+        // assert
+        Assert.IsTrue(result.Executed);
+        Assert.IsTrue(expectedResponseBytes.SequenceEqual(expectedResponseBytes));
+        Assert.AreEqual("application/json", response.Headers["Content-Type"]);
+    }
 
-        [TestMethod]
-        public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
+    [TestMethod]
+    public async Task JsonResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
+    {
+        // arrange
+        const string responseText = "{}";
+        var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
+        var stub = new StubModel
         {
-            // arrange
-            const string responseText = "{}";
-            var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    Json = responseText
-                }
-            };
+                Json = responseText
+            }
+        };
 
-            var response = new ResponseModel();
-            response.Headers.Add("Content-Type", "text/plain");
+        var response = new ResponseModel();
+        response.Headers.Add("Content-Type", "text/plain");
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsTrue(result.Executed);
-            Assert.IsTrue(expectedResponseBytes.SequenceEqual(expectedResponseBytes));
-            Assert.AreEqual("text/plain", response.Headers["Content-Type"]);
-        }
+        // assert
+        Assert.IsTrue(result.Executed);
+        Assert.IsTrue(expectedResponseBytes.SequenceEqual(expectedResponseBytes));
+        Assert.AreEqual("text/plain", response.Headers["Content-Type"]);
     }
 }

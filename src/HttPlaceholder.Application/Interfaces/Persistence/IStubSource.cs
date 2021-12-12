@@ -2,16 +2,15 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.Interfaces.Persistence
+namespace HttPlaceholder.Application.Interfaces.Persistence;
+
+public interface IStubSource
 {
-    public interface IStubSource
-    {
-        Task<IEnumerable<StubModel>> GetStubsAsync();
+    Task<IEnumerable<StubModel>> GetStubsAsync();
 
-        Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync();
+    Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync();
 
-        Task<StubModel> GetStubAsync(string stubId);
+    Task<StubModel> GetStubAsync(string stubId);
 
-        Task PrepareStubSourceAsync();
-    }
+    Task PrepareStubSourceAsync();
 }

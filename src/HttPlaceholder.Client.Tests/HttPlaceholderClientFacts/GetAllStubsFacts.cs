@@ -7,12 +7,12 @@ using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
+
+[TestClass]
+public class GetAllStubsFacts : BaseClientTest
 {
-    [TestClass]
-    public class GetAllStubsFacts : BaseClientTest
-    {
-        private const string GetAllStubsResponse = @"[
+    private const string GetAllStubsResponse = @"[
     {
         ""stub"": {
             ""id"": ""temporary-redirect"",
@@ -59,38 +59,37 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
     }
 ]";
 
-        [TestMethod]
-        public async Task GetAllStubsAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
-        {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When(HttpMethod.Get, $"{BaseUrl}ph-api/stubs")
-                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
+    [TestMethod]
+    public async Task GetAllStubsAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When(HttpMethod.Get, $"{BaseUrl}ph-api/stubs")
+            .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
-            // Act
-            var exception =
-                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.GetAllStubsAsync());
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.GetAllStubsAsync());
 
-            // Assert
-            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
-                exception.Message);
-        }
+        // Assert
+        Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            exception.Message);
+    }
 
-        [TestMethod]
-        public async Task GetAllStubsAsync_ShouldReturnAllStubs()
-        {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When(HttpMethod.Get, $"{BaseUrl}ph-api/stubs")
-                .Respond("application/json", GetAllStubsResponse)));
+    [TestMethod]
+    public async Task GetAllStubsAsync_ShouldReturnAllStubs()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When(HttpMethod.Get, $"{BaseUrl}ph-api/stubs")
+            .Respond("application/json", GetAllStubsResponse)));
 
-            // Act
-            var result = (await client.GetAllStubsAsync()).ToArray();
+        // Act
+        var result = (await client.GetAllStubsAsync()).ToArray();
 
-            // Assert
-            Assert.AreEqual(2, result.Length);
-            Assert.AreEqual("temporary-redirect", result[0].Stub.Id);
-            Assert.AreEqual("dynamic-mode-form-post", result[1].Stub.Id);
-        }
+        // Assert
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual("temporary-redirect", result[0].Stub.Id);
+        Assert.AreEqual("dynamic-mode-form-post", result[1].Stub.Id);
     }
 }

@@ -4,39 +4,38 @@ using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
+
+[TestClass]
+public class DisplayUrlResponseVariableParsingHandlerFacts
 {
-    [TestClass]
-    public class DisplayUrlResponseVariableParsingHandlerFacts
+    private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
+    private DisplayUrlResponseVariableParsingHandler _parsingHandler;
+
+    [TestInitialize]
+    public void Initialize() => _parsingHandler = new DisplayUrlResponseVariableParsingHandler(_httpContextServiceMock.Object);
+
+    [TestCleanup]
+    public void Cleanup() => _httpContextServiceMock.VerifyAll();
+
+    [TestMethod]
+    public void RequestBodyVariableHandler_Parse_HappyFlow()
     {
-        private readonly Mock<IHttpContextService> _httpContextServiceMock = new Mock<IHttpContextService>();
-        private DisplayUrlResponseVariableParsingHandler _parsingHandler;
+        // arrange
+        const string input = "URL: ((display_url))";
+        const string url = "http://localhost:5000/test.txt?var1=value1&var2=value2";
 
-        [TestInitialize]
-        public void Initialize() => _parsingHandler = new DisplayUrlResponseVariableParsingHandler(_httpContextServiceMock.Object);
+        var expectedResult = $"URL: {url}";
 
-        [TestCleanup]
-        public void Cleanup() => _httpContextServiceMock.VerifyAll();
+        _httpContextServiceMock
+            .Setup(m => m.DisplayUrl)
+            .Returns(url);
 
-        [TestMethod]
-        public void RequestBodyVariableHandler_Parse_HappyFlow()
-        {
-            // arrange
-            const string input = "URL: ((display_url))";
-            const string url = "http://localhost:5000/test.txt?var1=value1&var2=value2";
+        // act
+        var matches = ResponseVariableParser.VarRegex.Matches(input);
+        var result = _parsingHandler.Parse(input, matches);
 
-            var expectedResult = $"URL: {url}";
-
-            _httpContextServiceMock
-                .Setup(m => m.DisplayUrl)
-                .Returns(url);
-
-            // act
-            var matches = ResponseVariableParser.VarRegex.Matches(input);
-            var result = _parsingHandler.Parse(input, matches);
-
-            // assert
-            Assert.AreEqual(expectedResult, result);
-        }
+        // assert
+        Assert.AreEqual(expectedResult, result);
     }
 }

@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution
+namespace HttPlaceholder.Application.StubExecution;
+
+public interface IStubRequestExecutor
 {
-    public interface IStubRequestExecutor
-    {
-        Task<ResponseModel> ExecuteRequestAsync();
-    }
+    Task<ResponseModel> ExecuteRequestAsync();
 }
