@@ -73,6 +73,12 @@ export default {
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
+        title: "Scenarios",
+        icon: "card-list",
+        routeName: "Scenarios",
+        hideWhenAuthEnabledAndNotLoggedIn: true,
+      },
+      {
         title: "Settings",
         icon: "wrench",
         routeName: "Settings",
