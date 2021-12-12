@@ -1,3 +1,9 @@
+[1.1.0]
+- Updated HttPlaceholder to .NET 6 (https://github.com/dukeofharen/httplaceholder/issues/202).
+
+# BREAKING CHANGES
+- Since HttPlaceholder is now using .NET 6, you also need to install .NET 6 SDK on your PC if you use the .NET tool version. If you use the OS specific version of HttPlaceholder, you do not have to have the .NET SDK installed.
+
 [1.0.0]
 - Changed release of HttPlaceholder to determine version based on the latest version in the changelog instead of on the current date (https://github.com/dukeofharen/httplaceholder/pull/201).
 - Disable verbose logging in HttPlaceholder Docker image by default (https://github.com/dukeofharen/httplaceholder/pull/195).
