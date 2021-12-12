@@ -35,8 +35,7 @@ public class ValidateObjectAttribute : ValidationAttribute
         if (results.Count != 0)
         {
             var compositeResults =
-                new CompositeValidationResult(string.Format("Validation for {0} failed!",
-                    validationContext.DisplayName));
+                new CompositeValidationResult($"Validation for {validationContext.DisplayName} failed!");
             results.ForEach(compositeResults.AddResult);
 
             return compositeResults;
@@ -53,13 +52,6 @@ public class CompositeValidationResult : ValidationResult
     public IEnumerable<ValidationResult> Results => _results;
 
     public CompositeValidationResult(string errorMessage) : base(errorMessage) { }
-
-    public CompositeValidationResult(string errorMessage, IEnumerable<string> memberNames) : base(errorMessage,
-        memberNames)
-    {
-    }
-
-    protected CompositeValidationResult(ValidationResult validationResult) : base(validationResult) { }
 
     public void AddResult(ValidationResult validationResult) => _results.Add(validationResult);
 }

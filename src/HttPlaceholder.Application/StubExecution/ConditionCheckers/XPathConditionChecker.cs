@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Xml;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
@@ -20,7 +21,7 @@ public class XPathConditionChecker : IConditionChecker
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
-        var xpathConditions = stub.Conditions?.Xpath?.ToArray() ?? new StubXpathModel[0];
+        var xpathConditions = stub.Conditions?.Xpath?.ToArray() ?? Array.Empty<StubXpathModel>();
         if (!xpathConditions.Any())
         {
             return result;

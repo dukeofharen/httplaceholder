@@ -24,7 +24,7 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
     private Mock<IWritableStubSource> _writableStubSourceMock;
     protected Mock<IDateTime> DateTimeMock;
     protected MockHttpMessageHandler MockHttp;
-    protected IList<RequestResultModel> Requests = new List<RequestResultModel>();
+    protected readonly IList<RequestResultModel> Requests = new List<RequestResultModel>();
 
     protected void InitializeStubIntegrationTest(string yamlFileName)
     {

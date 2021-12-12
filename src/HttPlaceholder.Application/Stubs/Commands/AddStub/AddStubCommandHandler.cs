@@ -21,7 +21,7 @@ public class AddStubCommandHandler : IRequestHandler<AddStubCommand, FullStubMod
 
     public async Task<FullStubModel> Handle(AddStubCommand request, CancellationToken cancellationToken)
     {
-        var validationResults = (_stubModelValidator.ValidateStubModel(request.Stub)).ToArray();
+        var validationResults = _stubModelValidator.ValidateStubModel(request.Stub).ToArray();
         if (validationResults.Any())
         {
             throw new ValidationException(validationResults);

@@ -20,7 +20,7 @@ public class FormValueConditionChecker : IConditionChecker
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
-        var formConditions = stub.Conditions?.Form?.ToArray() ?? new StubFormModel[0];
+        var formConditions = stub.Conditions?.Form?.ToArray() ?? Array.Empty<StubFormModel>();
         if (!formConditions.Any())
         {
             return result;

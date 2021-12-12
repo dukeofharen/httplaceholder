@@ -75,7 +75,7 @@ public static class ImageSharpUtilities
         var scaledFont = font;
         var s = new FontRectangle(0, 0, float.MaxValue, float.MaxValue);
 
-        var scaleFactor = (scaledFont.Size / 2); // every time we change direction we half this size
+        var scaleFactor = scaledFont.Size / 2; // every time we change direction we half this size
         var trapCount = (int)scaledFont.Size * 2;
         if (trapCount < 10)
         {
@@ -114,7 +114,7 @@ public static class ImageSharpUtilities
         }
 
         var center = new PointF(padding, height / 2);
-        var textGraphicOptions = new TextGraphicsOptions()
+        var textGraphicOptions = new TextGraphicsOptions
         {
             TextOptions =
             {

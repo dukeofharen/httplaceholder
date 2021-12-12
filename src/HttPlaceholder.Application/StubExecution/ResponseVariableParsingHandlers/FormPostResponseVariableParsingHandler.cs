@@ -38,7 +38,7 @@ public class FormPostResponseVariableParsingHandler : IResponseVariableParsingHa
         }
         catch
         {
-            formValues = new ValueTuple<string, StringValues>[0];
+            formValues = Array.Empty<(string, StringValues)>();
         }
 
         // TODO there can be multiple form values, so this should be fixed in the future.

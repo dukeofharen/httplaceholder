@@ -134,7 +134,7 @@ internal static class Program
             await client.DeleteAllScenariosAsync();
 
             // Create stubs based on cURL commands.
-            var commands = @"curl 'https://site.com/_nuxt/fonts/fa-solid-900.3eb06c7.woff2' \
+            const string commands = @"curl 'https://site.com/_nuxt/fonts/fa-solid-900.3eb06c7.woff2' \
   -H 'sec-ch-ua: "" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""' \
   -H 'Referer: ' \
   -H 'Origin: https://site.com' \

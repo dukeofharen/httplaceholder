@@ -75,7 +75,7 @@ internal class YamlFileStubSource : IStubSource
         if (fileLocations.Count == 0)
         {
             _logger.LogInformation("No .yml input files found.");
-            return Task.FromResult(new StubModel[0].AsEnumerable());
+            return Task.FromResult(Array.Empty<StubModel>().AsEnumerable());
         }
 
         if (_stubs == null || GetLastStubFileModificationDateTime(fileLocations) > _stubLoadDateTime)

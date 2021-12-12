@@ -8,7 +8,4 @@ public class AsyncService : IAsyncService
 {
     public async Task DelayAsync(int millis) =>
         await Task.Delay(millis);
-
-    public void Sleep(int millis) =>
-        Thread.Sleep(millis);
 }

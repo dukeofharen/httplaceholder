@@ -96,7 +96,7 @@ public class ReverseProxyResponseWriter : IResponseWriter
         using var responseMessage = await httpClient.SendAsync(request);
         var content = responseMessage.Content != null
             ? await responseMessage.Content.ReadAsByteArrayAsync()
-            : new byte[0];
+            : Array.Empty<byte>();
         var rawResponseHeaders = responseMessage.Headers
             .ToDictionary(h => h.Key, h => h.Value.First());
         if (stub.Response.ReverseProxy.ReplaceRootUrl == true)

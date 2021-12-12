@@ -42,7 +42,7 @@ public class ResponseVariableParserFacts
     [TestMethod]
     public void VaribaleParser_Parse_HappyFlow()
     {
-        // arange
+        // arrange
         const string input = @"((handler1:value1)) ((handler2))
 ((handler1:bla))
 ((handler-x))";

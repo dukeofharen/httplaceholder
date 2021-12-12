@@ -74,7 +74,7 @@ public class RelationalDbStubCacheFacts
             .Setup(m => m.GetStubUpdateTrackingIdQuery)
             .Returns(query);
 
-        var insertIdQuery = "INSERT TRACKING ID QUERY";
+        const string insertIdQuery = "INSERT TRACKING ID QUERY";
         _mockQueryStore
             .Setup(m => m.InsertStubUpdateTrackingIdQuery)
             .Returns(insertIdQuery);
