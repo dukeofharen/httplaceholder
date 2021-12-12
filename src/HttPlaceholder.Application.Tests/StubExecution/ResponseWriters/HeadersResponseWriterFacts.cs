@@ -4,61 +4,60 @@ using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters
+namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
+
+[TestClass]
+public class HeadersResponseWriterFacts
 {
-    [TestClass]
-    public class HeadersResponseWriterFacts
+    private readonly HeadersResponseWriter _writer = new();
+
+    [TestMethod]
+    public async Task HeadersResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
-        private readonly HeadersResponseWriter _writer = new HeadersResponseWriter();
-
-        [TestMethod]
-        public async Task HeadersResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
+        // arrange
+        var stub = new StubModel
         {
-            // arrange
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
-                {
-                    Headers = null
-                }
-            };
+                Headers = null
+            }
+        };
 
-            var response = new ResponseModel();
+        var response = new ResponseModel();
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsFalse(result.Executed);
-            Assert.AreEqual(0, response.Headers.Count);
-        }
+        // assert
+        Assert.IsFalse(result.Executed);
+        Assert.AreEqual(0, response.Headers.Count);
+    }
 
-        [TestMethod]
-        public async Task HeadersResponseWriter_WriteToResponseAsync_HappyFlow()
+    [TestMethod]
+    public async Task HeadersResponseWriter_WriteToResponseAsync_HappyFlow()
+    {
+        // arrange
+        var stub = new StubModel
         {
-            // arrange
-            var stub = new StubModel
+            Response = new StubResponseModel
             {
-                Response = new StubResponseModel
+                Headers = new Dictionary<string, string>
                 {
-                    Headers = new Dictionary<string, string>
-               {
-                  { "X-Api-Key", "1223" },
-                  { "X-User-Secret", "abc" }
-               }
+                    { "X-Api-Key", "1223" },
+                    { "X-User-Secret", "abc" }
                 }
-            };
+            }
+        };
 
-            var response = new ResponseModel();
+        var response = new ResponseModel();
 
-            // act
-            var result = await _writer.WriteToResponseAsync(stub, response);
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
 
-            // assert
-            Assert.IsTrue(result.Executed);
-            Assert.AreEqual(2, response.Headers.Count);
-            Assert.AreEqual("1223", response.Headers["X-Api-Key"]);
-            Assert.AreEqual("abc", response.Headers["X-User-Secret"]);
-        }
+        // assert
+        Assert.IsTrue(result.Executed);
+        Assert.AreEqual(2, response.Headers.Count);
+        Assert.AreEqual("1223", response.Headers["X-Api-Key"]);
+        Assert.AreEqual("abc", response.Headers["X-User-Secret"]);
     }
 }

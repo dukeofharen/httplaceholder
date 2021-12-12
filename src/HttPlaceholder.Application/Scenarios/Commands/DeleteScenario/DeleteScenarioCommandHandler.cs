@@ -4,25 +4,24 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
 using MediatR;
 
-namespace HttPlaceholder.Application.Scenarios.Commands.DeleteScenario
+namespace HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
+
+public class DeleteScenarioCommandHandler : IRequestHandler<DeleteScenarioCommand>
 {
-    public class DeleteScenarioCommandHandler : IRequestHandler<DeleteScenarioCommand>
+    private readonly IScenarioService _scenarioService;
+
+    public DeleteScenarioCommandHandler(IScenarioService scenarioService)
     {
-        private readonly IScenarioService _scenarioService;
+        _scenarioService = scenarioService;
+    }
 
-        public DeleteScenarioCommandHandler(IScenarioService scenarioService)
+    public Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken)
+    {
+        if (!_scenarioService.DeleteScenario(request.ScenarioName))
         {
-            _scenarioService = scenarioService;
+            throw new NotFoundException($"Scenario '{request.ScenarioName}' not found.");
         }
 
-        public Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken)
-        {
-            if (!_scenarioService.DeleteScenario(request.ScenarioName))
-            {
-                throw new NotFoundException($"Scenario '{request.ScenarioName}' not found.");
-            }
-
-            return Unit.Task;
-        }
+        return Unit.Task;
     }
 }

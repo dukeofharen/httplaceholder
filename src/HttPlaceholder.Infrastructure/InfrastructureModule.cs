@@ -3,19 +3,18 @@ using HttPlaceholder.Infrastructure.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace HttPlaceholder.Infrastructure
+namespace HttPlaceholder.Infrastructure;
+
+public static class InfrastructureModule
 {
-    public static class InfrastructureModule
+    public static IServiceCollection AddInfrastructureModule(this IServiceCollection services)
     {
-        public static IServiceCollection AddInfrastructureModule(this IServiceCollection services)
-        {
-            services.TryAddSingleton<IAssemblyService, AssemblyService>();
-            services.TryAddSingleton<IAsyncService, AsyncService>();
-            services.TryAddSingleton<IDateTime, MachineDateTime>();
-            services.TryAddSingleton<IEnvService, EnvService>();
-            services.TryAddSingleton<IFileService, FileService>();
-            services.TryAddSingleton<IModelValidator, ModelValidator>();
-            return services;
-        }
+        services.TryAddSingleton<IAssemblyService, AssemblyService>();
+        services.TryAddSingleton<IAsyncService, AsyncService>();
+        services.TryAddSingleton<IDateTime, MachineDateTime>();
+        services.TryAddSingleton<IEnvService, EnvService>();
+        services.TryAddSingleton<IFileService, FileService>();
+        services.TryAddSingleton<IModelValidator, ModelValidator>();
+        return services;
     }
 }

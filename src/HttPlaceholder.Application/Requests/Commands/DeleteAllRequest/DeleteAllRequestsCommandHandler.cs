@@ -3,21 +3,20 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
 using MediatR;
 
-namespace HttPlaceholder.Application.Requests.Commands.DeleteAllRequest
+namespace HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
+
+public class DeleteAllRequestsCommandHandler : IRequestHandler<DeleteAllRequestsCommand>
 {
-    public class DeleteAllRequestsCommandHandler : IRequestHandler<DeleteAllRequestsCommand>
+    private readonly IStubContext _stubContext;
+
+    public DeleteAllRequestsCommandHandler(IStubContext stubContext)
     {
-        private readonly IStubContext _stubContext;
+        _stubContext = stubContext;
+    }
 
-        public DeleteAllRequestsCommandHandler(IStubContext stubContext)
-        {
-            _stubContext = stubContext;
-        }
-
-        public async Task<Unit> Handle(DeleteAllRequestsCommand request, CancellationToken cancellationToken)
-        {
-            await _stubContext.DeleteAllRequestResultsAsync();
-            return Unit.Value;
-        }
+    public async Task<Unit> Handle(DeleteAllRequestsCommand request, CancellationToken cancellationToken)
+    {
+        await _stubContext.DeleteAllRequestResultsAsync();
+        return Unit.Value;
     }
 }

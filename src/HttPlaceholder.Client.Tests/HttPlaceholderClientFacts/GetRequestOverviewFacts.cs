@@ -6,12 +6,12 @@ using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
+
+[TestClass]
+public class GetRequestOverviewFacts : BaseClientTest
 {
-    [TestClass]
-    public class GetRequestOverviewFacts : BaseClientTest
-    {
-        private const string RequestOverviewResponse = @"[
+    private const string RequestOverviewResponse = @"[
     {
         ""correlationId"": ""bec89e6a-9bee-4565-bccb-09f0a3363eee"",
         ""method"": ""POST"",
@@ -32,40 +32,39 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
     }
 ]";
 
-        [TestMethod]
-        public async Task GetRequestOverviewAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
-        {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When($"{BaseUrl}ph-api/requests/overview")
-                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
+    [TestMethod]
+    public async Task GetRequestOverviewAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When($"{BaseUrl}ph-api/requests/overview")
+            .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
-            // Act
-            var exception =
-                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                    client.GetRequestOverviewAsync());
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
+                client.GetRequestOverviewAsync());
 
-            // Assert
-            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
-                exception.Message);
-        }
+        // Assert
+        Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            exception.Message);
+    }
 
-        [TestMethod]
-        public async Task GetRequestOverviewAsync_ShouldReturnRequestOverview()
-        {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When($"{BaseUrl}ph-api/requests/overview")
-                .Respond("application/json", RequestOverviewResponse)));
+    [TestMethod]
+    public async Task GetRequestOverviewAsync_ShouldReturnRequestOverview()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When($"{BaseUrl}ph-api/requests/overview")
+            .Respond("application/json", RequestOverviewResponse)));
 
-            // Act
-            var result = (await client.GetRequestOverviewAsync()).ToArray();
+        // Act
+        var result = (await client.GetRequestOverviewAsync()).ToArray();
 
-            // Assert
-            Assert.AreEqual(2, result.Length);
+        // Assert
+        Assert.AreEqual(2, result.Length);
 
-            Assert.AreEqual("bec89e6a-9bee-4565-bccb-09f0a3363eee", result[0].CorrelationId);
-            Assert.AreEqual("xml-without-namespaces-specified", result[0].ExecutingStubId);
-        }
+        Assert.AreEqual("bec89e6a-9bee-4565-bccb-09f0a3363eee", result[0].CorrelationId);
+        Assert.AreEqual("xml-without-namespaces-specified", result[0].ExecutingStubId);
     }
 }

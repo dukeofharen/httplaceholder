@@ -5,125 +5,124 @@ using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
+namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
+
+[TestClass]
+public class ClientIpConditionCheckerFacts
 {
-    [TestClass]
-    public class ClientIpConditionCheckerFacts
+    private readonly Mock<IClientDataResolver> _clientIpResolverMock = new();
+    private ClientIpConditionChecker _checker;
+
+    [TestInitialize]
+    public void Initialize() =>
+        _checker = new ClientIpConditionChecker(
+            _clientIpResolverMock.Object);
+
+    [TestCleanup]
+    public void Cleanup() => _clientIpResolverMock.VerifyAll();
+
+    [TestMethod]
+    public void ClientIpConditionChecker_Validate_ConditionNotSet_ShouldReturnNotExecuted()
     {
-        private readonly Mock<IClientDataResolver> _clientIpResolverMock = new Mock<IClientDataResolver>();
-        private ClientIpConditionChecker _checker;
-
-        [TestInitialize]
-        public void Initialize() =>
-            _checker = new ClientIpConditionChecker(
-                _clientIpResolverMock.Object);
-
-        [TestCleanup]
-        public void Cleanup() => _clientIpResolverMock.VerifyAll();
-
-        [TestMethod]
-        public void ClientIpConditionChecker_Validate_ConditionNotSet_ShouldReturnNotExecuted()
+        // arrange
+        const string stubId = "stub1";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string stubId = "stub1";
-            var conditions = new StubConditionsModel
-            {
-                ClientIp = null
-            };
+            ClientIp = null
+        };
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void ClientIpConditionChecker_Validate_SingleIp_NotEqual_ShouldReturnInvalid()
+    [TestMethod]
+    public void ClientIpConditionChecker_Validate_SingleIp_NotEqual_ShouldReturnInvalid()
+    {
+        // arrange
+        const string stubId = "stub1";
+        const string clientIp = "127.0.0.1";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string stubId = "stub1";
-            const string clientIp = "127.0.0.1";
-            var conditions = new StubConditionsModel
-            {
-                ClientIp = "127.0.0.2"
-            };
+            ClientIp = "127.0.0.2"
+        };
 
-            _clientIpResolverMock
-               .Setup(m => m.GetClientIp())
-               .Returns(clientIp);
+        _clientIpResolverMock
+            .Setup(m => m.GetClientIp())
+            .Returns(clientIp);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void ClientIpConditionChecker_Validate_SingleIp_Equal_ShouldReturnValid()
+    [TestMethod]
+    public void ClientIpConditionChecker_Validate_SingleIp_Equal_ShouldReturnValid()
+    {
+        // arrange
+        const string stubId = "stub1";
+        const string clientIp = "127.0.0.1";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string stubId = "stub1";
-            const string clientIp = "127.0.0.1";
-            var conditions = new StubConditionsModel
-            {
-                ClientIp = "127.0.0.1"
-            };
+            ClientIp = "127.0.0.1"
+        };
 
-            _clientIpResolverMock
-               .Setup(m => m.GetClientIp())
-               .Returns(clientIp);
+        _clientIpResolverMock
+            .Setup(m => m.GetClientIp())
+            .Returns(clientIp);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void ClientIpConditionChecker_Validate_IpRange_NotInRange_ShouldReturnInvalid()
+    [TestMethod]
+    public void ClientIpConditionChecker_Validate_IpRange_NotInRange_ShouldReturnInvalid()
+    {
+        // arrange
+        const string stubId = "stub1";
+        const string clientIp = "127.0.0.9";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string stubId = "stub1";
-            const string clientIp = "127.0.0.9";
-            var conditions = new StubConditionsModel
-            {
-                ClientIp = "127.0.0.0/29"
-            };
+            ClientIp = "127.0.0.0/29"
+        };
 
-            _clientIpResolverMock
-               .Setup(m => m.GetClientIp())
-               .Returns(clientIp);
+        _clientIpResolverMock
+            .Setup(m => m.GetClientIp())
+            .Returns(clientIp);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void ClientIpConditionChecker_Validate_IpRange_InRange_ShouldReturnValid()
+    [TestMethod]
+    public void ClientIpConditionChecker_Validate_IpRange_InRange_ShouldReturnValid()
+    {
+        // arrange
+        const string stubId = "stub1";
+        const string clientIp = "127.0.0.6";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string stubId = "stub1";
-            const string clientIp = "127.0.0.6";
-            var conditions = new StubConditionsModel
-            {
-                ClientIp = "127.0.0.0/29"
-            };
+            ClientIp = "127.0.0.0/29"
+        };
 
-            _clientIpResolverMock
-               .Setup(m => m.GetClientIp())
-               .Returns(clientIp);
+        _clientIpResolverMock
+            .Setup(m => m.GetClientIp())
+            .Returns(clientIp);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 }

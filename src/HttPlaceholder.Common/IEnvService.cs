@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace HttPlaceholder.Common
+namespace HttPlaceholder.Common;
+
+public interface IEnvService
 {
-    public interface IEnvService
-    {
-        IDictionary<string, string> GetEnvironmentVariables();
+    IDictionary<string, string> GetEnvironmentVariables();
 
-        string GetEnvironmentVariable(string key);
+    string GetEnvironmentVariable(string key);
 
-        bool IsOs(OSPlatform platform);
-    }
+    bool IsOs(OSPlatform platform);
 }

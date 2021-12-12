@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 
-namespace HttPlaceholder.Application.Interfaces.Mappings
+namespace HttPlaceholder.Application.Interfaces.Mappings;
+
+public interface IHaveCustomMapping
 {
-    public interface IHaveCustomMapping
-    {
-        void CreateMappings(Profile configuration);
-    }
+    void CreateMappings(Profile configuration);
 }

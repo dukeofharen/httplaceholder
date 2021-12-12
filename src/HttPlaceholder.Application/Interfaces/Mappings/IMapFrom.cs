@@ -1,6 +1,5 @@
-﻿namespace HttPlaceholder.Application.Interfaces.Mappings
+﻿namespace HttPlaceholder.Application.Interfaces.Mappings;
+
+public interface IMapFrom<TEntity>
 {
-    public interface IMapFrom<TEntity>
-    {
-    }
 }

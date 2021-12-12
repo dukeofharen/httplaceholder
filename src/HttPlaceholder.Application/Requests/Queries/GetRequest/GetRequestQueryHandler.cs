@@ -5,26 +5,25 @@ using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using MediatR;
 
-namespace HttPlaceholder.Application.Requests.Queries.GetRequest
+namespace HttPlaceholder.Application.Requests.Queries.GetRequest;
+
+public class GetRequestQueryHandler : IRequestHandler<GetRequestQuery, RequestResultModel>
 {
-    public class GetRequestQueryHandler : IRequestHandler<GetRequestQuery, RequestResultModel>
+    private readonly IStubContext _stubContext;
+
+    public GetRequestQueryHandler(IStubContext stubContext)
     {
-        private readonly IStubContext _stubContext;
+        _stubContext = stubContext;
+    }
 
-        public GetRequestQueryHandler(IStubContext stubContext)
+    public async Task<RequestResultModel> Handle(GetRequestQuery request, CancellationToken cancellationToken)
+    {
+        var result = await _stubContext.GetRequestResultAsync(request.CorrelationId);
+        if (result == null)
         {
-            _stubContext = stubContext;
+            throw new NotFoundException("request", request.CorrelationId);
         }
 
-        public async Task<RequestResultModel> Handle(GetRequestQuery request, CancellationToken cancellationToken)
-        {
-            var result = await _stubContext.GetRequestResultAsync(request.CorrelationId);
-            if (result == null)
-            {
-                throw new NotFoundException("request", request.CorrelationId);
-            }
-
-            return result;
-        }
+        return result;
     }
 }

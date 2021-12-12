@@ -5,36 +5,35 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using NetTools;
 
-namespace HttPlaceholder.Application.StubExecution.ConditionCheckers
+namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
+
+public class ClientIpConditionChecker : IConditionChecker
 {
-    public class ClientIpConditionChecker : IConditionChecker
+    private readonly IClientDataResolver _clientDataResolver;
+
+    public ClientIpConditionChecker(IClientDataResolver clientDataResolver)
     {
-        private readonly IClientDataResolver _clientDataResolver;
+        _clientDataResolver = clientDataResolver;
+    }
 
-        public ClientIpConditionChecker(IClientDataResolver clientDataResolver)
+    public ConditionCheckResultModel Validate(StubModel stub)
+    {
+        var result = new ConditionCheckResultModel();
+        var clientIpCondition = stub.Conditions?.ClientIp;
+        if (clientIpCondition == null)
         {
-            _clientDataResolver = clientDataResolver;
-        }
-
-        public ConditionCheckResultModel Validate(StubModel stub)
-        {
-            var result = new ConditionCheckResultModel();
-            var clientIpCondition = stub.Conditions?.ClientIp;
-            if (clientIpCondition == null)
-            {
-                return result;
-            }
-
-            var clientIp = IPAddress.Parse(_clientDataResolver.GetClientIp());
-            var ranges = IPAddressRange.Parse(clientIpCondition).AsEnumerable();
-            result.ConditionValidation = ranges
-                .Any(i => i.Equals(clientIp))
-                ? ConditionValidationType.Valid
-                : ConditionValidationType.Invalid;
-
             return result;
         }
 
-        public int Priority => 10;
+        var clientIp = IPAddress.Parse(_clientDataResolver.GetClientIp());
+        var ranges = IPAddressRange.Parse(clientIpCondition).AsEnumerable();
+        result.ConditionValidation = ranges
+            .Any(i => i.Equals(clientIp))
+            ? ConditionValidationType.Valid
+            : ConditionValidationType.Invalid;
+
+        return result;
     }
+
+    public int Priority => 10;
 }

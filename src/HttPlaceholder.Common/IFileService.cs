@@ -1,37 +1,36 @@
 using System;
 
-namespace HttPlaceholder.Common
+namespace HttPlaceholder.Common;
+
+public interface IFileService
 {
-    public interface IFileService
-    {
-        byte[] ReadAllBytes(string path);
+    byte[] ReadAllBytes(string path);
 
-        string ReadAllText(string path);
+    string ReadAllText(string path);
 
-        void WriteAllBytes(string path, byte[] contents);
+    void WriteAllBytes(string path, byte[] contents);
 
-        void WriteAllText(string path, string contents);
+    void WriteAllText(string path, string contents);
 
-        bool FileExists(string path);
+    bool FileExists(string path);
 
-        bool DirectoryExists(string path);
+    bool DirectoryExists(string path);
 
-        void CreateDirectory(string path);
+    void CreateDirectory(string path);
 
-        string GetTempPath();
+    string GetTempPath();
 
-        void DeleteFile(string path);
+    void DeleteFile(string path);
 
-        DateTime GetLastWriteTime(string path);
+    DateTime GetLastWriteTime(string path);
 
-        bool IsDirectory(string path);
+    bool IsDirectory(string path);
 
-        string[] GetFiles(string path, string searchPattern);
+    string[] GetFiles(string path, string searchPattern);
 
-        string[] GetFiles(string path, string[] allowedFileExtensions);
+    string[] GetFiles(string path, string[] allowedFileExtensions);
 
-        string GetCurrentDirectory();
+    string GetCurrentDirectory();
 
-        DateTime GetModicationDateTime(string path);
-    }
+    DateTime GetModicationDateTime(string path);
 }

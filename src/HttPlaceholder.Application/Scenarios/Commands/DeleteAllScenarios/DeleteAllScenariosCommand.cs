@@ -1,8 +1,7 @@
 ﻿using MediatR;
 
-namespace HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios
+namespace HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios;
+
+public class DeleteAllScenariosCommand : IRequest
 {
-    public class DeleteAllScenariosCommand : IRequest
-    {
-    }
 }

@@ -1,7 +1,6 @@
-﻿namespace HttPlaceholder.Persistence.FileSystem.Models
+﻿namespace HttPlaceholder.Persistence.FileSystem.Models;
+
+public class FileStorageMetadataModel
 {
-    public class FileStorageMetadataModel
-    {
-        public string StubUpdateTrackingId { get; set; }
-    }
+    public string StubUpdateTrackingId { get; set; }
 }

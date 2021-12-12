@@ -9,12 +9,12 @@ using HttPlaceholder.Client.StubBuilders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
+
+[TestClass]
+public class CreateStubFacts : BaseClientTest
 {
-    [TestClass]
-    public class CreateStubFacts : BaseClientTest
-    {
-        private const string CreateStubResponse = @"{
+    private const string CreateStubResponse = @"{
     ""stub"": {
         ""id"": ""test-situation"",
         ""conditions"": {
@@ -39,76 +39,75 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
     }
 }";
 
-        [TestMethod]
-        public async Task CreateStubAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
+    [TestMethod]
+    public async Task CreateStubAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When(HttpMethod.Post, $"{BaseUrl}ph-api/stubs")
+            .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
+
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.CreateStubAsync(new StubDto()));
+
+        // Assert
+        Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            exception.Message);
+    }
+
+    [TestMethod]
+    public async Task CreateStubAsync_ShouldCreateStub()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When(HttpMethod.Post, $"{BaseUrl}ph-api/stubs")
+            .WithPartialContent("test-situation")
+            .WithPartialContent("GET")
+            .WithPartialContent("OK my dude!")
+            .Respond("application/json", CreateStubResponse)));
+        var input = new StubDto
         {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When(HttpMethod.Post, $"{BaseUrl}ph-api/stubs")
-                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
-
-            // Act
-            var exception =
-                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.CreateStubAsync(new StubDto()));
-
-            // Assert
-            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
-                exception.Message);
-        }
-
-        [TestMethod]
-        public async Task CreateStubAsync_ShouldCreateStub()
-        {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When(HttpMethod.Post, $"{BaseUrl}ph-api/stubs")
-                .WithPartialContent("test-situation")
-                .WithPartialContent("GET")
-                .WithPartialContent("OK my dude!")
-                .Respond("application/json", CreateStubResponse)));
-            var input = new StubDto
+            Id = "test-situation",
+            Tenant = "01-get",
+            Conditions = new StubConditionsDto
             {
-                Id = "test-situation",
-                Tenant = "01-get",
-                Conditions = new StubConditionsDto
+                Method = "GET",
+                Url = new StubUrlConditionDto
                 {
-                    Method = "GET",
-                    Url = new StubUrlConditionDto
-                    {
-                        Path = "/testtesttest", Query = new Dictionary<string, string> {{"id", "13"}}
-                    }
-                },
-                Response = new StubResponseDto {StatusCode = 200, Text = "OK my dude!"}
-            };
+                    Path = "/testtesttest", Query = new Dictionary<string, string> {{"id", "13"}}
+                }
+            },
+            Response = new StubResponseDto {StatusCode = 200, Text = "OK my dude!"}
+        };
 
-            // Act
-            var result = await client.CreateStubAsync(input);
+        // Act
+        var result = await client.CreateStubAsync(input);
 
-            // Assert
-            Assert.IsNotNull(result.Stub);
-            Assert.IsNotNull(result.Metadata);
-            Assert.AreEqual("test-situation", result.Stub.Id);
-            Assert.AreEqual("GET", result.Stub.Conditions.Method);
-        }
+        // Assert
+        Assert.IsNotNull(result.Stub);
+        Assert.IsNotNull(result.Metadata);
+        Assert.AreEqual("test-situation", result.Stub.Id);
+        Assert.AreEqual("GET", result.Stub.Conditions.Method);
+    }
 
-        [TestMethod]
-        public async Task CreateStubAsync_Builder_ShouldCreateStub()
-        {
-            // Arrange
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When(HttpMethod.Post, $"{BaseUrl}ph-api/stubs")
-                .WithPartialContent("stub123")
-                .Respond("application/json", CreateStubResponse)));
-            var input = StubBuilder.Begin().WithId("stub123");
+    [TestMethod]
+    public async Task CreateStubAsync_Builder_ShouldCreateStub()
+    {
+        // Arrange
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When(HttpMethod.Post, $"{BaseUrl}ph-api/stubs")
+            .WithPartialContent("stub123")
+            .Respond("application/json", CreateStubResponse)));
+        var input = StubBuilder.Begin().WithId("stub123");
 
-            // Act
-            var result = await client.CreateStubAsync(input);
+        // Act
+        var result = await client.CreateStubAsync(input);
 
-            // Assert
-            Assert.IsNotNull(result.Stub);
-            Assert.IsNotNull(result.Metadata);
-            Assert.AreEqual("test-situation", result.Stub.Id);
-            Assert.AreEqual("GET", result.Stub.Conditions.Method);
-        }
+        // Assert
+        Assert.IsNotNull(result.Stub);
+        Assert.IsNotNull(result.Metadata);
+        Assert.AreEqual("test-situation", result.Stub.Id);
+        Assert.AreEqual("GET", result.Stub.Conditions.Method);
     }
 }

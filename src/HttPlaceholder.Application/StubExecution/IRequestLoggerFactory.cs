@@ -1,7 +1,6 @@
-﻿namespace HttPlaceholder.Application.StubExecution
+﻿namespace HttPlaceholder.Application.StubExecution;
+
+public interface IRequestLoggerFactory
 {
-    public interface IRequestLoggerFactory
-    {
-        IRequestLogger GetRequestLogger();
-    }
+    IRequestLogger GetRequestLogger();
 }

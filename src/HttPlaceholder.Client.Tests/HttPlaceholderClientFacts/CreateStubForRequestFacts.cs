@@ -7,12 +7,12 @@ using HttPlaceholder.Client.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
-namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
+namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
+
+[TestClass]
+public class CreateStubForRequestFacts : BaseClientTest
 {
-    [TestClass]
-    public class CreateStubForRequestFacts : BaseClientTest
-    {
-        private const string CreateStubResult = @"{
+    private const string CreateStubResult = @"{
     ""stub"": {
         ""id"": ""generated-be3ac75bbea159e0ca1224336ce23aff"",
         ""conditions"": {
@@ -45,64 +45,63 @@ namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts
     }
 }";
 
-        [TestMethod]
-        public async Task CreateStubForRequestAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
-        {
-            // Arrange
-            const string correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When(HttpMethod.Post, $"{BaseUrl}ph-api/requests/{correlationId}/stubs")
-                .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
+    [TestMethod]
+    public async Task CreateStubForRequestAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
+    {
+        // Arrange
+        const string correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When(HttpMethod.Post, $"{BaseUrl}ph-api/requests/{correlationId}/stubs")
+            .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
-            // Act
-            var exception =
-                await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                    client.CreateStubForRequestAsync(correlationId));
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
+                client.CreateStubForRequestAsync(correlationId));
 
-            // Assert
-            Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
-                exception.Message);
-        }
+        // Assert
+        Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
+            exception.Message);
+    }
 
-        [TestMethod]
-        public async Task CreateStubForRequestAsync_ShouldCreateStub_NoInput()
-        {
-            // Arrange
-            const string correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When(HttpMethod.Post, $"{BaseUrl}ph-api/requests/{correlationId}/stubs")
-                .WithContent("{}")
-                .Respond("application/json", CreateStubResult)));
+    [TestMethod]
+    public async Task CreateStubForRequestAsync_ShouldCreateStub_NoInput()
+    {
+        // Arrange
+        const string correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When(HttpMethod.Post, $"{BaseUrl}ph-api/requests/{correlationId}/stubs")
+            .WithContent("{}")
+            .Respond("application/json", CreateStubResult)));
 
-            // Act
-            var result = await client.CreateStubForRequestAsync(correlationId);
+        // Act
+        var result = await client.CreateStubForRequestAsync(correlationId);
 
-            // Assert
-            Assert.IsNotNull(result.Stub);
-            Assert.IsNotNull(result.Metadata);
-            Assert.AreEqual("generated-be3ac75bbea159e0ca1224336ce23aff", result.Stub.Id);
-            Assert.AreEqual("GET", result.Stub.Conditions.Method);
-        }
+        // Assert
+        Assert.IsNotNull(result.Stub);
+        Assert.IsNotNull(result.Metadata);
+        Assert.AreEqual("generated-be3ac75bbea159e0ca1224336ce23aff", result.Stub.Id);
+        Assert.AreEqual("GET", result.Stub.Conditions.Method);
+    }
 
-        [TestMethod]
-        public async Task CreateStubForRequestAsync_ShouldCreateStub_WithInput()
-        {
-            // Arrange
-            const string correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
-            var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
-                .When(HttpMethod.Post, $"{BaseUrl}ph-api/requests/{correlationId}/stubs")
-                .WithContent(@"{""DoNotCreateStub"":true}")
-                .Respond("application/json", CreateStubResult)));
+    [TestMethod]
+    public async Task CreateStubForRequestAsync_ShouldCreateStub_WithInput()
+    {
+        // Arrange
+        const string correlationId = "95890e55-0be2-4c40-9046-7c7b291693ce";
+        var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
+            .When(HttpMethod.Post, $"{BaseUrl}ph-api/requests/{correlationId}/stubs")
+            .WithContent(@"{""DoNotCreateStub"":true}")
+            .Respond("application/json", CreateStubResult)));
 
-            // Act
-            var result = await client.CreateStubForRequestAsync(correlationId,
-                new CreateStubForRequestInputDto {DoNotCreateStub = true});
+        // Act
+        var result = await client.CreateStubForRequestAsync(correlationId,
+            new CreateStubForRequestInputDto {DoNotCreateStub = true});
 
-            // Assert
-            Assert.IsNotNull(result.Stub);
-            Assert.IsNotNull(result.Metadata);
-            Assert.AreEqual("generated-be3ac75bbea159e0ca1224336ce23aff", result.Stub.Id);
-            Assert.AreEqual("GET", result.Stub.Conditions.Method);
-        }
+        // Assert
+        Assert.IsNotNull(result.Stub);
+        Assert.IsNotNull(result.Metadata);
+        Assert.AreEqual("generated-be3ac75bbea159e0ca1224336ce23aff", result.Stub.Id);
+        Assert.AreEqual("GET", result.Stub.Conditions.Method);
     }
 }

@@ -2,18 +2,17 @@
 using HttPlaceholder.Hubs.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HttPlaceholder.Hubs
+namespace HttPlaceholder.Hubs;
+
+public static class SignalRModule
 {
-    public static class SignalRModule
+    public static IServiceCollection AddSignalRHubs(this IServiceCollection services)
     {
-        public static IServiceCollection AddSignalRHubs(this IServiceCollection services)
-        {
-            services
-                .AddSignalR()
-                .AddNewtonsoftJsonProtocol(options =>
-                    options.PayloadSerializerSettings.ContractResolver = new CamelCaseExceptDictionaryKeysResolver());
-            services.AddTransient<IRequestNotify, RequestNotify>();
-            return services;
-        }
+        services
+            .AddSignalR()
+            .AddNewtonsoftJsonProtocol(options =>
+                options.PayloadSerializerSettings.ContractResolver = new CamelCaseExceptDictionaryKeysResolver());
+        services.AddTransient<IRequestNotify, RequestNotify>();
+        return services;
     }
 }

@@ -1,14 +1,13 @@
 ﻿using MediatR;
 
-namespace HttPlaceholder.Application.Stubs.Commands.DeleteStub
-{
-    public class DeleteStubCommand : IRequest
-    {
-        public DeleteStubCommand(string stubId)
-        {
-            StubId = stubId;
-        }
+namespace HttPlaceholder.Application.Stubs.Commands.DeleteStub;
 
-        public string StubId { get; }
+public class DeleteStubCommand : IRequest
+{
+    public DeleteStubCommand(string stubId)
+    {
+        StubId = stubId;
     }
+
+    public string StubId { get; }
 }

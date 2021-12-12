@@ -8,52 +8,51 @@ using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.Requests.Queries
+namespace HttPlaceholder.Application.Tests.Requests.Queries;
+
+[TestClass]
+public class GetRequestQueryHandlerFacts
 {
-    [TestClass]
-    public class GetRequestQueryHandlerFacts
+    private readonly Mock<IStubContext> _mockStubContext = new();
+    private GetRequestQueryHandler _handler;
+
+    [TestInitialize]
+    public void Initialize() => _handler = new GetRequestQueryHandler(_mockStubContext.Object);
+
+    [TestCleanup]
+    public void Cleanup() => _mockStubContext.VerifyAll();
+
+    [TestMethod]
+    public async Task Handle_RequestNotFound_ShouldThrowNotFoundException()
     {
-        private readonly Mock<IStubContext> _mockStubContext = new Mock<IStubContext>();
-        private GetRequestQueryHandler _handler;
+        // Arrange
+        var correlationId = Guid.NewGuid().ToString();
+        var query = new GetRequestQuery {CorrelationId = correlationId};
 
-        [TestInitialize]
-        public void Initialize() => _handler = new GetRequestQueryHandler(_mockStubContext.Object);
+        _mockStubContext
+            .Setup(m => m.GetRequestResultAsync(correlationId))
+            .ReturnsAsync((RequestResultModel)null);
 
-        [TestCleanup]
-        public void Cleanup() => _mockStubContext.VerifyAll();
+        // Act / Assert
+        await Assert.ThrowsExceptionAsync<NotFoundException>(() => _handler.Handle(query, CancellationToken.None));
+    }
 
-        [TestMethod]
-        public async Task Handle_RequestNotFound_ShouldThrowNotFoundException()
-        {
-            // Arrange
-            var correlationId = Guid.NewGuid().ToString();
-            var query = new GetRequestQuery {CorrelationId = correlationId};
+    [TestMethod]
+    public async Task Handle_RequestFound_ShouldReturnRequest()
+    {
+        // Arrange
+        var correlationId = Guid.NewGuid().ToString();
+        var query = new GetRequestQuery {CorrelationId = correlationId};
 
-            _mockStubContext
-                .Setup(m => m.GetRequestResultAsync(correlationId))
-                .ReturnsAsync((RequestResultModel)null);
+        var expectedResult = new RequestResultModel {CorrelationId = correlationId};
+        _mockStubContext
+            .Setup(m => m.GetRequestResultAsync(correlationId))
+            .ReturnsAsync(expectedResult);
 
-            // Act / Assert
-            await Assert.ThrowsExceptionAsync<NotFoundException>(() => _handler.Handle(query, CancellationToken.None));
-        }
+        // Act
+        var result = await _handler.Handle(query, CancellationToken.None);
 
-        [TestMethod]
-        public async Task Handle_RequestFound_ShouldReturnRequest()
-        {
-            // Arrange
-            var correlationId = Guid.NewGuid().ToString();
-            var query = new GetRequestQuery {CorrelationId = correlationId};
-
-            var expectedResult = new RequestResultModel {CorrelationId = correlationId};
-            _mockStubContext
-                .Setup(m => m.GetRequestResultAsync(correlationId))
-                .ReturnsAsync(expectedResult);
-
-            // Act
-            var result = await _handler.Handle(query, CancellationToken.None);
-
-            // Assert
-            Assert.AreEqual(expectedResult, result);
-        }
+        // Assert
+        Assert.AreEqual(expectedResult, result);
     }
 }

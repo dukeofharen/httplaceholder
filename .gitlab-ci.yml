@@ -1,10 +1,9 @@
 variables:
   DEBIAN_IMAGE: debian:stable-slim
   PWSH_IMAGE: mcr.microsoft.com/powershell:latest
-  DOTNET_IMAGE: mcr.microsoft.com/dotnet/sdk:5.0
+  DOTNET_IMAGE: mcr.microsoft.com/dotnet/sdk:6.0
   NODE_IMAGE: node:lts-alpine3.9
   DOCKER_IMAGE: docker:latest
-  WINE_IMAGE: scottyhardy/docker-wine:latest
 
 stages:
   - prepare-version

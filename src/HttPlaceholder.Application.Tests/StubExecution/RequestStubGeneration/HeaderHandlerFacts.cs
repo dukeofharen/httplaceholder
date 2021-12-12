@@ -7,52 +7,51 @@ using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration
+namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration;
+
+[TestClass]
+public class HeaderHandlerFacts
 {
-    [TestClass]
-    public class HeaderHandlerFacts
+    private readonly HeaderHandler _handler = new();
+
+    [TestMethod]
+    public async Task HeaderHandler_HandleStubGenerationAsync_NoHeadersSet_ShouldReturnFalse()
     {
-        private readonly HeaderHandler _handler = new();
+        // Arrange
+        var request = new HttpRequestModel { Headers = new Dictionary<string, string>() };
+        var conditions = new StubConditionsModel();
 
-        [TestMethod]
-        public async Task HeaderHandler_HandleStubGenerationAsync_NoHeadersSet_ShouldReturnFalse()
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+
+        // Assert
+        Assert.IsFalse(result);
+        Assert.IsFalse(conditions.Headers.Any());
+    }
+
+    [TestMethod]
+    public async Task HeaderHandler_HandleStubGenerationAsync_HappyFlow()
+    {
+        // Arrange
+        var request = new HttpRequestModel
         {
-            // Arrange
-            var request = new HttpRequestModel { Headers = new Dictionary<string, string>() };
-            var conditions = new StubConditionsModel();
-
-            // Act
-            var result = await _handler.HandleStubGenerationAsync(request, conditions);
-
-            // Assert
-            Assert.IsFalse(result);
-            Assert.IsFalse(conditions.Headers.Any());
-        }
-
-        [TestMethod]
-        public async Task HeaderHandler_HandleStubGenerationAsync_HappyFlow()
-        {
-            // Arrange
-            var request = new HttpRequestModel
+            Headers = new Dictionary<string, string>
             {
-                Headers = new Dictionary<string, string>
-                {
-                    { "Postman-Token", Guid.NewGuid().ToString() },
-                    { "Host", "httplaceholder.com" },
-                    { "X-Api-Key", "123" },
-                    { "X-Bla", "bla" }
-                }
-            };
-            var stub = new StubConditionsModel();
+                { "Postman-Token", Guid.NewGuid().ToString() },
+                { "Host", "httplaceholder.com" },
+                { "X-Api-Key", "123" },
+                { "X-Bla", "bla" }
+            }
+        };
+        var stub = new StubConditionsModel();
 
-            // Act
-            var result = await _handler.HandleStubGenerationAsync(request, stub);
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, stub);
 
-            // Assert
-            Assert.IsTrue(result);
-            Assert.AreEqual(2, stub.Headers.Count);
-            Assert.AreEqual("123", stub.Headers["X-Api-Key"]);
-            Assert.AreEqual("bla", stub.Headers["X-Bla"]);
-        }
+        // Assert
+        Assert.IsTrue(result);
+        Assert.AreEqual(2, stub.Headers.Count);
+        Assert.AreEqual("123", stub.Headers["X-Api-Key"]);
+        Assert.AreEqual("bla", stub.Headers["X-Bla"]);
     }
 }

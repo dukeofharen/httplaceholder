@@ -5,97 +5,96 @@ using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers
+namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
+
+[TestClass]
+public class HostConditionCheckerFacts
 {
-    [TestClass]
-    public class HostConditionCheckerFacts
+    private readonly Mock<IClientDataResolver> _clientDataResolverMock = new();
+    private HostConditionChecker _checker;
+
+    [TestInitialize]
+    public void Initialize() => _checker = new HostConditionChecker(_clientDataResolverMock.Object);
+
+    [TestCleanup]
+    public void Cleanup() => _clientDataResolverMock.VerifyAll();
+
+    [TestMethod]
+    public void HostConditionChecker_Validate_NoConditionFound_ShouldReturnNotExecuted()
     {
-        private readonly Mock<IClientDataResolver> _clientDataResolverMock = new Mock<IClientDataResolver>();
-        private HostConditionChecker _checker;
-
-        [TestInitialize]
-        public void Initialize() => _checker = new HostConditionChecker(_clientDataResolverMock.Object);
-
-        [TestCleanup]
-        public void Cleanup() => _clientDataResolverMock.VerifyAll();
-
-        [TestMethod]
-        public void HostConditionChecker_Validate_NoConditionFound_ShouldReturnNotExecuted()
+        // arrange
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            var conditions = new StubConditionsModel
-            {
-                Host = null
-            };
+            Host = null
+        };
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void HostConditionChecker_Validate_ConditionIncorrect_ShouldReturnInvalid()
+    [TestMethod]
+    public void HostConditionChecker_Validate_ConditionIncorrect_ShouldReturnInvalid()
+    {
+        // arrange
+        const string host = "httplaceholder.com";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string host = "httplaceholder.com";
-            var conditions = new StubConditionsModel
-            {
-                Host = "google.com"
-            };
+            Host = "google.com"
+        };
 
-            _clientDataResolverMock
-               .Setup(m => m.GetHost())
-               .Returns(host);
+        _clientDataResolverMock
+            .Setup(m => m.GetHost())
+            .Returns(host);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void HostConditionChecker_Validate_ConditionCorrect_ShouldReturnValid()
+    [TestMethod]
+    public void HostConditionChecker_Validate_ConditionCorrect_ShouldReturnValid()
+    {
+        // arrange
+        const string host = "httplaceholder.com";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string host = "httplaceholder.com";
-            var conditions = new StubConditionsModel
-            {
-                Host = "httplaceholder.com"
-            };
+            Host = "httplaceholder.com"
+        };
 
-            _clientDataResolverMock
-               .Setup(m => m.GetHost())
-               .Returns(host);
+        _clientDataResolverMock
+            .Setup(m => m.GetHost())
+            .Returns(host);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+    }
 
-        [TestMethod]
-        public void HostConditionChecker_Validate_ConditionCorrectRegex_ShouldReturnValid()
+    [TestMethod]
+    public void HostConditionChecker_Validate_ConditionCorrectRegex_ShouldReturnValid()
+    {
+        // arrange
+        const string host = "httplaceholder.com";
+        var conditions = new StubConditionsModel
         {
-            // arrange
-            const string host = "httplaceholder.com";
-            var conditions = new StubConditionsModel
-            {
-                Host = "http(.*)"
-            };
+            Host = "http(.*)"
+        };
 
-            _clientDataResolverMock
-               .Setup(m => m.GetHost())
-               .Returns(host);
+        _clientDataResolverMock
+            .Setup(m => m.GetHost())
+            .Returns(host);
 
-            // act
-            var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // act
+        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-            // assert
-            Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        }
+        // assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 }

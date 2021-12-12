@@ -12,9 +12,9 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="10.1.1" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
         <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta11" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
         <PackageReference Include="YamlDotNet" Version="11.2.1" />

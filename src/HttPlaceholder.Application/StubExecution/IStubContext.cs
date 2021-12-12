@@ -2,46 +2,45 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution
+namespace HttPlaceholder.Application.StubExecution;
+
+public interface IStubContext
 {
-    public interface IStubContext
-    {
-        Task<IEnumerable<FullStubModel>> GetStubsAsync();
+    Task<IEnumerable<FullStubModel>> GetStubsAsync();
 
-        Task<IEnumerable<FullStubModel>> GetStubsFromReadOnlySourcesAsync();
+    Task<IEnumerable<FullStubModel>> GetStubsFromReadOnlySourcesAsync();
 
-        Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant);
+    Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant);
 
-        Task<IEnumerable<FullStubOverviewModel>> GetStubsOverviewAsync();
+    Task<IEnumerable<FullStubOverviewModel>> GetStubsOverviewAsync();
 
-        Task<FullStubModel> AddStubAsync(StubModel stub);
+    Task<FullStubModel> AddStubAsync(StubModel stub);
 
-        Task<bool> DeleteStubAsync(string stubId);
+    Task<bool> DeleteStubAsync(string stubId);
 
-        Task DeleteAllStubsAsync(string tenant);
+    Task DeleteAllStubsAsync(string tenant);
 
-        Task DeleteAllStubsAsync();
+    Task DeleteAllStubsAsync();
 
-        Task UpdateAllStubs(string tenant, IEnumerable<StubModel> stubs);
+    Task UpdateAllStubs(string tenant, IEnumerable<StubModel> stubs);
 
-        Task<FullStubModel> GetStubAsync(string stubId);
+    Task<FullStubModel> GetStubAsync(string stubId);
 
-        Task AddRequestResultAsync(RequestResultModel requestResult);
+    Task AddRequestResultAsync(RequestResultModel requestResult);
 
-        Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
+    Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync();
 
-        Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync();
+    Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync();
 
-        Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId);
+    Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId);
 
-        Task<RequestResultModel> GetRequestResultAsync(string correlationId);
+    Task<RequestResultModel> GetRequestResultAsync(string correlationId);
 
-        Task DeleteAllRequestResultsAsync();
+    Task DeleteAllRequestResultsAsync();
 
-        Task<bool> DeleteRequestAsync(string correlationId);
+    Task<bool> DeleteRequestAsync(string correlationId);
 
-        Task<IEnumerable<string>> GetTenantNamesAsync();
+    Task<IEnumerable<string>> GetTenantNamesAsync();
 
-        Task PrepareAsync();
-    }
+    Task PrepareAsync();
 }

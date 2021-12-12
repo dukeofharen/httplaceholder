@@ -8,116 +8,115 @@ using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace HttPlaceholder.Persistence.Tests.Implementations
+namespace HttPlaceholder.Persistence.Tests.Implementations;
+
+[TestClass]
+public class StubRootPathResolverFacts
 {
-    [TestClass]
-    public class StubRootPathResolverFacts
+    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
+    private readonly Mock<IAssemblyService> _assemblyServiceMock = new();
+    private readonly Mock<IFileService> _fileServiceMock = new();
+    private StubRootPathResolver _resolver;
+
+    [TestInitialize]
+    public void Initialize() =>
+        _resolver = new StubRootPathResolver(
+            _assemblyServiceMock.Object,
+            _fileServiceMock.Object,
+            _options);
+
+    [TestCleanup]
+    public void Cleanup()
     {
-        private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
-        private readonly Mock<IAssemblyService> _assemblyServiceMock = new Mock<IAssemblyService>();
-        private readonly Mock<IFileService> _fileServiceMock = new Mock<IFileService>();
-        private StubRootPathResolver _resolver;
+        _assemblyServiceMock.VerifyAll();
+        _fileServiceMock.VerifyAll();
+    }
 
-        [TestInitialize]
-        public void Initialize() =>
-            _resolver = new StubRootPathResolver(
-                _assemblyServiceMock.Object,
-                _fileServiceMock.Object,
-                _options);
+    [TestMethod]
+    public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
+    {
+        // arrange
+        const string inputFile = @"C:\stubs";
+        _options.Value.Storage.InputFile = inputFile;
 
-        [TestCleanup]
-        public void Cleanup()
-        {
-            _assemblyServiceMock.VerifyAll();
-            _fileServiceMock.VerifyAll();
-        }
+        _fileServiceMock
+            .Setup(m => m.IsDirectory(inputFile))
+            .Returns(true);
 
-        [TestMethod]
-        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
-        {
-            // arrange
-            const string inputFile = @"C:\stubs";
-            _options.Value.Storage.InputFile = inputFile;
+        // act
+        var result = _resolver.GetStubRootPaths();
 
-            _fileServiceMock
-               .Setup(m => m.IsDirectory(inputFile))
-               .Returns(true);
+        // assert
+        Assert.AreEqual(1, result.Length);
+        Assert.AreEqual(inputFile, result[0]);
+    }
 
-            // act
-            var result = _resolver.GetStubRootPaths();
+    [TestMethod]
+    public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
+    {
+        // arrange
+        var inputFilePath =
+            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs" : "/opt/httplaceholder";
 
-            // assert
-            Assert.AreEqual(1, result.Length);
-            Assert.AreEqual(inputFile, result[0]);
-        }
+        var inputFile = Path.Combine($@"{inputFilePath}", "stubs.yml");
+        _options.Value.Storage.InputFile = inputFile;
 
-        [TestMethod]
-        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
-        {
-            // arrange
-            var inputFilePath =
-                RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs" : "/opt/httplaceholder";
+        _fileServiceMock
+            .Setup(m => m.IsDirectory(inputFile))
+            .Returns(false);
 
-            var inputFile = Path.Combine($@"{inputFilePath}", "stubs.yml");
-            _options.Value.Storage.InputFile = inputFile;
+        // act
+        var result = _resolver.GetStubRootPaths();
 
-            _fileServiceMock
-               .Setup(m => m.IsDirectory(inputFile))
-               .Returns(false);
+        // assert
+        Assert.AreEqual(1, result.Length);
+        Assert.AreEqual(inputFilePath, result[0]);
+    }
 
-            // act
-            var result = _resolver.GetStubRootPaths();
+    [DataTestMethod]
+    [DataRow(",")]
+    [DataRow("%%")]
+    public void StubRootPathResolver_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths(string separator)
+    {
+        // arrange
+        var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        var path1 = isWindows ? @"C:\stubs1" : "/opt/httplaceholder/stubs1";
+        var path2 = isWindows ? @"C:\stubs2\stub.yml" : "/opt/httplaceholder/stubs2/stub.yml";
+        var inputFilePath = $"{path1}{separator}{path2}";
 
-            // assert
-            Assert.AreEqual(1, result.Length);
-            Assert.AreEqual(inputFilePath, result[0]);
-        }
+        _options.Value.Storage.InputFile = inputFilePath;
 
-        [DataTestMethod]
-        [DataRow(",")]
-        [DataRow("%%")]
-        public void StubRootPathResolver_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths(string separator)
-        {
-            // arrange
-            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-            var path1 = isWindows ? @"C:\stubs1" : "/opt/httplaceholder/stubs1";
-            var path2 = isWindows ? @"C:\stubs2\stub.yml" : "/opt/httplaceholder/stubs2/stub.yml";
-            var inputFilePath = $"{path1}{separator}{path2}";
+        _fileServiceMock
+            .Setup(m => m.IsDirectory(path1))
+            .Returns(true);
+        _fileServiceMock
+            .Setup(m => m.IsDirectory(path2))
+            .Returns(false);
 
-            _options.Value.Storage.InputFile = inputFilePath;
+        // act
+        var result = _resolver.GetStubRootPaths();
 
-            _fileServiceMock
-                .Setup(m => m.IsDirectory(path1))
-                .Returns(true);
-            _fileServiceMock
-                .Setup(m => m.IsDirectory(path2))
-                .Returns(false);
+        // assert
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual(path1, result[0]);
+        Assert.AreEqual(Path.GetDirectoryName(path2), result[1]);
+    }
 
-            // act
-            var result = _resolver.GetStubRootPaths();
+    [TestMethod]
+    public void StubRootPathResolver_GetStubRootPath_InputFileNotSet_ShouldReturnAssemblyPath()
+    {
+        // arrange
+        var assemblyPath = Path.Combine(@"C:\stubs\bin");
 
-            // assert
-            Assert.AreEqual(2, result.Length);
-            Assert.AreEqual(path1, result[0]);
-            Assert.AreEqual(Path.GetDirectoryName(path2), result[1]);
-        }
+        _assemblyServiceMock
+            .Setup(m => m.GetEntryAssemblyRootPath())
+            .Returns(assemblyPath);
 
-        [TestMethod]
-        public void StubRootPathResolver_GetStubRootPath_InputFileNotSet_ShouldReturnAssemblyPath()
-        {
-            // arrange
-            var assemblyPath = Path.Combine(@"C:\stubs\bin");
+        // act
+        var result = _resolver.GetStubRootPaths();
 
-            _assemblyServiceMock
-               .Setup(m => m.GetEntryAssemblyRootPath())
-               .Returns(assemblyPath);
-
-            // act
-            var result = _resolver.GetStubRootPaths();
-
-            // assert
-            Assert.AreEqual(1, result.Length);
-            Assert.AreEqual(assemblyPath, result[0]);
-        }
+        // assert
+        Assert.AreEqual(1, result.Length);
+        Assert.AreEqual(assemblyPath, result[0]);
     }
 }

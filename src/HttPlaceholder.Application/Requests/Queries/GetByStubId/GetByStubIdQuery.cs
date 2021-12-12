@@ -2,15 +2,14 @@
 using HttPlaceholder.Domain;
 using MediatR;
 
-namespace HttPlaceholder.Application.Requests.Queries.GetByStubId
-{
-    public class GetByStubIdQuery : IRequest<IEnumerable<RequestResultModel>>
-    {
-        public GetByStubIdQuery(string stubId)
-        {
-            StubId = stubId;
-        }
+namespace HttPlaceholder.Application.Requests.Queries.GetByStubId;
 
-        public string StubId { get; }
+public class GetByStubIdQuery : IRequest<IEnumerable<RequestResultModel>>
+{
+    public GetByStubIdQuery(string stubId)
+    {
+        StubId = stubId;
     }
+
+    public string StubId { get; }
 }

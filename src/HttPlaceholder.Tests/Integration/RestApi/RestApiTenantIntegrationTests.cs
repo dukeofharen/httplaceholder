@@ -12,200 +12,199 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 
-namespace HttPlaceholder.Tests.Integration.RestApi
+namespace HttPlaceholder.Tests.Integration.RestApi;
+
+[TestClass]
+public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
 {
-    [TestClass]
-    public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
+    [TestInitialize]
+    public void Initialize() => InitializeRestApiIntegrationTest();
+
+    [TestCleanup]
+    public void Cleanup() => CleanupRestApiIntegrationTest();
+
+    [TestMethod]
+    public async Task RestApiIntegration_Tenant_GetAll_Yaml()
     {
-        [TestInitialize]
-        public void Initialize() => InitializeRestApiIntegrationTest();
-
-        [TestCleanup]
-        public void Cleanup() => CleanupRestApiIntegrationTest();
-
-        [TestMethod]
-        public async Task RestApiIntegration_Tenant_GetAll_Yaml()
+        // arrange
+        const string tenant = "tenant1";
+        var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
+        StubSource.StubModels.Add(new StubModel
         {
-            // arrange
-            const string tenant = "tenant1";
-            var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-            StubSource.StubModels.Add(new StubModel
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel(),
+            Tenant = "otherTenant"
+        });
+        StubSource.StubModels.Add(new StubModel
+        {
+            Id = "test-456",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel(),
+            Tenant = tenant
+        });
+
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.IsTrue(response.IsSuccessStatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var reader = new StringReader(content);
+        var deserializer = new Deserializer();
+        var stubs = deserializer.Deserialize<FullStubDto[]>(reader);
+        Assert.AreEqual(1, stubs.Length);
+        Assert.AreEqual("test-456", stubs.Single().Stub.Id);
+    }
+
+    [TestMethod]
+    public async Task RestApiIntegration_Tenant_GetAll_Json()
+    {
+        // arrange
+        const string tenant = "tenant1";
+        var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
+        StubSource.StubModels.Add(new StubModel
+        {
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel(),
+            Tenant = "otherTenant"
+        });
+        StubSource.StubModels.Add(new StubModel
+        {
+            Id = "test-456",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel(),
+            Tenant = tenant
+        });
+
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.IsTrue(response.IsSuccessStatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+        var stubs = JsonConvert.DeserializeObject<FullStubDto[]>(content);
+        Assert.AreEqual(1, stubs.Length);
+        Assert.AreEqual("test-456", stubs.Single().Stub.Id);
+    }
+
+    [TestMethod]
+    public async Task RestApiIntegration_Tenant_DeleteAll_HappyFlow()
+    {
+        // arrange
+        const string tenant = "tenant1";
+        StubSource.StubModels.Add(new StubModel
+        {
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel(),
+            Tenant = "otherTenant"
+        });
+        StubSource.StubModels.Add(new StubModel
+        {
+            Id = "test-456",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel(),
+            Tenant = tenant
+        });
+
+        // Act
+        using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs");
+
+        // Assert
+        Assert.AreEqual(1, StubSource.StubModels.Count);
+        Assert.AreEqual("test-123", StubSource.StubModels.Single().Id);
+    }
+
+    [TestMethod]
+    public async Task RestApiIntegration_Tenant_UpdateAll_HappyFlow()
+    {
+        // Arrange
+        const string tenant = "tenant1";
+        StubSource.StubModels.Add(new StubModel
+        {
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel(),
+            Tenant = tenant
+        });
+        StubSource.StubModels.Add(new StubModel
+        {
+            Id = "test-456",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel(),
+            Tenant = tenant
+        });
+
+        var stubs = new[]
+        {
+            new StubDto
             {
                 Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = "otherTenant"
-            });
-            StubSource.StubModels.Add(new StubModel
+                Conditions = new StubConditionsDto { Method = "GET" },
+                Response = new StubResponseDto { Text = "OK" }
+            },
+            new StubDto
             {
-                Id = "test-456",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = tenant
-            });
+                Id = "test-789",
+                Conditions = new StubConditionsDto { Method = "POST" },
+                Response = new StubResponseDto { Text = "OK" }
+            }
+        };
 
-            var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
-
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            Assert.IsTrue(response.IsSuccessStatusCode);
-
-            var content = await response.Content.ReadAsStringAsync();
-            var reader = new StringReader(content);
-            var deserializer = new Deserializer();
-            var stubs = deserializer.Deserialize<FullStubDto[]>(reader);
-            Assert.AreEqual(1, stubs.Count());
-            Assert.AreEqual("test-456", stubs.Single().Stub.Id);
-        }
-
-        [TestMethod]
-        public async Task RestApiIntegration_Tenant_GetAll_Json()
-        {
-            // arrange
-            const string tenant = "tenant1";
-            var url = $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs";
-            StubSource.StubModels.Add(new StubModel
+        // Act
+        var request =
+            new HttpRequestMessage(HttpMethod.Put, $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs")
             {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = "otherTenant"
-            });
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-456",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = tenant
-            });
-
-            var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            Assert.IsTrue(response.IsSuccessStatusCode);
-
-            var content = await response.Content.ReadAsStringAsync();
-            var stubs = JsonConvert.DeserializeObject<FullStubDto[]>(content);
-            Assert.AreEqual(1, stubs.Count());
-            Assert.AreEqual("test-456", stubs.Single().Stub.Id);
-        }
-
-        [TestMethod]
-        public async Task RestApiIntegration_Tenant_DeleteAll_HappyFlow()
-        {
-            // arrange
-            const string tenant = "tenant1";
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = "otherTenant"
-            });
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-456",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = tenant
-            });
-
-            // Act
-            using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs");
-
-            // Assert
-            Assert.AreEqual(1, StubSource.StubModels.Count);
-            Assert.AreEqual("test-123", StubSource.StubModels.Single().Id);
-        }
-
-        [TestMethod]
-        public async Task RestApiIntegration_Tenant_UpdateAll_HappyFlow()
-        {
-            // Arrange
-            const string tenant = "tenant1";
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = tenant
-            });
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-456",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = tenant
-            });
-
-            var stubs = new[]
-            {
-                new StubDto
-                {
-                    Id = "test-123",
-                    Conditions = new StubConditionsDto { Method = "GET" },
-                    Response = new StubResponseDto { Text = "OK" }
-                },
-                new StubDto
-                {
-                    Id = "test-789",
-                    Conditions = new StubConditionsDto { Method = "POST" },
-                    Response = new StubResponseDto { Text = "OK" }
-                }
+                Content = new StringContent(
+                    JsonConvert.SerializeObject(stubs),
+                    Encoding.UTF8,
+                    "application/json")
             };
+        using var response = await Client.SendAsync(request);
 
-            // Act
-            var request =
-                new HttpRequestMessage(HttpMethod.Put, $"{TestServer.BaseAddress}ph-api/tenants/{tenant}/stubs")
-                {
-                    Content = new StringContent(
-                        JsonConvert.SerializeObject(stubs),
-                        Encoding.UTF8,
-                        "application/json")
-                };
-            using var response = await Client.SendAsync(request);
+        // Assert
+        Assert.AreEqual(2, StubSource.StubModels.Count);
+        Assert.AreEqual("test-123", StubSource.StubModels[0].Id);
+        Assert.AreEqual("test-789", StubSource.StubModels[1].Id);
+    }
 
-            // Assert
-            Assert.AreEqual(2, StubSource.StubModels.Count);
-            Assert.AreEqual("test-123", StubSource.StubModels[0].Id);
-            Assert.AreEqual("test-789", StubSource.StubModels[1].Id);
-        }
-
-        [TestMethod]
-        public async Task RestApiIntegration_Tenant_GetTenantNames()
+    [TestMethod]
+    public async Task RestApiIntegration_Tenant_GetTenantNames()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}ph-api/tenants";
+        StubSource.StubModels.Add(new StubModel
         {
-            // arrange
-            var url = $"{TestServer.BaseAddress}ph-api/tenants";
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-123",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = "otherTenant"
-            });
-            StubSource.StubModels.Add(new StubModel
-            {
-                Id = "test-456",
-                Conditions = new StubConditionsModel(),
-                Response = new StubResponseModel(),
-                Tenant = "tenant1"
-            });
+            Id = "test-123",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel(),
+            Tenant = "otherTenant"
+        });
+        StubSource.StubModels.Add(new StubModel
+        {
+            Id = "test-456",
+            Conditions = new StubConditionsModel(),
+            Response = new StubResponseModel(),
+            Tenant = "tenant1"
+        });
 
-            var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
-            request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            Assert.IsTrue(response.IsSuccessStatusCode);
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.IsTrue(response.IsSuccessStatusCode);
 
-            var content = await response.Content.ReadAsStringAsync();
-            var tenantNames = JsonConvert.DeserializeObject<List<string>>(content);
-            Assert.AreEqual(2, tenantNames.Count);
-            Assert.AreEqual("otherTenant", tenantNames[0]);
-            Assert.AreEqual("tenant1", tenantNames[1]);
-        }
+        var content = await response.Content.ReadAsStringAsync();
+        var tenantNames = JsonConvert.DeserializeObject<List<string>>(content);
+        Assert.AreEqual(2, tenantNames.Count);
+        Assert.AreEqual("otherTenant", tenantNames[0]);
+        Assert.AreEqual("tenant1", tenantNames[1]);
     }
 }

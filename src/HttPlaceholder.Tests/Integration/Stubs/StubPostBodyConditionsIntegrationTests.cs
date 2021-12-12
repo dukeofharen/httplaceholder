@@ -6,112 +6,111 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
-namespace HttPlaceholder.Tests.Integration.Stubs
+namespace HttPlaceholder.Tests.Integration.Stubs;
+
+[TestClass]
+public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
 {
-    [TestClass]
-    public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
+    [TestInitialize]
+    public void Initialize() => InitializeStubIntegrationTest("integration.yml");
+
+    [TestCleanup]
+    public void Cleanup() => CleanupIntegrationTest();
+
+    [TestMethod]
+    public async Task StubIntegration_RegularPost_ValidatePostBody_HappyFlow()
     {
-        [TestInitialize]
-        public void Initialize() => InitializeStubIntegrationTest("integration.yml");
-
-        [TestCleanup]
-        public void Cleanup() => CleanupIntegrationTest();
-
-        [TestMethod]
-        public async Task StubIntegration_RegularPost_ValidatePostBody_HappyFlow()
+        // arrange
+        var url = $"{TestServer.BaseAddress}api/users";
+        const string body = @"{""username"": ""john""}";
+        var request = new HttpRequestMessage
         {
-            // arrange
-            var url = $"{TestServer.BaseAddress}api/users";
-            const string body = @"{""username"": ""john""}";
-            var request = new HttpRequestMessage
+            Content = new StringContent(body),
+            Headers =
             {
-                Content = new StringContent(body),
-                Headers =
-            {
-               { "X-Api-Key", "123abc" },
-               { "X-Another-Secret", "sjaaaaaak 123" },
-               { "X-Another-Code", "Two Memories" }
+                { "X-Api-Key", "123abc" },
+                { "X-Another-Secret", "sjaaaaaak 123" },
+                { "X-Another-Code", "Two Memories" }
             },
-                Method = HttpMethod.Post,
-                RequestUri = new Uri(url)
-            };
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(url)
+        };
 
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.IsFalse(string.IsNullOrEmpty(content));
-            JObject.Parse(content);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
-        }
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.IsFalse(string.IsNullOrEmpty(content));
+        JObject.Parse(content);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual("application/json", response.Content.Headers.ContentType.ToString());
+    }
 
-        [TestMethod]
-        public async Task StubIntegration_RegularPost_ValidatePostBody_StubNotFound()
+    [TestMethod]
+    public async Task StubIntegration_RegularPost_ValidatePostBody_StubNotFound()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}api/users";
+        const string body = @"{""username"": ""jack""}";
+        var request = new HttpRequestMessage
         {
-            // arrange
-            var url = $"{TestServer.BaseAddress}api/users";
-            const string body = @"{""username"": ""jack""}";
-            var request = new HttpRequestMessage
+            Content = new StringContent(body),
+            Headers =
             {
-                Content = new StringContent(body),
-                Headers =
-            {
-               { "X-Api-Key", "123abc" },
-               { "X-Another-Secret", "sjaaaaaak 123" }
+                { "X-Api-Key", "123abc" },
+                { "X-Another-Secret", "sjaaaaaak 123" }
             },
-                Method = HttpMethod.Post,
-                RequestUri = new Uri(url)
-            };
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(url)
+        };
 
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
-        }
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
+    }
 
-        [TestMethod]
-        public async Task StubIntegration_RegularPost_Form_Ok()
+    [TestMethod]
+    public async Task StubIntegration_RegularPost_Form_Ok()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}form";
+        var request = new HttpRequestMessage
         {
-            // arrange
-            var url = $"{TestServer.BaseAddress}form";
-            var request = new HttpRequestMessage
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Post,
+            Content = new FormUrlEncodedContent(new[]
             {
-                RequestUri = new Uri(url),
-                Method = HttpMethod.Post,
-                Content = new FormUrlEncodedContent(new[]
-               {
-               new KeyValuePair<string, string>("key1", "sjaak"),
-               new KeyValuePair<string, string>("key2", "bob"),
-               new KeyValuePair<string, string>("key2", "ducoo")
+                new KeyValuePair<string, string>("key1", "sjaak"),
+                new KeyValuePair<string, string>("key2", "bob"),
+                new KeyValuePair<string, string>("key2", "ducoo")
             })
-            };
+        };
 
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("form-ok OK", content);
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
-        }
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual("form-ok OK", content);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+    }
 
-        [TestMethod]
-        public async Task StubIntegration_RegularPost_Form_Nok()
+    [TestMethod]
+    public async Task StubIntegration_RegularPost_Form_Nok()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}form";
+        var request = new HttpRequestMessage
         {
-            // arrange
-            var url = $"{TestServer.BaseAddress}form";
-            var request = new HttpRequestMessage
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Post,
+            Content = new FormUrlEncodedContent(new[]
             {
-                RequestUri = new Uri(url),
-                Method = HttpMethod.Post,
-                Content = new FormUrlEncodedContent(new[]
-               {
-               new KeyValuePair<string, string>("key1", "sjaak"),
-               new KeyValuePair<string, string>("key2", "bob")
+                new KeyValuePair<string, string>("key1", "sjaak"),
+                new KeyValuePair<string, string>("key2", "bob")
             })
-            };
+        };
 
-            // act / assert
-            using var response = await Client.SendAsync(request);
-            Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
-        }
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
     }
 }

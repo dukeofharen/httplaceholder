@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution
+namespace HttPlaceholder.Application.StubExecution;
+
+public interface IRequestLogger
 {
-    public interface IRequestLogger
-    {
-        void SetCorrelationId(string correlationId);
+    void SetCorrelationId(string correlationId);
 
-        void LogRequestParameters(string method, string url, string body, string clientIp, IDictionary<string, string> headers);
+    void LogRequestParameters(string method, string url, string body, string clientIp, IDictionary<string, string> headers);
 
-        RequestResultModel GetResult();
+    RequestResultModel GetResult();
 
-        void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions);
+    void SetStubExecutionResult(string stubId, bool passed, IEnumerable<ConditionCheckResultModel> conditions);
 
-        void SetResponseWriterResult(StubResponseWriterResultModel result);
+    void SetResponseWriterResult(StubResponseWriterResultModel result);
 
-        void SetExecutingStubId(string stubId);
-    }
+    void SetExecutingStubId(string stubId);
 }

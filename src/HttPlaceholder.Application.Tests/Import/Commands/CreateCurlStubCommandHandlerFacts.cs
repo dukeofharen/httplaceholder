@@ -7,34 +7,33 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.AutoMock;
 
-namespace HttPlaceholder.Application.Tests.Import.Commands
+namespace HttPlaceholder.Application.Tests.Import.Commands;
+
+[TestClass]
+public class CreateCurlStubCommandHandlerFacts
 {
-    [TestClass]
-    public class CreateCurlStubCommandHandlerFacts
+    private readonly AutoMocker _mocker = new();
+
+    [TestCleanup]
+    public void Cleanup() => _mocker.VerifyAll();
+
+    [TestMethod]
+    public async Task Handle_HappyFlow()
     {
-        private readonly AutoMocker _mocker = new();
+        // Arrange
+        var curlStubGeneratorMock = _mocker.GetMock<ICurlStubGenerator>();
+        var handler = _mocker.CreateInstance<CreateCurlStubCommandHandler>();
 
-        [TestCleanup]
-        public void Cleanup() => _mocker.VerifyAll();
+        var request = new CreateCurlStubCommand("curl bladibla", true);
+        var expectedResult = new[] { new FullStubModel() };
+        curlStubGeneratorMock
+            .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub))
+            .ReturnsAsync(expectedResult);
 
-        [TestMethod]
-        public async Task Handle_HappyFlow()
-        {
-            // Arrange
-            var curlStubGeneratorMock = _mocker.GetMock<ICurlStubGenerator>();
-            var handler = _mocker.CreateInstance<CreateCurlStubCommandHandler>();
+        // Act
+        var result = await handler.Handle(request, CancellationToken.None);
 
-            var request = new CreateCurlStubCommand("curl bladibla", true);
-            var expectedResult = new[] { new FullStubModel() };
-            curlStubGeneratorMock
-                .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub))
-                .ReturnsAsync(expectedResult);
-
-            // Act
-            var result = await handler.Handle(request, CancellationToken.None);
-
-            // Assert
-            Assert.AreEqual(expectedResult, result);
-        }
+        // Assert
+        Assert.AreEqual(expectedResult, result);
     }
 }

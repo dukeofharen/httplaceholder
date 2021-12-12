@@ -3,26 +3,25 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
-namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers
+namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
+
+/// <inheritdoc />
+public class HostHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />
-    public class HostHandler : IRequestToStubConditionsHandler
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
     {
-        /// <inheritdoc />
-        public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
+        var uri = new Uri(request.Url);
+        var host = uri.Host;
+        if (uri.Port != 80 && uri.Port != 443)
         {
-            var uri = new Uri(request.Url);
-            var host = uri.Host;
-            if (uri.Port != 80 && uri.Port != 443)
-            {
-                host += $":{uri.Port}";
-            }
-
-            conditions.Host = host;
-            return Task.FromResult(true);
+            host += $":{uri.Port}";
         }
 
-        /// <inheritdoc />
-        public int Priority => 0;
+        conditions.Host = host;
+        return Task.FromResult(true);
     }
+
+    /// <inheritdoc />
+    public int Priority => 0;
 }

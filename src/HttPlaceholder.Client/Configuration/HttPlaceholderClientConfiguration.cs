@@ -1,34 +1,33 @@
 ﻿using System;
 
-namespace HttPlaceholder.Client.Configuration
-{
-    public class HttPlaceholderClientConfiguration
-    {
-        private string _rootUrl;
+namespace HttPlaceholder.Client.Configuration;
 
-        public string RootUrl
+public class HttPlaceholderClientConfiguration
+{
+    private string _rootUrl;
+
+    public string RootUrl
+    {
+        get => _rootUrl;
+        set
         {
-            get => _rootUrl;
-            set
+            if (!string.IsNullOrWhiteSpace(value))
             {
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    _rootUrl = value.EndsWith("/") ? value : $"{value}/";
-                }
+                _rootUrl = value.EndsWith("/") ? value : $"{value}/";
             }
         }
+    }
 
-        public string Username { get; set; }
+    public string Username { get; set; }
 
-        public string Password { get; set; }
+    public string Password { get; set; }
 
-        public void Validate()
+    public void Validate()
+    {
+        if (string.IsNullOrWhiteSpace(RootUrl))
         {
-            if (string.IsNullOrWhiteSpace(RootUrl))
-            {
-                throw new ArgumentException(
-                    $"No value set for {nameof(RootUrl)} in HttPlaceholder configuration.");
-            }
+            throw new ArgumentException(
+                $"No value set for {nameof(RootUrl)} in HttPlaceholder configuration.");
         }
     }
 }

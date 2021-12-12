@@ -2,9 +2,8 @@
 using HttPlaceholder.Domain;
 using MediatR;
 
-namespace HttPlaceholder.Application.Requests.Queries.GetAllRequests
+namespace HttPlaceholder.Application.Requests.Queries.GetAllRequests;
+
+public class GetAllRequestsQuery : IRequest<IEnumerable<RequestResultModel>>
 {
-    public class GetAllRequestsQuery : IRequest<IEnumerable<RequestResultModel>>
-    {
-    }
 }

@@ -1,7 +1,6 @@
-﻿namespace HttPlaceholder.Client.Configuration
+﻿namespace HttPlaceholder.Client.Configuration;
+
+public static class ScenarioConstants
 {
-    public static class ScenarioConstants
-    {
-        public static string StartState = "Start";
-    }
+    public static string StartState = "Start";
 }

@@ -1,15 +1,14 @@
 ﻿using HttPlaceholder.Domain;
 using MediatR;
 
-namespace HttPlaceholder.Application.Stubs.Commands.AddStub
-{
-    public class AddStubCommand : IRequest<FullStubModel>
-    {
-        public AddStubCommand(StubModel stub)
-        {
-            Stub = stub;
-        }
+namespace HttPlaceholder.Application.Stubs.Commands.AddStub;
 
-        public StubModel Stub { get; }
+public class AddStubCommand : IRequest<FullStubModel>
+{
+    public AddStubCommand(StubModel stub)
+    {
+        Stub = stub;
     }
+
+    public StubModel Stub { get; }
 }

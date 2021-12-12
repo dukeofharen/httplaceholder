@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace HttPlaceholder.Common
+namespace HttPlaceholder.Common;
+
+public interface IModelValidator
 {
-    public interface IModelValidator
-    {
-        IEnumerable<ValidationResult> ValidateModel(object model);
-    }
+    IEnumerable<ValidationResult> ValidateModel(object model);
 }

@@ -3,50 +3,49 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Tests.Integration.Stubs
+namespace HttPlaceholder.Tests.Integration.Stubs;
+
+[TestClass]
+public class HealthcheckOnRootUrlTests : StubIntegrationTestBase
 {
-    [TestClass]
-    public class HealthcheckOnRootUrlTests : StubIntegrationTestBase
+    [TestInitialize]
+    public void Initialize()
     {
-        [TestInitialize]
-        public void Initialize()
-        {
-            Settings.Stub.HealthcheckOnRootUrl = true;
-            InitializeStubIntegrationTest("integration.yml");
-        }
+        Settings.Stub.HealthcheckOnRootUrl = true;
+        InitializeStubIntegrationTest("integration.yml");
+    }
 
-        [TestCleanup]
-        public void Cleanup() => CleanupIntegrationTest();
+    [TestCleanup]
+    public void Cleanup() => CleanupIntegrationTest();
 
-        [TestMethod]
-        public async Task StubIntegration_HealthcheckOnRootUrl_RootUrlCalled_ShouldNotExecuteStubs()
-        {
-            // Arrange
-            var url = BaseAddress;
+    [TestMethod]
+    public async Task StubIntegration_HealthcheckOnRootUrl_RootUrlCalled_ShouldNotExecuteStubs()
+    {
+        // Arrange
+        var url = BaseAddress;
 
-            // Act
-            using var response = await Client.GetAsync(url);
+        // Act
+        using var response = await Client.GetAsync(url);
 
-            // Assert
-            response.EnsureSuccessStatusCode();
+        // Assert
+        response.EnsureSuccessStatusCode();
 
-            var content = await response.Content.ReadAsStringAsync();
-            Assert.AreEqual("OK", content);
-            Assert.IsFalse(Requests.Any());
-        }
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual("OK", content);
+        Assert.IsFalse(Requests.Any());
+    }
 
-        [TestMethod]
-        public async Task StubIntegration_HealthcheckOnRootUrl_NotRootUrlCalled_ShouldExecuteStubs()
-        {
-            // Arrange
-            var url = $"{BaseAddress}some-url";
+    [TestMethod]
+    public async Task StubIntegration_HealthcheckOnRootUrl_NotRootUrlCalled_ShouldExecuteStubs()
+    {
+        // Arrange
+        var url = $"{BaseAddress}some-url";
 
-            // Act
-            using var response = await Client.GetAsync(url);
+        // Act
+        using var response = await Client.GetAsync(url);
 
-            // Assert
-            Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
-            Assert.IsTrue(Requests.Any());
-        }
+        // Assert
+        Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
+        Assert.IsTrue(Requests.Any());
     }
 }

@@ -1,12 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="HttPlaceholder (MSSQL)" type="DotNetProject" factoryName=".NET Project">
-    <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net5.0/HttPlaceholder" />
-    <option name="PROGRAM_PARAMETERS" value="-V" />
+  <configuration default="false" name="HttPlaceholder (file storage)" type="DotNetProject" factoryName=".NET Project">
+    <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net6.0/HttPlaceholder" />
+    <option name="PROGRAM_PARAMETERS" value="-V --fileStorageLocation $USER_HOME$/CodeMetadata/httplaceholder/stubsRoot --oldRequestsQueueLength 40 --useNewUi true" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
-    <envs>
-      <env name="sqlServerConnectionString" value="Server=localhost,1433;Database=httplaceholder;User Id=sa;Password=Password123!" />
-    </envs>
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
     <option name="USE_MONO" value="0" />
     <option name="RUNTIME_ARGUMENTS" value="" />
@@ -15,7 +12,7 @@
     <option name="PROJECT_ARGUMENTS_TRACKING" value="1" />
     <option name="PROJECT_WORKING_DIRECTORY_TRACKING" value="1" />
     <option name="PROJECT_KIND" value="DotNetCore" />
-    <option name="PROJECT_TFM" value="net5.0" />
+    <option name="PROJECT_TFM" value="net6.0" />
     <method v="2">
       <option name="Build" />
     </method>

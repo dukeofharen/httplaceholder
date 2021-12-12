@@ -1,7 +1,6 @@
-namespace HttPlaceholder.Application.Configuration
+namespace HttPlaceholder.Application.Configuration;
+
+public class GuiSettingsModel
 {
-    public class GuiSettingsModel
-    {
-        public bool EnableUserInterface { get; set; }
-    }
+    public bool EnableUserInterface { get; set; }
 }

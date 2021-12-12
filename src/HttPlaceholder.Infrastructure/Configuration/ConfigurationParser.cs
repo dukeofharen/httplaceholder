@@ -12,172 +12,171 @@ using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
 using static HttPlaceholder.Domain.Constants;
 
-namespace HttPlaceholder.Infrastructure.Configuration
+namespace HttPlaceholder.Infrastructure.Configuration;
+
+public class ConfigurationParser
 {
-    public class ConfigurationParser
+    private readonly IEnvService _envService;
+    private readonly IFileService _fileService;
+
+    public ConfigurationParser(
+        IEnvService envService,
+        IFileService fileService)
     {
-        private readonly IEnvService _envService;
-        private readonly IFileService _fileService;
+        _envService = envService;
+        _fileService = fileService;
+    }
 
-        public ConfigurationParser(
-            IEnvService envService,
-            IFileService fileService)
-        {
-            _envService = envService;
-            _fileService = fileService;
-        }
+    public ConfigurationParser() : this(
+        new EnvService(),
+        new FileService())
+    {
+    }
 
-        public ConfigurationParser() : this(
-            new EnvService(),
-            new FileService())
-        {
-        }
+    public IDictionary<string, string> ParseConfiguration(string[] args)
+    {
+        var argsDictionary = DetermineBaseArgsDictionary(args);
+        argsDictionary = argsDictionary.ToDictionary(d => d.Key.ToLower(), d => d.Value);
+        EnsureDefaultValuesAreAdded(argsDictionary);
+        return BuildFinalArgsDictionary(argsDictionary);
+    }
 
-        public IDictionary<string, string> ParseConfiguration(string[] args)
-        {
-            var argsDictionary = DetermineBaseArgsDictionary(args);
-            argsDictionary = argsDictionary.ToDictionary(d => d.Key.ToLower(), d => d.Value);
-            EnsureDefaultValuesAreAdded(argsDictionary);
-            return BuildFinalArgsDictionary(argsDictionary);
-        }
-
-        private IDictionary<string, string> DetermineBaseArgsDictionary(IEnumerable<string> args)
-        {
-            var argsDictionary = args.Parse();
-            var key = ConfigKeys.ConfigJsonLocationKey.ToLower();
-            var pair = argsDictionary.FirstOrDefault(d =>
-                string.Equals(d.Key, key, StringComparison.CurrentCultureIgnoreCase));
-            var configJsonPath = pair.Value;
-            if (string.IsNullOrWhiteSpace(configJsonPath))
-            {
-                var envVars = _envService.GetEnvironmentVariables();
-                configJsonPath = envVars?.FirstOrDefault(v => v.Key.Equals(key, StringComparison.OrdinalIgnoreCase))
-                    .Value;
-                if (string.IsNullOrWhiteSpace(configJsonPath))
-                {
-                    return argsDictionary;
-                }
-            }
-
-            // Read the settings from a given file if the correct config key is set
-            if (!_fileService.FileExists(configJsonPath))
-            {
-                throw new FileNotFoundException($"File '{configJsonPath}' not found.");
-            }
-
-            ConsoleHelpers.WriteLineColor($"Reading configuration from '{configJsonPath}'.", ConsoleColor.Green,
-                ConsoleColor.Black);
-            var config = _fileService.ReadAllText(configJsonPath);
-            argsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
-
-            return argsDictionary;
-        }
-
-        private void EnsureDefaultValuesAreAdded(IDictionary<string, string> argsDictionary)
-        {
-            argsDictionary.EnsureEntryExists(ConfigKeys.PortKey, DefaultHttpPort);
-            argsDictionary.EnsureEntryExists(ConfigKeys.PfxPathKey,
-                Path.Combine(AssemblyHelper.GetEntryAssemblyRootPath(), DefaultPfxPath));
-            argsDictionary.EnsureEntryExists(ConfigKeys.PfxPasswordKey, DefaultPfxPassword);
-            argsDictionary.EnsureEntryExists(ConfigKeys.HttpsPortKey, DefaultHttpsPort);
-            argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, UseHttps);
-            argsDictionary.EnsureEntryExists(ConfigKeys.EnableUserInterface, EnableUserInterface);
-            argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, DefaultOldRequestsQueueLength);
-            argsDictionary.EnsureEntryExists(ConfigKeys.MaximumExtraDurationMillisKey, DefaultMaximumExtraDuration);
-
-            // Determine and set file storage location.
-            string fileStorageLocation = null;
-            var windowsProfilePath = _envService.GetEnvironmentVariable("USERPROFILE");
-            var unixProfilePath = _envService.GetEnvironmentVariable("HOME");
-            var stubFolderName = ".httplaceholder";
-            if (_envService.IsOs(OSPlatform.Windows) && _fileService.DirectoryExists(windowsProfilePath))
-            {
-                fileStorageLocation = $"{windowsProfilePath}\\{stubFolderName}";
-            }
-            else if (
-                (_envService.IsOs(OSPlatform.Linux) ||
-                 _envService.IsOs(OSPlatform.OSX)) && _fileService.DirectoryExists(unixProfilePath))
-            {
-                fileStorageLocation = $"{unixProfilePath}/{stubFolderName}";
-            }
-
-            if (!string.IsNullOrWhiteSpace(fileStorageLocation))
-            {
-                if (!_fileService.DirectoryExists(fileStorageLocation))
-                {
-                    _fileService.CreateDirectory(fileStorageLocation);
-                }
-
-                argsDictionary.EnsureEntryExists(ConfigKeys.FileStorageLocationKey, fileStorageLocation);
-            }
-        }
-
-        private IDictionary<string, string> BuildFinalArgsDictionary(IDictionary<string, string> argsDictionary)
+    private IDictionary<string, string> DetermineBaseArgsDictionary(IEnumerable<string> args)
+    {
+        var argsDictionary = args.Parse();
+        var key = ConfigKeys.ConfigJsonLocationKey.ToLower();
+        var pair = argsDictionary.FirstOrDefault(d =>
+            string.Equals(d.Key, key, StringComparison.CurrentCultureIgnoreCase));
+        var configJsonPath = pair.Value;
+        if (string.IsNullOrWhiteSpace(configJsonPath))
         {
             var envVars = _envService.GetEnvironmentVariables();
-            envVars = envVars?.ToDictionary(d => d.Key.ToLower(), d => d.Value);
-
-            var configDictionary = new Dictionary<string, string>();
-            foreach (var constant in GetConfigKeyMetadata())
+            configJsonPath = envVars?.FirstOrDefault(v => v.Key.Equals(key, StringComparison.OrdinalIgnoreCase))
+                .Value;
+            if (string.IsNullOrWhiteSpace(configJsonPath))
             {
-                if (string.IsNullOrWhiteSpace(constant.Path))
-                {
-                    continue;
-                }
-
-                // First, add the environment variables to the configuration.
-                if (envVars != null && envVars.TryGetValue(constant.Key.ToLower(), out var envVar))
-                {
-                    configDictionary.Add(constant.Path, envVar);
-                    continue;
-                }
-
-                // Then, add the default values and values passed through the command line arguments.
-                if (argsDictionary.TryGetValue(constant.Key, out var value))
-                {
-                    if (constant.IsBoolValue == true && string.IsNullOrWhiteSpace(value))
-                    {
-                        // The property is a boolean and no value was provided. Interpret this as "true".
-                        value = "True";
-                    }
-
-                    configDictionary.Add(constant.Path, value);
-                }
+                return argsDictionary;
             }
-
-            return configDictionary;
         }
 
-        public static IEnumerable<ConfigMetadataModel> GetConfigKeyMetadata() =>
-            (from constant
-                    in ReflectionUtilities.GetConstants(typeof(ConfigKeys))
-                let attribute = constant.CustomAttributes.FirstOrDefault()
-                where attribute != null && attribute.AttributeType == typeof(ConfigKeyAttribute)
-                select new ConfigMetadataModel
-                {
-                    Key = (constant.GetValue(constant) as string)?.ToLower(),
-                    Description = ParseAttribute<string>(attribute, "Description", true),
-                    Example = ParseAttribute<string>(attribute, "Example", true),
-                    Path = ParseAttribute<string>(attribute, "ConfigPath", false),
-                    IsBoolValue = ParseAttribute<bool?>(attribute, "IsBoolValue", false)
-                }).ToList();
-
-        private static TValue ParseAttribute<TValue>(CustomAttributeData attribute, string memberName, bool shouldExist)
+        // Read the settings from a given file if the correct config key is set
+        if (!_fileService.FileExists(configJsonPath))
         {
-            if (attribute.NamedArguments == null)
-            {
-                throw new InvalidOperationException("NamedArguments not set.");
-            }
-
-            var result =
-                attribute.NamedArguments.FirstOrDefault(a => a.MemberName == memberName).TypedValue.Value;
-            if (shouldExist && result == null)
-            {
-                throw new InvalidOperationException(
-                    $"Property with name '{memberName}' was not found, but it should exist.");
-            }
-
-            return (TValue)result;
+            throw new FileNotFoundException($"File '{configJsonPath}' not found.");
         }
+
+        ConsoleHelpers.WriteLineColor($"Reading configuration from '{configJsonPath}'.", ConsoleColor.Green,
+            ConsoleColor.Black);
+        var config = _fileService.ReadAllText(configJsonPath);
+        argsDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(config);
+
+        return argsDictionary;
+    }
+
+    private void EnsureDefaultValuesAreAdded(IDictionary<string, string> argsDictionary)
+    {
+        argsDictionary.EnsureEntryExists(ConfigKeys.PortKey, DefaultHttpPort);
+        argsDictionary.EnsureEntryExists(ConfigKeys.PfxPathKey,
+            Path.Combine(AssemblyHelper.GetEntryAssemblyRootPath(), DefaultPfxPath));
+        argsDictionary.EnsureEntryExists(ConfigKeys.PfxPasswordKey, DefaultPfxPassword);
+        argsDictionary.EnsureEntryExists(ConfigKeys.HttpsPortKey, DefaultHttpsPort);
+        argsDictionary.EnsureEntryExists(ConfigKeys.UseHttpsKey, UseHttps);
+        argsDictionary.EnsureEntryExists(ConfigKeys.EnableUserInterface, EnableUserInterface);
+        argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, DefaultOldRequestsQueueLength);
+        argsDictionary.EnsureEntryExists(ConfigKeys.MaximumExtraDurationMillisKey, DefaultMaximumExtraDuration);
+
+        // Determine and set file storage location.
+        string fileStorageLocation = null;
+        var windowsProfilePath = _envService.GetEnvironmentVariable("USERPROFILE");
+        var unixProfilePath = _envService.GetEnvironmentVariable("HOME");
+        const string stubFolderName = ".httplaceholder";
+        if (_envService.IsOs(OSPlatform.Windows) && _fileService.DirectoryExists(windowsProfilePath))
+        {
+            fileStorageLocation = $"{windowsProfilePath}\\{stubFolderName}";
+        }
+        else if (
+            (_envService.IsOs(OSPlatform.Linux) ||
+             _envService.IsOs(OSPlatform.OSX)) && _fileService.DirectoryExists(unixProfilePath))
+        {
+            fileStorageLocation = $"{unixProfilePath}/{stubFolderName}";
+        }
+
+        if (!string.IsNullOrWhiteSpace(fileStorageLocation))
+        {
+            if (!_fileService.DirectoryExists(fileStorageLocation))
+            {
+                _fileService.CreateDirectory(fileStorageLocation);
+            }
+
+            argsDictionary.EnsureEntryExists(ConfigKeys.FileStorageLocationKey, fileStorageLocation);
+        }
+    }
+
+    private IDictionary<string, string> BuildFinalArgsDictionary(IDictionary<string, string> argsDictionary)
+    {
+        var envVars = _envService.GetEnvironmentVariables();
+        envVars = envVars?.ToDictionary(d => d.Key.ToLower(), d => d.Value);
+
+        var configDictionary = new Dictionary<string, string>();
+        foreach (var constant in GetConfigKeyMetadata())
+        {
+            if (string.IsNullOrWhiteSpace(constant.Path))
+            {
+                continue;
+            }
+
+            // First, add the environment variables to the configuration.
+            if (envVars != null && envVars.TryGetValue(constant.Key.ToLower(), out var envVar))
+            {
+                configDictionary.Add(constant.Path, envVar);
+                continue;
+            }
+
+            // Then, add the default values and values passed through the command line arguments.
+            if (argsDictionary.TryGetValue(constant.Key, out var value))
+            {
+                if (constant.IsBoolValue == true && string.IsNullOrWhiteSpace(value))
+                {
+                    // The property is a boolean and no value was provided. Interpret this as "true".
+                    value = "True";
+                }
+
+                configDictionary.Add(constant.Path, value);
+            }
+        }
+
+        return configDictionary;
+    }
+
+    public static IEnumerable<ConfigMetadataModel> GetConfigKeyMetadata() =>
+        (from constant
+                in ReflectionUtilities.GetConstants(typeof(ConfigKeys))
+            let attribute = constant.CustomAttributes.FirstOrDefault()
+            where attribute != null && attribute.AttributeType == typeof(ConfigKeyAttribute)
+            select new ConfigMetadataModel
+            {
+                Key = (constant.GetValue(constant) as string)?.ToLower(),
+                Description = ParseAttribute<string>(attribute, "Description", true),
+                Example = ParseAttribute<string>(attribute, "Example", true),
+                Path = ParseAttribute<string>(attribute, "ConfigPath", false),
+                IsBoolValue = ParseAttribute<bool?>(attribute, "IsBoolValue", false)
+            }).ToList();
+
+    private static TValue ParseAttribute<TValue>(CustomAttributeData attribute, string memberName, bool shouldExist)
+    {
+        if (attribute.NamedArguments == null)
+        {
+            throw new InvalidOperationException("NamedArguments not set.");
+        }
+
+        var result =
+            attribute.NamedArguments.FirstOrDefault(a => a.MemberName == memberName).TypedValue.Value;
+        if (shouldExist && result == null)
+        {
+            throw new InvalidOperationException(
+                $"Property with name '{memberName}' was not found, but it should exist.");
+        }
+
+        return (TValue)result;
     }
 }
