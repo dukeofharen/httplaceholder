@@ -2,33 +2,33 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-
         <IsPackable>false</IsPackable>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors />
+        <WarningsAsErrors/>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
-        <PackageReference Include="MSTest.TestAdapter" Version="2.2.5" />
-        <PackageReference Include="MSTest.TestFramework" Version="2.2.5" />
-        <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0"/>
+        <PackageReference Include="MSTest.TestAdapter" Version="2.2.5"/>
+        <PackageReference Include="MSTest.TestFramework" Version="2.2.5"/>
+        <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
-        <ProjectReference Include="..\HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj" />
-        <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj" />
+        <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj"/>
+        <ProjectReference Include="..\HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj"/>
+        <ProjectReference Include="..\HttPlaceholder.TestUtilities\HttPlaceholder.TestUtilities.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Resources\cURL\*" />
-      <Content Include="Resources\cURL\*">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
+        <None Remove="Resources\cURL\*"/>
+        <Content Include="Resources\cURL\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

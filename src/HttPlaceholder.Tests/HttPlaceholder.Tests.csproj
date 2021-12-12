@@ -6,6 +6,7 @@
         <AssemblyVersion>2019.8.24.1234</AssemblyVersion>
         <FileVersion>2019.8.24.1234</FileVersion>
         <Configurations>Debug;Release;Tool</Configurations>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <TreatWarningsAsErrors>false</TreatWarningsAsErrors>

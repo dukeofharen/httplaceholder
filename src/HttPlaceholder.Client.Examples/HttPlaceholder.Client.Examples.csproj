@@ -3,14 +3,15 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj" />
+        <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj"/>
     </ItemGroup>
 
 </Project>
