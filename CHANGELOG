@@ -1,5 +1,8 @@
-[1.1.1]
-- TODO Added new RequestToStubConditions handlers to accomodate the new conditions that have been built over time.
+[1.2.0]
+- Added new RequestToStubConditions handler to generate JSON conditions based on a request.
+
+# BREAKING CHANGES
+-
 
 [1.1.0]
 - Updated HttPlaceholder to .NET 6 (https://github.com/dukeofharen/httplaceholder/issues/202).
