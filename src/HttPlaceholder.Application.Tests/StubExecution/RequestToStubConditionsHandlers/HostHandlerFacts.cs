@@ -4,7 +4,7 @@ using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration;
+namespace HttPlaceholder.Application.Tests.StubExecution.RequestToStubConditionsHandlers;
 
 [TestClass]
 public class HostHandlerFacts
