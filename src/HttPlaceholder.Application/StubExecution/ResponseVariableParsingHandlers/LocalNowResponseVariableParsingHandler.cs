@@ -6,6 +6,9 @@ using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
+/// <summary>
+/// Response variable parsing handler to insert the local date/time into the response. An optional date/time format can be provided (based on the .NET date/time formatting strings).
+/// </summary>
 public class LocalNowResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IDateTime _dateTime;

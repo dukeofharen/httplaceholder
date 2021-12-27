@@ -5,6 +5,9 @@ using HttPlaceholder.Common.Utilities;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
+/// <summary>
+/// Response variable parsing handler that is used to insert a request header in the response.
+/// </summary>
 public class RequestHeaderResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;

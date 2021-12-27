@@ -8,6 +8,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker for validating whether the XML in the request body corresponds to a given list of XPath expressions.
+/// </summary>
 public class XPathConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;

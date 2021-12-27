@@ -5,6 +5,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to return a given response as JSON.
+/// </summary>
 internal class JsonResponseWriter : IResponseWriter
 {
     public int Priority => 0;

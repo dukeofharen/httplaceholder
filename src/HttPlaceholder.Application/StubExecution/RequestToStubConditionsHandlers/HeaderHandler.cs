@@ -8,7 +8,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
-/// <inheritdoc />
+/// <summary>
+/// "Request to stub conditions handler" that is used to request header conditions.
+/// </summary>
 public class HeaderHandler : IRequestToStubConditionsHandler
 {
     private static readonly IEnumerable<string> _headersToStrip = new[] { "Postman-Token", "Host" };

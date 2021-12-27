@@ -7,6 +7,9 @@ using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
+/// <summary>
+/// Response variable parsing handler that is used to insert a given posted form value in the response.
+/// </summary>
 public class FormPostResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;

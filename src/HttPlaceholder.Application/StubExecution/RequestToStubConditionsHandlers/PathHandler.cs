@@ -5,7 +5,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
-/// <inheritdoc />
+/// <summary>
+/// "Request to stub conditions handler" that is used to create a request path (no query parameters) expression.
+/// </summary>
 internal class PathHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />

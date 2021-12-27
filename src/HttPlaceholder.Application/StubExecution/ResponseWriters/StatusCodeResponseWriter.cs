@@ -3,6 +3,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to set the HTTP status code.
+/// </summary>
 public class StatusCodeResponseWriter : IResponseWriter
 {
     public int Priority => 0;

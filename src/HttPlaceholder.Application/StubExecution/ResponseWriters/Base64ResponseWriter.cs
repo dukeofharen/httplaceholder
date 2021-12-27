@@ -4,6 +4,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used for storing the request body as base64. When the response writer is used, the response is base64 decoded and sent to the client.
+/// </summary>
 public class Base64ResponseWriter : IResponseWriter
 {
     public int Priority => 0;

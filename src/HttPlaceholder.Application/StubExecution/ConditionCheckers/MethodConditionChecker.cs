@@ -5,6 +5,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker to validate the HTTP method.
+/// </summary>
 public class MethodConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;

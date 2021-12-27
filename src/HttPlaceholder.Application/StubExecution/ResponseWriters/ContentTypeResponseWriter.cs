@@ -4,6 +4,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to set the Content-Type header.
+/// </summary>
 public class ContentTypeResponseWriter : IResponseWriter
 {
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)

@@ -5,6 +5,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker for validating whether the stub scenario is in a specific state.
+/// </summary>
 public class ScenarioStateConditionChecker : IConditionChecker
 {
     private readonly IScenarioService _scenarioService;

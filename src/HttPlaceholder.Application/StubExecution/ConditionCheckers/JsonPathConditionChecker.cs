@@ -9,6 +9,9 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker that validates the incoming JSON request body against a list of JSONPath expressions.
+/// </summary>
 public class JsonPathConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;

@@ -3,6 +3,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to clear the scenario state of the stub (both hit counter and state).
+/// </summary>
 public class ClearScenarioStateResponseWriter : IResponseWriter
 {
     private readonly IScenarioService _scenarioService;

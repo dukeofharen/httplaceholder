@@ -10,6 +10,9 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker that validates if a JSON request body corresponds to a given set of properties.
+/// </summary>
 public class JsonConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;

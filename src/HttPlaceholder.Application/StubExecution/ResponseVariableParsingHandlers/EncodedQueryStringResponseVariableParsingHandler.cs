@@ -5,6 +5,9 @@ using HttPlaceholder.Application.Interfaces.Http;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
+/// <summary>
+/// Response variable parsing handler that is used to insert a given URL encoded query parameter in the response.
+/// </summary>
 public class EncodedQueryStringResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;

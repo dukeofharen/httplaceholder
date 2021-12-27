@@ -5,7 +5,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
-/// <inheritdoc />
+/// <summary>
+/// "Request to stub conditions handler" that is used to create a hostname header condition.
+/// </summary>
 public class HostHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />

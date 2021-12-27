@@ -6,6 +6,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker that is used to validate the request headers.
+/// </summary>
 public class HeaderConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;

@@ -5,6 +5,9 @@ using HttPlaceholder.Application.Interfaces.Http;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
+/// <summary>
+/// Response variable parsing handler that is used to insert the display URL (so the full URL) in the response.
+/// </summary>
 public class DisplayUrlResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;

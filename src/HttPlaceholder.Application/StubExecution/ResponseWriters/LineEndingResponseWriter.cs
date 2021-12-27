@@ -6,6 +6,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to enforce the response to use specific line endings (Windows or UNIX).
+/// </summary>
 public class LineEndingResponseWriter : IResponseWriter
 {
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)

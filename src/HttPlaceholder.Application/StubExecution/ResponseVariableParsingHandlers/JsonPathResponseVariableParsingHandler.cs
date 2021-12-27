@@ -9,6 +9,9 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
+/// <summary>
+/// Response variable parsing handler that is used to query the posted JSON string based on a JSONPath expression. The result is put in the response.
+/// </summary>
 public class JsonPathResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
