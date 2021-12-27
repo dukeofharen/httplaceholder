@@ -9,6 +9,11 @@ internal class BodyHandler : IRequestToStubConditionsHandler
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
     {
+        if (conditions.Json != null)
+        {
+            return Task.FromResult(false);
+        }
+
         if (string.IsNullOrWhiteSpace(request.Body))
         {
             return Task.FromResult(false);
