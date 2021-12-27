@@ -7098,6 +7098,114 @@
 									]
 								},
 								{
+									"name": "JSON",
+									"item": [
+										{
+											"name": "Object",
+											"item": [
+												{
+													"name": "Import cURL",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Check request body\", function () {",
+																	"    const jsonData = pm.response.json();",
+																	"    const body = jsonData[0].stub.conditions.body;",
+																	"    pm.expect(body).to.eql(undefined);",
+																	"",
+																	"    const json = jsonData[0].stub.conditions.json;",
+																	"    pm.expect(json.stringValue).to.eql(\"value\");",
+																	"    pm.expect(json.intValue).to.eql(42.1);",
+																	"    pm.expect(json.boolValue).to.eql(true);",
+																	"    pm.expect(json.objectValue.stringValue).to.eql(\"anotherValue\");",
+																	"    pm.expect(json.arrayValue.length).to.eql(2);",
+																	"    pm.expect(json.arrayValue[0]).to.eql(\"value1\");",
+																	"    pm.expect(json.arrayValue[1]).to.eql(333);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "curl 'https://api.site.com/json-object' \\\n  -H 'Content-Type: application/json' \\\n  --data-raw '{\"stringValue\":\"value\",\"intValue\":42.1,\"boolValue\":true,\"objectValue\":{\"stringValue\":\"anotherValue\"},\"arrayValue\":[\"value1\",333]}' \\\n  --compressed"
+														},
+														"url": {
+															"raw": "{{rootUrl}}ph-api/import/curl",
+															"host": [
+																"{{rootUrl}}ph-api"
+															],
+															"path": [
+																"import",
+																"curl"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "Array",
+											"item": [
+												{
+													"name": "Import cURL",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Check request body\", function () {",
+																	"    const jsonData = pm.response.json();",
+																	"    const body = jsonData[0].stub.conditions.body;",
+																	"    pm.expect(body).to.eql(undefined);",
+																	"",
+																	"    const json = jsonData[0].stub.conditions.json;",
+																	"    pm.expect(json.length).to.eql(5);",
+																	"    pm.expect(json[0]).to.eql(\"value1\");",
+																	"    pm.expect(json[1]).to.eql(44);",
+																	"    pm.expect(json[2]).to.eql(false);",
+																	"    pm.expect(json[3].key1).to.eql(\"val1\");",
+																	"    pm.expect(json[4].length).to.eql(2);",
+																	"    pm.expect(json[4][0]).to.eql(\"1\");",
+																	"    pm.expect(json[4][1]).to.eql(2);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "curl 'https://api.site.com/json-object' \\\n  -H 'Content-Type: application/json' \\\n  --data-raw '[\"value1\",44,false,{\"key1\":\"val1\"},[\"1\",2]]' \\\n  --compressed"
+														},
+														"url": {
+															"raw": "{{rootUrl}}ph-api/import/curl",
+															"host": [
+																"{{rootUrl}}ph-api"
+															],
+															"path": [
+																"import",
+																"curl"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										}
+									]
+								},
+								{
 									"name": "Path",
 									"item": [
 										{
