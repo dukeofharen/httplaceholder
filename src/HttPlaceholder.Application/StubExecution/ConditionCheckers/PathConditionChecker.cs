@@ -5,6 +5,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker that validates the request path (relative path without the query string).
+/// </summary>
 public class PathConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;

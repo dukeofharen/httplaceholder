@@ -4,6 +4,9 @@ using HttPlaceholder.Application.Interfaces.Http;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
+/// <summary>
+/// Response variable parsing handler that is used to insert a given query parameter in the response.
+/// </summary>
 public class QueryStringResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;

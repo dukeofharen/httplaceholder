@@ -6,6 +6,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker for validating the query strings.
+/// </summary>
 public class QueryStringConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;

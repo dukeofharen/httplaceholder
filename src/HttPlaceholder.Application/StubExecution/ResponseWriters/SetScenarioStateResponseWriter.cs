@@ -4,6 +4,9 @@ using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to set the state of the stub scenario to another value.
+/// </summary>
 public class SetScenarioStateResponseWriter : IResponseWriter
 {
     private readonly IScenarioService _scenarioService;

@@ -14,6 +14,9 @@ using SixLabors.ImageSharp.Processing;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to generate a random image (BMP, GIF, JPEG or PNG) with parameters (like quality, size etc.) and return it to the client.
+/// </summary>
 public class ImageResponseWriter : IResponseWriter
 {
     private readonly IAssemblyService _assemblyService;

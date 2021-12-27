@@ -101,6 +101,12 @@ sudo curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/maste
 sudo curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | sudo bash
 ```
 
+**Docker**
+
+HttPlaceholder has a Docker image; it can be found [here](https://hub.docker.com/r/dukeofharen/httplaceholder).
+
+Run the following command to run a basic HttPlaceholder container: `docker run -p 5000:5000 dukeofharen/httplaceholder:latest`
+
 **Install as .NET tool**
 
 ```bash

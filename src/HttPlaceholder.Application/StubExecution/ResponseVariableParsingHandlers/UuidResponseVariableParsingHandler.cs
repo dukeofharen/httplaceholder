@@ -5,6 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
+/// <summary>
+/// Response variable parsing handler for generating a random UUID and putting it in the response.
+/// </summary>
 public class UuidResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     public string Name => "uuid";

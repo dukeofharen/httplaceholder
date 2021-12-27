@@ -6,6 +6,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker that verifies the incoming request body.
+/// </summary>
 public class BodyConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;

@@ -5,6 +5,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to run the "response variable parsing handlers" for manipulating the response.
+/// </summary>
 public class DynamicResponseWriter : IResponseWriter
 {
     private readonly IResponseVariableParser _responseVariableParser;

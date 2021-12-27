@@ -3,6 +3,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker for validating whether the stub scenario has an exact number of hits.
+/// </summary>
 public class ScenarioExactHitCounterConditionChecker : IConditionChecker
 {
     private readonly IScenarioService _scenarioService;

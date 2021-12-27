@@ -4,7 +4,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
-/// <inheritdoc />
+/// <summary>
+/// "Request to stub conditions handler" that is used to create a client IP condition.
+/// </summary>
 public class ClientIpHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />

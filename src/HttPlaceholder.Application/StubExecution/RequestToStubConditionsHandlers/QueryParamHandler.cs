@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.WebUtilities;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
-/// <inheritdoc />
+/// <summary>
+/// "Request to stub conditions handler" that is used to create a query parameters condition.
+/// </summary>
 internal class QueryParamHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />

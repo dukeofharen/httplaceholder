@@ -5,6 +5,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker that is used to verify the hostname.
+/// </summary>
 public class HostConditionChecker : IConditionChecker
 {
     private readonly IClientDataResolver _clientDataResolver;

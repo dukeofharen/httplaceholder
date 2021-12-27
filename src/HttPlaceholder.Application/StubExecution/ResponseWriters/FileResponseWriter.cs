@@ -6,6 +6,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to search for a file on the OS and return that file to the client.
+/// </summary>
 public class FileResponseWriter : IResponseWriter
 {
     private readonly IFileService _fileService;

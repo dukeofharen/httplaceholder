@@ -7,6 +7,9 @@ using NetTools;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker that verifies the client IP address. IP address can be both a single IP or an IP range.
+/// </summary>
 public class ClientIpConditionChecker : IConditionChecker
 {
     private readonly IClientDataResolver _clientDataResolver;

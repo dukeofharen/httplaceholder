@@ -1,22 +1,21 @@
-using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.StubExecution.RequestStubGeneration;
+namespace HttPlaceholder.Application.Tests.StubExecution.RequestToStubConditionsHandlers;
 
 [TestClass]
-public class BodyHandlerFacts
+public class IsHttpsHandlerFacts
 {
-    private readonly BodyHandler _handler = new();
+    private readonly IsHttpsHandler _handler = new();
 
     [TestMethod]
-    public async Task BodyHandler_HandleStubGenerationAsync_BodyNotSetOnRequest_ShouldReturnFalse()
+    public async Task IsHttpsHandler_HandleStubGenerationAsync_NoHttps_ShouldNotSetIsHttps()
     {
         // Arrange
-        var request = new HttpRequestModel { Body = string.Empty };
+        var request = new HttpRequestModel { Url = "http://httplaceholder.com" };
         var conditions = new StubConditionsModel();
 
         // Act
@@ -24,15 +23,14 @@ public class BodyHandlerFacts
 
         // Assert
         Assert.IsFalse(result);
-        Assert.IsNull(conditions.Body);
+        Assert.IsFalse(conditions.Url.IsHttps.HasValue);
     }
 
     [TestMethod]
-    public async Task BodyHandler_HandleStubGenerationAsync_HappyFlow()
+    public async Task IsHttpsHandler_HandleStubGenerationAsync_Https_ShouldSetToTrue()
     {
         // Arrange
-        const string body = "POSTED!";
-        var request = new HttpRequestModel { Body = body };
+        var request = new HttpRequestModel { Url = "https://httplaceholder.com" };
         var conditions = new StubConditionsModel();
 
         // Act
@@ -40,6 +38,6 @@ public class BodyHandlerFacts
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual(body, conditions.Body.Single());
+        Assert.IsTrue(conditions.Url.IsHttps.HasValue && conditions.Url.IsHttps.Value);
     }
 }

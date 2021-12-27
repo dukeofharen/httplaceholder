@@ -3,6 +3,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker for validating whether the stub scenario has a maximum (exclusive) number of hits.
+/// </summary>
 public class ScenarioMaxHitCounterConditionChecker : IConditionChecker
 {
     private readonly IScenarioService _scenarioService;

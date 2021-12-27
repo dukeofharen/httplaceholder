@@ -5,6 +5,9 @@ using HttPlaceholder.Application.Interfaces.Http;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
+/// <summary>
+/// Response variable parsing handler that is used to insert the client IP in the response.
+/// </summary>
 public class ClientIpResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IClientDataResolver _clientDataResolver;

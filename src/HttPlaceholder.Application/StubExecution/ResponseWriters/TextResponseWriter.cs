@@ -5,6 +5,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to return the given response as plain text.
+/// </summary>
 public class TextResponseWriter : IResponseWriter
 {
     public int Priority => 0;

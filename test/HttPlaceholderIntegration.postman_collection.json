@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "051ed9ed-5049-4e6e-92fc-be8b0b498b45",
+		"_postman_id": "7152af4c-ab96-43bf-a8b0-66dd4a00b300",
 		"name": "HttPlaceholder Integration",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -4597,7 +4597,7 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.globals.set(\"correlationId\", pm.response.headers.get('x-httplaceholder-correlation'));"
+													"pm.environment.set(\"corrId\", pm.response.headers.get('x-httplaceholder-correlation'));"
 												],
 												"type": "text/javascript"
 											}
@@ -4634,13 +4634,13 @@
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{rootUrl}}ph-api/requests/{{correlationId}}",
+											"raw": "{{rootUrl}}ph-api/requests/{{corrId}}",
 											"host": [
 												"{{rootUrl}}ph-api"
 											],
 											"path": [
 												"requests",
-												"{{correlationId}}"
+												"{{corrId}}"
 											]
 										}
 									},
@@ -4665,13 +4665,13 @@
 										"method": "DELETE",
 										"header": [],
 										"url": {
-											"raw": "{{rootUrl}}ph-api/requests/{{correlationId}}",
+											"raw": "{{rootUrl}}ph-api/requests/{{corrId}}",
 											"host": [
 												"{{rootUrl}}ph-api"
 											],
 											"path": [
 												"requests",
-												"{{correlationId}}"
+												"{{corrId}}"
 											]
 										}
 									},
@@ -5953,11 +5953,8 @@
 													}
 												}
 											],
-											"protocolProfileBehavior": {
-												"disableBodyPruning": true
-											},
 											"request": {
-												"method": "GET",
+												"method": "POST",
 												"header": [],
 												"body": {
 													"mode": "urlencoded",
@@ -6049,11 +6046,8 @@
 													}
 												}
 											],
-											"protocolProfileBehavior": {
-												"disableBodyPruning": true
-											},
 											"request": {
-												"method": "GET",
+												"method": "POST",
 												"header": [],
 												"body": {
 													"mode": "urlencoded",
@@ -6078,6 +6072,284 @@
 												}
 											},
 											"response": []
+										}
+									]
+								},
+								{
+									"name": "JSON",
+									"item": [
+										{
+											"name": "Object",
+											"item": [
+												{
+													"name": "Do request",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Status code is 501\", function () {",
+																	"    pm.response.to.have.status(501);",
+																	"});",
+																	"",
+																	"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
+																	"pm.environment.set(\"corrId\", corrId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"stringValue\": \"value\",\n    \"intValue\": 42.1,\n    \"boolValue\": true,\n    \"objectValue\": {\n        \"stringValue\": \"anotherValue\"\n    },\n    \"arrayValue\": [\n        \"value1\",\n        333\n    ]\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{rootUrl}}json-data",
+															"host": [
+																"{{rootUrl}}json-data"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Create stub based on request",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Check generated stub\", function () {",
+																	"    const jsonData = pm.response.json();",
+																	"    const body = jsonData.stub.conditions.body;",
+																	"    pm.expect(body).to.eql(undefined);",
+																	"",
+																	"    const json = jsonData.stub.conditions.json;",
+																	"    pm.expect(json.stringValue).to.eql(\"value\");",
+																	"    pm.expect(json.intValue).to.eql(42.1);",
+																	"    pm.expect(json.boolValue).to.eql(true);",
+																	"    pm.expect(json.objectValue.stringValue).to.eql(\"anotherValue\");",
+																	"    pm.expect(json.arrayValue.length).to.eql(2);",
+																	"    pm.expect(json.arrayValue[0]).to.eql(\"value1\");",
+																	"    pm.expect(json.arrayValue[1]).to.eql(333);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"doNotCreateStub\": false\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{rootUrl}}ph-api/requests/{{corrId}}/stubs",
+															"host": [
+																"{{rootUrl}}ph-api"
+															],
+															"path": [
+																"requests",
+																"{{corrId}}",
+																"stubs"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Do request again",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Status code is 200\", function () {",
+																	"    pm.response.to.have.status(200);",
+																	"});",
+																	"",
+																	"pm.test(\"Body is correct\", function () {",
+																	"    pm.response.to.have.body(\"OK!\");",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"stringValue\": \"value\",\n    \"intValue\": 42.1,\n    \"boolValue\": true,\n    \"objectValue\": {\n        \"stringValue\": \"anotherValue\"\n    },\n    \"arrayValue\": [\n        \"value1\",\n        333\n    ]\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{rootUrl}}json-data",
+															"host": [
+																"{{rootUrl}}json-data"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "Array",
+											"item": [
+												{
+													"name": "Do request",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Status code is 501\", function () {",
+																	"    pm.response.to.have.status(501);",
+																	"});",
+																	"",
+																	"const corrId = pm.response.headers.get('X-HttPlaceholder-Correlation');",
+																	"pm.environment.set(\"corrId\", corrId);"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "[\n    \"value1\",\n    44,\n    false,\n    {\n        \"key1\": \"val1\"\n    },\n    [\n        \"1\",\n        2\n    ]\n]",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{rootUrl}}json-data",
+															"host": [
+																"{{rootUrl}}json-data"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Create stub based on request",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Check generated stub\", function () {",
+																	"    const jsonData = pm.response.json();",
+																	"    const body = jsonData.stub.conditions.body;",
+																	"    pm.expect(body).to.eql(undefined);",
+																	"",
+																	"    const json = jsonData.stub.conditions.json;",
+																	"    pm.expect(json.length).to.eql(5);",
+																	"    pm.expect(json[0]).to.eql(\"value1\");",
+																	"    pm.expect(json[1]).to.eql(44);",
+																	"    pm.expect(json[2]).to.eql(false);",
+																	"    pm.expect(json[3].key1).to.eql(\"val1\");",
+																	"    pm.expect(json[4].length).to.eql(2);",
+																	"    pm.expect(json[4][0]).to.eql(\"1\");",
+																	"    pm.expect(json[4][1]).to.eql(2);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"doNotCreateStub\": false\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{rootUrl}}ph-api/requests/{{corrId}}/stubs",
+															"host": [
+																"{{rootUrl}}ph-api"
+															],
+															"path": [
+																"requests",
+																"{{corrId}}",
+																"stubs"
+															]
+														}
+													},
+													"response": []
+												},
+												{
+													"name": "Do request again",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Status code is 200\", function () {",
+																	"    pm.response.to.have.status(200);",
+																	"});",
+																	"",
+																	"pm.test(\"Body is correct\", function () {",
+																	"    pm.response.to.have.body(\"OK!\");",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"stringValue\": \"value\",\n    \"intValue\": 42.1,\n    \"boolValue\": true,\n    \"objectValue\": {\n        \"stringValue\": \"anotherValue\"\n    },\n    \"arrayValue\": [\n        \"value1\",\n        333\n    ]\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{rootUrl}}json-data",
+															"host": [
+																"{{rootUrl}}json-data"
+															]
+														}
+													},
+													"response": []
+												}
+											]
 										}
 									]
 								},
@@ -6822,6 +7094,114 @@
 												}
 											},
 											"response": []
+										}
+									]
+								},
+								{
+									"name": "JSON",
+									"item": [
+										{
+											"name": "Object",
+											"item": [
+												{
+													"name": "Import cURL",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Check request body\", function () {",
+																	"    const jsonData = pm.response.json();",
+																	"    const body = jsonData[0].stub.conditions.body;",
+																	"    pm.expect(body).to.eql(undefined);",
+																	"",
+																	"    const json = jsonData[0].stub.conditions.json;",
+																	"    pm.expect(json.stringValue).to.eql(\"value\");",
+																	"    pm.expect(json.intValue).to.eql(42.1);",
+																	"    pm.expect(json.boolValue).to.eql(true);",
+																	"    pm.expect(json.objectValue.stringValue).to.eql(\"anotherValue\");",
+																	"    pm.expect(json.arrayValue.length).to.eql(2);",
+																	"    pm.expect(json.arrayValue[0]).to.eql(\"value1\");",
+																	"    pm.expect(json.arrayValue[1]).to.eql(333);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "curl 'https://api.site.com/json-object' \\\n  -H 'Content-Type: application/json' \\\n  --data-raw '{\"stringValue\":\"value\",\"intValue\":42.1,\"boolValue\":true,\"objectValue\":{\"stringValue\":\"anotherValue\"},\"arrayValue\":[\"value1\",333]}' \\\n  --compressed"
+														},
+														"url": {
+															"raw": "{{rootUrl}}ph-api/import/curl",
+															"host": [
+																"{{rootUrl}}ph-api"
+															],
+															"path": [
+																"import",
+																"curl"
+															]
+														}
+													},
+													"response": []
+												}
+											]
+										},
+										{
+											"name": "Array",
+											"item": [
+												{
+													"name": "Import cURL",
+													"event": [
+														{
+															"listen": "test",
+															"script": {
+																"exec": [
+																	"pm.test(\"Check request body\", function () {",
+																	"    const jsonData = pm.response.json();",
+																	"    const body = jsonData[0].stub.conditions.body;",
+																	"    pm.expect(body).to.eql(undefined);",
+																	"",
+																	"    const json = jsonData[0].stub.conditions.json;",
+																	"    pm.expect(json.length).to.eql(5);",
+																	"    pm.expect(json[0]).to.eql(\"value1\");",
+																	"    pm.expect(json[1]).to.eql(44);",
+																	"    pm.expect(json[2]).to.eql(false);",
+																	"    pm.expect(json[3].key1).to.eql(\"val1\");",
+																	"    pm.expect(json[4].length).to.eql(2);",
+																	"    pm.expect(json[4][0]).to.eql(\"1\");",
+																	"    pm.expect(json[4][1]).to.eql(2);",
+																	"});"
+																],
+																"type": "text/javascript"
+															}
+														}
+													],
+													"request": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "curl 'https://api.site.com/json-object' \\\n  -H 'Content-Type: application/json' \\\n  --data-raw '[\"value1\",44,false,{\"key1\":\"val1\"},[\"1\",2]]' \\\n  --compressed"
+														},
+														"url": {
+															"raw": "{{rootUrl}}ph-api/import/curl",
+															"host": [
+																"{{rootUrl}}ph-api"
+															],
+															"path": [
+																"import",
+																"curl"
+															]
+														}
+													},
+													"response": []
+												}
+											]
 										}
 									]
 								},

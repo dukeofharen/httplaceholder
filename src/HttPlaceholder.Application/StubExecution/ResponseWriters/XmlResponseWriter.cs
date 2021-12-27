@@ -5,6 +5,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to return the given response as XML.
+/// </summary>
 internal class XmlResponseWriter : IResponseWriter
 {
     public int Priority => 0;

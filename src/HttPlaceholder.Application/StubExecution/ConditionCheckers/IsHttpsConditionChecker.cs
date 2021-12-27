@@ -4,6 +4,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker that verifies if a request is done over HTTP or HTTPS.
+/// </summary>
 public class IsHttpsConditionChecker : IConditionChecker
 {
     private readonly IClientDataResolver _clientDataResolver;

@@ -6,6 +6,9 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
+/// <summary>
+/// Condition checker that is used to verify incoming basic authentication credentials.
+/// </summary>
 public class BasicAuthenticationConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;

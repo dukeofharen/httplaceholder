@@ -4,6 +4,9 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
+/// <summary>
+/// Response writer that is used to return response headers.
+/// </summary>
 public class HeadersResponseWriter : IResponseWriter
 {
     public int Priority => 0;
