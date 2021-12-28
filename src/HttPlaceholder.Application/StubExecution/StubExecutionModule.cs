@@ -21,6 +21,7 @@ public static class StubExecutionModule
         services.AddSingleton<IResponseVariableParser, ResponseVariableParser>();
         services.AddSingleton<IScenarioService, ScenarioService>();
         services.AddSingleton<ICurlStubGenerator, CurlStubGenerator>();
+        services.AddSingleton<IHarStubGenerator, HarStubGenerator>();
         services.AddSingleton<ICurlToHttpRequestMapper, CurlToHttpRequestMapper>();
         services.AddSingleton<IHttpRequestToConditionsService, HttpRequestToConditionsService>();
 
