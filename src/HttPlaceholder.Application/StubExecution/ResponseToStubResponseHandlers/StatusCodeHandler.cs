@@ -10,7 +10,11 @@ namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandler
 public class StatusCodeHandler : IResponseToStubResponseHandler
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel) => throw new System.NotImplementedException();
+    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel)
+    {
+        stubResponseModel.StatusCode = response.StatusCode;
+        return Task.FromResult(true);
+    }
 
     /// <inheritdoc />
     public int Priority => 0;
