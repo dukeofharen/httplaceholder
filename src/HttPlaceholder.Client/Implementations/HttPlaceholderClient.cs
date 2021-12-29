@@ -413,4 +413,21 @@ public class HttPlaceholderClient : IHttPlaceholderClient
 
         return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
     }
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(string input, bool doNotCreateStub)
+    {
+        using var response = await HttpClient.PostAsync(
+            $"/ph-api/import/har?doNotCreateStub={doNotCreateStub}",
+            new StringContent(input,
+                Encoding.UTF8,
+                TextContentType));
+        var content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttPlaceholderClientException(response.StatusCode, content);
+        }
+
+        return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
+    }
 }

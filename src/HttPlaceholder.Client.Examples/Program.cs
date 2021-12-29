@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -63,7 +64,7 @@ internal static class Program
                     .WithJsonBody(new {key1 = "val1", key2 = "val2"})));
 
             // Create multiple stubs.
-            var createdStubs= await client.CreateStubsAsync(
+            var createdStubs = await client.CreateStubsAsync(
                 new StubDto {Id = "test-stub-1", Response = new StubResponseDto {Text = "Let's go yeah!"}},
                 new StubDto {Id = "test-stub-2", Response = new StubResponseDto {Text = "Let's go yeah!"}});
 
@@ -169,6 +170,10 @@ curl 'https://site.com/_nuxt/1d6c3a9.js' \
   -H 'cookie: Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=' \
   --compressed";
             var curlCommandResult = await client.CreateCurlStubsAsync(commands, false);
+
+            // Create stubs based on HTTP archive (HAR).
+            var har = await File.ReadAllTextAsync("har.json");
+            var harResult = await client.CreateHarStubsAsync(har, false);
         }
         catch (Exception ex)
         {

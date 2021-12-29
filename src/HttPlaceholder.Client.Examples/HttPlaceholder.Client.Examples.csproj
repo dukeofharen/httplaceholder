@@ -7,11 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj"/>
+        <ProjectReference Include="..\HttPlaceholder.Client\HttPlaceholder.Client.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="har.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
