@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-// TODO next: make unit tests for this class.
 /// <inheritdoc />
 public class HarStubGenerator : IHarStubGenerator
 {
@@ -79,6 +78,8 @@ public class HarStubGenerator : IHarStubGenerator
     {
         StatusCode = entry.Response.Status,
         Content = entry.Response.Content?.Text,
+        ContentIsBase64 =
+            string.Equals(entry.Response.Content?.Encoding, "base64", StringComparison.OrdinalIgnoreCase),
         Headers = entry.Response.Headers.ToDictionary(h => h.Name, h => h.Value)
     };
 

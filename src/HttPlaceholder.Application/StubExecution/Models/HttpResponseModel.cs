@@ -21,4 +21,9 @@ public class HttpResponseModel
     /// Gets or sets the HTTP response content.
     /// </summary>
     public string Content { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the content is Base64 encoded.
+    /// </summary>
+    public bool ContentIsBase64 { get; set; }
 }
