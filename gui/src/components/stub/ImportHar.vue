@@ -1,8 +1,8 @@
 <template>
   <div class="mb-2">
-    Using this form, you can create stubs based on cURL commands. You can either
-    use a cURL command you have lying around or you can copy/paste a cURL
-    command from the developer console from your browser.
+    Using this form, you can create stubs based on an HTTP archive (or HAR).
+    Most modern browsers allow you to download a HAR file with the request and
+    response definitions of the recently made requests.
   </div>
   <div class="mb-2">
     <button
@@ -16,26 +16,28 @@
     <div class="row">
       <div class="col-md-12">
         <p>
-          You can copy/paste a cURL command from your browser. In most popular
-          web browsers, you can do this by going to the developer tools, going
-          to the "Network" tab and selecting the request where you would like to
-          have the cURL request for.
+          To get the HTTP archive of the requests from your browser, you need to
+          open the developer tools and open the "Network" tab.
         </p>
         <p>
-          When copying cURL requests from a browser on Windows, make sure you
-          select "Copy as cURL (bash)" or "Copy all as cURL (bash)" on Chrome or
-          "Copy as cURL (POSIX)" in Firefox. The Windows formatting of cURL
-          commands is currently not supported in HttPlaceholder.
+          In Firefox, you can right click on the request in the "Network" tab
+          and select "Copy all as HAR".
         </p>
+        <p>
+          In Chrome, you can also click "Copy all as HAR", but this does not
+          copy the response contents. To get the full responses, you need to
+          click "Save all as HAR with content" to get the full HAR.
+        </p>
+        <p>You can copy the full HAR file below.</p>
       </div>
     </div>
     <div class="row mb-2">
       <div class="col-md-4">
-        <img src="@/assets/curl_copy_firefox.png" />
+        <img src="@/assets/har_copy_firefox.png" />
         <em>Example in Firefox</em>
       </div>
       <div class="col-md-4">
-        <img src="@/assets/curl_copy_chrome.png" />
+        <img src="@/assets/har_copy_chrome.png" />
         <em
           >Example in Chrome. In Chrome, you can either select "Copy as cURL" or
           "Copy all as cURL".
@@ -49,15 +51,15 @@
     </div>
   </div>
   <div class="mb-2" v-if="!stubsYaml">
-    <textarea class="form-control" v-model="curlInput"></textarea>
+    <textarea class="form-control" v-model="harInput"></textarea>
   </div>
   <div v-if="!stubsYaml" class="mb-2">
     <button
       class="btn btn-success"
-      @click="importCommands"
+      @click="importHar"
       :disabled="!importButtonEnabled"
     >
-      Import cURL command(s)
+      Import HTTP archive
     </button>
   </div>
   <div v-if="stubsYaml" class="mb-2">The following stubs will be added.</div>
@@ -74,19 +76,18 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { useStore } from "vuex";
+import { computed, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
+import { useStore } from "vuex";
 import yaml from "js-yaml";
 import hljs from "highlight.js/lib/core";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
-import { setIntermediateStub } from "@/utils/session";
-import { shouldSave } from "@/utils/event";
 import { useRouter } from "vue-router";
+import { setIntermediateStub } from "@/utils/session";
 
 export default {
-  name: "ImportCurl",
+  name: "ImportHar",
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -95,28 +96,28 @@ export default {
     const codeBlock = ref(null);
 
     // Data
-    const curlInput = ref("");
-    const stubsYaml = ref("");
+    const harInput = ref("");
     const howToOpen = ref(false);
+    const stubsYaml = ref("");
 
     // Computed
-    const importButtonEnabled = computed(() => !!curlInput.value);
+    const importButtonEnabled = computed(() => !!harInput.value);
 
     // Methods
-    const importCommands = async () => {
+    const insertExample = () => {
+      harInput.value = resources.exampleHarInput;
+    };
+    const importHar = async () => {
       try {
-        const result = await store.dispatch("importModule/importCurlCommands", {
-          commands: curlInput.value,
+        const result = await store.dispatch("importModule/importHar", {
+          har: harInput.value,
           doNotCreateStub: true,
         });
-        if (!result.length) {
-          toastr.error(resources.noCurlStubsFound);
-          return;
-        }
 
         const filteredResult = result.map((r) => r.stub);
         stubsYaml.value = yaml.dump(filteredResult);
         setTimeout(() => {
+          console.log(codeBlock.value);
           if (codeBlock.value) {
             hljs.highlightElement(codeBlock.value);
           }
@@ -127,8 +128,8 @@ export default {
     };
     const saveStubs = async () => {
       try {
-        await store.dispatch("importModule/importCurlCommands", {
-          commands: curlInput.value,
+        await store.dispatch("importModule/importHar", {
+          har: harInput.value,
           doNotCreateStub: false,
         });
         toastr.success(resources.stubsAddedSuccessfully);
@@ -142,42 +143,21 @@ export default {
       router.push({ name: "StubForm" });
     };
     const reset = () => {
-      curlInput.value = "";
+      harInput.value = "";
       stubsYaml.value = "";
     };
-    const insertExample = () => {
-      curlInput.value = resources.exampleCurlInput;
-    };
-    const handleSave = async (e) => {
-      if (shouldSave(e)) {
-        e.preventDefault();
-        if (!stubsYaml.value) {
-          await importCommands();
-        } else {
-          await saveStubs();
-        }
-      }
-    };
-
-    // Lifecycle
-    const keydownEventListener = async (e) => await handleSave(e);
-    onMounted(() => document.addEventListener("keydown", keydownEventListener));
-    onUnmounted(() =>
-      document.removeEventListener("keydown", keydownEventListener)
-    );
 
     return {
-      curlInput,
-      importCommands,
+      howToOpen,
+      insertExample,
       stubsYaml,
-      codeBlock,
+      harInput,
+      importHar,
+      importButtonEnabled,
       saveStubs,
       editBeforeSaving,
       reset,
-      handleSave,
-      importButtonEnabled,
-      howToOpen,
-      insertExample,
+      codeBlock,
     };
   },
 };
