@@ -38,10 +38,7 @@
       </div>
       <div class="col-md-4">
         <img src="@/assets/har_copy_chrome.png" />
-        <em
-          >Example in Chrome. In Chrome, you can either select "Copy as cURL" or
-          "Copy all as cURL".
-        </em>
+        <em>Example in Chrome. </em>
       </div>
       <div class="col-md-12 mb-2 mt-2">
         <button class="btn btn-outline-primary btn-sm" @click="insertExample">

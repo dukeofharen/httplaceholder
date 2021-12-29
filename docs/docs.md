@@ -2067,6 +2067,35 @@ _Copy as cURL in Firefox on Windows_
 
 _Copy as cURL in Chrome on Windows_
 
+### Import HTTP archive (HAR)
+
+On this page, you can import an HTTP archive (or HAR for short) to create stubs based on it. An HTTP archive file is a JSON file that is a representation of a set of requests with its corresponding response. Most modern browsers allow you to copy or download the HAR file.
+
+![](img/ui/stub_har_form.png)
+_On this form, you can import a HAR file by pasting the contents of the HAR._
+
+![](img/ui/stub_har_form_review.png)
+_When pressing the "Import HTTP archive" button, you will see the stubs that will be added. You will have the option to directly save the stubs, edit the stubs before saving or resetting and starting over._
+
+#### Retrieving HAR from browser
+
+Retrieving the HTTP archive from browsers is easy and supported in all major browsers (e.g. Firefox, Chrome, Edge etc.). In general, you open the developer console of your browser, go to the "Network" tab and select the command where you would like to copy the cURl command for.
+
+**Firefox**
+
+![](img/ui/har_copy_firefox.png)
+
+_In Firefox, you can right click on the request in the "Network" tab
+and select "Copy all as HAR"._
+
+**Chrome**
+
+![](img/ui/har_copy_chrome.png)
+
+_In Chrome, you can also click "Copy all as HAR", but this does not
+copy the response contents. To get the full responses, you need to
+click "Save all as HAR with content" to get the full HAR._
+
 ## Add stub(s) form
 
 You can add stubs in one of three ways: either by filling in the stub YAML, by filling in a form or by uploading a YAML file from your PC.
