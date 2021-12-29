@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
@@ -82,6 +83,6 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.IsTrue(content.Contains("Test page in HttPlaceholder"));
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/html", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.HtmlMime, response.Content.Headers.ContentType.ToString());
     }
 }

@@ -21,4 +21,14 @@ public static class Constants
 
     // Scenario values.
     public const string DefaultScenarioState = "Start";
+
+    // Mime types.
+    public const string JsonMime = "application/json";
+    public const string TextMime = "text/plain";
+    public const string YamlTextMime = "text/yaml";
+    public const string YamlApplicationMime = "application/x-yaml";
+    public const string HtmlMime = "text/html";
+    public const string XmlMime = "text/xml";
+    public const string UrlEncodedFormMime = "application/x-www-form-urlencoded";
+    public const string MultipartFormDataMime = "multipart/form-data";
 }

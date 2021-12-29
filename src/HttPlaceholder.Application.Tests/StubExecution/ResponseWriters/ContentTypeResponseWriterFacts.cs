@@ -15,7 +15,7 @@ public class ContentTypeResponseWriterFacts
     {
         // Arrange
         var response = new ResponseModel();
-        response.Headers.Add("Content-Type", "text/plain");
+        response.Headers.Add("Content-Type", Constants.TextMime);
         var stub = new StubModel {Response = new StubResponseModel {ContentType = string.Empty}};
 
         // Act
@@ -23,7 +23,7 @@ public class ContentTypeResponseWriterFacts
 
         // Arrange
         Assert.IsFalse(result.Executed);
-        Assert.AreEqual("text/plain", response.Headers["Content-Type"]);
+        Assert.AreEqual(Constants.TextMime, response.Headers["Content-Type"]);
     }
 
     [TestMethod]
@@ -31,7 +31,7 @@ public class ContentTypeResponseWriterFacts
     {
         // Arrange
         var response = new ResponseModel();
-        response.Headers.Add("content-Type", "text/plain");
+        response.Headers.Add("content-Type", Constants.TextMime);
         var stub = new StubModel {Response = new StubResponseModel {ContentType = "text/csv"}};
 
         // Act

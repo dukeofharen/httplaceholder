@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Dto.v1.Metadata;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,7 +24,7 @@ public class RestApiMetadataIntegrationTests : RestApiIntegrationTestBase
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Get, "/ph-api/metadata")
         {
-            Headers = {{"Accept", "application/json"}}
+            Headers = {{"Accept", Constants.JsonMime}}
         };
 
         // Act
@@ -42,7 +43,7 @@ public class RestApiMetadataIntegrationTests : RestApiIntegrationTestBase
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Get, "/ph-api/metadata/features/authentication")
         {
-            Headers = {{"Accept", "application/json"}}
+            Headers = {{"Accept", Constants.JsonMime}}
         };
 
         // Act

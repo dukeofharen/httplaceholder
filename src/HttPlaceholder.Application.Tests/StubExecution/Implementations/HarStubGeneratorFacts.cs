@@ -121,7 +121,7 @@ public class HarStubGeneratorFacts
         Assert.IsFalse(res1.ContentIsBase64);
         Assert.AreEqual(200, res1.StatusCode);
         Assert.AreEqual(6, res1.Headers.Count);
-        Assert.AreEqual("text/html", res1.Headers["content-type"]);
+        Assert.AreEqual(Constants.HtmlMime, res1.Headers["content-type"]);
 
         var req2 = requests[1];
         Assert.AreEqual("GET", req2.Method);

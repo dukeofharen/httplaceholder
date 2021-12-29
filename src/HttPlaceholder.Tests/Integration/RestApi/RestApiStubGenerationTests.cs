@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Requests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -41,7 +42,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent("{}", Encoding.UTF8, "application/json")
+            Content = new StringContent("{}", Encoding.UTF8, Constants.JsonMime)
         };
         response = await Client.SendAsync(apiRequest);
         response.EnsureSuccessStatusCode();
@@ -97,7 +98,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent(JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}), Encoding.UTF8, "application/json")
+            Content = new StringContent(JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}), Encoding.UTF8, Constants.JsonMime)
         };
         response = await Client.SendAsync(apiRequest);
         response.EnsureSuccessStatusCode();

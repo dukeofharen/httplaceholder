@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
@@ -32,7 +33,7 @@ public class StubUrlConditionsIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.IsFalse(string.IsNullOrEmpty(content));
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
     }
 
     [TestMethod]

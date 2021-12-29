@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Scenarios;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -127,7 +128,7 @@ public class RestApiScenarioIntegrationTests : RestApiIntegrationTestBase
         {
             Method = HttpMethod.Put,
             RequestUri = new Uri($"{BaseAddress}ph-api/scenarios/{scenario}"),
-            Content = new StringContent(JsonConvert.SerializeObject(input), Encoding.UTF8, "application/json")
+            Content = new StringContent(JsonConvert.SerializeObject(input), Encoding.UTF8, Constants.JsonMime)
         };
         return await Client.SendAsync(request);
     }

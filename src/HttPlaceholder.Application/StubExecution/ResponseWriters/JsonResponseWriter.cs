@@ -21,7 +21,7 @@ internal class JsonResponseWriter : IResponseWriter
 
         var jsonBody = stub.Response.Json;
         response.Body = Encoding.UTF8.GetBytes(jsonBody);
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", "application/json", false);
+        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.JsonMime, false);
 
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }

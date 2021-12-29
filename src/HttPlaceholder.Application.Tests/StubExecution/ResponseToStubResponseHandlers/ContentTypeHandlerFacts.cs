@@ -35,7 +35,7 @@ public class ContentTypeHandlerFacts
         // Arrange
         var response = new HttpResponseModel
         {
-            Headers = {{"x-api-key", "1223"}, {headerKey, "application/json; charset=UTF-8"}}
+            Headers = {{"x-api-key", "1223"}, {headerKey, $"{Constants.JsonMime}; charset=UTF-8"}}
         };
         var stubResponse = new StubResponseModel();
 
@@ -44,6 +44,6 @@ public class ContentTypeHandlerFacts
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual("application/json; charset=UTF-8", stubResponse.ContentType);
+        Assert.AreEqual($"{Constants.JsonMime}; charset=UTF-8", stubResponse.ContentType);
     }
 }

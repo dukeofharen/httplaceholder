@@ -20,7 +20,7 @@ public class TextResponseWriter : IResponseWriter
         }
 
         response.Body = Encoding.UTF8.GetBytes(stub.Response.Text);
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", "text/plain", false);
+        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.TextMime, false);
 
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }
