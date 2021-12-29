@@ -14,6 +14,8 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 /// <inheritdoc />
 public class HarStubGenerator : IHarStubGenerator
 {
+    private static string[] _responseHeadersToStrip = new[] {"content-length", "content-encoding"};
+
     private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
     private readonly IHttpResponseToStubResponseService _httpResponseToStubResponseService;
     private readonly IStubContext _stubContext;
@@ -80,7 +82,9 @@ public class HarStubGenerator : IHarStubGenerator
         Content = entry.Response.Content?.Text,
         ContentIsBase64 =
             string.Equals(entry.Response.Content?.Encoding, "base64", StringComparison.OrdinalIgnoreCase),
-        Headers = entry.Response.Headers.ToDictionary(h => h.Name, h => h.Value)
+        Headers = entry.Response.Headers
+            .Where(h => !_responseHeadersToStrip.Contains(h.Name.ToLower()))
+            .ToDictionary(h => h.Name, h => h.Value)
     };
 
     private async Task<StubModel> MapStub(HttpRequestModel req, HttpResponseModel res)

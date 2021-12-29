@@ -43,7 +43,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.AreEqual(5, stubs.Length);
 
         var stub = stubs[0];
-        Assert.AreEqual("generated-90a6fbf965a88353be5728f5daba1bdf", stub.Id);
+        Assert.AreEqual("generated-f5bdb2a3076af2b344521522d73cecda", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
         Assert.AreEqual("/", stub.Conditions.Url.Path);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
@@ -52,12 +52,12 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.AreEqual("ducode.org", stub.Conditions.Host);
         Assert.AreEqual(200, stub.Response.StatusCode);
         Assert.AreEqual(Constants.HtmlMime, stub.Response.ContentType);
-        Assert.AreEqual(5, stub.Response.Headers.Count);
+        Assert.AreEqual(4, stub.Response.Headers.Count);
         Assert.AreEqual("nginx", stub.Response.Headers["server"]);
         Assert.IsTrue(stub.Response.Html.Contains("<!DOCTYPE html>"));
 
         stub = stubs[1];
-        Assert.AreEqual("generated-0a3de5702211fcfe4cc085bf1790eca4", stub.Id);
+        Assert.AreEqual("generated-f59773c5243d6958bb358c37f811bf99", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
         Assert.AreEqual("/static/style/style.css", stub.Conditions.Url.Path);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
@@ -66,12 +66,12 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.AreEqual("ducode.org", stub.Conditions.Host);
         Assert.AreEqual(200, stub.Response.StatusCode);
         Assert.AreEqual("text/css", stub.Response.ContentType);
-        Assert.AreEqual(6, stub.Response.Headers.Count);
+        Assert.AreEqual(5, stub.Response.Headers.Count);
         Assert.AreEqual("nginx", stub.Response.Headers["server"]);
         Assert.IsTrue(stub.Response.Text.Contains("@font-face"));
 
         stub = stubs[2];
-        Assert.AreEqual("generated-d7855f462d16907a9e5822fb88022797", stub.Id);
+        Assert.AreEqual("generated-191eedb4196d6680ca6a4fd3aae24102", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
         Assert.AreEqual("/static/fonts/roboto-mono.woff2", stub.Conditions.Url.Path);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
@@ -80,12 +80,12 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.AreEqual("ducode.org", stub.Conditions.Host);
         Assert.AreEqual(200, stub.Response.StatusCode);
         Assert.AreEqual("application/octet-stream", stub.Response.ContentType);
-        Assert.AreEqual(6, stub.Response.Headers.Count);
+        Assert.AreEqual(5, stub.Response.Headers.Count);
         Assert.AreEqual("nginx", stub.Response.Headers["server"]);
         Assert.IsTrue(stub.Response.Base64.Contains("d09GMgABAAAAADAYAA4AAAAAV5wAAC"));
 
         stub = stubs[3];
-        Assert.AreEqual("generated-3aabefe95c4970c2e390e2fa7c21a7d7", stub.Id);
+        Assert.AreEqual("generated-5b407a75c8c77b7c41a82e712ed053d0", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
         Assert.AreEqual("/static/favicon.png", stub.Conditions.Url.Path);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
@@ -94,7 +94,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.AreEqual("ducode.org", stub.Conditions.Host);
         Assert.AreEqual(200, stub.Response.StatusCode);
         Assert.AreEqual("image/png", stub.Response.ContentType);
-        Assert.AreEqual(6, stub.Response.Headers.Count);
+        Assert.AreEqual(5, stub.Response.Headers.Count);
         Assert.AreEqual("nginx", stub.Response.Headers["server"]);
         Assert.IsTrue(stub.Response.Base64.Contains("iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAA"));
 

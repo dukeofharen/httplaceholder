@@ -137,6 +137,10 @@
                         {
                             "name": "content-encoding",
                             "value": "gzip"
+                        },
+                        {
+                            "name": "content-length",
+                            "value": "1122"
                         }
                     ],
                     "cookies": [],
