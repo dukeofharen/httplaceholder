@@ -26,9 +26,13 @@ public static class CollectionUtilities
         dict.Add(key, value);
     }
 
+    public static KeyValuePair<string, string> CaseInsensitiveSearchPair(this IDictionary<string, string> dict,
+        string key) =>
+        dict.FirstOrDefault(h => string.Equals(key, h.Key, StringComparison.OrdinalIgnoreCase));
+
     public static string CaseInsensitiveSearch(this IDictionary<string, string> dict, string key)
     {
-        var pair = dict.FirstOrDefault(h => string.Equals(key, h.Key, StringComparison.OrdinalIgnoreCase));
+        var pair = dict.CaseInsensitiveSearchPair(key);
         return string.IsNullOrWhiteSpace(pair.Key) ? null : pair.Value;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 using HttPlaceholder.Domain;
@@ -45,5 +46,7 @@ public class ContentTypeHandlerFacts
         // Assert
         Assert.IsTrue(result);
         Assert.AreEqual($"{Constants.JsonMime}; charset=UTF-8", stubResponse.ContentType);
+        Assert.AreEqual(1, response.Headers.Count);
+        Assert.IsFalse(response.Headers.Any(h => h.Key == headerKey));
     }
 }

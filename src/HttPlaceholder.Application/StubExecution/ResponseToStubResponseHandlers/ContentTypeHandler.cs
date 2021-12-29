@@ -13,13 +13,14 @@ public class ContentTypeHandler : IResponseToStubResponseHandler
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel)
     {
-        var headerValue = response.Headers.CaseInsensitiveSearch("content-type");
-        if (string.IsNullOrWhiteSpace(headerValue))
+        var header = response.Headers.CaseInsensitiveSearchPair("content-type");
+        if (string.IsNullOrWhiteSpace(header.Value))
         {
             return Task.FromResult(false);
         }
 
-        stubResponseModel.ContentType = headerValue;
+        stubResponseModel.ContentType = header.Value;
+        response.Headers.Remove(header);
         return Task.FromResult(true);
     }
 
