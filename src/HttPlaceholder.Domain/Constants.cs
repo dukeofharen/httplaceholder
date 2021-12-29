@@ -28,7 +28,8 @@ public static class Constants
     public const string YamlTextMime = "text/yaml";
     public const string YamlApplicationMime = "application/x-yaml";
     public const string HtmlMime = "text/html";
-    public const string XmlMime = "text/xml";
+    public const string XmlTextMime = "text/xml";
+    public const string XmlApplicationMime = "application/xml";
     public const string UrlEncodedFormMime = "application/x-www-form-urlencoded";
     public const string MultipartFormDataMime = "multipart/form-data";
 }

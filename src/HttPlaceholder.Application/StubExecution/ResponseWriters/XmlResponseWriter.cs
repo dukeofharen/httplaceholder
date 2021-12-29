@@ -21,7 +21,7 @@ internal class XmlResponseWriter : IResponseWriter
 
         var body = stub.Response.Xml;
         response.Body = Encoding.UTF8.GetBytes(body);
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.XmlMime, false);
+        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.XmlTextMime, false);
 
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }

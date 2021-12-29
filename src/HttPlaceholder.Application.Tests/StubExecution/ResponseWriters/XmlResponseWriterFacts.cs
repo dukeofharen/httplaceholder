@@ -56,7 +56,7 @@ public class XmlResponseWriterFacts
         // assert
         Assert.IsTrue(result.Executed);
         Assert.IsTrue(expectedResponseBytes.SequenceEqual(expectedResponseBytes));
-        Assert.AreEqual(Constants.XmlMime, response.Headers["Content-Type"]);
+        Assert.AreEqual(Constants.XmlTextMime, response.Headers["Content-Type"]);
     }
 
     [TestMethod]

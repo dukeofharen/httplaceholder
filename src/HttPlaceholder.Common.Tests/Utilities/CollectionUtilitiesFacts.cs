@@ -57,12 +57,12 @@ public class CollectionUtilitiesFacts
         var dictionary = new Dictionary<string, string> {{"content-type", Constants.JsonMime}};
 
         // Act
-        dictionary.AddOrReplaceCaseInsensitive("Accept", Constants.XmlMime);
+        dictionary.AddOrReplaceCaseInsensitive("Accept", Constants.XmlTextMime);
 
         // Assert
         Assert.AreEqual(2, dictionary.Count);
         Assert.AreEqual(Constants.JsonMime, dictionary["content-type"]);
-        Assert.AreEqual(Constants.XmlMime, dictionary["Accept"]);
+        Assert.AreEqual(Constants.XmlTextMime, dictionary["Accept"]);
     }
 
     [DataTestMethod]
