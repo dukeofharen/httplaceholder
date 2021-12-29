@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
@@ -43,7 +44,7 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
 }";
         var request = new HttpRequestMessage
         {
-            Content = new StringContent(body, Encoding.UTF8, "application/json"),
+            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime),
             Method = HttpMethod.Put,
             RequestUri = new Uri(url)
         };
@@ -82,7 +83,7 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
 }";
         var request = new HttpRequestMessage
         {
-            Content = new StringContent(body, Encoding.UTF8, "application/json"),
+            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime),
             Method = HttpMethod.Put,
             RequestUri = new Uri(url)
         };
@@ -108,7 +109,7 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
 }]}";
         var request = new HttpRequestMessage
         {
-            Content = new StringContent(body, Encoding.UTF8, "application/json"),
+            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime),
             Method = HttpMethod.Put,
             RequestUri = new Uri(url)
         };
@@ -136,7 +137,7 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
 }]}";
         var request = new HttpRequestMessage
         {
-            Content = new StringContent(body, Encoding.UTF8, "application/json"),
+            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime),
             Method = HttpMethod.Put,
             RequestUri = new Uri(url)
         };

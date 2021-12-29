@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;
@@ -29,7 +30,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent(content, Encoding.UTF8, "text/plain")
+            Content = new StringContent(content, Encoding.UTF8, Constants.TextMime)
         };
         var curlResponse = await Client.SendAsync(apiRequest);
         curlResponse.EnsureSuccessStatusCode();

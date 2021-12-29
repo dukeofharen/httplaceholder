@@ -56,7 +56,7 @@ public class TextResponseWriterFacts
         // assert
         Assert.IsTrue(result.Executed);
         Assert.IsTrue(expectedBody.SequenceEqual(response.Body));
-        Assert.AreEqual("text/plain", response.Headers["Content-Type"]);
+        Assert.AreEqual(Constants.TextMime, response.Headers["Content-Type"]);
     }
 
     [TestMethod]
@@ -74,7 +74,7 @@ public class TextResponseWriterFacts
         };
 
         var response = new ResponseModel();
-        response.Headers.Add("Content-Type", "text/xml");
+        response.Headers.Add("Content-Type", Constants.XmlTextMime);
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response);
@@ -82,6 +82,6 @@ public class TextResponseWriterFacts
         // assert
         Assert.IsTrue(result.Executed);
         Assert.IsTrue(expectedBody.SequenceEqual(response.Body));
-        Assert.AreEqual("text/xml", response.Headers["Content-Type"]);
+        Assert.AreEqual(Constants.XmlTextMime, response.Headers["Content-Type"]);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
+using HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common.Utilities;
@@ -21,8 +22,10 @@ public static class StubExecutionModule
         services.AddSingleton<IResponseVariableParser, ResponseVariableParser>();
         services.AddSingleton<IScenarioService, ScenarioService>();
         services.AddSingleton<ICurlStubGenerator, CurlStubGenerator>();
+        services.AddSingleton<IHarStubGenerator, HarStubGenerator>();
         services.AddSingleton<ICurlToHttpRequestMapper, CurlToHttpRequestMapper>();
         services.AddSingleton<IHttpRequestToConditionsService, HttpRequestToConditionsService>();
+        services.AddSingleton<IHttpResponseToStubResponseService, HttpResponseToStubResponseService>();
 
         const string filter = "HttPlaceholder";
 
@@ -48,6 +51,12 @@ public static class StubExecutionModule
         foreach (var type in AssemblyHelper.GetImplementations<IRequestToStubConditionsHandler>(filter))
         {
             services.AddSingleton(typeof(IRequestToStubConditionsHandler), type);
+        }
+
+        // Response to stub response handlers
+        foreach (var type in AssemblyHelper.GetImplementations<IResponseToStubResponseHandler>(filter))
+        {
+            services.AddSingleton(typeof(IResponseToStubResponseHandler), type);
         }
 
         return services;

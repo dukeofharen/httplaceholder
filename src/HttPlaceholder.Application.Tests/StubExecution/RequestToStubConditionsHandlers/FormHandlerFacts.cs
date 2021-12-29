@@ -32,10 +32,9 @@ public class FormHandlerFacts
     public async Task FormHandler_HandleStubGenerationAsync_NoFormContentTypeSet_ShouldReturnFalse()
     {
         // Arrange
-        const string contentType = "application/json";
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> { { "Content-Type", contentType } }
+            Headers = new Dictionary<string, string> { { "Content-Type", Constants.JsonMime } }
         };
         var conditions = new StubConditionsModel();
 
@@ -48,10 +47,10 @@ public class FormHandlerFacts
     }
 
     [DataTestMethod]
-    [DataRow("application/x-www-form-urlencoded")]
-    [DataRow("application/x-www-form-urlencoded; charset=UTF-8")]
-    [DataRow("multipart/form-data")]
-    [DataRow("multipart/form-data; charset=UTF-8")]
+    [DataRow(Constants.UrlEncodedFormMime)]
+    [DataRow($"{Constants.UrlEncodedFormMime}; charset=UTF-8")]
+    [DataRow(Constants.MultipartFormDataMime)]
+    [DataRow($"{Constants.MultipartFormDataMime}; charset=UTF-8")]
     public async Task FormHandler_HandleStubGenerationAsync_HappyFlow(string contentType)
     {
         // Arrange

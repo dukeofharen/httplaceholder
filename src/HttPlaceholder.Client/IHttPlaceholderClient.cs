@@ -237,4 +237,12 @@ public interface IHttPlaceholderClient
     /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
     /// <returns>The created stubs.</returns>
     Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub);
+
+    /// <summary>
+    /// Creates stubs based on an HTTP archive (HAR)
+    /// </summary>
+    /// <param name="input">The HAR JSON string.</param>
+    /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
+    /// <returns>The created stubs.</returns>
+    Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(string input, bool doNotCreateStub);
 }

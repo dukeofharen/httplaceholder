@@ -7,6 +7,7 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Resources;
@@ -112,7 +113,7 @@ public class StubHandlingMiddleware
             _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
             var pageContents =
                 StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.RootUrl);
-            _httpContextService.AddHeader("Content-Type", "text/html");
+            _httpContextService.AddHeader("Content-Type", Constants.HtmlMime);
             await _httpContextService.WriteAsync(pageContents);
             _logger.LogInformation($"Request validation exception thrown: {e.Message}");
         }

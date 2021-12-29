@@ -23,7 +23,7 @@ internal class FormHandler : IRequestToStubConditionsHandler
             return Task.FromResult(false);
         }
 
-        var supportedContentTypes = new[] { "application/x-www-form-urlencoded", "multipart/form-data" };
+        var supportedContentTypes = new[] { Constants.UrlEncodedFormMime, Constants.MultipartFormDataMime };
         if (!supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)))
         {
             return Task.FromResult(false);

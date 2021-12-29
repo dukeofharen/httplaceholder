@@ -1,5 +1,6 @@
 [1.2.0]
-- Added new RequestToStubConditions handler to generate JSON conditions based on a request.
+- Added new RequestToStubConditions handler to generate JSON conditions based on a request (https://github.com/dukeofharen/httplaceholder/pull/205).
+- Added possibility to import HAR (HTTP Archive) files and creating stubs of those files (https://github.com/dukeofharen/httplaceholder/issues/206).
 
 # BREAKING CHANGES
 -

@@ -11,6 +11,14 @@ const actions = {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
+  importHar(_, input) {
+    return post(
+      `/ph-api/import/har?doNotCreateStub=${input.doNotCreateStub}`,
+      input.har
+    )
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };
 
 const mutations = {};

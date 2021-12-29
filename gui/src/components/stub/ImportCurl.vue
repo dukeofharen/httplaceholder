@@ -79,16 +79,17 @@ import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
 import hljs from "highlight.js/lib/core";
-import router from "@/router";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
+import { useRouter } from "vue-router";
 
 export default {
   name: "ImportCurl",
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     // Refs
     const codeBlock = ref(null);
@@ -131,7 +132,7 @@ export default {
           doNotCreateStub: false,
         });
         toastr.success(resources.stubsAddedSuccessfully);
-        router.push({ name: "Stubs" });
+        await router.push({ name: "Stubs" });
       } catch (e) {
         handleHttpError(e);
       }

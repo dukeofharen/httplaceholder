@@ -12,5 +12,10 @@ public class ValidationException : Exception
         ValidationErrors = validationErrors;
     }
 
+    public ValidationException(string error)
+    {
+        ValidationErrors = new[] {error};
+    }
+
     public override string Message => $"Validation failed:\n{string.Join("\n", ValidationErrors)}";
 }

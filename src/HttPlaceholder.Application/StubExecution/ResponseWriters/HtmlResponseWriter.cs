@@ -21,7 +21,7 @@ internal class HtmlResponseWriter : IResponseWriter
 
         var body = stub.Response.Html;
         response.Body = Encoding.UTF8.GetBytes(body);
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", "text/html", false);
+        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.HtmlMime, false);
 
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }

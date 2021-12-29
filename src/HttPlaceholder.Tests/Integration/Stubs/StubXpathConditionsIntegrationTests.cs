@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
@@ -43,7 +44,7 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("<result>OK</result>", content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.XmlTextMime, response.Content.Headers.ContentType.ToString());
     }
 
     [TestMethod]
@@ -73,7 +74,7 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("<result>OK</result>", content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.XmlTextMime, response.Content.Headers.ContentType.ToString());
     }
 
     [TestMethod]
@@ -125,7 +126,7 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         Assert.AreEqual("<result>OK</result>", content);
-        Assert.AreEqual("text/xml", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.XmlTextMime, response.Content.Headers.ContentType.ToString());
     }
 
     [TestMethod]

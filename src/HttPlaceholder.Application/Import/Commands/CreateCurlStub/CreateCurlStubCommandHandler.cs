@@ -5,7 +5,7 @@ using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using MediatR;
 
-namespace HttPlaceholder.Application.Import.Commands;
+namespace HttPlaceholder.Application.Import.Commands.CreateCurlStub;
 
 public class CreateCurlStubCommandHandler : IRequestHandler<CreateCurlStubCommand, IEnumerable<FullStubModel>>
 {

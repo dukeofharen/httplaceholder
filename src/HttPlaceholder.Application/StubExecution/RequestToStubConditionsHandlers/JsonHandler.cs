@@ -33,7 +33,7 @@ public class JsonHandler : IRequestToStubConditionsHandler
             return Task.FromResult(false);
         }
 
-        var supportedContentTypes = new[] {"application/json"};
+        var supportedContentTypes = new[] {Constants.JsonMime};
         if (!supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)))
         {
             return Task.FromResult(false);

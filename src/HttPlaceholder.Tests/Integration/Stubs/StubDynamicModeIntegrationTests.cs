@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
@@ -31,7 +32,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
     }
 
     [TestMethod]
@@ -45,7 +46,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.IsTrue(Guid.TryParse(content.Replace("The value is ", string.Empty), out _));
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
     }
 
     [TestMethod]
@@ -64,7 +65,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
 
         Assert.AreEqual("localhost", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
     }
@@ -90,7 +91,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
 
         Assert.AreEqual("Value 2!", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
     }
@@ -113,7 +114,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
 
         Assert.AreEqual("Test123", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
     }
@@ -137,7 +138,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
 
         Assert.AreEqual(url, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
     }
@@ -161,7 +162,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
 
         Assert.AreEqual(ip, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
     }
@@ -186,7 +187,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
 
         Assert.AreEqual(expectedDateTime, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
     }
@@ -211,7 +212,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
 
         Assert.AreEqual(expectedDateTime, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
     }

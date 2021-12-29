@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
@@ -97,11 +98,11 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
                     switch (part)
                     {
                         case "-F" or "--form":
-                            request.Headers.AddOrReplaceCaseInsensitive("Content-Type", "multipart/form-data");
+                            request.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.MultipartFormDataMime);
                             break;
                         case "-d" or "--data":
                             request.Headers.AddOrReplaceCaseInsensitive("Content-Type",
-                                "application/x-www-form-urlencoded");
+                                Constants.UrlEncodedFormMime);
                             break;
                     }
 

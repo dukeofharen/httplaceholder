@@ -5,7 +5,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.Models;
 
 /// <summary>
-/// A model that contains
+/// A model that contains a representation of an HTTP request.
 /// </summary>
 public class HttpRequestModel : IMapFrom<RequestParametersModel>
 {

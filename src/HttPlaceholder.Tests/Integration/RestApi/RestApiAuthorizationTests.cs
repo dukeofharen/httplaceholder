@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using HttPlaceholder.TestUtilities.Http;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -54,7 +55,7 @@ public class RestApiAuthorizationTests : RestApiIntegrationTestBase
         request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
         if (parsedHttpMethod == HttpMethod.Post || parsedHttpMethod == HttpMethod.Put)
         {
-            request.Content = new StringContent(postArray ? "[]" : "{}", Encoding.UTF8, "application/json");
+            request.Content = new StringContent(postArray ? "[]" : "{}", Encoding.UTF8, Constants.JsonMime);
         }
 
         using var response = await Client.SendAsync(request);
@@ -111,7 +112,7 @@ public class RestApiAuthorizationTests : RestApiIntegrationTestBase
         request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
         if (parsedHttpMethod == HttpMethod.Post || parsedHttpMethod == HttpMethod.Put)
         {
-            request.Content = new StringContent("{}", Encoding.UTF8, "application/json");
+            request.Content = new StringContent("{}", Encoding.UTF8, Constants.JsonMime);
         }
 
         using var response = await Client.SendAsync(request);

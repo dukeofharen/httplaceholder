@@ -24,28 +24,34 @@
     <div class="col-md-12 mt-3" v-if="selectedTab === tabs.importCurl">
       <ImportCurl />
     </div>
+    <div class="col-md-12 mt-3" v-if="selectedTab === tabs.importHar">
+      <ImportHar />
+    </div>
   </div>
 </template>
 
 <script>
 import UploadStubs from "@/components/stub/UploadStubs";
 import ImportCurl from "@/components/stub/ImportCurl";
+import ImportHar from "@/components/stub/ImportHar";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const tabs = {
   uploadStubs: "uploadStubs",
   importCurl: "importCurl",
+  importHar: "importHar",
 };
 
 const tabNames = {
   uploadStubs: "Upload stubs",
   importCurl: "Import cURL command(s)",
+  importHar: "Import HTTP archive (HAR)",
 };
 
 export default {
   name: "ImportStubs",
-  components: { UploadStubs, ImportCurl },
+  components: { UploadStubs, ImportCurl, ImportHar },
   setup() {
     const router = useRouter();
     const route = useRoute();

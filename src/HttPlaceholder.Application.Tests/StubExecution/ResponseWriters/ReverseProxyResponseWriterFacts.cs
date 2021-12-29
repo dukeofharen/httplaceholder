@@ -121,7 +121,7 @@ public class ReverseProxyResponseWriterFacts
         var mockHttp = new MockHttpMessageHandler();
         mockHttp
             .When(HttpMethod.Get, expectedRequestUrl)
-            .Respond("text/plain", "OK");
+            .Respond(Constants.TextMime, "OK");
         _mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
@@ -157,13 +157,13 @@ public class ReverseProxyResponseWriterFacts
 
         var headers = new Dictionary<string, string>
         {
-            {"Content-Type", "application/json"},
+            {"Content-Type", Constants.JsonMime},
             {"Content-Length", "111"},
             {"Host", "localhost:5000"},
             {"X-Api-Key", "abc123"},
             {"Connection", "keep-alive"},
             {"Accept-Encoding", "utf-8"},
-            {"Accept", "application/json"}
+            {"Accept", Constants.JsonMime}
         };
         _mockHttpContextService
             .Setup(m => m.GetHeaders())
@@ -177,9 +177,9 @@ public class ReverseProxyResponseWriterFacts
                 var proxyHeaders = r.Headers.ToDictionary(h => h.Key, h => h.Value.First());
                 return proxyHeaders.Count == 2 &&
                        proxyHeaders["X-Api-Key"] == "abc123" &&
-                       proxyHeaders["Accept"] == "application/json";
+                       proxyHeaders["Accept"] == Constants.JsonMime;
             })
-            .Respond("text/plain", "OK");
+            .Respond(Constants.TextMime, "OK");
         _mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
@@ -231,7 +231,7 @@ public class ReverseProxyResponseWriterFacts
             {
                 var msg = new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent("OK", Encoding.UTF8, "text/plain")
+                    Content = new StringContent("OK", Encoding.UTF8, Constants.TextMime)
                 };
                 foreach (var (key, value) in responseHeaders)
                 {
@@ -256,7 +256,7 @@ public class ReverseProxyResponseWriterFacts
         Assert.IsTrue(result.Executed);
 
         Assert.AreEqual(3, responseModel.Headers.Count);
-        Assert.AreEqual("text/plain; charset=utf-8", responseModel.Headers["Content-Type"]);
+        Assert.AreEqual($"{Constants.TextMime}; charset=utf-8", responseModel.Headers["Content-Type"]);
         Assert.AreEqual("2020-08-16", responseModel.Headers["Some-Date"]);
         Assert.AreEqual("abc123", responseModel.Headers["Token"]);
     }
@@ -286,7 +286,7 @@ public class ReverseProxyResponseWriterFacts
 
         _mockHttpContextService
             .Setup(m => m.GetHeaders())
-            .Returns(new Dictionary<string, string> {{"Content-Type", "application/json"}});
+            .Returns(new Dictionary<string, string> {{"Content-Type", Constants.JsonMime}});
 
         var mockHttp = new MockHttpMessageHandler();
         mockHttp
@@ -295,9 +295,9 @@ public class ReverseProxyResponseWriterFacts
             {
                 var contentHeaders = r.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First());
                 return contentHeaders.Count == 1 &&
-                       contentHeaders["Content-Type"] == "application/json";
+                       contentHeaders["Content-Type"] == Constants.JsonMime;
             })
-            .Respond("text/plain", "OK");
+            .Respond(Constants.TextMime, "OK");
         _mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
@@ -338,7 +338,7 @@ public class ReverseProxyResponseWriterFacts
 
         _mockHttpContextService
             .Setup(m => m.GetHeaders())
-            .Returns(new Dictionary<string, string> {{"Content-Type", "application/json"}});
+            .Returns(new Dictionary<string, string> {{"Content-Type", Constants.JsonMime}});
 
         var mockHttp = new MockHttpMessageHandler();
         mockHttp
@@ -347,9 +347,9 @@ public class ReverseProxyResponseWriterFacts
             {
                 var contentHeaders = r.Content.Headers.ToDictionary(h => h.Key, h => h.Value.First());
                 return contentHeaders.Count == 1 &&
-                       contentHeaders["Content-Type"] == "application/json";
+                       contentHeaders["Content-Type"] == Constants.JsonMime;
             })
-            .Respond("text/plain", "OK");
+            .Respond(Constants.TextMime, "OK");
         _mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
@@ -419,7 +419,7 @@ public class ReverseProxyResponseWriterFacts
             .Respond(
                 HttpStatusCode.OK,
                 new Dictionary<string, string> {{"X-Url", proxyUrl}},
-                "text/plain",
+                Constants.TextMime,
                 proxyUrl);
 
         _mockHttpClientFactory

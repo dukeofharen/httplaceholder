@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Common.Tests.Utilities;
@@ -11,57 +12,57 @@ public class CollectionUtilitiesFacts
     public void AddOrReplaceCaseInsensitive_AddEntryWithSameCasing()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{"Content-Type", "application/json"}};
+        var dictionary = new Dictionary<string, string> {{"Content-Type", Constants.JsonMime}};
 
         // Act
-        dictionary.AddOrReplaceCaseInsensitive("Content-Type", "text/plain");
+        dictionary.AddOrReplaceCaseInsensitive("Content-Type", Constants.TextMime);
 
         // Assert
         Assert.AreEqual(1, dictionary.Count);
-        Assert.AreEqual("text/plain", dictionary["Content-Type"]);
+        Assert.AreEqual(Constants.TextMime, dictionary["Content-Type"]);
     }
 
     [TestMethod]
     public void AddOrReplaceCaseInsensitive_AddEntryWithDifferentCasing()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{"content-type", "application/json"}};
+        var dictionary = new Dictionary<string, string> {{"content-type", Constants.JsonMime}};
 
         // Act
-        dictionary.AddOrReplaceCaseInsensitive("Content-Type", "text/plain");
+        dictionary.AddOrReplaceCaseInsensitive("Content-Type", Constants.TextMime);
 
         // Assert
         Assert.AreEqual(1, dictionary.Count);
-        Assert.AreEqual("text/plain", dictionary["Content-Type"]);
+        Assert.AreEqual(Constants.TextMime, dictionary["Content-Type"]);
     }
 
     [TestMethod]
     public void AddOrReplaceCaseInsensitive_AddEntryWithDifferentCasing_DoNotReplaceExistingValue()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{"content-type", "application/json"}};
+        var dictionary = new Dictionary<string, string> {{"content-type", Constants.JsonMime}};
 
         // Act
-        dictionary.AddOrReplaceCaseInsensitive("Content-Type", "text/plain", false);
+        dictionary.AddOrReplaceCaseInsensitive("Content-Type", Constants.TextMime, false);
 
         // Assert
         Assert.AreEqual(1, dictionary.Count);
-        Assert.AreEqual("application/json", dictionary["content-type"]);
+        Assert.AreEqual(Constants.JsonMime, dictionary["content-type"]);
     }
 
     [TestMethod]
     public void AddOrReplaceCaseInsensitive_AddNewEntry()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{"content-type", "application/json"}};
+        var dictionary = new Dictionary<string, string> {{"content-type", Constants.JsonMime}};
 
         // Act
-        dictionary.AddOrReplaceCaseInsensitive("Accept", "text/xml");
+        dictionary.AddOrReplaceCaseInsensitive("Accept", Constants.XmlTextMime);
 
         // Assert
         Assert.AreEqual(2, dictionary.Count);
-        Assert.AreEqual("application/json", dictionary["content-type"]);
-        Assert.AreEqual("text/xml", dictionary["Accept"]);
+        Assert.AreEqual(Constants.JsonMime, dictionary["content-type"]);
+        Assert.AreEqual(Constants.XmlTextMime, dictionary["Accept"]);
     }
 
     [DataTestMethod]
