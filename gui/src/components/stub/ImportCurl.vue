@@ -150,6 +150,7 @@ export default {
     };
     const insertExample = () => {
       curlInput.value = resources.exampleCurlInput;
+      howToOpen.value = false;
     };
     const onUploaded = (file) => {
       curlInput.value = file.result;

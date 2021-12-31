@@ -107,6 +107,7 @@ export default {
     // Methods
     const insertExample = () => {
       harInput.value = resources.exampleHarInput;
+      howToOpen.value = false;
     };
     const importHar = async () => {
       try {
