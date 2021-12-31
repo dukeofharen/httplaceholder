@@ -15,15 +15,16 @@
 
   <div v-if="responseBodyType === responseBodyTypes.base64" class="mt-3">
     <div>
-      <input type="file" name="file" ref="uploadField" @change="upload" />
       <div class="hint">
         You can upload a <strong>file</strong> for use in the Base64 response or
         click on "show text input" and insert <strong>plain text</strong> that
         will be encoded to Base64 on inserting.
       </div>
-      <button class="btn btn-primary me-2" @click="uploadClick">
-        Upload a file
-      </button>
+      <upload-button
+        button-text="Upload a file"
+        @uploaded="onUploaded"
+        result-type="base64"
+      />
       <button class="btn btn-primary" @click="showBase64TextInput = true">
         Show text input
       </button>
@@ -131,28 +132,20 @@ export default {
     );
 
     // Methods
-    const upload = (ev) => {
-      const files = Array.from(ev.target.files);
-      const file = files[0];
-      const reader = new FileReader();
+    const onUploaded = (file) => {
+      console.log(file.result);
       const regex = /^data:(.+);base64,(.*)$/;
-      reader.onload = (e) => {
-        const matches = e.target.result.match(regex);
-        const contentType = matches[1];
-        const body = matches[2];
-        store.commit("stubForm/setResponseContentType", contentType);
-        store.commit("stubForm/setResponseBody", {
-          type: responseBodyTypes.base64,
-          body,
-        });
-        responseBody.value = body;
-        store.commit("stubForm/closeFormHelper");
-        showBase64TextInput.value = false;
-      };
-      reader.readAsDataURL(file);
-    };
-    const uploadClick = () => {
-      uploadField.value.click();
+      const matches = file.result.match(regex);
+      const contentType = matches[1];
+      const body = matches[2];
+      store.commit("stubForm/setResponseContentType", contentType);
+      store.commit("stubForm/setResponseBody", {
+        type: responseBodyTypes.base64,
+        body,
+      });
+      responseBody.value = body;
+      store.commit("stubForm/closeFormHelper");
+      showBase64TextInput.value = false;
     };
     const insertVariableHandler = () => {
       const handler = metadata.value.variableHandlers.find(
@@ -208,10 +201,8 @@ export default {
       showDynamicModeRow,
       responseBodyTypes,
       uploadField,
-      upload,
       elementDescriptions,
       showBase64TextInput,
-      uploadClick,
       showVariableParsers,
       selectedVariableHandler,
       variableParserItems,
@@ -221,16 +212,13 @@ export default {
       insertVariableHandler,
       responseBodyField,
       close,
+      onUploaded,
     };
   },
 };
 </script>
 
 <style scoped>
-input[type="file"] {
-  display: none;
-}
-
 .hint {
   font-size: 0.9em;
 }

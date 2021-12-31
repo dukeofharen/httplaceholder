@@ -1,40 +1,51 @@
 <template>
+  <div class="mb-2">
+    Press the button below to upload a YAML file with stubs.
+  </div>
   <span>
-    <button type="button" class="btn btn-success" @click="upload">
-      Upload stubs
-    </button>
-    <input
-      type="file"
-      name="file"
-      ref="stubUpload"
-      @change="loadTextFromFile"
-      multiple
+    <upload-button
+      button-text="Upload stubs"
+      multiple="true"
+      @uploaded="onUploaded"
     />
   </span>
 </template>
 
 <script>
-import { ref } from "vue";
 import { getExtension } from "@/utils/file";
 import { resources } from "@/constants/resources";
 import toastr from "toastr";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
+import { useRouter } from "vue-router";
+
+const expectedExtensions = ["yml", "yaml"];
 
 export default {
   name: "UploadStubs",
-  setup(_, { emit }) {
+  setup() {
     const store = useStore();
-
-    // Refs
-    const stubUpload = ref(null);
+    const router = useRouter();
 
     // Data
     let reloadHandle = null;
 
     // Methods
-    const upload = () => {
-      stubUpload.value.click();
+    const onUploaded = async (file) => {
+      if (!expectedExtensions.includes(getExtension(file.filename))) {
+        toastr.warning(
+          resources.uploadInvalidFiles.format(file.filename) +
+            " " +
+            resources.onlyUploadYmlFiles
+        );
+        return;
+      }
+
+      try {
+        await addStubs(file.result, file.filename);
+      } catch (e) {
+        handleHttpError(e);
+      }
     };
     const addStubs = async (input, filename) => {
       try {
@@ -44,50 +55,15 @@ export default {
           clearTimeout(reloadHandle);
         }
 
-        reloadHandle = setTimeout(() => {
-          emit("uploaded");
+        reloadHandle = setTimeout(async () => {
+          await router.push({ name: "Stubs" });
         }, 200);
       } catch (e) {
         handleHttpError(e);
       }
     };
-    const loadTextFromFile = (ev) => {
-      const expectedExtensions = ["yml", "yaml"];
-      const files = Array.from(ev.target.files);
-      const invalidFileNames = files
-        .filter((f) => !expectedExtensions.includes(getExtension(f.name)))
-        .map((f) => f.name);
-      if (invalidFileNames.length) {
-        toastr.warning(
-          resources.uploadInvalidFiles.format(invalidFileNames.join(", ")) +
-            " " +
-            resources.onlyUploadYmlFiles
-        );
-      }
 
-      const validFiles = files.filter(
-        (f) => !invalidFileNames.includes(f.name)
-      );
-      for (let file of validFiles) {
-        let reader = new FileReader();
-        reader.onload = async (e) => {
-          try {
-            await addStubs(e.target.result, file.name);
-          } catch (e) {
-            handleHttpError(e);
-          }
-        };
-        reader.readAsText(file);
-      }
-    };
-
-    return { upload, stubUpload, loadTextFromFile };
+    return { onUploaded };
   },
 };
 </script>
-
-<style scoped>
-input[type="file"] {
-  display: none;
-}
-</style>
