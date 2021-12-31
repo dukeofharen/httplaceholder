@@ -151,6 +151,11 @@ export default {
     const insertExample = () => {
       curlInput.value = resources.exampleCurlInput;
     };
+    const onUploaded = (file) => {
+      curlInput.value = file.result;
+    };
+
+    // Lifecycle
     const handleSave = async (e) => {
       if (shouldSave(e)) {
         e.preventDefault();
@@ -161,11 +166,6 @@ export default {
         }
       }
     };
-    const onUploaded = (file) => {
-      curlInput.value = file.result;
-    };
-
-    // Lifecycle
     const keydownEventListener = async (e) => await handleSave(e);
     onMounted(() => document.addEventListener("keydown", keydownEventListener));
     onUnmounted(() =>

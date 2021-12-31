@@ -48,6 +48,9 @@
     </div>
   </div>
   <div class="mb-2" v-if="!stubsYaml">
+    <upload-button button-text="Upload file" @uploaded="onUploaded" />
+  </div>
+  <div class="mb-2" v-if="!stubsYaml">
     <textarea class="form-control" v-model="harInput"></textarea>
   </div>
   <div v-if="!stubsYaml" class="mb-2">
@@ -73,7 +76,7 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useStore } from "vuex";
 import yaml from "js-yaml";
@@ -82,6 +85,7 @@ import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import { useRouter } from "vue-router";
 import { setIntermediateStub } from "@/utils/session";
+import { shouldSave } from "@/utils/event";
 
 export default {
   name: "ImportHar",
@@ -143,6 +147,26 @@ export default {
       harInput.value = "";
       stubsYaml.value = "";
     };
+    const onUploaded = (file) => {
+      harInput.value = file.result;
+    };
+
+    // Lifecycle
+    const handleSave = async (e) => {
+      if (shouldSave(e)) {
+        e.preventDefault();
+        if (!stubsYaml.value) {
+          await importHar();
+        } else {
+          await saveStubs();
+        }
+      }
+    };
+    const keydownEventListener = async (e) => await handleSave(e);
+    onMounted(() => document.addEventListener("keydown", keydownEventListener));
+    onUnmounted(() =>
+      document.removeEventListener("keydown", keydownEventListener)
+    );
 
     return {
       howToOpen,
@@ -155,6 +179,7 @@ export default {
       editBeforeSaving,
       reset,
       codeBlock,
+      onUploaded,
     };
   },
 };
