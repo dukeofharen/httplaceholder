@@ -16,10 +16,7 @@
       </button>
     </div>
     <div class="col-md-12 mt-3" v-if="selectedTab === tabs.uploadStubs">
-      <div class="mb-2">
-        Press the button below to upload a YAML file with stubs.
-      </div>
-      <UploadStubs @uploaded="stubsUploaded" />
+      <UploadStubs />
     </div>
     <div class="col-md-12 mt-3" v-if="selectedTab === tabs.importCurl">
       <ImportCurl />
@@ -60,13 +57,12 @@ export default {
     const selectedTab = ref(route.query.tab || tabs.uploadStubs);
 
     // Methods
-    const stubsUploaded = async () => await router.push({ name: "Stubs" });
     const changeTab = async (tab) => {
       selectedTab.value = tab;
       await router.push({ name: "ImportStubs", query: { tab } });
     };
 
-    return { tabs, tabNames, selectedTab, stubsUploaded, changeTab };
+    return { tabs, tabNames, selectedTab, changeTab };
   },
 };
 </script>
