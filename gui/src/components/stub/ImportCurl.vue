@@ -49,6 +49,9 @@
     </div>
   </div>
   <div class="mb-2" v-if="!stubsYaml">
+    <upload-button button-text="Upload file" @uploaded="onUploaded" />
+  </div>
+  <div class="mb-2" v-if="!stubsYaml">
     <textarea class="form-control" v-model="curlInput"></textarea>
   </div>
   <div v-if="!stubsYaml" class="mb-2">
@@ -158,6 +161,9 @@ export default {
         }
       }
     };
+    const onUploaded = (file) => {
+      curlInput.value = file.result;
+    };
 
     // Lifecycle
     const keydownEventListener = async (e) => await handleSave(e);
@@ -178,6 +184,7 @@ export default {
       importButtonEnabled,
       howToOpen,
       insertExample,
+      onUploaded,
     };
   },
 };
