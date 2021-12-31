@@ -1,14 +1,14 @@
 # HttPlaceholder documentation
 
-- [Installation](#installation)
+- **[Installation](#installation)**
   - [Dotnet global tool](#dotnet-global-tool-cross-platform)
   - [Windows](#windows)
   - [Linux](#linux)
   - [Mac](#mac)
   - [Docker](#docker)
   - [Hosting](#hosting)
-- [Getting started](#getting-started)
-- [Request conditions](#request-conditions)
+- **[Getting started](#getting-started)**
+- **[Request conditions](#request-conditions)**
   - [General](#general-stub-info)
   - [Description](#description)
   - [Enabled](#enabled)
@@ -33,7 +33,7 @@
     - [XPath](#xpath)
   - [Client IP validation](#client-ip-validation)
   - [Hostname](#hostname)
-- [Response writers](#response-writers)
+- **[Response writers](#response-writers)**
   - [Response body](#response-body)
     - [Text](#text-response)
     - [JSON](#json-response)
@@ -63,10 +63,10 @@
     - [Local and UTC date & time](#local-and-utc-date--time)
     - [JSONPath](#jsonpath-parser)
   - [Reverse proxy](#reverse-proxy)
-- [REST API](#rest-api)
-- [Configuration](#configuration)
-- [Samples](#samples)
-- [Management interface](#management-interface)
+- **[REST API](#rest-api)**
+- **[Configuration](#configuration)**
+- **[Samples](#samples)**
+- **[Management interface](#management-interface)**
   - [How to get there](#how-to-get-there)
   - [Requests page](#requests-page)
   - [Stubs page](#stubs-page)
@@ -74,7 +74,7 @@
   - [Add stub(s) form](#add-stubs-form)
   - [Scenarios](#scenarios-page)
   - [Settings page](#settings-page)
-- [Tools and client libraries](#tools-and-client-libraries)
+- **[Tools and client libraries](#tools-and-client-libraries)**
   - [HttPlaceholder REST API client for .NET](#httplaceholder-rest-api-client-for-net)
 
 # Installation
@@ -2036,7 +2036,7 @@ On this page, you can upload stubs you have saved on your PC in YAML format. You
 On this page, you can create new stubs based on cURL commands. You can, for example, use cURL commands you have lying around or you can copy/paste cURL commands from your browser.
 
 ![](img/ui/stub_curl_form.png)
-_On this form, you can import one or multiple cURL commands._
+_On this form, you can import one or multiple cURL commands. You can also upload a file with the cURL commands in it._
 
 ![](img/ui/stub_curl_form_review.png)
 _When pressing the "Import cURL command(s)" button, you will see the stubs that will be added. You will have the option to directly save the stubs, edit the stubs before saving or resetting and starting over._
@@ -2072,7 +2072,7 @@ _Copy as cURL in Chrome on Windows_
 On this page, you can import an HTTP archive (or HAR for short) to create stubs based on it. An HTTP archive file is a JSON file that is a representation of a set of requests with its corresponding response. Most modern browsers allow you to copy or download the HAR file.
 
 ![](img/ui/stub_har_form.png)
-_On this form, you can import a HAR file by pasting the contents of the HAR._
+_On this form, you can import a HAR file by pasting the contents of the HAR. You can also upload a HAR file._
 
 ![](img/ui/stub_har_form_review.png)
 _When pressing the "Import HTTP archive" button, you will see the stubs that will be added. You will have the option to directly save the stubs, edit the stubs before saving or resetting and starting over._
