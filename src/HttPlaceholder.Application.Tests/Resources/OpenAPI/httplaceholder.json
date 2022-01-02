@@ -1,0 +1,2277 @@
+{
+    "x-generator": "NSwag v13.15.3.0 (NJsonSchema v10.6.4.0 (Newtonsoft.Json v13.0.0.0))",
+    "openapi": "3.0.0",
+    "info": {
+        "title": "HttPlaceholder API",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost"
+        }
+    ],
+    "paths": {
+        "/import/curl": {
+            "post": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "An endpoint that is used for creating a stub (or multiple stubs) based on cURL command(s).",
+                "operationId": "Import_CreateCurlStubs",
+                "parameters": [
+                    {
+                        "name": "doNotCreateStub",
+                        "in": "query",
+                        "description": "Whether to add the stub to the data source. If set to false, the stub is only returned but not added.",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "x-position": 2
+                    }
+                ],
+                "requestBody": {
+                    "x-name": "input",
+                    "description": "The data which should be added.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": true,
+                    "x-position": 1
+                },
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK, with the generated stubs.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FullStubDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/import/har": {
+            "post": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "An endpoint that is used for creating stubs based on a HAR file (HTTP Archive)",
+                "operationId": "Import_CreateHarStubs",
+                "parameters": [
+                    {
+                        "name": "doNotCreateStub",
+                        "in": "query",
+                        "description": "Whether to add the stub to the data source. If set to false, the stub is only returned but not added.",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "x-position": 2
+                    }
+                ],
+                "requestBody": {
+                    "x-name": "input",
+                    "description": "The raw HAR JSON input.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": true,
+                    "x-position": 1
+                },
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK, with the generated stubs.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FullStubDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/metadata": {
+            "get": {
+                "tags": [
+                    "Metadata"
+                ],
+                "summary": "Gets metadata about the API (like the assembly version).",
+                "operationId": "Metadata_Get",
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "HttPlaceholder metadata.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MetadataDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/metadata/features/{featureFlag}": {
+            "get": {
+                "tags": [
+                    "Metadata"
+                ],
+                "summary": "Checks whether a specific feature is enabled or not.",
+                "operationId": "Metadata_CheckFeature",
+                "parameters": [
+                    {
+                        "name": "featureFlag",
+                        "in": "path",
+                        "required": true,
+                        "description": "The feature flag to test.",
+                        "schema": {
+                            "$ref": "#/components/schemas/FeatureFlagType"
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "A model containing whether the feature flag is enabled or not.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FeatureResultDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/requests": {
+            "get": {
+                "tags": [
+                    "Request"
+                ],
+                "summary": "Get all Requests.",
+                "operationId": "Request_GetAll",
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "All request results",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RequestResultDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Request"
+                ],
+                "summary": "Delete all requests. This call flushes all the requests.",
+                "operationId": "Request_DeleteAll",
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "OK, but no content returned"
+                    }
+                }
+            }
+        },
+        "/requests/overview": {
+            "get": {
+                "tags": [
+                    "Request"
+                ],
+                "summary": "Get overview of all Requests.",
+                "operationId": "Request_GetOverview",
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "All request results",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RequestOverviewDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/requests/{correlationId}": {
+            "get": {
+                "tags": [
+                    "Request"
+                ],
+                "summary": "Gets a specific request by correlation ID.",
+                "operationId": "Request_GetRequest",
+                "parameters": [
+                    {
+                        "name": "correlationId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The original correlation ID.",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "The request.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RequestResultDto"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Request"
+                ],
+                "summary": "Delete a specific request.",
+                "operationId": "Request_DeleteRequest",
+                "parameters": [
+                    {
+                        "name": "correlationId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The ID of the request to delete.",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "OK, but no content returned"
+                    }
+                }
+            }
+        },
+        "/requests/{correlationId}/stubs": {
+            "post": {
+                "tags": [
+                    "Request"
+                ],
+                "summary": "An endpoint which accepts the correlation ID of a request made earlier.\nHttPlaceholder will create a stub based on this request for you to tweak later on.",
+                "operationId": "Request_CreateStubForRequest",
+                "parameters": [
+                    {
+                        "name": "correlationId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "requestBody": {
+                    "x-name": "input",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateStubForRequestInputDto"
+                            }
+                        }
+                    },
+                    "required": true,
+                    "x-position": 2
+                },
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK, with the generated stub",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FullStubDto"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/scenarios": {
+            "get": {
+                "tags": [
+                    "Scenario"
+                ],
+                "summary": "Gets all scenarios.",
+                "operationId": "Scenario_GetAllScenarioStates",
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK, with all scenarios.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ScenarioStateDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Scenario"
+                ],
+                "summary": "Deletes all scenarios.",
+                "operationId": "Scenario_DeleteAllScenarios",
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No content."
+                    }
+                }
+            }
+        },
+        "/scenarios/{scenario}": {
+            "get": {
+                "tags": [
+                    "Scenario"
+                ],
+                "summary": "Gets a specific scenario.",
+                "operationId": "Scenario_GetScenario",
+                "parameters": [
+                    {
+                        "name": "scenario",
+                        "in": "path",
+                        "required": true,
+                        "description": "The scenario name.",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "The ScenarioStateDto.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScenarioStateDto"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Scenario"
+                ],
+                "summary": "Sets the scenario state to a new value.",
+                "operationId": "Scenario_SetScenario",
+                "parameters": [
+                    {
+                        "name": "scenario",
+                        "in": "path",
+                        "required": true,
+                        "description": "The scenario name.",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 2
+                    }
+                ],
+                "requestBody": {
+                    "x-name": "scenarioState",
+                    "description": "The new scenario state.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ScenarioStateInputDto"
+                            }
+                        }
+                    },
+                    "required": true,
+                    "x-position": 1
+                },
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No content."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Scenario"
+                ],
+                "summary": "Deletes / clears a scenario.",
+                "operationId": "Scenario_DeleteScenario",
+                "parameters": [
+                    {
+                        "name": "scenario",
+                        "in": "path",
+                        "required": true,
+                        "description": "The scenario name.",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "No content."
+                    },
+                    "404": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stubs": {
+            "post": {
+                "tags": [
+                    "Stub"
+                ],
+                "summary": "Adds a new stub.",
+                "operationId": "Stub_Add",
+                "requestBody": {
+                    "x-name": "stub",
+                    "description": "The posted stub",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StubDto"
+                            }
+                        }
+                    },
+                    "required": true,
+                    "x-position": 1
+                },
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK, with the created stub",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FullStubDto"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Stub"
+                ],
+                "summary": "Get all stubs.",
+                "operationId": "Stub_GetAll",
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "All stubs.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FullStubDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Stub"
+                ],
+                "summary": "Delete ALL stubs. Be careful.",
+                "operationId": "Stub_DeleteAll",
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "OK, but not content"
+                    }
+                }
+            }
+        },
+        "/stubs/multiple": {
+            "post": {
+                "tags": [
+                    "Stub"
+                ],
+                "summary": "Adds multiple new stubs.",
+                "operationId": "Stub_AddMultiple",
+                "requestBody": {
+                    "x-name": "stubs",
+                    "description": "The posted stubs.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/StubDto"
+                                }
+                            }
+                        }
+                    },
+                    "required": true,
+                    "x-position": 1
+                },
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "OK, with the created stubs",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FullStubDto"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stubs/{stubId}": {
+            "put": {
+                "tags": [
+                    "Stub"
+                ],
+                "summary": "Updates a given stub.",
+                "operationId": "Stub_Update",
+                "parameters": [
+                    {
+                        "name": "stubId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The stub ID.",
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 2
+                    }
+                ],
+                "requestBody": {
+                    "x-name": "stub",
+                    "description": "The posted stub.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StubDto"
+                            }
+                        }
+                    },
+                    "required": true,
+                    "x-position": 1
+                },
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "OK, but no content returned"
+                    },
+                    "400": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Stub"
+                ],
+                "summary": "Get a specific stub by stub identifier.",
+                "operationId": "Stub_Get",
+                "parameters": [
+                    {
+                        "name": "stubId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "The stub.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FullStubDto"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Stub"
+                ],
+                "summary": "Delete a specific stub by stub identifier.",
+                "operationId": "Stub_Delete",
+                "parameters": [
+                    {
+                        "name": "stubId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "OK, but not content"
+                    },
+                    "404": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stubs/overview": {
+            "get": {
+                "tags": [
+                    "Stub"
+                ],
+                "summary": "Get stub overview.",
+                "operationId": "Stub_GetOverview",
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "All stubs.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FullStubOverviewDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/stubs/{stubId}/requests": {
+            "get": {
+                "tags": [
+                    "Stub"
+                ],
+                "summary": "Get requests for the given stub ID.",
+                "operationId": "Stub_GetRequestsByStubId",
+                "parameters": [
+                    {
+                        "name": "stubId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "request results for the given stubId",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/RequestResultDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tenants": {
+            "get": {
+                "tags": [
+                    "Tenant"
+                ],
+                "summary": "Gets all available tenant names.",
+                "operationId": "Tenant_GetTenantNames",
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "All available tenant names.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/tenants/{tenant}/stubs": {
+            "get": {
+                "tags": [
+                    "Tenant"
+                ],
+                "summary": "Gets all stubs in a specific tenant.",
+                "operationId": "Tenant_GetAll",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "All stubs in the tenant.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/FullStubDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tenant"
+                ],
+                "summary": "Deletes all stubs in a specific tenant.",
+                "operationId": "Tenant_DeleteAll",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "OK, but no content"
+                    },
+                    "default": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Tenant"
+                ],
+                "summary": "Updates the stubs in a specific tenant with the posted values.\nIf a stub that is currently available in a tenant isn't sent in the request,\nit will be deleted.",
+                "operationId": "Tenant_UpdateAll",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "requestBody": {
+                    "x-name": "stubs",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/StubDto"
+                                }
+                            }
+                        }
+                    },
+                    "required": true,
+                    "x-position": 2
+                },
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "OK, but no content"
+                    },
+                    "default": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{username}": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get the user for the given username.",
+                "operationId": "User_Get",
+                "parameters": [
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        },
+                        "x-position": 1
+                    }
+                ],
+                "responses": {
+                    "401": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "The User.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDto"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ProblemDetails": {
+                "type": "object",
+                "additionalProperties": {
+                    "nullable": true
+                },
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "title": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "detail": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "instance": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "extensions": {
+                        "type": "object",
+                        "additionalProperties": {}
+                    }
+                }
+            },
+            "FullStubDto": {
+                "type": "object",
+                "description": "A class for storing a stub with its metadata.",
+                "additionalProperties": false,
+                "properties": {
+                    "stub": {
+                        "description": "Gets or sets the stub.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubDto"
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "description": "Gets or sets the metadata.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubMetadataDto"
+                            }
+                        ]
+                    }
+                }
+            },
+            "StubDto": {
+                "type": "object",
+                "description": "A model for storing all information about a stub.",
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Gets or sets the identifier.",
+                        "nullable": true
+                    },
+                    "conditions": {
+                        "description": "Gets or sets the conditions.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubConditionsDto"
+                            }
+                        ]
+                    },
+                    "response": {
+                        "description": "Gets or sets the response.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubResponseDto"
+                            }
+                        ]
+                    },
+                    "priority": {
+                        "type": "integer",
+                        "description": "Gets or sets the priority.",
+                        "format": "int32"
+                    },
+                    "tenant": {
+                        "type": "string",
+                        "description": "Gets or sets the tenant.",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Gets or sets the description.",
+                        "nullable": true
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Gets or sets whether this stub is enabled or not."
+                    },
+                    "scenario": {
+                        "type": "string",
+                        "description": "Gets or sets the scenario the stub is executed under.",
+                        "nullable": true
+                    }
+                }
+            },
+            "StubConditionsDto": {
+                "type": "object",
+                "description": "A model for storing all conditions for a stub.",
+                "additionalProperties": false,
+                "properties": {
+                    "method": {
+                        "type": "string",
+                        "description": "Gets or sets the method.",
+                        "nullable": true
+                    },
+                    "url": {
+                        "description": "Gets or sets the URL.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubUrlConditionDto"
+                            }
+                        ]
+                    },
+                    "body": {
+                        "type": "array",
+                        "description": "Gets or sets the body.",
+                        "nullable": true,
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "form": {
+                        "type": "array",
+                        "description": "Gets or sets the form.",
+                        "nullable": true,
+                        "items": {
+                            "$ref": "#/components/schemas/StubFormDto"
+                        }
+                    },
+                    "headers": {
+                        "type": "object",
+                        "description": "Gets or sets the headers.",
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "xpath": {
+                        "type": "array",
+                        "description": "Gets or sets the xpath.",
+                        "nullable": true,
+                        "items": {
+                            "$ref": "#/components/schemas/StubXpathDto"
+                        }
+                    },
+                    "jsonPath": {
+                        "type": "array",
+                        "description": "Gets or sets the json path.",
+                        "nullable": true,
+                        "items": {}
+                    },
+                    "basicAuthentication": {
+                        "description": "Gets or sets the basic authentication.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubBasicAuthenticationDto"
+                            }
+                        ]
+                    },
+                    "clientIp": {
+                        "type": "string",
+                        "description": "Gets or sets the client ip.",
+                        "nullable": true
+                    },
+                    "host": {
+                        "type": "string",
+                        "description": "Gets or sets the host.",
+                        "nullable": true
+                    },
+                    "json": {
+                        "description": "Gets or sets the JSON condition model.",
+                        "nullable": true
+                    },
+                    "scenario": {
+                        "description": "Gets or sets the scenario conditions model.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubConditionScenarioDto"
+                            }
+                        ]
+                    }
+                }
+            },
+            "StubUrlConditionDto": {
+                "type": "object",
+                "description": "A model for storing information about the URL condition checkers.",
+                "additionalProperties": false,
+                "properties": {
+                    "path": {
+                        "type": "string",
+                        "description": "Gets or sets the path.",
+                        "nullable": true
+                    },
+                    "query": {
+                        "type": "object",
+                        "description": "Gets or sets the query.",
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "fullPath": {
+                        "type": "string",
+                        "description": "Gets or sets the full path.",
+                        "nullable": true
+                    },
+                    "isHttps": {
+                        "type": "boolean",
+                        "description": "Gets or sets the is HTTPS.",
+                        "nullable": true
+                    }
+                }
+            },
+            "StubFormDto": {
+                "type": "object",
+                "description": "A model for storing data for the form condition checker.",
+                "additionalProperties": false,
+                "properties": {
+                    "key": {
+                        "type": "string",
+                        "description": "Gets or sets the key.",
+                        "nullable": true
+                    },
+                    "value": {
+                        "type": "string",
+                        "description": "Gets or sets the value.",
+                        "nullable": true
+                    }
+                }
+            },
+            "StubXpathDto": {
+                "type": "object",
+                "description": "A model for storing information about the XPath condition checker.",
+                "additionalProperties": false,
+                "properties": {
+                    "queryString": {
+                        "type": "string",
+                        "description": "Gets or sets the query string.",
+                        "nullable": true
+                    },
+                    "namespaces": {
+                        "type": "object",
+                        "description": "Gets or sets the namespaces.",
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "StubBasicAuthenticationDto": {
+                "type": "object",
+                "description": "A model for storing stub information for the basic authentication condition checker.",
+                "additionalProperties": false,
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "description": "Gets or sets the username.",
+                        "nullable": true
+                    },
+                    "password": {
+                        "type": "string",
+                        "description": "Gets or sets the password.",
+                        "nullable": true
+                    }
+                }
+            },
+            "StubConditionScenarioDto": {
+                "type": "object",
+                "description": "A model for storing all scenario conditions for a stub",
+                "additionalProperties": false,
+                "properties": {
+                    "minHits": {
+                        "type": "integer",
+                        "description": "Gets or sets the inclusive min hit count.",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "maxHits": {
+                        "type": "integer",
+                        "description": "Gets or sets the exclusive max hit count.",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "exactHits": {
+                        "type": "integer",
+                        "description": "Gets or sets the exact hits count.",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "scenarioState": {
+                        "type": "string",
+                        "description": "Gets or sets the state the scenario should be in.",
+                        "nullable": true
+                    }
+                }
+            },
+            "StubResponseDto": {
+                "type": "object",
+                "description": "A model for storing all possible response parameters for a stub.",
+                "additionalProperties": false,
+                "properties": {
+                    "enableDynamicMode": {
+                        "type": "boolean",
+                        "description": "Gets or sets whether dynamic mode is on.",
+                        "nullable": true
+                    },
+                    "statusCode": {
+                        "type": "integer",
+                        "description": "Gets or sets the status code.",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "contentType": {
+                        "type": "string",
+                        "description": "Gets or sets the response content type.",
+                        "nullable": true
+                    },
+                    "text": {
+                        "type": "string",
+                        "description": "Gets or sets the text.",
+                        "nullable": true
+                    },
+                    "base64": {
+                        "type": "string",
+                        "description": "Gets or sets the base64.",
+                        "nullable": true
+                    },
+                    "file": {
+                        "type": "string",
+                        "description": "Gets or sets the file.",
+                        "nullable": true
+                    },
+                    "headers": {
+                        "type": "object",
+                        "description": "Gets or sets the headers.",
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "extraDuration": {
+                        "type": "integer",
+                        "description": "Gets or sets the duration of the extra.",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "json": {
+                        "type": "string",
+                        "description": "Gets or sets the json.",
+                        "nullable": true
+                    },
+                    "xml": {
+                        "type": "string",
+                        "description": "Gets or sets the XML.",
+                        "nullable": true
+                    },
+                    "html": {
+                        "type": "string",
+                        "description": "Gets or sets the HTML.",
+                        "nullable": true
+                    },
+                    "temporaryRedirect": {
+                        "type": "string",
+                        "description": "Gets or sets the temporary redirect.",
+                        "nullable": true
+                    },
+                    "permanentRedirect": {
+                        "type": "string",
+                        "description": "Gets or sets the permanent redirect.",
+                        "nullable": true
+                    },
+                    "reverseProxy": {
+                        "description": "Gets or sets the reverse proxy settings.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubResponseReverseProxyDto"
+                            }
+                        ]
+                    },
+                    "lineEndings": {
+                        "description": "Gets or sets the line endings type.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/LineEndingType"
+                            }
+                        ]
+                    },
+                    "image": {
+                        "description": "Gets or sets the stub image.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubResponseImageDto"
+                            }
+                        ]
+                    },
+                    "scenario": {
+                        "description": "Gets or sets the response scenario variables.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubResponseScenarioDto"
+                            }
+                        ]
+                    }
+                }
+            },
+            "StubResponseReverseProxyDto": {
+                "type": "object",
+                "description": "A model for storing reverse proxy settings.",
+                "additionalProperties": false,
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "description": "Gets or sets the URL where the request should be sent to. The request will be sent to exactly this URL.",
+                        "nullable": true
+                    },
+                    "appendQueryString": {
+                        "type": "boolean",
+                        "description": "Gets or sets whether the query string of the request to HttPlaceholder should be appended to the string that will be send to the proxy URL.",
+                        "nullable": true
+                    },
+                    "appendPath": {
+                        "type": "boolean",
+                        "description": "Gets or sets whether the path string of the request to HttPlaceholder should be appended to the string that will be send to the proxy URL.",
+                        "nullable": true
+                    },
+                    "replaceRootUrl": {
+                        "type": "boolean",
+                        "description": "Gets or sets whether the root URL of the response of the target web service should be replaced with the root URL of HttPlaceholder.",
+                        "nullable": true
+                    }
+                }
+            },
+            "LineEndingType": {
+                "type": "integer",
+                "description": "",
+                "x-enumNames": [
+                    "NotSet",
+                    "Windows",
+                    "Unix"
+                ],
+                "enum": [
+                    0,
+                    1,
+                    2
+                ]
+            },
+            "StubResponseImageDto": {
+                "type": "object",
+                "description": "A model for storing settings about the stub image that should be generated.",
+                "additionalProperties": false,
+                "properties": {
+                    "type": {
+                        "description": "Gets or sets the image type. Possibilities: jpeg, png, bmp and gif.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/ResponseImageType"
+                            }
+                        ]
+                    },
+                    "width": {
+                        "type": "integer",
+                        "description": "Gets or sets the image width in pixels.",
+                        "format": "int32"
+                    },
+                    "height": {
+                        "type": "integer",
+                        "description": "Gets or sets the image height in pixels.",
+                        "format": "int32"
+                    },
+                    "backgroundColor": {
+                        "type": "string",
+                        "description": "Gets or sets the background color in HEX.",
+                        "nullable": true
+                    },
+                    "text": {
+                        "type": "string",
+                        "description": "Gets or sets the text that should be drawn in the image.",
+                        "nullable": true
+                    },
+                    "fontSize": {
+                        "type": "integer",
+                        "description": "Gets or sets the fontsize for the text in the image.",
+                        "format": "int32"
+                    },
+                    "fontColor": {
+                        "type": "string",
+                        "description": "Gets or sets the font color.",
+                        "nullable": true
+                    },
+                    "jpegQuality": {
+                        "type": "integer",
+                        "description": "Gets or sets the image quality in the case of JPEG image.",
+                        "format": "int32"
+                    },
+                    "wordWrap": {
+                        "type": "boolean",
+                        "description": "Gets or sets whether the text should be wrapped across the image or not."
+                    }
+                }
+            },
+            "ResponseImageType": {
+                "type": "integer",
+                "description": "",
+                "x-enumNames": [
+                    "NotSet",
+                    "Jpeg",
+                    "Bmp",
+                    "Png",
+                    "Gif"
+                ],
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4
+                ]
+            },
+            "StubResponseScenarioDto": {
+                "type": "object",
+                "description": "A model for storing all scenario conditions for a stub response.",
+                "additionalProperties": false,
+                "properties": {
+                    "setScenarioState": {
+                        "type": "string",
+                        "description": "Gets or sets the scenario state the scenario should be set to after the stub is hit.",
+                        "nullable": true
+                    },
+                    "clearState": {
+                        "type": "boolean",
+                        "description": "Gets or sets a value which indicates if the state (scenario state and hit count) should be reset after the stub is hit.",
+                        "nullable": true
+                    }
+                }
+            },
+            "StubMetadataDto": {
+                "type": "object",
+                "description": "A model for storing metadata of a stub.",
+                "additionalProperties": false,
+                "properties": {
+                    "readOnly": {
+                        "type": "boolean",
+                        "description": "Gets or sets a value indicating whether [read only]."
+                    }
+                }
+            },
+            "MetadataDto": {
+                "type": "object",
+                "description": "A model for storing the HttPlaceholder metadata.",
+                "additionalProperties": false,
+                "properties": {
+                    "version": {
+                        "type": "string",
+                        "description": "Gets or sets the version.",
+                        "nullable": true
+                    },
+                    "variableHandlers": {
+                        "type": "array",
+                        "description": "Gets or sets the available variable handlers.",
+                        "nullable": true,
+                        "items": {
+                            "$ref": "#/components/schemas/VariableHandlerDto"
+                        }
+                    }
+                }
+            },
+            "VariableHandlerDto": {
+                "type": "object",
+                "description": "A model that is used for displaying what types of variable handlers are available.",
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Gets or sets the name of the variable handler.",
+                        "nullable": true
+                    },
+                    "fullName": {
+                        "type": "string",
+                        "description": "Gets or sets the full name of the variable handler.",
+                        "nullable": true
+                    },
+                    "example": {
+                        "type": "string",
+                        "description": "Gets or sets a short instruction on how to use the variable handler.",
+                        "nullable": true
+                    }
+                }
+            },
+            "FeatureResultDto": {
+                "type": "object",
+                "description": "A class for storing whether a specific feature is enabled or not.",
+                "additionalProperties": false,
+                "properties": {
+                    "featureFlag": {
+                        "description": "Gets or sets the checked feature.",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/FeatureFlagType"
+                            }
+                        ]
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Gets or sets whether the feature is enabled or not."
+                    }
+                }
+            },
+            "FeatureFlagType": {
+                "type": "integer",
+                "description": "",
+                "x-enumNames": [
+                    "Authentication"
+                ],
+                "enum": [
+                    0
+                ]
+            },
+            "RequestResultDto": {
+                "type": "object",
+                "description": "A model for storing a request.",
+                "additionalProperties": false,
+                "properties": {
+                    "correlationId": {
+                        "type": "string",
+                        "description": "Gets or sets the correlation identifier.",
+                        "nullable": true
+                    },
+                    "requestParameters": {
+                        "description": "Gets or sets the request parameters.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/RequestParametersDto"
+                            }
+                        ]
+                    },
+                    "stubExecutionResults": {
+                        "type": "array",
+                        "description": "Gets or sets the stub execution results.",
+                        "nullable": true,
+                        "items": {
+                            "$ref": "#/components/schemas/StubExecutionResultDto"
+                        }
+                    },
+                    "stubResponseWriterResults": {
+                        "type": "array",
+                        "description": "Gets or sets the stub response writer results.",
+                        "nullable": true,
+                        "items": {
+                            "$ref": "#/components/schemas/StubResponseWriterResultDto"
+                        }
+                    },
+                    "executingStubId": {
+                        "type": "string",
+                        "description": "Gets or sets the executing stub identifier.",
+                        "nullable": true
+                    },
+                    "stubTenant": {
+                        "type": "string",
+                        "description": "Gets or sets the tenant name of the stub.",
+                        "nullable": true
+                    },
+                    "requestBeginTime": {
+                        "type": "string",
+                        "description": "Gets or sets the request begin time.",
+                        "format": "date-time"
+                    },
+                    "requestEndTime": {
+                        "type": "string",
+                        "description": "Gets or sets the request end time.",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "RequestParametersDto": {
+                "type": "object",
+                "description": "A model for storing the request data for a request.",
+                "additionalProperties": false,
+                "properties": {
+                    "method": {
+                        "type": "string",
+                        "description": "Gets or sets the method.",
+                        "nullable": true
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "Gets or sets the URL.",
+                        "nullable": true
+                    },
+                    "body": {
+                        "type": "string",
+                        "description": "Gets or sets the body.",
+                        "nullable": true
+                    },
+                    "headers": {
+                        "type": "object",
+                        "description": "Gets or sets the headers.",
+                        "nullable": true,
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "clientIp": {
+                        "type": "string",
+                        "description": "Gets or sets the client ip.",
+                        "nullable": true
+                    }
+                }
+            },
+            "StubExecutionResultDto": {
+                "type": "object",
+                "description": "A model for storing all execution related data for a given stub.",
+                "additionalProperties": false,
+                "properties": {
+                    "stubId": {
+                        "type": "string",
+                        "description": "Gets or sets the stub identifier.",
+                        "nullable": true
+                    },
+                    "passed": {
+                        "type": "boolean",
+                        "description": "Gets or sets a value indicating whether this StubExecutionResultDto is passed."
+                    },
+                    "conditions": {
+                        "type": "array",
+                        "description": "Gets or sets the conditions.",
+                        "nullable": true,
+                        "items": {
+                            "$ref": "#/components/schemas/ConditionCheckResultDto"
+                        }
+                    }
+                }
+            },
+            "ConditionCheckResultDto": {
+                "type": "object",
+                "description": "A model for storing a condition check result.",
+                "additionalProperties": false,
+                "properties": {
+                    "checkerName": {
+                        "type": "string",
+                        "description": "Gets or sets the name of the checker.",
+                        "nullable": true
+                    },
+                    "conditionValidation": {
+                        "type": "string",
+                        "description": "Gets or sets the condition validation.",
+                        "nullable": true
+                    },
+                    "log": {
+                        "type": "string",
+                        "description": "Gets or sets the log.",
+                        "nullable": true
+                    }
+                }
+            },
+            "StubResponseWriterResultDto": {
+                "type": "object",
+                "description": "A model for storing the execution result of a specific response writer.",
+                "additionalProperties": false,
+                "properties": {
+                    "responseWriterName": {
+                        "type": "string",
+                        "description": "Gets or sets the name of the response writer.",
+                        "nullable": true
+                    },
+                    "executed": {
+                        "type": "boolean",
+                        "description": "Gets or sets a value indicating whether this StubResponseWriterResultDto is executed."
+                    },
+                    "log": {
+                        "type": "string",
+                        "description": "Gets or sets the log string of the executed response writer.",
+                        "nullable": true
+                    }
+                }
+            },
+            "RequestOverviewDto": {
+                "type": "object",
+                "description": "A model for storing the base properties of a request.",
+                "additionalProperties": false,
+                "properties": {
+                    "correlationId": {
+                        "type": "string",
+                        "description": "Gets or sets the correlation identifier.",
+                        "nullable": true
+                    },
+                    "method": {
+                        "type": "string",
+                        "description": "Gets or sets the method.",
+                        "nullable": true
+                    },
+                    "url": {
+                        "type": "string",
+                        "description": "Gets or sets the URL.",
+                        "nullable": true
+                    },
+                    "executingStubId": {
+                        "type": "string",
+                        "description": "Gets or sets the executing stub identifier.",
+                        "nullable": true
+                    },
+                    "stubTenant": {
+                        "type": "string",
+                        "description": "Gets or sets the tenant name of the stub.",
+                        "nullable": true
+                    },
+                    "requestBeginTime": {
+                        "type": "string",
+                        "description": "Gets or sets the request begin time.",
+                        "format": "date-time"
+                    },
+                    "requestEndTime": {
+                        "type": "string",
+                        "description": "Gets or sets the request end time.",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "CreateStubForRequestInputDto": {
+                "type": "object",
+                "description": "A model which contains metadata which is used when creating a stub from a request.",
+                "additionalProperties": false,
+                "properties": {
+                    "doNotCreateStub": {
+                        "type": "boolean",
+                        "description": "Gets or sets whether to add the stub to the data source. If set to false, the stub is only returned but not added."
+                    }
+                }
+            },
+            "ScenarioStateDto": {
+                "type": "object",
+                "description": "Represents the state of a specific scenario.",
+                "additionalProperties": false,
+                "properties": {
+                    "scenario": {
+                        "type": "string",
+                        "description": "Gets or sets the scenario name.",
+                        "nullable": true
+                    },
+                    "state": {
+                        "type": "string",
+                        "description": "Gets or sets the state the scenario is in.",
+                        "nullable": true
+                    },
+                    "hitCount": {
+                        "type": "integer",
+                        "description": "Gets or sets the number of times the scenario has been hit.",
+                        "format": "int32"
+                    }
+                }
+            },
+            "ScenarioStateInputDto": {
+                "type": "object",
+                "description": "A model that is used to set the scenario.",
+                "additionalProperties": false,
+                "properties": {
+                    "state": {
+                        "type": "string",
+                        "description": "Gets or sets the state the scenario is in.",
+                        "nullable": true
+                    },
+                    "hitCount": {
+                        "type": "integer",
+                        "description": "Gets or sets the number of times the scenario has been hit.",
+                        "format": "int32"
+                    }
+                }
+            },
+            "FullStubOverviewDto": {
+                "type": "object",
+                "description": "A class for storing a stripped down version of a stub with metadata.",
+                "additionalProperties": false,
+                "properties": {
+                    "stub": {
+                        "description": "Gets or sets the stub.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubOverviewDto"
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "description": "Gets or sets the metadata.",
+                        "nullable": true,
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/StubMetadataDto"
+                            }
+                        ]
+                    }
+                }
+            },
+            "StubOverviewDto": {
+                "type": "object",
+                "description": "A class for storing a stripped down version of a stub.",
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Gets or sets the identifier.",
+                        "nullable": true
+                    },
+                    "tenant": {
+                        "type": "string",
+                        "description": "Gets or sets the tenant.",
+                        "nullable": true
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "description": "Gets or sets whether the stub is enabled or not."
+                    }
+                }
+            },
+            "UserDto": {
+                "type": "object",
+                "description": "A model for storing information about a user.",
+                "additionalProperties": false,
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "description": "Gets or sets the username.",
+                        "nullable": true
+                    }
+                }
+            }
+        }
+    }
+}
