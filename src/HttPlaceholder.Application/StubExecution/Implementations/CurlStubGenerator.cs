@@ -35,9 +35,11 @@ internal class CurlStubGenerator : ICurlStubGenerator
         var results = new List<FullStubModel>();
         foreach (var request in requests)
         {
+            var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request);
             var stub = new StubModel
             {
-                Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request),
+                Description = $"{conditions.Method} request to path {conditions.Url?.Path}",
+                Conditions = conditions,
                 Response = { Text = "OK!" }
             };
 

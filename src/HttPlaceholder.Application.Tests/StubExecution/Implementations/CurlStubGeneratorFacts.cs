@@ -28,20 +28,20 @@ public class CurlStubGeneratorFacts
         var generator = _mocker.CreateInstance<CurlStubGenerator>();
 
         const string input = "curl commands";
-        const string expectedStubId1 = "generated-93a77714a6d316c469acb4227430615e";
-        const string expectedStubId2 = "generated-2e751b58fc0786b841770e7e0b6cc783";
+        const string expectedStubId1 = "generated-2154b7b33fa2554e1730fb4e92f280b7";
+        const string expectedStubId2 = "generated-f4a6f53fcd10c755e479b18dd027d2d4";
 
-        var requests = new[] { new HttpRequestModel(), new HttpRequestModel() };
+        var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
         curlToHttpRequestMapperMock
             .Setup(m => m.MapCurlCommandsToHttpRequest(input))
             .Returns(requests);
 
-        var conditions1 = new StubConditionsModel { Host = "host1"};
+        var conditions1 = new StubConditionsModel {Host = "host1"};
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[0]))
             .ReturnsAsync(conditions1);
 
-        var conditions2 = new StubConditionsModel { Host = "host2"};
+        var conditions2 = new StubConditionsModel {Host = "host2"};
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[1]))
             .ReturnsAsync(conditions2);
@@ -76,20 +76,26 @@ public class CurlStubGeneratorFacts
         var generator = _mocker.CreateInstance<CurlStubGenerator>();
 
         const string input = "curl commands";
-        const string expectedStubId1 = "generated-93a77714a6d316c469acb4227430615e";
-        const string expectedStubId2 = "generated-2e751b58fc0786b841770e7e0b6cc783";
+        const string expectedStubId1 = "generated-887c8ef2e5fe96d94245a86dd0676e80";
+        const string expectedStubId2 = "generated-c3acd82645aecc82156d05abd59b6cb6";
 
-        var requests = new[] { new HttpRequestModel(), new HttpRequestModel() };
+        var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
         curlToHttpRequestMapperMock
             .Setup(m => m.MapCurlCommandsToHttpRequest(input))
             .Returns(requests);
 
-        var conditions1 = new StubConditionsModel { Host = "host1"};
+        var conditions1 = new StubConditionsModel
+        {
+            Host = "host1", Method = "GET", Url = new StubUrlConditionModel {Path = "/path1"}
+        };
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[0]))
             .ReturnsAsync(conditions1);
 
-        var conditions2 = new StubConditionsModel { Host = "host2"};
+        var conditions2 = new StubConditionsModel
+        {
+            Host = "host2", Method = "POST", Url = new StubUrlConditionModel {Path = "/path2"}
+        };
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[1]))
             .ReturnsAsync(conditions2);
@@ -102,6 +108,8 @@ public class CurlStubGeneratorFacts
         Assert.IsTrue(result.All(s => s.Metadata != null));
         Assert.IsTrue(result.All(s => s.Stub.Response.Text == "OK!"));
         Assert.AreEqual(expectedStubId1, result[0].Stub.Id);
+        Assert.AreEqual("GET request to path /path1", result[0].Stub.Description);
+        Assert.AreEqual("POST request to path /path2", result[1].Stub.Description);
         Assert.AreEqual(expectedStubId2, result[1].Stub.Id);
         Assert.AreEqual(conditions1, result[0].Stub.Conditions);
         Assert.AreEqual(conditions2, result[1].Stub.Conditions);
