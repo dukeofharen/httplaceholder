@@ -89,10 +89,13 @@ public class HarStubGenerator : IHarStubGenerator
 
     private async Task<StubModel> MapStub(HttpRequestModel req, HttpResponseModel res)
     {
+        var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(req);
+        var response = await _httpResponseToStubResponseService.ConvertToResponseAsync(res);
         var stub = new StubModel
         {
-            Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(req),
-            Response = await _httpResponseToStubResponseService.ConvertToResponseAsync(res)
+            Description = $"{conditions.Method} request to path {conditions.Url?.Path}",
+            Conditions = conditions,
+            Response = response
         };
         stub.Id = $"generated-{HashingUtilities.GetMd5String(JsonConvert.SerializeObject(stub))}";
         return stub;

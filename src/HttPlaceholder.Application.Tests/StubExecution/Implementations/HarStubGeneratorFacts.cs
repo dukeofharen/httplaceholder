@@ -173,7 +173,11 @@ public class HarStubGeneratorFacts
 
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(It.IsAny<HttpRequestModel>()))
-            .ReturnsAsync(new StubConditionsModel());
+            .ReturnsAsync(new StubConditionsModel
+            {
+                Method = "GET",
+                Url = new StubUrlConditionModel{Path = "/path1"}
+            });
 
         httpResponseToStubResponseServiceMock
             .Setup(m => m.ConvertToResponseAsync(It.IsAny<HttpResponseModel>()))
@@ -184,12 +188,13 @@ public class HarStubGeneratorFacts
 
         // Assert
         Assert.AreEqual(3, result.Length);
+        Assert.AreEqual("GET request to path /path1", result[0].Stub.Description);
 
         stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>()), Times.Never);
         stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>()), Times.Never);
 
-        Assert.AreEqual("generated-28e7903e42f1cce3270bba2cfee053bf", result[0].Stub.Id);
-        Assert.AreEqual("generated-28e7903e42f1cce3270bba2cfee053bf", result[1].Stub.Id);
-        Assert.AreEqual("generated-28e7903e42f1cce3270bba2cfee053bf", result[2].Stub.Id);
+        Assert.AreEqual("generated-0928cedfc3ef5642fdb603bc2bec41d6", result[0].Stub.Id);
+        Assert.AreEqual("generated-0928cedfc3ef5642fdb603bc2bec41d6", result[1].Stub.Id);
+        Assert.AreEqual("generated-0928cedfc3ef5642fdb603bc2bec41d6", result[2].Stub.Id);
     }
 }
