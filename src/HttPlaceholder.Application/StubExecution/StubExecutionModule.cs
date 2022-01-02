@@ -26,6 +26,7 @@ public static class StubExecutionModule
         services.AddSingleton<ICurlToHttpRequestMapper, CurlToHttpRequestMapper>();
         services.AddSingleton<IHttpRequestToConditionsService, HttpRequestToConditionsService>();
         services.AddSingleton<IHttpResponseToStubResponseService, HttpResponseToStubResponseService>();
+        services.AddSingleton<IOpenApiStubGenerator, OpenApiStubGenerator>();
 
         const string filter = "HttPlaceholder";
 

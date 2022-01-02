@@ -45,7 +45,7 @@ internal class CurlStubGenerator : ICurlStubGenerator
 
             // Generate an ID based on the created stub.
             var contents = JsonConvert.SerializeObject(stub);
-            stub.Id = "generated-" + HashingUtilities.GetMd5String(contents);
+            stub.Id = $"generated-{HashingUtilities.GetMd5String(contents)}";
             results.Add(await CreateStub(doNotCreateStub, stub));
         }
 
