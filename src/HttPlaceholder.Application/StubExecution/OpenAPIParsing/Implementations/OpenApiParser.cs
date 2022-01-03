@@ -11,11 +11,9 @@ internal class OpenApiParser : IOpenApiParser
     public OpenApiResult ParseOpenApiDefinition(string input)
     {
         var openapi = new OpenApiStringReader().Read(input, out _);
-        var serverUrl = openapi.Servers.Any() ? openapi.Servers.First().Url : "http://localhost";
-
         return new OpenApiResult
         {
-            ServerUrl = serverUrl,
+            ServerUrl = openapi.Servers.Any() ? openapi.Servers.First().Url : "http://localhost",
             Lines = (from path in openapi.Paths
                 from operation in path.Value.Operations
                 from operationResponse in operation.Value.Responses
