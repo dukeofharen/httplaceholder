@@ -1,5 +1,6 @@
 ﻿using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Application.StubExecution.Implementations;
+using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -13,20 +14,22 @@ public static class StubExecutionModule
 {
     public static IServiceCollection AddStubExecutionModule(this IServiceCollection services)
     {
-        services.AddSingleton<IFinalStubDeterminer, FinalStubDeterminer>();
-        services.AddSingleton<IStubRequestExecutor, StubRequestExecutor>();
-        services.AddSingleton<IStubResponseGenerator, StubResponseGenerator>();
-        services.AddSingleton<IRequestLoggerFactory, RequestLoggerFactory>();
-        services.AddSingleton<IRequestStubGenerator, RequestStubGenerator>();
-        services.AddSingleton<IStubModelValidator, StubModelValidator>();
-        services.AddSingleton<IResponseVariableParser, ResponseVariableParser>();
-        services.AddSingleton<IScenarioService, ScenarioService>();
-        services.AddSingleton<ICurlStubGenerator, CurlStubGenerator>();
-        services.AddSingleton<IHarStubGenerator, HarStubGenerator>();
-        services.AddSingleton<ICurlToHttpRequestMapper, CurlToHttpRequestMapper>();
-        services.AddSingleton<IHttpRequestToConditionsService, HttpRequestToConditionsService>();
-        services.AddSingleton<IHttpResponseToStubResponseService, HttpResponseToStubResponseService>();
-        services.AddSingleton<IOpenApiStubGenerator, OpenApiStubGenerator>();
+        services
+            .AddOpenApiModule()
+            .AddSingleton<IFinalStubDeterminer, FinalStubDeterminer>()
+            .AddSingleton<IStubRequestExecutor, StubRequestExecutor>()
+            .AddSingleton<IStubResponseGenerator, StubResponseGenerator>()
+            .AddSingleton<IRequestLoggerFactory, RequestLoggerFactory>()
+            .AddSingleton<IRequestStubGenerator, RequestStubGenerator>()
+            .AddSingleton<IStubModelValidator, StubModelValidator>()
+            .AddSingleton<IResponseVariableParser, ResponseVariableParser>()
+            .AddSingleton<IScenarioService, ScenarioService>()
+            .AddSingleton<ICurlStubGenerator, CurlStubGenerator>()
+            .AddSingleton<IHarStubGenerator, HarStubGenerator>()
+            .AddSingleton<ICurlToHttpRequestMapper, CurlToHttpRequestMapper>()
+            .AddSingleton<IHttpRequestToConditionsService, HttpRequestToConditionsService>()
+            .AddSingleton<IHttpResponseToStubResponseService, HttpResponseToStubResponseService>()
+            .AddSingleton<IOpenApiStubGenerator, OpenApiStubGenerator>();
 
         const string filter = "HttPlaceholder";
 
