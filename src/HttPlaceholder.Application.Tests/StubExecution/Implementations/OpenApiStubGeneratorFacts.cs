@@ -36,7 +36,7 @@ public class OpenApiStubGeneratorFacts
 
         // Act
         var exception =
-            await Assert.ThrowsExceptionAsync<ValidationException>(() => generator.GenerateOpenApiStubs(input, true));
+            await Assert.ThrowsExceptionAsync<ValidationException>(() => generator.GenerateOpenApiStubsAsync(input, true));
 
         // Assert
         Assert.AreEqual("Validation failed:\nException occurred while trying to parse OpenAPI definition: ERROR!",
@@ -72,7 +72,7 @@ public class OpenApiStubGeneratorFacts
             .ReturnsAsync(stub2);
 
         // Act
-        var result = (await generator.GenerateOpenApiStubs(input, true)).ToArray();
+        var result = (await generator.GenerateOpenApiStubsAsync(input, true)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -120,7 +120,7 @@ public class OpenApiStubGeneratorFacts
             .ReturnsAsync(new FullStubModel{Stub = addedStub2});
 
         // Act
-        var result = (await generator.GenerateOpenApiStubs(input, false)).ToArray();
+        var result = (await generator.GenerateOpenApiStubsAsync(input, false)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);

@@ -15,5 +15,5 @@ public interface IOpenApiStubGenerator
     /// <param name="input">The OpenAPI JSON or YAML definition.</param>
     /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
     /// <returns>A list of created stubs.</returns>
-    Task<IEnumerable<FullStubModel>> GenerateOpenApiStubs(string input, bool doNotCreateStub);
+    Task<IEnumerable<FullStubModel>> GenerateOpenApiStubsAsync(string input, bool doNotCreateStub);
 }

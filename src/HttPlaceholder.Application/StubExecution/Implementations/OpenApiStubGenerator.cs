@@ -26,7 +26,7 @@ public class OpenApiStubGenerator : IOpenApiStubGenerator
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateOpenApiStubs(string input, bool doNotCreateStub)
+    public async Task<IEnumerable<FullStubModel>> GenerateOpenApiStubsAsync(string input, bool doNotCreateStub)
     {
         try
         {
