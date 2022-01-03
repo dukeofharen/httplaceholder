@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Import.Commands;
 using HttPlaceholder.Application.Import.Commands.CreateCurlStub;
 using HttPlaceholder.Application.Import.Commands.CreateHarStub;
+using HttPlaceholder.Application.Import.Commands.CreateOpenApiStub;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
@@ -32,7 +32,7 @@ public class ImportController : BaseApiController
             await Mediator.Send(new CreateCurlStubCommand(input, doNotCreateStub))));
 
     /// <summary>
-    /// An endpoint that is used for creating stubs based on a HAR file (HTTP Archive)
+    /// An endpoint that is used for creating stubs based on a HAR file (HTTP Archive).
     /// </summary>
     /// <param name="input">The raw HAR JSON input.</param>
     /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
@@ -44,4 +44,19 @@ public class ImportController : BaseApiController
         [FromQuery] bool doNotCreateStub) =>
         Ok(Mapper.Map<IEnumerable<FullStubDto>>(
             await Mediator.Send(new CreateHarStubCommand(input, doNotCreateStub))));
+
+    /// <summary>
+    /// An endpoint that is used for creating stubs based on a OpenAPI definition.
+    /// You can specify both a JSON or YAML file.
+    /// </summary>
+    /// <param name="input">The raw OpenAPI JSON or YAML input.</param>
+    /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
+    /// <returns>OK, with the generated stubs.</returns>
+    [HttpPost("openapi")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<FullStubDto>>> CreateOpenApiStubs(
+        [FromBody] string input,
+        [FromQuery] bool doNotCreateStub) =>
+        Ok(Mapper.Map<IEnumerable<FullStubDto>>(
+            await Mediator.Send(new CreateOpenApiStubCommand(input, doNotCreateStub))));
 }

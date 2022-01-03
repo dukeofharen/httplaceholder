@@ -89,7 +89,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     private static object GenerateRandomInteger(string format) =>
         format switch
         {
-            "int64" => _faker.Random.Long(0),
-            _ => _faker.Random.Int(0)
+            "int64" => _faker.Random.Long(0, 10000),
+            _ => _faker.Random.Int(0, 10000)
         };
 }

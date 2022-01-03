@@ -42,7 +42,7 @@ public class OpenApiToStubConverter : IOpenApiToStubConverter
         };
         var stub = new StubModel
         {
-            Description = line.Operation.Description,
+            Description = line.Operation.Summary,
             Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request),
             Response = await _httpResponseToStubResponseService.ConvertToResponseAsync(response),
         };

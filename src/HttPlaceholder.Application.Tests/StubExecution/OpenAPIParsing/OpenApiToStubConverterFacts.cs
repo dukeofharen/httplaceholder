@@ -32,7 +32,7 @@ public class OpenApiToStubConverterFacts
 
         var line = new OpenApiLine
         {
-            Operation = new OpenApiOperation {Description = "API to get users"},
+            Operation = new OpenApiOperation {Summary = "API to get users"},
             OperationType = OperationType.Post,
             PathKey = "/users",
             Response = new OpenApiResponse(),
