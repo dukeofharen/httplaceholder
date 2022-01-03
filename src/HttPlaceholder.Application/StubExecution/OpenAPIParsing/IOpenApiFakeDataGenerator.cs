@@ -21,25 +21,4 @@ public interface IOpenApiFakeDataGenerator
     /// <param name="schema">The OpenAPI schema.</param>
     /// <returns>The random string value as JSON.</returns>
     string GetRandomJsonStringValue(OpenApiSchema schema);
-
-    /// <summary>
-    /// Gets a random value.
-    /// </summary>
-    /// <param name="schema">The OpenAPI schema.</param>
-    /// <returns>The random value.</returns>
-    object GetRandomValue(OpenApiSchema schema);
-
-    /// <summary>
-    /// Gets a random array.
-    /// </summary>
-    /// <param name="schema">The OpenAPI schema.</param>
-    /// <returns>The random array.</returns>
-    object[] GetRandomJsonArray(OpenApiSchema schema);
-
-    /// <summary>
-    /// Gets a random object.
-    /// </summary>
-    /// <param name="schema">The OpenAPI schema.</param>
-    /// <returns>The random array as dictionary.</returns>
-    IDictionary<string, object> GetRandomJsonObject(OpenApiSchema schema);
 }

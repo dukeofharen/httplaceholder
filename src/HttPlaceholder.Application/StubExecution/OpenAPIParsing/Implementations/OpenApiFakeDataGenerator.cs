@@ -19,8 +19,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     /// <inheritdoc />
     public string GetRandomJsonStringValue(OpenApiSchema schema) => JsonConvert.SerializeObject(GetRandomValue(schema));
 
-    /// <inheritdoc />
-    public object GetRandomValue(OpenApiSchema schema)
+    internal static object GetRandomValue(OpenApiSchema schema)
     {
         var type = schema.Type;
         var format = schema.Format;
@@ -48,8 +47,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
         };
     }
 
-    /// <inheritdoc />
-    public object[] GetRandomJsonArray(OpenApiSchema schema)
+    private static object[] GetRandomJsonArray(OpenApiSchema schema)
     {
         var result = new List<object>();
         var noOfItems = _faker.Random.Int(1, 3);
@@ -61,8 +59,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
         return result.ToArray();
     }
 
-    /// <inheritdoc />
-    public IDictionary<string, object> GetRandomJsonObject(OpenApiSchema schema) =>
+    private static IDictionary<string, object> GetRandomJsonObject(OpenApiSchema schema) =>
         schema.Properties.ToDictionary(property => property.Key, property => GetRandomValue(property.Value));
 
     private static string GenerateFakeString(string format)
@@ -92,7 +89,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     private static object GenerateRandomInteger(string format) =>
         format switch
         {
-            "int64" => _faker.Random.Long(),
-            _ => _faker.Random.Int()
+            "int64" => _faker.Random.Long(0),
+            _ => _faker.Random.Int(0)
         };
 }
