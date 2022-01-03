@@ -9,7 +9,6 @@ namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementation
 /// <inheritdoc />
 internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
 {
-    // TODO handle date-time, int32 and int64 handling and perhaps other types (see https://swagger.io/specification/ for format strings)
     private static readonly Random _random = new();
 
     /// <inheritdoc />
@@ -21,7 +20,6 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     /// <inheritdoc />
     public object GetRandomValue(OpenApiSchema schema)
     {
-        // TODO use something like Bogus for this?
         var type = schema.Type;
         var actualSchema = schema;
         if (string.IsNullOrWhiteSpace(type) && !schema.Properties.Any() && schema.OneOf.Any())
@@ -50,7 +48,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     public object[] GetRandomJsonArray(OpenApiSchema schema)
     {
         var result = new List<object>();
-        var noOfItems = _random.Next(1, 3); // TODO use Bogus for this.
+        var noOfItems = _random.Next(1, 3);
         for (var i = 0; i < noOfItems; i++)
         {
             result.Add(GetRandomValue(schema.Items));

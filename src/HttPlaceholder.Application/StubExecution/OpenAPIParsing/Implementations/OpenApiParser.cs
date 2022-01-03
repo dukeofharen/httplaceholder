@@ -10,7 +10,6 @@ internal class OpenApiParser : IOpenApiParser
     /// <inheritdoc />
     public OpenApiResult ParseOpenApiDefinition(string input)
     {
-        // TODO catch exceptions and turn them into ValidationException.
         var openapi = new OpenApiStringReader().Read(input, out _);
         var serverUrl = openapi.Servers.Any() ? openapi.Servers.First().Url : "http://localhost";
 
