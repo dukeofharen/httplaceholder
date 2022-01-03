@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HttPlaceholder.Application.Tests.StubExecution.OpenAPIParsing;
 
 [TestClass]
-public class ParseOpenApiDefinitionFacts
+public class OpenApiParserFacts
 {
     private readonly OpenApiParser _parser = new();
 
