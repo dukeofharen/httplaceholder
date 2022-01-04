@@ -174,6 +174,10 @@ curl 'https://site.com/_nuxt/1d6c3a9.js' \
             // Create stubs based on HTTP archive (HAR).
             var har = await File.ReadAllTextAsync("har.json");
             var harResult = await client.CreateHarStubsAsync(har, false);
+
+            // Create stubs based on OpenAPI definition.
+            var openapi = await File.ReadAllTextAsync("petstore.yaml");
+            var openApiResult = await client.CreateOpenApiStubsAsync(openapi, false);
         }
         catch (Exception ex)
         {
