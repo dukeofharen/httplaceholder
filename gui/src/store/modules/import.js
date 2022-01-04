@@ -19,6 +19,14 @@ const actions = {
       .then((response) => Promise.resolve(response))
       .catch((error) => Promise.reject(error));
   },
+  importOpenApi(_, input) {
+    return post(
+      `/ph-api/import/openapi?doNotCreateStub=${input.doNotCreateStub}`,
+      input.openapi
+    )
+      .then((response) => Promise.resolve(response))
+      .catch((error) => Promise.reject(error));
+  },
 };
 
 const mutations = {};

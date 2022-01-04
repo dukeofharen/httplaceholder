@@ -1,65 +1,28 @@
 <template>
   <div class="mb-2 col-md-6">
-    Using this form, you can create stubs based on an HTTP archive (or HAR).
-    Most modern browsers allow you to download a HAR file with the request and
-    response definitions of the recently made requests.
+    Using this form, you can create stubs based on an OpenAPI (or Swagger)
+    definition. This definition can be provided in both JSON and YAML format.
+    Many APIs are accompanied by an OpenAPI definition, so this is a great way
+    to create stubs for the API.
   </div>
   <div class="mb-2">
-    <button
-      class="btn btn-outline-primary btn-sm"
-      @click="howToOpen = !howToOpen"
-    >
-      How to
+    <button class="btn btn-outline-primary btn-sm" @click="insertExample">
+      Insert example
     </button>
-  </div>
-  <div v-if="howToOpen">
-    <div class="row">
-      <div class="col-md-12">
-        <p>
-          To get the HTTP archive of the requests from your browser, you need to
-          open the developer tools and open the "Network" tab.
-        </p>
-        <p>
-          In Firefox, you can right click on the request in the "Network" tab
-          and select "Copy all as HAR".
-        </p>
-        <p>
-          In Chrome, you can also click "Copy all as HAR", but this does not
-          copy the response contents. To get the full responses, you need to
-          click "Save all as HAR with content" to get the full HAR.
-        </p>
-        <p>You can copy the full HAR file below.</p>
-      </div>
-    </div>
-    <div class="row mb-2">
-      <div class="col-md-4">
-        <img src="@/assets/har_copy_firefox.png" />
-        <em>Example in Firefox</em>
-      </div>
-      <div class="col-md-4">
-        <img src="@/assets/har_copy_chrome.png" />
-        <em>Example in Chrome. </em>
-      </div>
-      <div class="col-md-12 mb-2 mt-2">
-        <button class="btn btn-outline-primary btn-sm" @click="insertExample">
-          Insert example
-        </button>
-      </div>
-    </div>
   </div>
   <div class="mb-2" v-if="!stubsYaml">
     <upload-button button-text="Upload file" @uploaded="onUploaded" />
   </div>
   <div class="mb-2" v-if="!stubsYaml">
-    <textarea class="form-control" v-model="harInput"></textarea>
+    <textarea class="form-control" v-model="openApiInput"></textarea>
   </div>
   <div v-if="!stubsYaml" class="mb-2">
     <button
       class="btn btn-success"
-      @click="importHar"
+      @click="importOpenApi"
       :disabled="!importButtonEnabled"
     >
-      Import HTTP archive
+      Import OpenAPI definition
     </button>
   </div>
   <div v-if="stubsYaml" class="mb-2">The following stubs will be added.</div>
@@ -76,19 +39,19 @@
 </template>
 
 <script>
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { handleHttpError } from "@/utils/error";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { computed, onMounted, onUnmounted, ref } from "vue";
+import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import hljs from "highlight.js/lib/core";
+import { handleHttpError } from "@/utils/error";
 import toastr from "toastr";
-import { resources } from "@/constants/resources";
-import { useRouter } from "vue-router";
 import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
 
 export default {
-  name: "ImportHar",
+  name: "ImportOpenApi",
   setup() {
     const store = useStore();
     const router = useRouter();
@@ -97,22 +60,20 @@ export default {
     const codeBlock = ref(null);
 
     // Data
-    const harInput = ref("");
-    const howToOpen = ref(false);
+    const openApiInput = ref("");
     const stubsYaml = ref("");
 
     // Computed
-    const importButtonEnabled = computed(() => !!harInput.value);
+    const importButtonEnabled = computed(() => !!openApiInput.value);
 
     // Methods
     const insertExample = () => {
-      harInput.value = resources.exampleHarInput;
-      howToOpen.value = false;
+      openApiInput.value = resources.exampleOpenApiInput;
     };
-    const importHar = async () => {
+    const importOpenApi = async () => {
       try {
-        const result = await store.dispatch("importModule/importHar", {
-          har: harInput.value,
+        const result = await store.dispatch("importModule/importOpenApi", {
+          openapi: openApiInput.value,
           doNotCreateStub: true,
         });
 
@@ -128,10 +89,13 @@ export default {
         handleHttpError(e);
       }
     };
+    const onUploaded = (file) => {
+      openApiInput.value = file.result;
+    };
     const saveStubs = async () => {
       try {
-        await store.dispatch("importModule/importHar", {
-          har: harInput.value,
+        await store.dispatch("importModule/importOpenApi", {
+          openapi: openApiInput.value,
           doNotCreateStub: false,
         });
         toastr.success(resources.stubsAddedSuccessfully);
@@ -145,11 +109,8 @@ export default {
       router.push({ name: "StubForm" });
     };
     const reset = () => {
-      harInput.value = "";
+      openApiInput.value = "";
       stubsYaml.value = "";
-    };
-    const onUploaded = (file) => {
-      harInput.value = file.result;
     };
 
     // Lifecycle
@@ -157,7 +118,7 @@ export default {
       if (shouldSave(e)) {
         e.preventDefault();
         if (!stubsYaml.value) {
-          await importHar();
+          await importOpenApi();
         } else {
           await saveStubs();
         }
@@ -170,17 +131,16 @@ export default {
     );
 
     return {
-      howToOpen,
-      insertExample,
+      codeBlock,
+      openApiInput,
       stubsYaml,
-      harInput,
-      importHar,
+      insertExample,
+      onUploaded,
       importButtonEnabled,
+      importOpenApi,
       saveStubs,
       editBeforeSaving,
       reset,
-      codeBlock,
-      onUploaded,
     };
   },
 };
@@ -193,9 +153,5 @@ textarea {
   overflow-wrap: normal;
   overflow-x: scroll;
   min-height: 300px;
-}
-
-img {
-  width: 100%;
 }
 </style>

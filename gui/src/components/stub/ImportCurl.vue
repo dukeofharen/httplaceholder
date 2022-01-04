@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-2">
+  <div class="mb-2 col-md-6">
     Using this form, you can create stubs based on cURL commands. You can either
     use a cURL command you have lying around or you can copy/paste a cURL
     command from the developer console from your browser.

@@ -24,6 +24,9 @@
     <div class="col-md-12 mt-3" v-if="selectedTab === tabs.importHar">
       <ImportHar />
     </div>
+    <div class="col-md-12 mt-3" v-if="selectedTab === tabs.importOpenApi">
+      <ImportOpenApi />
+    </div>
   </div>
 </template>
 
@@ -31,6 +34,7 @@
 import UploadStubs from "@/components/stub/UploadStubs";
 import ImportCurl from "@/components/stub/ImportCurl";
 import ImportHar from "@/components/stub/ImportHar";
+import ImportOpenApi from "@/components/stub/ImportOpenApi";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
@@ -38,17 +42,19 @@ const tabs = {
   uploadStubs: "uploadStubs",
   importCurl: "importCurl",
   importHar: "importHar",
+  importOpenApi: "importOpenApi",
 };
 
 const tabNames = {
   uploadStubs: "Upload stubs",
   importCurl: "Import cURL command(s)",
   importHar: "Import HTTP archive (HAR)",
+  importOpenApi: "Import OpenAPI definition",
 };
 
 export default {
   name: "ImportStubs",
-  components: { UploadStubs, ImportCurl, ImportHar },
+  components: { ImportOpenApi, UploadStubs, ImportCurl, ImportHar },
   setup() {
     const router = useRouter();
     const route = useRoute();
