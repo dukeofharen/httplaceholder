@@ -38,7 +38,8 @@ public class OpenApiToStubConverterFacts
             Response = new OpenApiResponse(),
             ResponseKey = "200"
         };
-        var serverUrl = "http://localhost";
+        const string serverUrl = "http://localhost";
+        const string tenant = "tenant1";
 
         const string requestBody = "request body";
         openApiDataFillerMock
@@ -85,14 +86,15 @@ public class OpenApiToStubConverterFacts
             .ReturnsAsync(stubResponse);
 
         // Act
-        var result = await converter.ConvertToStubAsync(serverUrl, line);
+        var result = await converter.ConvertToStubAsync(serverUrl, line, tenant);
 
         // Assert
         Assert.IsNotNull(result);
         Assert.AreEqual(conditions, result.Conditions);
         Assert.AreEqual(stubResponse, result.Response);
+        Assert.AreEqual(tenant, result.Tenant);
         Assert.AreEqual("API to get users", result.Description);
-        Assert.AreEqual("generated-0214fec20fbd8d37904ae0b6c7ae35f8", result.Id);
+        Assert.AreEqual("generated-416d7b14b641c49beeb0367da7d1633e", result.Id);
 
         Assert.IsNotNull(capturedRequest);
         Assert.AreEqual(requestBody, capturedRequest.Body);

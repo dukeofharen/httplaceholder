@@ -26,7 +26,7 @@ public class OpenApiStubGenerator : IOpenApiStubGenerator
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateOpenApiStubsAsync(string input, bool doNotCreateStub)
+    public async Task<IEnumerable<FullStubModel>> GenerateOpenApiStubsAsync(string input, bool doNotCreateStub, string tenant)
     {
         try
         {
@@ -34,7 +34,7 @@ public class OpenApiStubGenerator : IOpenApiStubGenerator
             var openApiResult = _openApiParser.ParseOpenApiDefinition(input);
             foreach (var line in openApiResult.Lines)
             {
-                stubs.Add(await CreateStub(doNotCreateStub, openApiResult.ServerUrl, line));
+                stubs.Add(await CreateStub(doNotCreateStub, openApiResult.ServerUrl, line, tenant));
             }
 
             return stubs;
@@ -45,9 +45,9 @@ public class OpenApiStubGenerator : IOpenApiStubGenerator
         }
     }
 
-    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, string serverUrl, OpenApiLine line)
+    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, string serverUrl, OpenApiLine line, string tenant)
     {
-        var stub = await _openApiToStubConverter.ConvertToStubAsync(serverUrl, line);
+        var stub = await _openApiToStubConverter.ConvertToStubAsync(serverUrl, line, tenant);
         if (doNotCreateStub)
         {
             return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};

@@ -25,7 +25,7 @@ public class OpenApiToStubConverter : IOpenApiToStubConverter
     }
 
     /// <inheritdoc />
-    public async Task<StubModel> ConvertToStubAsync(string serverUrl, OpenApiLine line)
+    public async Task<StubModel> ConvertToStubAsync(string serverUrl, OpenApiLine line, string tenant)
     {
         var request = new HttpRequestModel
         {
@@ -42,6 +42,7 @@ public class OpenApiToStubConverter : IOpenApiToStubConverter
         };
         var stub = new StubModel
         {
+            Tenant = tenant,
             Description = line.Operation.Summary,
             Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request),
             Response = await _httpResponseToStubResponseService.ConvertToResponseAsync(response),

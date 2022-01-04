@@ -19,16 +19,17 @@ public class CreateOpenApiStubCommandHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public async Task Handle_HappyFlow()
+    public async Task Handle_HappyFlow_TenantSet()
     {
         // Arrange
         var openApiStubGeneratorMock = _mocker.GetMock<IOpenApiStubGenerator>();
         var handler = _mocker.CreateInstance<CreateOpenApiStubCommandHandler>();
 
+        const string tenant = "tenant1";
         var expectedResult = Array.Empty<FullStubModel>();
-        var request = new CreateOpenApiStubCommand("open api input", true);
+        var request = new CreateOpenApiStubCommand("open api input", true, tenant);
         openApiStubGeneratorMock
-            .Setup(m => m.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub))
+            .Setup(m => m.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, tenant))
             .ReturnsAsync(expectedResult);
 
         // Act
@@ -36,5 +37,29 @@ public class CreateOpenApiStubCommandHandlerFacts
 
         // Assert
         Assert.AreEqual(expectedResult, result);
+    }
+
+    [TestMethod]
+    public async Task Handle_HappyFlow_TenantNotSet()
+    {
+        // Arrange
+        var openApiStubGeneratorMock = _mocker.GetMock<IOpenApiStubGenerator>();
+        var handler = _mocker.CreateInstance<CreateOpenApiStubCommandHandler>();
+
+        var expectedResult = Array.Empty<FullStubModel>();
+        var request = new CreateOpenApiStubCommand("open api input", true, null);
+        string capturedTenant = null;
+        openApiStubGeneratorMock
+            .Setup(m => m.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, It.IsAny<string>()))
+            .Callback<string, bool, string>((_, _, tenant) => capturedTenant = tenant)
+            .ReturnsAsync(expectedResult);
+
+        // Act
+        var result = await handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+        Assert.IsNotNull(capturedTenant);
+        Assert.IsTrue(capturedTenant.StartsWith("openapi-import-"));
     }
 }

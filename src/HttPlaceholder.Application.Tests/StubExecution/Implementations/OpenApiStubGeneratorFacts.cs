@@ -36,7 +36,7 @@ public class OpenApiStubGeneratorFacts
 
         // Act
         var exception =
-            await Assert.ThrowsExceptionAsync<ValidationException>(() => generator.GenerateOpenApiStubsAsync(input, true));
+            await Assert.ThrowsExceptionAsync<ValidationException>(() => generator.GenerateOpenApiStubsAsync(input, true, null));
 
         // Assert
         Assert.AreEqual("Validation failed:\nException occurred while trying to parse OpenAPI definition: ERROR!",
@@ -54,6 +54,7 @@ public class OpenApiStubGeneratorFacts
 
         const string input = "openapi input";
 
+        const string tenant = "tenant1";
         const string serverUrl = "http://localhost";
         var lines = new[] {new OpenApiLine(), new OpenApiLine()};
         var openApiResult = new OpenApiResult {ServerUrl = serverUrl, Lines = lines};
@@ -63,16 +64,16 @@ public class OpenApiStubGeneratorFacts
 
         var stub1 = new StubModel {Id = "stub1"};
         openApiToStubConverterMock
-            .Setup(m => m.ConvertToStubAsync(serverUrl, lines[0]))
+            .Setup(m => m.ConvertToStubAsync(serverUrl, lines[0], tenant))
             .ReturnsAsync(stub1);
 
         var stub2 = new StubModel {Id = "stub2"};
         openApiToStubConverterMock
-            .Setup(m => m.ConvertToStubAsync(serverUrl, lines[1]))
+            .Setup(m => m.ConvertToStubAsync(serverUrl, lines[1], tenant))
             .ReturnsAsync(stub2);
 
         // Act
-        var result = (await generator.GenerateOpenApiStubsAsync(input, true)).ToArray();
+        var result = (await generator.GenerateOpenApiStubsAsync(input, true, tenant)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -94,6 +95,7 @@ public class OpenApiStubGeneratorFacts
 
         const string input = "openapi input";
 
+        const string tenant = "tenant1";
         const string serverUrl = "http://localhost";
         var lines = new[] {new OpenApiLine(), new OpenApiLine()};
         var openApiResult = new OpenApiResult {ServerUrl = serverUrl, Lines = lines};
@@ -103,7 +105,7 @@ public class OpenApiStubGeneratorFacts
 
         var stub1 = new StubModel {Id = "stub1"};
         openApiToStubConverterMock
-            .Setup(m => m.ConvertToStubAsync(serverUrl, lines[0]))
+            .Setup(m => m.ConvertToStubAsync(serverUrl, lines[0], tenant))
             .ReturnsAsync(stub1);
         var addedStub1 = new StubModel {Id = "stub1"};
         stubContextMock
@@ -112,7 +114,7 @@ public class OpenApiStubGeneratorFacts
 
         var stub2 = new StubModel {Id = "stub2"};
         openApiToStubConverterMock
-            .Setup(m => m.ConvertToStubAsync(serverUrl, lines[1]))
+            .Setup(m => m.ConvertToStubAsync(serverUrl, lines[1], tenant))
             .ReturnsAsync(stub2);
         var addedStub2 = new StubModel {Id = "stub2"};
         stubContextMock
@@ -120,7 +122,7 @@ public class OpenApiStubGeneratorFacts
             .ReturnsAsync(new FullStubModel{Stub = addedStub2});
 
         // Act
-        var result = (await generator.GenerateOpenApiStubsAsync(input, false)).ToArray();
+        var result = (await generator.GenerateOpenApiStubsAsync(input, false, tenant)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);

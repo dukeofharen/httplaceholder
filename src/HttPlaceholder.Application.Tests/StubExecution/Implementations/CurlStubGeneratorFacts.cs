@@ -28,8 +28,8 @@ public class CurlStubGeneratorFacts
         var generator = _mocker.CreateInstance<CurlStubGenerator>();
 
         const string input = "curl commands";
-        const string expectedStubId1 = "generated-2154b7b33fa2554e1730fb4e92f280b7";
-        const string expectedStubId2 = "generated-f4a6f53fcd10c755e479b18dd027d2d4";
+        const string expectedStubId1 = "generated-1614cb377bcd24439621eadcb4d8a18f";
+        const string expectedStubId2 = "generated-3fac60c4739c66a7ec8c1dc681fd5024";
 
         var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
         curlToHttpRequestMapperMock
@@ -77,8 +77,8 @@ public class CurlStubGeneratorFacts
 
         const string input = "curl commands";
         const string tenant = "tenant1";
-        const string expectedStubId1 = "generated-887c8ef2e5fe96d94245a86dd0676e80";
-        const string expectedStubId2 = "generated-c3acd82645aecc82156d05abd59b6cb6";
+        const string expectedStubId1 = "generated-f8ce4ba111b3c6f60616c4f7ca5cbdb5";
+        const string expectedStubId2 = "generated-732b63a987d7856932a66471521d8ce8";
 
         var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
         curlToHttpRequestMapperMock

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
@@ -18,6 +19,11 @@ public class CreateOpenApiStubCommandHandler : IRequestHandler<CreateOpenApiStub
 
     public async Task<IEnumerable<FullStubModel>> Handle(
         CreateOpenApiStubCommand request,
-        CancellationToken cancellationToken) =>
-        await _openApiStubGenerator.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub);
+        CancellationToken cancellationToken)
+    {
+        var tenant = string.IsNullOrWhiteSpace(request.Tenant)
+            ? $"openapi-import-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}"
+            : request.Tenant;
+        return await _openApiStubGenerator.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, tenant);
+    }
 }

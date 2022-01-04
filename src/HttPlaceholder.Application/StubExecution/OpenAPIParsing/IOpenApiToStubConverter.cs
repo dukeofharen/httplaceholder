@@ -14,6 +14,7 @@ public interface IOpenApiToStubConverter
     /// </summary>
     /// <param name="serverUrl">The server root URL.</param>
     /// <param name="line">The <see cref="OpenApiLine"/> (definition).</param>
+    /// <param name="tenant">The tenant the stubs should be created under.</param>
     /// <returns>The converted <see cref="StubModel"/>.</returns>
-    Task<StubModel> ConvertToStubAsync(string serverUrl, OpenApiLine line);
+    Task<StubModel> ConvertToStubAsync(string serverUrl, OpenApiLine line, string tenant);
 }
