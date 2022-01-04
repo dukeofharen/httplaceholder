@@ -5,14 +5,20 @@
       <button
         v-for="tab of tabs"
         :key="tab"
-        class="btn me-2"
+        class="btn me-2 tab-button"
         :class="{
           'btn-outline-success': selectedTab !== tab,
           'btn-success': selectedTab === tab,
         }"
         @click="changeTab(tab)"
       >
-        {{ tabNames[tab] }}
+        <i
+          v-if="tabDetails[tab].icon"
+          class="bi"
+          :class="tabDetails[tab].icon"
+        />
+        <span v-if="tabDetails[tab].image"></span>
+        {{ tabDetails[tab].title }}
       </button>
     </div>
     <div class="col-md-12 mt-3" v-if="selectedTab === tabs.uploadStubs">
@@ -45,11 +51,23 @@ const tabs = {
   importOpenApi: "importOpenApi",
 };
 
-const tabNames = {
-  uploadStubs: "Upload stubs",
-  importCurl: "Import cURL command(s)",
-  importHar: "Import HTTP archive (HAR)",
-  importOpenApi: "Import OpenAPI definition",
+const tabDetails = {
+  uploadStubs: {
+    title: "Upload stubs",
+    icon: "bi-arrow-up",
+  },
+  importCurl: {
+    title: "Import cURL command(s)",
+    icon: "bi-link",
+  },
+  importHar: {
+    title: "Import HTTP archive (HAR)",
+    icon: "bi-archive",
+  },
+  importOpenApi: {
+    title: "Import OpenAPI definition",
+    icon: "bi-cloud-upload",
+  },
 };
 
 export default {
@@ -68,9 +86,20 @@ export default {
       await router.push({ name: "ImportStubs", query: { tab } });
     };
 
-    return { tabs, tabNames, selectedTab, changeTab };
+    return { tabs, tabDetails, selectedTab, changeTab };
   },
 };
 </script>
 
-<style scoped></style>
+<style>
+.tab-button img {
+  width: 20px;
+}
+
+.tab-button span {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-size: 20px;
+}
+</style>
