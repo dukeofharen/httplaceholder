@@ -4,6 +4,7 @@
     - Close the "How to" on the "Import cURL command(s)" and "Import HTTP archive (HAR)" screens when inserting the example.
 - Added functionality to create stubs based on Swagger/OpenAPI file (https://github.com/dukeofharen/httplaceholder/issues/87).
     - Also, when adding stubs based on cURL commands or HTTP archive; automatically fill in a short stub description.
+    - The "Import OpenAPI", "Import cURL commands" and "Import HAR" screens now have an option to fill in a tenant for easy grouping of stubs.
 
 # BREAKING CHANGES
 -
