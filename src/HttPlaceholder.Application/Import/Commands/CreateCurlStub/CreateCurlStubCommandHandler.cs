@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
@@ -17,6 +18,11 @@ public class CreateCurlStubCommandHandler : IRequestHandler<CreateCurlStubComman
     }
 
     public async Task<IEnumerable<FullStubModel>> Handle(CreateCurlStubCommand request,
-        CancellationToken cancellationToken) =>
-        await _curlStubGenerator.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub);
+        CancellationToken cancellationToken)
+    {
+        var tenant = string.IsNullOrWhiteSpace(request.Tenant)
+            ? $"curl-import-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}"
+            : request.Tenant;
+        return await _curlStubGenerator.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, tenant);
+    }
 }

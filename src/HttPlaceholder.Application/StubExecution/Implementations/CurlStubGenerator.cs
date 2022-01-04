@@ -28,7 +28,8 @@ internal class CurlStubGenerator : ICurlStubGenerator
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateCurlStubsAsync(string input, bool doNotCreateStub)
+    public async Task<IEnumerable<FullStubModel>> GenerateCurlStubsAsync(string input, bool doNotCreateStub,
+        string tenant)
     {
         _logger.LogDebug($"Creating stubs based on cURL command {input}.");
         var requests = _curlToHttpRequestMapper.MapCurlCommandsToHttpRequest(input);
@@ -38,9 +39,10 @@ internal class CurlStubGenerator : ICurlStubGenerator
             var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request);
             var stub = new StubModel
             {
+                Tenant = tenant,
                 Description = $"{conditions.Method} request to path {conditions.Url?.Path}",
                 Conditions = conditions,
-                Response = { Text = "OK!" }
+                Response = {Text = "OK!"}
             };
 
             // Generate an ID based on the created stub.
@@ -56,7 +58,7 @@ internal class CurlStubGenerator : ICurlStubGenerator
     {
         if (doNotCreateStub)
         {
-            return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
+            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
         }
 
         await _stubContext.DeleteStubAsync(stub.Id);

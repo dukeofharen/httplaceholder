@@ -57,7 +57,7 @@ public class CurlStubGeneratorFacts
             .ReturnsAsync(fullStub2);
 
         // Act
-        var result = (await generator.GenerateCurlStubsAsync(input, false)).ToArray();
+        var result = (await generator.GenerateCurlStubsAsync(input, false, string.Empty)).ToArray();
 
         // Assert
         Assert.AreEqual(fullStub1, result[0]);
@@ -76,6 +76,7 @@ public class CurlStubGeneratorFacts
         var generator = _mocker.CreateInstance<CurlStubGenerator>();
 
         const string input = "curl commands";
+        const string tenant = "tenant1";
         const string expectedStubId1 = "generated-887c8ef2e5fe96d94245a86dd0676e80";
         const string expectedStubId2 = "generated-c3acd82645aecc82156d05abd59b6cb6";
 
@@ -101,12 +102,14 @@ public class CurlStubGeneratorFacts
             .ReturnsAsync(conditions2);
 
         // Act
-        var result = (await generator.GenerateCurlStubsAsync(input, true)).ToArray();
+        var result = (await generator.GenerateCurlStubsAsync(input, true, tenant)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
         Assert.IsTrue(result.All(s => s.Metadata != null));
         Assert.IsTrue(result.All(s => s.Stub.Response.Text == "OK!"));
+        Assert.IsTrue(result.All(s => s.Stub.Tenant == tenant));
+
         Assert.AreEqual(expectedStubId1, result[0].Stub.Id);
         Assert.AreEqual("GET request to path /path1", result[0].Stub.Description);
         Assert.AreEqual("POST request to path /path2", result[1].Stub.Description);
