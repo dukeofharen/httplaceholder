@@ -47,7 +47,7 @@ public class ImportController : BaseApiController
         [FromQuery] bool doNotCreateStub,
         [FromQuery] string tenant) =>
         Ok(Mapper.Map<IEnumerable<FullStubDto>>(
-            await Mediator.Send(new CreateHarStubCommand(input, doNotCreateStub))));
+            await Mediator.Send(new CreateHarStubCommand(input, doNotCreateStub, tenant))));
 
     /// <summary>
     /// An endpoint that is used for creating stubs based on a OpenAPI definition.

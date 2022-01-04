@@ -31,7 +31,7 @@ public class HarStubGenerator : IHarStubGenerator
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateHarStubsAsync(string input, bool doNotCreateStub)
+    public async Task<IEnumerable<FullStubModel>> GenerateHarStubsAsync(string input, bool doNotCreateStub, string tenant)
     {
         try
         {
@@ -39,7 +39,7 @@ public class HarStubGenerator : IHarStubGenerator
             ValidateHar(har);
             var stubs = har.Log.Entries
                 .Select(e => (req: MapRequest(e), res: MapResponse(e)))
-                .Select(t => MapStub(t.req, t.res))
+                .Select(t => MapStub(t.req, t.res, tenant))
                 .Select(r => r.Result);
             var result = new List<FullStubModel>();
             foreach (var stub in stubs)
@@ -87,12 +87,13 @@ public class HarStubGenerator : IHarStubGenerator
             .ToDictionary(h => h.Name, h => h.Value)
     };
 
-    private async Task<StubModel> MapStub(HttpRequestModel req, HttpResponseModel res)
+    private async Task<StubModel> MapStub(HttpRequestModel req, HttpResponseModel res, string tenant)
     {
         var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(req);
         var response = await _httpResponseToStubResponseService.ConvertToResponseAsync(res);
         var stub = new StubModel
         {
+            Tenant = tenant,
             Description = $"{conditions.Method} request to path {conditions.Url?.Path}",
             Conditions = conditions,
             Response = response
