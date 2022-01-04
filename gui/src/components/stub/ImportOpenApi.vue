@@ -5,13 +5,21 @@
     Many APIs are accompanied by an OpenAPI definition, so this is a great way
     to create stubs for the API.
   </div>
-  <div class="mb-2">
+  <div class="mb-2" v-if="!stubsYaml">
     <button class="btn btn-outline-primary btn-sm" @click="insertExample">
       Insert example
     </button>
   </div>
   <div class="mb-2" v-if="!stubsYaml">
     <upload-button button-text="Upload file" @uploaded="onUploaded" />
+  </div>
+  <div class="mb-2" v-if="!stubsYaml">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Fill in a tenant to group the generated stubs... (if no tenant is provided, a tenant name will be generated)"
+      v-model="tenant"
+    />
   </div>
   <div class="mb-2" v-if="!stubsYaml">
     <textarea class="form-control" v-model="openApiInput"></textarea>
@@ -62,6 +70,7 @@ export default {
     // Data
     const openApiInput = ref("");
     const stubsYaml = ref("");
+    const tenant = ref("");
 
     // Computed
     const importButtonEnabled = computed(() => !!openApiInput.value);
@@ -75,6 +84,7 @@ export default {
         const result = await store.dispatch("importModule/importOpenApi", {
           openapi: openApiInput.value,
           doNotCreateStub: true,
+          tenant: tenant.value,
         });
 
         const filteredResult = result.map((r) => r.stub);
@@ -97,6 +107,7 @@ export default {
         await store.dispatch("importModule/importOpenApi", {
           openapi: openApiInput.value,
           doNotCreateStub: false,
+          tenant: tenant.value,
         });
         toastr.success(resources.stubsAddedSuccessfully);
         await router.push({ name: "Stubs" });
@@ -111,6 +122,7 @@ export default {
     const reset = () => {
       openApiInput.value = "";
       stubsYaml.value = "";
+      tenant.value = "";
     };
 
     // Lifecycle
@@ -141,6 +153,7 @@ export default {
       saveStubs,
       editBeforeSaving,
       reset,
+      tenant,
     };
   },
 };

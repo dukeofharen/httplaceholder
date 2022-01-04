@@ -51,6 +51,14 @@
     <upload-button button-text="Upload file" @uploaded="onUploaded" />
   </div>
   <div class="mb-2" v-if="!stubsYaml">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Fill in a tenant to group the generated stubs... (if no tenant is provided, a tenant name will be generated)"
+      v-model="tenant"
+    />
+  </div>
+  <div class="mb-2" v-if="!stubsYaml">
     <textarea class="form-control" v-model="harInput"></textarea>
   </div>
   <div v-if="!stubsYaml" class="mb-2">
@@ -100,6 +108,7 @@ export default {
     const harInput = ref("");
     const howToOpen = ref(false);
     const stubsYaml = ref("");
+    const tenant = ref("");
 
     // Computed
     const importButtonEnabled = computed(() => !!harInput.value);
@@ -114,6 +123,7 @@ export default {
         const result = await store.dispatch("importModule/importHar", {
           har: harInput.value,
           doNotCreateStub: true,
+          tenant: tenant.value,
         });
 
         const filteredResult = result.map((r) => r.stub);
@@ -133,6 +143,7 @@ export default {
         await store.dispatch("importModule/importHar", {
           har: harInput.value,
           doNotCreateStub: false,
+          tenant: tenant.value,
         });
         toastr.success(resources.stubsAddedSuccessfully);
         await router.push({ name: "Stubs" });
@@ -147,6 +158,7 @@ export default {
     const reset = () => {
       harInput.value = "";
       stubsYaml.value = "";
+      tenant.value = "";
     };
     const onUploaded = (file) => {
       harInput.value = file.result;
@@ -181,6 +193,7 @@ export default {
       reset,
       codeBlock,
       onUploaded,
+      tenant,
     };
   },
 };

@@ -5,7 +5,7 @@ const state = () => ({});
 const actions = {
   importCurlCommands(_, input) {
     return post(
-      `/ph-api/import/curl?doNotCreateStub=${input.doNotCreateStub}`,
+      `/ph-api/import/curl?doNotCreateStub=${input.doNotCreateStub}&tenant=${input.tenant}`,
       input.commands
     )
       .then((response) => Promise.resolve(response))
@@ -13,7 +13,7 @@ const actions = {
   },
   importHar(_, input) {
     return post(
-      `/ph-api/import/har?doNotCreateStub=${input.doNotCreateStub}`,
+      `/ph-api/import/har?doNotCreateStub=${input.doNotCreateStub}&tenant=${input.tenant}`,
       input.har
     )
       .then((response) => Promise.resolve(response))
@@ -21,7 +21,7 @@ const actions = {
   },
   importOpenApi(_, input) {
     return post(
-      `/ph-api/import/openapi?doNotCreateStub=${input.doNotCreateStub}`,
+      `/ph-api/import/openapi?doNotCreateStub=${input.doNotCreateStub}&tenant=${input.tenant}`,
       input.openapi
     )
       .then((response) => Promise.resolve(response))
