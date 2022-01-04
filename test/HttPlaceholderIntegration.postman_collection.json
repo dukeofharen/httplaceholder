@@ -7581,7 +7581,7 @@
 													"    pm.expect(jsonData.length).to.eql(73);",
 													"});",
 													"",
-													"pm.test(\"Check 20th stub\", function () {",
+													"pm.test(\"Check 21st stub\", function () {",
 													"    const stub = jsonData[20].stub;",
 													"    pm.expect(stub.id).to.contain(\"generated-\");",
 													"    pm.expect(stub.description).to.eql(\"An endpoint which accepts the correlation ID of a request made earlier.\\nHttPlaceholder will create a stub based on this request for you to tweak later on.\");",

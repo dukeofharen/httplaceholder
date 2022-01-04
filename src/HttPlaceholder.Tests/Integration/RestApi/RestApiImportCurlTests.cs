@@ -22,7 +22,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
     public async Task RestApiIntegration_Import_ImportCurl_HappyFlow()
     {
         // Arrange
-        var content = await File.ReadAllTextAsync("chrome_on_ubuntu_multiple_curls.txt");
+        var content = await File.ReadAllTextAsync("Resources/chrome_on_ubuntu_multiple_curls.txt");
 
         // Post cURL commands to API.
         var url = $"{BaseAddress}ph-api/import/curl?doNotCreateStub=false";

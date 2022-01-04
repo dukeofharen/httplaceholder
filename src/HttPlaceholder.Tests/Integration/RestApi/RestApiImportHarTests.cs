@@ -23,7 +23,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
     public async Task RestApiIntegration_Import_ImportHar_HappyFlow()
     {
         // Arrange
-        var content = await File.ReadAllTextAsync("har.txt");
+        var content = await File.ReadAllTextAsync("Resources/har.txt");
 
         // Post HAR to API.
         var url = $"{BaseAddress}ph-api/import/har?doNotCreateStub=false";

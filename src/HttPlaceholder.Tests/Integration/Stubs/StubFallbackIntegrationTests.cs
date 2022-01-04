@@ -8,7 +8,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs;
 public class StubFallbackIntegrationTests : StubIntegrationTestBase
 {
     [TestInitialize]
-    public void Initialize() => InitializeStubIntegrationTest("fallback.yml");
+    public void Initialize() => InitializeStubIntegrationTest("Resources/fallback.yml");
 
     [TestCleanup]
     public void Cleanup() => CleanupIntegrationTest();

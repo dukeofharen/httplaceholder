@@ -12,7 +12,7 @@ public class HealthcheckOnRootUrlTests : StubIntegrationTestBase
     public void Initialize()
     {
         Settings.Stub.HealthcheckOnRootUrl = true;
-        InitializeStubIntegrationTest("integration.yml");
+        InitializeStubIntegrationTest("Resources/integration.yml");
     }
 
     [TestCleanup]
