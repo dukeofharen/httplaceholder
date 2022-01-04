@@ -68,12 +68,13 @@ public class CreateOpenApiStubsFacts : BaseClientTest
         var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
             .When(HttpMethod.Post, $"{BaseUrl}ph-api/import/openapi")
             .WithQueryString("doNotCreateStub", "False")
+            .WithQueryString("tenant", "tenant1")
             .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
         // Act
         var exception =
             await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                client.CreateOpenApiStubsAsync(openApi, false));
+                client.CreateOpenApiStubsAsync(openApi, false, "tenant1"));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -90,11 +91,12 @@ public class CreateOpenApiStubsFacts : BaseClientTest
         var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
             .When(HttpMethod.Post, $"{BaseUrl}ph-api/import/openapi")
             .WithQueryString("doNotCreateStub", doNotCreateStub.ToString())
+            .WithQueryString("tenant", "tenant1")
             .WithContent(openApi)
             .Respond("application/json", CreateOpenApiStubsResult)));
 
         // Act
-        var result = (await client.CreateOpenApiStubsAsync(openApi, doNotCreateStub)).ToArray();
+        var result = (await client.CreateOpenApiStubsAsync(openApi, doNotCreateStub, "tenant1")).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);

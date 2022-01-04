@@ -68,12 +68,13 @@ public class CreateHarStubsFacts : BaseClientTest
         var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
             .When(HttpMethod.Post, $"{BaseUrl}ph-api/import/har")
             .WithQueryString("doNotCreateStub", "False")
+            .WithQueryString("tenant", "tenant1")
             .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
         // Act
         var exception =
             await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                client.CreateHarStubsAsync(har, false));
+                client.CreateHarStubsAsync(har, false, "tenant1"));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -90,11 +91,12 @@ public class CreateHarStubsFacts : BaseClientTest
         var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
             .When(HttpMethod.Post, $"{BaseUrl}ph-api/import/har")
             .WithQueryString("doNotCreateStub", doNotCreateStub.ToString())
+            .WithQueryString("tenant", "tenant1")
             .WithContent(har)
             .Respond("application/json", CreateHarStubsResult)));
 
         // Act
-        var result = (await client.CreateHarStubsAsync(har, doNotCreateStub)).ToArray();
+        var result = (await client.CreateHarStubsAsync(har, doNotCreateStub, "tenant1")).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);

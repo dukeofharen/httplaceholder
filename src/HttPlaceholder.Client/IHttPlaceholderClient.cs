@@ -235,22 +235,25 @@ public interface IHttPlaceholderClient
     /// </summary>
     /// <param name="input">The cURL command(s).</param>
     /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
+    /// <param name="tenant">The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name will be generated.</param>
     /// <returns>The created stubs.</returns>
-    Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub);
+    Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub, string tenant = "");
 
     /// <summary>
     /// Creates stubs based on an HTTP archive (HAR)
     /// </summary>
     /// <param name="input">The HAR JSON string.</param>
     /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
+    /// <param name="tenant">The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name will be generated.</param>
     /// <returns>The created stubs.</returns>
-    Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(string input, bool doNotCreateStub);
+    Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(string input, bool doNotCreateStub, string tenant = "");
 
     /// <summary>
     /// Creates stubs based on an OpenAPI definition (both JSON and YAML supported).
     /// </summary>
     /// <param name="input">The OpenAPI YAML or JSON string.</param>
     /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
+    /// <param name="tenant">The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name will be generated.</param>
     /// <returns>The created stubs.</returns>
-    Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(string input, bool doNotCreateStub);
+    Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(string input, bool doNotCreateStub, string tenant = "");
 }

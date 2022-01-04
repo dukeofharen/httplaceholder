@@ -68,12 +68,13 @@ public class CreateCurlStubsFacts : BaseClientTest
         var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
             .When(HttpMethod.Post, $"{BaseUrl}ph-api/import/curl")
             .WithQueryString("doNotCreateStub", "False")
+            .WithQueryString("tenant", "tenant1")
             .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
         // Act
         var exception =
             await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                client.CreateCurlStubsAsync(commands, false));
+                client.CreateCurlStubsAsync(commands, false, "tenant1"));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -90,11 +91,12 @@ public class CreateCurlStubsFacts : BaseClientTest
         var client = new HttPlaceholderClient(CreateHttpClient(mock => mock
             .When(HttpMethod.Post, $"{BaseUrl}ph-api/import/curl")
             .WithQueryString("doNotCreateStub", doNotCreateStub.ToString())
+            .WithQueryString("tenant", "tenant1")
             .WithContent(commands)
             .Respond("application/json", CreateCurlStubsResult)));
 
         // Act
-        var result = (await client.CreateCurlStubsAsync(commands, doNotCreateStub)).ToArray();
+        var result = (await client.CreateCurlStubsAsync(commands, doNotCreateStub, "tenant1")).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);

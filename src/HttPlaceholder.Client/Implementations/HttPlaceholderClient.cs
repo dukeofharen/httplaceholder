@@ -398,10 +398,10 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub)
+    public async Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub, string tenant = "")
     {
         using var response = await HttpClient.PostAsync(
-            $"/ph-api/import/curl?doNotCreateStub={doNotCreateStub}",
+            $"/ph-api/import/curl?doNotCreateStub={doNotCreateStub}&tenant={tenant}",
             new StringContent(input,
                 Encoding.UTF8,
                 TextContentType));
@@ -415,10 +415,10 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(string input, bool doNotCreateStub)
+    public async Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(string input, bool doNotCreateStub, string tenant = "")
     {
         using var response = await HttpClient.PostAsync(
-            $"/ph-api/import/har?doNotCreateStub={doNotCreateStub}",
+            $"/ph-api/import/har?doNotCreateStub={doNotCreateStub}&tenant={tenant}",
             new StringContent(input,
                 Encoding.UTF8,
                 TextContentType));
@@ -431,10 +431,10 @@ public class HttPlaceholderClient : IHttPlaceholderClient
         return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
     }
 
-    public async Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(string input, bool doNotCreateStub)
+    public async Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(string input, bool doNotCreateStub, string tenant = "")
     {
         using var response = await HttpClient.PostAsync(
-            $"/ph-api/import/openapi?doNotCreateStub={doNotCreateStub}",
+            $"/ph-api/import/openapi?doNotCreateStub={doNotCreateStub}&tenant={tenant}",
             new StringContent(input,
                 Encoding.UTF8,
                 TextContentType));
