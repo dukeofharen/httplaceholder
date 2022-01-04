@@ -1,0 +1,17 @@
+export const curl = `curl 'https://api.site.com/api/v1/users' \\
+  -X 'PUT' \\
+  -H 'authority: api.site.com' \\
+  -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96"' \\
+  -H 'accept: application/json, text/plain, */*' \\
+  -H 'content-type: application/json;charset=UTF-8' \\
+  -H 'authorization: Bearer VERYLONGSTRING \\
+  -H 'sec-ch-ua-mobile: ?0' \\
+  -H 'user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36' \\
+  -H 'sec-ch-ua-platform: "Linux"' \\
+  -H 'origin: https://site.com' \\
+  -H 'sec-fetch-site: same-site' \\
+  -H 'sec-fetch-mode: cors' \\
+  -H 'sec-fetch-dest: empty' \\
+  -H 'accept-language: en-US,en;q=0.9,nl;q=0.8' \\
+  --data-raw $'{"id":1,"created":"2015-10-21T14:39:55","updated":"2021-11-26T22:10:52","userName":"d","firstName":"d\\'","lastName":"h","street":"Road","number":"6","postalCode":"1234AB","city":"Amsterdam","phone":"0612345678","email":"info@example.com","placeId":1,"newsletter":false,"driversLicenseNumber":"112233","emailRepeat":"info@example.com"}' \\
+  --compressed`;
