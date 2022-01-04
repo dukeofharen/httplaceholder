@@ -7341,7 +7341,7 @@
 													"",
 													"pm.test(\"Check stub 1\", function () {",
 													"    const stub = jsonData[0].stub;",
-													"    pm.expect(stub.id).to.eql(\"generated-26e8a759fe05971b8a9c51ebaec80c4e\");",
+													"    pm.expect(stub.id).to.eql(\"generated-24f00eecf5439f6f305a168b184339d3\");",
 													"",
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"GET\");",
@@ -7361,7 +7361,7 @@
 													"",
 													"pm.test(\"Check stub 2\", function () {",
 													"    const stub = jsonData[1].stub;",
-													"    pm.expect(stub.id).to.eql(\"generated-4263b7f25ead046ec1a00de30618b2a5\");",
+													"    pm.expect(stub.id).to.eql(\"generated-09b1935bc83ba1afcfdfe613dcdcd2e3\");",
 													"",
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"GET\");",
@@ -7381,7 +7381,7 @@
 													"",
 													"pm.test(\"Check stub 3\", function () {",
 													"    const stub = jsonData[2].stub;",
-													"    pm.expect(stub.id).to.eql(\"generated-a923889c4a0cb2b919d43e9568c29e7e\");",
+													"    pm.expect(stub.id).to.eql(\"generated-76cff71ff1aaa9532192f64cca2958b7\");",
 													"",
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"GET\");",
@@ -7401,7 +7401,7 @@
 													"",
 													"pm.test(\"Check stub 4\", function () {",
 													"    const stub = jsonData[3].stub;",
-													"    pm.expect(stub.id).to.eql(\"generated-c84a817f66279a8a7630a5d572b2f9a2\");",
+													"    pm.expect(stub.id).to.eql(\"generated-4b3af4b16f93185600d5b8803e8fd7b0\");",
 													"",
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"GET\");",
@@ -7421,7 +7421,7 @@
 													"",
 													"pm.test(\"Check stub 5\", function () {",
 													"    const stub = jsonData[4].stub;",
-													"    pm.expect(stub.id).to.eql(\"generated-ae0b9978e208e748dc02259af64515ca\");",
+													"    pm.expect(stub.id).to.eql(\"generated-a5c900b24f4dc4a28df93416597420e1\");",
 													"",
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"PUT\");",
@@ -7456,13 +7456,19 @@
 											}
 										},
 										"url": {
-											"raw": "{{rootUrl}}ph-api/import/har",
+											"raw": "{{rootUrl}}ph-api/import/har?tenant=tenant1",
 											"host": [
 												"{{rootUrl}}ph-api"
 											],
 											"path": [
 												"import",
 												"har"
+											],
+											"query": [
+												{
+													"key": "tenant",
+													"value": "tenant1"
+												}
 											]
 										}
 									},
