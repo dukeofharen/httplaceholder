@@ -17,10 +17,19 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     public string GetRandomStringValue(OpenApiSchema schema) => GetRandomValue(schema)?.ToString();
 
     /// <inheritdoc />
-    public string GetRandomJsonStringValue(OpenApiSchema schema) => JsonConvert.SerializeObject(GetRandomValue(schema));
+    public string GetRandomJsonStringValue(OpenApiSchema schema)
+    {
+        var value = GetRandomValue(schema);
+        return value == null ? null : JsonConvert.SerializeObject(value);
+    }
 
     internal static object GetRandomValue(OpenApiSchema schema)
     {
+        if (schema == null)
+        {
+            return null;
+        }
+
         var type = schema.Type;
         var format = schema.Format;
         var actualSchema = schema;

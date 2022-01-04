@@ -17,7 +17,6 @@
           class="bi"
           :class="tabDetails[tab].icon"
         />
-        <span v-if="tabDetails[tab].image"></span>
         {{ tabDetails[tab].title }}
       </button>
     </div>
@@ -94,12 +93,5 @@ export default {
 <style>
 .tab-button img {
   width: 20px;
-}
-
-.tab-button span {
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  background-size: 20px;
 }
 </style>
