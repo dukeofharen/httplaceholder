@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Bogus;
+using Microsoft.OpenApi;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Writers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
@@ -21,6 +26,28 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     {
         var value = GetRandomValue(schema);
         return value == null ? null : JsonConvert.SerializeObject(value);
+    }
+
+    /// <inheritdoc />
+    public string GetResponseJsonExample(OpenApiMediaType mediaType)
+    {
+        if (
+            mediaType.Examples?.Any() != true ||
+            mediaType.Examples.Values.First().Value == null)
+        {
+            return null;
+        }
+
+        var example = mediaType.Examples.Values.First().Value;
+        using var stringWriter = new StringWriter();
+        example.Write(
+            new OpenApiJsonWriter(stringWriter,
+                new OpenApiWriterSettings {ReferenceInline = ReferenceInlineSetting.InlineAllReferences}),
+            OpenApiSpecVersion.OpenApi3_0);
+        var result = stringWriter.ToString();
+
+        // Sometimes, a JSON example is formatted as string. We recognize that and return it as a valid JSON object.
+        return example is OpenApiString ? JToken.Parse(result).ToString() : result;
     }
 
     internal static object GetRandomValue(OpenApiSchema schema)

@@ -22,7 +22,8 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
     }
 
     /// <inheritdoc />
-    public int BuildHttpStatusCode(string responseKey) => _statusCodeRegex.IsMatch(responseKey) ? int.Parse(responseKey) : 0;
+    public int BuildHttpStatusCode(string responseKey) =>
+        _statusCodeRegex.IsMatch(responseKey) ? int.Parse(responseKey) : 0;
 
     /// <inheritdoc />
     public string BuildResponseBody(OpenApiResponse response)
@@ -34,6 +35,14 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
 
         var content = response.Content
             .FirstOrDefault(c => string.Equals(c.Key, Constants.JsonMime, StringComparison.OrdinalIgnoreCase));
+
+        // If the content has any examples assigned to it, create a response based on that instead of randomly generating a response.
+        var example = _openApiFakeDataGenerator.GetResponseJsonExample(content.Value);
+        if (!string.IsNullOrWhiteSpace(example))
+        {
+            return example;
+        }
+
         return string.IsNullOrWhiteSpace(content.Key)
             ? null
             : _openApiFakeDataGenerator.GetRandomJsonStringValue(content.Value.Schema);

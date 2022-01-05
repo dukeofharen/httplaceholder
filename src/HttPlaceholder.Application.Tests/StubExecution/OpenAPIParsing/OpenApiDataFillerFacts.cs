@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HttPlaceholder.Application.StubExecution.Models.HAR;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 using HttPlaceholder.Domain;
@@ -84,6 +85,35 @@ public class OpenApiDataFillerFacts
 
         // Assert
         Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void BuildResponseBody_ExampleIsSet_ShouldReturnExample()
+    {
+        // Arrange
+        var filler = _mocker.CreateInstance<OpenApiDataFiller>();
+        var generatorMock = _mocker.GetMock<IOpenApiFakeDataGenerator>();
+
+        var schema = new OpenApiSchema();
+        var mediaType = new OpenApiMediaType {Schema = schema};
+        var response = new OpenApiResponse
+        {
+            Content = new Dictionary<string, OpenApiMediaType>
+            {
+                {Constants.JsonMime, mediaType}
+            }
+        };
+
+        const string example = "JSON EXAMPLE";
+        generatorMock
+            .Setup(m => m.GetResponseJsonExample(mediaType))
+            .Returns(example);
+
+        // Act
+        var result = filler.BuildResponseBody(response);
+
+        // Assert
+        Assert.AreEqual(example, result);
     }
 
     [TestMethod]

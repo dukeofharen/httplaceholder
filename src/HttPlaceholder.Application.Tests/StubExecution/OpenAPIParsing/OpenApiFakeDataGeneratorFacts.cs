@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
+using Microsoft.OpenApi;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Writers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -234,5 +238,74 @@ public class OpenApiFakeDataGeneratorFacts
         // Assert
         var rawResult = JsonConvert.DeserializeObject<string>(result);
         Assert.IsFalse(string.IsNullOrWhiteSpace(rawResult));
+    }
+
+    [TestMethod]
+    public void GetResponseJsonExample_NoExamples_ShouldReturnNull()
+    {
+        // Arrange
+        var mediaType = new OpenApiMediaType {Examples = null};
+
+        // Act
+        var result = _generator.GetResponseJsonExample(mediaType);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void GetResponseJsonExample_ExampleIsNull_ShouldReturnNull()
+    {
+        // Arrange
+        var mediaType = new OpenApiMediaType
+        {
+            Examples = new Dictionary<string, OpenApiExample> {{"foo", new OpenApiExample {Value = null}}}
+        };
+
+        // Act
+        var result = _generator.GetResponseJsonExample(mediaType);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void GetResponseJsonExample_ExampleIsOpenApiObject_ShouldReturnJsonString()
+    {
+        // Arrange
+        var obj = new OpenApiObject {{"key", new OpenApiString("val")}};
+        var mediaType = new OpenApiMediaType
+        {
+            Examples = new Dictionary<string, OpenApiExample> {{"foo", new OpenApiExample {Value = obj}}}
+        };
+
+        // Act
+        var result = _generator.GetResponseJsonExample(mediaType);
+
+        // Assert
+        Assert.AreEqual(@"{
+  ""key"": ""val""
+}", result);
+    }
+
+    [TestMethod]
+    public void GetResponseJsonExample_ExampleIsOpenApiString_ShouldReturnJsonString()
+    {
+        // Arrange
+        var obj = new OpenApiString(@"{
+  ""key"": ""val""
+}");
+        var mediaType = new OpenApiMediaType
+        {
+            Examples = new Dictionary<string, OpenApiExample> {{"foo", new OpenApiExample {Value = obj}}}
+        };
+
+        // Act
+        var result = _generator.GetResponseJsonExample(mediaType);
+
+        // Assert
+        Assert.AreEqual(@"{
+  ""key"": ""val""
+}", result);
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.OpenApi.Models;
+﻿using Microsoft.OpenApi.Models;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 
@@ -21,4 +20,11 @@ public interface IOpenApiFakeDataGenerator
     /// <param name="schema">The OpenAPI schema.</param>
     /// <returns>The random string value as JSON.</returns>
     string GetRandomJsonStringValue(OpenApiSchema schema);
+
+    /// <summary>
+    /// Used to receive an OpenAPI example and generate an example value for it for use in stubs.
+    /// </summary>
+    /// <param name="mediaType">The OpenAPI media type.</param>
+    /// <returns>The response example as JSON.</returns>
+    string GetResponseJsonExample(OpenApiMediaType mediaType);
 }
