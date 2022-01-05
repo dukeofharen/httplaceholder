@@ -71,7 +71,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
         return type switch
         {
             "boolean" => _faker.Random.Bool(),
-            "string" => GenerateFakeString(format),
+            "string" => GenerateFakeString(format, actualSchema.Enum),
             "integer" => GenerateRandomInteger(format),
             "number" => GenerateRandomNumber(format),
             "object" => GetRandomJsonObject(actualSchema),
@@ -96,8 +96,15 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     private static IDictionary<string, object> GetRandomJsonObject(OpenApiSchema schema) =>
         schema.Properties.ToDictionary(property => property.Key, property => GetRandomValue(property.Value));
 
-    private static string GenerateFakeString(string format)
+    private static string GenerateFakeString(string format, IList<IOpenApiAny> enumValues)
     {
+        if (enumValues?.Any() == true)
+        {
+            // Pick a random value from the enum list.
+            var enumValue = _faker.PickRandom(enumValues);
+            return (enumValue as OpenApiString)?.Value;
+        }
+
         var date = _faker.Date.Between(DateTime.Now.AddYears(-2), DateTime.Now);
         switch (format)
         {

@@ -112,6 +112,26 @@ public class OpenApiFakeDataGeneratorFacts
     }
 
     [TestMethod]
+    public void GetRandomValue_StringValue_Enum()
+    {
+        // Arrange
+        var schema = new OpenApiSchema
+        {
+            Type = "string",
+            Enum = new List<IOpenApiAny>
+            {
+                new OpenApiString("cat"), new OpenApiString("dog"), new OpenApiString("rabbit")
+            }
+        };
+
+        // Act
+        var result = (string)OpenApiFakeDataGenerator.GetRandomValue(schema);
+
+        // Assert
+        Assert.IsTrue(result is "cat" or "dog" or "rabbit");
+    }
+
+    [TestMethod]
     public void GetRandomValue_OneOf()
     {
         // Arrange
@@ -271,10 +291,7 @@ public class OpenApiFakeDataGeneratorFacts
     {
         // Arrange
         var obj = new OpenApiObject {{"key", new OpenApiString("val")}};
-        var mediaType = new OpenApiMediaType
-        {
-            Example = obj
-        };
+        var mediaType = new OpenApiMediaType {Example = obj};
 
         // Act
         var result = _generator.GetResponseJsonExample(mediaType);

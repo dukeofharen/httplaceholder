@@ -104,6 +104,9 @@ components:
           type: string
         tag:
           type: string
+        petType:
+          type: string
+          enum: [cat, dog, rabbit]
     Pets:
       type: array
       items:
