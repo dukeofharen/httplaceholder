@@ -38,6 +38,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Pets"
+              example:
+                - id: 1
+                  name: Cat
+                - id: 2
+                  name: Dog
         default:
           description: unexpected error
           content:

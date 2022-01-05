@@ -31,14 +31,12 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     /// <inheritdoc />
     public string GetResponseJsonExample(OpenApiMediaType mediaType)
     {
-        if (
-            mediaType.Examples?.Any() != true ||
-            mediaType.Examples.Values.First().Value == null)
+        var example = ExtractExample(mediaType);
+        if (example == null)
         {
             return null;
         }
 
-        var example = mediaType.Examples.Values.First().Value;
         using var stringWriter = new StringWriter();
         example.Write(
             new OpenApiJsonWriter(stringWriter,
@@ -128,4 +126,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
             "int64" => _faker.Random.Long(0, 10000),
             _ => _faker.Random.Int(0, 10000)
         };
+
+    private static IOpenApiAny ExtractExample(OpenApiMediaType mediaType) =>
+        mediaType.Example ?? mediaType.Examples?.Values.FirstOrDefault()?.Value;
 }

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Text;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
-using Microsoft.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using Microsoft.OpenApi.Writers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
@@ -270,7 +267,26 @@ public class OpenApiFakeDataGeneratorFacts
     }
 
     [TestMethod]
-    public void GetResponseJsonExample_ExampleIsOpenApiObject_ShouldReturnJsonString()
+    public void GetResponseJsonExample_Example_ExampleIsOpenApiObject_ShouldReturnJsonString()
+    {
+        // Arrange
+        var obj = new OpenApiObject {{"key", new OpenApiString("val")}};
+        var mediaType = new OpenApiMediaType
+        {
+            Example = obj
+        };
+
+        // Act
+        var result = _generator.GetResponseJsonExample(mediaType);
+
+        // Assert
+        Assert.AreEqual(@"{
+  ""key"": ""val""
+}", result);
+    }
+
+    [TestMethod]
+    public void GetResponseJsonExample_Examples_ExampleIsOpenApiObject_ShouldReturnJsonString()
     {
         // Arrange
         var obj = new OpenApiObject {{"key", new OpenApiString("val")}};
@@ -289,7 +305,7 @@ public class OpenApiFakeDataGeneratorFacts
     }
 
     [TestMethod]
-    public void GetResponseJsonExample_ExampleIsOpenApiString_ShouldReturnJsonString()
+    public void GetResponseJsonExample_Examples_ExampleIsOpenApiString_ShouldReturnJsonString()
     {
         // Arrange
         var obj = new OpenApiString(@"{
