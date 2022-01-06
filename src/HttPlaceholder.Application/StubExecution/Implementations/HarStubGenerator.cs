@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.Models.HAR;
-using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Domain;
 using Newtonsoft.Json;
 
@@ -31,7 +31,8 @@ public class HarStubGenerator : IHarStubGenerator
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateHarStubsAsync(string input, bool doNotCreateStub, string tenant)
+    public async Task<IEnumerable<FullStubModel>> GenerateHarStubsAsync(string input, bool doNotCreateStub,
+        string tenant)
     {
         try
         {
@@ -98,7 +99,7 @@ public class HarStubGenerator : IHarStubGenerator
             Conditions = conditions,
             Response = response
         };
-        stub.Id = $"generated-{HashingUtilities.GetMd5String(JsonConvert.SerializeObject(stub))}";
+        stub.EnsureStubId();
         return stub;
     }
 

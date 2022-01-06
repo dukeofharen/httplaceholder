@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using YamlDotNet.Core;
 using Constants = HttPlaceholder.Domain.Constants;
 
@@ -143,8 +143,7 @@ internal class YamlFileStubSource : IStubSource
             if (string.IsNullOrWhiteSpace(stub.Id))
             {
                 // If no ID is set, calculate a unique ID based on the stub contents.
-                var contents = JsonConvert.SerializeObject(stub);
-                stub.Id = HashingUtilities.GetMd5String(contents);
+                stub.EnsureStubId();
             }
 
             var results = _stubModelValidator.ValidateStubModel(stub).ToArray();

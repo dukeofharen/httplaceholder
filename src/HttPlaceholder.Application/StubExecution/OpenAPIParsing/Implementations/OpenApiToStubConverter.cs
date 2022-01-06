@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
-using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Domain;
-using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
@@ -47,7 +46,7 @@ public class OpenApiToStubConverter : IOpenApiToStubConverter
             Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request),
             Response = await _httpResponseToStubResponseService.ConvertToResponseAsync(response),
         };
-        stub.Id = $"generated-{HashingUtilities.GetMd5String(JsonConvert.SerializeObject(stub))}";
+        stub.EnsureStubId();
         return stub;
     }
 }

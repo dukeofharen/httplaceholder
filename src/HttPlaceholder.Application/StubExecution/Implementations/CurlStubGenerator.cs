@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
@@ -46,8 +45,7 @@ internal class CurlStubGenerator : ICurlStubGenerator
             };
 
             // Generate an ID based on the created stub.
-            var contents = JsonConvert.SerializeObject(stub);
-            stub.Id = $"generated-{HashingUtilities.GetMd5String(contents)}";
+            stub.EnsureStubId();
             results.Add(await CreateStub(doNotCreateStub, stub));
         }
 
