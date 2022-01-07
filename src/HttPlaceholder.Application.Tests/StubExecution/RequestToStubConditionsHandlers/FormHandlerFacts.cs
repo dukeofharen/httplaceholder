@@ -25,7 +25,7 @@ public class FormHandlerFacts
 
         // Assert
         Assert.IsFalse(result);
-        Assert.IsFalse(conditions.Headers.Any());
+        Assert.IsNull(conditions.Form);
     }
 
     [TestMethod]
@@ -43,7 +43,28 @@ public class FormHandlerFacts
 
         // Assert
         Assert.IsFalse(result);
-        Assert.IsFalse(conditions.Headers.Any());
+        Assert.IsNull(conditions.Form);
+    }
+
+    [DataTestMethod]
+    [DataRow("")]
+    [DataRow(" ")]
+    [DataRow(null)]
+    public async Task FormHandler_HandleStubGenerationAsync_NoRequestBodySet_ShouldReturnFalse(string body)
+    {
+        // Arrange
+        var request = new HttpRequestModel
+        {
+            Headers = new Dictionary<string, string> { { "Content-Type", Constants.UrlEncodedFormMime } }, Body = body
+        };
+        var conditions = new StubConditionsModel();
+
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+
+        // Assert
+        Assert.IsFalse(result);
+        Assert.IsNull(conditions.Form);
     }
 
     [DataTestMethod]
