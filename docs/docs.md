@@ -1690,7 +1690,11 @@ To read more about scenarios, go to [conditions](#request-scenario) or [response
 
 ## Import
 
-The import collection is used to be able to import all kinds of data in HttPlaceholder.
+The import collection is used to be able to import all kinds of data in HttPlaceholder. The following kinds of import are currently supported:
+
+* [cURL commands](#import-curl-commands)
+* [HTTP Archive (HAR)](#import-http-archive-har)
+* [OpenAPI definitions](#import-openapi-definition)
 
 # Configuration
 
@@ -2035,6 +2039,8 @@ On this page, you can upload stubs you have saved on your PC in YAML format. You
 
 On this page, you can create new stubs based on cURL commands. You can, for example, use cURL commands you have lying around or you can copy/paste cURL commands from your browser.
 
+You can optionally fill in a tenant. All stubs that are created, will be created under this tenant. This is so you can easily see which stubs were imported together. If you do not provide a tenant, a tenant name will be automatically generated.
+
 ![](img/ui/stub_curl_form.png)
 _On this form, you can import one or multiple cURL commands. You can also upload a file with the cURL commands in it._
 
@@ -2071,6 +2077,8 @@ _Copy as cURL in Chrome on Windows_
 
 On this page, you can import an HTTP archive (or HAR for short) to create stubs based on it. An HTTP archive file is a JSON file that is a representation of a set of requests with its corresponding response. Most modern browsers allow you to copy or download the HAR file.
 
+You can optionally fill in a tenant. All stubs that are created, will be created under this tenant. This is so you can easily see which stubs were imported together. If you do not provide a tenant, a tenant name will be automatically generated.
+
 ![](img/ui/stub_har_form.png)
 _On this form, you can import a HAR file by pasting the contents of the HAR. You can also upload a HAR file._
 
@@ -2095,6 +2103,20 @@ and select "Copy all as HAR"._
 _In Chrome, you can also click "Copy all as HAR", but this does not
 copy the response contents. To get the full responses, you need to
 click "Save all as HAR with content" to get the full HAR._
+
+### Import OpenAPI definition
+
+On this page, you can import an [OpenAPI](https://www.openapis.org/) definition. Many modern APIs are accompanied by an OpenAPI definition. This is a JSON or YAML file which contains the definition of a specific API. By importing the OpenAPI definition, HttPlaceholder will create stubs for you so you can start developing against this new API.
+
+You can find some OpenAPI examples here: <https://github.com/OAI/OpenAPI-Specification/tree/main/examples>
+
+You can optionally fill in a tenant. All stubs that are created, will be created under this tenant. This is so you can easily see which stubs were imported together. If you do not provide a tenant, a tenant name will be automatically generated.
+
+![](img/ui/stub_openapi_form.png)
+_On this form, you can import an OpenAPI file by pasting the contents of the HAR. You can also upload an OpenAPI file._
+
+![](img/ui/stub_openapi_form_review.png)
+_When pressing the "Import OpenAPI definition" button, you will see the stubs that will be added. You will have the option to directly save the stubs, edit the stubs before saving or resetting and starting over._
 
 ## Add stub(s) form
 
