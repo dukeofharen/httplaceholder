@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
+using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
@@ -13,7 +14,7 @@ internal class OpenApiParser : IOpenApiParser
         var openapi = new OpenApiStringReader().Read(input, out _);
         return new OpenApiResult
         {
-            ServerUrl = openapi.Servers.Any() ? openapi.Servers.First().Url : "http://localhost",
+            Server = openapi.Servers.Any() ? openapi.Servers.First() : new OpenApiServer {Url = "http://localhost"},
             Lines = (from path in openapi.Paths
                 from operation in path.Value.Operations
                 from operationResponse in operation.Value.Responses

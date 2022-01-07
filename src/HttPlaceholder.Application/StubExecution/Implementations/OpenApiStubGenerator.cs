@@ -38,7 +38,7 @@ public class OpenApiStubGenerator : IOpenApiStubGenerator
             var openApiResult = _openApiParser.ParseOpenApiDefinition(input);
             foreach (var line in openApiResult.Lines)
             {
-                stubs.Add(await CreateStub(doNotCreateStub, openApiResult.ServerUrl, line, tenant));
+                stubs.Add(await CreateStub(doNotCreateStub, openApiResult.Server?.Url, line, tenant));
             }
 
             return stubs;

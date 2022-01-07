@@ -21,7 +21,7 @@ public class OpenApiParserFacts
         var result = _parser.ParseOpenApiDefinition(input);
 
         // Assert
-        Assert.AreEqual("http://petstore.swagger.io/v1", result.ServerUrl);
+        Assert.AreEqual("http://petstore.swagger.io/v1", result.Server.Url);
 
         var lines = result.Lines.ToArray();
         Assert.AreEqual(6, lines.Length);

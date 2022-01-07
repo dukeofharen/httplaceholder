@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.OpenApi.Models;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
 
@@ -8,9 +9,9 @@ namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
 public class OpenApiResult
 {
     /// <summary>
-    /// Gets or sets the OpenAPI server URL.
+    /// Gets or sets the OpenAPI server.
     /// </summary>
-    public string ServerUrl { get; set; }
+    public OpenApiServer Server { get; set; }
 
     /// <summary>
     /// Gets or sets the OpenAPI definitions.
