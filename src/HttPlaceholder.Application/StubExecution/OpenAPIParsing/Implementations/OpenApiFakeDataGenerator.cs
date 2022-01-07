@@ -82,6 +82,12 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
             actualSchema = allOf;
         }
 
+        if (string.IsNullOrWhiteSpace(type) && schema.Properties.Any())
+        {
+            // Sort of ugly hack to accomodate to broken OpenAPI definitions.
+            type = "object";
+        }
+
         return type switch
         {
             "boolean" => _faker.Random.Bool(),

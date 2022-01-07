@@ -204,6 +204,29 @@ public class OpenApiFakeDataGeneratorFacts
     }
 
     [TestMethod]
+    public void GetRandomValue_TypeNotSet_HasProperties_ShouldBeInterpretedAsObject()
+    {
+        // Arrange
+        var schema = new OpenApiSchema
+        {
+            Type = null,
+            Properties = new Dictionary<string, OpenApiSchema>
+            {
+                {"stringKey", new OpenApiSchema {Type = "string"}},
+                {"intKey", new OpenApiSchema {Type = "integer"}},
+            }
+        };
+
+        // Act
+        var result = (IDictionary<string, object>)OpenApiFakeDataGenerator.GetRandomValue(schema);
+
+        // Assert
+        Assert.AreEqual(2, result.Count);
+        Assert.IsInstanceOfType(result["stringKey"], typeof(string));
+        Assert.IsInstanceOfType(result["intKey"], typeof(long));
+    }
+
+    [TestMethod]
     public void GetRandomValue_Array()
     {
         // Arrange
