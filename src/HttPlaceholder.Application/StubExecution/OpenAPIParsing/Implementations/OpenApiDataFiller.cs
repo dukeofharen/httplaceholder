@@ -114,7 +114,18 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
         string GetUrlValue(OpenApiParameter parameter)
         {
             var example = _openApiFakeDataGenerator.GetExampleForParameter(parameter);
-            return example?.ToString() ?? _openApiFakeDataGenerator.GetRandomStringValue(parameter.Schema);
+            if(example != null)
+            {
+                return example.ToString();
+            }
+
+            var schema = parameter.Schema;
+            if (parameter.Schema.Items != null)
+            {
+                schema = parameter.Schema.Items;
+            }
+
+            return _openApiFakeDataGenerator.GetRandomStringValue(schema);
         }
 
         var relativePath = basePath;

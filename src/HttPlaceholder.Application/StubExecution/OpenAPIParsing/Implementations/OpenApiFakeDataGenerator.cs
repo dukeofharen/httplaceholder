@@ -82,14 +82,14 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
             "string" => GenerateFakeString(format, actualSchema.Enum),
             "integer" => GenerateRandomInteger(format),
             "number" => GenerateRandomNumber(format),
-            "object" => GetRandomJsonObject(actualSchema),
-            "array" => GetRandomJsonArray(actualSchema),
+            "object" => GetRandomObject(actualSchema),
+            "array" => GetRandomArray(actualSchema),
             "null" => null,
             _ => string.Empty
         };
     }
 
-    private static object[] GetRandomJsonArray(OpenApiSchema schema)
+    private static object[] GetRandomArray(OpenApiSchema schema)
     {
         var result = new List<object>();
         var noOfItems = _faker.Random.Int(1, 3);
@@ -101,7 +101,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
         return result.ToArray();
     }
 
-    private static IDictionary<string, object> GetRandomJsonObject(OpenApiSchema schema) =>
+    private static IDictionary<string, object> GetRandomObject(OpenApiSchema schema) =>
         schema.Properties.ToDictionary(property => property.Key, property => GetRandomValue(property.Value));
 
     private static string GenerateFakeString(string format, IList<IOpenApiAny> enumValues)

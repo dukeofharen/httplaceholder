@@ -37,13 +37,11 @@ public class OpenApiDataFillerFacts
         var filler = _mocker.CreateInstance<OpenApiDataFiller>();
         var server = new OpenApiServer
         {
-            Url = "{scheme}://localhost/api/{apiVersion}", Variables = new Dictionary<string, OpenApiServerVariable>
+            Url = "{scheme}://localhost/api/{apiVersion}",
+            Variables = new Dictionary<string, OpenApiServerVariable>
             {
-                {"scheme", new OpenApiServerVariable
-                {
-                    Default = "https"
-                }},
-                {"apiVersion", new OpenApiServerVariable{Default = "v3"}}
+                {"scheme", new OpenApiServerVariable {Default = "https"}},
+                {"apiVersion", new OpenApiServerVariable {Default = "v3"}}
             }
         };
 
@@ -252,7 +250,7 @@ public class OpenApiDataFillerFacts
         var response = new OpenApiResponse
         {
             Content = new Dictionary<string, OpenApiMediaType>(),
-            Headers = new Dictionary<string, OpenApiHeader> {{"x-api-key",header}}
+            Headers = new Dictionary<string, OpenApiHeader> {{"x-api-key", header}}
         };
 
         const string example = "example string";
@@ -367,10 +365,7 @@ public class OpenApiDataFillerFacts
         {
             RequestBody = new OpenApiRequestBody
             {
-                Content = new Dictionary<string, OpenApiMediaType>
-                {
-                    {Constants.JsonMime, mediaType}
-                }
+                Content = new Dictionary<string, OpenApiMediaType> {{Constants.JsonMime, mediaType}}
             }
         };
 
@@ -469,6 +464,12 @@ public class OpenApiDataFillerFacts
                     Name = "headerkey",
                     In = ParameterLocation.Header,
                     Schema = new OpenApiSchema {Type = "string"}
+                },
+                new()
+                {
+                    Name = "arraykey",
+                    In = ParameterLocation.Query,
+                    Schema = new OpenApiSchema {Type = "array", Items = new OpenApiSchema {Type = "string"}}
                 }
             }
         };
@@ -485,12 +486,15 @@ public class OpenApiDataFillerFacts
         generatorMock
             .Setup(m => m.GetExampleForParameter(operation.Parameters[3]))
             .Returns("filterval2");
+        generatorMock
+            .Setup(m => m.GetRandomStringValue(operation.Parameters[5].Schema.Items))
+            .Returns("arrayvalue");
 
         // Act
         var result = filler.BuildRelativeRequestPath(operation, basePath);
 
         // Assert
-        const string expectedPath = "/api/users/user1/orders/123?filter=filterval&anotherquery=filterval2";
+        const string expectedPath = "/api/users/user1/orders/123?filter=filterval&anotherquery=filterval2&arraykey=arrayvalue";
         Assert.AreEqual(expectedPath, result);
     }
 
