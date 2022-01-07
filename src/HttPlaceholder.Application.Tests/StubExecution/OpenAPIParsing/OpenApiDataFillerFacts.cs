@@ -98,10 +98,7 @@ public class OpenApiDataFillerFacts
         var mediaType = new OpenApiMediaType {Schema = schema};
         var response = new OpenApiResponse
         {
-            Content = new Dictionary<string, OpenApiMediaType>
-            {
-                {Constants.JsonMime, mediaType}
-            }
+            Content = new Dictionary<string, OpenApiMediaType> {{Constants.JsonMime, mediaType}}
         };
 
         const string example = "JSON EXAMPLE";
@@ -204,6 +201,34 @@ public class OpenApiDataFillerFacts
     }
 
     [TestMethod]
+    public void BuildResponseHeaders_UseExample()
+    {
+        // Arrange
+        var filler = _mocker.CreateInstance<OpenApiDataFiller>();
+        var generatorMock = _mocker.GetMock<IOpenApiFakeDataGenerator>();
+
+        var headerSchema = new OpenApiSchema();
+        var header = new OpenApiHeader {Schema = headerSchema};
+        var response = new OpenApiResponse
+        {
+            Content = new Dictionary<string, OpenApiMediaType>(),
+            Headers = new Dictionary<string, OpenApiHeader> {{"x-api-key",header}}
+        };
+
+        const string example = "example string";
+        generatorMock
+            .Setup(m => m.GetExampleForHeader(header))
+            .Returns(example);
+
+        // Act
+        var result = filler.BuildResponseHeaders(response);
+
+        // Assert
+        Assert.AreEqual(1, result.Count);
+        Assert.AreEqual(example, result["x-api-key"]);
+    }
+
+    [TestMethod]
     public void BuildRequestBody_ContentIsNull_ShouldReturnNull()
     {
         // Arrange
@@ -290,6 +315,38 @@ public class OpenApiDataFillerFacts
     }
 
     [TestMethod]
+    public void BuildRequestBody_ContentIsJson_UseExample()
+    {
+        // Arrange
+        var filler = _mocker.CreateInstance<OpenApiDataFiller>();
+        var generatorMock = _mocker.GetMock<IOpenApiFakeDataGenerator>();
+
+        var schema = new OpenApiSchema();
+        var mediaType = new OpenApiMediaType {Schema = schema};
+        var operation = new OpenApiOperation
+        {
+            RequestBody = new OpenApiRequestBody
+            {
+                Content = new Dictionary<string, OpenApiMediaType>
+                {
+                    {Constants.JsonMime, mediaType}
+                }
+            }
+        };
+
+        const string example = "example string";
+        generatorMock
+            .Setup(m => m.GetJsonExample(mediaType))
+            .Returns(example);
+
+        // Act
+        var result = filler.BuildRequestBody(operation);
+
+        // Assert
+        Assert.AreEqual(example, result);
+    }
+
+    [TestMethod]
     public void BuildRelativeRequestPath_WithPathParams_WithoutQuery()
     {
         // Arrange
@@ -317,7 +374,7 @@ public class OpenApiDataFillerFacts
         };
 
         generatorMock
-            .Setup(m => m.GetRandomStringValue(operation.Parameters[0].Schema))
+            .Setup(m => m.GetExampleForParameter(operation.Parameters[0]))
             .Returns("user1");
         generatorMock
             .Setup(m => m.GetRandomStringValue(operation.Parameters[1].Schema))
@@ -363,7 +420,13 @@ public class OpenApiDataFillerFacts
                 },
                 new()
                 {
-                    Name = "filter",
+                    Name = "anotherquery",
+                    In = ParameterLocation.Query,
+                    Schema = new OpenApiSchema {Type = "string"}
+                },
+                new()
+                {
+                    Name = "headerkey",
                     In = ParameterLocation.Header,
                     Schema = new OpenApiSchema {Type = "string"}
                 }
@@ -374,17 +437,20 @@ public class OpenApiDataFillerFacts
             .Setup(m => m.GetRandomStringValue(operation.Parameters[0].Schema))
             .Returns("user1");
         generatorMock
-            .Setup(m => m.GetRandomStringValue(operation.Parameters[1].Schema))
+            .Setup(m => m.GetExampleForParameter(operation.Parameters[1]))
             .Returns("123");
         generatorMock
             .Setup(m => m.GetRandomStringValue(operation.Parameters[2].Schema))
             .Returns("filterval");
+        generatorMock
+            .Setup(m => m.GetExampleForParameter(operation.Parameters[3]))
+            .Returns("filterval2");
 
         // Act
         var result = filler.BuildRelativeRequestPath(operation, basePath);
 
         // Assert
-        const string expectedPath = "/api/users/user1/orders/123?filter=filterval";
+        const string expectedPath = "/api/users/user1/orders/123?filter=filterval&anotherquery=filterval2";
         Assert.AreEqual(expectedPath, result);
     }
 
