@@ -29,9 +29,9 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     }
 
     /// <inheritdoc />
-    public string GetResponseJsonExample(OpenApiMediaType mediaType)
+    public string GetJsonExample(OpenApiMediaType mediaType)
     {
-        var example = mediaType.Example ?? mediaType.Examples?.Values.FirstOrDefault()?.Value;
+        var example = mediaType?.Example ?? mediaType?.Schema?.Example ?? mediaType?.Examples?.Values.FirstOrDefault()?.Value;
         if (example == null)
         {
             return null;
@@ -46,7 +46,13 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     /// <inheritdoc />
     public object GetExampleForHeader(OpenApiHeader header)
     {
-        var example = header.Example ?? header.Examples?.Values.FirstOrDefault()?.Value;
+        var example = header?.Example ?? header?.Schema?.Example ?? header?.Examples?.Values.FirstOrDefault()?.Value;
+        return example == null ? null : ExtractExampleFromOpenApiAny(example);
+    }
+
+    public object GetExampleForParameter(OpenApiParameter parameter)
+    {
+        var example = parameter?.Example ?? parameter?.Schema?.Example ?? parameter?.Examples?.Values.FirstOrDefault()?.Value;
         return example == null ? null : ExtractExampleFromOpenApiAny(example);
     }
 

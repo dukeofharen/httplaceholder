@@ -37,7 +37,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
             .FirstOrDefault(c => string.Equals(c.Key, Constants.JsonMime, StringComparison.OrdinalIgnoreCase));
 
         // If the content has any examples assigned to it, create a response based on that instead of randomly generating a response.
-        var example = _openApiFakeDataGenerator.GetResponseJsonExample(content.Value);
+        var example = _openApiFakeDataGenerator.GetJsonExample(content.Value);
         if (!string.IsNullOrWhiteSpace(example))
         {
             return example;
@@ -81,6 +81,14 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
 
         var definition = requestBodyDefinitions.Content
             .FirstOrDefault(c => string.Equals(c.Key, Constants.JsonMime, StringComparison.OrdinalIgnoreCase));
+
+        // If the content has any examples assigned to it, create a response based on that instead of randomly generating a response.
+        var example = _openApiFakeDataGenerator.GetJsonExample(definition.Value);
+        if (!string.IsNullOrWhiteSpace(example))
+        {
+            return example;
+        }
+
         return string.IsNullOrWhiteSpace(definition.Key)
             ? null
             : _openApiFakeDataGenerator.GetRandomJsonStringValue(definition.Value.Schema);
@@ -89,6 +97,12 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
     /// <inheritdoc />
     public string BuildRelativeRequestPath(OpenApiOperation operation, string basePath)
     {
+        string GetUrlValue(OpenApiParameter parameter)
+        {
+            var example = _openApiFakeDataGenerator.GetExampleForParameter(parameter);
+            return example?.ToString() ?? _openApiFakeDataGenerator.GetRandomStringValue(parameter.Schema);
+        }
+
         var relativePath = basePath;
         var parameters = operation.Parameters;
 
@@ -101,8 +115,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
             relativePath = pathParams
                 .Aggregate(
                     relativePath,
-                    (current, parameter) => current.Replace($"{{{parameter.Name}}}",
-                        _openApiFakeDataGenerator.GetRandomStringValue(parameter.Schema)));
+                    (current, parameter) => current.Replace($"{{{parameter.Name}}}", GetUrlValue(parameter)));
         }
 
         // Parse query parameters.
@@ -117,7 +130,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
         var queryString = HttpUtility.ParseQueryString(string.Empty);
         foreach (var param in queryParams)
         {
-            queryString.Add(param.Name, _openApiFakeDataGenerator.GetRandomStringValue(param.Schema));
+            queryString.Add(param.Name, GetUrlValue(param));
         }
 
         return $"{relativePath}?{queryString}";

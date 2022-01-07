@@ -265,7 +265,7 @@ public class OpenApiFakeDataGeneratorFacts
         var mediaType = new OpenApiMediaType {Examples = null};
 
         // Act
-        var result = _generator.GetResponseJsonExample(mediaType);
+        var result = _generator.GetJsonExample(mediaType);
 
         // Assert
         Assert.IsNull(result);
@@ -281,7 +281,7 @@ public class OpenApiFakeDataGeneratorFacts
         };
 
         // Act
-        var result = _generator.GetResponseJsonExample(mediaType);
+        var result = _generator.GetJsonExample(mediaType);
 
         // Assert
         Assert.IsNull(result);
@@ -295,7 +295,7 @@ public class OpenApiFakeDataGeneratorFacts
         var mediaType = new OpenApiMediaType {Example = obj};
 
         // Act
-        var result = _generator.GetResponseJsonExample(mediaType);
+        var result = _generator.GetJsonExample(mediaType);
 
         // Assert
         Assert.AreEqual(@"{
@@ -314,7 +314,7 @@ public class OpenApiFakeDataGeneratorFacts
         };
 
         // Act
-        var result = _generator.GetResponseJsonExample(mediaType);
+        var result = _generator.GetJsonExample(mediaType);
 
         // Assert
         Assert.AreEqual(@"{
@@ -335,7 +335,7 @@ public class OpenApiFakeDataGeneratorFacts
         };
 
         // Act
-        var result = _generator.GetResponseJsonExample(mediaType);
+        var result = _generator.GetJsonExample(mediaType);
 
         // Assert
         Assert.AreEqual(@"{
@@ -530,7 +530,7 @@ public class OpenApiFakeDataGeneratorFacts
     }
 
     [TestMethod]
-    public void GetExampleForHeader_SingleExampleNotSet_MultipleExamplesSet_ShouldReturnExample()
+    public void GetExampleForHeader_SingleExampleNotSet_SchemaExampleNotSet_MultipleExamplesSet_ShouldReturnExample()
     {
         // Arrange
         var input = new OpenApiHeader
@@ -539,6 +539,10 @@ public class OpenApiFakeDataGeneratorFacts
             Examples = new Dictionary<string, OpenApiExample>
             {
                 {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+            },
+            Schema = new OpenApiSchema
+            {
+                Example = null
             }
         };
 
@@ -547,6 +551,30 @@ public class OpenApiFakeDataGeneratorFacts
 
         // Assert
         Assert.AreEqual(123, result);
+    }
+
+    [TestMethod]
+    public void GetExampleForHeader_SingleExampleNotSet_SchemaExampleSet_ShouldReturnExample()
+    {
+        // Arrange
+        var input = new OpenApiHeader
+        {
+            Example = null,
+            Examples = new Dictionary<string, OpenApiExample>
+            {
+                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+            },
+            Schema = new OpenApiSchema
+            {
+                Example = new OpenApiInteger(789)
+            }
+        };
+
+        // Act
+        var result = _generator.GetExampleForHeader(input);
+
+        // Assert
+        Assert.AreEqual(789, result);
     }
 
     [TestMethod]
@@ -559,6 +587,10 @@ public class OpenApiFakeDataGeneratorFacts
             Examples = new Dictionary<string, OpenApiExample>
             {
                 {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+            },
+            Schema = new OpenApiSchema
+            {
+                Example = new OpenApiInteger(789)
             }
         };
 
@@ -581,6 +613,95 @@ public class OpenApiFakeDataGeneratorFacts
 
         // Act
         var result = _generator.GetExampleForHeader(input);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void GetExampleForParameter_SingleExampleNotSet_SchemaExampleNotSet_MultipleExamplesSet_ShouldReturnExample()
+    {
+        // Arrange
+        var input = new OpenApiParameter
+        {
+            Example = null,
+            Examples = new Dictionary<string, OpenApiExample>
+            {
+                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+            },
+            Schema = new OpenApiSchema
+            {
+                Example = null
+            }
+        };
+
+        // Act
+        var result = _generator.GetExampleForParameter(input);
+
+        // Assert
+        Assert.AreEqual(123, result);
+    }
+
+    [TestMethod]
+    public void GetExampleForParameter_SingleExampleNotSet_SchemaExampleSet_ShouldReturnExample()
+    {
+        // Arrange
+        var input = new OpenApiParameter
+        {
+            Example = null,
+            Examples = new Dictionary<string, OpenApiExample>
+            {
+                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+            },
+            Schema = new OpenApiSchema
+            {
+                Example = new OpenApiInteger(789)
+            }
+        };
+
+        // Act
+        var result = _generator.GetExampleForParameter(input);
+
+        // Assert
+        Assert.AreEqual(789, result);
+    }
+
+    [TestMethod]
+    public void GetExampleForParameter_SingleExampleSet_ShouldReturnExample()
+    {
+        // Arrange
+        var input = new OpenApiParameter
+        {
+            Example = new OpenApiInteger(456),
+            Examples = new Dictionary<string, OpenApiExample>
+            {
+                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+            },
+            Schema = new OpenApiSchema
+            {
+                Example = new OpenApiInteger(789)
+            }
+        };
+
+        // Act
+        var result = _generator.GetExampleForParameter(input);
+
+        // Assert
+        Assert.AreEqual(456, result);
+    }
+
+    [TestMethod]
+    public void GetExampleForParameter_NoExampleFound_ShouldReturnNull()
+    {
+        // Arrange
+        var input = new OpenApiParameter
+        {
+            Example = null,
+            Examples = null
+        };
+
+        // Act
+        var result = _generator.GetExampleForParameter(input);
 
         // Assert
         Assert.IsNull(result);

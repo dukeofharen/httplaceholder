@@ -25,8 +25,8 @@ public interface IOpenApiFakeDataGenerator
     /// Used to receive an OpenAPI example and generate an example value for it for use in stubs.
     /// </summary>
     /// <param name="mediaType">The OpenAPI media type.</param>
-    /// <returns>The response example as JSON. null if no example was found</returns>
-    string GetResponseJsonExample(OpenApiMediaType mediaType);
+    /// <returns>The example as JSON. null if no example was found</returns>
+    string GetJsonExample(OpenApiMediaType mediaType);
 
     /// <summary>
     /// Used to receive an OpenAPI header example and generate an example value for it for use in stubs.
@@ -34,4 +34,11 @@ public interface IOpenApiFakeDataGenerator
     /// <param name="header">The header to get an example for.</param>
     /// <returns>The found example. null if no example was found.</returns>
     object GetExampleForHeader(OpenApiHeader header);
+
+    /// <summary>
+    /// Used to receive an OpenAPI parameter example and generate an example value for it for use in stubs.
+    /// </summary>
+    /// <param name="parameter">The parameter to get an example for.</param>
+    /// <returns>The found example. null if no example was found.</returns>
+    object GetExampleForParameter(OpenApiParameter parameter);
 }

@@ -46,16 +46,17 @@ public class RestApiImportOpenApiPetStoreTests : RestApiIntegrationTestBase
         var stub = stubs[0];
         Assert.IsTrue(stub.Id.StartsWith("generated-"));
         Assert.AreEqual("List all pets", stub.Description);
+
         Assert.AreEqual("GET", stub.Conditions.Method);
         Assert.AreEqual("tenant1", stub.Tenant);
-
         Assert.AreEqual("/v1/pets", stub.Conditions.Url.Path);
+        Assert.AreEqual("42", stub.Conditions.Url.Query["limit"]);
         Assert.AreEqual("petstore.swagger.io", stub.Conditions.Host);
 
         Assert.AreEqual(200, stub.Response.StatusCode);
         Assert.AreEqual(Constants.JsonMime, stub.Response.ContentType);
         Assert.AreEqual(1, stub.Response.Headers.Count);
-        Assert.IsTrue(stub.Response.Headers.ContainsKey("x-next"));
+        Assert.AreEqual("http://petstore.swagger.io/v1/pets/42", stub.Response.Headers["x-next"]);
 
         var responseBody = JsonConvert.DeserializeObject<Dictionary<string, object>[]>(stub.Response.Json);
         Assert.IsNotNull(responseBody);

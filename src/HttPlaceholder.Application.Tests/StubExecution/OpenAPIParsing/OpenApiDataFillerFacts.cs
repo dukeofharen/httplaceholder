@@ -106,7 +106,7 @@ public class OpenApiDataFillerFacts
 
         const string example = "JSON EXAMPLE";
         generatorMock
-            .Setup(m => m.GetResponseJsonExample(mediaType))
+            .Setup(m => m.GetJsonExample(mediaType))
             .Returns(example);
 
         // Act
