@@ -9,6 +9,13 @@ namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 public interface IOpenApiDataFiller
 {
     /// <summary>
+    /// Parses the OpenAPI server URL.
+    /// </summary>
+    /// <param name="server">The OpenAPI server.</param>
+    /// <returns>The parsed server URL.</returns>
+    string BuildServerUrl(OpenApiServer server);
+
+    /// <summary>
     /// Parses the response key to an HTTP status code. Returns "0" if the key is no valid status code.
     /// </summary>
     /// <param name="responseKey">The OpenAPI response key.</param>

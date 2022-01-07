@@ -3,6 +3,7 @@ using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
 using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Domain;
+using Microsoft.OpenApi.Models;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
@@ -24,14 +25,14 @@ public class OpenApiToStubConverter : IOpenApiToStubConverter
     }
 
     /// <inheritdoc />
-    public async Task<StubModel> ConvertToStubAsync(string serverUrl, OpenApiLine line, string tenant)
+    public async Task<StubModel> ConvertToStubAsync(OpenApiServer server, OpenApiLine line, string tenant)
     {
         var request = new HttpRequestModel
         {
             Body = _openApiDataFiller.BuildRequestBody(line.Operation),
             Headers = _openApiDataFiller.BuildRequestHeaders(line.Operation),
             Method = line.OperationType.ToString().ToUpper(),
-            Url = $"{serverUrl}{_openApiDataFiller.BuildRelativeRequestPath(line.Operation, line.PathKey)}" // TODO also parse serverUrl
+            Url = $"{_openApiDataFiller.BuildServerUrl(server)}{_openApiDataFiller.BuildRelativeRequestPath(line.Operation, line.PathKey)}"
         };
         var response = new HttpResponseModel
         {

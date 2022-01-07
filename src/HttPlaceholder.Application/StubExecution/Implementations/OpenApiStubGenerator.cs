@@ -6,6 +6,7 @@ using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
@@ -38,7 +39,7 @@ public class OpenApiStubGenerator : IOpenApiStubGenerator
             var openApiResult = _openApiParser.ParseOpenApiDefinition(input);
             foreach (var line in openApiResult.Lines)
             {
-                stubs.Add(await CreateStub(doNotCreateStub, openApiResult.Server?.Url, line, tenant));
+                stubs.Add(await CreateStub(doNotCreateStub, openApiResult.Server, line, tenant));
             }
 
             return stubs;
@@ -50,9 +51,9 @@ public class OpenApiStubGenerator : IOpenApiStubGenerator
         }
     }
 
-    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, string serverUrl, OpenApiLine line, string tenant)
+    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, OpenApiServer server, OpenApiLine line, string tenant)
     {
-        var stub = await _openApiToStubConverter.ConvertToStubAsync(serverUrl, line, tenant);
+        var stub = await _openApiToStubConverter.ConvertToStubAsync(server, line, tenant);
         if (doNotCreateStub)
         {
             return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};

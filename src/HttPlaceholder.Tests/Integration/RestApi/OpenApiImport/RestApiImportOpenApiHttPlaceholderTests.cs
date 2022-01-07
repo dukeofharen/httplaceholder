@@ -35,8 +35,8 @@ public class RestApiImportOpenApiHttPlaceholderTests : RestApiIntegrationTestBas
             Method = HttpMethod.Post,
             Content = new StringContent(content, Encoding.UTF8, Constants.TextMime)
         };
-        var curlResponse = await Client.SendAsync(apiRequest);
-        curlResponse.EnsureSuccessStatusCode();
+        var response = await Client.SendAsync(apiRequest);
+        response.EnsureSuccessStatusCode();
 
         // Get and check the stubs.
         var stubs = StubSource.StubModels.ToArray();

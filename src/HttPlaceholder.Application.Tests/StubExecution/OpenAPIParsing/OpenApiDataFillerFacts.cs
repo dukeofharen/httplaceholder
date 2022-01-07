@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using HttPlaceholder.Application.StubExecution.Models.HAR;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 using HttPlaceholder.Domain;
@@ -13,6 +12,47 @@ namespace HttPlaceholder.Application.Tests.StubExecution.OpenAPIParsing;
 public class OpenApiDataFillerFacts
 {
     private readonly AutoMocker _mocker = new();
+
+    [TestMethod]
+    public void BuildServerUrl_NoVariablesSet_ShouldReturnUrlDirectly()
+    {
+        // Arrange
+        var filler = _mocker.CreateInstance<OpenApiDataFiller>();
+        var server = new OpenApiServer
+        {
+            Url = "http://localhost", Variables = new Dictionary<string, OpenApiServerVariable>()
+        };
+
+        // Act
+        var result = filler.BuildServerUrl(server);
+
+        // Assert
+        Assert.AreEqual(server.Url, result);
+    }
+
+    [TestMethod]
+    public void BuildServerUrl_VariablesSet_ShouldParseAndReturnUrl()
+    {
+        // Arrange
+        var filler = _mocker.CreateInstance<OpenApiDataFiller>();
+        var server = new OpenApiServer
+        {
+            Url = "{scheme}://localhost/api/{apiVersion}", Variables = new Dictionary<string, OpenApiServerVariable>
+            {
+                {"scheme", new OpenApiServerVariable
+                {
+                    Default = "https"
+                }},
+                {"apiVersion", new OpenApiServerVariable{Default = "v3"}}
+            }
+        };
+
+        // Act
+        var result = filler.BuildServerUrl(server);
+
+        // Assert
+        Assert.AreEqual("https://localhost/api/v3", result);
+    }
 
     [TestMethod]
     public void BuildHttpStatusCode_StatusCodeRegexMatches_ShouldReturnStatusCode()

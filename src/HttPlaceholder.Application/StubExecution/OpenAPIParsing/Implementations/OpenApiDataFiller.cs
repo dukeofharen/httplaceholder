@@ -12,13 +12,27 @@ namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementation
 /// <inheritdoc />
 internal class OpenApiDataFiller : IOpenApiDataFiller
 {
-    private static readonly Regex _statusCodeRegex = new Regex("^[1-5]{1}[0-9]{2}$", RegexOptions.Compiled);
+    private static readonly Regex _statusCodeRegex = new("^[1-5]{1}[0-9]{2}$", RegexOptions.Compiled);
 
     private readonly IOpenApiFakeDataGenerator _openApiFakeDataGenerator;
 
     public OpenApiDataFiller(IOpenApiFakeDataGenerator openApiFakeDataGenerator)
     {
         _openApiFakeDataGenerator = openApiFakeDataGenerator;
+    }
+
+    /// <inheritdoc />
+    public string BuildServerUrl(OpenApiServer server)
+    {
+        if (server.Variables?.Any() == false)
+        {
+            return server.Url;
+        }
+
+        return server.Variables
+            .Aggregate(
+                server.Url,
+                (current, variable) => current.Replace($"{{{variable.Key}}}", variable.Value.Default));
     }
 
     /// <inheritdoc />

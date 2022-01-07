@@ -39,7 +39,12 @@ public class OpenApiToStubConverterFacts
             ResponseKey = "200"
         };
         const string serverUrl = "http://localhost";
+        var server = new OpenApiServer {Url = serverUrl};
         const string tenant = "tenant1";
+
+        openApiDataFillerMock
+            .Setup(m => m.BuildServerUrl(server))
+            .Returns(serverUrl);
 
         const string requestBody = "request body";
         openApiDataFillerMock
@@ -86,7 +91,7 @@ public class OpenApiToStubConverterFacts
             .ReturnsAsync(stubResponse);
 
         // Act
-        var result = await converter.ConvertToStubAsync(serverUrl, line, tenant);
+        var result = await converter.ConvertToStubAsync(server, line, tenant);
 
         // Assert
         Assert.IsNotNull(result);
