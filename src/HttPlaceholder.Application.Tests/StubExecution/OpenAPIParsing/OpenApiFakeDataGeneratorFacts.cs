@@ -6,6 +6,7 @@ using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.OpenAPIParsing;
@@ -340,5 +341,248 @@ public class OpenApiFakeDataGeneratorFacts
         Assert.AreEqual(@"{
   ""key"": ""val""
 }", result);
+    }
+
+    [DataTestMethod]
+    [DataRow(AnyType.Array)]
+    [DataRow(AnyType.Object)]
+    [DataRow(AnyType.Null)]
+    [DataRow(null)]
+    public void ExtractExampleFromOpenApiAny_UnsupportedTypes(AnyType anyType)
+    {
+        // Arrange
+        var any = new Mock<IOpenApiAny>();
+        any
+            .Setup(m => m.AnyType)
+            .Returns(anyType);
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractExampleFromOpenApiAny(any.Object);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [DataTestMethod]
+    public void ExtractExampleFromOpenApiAny_Primitive()
+    {
+        // Arrange
+        var any = new OpenApiString("test1");
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractExampleFromOpenApiAny(any);
+
+        // Assert
+        Assert.AreEqual("test1", result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_Binary()
+    {
+        // Arrange
+        var any = new OpenApiBinary(new byte[] {1, 2, 3});
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Binary);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_Byte()
+    {
+        // Arrange
+        var any = new OpenApiByte(new byte[] {1, 2, 3});
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Byte);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_Boolean()
+    {
+        // Arrange
+        var any = new OpenApiBoolean(true);
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Boolean);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_Integer()
+    {
+        // Arrange
+        var any = new OpenApiInteger(123);
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Integer);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_Long()
+    {
+        // Arrange
+        var any = new OpenApiLong(123);
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Long);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_Float()
+    {
+        // Arrange
+        var any = new OpenApiFloat(3_000.5F);
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Float);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_Double()
+    {
+        // Arrange
+        var any = new OpenApiDouble(1.23);
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Double);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_String()
+    {
+        // Arrange
+        var any = new OpenApiString("test1");
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.String);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_Date()
+    {
+        // Arrange
+        var any = new OpenApiDate(DateTime.Today);
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Date);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_DateTime()
+    {
+        // Arrange
+        var any = new OpenApiDateTime(DateTime.Now);
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.DateTime);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_Password()
+    {
+        // Arrange
+        var any = new OpenApiPassword("password");
+
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(any, PrimitiveType.Password);
+
+        // Assert
+        Assert.AreEqual(any.Value, result);
+    }
+
+    [TestMethod]
+    public void ExtractOpenApiPrimitiveValue_Null()
+    {
+        // Act
+        var result = OpenApiFakeDataGenerator.ExtractOpenApiPrimitiveValue(null, null);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void GetExampleForHeader_SingleExampleNotSet_MultipleExamplesSet_ShouldReturnExample()
+    {
+        // Arrange
+        var input = new OpenApiHeader
+        {
+            Example = null,
+            Examples = new Dictionary<string, OpenApiExample>
+            {
+                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+            }
+        };
+
+        // Act
+        var result = _generator.GetExampleForHeader(input);
+
+        // Assert
+        Assert.AreEqual(123, result);
+    }
+
+    [TestMethod]
+    public void GetExampleForHeader_SingleExampleSet_ShouldReturnExample()
+    {
+        // Arrange
+        var input = new OpenApiHeader
+        {
+            Example = new OpenApiInteger(456),
+            Examples = new Dictionary<string, OpenApiExample>
+            {
+                {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
+            }
+        };
+
+        // Act
+        var result = _generator.GetExampleForHeader(input);
+
+        // Assert
+        Assert.AreEqual(456, result);
+    }
+
+    [TestMethod]
+    public void GetExampleForHeader_NoExampleFound_ShouldReturnNull()
+    {
+        // Arrange
+        var input = new OpenApiHeader
+        {
+            Example = null,
+            Examples = null
+        };
+
+        // Act
+        var result = _generator.GetExampleForHeader(input);
+
+        // Assert
+        Assert.IsNull(result);
     }
 }

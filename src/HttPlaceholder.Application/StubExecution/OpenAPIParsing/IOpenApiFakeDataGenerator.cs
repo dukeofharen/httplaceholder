@@ -27,4 +27,11 @@ public interface IOpenApiFakeDataGenerator
     /// <param name="mediaType">The OpenAPI media type.</param>
     /// <returns>The response example as JSON. null if no example was found</returns>
     string GetResponseJsonExample(OpenApiMediaType mediaType);
+
+    /// <summary>
+    /// Used to receive an OpenAPI header example and generate an example value for it for use in stubs.
+    /// </summary>
+    /// <param name="header">The header to get an example for.</param>
+    /// <returns>The found example. null if no example was found.</returns>
+    object GetExampleForHeader(OpenApiHeader header);
 }

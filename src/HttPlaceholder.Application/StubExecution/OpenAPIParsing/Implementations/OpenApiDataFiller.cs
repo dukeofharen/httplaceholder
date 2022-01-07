@@ -51,9 +51,14 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
     /// <inheritdoc />
     public IDictionary<string, string> BuildResponseHeaders(OpenApiResponse response)
     {
+        string GetHeaderValue(KeyValuePair<string, OpenApiHeader> h)
+        {
+            var example = _openApiFakeDataGenerator.GetExampleForHeader(h.Value);
+            return example?.ToString() ?? _openApiFakeDataGenerator.GetRandomStringValue(h.Value.Schema);
+        }
+
         var result = response.Headers?.Any() == true
-            ? response.Headers.ToDictionary(h => h.Key,
-                h => _openApiFakeDataGenerator.GetRandomStringValue(h.Value.Schema))
+            ? response.Headers.ToDictionary(h => h.Key, GetHeaderValue)
             : new Dictionary<string, string>();
 
         var contentType = response.Content.FirstOrDefault().Key;

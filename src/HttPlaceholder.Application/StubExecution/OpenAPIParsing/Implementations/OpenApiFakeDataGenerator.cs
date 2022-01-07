@@ -31,21 +31,23 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     /// <inheritdoc />
     public string GetResponseJsonExample(OpenApiMediaType mediaType)
     {
-        var example = ExtractExample(mediaType);
+        var example = mediaType.Example ?? mediaType.Examples?.Values.FirstOrDefault()?.Value;
         if (example == null)
         {
             return null;
         }
 
-        using var stringWriter = new StringWriter();
-        example.Write(
-            new OpenApiJsonWriter(stringWriter,
-                new OpenApiWriterSettings {ReferenceInline = ReferenceInlineSetting.InlineAllReferences}),
-            OpenApiSpecVersion.OpenApi3_0);
-        var result = stringWriter.ToString();
+        var result = ExtractJsonFromOpenApiAny(example);
 
         // Sometimes, a JSON example is formatted as string. We recognize that and return it as a valid JSON object.
         return example is OpenApiString ? JToken.Parse(result).ToString() : result;
+    }
+
+    /// <inheritdoc />
+    public object GetExampleForHeader(OpenApiHeader header)
+    {
+        var example = header.Example ?? header.Examples?.Values.FirstOrDefault()?.Value;
+        return example == null ? null : ExtractExampleFromOpenApiAny(example);
     }
 
     internal static object GetRandomValue(OpenApiSchema schema)
@@ -134,6 +136,47 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
             _ => _faker.Random.Int(0, 10000)
         };
 
-    private static IOpenApiAny ExtractExample(OpenApiMediaType mediaType) =>
-        mediaType.Example ?? mediaType.Examples?.Values.FirstOrDefault()?.Value;
+    private static string ExtractJsonFromOpenApiAny(IOpenApiAny example)
+    {
+        using var stringWriter = new StringWriter();
+        example.Write(
+            new OpenApiJsonWriter(stringWriter,
+                new OpenApiWriterSettings {ReferenceInline = ReferenceInlineSetting.InlineAllReferences}),
+            OpenApiSpecVersion.OpenApi3_0);
+        var result = stringWriter.ToString();
+        return result;
+    }
+
+    internal static object ExtractExampleFromOpenApiAny(IOpenApiAny example)
+    {
+        switch (example.AnyType)
+        {
+            case AnyType.Primitive:
+                var primitiveType = example as IOpenApiPrimitive;
+                return ExtractOpenApiPrimitiveValue(example, primitiveType?.PrimitiveType);
+            case AnyType.Array:
+            case AnyType.Object:
+            case AnyType.Null:
+            default:
+                // Generation of other types is not supported in this method.
+                return null;
+        }
+    }
+
+    internal static object ExtractOpenApiPrimitiveValue(IOpenApiAny example, PrimitiveType? type) =>
+        type switch
+        {
+            PrimitiveType.Binary => ((OpenApiBinary)example).Value,
+            PrimitiveType.Byte => ((OpenApiByte)example).Value,
+            PrimitiveType.Boolean => ((OpenApiBoolean)example).Value,
+            PrimitiveType.Integer => ((OpenApiInteger)example).Value,
+            PrimitiveType.Long => ((OpenApiLong)example).Value,
+            PrimitiveType.Float => ((OpenApiFloat)example).Value,
+            PrimitiveType.Double => ((OpenApiDouble)example).Value,
+            PrimitiveType.String => ((OpenApiString)example).Value,
+            PrimitiveType.Date => ((OpenApiDate)example).Value,
+            PrimitiveType.DateTime => ((OpenApiDateTime)example).Value,
+            PrimitiveType.Password => ((OpenApiPassword)example).Value,
+            _ => null
+        };
 }
