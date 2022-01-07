@@ -31,7 +31,7 @@ public class OpenApiToStubConverter : IOpenApiToStubConverter
             Body = _openApiDataFiller.BuildRequestBody(line.Operation),
             Headers = _openApiDataFiller.BuildRequestHeaders(line.Operation),
             Method = line.OperationType.ToString().ToUpper(),
-            Url = $"{serverUrl}{_openApiDataFiller.BuildRelativeRequestPath(line.Operation, line.PathKey)}"
+            Url = $"{serverUrl}{_openApiDataFiller.BuildRelativeRequestPath(line.Operation, line.PathKey)}" // TODO also parse serverUrl
         };
         var response = new HttpResponseModel
         {

@@ -25,7 +25,7 @@ public class RestApiImportOpenApiHttPlaceholderTests : RestApiIntegrationTestBas
     public async Task RestApiIntegration_Import_ImportOpenApi_HappyFlow()
     {
         // Arrange
-        var content = await File.ReadAllTextAsync("Resources/httplaceholder.json");
+        var content = await File.ReadAllTextAsync("Resources/openapi/3.0/httplaceholder.json");
 
         // Post OpenAPI string to API.
         var url = $"{BaseAddress}ph-api/import/openapi?doNotCreateStub=false&tenant=tenant1";

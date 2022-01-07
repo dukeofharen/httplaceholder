@@ -24,7 +24,7 @@ public class RestApiImportOpenApiPetStoreTests : RestApiIntegrationTestBase
     public async Task RestApiIntegration_Import_ImportOpenApi_HappyFlow()
     {
         // Arrange
-        var content = await File.ReadAllTextAsync("Resources/petstore.yaml");
+        var content = await File.ReadAllTextAsync("Resources/openapi/3.0/petstore.yaml");
 
         // Post OpenAPI string to API.
         var url = $"{BaseAddress}ph-api/import/openapi?doNotCreateStub=false&tenant=tenant1";
