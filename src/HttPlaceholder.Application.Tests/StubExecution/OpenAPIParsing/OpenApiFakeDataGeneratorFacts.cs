@@ -148,6 +148,22 @@ public class OpenApiFakeDataGeneratorFacts
         Assert.IsFalse(string.IsNullOrWhiteSpace((string)result));
     }
 
+    [TestMethod]
+    public void GetRandomValue_AllOf()
+    {
+        // Arrange
+        var schema = new OpenApiSchema
+        {
+            AllOf = new List<OpenApiSchema> {new() {Type = "string", Format = string.Empty}}
+        };
+
+        // Act
+        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+
+        // Assert
+        Assert.IsFalse(string.IsNullOrWhiteSpace((string)result));
+    }
+
     [DataTestMethod]
     [DataRow("int32")]
     [DataRow("int64")]

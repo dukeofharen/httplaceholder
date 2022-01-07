@@ -66,14 +66,20 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
         var type = schema.Type;
         var format = schema.Format;
         var actualSchema = schema;
-        if (string.IsNullOrWhiteSpace(type) && !schema.Properties.Any() && schema.OneOf.Any())
+        if (!schema.Properties.Any() && schema.OneOf.Any())
         {
-            // In some cases, the type is null and the properties are not set, but there is a value in OneOf.
-            // So use this value instead.
             var oneOf = schema.OneOf.First();
             type = oneOf.Type;
             format = oneOf.Format;
             actualSchema = oneOf;
+        }
+
+        if (!schema.Properties.Any() && schema.AllOf.Any())
+        {
+            var allOf = schema.AllOf.First();
+            type = allOf.Type;
+            format = allOf.Format;
+            actualSchema = allOf;
         }
 
         return type switch
