@@ -180,6 +180,22 @@ public class OpenApiFakeDataGeneratorFacts
         Assert.IsInstanceOfType(result, typeof(long));
     }
 
+    [DataTestMethod]
+    [DataRow("float")]
+    [DataRow("double")]
+    [DataRow(null)]
+    public void GetRandomValue_Number(string format)
+    {
+        // Arrange
+        var schema = new OpenApiSchema {Type = "number", Format = format};
+
+        // Act
+        var result = OpenApiFakeDataGenerator.GetRandomValue(schema);
+
+        // Assert
+        Assert.IsInstanceOfType(result, typeof(double));
+    }
+
     [TestMethod]
     public void GetRandomValue_Object()
     {

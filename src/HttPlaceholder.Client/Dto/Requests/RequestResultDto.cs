@@ -21,12 +21,12 @@ public class RequestResultDto
     /// <summary>
     /// Gets or sets the stub execution results.
     /// </summary>
-    public IList<StubExecutionResultDto> StubExecutionResults { get; set; } = new List<StubExecutionResultDto>();
+    public IList<StubExecutionResultDto> StubExecutionResults { get; } = new List<StubExecutionResultDto>();
 
     /// <summary>
     /// Gets or sets the stub response writer results.
     /// </summary>
-    public IList<StubResponseWriterResultDto> StubResponseWriterResults { get; set; } =
+    public IList<StubResponseWriterResultDto> StubResponseWriterResults { get; } =
         new List<StubResponseWriterResultDto>();
 
     /// <summary>

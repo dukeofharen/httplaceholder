@@ -21,12 +21,12 @@ public class RequestResultModel
     /// <summary>
     /// Gets or sets the stub execution results.
     /// </summary>
-    public IList<StubExecutionResultModel> StubExecutionResults { get; set; } = new List<StubExecutionResultModel>();
+    public IList<StubExecutionResultModel> StubExecutionResults { get; } = new List<StubExecutionResultModel>();
 
     /// <summary>
     /// Gets or sets the stub response writer results.
     /// </summary>
-    public IList<StubResponseWriterResultModel> StubResponseWriterResults { get; set; } = new List<StubResponseWriterResultModel>();
+    public IList<StubResponseWriterResultModel> StubResponseWriterResults { get; } = new List<StubResponseWriterResultModel>();
 
     /// <summary>
     /// Gets or sets the executing stub identifier.

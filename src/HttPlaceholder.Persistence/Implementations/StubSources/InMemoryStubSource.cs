@@ -42,7 +42,6 @@ internal class InMemoryStubSource : IWritableStubSource
 
     public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
     {
-        // This method is not optimized right now.
         var requests = await GetRequestResultsAsync();
         return requests.Select(r => new RequestOverviewModel
         {

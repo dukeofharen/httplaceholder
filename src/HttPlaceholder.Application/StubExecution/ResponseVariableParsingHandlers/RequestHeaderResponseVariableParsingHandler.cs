@@ -28,11 +28,6 @@ public class RequestHeaderResponseVariableParsingHandler : IResponseVariablePars
         var headers = _httpContextService.GetHeaders();
         foreach (var match in matches)
         {
-            if (match.Groups.Count != 3)
-            {
-                continue;
-            }
-
             var headerName = match.Groups[2].Value;
             var replaceValue = headers.CaseInsensitiveSearch(headerName);
 

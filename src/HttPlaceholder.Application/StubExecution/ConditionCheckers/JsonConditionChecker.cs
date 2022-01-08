@@ -53,7 +53,7 @@ public class JsonConditionChecker : IConditionChecker
 
     public int Priority => 1;
 
-    private bool CheckSubmittedJson(object input, JToken jToken, List<string> logResults)
+    internal bool CheckSubmittedJson(object input, JToken jToken, List<string> logResults)
     {
         var jtType = jToken.Type;
         if (
@@ -206,7 +206,7 @@ public class JsonConditionChecker : IConditionChecker
     /// By calling this method, we are sure that the data is always in the correct format when running this condition checker.
     /// </summary>
     /// <returns>The converted JSON conditions.</returns>
-    private static object ConvertJsonConditions(object conditions)
+    internal static object ConvertJsonConditions(object conditions)
     {
         switch (conditions)
         {

@@ -1,0 +1,38 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;
+  &lt;Assembly Path="/home/duco/.nuget/packages/microsoft.openapi/1.2.3/lib/netstandard2.0/Microsoft.OpenApi.dll" /&gt;
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=HttPlaceholder_002EApplication_003B_002A_003BApplicationModule_003B_002A/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=HttPlaceholder_002EApplication_003B_002A_003BHttPlaceholder_002EApplication_002EInfrastructure_002E_002A_003B_002A/@EntryIndexedValue">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=HttPlaceholder_002EApplication_003B_002A_003BHttPlaceholder_002EApplication_002EStubExecution_002EModels_002E_002A_003B_002A/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=HttPlaceholder_002EDomain_003B_002A_003B_002A_003B_002A/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=HttPlaceholder_002E_002A_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=HttPlaceholder_002ETests_003B_002A_003B_002A_003B_002A/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/Filtering/ExcludeCoverageFilters/=HttPlaceholder_002ETestUtilities_003B_002A_003B_002A_003B_002A/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/Highlighting/HighlightingSourceSnapshotLocation/@EntryValue">/home/duco/.cache/JetBrains/Rider2021.3/resharper-host/temp/Rider/vAny/CoverageData/_HttPlaceholder.-1110372707/Snapshot/snapshot.utdcvr</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a5bc2ea4_002Decb0_002D403c_002D906f_002D7f0404876ab6/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;Project Location="/home/duco/Code/httplaceholder/src" Presentation="&amp;lt;Tests&amp;gt;" /&gt;
+&lt;/SessionState&gt;</s:String>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Src_002FInfrastructure_002FHttPlaceholder_002EPersistence_002FDb_002FResources_002FMysqlResources/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Src_002FInfrastructure_002FHttPlaceholder_002EPersistence_002FDb_002FResources_002FSqliteResources/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Src_002FInfrastructure_002FHttPlaceholder_002EPersistence_002FDb_002FResources_002FSqlServerResources/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Src_002FPresentation_002FHttPlaceholder_002FResources_002FManPage/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Src_002FPresentation_002FHttPlaceholder_002FResources_002FStaticResources/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Tests_002FHttPlaceholder_002EPersistence_002ETests_002FImplementations_002FStubSources_002FTestResources/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Mediat/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

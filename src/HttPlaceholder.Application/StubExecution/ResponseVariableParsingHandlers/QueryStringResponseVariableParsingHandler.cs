@@ -27,11 +27,6 @@ public class QueryStringResponseVariableParsingHandler : IResponseVariableParsin
         var queryDict = _httpContextService.GetQueryStringDictionary();
         foreach (var match in matches)
         {
-            if (match.Groups.Count != 3)
-            {
-                continue;
-            }
-
             var queryStringName = match.Groups[2].Value;
             queryDict.TryGetValue(queryStringName, out var replaceValue);
 

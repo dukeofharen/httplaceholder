@@ -16,6 +16,32 @@ public class CurlToHttpRequestMapperFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
+    public void MapCurlCommandsToHttpRequest_CommandIsEmpty_ShouldReturnEmptyResult()
+    {
+        // Arrange
+        var mapper = _mocker.CreateInstance<CurlToHttpRequestMapper>();
+
+        // Act
+        var result = mapper.MapCurlCommandsToHttpRequest(string.Empty);
+
+        // Assert
+        Assert.IsFalse(result.Any());
+    }
+
+    [TestMethod]
+    public void MapCurlCommandsToHttpRequest_CommandIsNotCurl_ShouldReturnEmptyResult()
+    {
+        // Arrange
+        var mapper = _mocker.CreateInstance<CurlToHttpRequestMapper>();
+
+        // Act
+        var result = mapper.MapCurlCommandsToHttpRequest("not a curl command");
+
+        // Assert
+        Assert.IsFalse(result.Any());
+    }
+
+    [TestMethod]
     public void MapCurlCommandsToHttpRequest_FirefoxOnUbuntu_Scenario1()
     {
         // Arrange

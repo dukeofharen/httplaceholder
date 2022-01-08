@@ -121,6 +121,7 @@
     <value># Simple GET situations.
 - id: situation-01
   tenant: 01-get
+  enabled: true
   conditions:
     method: GET
     url:
@@ -139,6 +140,7 @@
 
 - id: situation-02
   tenant: 01-get
+  enabled: false
   conditions:
     method: GET
     url:

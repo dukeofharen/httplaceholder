@@ -5,6 +5,8 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.AutoMock;
+using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
@@ -42,23 +44,20 @@ public class JsonConditionCheckerFacts
     }
 ]";
 
-    private readonly Mock<IHttpContextService> _mockHttpContextService = new();
-    private JsonConditionChecker _checker;
-
-    [TestInitialize]
-    public void Initialize() => _checker = new JsonConditionChecker(_mockHttpContextService.Object);
+    private readonly AutoMocker _mocker = new();
 
     [TestCleanup]
-    public void Cleanup() => _mockHttpContextService.VerifyAll();
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void Validate_JsonConditionsNotSet_ShouldReturnNotExecuted()
     {
         // Arrange
+        var checker = _mocker.CreateInstance<JsonConditionChecker>();
         var conditions = new StubConditionsModel {Json = null};
 
         // Act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -68,15 +67,17 @@ public class JsonConditionCheckerFacts
     public void Validate_ConditionsObject_ShouldReturnValid()
     {
         // Arrange
+        var checker = _mocker.CreateInstance<JsonConditionChecker>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
         var jsonConditions = CreateObjectStubConditions();
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetBody())
             .Returns(PostedObjectJson);
 
         // Act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -87,17 +88,20 @@ public class JsonConditionCheckerFacts
     public void Validate_ConditionsObject_JsonIsCorrupt_ShouldReturnInvalid()
     {
         // Arrange
+        var checker = _mocker.CreateInstance<JsonConditionChecker>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+
         var jsonConditions = CreateObjectStubConditions();
         ((IDictionary<object, object>)jsonConditions["subObject"])["intValue"] = "4";
 
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetBody())
             .Returns("JSON IS CORRUPT!!!");
 
         // Act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -108,17 +112,20 @@ public class JsonConditionCheckerFacts
     public void Validate_ConditionsObject_JsonIsIncorrect_ShouldReturnInvalid()
     {
         // Arrange
+        var checker = _mocker.CreateInstance<JsonConditionChecker>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+
         var jsonConditions = CreateObjectStubConditions();
         ((IDictionary<object, object>)jsonConditions["subObject"])["intValue"] = "4";
 
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetBody())
             .Returns(PostedObjectJson);
 
         // Act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -128,15 +135,18 @@ public class JsonConditionCheckerFacts
     public void Validate_ConditionsArray_ShouldReturnValid()
     {
         // Arrange
+        var checker = _mocker.CreateInstance<JsonConditionChecker>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+
         var jsonConditions = CreateArrayStubConditions();
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetBody())
             .Returns(PostedArrayJson);
 
         // Act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -147,20 +157,134 @@ public class JsonConditionCheckerFacts
     public void Validate_ConditionsArray_JsonIsIncorrect_ShouldReturnInvalid()
     {
         // Arrange
+        var checker = _mocker.CreateInstance<JsonConditionChecker>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+
         var jsonConditions = CreateArrayStubConditions();
         jsonConditions[1] = "4";
 
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetBody())
             .Returns(PostedArrayJson);
 
         // Act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
+
+    [TestMethod]
+    public void ConvertJsonConditions_InputIsNull_ShouldReturnNull()
+    {
+        // Act
+        var result = JsonConditionChecker.ConvertJsonConditions(null);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void ConvertJsonConditions_InputIsDictionary_ShouldReturnInputAsIs()
+    {
+        // Arrange
+        var input = new Dictionary<object, object>();
+
+        // Act
+        var result = JsonConditionChecker.ConvertJsonConditions(input);
+
+        // Assert
+        Assert.AreEqual(input, result);
+    }
+
+    [TestMethod]
+    public void ConvertJsonConditions_InputIsList_ShouldReturnInputAsIs()
+    {
+        // Arrange
+        var input = new List<object>();
+
+        // Act
+        var result = JsonConditionChecker.ConvertJsonConditions(input);
+
+        // Assert
+        Assert.AreEqual(input, result);
+    }
+
+    [TestMethod]
+    public void ConvertJsonConditions_InputIsString_ShouldReturnInputAsIs()
+    {
+        // Arrange
+        var input = "input";
+
+        // Act
+        var result = JsonConditionChecker.ConvertJsonConditions(input);
+
+        // Assert
+        Assert.AreEqual(input, result);
+    }
+
+    [TestMethod]
+    public void ConvertJsonConditions_InputIsJArray_ShouldConvertCorrectly()
+    {
+        // Arrange
+        var jArray = JArray.Parse("[1, 2, 3]");
+
+        // Act
+        var result = JsonConditionChecker.ConvertJsonConditions(jArray);
+
+        // Assert
+        Assert.AreNotEqual(jArray, result);
+
+        var list = (List<object>)result;
+        Assert.AreEqual(3, list.Count);
+        Assert.AreEqual("1", list[0]);
+    }
+
+    [TestMethod]
+    public void ConvertJsonConditions_InputIsJObject_ShouldConvertCorrectly()
+    {
+        // Arrange
+        var jObject = JObject.Parse(@"{""key1"": ""val1"", ""key2"": ""val2""}");
+
+        // Act
+        var result = JsonConditionChecker.ConvertJsonConditions(jObject);
+
+        // Assert
+        Assert.AreNotEqual(jObject, result);
+
+        var dict = (Dictionary<object, object>)result;
+        Assert.AreEqual(2, dict.Count);
+        Assert.AreEqual("val1", dict["key1"]);
+    }
+
+    [TestMethod]
+    public void ConvertJsonConditions_InputIsSomethingEls_ShouldConvertToString()
+    {
+        // Arrange
+        var input = 123;
+
+        // Act
+        var result = JsonConditionChecker.ConvertJsonConditions(input);
+
+        // Assert
+        Assert.AreNotEqual(input, result);
+        Assert.AreEqual("123", result);
+    }
+
+    [TestMethod]
+    public void CheckSubmittedJson_InputNotSupported_ShouldReturnFalse()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonConditionChecker>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+
+        // Act
+        var result = checker.CheckSubmittedJson(123, JToken.Parse("{}"), new List<string>());
+
+        // Assert
+        Assert.IsFalse(result);
     }
 
     private static IDictionary<object, object> CreateObjectStubConditions() =>
