@@ -49,11 +49,6 @@ public class FormPostResponseVariableParsingHandler : IResponseVariableParsingHa
 
         foreach (var match in enumerable)
         {
-            if (match.Groups.Count != 3)
-            {
-                continue;
-            }
-
             var formValueName = match.Groups[2].Value;
             formDict.TryGetValue(formValueName, out var replaceValue);
 

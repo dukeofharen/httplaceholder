@@ -20,10 +20,7 @@ namespace HttPlaceholder.Middleware;
 
 public class StubHandlingMiddleware
 {
-    private static readonly string[] _segmentsToIgnore =
-    {
-        "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub"
-    };
+    private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub"};
 
     private readonly RequestDelegate _next;
     private readonly IClientDataResolver _clientDataResolver;
@@ -129,7 +126,7 @@ public class StubHandlingMiddleware
         var enableRequestLogging = _settings?.Storage?.EnableRequestLogging ?? false;
         if (enableRequestLogging)
         {
-            _logger.LogInformation(jsonLoggingResult.ToString());
+            _logger.LogInformation($"Request: {jsonLoggingResult}");
         }
 
         await _stubContext.AddRequestResultAsync(loggingResult);

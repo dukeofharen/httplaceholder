@@ -28,20 +28,20 @@ public class CurlStubGeneratorFacts
         var generator = _mocker.CreateInstance<CurlStubGenerator>();
 
         const string input = "curl commands";
-        const string expectedStubId1 = "generated-93a77714a6d316c469acb4227430615e";
-        const string expectedStubId2 = "generated-2e751b58fc0786b841770e7e0b6cc783";
+        const string expectedStubId1 = "generated-1614cb377bcd24439621eadcb4d8a18f";
+        const string expectedStubId2 = "generated-3fac60c4739c66a7ec8c1dc681fd5024";
 
-        var requests = new[] { new HttpRequestModel(), new HttpRequestModel() };
+        var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
         curlToHttpRequestMapperMock
             .Setup(m => m.MapCurlCommandsToHttpRequest(input))
             .Returns(requests);
 
-        var conditions1 = new StubConditionsModel { Host = "host1"};
+        var conditions1 = new StubConditionsModel {Host = "host1"};
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[0]))
             .ReturnsAsync(conditions1);
 
-        var conditions2 = new StubConditionsModel { Host = "host2"};
+        var conditions2 = new StubConditionsModel {Host = "host2"};
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[1]))
             .ReturnsAsync(conditions2);
@@ -57,7 +57,7 @@ public class CurlStubGeneratorFacts
             .ReturnsAsync(fullStub2);
 
         // Act
-        var result = (await generator.GenerateCurlStubsAsync(input, false)).ToArray();
+        var result = (await generator.GenerateCurlStubsAsync(input, false, string.Empty)).ToArray();
 
         // Assert
         Assert.AreEqual(fullStub1, result[0]);
@@ -76,32 +76,43 @@ public class CurlStubGeneratorFacts
         var generator = _mocker.CreateInstance<CurlStubGenerator>();
 
         const string input = "curl commands";
-        const string expectedStubId1 = "generated-93a77714a6d316c469acb4227430615e";
-        const string expectedStubId2 = "generated-2e751b58fc0786b841770e7e0b6cc783";
+        const string tenant = "tenant1";
+        const string expectedStubId1 = "generated-f8ce4ba111b3c6f60616c4f7ca5cbdb5";
+        const string expectedStubId2 = "generated-732b63a987d7856932a66471521d8ce8";
 
-        var requests = new[] { new HttpRequestModel(), new HttpRequestModel() };
+        var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
         curlToHttpRequestMapperMock
             .Setup(m => m.MapCurlCommandsToHttpRequest(input))
             .Returns(requests);
 
-        var conditions1 = new StubConditionsModel { Host = "host1"};
+        var conditions1 = new StubConditionsModel
+        {
+            Host = "host1", Method = "GET", Url = new StubUrlConditionModel {Path = "/path1"}
+        };
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[0]))
             .ReturnsAsync(conditions1);
 
-        var conditions2 = new StubConditionsModel { Host = "host2"};
+        var conditions2 = new StubConditionsModel
+        {
+            Host = "host2", Method = "POST", Url = new StubUrlConditionModel {Path = "/path2"}
+        };
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(requests[1]))
             .ReturnsAsync(conditions2);
 
         // Act
-        var result = (await generator.GenerateCurlStubsAsync(input, true)).ToArray();
+        var result = (await generator.GenerateCurlStubsAsync(input, true, tenant)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
         Assert.IsTrue(result.All(s => s.Metadata != null));
         Assert.IsTrue(result.All(s => s.Stub.Response.Text == "OK!"));
+        Assert.IsTrue(result.All(s => s.Stub.Tenant == tenant));
+
         Assert.AreEqual(expectedStubId1, result[0].Stub.Id);
+        Assert.AreEqual("GET request to path /path1", result[0].Stub.Description);
+        Assert.AreEqual("POST request to path /path2", result[1].Stub.Description);
         Assert.AreEqual(expectedStubId2, result[1].Stub.Id);
         Assert.AreEqual(conditions1, result[0].Stub.Conditions);
         Assert.AreEqual(conditions2, result[1].Stub.Conditions);

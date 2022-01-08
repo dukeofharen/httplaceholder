@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
@@ -17,6 +18,11 @@ public class CreateHarStubCommandHandler : IRequestHandler<CreateHarStubCommand,
     }
 
     public async Task<IEnumerable<FullStubModel>> Handle(CreateHarStubCommand request,
-        CancellationToken cancellationToken) =>
-        await _harStubGenerator.GenerateHarStubsAsync(request.Har, request.DoNotCreateStub);
+        CancellationToken cancellationToken)
+    {
+        var tenant = string.IsNullOrWhiteSpace(request.Tenant)
+            ? $"har-import-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}"
+            : request.Tenant;
+        return await _harStubGenerator.GenerateHarStubsAsync(request.Har, request.DoNotCreateStub, tenant);
+    }
 }

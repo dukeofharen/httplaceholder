@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
@@ -28,22 +27,25 @@ internal class CurlStubGenerator : ICurlStubGenerator
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateCurlStubsAsync(string input, bool doNotCreateStub)
+    public async Task<IEnumerable<FullStubModel>> GenerateCurlStubsAsync(string input, bool doNotCreateStub,
+        string tenant)
     {
         _logger.LogDebug($"Creating stubs based on cURL command {input}.");
         var requests = _curlToHttpRequestMapper.MapCurlCommandsToHttpRequest(input);
         var results = new List<FullStubModel>();
         foreach (var request in requests)
         {
+            var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request);
             var stub = new StubModel
             {
-                Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request),
-                Response = { Text = "OK!" }
+                Tenant = tenant,
+                Description = $"{conditions.Method} request to path {conditions.Url?.Path}",
+                Conditions = conditions,
+                Response = {Text = "OK!"}
             };
 
             // Generate an ID based on the created stub.
-            var contents = JsonConvert.SerializeObject(stub);
-            stub.Id = "generated-" + HashingUtilities.GetMd5String(contents);
+            stub.EnsureStubId();
             results.Add(await CreateStub(doNotCreateStub, stub));
         }
 
@@ -54,7 +56,7 @@ internal class CurlStubGenerator : ICurlStubGenerator
     {
         if (doNotCreateStub)
         {
-            return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
+            return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
         }
 
         await _stubContext.DeleteStubAsync(stub.Id);

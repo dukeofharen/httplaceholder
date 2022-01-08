@@ -19,16 +19,17 @@ public class CreateCurlStubCommandHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public async Task Handle_HappyFlow()
+    public async Task Handle_HappyFlow_TenantSet()
     {
         // Arrange
         var curlStubGeneratorMock = _mocker.GetMock<ICurlStubGenerator>();
         var handler = _mocker.CreateInstance<CreateCurlStubCommandHandler>();
 
-        var request = new CreateCurlStubCommand("curl bladibla", true);
+        const string tenant = "tenant1";
+        var request = new CreateCurlStubCommand("curl bladibla", true, tenant);
         var expectedResult = new[] { new FullStubModel() };
         curlStubGeneratorMock
-            .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub))
+            .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, tenant))
             .ReturnsAsync(expectedResult);
 
         // Act
@@ -36,5 +37,29 @@ public class CreateCurlStubCommandHandlerFacts
 
         // Assert
         Assert.AreEqual(expectedResult, result);
+    }
+
+    [TestMethod]
+    public async Task Handle_HappyFlow_TenantNotSet()
+    {
+        // Arrange
+        var curlStubGeneratorMock = _mocker.GetMock<ICurlStubGenerator>();
+        var handler = _mocker.CreateInstance<CreateCurlStubCommandHandler>();
+
+        var request = new CreateCurlStubCommand("curl bladibla", true, null);
+        var expectedResult = new[] { new FullStubModel() };
+        string capturedTenant = null;
+        curlStubGeneratorMock
+            .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, It.IsAny<string>()))
+            .Callback<string, bool, string>((_, _, tenant) => capturedTenant = tenant)
+            .ReturnsAsync(expectedResult);
+
+        // Act
+        var result = await handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+        Assert.IsNotNull(capturedTenant);
+        Assert.IsTrue(capturedTenant.StartsWith("curl-import-"));
     }
 }

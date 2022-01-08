@@ -12,6 +12,11 @@ public class StatusCodeHandler : IResponseToStubResponseHandler
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel)
     {
+        if (response.StatusCode <= 0)
+        {
+            return Task.FromResult(false);
+        }
+
         stubResponseModel.StatusCode = response.StatusCode;
         return Task.FromResult(true);
     }

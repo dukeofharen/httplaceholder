@@ -28,5 +28,5 @@ public class ResponseModel
     /// <summary>
     /// Gets or sets the headers.
     /// </summary>
-    public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+    public IDictionary<string, string> Headers { get; } = new Dictionary<string, string>();
 }

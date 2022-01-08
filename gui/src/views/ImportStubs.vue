@@ -5,14 +5,19 @@
       <button
         v-for="tab of tabs"
         :key="tab"
-        class="btn me-2"
+        class="btn me-2 tab-button"
         :class="{
           'btn-outline-success': selectedTab !== tab,
           'btn-success': selectedTab === tab,
         }"
         @click="changeTab(tab)"
       >
-        {{ tabNames[tab] }}
+        <i
+          v-if="tabDetails[tab].icon"
+          class="bi"
+          :class="tabDetails[tab].icon"
+        />
+        {{ tabDetails[tab].title }}
       </button>
     </div>
     <div class="col-md-12 mt-3" v-if="selectedTab === tabs.uploadStubs">
@@ -24,6 +29,9 @@
     <div class="col-md-12 mt-3" v-if="selectedTab === tabs.importHar">
       <ImportHar />
     </div>
+    <div class="col-md-12 mt-3" v-if="selectedTab === tabs.importOpenApi">
+      <ImportOpenApi />
+    </div>
   </div>
 </template>
 
@@ -31,6 +39,7 @@
 import UploadStubs from "@/components/stub/UploadStubs";
 import ImportCurl from "@/components/stub/ImportCurl";
 import ImportHar from "@/components/stub/ImportHar";
+import ImportOpenApi from "@/components/stub/ImportOpenApi";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
@@ -38,17 +47,31 @@ const tabs = {
   uploadStubs: "uploadStubs",
   importCurl: "importCurl",
   importHar: "importHar",
+  importOpenApi: "importOpenApi",
 };
 
-const tabNames = {
-  uploadStubs: "Upload stubs",
-  importCurl: "Import cURL command(s)",
-  importHar: "Import HTTP archive (HAR)",
+const tabDetails = {
+  uploadStubs: {
+    title: "Upload stubs",
+    icon: "bi-arrow-up",
+  },
+  importCurl: {
+    title: "Import cURL command(s)",
+    icon: "bi-link",
+  },
+  importHar: {
+    title: "Import HTTP archive (HAR)",
+    icon: "bi-archive",
+  },
+  importOpenApi: {
+    title: "Import OpenAPI definition",
+    icon: "bi-cloud-upload",
+  },
 };
 
 export default {
   name: "ImportStubs",
-  components: { UploadStubs, ImportCurl, ImportHar },
+  components: { ImportOpenApi, UploadStubs, ImportCurl, ImportHar },
   setup() {
     const router = useRouter();
     const route = useRoute();
@@ -62,9 +85,13 @@ export default {
       await router.push({ name: "ImportStubs", query: { tab } });
     };
 
-    return { tabs, tabNames, selectedTab, changeTab };
+    return { tabs, tabDetails, selectedTab, changeTab };
   },
 };
 </script>
 
-<style scoped></style>
+<style>
+.tab-button img {
+  width: 20px;
+}
+</style>

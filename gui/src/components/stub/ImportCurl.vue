@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-2">
+  <div class="mb-2 col-md-6">
     Using this form, you can create stubs based on cURL commands. You can either
     use a cURL command you have lying around or you can copy/paste a cURL
     command from the developer console from your browser.
@@ -52,6 +52,14 @@
     <upload-button button-text="Upload file" @uploaded="onUploaded" />
   </div>
   <div class="mb-2" v-if="!stubsYaml">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Fill in a tenant to group the generated stubs... (if no tenant is provided, a tenant name will be generated)"
+      v-model="tenant"
+    />
+  </div>
+  <div class="mb-2" v-if="!stubsYaml">
     <textarea class="form-control" v-model="curlInput"></textarea>
   </div>
   <div v-if="!stubsYaml" class="mb-2">
@@ -101,6 +109,7 @@ export default {
     const curlInput = ref("");
     const stubsYaml = ref("");
     const howToOpen = ref(false);
+    const tenant = ref("");
 
     // Computed
     const importButtonEnabled = computed(() => !!curlInput.value);
@@ -111,6 +120,7 @@ export default {
         const result = await store.dispatch("importModule/importCurlCommands", {
           commands: curlInput.value,
           doNotCreateStub: true,
+          tenant: tenant.value,
         });
         if (!result.length) {
           toastr.error(resources.noCurlStubsFound);
@@ -133,6 +143,7 @@ export default {
         await store.dispatch("importModule/importCurlCommands", {
           commands: curlInput.value,
           doNotCreateStub: false,
+          tenant: tenant.value,
         });
         toastr.success(resources.stubsAddedSuccessfully);
         await router.push({ name: "Stubs" });
@@ -147,6 +158,7 @@ export default {
     const reset = () => {
       curlInput.value = "";
       stubsYaml.value = "";
+      tenant.value = "";
     };
     const insertExample = () => {
       curlInput.value = resources.exampleCurlInput;
@@ -186,6 +198,7 @@ export default {
       howToOpen,
       insertExample,
       onUploaded,
+      tenant,
     };
   },
 };

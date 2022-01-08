@@ -22,10 +22,10 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
     public async Task RestApiIntegration_Import_ImportCurl_HappyFlow()
     {
         // Arrange
-        var content = await File.ReadAllTextAsync("chrome_on_ubuntu_multiple_curls.txt");
+        var content = await File.ReadAllTextAsync("Resources/chrome_on_ubuntu_multiple_curls.txt");
 
         // Post cURL commands to API.
-        var url = $"{BaseAddress}ph-api/import/curl?doNotCreateStub=false";
+        var url = $"{BaseAddress}ph-api/import/curl?doNotCreateStub=false&tenant=tenant1";
         var apiRequest = new HttpRequestMessage
         {
             RequestUri = new Uri(url),
@@ -42,7 +42,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
         Assert.AreEqual(3, stubs.Length);
 
         var stub1 = stubs[0];
-        Assert.AreEqual("generated-9244dcb5e6fb8259f92bf9d89eeb5d4f", stub1.Id);
+        Assert.AreEqual("generated-e4794bda9f0b95c6aa9247606a85fe50", stub1.Id);
         Assert.AreEqual("GET", stub1.Conditions.Method);
         Assert.AreEqual("/_nuxt/fonts/fa-solid-900.3eb06c7.woff2", stub1.Conditions.Url.Path);
         var headers1 = stub1.Conditions.Headers;
@@ -51,7 +51,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
         Assert.AreEqual("deflate,\\ gzip,\\ br", headers1["Accept-Encoding"]);
 
         var stub2 = stubs[1];
-        Assert.AreEqual("generated-56f4d8c9af8353dec743938a9775bafd", stub2.Id);
+        Assert.AreEqual("generated-9d03812abe18fdc50318ab30989ce946", stub2.Id);
         Assert.AreEqual("GET", stub2.Conditions.Method);
         Assert.AreEqual("/_nuxt/css/4cda201.css", stub2.Conditions.Url.Path);
         var headers2 = stub2.Conditions.Headers;
@@ -62,7 +62,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
         Assert.AreEqual("deflate,\\ gzip,\\ br", headers2["Accept-Encoding"]);
 
         var stub3 = stubs[2];
-        Assert.AreEqual("generated-87c52adc29dc4ea337978afb2b7649c7", stub3.Id);
+        Assert.AreEqual("generated-dd585104a80d6ef390d8fc174748d5b4", stub3.Id);
         Assert.AreEqual("GET", stub3.Conditions.Method);
         Assert.AreEqual("/_nuxt/1d6c3a9.js", stub3.Conditions.Url.Path);
         var headers3 = stub3.Conditions.Headers;

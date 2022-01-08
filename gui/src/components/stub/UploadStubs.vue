@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-2">
+  <div class="mb-2 col-md-6">
     Press the button below to upload a YAML file with stubs.
   </div>
   <span>

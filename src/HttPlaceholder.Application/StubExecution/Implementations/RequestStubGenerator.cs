@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution.Models;
-using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -50,7 +50,7 @@ internal class RequestStubGenerator : IRequestStubGenerator
 
         // Generate an ID based on the created stub.
         var contents = JsonConvert.SerializeObject(stub);
-        stub.Id = "generated-" + HashingUtilities.GetMd5String(contents);
+        stub.EnsureStubId();
 
         FullStubModel result;
         if (doNotCreateStub)

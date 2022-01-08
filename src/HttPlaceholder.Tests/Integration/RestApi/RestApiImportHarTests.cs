@@ -20,13 +20,13 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
     public void Cleanup() => CleanupRestApiIntegrationTest();
 
     [TestMethod]
-    public async Task RestApiIntegration_Import_ImportHar_HappyFLow()
+    public async Task RestApiIntegration_Import_ImportHar_HappyFlow()
     {
         // Arrange
-        var content = await File.ReadAllTextAsync("har.txt");
+        var content = await File.ReadAllTextAsync("Resources/har.txt");
 
         // Post HAR to API.
-        var url = $"{BaseAddress}ph-api/import/har?doNotCreateStub=false";
+        var url = $"{BaseAddress}ph-api/import/har?doNotCreateStub=false&tenant=tenant1";
         var apiRequest = new HttpRequestMessage
         {
             RequestUri = new Uri(url),
@@ -43,7 +43,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.AreEqual(5, stubs.Length);
 
         var stub = stubs[0];
-        Assert.AreEqual("generated-f5bdb2a3076af2b344521522d73cecda", stub.Id);
+        Assert.AreEqual("generated-24f00eecf5439f6f305a168b184339d3", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
         Assert.AreEqual("/", stub.Conditions.Url.Path);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
@@ -57,7 +57,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.IsTrue(stub.Response.Html.Contains("<!DOCTYPE html>"));
 
         stub = stubs[1];
-        Assert.AreEqual("generated-f59773c5243d6958bb358c37f811bf99", stub.Id);
+        Assert.AreEqual("generated-09b1935bc83ba1afcfdfe613dcdcd2e3", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
         Assert.AreEqual("/static/style/style.css", stub.Conditions.Url.Path);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
@@ -71,7 +71,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.IsTrue(stub.Response.Text.Contains("@font-face"));
 
         stub = stubs[2];
-        Assert.AreEqual("generated-191eedb4196d6680ca6a4fd3aae24102", stub.Id);
+        Assert.AreEqual("generated-76cff71ff1aaa9532192f64cca2958b7", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
         Assert.AreEqual("/static/fonts/roboto-mono.woff2", stub.Conditions.Url.Path);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
@@ -85,7 +85,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.IsTrue(stub.Response.Base64.Contains("d09GMgABAAAAADAYAA4AAAAAV5wAAC"));
 
         stub = stubs[3];
-        Assert.AreEqual("generated-5b407a75c8c77b7c41a82e712ed053d0", stub.Id);
+        Assert.AreEqual("generated-4b3af4b16f93185600d5b8803e8fd7b0", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
         Assert.AreEqual("/static/favicon.png", stub.Conditions.Url.Path);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
@@ -99,7 +99,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.IsTrue(stub.Response.Base64.Contains("iVBORw0KGgoAAAANSUhEUgAAAQAAAAEACAIAA"));
 
         stub = stubs[4];
-        Assert.AreEqual("generated-32594f2b19f2644973f86b1b637d2bfa", stub.Id);
+        Assert.AreEqual("generated-a5c900b24f4dc4a28df93416597420e1", stub.Id);
         Assert.AreEqual("PUT", stub.Conditions.Method);
         Assert.AreEqual("/api/v1/admin/users/123", stub.Conditions.Url.Path);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);

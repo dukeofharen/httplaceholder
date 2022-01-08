@@ -7,7 +7,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs.Scenarios;
 public class ScenarioStateTests : StubIntegrationTestBase
 {
     [TestInitialize]
-    public void Initialize() => InitializeStubIntegrationTest("scenarios.yml");
+    public void Initialize() => InitializeStubIntegrationTest("Resources/scenarios.yml");
 
     [TestCleanup]
     public void Cleanup() => CleanupIntegrationTest();

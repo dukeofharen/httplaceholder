@@ -8,7 +8,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs;
 public class StubEnabledDisabledIntegrationTests : StubIntegrationTestBase
 {
     [TestInitialize]
-    public void Initialize() => InitializeStubIntegrationTest("integration.yml");
+    public void Initialize() => InitializeStubIntegrationTest("Resources/integration.yml");
 
     [TestCleanup]
     public void Cleanup() => CleanupIntegrationTest();

@@ -40,13 +40,13 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
         {
             var result = new List<HttpRequestModel>();
             HttpRequestModel request = null;
-            var parts = commands.Trim().Split(new[] { " ", "\r\n", "\n" }, StringSplitOptions.None);
-            if (parts.Length == 0)
+            if (string.IsNullOrWhiteSpace(commands))
             {
-                _logger.LogDebug("cURL ommand string is empty, so not extracting request.");
+                _logger.LogDebug("cURL command string is empty, so not extracting request.");
                 return result;
             }
 
+            var parts = commands.Trim().Split(new[] { " ", "\r\n", "\n" }, StringSplitOptions.None);
             if (!IsCurl(parts[0]))
             {
                 _logger.LogDebug("Command is not a cURL command, so not extracting request.");

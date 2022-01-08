@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
 
@@ -48,4 +49,6 @@ public interface IHttpContextService
     Task WriteAsync(byte[] body);
 
     Task WriteAsync(string body);
+
+    void SetUser(ClaimsPrincipal principal);
 }

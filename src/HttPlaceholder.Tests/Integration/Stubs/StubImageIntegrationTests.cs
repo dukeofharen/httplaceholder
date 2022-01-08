@@ -13,7 +13,7 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
     [TestInitialize]
     public void Initialize()
     {
-        InitializeStubIntegrationTest("integration.yml");
+        InitializeStubIntegrationTest("Resources/integration.yml");
         FileServiceMock
             .Setup(m => m.GetTempPath())
             .Returns(OperatingSystem.IsWindows() ? @"C:\Windows\Temp" : "/tmp");

@@ -111,6 +111,33 @@ public class AddStubsCommandHandlerFacts
     }
 
     [TestMethod]
+    public async Task Handle_StubExistsInReadOnlySource_ShouldThrowValidationException()
+    {
+        // Arrange
+        var handler = _mocker.CreateInstance<AddStubsCommandHandler>();
+        var stubModelValidatorMock = _mocker.GetMock<IStubModelValidator>();
+        var stubContextMock = _mocker.GetMock<IStubContext>();
+
+        var stub1 = new StubModel {Id = "stub1"};
+        var stub2 = new StubModel {Id = "stub2"};
+        var request = new AddStubsCommand(new[] {stub1, stub2});
+
+        stubModelValidatorMock
+            .Setup(m => m.ValidateStubModel(It.IsAny<StubModel>()))
+            .Returns(Array.Empty<string>());
+
+        stubContextMock
+            .Setup(m => m.GetStubsFromReadOnlySourcesAsync())
+            .ReturnsAsync(new[] {new FullStubModel {Stub = new StubModel {Id = stub2.Id.ToUpper()}}});
+
+        // Act
+        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => handler.Handle(request, CancellationToken.None));
+
+        // Assert
+        Assert.AreEqual("Validation failed:\nStub with ID already exists: STUB2", exception.Message);
+    }
+
+    [TestMethod]
     public async Task Handle_ShouldAddAndReturnStubsSuccessfully()
     {
         // Arrange

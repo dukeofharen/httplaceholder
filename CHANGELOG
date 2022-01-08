@@ -1,7 +1,13 @@
-[1.2.1]
+[1.3.0]
 - Small UI changes (https://github.com/dukeofharen/httplaceholder/pull/209)
     - Added upload buttons to the "Import cURL command(s)" and "Import HTTP archive (HAR)" screens.
     - Close the "How to" on the "Import cURL command(s)" and "Import HTTP archive (HAR)" screens when inserting the example.
+- Added functionality to create stubs based on Swagger/OpenAPI file (https://github.com/dukeofharen/httplaceholder/issues/87).
+    - Also, when adding stubs based on cURL commands or HTTP archive; automatically fill in a short stub description.
+    - The "Import OpenAPI", "Import cURL commands" and "Import HAR" screens now have an option to fill in a tenant for easy grouping of stubs.
+
+# BREAKING CHANGES
+-
 
 [1.2.0]
 - Added new RequestToStubConditions handler to generate JSON conditions based on a request (https://github.com/dukeofharen/httplaceholder/pull/205).

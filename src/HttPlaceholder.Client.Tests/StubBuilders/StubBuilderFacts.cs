@@ -123,7 +123,7 @@ public class StubBuilderFacts
     {
         // Act
         var stub = StubBuilder.Begin()
-            .WithConditions(StubConditionBuilder.Begin().Build())
+            .WithConditions(StubConditionBuilder.Begin())
             .Build();
 
         // Assert
@@ -148,7 +148,7 @@ public class StubBuilderFacts
     {
         // Act
         var stub = StubBuilder.Begin()
-            .WithResponse(StubResponseBuilder.Begin().Build())
+            .WithResponse(StubResponseBuilder.Begin())
             .Build();
 
         // Assert

@@ -12,7 +12,7 @@ namespace HttPlaceholder.Tests.Integration.Stubs;
 public class StubUrlConditionsIntegrationTests : StubIntegrationTestBase
 {
     [TestInitialize]
-    public void Initialize() => InitializeStubIntegrationTest("integration.yml");
+    public void Initialize() => InitializeStubIntegrationTest("Resources/integration.yml");
 
     [TestCleanup]
     public void Cleanup() => CleanupIntegrationTest();

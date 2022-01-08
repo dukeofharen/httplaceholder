@@ -4,199 +4,167 @@ using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
 [TestClass]
 public class QueryStringConditionCheckerFacts
 {
-    private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
-    private QueryStringConditionChecker _checker;
-
-    [TestInitialize]
-    public void Initialize() =>
-        _checker = new QueryStringConditionChecker(
-            _httpContextServiceMock.Object);
+    private readonly AutoMocker _mocker = new();
 
     [TestCleanup]
-    public void Cleanup() => _httpContextServiceMock.VerifyAll();
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void QueryStringConditionChecker_Validate_StubsFound_ButNoQueryStringConditions_ShouldReturnNotExecuted()
     {
-        // arrange
+        // Arrange
+        var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
+        var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Query = null}};
+
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+
+        // Assert
+        Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+    }
+
+    [TestMethod]
+    public void QueryStringConditionChecker_Validate_StubsFound_NoMatchingQueryStringKeys_ShouldReturnInvalid()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel
-            {
-                Query = null
-            }
+            Url = new StubUrlConditionModel {Query = new Dictionary<string, string> {{"q", "2"}, {"y", "3"}}}
         };
+        var query = new Dictionary<string, string> {{"x", "1"}, {"z", "2"}};
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        httpContextServiceMock
+            .Setup(m => m.GetQueryStringDictionary())
+            .Returns(query);
 
-        // assert
-        Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
     public void QueryStringConditionChecker_Validate_StubsFound_AllQueryStringsIncorrect_ShouldReturnInvalid()
     {
-        // arrange
+        // Arrange
+        var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel
-            {
-                Query = new Dictionary<string, string>
-                {
-                    {"q", "2"},
-                    {"y", "3"}
-                }
-            }
+            Url = new StubUrlConditionModel {Query = new Dictionary<string, string> {{"q", "2"}, {"y", "3"}}}
         };
-        var query = new Dictionary<string, string>
-        {
-            { "q", "1" },
-            { "y", "2" }
-        };
+        var query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}};
 
-        _httpContextServiceMock
+        httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
+        // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
     public void QueryStringConditionChecker_Validate_StubsFound_OneQueryStringValueMissing_ShouldReturnInvalid()
     {
-        // arrange
-        var query = new Dictionary<string, string>
-        {
-            { "q", "1" },
-            { "y", "2" }
-        };
+        // Arrange
+        var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}};
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel
-            {
-                Query = new Dictionary<string, string>
-                {
-                    {"q", "2"}
-                }
-            }
+            Url = new StubUrlConditionModel {Query = new Dictionary<string, string> {{"q", "2"}}}
         };
 
-        _httpContextServiceMock
+        httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
+        // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
     public void QueryStringConditionChecker_Validate_StubsFound_OnlyOneQueryStringCorrect_ShouldReturnInvalid()
     {
-        // arrange
-        var query = new Dictionary<string, string>
-        {
-            { "q", "1" },
-            { "y", "2" }
-        };
+        // Arrange
+        var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}};
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel
-            {
-                Query = new Dictionary<string, string>
-                {
-                    {"q", "1"},
-                    {"y", "3"}
-                }
-            }
+            Url = new StubUrlConditionModel {Query = new Dictionary<string, string> {{"q", "1"}, {"y", "3"}}}
         };
 
-        _httpContextServiceMock
+        httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
+        // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
     public void QueryStringConditionChecker_Validate_StubsFound_HappyFlow_FullText()
     {
-        // arrange
+        // Arrange
+        var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel
-            {
-                Query = new Dictionary<string, string>
-                {
-                    {"q", "1"},
-                    {"y", "2"}
-                }
-            }
+            Url = new StubUrlConditionModel {Query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}}}
         };
-        var query = new Dictionary<string, string>
-        {
-            { "q", "1" },
-            { "y", "2" }
-        };
+        var query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}};
 
-        _httpContextServiceMock
+        httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
+        // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
     [TestMethod]
     public void QueryStringConditionChecker_Validate_StubsFound_HappyFlow_Regex()
     {
-        // arrange
-        var query = new Dictionary<string, string>
-        {
-            { "q", "1" },
-            { "y", "2" }
-        };
+        // Arrange
+        var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}};
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel
-            {
-                Query = new Dictionary<string, string>
-                {
-                    {"q", "1"},
-                    {"y", "2"}
-                }
-            }
+            Url = new StubUrlConditionModel {Query = new Dictionary<string, string> {{"q", "1"}, {"y", "2"}}}
         };
 
-        _httpContextServiceMock
+        httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
+        // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 }
