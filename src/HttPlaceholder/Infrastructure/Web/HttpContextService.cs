@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -153,4 +154,6 @@ public class HttpContextService : IHttpContextService
         var bodyBytes = Encoding.UTF8.GetBytes(body);
         await httpContext.Response.Body.WriteAsync(bodyBytes, 0, bodyBytes.Length);
     }
+
+    public void SetUser(ClaimsPrincipal principal) => _httpContextAccessor.HttpContext.User = principal;
 }
