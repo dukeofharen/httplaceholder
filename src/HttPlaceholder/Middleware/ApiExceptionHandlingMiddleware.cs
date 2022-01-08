@@ -2,22 +2,27 @@
 using System.Net;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace HttPlaceholder.Middleware;
 
 public class ApiExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly IHttpContextService _httpContextService;
 
-    public ApiExceptionHandlingMiddleware(RequestDelegate next)
+    public ApiExceptionHandlingMiddleware(RequestDelegate next, IHttpContextService httpContextService)
     {
         _next = next;
+        _httpContextService = httpContextService;
     }
 
     public async Task Invoke(HttpContext context)
     {
-        if (context?.Request.Path.Value?.Contains("ph-api/") == true)
+        if (_httpContextService.Path?.Contains("ph-api/") == true)
         {
             try
             {
@@ -25,25 +30,27 @@ public class ApiExceptionHandlingMiddleware
             }
             catch (ConflictException)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                _httpContextService.SetStatusCode(HttpStatusCode.Conflict);
             }
             catch (NotFoundException)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                _httpContextService.SetStatusCode(HttpStatusCode.NotFound);
             }
             catch (ForbiddenException)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                _httpContextService.SetStatusCode(HttpStatusCode.Forbidden);
             }
             catch (ArgumentException ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                await context.Response.WriteAsJsonAsync(new[] { ex.Message });
+                _httpContextService.SetStatusCode(HttpStatusCode.BadRequest);
+                _httpContextService.AddHeader("Content-Type", Constants.JsonMime);
+                await _httpContextService.WriteAsync(JsonConvert.SerializeObject(new[] {ex.Message}));
             }
             catch (ValidationException ex)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                await context.Response.WriteAsJsonAsync(ex.ValidationErrors);
+                _httpContextService.SetStatusCode(HttpStatusCode.BadRequest);
+                _httpContextService.AddHeader("Content-Type", Constants.JsonMime);
+                await _httpContextService.WriteAsync(JsonConvert.SerializeObject(ex.ValidationErrors));
             }
         }
         else

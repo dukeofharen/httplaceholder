@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -29,6 +30,14 @@ public class MockLogger<TCategoryName> : ILogger<TCategoryName>
         Entries.Add(entry);
         Debug.WriteLine(entry);
     }
+
+    public bool Contains(LogLevel logLevel, string text) => Entries.Any(e =>
+        e.LogLevel == logLevel &&
+        e.State.Contains(text));
+
+    public bool ContainsWithExactText(LogLevel logLevel, string text) => Entries.Any(e =>
+        e.LogLevel == logLevel &&
+        e.State == text);
 
     public class LogEntry
     {
