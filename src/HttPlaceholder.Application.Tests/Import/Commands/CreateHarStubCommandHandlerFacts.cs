@@ -34,7 +34,6 @@ public class CreateHarStubCommandHandlerFacts
 
         // Assert
         Assert.AreEqual(expectedResult, result);
-        ;
     }
 
     [TestMethod]
