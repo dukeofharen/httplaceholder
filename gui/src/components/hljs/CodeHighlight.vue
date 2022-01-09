@@ -1,12 +1,10 @@
 <template>
-  <pre ref="codeBlock" class="language-yaml" :class="'language-' + language">{{
-    code
-  }}</pre>
+  <pre ref="codeBlock" :class="languageClass">{{ code }}</pre>
 </template>
 
 <script>
 import hljs from "highlight.js/lib/core";
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 
 export default {
   name: "CodeHighlight",
@@ -14,6 +12,7 @@ export default {
     language: {
       type: String,
       required: true,
+      default: "plaintext",
     },
     code: {
       type: String,
@@ -23,6 +22,9 @@ export default {
   setup(props) {
     // Refs
     const codeBlock = ref(null);
+
+    // Computed
+    const languageClass = computed(() => props.language);
 
     // Functions
     const reloadCode = () => {
@@ -42,7 +44,7 @@ export default {
       () => reloadCode()
     );
 
-    return { codeBlock };
+    return { codeBlock, languageClass };
   },
 };
 </script>
