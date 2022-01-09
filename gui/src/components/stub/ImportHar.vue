@@ -84,7 +84,7 @@
       <button class="btn btn-danger me-2" @click="reset">Reset</button>
     </div>
     <div class="mb-2">
-      <pre ref="codeBlock" class="language-yaml">{{ stubsYaml }}</pre>
+      <code-highlight language="yaml" :code="stubsYaml" />
     </div>
   </div>
 </template>
@@ -94,7 +94,6 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useStore } from "vuex";
 import yaml from "js-yaml";
-import hljs from "highlight.js/lib/core";
 import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import { useRouter } from "vue-router";
@@ -106,9 +105,6 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
-
-    // Refs
-    const codeBlock = ref(null);
 
     // Data
     const input = ref("");
@@ -135,12 +131,6 @@ export default {
 
         const filteredResult = result.map((r) => r.stub);
         stubsYaml.value = yaml.dump(filteredResult);
-        setTimeout(() => {
-          console.log(codeBlock.value);
-          if (codeBlock.value) {
-            hljs.highlightElement(codeBlock.value);
-          }
-        }, 10);
       } catch (e) {
         handleHttpError(e);
       }
@@ -198,7 +188,6 @@ export default {
       saveStubs,
       editBeforeSaving,
       reset,
-      codeBlock,
       onUploaded,
       tenant,
       stubsPreviewOpened,
