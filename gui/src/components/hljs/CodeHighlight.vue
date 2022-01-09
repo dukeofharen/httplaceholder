@@ -6,7 +6,7 @@
 
 <script>
 import hljs from "highlight.js/lib/core";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 export default {
   name: "CodeHighlight",
@@ -20,7 +20,7 @@ export default {
       required: true,
     },
   },
-  setup() {
+  setup(props) {
     // Refs
     const codeBlock = ref(null);
 
@@ -35,6 +35,12 @@ export default {
 
     // Lifecycle
     onMounted(() => reloadCode());
+
+    // Watch
+    watch(
+      () => props.code,
+      () => reloadCode()
+    );
 
     return { codeBlock };
   },

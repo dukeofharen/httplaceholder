@@ -68,7 +68,7 @@
             />
           </div>
         </div>
-        <pre ref="codeBlock" class="language-yaml">{{ stubYaml }}</pre>
+        <code-highlight language="yaml" :code="stubYaml" />
       </div>
     </template>
   </accordion-item>
@@ -79,7 +79,6 @@ import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import yaml from "js-yaml";
 import toastr from "toastr";
-import hljs from "highlight.js/lib/core";
 import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
 import { useRouter } from "vue-router";
@@ -98,19 +97,9 @@ export default {
     const store = useStore();
     const router = useRouter();
 
-    // Refs
-    const codeBlock = ref(null);
-
     // Functions
     const getStubId = () => props.overviewStub.stub.id;
     const isEnabled = () => props.overviewStub.stub.enabled;
-    const initHljs = () => {
-      setTimeout(() => {
-        if (codeBlock.value) {
-          hljs.highlightElement(codeBlock.value);
-        }
-      }, 10);
-    };
 
     // Data
     const overviewStubValue = ref(props.overviewStub);
@@ -154,8 +143,6 @@ export default {
       if (!fullStub.value) {
         try {
           fullStub.value = await store.dispatch("stubs/getStub", getStubId());
-          console.log(JSON.stringify(fullStub.value));
-          initHljs();
 
           // Sadly, when doing this without the timeout, it does the slide down incorrect.
           setTimeout(() => (accordionOpened.value = true), 1);
@@ -179,7 +166,6 @@ export default {
         const enabled = await store.dispatch("stubs/flipEnabled", getStubId());
         fullStub.value.stub.enabled = enabled;
         overviewStubValue.value.stub.enabled = enabled;
-        initHljs();
       } catch (e) {
         handleHttpError(e);
       }
@@ -211,7 +197,6 @@ export default {
       id,
       enabled,
       accordionOpened,
-      codeBlock,
       hasScenario,
       scenario,
     };
