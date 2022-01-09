@@ -4,83 +4,89 @@
     use a cURL command you have lying around or you can copy/paste a cURL
     command from the developer console from your browser.
   </div>
-  <div class="mb-2">
-    <button
-      class="btn btn-outline-primary btn-sm"
-      @click="howToOpen = !howToOpen"
-    >
-      How to
-    </button>
-  </div>
-  <div v-if="howToOpen">
-    <div class="row">
-      <div class="col-md-12">
-        <p>
-          You can copy/paste a cURL command from your browser. In most popular
-          web browsers, you can do this by going to the developer tools, going
-          to the "Network" tab and selecting the request where you would like to
-          have the cURL request for.
-        </p>
-        <p>
-          When copying cURL requests from a browser on Windows, make sure you
-          select "Copy as cURL (bash)" or "Copy all as cURL (bash)" on Chrome or
-          "Copy as cURL (POSIX)" in Firefox. The Windows formatting of cURL
-          commands is currently not supported in HttPlaceholder.
-        </p>
+  <div v-if="!stubsPreviewOpened">
+    <div class="mb-2">
+      <button
+        class="btn btn-outline-primary btn-sm"
+        @click="howToOpen = !howToOpen"
+      >
+        How to
+      </button>
+    </div>
+    <div v-if="howToOpen">
+      <div class="row">
+        <div class="col-md-12">
+          <p>
+            You can copy/paste a cURL command from your browser. In most popular
+            web browsers, you can do this by going to the developer tools, going
+            to the "Network" tab and selecting the request where you would like
+            to have the cURL request for.
+          </p>
+          <p>
+            When copying cURL requests from a browser on Windows, make sure you
+            select "Copy as cURL (bash)" or "Copy all as cURL (bash)" on Chrome
+            or "Copy as cURL (POSIX)" in Firefox. The Windows formatting of cURL
+            commands is currently not supported in HttPlaceholder.
+          </p>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-md-4">
+          <img src="@/assets/curl_copy_firefox.png" />
+          <em>Example in Firefox</em>
+        </div>
+        <div class="col-md-4">
+          <img src="@/assets/curl_copy_chrome.png" />
+          <em
+            >Example in Chrome. In Chrome, you can either select "Copy as cURL"
+            or "Copy all as cURL".
+          </em>
+        </div>
+        <div class="col-md-12 mb-2 mt-2">
+          <button class="btn btn-outline-primary btn-sm" @click="insertExample">
+            Insert example
+          </button>
+        </div>
       </div>
     </div>
-    <div class="row mb-2">
-      <div class="col-md-4">
-        <img src="@/assets/curl_copy_firefox.png" />
-        <em>Example in Firefox</em>
-      </div>
-      <div class="col-md-4">
-        <img src="@/assets/curl_copy_chrome.png" />
-        <em
-          >Example in Chrome. In Chrome, you can either select "Copy as cURL" or
-          "Copy all as cURL".
-        </em>
-      </div>
-      <div class="col-md-12 mb-2 mt-2">
-        <button class="btn btn-outline-primary btn-sm" @click="insertExample">
-          Insert example
-        </button>
-      </div>
+    <div class="mb-2">
+      <upload-button button-text="Upload file" @uploaded="onUploaded" />
+    </div>
+    <div class="mb-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Fill in a tenant to group the generated stubs... (if no tenant is provided, a tenant name will be generated)"
+        v-model="tenant"
+      />
+    </div>
+    <div class="mb-2">
+      <textarea class="form-control" v-model="input"></textarea>
+    </div>
+    <div class="mb-2">
+      <button
+        class="btn btn-success"
+        @click="importCommands"
+        :disabled="!importButtonEnabled"
+      >
+        Import cURL command(s)
+      </button>
     </div>
   </div>
-  <div class="mb-2" v-if="!stubsYaml">
-    <upload-button button-text="Upload file" @uploaded="onUploaded" />
-  </div>
-  <div class="mb-2" v-if="!stubsYaml">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Fill in a tenant to group the generated stubs... (if no tenant is provided, a tenant name will be generated)"
-      v-model="tenant"
-    />
-  </div>
-  <div class="mb-2" v-if="!stubsYaml">
-    <textarea class="form-control" v-model="curlInput"></textarea>
-  </div>
-  <div v-if="!stubsYaml" class="mb-2">
-    <button
-      class="btn btn-success"
-      @click="importCommands"
-      :disabled="!importButtonEnabled"
-    >
-      Import cURL command(s)
-    </button>
-  </div>
-  <div v-if="stubsYaml" class="mb-2">The following stubs will be added.</div>
-  <div v-if="stubsYaml" class="mb-2">
-    <button class="btn btn-success me-2" @click="saveStubs">Save stubs</button>
-    <button class="btn btn-success me-2" @click="editBeforeSaving">
-      Edit stubs before saving
-    </button>
-    <button class="btn btn-danger me-2" @click="reset">Reset</button>
-  </div>
-  <div v-if="stubsYaml" class="mb-2">
-    <pre ref="codeBlock" class="language-yaml">{{ stubsYaml }}</pre>
+  <div v-else>
+    <div v-if="stubsYaml" class="mb-2">The following stubs will be added.</div>
+    <div v-if="stubsYaml" class="mb-2">
+      <button class="btn btn-success me-2" @click="saveStubs">
+        Save stubs
+      </button>
+      <button class="btn btn-success me-2" @click="editBeforeSaving">
+        Edit stubs before saving
+      </button>
+      <button class="btn btn-danger me-2" @click="reset">Reset</button>
+    </div>
+    <div v-if="stubsYaml" class="mb-2">
+      <pre ref="codeBlock" class="language-yaml">{{ stubsYaml }}</pre>
+    </div>
   </div>
 </template>
 
@@ -106,19 +112,20 @@ export default {
     const codeBlock = ref(null);
 
     // Data
-    const curlInput = ref("");
+    const input = ref("");
     const stubsYaml = ref("");
     const howToOpen = ref(false);
     const tenant = ref("");
 
     // Computed
-    const importButtonEnabled = computed(() => !!curlInput.value);
+    const importButtonEnabled = computed(() => !!input.value);
+    const stubsPreviewOpened = computed(() => !!stubsYaml.value);
 
     // Methods
     const importCommands = async () => {
       try {
         const result = await store.dispatch("importModule/importCurlCommands", {
-          commands: curlInput.value,
+          commands: input.value,
           doNotCreateStub: true,
           tenant: tenant.value,
         });
@@ -141,7 +148,7 @@ export default {
     const saveStubs = async () => {
       try {
         await store.dispatch("importModule/importCurlCommands", {
-          commands: curlInput.value,
+          commands: input.value,
           doNotCreateStub: false,
           tenant: tenant.value,
         });
@@ -156,16 +163,16 @@ export default {
       router.push({ name: "StubForm" });
     };
     const reset = () => {
-      curlInput.value = "";
+      input.value = "";
       stubsYaml.value = "";
       tenant.value = "";
     };
     const insertExample = () => {
-      curlInput.value = resources.exampleCurlInput;
+      input.value = resources.exampleCurlInput;
       howToOpen.value = false;
     };
     const onUploaded = (file) => {
-      curlInput.value = file.result;
+      input.value = file.result;
     };
 
     // Lifecycle
@@ -186,7 +193,7 @@ export default {
     );
 
     return {
-      curlInput,
+      input,
       importCommands,
       stubsYaml,
       codeBlock,
@@ -199,6 +206,7 @@ export default {
       insertExample,
       onUploaded,
       tenant,
+      stubsPreviewOpened,
     };
   },
 };
