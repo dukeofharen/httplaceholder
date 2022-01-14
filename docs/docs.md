@@ -2277,4 +2277,8 @@ var createdStub = await client.CreateStubAsync(StubBuilder.Begin()
 ...
 ```
 
-This method is a bit shorter and is more readable.
+This method is a bit shorter and is more readable.              
+
+---
+
+&copy; 2022 [Dukeofharen](https://ducode.org)

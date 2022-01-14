@@ -211,7 +211,7 @@ Thank you for being involved!
 
 ## Authors & contributors
 
-The original setup of this repository is by [dukeofharen](https://github.com/dukeofharen).
+The original setup of this repository is by [dukeofharen](https://github.com/dukeofharen) (https://ducode.org).
 
 For a full list of all authors and contributors,
 check [the contributor's page](https://github.com/dukeofharen/httplaceholder/contributors).
