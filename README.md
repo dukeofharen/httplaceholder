@@ -36,7 +36,7 @@
     - [Installation](#installation)
     - [Example](#example)
 - [Getting started](#getting-started)
-- [Documentation](#documentation)
+- [Documentation](docs/docs.md)
     - [Tools](#tools)
 - [Roadmap](#roadmap)
 - [Support](#support)
