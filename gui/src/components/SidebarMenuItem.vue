@@ -44,6 +44,11 @@ export default {
 .list-group .list-group-item {
   background-color: $gray-900;
   color: $gray-400;
-  border-color: $gray-700;
+  border: 0 !important;
+}
+
+.router-link-active {
+  background-color: $green-700 !important;
+  border-radius: 5px !important;
 }
 </style>

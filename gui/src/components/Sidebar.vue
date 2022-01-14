@@ -1,8 +1,6 @@
 <template>
   <div class="col-auto col-md-3 col-xl-2 px-md-2 px-0 bg-dark">
-    <div
-      class="d-flex flex-column align-items-stretch flex-shrink-0 min-vh-100"
-    >
+    <div class="d-flex flex-column flex-shrink-0 min-vh-100">
       <a
         href="/"
         class="
@@ -29,6 +27,9 @@
           :key="item.title"
           :item="item"
         />
+      </div>
+      <div class="bottom-link">
+        <a href="https://ducode.org" target="_blank">Ducode.org</a>
       </div>
     </div>
   </div>
@@ -119,7 +120,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// Required
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
 .logo img {
   max-width: 100%;
+}
+
+.bottom-link {
+  position: absolute;
+  bottom: 10px;
+}
+
+@include media-breakpoint-up(md) {
+  .bottom-link {
+    left: 23px;
+    bottom: 23px;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .bottom-link {
+    left: 15px;
+    bottom: 15px;
+  }
+}
+
+.bottom-link a {
+  text-decoration: none;
+  color: $gray-500;
+  font-weight: bold;
 }
 </style>

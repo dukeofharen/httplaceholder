@@ -2281,4 +2281,4 @@ This method is a bit shorter and is more readable.
 
 ---
 
-&copy; 2022 [Dukeofharen](https://ducode.org)
+&copy; 2022 [Ducode.org](https://ducode.org)
