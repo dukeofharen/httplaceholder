@@ -1,1 +1,1 @@
-import "typeface-roboto/index.css";
+import "@fontsource/roboto-mono";

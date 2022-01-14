@@ -15,6 +15,7 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
+    "@fontsource/roboto-mono": "^4.5.0",
     "@microsoft/signalr": "^5.0.10",
     "@popperjs/core": "^2.10.2",
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -42,7 +43,6 @@
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "toastr": "^2.1.4",
-    "typeface-roboto": "^1.1.13",
     "vue3-slide-up-down": "^1.2.3",
     "xml-formatter": "^2.4.1"
   }
