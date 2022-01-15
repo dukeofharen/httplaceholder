@@ -51,6 +51,12 @@
           <ResponseBodyHelper
             v-if="currentSelectedFormHelper === formHelperKeys.responseBody"
           />
+          <ResponseBodyHelper
+            v-if="
+              currentSelectedFormHelper === formHelperKeys.responseBodyPlainText
+            "
+            :preset-response-body-type="responseBodyTypes.text"
+          />
           <RedirectSelector
             v-if="currentSelectedFormHelper === formHelperKeys.redirect"
           />
@@ -68,7 +74,11 @@
 
 <script>
 import { computed, ref, watch } from "vue";
-import { formHelperKeys, stubFormHelpers } from "@/constants/stubFormResources";
+import {
+  formHelperKeys,
+  stubFormHelpers,
+  responseBodyTypes,
+} from "@/constants/stubFormResources";
 import { useStore } from "vuex";
 import HttpMethodSelector from "@/components/stub/HttpMethodSelector";
 import TenantSelector from "@/components/stub/TenantSelector";
@@ -167,6 +177,7 @@ export default {
       formHelperFilterInput,
       openFormHelperList,
       closeFormHelperAndList,
+      responseBodyTypes,
     };
   },
 };

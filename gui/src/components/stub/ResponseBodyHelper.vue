@@ -1,81 +1,90 @@
 <template>
-  <div class="hint">
-    Select a type of response and fill in the actual response that should be
-    returned and press "Insert".
-  </div>
-
-  <div class="mt-3">
-    <select class="form-select" v-model="responseBodyType">
-      <option value="">Select a response type...</option>
-      <option v-for="item in responseBodyTypeItems" :key="item" :value="item">
-        {{ item }}
-      </option>
-    </select>
-  </div>
-
-  <div v-if="responseBodyType === responseBodyTypes.base64" class="mt-3">
-    <div>
+  <div class="response-body-form">
+    <div v-if="showResponseBodyTypeDropdown">
       <div class="hint">
-        You can upload a <strong>file</strong> for use in the Base64 response or
-        click on "show text input" and insert <strong>plain text</strong> that
-        will be encoded to Base64 on inserting.
+        Select a type of response and fill in the actual response that should be
+        returned and press "Insert".
       </div>
-      <upload-button
-        button-text="Upload a file"
-        @uploaded="onUploaded"
-        result-type="base64"
-      />
-      <button class="btn btn-primary" @click="showBase64TextInput = true">
-        Show text input
-      </button>
-    </div>
-  </div>
 
-  <div class="mt-3" v-if="showDynamicModeRow">
-    <div class="hint">{{ elementDescriptions.dynamicMode }}</div>
-    <div class="form-check mt-2">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        v-model="enableDynamicMode"
-        id="enableDynamicMode"
-      />
-      <label class="form-check-label" for="enableDynamicMode"
-        >Enable dynamic mode</label
-      >
+      <div class="mt-2">
+        <select class="form-select" v-model="responseBodyType">
+          <option value="">Select a response type...</option>
+          <option
+            v-for="item in responseBodyTypeItems"
+            :key="item"
+            :value="item"
+          >
+            {{ item }}
+          </option>
+        </select>
+      </div>
     </div>
-    <div v-if="showVariableParsers" class="mt-2">
-      <select
-        class="form-select"
-        v-model="selectedVariableHandler"
-        @change="insertVariableHandler"
-      >
-        <option value="">
-          Select a variable handler to insert in the response...
-        </option>
-        <option
-          v-for="item of variableParserItems"
-          :key="item.key"
-          :value="item.key"
+
+    <div v-if="responseBodyType === responseBodyTypes.base64">
+      <div>
+        <div class="hint">
+          You can upload a <strong>file</strong> for use in the Base64 response
+          or click on "show text input" and insert
+          <strong>plain text</strong> that will be encoded to Base64 on
+          inserting.
+        </div>
+        <upload-button
+          button-text="Upload a file"
+          @uploaded="onUploaded"
+          result-type="base64"
+        />
+        <button class="btn btn-primary" @click="showBase64TextInput = true">
+          Show text input
+        </button>
+      </div>
+    </div>
+
+    <div v-if="showDynamicModeRow">
+      <div class="hint">{{ elementDescriptions.dynamicMode }}</div>
+      <div class="form-check mt-2">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          v-model="enableDynamicMode"
+          id="enableDynamicMode"
+        />
+        <label class="form-check-label" for="enableDynamicMode"
+          >Enable dynamic mode</label
         >
-          {{ item.name }}
-        </option>
-      </select>
+      </div>
+      <div v-if="showVariableParsers" class="mt-2">
+        <select
+          class="form-select"
+          v-model="selectedVariableHandler"
+          @change="insertVariableHandler"
+        >
+          <option value="">
+            Select a variable handler to insert in the response...
+          </option>
+          <option
+            v-for="item of variableParserItems"
+            :key="item.key"
+            :value="item.key"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
     </div>
-  </div>
 
-  <div v-if="showResponseBody" class="mt-3">
-    <textarea
-      class="form-control"
-      v-model="responseBody"
-      ref="responseBodyField"
-      placeholder="Fill in the response..."
-    ></textarea>
-  </div>
+    <div v-if="showResponseBody">
+      <textarea
+        class="form-control"
+        v-model="responseBody"
+        ref="responseBodyField"
+        placeholder="Fill in the response..."
+      ></textarea>
+    </div>
 
-  <div class="mt-3">
-    <button class="btn btn-success me-2" @click="insert">Insert</button>
-    <button class="btn btn-danger" @click="close">Close</button>
+    <div>
+      <button class="btn btn-success me-2" @click="insert">Insert</button>
+      <button class="btn btn-danger" @click="close">Close</button>
+    </div>
   </div>
 </template>
 
@@ -90,7 +99,12 @@ import { handleHttpError } from "@/utils/error";
 
 export default {
   name: "ResponseBodyHelper",
-  setup() {
+  props: {
+    presetResponseBodyType: {
+      type: String,
+    },
+  },
+  setup(props) {
     const store = useStore();
 
     // Refs
@@ -98,7 +112,7 @@ export default {
     const responseBodyField = ref(null);
 
     // Data
-    const responseBodyType = ref("");
+    const responseBodyType = ref(props.presetResponseBodyType);
     const responseBody = ref("");
     const enableDynamicMode = ref(null);
     const showBase64TextInput = ref(false);
@@ -114,6 +128,9 @@ export default {
     );
     const showVariableParsers = computed(
       () => showDynamicModeRow.value && enableDynamicMode.value
+    );
+    const showResponseBodyTypeDropdown = computed(
+      () => !props.presetResponseBodyType
     );
     const variableParserItems = computed(() => {
       if (!metadata.value || !metadata.value.variableHandlers) {
@@ -213,6 +230,7 @@ export default {
       responseBodyField,
       close,
       onUploaded,
+      showResponseBodyTypeDropdown,
     };
   },
 };
@@ -221,5 +239,9 @@ export default {
 <style scoped>
 .hint {
   font-size: 0.9em;
+}
+
+.response-body-form > div:not(:first-child) {
+  margin-top: 1rem !important;
 }
 </style>
