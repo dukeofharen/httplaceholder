@@ -69,6 +69,12 @@
             v-if="currentSelectedFormHelper === formHelperKeys.responseBodyHtml"
             :preset-response-body-type="responseBodyTypes.html"
           />
+          <ResponseBodyHelper
+            v-if="
+              currentSelectedFormHelper === formHelperKeys.responseBodyBase64
+            "
+            :preset-response-body-type="responseBodyTypes.base64"
+          />
           <RedirectSelector
             v-if="currentSelectedFormHelper === formHelperKeys.redirect"
           />
