@@ -73,12 +73,7 @@
     </div>
 
     <div v-if="showResponseBody">
-      <textarea
-        class="form-control"
-        v-model="responseBody"
-        ref="responseBodyField"
-        placeholder="Fill in the response..."
-      ></textarea>
+      <codemirror v-model="responseBody" :options="cmOptions" />
     </div>
 
     <div>
@@ -93,7 +88,7 @@ import {
   responseBodyTypes,
   elementDescriptions,
 } from "@/constants/stubFormResources";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 
@@ -121,6 +116,12 @@ export default {
     );
     const metadata = ref(null);
     const selectedVariableHandler = ref("");
+    const cmOptions = ref({
+      tabSize: 4,
+      mode: "",
+      lineNumbers: true,
+      line: true,
+    });
 
     // Computed
     const showDynamicModeRow = computed(
@@ -150,7 +151,6 @@ export default {
 
     // Methods
     const onUploaded = (file) => {
-      console.log(file.result);
       const regex = /^data:(.+);base64,(.*)$/;
       const matches = file.result.match(regex);
       const contentType = matches[1];
@@ -213,6 +213,25 @@ export default {
       enableDynamicMode.value = store.getters["stubForm/getDynamicMode"];
     });
 
+    // Watch
+    watch(responseBodyType, () => {
+      cmOptions.value.htmlMode = false;
+      cmOptions.value.mode = "";
+      switch (responseBodyType.value) {
+        case responseBodyTypes.html:
+          cmOptions.value.htmlMode = true;
+          cmOptions.value.mode = "text/html";
+          break;
+        case responseBodyTypes.xml:
+          cmOptions.value.htmlMode = false;
+          cmOptions.value.mode = "application/xml";
+          break;
+        case responseBodyTypes.json:
+          cmOptions.value.mode = { name: "javascript", json: true };
+          break;
+      }
+    });
+
     return {
       responseBodyType,
       enableDynamicMode,
@@ -233,6 +252,7 @@ export default {
       close,
       onUploaded,
       showResponseBodyTypeDropdown,
+      cmOptions,
     };
   },
 };

@@ -28,15 +28,8 @@ export default {
     // Variables
     let cmInstance;
 
-    // Watch
-    watch(props, (newProps) => {
-      if (cmInstance && cmInstance.getValue() !== newProps.modelValue) {
-        cmInstance.setValue(newProps.modelValue);
-      }
-    });
-
-    // Lifecycle
-    onMounted(() => {
+    // Methods
+    const initializeCodemirror = () => {
       cmInstance = CodeMirror.fromTextArea(editor.value, props.options);
       cmInstance.on("change", () =>
         emit("update:modelValue", cmInstance.getValue())
@@ -48,7 +41,32 @@ export default {
           cm.replaceSelection(spaces);
         },
       });
-    });
+    };
+
+    // Watch
+    watch(
+      () => props.modelValue,
+      (newModelValue) => {
+        if (cmInstance && cmInstance.getValue() !== newModelValue) {
+          cmInstance.setValue(newModelValue);
+        }
+      }
+    );
+    watch(
+      () => props.options,
+      () => {
+        if (cmInstance && props.options) {
+          const cleanOptions = JSON.parse(JSON.stringify(props.options));
+          for (const key of Object.keys(cleanOptions)) {
+            cmInstance.setOption(key, cleanOptions[key]);
+          }
+        }
+      },
+      { deep: true }
+    );
+
+    // Lifecycle
+    onMounted(() => initializeCodemirror());
 
     return { contents, editor };
   },
