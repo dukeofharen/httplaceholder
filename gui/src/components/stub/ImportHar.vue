@@ -94,11 +94,11 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useStore } from "vuex";
 import yaml from "js-yaml";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import { useRouter } from "vue-router";
 import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
+import { success } from "@/utils/toast";
 
 export default {
   name: "ImportHar",
@@ -142,7 +142,7 @@ export default {
           doNotCreateStub: false,
           tenant: tenant.value,
         });
-        toastr.success(resources.stubsAddedSuccessfully);
+        success(resources.stubsAddedSuccessfully);
         await router.push({ name: "Stubs" });
       } catch (e) {
         handleHttpError(e);

@@ -71,10 +71,10 @@ import { useRoute } from "vue-router";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import Request from "@/components/request/Request";
 import { resources } from "@/constants/resources";
-import toastr from "toastr";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { handleHttpError } from "@/utils/error";
 import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
+import { success } from "@/utils/toast";
 
 export default {
   name: "Requests",
@@ -164,7 +164,7 @@ export default {
     const deleteAllRequests = async () => {
       try {
         await store.dispatch("requests/clearRequests");
-        toastr.success(resources.requestsDeletedSuccessfully);
+        success(resources.requestsDeletedSuccessfully);
         await loadRequests();
       } catch (e) {
         handleHttpError(e);

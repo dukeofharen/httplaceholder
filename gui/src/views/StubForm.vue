@@ -62,11 +62,11 @@ import { resources } from "@/constants/resources";
 import { simpleEditorThreshold } from "@/constants/technical";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
-import toastr from "toastr";
 import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";
 import FormHelperSelector from "@/components/stub/FormHelperSelector";
 import StubFormButtons from "@/components/stub/StubFormButtons";
 import SimpleEditor from "@/components/simpleEditor/SimpleEditor";
+import { error } from "@/utils/toast";
 
 const editorTypes = {
   none: "none",
@@ -138,7 +138,7 @@ export default {
           input.value = yaml.dump(fullStub.stub);
         } catch (e) {
           if (e.status === 404) {
-            toastr.error(resources.stubNotFound.format(stubId.value));
+            error(resources.stubNotFound.format(stubId.value));
             await router.push({ name: "StubForm" });
           } else {
             handleHttpError(e);

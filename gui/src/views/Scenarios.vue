@@ -56,8 +56,8 @@
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
+import { success } from "@/utils/toast";
 
 export default {
   name: "Scenarios",
@@ -91,7 +91,7 @@ export default {
     const clearAllScenarios = async () => {
       try {
         await store.dispatch("scenarios/deleteAllScenarios");
-        toastr.success(resources.scenariosDeletedSuccessfully);
+        success(resources.scenariosDeletedSuccessfully);
         await loadScenarios();
       } catch (e) {
         handleHttpError(e);
@@ -100,7 +100,7 @@ export default {
     const deleteScenario = async (scenario) => {
       try {
         await store.dispatch("scenarios/deleteScenario", scenario);
-        toastr.success(resources.scenarioDeletedSuccessfully);
+        success(resources.scenarioDeletedSuccessfully);
         await loadScenarios();
       } catch (e) {
         handleHttpError(e);

@@ -95,11 +95,11 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
 import { useRouter } from "vue-router";
+import { error, success } from "@/utils/toast";
 
 export default {
   name: "ImportCurl",
@@ -126,7 +126,7 @@ export default {
           tenant: tenant.value,
         });
         if (!result.length) {
-          toastr.error(resources.noCurlStubsFound);
+          error(resources.noCurlStubsFound);
           return;
         }
 
@@ -143,7 +143,7 @@ export default {
           doNotCreateStub: false,
           tenant: tenant.value,
         });
-        toastr.success(resources.stubsAddedSuccessfully);
+        success(resources.stubsAddedSuccessfully);
         await router.push({ name: "Stubs" });
       } catch (e) {
         handleHttpError(e);

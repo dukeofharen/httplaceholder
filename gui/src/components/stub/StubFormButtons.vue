@@ -22,11 +22,11 @@
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { resources } from "@/constants/resources";
 import { useStore } from "vuex";
-import toastr from "toastr";
 import { handleHttpError } from "@/utils/error";
 import { useRoute, useRouter } from "vue-router";
 import { shouldSave } from "@/utils/event";
 import { formHelperKeys } from "@/constants/stubFormResources";
+import { success } from "@/utils/toast";
 
 export default {
   name: "StubFormButtons",
@@ -75,7 +75,7 @@ export default {
           }
         }
 
-        toastr.success(resources.stubsAddedSuccessfully);
+        success(resources.stubsAddedSuccessfully);
       } catch (e) {
         handleHttpError(e);
       }
@@ -86,7 +86,7 @@ export default {
           stubId: stubId.value,
           input: input.value,
         });
-        toastr.success(resources.stubUpdatedSuccessfully);
+        success(resources.stubUpdatedSuccessfully);
         const currentStubId = store.getters["stubForm/getStubId"];
         if (stubId.value !== currentStubId) {
           await router.push({

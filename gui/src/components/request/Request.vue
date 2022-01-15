@@ -44,7 +44,6 @@
 <script>
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
-import toastr from "toastr";
 import { formatDateTime, formatFromNow } from "@/utils/datetime";
 import { handleHttpError } from "@/utils/error";
 import { setIntermediateStub } from "@/utils/session";
@@ -53,6 +52,7 @@ import RequestDetails from "@/components/request/RequestDetails";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { useRouter } from "vue-router";
+import { success } from "@/utils/toast";
 
 export default {
   name: "Request",
@@ -128,7 +128,7 @@ export default {
     const deleteRequest = async () => {
       try {
         await store.dispatch("requests/deleteRequest", correlationId());
-        toastr.success(resources.requestDeletedSuccessfully);
+        success(resources.requestDeletedSuccessfully);
         emit("deleted");
       } catch (e) {
         handleHttpError(e);

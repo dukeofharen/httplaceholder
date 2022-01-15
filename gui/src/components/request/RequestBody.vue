@@ -50,10 +50,10 @@
 <script>
 import { computed, onMounted, ref } from "vue";
 import xmlFormatter from "xml-formatter";
-import toastr from "toastr";
 import { formFormat } from "@/utils/form";
 import { copyTextToClipboard } from "@/utils/clipboard";
 import { resources } from "@/constants/resources";
+import { success } from "@/utils/toast";
 
 const bodyTypes = {
   xml: "XML",
@@ -138,7 +138,7 @@ export default {
     const viewRawBody = () => (showRenderedBody.value = false);
     const copy = () =>
       copyTextToClipboard(getBody()).then(() =>
-        toastr.success(resources.requestBodyCopiedToClipboard)
+        success(resources.requestBodyCopiedToClipboard)
       );
 
     // Lifecycle

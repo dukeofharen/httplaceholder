@@ -1,4 +1,4 @@
-import toastr from "toastr";
+import { error as errorToast } from "@/utils/toast";
 import { resources } from "@/constants/resources";
 
 export function handleHttpError(error) {
@@ -22,9 +22,9 @@ export function handleHttpError(error) {
   }
 
   if (result) {
-    toastr.error(result);
+    errorToast(result);
   } else {
     console.log(error);
-    toastr.error(resources.somethingWentWrongServer);
+    errorToast(resources.somethingWentWrongServer);
   }
 }

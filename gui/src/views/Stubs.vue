@@ -133,12 +133,12 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { computed, onMounted, ref, watch } from "vue";
 import Stub from "@/components/stub/Stub";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { handleHttpError } from "@/utils/error";
 import { downloadBlob } from "@/utils/download";
 import { getStubFilterForm, setStubFilterForm } from "@/utils/session";
+import { success } from "@/utils/toast";
 
 export default {
   name: "Stubs",
@@ -221,7 +221,7 @@ export default {
     const deleteAllStubs = async () => {
       try {
         await store.dispatch("stubs/deleteStubs");
-        toastr.success(resources.stubsDeletedSuccessfully);
+        success(resources.stubsDeletedSuccessfully);
         await loadData();
       } catch (e) {
         handleHttpError(e);
@@ -242,7 +242,7 @@ export default {
       }
 
       await Promise.all(promises);
-      toastr.success(resources.stubsDisabledSuccessfully);
+      success(resources.stubsDisabledSuccessfully);
       await loadData();
     };
     const enableStubs = async () => {
@@ -260,7 +260,7 @@ export default {
       }
 
       await Promise.all(promises);
-      toastr.success(resources.stubsEnabledSuccessfully);
+      success(resources.stubsEnabledSuccessfully);
       await loadData();
     };
     const deleteStubs = async () => {
@@ -278,7 +278,7 @@ export default {
       }
 
       await Promise.all(promises);
-      toastr.success(resources.filteredStubsDeletedSuccessfully);
+      success(resources.filteredStubsDeletedSuccessfully);
       await loadData();
     };
     const download = async () => {

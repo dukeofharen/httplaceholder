@@ -78,12 +78,12 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import yaml from "js-yaml";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
 import { useRouter } from "vue-router";
 import dayjs from "dayjs";
 import { handleHttpError } from "@/utils/error";
+import { success } from "@/utils/toast";
 
 export default {
   name: "Stub",
@@ -173,7 +173,7 @@ export default {
     const deleteStub = async () => {
       try {
         await store.dispatch("stubs/deleteStub", getStubId());
-        toastr.success(resources.stubDeletedSuccessfully);
+        success(resources.stubDeletedSuccessfully);
         showDeleteModal.value = false;
         emit("deleted");
       } catch (e) {

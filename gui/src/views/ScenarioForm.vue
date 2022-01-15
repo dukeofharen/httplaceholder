@@ -45,9 +45,9 @@ import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import { shouldSave } from "@/utils/event";
+import { success } from "@/utils/toast";
 
 export default {
   name: "ScenarioForm",
@@ -79,7 +79,7 @@ export default {
         }
 
         await store.dispatch("scenarios/setScenario", scenarioForm.value);
-        toastr.success(resources.scenarioSetSuccessfully);
+        success(resources.scenarioSetSuccessfully);
         await router.push({ name: "Scenarios" });
       } catch (e) {
         handleHttpError(e);
