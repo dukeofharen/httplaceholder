@@ -187,7 +187,6 @@ export default {
         body: responseBodyResult,
       });
       store.commit("stubForm/setDynamicMode", enableDynamicMode.value);
-      showBase64TextInput.value = false;
     };
     const close = () => {
       insert();

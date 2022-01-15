@@ -5,6 +5,7 @@
 <script>
 import { onMounted, ref, watch } from "vue";
 import CodeMirror from "codemirror";
+import { useStore } from "vuex";
 
 export default {
   name: "CodeMirror",
@@ -19,6 +20,8 @@ export default {
     },
   },
   setup(props, { emit }) {
+    const store = useStore();
+
     // Refs
     const editor = ref(null);
 
@@ -41,6 +44,9 @@ export default {
           cm.replaceSelection(spaces);
         },
       });
+      if (store.getters["general/getDarkTheme"]) {
+        cmInstance.setOption("theme", "material-darker");
+      }
     };
     const replaceSelection = (replacement, selection) => {
       if (cmInstance) {

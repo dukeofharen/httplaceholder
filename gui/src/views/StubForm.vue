@@ -56,7 +56,7 @@
 
 <script>
 import { useRoute, useRouter } from "vue-router";
-import { computed, onBeforeMount, onMounted, watch, ref } from "vue";
+import { computed, onMounted, watch, ref } from "vue";
 import { useStore } from "vuex";
 import { resources } from "@/constants/resources";
 import { simpleEditorThreshold } from "@/constants/technical";
@@ -148,11 +148,6 @@ export default {
     };
 
     // Lifecycle
-    onBeforeMount(() => {
-      if (store.getters["general/getDarkTheme"]) {
-        cmOptions.theme = "material-darker";
-      }
-    });
     onMounted(async () => await initialize());
 
     // Watch
