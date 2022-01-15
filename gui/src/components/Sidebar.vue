@@ -148,6 +148,12 @@ export default {
   }
 }
 
+@media screen and (max-height: 400px) {
+  .bottom-link {
+    display: none;
+  }
+}
+
 .bottom-link a {
   text-decoration: none;
   color: $gray-500;
