@@ -42,6 +42,11 @@ export default {
         },
       });
     };
+    const replaceSelection = (replacement, selection) => {
+      if (cmInstance) {
+        cmInstance.replaceSelection(replacement, selection);
+      }
+    };
 
     // Watch
     watch(
@@ -68,7 +73,7 @@ export default {
     // Lifecycle
     onMounted(() => initializeCodemirror());
 
-    return { contents, editor };
+    return { contents, editor, replaceSelection };
   },
 };
 </script>

@@ -73,7 +73,11 @@
     </div>
 
     <div v-if="showResponseBody">
-      <codemirror v-model="responseBody" :options="cmOptions" />
+      <codemirror
+        ref="codeEditor"
+        v-model="responseBody"
+        :options="cmOptions"
+      />
     </div>
 
     <div>
@@ -103,8 +107,7 @@ export default {
     const store = useStore();
 
     // Refs
-    const uploadField = ref(null);
-    const responseBodyField = ref(null);
+    const codeEditor = ref(null);
 
     // Data
     const responseBodyType = ref("");
@@ -165,16 +168,13 @@ export default {
       showBase64TextInput.value = false;
     };
     const insertVariableHandler = () => {
-      const handler = metadata.value.variableHandlers.find(
-        (h) => h.name === selectedVariableHandler.value
-      );
-      setTimeout(() => (selectedVariableHandler.value = ""), 10);
-      const cursorPosition = responseBodyField.value.selectionStart;
-      responseBody.value = [
-        responseBody.value.slice(0, cursorPosition),
-        handler.example,
-        responseBody.value.slice(cursorPosition),
-      ].join("");
+      if (codeEditor.value && codeEditor.value.replaceSelection) {
+        const handler = metadata.value.variableHandlers.find(
+          (h) => h.name === selectedVariableHandler.value
+        );
+        setTimeout(() => (selectedVariableHandler.value = ""), 10);
+        codeEditor.value.replaceSelection(handler.example);
+      }
     };
     const close = () => {
       store.commit("stubForm/closeFormHelper");
@@ -238,7 +238,6 @@ export default {
       responseBodyTypeItems,
       showDynamicModeRow,
       responseBodyTypes,
-      uploadField,
       elementDescriptions,
       showBase64TextInput,
       showVariableParsers,
@@ -248,11 +247,11 @@ export default {
       showResponseBody,
       insert,
       insertVariableHandler,
-      responseBodyField,
       close,
       onUploaded,
       showResponseBodyTypeDropdown,
       cmOptions,
+      codeEditor,
     };
   },
 };
