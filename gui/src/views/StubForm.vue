@@ -116,8 +116,17 @@ export default {
     const initialize = async () => {
       store.commit("stubForm/closeFormHelper");
       if (newStub.value) {
-        const intermediateStub = getIntermediateStub();
+        let intermediateStub = getIntermediateStub();
         if (intermediateStub) {
+          const deserializedStub = yaml.load(intermediateStub);
+          if (
+            Array.isArray(deserializedStub) &&
+            deserializedStub.length === 1
+          ) {
+            // When the intermediate stub is an array that contains only 1 stub, make it an object for easier editing.
+            intermediateStub = yaml.dump(deserializedStub[0]);
+          }
+
           input.value = intermediateStub;
           clearIntermediateStub();
         } else {
