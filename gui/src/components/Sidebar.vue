@@ -2,7 +2,8 @@
   <div class="col-auto col-md-3 col-xl-2 px-md-2 px-0 bg-dark">
     <div class="d-flex flex-column flex-shrink-0 min-vh-100">
       <a
-        href="/"
+        href="https://httplaceholder.com"
+        target="_blank"
         class="
           d-flex
           align-items-center
@@ -27,9 +28,6 @@
           :key="item.title"
           :item="item"
         />
-      </div>
-      <div class="bottom-link">
-        <a href="https://ducode.org" target="_blank">Ducode.org</a>
       </div>
     </div>
   </div>
@@ -127,36 +125,5 @@ export default {
 
 .logo img {
   max-width: 100%;
-}
-
-.bottom-link {
-  position: absolute;
-  bottom: 10px;
-}
-
-@include media-breakpoint-up(md) {
-  .bottom-link {
-    left: 23px;
-    bottom: 23px;
-  }
-}
-
-@include media-breakpoint-down(md) {
-  .bottom-link {
-    left: 15px;
-    bottom: 15px;
-  }
-}
-
-@media (max-height: 400px), (max-width: 380px) {
-  .bottom-link {
-    display: none;
-  }
-}
-
-.bottom-link a {
-  text-decoration: none;
-  color: $gray-500;
-  font-weight: bold;
 }
 </style>
