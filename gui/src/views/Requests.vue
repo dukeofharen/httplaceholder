@@ -154,6 +154,9 @@ export default {
     const loadTenantNames = async () => {
       try {
         tenants.value = await store.dispatch("tenants/getTenantNames");
+        if (!tenants.value.find((t) => t === filter.value.selectedTenantName)) {
+          filter.value.selectedTenantName = "";
+        }
       } catch (e) {
         handleHttpError(e);
       }
