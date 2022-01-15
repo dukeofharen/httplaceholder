@@ -57,6 +57,10 @@
             "
             :preset-response-body-type="responseBodyTypes.text"
           />
+          <ResponseBodyHelper
+            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyJson"
+            :preset-response-body-type="responseBodyTypes.json"
+          />
           <RedirectSelector
             v-if="currentSelectedFormHelper === formHelperKeys.redirect"
           />

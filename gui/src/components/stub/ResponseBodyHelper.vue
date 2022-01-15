@@ -112,7 +112,7 @@ export default {
     const responseBodyField = ref(null);
 
     // Data
-    const responseBodyType = ref(props.presetResponseBodyType);
+    const responseBodyType = ref("");
     const responseBody = ref("");
     const enableDynamicMode = ref(null);
     const showBase64TextInput = ref(false);
@@ -196,7 +196,9 @@ export default {
 
     // Lifecycle
     onMounted(async () => {
-      responseBodyType.value = store.getters["stubForm/getResponseBodyType"];
+      responseBodyType.value =
+        props.presetResponseBodyType ||
+        store.getters["stubForm/getResponseBodyType"];
       let currentResponseBody = store.getters["stubForm/getResponseBody"];
       if (responseBodyType.value === responseBodyTypes.base64) {
         currentResponseBody = atob(currentResponseBody);

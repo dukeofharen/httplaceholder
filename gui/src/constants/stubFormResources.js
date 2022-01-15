@@ -42,6 +42,7 @@ const elementDescriptions = {
     "Defines the HTTP status code that should be returned. Default is HTTP 200 (OK).",
   responseBody: "Provide the body that should be added to the response.",
   responseBodyPlainText: "Let the stub return a plain text response.",
+  responseBodyJson: "Let the stub return a JSON response.",
   responseHeaders:
     "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'.",
   responseContentType: "This sets the Content-Type response header.",
@@ -430,6 +431,7 @@ const formHelperKeys = {
   statusCode: "statusCode",
   responseBody: "responseBody",
   responseBodyPlainText: "responseBodyPlainText",
+  responseBodyJson: "responseBodyJson",
   redirect: "redirect",
   lineEndings: "lineEndings",
   scenario: "scenario",
@@ -595,6 +597,11 @@ const stubFormHelpers = [
     title: "Plain text body",
     subTitle: elementDescriptions.responseBodyPlainText,
     formHelperToOpen: formHelperKeys.responseBodyPlainText,
+  },
+  {
+    title: "JSON body",
+    subTitle: elementDescriptions.responseBodyJson,
+    formHelperToOpen: formHelperKeys.responseBodyJson,
   },
   {
     title: "Response headers",
