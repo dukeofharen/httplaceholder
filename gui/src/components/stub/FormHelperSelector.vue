@@ -58,6 +58,10 @@
             :preset-response-body-type="responseBodyTypes.text"
           />
           <ResponseBodyHelper
+            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyXml"
+            :preset-response-body-type="responseBodyTypes.xml"
+          />
+          <ResponseBodyHelper
             v-if="currentSelectedFormHelper === formHelperKeys.responseBodyJson"
             :preset-response-body-type="responseBodyTypes.json"
           />
