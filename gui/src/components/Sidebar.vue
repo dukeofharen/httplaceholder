@@ -148,7 +148,7 @@ export default {
   }
 }
 
-@media screen and (max-height: 400px) {
+@media (max-height: 400px), (max-width: 380px) {
   .bottom-link {
     display: none;
   }
