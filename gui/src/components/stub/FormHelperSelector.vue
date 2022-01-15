@@ -58,12 +58,16 @@
             :preset-response-body-type="responseBodyTypes.text"
           />
           <ResponseBodyHelper
+            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyJson"
+            :preset-response-body-type="responseBodyTypes.json"
+          />
+          <ResponseBodyHelper
             v-if="currentSelectedFormHelper === formHelperKeys.responseBodyXml"
             :preset-response-body-type="responseBodyTypes.xml"
           />
           <ResponseBodyHelper
-            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyJson"
-            :preset-response-body-type="responseBodyTypes.json"
+            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyHtml"
+            :preset-response-body-type="responseBodyTypes.html"
           />
           <RedirectSelector
             v-if="currentSelectedFormHelper === formHelperKeys.redirect"

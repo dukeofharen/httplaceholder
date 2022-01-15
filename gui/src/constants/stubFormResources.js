@@ -44,6 +44,7 @@ const elementDescriptions = {
   responseBodyPlainText: "Let the stub return a plain text response.",
   responseBodyJson: "Let the stub return a JSON response.",
   responseBodyXml: "Let the stub return an XML response.",
+  responseBodyHtml: "Let the stub return an HTML response.",
   responseHeaders:
     "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'.",
   responseContentType: "This sets the Content-Type response header.",
@@ -434,6 +435,7 @@ const formHelperKeys = {
   responseBodyPlainText: "responseBodyPlainText",
   responseBodyJson: "responseBodyJson",
   responseBodyXml: "responseBodyXml",
+  responseBodyHtml: "responseBodyHtml",
   redirect: "redirect",
   lineEndings: "lineEndings",
   scenario: "scenario",
@@ -609,6 +611,11 @@ const stubFormHelpers = [
     title: "XML body",
     subTitle: elementDescriptions.responseBodyXml,
     formHelperToOpen: formHelperKeys.responseBodyXml,
+  },
+  {
+    title: "HTML body",
+    subTitle: elementDescriptions.responseBodyHtml,
+    formHelperToOpen: formHelperKeys.responseBodyHtml,
   },
   {
     title: "Response headers",
