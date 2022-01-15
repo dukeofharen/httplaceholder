@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import {
   formHelperKeys,
   stubFormHelpers,
@@ -106,6 +106,7 @@ import RedirectSelector from "@/components/stub/RedirectSelector";
 import LineEndingSelector from "@/components/stub/LineEndingSelector";
 import ScenarioSelector from "@/components/stub/ScenarioSelector";
 import { useRoute } from "vue-router";
+import { escapePressed } from "@/utils/event";
 
 export default {
   name: "FormHelperSelector",
@@ -183,6 +184,16 @@ export default {
       () => route.params,
       () => closeFormHelperAndList()
     );
+
+    // Lifecycle
+    const escapeListener = (e) => {
+      if (escapePressed(e)) {
+        e.preventDefault();
+        closeFormHelperAndList();
+      }
+    };
+    onMounted(() => document.addEventListener("keydown", escapeListener));
+    onUnmounted(() => document.removeEventListener("keydown", escapeListener));
 
     return {
       formHelperItems,

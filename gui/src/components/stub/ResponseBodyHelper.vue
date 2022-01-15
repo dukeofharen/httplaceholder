@@ -81,7 +81,6 @@
     </div>
 
     <div>
-      <button class="btn btn-success me-2" @click="insert">Insert</button>
       <button class="btn btn-danger" @click="close">Close</button>
     </div>
   </div>
@@ -125,6 +124,7 @@ export default {
       lineNumbers: true,
       line: true,
     });
+    let setInputTimeout = null;
 
     // Computed
     const showDynamicModeRow = computed(
@@ -176,9 +176,6 @@ export default {
         codeEditor.value.replaceSelection(handler.example);
       }
     };
-    const close = () => {
-      store.commit("stubForm/closeFormHelper");
-    };
     const insert = () => {
       let responseBodyResult = responseBody.value;
       if (responseBodyType.value === responseBodyTypes.base64) {
@@ -191,7 +188,10 @@ export default {
       });
       store.commit("stubForm/setDynamicMode", enableDynamicMode.value);
       showBase64TextInput.value = false;
-      close();
+    };
+    const close = () => {
+      insert();
+      store.commit("stubForm/closeFormHelper");
     };
 
     // Lifecycle
@@ -230,6 +230,13 @@ export default {
           cmOptions.value.mode = { name: "javascript", json: true };
           break;
       }
+    });
+    watch(responseBody, () => {
+      if (setInputTimeout) {
+        clearTimeout(setInputTimeout);
+      }
+
+      setInputTimeout = setTimeout(() => insert(), 100);
     });
 
     return {
