@@ -40,6 +40,7 @@
         class="btn btn-outline-success btn-sm me-2"
         title="Disable the current selection of stubs"
         @click="showDisableStubsModal = true"
+        :disabled="disableMutationButtons"
       >
         Disable stubs
       </button>
@@ -55,6 +56,7 @@
         class="btn btn-outline-success btn-sm me-2"
         title="Enable the current selection of stubs"
         @click="showEnableStubsModal = true"
+        :disabled="disableMutationButtons"
       >
         Enable stubs
       </button>
@@ -70,6 +72,7 @@
         class="btn btn-outline-success btn-sm me-2"
         title="Delete the current selection of stubs"
         @click="showDeleteStubsModal = true"
+        :disabled="disableMutationButtons"
       >
         Delete stubs
       </button>
@@ -200,6 +203,7 @@ export default {
 
     // Computed
     const filteredStubs = computed(() => filterStubs(stubs.value));
+    const disableMutationButtons = computed(() => !filteredStubs.value.length);
 
     // Methods
     const loadStubs = async () => {
@@ -326,6 +330,7 @@ export default {
       showEnableStubsModal,
       showDeleteStubsModal,
       deleteStubs,
+      disableMutationButtons,
     };
   },
 };
