@@ -54,7 +54,7 @@
         </button>
       </div>
     </div>
-    <accordion>
+    <accordion v-if="requests.length">
       <Request
         v-for="request of filteredRequests"
         :key="request.correlationId"
@@ -62,6 +62,10 @@
         @deleted="loadRequests"
       />
     </accordion>
+    <div v-else>
+      No requests have been made to HttPlaceholder yet. Perform HTTP requests
+      and you will see the requests appearing on this page.
+    </div>
   </div>
 </template>
 

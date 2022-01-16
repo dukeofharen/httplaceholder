@@ -117,7 +117,7 @@
       </div>
     </div>
 
-    <accordion>
+    <accordion v-if="stubs.length">
       <Stub
         v-for="stub of filteredStubs"
         :key="stub.stub.id"
@@ -125,6 +125,11 @@
         @deleted="loadData"
       />
     </accordion>
+    <div v-else>
+      No stubs have been added yet. Add a new stub by going to
+      <router-link :to="{ name: 'StubForm' }">Add stubs</router-link> or
+      <router-link :to="{ name: 'ImportStubs' }">Import stubs</router-link>.
+    </div>
   </div>
 </template>
 
