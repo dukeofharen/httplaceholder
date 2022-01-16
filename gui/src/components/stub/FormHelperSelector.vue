@@ -20,7 +20,7 @@
       </div>
       <div class="list-group">
         <template v-for="(item, index) in filteredStubFormHelpers" :key="index">
-          <div v-if="item.isMainItem" class="list-group-item fw-bold fs-4">
+          <div v-if="item.isMainItem" class="list-group-item fw-bold fs-3">
             {{ item.title }}
           </div>
           <button

@@ -6,6 +6,10 @@
     resize: vertical;
 }
 
+.CodeMirror {
+    width: 200px;
+}
+
 @include media-breakpoint-up(sm) {
     .CodeMirror {
         width: 362px;
