@@ -1,9 +1,11 @@
 <template>
   <accordion-item @buttonClicked="showDetails" :opened="accordionOpened">
     <template v-slot:button-text>
-      <span>
+      <span class="request-header">
         <Method :method="overviewRequest.method" />
-        <span class="ms-sm-1">{{ overviewRequest.url }}</span>
+        <span class="ms-sm-1 request-url" :title="overviewRequest.url">{{
+          overviewRequest.url
+        }}</span>
         <span class="ms-sm-1">
           <span>(</span>
           <span
@@ -150,4 +152,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.request-header {
+  width: 100%;
+}
+
+.request-url {
+  overflow-wrap: break-word;
+  width: 100%;
+}
+</style>
