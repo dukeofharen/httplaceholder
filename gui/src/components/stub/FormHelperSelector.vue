@@ -23,7 +23,6 @@
           placeholder="Filter form helpers (press 'Escape' to close)..."
           v-model="formHelperFilter"
           ref="formHelperFilterInput"
-          @keyup.esc="closeFormHelperAndList"
         />
       </div>
       <div class="list-group">
