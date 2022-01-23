@@ -66,7 +66,7 @@
             :key="item.key"
             :value="item.key"
           >
-            {{ item.name }}
+            {{ item.name }}: "{{ item.example }}"
           </option>
         </select>
       </div>
@@ -95,7 +95,6 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import { fromBase64, toBase64 } from "@/utils/text";
-// import { fromBase64 } from "@/utils/text";
 
 export default {
   name: "ResponseBodyHelper",
@@ -146,6 +145,7 @@ export default {
       return metadata.value.variableHandlers.map((h) => ({
         key: h.name,
         name: h.fullName,
+        example: h.example,
       }));
     });
     const showResponseBody = computed(
