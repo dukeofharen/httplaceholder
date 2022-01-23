@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="row flex-nowrap">
       <Sidebar />
-      <div class="col py-3 main-body">
+      <div class="col-md-10 col-10 col-xl-10 col-lg-10 col-sm-9 py-3 main-body">
         <router-view v-slot="{ Component }">
           <transition name="fade" mode="out-in">
             <component :is="Component" />

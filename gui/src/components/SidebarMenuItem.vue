@@ -15,7 +15,7 @@
     @click="item.onClick"
   >
     <i class="fs-5" :class="'bi-' + item.icon"></i>
-    <strong class="mb-1 d-none d-sm-inline ms-3">{{ item.title }}</strong>
+    <strong class="mb-1 d-none d-md-inline ms-3">{{ item.title }}</strong>
   </a>
 </template>
 
@@ -49,6 +49,11 @@ export default {
 
 .router-link-active {
   background-color: $green-700 !important;
-  border-radius: 5px !important;
+}
+
+@include media-breakpoint-down(sm) {
+  .list-group-item {
+    text-align: center;
+  }
 }
 </style>

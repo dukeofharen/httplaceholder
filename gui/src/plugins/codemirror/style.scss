@@ -6,40 +6,6 @@
     resize: vertical;
 }
 
-.CodeMirror {
-    width: 200px;
-}
-
-@include media-breakpoint-up(sm) {
-    .CodeMirror {
-        width: 362px;
-    }
-}
-
-@include media-breakpoint-up(md) {
-    .CodeMirror {
-        width: 553px;
-    }
-}
-
-@include media-breakpoint-up(lg) {
-    .CodeMirror {
-        width: 700px;
-    }
-}
-
-@include media-breakpoint-up(xl) {
-    .CodeMirror {
-        width: 976px;
-    }
-}
-
-@include media-breakpoint-up(xxl) {
-    .CodeMirror {
-        width: 1136px;
-    }
-}
-
 .CodeMirror-gutters {
     background-color: #fff;
     border-right: 0 !important;
