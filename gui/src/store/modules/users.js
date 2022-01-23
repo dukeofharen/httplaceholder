@@ -1,9 +1,10 @@
 import { clearUserToken, getUserToken, saveUserToken } from "@/utils/session";
 import { get } from "@/utils/api";
+import { toBase64 } from "@/utils/text";
 
 const token = getUserToken();
 const getUser = (username, password, commit) => {
-  const token = btoa(`${username}:${password}`);
+  const token = toBase64(`${username}:${password}`);
   return get(`/ph-api/users/${username}`, {
     headers: {
       Authorization: `Basic ${token}`,

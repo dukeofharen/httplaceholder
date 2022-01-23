@@ -88,12 +88,14 @@
 
 <script>
 import {
-  responseBodyTypes,
   elementDescriptions,
+  responseBodyTypes,
 } from "@/constants/stubFormResources";
 import { computed, onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
+import { fromBase64, toBase64 } from "@/utils/text";
+// import { fromBase64 } from "@/utils/text";
 
 export default {
   name: "ResponseBodyHelper",
@@ -179,7 +181,7 @@ export default {
     const insert = () => {
       let responseBodyResult = responseBody.value;
       if (responseBodyType.value === responseBodyTypes.base64) {
-        responseBodyResult = btoa(responseBodyResult);
+        responseBodyResult = toBase64(responseBodyResult);
       }
 
       store.commit("stubForm/setResponseBody", {
@@ -200,7 +202,10 @@ export default {
         store.getters["stubForm/getResponseBodyType"];
       let currentResponseBody = store.getters["stubForm/getResponseBody"];
       if (responseBodyType.value === responseBodyTypes.base64) {
-        currentResponseBody = atob(currentResponseBody);
+        const decodedBase64 = fromBase64(currentResponseBody);
+        if (decodedBase64) {
+          currentResponseBody = decodedBase64;
+        }
       }
 
       responseBody.value = currentResponseBody;
@@ -209,6 +214,7 @@ export default {
       } catch (e) {
         handleHttpError(e);
       }
+
       enableDynamicMode.value = store.getters["stubForm/getDynamicMode"];
     });
 
