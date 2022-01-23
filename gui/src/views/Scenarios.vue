@@ -3,10 +3,15 @@
     <h1>Scenarios</h1>
 
     <div class="col-md-12 mb-3">
-      <router-link class="btn btn-success me-2" :to="{ name: 'ScenarioForm' }"
+      <router-link
+        class="btn btn-success me-2 btn-mobile full-width"
+        :to="{ name: 'ScenarioForm' }"
         >Add scenario
       </router-link>
-      <button class="btn btn-danger" @click="clearAllScenariosModal = true">
+      <button
+        class="btn btn-danger btn-mobile full-width"
+        @click="clearAllScenariosModal = true"
+      >
         Clear all scenarios
       </button>
       <modal

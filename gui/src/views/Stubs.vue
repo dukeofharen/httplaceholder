@@ -3,25 +3,33 @@
     <h1>Stubs</h1>
 
     <div class="col-md-12 mb-3">
-      <button type="button" class="btn btn-success me-2" @click="loadData">
+      <button
+        type="button"
+        class="btn btn-success me-2 btn-mobile full-width"
+        @click="loadData"
+      >
         Refresh
       </button>
-      <router-link :to="{ name: 'StubForm' }" class="btn btn-success me-2"
+      <router-link
+        :to="{ name: 'StubForm' }"
+        class="btn btn-success me-2 btn-mobile full-width"
         >Add stubs</router-link
       >
       <button
-        class="btn btn-success me-2"
+        class="btn btn-success me-2 btn-mobile full-width"
         @click="download"
         title="Download the (filtered) stubs as YAML file."
       >
         Download stubs as YAML
       </button>
-      <router-link :to="{ name: 'ImportStubs' }" class="btn btn-success me-2"
+      <router-link
+        :to="{ name: 'ImportStubs' }"
+        class="btn btn-success me-2 btn-mobile full-width"
         >Import stubs</router-link
       >
       <button
         type="button"
-        class="btn btn-danger"
+        class="btn btn-danger btn-mobile full-width"
         @click="showDeleteAllStubsModal = true"
       >
         Delete all stubs
@@ -37,7 +45,7 @@
 
     <div class="col-md-12 mb-3">
       <button
-        class="btn btn-outline-success btn-sm me-2"
+        class="btn btn-outline-success btn-sm me-2 btn-mobile"
         title="Disable the current selection of stubs"
         @click="showDisableStubsModal = true"
         :disabled="disableMutationButtons"
@@ -53,7 +61,7 @@
       />
 
       <button
-        class="btn btn-outline-success btn-sm me-2"
+        class="btn btn-outline-success btn-sm me-2 btn-mobile"
         title="Enable the current selection of stubs"
         @click="showEnableStubsModal = true"
         :disabled="disableMutationButtons"
@@ -69,7 +77,7 @@
       />
 
       <button
-        class="btn btn-outline-success btn-sm me-2"
+        class="btn btn-outline-success btn-sm me-2 btn-mobile"
         title="Delete the current selection of stubs"
         @click="showDeleteStubsModal = true"
         :disabled="disableMutationButtons"

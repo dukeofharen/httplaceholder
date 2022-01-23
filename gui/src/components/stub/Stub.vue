@@ -11,7 +11,7 @@
         <div class="row mb-3">
           <div class="col-md-12">
             <router-link
-              class="btn btn-success btn-sm me-2"
+              class="btn btn-success btn-sm me-2 btn-mobile"
               title="View all requests made for this stub"
               :to="{
                 name: 'Requests',
@@ -20,7 +20,7 @@
               >Requests
             </router-link>
             <button
-              class="btn btn-success btn-sm me-2"
+              class="btn btn-success btn-sm me-2 btn-mobile"
               title="Duplicate this stub"
               @click="duplicate"
             >
@@ -28,7 +28,7 @@
             </button>
             <router-link
               v-if="!isReadOnly"
-              class="btn btn-success btn-sm me-2"
+              class="btn btn-success btn-sm me-2 btn-mobile"
               title="Update this stub"
               :to="{
                 name: 'StubForm',
@@ -38,7 +38,7 @@
             </router-link>
             <button
               v-if="!isReadOnly"
-              class="btn btn-success btn-sm me-2"
+              class="btn btn-success btn-sm me-2 btn-mobile"
               :title="enableDisableTitle"
               @click="enableOrDisable"
             >
@@ -46,13 +46,13 @@
             </button>
             <router-link
               v-if="hasScenario"
-              class="btn btn-success btn-sm me-2"
+              class="btn btn-success btn-sm me-2 btn-mobile"
               :to="{ name: 'ScenarioForm', params: { scenario: scenario } }"
               >Set scenario</router-link
             >
             <button
               v-if="!isReadOnly"
-              class="btn btn-danger btn-sm me-2"
+              class="btn btn-danger btn-sm me-2 btn-mobile"
               title="Delete the stub"
               @click="showDeleteModal = true"
             >

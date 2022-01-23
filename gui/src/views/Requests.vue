@@ -2,12 +2,16 @@
   <div>
     <h1>Requests</h1>
     <div class="col-md-12 mb-3">
-      <button type="button" class="btn btn-success me-2" @click="loadRequests">
+      <button
+        type="button"
+        class="btn btn-success me-2 btn-mobile full-width"
+        @click="loadRequests"
+      >
         Refresh
       </button>
       <button
         type="button"
-        class="btn btn-danger"
+        class="btn btn-danger btn-mobile full-width"
         @click="showDeleteAllRequestsModal = true"
       >
         Delete all requests
