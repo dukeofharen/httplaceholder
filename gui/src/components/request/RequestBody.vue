@@ -27,12 +27,10 @@
       </div>
       <div class="row mt-3">
         <div class="col-md-12" v-if="showRenderedBody">
-          <pre ref="renderedBodyPre" class="renderedBodyClass">{{
-            renderedBody
-          }}</pre>
+          <code-highlight :language="language" :code="renderedBody" />
         </div>
         <div class="col-md-12" v-if="!showRenderedBody">
-          {{ rawBody }}
+          <code-highlight :code="rawBody" />
         </div>
       </div>
       <div class="row mt-3">
@@ -52,11 +50,10 @@
 <script>
 import { computed, onMounted, ref } from "vue";
 import xmlFormatter from "xml-formatter";
-import toastr from "toastr";
-import hljs from "highlight.js/lib/core";
 import { formFormat } from "@/utils/form";
 import { copyTextToClipboard } from "@/utils/clipboard";
 import { resources } from "@/constants/resources";
+import { success } from "@/utils/toast";
 
 const bodyTypes = {
   xml: "XML",
@@ -73,22 +70,12 @@ export default {
     },
   },
   setup(props) {
-    // Refs
-    const renderedBodyPre = ref(null);
-
     // Data
     const showRenderedBody = ref(false);
 
     // Functions
     const getHeaders = () => props.request.requestParameters.headers;
     const getBody = () => props.request.requestParameters.body;
-    const initHljs = () => {
-      setTimeout(() => {
-        if (renderedBodyClass.value && renderedBodyPre.value) {
-          hljs.highlightElement(renderedBodyPre.value);
-        }
-      }, 10);
-    };
 
     // Computed
     const bodyType = computed(() => {
@@ -132,12 +119,12 @@ export default {
 
       return "";
     });
-    const renderedBodyClass = computed(() => {
+    const language = computed(() => {
       switch (bodyType.value) {
         case bodyTypes.json:
-          return "language-json";
+          return "json";
         case bodyTypes.xml:
-          return "language-xml";
+          return "xml";
         default:
           return "";
       }
@@ -147,18 +134,16 @@ export default {
     // Methods
     const viewRenderedBody = () => {
       showRenderedBody.value = true;
-      initHljs();
     };
     const viewRawBody = () => (showRenderedBody.value = false);
     const copy = () =>
       copyTextToClipboard(getBody()).then(() =>
-        toastr.success(resources.requestBodyCopiedToClipboard)
+        success(resources.requestBodyCopiedToClipboard)
       );
 
     // Lifecycle
     onMounted(() => {
       showRenderedBody.value = !!bodyType.value;
-      initHljs();
     });
 
     return {
@@ -169,8 +154,7 @@ export default {
       viewRawBody,
       rawBody,
       copy,
-      renderedBodyClass,
-      renderedBodyPre,
+      language,
     };
   },
 };

@@ -1,41 +1,43 @@
 <template>
-  <h1>{{ title }}</h1>
+  <div>
+    <h1>{{ title }}</h1>
 
-  <div class="row">
-    <div class="col-md-12 mb-2">
-      <div class="input-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Scenario name (required)"
-          v-model="scenarioForm.scenario"
-        />
+    <div class="row">
+      <div class="col-md-12 mb-2">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Scenario name (required)"
+            v-model="scenarioForm.scenario"
+          />
+        </div>
       </div>
-    </div>
-    <div class="col-md-12 mb-2">
-      <div class="input-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Scenario state (optional)"
-          v-model="scenarioForm.state"
-        />
+      <div class="col-md-12 mb-2">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Scenario state (optional)"
+            v-model="scenarioForm.state"
+          />
+        </div>
       </div>
-    </div>
-    <div class="col-md-12 mb-2">
-      <div class="input-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Scenario hit count (optional)"
-          v-model="scenarioForm.hitCount"
-        />
+      <div class="col-md-12 mb-2">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Scenario hit count (optional)"
+            v-model="scenarioForm.hitCount"
+          />
+        </div>
       </div>
-    </div>
-    <div class="col-md-12 mb-2">
-      <button class="btn btn-success" @click="save" :disabled="saveDisabled">
-        Save
-      </button>
+      <div class="col-md-12 mb-2">
+        <button class="btn btn-success" @click="save" :disabled="saveDisabled">
+          Save
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -45,9 +47,9 @@ import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import { shouldSave } from "@/utils/event";
+import { success } from "@/utils/toast";
 
 export default {
   name: "ScenarioForm",
@@ -79,7 +81,7 @@ export default {
         }
 
         await store.dispatch("scenarios/setScenario", scenarioForm.value);
-        toastr.success(resources.scenarioSetSuccessfully);
+        success(resources.scenarioSetSuccessfully);
         await router.push({ name: "Scenarios" });
       } catch (e) {
         handleHttpError(e);

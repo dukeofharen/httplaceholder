@@ -6,37 +6,23 @@
     resize: vertical;
 }
 
-@include media-breakpoint-up(sm) {
-    .CodeMirror {
-        width: 362px;
-    }
-}
-
-@include media-breakpoint-up(md) {
-    .CodeMirror {
-        width: 553px;
-    }
-}
-
-@include media-breakpoint-up(lg) {
-    .CodeMirror {
-        width: 700px;
-    }
-}
-
-@include media-breakpoint-up(xl) {
-    .CodeMirror {
-        width: 976px;
-    }
-}
-
-@include media-breakpoint-up(xxl) {
-    .CodeMirror {
-        width: 1136px;
-    }
-}
-
 .CodeMirror-gutters {
     background-color: #fff;
     border-right: 0 !important;
+}
+
+.break-word {
+    overflow-wrap: break-word;
+}
+
+@include media-breakpoint-down(sm) {
+    .btn-mobile.full-width {
+        width: 100%;
+    }
+}
+
+@include media-breakpoint-down(lg) {
+    .btn-mobile {
+        margin-bottom: 0.5rem !important;
+    }
 }

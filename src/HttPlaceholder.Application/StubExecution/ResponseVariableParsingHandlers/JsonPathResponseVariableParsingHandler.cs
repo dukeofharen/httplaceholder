@@ -27,7 +27,7 @@ public class JsonPathResponseVariableParsingHandler : IResponseVariableParsingHa
 
     public string Name => "jsonpath";
 
-    public string FullName => "JSONPath variable handler";
+    public string FullName => "JSONPath";
 
     public string Example => "((jsonpath:$.values[1].title))";
 

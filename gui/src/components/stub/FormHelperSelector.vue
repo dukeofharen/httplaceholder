@@ -8,6 +8,14 @@
   </div>
   <div class="row mt-3" v-if="showFormHelperItems">
     <div class="col-md-12">
+      <div class="mb-3">
+        <button
+          class="btn btn-danger btn-mobile full-width"
+          @click="closeFormHelperAndList"
+        >
+          Close list
+        </button>
+      </div>
       <div class="input-group mb-3">
         <input
           type="text"
@@ -15,12 +23,11 @@
           placeholder="Filter form helpers (press 'Escape' to close)..."
           v-model="formHelperFilter"
           ref="formHelperFilterInput"
-          @keyup.esc="closeFormHelperAndList"
         />
       </div>
       <div class="list-group">
         <template v-for="(item, index) in filteredStubFormHelpers" :key="index">
-          <div v-if="item.isMainItem" class="list-group-item fw-bold fs-4">
+          <div v-if="item.isMainItem" class="list-group-item fw-bold fs-3">
             {{ item.title }}
           </div>
           <button
@@ -51,6 +58,30 @@
           <ResponseBodyHelper
             v-if="currentSelectedFormHelper === formHelperKeys.responseBody"
           />
+          <ResponseBodyHelper
+            v-if="
+              currentSelectedFormHelper === formHelperKeys.responseBodyPlainText
+            "
+            :preset-response-body-type="responseBodyTypes.text"
+          />
+          <ResponseBodyHelper
+            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyJson"
+            :preset-response-body-type="responseBodyTypes.json"
+          />
+          <ResponseBodyHelper
+            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyXml"
+            :preset-response-body-type="responseBodyTypes.xml"
+          />
+          <ResponseBodyHelper
+            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyHtml"
+            :preset-response-body-type="responseBodyTypes.html"
+          />
+          <ResponseBodyHelper
+            v-if="
+              currentSelectedFormHelper === formHelperKeys.responseBodyBase64
+            "
+            :preset-response-body-type="responseBodyTypes.base64"
+          />
           <RedirectSelector
             v-if="currentSelectedFormHelper === formHelperKeys.redirect"
           />
@@ -67,8 +98,12 @@
 </template>
 
 <script>
-import { computed, ref, watch } from "vue";
-import { formHelperKeys, stubFormHelpers } from "@/constants/stubFormResources";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import {
+  formHelperKeys,
+  stubFormHelpers,
+  responseBodyTypes,
+} from "@/constants/stubFormResources";
 import { useStore } from "vuex";
 import HttpMethodSelector from "@/components/stub/HttpMethodSelector";
 import TenantSelector from "@/components/stub/TenantSelector";
@@ -78,6 +113,7 @@ import RedirectSelector from "@/components/stub/RedirectSelector";
 import LineEndingSelector from "@/components/stub/LineEndingSelector";
 import ScenarioSelector from "@/components/stub/ScenarioSelector";
 import { useRoute } from "vue-router";
+import { escapePressed } from "@/utils/event";
 
 export default {
   name: "FormHelperSelector",
@@ -156,6 +192,16 @@ export default {
       () => closeFormHelperAndList()
     );
 
+    // Lifecycle
+    const escapeListener = (e) => {
+      if (escapePressed(e)) {
+        e.preventDefault();
+        closeFormHelperAndList();
+      }
+    };
+    onMounted(() => document.addEventListener("keydown", escapeListener));
+    onUnmounted(() => document.removeEventListener("keydown", escapeListener));
+
     return {
       formHelperItems,
       formHelperKeys,
@@ -167,6 +213,7 @@ export default {
       formHelperFilterInput,
       openFormHelperList,
       closeFormHelperAndList,
+      responseBodyTypes,
     };
   },
 };

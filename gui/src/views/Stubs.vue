@@ -3,25 +3,33 @@
     <h1>Stubs</h1>
 
     <div class="col-md-12 mb-3">
-      <button type="button" class="btn btn-success me-2" @click="loadData">
+      <button
+        type="button"
+        class="btn btn-success me-2 btn-mobile full-width"
+        @click="loadData"
+      >
         Refresh
       </button>
-      <router-link :to="{ name: 'StubForm' }" class="btn btn-success me-2"
+      <router-link
+        :to="{ name: 'StubForm' }"
+        class="btn btn-success me-2 btn-mobile full-width"
         >Add stubs</router-link
       >
       <button
-        class="btn btn-success me-2"
+        class="btn btn-success me-2 btn-mobile full-width"
         @click="download"
         title="Download the (filtered) stubs as YAML file."
       >
         Download stubs as YAML
       </button>
-      <router-link :to="{ name: 'ImportStubs' }" class="btn btn-success me-2"
+      <router-link
+        :to="{ name: 'ImportStubs' }"
+        class="btn btn-success me-2 btn-mobile full-width"
         >Import stubs</router-link
       >
       <button
         type="button"
-        class="btn btn-danger"
+        class="btn btn-danger btn-mobile full-width"
         @click="showDeleteAllStubsModal = true"
       >
         Delete all stubs
@@ -37,9 +45,10 @@
 
     <div class="col-md-12 mb-3">
       <button
-        class="btn btn-outline-success btn-sm me-2"
+        class="btn btn-outline-success btn-sm me-2 btn-mobile"
         title="Disable the current selection of stubs"
         @click="showDisableStubsModal = true"
+        :disabled="disableMutationButtons"
       >
         Disable stubs
       </button>
@@ -52,9 +61,10 @@
       />
 
       <button
-        class="btn btn-outline-success btn-sm me-2"
+        class="btn btn-outline-success btn-sm me-2 btn-mobile"
         title="Enable the current selection of stubs"
         @click="showEnableStubsModal = true"
+        :disabled="disableMutationButtons"
       >
         Enable stubs
       </button>
@@ -67,9 +77,10 @@
       />
 
       <button
-        class="btn btn-outline-success btn-sm me-2"
+        class="btn btn-outline-success btn-sm me-2 btn-mobile"
         title="Delete the current selection of stubs"
         @click="showDeleteStubsModal = true"
+        :disabled="disableMutationButtons"
       >
         Delete stubs
       </button>
@@ -117,7 +128,7 @@
       </div>
     </div>
 
-    <accordion>
+    <accordion v-if="stubs.length">
       <Stub
         v-for="stub of filteredStubs"
         :key="stub.stub.id"
@@ -125,6 +136,11 @@
         @deleted="loadData"
       />
     </accordion>
+    <div v-else>
+      No stubs have been added yet. Add a new stub by going to
+      <router-link :to="{ name: 'StubForm' }">Add stubs</router-link> or
+      <router-link :to="{ name: 'ImportStubs' }">Import stubs</router-link>.
+    </div>
   </div>
 </template>
 
@@ -133,12 +149,12 @@ import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { computed, onMounted, ref, watch } from "vue";
 import Stub from "@/components/stub/Stub";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { handleHttpError } from "@/utils/error";
 import { downloadBlob } from "@/utils/download";
 import { getStubFilterForm, setStubFilterForm } from "@/utils/session";
+import { success } from "@/utils/toast";
 
 export default {
   name: "Stubs",
@@ -195,6 +211,7 @@ export default {
 
     // Computed
     const filteredStubs = computed(() => filterStubs(stubs.value));
+    const disableMutationButtons = computed(() => !filteredStubs.value.length);
 
     // Methods
     const loadStubs = async () => {
@@ -208,6 +225,9 @@ export default {
     const loadTenantNames = async () => {
       try {
         tenants.value = await store.dispatch("tenants/getTenantNames");
+        if (!tenants.value.find((t) => t === filter.value.selectedTenantName)) {
+          filter.value.selectedTenantName = "";
+        }
       } catch (e) {
         handleHttpError(e);
       }
@@ -218,7 +238,7 @@ export default {
     const deleteAllStubs = async () => {
       try {
         await store.dispatch("stubs/deleteStubs");
-        toastr.success(resources.stubsDeletedSuccessfully);
+        success(resources.stubsDeletedSuccessfully);
         await loadData();
       } catch (e) {
         handleHttpError(e);
@@ -239,7 +259,7 @@ export default {
       }
 
       await Promise.all(promises);
-      toastr.success(resources.stubsDisabledSuccessfully);
+      success(resources.stubsDisabledSuccessfully);
       await loadData();
     };
     const enableStubs = async () => {
@@ -257,7 +277,7 @@ export default {
       }
 
       await Promise.all(promises);
-      toastr.success(resources.stubsEnabledSuccessfully);
+      success(resources.stubsEnabledSuccessfully);
       await loadData();
     };
     const deleteStubs = async () => {
@@ -275,7 +295,7 @@ export default {
       }
 
       await Promise.all(promises);
-      toastr.success(resources.filteredStubsDeletedSuccessfully);
+      success(resources.filteredStubsDeletedSuccessfully);
       await loadData();
     };
     const download = async () => {
@@ -318,6 +338,7 @@ export default {
       showEnableStubsModal,
       showDeleteStubsModal,
       deleteStubs,
+      disableMutationButtons,
     };
   },
 };

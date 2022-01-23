@@ -1,101 +1,113 @@
 <template>
-  <div class="hint">
-    Select a type of response and fill in the actual response that should be
-    returned and press "Insert".
-  </div>
-
-  <div class="mt-3">
-    <select class="form-select" v-model="responseBodyType">
-      <option value="">Select a response type...</option>
-      <option v-for="item in responseBodyTypeItems" :key="item" :value="item">
-        {{ item }}
-      </option>
-    </select>
-  </div>
-
-  <div v-if="responseBodyType === responseBodyTypes.base64" class="mt-3">
-    <div>
+  <div class="response-body-form">
+    <div v-if="showResponseBodyTypeDropdown">
       <div class="hint">
-        You can upload a <strong>file</strong> for use in the Base64 response or
-        click on "show text input" and insert <strong>plain text</strong> that
-        will be encoded to Base64 on inserting.
+        Select a type of response and fill in the actual response that should be
+        returned and press "Insert".
       </div>
-      <upload-button
-        button-text="Upload a file"
-        @uploaded="onUploaded"
-        result-type="base64"
-      />
-      <button class="btn btn-primary" @click="showBase64TextInput = true">
-        Show text input
-      </button>
-    </div>
-  </div>
 
-  <div class="mt-3" v-if="showDynamicModeRow">
-    <div class="hint">{{ elementDescriptions.dynamicMode }}</div>
-    <div class="form-check mt-2">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        v-model="enableDynamicMode"
-        id="enableDynamicMode"
-      />
-      <label class="form-check-label" for="enableDynamicMode"
-        >Enable dynamic mode</label
-      >
+      <div class="mt-2">
+        <select class="form-select" v-model="responseBodyType">
+          <option value="">Select a response type...</option>
+          <option
+            v-for="item in responseBodyTypeItems"
+            :key="item"
+            :value="item"
+          >
+            {{ item }}
+          </option>
+        </select>
+      </div>
     </div>
-    <div v-if="showVariableParsers" class="mt-2">
-      <select
-        class="form-select"
-        v-model="selectedVariableHandler"
-        @change="insertVariableHandler"
-      >
-        <option value="">
-          Select a variable handler to insert in the response...
-        </option>
-        <option
-          v-for="item of variableParserItems"
-          :key="item.key"
-          :value="item.key"
+
+    <div v-if="responseBodyType === responseBodyTypes.base64">
+      <div>
+        <div class="hint">
+          You can upload a <strong>file</strong> for use in the Base64 response
+          or click on "show text input" and insert
+          <strong>plain text</strong> that will be encoded to Base64 on
+          inserting.
+        </div>
+        <upload-button
+          button-text="Upload a file"
+          @uploaded="onUploaded"
+          result-type="base64"
+        />
+        <button class="btn btn-primary" @click="showBase64TextInput = true">
+          Show text input
+        </button>
+      </div>
+    </div>
+
+    <div v-if="showDynamicModeRow">
+      <div class="form-check mt-2">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          v-model="enableDynamicMode"
+          id="enableDynamicMode"
+        />
+        <label class="form-check-label" for="enableDynamicMode"
+          >Enable dynamic mode</label
         >
-          {{ item.name }}
-        </option>
-      </select>
+      </div>
+      <div v-if="showVariableParsers" class="mt-2">
+        <div class="hint mb-2">{{ elementDescriptions.dynamicMode }}</div>
+        <select
+          class="form-select"
+          v-model="selectedVariableHandler"
+          @change="insertVariableHandler"
+        >
+          <option value="">
+            Select a variable handler to insert in the response...
+          </option>
+          <option
+            v-for="item of variableParserItems"
+            :key="item.key"
+            :value="item.key"
+          >
+            {{ item.name }}
+          </option>
+        </select>
+      </div>
     </div>
-  </div>
 
-  <div v-if="showResponseBody" class="mt-3">
-    <textarea
-      class="form-control"
-      v-model="responseBody"
-      ref="responseBodyField"
-      placeholder="Fill in the response..."
-    ></textarea>
-  </div>
+    <div v-if="showResponseBody">
+      <codemirror
+        ref="codeEditor"
+        v-model="responseBody"
+        :options="cmOptions"
+      />
+    </div>
 
-  <div class="mt-3">
-    <button class="btn btn-success me-2" @click="insert">Insert</button>
-    <button class="btn btn-danger" @click="close">Close</button>
+    <div>
+      <button class="btn btn-danger" @click="close">Close</button>
+    </div>
   </div>
 </template>
 
 <script>
 import {
-  responseBodyTypes,
   elementDescriptions,
+  responseBodyTypes,
 } from "@/constants/stubFormResources";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
+import { fromBase64, toBase64 } from "@/utils/text";
 
 export default {
   name: "ResponseBodyHelper",
-  setup() {
+  props: {
+    presetResponseBodyType: {
+      type: String,
+    },
+  },
+  setup(props) {
     const store = useStore();
 
     // Refs
-    const uploadField = ref(null);
-    const responseBodyField = ref(null);
+    const codeEditor = ref(null);
 
     // Data
     const responseBodyType = ref("");
@@ -107,6 +119,13 @@ export default {
     );
     const metadata = ref(null);
     const selectedVariableHandler = ref("");
+    const cmOptions = ref({
+      tabSize: 4,
+      mode: "",
+      lineNumbers: true,
+      line: true,
+    });
+    let setInputTimeout = null;
 
     // Computed
     const showDynamicModeRow = computed(
@@ -115,15 +134,27 @@ export default {
     const showVariableParsers = computed(
       () => showDynamicModeRow.value && enableDynamicMode.value
     );
+    const showResponseBodyTypeDropdown = computed(
+      () => !props.presetResponseBodyType
+    );
     const variableParserItems = computed(() => {
       if (!metadata.value || !metadata.value.variableHandlers) {
         return [];
       }
 
-      return metadata.value.variableHandlers.map((h) => ({
+      const result = metadata.value.variableHandlers.map((h) => ({
         key: h.name,
         name: h.fullName,
+        example: h.example,
       }));
+
+      result.sort((a, b) => {
+        if (a.name > b.name) return 1;
+        if (a.name < b.name) return -1;
+        return 0;
+      });
+
+      return result;
     });
     const showResponseBody = computed(
       () =>
@@ -133,7 +164,6 @@ export default {
 
     // Methods
     const onUploaded = (file) => {
-      console.log(file.result);
       const regex = /^data:(.+);base64,(.*)$/;
       const matches = file.result.match(regex);
       const contentType = matches[1];
@@ -148,24 +178,18 @@ export default {
       showBase64TextInput.value = false;
     };
     const insertVariableHandler = () => {
-      const handler = metadata.value.variableHandlers.find(
-        (h) => h.name === selectedVariableHandler.value
-      );
-      setTimeout(() => (selectedVariableHandler.value = ""), 10);
-      const cursorPosition = responseBodyField.value.selectionStart;
-      responseBody.value = [
-        responseBody.value.slice(0, cursorPosition),
-        handler.example,
-        responseBody.value.slice(cursorPosition),
-      ].join("");
-    };
-    const close = () => {
-      store.commit("stubForm/closeFormHelper");
+      if (codeEditor.value && codeEditor.value.replaceSelection) {
+        const handler = metadata.value.variableHandlers.find(
+          (h) => h.name === selectedVariableHandler.value
+        );
+        setTimeout(() => (selectedVariableHandler.value = ""), 10);
+        codeEditor.value.replaceSelection(handler.example);
+      }
     };
     const insert = () => {
       let responseBodyResult = responseBody.value;
       if (responseBodyType.value === responseBodyTypes.base64) {
-        responseBodyResult = btoa(responseBodyResult);
+        responseBodyResult = toBase64(responseBodyResult);
       }
 
       store.commit("stubForm/setResponseBody", {
@@ -173,16 +197,23 @@ export default {
         body: responseBodyResult,
       });
       store.commit("stubForm/setDynamicMode", enableDynamicMode.value);
-      showBase64TextInput.value = false;
-      close();
+    };
+    const close = () => {
+      insert();
+      store.commit("stubForm/closeFormHelper");
     };
 
     // Lifecycle
     onMounted(async () => {
-      responseBodyType.value = store.getters["stubForm/getResponseBodyType"];
+      responseBodyType.value =
+        props.presetResponseBodyType ||
+        store.getters["stubForm/getResponseBodyType"];
       let currentResponseBody = store.getters["stubForm/getResponseBody"];
       if (responseBodyType.value === responseBodyTypes.base64) {
-        currentResponseBody = atob(currentResponseBody);
+        const decodedBase64 = fromBase64(currentResponseBody);
+        if (decodedBase64) {
+          currentResponseBody = decodedBase64;
+        }
       }
 
       responseBody.value = currentResponseBody;
@@ -191,7 +222,34 @@ export default {
       } catch (e) {
         handleHttpError(e);
       }
+
       enableDynamicMode.value = store.getters["stubForm/getDynamicMode"];
+    });
+
+    // Watch
+    watch(responseBodyType, () => {
+      cmOptions.value.htmlMode = false;
+      cmOptions.value.mode = "";
+      switch (responseBodyType.value) {
+        case responseBodyTypes.html:
+          cmOptions.value.htmlMode = true;
+          cmOptions.value.mode = "text/html";
+          break;
+        case responseBodyTypes.xml:
+          cmOptions.value.htmlMode = false;
+          cmOptions.value.mode = "application/xml";
+          break;
+        case responseBodyTypes.json:
+          cmOptions.value.mode = { name: "javascript", json: true };
+          break;
+      }
+    });
+    watch(responseBody, () => {
+      if (setInputTimeout) {
+        clearTimeout(setInputTimeout);
+      }
+
+      setInputTimeout = setTimeout(() => insert(), 100);
     });
 
     return {
@@ -200,7 +258,6 @@ export default {
       responseBodyTypeItems,
       showDynamicModeRow,
       responseBodyTypes,
-      uploadField,
       elementDescriptions,
       showBase64TextInput,
       showVariableParsers,
@@ -210,9 +267,11 @@ export default {
       showResponseBody,
       insert,
       insertVariableHandler,
-      responseBodyField,
       close,
       onUploaded,
+      showResponseBodyTypeDropdown,
+      cmOptions,
+      codeEditor,
     };
   },
 };
@@ -221,5 +280,9 @@ export default {
 <style scoped>
 .hint {
   font-size: 0.9em;
+}
+
+.response-body-form > div:not(:first-child) {
+  margin-top: 1rem !important;
 }
 </style>

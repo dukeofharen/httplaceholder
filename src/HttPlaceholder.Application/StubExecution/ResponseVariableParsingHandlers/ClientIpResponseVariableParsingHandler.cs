@@ -19,7 +19,7 @@ public class ClientIpResponseVariableParsingHandler : IResponseVariableParsingHa
 
     public string Name => "client_ip";
 
-    public string FullName => "Client IP variable handler";
+    public string FullName => "Client IP";
 
     public string Example => "((client_ip))";
 

@@ -5,7 +5,7 @@
       <button
         v-for="tab of tabs"
         :key="tab"
-        class="btn me-2 tab-button"
+        class="btn me-2 tab-button btn-mobile full-width"
         :class="{
           'btn-outline-success': selectedTab !== tab,
           'btn-success': selectedTab === tab,

@@ -19,7 +19,7 @@ public class EncodedQueryStringResponseVariableParsingHandler : IResponseVariabl
 
     public string Name => "query_encoded";
 
-    public string FullName => "URL encoded query string variable handler";
+    public string FullName => "URL encoded query string";
 
     public string Example => "((query_encoded:query_string_key))";
 

@@ -11,7 +11,7 @@
         <div class="row mb-3">
           <div class="col-md-12">
             <router-link
-              class="btn btn-success btn-sm me-2"
+              class="btn btn-success btn-sm me-2 btn-mobile"
               title="View all requests made for this stub"
               :to="{
                 name: 'Requests',
@@ -20,7 +20,7 @@
               >Requests
             </router-link>
             <button
-              class="btn btn-success btn-sm me-2"
+              class="btn btn-success btn-sm me-2 btn-mobile"
               title="Duplicate this stub"
               @click="duplicate"
             >
@@ -28,7 +28,7 @@
             </button>
             <router-link
               v-if="!isReadOnly"
-              class="btn btn-success btn-sm me-2"
+              class="btn btn-success btn-sm me-2 btn-mobile"
               title="Update this stub"
               :to="{
                 name: 'StubForm',
@@ -38,7 +38,7 @@
             </router-link>
             <button
               v-if="!isReadOnly"
-              class="btn btn-success btn-sm me-2"
+              class="btn btn-success btn-sm me-2 btn-mobile"
               :title="enableDisableTitle"
               @click="enableOrDisable"
             >
@@ -46,13 +46,13 @@
             </button>
             <router-link
               v-if="hasScenario"
-              class="btn btn-success btn-sm me-2"
+              class="btn btn-success btn-sm me-2 btn-mobile"
               :to="{ name: 'ScenarioForm', params: { scenario: scenario } }"
               >Set scenario</router-link
             >
             <button
               v-if="!isReadOnly"
-              class="btn btn-danger btn-sm me-2"
+              class="btn btn-danger btn-sm me-2 btn-mobile"
               title="Delete the stub"
               @click="showDeleteModal = true"
             >
@@ -68,7 +68,7 @@
             />
           </div>
         </div>
-        <pre ref="codeBlock" class="language-yaml">{{ stubYaml }}</pre>
+        <code-highlight language="yaml" :code="stubYaml" />
       </div>
     </template>
   </accordion-item>
@@ -78,13 +78,12 @@
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import yaml from "js-yaml";
-import toastr from "toastr";
-import hljs from "highlight.js/lib/core";
 import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
 import { useRouter } from "vue-router";
 import dayjs from "dayjs";
 import { handleHttpError } from "@/utils/error";
+import { success } from "@/utils/toast";
 
 export default {
   name: "Stub",
@@ -98,19 +97,9 @@ export default {
     const store = useStore();
     const router = useRouter();
 
-    // Refs
-    const codeBlock = ref(null);
-
     // Functions
     const getStubId = () => props.overviewStub.stub.id;
     const isEnabled = () => props.overviewStub.stub.enabled;
-    const initHljs = () => {
-      setTimeout(() => {
-        if (codeBlock.value) {
-          hljs.highlightElement(codeBlock.value);
-        }
-      }, 10);
-    };
 
     // Data
     const overviewStubValue = ref(props.overviewStub);
@@ -154,8 +143,6 @@ export default {
       if (!fullStub.value) {
         try {
           fullStub.value = await store.dispatch("stubs/getStub", getStubId());
-          console.log(JSON.stringify(fullStub.value));
-          initHljs();
 
           // Sadly, when doing this without the timeout, it does the slide down incorrect.
           setTimeout(() => (accordionOpened.value = true), 1);
@@ -179,7 +166,6 @@ export default {
         const enabled = await store.dispatch("stubs/flipEnabled", getStubId());
         fullStub.value.stub.enabled = enabled;
         overviewStubValue.value.stub.enabled = enabled;
-        initHljs();
       } catch (e) {
         handleHttpError(e);
       }
@@ -187,7 +173,7 @@ export default {
     const deleteStub = async () => {
       try {
         await store.dispatch("stubs/deleteStub", getStubId());
-        toastr.success(resources.stubDeletedSuccessfully);
+        success(resources.stubDeletedSuccessfully);
         showDeleteModal.value = false;
         emit("deleted");
       } catch (e) {
@@ -211,7 +197,6 @@ export default {
       id,
       enabled,
       accordionOpened,
-      codeBlock,
       hasScenario,
       scenario,
     };

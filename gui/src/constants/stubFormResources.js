@@ -41,6 +41,12 @@ const elementDescriptions = {
   statusCode:
     "Defines the HTTP status code that should be returned. Default is HTTP 200 (OK).",
   responseBody: "Provide the body that should be added to the response.",
+  responseBodyPlainText: "Let the stub return a plain text response.",
+  responseBodyJson: "Let the stub return a JSON response.",
+  responseBodyXml: "Let the stub return an XML response.",
+  responseBodyHtml: "Let the stub return an HTML response.",
+  responseBodyBase64:
+    "Let the stub return a binary in the form of Base64. When executing the stub, the Base64 string will be decoded and returned to the client.",
   responseHeaders:
     "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'.",
   responseContentType: "This sets the Content-Type response header.",
@@ -428,6 +434,11 @@ const formHelperKeys = {
   httpMethod: "httpMethod",
   statusCode: "statusCode",
   responseBody: "responseBody",
+  responseBodyPlainText: "responseBodyPlainText",
+  responseBodyJson: "responseBodyJson",
+  responseBodyXml: "responseBodyXml",
+  responseBodyHtml: "responseBodyHtml",
+  responseBodyBase64: "responseBodyBase64",
   redirect: "redirect",
   lineEndings: "lineEndings",
   scenario: "scenario",
@@ -516,7 +527,7 @@ const stubFormHelpers = [
     defaultValueMutation: "stubForm/setDefaultRequestHeaders",
   },
   {
-    title: "Body",
+    title: "Request body",
     subTitle: elementDescriptions.body,
     defaultValueMutation: "stubForm/setDefaultRequestBody",
   },
@@ -588,6 +599,31 @@ const stubFormHelpers = [
     title: "Response body",
     subTitle: elementDescriptions.responseBody,
     formHelperToOpen: formHelperKeys.responseBody,
+  },
+  {
+    title: "Plain text body",
+    subTitle: elementDescriptions.responseBodyPlainText,
+    formHelperToOpen: formHelperKeys.responseBodyPlainText,
+  },
+  {
+    title: "JSON body",
+    subTitle: elementDescriptions.responseBodyJson,
+    formHelperToOpen: formHelperKeys.responseBodyJson,
+  },
+  {
+    title: "XML body",
+    subTitle: elementDescriptions.responseBodyXml,
+    formHelperToOpen: formHelperKeys.responseBodyXml,
+  },
+  {
+    title: "HTML body",
+    subTitle: elementDescriptions.responseBodyHtml,
+    formHelperToOpen: formHelperKeys.responseBodyHtml,
+  },
+  {
+    title: "Base64 (binary) body",
+    subTitle: elementDescriptions.responseBodyBase64,
+    formHelperToOpen: formHelperKeys.responseBodyBase64,
   },
   {
     title: "Response headers",

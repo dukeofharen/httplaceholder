@@ -1,9 +1,11 @@
 <template>
   <accordion-item @buttonClicked="showDetails" :opened="accordionOpened">
     <template v-slot:button-text>
-      <span>
+      <span class="request-header">
         <Method :method="overviewRequest.method" />
-        <span class="ms-sm-1">{{ overviewRequest.url }}</span>
+        <span class="ms-sm-1 request-url" :title="overviewRequest.url">{{
+          overviewRequest.url
+        }}</span>
         <span class="ms-sm-1">
           <span>(</span>
           <span
@@ -44,7 +46,6 @@
 <script>
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useStore } from "vuex";
-import toastr from "toastr";
 import { formatDateTime, formatFromNow } from "@/utils/datetime";
 import { handleHttpError } from "@/utils/error";
 import { setIntermediateStub } from "@/utils/session";
@@ -53,6 +54,7 @@ import RequestDetails from "@/components/request/RequestDetails";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { useRouter } from "vue-router";
+import { success } from "@/utils/toast";
 
 export default {
   name: "Request",
@@ -128,7 +130,7 @@ export default {
     const deleteRequest = async () => {
       try {
         await store.dispatch("requests/deleteRequest", correlationId());
-        toastr.success(resources.requestDeletedSuccessfully);
+        success(resources.requestDeletedSuccessfully);
         emit("deleted");
       } catch (e) {
         handleHttpError(e);
@@ -150,4 +152,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.request-header {
+  width: 100%;
+}
+
+.request-url {
+  overflow-wrap: break-word;
+  width: 100%;
+}
+</style>

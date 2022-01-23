@@ -64,4 +64,8 @@ export default {
 .accordion-button::after {
   background-image: none;
 }
+
+.accordion-item {
+  overflow-x: hidden;
+}
 </style>

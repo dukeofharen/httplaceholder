@@ -41,10 +41,10 @@
 <script>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
+import { error } from "@/utils/toast";
 
 export default {
   name: "Login",
@@ -73,7 +73,7 @@ export default {
         await router.push({ name: "Requests" });
       } catch (e) {
         if (e.status === 401) {
-          toastr.error(resources.credentialsIncorrect);
+          error(resources.credentialsIncorrect);
         } else {
           handleHttpError(e);
         }

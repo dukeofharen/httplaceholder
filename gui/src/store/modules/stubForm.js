@@ -1,16 +1,16 @@
 import yaml from "js-yaml";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
 import {
   defaultValues,
   responseBodyTypes,
 } from "@/constants/stubFormResources";
+import { error } from "@/utils/toast";
 
 const parseInput = (state) => {
   try {
     return yaml.load(state.input);
   } catch (e) {
-    toastr.error(resources.errorDuringParsingOfYaml.format(e));
+    error(resources.errorDuringParsingOfYaml.format(e));
     return null;
   }
 };
@@ -19,7 +19,7 @@ const handle = (func) => {
   try {
     return func();
   } catch (e) {
-    toastr.error(resources.errorDuringParsingOfYaml.format(e));
+    error(resources.errorDuringParsingOfYaml.format(e));
     return null;
   }
 };

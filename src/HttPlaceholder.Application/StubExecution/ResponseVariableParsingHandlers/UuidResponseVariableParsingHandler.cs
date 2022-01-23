@@ -12,7 +12,7 @@ public class UuidResponseVariableParsingHandler : IResponseVariableParsingHandle
 {
     public string Name => "uuid";
 
-    public string FullName => "Variable handler for inserting UUID";
+    public string FullName => "UUID";
 
     public string Example => "((uuid))";
 

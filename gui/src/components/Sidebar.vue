@@ -1,10 +1,9 @@
 <template>
-  <div class="col-auto col-md-3 col-xl-2 px-md-2 px-0 bg-dark">
-    <div
-      class="d-flex flex-column align-items-stretch flex-shrink-0 min-vh-100"
-    >
+  <div class="col-2 col-sm-3 col-md-2 col-xl-2 col-lg-2 px-md-2 px-0 bg-dark">
+    <div class="d-flex flex-column flex-shrink-0 min-vh-100">
       <a
-        href="/"
+        href="https://httplaceholder.com"
+        target="_blank"
         class="
           d-flex
           align-items-center
@@ -119,6 +118,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// Required
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
 .logo img {
   max-width: 100%;
 }

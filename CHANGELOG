@@ -1,3 +1,22 @@
+[1.4.0]
+- Use Roboto Mono as font for user interface.
+- Fixed bug in tenant filtering of requests and stubs screen.
+- When a single stub has been generated and will be opened in the stub form, place it in the stub form as a single stub.
+- Added separate stub form helpers for JSON, XML, HTML, plain text and Base64.
+- Added CodeMirror editor input for response body helpers.
+- When updating the response body using one of the response body helpers, immediately insert the body in the stub.
+- Added placeholder text when there are no requests or stubs.
+- Disable mutation buttons on stubs screen when no stubs are currently visible.
+- Animate on routing.
+- Renamed a few variable handlers to more logical names.
+- Fixed spacing bug with sidebar and main content. The content now does not go outside of the main content anymore.
+- When URL in request is too long, break it up instead of letting it go outside of the current view.
+- Many changes to make the UI more mobile friendly (fixed the sidebar, fixed the stub form etc.)
+- Small fixes for PWA.
+
+# BREAKING CHANGES
+-
+
 [1.3.0]
 - Small UI changes (https://github.com/dukeofharen/httplaceholder/pull/209)
     - Added upload buttons to the "Import cURL command(s)" and "Import HTTP archive (HAR)" screens.

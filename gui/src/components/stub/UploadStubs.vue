@@ -14,10 +14,10 @@
 <script>
 import { getExtension } from "@/utils/file";
 import { resources } from "@/constants/resources";
-import toastr from "toastr";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
+import { success, warning } from "@/utils/toast";
 
 const expectedExtensions = ["yml", "yaml"];
 
@@ -33,7 +33,7 @@ export default {
     // Methods
     const onUploaded = async (file) => {
       if (!expectedExtensions.includes(getExtension(file.filename))) {
-        toastr.warning(
+        warning(
           resources.uploadInvalidFiles.format(file.filename) +
             " " +
             resources.onlyUploadYmlFiles
@@ -50,7 +50,7 @@ export default {
     const addStubs = async (input, filename) => {
       try {
         await store.dispatch("stubs/addStubs", input);
-        toastr.success(resources.stubsInFileAddedSuccessfully.format(filename));
+        success(resources.stubsInFileAddedSuccessfully.format(filename));
         if (reloadHandle) {
           clearTimeout(reloadHandle);
         }

@@ -5,6 +5,7 @@
 <script>
 import { onMounted, ref, watch } from "vue";
 import CodeMirror from "codemirror";
+import { useStore } from "vuex";
 
 export default {
   name: "CodeMirror",
@@ -19,6 +20,8 @@ export default {
     },
   },
   setup(props, { emit }) {
+    const store = useStore();
+
     // Refs
     const editor = ref(null);
 
@@ -28,15 +31,8 @@ export default {
     // Variables
     let cmInstance;
 
-    // Watch
-    watch(props, (newProps) => {
-      if (cmInstance && cmInstance.getValue() !== newProps.modelValue) {
-        cmInstance.setValue(newProps.modelValue);
-      }
-    });
-
-    // Lifecycle
-    onMounted(() => {
+    // Methods
+    const initializeCodemirror = () => {
       cmInstance = CodeMirror.fromTextArea(editor.value, props.options);
       cmInstance.on("change", () =>
         emit("update:modelValue", cmInstance.getValue())
@@ -48,9 +44,42 @@ export default {
           cm.replaceSelection(spaces);
         },
       });
-    });
+      if (store.getters["general/getDarkTheme"]) {
+        cmInstance.setOption("theme", "material-darker");
+      }
+    };
+    const replaceSelection = (replacement, selection) => {
+      if (cmInstance) {
+        cmInstance.replaceSelection(replacement, selection);
+      }
+    };
 
-    return { contents, editor };
+    // Watch
+    watch(
+      () => props.modelValue,
+      (newModelValue) => {
+        if (cmInstance && cmInstance.getValue() !== newModelValue) {
+          cmInstance.setValue(newModelValue);
+        }
+      }
+    );
+    watch(
+      () => props.options,
+      () => {
+        if (cmInstance && props.options) {
+          const cleanOptions = JSON.parse(JSON.stringify(props.options));
+          for (const key of Object.keys(cleanOptions)) {
+            cmInstance.setOption(key, cleanOptions[key]);
+          }
+        }
+      },
+      { deep: true }
+    );
+
+    // Lifecycle
+    onMounted(() => initializeCodemirror());
+
+    return { contents, editor, replaceSelection };
   },
 };
 </script>

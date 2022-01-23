@@ -1,54 +1,61 @@
 <template>
-  <h1>Scenarios</h1>
+  <div>
+    <h1>Scenarios</h1>
 
-  <div class="col-md-12 mb-3">
-    <router-link class="btn btn-success me-2" :to="{ name: 'ScenarioForm' }"
-      >Add scenario
-    </router-link>
-    <button class="btn btn-danger" @click="clearAllScenariosModal = true">
-      Clear all scenarios
-    </button>
-    <modal
-      title="Clear all scenarios?"
-      bodyText="The scenarios can't be recovered."
-      :yes-click-function="clearAllScenarios"
-      :show-modal="clearAllScenariosModal"
-      @close="clearAllScenariosModal = false"
-    />
-  </div>
-
-  <div class="col-md-12">
-    <ul class="list-group">
-      <li
-        v-for="scenario of filteredScenarios"
-        :key="scenario.scenario"
-        class="list-group-item list-group-item-action"
+    <div class="col-md-12 mb-3">
+      <router-link
+        class="btn btn-success me-2 btn-mobile full-width"
+        :to="{ name: 'ScenarioForm' }"
+        >Add scenario
+      </router-link>
+      <button
+        class="btn btn-danger btn-mobile full-width"
+        @click="clearAllScenariosModal = true"
       >
-        <div>
-          <span class="fw-bold">{{ scenario.scenario }}</span
-          ><br />
-          State: {{ scenario.state }}<br />
-          Hit count: {{ scenario.hitCount }}
-        </div>
-        <div>
-          <router-link
-            class="btn btn-success btn-sm me-2"
-            :to="{
-              name: 'ScenarioForm',
-              params: { scenario: scenario.scenario },
-            }"
-          >
-            Update
-          </router-link>
-          <button
-            class="btn btn-danger btn-sm"
-            @click="deleteScenario(scenario.scenario)"
-          >
-            Delete
-          </button>
-        </div>
-      </li>
-    </ul>
+        Clear all scenarios
+      </button>
+      <modal
+        title="Clear all scenarios?"
+        bodyText="The scenarios can't be recovered."
+        :yes-click-function="clearAllScenarios"
+        :show-modal="clearAllScenariosModal"
+        @close="clearAllScenariosModal = false"
+      />
+    </div>
+
+    <div class="col-md-12">
+      <ul class="list-group">
+        <li
+          v-for="scenario of filteredScenarios"
+          :key="scenario.scenario"
+          class="list-group-item list-group-item-action"
+        >
+          <div>
+            <span class="fw-bold">{{ scenario.scenario }}</span
+            ><br />
+            State: {{ scenario.state }}<br />
+            Hit count: {{ scenario.hitCount }}
+          </div>
+          <div>
+            <router-link
+              class="btn btn-success btn-sm me-2"
+              :to="{
+                name: 'ScenarioForm',
+                params: { scenario: scenario.scenario },
+              }"
+            >
+              Update
+            </router-link>
+            <button
+              class="btn btn-danger btn-sm"
+              @click="deleteScenario(scenario.scenario)"
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -56,8 +63,8 @@
 import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
-import toastr from "toastr";
 import { resources } from "@/constants/resources";
+import { success } from "@/utils/toast";
 
 export default {
   name: "Scenarios",
@@ -91,7 +98,7 @@ export default {
     const clearAllScenarios = async () => {
       try {
         await store.dispatch("scenarios/deleteAllScenarios");
-        toastr.success(resources.scenariosDeletedSuccessfully);
+        success(resources.scenariosDeletedSuccessfully);
         await loadScenarios();
       } catch (e) {
         handleHttpError(e);
@@ -100,7 +107,7 @@ export default {
     const deleteScenario = async (scenario) => {
       try {
         await store.dispatch("scenarios/deleteScenario", scenario);
-        toastr.success(resources.scenarioDeletedSuccessfully);
+        success(resources.scenarioDeletedSuccessfully);
         await loadScenarios();
       } catch (e) {
         handleHttpError(e);

@@ -71,6 +71,10 @@
   - [Requests page](#requests-page)
   - [Stubs page](#stubs-page)
   - [Import stubs](#import-stubs)
+    - [Upload stubs](#upload-stubs)
+    - [Import cURL commands](#import-curl-commands)
+    - [Import HTTP archive (HAR)](#import-http-archive-har)
+    - [Import OpenAPI definition](#import-openapi-definition)
   - [Add stub(s) form](#add-stubs-form)
   - [Scenarios](#scenarios-page)
   - [Settings page](#settings-page)
@@ -83,7 +87,7 @@ Follow these steps to install / update HttPlaceholder. If you update HttPlacehol
 
 ## Dotnet global tool (cross platform)
 
-Make sure you have installed the correct .NET SDK (at least .NET 6) for your OS (see https://dotnet.microsoft.com/download). When the .NET SDK is installed, run `dotnet tool install --global httplaceholder` to install HttPlaceholder.
+Make sure you have installed the correct .NET SDK (at least .NET 6) for your OS (see https://dotnet.microsoft.com/download). When the .NET SDK is installed, run `dotnet tool install --global HttPlaceholder --version "1.*"` to install HttPlaceholder.
 
 ## Windows
 
@@ -1650,7 +1654,7 @@ Finally, there is also a reverse proxy setting called `replaceRootUrl` (which is
 
 # REST API
 
-Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to four collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection and scenario collection.
+Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to the following collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection, scenario collection and import collection.
 
 Click [here](https://github.com/dukeofharen/httplaceholder/releases/latest) if you want the swagger.json file. Using this swagger.json file, you can easily create a REST client for your favourite programming language (e.g. using a tool like [autorest](https://github.com/Azure/autorest)).
 
@@ -2273,4 +2277,8 @@ var createdStub = await client.CreateStubAsync(StubBuilder.Begin()
 ...
 ```
 
-This method is a bit shorter and is more readable.
+This method is a bit shorter and is more readable.              
+
+---
+
+&copy; 2022 [Ducode.org](https://ducode.org)

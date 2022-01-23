@@ -2,12 +2,16 @@
   <div>
     <h1>Requests</h1>
     <div class="col-md-12 mb-3">
-      <button type="button" class="btn btn-success me-2" @click="loadRequests">
+      <button
+        type="button"
+        class="btn btn-success me-2 btn-mobile full-width"
+        @click="loadRequests"
+      >
         Refresh
       </button>
       <button
         type="button"
-        class="btn btn-danger"
+        class="btn btn-danger btn-mobile full-width"
         @click="showDeleteAllRequestsModal = true"
       >
         Delete all requests
@@ -54,7 +58,7 @@
         </button>
       </div>
     </div>
-    <accordion>
+    <accordion v-if="requests.length">
       <Request
         v-for="request of filteredRequests"
         :key="request.correlationId"
@@ -62,6 +66,10 @@
         @deleted="loadRequests"
       />
     </accordion>
+    <div v-else>
+      No requests have been made to HttPlaceholder yet. Perform HTTP requests
+      and you will see the requests appearing on this page.
+    </div>
   </div>
 </template>
 
@@ -71,10 +79,10 @@ import { useRoute } from "vue-router";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import Request from "@/components/request/Request";
 import { resources } from "@/constants/resources";
-import toastr from "toastr";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { handleHttpError } from "@/utils/error";
 import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
+import { success } from "@/utils/toast";
 
 export default {
   name: "Requests",
@@ -154,6 +162,9 @@ export default {
     const loadTenantNames = async () => {
       try {
         tenants.value = await store.dispatch("tenants/getTenantNames");
+        if (!tenants.value.find((t) => t === filter.value.selectedTenantName)) {
+          filter.value.selectedTenantName = "";
+        }
       } catch (e) {
         handleHttpError(e);
       }
@@ -161,7 +172,7 @@ export default {
     const deleteAllRequests = async () => {
       try {
         await store.dispatch("requests/clearRequests");
-        toastr.success(resources.requestsDeletedSuccessfully);
+        success(resources.requestsDeletedSuccessfully);
         await loadRequests();
       } catch (e) {
         handleHttpError(e);

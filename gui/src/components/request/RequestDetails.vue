@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12 mb-3">
         <label>URL</label>
-        <span>{{ requestParams.url }}</span>
+        <pre class="request-url"><code>{{ requestParams.url }}</code></pre>
       </div>
       <div class="col-md-12 mb-3">
         <label>Client IP</label>
@@ -132,5 +132,9 @@ export default {
 label {
   display: block;
   font-weight: bold;
+}
+
+.request-url {
+  margin-bottom: 0;
 }
 </style>
