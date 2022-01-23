@@ -1,55 +1,57 @@
 <template>
-  <h1>{{ title }}</h1>
+  <div>
+    <h1>{{ title }}</h1>
 
-  <div class="row">
-    <div class="col-md-12">
-      Fill in the stub below in YAML format and click on "Save". For examples,
-      visit
-      <a href="https://github.com/dukeofharen/httplaceholder" target="_blank"
-        >https://github.com/dukeofharen/httplaceholder</a
-      >.
+    <div class="row">
+      <div class="col-md-12">
+        Fill in the stub below in YAML format and click on "Save". For examples,
+        visit
+        <a href="https://github.com/dukeofharen/httplaceholder" target="_blank"
+          >https://github.com/dukeofharen/httplaceholder</a
+        >.
+      </div>
     </div>
-  </div>
 
-  <FormHelperSelector v-if="showFormHelperSelector" />
+    <FormHelperSelector v-if="showFormHelperSelector" />
 
-  <div class="row mt-3">
-    <div class="col-md-12">
-      <button
-        class="btn btn-outline btn-sm me-2"
-        :class="{
-          'btn-outline-success': editorType === editorTypes.codemirror,
-        }"
-        @click="selectedEditorType = editorTypes.codemirror"
-        title="Use advanced editor for editing the stub. The editor has code highlighting but is not suited for updating large stubs."
-      >
-        Advanced editor
-      </button>
-      <button
-        class="btn btn-outline btn-sm"
-        :class="{
-          'btn-outline-success': editorType === editorTypes.simple,
-        }"
-        @click="selectedEditorType = editorTypes.simple"
-        title="Use simple editor for editing the stub. The editor has no code highlighting but is suited for updating large stubs."
-      >
-        Simple editor
-      </button>
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <button
+          class="btn btn-outline btn-sm me-2"
+          :class="{
+            'btn-outline-success': editorType === editorTypes.codemirror,
+          }"
+          @click="selectedEditorType = editorTypes.codemirror"
+          title="Use advanced editor for editing the stub. The editor has code highlighting but is not suited for updating large stubs."
+        >
+          Advanced editor
+        </button>
+        <button
+          class="btn btn-outline btn-sm"
+          :class="{
+            'btn-outline-success': editorType === editorTypes.simple,
+          }"
+          @click="selectedEditorType = editorTypes.simple"
+          title="Use simple editor for editing the stub. The editor has no code highlighting but is suited for updating large stubs."
+        >
+          Simple editor
+        </button>
+      </div>
     </div>
-  </div>
 
-  <div class="row mt-3">
-    <div class="col-md-12" v-if="editorType === editorTypes.codemirror">
-      <codemirror v-model="input" :options="cmOptions" />
+    <div class="row mt-3">
+      <div class="col-md-12" v-if="editorType === editorTypes.codemirror">
+        <codemirror v-model="input" :options="cmOptions" />
+      </div>
+      <div class="col-md-12" v-if="editorType === editorTypes.simple">
+        <simple-editor v-model="input" />
+      </div>
     </div>
-    <div class="col-md-12" v-if="editorType === editorTypes.simple">
-      <simple-editor v-model="input" />
-    </div>
-  </div>
 
-  <div class="row mt-3">
-    <div class="col-md-12">
-      <StubFormButtons v-model="stubId" />
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <StubFormButtons v-model="stubId" />
+      </div>
     </div>
   </div>
 </template>

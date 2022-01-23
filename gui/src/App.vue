@@ -3,7 +3,11 @@
     <div class="row flex-nowrap">
       <Sidebar />
       <div class="col py-3 main-body">
-        <router-view />
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
       </div>
     </div>
   </div>
@@ -65,5 +69,15 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Roboto Mono", sans-serif !important;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.1s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

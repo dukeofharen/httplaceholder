@@ -1,41 +1,43 @@
 <template>
-  <h1>{{ title }}</h1>
+  <div>
+    <h1>{{ title }}</h1>
 
-  <div class="row">
-    <div class="col-md-12 mb-2">
-      <div class="input-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Scenario name (required)"
-          v-model="scenarioForm.scenario"
-        />
+    <div class="row">
+      <div class="col-md-12 mb-2">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Scenario name (required)"
+            v-model="scenarioForm.scenario"
+          />
+        </div>
       </div>
-    </div>
-    <div class="col-md-12 mb-2">
-      <div class="input-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Scenario state (optional)"
-          v-model="scenarioForm.state"
-        />
+      <div class="col-md-12 mb-2">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Scenario state (optional)"
+            v-model="scenarioForm.state"
+          />
+        </div>
       </div>
-    </div>
-    <div class="col-md-12 mb-2">
-      <div class="input-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Scenario hit count (optional)"
-          v-model="scenarioForm.hitCount"
-        />
+      <div class="col-md-12 mb-2">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Scenario hit count (optional)"
+            v-model="scenarioForm.hitCount"
+          />
+        </div>
       </div>
-    </div>
-    <div class="col-md-12 mb-2">
-      <button class="btn btn-success" @click="save" :disabled="saveDisabled">
-        Save
-      </button>
+      <div class="col-md-12 mb-2">
+        <button class="btn btn-success" @click="save" :disabled="saveDisabled">
+          Save
+        </button>
+      </div>
     </div>
   </div>
 </template>

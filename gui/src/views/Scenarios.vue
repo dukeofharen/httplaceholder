@@ -1,54 +1,56 @@
 <template>
-  <h1>Scenarios</h1>
+  <div>
+    <h1>Scenarios</h1>
 
-  <div class="col-md-12 mb-3">
-    <router-link class="btn btn-success me-2" :to="{ name: 'ScenarioForm' }"
-      >Add scenario
-    </router-link>
-    <button class="btn btn-danger" @click="clearAllScenariosModal = true">
-      Clear all scenarios
-    </button>
-    <modal
-      title="Clear all scenarios?"
-      bodyText="The scenarios can't be recovered."
-      :yes-click-function="clearAllScenarios"
-      :show-modal="clearAllScenariosModal"
-      @close="clearAllScenariosModal = false"
-    />
-  </div>
+    <div class="col-md-12 mb-3">
+      <router-link class="btn btn-success me-2" :to="{ name: 'ScenarioForm' }"
+        >Add scenario
+      </router-link>
+      <button class="btn btn-danger" @click="clearAllScenariosModal = true">
+        Clear all scenarios
+      </button>
+      <modal
+        title="Clear all scenarios?"
+        bodyText="The scenarios can't be recovered."
+        :yes-click-function="clearAllScenarios"
+        :show-modal="clearAllScenariosModal"
+        @close="clearAllScenariosModal = false"
+      />
+    </div>
 
-  <div class="col-md-12">
-    <ul class="list-group">
-      <li
-        v-for="scenario of filteredScenarios"
-        :key="scenario.scenario"
-        class="list-group-item list-group-item-action"
-      >
-        <div>
-          <span class="fw-bold">{{ scenario.scenario }}</span
-          ><br />
-          State: {{ scenario.state }}<br />
-          Hit count: {{ scenario.hitCount }}
-        </div>
-        <div>
-          <router-link
-            class="btn btn-success btn-sm me-2"
-            :to="{
-              name: 'ScenarioForm',
-              params: { scenario: scenario.scenario },
-            }"
-          >
-            Update
-          </router-link>
-          <button
-            class="btn btn-danger btn-sm"
-            @click="deleteScenario(scenario.scenario)"
-          >
-            Delete
-          </button>
-        </div>
-      </li>
-    </ul>
+    <div class="col-md-12">
+      <ul class="list-group">
+        <li
+          v-for="scenario of filteredScenarios"
+          :key="scenario.scenario"
+          class="list-group-item list-group-item-action"
+        >
+          <div>
+            <span class="fw-bold">{{ scenario.scenario }}</span
+            ><br />
+            State: {{ scenario.state }}<br />
+            Hit count: {{ scenario.hitCount }}
+          </div>
+          <div>
+            <router-link
+              class="btn btn-success btn-sm me-2"
+              :to="{
+                name: 'ScenarioForm',
+                params: { scenario: scenario.scenario },
+              }"
+            >
+              Update
+            </router-link>
+            <button
+              class="btn btn-danger btn-sm"
+              @click="deleteScenario(scenario.scenario)"
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
