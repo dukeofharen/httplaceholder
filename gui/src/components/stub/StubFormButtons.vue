@@ -1,13 +1,17 @@
 <template>
-  <button class="btn btn-success me-2" @click="save">Save</button>
+  <button class="btn btn-success me-2 btn-mobile" @click="save">Save</button>
   <button
     v-if="showSaveAsNewStubButton"
-    class="btn btn-success me-2"
+    class="btn btn-success me-2 btn-mobile"
     @click="addStub"
   >
     Save as new stub
   </button>
-  <button type="button" class="btn btn-danger" @click="showResetModal = true">
+  <button
+    type="button"
+    class="btn btn-danger btn-mobile"
+    @click="showResetModal = true"
+  >
     Reset
   </button>
   <modal

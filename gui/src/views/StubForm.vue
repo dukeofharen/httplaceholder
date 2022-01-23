@@ -6,7 +6,10 @@
       <div class="col-md-12">
         Fill in the stub below in YAML format and click on "Save". For examples,
         visit
-        <a href="https://github.com/dukeofharen/httplaceholder" target="_blank"
+        <a
+          href="https://github.com/dukeofharen/httplaceholder"
+          target="_blank"
+          class="break-word"
           >https://github.com/dukeofharen/httplaceholder</a
         >.
       </div>

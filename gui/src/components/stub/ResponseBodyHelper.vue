@@ -40,7 +40,6 @@
     </div>
 
     <div v-if="showDynamicModeRow">
-      <div class="hint">{{ elementDescriptions.dynamicMode }}</div>
       <div class="form-check mt-2">
         <input
           class="form-check-input"
@@ -53,6 +52,7 @@
         >
       </div>
       <div v-if="showVariableParsers" class="mt-2">
+        <div class="hint mb-2">{{ elementDescriptions.dynamicMode }}</div>
         <select
           class="form-select"
           v-model="selectedVariableHandler"
@@ -66,7 +66,7 @@
             :key="item.key"
             :value="item.key"
           >
-            {{ item.name }}: "{{ item.example }}"
+            {{ item.name }}
           </option>
         </select>
       </div>
@@ -142,11 +142,19 @@ export default {
         return [];
       }
 
-      return metadata.value.variableHandlers.map((h) => ({
+      const result = metadata.value.variableHandlers.map((h) => ({
         key: h.name,
         name: h.fullName,
         example: h.example,
       }));
+
+      result.sort((a, b) => {
+        if (a.name > b.name) return 1;
+        if (a.name < b.name) return -1;
+        return 0;
+      });
+
+      return result;
     });
     const showResponseBody = computed(
       () =>

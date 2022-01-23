@@ -8,6 +8,14 @@
   </div>
   <div class="row mt-3" v-if="showFormHelperItems">
     <div class="col-md-12">
+      <div class="mb-3">
+        <button
+          class="btn btn-danger btn-mobile full-width"
+          @click="closeFormHelperAndList"
+        >
+          Close list
+        </button>
+      </div>
       <div class="input-group mb-3">
         <input
           type="text"

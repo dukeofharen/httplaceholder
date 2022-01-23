@@ -11,6 +11,10 @@
     border-right: 0 !important;
 }
 
+.break-word {
+    overflow-wrap: break-word;
+}
+
 @include media-breakpoint-down(sm) {
     .btn-mobile.full-width {
         width: 100%;
