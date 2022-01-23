@@ -6,6 +6,10 @@ module.exports = {
       return args;
     });
   },
+  pwa: {
+    name: "HttPlaceholder",
+    themeColor: "#0f5132",
+  },
   devServer: {
     proxy: {
       "/ph-api": {
