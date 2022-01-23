@@ -19,7 +19,7 @@ public class RequestBodyResponseVariableParsingHandler : IResponseVariableParsin
 
     public string Name => "request_body";
 
-    public string FullName => "Variable handler for inserting complete request body";
+    public string FullName => "Full request body";
 
     public string Example => "((request_body))";
 

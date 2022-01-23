@@ -19,7 +19,7 @@ public class RequestHeaderResponseVariableParsingHandler : IResponseVariablePars
 
     public string Name => "request_header";
 
-    public string FullName => "Variable handler for inserting request header";
+    public string FullName => "Request header";
 
     public string Example => "((request_header:X-Api-Key))";
 

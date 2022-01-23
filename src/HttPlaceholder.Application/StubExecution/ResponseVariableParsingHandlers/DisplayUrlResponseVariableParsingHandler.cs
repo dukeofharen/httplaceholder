@@ -19,7 +19,7 @@ public class DisplayUrlResponseVariableParsingHandler : IResponseVariableParsing
 
     public string Name => "display_url";
 
-    public string FullName => "Display URL variable handler";
+    public string FullName => "Display URL";
 
     public string Example => "((display_url))";
 

@@ -21,7 +21,7 @@ public class UtcNowResponseVariableParsingHandler : IResponseVariableParsingHand
 
     public string Name => "utcnow";
 
-    public string FullName => "Variable handler for retrieving UTC date / time";
+    public string FullName => "UTC date / time";
 
     public string Example => "((utcnow:yyyy-MM-dd HH:mm:ss))";
 

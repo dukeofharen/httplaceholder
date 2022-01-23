@@ -21,7 +21,7 @@ public class FormPostResponseVariableParsingHandler : IResponseVariableParsingHa
 
     public string Name => "form_post";
 
-    public string FullName => "Form post variable handler";
+    public string FullName => "Form post";
 
     public string Example => "((form_post:form_key))";
 
