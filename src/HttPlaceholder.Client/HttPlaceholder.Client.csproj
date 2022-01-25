@@ -3,6 +3,13 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <RepositoryUrl>https://github.com/dukeofharen/httplaceholder</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Copyright>Ducode</Copyright>
+        <AssemblyTitle>HttPlaceholder NuGet Client</AssemblyTitle>
+        <Description>HttPlaceholder NuGet Client</Description>
+        <Company>Ducode</Company>
+        <Authors>Ducode</Authors>
     </PropertyGroup>
 
     <ItemGroup>

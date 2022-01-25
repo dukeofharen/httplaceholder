@@ -22,11 +22,4 @@ dotnet pack -c Release \
     -o $DIST_DIR \
     /p:Version=$VERSION \
     /p:AssemblyVersion=$VERSION \
-    /p:FileVersion=$VERSION \
-    /p:Authors=Ducode \
-    /p:Company=Ducode \
-    /p:AssemblyTitle="HttPlaceholder NuGet Client" \
-    /p:Description="HttPlaceholder NuGet Client" \
-    /p:Copyright="2021 Ducode" \
-    /p:RepositoryUrl="https://github.com/dukeofharen/httplaceholder" \
-    /p:RepositoryType=git
+    /p:FileVersion=$VERSION
