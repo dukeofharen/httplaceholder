@@ -1,3 +1,6 @@
+[1.4.1]
+- Added license and logo to Nuget packages (https://github.com/dukeofharen/httplaceholder/issues/76 and https://github.com/dukeofharen/httplaceholder/issues/81).
+
 [1.4.0]
 - Use Roboto Mono as font for user interface.
 - Fixed bug in tenant filtering of requests and stubs screen.

@@ -3,7 +3,20 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <LangVersion>latest</LangVersion>
+        <RepositoryUrl>https://github.com/dukeofharen/httplaceholder</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Copyright>Ducode</Copyright>
+        <AssemblyTitle>HttPlaceholder NuGet Client</AssemblyTitle>
+        <Description>HttPlaceholder NuGet Client</Description>
+        <Company>Ducode</Company>
+        <Authors>Ducode</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath=""/>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />

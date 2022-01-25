@@ -12,11 +12,16 @@
         <Authors>Ducode</Authors>
         <Company>Ducode</Company>
         <RepositoryUrl>https://github.com/dukeofharen/httplaceholder</RepositoryUrl>
+        <PackageIconUrl>https://raw.githubusercontent.com/dukeofharen/Ducode.Essentials/master/media/ducode.png</PackageIconUrl>
+        <RepositoryType>git</RepositoryType>
         <Description>A very flexible cross platform HTTP stub application.</Description>
         <IsPackable>true</IsPackable>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>httplaceholder</ToolCommandName>
         <Configurations>Debug;Release;Tool</Configurations>
+        <Copyright>Ducode</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -33,6 +38,9 @@
         <WarningsAsErrors />
         <NoWarn>1701;1702; CS1591</NoWarn>
     </PropertyGroup>
+    <ItemGroup>
+        <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath=""/>
+    </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.0" />
