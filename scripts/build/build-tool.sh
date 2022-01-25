@@ -14,14 +14,19 @@ ROOT_DIR=$DIR/../..
 DIST_DIR=$ROOT_DIR/dist
 
 # Create dist dir
-mkdir $DIST_DIR
+if [ ! -d "$DIST_DIR" ]; then
+  mkdir $DIST_DIR
+fi
 
 # Copy GUI to src dir
 cp -r $ROOT_DIR/gui/dist/. $ROOT_DIR/src/HttPlaceholder/gui
-rm $ROOT_DIR/src/HttPlaceholder/gui/.guiwillbeplacedhere
+PLACEHOLDER_PATH="$ROOT_DIR/src/HttPlaceholder/gui/.guiwillbeplacedhere"
+if [ -f "$PLACEHOLDER_PATH" ]; then
+  rm $ROOT_DIR/src/HttPlaceholder/gui/.guiwillbeplacedhere
+fi
 
 # Pack tool
-cd src/HttPlaceholder
+cd $ROOT_DIR/src/HttPlaceholder
 sed -i 's/<PackAsTool>false<\/PackAsTool>/<PackAsTool>true<\/PackAsTool>/' HttPlaceholder.csproj
 dotnet pack -c Tool \
     -o $DIST_DIR \

@@ -14,7 +14,9 @@ ROOT_DIR=$DIR/../..
 DIST_DIR=$ROOT_DIR/dist
 
 # Create dist dir
-mkdir $DIST_DIR
+if [ ! -d "$DIST_DIR" ]; then
+  mkdir $DIST_DIR
+fi
 
 # Pack tool
 cd $ROOT_DIR/src/HttPlaceholder.Client
