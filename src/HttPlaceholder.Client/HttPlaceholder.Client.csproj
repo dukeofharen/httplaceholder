@@ -11,7 +11,12 @@
         <Company>Ducode</Company>
         <Authors>Ducode</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath=""/>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
