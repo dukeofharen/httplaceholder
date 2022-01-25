@@ -10,6 +10,7 @@
         <Description>HttPlaceholder NuGet Client</Description>
         <Company>Ducode</Company>
         <Authors>Ducode</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 
     <ItemGroup>

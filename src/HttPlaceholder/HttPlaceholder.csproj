@@ -19,6 +19,7 @@
         <ToolCommandName>httplaceholder</ToolCommandName>
         <Configurations>Debug;Release;Tool</Configurations>
         <Copyright>Ducode</Copyright>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
