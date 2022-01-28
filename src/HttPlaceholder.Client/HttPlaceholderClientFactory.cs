@@ -9,6 +9,21 @@ namespace HttPlaceholder.Client;
 /// A class for creating instances of <see cref="HttPlaceholderClient"/>.
 /// Useful for projects that do not use .NET Core or the .NET Core DI container.
 /// </summary>
+/// <example>
+/// If you do not use .NET Core or the .NET Core dependency container, use this method to create a new client.
+///
+/// <code>
+///...
+/// var config = new HttPlaceholderClientConfiguration
+/// {
+/// RootUrl = "http://localhost:5000", // The HttPlaceholder root URL.
+/// Username = "username", // Optionally set the authentication.
+/// Password = "password"
+/// };
+/// var client = HttPlaceholderClientFactory.CreateHttPlaceholderClient(config);
+/// ...
+/// </code>
+/// </example>
 public static class HttPlaceholderClientFactory
 {
     // Static HttpClient that will be used for the client.

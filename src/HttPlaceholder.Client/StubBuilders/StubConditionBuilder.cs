@@ -171,8 +171,8 @@ public sealed class StubConditionBuilder
     /// <summary>
     /// Adds a check on JSONPath to the request definition. The JSONPath condition will check the posted JSON body on the JSONPath queries.
     /// This method can be called multiple times to add multiple JSONPath conditions.
-    /// If only the <see cref="query"/> is filled in, the JSONPath will be checked as is and will pass if any result was found.
-    /// If the <see cref="expectedValue"/> is also filled in, the JSONPath will be checked and the value from the JSONPath query will be checked against the <see cref="expectedValue"/>.
+    /// If only the query is filled in, the JSONPath will be checked as is and will pass if any result was found.
+    /// If the expectedValue is also filled in, the JSONPath will be checked and the value from the JSONPath query will be checked against the expectedValue.
     /// </summary>
     /// <param name="query">The JSONPath query.</param>
     /// <param name="expectedValue"></param>
@@ -258,7 +258,7 @@ public sealed class StubConditionBuilder
     }
 
     /// <summary>
-    /// Adds a scenario check to the request definition to check if the scenario has been hit at least <see cref="minHits"/> (inclusive) times.
+    /// Adds a scenario check to the request definition to check if the scenario has been hit at least minHits (inclusive) times.
     /// </summary>
     /// <param name="minHits">The inclusive minimal hits the scenario should be have been hit.</param>
     /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
@@ -270,7 +270,7 @@ public sealed class StubConditionBuilder
     }
 
     /// <summary>
-    /// Adds a scenario check to the request definition to check if the scenario has been hit at most <see cref="maxHits"/> (exclusive) times.
+    /// Adds a scenario check to the request definition to check if the scenario has been hit at most maxHits (exclusive) times.
     /// </summary>
     /// <param name="maxHits">The exclusive maximum hits the scenario should have been hit.</param>
     /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
@@ -282,7 +282,7 @@ public sealed class StubConditionBuilder
     }
 
     /// <summary>
-    /// Adds a scenario check to the request definition to check if the scenario has been hit exactly <see cref="exactHits"/> times.
+    /// Adds a scenario check to the request definition to check if the scenario has been hit exactly exactHits times.
     /// </summary>
     /// <param name="exactHits">The number of times the scenario should have been hit.</param>
     /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>

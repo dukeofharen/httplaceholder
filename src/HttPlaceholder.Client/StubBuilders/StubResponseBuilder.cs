@@ -266,7 +266,7 @@ public sealed class StubResponseBuilder
     /// <param name="fontSize">The font size of the drawn text.</param>
     /// <param name="fontColor">The font color as HTML color code (e.g. '#123456').</param>
     /// <param name="wordWrap">If set to true, draw the text across the image.</param>
-    /// <param name="jpegQuality">A value between 1 and 100 to set the JPEG image. Of course only used if <see cref="imageType"/> is <see cref="ResponseImageType.Jpeg"/>.</param>
+    /// <param name="jpegQuality">A value between 1 and 100 to set the JPEG image. Of course only used if imageType is <see cref="ResponseImageType.Jpeg"/>.</param>
     /// <returns>The current <see cref="StubResponseBuilder"/>.</returns>
     public StubResponseBuilder WithImage(
         ResponseImageType imageType,

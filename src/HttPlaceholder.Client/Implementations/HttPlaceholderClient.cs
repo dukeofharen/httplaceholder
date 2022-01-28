@@ -15,7 +15,49 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Client.Implementations;
 
-/// <inheritdoc />
+/// <summary>
+/// Describes a class that is used to communicate with HttPlaceholder.
+/// </summary>
+/// <example>
+/// When you've initialized the client, you can call the HttPlaceholder API endpoints. Here is an example for how you add a simple stub.
+/// <code>
+/// ...
+/// var createdStub = await client.CreateStubAsync(new StubDto
+/// {
+/// Id = "test-stub-123",
+/// Conditions = new StubConditionsDto
+/// {
+/// Method = "GET",
+/// Url = new StubUrlConditionsDto
+/// {
+/// Path = "/test-path"
+/// }
+/// },
+/// Response = new StubResponseDto
+/// {
+/// StatusCode = 200,
+/// Json = @"{""key1"":""val1"", ""key2"":""val2""}"
+/// }
+/// });
+/// ...
+/// </code>
+///
+/// This method will create the stub and will also return the created stub. Because this way of adding stubs can get very verbose very quick, another way of adding stubs with the client has been added: the StubBuilder. This is a fluent builder which can also be used to create new stubs. Here is the same example, but now with using the StubBuilder:
+/// <code>
+/// ...
+/// var createdStub = await client.CreateStubAsync(StubBuilder.Begin()
+/// .WithId("test-stub-123")
+/// .WithConditions(StubConditionBuilder.Begin()
+/// .WithHttpMethod(HttpMethod.Get)
+/// .WithPath("/test-path"))
+/// .WithResponse(StubResponseBuilder.Begin()
+/// .WithHttpStatusCode(HttpStatusCode.Ok)
+/// .WithJsonBody(new {key1 = "val1", key2 = "val2"})));
+/// ...
+/// </code>
+///
+/// This method is a bit shorter and is more readable.
+/// </example>
 public class HttPlaceholderClient : IHttPlaceholderClient
 {
     private const string JsonContentType = "application/json";
@@ -57,7 +99,7 @@ public class HttPlaceholderClient : IHttPlaceholderClient
         }
 
         var result = JsonConvert.DeserializeObject<FeatureResultDto>(content);
-        return result is { Enabled: true };
+        return result is {Enabled: true};
     }
 
     /// <inheritdoc />
@@ -402,7 +444,8 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub, string tenant = "")
+    public async Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub,
+        string tenant = "")
     {
         using var response = await HttpClient.PostAsync(
             $"/ph-api/import/curl?doNotCreateStub={doNotCreateStub}&tenant={tenant}",
@@ -419,7 +462,8 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(string input, bool doNotCreateStub, string tenant = "")
+    public async Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(string input, bool doNotCreateStub,
+        string tenant = "")
     {
         using var response = await HttpClient.PostAsync(
             $"/ph-api/import/har?doNotCreateStub={doNotCreateStub}&tenant={tenant}",
@@ -436,7 +480,8 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(string input, bool doNotCreateStub, string tenant = "")
+    public async Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(string input, bool doNotCreateStub,
+        string tenant = "")
     {
         using var response = await HttpClient.PostAsync(
             $"/ph-api/import/openapi?doNotCreateStub={doNotCreateStub}&tenant={tenant}",
