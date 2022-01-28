@@ -21,6 +21,10 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     private const string JsonContentType = "application/json";
     private const string TextContentType = "text/plain";
 
+    /// <summary>
+    /// Creates a <see cref="HttPlaceholderClient"/> instance.
+    /// </summary>
+    /// <param name="httpClient">A <see cref="HttpClient"/> instance.</param>
     public HttPlaceholderClient(HttpClient httpClient)
     {
         HttpClient = httpClient;
@@ -431,6 +435,7 @@ public class HttPlaceholderClient : IHttPlaceholderClient
         return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(string input, bool doNotCreateStub, string tenant = "")
     {
         using var response = await HttpClient.PostAsync(
