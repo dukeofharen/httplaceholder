@@ -17,7 +17,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath=""/>
+        <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath="" />
     </ItemGroup>
 
     <ItemGroup>
