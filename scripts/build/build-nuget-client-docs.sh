@@ -12,6 +12,7 @@ cd $CLIENT_DIR
 # Install cURL
 apt update -y
 apt install curl -y
+apt install zip -y
 
 # Download Doxygen
 DOXYGEN_FILE="doxygen.tar.gz"
@@ -31,4 +32,5 @@ tar -xvzf $DOXYGEN_FILE -C $DOXYGEN_EXTRACT_PATH
 $DOXYGEN_EXTRACT_PATH/doxygen-1.9.3/bin/doxygen
 
 # Pack docks
-tar zcvf $DIST_PATH/nuget-client-docs.tar.gz "$CLIENT_DIR/docs/html"
+cd $CLIENT_DIR/docs/html
+zip -r $DIST_PATH/nuget-client-docs.zip .
