@@ -2,6 +2,10 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=$DIR/../..
 CLIENT_DIR=$ROOT_DIR/src/HttPlaceholder.Client
+DIST_PATH=$ROOT_DIR/dist
+if [ ! -d "$ROOT_DIR" ]; then
+  mkdir $DIST_PATH  
+fi
 
 cd $CLIENT_DIR
 
@@ -25,3 +29,7 @@ tar -xvzf $DOXYGEN_FILE -C $DOXYGEN_EXTRACT_PATH
 
 # Create docs
 $DOXYGEN_EXTRACT_PATH/doxygen-1.9.3/bin/doxygen
+
+# Pack docks
+cd $DIR/docs/html
+tar -czvf $DIST_PATH/nuget-client-docs.tar.gz .

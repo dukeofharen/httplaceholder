@@ -122,7 +122,7 @@ create-nuget-client-docs:
     - ./scripts/build/build-nuget-client-docs.sh
   artifacts:
     paths:
-      - src/HttPlaceholder.Client/docs/html
+      - dist
     expire_in: 1 week
 
 docker-build:
