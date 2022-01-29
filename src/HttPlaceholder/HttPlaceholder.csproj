@@ -4,6 +4,7 @@
         <PackageId>HttPlaceholder</PackageId>
         <TargetFramework>net6.0</TargetFramework>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <Version>2019.8.24.1234</Version>
         <AssemblyVersion>2019.8.24.1234</AssemblyVersion>
         <FileVersion>2019.8.24.1234</FileVersion>
@@ -22,21 +23,6 @@
         <Copyright>Ducode</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>logo.png</PackageIcon>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors />
-        <NoWarn>1701;1702;RCS1138;CS1591</NoWarn>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors />
-        <NoWarn>1701;1702; CS1591</NoWarn>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Tool|AnyCPU'">
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <WarningsAsErrors />
-        <NoWarn>1701;1702; CS1591</NoWarn>
     </PropertyGroup>
     <ItemGroup>
         <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath=""/>
