@@ -4,7 +4,8 @@ ROOT_DIR=$DIR/../..
 CLIENT_DIR=$ROOT_DIR/src/HttPlaceholder.Client
 DIST_PATH=$ROOT_DIR/dist
 if [ ! -d "$ROOT_DIR" ]; then
-  mkdir $DIST_PATH  
+  echo "Creating path $DIST_PATH"
+  mkdir $DIST_PATH
 fi
 
 cd $CLIENT_DIR
