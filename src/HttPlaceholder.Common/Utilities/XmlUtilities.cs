@@ -3,10 +3,18 @@ using System.Xml;
 
 namespace HttPlaceholder.Common.Utilities;
 
+/// <summary>
+/// A utility class for working with XML.
+/// </summary>
 public static class XmlUtilities
 {
     private static Regex NamespaceRegex { get; } = new("xmlns:(.*?)=\"(.*?)\"", RegexOptions.Compiled);
 
+    /// <summary>
+    /// Parses a given body and assign the found namespaces to the <see cref="XmlNamespaceManager"/>.
+    /// </summary>
+    /// <param name="nsManager">The <see cref="XmlNamespaceManager"/>.</param>
+    /// <param name="body">The XML body.</param>
     public static void ParseBodyAndAssignNamespaces(this XmlNamespaceManager nsManager, string body)
     {
         var matches = NamespaceRegex.Matches(body);

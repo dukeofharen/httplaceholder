@@ -7,14 +7,32 @@ using SixLabors.ImageSharp.Processing;
 
 namespace HttPlaceholder.Common.Utilities;
 
+/// <summary>
+/// A utility class for working with ImageSharp.
+/// </summary>
 public static class ImageSharpUtilities
 {
+    /// <summary>
+    /// Inverts a given color.
+    /// </summary>
+    /// <param name="input">The color.</param>
+    /// <returns>The inverted <see cref="Color"/>.</returns>
     public static Color InvertColor(this Color input)
     {
         var pixel = input.ToPixel<Rgba32>();
         return Color.FromRgb((byte)(255 - pixel.R), (byte)(255 - pixel.G), (byte)(255 - pixel.B));
     }
 
+    /// <summary>
+    /// Applies a watermark to a given image.
+    /// </summary>
+    /// <param name="processingContext">The image processing context.</param>
+    /// <param name="font">The font the watermark should be in.</param>
+    /// <param name="text">The watermark text.</param>
+    /// <param name="color">The HTML encoded color (e.g. '#123456').</param>
+    /// <param name="padding">The padding in pixels.</param>
+    /// <param name="wordwrap">True if the words should be wrapped.</param>
+    /// <returns>The input <see cref="IImageProcessingContext"/>.</returns>
     public static IImageProcessingContext ApplyScalingWaterMark(this IImageProcessingContext processingContext,
         Font font,
         string text,

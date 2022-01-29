@@ -39,5 +39,5 @@ public class FileService : IFileService
 
     public string GetCurrentDirectory() => Directory.GetCurrentDirectory();
 
-    public DateTime GetModicationDateTime(string path) => File.GetLastWriteTimeUtc(path);
+    public DateTime GetModificationDateTime(string path) => File.GetLastWriteTimeUtc(path);
 }

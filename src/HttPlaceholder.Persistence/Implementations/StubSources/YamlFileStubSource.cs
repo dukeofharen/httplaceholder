@@ -134,7 +134,7 @@ internal class YamlFileStubSource : IStubSource
         await GetStubsAsync();
 
     private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
-        files.Max(f => _fileService.GetModicationDateTime(f));
+        files.Max(f => _fileService.GetModificationDateTime(f));
 
     private void ParseAndValidateStubs(IEnumerable<StubModel> stubs)
     {
