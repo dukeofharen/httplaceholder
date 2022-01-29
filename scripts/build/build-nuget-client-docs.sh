@@ -7,7 +7,7 @@ cd $CLIENT_DIR
 
 # Install cURL
 apt update -y
-apt install curl
+apt install curl -y
 
 # Download Doxygen
 DOXYGEN_FILE="doxygen.tar.gz"
