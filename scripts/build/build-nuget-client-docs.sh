@@ -3,7 +3,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 ROOT_DIR=$DIR/../..
 CLIENT_DIR=$ROOT_DIR/src/HttPlaceholder.Client
 DIST_PATH=$ROOT_DIR/dist
-if [ ! -d "$ROOT_DIR" ]; then
+if [ ! -d "$DIST_PATH" ]; then
   echo "Creating path $DIST_PATH"
   mkdir $DIST_PATH
 fi
