@@ -32,5 +32,5 @@ tar -xvzf $DOXYGEN_FILE -C $DOXYGEN_EXTRACT_PATH
 $DOXYGEN_EXTRACT_PATH/doxygen-1.9.3/bin/doxygen
 
 # Pack docks
-tar zcvf nuget-client-docs.tar.gz "$CLIENT_DIR/docs/html"
-mv nuget-client-docs.tar.gz $DIST_PATH
+cd "$CLIENT_DIR/docs/html"
+tar zcvf "$DIST_PATH/nuget-client-docs.tar.gz" .
