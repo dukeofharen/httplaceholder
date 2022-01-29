@@ -5,6 +5,10 @@ CLIENT_DIR=$ROOT_DIR/src/HttPlaceholder.Client
 
 cd $CLIENT_DIR
 
+# Install cURL
+apt update -y
+apt install curl
+
 # Download Doxygen
 DOXYGEN_FILE="doxygen.tar.gz"
 DOXYGEN_EXTRACT_PATH="/tmp/doxygen"
