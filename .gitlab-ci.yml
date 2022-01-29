@@ -24,95 +24,95 @@ set-version:
       - version.txt
     expire_in: 1 week
 
-test:
-  image: $DOTNET_IMAGE
-  stage: test
-  script:
-    - cd src
-    - dotnet test
-
-build-ui:
-  image: $NODE_IMAGE
-  stage: build-ui
-  script:
-    - chmod +x ./scripts/build/build-ui.sh
-    - sh ./scripts/build/build-ui.sh
-  artifacts:
-    paths:
-      - gui/dist
-    expire_in: 1 week
-
-build-windows:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - apt update && apt install zip -y
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-windows.sh
-    - ./scripts/build/build-windows.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-
-build-linux:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-linux.sh
-    - ./scripts/build/build-linux.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-
-build-osx:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-osx.sh
-    - ./scripts/build/build-osx.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-
-build-tool:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-tool.sh
-    - ./scripts/build/build-tool.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-
-build-nuget-client:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - VERSION="$(cat version.txt)"
-    - chmod +x ./scripts/build/build-nuget-client.sh
-    - ./scripts/build/build-nuget-client.sh "$VERSION"
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-
-create-open-api-file:
-  image: $DOTNET_IMAGE
-  stage: build-server
-  script:
-    - chmod +x ./scripts/build/create-open-api-file.sh
-    - ./scripts/build/create-open-api-file.sh
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
+#test:
+#  image: $DOTNET_IMAGE
+#  stage: test
+#  script:
+#    - cd src
+#    - dotnet test
+#
+#build-ui:
+#  image: $NODE_IMAGE
+#  stage: build-ui
+#  script:
+#    - chmod +x ./scripts/build/build-ui.sh
+#    - sh ./scripts/build/build-ui.sh
+#  artifacts:
+#    paths:
+#      - gui/dist
+#    expire_in: 1 week
+#
+#build-windows:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - apt update && apt install zip -y
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-windows.sh
+#    - ./scripts/build/build-windows.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
+#
+#build-linux:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-linux.sh
+#    - ./scripts/build/build-linux.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
+#
+#build-osx:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-osx.sh
+#    - ./scripts/build/build-osx.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
+#
+#build-tool:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-tool.sh
+#    - ./scripts/build/build-tool.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
+#
+#build-nuget-client:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - VERSION="$(cat version.txt)"
+#    - chmod +x ./scripts/build/build-nuget-client.sh
+#    - ./scripts/build/build-nuget-client.sh "$VERSION"
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
+#
+#create-open-api-file:
+#  image: $DOTNET_IMAGE
+#  stage: build-server
+#  script:
+#    - chmod +x ./scripts/build/create-open-api-file.sh
+#    - ./scripts/build/create-open-api-file.sh
+#  artifacts:
+#    paths:
+#      - dist
+#    expire_in: 1 week
 
 create-nuget-client-docs:
   image: $DEBIAN_IMAGE
