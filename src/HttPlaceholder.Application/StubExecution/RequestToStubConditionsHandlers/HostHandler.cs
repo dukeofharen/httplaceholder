@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// <summary>
 /// "Request to stub conditions handler" that is used to create a hostname header condition.
 /// </summary>
-public class HostHandler : IRequestToStubConditionsHandler
+internal class HostHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)

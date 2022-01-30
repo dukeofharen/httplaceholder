@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler to insert the local date/time into the response. An optional date/time format can be provided (based on the .NET date/time formatting strings).
 /// </summary>
-public class LocalNowResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class LocalNowResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IDateTime _dateTime;
 
@@ -18,13 +18,16 @@ public class LocalNowResponseVariableParsingHandler : IResponseVariableParsingHa
         _dateTime = dateTime;
     }
 
-
+    /// <inheritdoc />
     public string Name => "localnow";
 
+    /// <inheritdoc />
     public string FullName => "Local date / time";
 
+    /// <inheritdoc />
     public string Example => "((localnow:yyyy-MM-dd HH:mm:ss))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();

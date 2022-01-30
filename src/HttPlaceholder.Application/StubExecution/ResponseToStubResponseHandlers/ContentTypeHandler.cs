@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandler
 /// <summary>
 /// This handler is being used for setting the content type.
 /// </summary>
-public class ContentTypeHandler : IResponseToStubResponseHandler
+internal class ContentTypeHandler : IResponseToStubResponseHandler
 {
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel)

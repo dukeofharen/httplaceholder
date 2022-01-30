@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// <summary>
 /// "Request to stub conditions handler" that is used to create a basic authentication condition.
 /// </summary>
-public class BasicAuthenticationHandler : IRequestToStubConditionsHandler
+internal class BasicAuthenticationHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)

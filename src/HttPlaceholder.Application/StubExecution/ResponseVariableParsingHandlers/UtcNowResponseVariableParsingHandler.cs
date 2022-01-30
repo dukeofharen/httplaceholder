@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler to insert the UTC date/time into the response. An optional date/time format can be provided (based on the .NET date/time formatting strings).
 /// </summary>
-public class UtcNowResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class UtcNowResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IDateTime _dateTime;
 
@@ -19,12 +19,16 @@ public class UtcNowResponseVariableParsingHandler : IResponseVariableParsingHand
     }
 
 
+    /// <inheritdoc />
     public string Name => "utcnow";
 
+    /// <inheritdoc />
     public string FullName => "UTC date / time";
 
+    /// <inheritdoc />
     public string Example => "((utcnow:yyyy-MM-dd HH:mm:ss))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();

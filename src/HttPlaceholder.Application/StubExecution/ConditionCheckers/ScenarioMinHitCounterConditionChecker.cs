@@ -10,11 +10,15 @@ public class ScenarioMinHitCounterConditionChecker : IConditionChecker
 {
     private readonly IScenarioService _scenarioService;
 
+    /// <summary>
+    /// Constructs a <see cref="ScenarioMinHitCounterConditionChecker"/> instance.
+    /// </summary>
     public ScenarioMinHitCounterConditionChecker(IScenarioService scenarioService)
     {
         _scenarioService = scenarioService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -46,5 +50,6 @@ public class ScenarioMinHitCounterConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 8;
 }

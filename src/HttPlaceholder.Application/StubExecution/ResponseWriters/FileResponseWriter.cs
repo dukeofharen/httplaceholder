@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to search for a file on the OS and return that file to the client.
 /// </summary>
-public class FileResponseWriter : IResponseWriter
+internal class FileResponseWriter : IResponseWriter
 {
     private readonly IFileService _fileService;
     private readonly IStubRootPathResolver _stubRootPathResolver;
@@ -22,8 +22,10 @@ public class FileResponseWriter : IResponseWriter
         _stubRootPathResolver = stubRootPathResolver;
     }
 
+    /// <inheritdoc />
     public int Priority => 0;
 
+    /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (stub.Response?.File == null)

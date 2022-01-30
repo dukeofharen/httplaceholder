@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
-using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
+using HttPlaceholder.Application.Requests.Commands.DeleteAllRequests;
 using HttPlaceholder.Application.Requests.Commands.DeleteRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetRequest;

@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace HttPlaceholder.Application.Exceptions;
 
-[Serializable]
+/// <summary>
+/// An exception that is thrown when a specific action may not be executed.
+/// </summary>
 public class ForbiddenException : Exception
 {
-    public ForbiddenException()
-    {
-    }
-
-    protected ForbiddenException(SerializationInfo serializationInfo, StreamingContext streamingContext) :
-        base(serializationInfo, streamingContext)
-    {
-    }
 }

@@ -7,7 +7,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert a given query parameter in the response.
 /// </summary>
-public class QueryStringResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class QueryStringResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
 
@@ -16,12 +16,16 @@ public class QueryStringResponseVariableParsingHandler : IResponseVariableParsin
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public string Name => "query";
 
+    /// <inheritdoc />
     public string FullName => "Query string";
 
+    /// <inheritdoc />
     public string Example => "((query:query_string_key))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches)
     {
         var queryDict = _httpContextService.GetQueryStringDictionary();

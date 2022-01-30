@@ -17,7 +17,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to generate a random image (BMP, GIF, JPEG or PNG) with parameters (like quality, size etc.) and return it to the client.
 /// </summary>
-public class ImageResponseWriter : IResponseWriter
+internal class ImageResponseWriter : IResponseWriter
 {
     private readonly IAssemblyService _assemblyService;
     private readonly IFileService _fileService;
@@ -28,6 +28,7 @@ public class ImageResponseWriter : IResponseWriter
         _fileService = fileService;
     }
 
+    /// <inheritdoc />
     public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         var imgDefinition = stub.Response?.Image;
@@ -92,5 +93,6 @@ public class ImageResponseWriter : IResponseWriter
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 
+    /// <inheritdoc />
     public int Priority => -11;
 }

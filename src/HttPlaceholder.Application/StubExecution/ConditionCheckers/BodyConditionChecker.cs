@@ -13,11 +13,15 @@ public class BodyConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
 
+    /// <summary>
+    /// Constructs a <see cref="BodyConditionChecker"/> instance.
+    /// </summary>
     public BodyConditionChecker(IHttpContextService httpContextService)
     {
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -51,5 +55,6 @@ public class BodyConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 8;
 }

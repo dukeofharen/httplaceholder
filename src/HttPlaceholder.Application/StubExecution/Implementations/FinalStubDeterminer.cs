@@ -5,8 +5,10 @@ using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
+/// <inheritdoc/>
 internal class FinalStubDeterminer : IFinalStubDeterminer
 {
+    /// <inheritdoc/>
     public StubModel DetermineFinalStub(IEnumerable<(StubModel, IEnumerable<ConditionCheckResultModel>)> matchedStubs)
     {
         StubModel finalStub;

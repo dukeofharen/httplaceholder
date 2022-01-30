@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 /// <inheritdoc />
-public class HarStubGenerator : IHarStubGenerator
+internal class HarStubGenerator : IHarStubGenerator
 {
     private static string[] _responseHeadersToStrip = new[] {"content-length", "content-encoding"};
 

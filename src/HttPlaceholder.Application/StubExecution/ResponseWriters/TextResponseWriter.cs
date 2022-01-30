@@ -8,10 +8,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to return the given response as plain text.
 /// </summary>
-public class TextResponseWriter : IResponseWriter
+internal class TextResponseWriter : IResponseWriter
 {
+    /// <inheritdoc />
     public int Priority => 0;
 
+    /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (stub.Response.Text == null)

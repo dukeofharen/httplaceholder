@@ -7,7 +7,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandler
 /// <summary>
 /// This handler is used for setting the HTTP status code.
 /// </summary>
-public class StatusCodeHandler : IResponseToStubResponseHandler
+internal class StatusCodeHandler : IResponseToStubResponseHandler
 {
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel)

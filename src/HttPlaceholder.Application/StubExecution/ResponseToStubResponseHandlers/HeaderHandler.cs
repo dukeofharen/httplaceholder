@@ -7,7 +7,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandler
 /// <summary>
 /// This handler is used for setting the stub response headers.
 /// </summary>
-public class HeaderHandler : IResponseToStubResponseHandler
+internal class HeaderHandler : IResponseToStubResponseHandler
 {
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel)

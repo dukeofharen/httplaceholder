@@ -11,11 +11,15 @@ public class IsHttpsConditionChecker : IConditionChecker
 {
     private readonly IClientDataResolver _clientDataResolver;
 
+    /// <summary>
+    /// Constructs a <see cref="IsHttpsConditionChecker"/> instance.
+    /// </summary>
     public IsHttpsConditionChecker(IClientDataResolver clientDataResolver)
     {
         _clientDataResolver = clientDataResolver;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -34,5 +38,6 @@ public class IsHttpsConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 10;
 }

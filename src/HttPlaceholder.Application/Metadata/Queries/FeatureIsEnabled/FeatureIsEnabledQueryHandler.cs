@@ -9,15 +9,22 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.Metadata.Queries.FeatureIsEnabled;
 
+/// <summary>
+/// A query handler that is used to check whether a specific feature is enabled or not.
+/// </summary>
 public class FeatureIsEnabledQueryHandler : IRequestHandler<FeatureIsEnabledQuery, FeatureResultModel>
 {
     private readonly SettingsModel _settings;
 
+    /// <summary>
+    /// Constructs a <see cref="FeatureIsEnabledQueryHandler"/> instance.
+    /// </summary>
     public FeatureIsEnabledQueryHandler(IOptions<SettingsModel> options)
     {
         _settings = options.Value;
     }
 
+    /// <inheritdoc />
     public Task<FeatureResultModel> Handle(FeatureIsEnabledQuery request, CancellationToken cancellationToken) =>
         request.FeatureFlag switch
         {

@@ -10,11 +10,15 @@ public class ScenarioMaxHitCounterConditionChecker : IConditionChecker
 {
     private readonly IScenarioService _scenarioService;
 
+    /// <summary>
+    /// Constructs a <see cref="ScenarioMaxHitCounterConditionChecker"/> instance.
+    /// </summary>
     public ScenarioMaxHitCounterConditionChecker(IScenarioService scenarioService)
     {
         _scenarioService = scenarioService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -46,5 +50,6 @@ public class ScenarioMaxHitCounterConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 8;
 }

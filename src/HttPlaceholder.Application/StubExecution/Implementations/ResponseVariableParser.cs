@@ -6,7 +6,8 @@ using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-public class ResponseVariableParser : IResponseVariableParser
+/// <inheritdoc/>
+internal class ResponseVariableParser : IResponseVariableParser
 {
     public static Regex VarRegex { get; } = new(
         @"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)",
@@ -20,6 +21,7 @@ public class ResponseVariableParser : IResponseVariableParser
         _handlers = handlers;
     }
 
+    /// <inheritdoc/>
     public string Parse(string input)
     {
         var matches = VarRegex.Matches(input).Cast<Match>().ToArray();

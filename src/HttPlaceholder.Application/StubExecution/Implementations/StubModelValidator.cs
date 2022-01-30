@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
+/// <inheritdoc/>
 internal class StubModelValidator : IStubModelValidator
 {
     private readonly IModelValidator _modelValidator;
@@ -21,6 +22,7 @@ internal class StubModelValidator : IStubModelValidator
         _settings = options.Value;
     }
 
+    /// <inheritdoc/>
     public IEnumerable<string> ValidateStubModel(StubModel stub)
     {
         var validationResults = _modelValidator.ValidateModel(stub);

@@ -8,7 +8,7 @@ using Microsoft.OpenApi.Models;
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
 /// <inheritdoc />
-public class OpenApiToStubConverter : IOpenApiToStubConverter
+internal class OpenApiToStubConverter : IOpenApiToStubConverter
 {
     private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
     private readonly IHttpResponseToStubResponseService _httpResponseToStubResponseService;

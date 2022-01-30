@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace HttPlaceholder.Application.Exceptions;
 
-[Serializable]
+/// <summary>
+/// An exception that is thrown when an action conflicts with already existing data.
+/// </summary>
 public class ConflictException : Exception
 {
+    /// <summary>
+    /// Constructs a <see cref="ConflictException"/> instance.
+    /// </summary>
+    /// <param name="message">The message.</param>
     public ConflictException(string message) : base($"Conflict detected: {message}")
-    {
-    }
-
-    protected ConflictException(SerializationInfo serializationInfo, StreamingContext streamingContext) :
-        base(serializationInfo, streamingContext)
     {
     }
 }

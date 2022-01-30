@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert the posted request body in the response.
 /// </summary>
-public class RequestBodyResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class RequestBodyResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
 
@@ -17,12 +17,16 @@ public class RequestBodyResponseVariableParsingHandler : IResponseVariableParsin
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public string Name => "request_body";
 
+    /// <inheritdoc />
     public string FullName => "Full request body";
 
+    /// <inheritdoc />
     public string Example => "((request_body))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches)
     {
         var matchArray = matches as Match[] ?? matches.ToArray();

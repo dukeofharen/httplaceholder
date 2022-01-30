@@ -3,6 +3,7 @@ using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
+/// <inheritdoc/>
 internal class RequestLoggerFactory : IRequestLoggerFactory
 {
     private readonly IDateTime _dateTime;
@@ -16,6 +17,7 @@ internal class RequestLoggerFactory : IRequestLoggerFactory
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc/>
     public IRequestLogger GetRequestLogger()
     {
         const string requestLoggerKey = "requestLogger";

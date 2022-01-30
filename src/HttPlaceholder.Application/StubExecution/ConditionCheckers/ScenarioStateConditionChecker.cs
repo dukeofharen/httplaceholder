@@ -12,11 +12,15 @@ public class ScenarioStateConditionChecker : IConditionChecker
 {
     private readonly IScenarioService _scenarioService;
 
+    /// <summary>
+    /// Constructs a <see cref="ScenarioStateConditionChecker"/> instance.
+    /// </summary>
     public ScenarioStateConditionChecker(IScenarioService scenarioService)
     {
         _scenarioService = scenarioService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -48,5 +52,6 @@ public class ScenarioStateConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 8;
 }

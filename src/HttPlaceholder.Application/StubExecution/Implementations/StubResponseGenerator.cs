@@ -6,6 +6,7 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
+/// <inheritdoc/>
 internal class StubResponseGenerator : IStubResponseGenerator
 {
     private readonly IRequestLoggerFactory _requestLoggerFactory;
@@ -19,6 +20,7 @@ internal class StubResponseGenerator : IStubResponseGenerator
         _responseWriters = responseWriters;
     }
 
+    /// <inheritdoc/>
     public async Task<ResponseModel> GenerateResponseAsync(StubModel stub)
     {
         var requestLogger = _requestLoggerFactory.GetRequestLogger();
