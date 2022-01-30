@@ -15,7 +15,7 @@ public class BetweenAttributeFacts
     [DataRow(null, 3, 5, false, true, true)]
     [DataRow(0, 3, 5, false, false, false)]
     [DataRow(null, 3, 5, false, false, false)]
-    public void IsValid(int? input, int min, int max, bool including, bool allowDefault, bool isValid)
+    public void IsValid_ShouldWork(int? input, int min, int max, bool including, bool allowDefault, bool isValid)
     {
         // Arrange
         var attribute = new BetweenAttribute(min, max, including, allowDefault);
