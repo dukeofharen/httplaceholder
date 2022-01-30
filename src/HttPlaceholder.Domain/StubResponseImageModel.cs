@@ -73,8 +73,14 @@ public class StubResponseImageModel
     [YamlMember(Alias = "wordWrap")]
     public bool WordWrap { get; set; }
 
+    /// <summary>
+    /// Gets an MD5 hash of this object for caching purposes.
+    /// </summary>
     [JsonIgnore] public string Hash => HashingUtilities.GetMd5String(JsonConvert.SerializeObject(this));
 
+    /// <summary>
+    /// Gets the content type header value.
+    /// </summary>
     public string ContentTypeHeaderValue =>
         Type switch
         {
