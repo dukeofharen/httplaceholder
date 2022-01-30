@@ -11,6 +11,9 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
+/// <summary>
+/// A stub source that is used to store and read data from a relational database.
+/// </summary>
 internal class RelationalDbStubSource : IWritableStubSource
 {
     // TODO move to separate constants class.
@@ -33,6 +36,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         _relationalDbStubCache = relationalDbStubCache;
     }
 
+    /// <inheritdoc />
     public async Task AddRequestResultAsync(RequestResultModel requestResult)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
@@ -48,6 +52,7 @@ internal class RelationalDbStubSource : IWritableStubSource
             });
     }
 
+    /// <inheritdoc />
     public async Task AddStubAsync(StubModel stub)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
@@ -57,6 +62,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         _relationalDbStubCache.ClearStubCache(ctx);
     }
 
+    /// <inheritdoc />
     public async Task<bool> DeleteRequestAsync(string correlationId)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
@@ -64,6 +70,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         return updatedRows > 0;
     }
 
+    /// <inheritdoc />
     public async Task CleanOldRequestResultsAsync()
     {
         var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
@@ -71,6 +78,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         await ctx.ExecuteAsync(_queryStore.CleanOldRequestsQuery, new {Limit = maxLength});
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
     {
         // This method is not optimized right now.
@@ -87,6 +95,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         }).ToArray();
     }
 
+    /// <inheritdoc />
     public async Task<RequestResultModel> GetRequestAsync(string correlationId)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
@@ -96,12 +105,14 @@ internal class RelationalDbStubSource : IWritableStubSource
         return result == null ? null : JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
     }
 
+    /// <inheritdoc />
     public async Task DeleteAllRequestResultsAsync()
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         await ctx.ExecuteAsync(_queryStore.DeleteAllRequestsQuery);
     }
 
+    /// <inheritdoc />
     public async Task<bool> DeleteStubAsync(string stubId)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
@@ -110,6 +121,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         return updated > 0;
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
@@ -118,17 +130,20 @@ internal class RelationalDbStubSource : IWritableStubSource
             .Select(r => JsonConvert.DeserializeObject<RequestResultModel>(r.Json));
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<StubModel>> GetStubsAsync()
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         return await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
         (await GetStubsAsync())
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
+    /// <inheritdoc />
     public async Task<StubModel> GetStubAsync(string stubId)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
@@ -136,6 +151,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         return stubs.FirstOrDefault(s => s.Id == stubId);
     }
 
+    /// <inheritdoc />
     public async Task PrepareStubSourceAsync()
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();

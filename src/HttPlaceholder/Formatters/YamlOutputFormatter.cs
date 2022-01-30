@@ -8,6 +8,7 @@ using YamlDotNet.Serialization;
 namespace HttPlaceholder.Formatters;
 
 /// <summary>
+/// An output formatter that is used to handle YAML output.
 /// Source: https://github.com/fiyazbinhasan/CoreFormatters
 /// </summary>
 public class YamlOutputFormatter : TextOutputFormatter
@@ -15,7 +16,7 @@ public class YamlOutputFormatter : TextOutputFormatter
     private readonly ISerializer _serializer;
 
     /// <summary>
-    ///
+    /// Constructs a <see cref="YamlOutputFormatter"/> instance.
     /// </summary>
     /// <param name="serializer"></param>
     public YamlOutputFormatter(ISerializer serializer)
@@ -28,12 +29,7 @@ public class YamlOutputFormatter : TextOutputFormatter
         SupportedMediaTypes.Add(MediaTypeHeaderValues.TextYaml);
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="selectedEncoding"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public override async Task WriteResponseBodyAsync(OutputFormatterWriteContext context, Encoding selectedEncoding)
     {
         if (context == null)

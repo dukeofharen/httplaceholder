@@ -12,11 +12,16 @@ public class RequestHub : Hub
 {
     private readonly ILoginService _loginService;
 
+    /// <summary>
+    /// Constructs a <see cref="RequestHub"/> instance.
+    /// </summary>
+    /// <param name="loginService"></param>
     public RequestHub(ILoginService loginService)
     {
         _loginService = loginService;
     }
 
+    /// <inheritdoc />
     public override Task OnConnectedAsync()
     {
         if (!_loginService.CheckLoginCookie())

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Db.Implementations;
 
+/// <inheritdoc />
 internal class RelationalDbStubCache : IRelationalDbStubCache
 {
     private const string StubJsonType = "json";
@@ -27,6 +28,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
         _logger = logger;
     }
 
+    /// <inheritdoc />
     public void ClearStubCache(IDatabaseContext ctx)
     {
         // Clear the in memory stub cache.
@@ -42,6 +44,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
         }
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<StubModel>> GetOrUpdateStubCache(IDatabaseContext ctx)
     {
         var shouldUpdateCache = false;

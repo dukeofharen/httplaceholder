@@ -4,8 +4,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Hubs;
 
+/// <summary>
+/// A class for registering SignalR related classes on the service collection.
+/// </summary>
 public static class SignalRModule
 {
+    /// <summary>
+    /// Registers SignalR related classes on the service collection.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
     public static IServiceCollection AddSignalRHubs(this IServiceCollection services)
     {
         services

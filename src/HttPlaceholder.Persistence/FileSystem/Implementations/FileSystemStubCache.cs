@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.FileSystem.Implementations;
 
+/// <inheritdoc />
 internal class FileSystemStubCache : IFileSystemStubCache
 {
     private static readonly object _cacheUpdateLock = new();
@@ -32,6 +33,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
         _settings = options.Value;
     }
 
+    /// <inheritdoc />
     public IEnumerable<StubModel> GetOrUpdateStubCache()
     {
         var shouldUpdateCache = false;
@@ -70,6 +72,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
         return StubCache;
     }
 
+    /// <inheritdoc />
     public void ClearStubCache()
     {
         // Clear the in memory stub cache.

@@ -16,12 +16,19 @@ using Serilog;
 
 namespace HttPlaceholder.Utilities;
 
+/// <summary>
+/// A utility class for handling the starting of HttPlaceholder.
+/// </summary>
 public static class ProgramUtilities
 {
     private static readonly string[] _verboseArgs = { "-V", "--verbose" };
     private static readonly string[] _versionArgs = { "-v", "--version" };
     private static readonly string[] _helpArgs = { "-h", "--help", "-?" };
 
+    /// <summary>
+    /// Configure the logging.
+    /// </summary>
+    /// <param name="args">The command line arguments.</param>
     public static void ConfigureLogging(IEnumerable<string> args)
     {
         var env = Environment.GetEnvironmentVariable("verbose");
@@ -39,6 +46,10 @@ public static class ProgramUtilities
             .CreateLogger();
     }
 
+    /// <summary>
+    /// Handle several commands.
+    /// </summary>
+    /// <param name="args">The command line arguments.</param>
     public static void HandleCommands(IEnumerable<string> args)
     {
         var version = AssemblyHelper.GetAssemblyVersion();
@@ -49,6 +60,11 @@ public static class ProgramUtilities
         HandleArgument(() => Console.WriteLine(GetManPage()), argsArray, _helpArgs);
     }
 
+    /// <summary>
+    /// Builds the web host for starting the application.
+    /// </summary>
+    /// <param name="args">The command line arguments.</param>
+    /// <returns>The web host.</returns>
     public static IWebHost BuildWebHost(string[] args)
     {
         var configParser = new ConfigurationParser();

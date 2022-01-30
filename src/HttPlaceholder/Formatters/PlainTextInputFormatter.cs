@@ -5,8 +5,14 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace HttPlaceholder.Formatters;
 
+/// <summary>
+/// An input formatter that is used to handle plain text input.
+/// </summary>
 public class PlainTextInputFormatter : TextInputFormatter
 {
+    /// <summary>
+    /// Constructs a <see cref="PlainTextInputFormatter"/> instance.
+    /// </summary>
     public PlainTextInputFormatter()
     {
         SupportedEncodings.Add(Encoding.UTF8);
@@ -14,6 +20,7 @@ public class PlainTextInputFormatter : TextInputFormatter
         SupportedMediaTypes.Add(MediaTypeHeaderValues.PlainText);
     }
 
+    /// <inheritdoc />
     public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context,
         Encoding encoding)
     {

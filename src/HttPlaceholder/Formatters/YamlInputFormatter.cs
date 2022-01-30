@@ -7,6 +7,7 @@ using YamlDotNet.Serialization;
 namespace HttPlaceholder.Formatters;
 
 /// <summary>
+/// An input formatter that is used to handle YAML input.
 /// Source: https://github.com/fiyazbinhasan/CoreFormatters
 /// </summary>
 public class YamlInputFormatter : TextInputFormatter
@@ -14,7 +15,7 @@ public class YamlInputFormatter : TextInputFormatter
     private readonly IDeserializer _deserializer;
 
     /// <summary>
-    ///
+    /// Constructs a <see cref="YamlInputFormatter"/> instance.
     /// </summary>
     /// <param name="deserializer"></param>
     public YamlInputFormatter(IDeserializer deserializer)
@@ -27,12 +28,7 @@ public class YamlInputFormatter : TextInputFormatter
         SupportedMediaTypes.Add(MediaTypeHeaderValues.TextYaml);
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="encoding"></param>
-    /// <returns></returns>
+    /// <inheritdoc />
     public override Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
     {
         if (context == null)

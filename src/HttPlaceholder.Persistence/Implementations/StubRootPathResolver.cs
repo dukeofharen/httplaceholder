@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Implementations;
 
+/// <inheritdoc />
 internal class StubRootPathResolver : IStubRootPathResolver
 {
     private readonly IAssemblyService _assemblyService;
@@ -25,6 +26,7 @@ internal class StubRootPathResolver : IStubRootPathResolver
         _settings = options.Value;
     }
 
+    /// <inheritdoc />
     public string[] GetStubRootPaths()
     {
         // First, check the "inputFile" configuration property and extract the directory of this folder.

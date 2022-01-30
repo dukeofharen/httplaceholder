@@ -16,7 +16,13 @@ public abstract class BaseApiController : Controller
     private IMapper _mapper;
     private IMediator _mediator;
 
+    /// <summary>
+    /// Gets the AutoMapper instance.
+    /// </summary>
     protected IMapper Mapper => _mapper ??= HttpContext.RequestServices.GetRequiredService<IMapper>();
 
+    /// <summary>
+    /// Gets the Mediator instance.
+    /// </summary>
     protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
 }

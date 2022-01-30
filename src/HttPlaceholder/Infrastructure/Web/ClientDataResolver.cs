@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Infrastructure.Web;
 
+/// <inheritdoc />
 public class ClientDataResolver : IClientDataResolver
 {
     private const string ForwardedHeaderKey = "X-Forwarded-For";
@@ -16,11 +17,15 @@ public class ClientDataResolver : IClientDataResolver
     private static IPAddress NginxProxyIp { get; } = IPAddress.Parse("::ffff:127.0.0.1");
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    /// <summary>
+    /// Constructs a <see cref="ClientDataResolver"/> instance.
+    /// </summary>
     public ClientDataResolver(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
     }
 
+    /// <inheritdoc />
     public string GetClientIp()
     {
         var request = _httpContextAccessor.HttpContext.Request;
@@ -38,6 +43,7 @@ public class ClientDataResolver : IClientDataResolver
         return parts.First();
     }
 
+    /// <inheritdoc />
     public string GetHost()
     {
         var request = _httpContextAccessor.HttpContext.Request;
@@ -53,6 +59,7 @@ public class ClientDataResolver : IClientDataResolver
         return request.Host.ToString();
     }
 
+    /// <inheritdoc />
     public bool IsHttps()
     {
         var request = _httpContextAccessor.HttpContext.Request;

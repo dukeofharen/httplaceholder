@@ -18,6 +18,9 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Middleware;
 
+/// <summary>
+/// A piece of middleware for matching requests against stubs.
+/// </summary>
 public class StubHandlingMiddleware
 {
     private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub"};
@@ -33,6 +36,9 @@ public class StubHandlingMiddleware
     private readonly SettingsModel _settings;
     private readonly IMapper _mapper;
 
+    /// <summary>
+    /// Constructs a <see cref="StubHandlingMiddleware"/> instance.
+    /// </summary>
     public StubHandlingMiddleware(
         RequestDelegate next,
         IClientDataResolver clientDataResolver,
@@ -57,6 +63,9 @@ public class StubHandlingMiddleware
         _settings = options.Value;
     }
 
+    /// <summary>
+    /// Handles the middleware.
+    /// </summary>
     public async Task Invoke(HttpContext context)
     {
         var path = _httpContextService.Path;

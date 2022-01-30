@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// Tenant Controller
+/// The tenant controller.
 /// </summary>
 [Route("ph-api/tenants")]
 [ApiAuthorization]
@@ -32,6 +32,7 @@ public class TenantController : BaseApiController
     /// <summary>
     /// Gets all stubs in a specific tenant.
     /// </summary>
+    /// <param name="tenant">The tenant.</param>
     /// <returns>All stubs in the tenant.</returns>
     [HttpGet]
     [Route("{tenant}/stubs")]
@@ -42,6 +43,7 @@ public class TenantController : BaseApiController
     /// <summary>
     /// Deletes all stubs in a specific tenant.
     /// </summary>
+    /// <param name="tenant">The tenant.</param>
     /// <returns>OK, but no content</returns>
     [HttpDelete]
     [Route("{tenant}/stubs")]
@@ -55,11 +57,10 @@ public class TenantController : BaseApiController
 
     /// <summary>
     /// Updates the stubs in a specific tenant with the posted values.
-    /// If a stub that is currently available in a tenant isn't sent in the request,
-    /// it will be deleted.
+    /// If a stub that is currently available in a tenant isn't sent in the request, it will be deleted.
     /// </summary>
-    /// <param name="tenant"></param>
-    /// <param name="stubs"></param>
+    /// <param name="tenant">The tenant.</param>
+    /// <param name="stubs">The stubs to update.</param>
     /// <returns>OK, but no content</returns>
     [HttpPut]
     [Route("{tenant}/stubs")]

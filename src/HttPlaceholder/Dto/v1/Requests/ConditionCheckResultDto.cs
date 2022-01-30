@@ -26,6 +26,7 @@ public class ConditionCheckResultDto : IHaveCustomMapping
     /// </summary>
     public string Log { get; set; }
 
+    /// <inheritdoc />
     public void CreateMappings(Profile configuration)
     {
         configuration

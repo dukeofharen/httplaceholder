@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// User controller
+/// The user controller.
 /// </summary>
 [Route("ph-api/users")]
 [ApiAuthorization]
@@ -17,7 +17,8 @@ public class UserController : BaseApiController
     /// <summary>
     /// Get the user for the given username.
     /// </summary>
-    /// <returns>The User.</returns>
+    /// <param name="username">The username.</param>
+    /// <returns>The user.</returns>
     [HttpGet]
     [Route("{username}")]
     [ProducesResponseType(StatusCodes.Status200OK)]

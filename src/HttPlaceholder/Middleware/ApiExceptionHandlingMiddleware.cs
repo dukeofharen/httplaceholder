@@ -9,17 +9,28 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Middleware;
 
+/// <summary>
+/// A piece of middleware for handling exceptions.
+/// </summary>
 public class ApiExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IHttpContextService _httpContextService;
 
+    /// <summary>
+    /// Constructs an <see cref="ApiExceptionHandlingMiddleware"/> instance.
+    /// </summary>
+    /// <param name="next"></param>
+    /// <param name="httpContextService"></param>
     public ApiExceptionHandlingMiddleware(RequestDelegate next, IHttpContextService httpContextService)
     {
         _next = next;
         _httpContextService = httpContextService;
     }
 
+    /// <summary>
+    /// Handles the middleware.
+    /// </summary>
     public async Task Invoke(HttpContext context)
     {
         if (_httpContextService.Path?.Contains("ph-api/") == true)

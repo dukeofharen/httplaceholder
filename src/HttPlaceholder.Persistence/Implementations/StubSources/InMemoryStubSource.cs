@@ -8,6 +8,9 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
+/// <summary>
+/// A stub source that is used to store and read data from memory.
+/// </summary>
 internal class InMemoryStubSource : IWritableStubSource
 {
     private static readonly object _lock = new();
@@ -22,6 +25,7 @@ internal class InMemoryStubSource : IWritableStubSource
         _settings = options.Value;
     }
 
+    /// <inheritdoc />
     public Task AddRequestResultAsync(RequestResultModel requestResult)
     {
         lock (_lock)
@@ -31,6 +35,7 @@ internal class InMemoryStubSource : IWritableStubSource
         }
     }
 
+    /// <inheritdoc />
     public Task AddStubAsync(StubModel stub)
     {
         lock (_lock)
@@ -40,6 +45,7 @@ internal class InMemoryStubSource : IWritableStubSource
         }
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
     {
         var requests = await GetRequestResultsAsync();
@@ -55,6 +61,7 @@ internal class InMemoryStubSource : IWritableStubSource
         }).ToArray();
     }
 
+    /// <inheritdoc />
     public Task<RequestResultModel> GetRequestAsync(string correlationId)
     {
         lock (_lock)
@@ -63,6 +70,7 @@ internal class InMemoryStubSource : IWritableStubSource
         }
     }
 
+    /// <inheritdoc />
     public Task DeleteAllRequestResultsAsync()
     {
         lock (_lock)
@@ -72,6 +80,7 @@ internal class InMemoryStubSource : IWritableStubSource
         }
     }
 
+    /// <inheritdoc />
     public Task<bool> DeleteRequestAsync(string correlationId)
     {
         lock (_lock)
@@ -87,6 +96,7 @@ internal class InMemoryStubSource : IWritableStubSource
         }
     }
 
+    /// <inheritdoc />
     public Task<bool> DeleteStubAsync(string stubId)
     {
         lock (_lock)
@@ -102,6 +112,7 @@ internal class InMemoryStubSource : IWritableStubSource
         }
     }
 
+    /// <inheritdoc />
     public Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
     {
         lock (_lock)
@@ -110,6 +121,7 @@ internal class InMemoryStubSource : IWritableStubSource
         }
     }
 
+    /// <inheritdoc />
     public Task<IEnumerable<StubModel>> GetStubsAsync()
     {
         lock (_lock)
@@ -118,14 +130,17 @@ internal class InMemoryStubSource : IWritableStubSource
         }
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync()  =>
         (await GetStubsAsync())
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
+    /// <inheritdoc />
     public Task<StubModel> GetStubAsync(string stubId) =>
         Task.FromResult(StubModels.FirstOrDefault(s => s.Id == stubId));
 
+    /// <inheritdoc />
     public Task CleanOldRequestResultsAsync()
     {
         lock (_lock)
@@ -143,5 +158,6 @@ internal class InMemoryStubSource : IWritableStubSource
         }
     }
 
+    /// <inheritdoc />
     public Task PrepareStubSourceAsync() => Task.CompletedTask;
 }

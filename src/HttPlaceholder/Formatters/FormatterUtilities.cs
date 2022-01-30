@@ -4,8 +4,15 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace HttPlaceholder.Formatters;
 
+/// <summary>
+/// A class for adding several formatters to .NET.
+/// </summary>
 public static class FormatterUtilities
 {
+    /// <summary>
+    /// Adds YAML formatting.
+    /// </summary>
+    /// <param name="options">The <see cref="MvcOptions"/>.</param>
     public static MvcOptions AddYamlFormatting(this MvcOptions options)
     {
         options.InputFormatters.Add(new YamlInputFormatter(new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build()));
@@ -14,6 +21,10 @@ public static class FormatterUtilities
         return options;
     }
 
+    /// <summary>
+    /// Adds plain text formatting.
+    /// </summary>
+    /// <param name="options">The <see cref="MvcOptions"/>.</param>
     public static MvcOptions AddPlainTextFormatting(this MvcOptions options)
     {
         options.InputFormatters.Add(new PlainTextInputFormatter());

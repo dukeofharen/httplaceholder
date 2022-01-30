@@ -7,14 +7,18 @@ using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Infrastructure.Implementations;
 
+/// <inheritdoc />
 public class EnvService : IEnvService
 {
+    /// <inheritdoc />
     public IDictionary<string, string> GetEnvironmentVariables() =>
         Environment.GetEnvironmentVariables()
             .Cast<DictionaryEntry>()
             .ToDictionary(de => (string)de.Key, de => (string)de.Value);
 
+    /// <inheritdoc />
     public string GetEnvironmentVariable(string key) => Environment.GetEnvironmentVariable(key);
 
+    /// <inheritdoc />
     public bool IsOs(OSPlatform platform) => RuntimeInformation.IsOSPlatform(platform);
 }

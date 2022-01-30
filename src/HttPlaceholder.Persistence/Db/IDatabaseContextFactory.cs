@@ -5,5 +5,9 @@
 /// </summary>
 public interface IDatabaseContextFactory
 {
+    /// <summary>
+    /// Creates a <see cref="IDatabaseContext"/> instance.
+    /// </summary>
+    /// <returns>A <see cref="IDatabaseContext"/> instance.</returns>
     IDatabaseContext CreateDatabaseContext();
 }

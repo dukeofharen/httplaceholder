@@ -19,8 +19,16 @@ using Microsoft.Extensions.FileProviders;
 
 namespace HttPlaceholder.Utilities;
 
+/// <summary>
+/// A class that is used to configure .NET for HttPlaceholder.
+/// </summary>
 public static class StartupUtilities
 {
+    /// <summary>
+    /// Add the necessary HttPlaceholder classes to the service collection.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The configuration.</param>
     public static IServiceCollection AddHttPlaceholder(this IServiceCollection services,
         IConfiguration configuration) =>
         services
@@ -36,13 +44,11 @@ public static class StartupUtilities
                 typeof(Startup).Assembly,
                 typeof(ApplicationModule).Assembly);
 
-    private static IServiceCollection AddWebInfrastructure(this IServiceCollection services)
-    {
-        services.TryAddSingleton<IClientDataResolver, ClientDataResolver>();
-        services.TryAddSingleton<IHttpContextService, HttpContextService>();
-        return services;
-    }
-
+    /// <summary>
+    /// Adds a file server for serving the user interface.
+    /// </summary>
+    /// <param name="app">The application builder.</param>
+    /// <param name="loadStaticFiles">Whether to serve the user interface or not.</param>
     public static IApplicationBuilder UseGui(this IApplicationBuilder app, bool loadStaticFiles)
     {
         if (!loadStaticFiles)
@@ -62,6 +68,10 @@ public static class StartupUtilities
         return app;
     }
 
+    /// <summary>
+    /// Adds a file server for serving several other static files
+    /// </summary>
+    /// <param name="app">The application builder.</param>
     public static IApplicationBuilder UsePhStatic(this IApplicationBuilder app)
     {
         var path = $"{AssemblyHelper.GetCallingAssemblyRootPath()}/ph-static";
@@ -71,6 +81,11 @@ public static class StartupUtilities
         });
     }
 
+    /// <summary>
+    /// Preloads the stub sources.
+    /// </summary>
+    /// <param name="app">The application builder.</param>
+    /// <param name="preloadStubs">True if the stub sources should be preloaded, false otherwise.</param>
     public static IApplicationBuilder PreloadStubs(this IApplicationBuilder app, bool preloadStubs)
     {
         if (!preloadStubs)
@@ -85,6 +100,10 @@ public static class StartupUtilities
         return app;
     }
 
+    /// <summary>
+    /// Registers HttPlaceholder on the application builder.
+    /// </summary>
+    /// <param name="app">The application builder.</param>
     public static IApplicationBuilder UseHttPlaceholder(this IApplicationBuilder app) => app
         .Use(async (context, next) =>
         {
@@ -100,4 +119,11 @@ public static class StartupUtilities
         .UseMiddleware<ApiHeadersMiddleware>()
         .UseMiddleware<ApiExceptionHandlingMiddleware>()
         .UseMiddleware<StubHandlingMiddleware>();
+
+    private static IServiceCollection AddWebInfrastructure(this IServiceCollection services)
+    {
+        services.TryAddSingleton<IClientDataResolver, ClientDataResolver>();
+        services.TryAddSingleton<IHttpContextService, HttpContextService>();
+        return services;
+    }
 }

@@ -4,7 +4,10 @@ using Microsoft.Extensions.Configuration;
 
 namespace HttPlaceholder.Persistence.Db.Implementations;
 
-public class SqlServerDbConnectionFactory : IDbConnectionFactory
+/// <summary>
+/// A class for creating MS SQL Server DB connections.
+/// </summary>
+internal class SqlServerDbConnectionFactory : IDbConnectionFactory
 {
     internal const string ConnectionStringKey = "SqlServer";
     private readonly IConfiguration _configuration;
@@ -14,6 +17,7 @@ public class SqlServerDbConnectionFactory : IDbConnectionFactory
         _configuration = configuration;
     }
 
+    /// <inheritdoc />
     public IDbConnection GetConnection() =>
         new SqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
 }

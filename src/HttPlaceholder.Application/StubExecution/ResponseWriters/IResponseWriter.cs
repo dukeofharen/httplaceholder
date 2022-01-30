@@ -9,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 public interface IResponseWriter
 {
     /// <summary>
-    /// The implemented method writes data to the <see cref="response"/>.
+    /// The implemented method writes data to the response.
     /// </summary>
     /// <param name="stub">The matched stub.</param>
     /// <param name="response">The response that will eventually be returned to the client.</param>

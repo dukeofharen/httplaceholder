@@ -45,6 +45,7 @@ public class RequestOverviewDto : IHaveCustomMapping
     /// </summary>
     public DateTime RequestEndTime { get; set; }
 
+    /// <inheritdoc />
     public void CreateMappings(Profile configuration)
     {
         configuration.CreateMap<RequestOverviewModel, RequestOverviewDto>();
