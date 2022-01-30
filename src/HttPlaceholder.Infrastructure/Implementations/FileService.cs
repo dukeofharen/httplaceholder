@@ -53,7 +53,4 @@ public class FileService : IFileService
 
     /// <inheritdoc />
     public string GetCurrentDirectory() => Directory.GetCurrentDirectory();
-
-    /// <inheritdoc />
-    public DateTime GetModificationDateTime(string path) => File.GetLastWriteTimeUtc(path);
 }

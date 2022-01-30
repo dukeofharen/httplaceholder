@@ -107,7 +107,7 @@ internal class YamlFileStubSource : IStubSource
 
                     ParseAndValidateStubs(stubs);
                     result.AddRange(stubs);
-                    _stubLoadDateTime = DateTime.UtcNow;
+                    _stubLoadDateTime = DateTime.Now;
                 }
                 catch (YamlException ex)
                 {
@@ -141,7 +141,7 @@ internal class YamlFileStubSource : IStubSource
         await GetStubsAsync();
 
     private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
-        files.Max(f => _fileService.GetModificationDateTime(f));
+        files.Max(f => _fileService.GetLastWriteTime(f));
 
     private void ParseAndValidateStubs(IEnumerable<StubModel> stubs)
     {

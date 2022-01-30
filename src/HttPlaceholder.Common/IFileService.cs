@@ -102,11 +102,4 @@ public interface IFileService
     /// </summary>
     /// <returns>The current directory.</returns>
     string GetCurrentDirectory();
-
-    /// <summary>
-    /// Gets the last write date and time of a specific file.
-    /// </summary>
-    /// <param name="path">The file path.</param>
-    /// <returns>The last write <see cref="DateTime"/>.</returns>
-    DateTime GetModificationDateTime(string path);
 }
