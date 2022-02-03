@@ -1,5 +1,6 @@
 ﻿namespace HttPlaceholder.Persistence.Db.Implementations;
 
+/// <inheritdoc />
 internal class DatabaseContextFactory : IDatabaseContextFactory
 {
     private readonly IDbConnectionFactory _dbConnectionFactory;
@@ -9,5 +10,6 @@ internal class DatabaseContextFactory : IDatabaseContextFactory
         _dbConnectionFactory = dbConnectionFactory;
     }
 
+    /// <inheritdoc />
     public IDatabaseContext CreateDatabaseContext() => new DatabaseContext(_dbConnectionFactory.GetConnection());
 }

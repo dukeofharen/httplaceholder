@@ -12,6 +12,9 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
+/// <summary>
+/// A stub source that is used to store and read data on the file system.
+/// </summary>
 internal class FileSystemStubSource : IWritableStubSource
 {
     private readonly IFileService _fileService;
@@ -28,6 +31,7 @@ internal class FileSystemStubSource : IWritableStubSource
         _settings = options.Value;
     }
 
+    /// <inheritdoc />
     public Task AddRequestResultAsync(RequestResultModel requestResult)
     {
         var path = GetRequestsFolder();
@@ -37,6 +41,7 @@ internal class FileSystemStubSource : IWritableStubSource
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
     public Task AddStubAsync(StubModel stub)
     {
         var path = GetStubsFolder();
@@ -47,6 +52,7 @@ internal class FileSystemStubSource : IWritableStubSource
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
     {
         // This method is not optimized right now.
@@ -63,6 +69,7 @@ internal class FileSystemStubSource : IWritableStubSource
         }).ToArray();
     }
 
+    /// <inheritdoc />
     public Task<RequestResultModel> GetRequestAsync(string correlationId)
     {
         var path = GetRequestsFolder();
@@ -76,6 +83,7 @@ internal class FileSystemStubSource : IWritableStubSource
         return Task.FromResult(JsonConvert.DeserializeObject<RequestResultModel>(contents));
     }
 
+    /// <inheritdoc />
     public Task DeleteAllRequestResultsAsync()
     {
         var path = GetRequestsFolder();
@@ -88,6 +96,7 @@ internal class FileSystemStubSource : IWritableStubSource
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
     public Task<bool> DeleteRequestAsync(string correlationId)
     {
         var path = GetRequestsFolder();
@@ -101,6 +110,7 @@ internal class FileSystemStubSource : IWritableStubSource
         return Task.FromResult(true);
     }
 
+    /// <inheritdoc />
     public Task<bool> DeleteStubAsync(string stubId)
     {
         var path = GetStubsFolder();
@@ -115,6 +125,7 @@ internal class FileSystemStubSource : IWritableStubSource
         return Task.FromResult(true);
     }
 
+    /// <inheritdoc />
     public Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
     {
         var path = GetRequestsFolder();
@@ -127,20 +138,24 @@ internal class FileSystemStubSource : IWritableStubSource
         return Task.FromResult(result.AsEnumerable());
     }
 
+    /// <inheritdoc />
     public Task<IEnumerable<StubModel>> GetStubsAsync() =>
         Task.FromResult(_fileSystemStubCache.GetOrUpdateStubCache());
 
+    /// <inheritdoc />
     public Task<StubModel> GetStubAsync(string stubId)
     {
         var stubs = _fileSystemStubCache.GetOrUpdateStubCache();
         return Task.FromResult(stubs.FirstOrDefault(s => s.Id == stubId));
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
         (await GetStubsAsync())
         .Select(s => new StubOverviewModel { Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled })
         .ToArray();
 
+    /// <inheritdoc />
     public Task CleanOldRequestResultsAsync()
     {
         // TODO make this thread safe. What if multiple instances of HttPlaceholder are running?
@@ -159,6 +174,7 @@ internal class FileSystemStubSource : IWritableStubSource
         return Task.CompletedTask;
     }
 
+    /// <inheritdoc />
     public Task PrepareStubSourceAsync()
     {
         var requestsFolder = GetRequestsFolder();

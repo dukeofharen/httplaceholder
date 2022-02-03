@@ -7,10 +7,12 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used for storing the request body as base64. When the response writer is used, the response is base64 decoded and sent to the client.
 /// </summary>
-public class Base64ResponseWriter : IResponseWriter
+internal class Base64ResponseWriter : IResponseWriter
 {
+    /// <inheritdoc />
     public int Priority => 0;
 
+    /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (stub.Response?.Base64 == null)

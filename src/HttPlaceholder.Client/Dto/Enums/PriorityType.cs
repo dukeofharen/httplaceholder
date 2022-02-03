@@ -1,9 +1,28 @@
-﻿namespace HttPlaceholder.Client.Dto.Enums;
-
-public enum PriorityType
+﻿namespace HttPlaceholder.Client.Dto.Enums
 {
-    Default = 0,
-    Low = -1,
-    Medium = 5,
-    High = 10
+    /// <summary>
+    /// A utility enum to determine the priority for a stub.
+    /// </summary>
+    public enum PriorityType
+    {
+        /// <summary>
+        /// The default priority.
+        /// </summary>
+        Default = 0,
+
+        /// <summary>
+        /// Low priority.
+        /// </summary>
+        Low = -1,
+
+        /// <summary>
+        /// Medium priority.
+        /// </summary>
+        Medium = 5,
+
+        /// <summary>
+        /// High priority.
+        /// </summary>
+        High = 10
+    }
 }

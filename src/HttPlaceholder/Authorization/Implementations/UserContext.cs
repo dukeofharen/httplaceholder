@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Authorization.Implementations;
 
-public class UserContext : IUserContext
+/// <inheritdoc />
+internal class UserContext : IUserContext
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -13,5 +14,6 @@ public class UserContext : IUserContext
         _httpContextAccessor = httpContextAccessor;
     }
 
+    /// <inheritdoc />
     public ClaimsPrincipal User => _httpContextAccessor.HttpContext.User;
 }

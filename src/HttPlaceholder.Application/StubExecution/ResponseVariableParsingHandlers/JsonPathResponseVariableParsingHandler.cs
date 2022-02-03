@@ -12,7 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to query the posted JSON string based on a JSONPath expression. The result is put in the response.
 /// </summary>
-public class JsonPathResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class JsonPathResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
     private readonly ILogger<JsonPathResponseVariableParsingHandler> _logger;
@@ -25,12 +25,16 @@ public class JsonPathResponseVariableParsingHandler : IResponseVariableParsingHa
         _logger = logger;
     }
 
+    /// <inheritdoc />
     public string Name => "jsonpath";
 
+    /// <inheritdoc />
     public string FullName => "JSONPath";
 
+    /// <inheritdoc />
     public string Example => "((jsonpath:$.values[1].title))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches)
     {
         var matchArray = matches as Match[] ?? matches.ToArray();

@@ -7,7 +7,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandler
 /// <summary>
 /// Handler that is being used for setting the response body.
 /// </summary>
-public class ResponseBodyHandler : IResponseToStubResponseHandler
+internal class ResponseBodyHandler : IResponseToStubResponseHandler
 {
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel)

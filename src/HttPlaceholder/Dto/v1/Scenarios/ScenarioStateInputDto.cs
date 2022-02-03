@@ -19,6 +19,7 @@ public class ScenarioStateInputDto : IHaveCustomMapping
     /// </summary>
     public int HitCount { get; init; } = -1;
 
+    /// <inheritdoc />
     public void CreateMappings(Profile configuration) => configuration
         .CreateMap<ScenarioStateInputDto, ScenarioStateModel>()
         .ForMember(src => src.Scenario, opt => opt.Ignore());

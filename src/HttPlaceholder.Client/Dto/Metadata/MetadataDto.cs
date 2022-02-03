@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 
-namespace HttPlaceholder.Client.Dto.Metadata;
-
-/// <summary>
-/// A model for storing the HttPlaceholder metadata.
-/// </summary>
-public class MetadataDto
+namespace HttPlaceholder.Client.Dto.Metadata
 {
     /// <summary>
-    /// Gets or sets the version.
+    /// A model for storing the HttPlaceholder metadata.
     /// </summary>
-    public string Version { get; set; }
+    public class MetadataDto
+    {
+        /// <summary>
+        /// Gets or sets the version.
+        /// </summary>
+        public string Version { get; set; }
 
-    /// <summary>
-    /// Gets or sets the available variable handlers.
-    /// </summary>
-    public IEnumerable<VariableHandlerDto> VariableHandlers { get; set; }
+        /// <summary>
+        /// Gets or sets the available variable handlers.
+        /// </summary>
+        public IEnumerable<VariableHandlerDto> VariableHandlers { get; set; }
+    }
 }

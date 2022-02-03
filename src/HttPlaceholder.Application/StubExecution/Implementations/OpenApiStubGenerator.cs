@@ -11,7 +11,7 @@ using Microsoft.OpenApi.Models;
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 /// <inheritdoc />
-public class OpenApiStubGenerator : IOpenApiStubGenerator
+internal class OpenApiStubGenerator : IOpenApiStubGenerator
 {
     private readonly IStubContext _stubContext;
     private readonly IOpenApiParser _openApiParser;

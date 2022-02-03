@@ -15,12 +15,15 @@ public class XPathConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
 
-
+    /// <summary>
+    /// Constructs a <see cref="BasicAuthenticationConditionChecker"/> instance.
+    /// </summary>
     public XPathConditionChecker(IHttpContextService httpContextService)
     {
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -79,5 +82,6 @@ public class XPathConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 0;
 }

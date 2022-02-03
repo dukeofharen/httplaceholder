@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Requests.Commands.CreateStubForRequest;
-using HttPlaceholder.Application.Requests.Commands.DeleteAllRequest;
+using HttPlaceholder.Application.Requests.Commands.DeleteAllRequests;
 using HttPlaceholder.Application.Requests.Commands.DeleteRequest;
 using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetRequest;
@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// Controller for requests.
+/// The request controller
 /// </summary>
 [Route("ph-api/requests")]
 [ApiAuthorization]
@@ -42,7 +42,7 @@ public class RequestController : BaseApiController
     /// <summary>
     /// Gets a specific request by correlation ID.
     /// </summary>
-    /// <param name="correlationId">The original correlation ID.</param>
+    /// <param name="correlationId">The request correlation ID.</param>
     /// <returns>The request.</returns>
     [HttpGet("{correlationId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -66,7 +66,7 @@ public class RequestController : BaseApiController
     /// <summary>
     /// Delete a specific request.
     /// </summary>
-    /// <param name="correlationId">The ID of the request to delete.</param>
+    /// <param name="correlationId">The correlation ID of the request to delete.</param>
     /// <returns>OK, but no content returned</returns>
     [HttpDelete("{correlationId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -80,6 +80,8 @@ public class RequestController : BaseApiController
     /// An endpoint which accepts the correlation ID of a request made earlier.
     /// HttPlaceholder will create a stub based on this request for you to tweak later on.
     /// </summary>
+    /// <param name="correlationId">The request correlation ID.</param>
+    /// <param name="input">The input.</param>
     /// <returns>OK, with the generated stub</returns>
     [HttpPost("{correlationId}/stubs")]
     [ProducesResponseType(StatusCodes.Status200OK)]

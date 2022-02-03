@@ -10,7 +10,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert a given posted form value in the response.
 /// </summary>
-public class FormPostResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class FormPostResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
 
@@ -19,12 +19,16 @@ public class FormPostResponseVariableParsingHandler : IResponseVariableParsingHa
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public string Name => "form_post";
 
+    /// <inheritdoc />
     public string FullName => "Form post";
 
+    /// <inheritdoc />
     public string Example => "((form_post:form_key))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();

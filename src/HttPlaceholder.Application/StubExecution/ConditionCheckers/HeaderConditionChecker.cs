@@ -13,11 +13,15 @@ public class HeaderConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
 
+    /// <summary>
+    /// Constructs a <see cref="HeaderConditionChecker"/> instance.
+    /// </summary>
     public HeaderConditionChecker(IHttpContextService httpContextService)
     {
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -58,5 +62,6 @@ public class HeaderConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 8;
 }

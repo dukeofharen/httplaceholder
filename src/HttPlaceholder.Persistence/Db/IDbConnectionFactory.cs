@@ -7,5 +7,9 @@ namespace HttPlaceholder.Persistence.Db;
 /// </summary>
 public interface IDbConnectionFactory
 {
+    /// <summary>
+    /// Creates an <see cref="IDbConnection"/> instance.
+    /// </summary>
+    /// <returns>An <see cref="IDbConnection"/> instance.</returns>
     IDbConnection GetConnection();
 }

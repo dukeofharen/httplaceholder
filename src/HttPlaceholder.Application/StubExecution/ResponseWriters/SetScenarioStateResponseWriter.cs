@@ -7,7 +7,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to set the state of the stub scenario to another value.
 /// </summary>
-public class SetScenarioStateResponseWriter : IResponseWriter
+internal class SetScenarioStateResponseWriter : IResponseWriter
 {
     private readonly IScenarioService _scenarioService;
 
@@ -16,6 +16,7 @@ public class SetScenarioStateResponseWriter : IResponseWriter
         _scenarioService = scenarioService;
     }
 
+    /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (string.IsNullOrWhiteSpace(stub.Response.Scenario?.SetScenarioState) ||
@@ -32,5 +33,6 @@ public class SetScenarioStateResponseWriter : IResponseWriter
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }
 
+    /// <inheritdoc />
     public int Priority => 0;
 }

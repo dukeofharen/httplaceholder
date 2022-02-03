@@ -7,7 +7,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// <summary>
 /// "Request to stub conditions handler" that is used to create a client IP condition.
 /// </summary>
-public class ClientIpHandler : IRequestToStubConditionsHandler
+internal class ClientIpHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)

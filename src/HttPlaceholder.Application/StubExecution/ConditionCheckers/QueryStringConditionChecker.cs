@@ -13,11 +13,15 @@ public class QueryStringConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
 
+    /// <summary>
+    /// Constructs a <see cref="QueryStringConditionChecker"/> instance.
+    /// </summary>
     public QueryStringConditionChecker(IHttpContextService httpContextService)
     {
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -58,5 +62,6 @@ public class QueryStringConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 8;
 }

@@ -10,7 +10,7 @@ stages:
   - test
   - build-ui
   - build-server
-  - build-installer
+  - build-docs
   - publish
 
 set-version:
@@ -109,6 +109,17 @@ create-open-api-file:
   script:
     - chmod +x ./scripts/build/create-open-api-file.sh
     - ./scripts/build/create-open-api-file.sh
+  artifacts:
+    paths:
+      - dist
+    expire_in: 1 week
+
+create-nuget-client-docs:
+  image: $DEBIAN_IMAGE
+  stage: build-docs
+  script:
+    - chmod +x ./scripts/build/build-nuget-client-docs.sh
+    - ./scripts/build/build-nuget-client-docs.sh
   artifacts:
     paths:
       - dist

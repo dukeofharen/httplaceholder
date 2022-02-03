@@ -10,8 +10,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Application.StubExecution;
 
+/// <summary>
+/// A class that is used to add all stub execution related classes to the service collection.
+/// </summary>
 public static class StubExecutionModule
 {
+    /// <summary>
+    /// Add all stub execution related classes to the service collection.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
     public static IServiceCollection AddStubExecutionModule(this IServiceCollection services)
     {
         services

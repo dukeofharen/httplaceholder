@@ -13,7 +13,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to setup a reverse proxy to another URL.
 /// </summary>
-public class ReverseProxyResponseWriter : IResponseWriter
+internal class ReverseProxyResponseWriter : IResponseWriter
 {
     private static readonly string[] _excludedRequestHeaderNames =
     {
@@ -36,8 +36,10 @@ public class ReverseProxyResponseWriter : IResponseWriter
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public int Priority => -10;
 
+    /// <inheritdoc />
     public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (stub.Response.ReverseProxy == null || string.IsNullOrWhiteSpace(stub.Response.ReverseProxy.Url))

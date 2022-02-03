@@ -12,11 +12,15 @@ public class PathConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
 
+    /// <summary>
+    /// Constructs a <see cref="PathConditionChecker"/> instance.
+    /// </summary>
     public PathConditionChecker(IHttpContextService httpContextService)
     {
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -41,5 +45,6 @@ public class PathConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 8;
 }

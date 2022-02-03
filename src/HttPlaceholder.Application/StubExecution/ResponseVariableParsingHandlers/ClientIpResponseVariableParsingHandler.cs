@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert the client IP in the response.
 /// </summary>
-public class ClientIpResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class ClientIpResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IClientDataResolver _clientDataResolver;
 
@@ -17,12 +17,16 @@ public class ClientIpResponseVariableParsingHandler : IResponseVariableParsingHa
         _clientDataResolver = clientDataResolver;
     }
 
+    /// <inheritdoc />
     public string Name => "client_ip";
 
+    /// <inheritdoc />
     public string FullName => "Client IP";
 
+    /// <inheritdoc />
     public string Example => "((client_ip))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();

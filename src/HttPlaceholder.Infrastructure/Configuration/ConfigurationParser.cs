@@ -14,12 +14,18 @@ using static HttPlaceholder.Domain.Constants;
 
 namespace HttPlaceholder.Infrastructure.Configuration;
 
+/// <summary>
+/// A class that is used to convert a list of command line arguments to a dictionary.
+/// </summary>
 public class ConfigurationParser
 {
     private readonly IEnvService _envService;
     private readonly IFileService _fileService;
 
-    public ConfigurationParser(
+    /// <summary>
+    /// Constructs a <see cref="ConfigurationParser"/> instance.
+    /// </summary>
+    internal ConfigurationParser(
         IEnvService envService,
         IFileService fileService)
     {
@@ -27,12 +33,20 @@ public class ConfigurationParser
         _fileService = fileService;
     }
 
+    /// <summary>
+    /// Constructs a <see cref="ConfigurationParser"/> instance.
+    /// </summary>
     public ConfigurationParser() : this(
         new EnvService(),
         new FileService())
     {
     }
 
+    /// <summary>
+    /// Converts a string array of command line arguments into a dictionary.
+    /// </summary>
+    /// <param name="args">The command line arguments.</param>
+    /// <returns>The parsed dictionary.</returns>
     public IDictionary<string, string> ParseConfiguration(string[] args)
     {
         var argsDictionary = DetermineBaseArgsDictionary(args);
@@ -148,6 +162,10 @@ public class ConfigurationParser
         return configDictionary;
     }
 
+    /// <summary>
+    /// Returns a list of all possible configuration keys and its metadata.
+    /// </summary>
+    /// <returns>A list of <see cref="ConfigMetadataModel"/>.</returns>
     public static IEnumerable<ConfigMetadataModel> GetConfigKeyMetadata() =>
         (from constant
                 in ReflectionUtilities.GetConstants(typeof(ConfigKeys))

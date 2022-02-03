@@ -10,7 +10,8 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-public class StubRequestExecutor : IStubRequestExecutor
+/// <inheritdoc/>
+internal class StubRequestExecutor : IStubRequestExecutor
 {
     private readonly IEnumerable<IConditionChecker> _conditionCheckers;
     private readonly IFinalStubDeterminer _finalStubDeterminer;
@@ -38,6 +39,7 @@ public class StubRequestExecutor : IStubRequestExecutor
         _scenarioService = scenarioService;
     }
 
+    /// <inheritdoc/>
     public async Task<ResponseModel> ExecuteRequestAsync()
     {
         var requestLogger = _requestLoggerFactory.GetRequestLogger();

@@ -1,33 +1,50 @@
 ﻿using System;
 
-namespace HttPlaceholder.Client.Configuration;
-
-public class HttPlaceholderClientConfiguration
+namespace HttPlaceholder.Client.Configuration
 {
-    private string _rootUrl;
-
-    public string RootUrl
+    /// <summary>
+    /// Class that is used to store the HttPlaceholder client configuration.
+    /// </summary>
+    public class HttPlaceholderClientConfiguration
     {
-        get => _rootUrl;
-        set
+        private string _rootUrl;
+
+        /// <summary>
+        /// The root URL of the HttPlaceholder instance. The URL will be appended with "/" if it does not end with a "/" yet.
+        /// </summary>
+        public string RootUrl
         {
-            if (!string.IsNullOrWhiteSpace(value))
+            get => _rootUrl;
+            set
             {
-                _rootUrl = value.EndsWith("/") ? value : $"{value}/";
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    _rootUrl = value.EndsWith("/") ? value : $"{value}/";
+                }
             }
         }
-    }
 
-    public string Username { get; set; }
+        /// <summary>
+        /// The username of the HttPlaceholder instance.
+        /// </summary>
+        public string Username { get; set; }
 
-    public string Password { get; set; }
+        /// <summary>
+        /// The password of the HttPlaceholder instance.
+        /// </summary>
+        public string Password { get; set; }
 
-    public void Validate()
-    {
-        if (string.IsNullOrWhiteSpace(RootUrl))
+        /// <summary>
+        /// Validates the HttPlaceholder configuration.
+        /// </summary>
+        /// <exception cref="ArgumentException"></exception>
+        public void Validate()
         {
-            throw new ArgumentException(
-                $"No value set for {nameof(RootUrl)} in HttPlaceholder configuration.");
+            if (string.IsNullOrWhiteSpace(RootUrl))
+            {
+                throw new ArgumentException(
+                    $"No value set for {nameof(RootUrl)} in HttPlaceholder configuration.");
+            }
         }
     }
 }

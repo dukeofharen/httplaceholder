@@ -9,6 +9,7 @@ using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Persistence.Implementations;
 
+/// <inheritdoc />
 internal class StubContext : IStubContext
 {
     private readonly IEnumerable<IStubSource> _stubSources;
@@ -18,10 +19,13 @@ internal class StubContext : IStubContext
         _stubSources = stubSources;
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> GetStubsAsync() => await GetStubsAsync(false);
 
+    /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> GetStubsFromReadOnlySourcesAsync() => await GetStubsAsync(true);
 
+    /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant)
     {
         var stubs = await GetStubsAsync(false);
@@ -29,6 +33,7 @@ internal class StubContext : IStubContext
             .Where(s => string.Equals(s.Stub.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<FullStubOverviewModel>> GetStubsOverviewAsync()
     {
         var result = new List<FullStubOverviewModel>();
@@ -46,6 +51,7 @@ internal class StubContext : IStubContext
         return result;
     }
 
+    /// <inheritdoc />
     public async Task<FullStubModel> AddStubAsync(StubModel stub)
     {
         // Check that a stub with the new ID isn't already added to a readonly stub source.
@@ -60,9 +66,11 @@ internal class StubContext : IStubContext
         return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel { ReadOnly = false } };
     }
 
+    /// <inheritdoc />
     public async Task<bool> DeleteStubAsync(string stubId) =>
         await GetWritableStubSource().DeleteStubAsync(stubId);
 
+    /// <inheritdoc />
     public async Task DeleteAllStubsAsync(string tenant)
     {
         var source = GetWritableStubSource();
@@ -75,6 +83,7 @@ internal class StubContext : IStubContext
         }
     }
 
+    /// <inheritdoc />
     public async Task DeleteAllStubsAsync()
     {
         var source = GetWritableStubSource();
@@ -85,6 +94,7 @@ internal class StubContext : IStubContext
         }
     }
 
+    /// <inheritdoc />
     public async Task UpdateAllStubs(string tenant, IEnumerable<StubModel> stubs)
     {
         var source = GetWritableStubSource();
@@ -111,6 +121,7 @@ internal class StubContext : IStubContext
         }
     }
 
+    /// <inheritdoc />
     public async Task<FullStubModel> GetStubAsync(string stubId)
     {
         FullStubModel result = null;
@@ -131,6 +142,7 @@ internal class StubContext : IStubContext
         return result;
     }
 
+    /// <inheritdoc />
     public async Task AddRequestResultAsync(RequestResultModel requestResult)
     {
         var source = GetWritableStubSource();
@@ -145,14 +157,17 @@ internal class StubContext : IStubContext
         await source.AddRequestResultAsync(requestResult);
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync() =>
         (await GetWritableStubSource().GetRequestResultsAsync())
         .OrderByDescending(s => s.RequestBeginTime);
 
+    /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync() =>
         (await GetWritableStubSource().GetRequestResultsOverviewAsync())
         .OrderByDescending(s => s.RequestEndTime);
 
+    /// <inheritdoc />
     public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId)
     {
         var source = GetWritableStubSource();
@@ -163,24 +178,28 @@ internal class StubContext : IStubContext
         return results;
     }
 
+    /// <inheritdoc />
     public async Task<RequestResultModel> GetRequestResultAsync(string correlationId)
     {
         var source = GetWritableStubSource();
         return await source.GetRequestAsync(correlationId);
     }
 
+    /// <inheritdoc />
     public async Task DeleteAllRequestResultsAsync()
     {
         var source = GetWritableStubSource();
         await source.DeleteAllRequestResultsAsync();
     }
 
+    /// <inheritdoc />
     public async Task<bool> DeleteRequestAsync(string correlationId)
     {
         var source = GetWritableStubSource();
         return await source.DeleteRequestAsync(correlationId);
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<string>> GetTenantNamesAsync() =>
         (await GetStubsAsync())
         .Select(s => s.Stub.Tenant)
@@ -188,6 +207,7 @@ internal class StubContext : IStubContext
         .OrderBy(n => n)
         .Distinct();
 
+    /// <inheritdoc />
     public async Task PrepareAsync()
     {
         foreach (var source in _stubSources)

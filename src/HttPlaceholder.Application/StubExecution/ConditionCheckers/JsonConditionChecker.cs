@@ -17,11 +17,15 @@ public class JsonConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
 
+    /// <summary>
+    /// Constructs a <see cref="JsonConditionChecker"/> instance.
+    /// </summary>
     public JsonConditionChecker(IHttpContextService httpContextService)
     {
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -51,6 +55,7 @@ public class JsonConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 1;
 
     internal bool CheckSubmittedJson(object input, JToken jToken, List<string> logResults)

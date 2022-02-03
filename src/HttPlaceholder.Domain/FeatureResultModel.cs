@@ -7,6 +7,11 @@ namespace HttPlaceholder.Domain;
 /// </summary>
 public class FeatureResultModel
 {
+    /// <summary>
+    /// Constructs a <see cref="FeatureResultModel"/> instance.
+    /// </summary>
+    /// <param name="featureFlag">The feature flag.</param>
+    /// <param name="enabled">Whether the feature is enabled or not.</param>
     public FeatureResultModel(FeatureFlagType featureFlag, bool enabled)
     {
         FeatureFlag = featureFlag;

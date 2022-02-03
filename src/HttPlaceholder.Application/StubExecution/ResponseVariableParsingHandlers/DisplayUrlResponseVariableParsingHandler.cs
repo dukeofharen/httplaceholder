@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert the display URL (so the full URL) in the response.
 /// </summary>
-public class DisplayUrlResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class DisplayUrlResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
 
@@ -17,12 +17,16 @@ public class DisplayUrlResponseVariableParsingHandler : IResponseVariableParsing
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public string Name => "display_url";
 
+    /// <inheritdoc />
     public string FullName => "Display URL";
 
+    /// <inheritdoc />
     public string Example => "((display_url))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();

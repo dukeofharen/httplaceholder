@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert a request header in the response.
 /// </summary>
-public class RequestHeaderResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class RequestHeaderResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
 
@@ -17,12 +17,16 @@ public class RequestHeaderResponseVariableParsingHandler : IResponseVariablePars
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public string Name => "request_header";
 
+    /// <inheritdoc />
     public string FullName => "Request header";
 
+    /// <inheritdoc />
     public string Example => "((request_header:X-Api-Key))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches)
     {
         var headers = _httpContextService.GetHeaders();

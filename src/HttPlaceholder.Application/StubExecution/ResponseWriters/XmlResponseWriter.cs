@@ -10,8 +10,10 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// </summary>
 internal class XmlResponseWriter : IResponseWriter
 {
+    /// <inheritdoc />
     public int Priority => 0;
 
+    /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (stub.Response?.Xml == null)

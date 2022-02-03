@@ -10,11 +10,15 @@ public class ScenarioExactHitCounterConditionChecker : IConditionChecker
 {
     private readonly IScenarioService _scenarioService;
 
+    /// <summary>
+    /// Constructs a <see cref="ScenarioExactHitCounterConditionChecker"/> instance.
+    /// </summary>
     public ScenarioExactHitCounterConditionChecker(IScenarioService scenarioService)
     {
         _scenarioService = scenarioService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -46,5 +50,6 @@ public class ScenarioExactHitCounterConditionChecker : IConditionChecker
         return result;
     }
 
+    /// <inheritdoc />
     public int Priority => 8;
 }

@@ -5,6 +5,12 @@ namespace HttPlaceholder.Domain;
 /// </summary>
 public class VariableHandlerModel
 {
+    /// <summary>
+    /// Constructs a <see cref="VariableHandlerModel"/> instance.
+    /// </summary>
+    /// <param name="name">The name.</param>
+    /// <param name="fullName">The full name.</param>
+    /// <param name="example">An example.</param>
     public VariableHandlerModel(string name, string fullName, string example)
     {
         Name = name;

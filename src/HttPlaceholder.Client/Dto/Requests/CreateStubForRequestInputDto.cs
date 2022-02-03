@@ -1,12 +1,13 @@
-﻿namespace HttPlaceholder.Client.Dto.Requests;
-
-/// <summary>
-/// A model which contains metadata which is used when creating a stub from a request.
-/// </summary>
-public class CreateStubForRequestInputDto
+﻿namespace HttPlaceholder.Client.Dto.Requests
 {
     /// <summary>
-    /// Gets or sets whether to add the stub to the data source. If set to false, the stub is only returned but not added.
+    /// A model which contains metadata which is used when creating a stub from a request.
     /// </summary>
-    public bool DoNotCreateStub { get; set; }
+    public class CreateStubForRequestInputDto
+    {
+        /// <summary>
+        /// Gets or sets whether to add the stub to the data source. If set to false, the stub is only returned but not added.
+        /// </summary>
+        public bool DoNotCreateStub { get; set; }
+    }
 }

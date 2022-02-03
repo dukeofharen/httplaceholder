@@ -8,15 +8,22 @@ using MediatR;
 
 namespace HttPlaceholder.Application.Import.Commands.CreateOpenApiStub;
 
+/// <summary>
+/// A command handler for creating stubs based on OpenAPI definitions.
+/// </summary>
 public class CreateOpenApiStubCommandHandler : IRequestHandler<CreateOpenApiStubCommand, IEnumerable<FullStubModel>>
 {
     private readonly IOpenApiStubGenerator _openApiStubGenerator;
 
+    /// <summary>
+    /// Constructs a <see cref="CreateOpenApiStubCommandHandler"/> instance.
+    /// </summary>
     public CreateOpenApiStubCommandHandler(IOpenApiStubGenerator openApiStubGenerator)
     {
         _openApiStubGenerator = openApiStubGenerator;
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> Handle(
         CreateOpenApiStubCommand request,
         CancellationToken cancellationToken)

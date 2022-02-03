@@ -7,7 +7,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to add an extra duration to the total execution time of the request.
 /// </summary>
-public class ExtraDurationResponseWriter : IResponseWriter
+internal class ExtraDurationResponseWriter : IResponseWriter
 {
     private readonly IAsyncService _asyncService;
 
@@ -17,8 +17,10 @@ public class ExtraDurationResponseWriter : IResponseWriter
         _asyncService = asyncService;
     }
 
+    /// <inheritdoc />
     public int Priority => 0;
 
+    /// <inheritdoc />
     public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         // Simulate sluggish response here, if configured.

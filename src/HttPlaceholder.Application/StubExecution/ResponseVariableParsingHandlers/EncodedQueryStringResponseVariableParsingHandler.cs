@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert a given URL encoded query parameter in the response.
 /// </summary>
-public class EncodedQueryStringResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class EncodedQueryStringResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
 
@@ -17,12 +17,16 @@ public class EncodedQueryStringResponseVariableParsingHandler : IResponseVariabl
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public string Name => "query_encoded";
 
+    /// <inheritdoc />
     public string FullName => "URL encoded query string";
 
+    /// <inheritdoc />
     public string Example => "((query_encoded:query_string_key))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches)
     {
         var queryDict = _httpContextService.GetQueryStringDictionary();

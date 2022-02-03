@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Authorization.Implementations;
 
+/// <inheritdoc />
 internal class LoginService : ILoginService
 {
     private const string Salt = "83b2737f-7d85-4a0a-8113-b98ed4a255a1";
@@ -21,6 +22,7 @@ internal class LoginService : ILoginService
         _settings = options.Value;
     }
 
+    /// <inheritdoc />
     public bool CheckLoginCookie()
     {
         var username = _settings.Authentication?.ApiUsername ?? string.Empty;
@@ -35,6 +37,7 @@ internal class LoginService : ILoginService
         return cookie.Value == expectedHash;
     }
 
+    /// <inheritdoc />
     public void SetLoginCookie(string username, string password) =>
         _httpContextAccessor.HttpContext.Response.Cookies.Append(
             CookieKeys.LoginCookieKey,

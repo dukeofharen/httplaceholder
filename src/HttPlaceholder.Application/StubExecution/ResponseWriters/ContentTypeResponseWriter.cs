@@ -9,6 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// </summary>
 public class ContentTypeResponseWriter : IResponseWriter
 {
+    /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (string.IsNullOrWhiteSpace(stub.Response?.ContentType))
@@ -20,5 +21,6 @@ public class ContentTypeResponseWriter : IResponseWriter
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }
 
+    /// <inheritdoc />
     public int Priority => -11;
 }

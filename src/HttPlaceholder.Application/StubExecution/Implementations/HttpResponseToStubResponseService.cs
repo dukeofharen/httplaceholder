@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 /// <inheritdoc />
-public class HttpResponseToStubResponseService : IHttpResponseToStubResponseService
+internal class HttpResponseToStubResponseService : IHttpResponseToStubResponseService
 {
     private readonly IEnumerable<IResponseToStubResponseHandler> _handlers;
     private readonly ILogger<HttpResponseToStubResponseService> _logger;

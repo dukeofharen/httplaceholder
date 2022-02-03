@@ -8,14 +8,18 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler for generating a random UUID and putting it in the response.
 /// </summary>
-public class UuidResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class UuidResponseVariableParsingHandler : IResponseVariableParsingHandler
 {
+    /// <inheritdoc />
     public string Name => "uuid";
 
+    /// <inheritdoc />
     public string FullName => "UUID";
 
+    /// <inheritdoc />
     public string Example => "((uuid))";
 
+    /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches) =>
         (from match
                 in matches

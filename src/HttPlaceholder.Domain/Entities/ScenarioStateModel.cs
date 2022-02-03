@@ -5,10 +5,17 @@
 /// </summary>
 public class ScenarioStateModel
 {
+    /// <summary>
+    /// Constructs a <see cref="ScenarioStateModel"/> instance.
+    /// </summary>
     public ScenarioStateModel()
     {
     }
 
+    /// <summary>
+    /// Constructs a <see cref="ScenarioStateModel"/> instance.
+    /// </summary>
+    /// <param name="scenario">The scenario.</param>
     public ScenarioStateModel(string scenario)
     {
         Scenario = scenario.ToLower();

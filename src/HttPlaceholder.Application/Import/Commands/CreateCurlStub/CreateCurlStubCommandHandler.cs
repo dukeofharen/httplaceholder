@@ -8,15 +8,22 @@ using MediatR;
 
 namespace HttPlaceholder.Application.Import.Commands.CreateCurlStub;
 
+/// <summary>
+/// A command handler for creating stubs based on cURL commands.
+/// </summary>
 public class CreateCurlStubCommandHandler : IRequestHandler<CreateCurlStubCommand, IEnumerable<FullStubModel>>
 {
     private readonly ICurlStubGenerator _curlStubGenerator;
 
+    /// <summary>
+    /// Constructs a <see cref="CreateCurlStubCommandHandler"/> instance.
+    /// </summary>
     public CreateCurlStubCommandHandler(ICurlStubGenerator curlStubGenerator)
     {
         _curlStubGenerator = curlStubGenerator;
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> Handle(CreateCurlStubCommand request,
         CancellationToken cancellationToken)
     {

@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// Stub Controller
+/// The stub controller.
 /// </summary>
 [Route("ph-api/stubs")]
 [ApiAuthorization]
@@ -28,8 +28,8 @@ public class StubController : BaseApiController
     /// <summary>
     /// Adds a new stub.
     /// </summary>
-    /// <param name="stub">The posted stub</param>
-    /// <returns>OK, with the created stub</returns>
+    /// <param name="stub">The posted stub.</param>
+    /// <returns>OK, with the created stub.</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -86,6 +86,7 @@ public class StubController : BaseApiController
     /// <summary>
     /// Get requests for the given stub ID.
     /// </summary>
+    /// <param name="stubId">The stub ID.</param>
     /// <returns>request results for the given stubId</returns>
     [HttpGet]
     [Route("{stubId}/requests")]
@@ -96,6 +97,7 @@ public class StubController : BaseApiController
     /// <summary>
     /// Get a specific stub by stub identifier.
     /// </summary>
+    /// <param name="stubId">The stub ID.</param>
     /// <returns>The stub.</returns>
     [HttpGet]
     [Route("{stubId}")]
@@ -108,6 +110,7 @@ public class StubController : BaseApiController
     /// <summary>
     /// Delete a specific stub by stub identifier.
     /// </summary>
+    /// <param name="stubId">The stub ID.</param>
     /// <returns>OK, but not content</returns>
     [HttpDelete]
     [Route("{stubId}")]

@@ -13,7 +13,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// The content type should be JSON, the JSON should be correct and no request body should have been set for the stub yet.
 /// JSON objects and arrays are supported as root node.
 /// </summary>
-public class JsonHandler : IRequestToStubConditionsHandler
+internal class JsonHandler : IRequestToStubConditionsHandler
 {
     private readonly ILogger<JsonHandler> _logger;
 

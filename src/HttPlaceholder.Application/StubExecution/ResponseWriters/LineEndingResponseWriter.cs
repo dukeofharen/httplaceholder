@@ -9,8 +9,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to enforce the response to use specific line endings (Windows or UNIX).
 /// </summary>
-public class LineEndingResponseWriter : IResponseWriter
+internal class LineEndingResponseWriter : IResponseWriter
 {
+    /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         var lineEndings = stub.Response.LineEndings;
@@ -44,6 +45,7 @@ public class LineEndingResponseWriter : IResponseWriter
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name, log));
     }
 
+    /// <inheritdoc />
     public int Priority => -10;
 
     private static byte[] ReplaceLineEndings(byte[] input, string lineEndingSeparator) =>

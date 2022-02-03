@@ -6,7 +6,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to clear the scenario state of the stub (both hit counter and state).
 /// </summary>
-public class ClearScenarioStateResponseWriter : IResponseWriter
+internal class ClearScenarioStateResponseWriter : IResponseWriter
 {
     private readonly IScenarioService _scenarioService;
 
@@ -15,6 +15,7 @@ public class ClearScenarioStateResponseWriter : IResponseWriter
         _scenarioService = scenarioService;
     }
 
+    /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (stub.Response.Scenario?.ClearState != true || string.IsNullOrWhiteSpace(stub.Scenario))
@@ -26,5 +27,6 @@ public class ClearScenarioStateResponseWriter : IResponseWriter
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }
 
+    /// <inheritdoc />
     public int Priority => 0;
 }

@@ -16,6 +16,9 @@ using Constants = HttPlaceholder.Domain.Constants;
 
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
+/// <summary>
+/// A stub source that is used to read data from one or several YAML files, from possibly multiple locations.
+/// </summary>
 internal class YamlFileStubSource : IStubSource
 {
     private static readonly string[] _extensions = {".yml", ".yaml"};
@@ -39,6 +42,7 @@ internal class YamlFileStubSource : IStubSource
         _settings = options.Value;
     }
 
+    /// <inheritdoc />
     public Task<IEnumerable<StubModel>> GetStubsAsync()
     {
         var inputFileLocation = _settings.Storage?.InputFile;
@@ -103,7 +107,7 @@ internal class YamlFileStubSource : IStubSource
 
                     ParseAndValidateStubs(stubs);
                     result.AddRange(stubs);
-                    _stubLoadDateTime = DateTime.UtcNow;
+                    _stubLoadDateTime = DateTime.Now;
                 }
                 catch (YamlException ex)
                 {
@@ -121,20 +125,23 @@ internal class YamlFileStubSource : IStubSource
         return Task.FromResult(_stubs);
     }
 
+    /// <inheritdoc />
     public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
         (await GetStubsAsync())
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
+    /// <inheritdoc />
     public async Task<StubModel> GetStubAsync(string stubId) =>
         (await GetStubsAsync()).FirstOrDefault(s => s.Id == stubId);
 
+    /// <inheritdoc />
     public async Task PrepareStubSourceAsync() =>
         // Check if the .yml files could be loaded.
         await GetStubsAsync();
 
     private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
-        files.Max(f => _fileService.GetModicationDateTime(f));
+        files.Max(f => _fileService.GetLastWriteTime(f));
 
     private void ParseAndValidateStubs(IEnumerable<StubModel> stubs)
     {

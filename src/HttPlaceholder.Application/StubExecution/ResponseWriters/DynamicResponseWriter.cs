@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to run the "response variable parsing handlers" for manipulating the response.
 /// </summary>
-public class DynamicResponseWriter : IResponseWriter
+internal class DynamicResponseWriter : IResponseWriter
 {
     private readonly IResponseVariableParser _responseVariableParser;
 
@@ -17,8 +17,10 @@ public class DynamicResponseWriter : IResponseWriter
         _responseVariableParser = responseVariableParser;
     }
 
+    /// <inheritdoc />
     public int Priority => -10;
 
+    /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (stub.Response.EnableDynamicMode != true)

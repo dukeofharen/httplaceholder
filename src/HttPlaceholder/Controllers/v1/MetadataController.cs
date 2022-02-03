@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// metadata controller
+/// The metadata controller.
 /// </summary>
 [Route("ph-api/metadata")]
 public class MetadataController : BaseApiController

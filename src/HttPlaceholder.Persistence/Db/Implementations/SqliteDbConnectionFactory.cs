@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace HttPlaceholder.Persistence.Db.Implementations;
 
+/// <summary>
+/// A class for creating SQLite DB connections.
+/// </summary>
 internal class SqliteDbConnectionFactory : IDbConnectionFactory
 {
     internal const string ConnectionStringKey = "Sqlite";
@@ -14,6 +17,7 @@ internal class SqliteDbConnectionFactory : IDbConnectionFactory
         _configuration = configuration;
     }
 
+    /// <inheritdoc />
     public IDbConnection GetConnection() =>
         new SQLiteConnection(_configuration.GetConnectionString(ConnectionStringKey));
 }

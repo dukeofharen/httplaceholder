@@ -12,18 +12,30 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Persistence;
 
+/// <summary>
+/// A class that is used to register all classes in the Persistence module on the service collection.
+/// </summary>
 public static class PersistenceModule
 {
-    public static IServiceCollection AddPersistenceModule(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddSingleton<IStubContext, StubContext>();
-        services.AddSingleton<IStubRootPathResolver, StubRootPathResolver>();
-        services.AddSingleton<IScenarioStateStore, ScenarioStateStore>();
+    /// <summary>
+    /// Register all classes in the Persistence module on the service collection.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The configuration.</param>
+    public static IServiceCollection AddPersistenceModule(
+        this IServiceCollection services,
+        IConfiguration configuration) =>
+        services
+            .AddSingleton<IStubContext, StubContext>()
+            .AddSingleton<IStubRootPathResolver, StubRootPathResolver>()
+            .AddSingleton<IScenarioStateStore, ScenarioStateStore>()
+            .AddStubSources(configuration);
 
-        services.AddStubSources(configuration);
-        return services;
-    }
-
+    /// <summary>
+    /// Register specific stub sources on the service collection based on the configuration.
+    /// </summary>
+    /// <param name="services">The service collection.</param>
+    /// <param name="configuration">The configuration.</param>
     public static IServiceCollection AddStubSources(this IServiceCollection services, IConfiguration configuration)
     {
         var settings = configuration.Get<SettingsModel>();
@@ -31,7 +43,8 @@ public static class PersistenceModule
         var fileStoragePath = settings?.Storage?.FileStorageLocation;
         var mysqlConnectionString = configuration.GetConnectionString(MysqlDbConnectionFactory.ConnectionStringKey);
         var sqliteConnectionString = configuration.GetConnectionString(SqliteDbConnectionFactory.ConnectionStringKey);
-        var sqlServerConnectionString = configuration.GetConnectionString(SqlServerDbConnectionFactory.ConnectionStringKey);
+        var sqlServerConnectionString =
+            configuration.GetConnectionString(SqlServerDbConnectionFactory.ConnectionStringKey);
         var useInMemory = settings?.Storage?.UseInMemoryStorage ?? false;
         if (useInMemory)
         {

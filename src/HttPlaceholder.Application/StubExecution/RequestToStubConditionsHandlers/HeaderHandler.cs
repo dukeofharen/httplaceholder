@@ -11,7 +11,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// <summary>
 /// "Request to stub conditions handler" that is used to request header conditions.
 /// </summary>
-public class HeaderHandler : IRequestToStubConditionsHandler
+internal class HeaderHandler : IRequestToStubConditionsHandler
 {
     private static readonly IEnumerable<string> _headersToStrip = new[] { "Postman-Token", "Host" };
 

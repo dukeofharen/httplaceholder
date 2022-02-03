@@ -16,11 +16,15 @@ public class JsonPathConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
 
+    /// <summary>
+    /// Constructs a <see cref="JsonPathConditionChecker"/> instance.
+    /// </summary>
     public JsonPathConditionChecker(IHttpContextService httpContextService)
     {
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public ConditionCheckResultModel Validate(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
@@ -119,5 +123,6 @@ public class JsonPathConditionChecker : IConditionChecker
         return jsonPathCondition;
     }
 
+    /// <inheritdoc />
     public int Priority => 0;
 }

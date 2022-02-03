@@ -5,7 +5,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Persistence.Db;
 
 /// <summary>
-/// Describes a class which is used to keep track of the stub cache and invalidation.
+/// A class which is used to keep track of the stub cache and invalidation for relational databases.
 /// </summary>
 public interface IRelationalDbStubCache
 {
