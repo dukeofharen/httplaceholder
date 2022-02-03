@@ -77,12 +77,6 @@ public class MockHttpContext : HttpContext
             .Setup(m => m.Host)
             .Returns(new HostString(host));
 
-    public void InitializeUserWithId(long id) => InitializeUserWithId(id.ToString());
-
-    public void InitializeUserWithId(string id) => User = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {new Claim(ClaimTypes.NameIdentifier, id)})});
-
-    public void SetUser(ClaimsPrincipal user) => User = user;
-
     public void SetRequestMethod(string method) =>
         HttpRequestMock
             .Setup(m => m.Method)
