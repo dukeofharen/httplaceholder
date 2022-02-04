@@ -5,6 +5,9 @@
         {{ id }}
       </span>
       <span v-if="!enabled" class="disabled">&nbsp;(disabled)</span>
+      <span v-if="overviewStub.metadata.readOnly" title="Stub is read-only"
+        >&nbsp;<i class="bi-eye"></i
+      ></span>
     </template>
     <template v-slot:accordion-body>
       <div v-if="fullStub">

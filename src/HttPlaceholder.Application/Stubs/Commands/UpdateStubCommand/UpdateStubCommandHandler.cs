@@ -33,6 +33,20 @@ public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
             throw new ValidationException(validationResults);
         }
 
+        // Check that the stub is not read-only.
+        const string exceptionFormat = "Stub with ID '{0}' is read-only; it can not be updated through the API.";
+        var oldStub = await _stubContext.GetStubAsync(request.StubId);
+        if (oldStub?.Metadata?.ReadOnly == true)
+        {
+            throw new ValidationException(string.Format(exceptionFormat, request.StubId));
+        }
+
+        var newStub = await _stubContext.GetStubAsync(request.Stub.Id);
+        if (newStub?.Metadata?.ReadOnly == true)
+        {
+            throw new ValidationException(string.Format(exceptionFormat, request.Stub.Id));
+        }
+
         // Delete stub with same ID.
         await _stubContext.DeleteStubAsync(request.StubId);
         await _stubContext.DeleteStubAsync(request.Stub.Id);
