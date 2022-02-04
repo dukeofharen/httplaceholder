@@ -1,6 +1,8 @@
 [1.4.1]
 - Added license and logo to Nuget packages (https://github.com/dukeofharen/httplaceholder/issues/76 and https://github.com/dukeofharen/httplaceholder/issues/81).
 - Added documentation to all classes of .NET client and HttPlaceholder (https://github.com/dukeofharen/httplaceholder/pull/213).
+- When setting the scenario with an empty state; set the scenario state to the default state of "Start" (https://github.com/dukeofharen/httplaceholder/pull/214).
+- Added icon at stub when stub is read-only.
 
 [1.4.0]
 - Use Roboto Mono as font for user interface.
