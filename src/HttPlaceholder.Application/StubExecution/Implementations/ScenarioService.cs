@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
@@ -63,6 +64,11 @@ internal class ScenarioService : IScenarioService
             var existingScenario = _scenarioStateStore.GetScenario(scenario);
             if (existingScenario == null)
             {
+                if (string.IsNullOrWhiteSpace(scenarioState.State))
+                {
+                    scenarioState.State = Constants.DefaultScenarioState;
+                }
+
                 _scenarioStateStore.AddScenario(scenario, scenarioState);
             }
             else
