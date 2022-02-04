@@ -55,6 +55,7 @@
         <Content Include="ph-static\**\*.*">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <None Remove="gui\.gitkeep" />
     </ItemGroup>
     <ItemGroup>
         <None Update="key.pfx">
