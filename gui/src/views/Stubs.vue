@@ -211,7 +211,12 @@ export default {
 
     // Computed
     const filteredStubs = computed(() => filterStubs(stubs.value));
-    const disableMutationButtons = computed(() => !filteredStubs.value.length);
+    const filteredNonReadOnlyStubs = computed(() =>
+      filteredStubs.value.filter((s) => !s.metadata.readOnly)
+    );
+    const disableMutationButtons = computed(
+      () => !filteredNonReadOnlyStubs.value.length
+    );
 
     // Methods
     const loadStubs = async () => {
@@ -252,7 +257,7 @@ export default {
           handleHttpError(e);
         }
       };
-      const stubIds = filteredStubs.value.map((fs) => fs.stub.id);
+      const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id);
       const promises = [];
       for (const stubId of stubIds) {
         promises.push(disableStub(stubId));
@@ -270,7 +275,7 @@ export default {
           handleHttpError(e);
         }
       };
-      const stubIds = filteredStubs.value.map((fs) => fs.stub.id);
+      const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id);
       const promises = [];
       for (const stubId of stubIds) {
         promises.push(enableStub(stubId));
@@ -288,7 +293,7 @@ export default {
           handleHttpError(e);
         }
       };
-      const stubIds = filteredStubs.value.map((fs) => fs.stub.id);
+      const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id);
       const promises = [];
       for (const stubId of stubIds) {
         promises.push(deleteStub(stubId));
@@ -339,6 +344,7 @@ export default {
       showDeleteStubsModal,
       deleteStubs,
       disableMutationButtons,
+      filteredNonReadOnlyStubs,
     };
   },
 };
