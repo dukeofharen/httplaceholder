@@ -50,7 +50,7 @@ public class UpdateStubCommandHandlerFacts
     }
 
     [TestMethod]
-    public async Task Handle_StubIsReadonly_ShouldThrowValidationException()
+    public async Task Handle_OldStubIsReadonly_ShouldThrowValidationException()
     {
         // Arrange
         var mockStubModelValidator = _mocker.GetMock<IStubModelValidator>();
@@ -64,13 +64,21 @@ public class UpdateStubCommandHandlerFacts
             .Setup(m => m.ValidateStubModel(stub))
             .Returns(Array.Empty<string>());
 
-        var existingStub = new FullStubModel
+        var oldStub = new FullStubModel
         {
-            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = true}
+            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}
+        };
+        mockStubContext
+            .Setup(m => m.GetStubAsync(request.StubId))
+            .ReturnsAsync(oldStub);
+
+        var newStub = new FullStubModel
+        {
+            Stub = stub, Metadata = new StubMetadataModel {ReadOnly = true}
         };
         mockStubContext
             .Setup(m => m.GetStubAsync(stub.Id))
-            .ReturnsAsync(existingStub);
+            .ReturnsAsync(newStub);
 
         // Act
         var exception =
@@ -81,6 +89,40 @@ public class UpdateStubCommandHandlerFacts
         var errors = exception.ValidationErrors.ToArray();
         Assert.AreEqual(1, errors.Length);
         Assert.AreEqual("Stub with ID 'stub1' is read-only; it can not be updated through the API.", errors.Single());
+    }
+
+    [TestMethod]
+    public async Task Handle_NewStubIsReadonly_ShouldThrowValidationException()
+    {
+        // Arrange
+        var mockStubModelValidator = _mocker.GetMock<IStubModelValidator>();
+        var mockStubContext = _mocker.GetMock<IStubContext>();
+        var handler = _mocker.CreateInstance<UpdateStubCommandHandler>();
+
+        var stub = new StubModel {Id = "stub1"};
+        var request = new UpdateStubCommand("new-stub-id", stub);
+
+        mockStubModelValidator
+            .Setup(m => m.ValidateStubModel(stub))
+            .Returns(Array.Empty<string>());
+
+        var oldStub = new FullStubModel
+        {
+            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = true}
+        };
+        mockStubContext
+            .Setup(m => m.GetStubAsync(request.StubId))
+            .ReturnsAsync(oldStub);
+
+        // Act
+        var exception =
+            await Assert.ThrowsExceptionAsync<ValidationException>(() =>
+                handler.Handle(request, CancellationToken.None));
+
+        // Assert
+        var errors = exception.ValidationErrors.ToArray();
+        Assert.AreEqual(1, errors.Length);
+        Assert.AreEqual("Stub with ID 'new-stub-id' is read-only; it can not be updated through the API.", errors.Single());
     }
 
     [TestMethod]
