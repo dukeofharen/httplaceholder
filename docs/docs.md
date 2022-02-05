@@ -1704,7 +1704,11 @@ The import collection is used to be able to import all kinds of data in HttPlace
 
 This paragraph contains all command line arguments supported by HttPlaceholder. Configuration can be set using command line arguments, a configuration file or environment variables.
 
-## Command line arguments
+## Configuration properties
+
+### Environment variables
+
+You can set any of the configuration properties as environment variable. E.g. when you want to set the HTTPS port as environment variable, you can set an environment variable with the name `httpsPort` and set it to for example value `4433`.
 
 ### Verbose output
 
