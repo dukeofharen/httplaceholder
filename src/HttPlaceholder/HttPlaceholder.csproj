@@ -25,7 +25,7 @@
         <PackageIcon>logo.png</PackageIcon>
     </PropertyGroup>
     <ItemGroup>
-        <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath=""/>
+        <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.0" />

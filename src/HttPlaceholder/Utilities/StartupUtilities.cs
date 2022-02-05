@@ -5,6 +5,7 @@ using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.HostedServices;
 using HttPlaceholder.Hubs;
 using HttPlaceholder.Infrastructure;
 using HttPlaceholder.Infrastructure.Web;
@@ -38,6 +39,7 @@ public static class StartupUtilities
             .AddPersistenceModule(configuration)
             .AddAuthorizationModule()
             .AddSignalRHubs()
+            .AddHostedServices()
             .AddWebInfrastructure()
             .AddAutoMapper(
                 config => config.AllowNullCollections = true,
