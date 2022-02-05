@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using HttPlaceholder.Application.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace HttPlaceholder.HostedServices;
 
@@ -11,5 +14,17 @@ public static class HostedServiceModule
     /// A method for registering all hosted services.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    public static IServiceCollection AddHostedServices(this IServiceCollection services) => services;
+    /// <param name="configuration">The configuration.</param>
+    public static IServiceCollection AddHostedServices(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        var settings = configuration.Get<SettingsModel>();
+        if (settings.Storage?.CleanOldRequestsInBackgroundJob == true)
+        {
+            services.AddHostedService<CleanOldRequestsJob>();
+        }
+
+        return services;
+    }
 }

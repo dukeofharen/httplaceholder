@@ -39,7 +39,7 @@ public static class StartupUtilities
             .AddPersistenceModule(configuration)
             .AddAuthorizationModule()
             .AddSignalRHubs()
-            .AddHostedServices()
+            .AddHostedServices(configuration)
             .AddWebInfrastructure()
             .AddAutoMapper(
                 config => config.AllowNullCollections = true,
