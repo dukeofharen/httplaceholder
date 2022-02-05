@@ -236,6 +236,20 @@ public class StubContextFacts
     }
 
     [TestMethod]
+    public async Task CleanOldRequestResultsAsync_HappyFlow()
+    {
+        // arrange
+        var stubSource = new Mock<IWritableStubSource>();
+        _stubSources.Add(stubSource.Object);
+
+        // act
+        await _context.CleanOldRequestResultsAsync();
+
+        // assert
+        stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Once);
+    }
+
+    [TestMethod]
     public async Task GetRequestResultsAsync_HappyFlow()
     {
         // arrange
