@@ -118,6 +118,11 @@ public interface IStubContext
     Task<bool> DeleteRequestAsync(string correlationId);
 
     /// <summary>
+    /// Clean all old requests.
+    /// </summary>
+    Task CleanOldRequestResultsAsync();
+
+    /// <summary>
     /// Retrieves a list with all tenant names.
     /// </summary>
     /// <returns>A list with all tenant names.</returns>

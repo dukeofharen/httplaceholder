@@ -200,6 +200,13 @@ internal class StubContext : IStubContext
     }
 
     /// <inheritdoc />
+    public async Task CleanOldRequestResultsAsync()
+    {
+        var source = GetWritableStubSource();
+        await source.CleanOldRequestResultsAsync();
+    }
+
+    /// <inheritdoc />
     public async Task<IEnumerable<string>> GetTenantNamesAsync() =>
         (await GetStubsAsync())
         .Select(s => s.Stub.Tenant)
