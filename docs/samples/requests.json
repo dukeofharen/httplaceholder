@@ -1988,6 +1988,54 @@
 					]
 				},
 				{
+					"name": "Scheduled jobs",
+					"item": [
+						{
+							"name": "Run CleanOldRequestsJob",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "text/yaml",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "id: test-situation\r\ntenant: 01-get\r\nconditions:\r\n  method: GET\r\n  url:\r\n    path: /testtesttest\r\n    query:\r\n      id: 12\r\nresponse:\r\n  statusCode: 200\r\n  text: OK my dude!"
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/scheduledJob/CleanOldRequestsJob",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"scheduledJob",
+										"CleanOldRequestsJob"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Stubs",
 					"item": [
 						{

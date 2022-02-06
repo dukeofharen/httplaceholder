@@ -54,7 +54,7 @@ public class StubController : BaseApiController
     /// </summary>
     /// <param name="stub">The posted stub.</param>
     /// <param name="stubId">The stub ID.</param>
-    /// <returns>OK, but no content returned</returns>
+    /// <returns>OK, but no content returned.</returns>
     [HttpPut("{stubId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
