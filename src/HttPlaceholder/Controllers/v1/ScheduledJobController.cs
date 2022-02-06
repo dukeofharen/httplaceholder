@@ -59,7 +59,7 @@ public class ScheduledJobController : BaseApiController
             statusCode = HttpStatusCode.InternalServerError;
         }
 
-        return StatusCode((int)statusCode, new JobExecutionResultModel(message));
+        return StatusCode((int)statusCode, new JobExecutionResultDto(message));
     }
 
     /// <summary>

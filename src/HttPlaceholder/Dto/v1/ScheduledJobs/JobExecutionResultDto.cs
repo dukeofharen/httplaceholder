@@ -3,12 +3,12 @@
 /// <summary>
 /// A model that is returned when a scheduled job has executed through the API.
 /// </summary>
-public class JobExecutionResultModel
+public class JobExecutionResultDto
 {
     /// <summary>
-    /// Constructs a <see cref="JobExecutionResultModel"/> instance.
+    /// Constructs a <see cref="JobExecutionResultDto"/> instance.
     /// </summary>
-    public JobExecutionResultModel(string message)
+    public JobExecutionResultDto(string message)
     {
         Message = message;
     }
