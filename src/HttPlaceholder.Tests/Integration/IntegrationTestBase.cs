@@ -32,7 +32,8 @@ public abstract class IntegrationTestBase
         var config = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string>
             {
-                { "Storage:InputFile", @"C:\tmp" }
+                { "Storage:InputFile", @"C:\tmp" },
+                { "Storage:CleanOldRequestsInBackgroundJob", "true" },
             })
             .Build();
         var startup = new Startup(config);
