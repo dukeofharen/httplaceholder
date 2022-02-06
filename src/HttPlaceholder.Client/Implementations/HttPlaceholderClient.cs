@@ -7,6 +7,7 @@ using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Dto.Scenarios;
+using HttPlaceholder.Client.Dto.ScheduledJobs;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Dto.Users;
 using HttPlaceholder.Client.Exceptions;
@@ -495,6 +496,33 @@ namespace HttPlaceholder.Client.Implementations
             }
 
             return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
+        }
+
+        /// <inheritdoc />
+        public async Task<JobExecutionResultDto> ExecuteScheduledJobAsync(string jobName)
+        {
+            using var response = await HttpClient.PostAsync(
+                $"/ph-api/scheduledJob/{jobName}", new StringContent(string.Empty));
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<JobExecutionResultDto>(content);
+        }
+
+        /// <inheritdoc />
+        public async Task<string[]> GetScheduledJobNamesAsync()
+        {
+            using var response = await HttpClient.GetAsync($"/ph-api/scheduledJob");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<string[]>(content);
         }
     }
 }

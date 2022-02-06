@@ -178,6 +178,12 @@ curl 'https://site.com/_nuxt/1d6c3a9.js' \
             // Create stubs based on OpenAPI definition.
             var openapi = await File.ReadAllTextAsync("petstore.yaml");
             var openApiResult = await client.CreateOpenApiStubsAsync(openapi, false);
+
+            // Execute a scheduled job.
+            var scheduledJobResult = await client.ExecuteScheduledJobAsync("CleanOldRequestsJob");
+
+            // Get a list of scheduled job names.
+            var scheduledJobNames = await client.GetScheduledJobNamesAsync();
         }
         catch (Exception ex)
         {

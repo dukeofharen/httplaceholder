@@ -4,6 +4,7 @@ using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Dto.Scenarios;
+using HttPlaceholder.Client.Dto.ScheduledJobs;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Dto.Users;
 using HttPlaceholder.Client.StubBuilders;
@@ -256,5 +257,18 @@ namespace HttPlaceholder.Client
         /// <param name="tenant">The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name will be generated.</param>
         /// <returns>The created stubs.</returns>
         Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(string input, bool doNotCreateStub, string tenant = "");
+
+        /// <summary>
+        /// Executes a given scheduled job.
+        /// </summary>
+        /// <param name="jobName">The name of the job.</param>
+        /// <returns>A <see cref="JobExecutionResultDto"/> with the execution results.</returns>
+        Task<JobExecutionResultDto> ExecuteScheduledJobAsync(string jobName);
+
+        /// <summary>
+        /// Gets a list of scheduled job names.
+        /// </summary>
+        /// <returns>An array containing all active scheduled job names.</returns>
+        Task<string[]> GetScheduledJobNamesAsync();
     }
 }
