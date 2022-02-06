@@ -11,6 +11,9 @@
     - This configuration parameter has been added because some people host HttPlaceholder in a cloud environment with a serverless database. Performing a query every 5 minutes can crank up the costs. By cleaning the requests in the old way, no more SQL queries than necessary will be performed so the costs stay (relatively) low.
     - Besides this, whenever a request could not be matched to a stub and the user interface is disable, an empty response will be returned instead of a basic HTML page.
 
+# BREAKING CHANGES
+- As mentioned before, the "clean old requests" job is now enabled by default. If you want HttPlaceholder to continue cleaning requests in the old way, set `cleanOldRequestsInBackgroundJob` to `false` to not get a bigger bill on your serverless database than needed.
+
 [1.4.0]
 - Use Roboto Mono as font for user interface.
 - Fixed bug in tenant filtering of requests and stubs screen.
