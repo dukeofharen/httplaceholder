@@ -1654,7 +1654,7 @@ Finally, there is also a reverse proxy setting called `replaceRootUrl` (which is
 
 # REST API
 
-Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to the following collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection, scenario collection, import collection and users collection.
+Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to the following collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection, scenario collection, scheduled job collection, import collection and users collection.
 
 Click [here](https://github.com/dukeofharen/httplaceholder/releases/latest) if you want the swagger.json file. Using this swagger.json file, you can easily create a REST client for your favourite programming language (e.g. using a tool like [autorest](https://github.com/Azure/autorest)).
 
@@ -1699,6 +1699,10 @@ The import collection is used to be able to import all kinds of data in HttPlace
 * [cURL commands](#import-curl-commands)
 * [HTTP Archive (HAR)](#import-http-archive-har)
 * [OpenAPI definitions](#import-openapi-definition)
+
+## Scheduled jobs
+
+The scheduled jobs collection is used for calling scheduled jobs manually. This is mainly for testing purposes, because the scheduled jobs, as the name says, are run on a schedule in the background.
 
 # Configuration
 
@@ -1839,6 +1843,16 @@ httplaceholder --oldRequestsQueueLength 100
 ```
 
 The maximum number of HTTP requests that the in memory stub source (used for the REST API) should store before truncating old records. Default: 40.
+
+### Run the cleaning of requests in the background
+
+```bash
+httplaceholder --cleanOldRequestsInBackgroundJob
+```
+
+Whether the cleaning of old requests should be performed in a background job. If this configuration value is turned on, old requests will be cleaned once in 5 minutes. If this configuration value is turned off, the deletion of old requests is done after every non-API request.
+
+The "old way" of cleaning old requests was not deleted because running the scheduled job every 5 minutes might mean a call to the database, even though no requests need to be cleaned. For people running HttPlaceholder with a serverless database, it means paying extra costs, so deleting the requests after every non-API request is the cheaper way to go.
 
 ### REST API Authentication (optional)
 
