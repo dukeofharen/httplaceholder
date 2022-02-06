@@ -61,4 +61,12 @@ public class ScheduledJobController : BaseApiController
 
         return StatusCode((int)statusCode, new JobExecutionResultModel(message));
     }
+
+    /// <summary>
+    /// An endpoint for retrieving all the scheduled job names that can can be executed.
+    /// </summary>
+    /// <returns>A list of scheduled job names.</returns>
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public ActionResult<IEnumerable<string>> GetScheduledJobNames() => Ok(_hostedServices.Select(s => s.Key));
 }
