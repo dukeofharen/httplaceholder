@@ -1854,6 +1854,8 @@ Whether the cleaning of old requests should be performed in a background job. If
 
 The "old way" of cleaning old requests was not deleted because running the scheduled job every 5 minutes might mean a call to the database, even though no requests need to be cleaned. For people running HttPlaceholder with a serverless database, it means paying extra costs, so deleting the requests after every non-API request is the cheaper way to go.
 
+Also, take a look at [here](#request-logging-optional) for more information.
+
 ### REST API Authentication (optional)
 
 ```bash
