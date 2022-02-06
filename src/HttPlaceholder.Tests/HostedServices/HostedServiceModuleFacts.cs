@@ -35,8 +35,8 @@ public class HostedServiceModuleFacts
         services.AddHostedServices(BuildConfiguration(args));
 
         // Assert
-        Assert.AreEqual(1, services.Count);
-        Assert.IsTrue(services.Any(s => s.ImplementationType == typeof(CleanOldRequestsJob)));
+        Assert.AreEqual(2, services.Count);
+        Assert.IsTrue(services.All(s => s.ImplementationType == typeof(CleanOldRequestsJob)));
     }
 
     private static IConfiguration BuildConfiguration(IDictionary<string, string> dict) =>

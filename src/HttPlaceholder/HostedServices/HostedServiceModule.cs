@@ -22,7 +22,7 @@ public static class HostedServiceModule
         var settings = configuration.Get<SettingsModel>();
         if (settings?.Storage?.CleanOldRequestsInBackgroundJob == true)
         {
-            services.AddHostedService<CleanOldRequestsJob>();
+            services.RegisterCustomHostedService<CleanOldRequestsJob>();
         }
 
         return services;
