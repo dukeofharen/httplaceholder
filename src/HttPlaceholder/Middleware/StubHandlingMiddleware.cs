@@ -117,10 +117,14 @@ public class StubHandlingMiddleware
         {
             _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
             _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
-            var pageContents =
-                StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.RootUrl);
-            _httpContextService.AddHeader("Content-Type", Constants.HtmlMime);
-            await _httpContextService.WriteAsync(pageContents);
+            if (_settings?.Gui?.EnableUserInterface == true)
+            {
+                var pageContents =
+                    StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.RootUrl);
+                _httpContextService.AddHeader("Content-Type", Constants.HtmlMime);
+                await _httpContextService.WriteAsync(pageContents);
+            }
+
             _logger.LogInformation($"Request validation exception thrown: {e.Message}");
         }
         catch (Exception e)

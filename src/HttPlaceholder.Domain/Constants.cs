@@ -63,6 +63,11 @@ public static class Constants
     public const int DefaultOldRequestsQueueLength = 40;
 
     /// <summary>
+    /// Whether the CleanOldRequests job is enabled by default.
+    /// </summary>
+    public const bool CleanOldRequestsInBackgroundJob = true;
+
+    /// <summary>
     /// The default maximum "extra duration" milliseconds.
     /// </summary>
     public const int DefaultMaximumExtraDuration = 60000;

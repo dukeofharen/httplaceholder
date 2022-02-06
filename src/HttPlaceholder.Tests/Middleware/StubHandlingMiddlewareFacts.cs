@@ -29,7 +29,7 @@ public class StubHandlingMiddlewareFacts
 
     private readonly SettingsModel _settings = new()
     {
-        Stub = new StubSettingsModel(), Storage = new StorageSettingsModel()
+        Stub = new StubSettingsModel(), Storage = new StorageSettingsModel(), Gui = new GuiSettingsModel()
     };
 
     private readonly AutoMocker _mocker = new();
@@ -250,10 +250,12 @@ public class StubHandlingMiddlewareFacts
     }
 
     [TestMethod]
-    public async Task Invoke_ExecuteStub_RequestValidationWhenExecutingStub_ShouldReturn501()
+    public async Task
+        Invoke_ExecuteStub_UiEnabled_RequestValidationExceptionWhenExecutingStub_ShouldReturn501WithHtmlPage()
     {
         // Arrange
         _settings.Storage.EnableRequestLogging = true;
+        _settings.Gui.EnableUserInterface = true;
         var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
@@ -281,12 +283,51 @@ public class StubHandlingMiddlewareFacts
         httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.NotImplemented));
         httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-Correlation", It.IsAny<StringValues>()));
         httpContextServiceMock.Verify(m => m.AddHeader("Content-Type", Constants.HtmlMime));
-        httpContextServiceMock.Verify(m => m.WriteAsync(It.Is<string>(b => b.Contains("HttPlaceholder - no stub configured"))));
+        httpContextServiceMock.Verify(m =>
+            m.WriteAsync(It.Is<string>(b => b.Contains("HttPlaceholder - no stub configured"))));
         Assert.IsTrue(_mockLogger.Contains(LogLevel.Information, "Request validation exception thrown:"));
     }
 
     [TestMethod]
-    public async Task Invoke_ExecuteStub_AnotherExceptionWHileExecutingStub_ShouldReturn500()
+    public async Task
+        Invoke_ExecuteStub_UiDisabled_RequestValidationExceptionWhenExecutingStub_ShouldReturn501WithoutHtmlPage()
+    {
+        // Arrange
+        _settings.Storage.EnableRequestLogging = true;
+        _settings.Gui.EnableUserInterface = false;
+        var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+
+        const string requestPath = "/stub-path";
+
+        httpContextServiceMock
+            .Setup(m => m.Path)
+            .Returns(requestPath);
+
+        stubRequestExecutorMock
+            .Setup(m => m.ExecuteRequestAsync())
+            .ThrowsAsync(new RequestValidationException("ERROR!"));
+
+        var requestResultModel = new RequestResultModel();
+        _requestLoggerMock
+            .Setup(m => m.GetResult())
+            .Returns(requestResultModel);
+
+        // Act
+        await middleware.Invoke(null);
+
+        // Assert
+        Assert.IsFalse(_nextCalled);
+        httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.NotImplemented));
+        httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-Correlation", It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m => m.AddHeader("Content-Type", Constants.HtmlMime), Times.Never);
+        httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>()), Times.Never);
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Information, "Request validation exception thrown:"));
+    }
+
+    [TestMethod]
+    public async Task Invoke_ExecuteStub_AnotherExceptionWhileExecutingStub_ShouldReturn500()
     {
         // Arrange
         _settings.Storage.EnableRequestLogging = true;

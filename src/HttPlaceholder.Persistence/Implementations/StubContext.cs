@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
+using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Implementations;
 
@@ -13,10 +15,12 @@ namespace HttPlaceholder.Persistence.Implementations;
 internal class StubContext : IStubContext
 {
     private readonly IEnumerable<IStubSource> _stubSources;
+    private readonly SettingsModel _settings;
 
-    public StubContext(IEnumerable<IStubSource> stubSources)
+    public StubContext(IEnumerable<IStubSource> stubSources, IOptions<SettingsModel> options)
     {
         _stubSources = stubSources;
+        _settings = options.Value;
     }
 
     /// <inheritdoc />
@@ -43,7 +47,7 @@ internal class StubContext : IStubContext
             var stubs = await source.GetStubsOverviewAsync();
             var fullStubModels = stubs.Select(s => new FullStubOverviewModel
             {
-                Stub = s, Metadata = new StubMetadataModel { ReadOnly = stubSourceIsReadOnly }
+                Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
             });
             result.AddRange(fullStubModels);
         }
@@ -63,7 +67,7 @@ internal class StubContext : IStubContext
 
         var source = GetWritableStubSource();
         await source.AddStubAsync(stub);
-        return new FullStubModel { Stub = stub, Metadata = new StubMetadataModel { ReadOnly = false } };
+        return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = false}};
     }
 
     /// <inheritdoc />
@@ -132,8 +136,7 @@ internal class StubContext : IStubContext
             {
                 result = new FullStubModel
                 {
-                    Stub = stub,
-                    Metadata = new StubMetadataModel { ReadOnly = source is not IWritableStubSource }
+                    Stub = stub, Metadata = new StubMetadataModel {ReadOnly = source is not IWritableStubSource}
                 };
                 break;
             }
@@ -147,8 +150,11 @@ internal class StubContext : IStubContext
     {
         var source = GetWritableStubSource();
 
-        // Clean up old requests here.
-        await source.CleanOldRequestResultsAsync();
+        if (_settings.Storage?.CleanOldRequestsInBackgroundJob == false)
+        {
+            // Clean up old requests here.
+            await source.CleanOldRequestResultsAsync();
+        }
 
         var stub = !string.IsNullOrWhiteSpace(requestResult.ExecutingStubId)
             ? await GetStubAsync(requestResult.ExecutingStubId)
@@ -200,6 +206,13 @@ internal class StubContext : IStubContext
     }
 
     /// <inheritdoc />
+    public async Task CleanOldRequestResultsAsync()
+    {
+        var source = GetWritableStubSource();
+        await source.CleanOldRequestResultsAsync();
+    }
+
+    /// <inheritdoc />
     public async Task<IEnumerable<string>> GetTenantNamesAsync() =>
         (await GetStubsAsync())
         .Select(s => s.Stub.Tenant)
@@ -232,7 +245,7 @@ internal class StubContext : IStubContext
             var stubs = await source.GetStubsAsync();
             var fullStubModels = stubs.Select(s => new FullStubModel
             {
-                Stub = s, Metadata = new StubMetadataModel { ReadOnly = stubSourceIsReadOnly }
+                Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
             });
             result.AddRange(fullStubModels);
         }

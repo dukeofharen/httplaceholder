@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.Implementations;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -15,10 +17,11 @@ namespace HttPlaceholder.Persistence.Tests.Implementations;
 public class StubContextFacts
 {
     private readonly IList<IStubSource> _stubSources = new List<IStubSource>();
+    private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
     private StubContext _context;
 
     [TestInitialize]
-    public void Initialize() => _context = new StubContext(_stubSources);
+    public void Initialize() => _context = new StubContext(_stubSources, Options.Create(_settings));
 
     [TestMethod]
     public async Task GetStubsAsync_HappyFlow()
@@ -233,6 +236,48 @@ public class StubContextFacts
         stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Once);
 
         Assert.AreEqual(stub.Tenant, request.StubTenant);
+    }
+
+    [TestMethod]
+    public async Task AddRequestResultAsync_CleanOldRequestsJobEnabled_ShouldNotCallCleanOldRequestResultsAsync()
+    {
+        // arrange
+        _settings.Storage.CleanOldRequestsInBackgroundJob = true;
+
+        var stubSource = new Mock<IWritableStubSource>();
+
+        var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
+        stubSource
+            .Setup(m => m.GetStubAsync(stub.Id))
+            .ReturnsAsync(stub);
+
+        var request = new RequestResultModel {ExecutingStubId = stub.Id};
+        stubSource
+            .Setup(m => m.AddRequestResultAsync(request))
+            .Returns(Task.CompletedTask);
+
+        _stubSources.Add(stubSource.Object);
+
+        // act
+        await _context.AddRequestResultAsync(request);
+
+        // assert
+        stubSource.Verify(m => m.AddRequestResultAsync(request), Times.Once);
+        stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Never);
+    }
+
+    [TestMethod]
+    public async Task CleanOldRequestResultsAsync_HappyFlow()
+    {
+        // arrange
+        var stubSource = new Mock<IWritableStubSource>();
+        _stubSources.Add(stubSource.Object);
+
+        // act
+        await _context.CleanOldRequestResultsAsync();
+
+        // assert
+        stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Once);
     }
 
     [TestMethod]

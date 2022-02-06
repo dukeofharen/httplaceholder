@@ -29,4 +29,9 @@ public class StorageSettingsModel
     /// Gets or sets whether everything should be stored in memory.
     /// </summary>
     public bool UseInMemoryStorage { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the deletion of old requests should be done in a background job.
+    /// </summary>
+    public bool CleanOldRequestsInBackgroundJob { get; set; }
 }

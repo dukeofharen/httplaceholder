@@ -55,6 +55,16 @@ public static class ConfigKeys
     public const string OldRequestsQueueLengthKey = "oldRequestsQueueLength";
 
     /// <summary>
+    /// Constant for cleanOldRequestsInBackgroundJob.
+    /// </summary>
+    [ConfigKey(
+        Description = "whether the cleaning of old requests should be done in a background job. If set to true, will delete old requests in a background job that runs once in 5 minutes. If set to false, will clean old requests every time a request is handled. Default: true.",
+        Example = "true",
+        IsBoolValue = true,
+        ConfigPath = "Storage:CleanOldRequestsInBackgroundJob")]
+    public const string CleanOldRequestsInBackgroundJob = "cleanOldRequestsInBackgroundJob";
+
+    /// <summary>
     /// Constant for pfxPassword.
     /// </summary>
     [ConfigKey(

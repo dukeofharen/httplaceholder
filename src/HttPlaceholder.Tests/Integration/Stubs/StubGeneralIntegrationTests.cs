@@ -9,7 +9,11 @@ namespace HttPlaceholder.Tests.Integration.Stubs;
 public class StubGeneralIntegrationTests : StubIntegrationTestBase
 {
     [TestInitialize]
-    public void Initialize() => InitializeStubIntegrationTest("Resources/integration.yml");
+    public void Initialize()
+    {
+        Settings.Gui.EnableUserInterface = true;
+        InitializeStubIntegrationTest("Resources/integration.yml");
+    }
 
     [TestCleanup]
     public void Cleanup() => CleanupIntegrationTest();
