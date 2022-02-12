@@ -53,7 +53,6 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { resources } from "@/constants/resources";
@@ -62,11 +61,12 @@ import { handleHttpError } from "@/utils/error";
 import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
+import { useImportStore } from "@/store/import";
 
 export default {
   name: "ImportOpenApi",
   setup() {
-    const store = useStore();
+    const importStore = useImportStore();
     const router = useRouter();
 
     // Data
@@ -84,7 +84,7 @@ export default {
     };
     const importOpenApi = async () => {
       try {
-        const result = await store.dispatch("importModule/importOpenApi", {
+        const result = await importStore.importOpenApi({
           openapi: input.value,
           doNotCreateStub: true,
           tenant: tenant.value,
@@ -101,7 +101,7 @@ export default {
     };
     const saveStubs = async () => {
       try {
-        await store.dispatch("importModule/importOpenApi", {
+        await importStore.importOpenApi({
           openapi: input.value,
           doNotCreateStub: false,
           tenant: tenant.value,

@@ -92,7 +92,6 @@
 
 <script>
 import { computed, onMounted, onUnmounted, ref } from "vue";
-import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
 import { resources } from "@/constants/resources";
@@ -100,11 +99,12 @@ import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
 import { useRouter } from "vue-router";
 import { error, success } from "@/utils/toast";
+import { useImportStore } from "@/store/import";
 
 export default {
   name: "ImportCurl",
   setup() {
-    const store = useStore();
+    const importStore = useImportStore();
     const router = useRouter();
 
     // Data
@@ -120,7 +120,7 @@ export default {
     // Methods
     const importCommands = async () => {
       try {
-        const result = await store.dispatch("importModule/importCurlCommands", {
+        const result = await importStore.importCurlCommands({
           commands: input.value,
           doNotCreateStub: true,
           tenant: tenant.value,
@@ -138,7 +138,7 @@ export default {
     };
     const saveStubs = async () => {
       try {
-        await store.dispatch("importModule/importCurlCommands", {
+        await importStore.importCurlCommands({
           commands: input.value,
           doNotCreateStub: false,
           tenant: tenant.value,
