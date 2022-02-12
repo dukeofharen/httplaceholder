@@ -18,11 +18,13 @@ import Sidebar from "@/components/Sidebar";
 import { useStore } from "vuex";
 import { computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
+import { useUsersStore } from "@/store/users";
 
 export default {
   components: { Sidebar },
   setup() {
     const store = useStore();
+    const userStore = useUsersStore();
     const router = useRouter();
 
     // Functions
@@ -56,7 +58,7 @@ export default {
       const authEnabled = await store.dispatch(
         "metadata/checkAuthenticationIsEnabled"
       );
-      if (!store.getters["users/getAuthenticated"] && authEnabled) {
+      if (!userStore.getAuthenticated && authEnabled) {
         await router.push({ name: "Login" });
       }
     });

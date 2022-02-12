@@ -1,8 +1,9 @@
 import { addBeforeSendHandler } from "@/utils/api";
-import store from "@/store";
+import { useUsersStore } from "@/store/users";
 
 addBeforeSendHandler((url, request) => {
-  const token = store.getters["users/getUserToken"];
+  const usersStore = useUsersStore();
+  const token = usersStore.getUserToken;
   const headerKeys = Object.keys(request.headers);
   if (token && !headerKeys.find((k) => k.toLowerCase() === "authorization")) {
     request.headers.Authorization = `Basic ${token}`;

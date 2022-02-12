@@ -6,7 +6,6 @@ import scenarios from "@/store/modules/scenarios";
 import stubForm from "@/store/modules/stubForm";
 import stubs from "@/store/modules/stubs";
 import tenants from "@/store/modules/tenants";
-import users from "@/store/modules/users";
 
 export default createStore({
   modules: {
@@ -17,6 +16,5 @@ export default createStore({
     stubForm,
     stubs,
     tenants,
-    users,
   },
 });

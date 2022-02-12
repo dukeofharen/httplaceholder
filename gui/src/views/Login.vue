@@ -40,16 +40,16 @@
 
 <script>
 import { computed, ref } from "vue";
-import { useStore } from "vuex";
 import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { error } from "@/utils/toast";
+import { useUsersStore } from "@/store/users";
 
 export default {
   name: "Login",
   setup() {
-    const store = useStore();
+    const userStore = useUsersStore();
     const router = useRouter();
 
     // Data
@@ -66,7 +66,7 @@ export default {
       }
 
       try {
-        await store.dispatch("users/authenticate", {
+        await userStore.authenticate({
           username: username.value,
           password: password.value,
         });

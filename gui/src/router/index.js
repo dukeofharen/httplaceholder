@@ -1,5 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import store from "@/store";
+import { useUsersStore } from "@/store/users";
 
 const routes = [
   {
@@ -65,8 +66,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _, next) => {
+  const usersStore = useUsersStore();
   const authEnabled = store.getters["metadata/authenticationEnabled"];
-  const authenticated = store.getters["users/getAuthenticated"];
+  const authenticated = usersStore.getAuthenticated;
   if (authEnabled && !authenticated && to.name !== "Login") {
     next({ name: "Login" });
   } else {
