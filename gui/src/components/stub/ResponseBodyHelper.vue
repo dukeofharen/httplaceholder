@@ -95,6 +95,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import { fromBase64, toBase64 } from "@/utils/text";
+import { useMetadataStore } from "@/store/metadata";
 
 export default {
   name: "ResponseBodyHelper",
@@ -105,6 +106,7 @@ export default {
   },
   setup(props) {
     const store = useStore();
+    const metadataStore = useMetadataStore();
 
     // Refs
     const codeEditor = ref(null);
@@ -218,7 +220,7 @@ export default {
 
       responseBody.value = currentResponseBody;
       try {
-        metadata.value = await store.dispatch("metadata/getMetadata");
+        metadata.value = await metadataStore.getMetadata();
       } catch (e) {
         handleHttpError(e);
       }

@@ -36,16 +36,16 @@
 <script>
 import SidebarMenuItem from "@/components/SidebarMenuItem";
 import { computed } from "vue";
-import { useStore } from "vuex";
 import router from "@/router";
 import { useUsersStore } from "@/store/users";
+import { useMetadataStore } from "@/store/metadata";
 
 export default {
   name: "Sidebar",
   components: { SidebarMenuItem },
   setup() {
-    const store = useStore();
     const userStore = useUsersStore();
+    const metadataStore = useMetadataStore();
 
     // Data
     const plainMenuItems = [
@@ -99,8 +99,7 @@ export default {
     // Computed
     const menuItems = computed(() => {
       const isAuthenticated = userStore.getAuthenticated;
-      console.log(isAuthenticated);
-      const authEnabled = store.getters["metadata/authenticationEnabled"];
+      const authEnabled = metadataStore.getAuthenticationEnabled;
       return plainMenuItems.filter(
         (i) =>
           (i.onlyShowWhenLoggedInAndAuthEnabled &&

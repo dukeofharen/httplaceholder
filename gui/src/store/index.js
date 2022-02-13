@@ -1,6 +1,5 @@
 import { createStore } from "vuex";
 import general from "@/store/modules/general";
-import metadata from "@/store/modules/metadata";
 import requests from "@/store/modules/requests";
 import scenarios from "@/store/modules/scenarios";
 import stubForm from "@/store/modules/stubForm";
@@ -10,7 +9,6 @@ import tenants from "@/store/modules/tenants";
 export default createStore({
   modules: {
     general,
-    metadata,
     requests,
     scenarios,
     stubForm,
