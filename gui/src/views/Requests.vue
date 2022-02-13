@@ -74,7 +74,6 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import Request from "@/components/request/Request";
@@ -85,14 +84,15 @@ import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
 import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
 import { useRequestsStore } from "@/store/requests";
+import { useGeneralStore } from "@/store/general";
 
 export default {
   name: "Requests",
   components: { Request },
   setup() {
-    const store = useStore();
     const tenantStore = useTenantsStore();
     const requestStore = useRequestsStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
 
     // Data
@@ -101,7 +101,7 @@ export default {
     const showDeleteAllRequestsModal = ref(false);
     let signalrConnection = null;
 
-    const saveSearchFilters = store.getters["general/getSaveSearchFilters"];
+    const saveSearchFilters = generalStore.getSaveSearchFilters;
     let savedFilter = {};
     if (saveSearchFilters) {
       savedFilter = getRequestFilterForm() || {};
@@ -183,7 +183,7 @@ export default {
       }
     };
     const filterChanged = () => {
-      if (store.getters["general/getSaveSearchFilters"]) {
+      if (generalStore.getSaveSearchFilters) {
         setRequestFilterForm(filter.value);
       }
     };

@@ -15,18 +15,18 @@
 
 <script>
 import Sidebar from "@/components/Sidebar";
-import { useStore } from "vuex";
 import { computed, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useUsersStore } from "@/store/users";
 import { useMetadataStore } from "@/store/metadata";
+import { useGeneralStore } from "@/store/general";
 
 export default {
   components: { Sidebar },
   setup() {
-    const store = useStore();
     const userStore = useUsersStore();
     const metadataStore = useMetadataStore();
+    const generalStore = useGeneralStore();
     const router = useRouter();
 
     // Functions
@@ -44,14 +44,14 @@ export default {
     };
 
     // Computed
-    const darkTheme = computed(() => store.getters["general/getDarkTheme"]);
+    const darkTheme = computed(() => generalStore.getDarkTheme);
 
     // Watch
     watch(darkTheme, (darkTheme) => setDarkTheme(darkTheme));
 
     // Lifecycle
     onMounted(async () => {
-      const darkThemeEnabled = store.getters["general/getDarkTheme"];
+      const darkThemeEnabled = darkTheme.value;
       setDarkTheme(darkThemeEnabled);
       metadataStore
         .getMetadata()
