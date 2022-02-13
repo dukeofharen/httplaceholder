@@ -45,18 +45,18 @@
 <script>
 import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, onUnmounted, ref } from "vue";
-import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import { resources } from "@/constants/resources";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
+import { useScenariosStore } from "@/store/scenarios";
 
 export default {
   name: "ScenarioForm",
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const store = useStore();
+    const scenarioStore = useScenariosStore();
 
     // Data
     const scenarioForm = ref({
@@ -80,7 +80,7 @@ export default {
           scenarioForm.value.hitCount = 0;
         }
 
-        await store.dispatch("scenarios/setScenario", scenarioForm.value);
+        await scenarioStore.setScenario(scenarioForm.value);
         success(resources.scenarioSetSuccessfully);
         await router.push({ name: "Scenarios" });
       } catch (e) {
@@ -104,8 +104,7 @@ export default {
 
       if (!newScenario.value) {
         try {
-          scenarioForm.value = await store.dispatch(
-            "scenarios/getScenario",
+          scenarioForm.value = await scenarioStore.getScenario(
             scenarioName.value
           );
         } catch (e) {

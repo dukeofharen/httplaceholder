@@ -61,15 +61,15 @@
 
 <script>
 import { computed, onMounted, ref } from "vue";
-import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
+import { useScenariosStore } from "@/store/scenarios";
 
 export default {
   name: "Scenarios",
   setup() {
-    const store = useStore();
+    const scenarioStore = useScenariosStore();
 
     // Data
     const scenarios = ref([]);
@@ -90,14 +90,14 @@ export default {
     // Methods
     const loadScenarios = async () => {
       try {
-        scenarios.value = await store.dispatch("scenarios/getAllScenarios");
+        scenarios.value = await scenarioStore.getAllScenarios();
       } catch (e) {
         handleHttpError(e);
       }
     };
     const clearAllScenarios = async () => {
       try {
-        await store.dispatch("scenarios/deleteAllScenarios");
+        await scenarioStore.deleteAllScenarios();
         success(resources.scenariosDeletedSuccessfully);
         await loadScenarios();
       } catch (e) {
@@ -106,7 +106,7 @@ export default {
     };
     const deleteScenario = async (scenario) => {
       try {
-        await store.dispatch("scenarios/deleteScenario", scenario);
+        await scenarioStore.deleteScenario(scenario);
         success(resources.scenarioDeletedSuccessfully);
         await loadScenarios();
       } catch (e) {
