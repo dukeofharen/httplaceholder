@@ -84,6 +84,7 @@ import { handleHttpError } from "@/utils/error";
 import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
 import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
+import { useRequestsStore } from "@/store/requests";
 
 export default {
   name: "Requests",
@@ -91,6 +92,7 @@ export default {
   setup() {
     const store = useStore();
     const tenantStore = useTenantsStore();
+    const requestStore = useRequestsStore();
     const route = useRoute();
 
     // Data
@@ -156,7 +158,7 @@ export default {
     // Methods
     const loadRequests = async () => {
       try {
-        requests.value = await store.dispatch("requests/getRequestsOverview");
+        requests.value = await requestStore.getRequestsOverview();
       } catch (e) {
         handleHttpError(e);
       }
@@ -173,7 +175,7 @@ export default {
     };
     const deleteAllRequests = async () => {
       try {
-        await store.dispatch("requests/clearRequests");
+        await requestStore.clearRequests();
         success(resources.requestsDeletedSuccessfully);
         await loadRequests();
       } catch (e) {
