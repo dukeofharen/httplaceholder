@@ -29,16 +29,16 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
 import { onMounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useTenantsStore } from "@/store/tenants";
+import { useStubFormStore } from "@/store/stubForm";
 
 export default {
   name: "TenantSelector",
   setup() {
-    const store = useStore();
     const tenantStore = useTenantsStore();
+    const stubFormStore = useStubFormStore();
 
     // Data
     const tenantNames = ref([]);
@@ -46,8 +46,8 @@ export default {
 
     // Methods
     const tenantSelected = (tenant) => {
-      store.commit("stubForm/setTenant", tenant);
-      store.commit("stubForm/closeFormHelper");
+      stubFormStore.setTenant(tenant);
+      stubFormStore.closeFormHelper();
     };
 
     // Lifecycle

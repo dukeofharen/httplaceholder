@@ -25,13 +25,13 @@
 <script>
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { resources } from "@/constants/resources";
-import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import { useRoute, useRouter } from "vue-router";
 import { shouldSave } from "@/utils/event";
 import { formHelperKeys } from "@/constants/stubFormResources";
 import { success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
+import { useStubFormStore } from "@/store/stubForm";
 
 export default {
   name: "StubFormButtons",
@@ -42,8 +42,8 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const store = useStore();
     const stubStore = useStubsStore();
+    const stubFormStore = useStubFormStore();
     const route = useRoute();
     const router = useRouter();
 
@@ -52,14 +52,13 @@ export default {
 
     // Computed
     const input = computed({
-      get: () => store.getters["stubForm/getInput"],
-      set: (value) => store.commit("stubForm/setInput", value),
+      get: () => stubFormStore.getInput,
+      set: (value) => stubFormStore.setInput(value),
     });
     const newStub = computed(() => !route.params.stubId);
     const stubId = computed(() => route.params.stubId);
     const showSaveAsNewStubButton = computed(
-      () =>
-        !store.getters["stubForm/getInputHasMultipleStubs"] && !newStub.value
+      () => !stubFormStore.getInputHasMultipleStubs && !newStub.value
     );
 
     // Methods
@@ -93,7 +92,7 @@ export default {
           input: input.value,
         });
         success(resources.stubUpdatedSuccessfully);
-        const currentStubId = store.getters["stubForm/getStubId"];
+        const currentStubId = stubFormStore.getStubId;
         if (stubId.value !== currentStubId) {
           await router.push({
             name: "StubForm",
@@ -113,7 +112,7 @@ export default {
     };
     const checkSave = async (e) => {
       const currentSelectedFormHelper =
-        store.getters["stubForm/getCurrentSelectedFormHelper"];
+        stubFormStore.getCurrentSelectedFormHelper;
       if (
         shouldSave(e) &&
         currentSelectedFormHelper.value !== formHelperKeys.responseBody

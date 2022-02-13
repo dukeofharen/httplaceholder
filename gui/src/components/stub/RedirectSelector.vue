@@ -12,27 +12,27 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
+import { useStubFormStore } from "@/store/stubForm";
 
 export default {
   name: "RedirectSelector",
   setup() {
-    const store = useStore();
+    const stubFormStore = useStubFormStore();
 
     // Data
     const items = [
       {
         name: "Temporary redirect",
         onSelected: () => {
-          store.commit("stubForm/setDefaultTempRedirect");
-          store.commit("stubForm/closeFormHelper");
+          stubFormStore.setDefaultTempRedirect();
+          stubFormStore.closeFormHelper();
         },
       },
       {
         name: "Permanent redirect",
         onSelected: () => {
-          store.commit("stubForm/setDefaultPermanentRedirect");
-          store.commit("stubForm/closeFormHelper");
+          stubFormStore.setDefaultPermanentRedirect();
+          stubFormStore.closeFormHelper();
         },
       },
     ];

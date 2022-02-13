@@ -92,10 +92,10 @@ import {
   responseBodyTypes,
 } from "@/constants/stubFormResources";
 import { computed, onMounted, ref, watch } from "vue";
-import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import { fromBase64, toBase64 } from "@/utils/text";
 import { useMetadataStore } from "@/store/metadata";
+import { useStubFormStore } from "@/store/stubForm";
 
 export default {
   name: "ResponseBodyHelper",
@@ -105,8 +105,8 @@ export default {
     },
   },
   setup(props) {
-    const store = useStore();
     const metadataStore = useMetadataStore();
+    const stubFormStore = useStubFormStore();
 
     // Refs
     const codeEditor = ref(null);
@@ -170,13 +170,13 @@ export default {
       const matches = file.result.match(regex);
       const contentType = matches[1];
       const body = matches[2];
-      store.commit("stubForm/setResponseContentType", contentType);
-      store.commit("stubForm/setResponseBody", {
+      stubFormStore.setResponseContentType(contentType);
+      stubFormStore.setResponseBody({
         type: responseBodyTypes.base64,
         body,
       });
       responseBody.value = body;
-      store.commit("stubForm/closeFormHelper");
+      stubFormStore.closeFormHelper();
       showBase64TextInput.value = false;
     };
     const insertVariableHandler = () => {
@@ -194,23 +194,22 @@ export default {
         responseBodyResult = toBase64(responseBodyResult);
       }
 
-      store.commit("stubForm/setResponseBody", {
+      stubFormStore.setResponseBody({
         type: responseBodyType.value,
         body: responseBodyResult,
       });
-      store.commit("stubForm/setDynamicMode", enableDynamicMode.value);
+      stubFormStore.setDynamicMode(enableDynamicMode.value);
     };
     const close = () => {
       insert();
-      store.commit("stubForm/closeFormHelper");
+      stubFormStore.closeFormHelper();
     };
 
     // Lifecycle
     onMounted(async () => {
       responseBodyType.value =
-        props.presetResponseBodyType ||
-        store.getters["stubForm/getResponseBodyType"];
-      let currentResponseBody = store.getters["stubForm/getResponseBody"];
+        props.presetResponseBodyType || stubFormStore.getResponseBodyType;
+      let currentResponseBody = stubFormStore.getResponseBody;
       if (responseBodyType.value === responseBodyTypes.base64) {
         const decodedBase64 = fromBase64(currentResponseBody);
         if (decodedBase64) {
@@ -225,7 +224,7 @@ export default {
         handleHttpError(e);
       }
 
-      enableDynamicMode.value = store.getters["stubForm/getDynamicMode"];
+      enableDynamicMode.value = stubFormStore.getDynamicMode;
     });
 
     // Watch

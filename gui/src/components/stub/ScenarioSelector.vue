@@ -30,15 +30,15 @@
 
 <script>
 import { onMounted, ref } from "vue";
-import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import { useScenariosStore } from "@/store/scenarios";
+import { useStubFormStore } from "@/store/stubForm";
 
 export default {
   name: "ScenarioSelector",
   setup() {
-    const store = useStore();
     const scenarioStore = useScenariosStore();
+    const stubFormStore = useStubFormStore();
 
     // Data
     const scenarios = ref([]);
@@ -46,8 +46,8 @@ export default {
 
     // Methods
     const scenarioSelected = (scenario) => {
-      store.commit("stubForm/setScenario", scenario);
-      store.commit("stubForm/closeFormHelper");
+      stubFormStore.setScenario(scenario);
+      stubFormStore.closeFormHelper();
     };
 
     // Lifecycle

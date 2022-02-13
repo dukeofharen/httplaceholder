@@ -465,17 +465,17 @@ const stubFormHelpers = [
   {
     title: "Description",
     subTitle: elementDescriptions.description,
-    defaultValueMutation: "stubForm/setDefaultDescription",
+    defaultValueMutation: (store) => store.setDefaultDescription(),
   },
   {
     title: "Priority",
     subTitle: elementDescriptions.priority,
-    defaultValueMutation: "stubForm/setDefaultPriority",
+    defaultValueMutation: (store) => store.setDefaultPriority(),
   },
   {
     title: "Disable stub",
     subTitle: elementDescriptions.disable,
-    defaultValueMutation: "stubForm/setStubDisabled",
+    defaultValueMutation: (store) => store.setStubDisabled(),
   },
   {
     title: "Tenant",
@@ -499,92 +499,92 @@ const stubFormHelpers = [
   {
     title: "URL path",
     subTitle: elementDescriptions.urlPath,
-    defaultValueMutation: "stubForm/setDefaultPath",
+    defaultValueMutation: (store) => store.setDefaultPath(),
   },
   {
     title: "Full path",
     subTitle: elementDescriptions.fullPath,
-    defaultValueMutation: "stubForm/setDefaultFullPath",
+    defaultValueMutation: (store) => store.setDefaultFullPath(),
   },
   {
     title: "Query string",
     subTitle: elementDescriptions.queryString,
-    defaultValueMutation: "stubForm/setDefaultQuery",
+    defaultValueMutation: (store) => store.setDefaultQuery(),
   },
   {
     title: "HTTPS",
     subTitle: elementDescriptions.isHttps,
-    defaultValueMutation: "stubForm/setDefaultIsHttps",
+    defaultValueMutation: (store) => store.setDefaultIsHttps(),
   },
   {
     title: "Basic authentication",
     subTitle: elementDescriptions.basicAuthentication,
-    defaultValueMutation: "stubForm/setDefaultBasicAuth",
+    defaultValueMutation: (store) => store.setDefaultBasicAuth(),
   },
   {
     title: "Headers",
     subTitle: elementDescriptions.headers,
-    defaultValueMutation: "stubForm/setDefaultRequestHeaders",
+    defaultValueMutation: (store) => store.setDefaultRequestHeaders(),
   },
   {
     title: "Request body",
     subTitle: elementDescriptions.body,
-    defaultValueMutation: "stubForm/setDefaultRequestBody",
+    defaultValueMutation: (store) => store.setDefaultRequestBody(),
   },
   {
     title: "Form body",
     subTitle: elementDescriptions.formBody,
-    defaultValueMutation: "stubForm/setDefaultFormBody",
+    defaultValueMutation: (store) => store.setDefaultFormBody(),
   },
   {
     title: "Client IP",
     subTitle: elementDescriptions.clientIp,
-    defaultValueMutation: "stubForm/setDefaultClientIp",
+    defaultValueMutation: (store) => store.setDefaultClientIp(),
   },
   {
     title: "Hostname",
     subTitle: elementDescriptions.hostname,
-    defaultValueMutation: "stubForm/setDefaultHostname",
+    defaultValueMutation: (store) => store.setDefaultHostname(),
   },
   {
     title: "JSONPath",
     subTitle: elementDescriptions.jsonPath,
-    defaultValueMutation: "stubForm/setDefaultJsonPath",
+    defaultValueMutation: (store) => store.setDefaultJsonPath(),
   },
   {
     title: "JSON object",
     subTitle: elementDescriptions.jsonObject,
-    defaultValueMutation: "stubForm/setDefaultJsonObject",
+    defaultValueMutation: (store) => store.setDefaultJsonObject(),
   },
   {
     title: "JSON array",
     subTitle: elementDescriptions.jsonArray,
-    defaultValueMutation: "stubForm/setDefaultJsonArray",
+    defaultValueMutation: (store) => store.setDefaultJsonArray(),
   },
   {
     title: "XPath",
     subTitle: elementDescriptions.xpath,
-    defaultValueMutation: "stubForm/setDefaultXPath",
+    defaultValueMutation: (store) => store.setDefaultXPath(),
   },
   {
     title: "Scenario min hit counter",
     subTitle: elementDescriptions.minHits,
-    defaultValueMutation: "stubForm/setDefaultMinHits",
+    defaultValueMutation: (store) => store.setDefaultMinHits(),
   },
   {
     title: "Scenario max hit counter",
     subTitle: elementDescriptions.maxHits,
-    defaultValueMutation: "stubForm/setDefaultMaxHits",
+    defaultValueMutation: (store) => store.setDefaultMaxHits(),
   },
   {
     title: "Scenario exact hit counter",
     subTitle: elementDescriptions.exactHits,
-    defaultValueMutation: "stubForm/setDefaultExactHits",
+    defaultValueMutation: (store) => store.setDefaultExactHits(),
   },
   {
     title: "Scenario state check",
     subTitle: elementDescriptions.scenarioState,
-    defaultValueMutation: "stubForm/setDefaultScenarioState",
+    defaultValueMutation: (store) => store.setDefaultScenarioState(),
   },
   {
     title: "Add response definition",
@@ -628,22 +628,22 @@ const stubFormHelpers = [
   {
     title: "Response headers",
     subTitle: elementDescriptions.responseHeaders,
-    defaultValueMutation: "stubForm/setDefaultResponseHeaders",
+    defaultValueMutation: (store) => store.setDefaultResponseHeaders(),
   },
   {
     title: "Content type",
     subTitle: elementDescriptions.responseContentType,
-    defaultValueMutation: "stubForm/setDefaultResponseContentType",
+    defaultValueMutation: (store) => store.setDefaultResponseContentType(),
   },
   {
     title: "Extra duration",
     subTitle: elementDescriptions.extraDuration,
-    defaultValueMutation: "stubForm/setDefaultExtraDuration",
+    defaultValueMutation: (store) => store.setDefaultExtraDuration(),
   },
   {
     title: "Image",
     subTitle: elementDescriptions.image,
-    defaultValueMutation: "stubForm/setDefaultImage",
+    defaultValueMutation: (store) => store.setDefaultImage(),
   },
   {
     title: "Redirect",
@@ -658,17 +658,17 @@ const stubFormHelpers = [
   {
     title: "Reverse proxy",
     subTitle: elementDescriptions.reverseProxy,
-    defaultValueMutation: "stubForm/setDefaultReverseProxy",
+    defaultValueMutation: (store) => store.setDefaultReverseProxy(),
   },
   {
     title: "Clear scenario state",
     subTitle: elementDescriptions.clearState,
-    defaultValueMutation: "stubForm/setClearState",
+    defaultValueMutation: (store) => store.setClearState(),
   },
   {
     title: "Set new scenario state",
     subTitle: elementDescriptions.newScenarioState,
-    defaultValueMutation: "stubForm/setDefaultNewScenarioState",
+    defaultValueMutation: (store) => store.setDefaultNewScenarioState(),
   },
 ];
 

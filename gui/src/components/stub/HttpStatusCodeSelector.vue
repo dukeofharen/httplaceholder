@@ -13,17 +13,17 @@
 
 <script>
 import { httpStatusCodes } from "@/constants/stubFormResources";
-import { useStore } from "vuex";
+import { useStubFormStore } from "@/store/stubForm";
 
 export default {
   name: "HttpStatusCodeSelector",
   setup() {
-    const store = useStore();
+    const stubFormStore = useStubFormStore();
 
     // Methods
     const codeSelected = (code) => {
-      store.commit("stubForm/setStatusCode", code.code);
-      store.commit("stubForm/closeFormHelper");
+      stubFormStore.setStatusCode(code.code);
+      stubFormStore.closeFormHelper();
     };
 
     return { httpStatusCodes, codeSelected };
