@@ -1,4 +1,4 @@
-import { defineStore } from "pinia/dist/pinia";
+import { defineStore } from "pinia";
 import { get } from "@/utils/api";
 
 export const useTenantsStore = defineStore({

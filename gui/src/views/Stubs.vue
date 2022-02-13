@@ -156,6 +156,7 @@ import { downloadBlob } from "@/utils/download";
 import { getStubFilterForm, setStubFilterForm } from "@/utils/session";
 import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
+import { useStubsStore } from "@/store/stubs";
 
 export default {
   name: "Stubs",
@@ -163,6 +164,7 @@ export default {
   setup() {
     const store = useStore();
     const tenantStore = useTenantsStore();
+    const stubStore = useStubsStore();
     const route = useRoute();
 
     // Data
@@ -224,7 +226,7 @@ export default {
     const loadStubs = async () => {
       try {
         stubs.value = [];
-        stubs.value = await store.dispatch("stubs/getStubsOverview");
+        stubs.value = await stubStore.getStubsOverview();
       } catch (e) {
         handleHttpError(e);
       }
@@ -244,7 +246,7 @@ export default {
     };
     const deleteAllStubs = async () => {
       try {
-        await store.dispatch("stubs/deleteStubs");
+        await stubStore.deleteStubs();
         success(resources.stubsDeletedSuccessfully);
         await loadData();
       } catch (e) {
@@ -254,7 +256,7 @@ export default {
     const disableStubs = async () => {
       const disableStub = async (stubIdToDisable) => {
         try {
-          await store.dispatch("stubs/disableStub", stubIdToDisable);
+          await stubStore.disableStub(stubIdToDisable);
         } catch (e) {
           handleHttpError(e);
         }
@@ -272,7 +274,7 @@ export default {
     const enableStubs = async () => {
       const enableStub = async (stubIdToEnable) => {
         try {
-          await store.dispatch("stubs/enableStub", stubIdToEnable);
+          await stubStore.enableStub(stubIdToEnable);
         } catch (e) {
           handleHttpError(e);
         }
@@ -290,7 +292,7 @@ export default {
     const deleteStubs = async () => {
       const deleteStub = async (stubIdToDelete) => {
         try {
-          await store.dispatch("stubs/deleteStub", stubIdToDelete);
+          await stubStore.deleteStub(stubIdToDelete);
         } catch (e) {
           handleHttpError(e);
         }
@@ -307,7 +309,7 @@ export default {
     };
     const download = async () => {
       try {
-        const stubs = filterStubs(await store.dispatch("stubs/getStubs")).map(
+        const stubs = filterStubs(await stubStore.getStubs()).map(
           (fs) => fs.stub
         );
         const downloadString = `${resources.downloadStubsHeader}\n${yaml.dump(

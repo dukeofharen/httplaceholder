@@ -79,7 +79,6 @@
 
 <script>
 import { computed, ref } from "vue";
-import { useStore } from "vuex";
 import yaml from "js-yaml";
 import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
@@ -87,6 +86,7 @@ import { useRouter } from "vue-router";
 import dayjs from "dayjs";
 import { handleHttpError } from "@/utils/error";
 import { success } from "@/utils/toast";
+import { useStubsStore } from "@/store/stubs";
 
 export default {
   name: "Stub",
@@ -97,7 +97,7 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const store = useStore();
+    const stubStore = useStubsStore();
     const router = useRouter();
 
     // Functions
@@ -145,7 +145,7 @@ export default {
     const showDetails = async () => {
       if (!fullStub.value) {
         try {
-          fullStub.value = await store.dispatch("stubs/getStub", getStubId());
+          fullStub.value = await stubStore.getStub(getStubId());
 
           // Sadly, when doing this without the timeout, it does the slide down incorrect.
           setTimeout(() => (accordionOpened.value = true), 1);
@@ -166,7 +166,7 @@ export default {
     };
     const enableOrDisable = async () => {
       try {
-        const enabled = await store.dispatch("stubs/flipEnabled", getStubId());
+        const enabled = await stubStore.flipEnabled(getStubId());
         fullStub.value.stub.enabled = enabled;
         overviewStubValue.value.stub.enabled = enabled;
       } catch (e) {
@@ -175,7 +175,7 @@ export default {
     };
     const deleteStub = async () => {
       try {
-        await store.dispatch("stubs/deleteStub", getStubId());
+        await stubStore.deleteStub(getStubId());
         success(resources.stubDeletedSuccessfully);
         showDeleteModal.value = false;
         emit("deleted");

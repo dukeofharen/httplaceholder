@@ -72,6 +72,7 @@ import FormHelperSelector from "@/components/stub/FormHelperSelector";
 import StubFormButtons from "@/components/stub/StubFormButtons";
 import SimpleEditor from "@/components/simpleEditor/SimpleEditor";
 import { error } from "@/utils/toast";
+import { useStubsStore } from "@/store/stubs";
 
 const editorTypes = {
   none: "none",
@@ -86,6 +87,7 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const store = useStore();
+    const stubStore = useStubsStore();
 
     // Data
     const cmOptions = {
@@ -139,7 +141,7 @@ export default {
         }
       } else {
         try {
-          const fullStub = await store.dispatch("stubs/getStub", stubId.value);
+          const fullStub = await stubStore.getStub(stubId.value);
           input.value = yaml.dump(fullStub.stub);
         } catch (e) {
           if (e.status === 404) {

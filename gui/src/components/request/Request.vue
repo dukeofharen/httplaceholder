@@ -55,6 +55,7 @@ import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { useRouter } from "vue-router";
 import { success } from "@/utils/toast";
+import { useStubsStore } from "@/store/stubs";
 
 export default {
   name: "Request",
@@ -67,6 +68,7 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore();
+    const stubStore = useStubsStore();
     const router = useRouter();
 
     // Functions
@@ -114,13 +116,10 @@ export default {
     };
     const createStub = async () => {
       try {
-        const fullStub = await store.dispatch(
-          "stubs/createStubBasedOnRequest",
-          {
-            correlationId: correlationId(),
-            doNotCreateStub: true,
-          }
-        );
+        const fullStub = await stubStore.createStubBasedOnRequest({
+          correlationId: correlationId(),
+          doNotCreateStub: true,
+        });
         setIntermediateStub(yaml.dump(fullStub.stub));
         await router.push({ name: "StubForm" });
       } catch (e) {

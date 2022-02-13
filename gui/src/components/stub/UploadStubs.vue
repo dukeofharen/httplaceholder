@@ -14,17 +14,17 @@
 <script>
 import { getExtension } from "@/utils/file";
 import { resources } from "@/constants/resources";
-import { useStore } from "vuex";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { success, warning } from "@/utils/toast";
+import { useStubsStore } from "@/store/stubs";
 
 const expectedExtensions = ["yml", "yaml"];
 
 export default {
   name: "UploadStubs",
   setup() {
-    const store = useStore();
+    const stubStore = useStubsStore();
     const router = useRouter();
 
     // Data
@@ -49,7 +49,7 @@ export default {
     };
     const addStubs = async (input, filename) => {
       try {
-        await store.dispatch("stubs/addStubs", input);
+        await stubStore.addStubs(input);
         success(resources.stubsInFileAddedSuccessfully.format(filename));
         if (reloadHandle) {
           clearTimeout(reloadHandle);

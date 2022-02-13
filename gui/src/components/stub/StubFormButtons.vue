@@ -31,6 +31,7 @@ import { useRoute, useRouter } from "vue-router";
 import { shouldSave } from "@/utils/event";
 import { formHelperKeys } from "@/constants/stubFormResources";
 import { success } from "@/utils/toast";
+import { useStubsStore } from "@/store/stubs";
 
 export default {
   name: "StubFormButtons",
@@ -42,6 +43,7 @@ export default {
   },
   setup(props, { emit }) {
     const store = useStore();
+    const stubStore = useStubsStore();
     const route = useRoute();
     const router = useRouter();
 
@@ -68,7 +70,7 @@ export default {
     };
     const addStub = async () => {
       try {
-        const result = await store.dispatch("stubs/addStubs", input.value);
+        const result = await stubStore.addStubs(input.value);
         if (result.length === 1) {
           const addedStubId = result[0].stub.id;
           if (stubId.value !== addedStubId) {
@@ -86,7 +88,7 @@ export default {
     };
     const updateStub = async () => {
       try {
-        await store.dispatch("stubs/updateStub", {
+        await stubStore.updateStub({
           stubId: stubId.value,
           input: input.value,
         });
