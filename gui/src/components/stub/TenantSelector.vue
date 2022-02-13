@@ -32,11 +32,13 @@
 import { useStore } from "vuex";
 import { onMounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
+import { useTenantsStore } from "@/store/tenants";
 
 export default {
   name: "TenantSelector",
   setup() {
     const store = useStore();
+    const tenantStore = useTenantsStore();
 
     // Data
     const tenantNames = ref([]);
@@ -51,7 +53,7 @@ export default {
     // Lifecycle
     onMounted(async () => {
       try {
-        tenantNames.value = await store.dispatch("tenants/getTenantNames");
+        tenantNames.value = await tenantStore.getTenantNames();
       } catch (e) {
         handleHttpError(e);
       }

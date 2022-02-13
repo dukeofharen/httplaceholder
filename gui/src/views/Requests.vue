@@ -83,12 +83,14 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 import { handleHttpError } from "@/utils/error";
 import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
 import { success } from "@/utils/toast";
+import { useTenantsStore } from "@/store/tenants";
 
 export default {
   name: "Requests",
   components: { Request },
   setup() {
     const store = useStore();
+    const tenantStore = useTenantsStore();
     const route = useRoute();
 
     // Data
@@ -161,7 +163,7 @@ export default {
     };
     const loadTenantNames = async () => {
       try {
-        tenants.value = await store.dispatch("tenants/getTenantNames");
+        tenants.value = await tenantStore.getTenantNames();
         if (!tenants.value.find((t) => t === filter.value.selectedTenantName)) {
           filter.value.selectedTenantName = "";
         }
