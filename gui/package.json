@@ -11,8 +11,7 @@
     "core-js": "^3.6.5",
     "register-service-worker": "^1.7.1",
     "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0"
+    "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
     "@fontsource/roboto-mono": "^4.5.0",
@@ -39,6 +38,7 @@
     "eslint-plugin-vue": "^7.0.0",
     "highlight.js": "^11.2.0",
     "js-yaml": "^4.1.0",
+    "pinia": "^2.0.11",
     "prettier": "^2.2.1",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",

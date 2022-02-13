@@ -92,18 +92,18 @@
 <script>
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
-import { useStore } from "vuex";
 import yaml from "js-yaml";
 import { resources } from "@/constants/resources";
 import { useRouter } from "vue-router";
 import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
+import { useImportStore } from "@/store/import";
 
 export default {
   name: "ImportHar",
   setup() {
-    const store = useStore();
+    const importStore = useImportStore();
     const router = useRouter();
 
     // Data
@@ -123,7 +123,7 @@ export default {
     };
     const importHar = async () => {
       try {
-        const result = await store.dispatch("importModule/importHar", {
+        const result = await importStore.importHar({
           har: input.value,
           doNotCreateStub: true,
           tenant: tenant.value,
@@ -137,7 +137,7 @@ export default {
     };
     const saveStubs = async () => {
       try {
-        await store.dispatch("importModule/importHar", {
+        await importStore.importHar({
           har: input.value,
           doNotCreateStub: false,
           tenant: tenant.value,

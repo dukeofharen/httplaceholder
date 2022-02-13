@@ -12,13 +12,13 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
 import { lineEndingTypes } from "@/constants/stubFormResources";
+import { useStubFormStore } from "@/store/stubForm";
 
 export default {
   name: "LineEndingSelector",
   setup() {
-    const store = useStore();
+    const stubFormStore = useStubFormStore();
 
     // Data
     const types = [
@@ -38,8 +38,8 @@ export default {
 
     // Methods
     const lineEndingSelected = (value) => {
-      store.commit("stubForm/setLineEndings", value);
-      store.commit("stubForm/closeFormHelper");
+      stubFormStore.setLineEndings(value);
+      stubFormStore.closeFormHelper();
     };
 
     return { types, lineEndingSelected };

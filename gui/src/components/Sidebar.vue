@@ -36,14 +36,16 @@
 <script>
 import SidebarMenuItem from "@/components/SidebarMenuItem";
 import { computed } from "vue";
-import { useStore } from "vuex";
 import router from "@/router";
+import { useUsersStore } from "@/store/users";
+import { useMetadataStore } from "@/store/metadata";
 
 export default {
   name: "Sidebar",
   components: { SidebarMenuItem },
   setup() {
-    const store = useStore();
+    const userStore = useUsersStore();
+    const metadataStore = useMetadataStore();
 
     // Data
     const plainMenuItems = [
@@ -88,7 +90,7 @@ export default {
         icon: "box-arrow-left",
         onlyShowWhenLoggedInAndAuthEnabled: true,
         onClick: async () => {
-          store.commit("users/logOut");
+          userStore.logOut();
           await router.push({ name: "Login" });
         },
       },
@@ -96,8 +98,8 @@ export default {
 
     // Computed
     const menuItems = computed(() => {
-      const isAuthenticated = store.getters["users/getAuthenticated"];
-      const authEnabled = store.getters["metadata/authenticationEnabled"];
+      const isAuthenticated = userStore.getAuthenticated;
+      const authEnabled = metadataStore.getAuthenticationEnabled;
       return plainMenuItems.filter(
         (i) =>
           (i.onlyShowWhenLoggedInAndAuthEnabled &&

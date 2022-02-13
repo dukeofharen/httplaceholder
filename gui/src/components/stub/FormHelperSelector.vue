@@ -104,7 +104,6 @@ import {
   stubFormHelpers,
   responseBodyTypes,
 } from "@/constants/stubFormResources";
-import { useStore } from "vuex";
 import HttpMethodSelector from "@/components/stub/HttpMethodSelector";
 import TenantSelector from "@/components/stub/TenantSelector";
 import HttpStatusCodeSelector from "@/components/stub/HttpStatusCodeSelector";
@@ -114,6 +113,7 @@ import LineEndingSelector from "@/components/stub/LineEndingSelector";
 import ScenarioSelector from "@/components/stub/ScenarioSelector";
 import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
+import { useStubFormStore } from "@/store/stubForm";
 
 export default {
   name: "FormHelperSelector",
@@ -127,7 +127,7 @@ export default {
     ScenarioSelector,
   },
   setup() {
-    const store = useStore();
+    const stubFormStore = useStubFormStore();
     const route = useRoute();
 
     // Refs
@@ -141,9 +141,9 @@ export default {
     // Methods
     const onFormHelperItemClick = (item) => {
       if (item.defaultValueMutation) {
-        store.commit(item.defaultValueMutation);
+        item.defaultValueMutation(stubFormStore);
       } else if (item.formHelperToOpen) {
-        store.commit("stubForm/openFormHelper", item.formHelperToOpen);
+        stubFormStore.openFormHelper(item.formHelperToOpen);
       }
 
       showFormHelperItems.value = false;
@@ -158,13 +158,13 @@ export default {
     };
     const closeFormHelperAndList = () => {
       formHelperFilter.value = "";
-      store.commit("stubForm/closeFormHelper");
+      stubFormStore.closeFormHelper();
       showFormHelperItems.value = false;
     };
 
     // Computed
     const currentSelectedFormHelper = computed(
-      () => store.getters["stubForm/getCurrentSelectedFormHelper"]
+      () => stubFormStore.getCurrentSelectedFormHelper
     );
     const filteredStubFormHelpers = computed(() => {
       if (!formHelperFilter.value) {

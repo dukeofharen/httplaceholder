@@ -36,20 +36,18 @@
 
 <script>
 import { ref } from "vue";
-import { useStore } from "vuex";
+import { useGeneralStore } from "@/store/general";
 
 export default {
   name: "Settings",
   setup() {
-    const store = useStore();
+    const generalStore = useGeneralStore();
 
     // Data
-    const settings = ref(store.getters["general/getSettings"]);
+    const settings = ref(generalStore.getSettings);
 
     // Methods
-    const saveSettings = () => {
-      store.commit("general/storeSettings", settings.value);
-    };
+    const saveSettings = () => generalStore.storeSettings(settings.value);
 
     return { settings, saveSettings };
   },

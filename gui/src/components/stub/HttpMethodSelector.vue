@@ -13,17 +13,17 @@
 
 <script>
 import { httpMethods } from "@/constants/stubFormResources";
-import { useStore } from "vuex";
+import { useStubFormStore } from "@/store/stubForm";
 
 export default {
   name: "HttpMethodSelector",
   setup() {
-    const store = useStore();
+    const stubFormStore = useStubFormStore();
 
     // Methods
     const methodSelected = (method) => {
-      store.commit("stubForm/setMethod", method);
-      store.commit("stubForm/closeFormHelper");
+      stubFormStore.setMethod(method);
+      stubFormStore.closeFormHelper();
     };
 
     return { httpMethods, methodSelected };

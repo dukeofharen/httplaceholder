@@ -45,7 +45,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
             // The local cache hasn't been initialized yet. Do that now.
             _logger.LogInformation(
                 "Initializing the cache, because either the local stub cache or tracking ID is not set yet.");
-            StubUpdateTrackingId = metadata.StubUpdateTrackingId;
+            StubUpdateTrackingId = metadata?.StubUpdateTrackingId ?? Guid.NewGuid().ToString();
             shouldUpdateCache = true;
         }
         else if (StubUpdateTrackingId != metadata.StubUpdateTrackingId)

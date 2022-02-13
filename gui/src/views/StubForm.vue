@@ -62,7 +62,6 @@
 <script>
 import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, watch, ref } from "vue";
-import { useStore } from "vuex";
 import { resources } from "@/constants/resources";
 import { simpleEditorThreshold } from "@/constants/technical";
 import { handleHttpError } from "@/utils/error";
@@ -72,6 +71,8 @@ import FormHelperSelector from "@/components/stub/FormHelperSelector";
 import StubFormButtons from "@/components/stub/StubFormButtons";
 import SimpleEditor from "@/components/simpleEditor/SimpleEditor";
 import { error } from "@/utils/toast";
+import { useStubsStore } from "@/store/stubs";
+import { useStubFormStore } from "@/store/stubForm";
 
 const editorTypes = {
   none: "none",
@@ -85,7 +86,8 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const store = useStore();
+    const stubStore = useStubsStore();
+    const stubFormStore = useStubFormStore();
 
     // Data
     const cmOptions = {
@@ -101,25 +103,25 @@ export default {
     const newStub = computed(() => !route.params.stubId);
     const title = computed(() => (newStub.value ? "Add stub" : "Update stub"));
     const input = computed({
-      get: () => store.getters["stubForm/getInput"],
-      set: (value) => store.commit("stubForm/setInput", value),
+      get: () => stubFormStore.getInput,
+      set: (value) => stubFormStore.setInput(value),
     });
     const showFormHelperSelector = computed(
-      () => !store.getters["stubForm/getInputHasMultipleStubs"]
+      () => !stubFormStore.getInputHasMultipleStubs
     );
     const editorType = computed(() => {
       if (selectedEditorType.value !== editorTypes.none) {
         return selectedEditorType.value;
       }
 
-      return store.getters["stubForm/getInputLength"] > simpleEditorThreshold
+      return stubFormStore.getInputLength > simpleEditorThreshold
         ? editorTypes.simple
         : editorTypes.codemirror;
     });
 
     // Functions
     const initialize = async () => {
-      store.commit("stubForm/closeFormHelper");
+      stubFormStore.closeFormHelper();
       if (newStub.value) {
         let intermediateStub = getIntermediateStub();
         if (intermediateStub) {
@@ -139,7 +141,7 @@ export default {
         }
       } else {
         try {
-          const fullStub = await store.dispatch("stubs/getStub", stubId.value);
+          const fullStub = await stubStore.getStub(stubId.value);
           input.value = yaml.dump(fullStub.stub);
         } catch (e) {
           if (e.status === 404) {

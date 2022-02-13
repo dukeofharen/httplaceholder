@@ -74,7 +74,6 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import Request from "@/components/request/Request";
@@ -83,12 +82,17 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 import { handleHttpError } from "@/utils/error";
 import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
 import { success } from "@/utils/toast";
+import { useTenantsStore } from "@/store/tenants";
+import { useRequestsStore } from "@/store/requests";
+import { useGeneralStore } from "@/store/general";
 
 export default {
   name: "Requests",
   components: { Request },
   setup() {
-    const store = useStore();
+    const tenantStore = useTenantsStore();
+    const requestStore = useRequestsStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
 
     // Data
@@ -97,7 +101,7 @@ export default {
     const showDeleteAllRequestsModal = ref(false);
     let signalrConnection = null;
 
-    const saveSearchFilters = store.getters["general/getSaveSearchFilters"];
+    const saveSearchFilters = generalStore.getSaveSearchFilters;
     let savedFilter = {};
     if (saveSearchFilters) {
       savedFilter = getRequestFilterForm() || {};
@@ -154,14 +158,14 @@ export default {
     // Methods
     const loadRequests = async () => {
       try {
-        requests.value = await store.dispatch("requests/getRequestsOverview");
+        requests.value = await requestStore.getRequestsOverview();
       } catch (e) {
         handleHttpError(e);
       }
     };
     const loadTenantNames = async () => {
       try {
-        tenants.value = await store.dispatch("tenants/getTenantNames");
+        tenants.value = await tenantStore.getTenantNames();
         if (!tenants.value.find((t) => t === filter.value.selectedTenantName)) {
           filter.value.selectedTenantName = "";
         }
@@ -171,7 +175,7 @@ export default {
     };
     const deleteAllRequests = async () => {
       try {
-        await store.dispatch("requests/clearRequests");
+        await requestStore.clearRequests();
         success(resources.requestsDeletedSuccessfully);
         await loadRequests();
       } catch (e) {
@@ -179,7 +183,7 @@ export default {
       }
     };
     const filterChanged = () => {
-      if (store.getters["general/getSaveSearchFilters"]) {
+      if (generalStore.getSaveSearchFilters) {
         setRequestFilterForm(filter.value);
       }
     };

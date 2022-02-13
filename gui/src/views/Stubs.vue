@@ -13,8 +13,8 @@
       <router-link
         :to="{ name: 'StubForm' }"
         class="btn btn-success me-2 btn-mobile full-width"
-        >Add stubs</router-link
-      >
+        >Add stubs
+      </router-link>
       <button
         class="btn btn-success me-2 btn-mobile full-width"
         @click="download"
@@ -25,8 +25,8 @@
       <router-link
         :to="{ name: 'ImportStubs' }"
         class="btn btn-success me-2 btn-mobile full-width"
-        >Import stubs</router-link
-      >
+        >Import stubs
+      </router-link>
       <button
         type="button"
         class="btn btn-danger btn-mobile full-width"
@@ -138,14 +138,15 @@
     </accordion>
     <div v-else>
       No stubs have been added yet. Add a new stub by going to
-      <router-link :to="{ name: 'StubForm' }">Add stubs</router-link> or
-      <router-link :to="{ name: 'ImportStubs' }">Import stubs</router-link>.
+      <router-link :to="{ name: 'StubForm' }">Add stubs</router-link>
+      or
+      <router-link :to="{ name: 'ImportStubs' }">Import stubs</router-link>
+      .
     </div>
   </div>
 </template>
 
 <script>
-import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { computed, onMounted, ref, watch } from "vue";
 import Stub from "@/components/stub/Stub";
@@ -155,12 +156,17 @@ import { handleHttpError } from "@/utils/error";
 import { downloadBlob } from "@/utils/download";
 import { getStubFilterForm, setStubFilterForm } from "@/utils/session";
 import { success } from "@/utils/toast";
+import { useTenantsStore } from "@/store/tenants";
+import { useStubsStore } from "@/store/stubs";
+import { useGeneralStore } from "@/store/general";
 
 export default {
   name: "Stubs",
   components: { Stub },
   setup() {
-    const store = useStore();
+    const tenantStore = useTenantsStore();
+    const stubStore = useStubsStore();
+    const generalStore = useGeneralStore();
     const route = useRoute();
 
     // Data
@@ -171,7 +177,7 @@ export default {
     const showEnableStubsModal = ref(false);
     const showDeleteStubsModal = ref(false);
 
-    const saveSearchFilters = store.getters["general/getSaveSearchFilters"];
+    const saveSearchFilters = generalStore.getSaveSearchFilters;
     let savedFilter = {};
     if (saveSearchFilters) {
       savedFilter = getStubFilterForm() || {};
@@ -222,14 +228,14 @@ export default {
     const loadStubs = async () => {
       try {
         stubs.value = [];
-        stubs.value = await store.dispatch("stubs/getStubsOverview");
+        stubs.value = await stubStore.getStubsOverview();
       } catch (e) {
         handleHttpError(e);
       }
     };
     const loadTenantNames = async () => {
       try {
-        tenants.value = await store.dispatch("tenants/getTenantNames");
+        tenants.value = await tenantStore.getTenantNames();
         if (!tenants.value.find((t) => t === filter.value.selectedTenantName)) {
           filter.value.selectedTenantName = "";
         }
@@ -242,7 +248,7 @@ export default {
     };
     const deleteAllStubs = async () => {
       try {
-        await store.dispatch("stubs/deleteStubs");
+        await stubStore.deleteStubs();
         success(resources.stubsDeletedSuccessfully);
         await loadData();
       } catch (e) {
@@ -252,7 +258,7 @@ export default {
     const disableStubs = async () => {
       const disableStub = async (stubIdToDisable) => {
         try {
-          await store.dispatch("stubs/disableStub", stubIdToDisable);
+          await stubStore.disableStub(stubIdToDisable);
         } catch (e) {
           handleHttpError(e);
         }
@@ -270,7 +276,7 @@ export default {
     const enableStubs = async () => {
       const enableStub = async (stubIdToEnable) => {
         try {
-          await store.dispatch("stubs/enableStub", stubIdToEnable);
+          await stubStore.enableStub(stubIdToEnable);
         } catch (e) {
           handleHttpError(e);
         }
@@ -288,7 +294,7 @@ export default {
     const deleteStubs = async () => {
       const deleteStub = async (stubIdToDelete) => {
         try {
-          await store.dispatch("stubs/deleteStub", stubIdToDelete);
+          await stubStore.deleteStub(stubIdToDelete);
         } catch (e) {
           handleHttpError(e);
         }
@@ -305,7 +311,7 @@ export default {
     };
     const download = async () => {
       try {
-        const stubs = filterStubs(await store.dispatch("stubs/getStubs")).map(
+        const stubs = filterStubs(await stubStore.getStubs()).map(
           (fs) => fs.stub
         );
         const downloadString = `${resources.downloadStubsHeader}\n${yaml.dump(
@@ -317,7 +323,7 @@ export default {
       }
     };
     const filterChanged = () => {
-      if (store.getters["general/getSaveSearchFilters"]) {
+      if (generalStore.getSaveSearchFilters) {
         setStubFilterForm(filter.value);
       }
     };

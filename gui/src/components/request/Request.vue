@@ -45,7 +45,6 @@
 
 <script>
 import { computed, ref, onMounted, onUnmounted } from "vue";
-import { useStore } from "vuex";
 import { formatDateTime, formatFromNow } from "@/utils/datetime";
 import { handleHttpError } from "@/utils/error";
 import { setIntermediateStub } from "@/utils/session";
@@ -55,6 +54,8 @@ import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { useRouter } from "vue-router";
 import { success } from "@/utils/toast";
+import { useStubsStore } from "@/store/stubs";
+import { useRequestsStore } from "@/store/requests";
 
 export default {
   name: "Request",
@@ -66,7 +67,8 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const store = useStore();
+    const stubStore = useStubsStore();
+    const requestStore = useRequestsStore();
     const router = useRouter();
 
     // Functions
@@ -100,10 +102,7 @@ export default {
     const showDetails = async () => {
       if (Object.keys(request.value).length === 0) {
         try {
-          request.value = await store.dispatch(
-            "requests/getRequest",
-            correlationId()
-          );
+          request.value = await requestStore.getRequest(correlationId());
           accordionOpened.value = true;
         } catch (e) {
           handleHttpError(e);
@@ -114,13 +113,10 @@ export default {
     };
     const createStub = async () => {
       try {
-        const fullStub = await store.dispatch(
-          "stubs/createStubBasedOnRequest",
-          {
-            correlationId: correlationId(),
-            doNotCreateStub: true,
-          }
-        );
+        const fullStub = await stubStore.createStubBasedOnRequest({
+          correlationId: correlationId(),
+          doNotCreateStub: true,
+        });
         setIntermediateStub(yaml.dump(fullStub.stub));
         await router.push({ name: "StubForm" });
       } catch (e) {
@@ -129,7 +125,7 @@ export default {
     };
     const deleteRequest = async () => {
       try {
-        await store.dispatch("requests/deleteRequest", correlationId());
+        await requestStore.deleteRequest(correlationId());
         success(resources.requestDeletedSuccessfully);
         emit("deleted");
       } catch (e) {
