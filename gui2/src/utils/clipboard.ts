@@ -1,4 +1,4 @@
-function fallbackCopyTextToClipboard(text) {
+function fallbackCopyTextToClipboard(text: string) {
   const textArea = document.createElement("textarea");
   textArea.value = text;
 
@@ -15,7 +15,7 @@ function fallbackCopyTextToClipboard(text) {
   document.body.removeChild(textArea);
 }
 
-export function copyTextToClipboard(text) {
+export function copyTextToClipboard(text: string): Promise<void> {
   if (!navigator.clipboard) {
     return new Promise((resolve, reject) => {
       try {
