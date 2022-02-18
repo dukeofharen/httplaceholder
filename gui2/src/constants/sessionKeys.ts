@@ -1,3 +1,4 @@
+// TODO make enum
 export const sessionKeys = {
   intermediateStub: "intermediateStub",
   settings: "settings",
