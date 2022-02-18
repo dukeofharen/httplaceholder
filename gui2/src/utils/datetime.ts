@@ -1,7 +1,7 @@
 import { dateTimeFormat } from "@/constants/technical";
 import dayjs from "dayjs";
 
-export function formatDateTime(input) {
+export function formatDateTime(input: string) {
   if (!input) {
     return;
   }
@@ -9,7 +9,7 @@ export function formatDateTime(input) {
   return dayjs(input).format(dateTimeFormat);
 }
 
-export function formatFromNow(input) {
+export function formatFromNow(input: string) {
   if (!input) {
     return;
   }
@@ -17,7 +17,7 @@ export function formatFromNow(input) {
   return dayjs(input).fromNow();
 }
 
-export function getDuration(fromInput, toInput) {
+export function getDuration(fromInput: string, toInput: string) {
   const from = dayjs(fromInput);
   const to = dayjs(toInput);
   return to.diff(from, "millisecond");
