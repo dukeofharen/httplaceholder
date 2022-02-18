@@ -1,125 +1,85 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "@/components/HelloWorld.vue";
-</script>
-
 <template>
-  <header>
-    <img
-      alt="Vue logo"
-      class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
-    />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <div class="container-fluid">
+    <div class="row flex-nowrap">
+      <Sidebar />
+      <div class="col-md-10 col-10 col-xl-10 col-lg-10 col-sm-9 py-3 main-body">
+        <router-view v-slot="{ Component }">
+          <transition name="fade" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
+      </div>
     </div>
-  </header>
-
-  <RouterView />
+  </div>
 </template>
 
-<style>
-@import "@/assets/base.css";
+<script>
+import Sidebar from "@/components/Sidebar";
+import { computed, onMounted, watch } from "vue";
+import { useRouter } from "vue-router";
+import { useUsersStore } from "@/store/users";
+import { useMetadataStore } from "@/store/metadata";
+import { useGeneralStore } from "@/store/general";
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+export default {
+  components: { Sidebar },
+  setup() {
+    const userStore = useUsersStore();
+    const metadataStore = useMetadataStore();
+    const generalStore = useGeneralStore();
+    const router = useRouter();
 
-  font-weight: normal;
+    // Functions
+    const setDarkTheme = (darkTheme) => {
+      const bodyElement = document.body;
+      const darkName = "dark-theme";
+      const lightName = "light-theme";
+      if (darkTheme) {
+        bodyElement.classList.remove(lightName);
+        bodyElement.classList.add(darkName);
+      } else {
+        bodyElement.classList.remove(darkName);
+        bodyElement.classList.add(lightName);
+      }
+    };
+
+    // Computed
+    const darkTheme = computed(() => generalStore.getDarkTheme);
+
+    // Watch
+    watch(darkTheme, (darkTheme) => setDarkTheme(darkTheme));
+
+    // Lifecycle
+    onMounted(async () => {
+      const darkThemeEnabled = darkTheme.value;
+      setDarkTheme(darkThemeEnabled);
+      metadataStore
+        .getMetadata()
+        .then((m) => (document.title = `HttPlaceholder - v${m.version}`));
+
+      const authEnabled = await metadataStore.checkAuthenticationIsEnabled();
+      if (!userStore.getAuthenticated && authEnabled) {
+        await router.push({ name: "Login" });
+      }
+    });
+  },
+};
+</script>
+
+<style lang="scss">
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto Mono", sans-serif !important;
 }
 
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.1s ease;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

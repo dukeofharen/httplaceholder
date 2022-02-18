@@ -3,7 +3,7 @@ import { post } from "@/utils/api";
 
 export const useImportStore = defineStore({
   id: "import",
-  state: () => {},
+  state: () => ({}),
   getters: {},
   actions: {
     async importCurlCommands(input) {
