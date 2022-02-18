@@ -13,15 +13,19 @@
   },
   "dependencies": {
     "@fontsource/roboto-mono": "^4.5.3",
+    "@microsoft/signalr": "^6.0.2",
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.8.1",
     "codemirror": "^5.65.1",
     "dayjs": "^1.10.7",
     "highlight.js": "^11.4.0",
+    "js-yaml": "^4.1.0",
     "pinia": "^2.0.11",
     "toastr": "^2.1.4",
     "vue": "^3.2.29",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "vue3-slide-up-down": "^1.2.5",
+    "xml-formatter": "^2.6.1"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",
