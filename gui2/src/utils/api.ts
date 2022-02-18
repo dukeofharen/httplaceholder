@@ -14,9 +14,9 @@ type Headers = {
   [key: string]: string;
 };
 
-type Error = {
+export type HttpError = {
   statusText: string;
-  body: string;
+  body: any;
   status: number;
 };
 
@@ -33,7 +33,7 @@ const handleResponse = async (response: Response) => {
   }
 
   if (!response.ok) {
-    throw <Error>{
+    throw <HttpError>{
       body: isJson ? await response.json() : await response.text(),
       status: response.status,
       statusText: response.statusText,
