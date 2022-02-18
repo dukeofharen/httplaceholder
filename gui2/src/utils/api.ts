@@ -1,8 +1,28 @@
-const beforeSendHandlers = [];
+type BeforeSendHandler = { (url: string, request: RequestInit): void };
+const beforeSendHandlers: BeforeSendHandler[] = [];
 
-const handleResponse = async (response) => {
-  const headers = {};
-  for (let header of response.headers.entries()) {
+export interface RequestOptions {
+  headers: object | undefined;
+}
+
+export interface PreparedRequest {
+  body: string;
+  contentType: string;
+}
+
+type Headers = {
+  [key: string]: string;
+};
+
+type Error = {
+  statusText: string;
+  body: string;
+  status: number;
+};
+
+const handleResponse = async (response: Response) => {
+  const headers: Headers = {};
+  for (const header of response.headers.entries()) {
     headers[header[0]] = header[1];
   }
 
@@ -13,48 +33,49 @@ const handleResponse = async (response) => {
   }
 
   if (!response.ok) {
-    const error = new Error(response.statusText);
-    error.body = isJson ? await response.json() : await response.text();
-    error.status = response.status;
-    throw error;
+    throw <Error>{
+      body: isJson ? await response.json() : await response.text(),
+      status: response.status,
+      statusText: response.statusText,
+    };
   }
 
   return isJson ? response.json() : response.text();
 };
 
-const prepareRequest = (input) => {
+function prepareRequest(input: any): PreparedRequest {
   switch (typeof input) {
     case "string":
-      return {
+      return <PreparedRequest>{
         body: input,
         contentType: "text/plain",
       };
     case "object":
-      return {
+      return <PreparedRequest>{
         body: JSON.stringify(input),
         contentType: "application/json",
       };
     default:
-      return {
+      return <PreparedRequest>{
         body: "",
         contentType: "",
       };
   }
-};
+}
 
-const handleBeforeSend = (url, request) => {
+const handleBeforeSend = (url: string, request: RequestInit) => {
   for (const handler of beforeSendHandlers) {
     handler(url, request);
   }
 };
 
-export function addBeforeSendHandler(action) {
+export function addBeforeSendHandler(action: BeforeSendHandler) {
   beforeSendHandlers.push(action);
 }
 
-export function get(url, options) {
+export function get(url: string, options: RequestOptions) {
   options = options || {};
-  const request = {
+  const request = <RequestInit>{
     method: "get",
     headers: options.headers || {},
   };
@@ -62,9 +83,9 @@ export function get(url, options) {
   return fetch(url, request).then(handleResponse);
 }
 
-export function del(url, options) {
+export function del(url: string, options: RequestOptions) {
   options = options || {};
-  const request = {
+  const request = <RequestInit>{
     method: "delete",
     headers: options.headers || {},
   };
@@ -72,7 +93,7 @@ export function del(url, options) {
   return fetch(url, request).then(handleResponse);
 }
 
-export function put(url, body, options) {
+export function put(url: string, body: any, options: RequestOptions) {
   const preparedRequest = prepareRequest(body);
   options = options || {};
   const headers = Object.assign(
@@ -88,7 +109,7 @@ export function put(url, body, options) {
   return fetch(url, request).then(handleResponse);
 }
 
-export function post(url, body, options) {
+export function post(url: string, body: any, options: RequestOptions) {
   const preparedRequest = prepareRequest(body);
   options = options || {};
   const headers = Object.assign(
