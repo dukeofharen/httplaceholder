@@ -12,7 +12,14 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@fontsource/roboto-mono": "^4.5.3",
+    "bootstrap": "^5.1.3",
+    "bootstrap-icons": "^1.8.1",
+    "codemirror": "^5.65.1",
+    "dayjs": "^1.10.7",
+    "highlight.js": "^11.4.0",
     "pinia": "^2.0.11",
+    "toastr": "^2.1.4",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12"
   },
