@@ -17,7 +17,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "ResponseWriterResults",
   props: {
     correlationId: {
@@ -29,7 +31,7 @@ export default {
       required: true,
     },
   },
-};
+});
 </script>
 
 <style scoped>

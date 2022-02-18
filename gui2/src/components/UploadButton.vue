@@ -13,8 +13,9 @@
 
 <script>
 import { ref } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "UploadButton",
   props: {
     buttonText: {
@@ -73,7 +74,7 @@ export default {
 
     return { uploadField, uploadClick, loadTextFromFile };
   },
-};
+});
 </script>
 
 <style scoped>

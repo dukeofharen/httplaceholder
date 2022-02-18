@@ -42,6 +42,7 @@ import ImportHar from "@/components/stub/ImportHar.vue";
 import ImportOpenApi from "@/components/stub/ImportOpenApi.vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { defineComponent } from "vue";
 
 const tabs = {
   uploadStubs: "uploadStubs",
@@ -69,7 +70,7 @@ const tabDetails = {
   },
 };
 
-export default {
+export default defineComponent({
   name: "ImportStubs",
   components: { ImportOpenApi, UploadStubs, ImportCurl, ImportHar },
   setup() {
@@ -87,7 +88,7 @@ export default {
 
     return { tabs, tabDetails, selectedTab, changeTab };
   },
-};
+});
 </script>
 
 <style>

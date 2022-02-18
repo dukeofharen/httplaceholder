@@ -4,8 +4,9 @@
 
 <script>
 import { computed } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Method",
   props: {
     method: {
@@ -35,7 +36,7 @@ export default {
 
     return { className };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

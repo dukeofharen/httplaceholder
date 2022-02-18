@@ -9,8 +9,9 @@
 
 <script>
 import { ref, watch } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "SimpleEditor",
   props: {
     modelValue: {
@@ -40,7 +41,7 @@ export default {
 
     return { contents, simpleEditorTabPress, contentsChanged };
   },
-};
+});
 </script>
 
 <style scoped>

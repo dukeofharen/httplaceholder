@@ -13,8 +13,9 @@
 
 <script>
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "RedirectSelector",
   setup() {
     const stubFormStore = useStubFormStore();
@@ -39,5 +40,5 @@ export default {
 
     return { items };
   },
-};
+});
 </script>

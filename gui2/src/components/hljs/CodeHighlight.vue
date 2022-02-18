@@ -5,8 +5,9 @@
 <script>
 import hljs from "highlight.js/lib/core";
 import { computed, onMounted, ref, watch } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "CodeHighlight",
   props: {
     language: {
@@ -46,7 +47,7 @@ export default {
 
     return { codeBlock, languageClass };
   },
-};
+});
 </script>
 
 <style scoped></style>

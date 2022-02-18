@@ -14,8 +14,9 @@
 <script>
 import { httpMethods } from "@/constants/stubFormResources";
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "HttpMethodSelector",
   setup() {
     const stubFormStore = useStubFormStore();
@@ -28,7 +29,7 @@ export default {
 
     return { httpMethods, methodSelected };
   },
-};
+});
 </script>
 
 <style scoped></style>

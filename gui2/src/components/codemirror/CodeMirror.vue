@@ -6,8 +6,9 @@
 import { onMounted, ref, watch } from "vue";
 import CodeMirror from "codemirror";
 import { useGeneralStore } from "@/store/general";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "CodeMirror",
   props: {
     modelValue: {
@@ -81,7 +82,7 @@ export default {
 
     return { contents, editor, replaceSelection };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

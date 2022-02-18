@@ -14,8 +14,9 @@
 <script>
 import { lineEndingTypes } from "@/constants/stubFormResources";
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "LineEndingSelector",
   setup() {
     const stubFormStore = useStubFormStore();
@@ -44,7 +45,7 @@ export default {
 
     return { types, lineEndingSelected };
   },
-};
+});
 </script>
 
 <style scoped></style>

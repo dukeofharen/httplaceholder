@@ -30,8 +30,9 @@
 <script>
 import { Modal } from "bootstrap";
 import { onMounted, ref, watch } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Modal",
   props: {
     title: {
@@ -114,7 +115,7 @@ export default {
 
     return { onYesClick, onNoClick, modal };
   },
-};
+});
 </script>
 
 <style scoped></style>

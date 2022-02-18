@@ -32,8 +32,9 @@ import { formHelperKeys } from "@/constants/stubFormResources";
 import { success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "StubFormButtons",
   props: {
     modelValue: {
@@ -139,7 +140,7 @@ export default {
       showSaveAsNewStubButton,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

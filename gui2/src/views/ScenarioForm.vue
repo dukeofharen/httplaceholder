@@ -50,8 +50,9 @@ import { resources } from "@/constants/resources";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
 import { useScenariosStore } from "@/store/scenarios";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "ScenarioForm",
   setup() {
     const route = useRoute();
@@ -120,7 +121,7 @@ export default {
 
     return { title, scenarioForm, save, saveDisabled };
   },
-};
+});
 </script>
 
 <style scoped></style>

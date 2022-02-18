@@ -62,8 +62,9 @@ import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
 import { useImportStore } from "@/store/import";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "ImportOpenApi",
   setup() {
     const importStore = useImportStore();
@@ -153,7 +154,7 @@ export default {
       stubsPreviewOpened,
     };
   },
-};
+});
 </script>
 
 <style scoped>

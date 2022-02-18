@@ -85,8 +85,9 @@ import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
 import { useRequestsStore } from "@/store/requests";
 import { useGeneralStore } from "@/store/general";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Requests",
   components: { Request },
   setup() {
@@ -212,7 +213,7 @@ export default {
       showDeleteAllRequestsModal,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

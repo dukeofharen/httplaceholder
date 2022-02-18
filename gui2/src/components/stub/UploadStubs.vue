@@ -18,10 +18,11 @@ import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { success, warning } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
+import { defineComponent } from "vue";
 
 const expectedExtensions = ["yml", "yaml"];
 
-export default {
+export default defineComponent({
   name: "UploadStubs",
   setup() {
     const stubStore = useStubsStore();
@@ -65,5 +66,5 @@ export default {
 
     return { onUploaded };
   },
-};
+});
 </script>

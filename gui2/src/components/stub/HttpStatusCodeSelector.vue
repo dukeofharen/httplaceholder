@@ -14,8 +14,9 @@
 <script>
 import { httpStatusCodes } from "@/constants/stubFormResources";
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "HttpStatusCodeSelector",
   setup() {
     const stubFormStore = useStubFormStore();
@@ -28,7 +29,7 @@ export default {
 
     return { httpStatusCodes, codeSelected };
   },
-};
+});
 </script>
 
 <style scoped></style>

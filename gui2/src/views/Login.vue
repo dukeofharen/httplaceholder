@@ -45,8 +45,9 @@ import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { error } from "@/utils/toast";
 import { useUsersStore } from "@/store/users";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Login",
   setup() {
     const userStore = useUsersStore();
@@ -82,7 +83,7 @@ export default {
 
     return { username, password, logIn, buttonEnabled };
   },
-};
+});
 </script>
 
 <style scoped></style>

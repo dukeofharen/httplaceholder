@@ -87,8 +87,9 @@ import dayjs from "dayjs";
 import { handleHttpError } from "@/utils/error";
 import { success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Stub",
   props: {
     overviewStub: {
@@ -204,7 +205,7 @@ export default {
       scenario,
     };
   },
-};
+});
 </script>
 
 <style scoped>

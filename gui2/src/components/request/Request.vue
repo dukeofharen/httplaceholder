@@ -56,8 +56,9 @@ import { useRouter } from "vue-router";
 import { success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { useRequestsStore } from "@/store/requests";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Request",
   components: { Method, RequestDetails },
   props: {
@@ -145,7 +146,7 @@ export default {
       deleteRequest,
     };
   },
-};
+});
 </script>
 
 <style scoped>

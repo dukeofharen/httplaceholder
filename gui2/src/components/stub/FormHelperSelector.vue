@@ -114,8 +114,9 @@ import ScenarioSelector from "@/components/stub/ScenarioSelector.vue";
 import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "FormHelperSelector",
   components: {
     LineEndingSelector,
@@ -216,7 +217,7 @@ export default {
       responseBodyTypes,
     };
   },
-};
+});
 </script>
 
 <style scoped>

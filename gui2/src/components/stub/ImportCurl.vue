@@ -100,8 +100,9 @@ import { shouldSave } from "@/utils/event";
 import { useRouter } from "vue-router";
 import { error, success } from "@/utils/toast";
 import { useImportStore } from "@/store/import";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "ImportCurl",
   setup() {
     const importStore = useImportStore();
@@ -199,7 +200,7 @@ export default {
       stubsPreviewOpened,
     };
   },
-};
+});
 </script>
 
 <style scoped>

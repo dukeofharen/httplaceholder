@@ -96,8 +96,9 @@ import { handleHttpError } from "@/utils/error";
 import { fromBase64, toBase64 } from "@/utils/text";
 import { useMetadataStore } from "@/store/metadata";
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "ResponseBodyHelper",
   props: {
     presetResponseBodyType: {
@@ -275,7 +276,7 @@ export default {
       codeEditor,
     };
   },
-};
+});
 </script>
 
 <style scoped>

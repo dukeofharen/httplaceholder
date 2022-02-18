@@ -17,8 +17,9 @@
 <script>
 import { computed } from "vue";
 import { parseUrl } from "@/utils/url";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "QueryParams",
   props: {
     request: {
@@ -38,7 +39,7 @@ export default {
 
     return { requestParams, queryParameters };
   },
-};
+});
 </script>
 
 <style scoped></style>

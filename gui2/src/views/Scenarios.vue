@@ -65,8 +65,9 @@ import { handleHttpError } from "@/utils/error";
 import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { useScenariosStore } from "@/store/scenarios";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Scenarios",
   setup() {
     const scenarioStore = useScenariosStore();
@@ -125,7 +126,7 @@ export default {
       deleteScenario,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

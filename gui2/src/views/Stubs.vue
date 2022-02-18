@@ -159,8 +159,9 @@ import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
 import { useStubsStore } from "@/store/stubs";
 import { useGeneralStore } from "@/store/general";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Stubs",
   components: { Stub },
   setup() {
@@ -353,7 +354,7 @@ export default {
       filteredNonReadOnlyStubs,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

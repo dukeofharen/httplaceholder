@@ -37,8 +37,9 @@
 <script>
 import { ref } from "vue";
 import { useGeneralStore } from "@/store/general";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Settings",
   setup() {
     const generalStore = useGeneralStore();
@@ -51,7 +52,7 @@ export default {
 
     return { settings, saveSettings };
   },
-};
+});
 </script>
 
 <style scoped></style>

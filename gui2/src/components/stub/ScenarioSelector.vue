@@ -33,8 +33,9 @@ import { onMounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useScenariosStore } from "@/store/scenarios";
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "ScenarioSelector",
   setup() {
     const scenarioStore = useScenariosStore();
@@ -65,7 +66,7 @@ export default {
 
     return { scenarios, scenarioSelected, scenario };
   },
-};
+});
 </script>
 
 <style scoped></style>

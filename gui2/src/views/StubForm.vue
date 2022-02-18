@@ -73,6 +73,7 @@ import SimpleEditor from "@/components/simpleEditor/SimpleEditor.vue";
 import { error } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
 
 const editorTypes = {
   none: "none",
@@ -80,7 +81,7 @@ const editorTypes = {
   simple: "simple",
 };
 
-export default {
+export default defineComponent({
   name: "StubForm",
   components: { SimpleEditor, FormHelperSelector, StubFormButtons },
   setup() {
@@ -174,7 +175,7 @@ export default {
       editorType,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

@@ -67,8 +67,9 @@ import QueryParams from "@/components/request/QueryParams.vue";
 import StubExecutionResults from "@/components/request/StubExecutionResults.vue";
 import ResponseWriterResults from "@/components/request/ResponseWriterResults.vue";
 import RequestBody from "@/components/request/RequestBody.vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "RequestDetails",
   components: {
     RequestBody,
@@ -125,7 +126,7 @@ export default {
       showRequestBody,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

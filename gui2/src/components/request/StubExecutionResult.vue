@@ -47,8 +47,9 @@
 
 <script>
 import { conditionValidationType } from "@/constants/conditionValidationType";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "StubExecutionResult",
   props: {
     correlationId: {
@@ -63,7 +64,7 @@ export default {
   setup() {
     return { conditionValidationType };
   },
-};
+});
 </script>
 
 <style scoped>

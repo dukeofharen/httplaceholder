@@ -17,8 +17,9 @@
 <script>
 import { computed } from "vue";
 import StubExecutionResult from "@/components/request/StubExecutionResult.vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "StubExecutionResults",
   components: { StubExecutionResult },
   props: {
@@ -48,7 +49,7 @@ export default {
       orderedStubExecutionResults,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

@@ -54,6 +54,7 @@ import { formFormat } from "@/utils/form";
 import { copyTextToClipboard } from "@/utils/clipboard";
 import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
+import { defineComponent } from "vue";
 
 const bodyTypes = {
   xml: "XML",
@@ -61,7 +62,7 @@ const bodyTypes = {
   form: "Form",
 };
 
-export default {
+export default defineComponent({
   name: "RequestBody",
   props: {
     request: {
@@ -157,7 +158,7 @@ export default {
       language,
     };
   },
-};
+});
 </script>
 
 <style scoped>

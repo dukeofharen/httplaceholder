@@ -16,8 +16,9 @@
 
 <script>
 import { computed } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "RequestHeaders",
   props: {
     request: {
@@ -33,7 +34,7 @@ export default {
 
     return { requestParams };
   },
-};
+});
 </script>
 
 <style scoped></style>
