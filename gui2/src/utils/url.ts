@@ -1,5 +1,9 @@
+export type QueryParameters = {
+  [key: string]: any;
+};
+
 // Source: https://stackoverflow.com/questions/8486099/how-do-i-parse-a-url-query-parameters-in-javascript
-export function parseUrl(url) {
+export function parseUrl(url: string): QueryParameters {
   if (!url) url = location.href;
   const question = url.indexOf("?");
   let hash = url.indexOf("#");
@@ -9,12 +13,13 @@ export function parseUrl(url) {
     question === -1 || hash === question + 1
       ? url.substring(hash)
       : url.substring(question + 1, hash);
-  const result = {};
+  const result: QueryParameters = {};
   query.split("&").forEach(function (part) {
     if (!part) return;
     part = part.split("+").join(" "); // replace every + with space, regexp-free version
     const eq = part.indexOf("=");
     let key = eq > -1 ? part.substr(0, eq) : part;
+    // TODO fix deprecated "substr"
     const val = eq > -1 ? decodeURIComponent(part.substr(eq + 1)) : "";
     const from = key.indexOf("[");
     if (from === -1) result[decodeURIComponent(key)] = val;
