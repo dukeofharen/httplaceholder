@@ -2,7 +2,7 @@
   "name": "gui2",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host 0.0.0.0",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
@@ -21,6 +21,7 @@
     "highlight.js": "^11.4.0",
     "js-yaml": "^4.1.0",
     "pinia": "^2.0.11",
+    "register-service-worker": "^1.7.2",
     "toastr": "^2.1.4",
     "vue": "^3.2.29",
     "vue-router": "^4.0.12",
