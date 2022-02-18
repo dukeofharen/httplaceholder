@@ -14,14 +14,14 @@
 </template>
 
 <script>
-import Sidebar from "@/components/Sidebar";
-import { computed, onMounted, watch } from "vue";
+import Sidebar from "@/components/Sidebar.vue";
+import { computed, defineComponent, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useUsersStore } from "@/store/users";
 import { useMetadataStore } from "@/store/metadata";
 import { useGeneralStore } from "@/store/general";
 
-export default {
+export default defineComponent({
   components: { Sidebar },
   setup() {
     const userStore = useUsersStore();
@@ -63,7 +63,7 @@ export default {
       }
     });
   },
-};
+});
 </script>
 
 <style lang="scss">

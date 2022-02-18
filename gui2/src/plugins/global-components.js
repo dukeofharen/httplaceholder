@@ -1,11 +1,11 @@
-import Modal from "@/components/bootstrap/Modal";
-import Accordion from "@/components/bootstrap/Accordion";
-import AccordionItem from "@/components/bootstrap/AccordionItem";
+import Modal from "@/components/bootstrap/Modal.vue";
+import Accordion from "@/components/bootstrap/Accordion.vue";
+import AccordionItem from "@/components/bootstrap/AccordionItem.vue";
 import SlideUpDown from "vue3-slide-up-down";
-import CodeMirror from "@/components/codemirror/CodeMirror";
-import SimpleEditor from "@/components/simpleEditor/SimpleEditor";
-import UploadButton from "@/components/UploadButton";
-import CodeHighlight from "@/components/hljs/CodeHighlight";
+import CodeMirror from "@/components/codemirror/CodeMirror.vue";
+import SimpleEditor from "@/components/simpleEditor/SimpleEditor.vue";
+import UploadButton from "@/components/UploadButton.vue";
+import CodeHighlight from "@/components/hljs/CodeHighlight.vue";
 
 export default function registerGlobalComponents(vueApp) {
   vueApp.component("modal", Modal);

@@ -104,13 +104,13 @@ import {
   stubFormHelpers,
   responseBodyTypes,
 } from "@/constants/stubFormResources";
-import HttpMethodSelector from "@/components/stub/HttpMethodSelector";
-import TenantSelector from "@/components/stub/TenantSelector";
-import HttpStatusCodeSelector from "@/components/stub/HttpStatusCodeSelector";
-import ResponseBodyHelper from "@/components/stub/ResponseBodyHelper";
-import RedirectSelector from "@/components/stub/RedirectSelector";
-import LineEndingSelector from "@/components/stub/LineEndingSelector";
-import ScenarioSelector from "@/components/stub/ScenarioSelector";
+import HttpMethodSelector from "@/components/stub/HttpMethodSelector.vue";
+import TenantSelector from "@/components/stub/TenantSelector.vue";
+import HttpStatusCodeSelector from "@/components/stub/HttpStatusCodeSelector.vue";
+import ResponseBodyHelper from "@/components/stub/ResponseBodyHelper.vue";
+import RedirectSelector from "@/components/stub/RedirectSelector.vue";
+import LineEndingSelector from "@/components/stub/LineEndingSelector.vue";
+import ScenarioSelector from "@/components/stub/ScenarioSelector.vue";
 import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
 import { useStubFormStore } from "@/store/stubForm";

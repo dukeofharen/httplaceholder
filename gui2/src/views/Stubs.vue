@@ -149,7 +149,7 @@
 <script>
 import { useRoute } from "vue-router";
 import { computed, onMounted, ref, watch } from "vue";
-import Stub from "@/components/stub/Stub";
+import Stub from "@/components/stub/Stub.vue";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { handleHttpError } from "@/utils/error";

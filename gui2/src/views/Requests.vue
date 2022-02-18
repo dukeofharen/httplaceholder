@@ -76,7 +76,7 @@
 <script>
 import { useRoute } from "vue-router";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
-import Request from "@/components/request/Request";
+import Request from "@/components/request/Request.vue";
 import { resources } from "@/constants/resources";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 import { handleHttpError } from "@/utils/error";

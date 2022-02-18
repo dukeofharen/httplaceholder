@@ -16,7 +16,7 @@
 
 <script>
 import { computed } from "vue";
-import StubExecutionResult from "@/components/request/StubExecutionResult";
+import StubExecutionResult from "@/components/request/StubExecutionResult.vue";
 
 export default {
   name: "StubExecutionResults",

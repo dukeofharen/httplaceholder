@@ -4,16 +4,7 @@
       <a
         href="https://httplaceholder.com"
         target="_blank"
-        class="
-          d-flex
-          align-items-center
-          pb-3
-          mb-md-0
-          me-md-auto
-          text-white text-decoration-none
-          justify-content-center
-          mt-1
-        "
+        class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none justify-content-center mt-1"
       >
         <span class="fs-5 d-none d-md-inline logo"
           ><img src="@/assets/logo-white_small.png" alt=""
@@ -34,13 +25,13 @@
 </template>
 
 <script>
-import SidebarMenuItem from "@/components/SidebarMenuItem";
-import { computed } from "vue";
+import SidebarMenuItem from "@/components/SidebarMenuItem.vue";
+import { computed, defineComponent } from "vue";
 import router from "@/router";
 import { useUsersStore } from "@/store/users";
 import { useMetadataStore } from "@/store/metadata";
 
-export default {
+export default defineComponent({
   name: "Sidebar",
   components: { SidebarMenuItem },
   setup() {
@@ -116,7 +107,7 @@ export default {
       menuItems: menuItems,
     };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

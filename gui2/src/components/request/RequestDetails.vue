@@ -62,11 +62,11 @@
 <script>
 import { computed } from "vue";
 import { formatDateTime, getDuration } from "@/utils/datetime";
-import RequestHeaders from "@/components/request/RequestHeaders";
-import QueryParams from "@/components/request/QueryParams";
-import StubExecutionResults from "@/components/request/StubExecutionResults";
-import ResponseWriterResults from "@/components/request/ResponseWriterResults";
-import RequestBody from "@/components/request/RequestBody";
+import RequestHeaders from "@/components/request/RequestHeaders.vue";
+import QueryParams from "@/components/request/QueryParams.vue";
+import StubExecutionResults from "@/components/request/StubExecutionResults.vue";
+import ResponseWriterResults from "@/components/request/ResponseWriterResults.vue";
+import RequestBody from "@/components/request/RequestBody.vue";
 
 export default {
   name: "RequestDetails",
