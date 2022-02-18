@@ -6,8 +6,9 @@ import CodeMirror from "@/components/codemirror/CodeMirror.vue";
 import SimpleEditor from "@/components/simpleEditor/SimpleEditor.vue";
 import UploadButton from "@/components/UploadButton.vue";
 import CodeHighlight from "@/components/hljs/CodeHighlight.vue";
+import type { App } from "vue";
 
-export default function registerGlobalComponents(vueApp) {
+export function registerGlobalComponents(vueApp: App<Element>): void {
   vueApp.component("modal", Modal);
   vueApp.component("accordion", Accordion);
   vueApp.component("accordion-item", AccordionItem);
