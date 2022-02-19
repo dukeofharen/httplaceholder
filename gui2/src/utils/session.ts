@@ -28,8 +28,7 @@ export function setSettings(settings: SettingsModel) {
   setLocal(sessionKeys.settings, settings);
 }
 
-// TODO make this NOT an any
-export function getUserToken(): any {
+export function getUserToken(): string {
   return getSession(sessionKeys.userToken);
 }
 
@@ -37,8 +36,7 @@ export function clearUserToken() {
   removeSession(sessionKeys.userToken);
 }
 
-// TODO make this NOT an any
-export function saveUserToken(token: any) {
+export function saveUserToken(token: string) {
   setSession(sessionKeys.userToken, token);
 }
 

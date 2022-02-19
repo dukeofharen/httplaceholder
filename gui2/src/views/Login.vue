@@ -38,13 +38,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, ref } from "vue";
 import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { error } from "@/utils/toast";
-import { useUsersStore } from "@/store/users";
+import { AuthenticationInput, useUsersStore } from "@/store/users";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -70,9 +70,9 @@ export default defineComponent({
         await userStore.authenticate({
           username: username.value,
           password: password.value,
-        });
+        } as AuthenticationInput);
         await router.push({ name: "Requests" });
-      } catch (e) {
+      } catch (e: any) {
         if (e.status === 401) {
           error(resources.credentialsIncorrect);
         } else {
