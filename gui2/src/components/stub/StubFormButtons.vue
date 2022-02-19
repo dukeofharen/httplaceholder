@@ -33,6 +33,7 @@ import { success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
+import { error } from "@/utils/toast";
 
 export default defineComponent({
   name: "StubFormButtons",
@@ -83,7 +84,9 @@ export default defineComponent({
 
         success(resources.stubsAddedSuccessfully);
       } catch (e) {
-        handleHttpError(e);
+        if (!handleHttpError(e)) {
+          error(resources.errorDuringParsingOfYaml.format(e));
+        }
       }
     };
     const updateStub = async () => {
@@ -101,7 +104,9 @@ export default defineComponent({
           });
         }
       } catch (e) {
-        handleHttpError(e);
+        if (!handleHttpError(e)) {
+          error(resources.errorDuringParsingOfYaml.format(e));
+        }
       }
     };
     const save = async () => {
