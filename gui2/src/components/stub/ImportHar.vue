@@ -89,7 +89,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
@@ -98,8 +98,9 @@ import { useRouter } from "vue-router";
 import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
-import { useImportStore } from "@/store/import";
+import { type ImportInputModel, useImportStore } from "@/store/import";
 import { defineComponent } from "vue";
+import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 
 export default defineComponent({
   name: "ImportHar",
@@ -124,11 +125,12 @@ export default defineComponent({
     };
     const importHar = async () => {
       try {
-        const result = await importStore.importHar({
-          har: input.value,
+        const importInput: ImportInputModel = {
+          input: input.value,
           doNotCreateStub: true,
           tenant: tenant.value,
-        });
+        };
+        const result = await importStore.importHar(importInput);
 
         const filteredResult = result.map((r) => r.stub);
         stubsYaml.value = yaml.dump(filteredResult);
@@ -138,11 +140,12 @@ export default defineComponent({
     };
     const saveStubs = async () => {
       try {
-        await importStore.importHar({
-          har: input.value,
+        const importInput: ImportInputModel = {
+          input: input.value,
           doNotCreateStub: false,
           tenant: tenant.value,
-        });
+        };
+        await importStore.importHar(importInput);
         success(resources.stubsAddedSuccessfully);
         await router.push({ name: "Stubs" });
       } catch (e) {
@@ -158,12 +161,12 @@ export default defineComponent({
       stubsYaml.value = "";
       tenant.value = "";
     };
-    const onUploaded = (file) => {
+    const onUploaded = (file: FileUploadedModel) => {
       input.value = file.result;
     };
 
     // Lifecycle
-    const handleSave = async (e) => {
+    const handleSave = async (e: KeyboardEvent) => {
       if (shouldSave(e)) {
         e.preventDefault();
         if (!stubsYaml.value) {
@@ -173,7 +176,8 @@ export default defineComponent({
         }
       }
     };
-    const keydownEventListener = async (e) => await handleSave(e);
+    const keydownEventListener = async (e: KeyboardEvent) =>
+      await handleSave(e);
     onMounted(() => document.addEventListener("keydown", keydownEventListener));
     onUnmounted(() =>
       document.removeEventListener("keydown", keydownEventListener)
