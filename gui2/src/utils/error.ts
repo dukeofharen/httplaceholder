@@ -2,17 +2,17 @@ import { error as errorToast } from "@/utils/toast";
 import { resources } from "@/constants/resources";
 import type { HttpError } from "@/utils/api";
 
-export function handleHttpError(error: any) {
+export function handleHttpError(error: any): boolean {
   let result;
   if (!error.status) {
     // Not an HTTP error.
-    return;
+    return false;
   }
 
   const httpError = <HttpError>error;
   if (httpError.status === 401) {
     // Let the application handle the 401s itself.
-    return;
+    return false;
   }
 
   if (httpError.status === 400) {
@@ -34,4 +34,6 @@ export function handleHttpError(error: any) {
     console.log(error);
     errorToast(resources.somethingWentWrongServer);
   }
+
+  return true;
 }
