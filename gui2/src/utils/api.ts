@@ -73,8 +73,10 @@ export function addBeforeSendHandler(action: BeforeSendHandler) {
   beforeSendHandlers.push(action);
 }
 
-export function get(url: string, options: RequestOptions) {
-  options = options || {};
+export function get(url: string, options?: RequestOptions) {
+  options = options || {
+    headers: {},
+  };
   const request = <RequestInit>{
     method: "get",
     headers: options.headers || {},
@@ -83,8 +85,10 @@ export function get(url: string, options: RequestOptions) {
   return fetch(url, request).then(handleResponse);
 }
 
-export function del(url: string, options: RequestOptions) {
-  options = options || {};
+export function del(url: string, options?: RequestOptions) {
+  options = options || {
+    headers: {},
+  };
   const request = <RequestInit>{
     method: "delete",
     headers: options.headers || {},
@@ -93,9 +97,11 @@ export function del(url: string, options: RequestOptions) {
   return fetch(url, request).then(handleResponse);
 }
 
-export function put(url: string, body: any, options: RequestOptions) {
+export function put(url: string, body: any, options?: RequestOptions) {
   const preparedRequest = prepareRequest(body);
-  options = options || {};
+  options = options || {
+    headers: {},
+  };
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
     options.headers || {}
@@ -109,9 +115,11 @@ export function put(url: string, body: any, options: RequestOptions) {
   return fetch(url, request).then(handleResponse);
 }
 
-export function post(url: string, body: any, options: RequestOptions) {
+export function post(url: string, body: any, options?: RequestOptions) {
   const preparedRequest = prepareRequest(body);
-  options = options || {};
+  options = options || {
+    headers: {},
+  };
   const headers = Object.assign(
     { "content-type": preparedRequest.contentType },
     options.headers || {}

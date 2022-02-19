@@ -90,7 +90,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
@@ -99,8 +99,9 @@ import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
 import { useRouter } from "vue-router";
 import { error, success } from "@/utils/toast";
-import { useImportStore } from "@/store/import";
+import { type ImportInputModel, useImportStore } from "@/store/import";
 import { defineComponent } from "vue";
+import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 
 export default defineComponent({
   name: "ImportCurl",
@@ -121,11 +122,12 @@ export default defineComponent({
     // Methods
     const importCommands = async () => {
       try {
-        const result = await importStore.importCurlCommands({
-          commands: input.value,
+        const importInput: ImportInputModel = {
           doNotCreateStub: true,
           tenant: tenant.value,
-        });
+          input: input.value,
+        };
+        const result = await importStore.importCurlCommands(importInput);
         if (!result.length) {
           error(resources.noCurlStubsFound);
           return;
@@ -139,11 +141,12 @@ export default defineComponent({
     };
     const saveStubs = async () => {
       try {
-        await importStore.importCurlCommands({
-          commands: input.value,
+        const importInput: ImportInputModel = {
           doNotCreateStub: false,
           tenant: tenant.value,
-        });
+          input: input.value,
+        };
+        await importStore.importCurlCommands(importInput);
         success(resources.stubsAddedSuccessfully);
         await router.push({ name: "Stubs" });
       } catch (e) {
@@ -163,12 +166,12 @@ export default defineComponent({
       input.value = resources.exampleCurlInput;
       howToOpen.value = false;
     };
-    const onUploaded = (file) => {
+    const onUploaded = (file: FileUploadedModel) => {
       input.value = file.result;
     };
 
     // Lifecycle
-    const handleSave = async (e) => {
+    const handleSave = async (e: KeyboardEvent) => {
       if (shouldSave(e)) {
         e.preventDefault();
         if (!stubsYaml.value) {
@@ -178,7 +181,8 @@ export default defineComponent({
         }
       }
     };
-    const keydownEventListener = async (e) => await handleSave(e);
+    const keydownEventListener = async (e: KeyboardEvent) =>
+      await handleSave(e);
     onMounted(() => document.addEventListener("keydown", keydownEventListener));
     onUnmounted(() =>
       document.removeEventListener("keydown", keydownEventListener)

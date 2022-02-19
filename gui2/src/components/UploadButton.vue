@@ -11,9 +11,10 @@
   </button>
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from "vue";
 import { defineComponent } from "vue";
+import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 
 export default defineComponent({
   name: "UploadButton",
@@ -35,7 +36,7 @@ export default defineComponent({
     resultType: {
       type: String,
       default: "text",
-      validator(value) {
+      validator(value: string) {
         return ["text", "base64"].includes(value);
       },
     },
@@ -43,21 +44,24 @@ export default defineComponent({
   emits: ["uploaded"],
   setup(props, { emit }) {
     // Refs
-    const uploadField = ref(null);
+    const uploadField = ref<HTMLElement>();
 
     // Methods
     const uploadClick = function () {
-      uploadField.value.click();
+      if (uploadField.value) {
+        uploadField.value.click();
+      }
     };
-    const loadTextFromFile = (ev) => {
-      const files = Array.from(ev.target.files);
+    const loadTextFromFile = (ev: any) => {
+      const files: File[] = Array.from(ev.target.files);
       for (let file of files) {
         let reader = new FileReader();
-        reader.onload = (e) => {
-          emit("uploaded", {
+        reader.onload = (e: any) => {
+          const uploadedFile: FileUploadedModel = {
             filename: file.name,
             result: e.target.result,
-          });
+          };
+          emit("uploaded", uploadedFile);
         };
         switch (props.resultType) {
           case "text":

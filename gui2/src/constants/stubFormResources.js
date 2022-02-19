@@ -452,6 +452,7 @@ const responseBodyTypes = {
   base64: "Base64",
 };
 
+// TODO delete this after migrating to enum
 const lineEndingTypes = {
   windows: "windows",
   unix: "unix",
