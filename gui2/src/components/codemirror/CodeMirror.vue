@@ -2,7 +2,7 @@
   <textarea ref="editor" v-model="contents"></textarea>
 </template>
 
-<script>
+<script lang="ts">
 import { onMounted, ref, watch } from "vue";
 import CodeMirror from "codemirror";
 import { useGeneralStore } from "@/store/general";
@@ -17,39 +17,42 @@ export default defineComponent({
     },
     options: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   },
   setup(props, { emit }) {
     const generalStore = useGeneralStore();
 
     // Refs
-    const editor = ref(null);
+    const editor = ref<HTMLTextAreaElement>();
 
     // Data
     const contents = ref(props.modelValue);
 
     // Variables
-    let cmInstance;
+    let cmInstance: CodeMirror.EditorFromTextArea;
 
     // Methods
     const initializeCodemirror = () => {
-      cmInstance = CodeMirror.fromTextArea(editor.value, props.options);
-      cmInstance.on("change", () =>
-        emit("update:modelValue", cmInstance.getValue())
-      );
-      cmInstance.setOption("extraKeys", {
-        Tab: (cm) => {
-          // Make sure inserts spaces instead of tabs.
-          const spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-          cm.replaceSelection(spaces);
-        },
-      });
-      if (generalStore.getDarkTheme) {
-        cmInstance.setOption("theme", "material-darker");
+      if (editor.value) {
+        cmInstance = CodeMirror.fromTextArea(editor.value, props.options);
+        cmInstance.on("change", () =>
+          emit("update:modelValue", cmInstance.getValue())
+        );
+        cmInstance.setOption("extraKeys", {
+          Tab: (cm) => {
+            // Make sure inserts spaces instead of tabs.
+            const currentIndent = cm.getOption("indentUnit") || 0;
+            const spaces = Array(currentIndent + 1).join(" ");
+            cm.replaceSelection(spaces);
+          },
+        });
+        if (generalStore.getDarkTheme) {
+          cmInstance.setOption("theme", "material-darker");
+        }
       }
     };
-    const replaceSelection = (replacement, selection) => {
+    const replaceSelection = (replacement: string, selection: string) => {
       if (cmInstance) {
         cmInstance.replaceSelection(replacement, selection);
       }
@@ -70,7 +73,7 @@ export default defineComponent({
         if (cmInstance && props.options) {
           const cleanOptions = JSON.parse(JSON.stringify(props.options));
           for (const key of Object.keys(cleanOptions)) {
-            cmInstance.setOption(key, cleanOptions[key]);
+            (cmInstance as any).setOption(key, cleanOptions[key]); // TODO make this cleaner.
           }
         }
       },
