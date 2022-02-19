@@ -35,7 +35,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import UploadStubs from "@/components/stub/UploadStubs.vue";
 import ImportCurl from "@/components/stub/ImportCurl.vue";
 import ImportHar from "@/components/stub/ImportHar.vue";
@@ -81,7 +81,7 @@ export default defineComponent({
     const selectedTab = ref(route.query.tab || tabs.uploadStubs);
 
     // Methods
-    const changeTab = async (tab) => {
+    const changeTab = async (tab: string) => {
       selectedTab.value = tab;
       await router.push({ name: "ImportStubs", query: { tab } });
     };
