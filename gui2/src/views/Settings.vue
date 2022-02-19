@@ -34,10 +34,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref } from "vue";
 import { useGeneralStore } from "@/store/general";
 import { defineComponent } from "vue";
+import type { SettingsModel } from "@/domain/settings-model";
 
 export default defineComponent({
   name: "Settings",
@@ -45,7 +46,7 @@ export default defineComponent({
     const generalStore = useGeneralStore();
 
     // Data
-    const settings = ref(generalStore.getSettings);
+    const settings = ref<SettingsModel>(generalStore.getSettings);
 
     // Methods
     const saveSettings = () => generalStore.storeSettings(settings.value);

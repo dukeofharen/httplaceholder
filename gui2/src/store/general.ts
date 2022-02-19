@@ -1,14 +1,15 @@
 import { defineStore } from "pinia";
 import { getSettings, setSettings } from "@/utils/session";
+import type { SettingsModel } from "@/domain/settings-model";
 
-const savedSettings = getSettings() || {
+const savedSettings: SettingsModel = getSettings() || {
   darkTheme: false,
   saveSearchFilters: true,
 };
 export const useGeneralStore = defineStore({
   id: "general",
   state: () => ({
-    settings: {
+    settings: <SettingsModel>{
       darkTheme: savedSettings.darkTheme,
       saveSearchFilters: savedSettings.saveSearchFilters,
     },
@@ -19,7 +20,7 @@ export const useGeneralStore = defineStore({
     getSaveSearchFilters: (state) => state.settings.saveSearchFilters,
   },
   actions: {
-    storeSettings(settings) {
+    storeSettings(settings: SettingsModel) {
       this.settings = settings;
       setSettings(settings);
     },

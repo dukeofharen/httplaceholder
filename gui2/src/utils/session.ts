@@ -6,6 +6,7 @@ import {
   setSession,
 } from "@/utils/storage";
 import { sessionKeys } from "@/constants/sessionKeys";
+import type { SettingsModel } from "@/domain/settings-model";
 
 export function getIntermediateStub(): any {
   return getSession(sessionKeys.intermediateStub);
@@ -19,15 +20,15 @@ export function clearIntermediateStub() {
   removeSession(sessionKeys.intermediateStub);
 }
 
-export function getSettings() {
-  return getLocal(sessionKeys.settings);
+export function getSettings(): SettingsModel {
+  return getLocal(sessionKeys.settings) as SettingsModel;
 }
 
-// TODO make this NOT an any
-export function setSettings(settings: any) {
+export function setSettings(settings: SettingsModel) {
   setLocal(sessionKeys.settings, settings);
 }
 
+// TODO make this NOT an any
 export function getUserToken(): any {
   return getSession(sessionKeys.userToken);
 }
