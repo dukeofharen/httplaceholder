@@ -11,7 +11,7 @@
   </span>
 </template>
 
-<script>
+<script lang="ts">
 import { getExtension } from "@/utils/file";
 import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
@@ -19,6 +19,8 @@ import { useRouter } from "vue-router";
 import { success, warning } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { defineComponent } from "vue";
+import { vsprintf } from "sprintf-js";
+import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 
 const expectedExtensions = ["yml", "yaml"];
 
@@ -29,13 +31,13 @@ export default defineComponent({
     const router = useRouter();
 
     // Data
-    let reloadHandle = null;
+    let reloadHandle: any = null;
 
     // Methods
-    const onUploaded = async (file) => {
+    const onUploaded = async (file: FileUploadedModel) => {
       if (!expectedExtensions.includes(getExtension(file.filename))) {
         warning(
-          resources.uploadInvalidFiles.format(file.filename) +
+          vsprintf(resources.uploadInvalidFiles, [file.filename]) +
             " " +
             resources.onlyUploadYmlFiles
         );
@@ -48,10 +50,10 @@ export default defineComponent({
         handleHttpError(e);
       }
     };
-    const addStubs = async (input, filename) => {
+    const addStubs = async (input: any, filename: string) => {
       try {
         await stubStore.addStubs(input);
-        success(resources.stubsInFileAddedSuccessfully.format(filename));
+        success(vsprintf(resources.stubsInFileAddedSuccessfully, [filename]));
         if (reloadHandle) {
           clearTimeout(reloadHandle);
         }

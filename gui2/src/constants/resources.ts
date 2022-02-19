@@ -14,7 +14,7 @@ export const resources = {
   stubsEnabledSuccessfully: "Stubs were enabled successfully.",
   filteredStubsDeletedSuccessfully: "Stubs were deleted successfully.",
   stubNotFound: "Stub with ID {0} was not found.",
-  stubsInFileAddedSuccessfully: "Stubs in file '{0}' were added successfully.",
+  stubsInFileAddedSuccessfully: "Stubs in file '%s' were added successfully.",
   scenarioSetSuccessfully: "The scenario values were set successfully.",
   scenariosDeletedSuccessfully: "The scenarios were deleted successfully.",
   scenarioDeletedSuccessfully: "The scenario was deleted successfully.",
@@ -24,7 +24,7 @@ export const resources = {
   requestBodyCopiedToClipboard:
     "Request body successfully copied to clipboard.",
   uploadInvalidFiles:
-    "These files you are trying to upload have an incorrect extension: {0}.",
+    "These files you are trying to upload have an incorrect extension: %s.",
   onlyUploadYmlFiles:
     "Make sure to only upload files with the 'yml' or 'yaml' extension.",
   credentialsIncorrect: "The credentials are incorrect.",
