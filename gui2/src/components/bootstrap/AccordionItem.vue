@@ -20,7 +20,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, watch } from "vue";
 import { defineComponent } from "vue";
 

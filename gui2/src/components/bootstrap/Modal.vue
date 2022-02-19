@@ -27,7 +27,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Modal } from "bootstrap";
 import { onMounted, ref, watch } from "vue";
 import { defineComponent } from "vue";
@@ -63,16 +63,20 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     // Template refs
-    const modal = ref(null);
+    const modal = ref<HTMLElement>();
 
     // Functions
     const showModal = () => {
-      const currentModal = Modal.getOrCreateInstance(modal.value);
-      currentModal.show();
+      if (modal.value) {
+        const currentModal = Modal.getOrCreateInstance(modal.value);
+        currentModal.show();
+      }
     };
     const hideModal = () => {
-      const currentModal = Modal.getOrCreateInstance(modal.value);
-      currentModal.hide();
+      if (modal.value) {
+        const currentModal = Modal.getOrCreateInstance(modal.value);
+        currentModal.hide();
+      }
     };
 
     // Methods
@@ -99,9 +103,11 @@ export default defineComponent({
         hideModal();
       }
 
-      modal.value.addEventListener("hidden.bs.modal", () => {
-        emit("close");
-      });
+      if (modal.value) {
+        modal.value.addEventListener("hidden.bs.modal", () => {
+          emit("close");
+        });
+      }
     });
 
     // Watch
