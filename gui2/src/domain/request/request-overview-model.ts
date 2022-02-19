@@ -4,6 +4,6 @@ export interface RequestOverviewModel {
   url: string;
   executingStubId: string;
   stubTenant: string;
-  requestBeginTime: Date;
-  requestEndTime: Date;
+  requestBeginTime: string;
+  requestEndTime: string;
 }

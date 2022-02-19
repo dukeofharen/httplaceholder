@@ -43,8 +43,8 @@
   </accordion-item>
 </template>
 
-<script>
-import { computed, ref, onMounted, onUnmounted } from "vue";
+<script lang="ts">
+import { computed, ref, onMounted, onUnmounted, type PropType } from "vue";
 import { formatDateTime, formatFromNow } from "@/utils/datetime";
 import { handleHttpError } from "@/utils/error";
 import { setIntermediateStub } from "@/utils/session";
@@ -57,13 +57,14 @@ import { success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { useRequestsStore } from "@/store/requests";
 import { defineComponent } from "vue";
+import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
 
 export default defineComponent({
   name: "Request",
   components: { Method, RequestDetails },
   props: {
     overviewRequest: {
-      type: Object,
+      type: Object as PropType<RequestOverviewModel>,
       required: true,
     },
   },
@@ -83,19 +84,19 @@ export default defineComponent({
 
     // Data
     const timeFromNow = ref(getTimeFromNow());
-    const refreshTimeFromNowInterval = ref(null);
+    let refreshTimeFromNowInterval: any;
     const request = ref({});
     const accordionOpened = ref(false);
 
     // Lifecycle
     onMounted(() => {
-      refreshTimeFromNowInterval.value = setInterval(() => {
+      refreshTimeFromNowInterval = setInterval(() => {
         timeFromNow.value = getTimeFromNow();
       }, 60000);
     });
     onUnmounted(() => {
-      if (refreshTimeFromNowInterval.value) {
-        clearInterval(refreshTimeFromNowInterval.value);
+      if (refreshTimeFromNowInterval) {
+        clearInterval(refreshTimeFromNowInterval);
       }
     });
 

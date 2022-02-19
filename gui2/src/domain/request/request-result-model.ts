@@ -9,6 +9,6 @@ export interface RequestResultModel {
   stubResponseWriterResults: StubResponseWriterResultModel[];
   executingStubId: string;
   stubTenant: string;
-  requestBeginTime: Date;
-  requestEndTime: Date;
+  requestBeginTime: string;
+  requestEndTime: string;
 }
