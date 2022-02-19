@@ -6,7 +6,7 @@ export const useTenantsStore = defineStore({
   state: () => ({}),
   getters: {},
   actions: {
-    getTenantNames() {
+    getTenantNames(): Promise<string[]> {
       return get("/ph-api/tenants")
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));

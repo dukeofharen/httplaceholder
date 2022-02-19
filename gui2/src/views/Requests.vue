@@ -73,12 +73,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useRoute } from "vue-router";
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import Request from "@/components/request/Request.vue";
 import { resources } from "@/constants/resources";
-import { HubConnectionBuilder } from "@microsoft/signalr";
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { handleHttpError } from "@/utils/error";
 import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
 import { success } from "@/utils/toast";
@@ -86,6 +86,8 @@ import { useTenantsStore } from "@/store/tenants";
 import { useRequestsStore } from "@/store/requests";
 import { useGeneralStore } from "@/store/general";
 import { defineComponent } from "vue";
+import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
+import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
 
 export default defineComponent({
   name: "Requests",
@@ -97,35 +99,40 @@ export default defineComponent({
     const route = useRoute();
 
     // Data
-    const requests = ref([]);
-    const tenants = ref([]);
+    const requests = ref<RequestOverviewModel[]>([]);
+    const tenants = ref<string[]>([]);
     const showDeleteAllRequestsModal = ref(false);
-    let signalrConnection = null;
+    let signalrConnection: HubConnection;
 
     const saveSearchFilters = generalStore.getSaveSearchFilters;
-    let savedFilter = {};
+    let savedFilter: StubSavedFilterModel = {
+      urlStubIdFilter: "",
+      selectedTenantName: "",
+    };
     if (saveSearchFilters) {
       savedFilter = getRequestFilterForm() || {};
     }
 
-    const filter = ref({
-      urlStubIdFilter: route.query.filter || savedFilter.urlStubIdFilter || "",
+    const filter = ref<StubSavedFilterModel>({
+      urlStubIdFilter:
+        (route.query.filter as string) || savedFilter.urlStubIdFilter || "",
       selectedTenantName:
-        route.query.tenant || savedFilter.selectedTenantName || "",
+        (route.query.tenant as string) || savedFilter.selectedTenantName || "",
     });
 
     // Functions
-    const initializeSignalR = () => {
+    const initializeSignalR = async () => {
       signalrConnection = new HubConnectionBuilder()
         .withUrl("/requestHub")
         .build();
-      signalrConnection.on("RequestReceived", (request) =>
+      signalrConnection.on("RequestReceived", (request: RequestOverviewModel) =>
         requests.value.unshift(request)
       );
-      signalrConnection
-        .start()
-        .then(() => {})
-        .catch((err) => console.log(err.toString()));
+      try {
+        await signalrConnection.start();
+      } catch (err: any) {
+        console.log(err.toString());
+      }
     };
 
     // Computed
@@ -194,8 +201,11 @@ export default defineComponent({
 
     // Lifecycle
     onMounted(async () => {
-      await Promise.all([loadRequests(), loadTenantNames()]);
-      initializeSignalR();
+      await Promise.all([
+        loadRequests(),
+        loadTenantNames(),
+        initializeSignalR(),
+      ]);
     });
     onUnmounted(() => {
       if (signalrConnection) {
