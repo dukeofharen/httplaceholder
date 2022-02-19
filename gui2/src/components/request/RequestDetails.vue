@@ -3,28 +3,28 @@
     <div class="row">
       <div class="col-md-12 mb-3">
         <label>URL</label>
-        <pre class="request-url"><code>{{ requestParams.url }}</code></pre>
+        <pre class="request-url"><code>{{ requestParams?.url }}</code></pre>
       </div>
       <div class="col-md-12 mb-3">
         <label>Client IP</label>
-        <span>{{ requestParams.clientIp }}</span>
+        <span>{{ requestParams?.clientIp }}</span>
       </div>
       <div class="col-md-12 mb-3">
         <label>Correlation ID</label>
-        <span>{{ request.correlationId }}</span>
+        <span>{{ request?.correlationId }}</span>
       </div>
       <div class="col-md-12 mb-3">
         <label>Executed stub</label>
         <router-link
-          :to="{ name: 'Stubs', query: { filter: request.executingStubId } }"
-          >{{ request.executingStubId }}</router-link
+          :to="{ name: 'Stubs', query: { filter: request?.executingStubId } }"
+          >{{ request?.executingStubId }}</router-link
         >
       </div>
       <div class="col-md-12 mb-3">
         <label>Stub tenant (category)</label>
         <router-link
-          :to="{ name: 'Stubs', query: { tenant: request.stubTenant } }"
-          >{{ request.stubTenant }}</router-link
+          :to="{ name: 'Stubs', query: { tenant: request?.stubTenant } }"
+          >{{ request?.stubTenant }}</router-link
         >
       </div>
       <div class="col-md-12 mb-3">
@@ -45,13 +45,13 @@
         <div class="accordion">
           <StubExecutionResults
             v-if="showStubExecutionResults"
-            :correlation-id="request.correlationId"
-            :stub-execution-results="request.stubExecutionResults"
+            :correlation-id="request?.correlationId"
+            :stub-execution-results="request?.stubExecutionResults"
           />
           <ResponseWriterResults
             v-if="showStubResponseWriterResults"
-            :correlation-id="request.correlationId"
-            :stub-response-writer-results="request.stubResponseWriterResults"
+            :correlation-id="request?.correlationId"
+            :stub-response-writer-results="request?.stubResponseWriterResults"
           />
         </div>
       </div>
@@ -59,8 +59,8 @@
   </div>
 </template>
 
-<script>
-import { computed } from "vue";
+<script lang="ts">
+import { computed, type PropType } from "vue";
 import { formatDateTime, getDuration } from "@/utils/datetime";
 import RequestHeaders from "@/components/request/RequestHeaders.vue";
 import QueryParams from "@/components/request/QueryParams.vue";
@@ -68,6 +68,7 @@ import StubExecutionResults from "@/components/request/StubExecutionResults.vue"
 import ResponseWriterResults from "@/components/request/ResponseWriterResults.vue";
 import RequestBody from "@/components/request/RequestBody.vue";
 import { defineComponent } from "vue";
+import type { RequestResultModel } from "@/domain/request/request-result-model";
 
 export default defineComponent({
   name: "RequestDetails",
@@ -80,7 +81,7 @@ export default defineComponent({
   },
   props: {
     request: {
-      type: Object,
+      type: Object as PropType<RequestResultModel>,
       required: true,
     },
   },
@@ -90,11 +91,11 @@ export default defineComponent({
       () => props.request?.requestParameters || {}
     );
     const requestTime = computed(() =>
-      formatDateTime(props.request.requestEndTime)
+      formatDateTime(props.request?.requestEndTime)
     );
     const duration = computed(() => {
       const req = props.request;
-      return getDuration(req.requestBeginTime, req.requestEndTime);
+      return getDuration(req?.requestBeginTime, req?.requestEndTime);
     });
     const showQueryParameters = computed(
       () => requestParams.value?.url?.includes("?") || false
@@ -102,13 +103,13 @@ export default defineComponent({
     const showRequestBody = computed(() => requestParams.value?.body || false);
     const showStubExecutionResults = computed(
       () =>
-        props.request.stubExecutionResults &&
-        props.request.stubExecutionResults.length
+        props.request?.stubExecutionResults &&
+        props.request?.stubExecutionResults.length
     );
     const showStubResponseWriterResults = computed(
       () =>
-        props.request.stubResponseWriterResults &&
-        props.request.stubResponseWriterResults.length
+        props.request?.stubResponseWriterResults &&
+        props.request?.stubResponseWriterResults.length
     );
     const showResults = computed(
       () =>

@@ -17,7 +17,14 @@ export function formatFromNow(input: string) {
   return dayjs(input).fromNow();
 }
 
-export function getDuration(fromInput: string, toInput: string) {
+export function getDuration(
+  fromInput: string,
+  toInput: string
+): number | undefined {
+  if (!fromInput || !toInput) {
+    return;
+  }
+
   const from = dayjs(fromInput);
   const to = dayjs(toInput);
   return to.diff(from, "millisecond");

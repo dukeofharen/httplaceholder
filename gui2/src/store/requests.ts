@@ -13,7 +13,7 @@ export const useRequestsStore = defineStore({
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },
-    getRequest(correlationId: string): Promise<RequestResultModel[]> {
+    getRequest(correlationId: string): Promise<RequestResultModel> {
       return get(`/ph-api/requests/${correlationId}`)
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));

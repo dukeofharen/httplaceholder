@@ -12,3 +12,22 @@ export interface RequestResultModel {
   requestBeginTime: string;
   requestEndTime: string;
 }
+
+export function getDefaultRequestResultModel(): RequestResultModel {
+  return {
+    requestParameters: {
+      body: "",
+      url: "",
+      clientIp: "",
+      headers: {},
+      method: "",
+    },
+    requestEndTime: "",
+    requestBeginTime: "",
+    correlationId: "",
+    executingStubId: "",
+    stubExecutionResults: [],
+    stubResponseWriterResults: [],
+    stubTenant: "",
+  };
+}

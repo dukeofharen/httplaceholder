@@ -58,6 +58,8 @@ import { useStubsStore } from "@/store/stubs";
 import { useRequestsStore } from "@/store/requests";
 import { defineComponent } from "vue";
 import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
+import type { RequestResultModel } from "@/domain/request/request-result-model";
+import { getDefaultRequestResultModel } from "@/domain/request/request-result-model";
 
 export default defineComponent({
   name: "Request",
@@ -85,7 +87,7 @@ export default defineComponent({
     // Data
     const timeFromNow = ref(getTimeFromNow());
     let refreshTimeFromNowInterval: any;
-    const request = ref({});
+    const request = ref<RequestResultModel>(getDefaultRequestResultModel());
     const accordionOpened = ref(false);
 
     // Lifecycle
@@ -102,7 +104,7 @@ export default defineComponent({
 
     // Methods
     const showDetails = async () => {
-      if (Object.keys(request.value).length === 0) {
+      if (!request.value.correlationId) {
         try {
           request.value = await requestStore.getRequest(correlationId());
           accordionOpened.value = true;
