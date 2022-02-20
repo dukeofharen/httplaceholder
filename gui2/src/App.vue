@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import Sidebar from "@/components/Sidebar.vue";
 import { computed, defineComponent, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
