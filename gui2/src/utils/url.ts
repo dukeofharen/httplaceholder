@@ -19,8 +19,7 @@ export function parseUrl(url: string): QueryParameters {
     part = part.split("+").join(" "); // replace every + with space, regexp-free version
     const eq = part.indexOf("=");
     let key = eq > -1 ? part.substr(0, eq) : part;
-    // TODO fix deprecated "substr"
-    const val = eq > -1 ? decodeURIComponent(part.substr(eq + 1)) : "";
+    const val = eq > -1 ? decodeURIComponent(part.substring(eq + 1)) : "";
     const from = key.indexOf("[");
     if (from === -1) result[decodeURIComponent(key)] = val;
     else {
