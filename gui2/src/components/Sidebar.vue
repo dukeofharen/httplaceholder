@@ -24,7 +24,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import SidebarMenuItem from "@/components/SidebarMenuItem.vue";
 import { computed, defineComponent } from "vue";
 import router from "@/router";
