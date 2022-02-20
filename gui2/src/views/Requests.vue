@@ -86,8 +86,8 @@ import { useTenantsStore } from "@/store/tenants";
 import { useRequestsStore } from "@/store/requests";
 import { useGeneralStore } from "@/store/general";
 import { defineComponent } from "vue";
-import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
 import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
+import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-model";
 
 export default defineComponent({
   name: "Requests",
@@ -105,7 +105,7 @@ export default defineComponent({
     let signalrConnection: HubConnection;
 
     const saveSearchFilters = generalStore.getSaveSearchFilters;
-    let savedFilter: StubSavedFilterModel = {
+    let savedFilter: RequestSavedFilterModel = {
       urlStubIdFilter: "",
       selectedTenantName: "",
     };
@@ -113,7 +113,7 @@ export default defineComponent({
       savedFilter = getRequestFilterForm() || {};
     }
 
-    const filter = ref<StubSavedFilterModel>({
+    const filter = ref<RequestSavedFilterModel>({
       urlStubIdFilter:
         (route.query.filter as string) || savedFilter.urlStubIdFilter || "",
       selectedTenantName:

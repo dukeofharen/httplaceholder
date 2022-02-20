@@ -8,6 +8,7 @@ import {
 import { sessionKeys } from "@/constants/sessionKeys";
 import type { SettingsModel } from "@/domain/settings-model";
 import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
+import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-model";
 
 export function getIntermediateStub(): any {
   return getSession(sessionKeys.intermediateStub);
@@ -41,19 +42,18 @@ export function saveUserToken(token: string) {
   setSession(sessionKeys.userToken, token);
 }
 
-// TODO make this NOT an any
-export function setStubFilterForm(filter: any) {
+export function setStubFilterForm(filter: StubSavedFilterModel) {
   setSession(sessionKeys.stubsFilter, filter);
 }
 
-export function getStubFilterForm(): any {
+export function getStubFilterForm(): StubSavedFilterModel {
   return getSession(sessionKeys.stubsFilter);
 }
 
-export function setRequestFilterForm(filter: StubSavedFilterModel) {
+export function setRequestFilterForm(filter: RequestSavedFilterModel) {
   setSession(sessionKeys.requestsFilter, filter);
 }
 
-export function getRequestFilterForm(): StubSavedFilterModel {
+export function getRequestFilterForm(): RequestSavedFilterModel {
   return getSession(sessionKeys.requestsFilter);
 }

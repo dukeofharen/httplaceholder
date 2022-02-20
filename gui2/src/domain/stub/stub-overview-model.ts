@@ -1,5 +1,5 @@
 export interface StubOverviewModel {
   id: string;
-  tenant: string;
+  tenant?: string;
   enabled: boolean;
 }
