@@ -549,7 +549,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setLineEndings(lineEndings: LineEndingType): void {
+    setLineEndings(lineEndings: LineEndingType | undefined): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {

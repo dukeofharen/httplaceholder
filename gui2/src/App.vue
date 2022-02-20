@@ -30,7 +30,7 @@ export default defineComponent({
     const router = useRouter();
 
     // Functions
-    const setDarkTheme = (darkTheme) => {
+    const setDarkTheme = (darkTheme: boolean) => {
       const bodyElement = document.body;
       const darkName = "dark-theme";
       const lightName = "light-theme";

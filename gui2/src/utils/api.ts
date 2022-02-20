@@ -22,10 +22,7 @@ export type HttpError = {
 
 const handleResponse = async (response: Response) => {
   const headers: Headers = {};
-  for (const header of response.headers.entries()) {
-    headers[header[0]] = header[1];
-  }
-
+  response.headers.forEach((value, key) => (headers[key] = value));
   const contentType = headers["content-type"];
   let isJson = false;
   if (contentType && contentType.includes("application/json")) {

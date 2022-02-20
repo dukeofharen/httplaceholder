@@ -25,20 +25,20 @@ export default defineComponent({
     const types = [
       {
         name: "As provided in response body",
-        value: null,
+        value: undefined,
       },
       {
         name: "UNIX line endings",
-        value: LineEndingType.unix,
+        value: LineEndingType.Unix,
       },
       {
         name: "Windows line endings",
-        value: LineEndingType.windows,
+        value: LineEndingType.Windows,
       },
     ];
 
     // Methods
-    const lineEndingSelected = (value) => {
+    const lineEndingSelected = (value: LineEndingType | undefined) => {
       stubFormStore.setLineEndings(value);
       stubFormStore.closeFormHelper();
     };

@@ -44,7 +44,7 @@ import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { error } from "@/utils/toast";
-import { AuthenticationInput, useUsersStore } from "@/store/users";
+import { type AuthenticationInput, useUsersStore } from "@/store/users";
 import { defineComponent } from "vue";
 
 export default defineComponent({

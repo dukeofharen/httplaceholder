@@ -20,9 +20,9 @@ export const useGeneralStore = defineStore({
       },
     } as GeneralState),
   getters: {
-    getSettings: (state) => state.settings,
-    getDarkTheme: (state) => state.settings.darkTheme,
-    getSaveSearchFilters: (state) => state.settings.saveSearchFilters,
+    getSettings: (state): SettingsModel => state.settings,
+    getDarkTheme: (state): boolean => state.settings.darkTheme,
+    getSaveSearchFilters: (state): boolean => state.settings.saveSearchFilters,
   },
   actions: {
     storeSettings(settings: SettingsModel) {

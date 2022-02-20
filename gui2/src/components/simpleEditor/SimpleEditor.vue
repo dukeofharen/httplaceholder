@@ -24,12 +24,14 @@ export default defineComponent({
     const contents = ref(props.modelValue);
 
     // Methods
-    const simpleEditorTabPress = (e) => {
+    const simpleEditorTabPress = (e: KeyboardEvent) => {
       if (e.key === "Tab") {
         e.preventDefault();
-        const textarea = e.target;
-        const [start, end] = [textarea.selectionStart, textarea.selectionEnd];
-        textarea.setRangeText("  ", start, end, "end");
+        const textarea = e.target as HTMLTextAreaElement;
+        if (textarea) {
+          const [start, end] = [textarea.selectionStart, textarea.selectionEnd];
+          textarea.setRangeText("  ", start, end, "end");
+        }
       }
     };
     const contentsChanged = () => {

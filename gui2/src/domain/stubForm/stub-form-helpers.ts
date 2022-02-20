@@ -3,6 +3,7 @@ import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 
 export interface StubFormHelper {
   title: string;
+  subTitle?: string;
   isMainItem?: boolean;
   defaultValueMutation?: (store: any) => void;
   formHelperToOpen?: FormHelperKey;

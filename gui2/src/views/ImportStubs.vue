@@ -51,7 +51,7 @@ const tabs = {
   importOpenApi: "importOpenApi",
 };
 
-const tabDetails = {
+const tabDetails: any = {
   uploadStubs: {
     title: "Upload stubs",
     icon: "bi-arrow-up",
