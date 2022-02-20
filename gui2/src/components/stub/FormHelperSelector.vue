@@ -97,7 +97,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import {
   formHelperKeys,

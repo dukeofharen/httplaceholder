@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
 

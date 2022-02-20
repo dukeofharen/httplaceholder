@@ -11,10 +11,10 @@
   </div>
 </template>
 
-<script>
-import { lineEndingTypes } from "@/constants/stubFormResources";
+<script lang="ts">
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
+import { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 
 export default defineComponent({
   name: "LineEndingSelector",
@@ -29,11 +29,11 @@ export default defineComponent({
       },
       {
         name: "UNIX line endings",
-        value: lineEndingTypes.unix,
+        value: LineEndingType.unix,
       },
       {
         name: "Windows line endings",
-        value: lineEndingTypes.windows,
+        value: LineEndingType.windows,
       },
     ];
 
