@@ -11,7 +11,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
 import { httpMethods } from "@/domain/stubForm/http-methods";
@@ -22,7 +22,7 @@ export default defineComponent({
     const stubFormStore = useStubFormStore();
 
     // Methods
-    const methodSelected = (method) => {
+    const methodSelected = (method: string) => {
       stubFormStore.setMethod(method);
       stubFormStore.closeFormHelper();
     };
