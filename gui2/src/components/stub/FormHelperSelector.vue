@@ -47,49 +47,49 @@
       <div class="card">
         <div class="card-body">
           <HttpMethodSelector
-            v-if="currentSelectedFormHelper === formHelperKeys.httpMethod"
+            v-if="currentSelectedFormHelper === FormHelperKey.HttpMethod"
           />
           <TenantSelector
-            v-if="currentSelectedFormHelper === formHelperKeys.tenant"
+            v-if="currentSelectedFormHelper === FormHelperKey.Tenant"
           />
           <HttpStatusCodeSelector
-            v-if="currentSelectedFormHelper === formHelperKeys.statusCode"
+            v-if="currentSelectedFormHelper === FormHelperKey.StatusCode"
           />
           <ResponseBodyHelper
-            v-if="currentSelectedFormHelper === formHelperKeys.responseBody"
-          />
-          <ResponseBodyHelper
-            v-if="
-              currentSelectedFormHelper === formHelperKeys.responseBodyPlainText
-            "
-            :preset-response-body-type="responseBodyTypes.text"
-          />
-          <ResponseBodyHelper
-            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyJson"
-            :preset-response-body-type="responseBodyTypes.json"
-          />
-          <ResponseBodyHelper
-            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyXml"
-            :preset-response-body-type="responseBodyTypes.xml"
-          />
-          <ResponseBodyHelper
-            v-if="currentSelectedFormHelper === formHelperKeys.responseBodyHtml"
-            :preset-response-body-type="responseBodyTypes.html"
+            v-if="currentSelectedFormHelper === FormHelperKey.ResponseBody"
           />
           <ResponseBodyHelper
             v-if="
-              currentSelectedFormHelper === formHelperKeys.responseBodyBase64
+              currentSelectedFormHelper === FormHelperKey.ResponseBodyPlainText
             "
-            :preset-response-body-type="responseBodyTypes.base64"
+            :preset-response-body-type="ResponseBodyType.text"
+          />
+          <ResponseBodyHelper
+            v-if="currentSelectedFormHelper === FormHelperKey.ResponseBodyJson"
+            :preset-response-body-type="ResponseBodyType.json"
+          />
+          <ResponseBodyHelper
+            v-if="currentSelectedFormHelper === FormHelperKey.ResponseBodyXml"
+            :preset-response-body-type="ResponseBodyType.xml"
+          />
+          <ResponseBodyHelper
+            v-if="currentSelectedFormHelper === FormHelperKey.ResponseBodyHtml"
+            :preset-response-body-type="ResponseBodyType.html"
+          />
+          <ResponseBodyHelper
+            v-if="
+              currentSelectedFormHelper === FormHelperKey.ResponseBodyBase64
+            "
+            :preset-response-body-type="ResponseBodyType.base64"
           />
           <RedirectSelector
-            v-if="currentSelectedFormHelper === formHelperKeys.redirect"
+            v-if="currentSelectedFormHelper === FormHelperKey.Redirect"
           />
           <LineEndingSelector
-            v-if="currentSelectedFormHelper === formHelperKeys.lineEndings"
+            v-if="currentSelectedFormHelper === FormHelperKey.LineEndings"
           />
           <ScenarioSelector
-            v-if="currentSelectedFormHelper === formHelperKeys.scenario"
+            v-if="currentSelectedFormHelper === FormHelperKey.Scenario"
           />
         </div>
       </div>
@@ -99,11 +99,6 @@
 
 <script lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
-import {
-  formHelperKeys,
-  stubFormHelpers,
-  responseBodyTypes,
-} from "@/constants/stubFormResources";
 import HttpMethodSelector from "@/components/stub/HttpMethodSelector.vue";
 import TenantSelector from "@/components/stub/TenantSelector.vue";
 import HttpStatusCodeSelector from "@/components/stub/HttpStatusCodeSelector.vue";
@@ -115,6 +110,12 @@ import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
+import {
+  type StubFormHelper,
+  stubFormHelpers,
+} from "@/domain/stubForm/stub-form-helpers";
+import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
+import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
 
 export default defineComponent({
   name: "FormHelperSelector",
@@ -132,7 +133,7 @@ export default defineComponent({
     const route = useRoute();
 
     // Refs
-    const formHelperFilterInput = ref(null);
+    const formHelperFilterInput = ref<HTMLElement>();
 
     // Data
     const showFormHelperItems = ref(false);
@@ -140,7 +141,7 @@ export default defineComponent({
     const formHelperFilter = ref("");
 
     // Methods
-    const onFormHelperItemClick = (item) => {
+    const onFormHelperItemClick = (item: StubFormHelper) => {
       if (item.defaultValueMutation) {
         item.defaultValueMutation(stubFormStore);
       } else if (item.formHelperToOpen) {
@@ -194,7 +195,7 @@ export default defineComponent({
     );
 
     // Lifecycle
-    const escapeListener = (e) => {
+    const escapeListener = (e: KeyboardEvent) => {
       if (escapePressed(e)) {
         e.preventDefault();
         closeFormHelperAndList();
@@ -205,7 +206,6 @@ export default defineComponent({
 
     return {
       formHelperItems,
-      formHelperKeys,
       currentSelectedFormHelper,
       showFormHelperItems,
       filteredStubFormHelpers,
@@ -214,7 +214,8 @@ export default defineComponent({
       formHelperFilterInput,
       openFormHelperList,
       closeFormHelperAndList,
-      responseBodyTypes,
+      FormHelperKey,
+      ResponseBodyType,
     };
   },
 });

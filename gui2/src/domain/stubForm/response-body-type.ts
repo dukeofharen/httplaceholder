@@ -7,11 +7,6 @@ export enum ResponseBodyType {
 }
 
 export function getValues(): string[] {
-  return [
-    ResponseBodyType.text,
-    ResponseBodyType.json,
-    ResponseBodyType.xml,
-    ResponseBodyType.html,
-    ResponseBodyType.base64,
-  ];
+  const enumType = ResponseBodyType as any;
+  return Object.keys(ResponseBodyType).map((key) => enumType[key]);
 }

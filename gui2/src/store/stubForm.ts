@@ -7,11 +7,12 @@ import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
 import { vsprintf } from "sprintf-js";
 import type { StubModel } from "@/domain/stub/stub-model";
 import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
+import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 
 type StubFormState = {
   input: string;
   inputHasMultipleStubs: boolean;
-  currentSelectedFormHelper: string;
+  currentSelectedFormHelper: FormHelperKey;
 };
 
 export interface SetResponseInput {
@@ -43,12 +44,12 @@ export const useStubFormStore = defineStore({
     ({
       input: "",
       inputHasMultipleStubs: false,
-      currentSelectedFormHelper: "",
+      currentSelectedFormHelper: FormHelperKey.None,
     } as StubFormState),
   getters: {
     getInput: (state): string => state.input,
     getInputLength: (state): number => state.input.length,
-    getCurrentSelectedFormHelper: (state): string =>
+    getCurrentSelectedFormHelper: (state): FormHelperKey =>
       state.currentSelectedFormHelper,
     getResponseBodyType(state): ResponseBodyType {
       return handle(() => {
@@ -119,11 +120,11 @@ export const useStubFormStore = defineStore({
     getInputHasMultipleStubs: (state): boolean => state.inputHasMultipleStubs,
   },
   actions: {
-    openFormHelper(key: string): void {
+    openFormHelper(key: FormHelperKey): void {
       this.currentSelectedFormHelper = key;
     },
     closeFormHelper(): void {
-      this.currentSelectedFormHelper = "";
+      this.currentSelectedFormHelper = FormHelperKey.None;
     },
     setInput(input: string): void {
       this.input = input;
