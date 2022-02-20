@@ -59,13 +59,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { useScenariosStore } from "@/store/scenarios";
 import { defineComponent } from "vue";
+import type { ScenarioModel } from "@/domain/scenario/scenario-model";
 
 export default defineComponent({
   name: "Scenarios",
@@ -73,13 +74,13 @@ export default defineComponent({
     const scenarioStore = useScenariosStore();
 
     // Data
-    const scenarios = ref([]);
+    const scenarios = ref<ScenarioModel[]>([]);
     const clearAllScenariosModal = ref(false);
 
     // Computed
     const filteredScenarios = computed(() => {
       let scenariosResult = scenarios.value;
-      const compare = (a, b) => {
+      const compare = (a: ScenarioModel, b: ScenarioModel) => {
         if (a.scenario < b.scenario) return -1;
         if (a.scenario > b.scenario) return 1;
         return 0;
@@ -105,7 +106,7 @@ export default defineComponent({
         handleHttpError(e);
       }
     };
-    const deleteScenario = async (scenario) => {
+    const deleteScenario = async (scenario: string) => {
       try {
         await scenarioStore.deleteScenario(scenario);
         success(resources.scenarioDeletedSuccessfully);

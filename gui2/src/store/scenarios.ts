@@ -14,7 +14,7 @@ export const useScenariosStore = defineStore({
   state: () => ({}),
   getters: {},
   actions: {
-    getAllScenarios(): Promise<ScenarioModel> {
+    getAllScenarios(): Promise<ScenarioModel[]> {
       return get("/ph-api/scenarios")
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
