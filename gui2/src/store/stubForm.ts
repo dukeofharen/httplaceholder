@@ -2,66 +2,79 @@ import { defineStore } from "pinia";
 import yaml from "js-yaml";
 import { error } from "@/utils/toast";
 import { resources } from "@/constants/resources";
-import {
-  defaultValues,
-  responseBodyTypes,
-} from "@/constants/stubFormResources";
+import { defaultValues } from "@/domain/stubForm/default-values";
+import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
+import { vsprintf } from "sprintf-js";
+import type { StubModel } from "@/domain/stub/stub-model";
+import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 
-const parseInput = (input) => {
+type StubFormState = {
+  input: string;
+  inputHasMultipleStubs: boolean;
+  currentSelectedFormHelper: string;
+};
+
+export interface SetResponseInput {
+  type: ResponseBodyType;
+  body: string;
+}
+
+const parseInput = (input: string): StubModel | undefined => {
   try {
-    return yaml.load(input);
+    return yaml.load(input) as StubModel;
   } catch (e) {
-    error(resources.errorDuringParsingOfYaml.format(e));
-    return null;
+    error(vsprintf(resources.errorDuringParsingOfYaml, [e]));
+    return undefined;
   }
 };
 
-const handle = (func) => {
+const handle = (func: () => any) => {
   try {
     return func();
   } catch (e) {
-    error(resources.errorDuringParsingOfYaml.format(e));
+    error(vsprintf(resources.errorDuringParsingOfYaml, [e]));
     return null;
   }
 };
 
 export const useStubFormStore = defineStore({
   id: "stubForm",
-  state: () => ({
-    input: "",
-    inputHasMultipleStubs: false,
-    currentSelectedFormHelper: "",
-  }),
+  state: () =>
+    ({
+      input: "",
+      inputHasMultipleStubs: false,
+      currentSelectedFormHelper: "",
+    } as StubFormState),
   getters: {
     getInput: (state) => state.input,
     getInputLength: (state) => state.input.length,
     getCurrentSelectedFormHelper: (state) => state.currentSelectedFormHelper,
-    getResponseBodyType(state) {
+    getResponseBodyType(state): ResponseBodyType {
       return handle(() => {
         const parsed = parseInput(state.input);
         if (parsed) {
           if (!parsed.response) {
-            return responseBodyTypes.text;
+            return ResponseBodyType.text;
           }
 
           const res = parsed.response;
           if (res.text) {
-            return responseBodyTypes.text;
+            return ResponseBodyType.text;
           } else if (res.json) {
-            return responseBodyTypes.json;
+            return ResponseBodyType.json;
           } else if (res.xml) {
-            return responseBodyTypes.xml;
+            return ResponseBodyType.xml;
           } else if (res.html) {
-            return responseBodyTypes.html;
+            return ResponseBodyType.html;
           } else if (res.base64) {
-            return responseBodyTypes.base64;
+            return ResponseBodyType.base64;
           }
         }
 
-        return responseBodyTypes.text;
+        return ResponseBodyType.text;
       });
     },
-    getResponseBody(state) {
+    getResponseBody(state): string {
       return handle(() => {
         const parsed = parseInput(state.input);
         if (parsed) {
@@ -78,7 +91,7 @@ export const useStubFormStore = defineStore({
         return "";
       });
     },
-    getDynamicMode(state) {
+    getDynamicMode(state): boolean {
       return handle(() => {
         const parsed = parseInput(state.input);
         if (parsed) {
@@ -92,7 +105,7 @@ export const useStubFormStore = defineStore({
         return false;
       });
     },
-    getStubId(state) {
+    getStubId(state): string {
       return handle(() => {
         const parsed = parseInput(state.input);
         if (parsed) {
@@ -105,17 +118,17 @@ export const useStubFormStore = defineStore({
     getInputHasMultipleStubs: (state) => state.inputHasMultipleStubs,
   },
   actions: {
-    openFormHelper(key) {
+    openFormHelper(key: string): void {
       this.currentSelectedFormHelper = key;
     },
-    closeFormHelper() {
+    closeFormHelper(): void {
       this.currentSelectedFormHelper = "";
     },
-    setInput(input) {
+    setInput(input: string): void {
       this.input = input;
       this.inputHasMultipleStubs = /^-/gm.test(input);
     },
-    setDefaultDescription() {
+    setDefaultDescription(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -124,7 +137,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultPriority() {
+    setDefaultPriority(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -133,7 +146,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultPath() {
+    setDefaultPath(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -150,7 +163,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultFullPath() {
+    setDefaultFullPath(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -167,7 +180,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultQuery() {
+    setDefaultQuery(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -191,7 +204,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultIsHttps() {
+    setDefaultIsHttps(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -208,7 +221,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultBasicAuth() {
+    setDefaultBasicAuth(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -222,7 +235,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultRequestHeaders() {
+    setDefaultRequestHeaders(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -242,7 +255,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultRequestBody() {
+    setDefaultRequestBody(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -261,7 +274,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultFormBody() {
+    setDefaultFormBody(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -280,7 +293,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultClientIp() {
+    setDefaultClientIp(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -293,7 +306,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultHostname() {
+    setDefaultHostname(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -301,12 +314,12 @@ export const useStubFormStore = defineStore({
             parsed.conditions = {};
           }
 
-          parsed.conditions.hostname = defaultValues.hostname;
+          parsed.conditions.host = defaultValues.hostname;
           this.input = yaml.dump(parsed);
         }
       });
     },
-    setDefaultJsonPath() {
+    setDefaultJsonPath(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -325,7 +338,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultJsonObject() {
+    setDefaultJsonObject(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -338,7 +351,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultJsonArray() {
+    setDefaultJsonArray(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -351,7 +364,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultXPath() {
+    setDefaultXPath(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -370,7 +383,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setMethod(method) {
+    setMethod(method: string): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -383,7 +396,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setTenant(tenant) {
+    setTenant(tenant: string): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -392,7 +405,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setScenario(scenario) {
+    setScenario(scenario: string): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -401,7 +414,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setStatusCode(code) {
+    setStatusCode(code: number): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -414,7 +427,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setResponseBody(payload) {
+    setResponseBody(payload: SetResponseInput): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -428,23 +441,23 @@ export const useStubFormStore = defineStore({
           delete parsed.response.html;
           delete parsed.response.base64;
 
-          const responseType = payload.type || responseBodyTypes.text;
+          const responseType = payload.type || ResponseBodyType.text;
           const responseBody = payload.body || "";
           switch (responseType) {
-            case responseBodyTypes.json:
+            case ResponseBodyType.json:
               parsed.response.json = responseBody;
               break;
-            case responseBodyTypes.xml:
+            case ResponseBodyType.xml:
               parsed.response.xml = responseBody;
               break;
-            case responseBodyTypes.html:
+            case ResponseBodyType.html:
               parsed.response.html = responseBody;
               break;
-            case responseBodyTypes.base64:
+            case ResponseBodyType.base64:
               parsed.response.base64 = responseBody;
               break;
             default:
-            case responseBodyTypes.text:
+            case ResponseBodyType.text:
               parsed.response.text = responseBody;
               break;
           }
@@ -453,7 +466,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setResponseContentType(contentType) {
+    setResponseContentType(contentType: string): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -462,10 +475,12 @@ export const useStubFormStore = defineStore({
           }
 
           if (parsed.response.headers) {
-            const key = Object.keys(parsed.response.headers).find(
-              (k) => k.toLowerCase().trim() === "content-type"
-            );
-            delete parsed.response.headers[key];
+            const key: string | undefined = Object.keys(
+              parsed.response.headers
+            ).find((k) => k.toLowerCase().trim() === "content-type");
+            if (key) {
+              delete parsed.response.headers[key];
+            }
           }
 
           parsed.response.contentType = contentType;
@@ -473,7 +488,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultResponseHeaders() {
+    setDefaultResponseHeaders(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -493,7 +508,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultExtraDuration() {
+    setDefaultExtraDuration(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -506,7 +521,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultTempRedirect() {
+    setDefaultTempRedirect(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -519,7 +534,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultPermanentRedirect() {
+    setDefaultPermanentRedirect(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -532,7 +547,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setLineEndings(lineEndings) {
+    setLineEndings(lineEndings: LineEndingType): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -550,7 +565,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDynamicMode(value) {
+    setDynamicMode(value: boolean): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -568,7 +583,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultReverseProxy() {
+    setDefaultReverseProxy(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -581,7 +596,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setStubDisabled() {
+    setStubDisabled(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -590,7 +605,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultResponseContentType() {
+    setDefaultResponseContentType(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -603,7 +618,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultImage() {
+    setDefaultImage(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -616,7 +631,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultMinHits() {
+    setDefaultMinHits(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -633,7 +648,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultMaxHits() {
+    setDefaultMaxHits(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -650,7 +665,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultExactHits() {
+    setDefaultExactHits(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -667,7 +682,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultScenarioState() {
+    setDefaultScenarioState(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -685,7 +700,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setClearState() {
+    setClearState(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -702,7 +717,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultNewScenarioState() {
+    setDefaultNewScenarioState(): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {

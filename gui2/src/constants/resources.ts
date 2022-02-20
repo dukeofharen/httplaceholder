@@ -20,7 +20,7 @@ export const resources = {
   scenarioDeletedSuccessfully: "The scenario was deleted successfully.",
   noCurlStubsFound:
     "No stubs could be determined from the cURL command(s). This might mean that you did not provide valid input.",
-  errorDuringParsingOfYaml: "Something went wrong while parsing the YAML: {0}",
+  errorDuringParsingOfYaml: "Something went wrong while parsing the YAML: %s",
   requestBodyCopiedToClipboard:
     "Request body successfully copied to clipboard.",
   uploadInvalidFiles:
