@@ -73,7 +73,7 @@ export default defineComponent({
         if (cmInstance && props.options) {
           const cleanOptions = JSON.parse(JSON.stringify(props.options));
           for (const key of Object.keys(cleanOptions)) {
-            (cmInstance as any).setOption(key, cleanOptions[key]); // TODO make this cleaner.
+            (cmInstance as any).setOption(key, cleanOptions[key]);
           }
         }
       },
