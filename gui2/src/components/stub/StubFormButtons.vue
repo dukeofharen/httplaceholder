@@ -22,18 +22,19 @@
   />
 </template>
 
-<script>
+<script lang="ts">
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import { useRoute, useRouter } from "vue-router";
 import { shouldSave } from "@/utils/event";
-import { formHelperKeys } from "@/constants/stubFormResources";
 import { success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
 import { error } from "@/utils/toast";
+import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
+import { vsprintf } from "sprintf-js";
 
 export default defineComponent({
   name: "StubFormButtons",
@@ -58,7 +59,7 @@ export default defineComponent({
       set: (value) => stubFormStore.setInput(value),
     });
     const newStub = computed(() => !route.params.stubId);
-    const stubId = computed(() => route.params.stubId);
+    const stubId = computed(() => route.params.stubId as string);
     const showSaveAsNewStubButton = computed(
       () => !stubFormStore.getInputHasMultipleStubs && !newStub.value
     );
@@ -85,7 +86,7 @@ export default defineComponent({
         success(resources.stubsAddedSuccessfully);
       } catch (e) {
         if (!handleHttpError(e)) {
-          error(resources.errorDuringParsingOfYaml.format(e));
+          error(vsprintf(resources.errorDuringParsingOfYaml, [e]));
         }
       }
     };
@@ -105,7 +106,7 @@ export default defineComponent({
         }
       } catch (e) {
         if (!handleHttpError(e)) {
-          error(resources.errorDuringParsingOfYaml.format(e));
+          error(vsprintf(resources.errorDuringParsingOfYaml, [e]));
         }
       }
     };
@@ -116,12 +117,12 @@ export default defineComponent({
         await updateStub();
       }
     };
-    const checkSave = async (e) => {
+    const checkSave = async (e: KeyboardEvent) => {
       const currentSelectedFormHelper =
         stubFormStore.getCurrentSelectedFormHelper;
       if (
         shouldSave(e) &&
-        currentSelectedFormHelper.value !== formHelperKeys.responseBody
+        currentSelectedFormHelper !== FormHelperKey.ResponseBody
       ) {
         e.preventDefault();
         await save();
@@ -129,7 +130,7 @@ export default defineComponent({
     };
 
     // Lifecycle
-    const keydownEventListener = async (e) => await checkSave(e);
+    const keydownEventListener = async (e: KeyboardEvent) => await checkSave(e);
     onMounted(() => document.addEventListener("keydown", keydownEventListener));
     onUnmounted(() =>
       document.removeEventListener("keydown", keydownEventListener)

@@ -46,9 +46,10 @@ export const useStubFormStore = defineStore({
       currentSelectedFormHelper: "",
     } as StubFormState),
   getters: {
-    getInput: (state) => state.input,
-    getInputLength: (state) => state.input.length,
-    getCurrentSelectedFormHelper: (state) => state.currentSelectedFormHelper,
+    getInput: (state): string => state.input,
+    getInputLength: (state): number => state.input.length,
+    getCurrentSelectedFormHelper: (state): string =>
+      state.currentSelectedFormHelper,
     getResponseBodyType(state): ResponseBodyType {
       return handle(() => {
         const parsed = parseInput(state.input);
@@ -115,7 +116,7 @@ export const useStubFormStore = defineStore({
         return "";
       });
     },
-    getInputHasMultipleStubs: (state) => state.inputHasMultipleStubs,
+    getInputHasMultipleStubs: (state): boolean => state.inputHasMultipleStubs,
   },
   actions: {
     openFormHelper(key: string): void {
