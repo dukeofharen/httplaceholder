@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import { httpMethods } from "@/constants/stubFormResources";
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
+import { httpMethods } from "@/domain/stubForm/http-methods";
 
 export default defineComponent({
   name: "HttpMethodSelector",

@@ -12,9 +12,9 @@
 </template>
 
 <script>
-import { httpStatusCodes } from "@/constants/stubFormResources";
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
+import { httpStatusCodes } from "@/domain/stubForm/http-status-codes";
 
 export default defineComponent({
   name: "HttpStatusCodeSelector",
