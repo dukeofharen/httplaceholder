@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
-import { defineComponent } from "vue";
+import { defineComponent, type PropType, ref } from "vue";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
+import { UploadButtonType } from "@/domain/upload-button-type";
 
 export default defineComponent({
   name: "UploadButton",
@@ -34,14 +34,10 @@ export default defineComponent({
       required: false,
     },
     resultType: {
-      type: String,
-      default: "text",
-      validator(value: string) {
-        return ["text", "base64"].includes(value);
-      },
+      type: String as PropType<UploadButtonType>,
+      default: UploadButtonType.Text,
     },
   },
-  emits: ["uploaded"],
   setup(props, { emit }) {
     // Refs
     const uploadField = ref<HTMLElement>();
@@ -64,10 +60,10 @@ export default defineComponent({
           emit("uploaded", uploadedFile);
         };
         switch (props.resultType) {
-          case "text":
+          case UploadButtonType.Text:
             reader.readAsText(file);
             break;
-          case "base64":
+          case UploadButtonType.Base64:
             reader.readAsDataURL(file);
             break;
           default:
@@ -76,7 +72,11 @@ export default defineComponent({
       }
     };
 
-    return { uploadField, uploadClick, loadTextFromFile };
+    return {
+      uploadField,
+      uploadClick,
+      loadTextFromFile,
+    };
   },
 });
 </script>

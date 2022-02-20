@@ -31,7 +31,7 @@
         <upload-button
           button-text="Upload a file"
           @uploaded="onUploaded"
-          result-type="base64"
+          :result-type="UploadButtonType.Base64"
         />
         <button class="btn btn-primary" @click="showBase64TextInput = true">
           Show text input
@@ -106,6 +106,7 @@ import {
 import type { MetadataModel } from "@/domain/metadata/metadata-model";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 import { elementDescriptions } from "@/domain/stubForm/element-descriptions";
+import { UploadButtonType } from "@/domain/upload-button-type";
 
 export default defineComponent({
   name: "ResponseBodyHelper",
@@ -286,6 +287,7 @@ export default defineComponent({
       codeEditor,
       ResponseBodyType,
       elementDescriptions,
+      UploadButtonType,
     };
   },
 });
