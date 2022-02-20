@@ -14,15 +14,16 @@
   </accordion-item>
 </template>
 
-<script>
+<script lang="ts">
 import { computed } from "vue";
-import { defineComponent } from "vue";
+import { defineComponent, type PropType } from "vue";
+import type { RequestResultModel } from "@/domain/request/request-result-model";
 
 export default defineComponent({
   name: "RequestHeaders",
   props: {
     request: {
-      type: Object,
+      type: Object as PropType<RequestResultModel>,
       required: true,
     },
   },
