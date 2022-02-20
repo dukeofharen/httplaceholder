@@ -20,10 +20,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, watch } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "AccordionItem",
   props: {
     opened: {
@@ -57,7 +58,7 @@ export default {
 
     return { openedValue, toggle };
   },
-};
+});
 </script>
 
 <style scoped>

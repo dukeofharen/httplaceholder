@@ -52,7 +52,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useRouter } from "vue-router";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { resources } from "@/constants/resources";
@@ -61,9 +61,11 @@ import { handleHttpError } from "@/utils/error";
 import { setIntermediateStub } from "@/utils/session";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
-import { useImportStore } from "@/store/import";
+import { type ImportInputModel, useImportStore } from "@/store/import";
+import { defineComponent } from "vue";
+import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 
-export default {
+export default defineComponent({
   name: "ImportOpenApi",
   setup() {
     const importStore = useImportStore();
@@ -84,11 +86,12 @@ export default {
     };
     const importOpenApi = async () => {
       try {
-        const result = await importStore.importOpenApi({
-          openapi: input.value,
+        const importInput: ImportInputModel = {
+          input: input.value,
           doNotCreateStub: true,
           tenant: tenant.value,
-        });
+        };
+        const result = await importStore.importOpenApi(importInput);
 
         const filteredResult = result.map((r) => r.stub);
         stubsYaml.value = yaml.dump(filteredResult);
@@ -96,16 +99,17 @@ export default {
         handleHttpError(e);
       }
     };
-    const onUploaded = (file) => {
+    const onUploaded = (file: FileUploadedModel) => {
       input.value = file.result;
     };
     const saveStubs = async () => {
       try {
-        await importStore.importOpenApi({
-          openapi: input.value,
+        const importInput: ImportInputModel = {
+          input: input.value,
           doNotCreateStub: false,
           tenant: tenant.value,
-        });
+        };
+        await importStore.importOpenApi(importInput);
         success(resources.stubsAddedSuccessfully);
         await router.push({ name: "Stubs" });
       } catch (e) {
@@ -123,7 +127,7 @@ export default {
     };
 
     // Lifecycle
-    const handleSave = async (e) => {
+    const handleSave = async (e: KeyboardEvent) => {
       if (shouldSave(e)) {
         e.preventDefault();
         if (!stubsYaml.value) {
@@ -133,7 +137,8 @@ export default {
         }
       }
     };
-    const keydownEventListener = async (e) => await handleSave(e);
+    const keydownEventListener = async (e: KeyboardEvent) =>
+      await handleSave(e);
     onMounted(() => document.addEventListener("keydown", keydownEventListener));
     onUnmounted(() =>
       document.removeEventListener("keydown", keydownEventListener)
@@ -153,7 +158,7 @@ export default {
       stubsPreviewOpened,
     };
   },
-};
+});
 </script>
 
 <style scoped>

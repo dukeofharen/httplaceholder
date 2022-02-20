@@ -47,13 +47,15 @@
   </div>
 </template>
 
-<script>
-import { computed, onMounted, ref } from "vue";
+<script lang="ts">
+import { computed, onMounted, type PropType, ref } from "vue";
 import xmlFormatter from "xml-formatter";
 import { formFormat } from "@/utils/form";
 import { copyTextToClipboard } from "@/utils/clipboard";
 import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
+import { defineComponent } from "vue";
+import type { RequestResultModel } from "@/domain/request/request-result-model";
 
 const bodyTypes = {
   xml: "XML",
@@ -61,11 +63,11 @@ const bodyTypes = {
   form: "Form",
 };
 
-export default {
+export default defineComponent({
   name: "RequestBody",
   props: {
     request: {
-      type: Object,
+      type: Object as PropType<RequestResultModel>,
       required: true,
     },
   },
@@ -157,7 +159,7 @@ export default {
       language,
     };
   },
-};
+});
 </script>
 
 <style scoped>

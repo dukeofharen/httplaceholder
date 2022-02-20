@@ -35,13 +35,14 @@
   </div>
 </template>
 
-<script>
-import UploadStubs from "@/components/stub/UploadStubs";
-import ImportCurl from "@/components/stub/ImportCurl";
-import ImportHar from "@/components/stub/ImportHar";
-import ImportOpenApi from "@/components/stub/ImportOpenApi";
+<script lang="ts">
+import UploadStubs from "@/components/stub/UploadStubs.vue";
+import ImportCurl from "@/components/stub/ImportCurl.vue";
+import ImportHar from "@/components/stub/ImportHar.vue";
+import ImportOpenApi from "@/components/stub/ImportOpenApi.vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { defineComponent } from "vue";
 
 const tabs = {
   uploadStubs: "uploadStubs",
@@ -50,7 +51,7 @@ const tabs = {
   importOpenApi: "importOpenApi",
 };
 
-const tabDetails = {
+const tabDetails: any = {
   uploadStubs: {
     title: "Upload stubs",
     icon: "bi-arrow-up",
@@ -69,7 +70,7 @@ const tabDetails = {
   },
 };
 
-export default {
+export default defineComponent({
   name: "ImportStubs",
   components: { ImportOpenApi, UploadStubs, ImportCurl, ImportHar },
   setup() {
@@ -80,14 +81,14 @@ export default {
     const selectedTab = ref(route.query.tab || tabs.uploadStubs);
 
     // Methods
-    const changeTab = async (tab) => {
+    const changeTab = async (tab: string) => {
       selectedTab.value = tab;
       await router.push({ name: "ImportStubs", query: { tab } });
     };
 
     return { tabs, tabDetails, selectedTab, changeTab };
   },
-};
+});
 </script>
 
 <style>

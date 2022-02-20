@@ -27,13 +27,13 @@
         <div
           :class="{
             'text-success':
-              condition.conditionValidation === conditionValidationType.Valid,
+              condition.conditionValidation === ConditionValidationType.Valid,
             'text-danger':
-              condition.conditionValidation === conditionValidationType.Invalid,
+              condition.conditionValidation === ConditionValidationType.Invalid,
           }"
         >
           {{
-            condition.conditionValidation === conditionValidationType.Valid
+            condition.conditionValidation === ConditionValidationType.Valid
               ? "passed"
               : "not passed"
           }}
@@ -45,10 +45,12 @@
   </accordion-item>
 </template>
 
-<script>
-import { conditionValidationType } from "@/constants/conditionValidationType";
+<script lang="ts">
+import { defineComponent, type PropType } from "vue";
+import type { StubExecutionResultModel } from "@/domain/request/stub-execution-result-model";
+import { ConditionValidationType } from "@/domain/request/enums/condition-validation-type";
 
-export default {
+export default defineComponent({
   name: "StubExecutionResult",
   props: {
     correlationId: {
@@ -56,14 +58,14 @@ export default {
       required: true,
     },
     result: {
-      type: Object,
+      type: Object as PropType<StubExecutionResultModel>,
       required: true,
     },
   },
   setup() {
-    return { conditionValidationType };
+    return { ConditionValidationType };
   },
-};
+});
 </script>
 
 <style scoped>

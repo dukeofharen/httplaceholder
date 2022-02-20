@@ -2,10 +2,11 @@
   <span class="method" :class="className">{{ method }}</span>
 </template>
 
-<script>
+<script lang="ts">
 import { computed } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Method",
   props: {
     method: {
@@ -14,6 +15,7 @@ export default {
     },
   },
   setup(props) {
+    // Computed
     const className = computed(() => {
       switch (props.method) {
         case "GET":
@@ -35,7 +37,7 @@ export default {
 
     return { className };
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

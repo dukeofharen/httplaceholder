@@ -11,10 +11,12 @@
   </button>
 </template>
 
-<script>
-import { ref } from "vue";
+<script lang="ts">
+import { defineComponent, type PropType, ref } from "vue";
+import type { FileUploadedModel } from "@/domain/file-uploaded-model";
+import { UploadButtonType } from "@/domain/upload-button-type";
 
-export default {
+export default defineComponent({
   name: "UploadButton",
   props: {
     buttonText: {
@@ -32,37 +34,36 @@ export default {
       required: false,
     },
     resultType: {
-      type: String,
-      default: "text",
-      validator(value) {
-        return ["text", "base64"].includes(value);
-      },
+      type: String as PropType<UploadButtonType>,
+      default: UploadButtonType.Text,
     },
   },
-  emits: ["uploaded"],
   setup(props, { emit }) {
     // Refs
-    const uploadField = ref(null);
+    const uploadField = ref<HTMLElement>();
 
     // Methods
     const uploadClick = function () {
-      uploadField.value.click();
+      if (uploadField.value) {
+        uploadField.value.click();
+      }
     };
-    const loadTextFromFile = (ev) => {
-      const files = Array.from(ev.target.files);
+    const loadTextFromFile = (ev: any) => {
+      const files: File[] = Array.from(ev.target.files);
       for (let file of files) {
         let reader = new FileReader();
-        reader.onload = (e) => {
-          emit("uploaded", {
+        reader.onload = (e: any) => {
+          const uploadedFile: FileUploadedModel = {
             filename: file.name,
             result: e.target.result,
-          });
+          };
+          emit("uploaded", uploadedFile);
         };
         switch (props.resultType) {
-          case "text":
+          case UploadButtonType.Text:
             reader.readAsText(file);
             break;
-          case "base64":
+          case UploadButtonType.Base64:
             reader.readAsDataURL(file);
             break;
           default:
@@ -71,9 +72,13 @@ export default {
       }
     };
 
-    return { uploadField, uploadClick, loadTextFromFile };
+    return {
+      uploadField,
+      uploadClick,
+      loadTextFromFile,
+    };
   },
-};
+});
 </script>
 
 <style scoped>

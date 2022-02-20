@@ -7,10 +7,11 @@
   ></textarea>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, watch } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "SimpleEditor",
   props: {
     modelValue: {
@@ -23,12 +24,14 @@ export default {
     const contents = ref(props.modelValue);
 
     // Methods
-    const simpleEditorTabPress = (e) => {
+    const simpleEditorTabPress = (e: KeyboardEvent) => {
       if (e.key === "Tab") {
         e.preventDefault();
-        const textarea = e.target;
-        const [start, end] = [textarea.selectionStart, textarea.selectionEnd];
-        textarea.setRangeText("  ", start, end, "end");
+        const textarea = e.target as HTMLTextAreaElement;
+        if (textarea) {
+          const [start, end] = [textarea.selectionStart, textarea.selectionEnd];
+          textarea.setRangeText("  ", start, end, "end");
+        }
       }
     };
     const contentsChanged = () => {
@@ -40,7 +43,7 @@ export default {
 
     return { contents, simpleEditorTabPress, contentsChanged };
   },
-};
+});
 </script>
 
 <style scoped>

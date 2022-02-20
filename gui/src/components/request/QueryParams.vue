@@ -14,15 +14,16 @@
   </accordion-item>
 </template>
 
-<script>
-import { computed } from "vue";
+<script lang="ts">
 import { parseUrl } from "@/utils/url";
+import { defineComponent, computed, type PropType } from "vue";
+import type { RequestResultModel } from "@/domain/request/request-result-model";
 
-export default {
+export default defineComponent({
   name: "QueryParams",
   props: {
     request: {
-      type: Object,
+      type: Object as PropType<RequestResultModel>,
       required: true,
     },
   },
@@ -38,7 +39,7 @@ export default {
 
     return { requestParams, queryParameters };
   },
-};
+});
 </script>
 
 <style scoped></style>

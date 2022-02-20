@@ -43,26 +43,30 @@
   </accordion-item>
 </template>
 
-<script>
-import { computed, ref, onMounted, onUnmounted } from "vue";
+<script lang="ts">
+import { computed, ref, onMounted, onUnmounted, type PropType } from "vue";
 import { formatDateTime, formatFromNow } from "@/utils/datetime";
 import { handleHttpError } from "@/utils/error";
 import { setIntermediateStub } from "@/utils/session";
-import Method from "@/components/request/Method";
-import RequestDetails from "@/components/request/RequestDetails";
+import Method from "@/components/request/Method.vue";
+import RequestDetails from "@/components/request/RequestDetails.vue";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { useRouter } from "vue-router";
 import { success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { useRequestsStore } from "@/store/requests";
+import { defineComponent } from "vue";
+import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
+import type { RequestResultModel } from "@/domain/request/request-result-model";
+import { getDefaultRequestResultModel } from "@/domain/request/request-result-model";
 
-export default {
+export default defineComponent({
   name: "Request",
   components: { Method, RequestDetails },
   props: {
     overviewRequest: {
-      type: Object,
+      type: Object as PropType<RequestOverviewModel>,
       required: true,
     },
   },
@@ -82,25 +86,25 @@ export default {
 
     // Data
     const timeFromNow = ref(getTimeFromNow());
-    const refreshTimeFromNowInterval = ref(null);
-    const request = ref({});
+    let refreshTimeFromNowInterval: any;
+    const request = ref<RequestResultModel>(getDefaultRequestResultModel());
     const accordionOpened = ref(false);
 
     // Lifecycle
     onMounted(() => {
-      refreshTimeFromNowInterval.value = setInterval(() => {
+      refreshTimeFromNowInterval = setInterval(() => {
         timeFromNow.value = getTimeFromNow();
       }, 60000);
     });
     onUnmounted(() => {
-      if (refreshTimeFromNowInterval.value) {
-        clearInterval(refreshTimeFromNowInterval.value);
+      if (refreshTimeFromNowInterval) {
+        clearInterval(refreshTimeFromNowInterval);
       }
     });
 
     // Methods
     const showDetails = async () => {
-      if (Object.keys(request.value).length === 0) {
+      if (!request.value.correlationId) {
         try {
           request.value = await requestStore.getRequest(correlationId());
           accordionOpened.value = true;
@@ -145,7 +149,7 @@ export default {
       deleteRequest,
     };
   },
-};
+});
 </script>
 
 <style scoped>

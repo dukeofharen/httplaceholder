@@ -42,16 +42,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { resources } from "@/constants/resources";
 import { shouldSave } from "@/utils/event";
 import { success } from "@/utils/toast";
-import { useScenariosStore } from "@/store/scenarios";
+import { type ScenarioInputModel, useScenariosStore } from "@/store/scenarios";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "ScenarioForm",
   setup() {
     const route = useRoute();
@@ -59,14 +60,14 @@ export default {
     const scenarioStore = useScenariosStore();
 
     // Data
-    const scenarioForm = ref({
+    const scenarioForm = ref<ScenarioInputModel>({
       scenario: "",
       state: "",
-      hitCount: "",
+      hitCount: 0,
     });
 
     // Computed
-    const scenarioName = computed(() => route.params.scenario);
+    const scenarioName = computed(() => route.params.scenario as string);
     const newScenario = computed(() => !scenarioName.value);
     const title = computed(() =>
       newScenario.value ? "Add scenario" : "Update scenario"
@@ -87,7 +88,7 @@ export default {
         handleHttpError(e);
       }
     };
-    const checkSave = async (e) => {
+    const checkSave = async (e: KeyboardEvent) => {
       if (shouldSave(e) && !saveDisabled.value) {
         e.preventDefault();
         await save();
@@ -95,7 +96,7 @@ export default {
     };
 
     // Lifecycle
-    const keydownEventListener = async (e) => await checkSave(e);
+    const keydownEventListener = async (e: KeyboardEvent) => await checkSave(e);
     onMounted(async () => {
       document.addEventListener("keydown", keydownEventListener);
       if (scenarioName.value) {
@@ -107,7 +108,7 @@ export default {
           scenarioForm.value = await scenarioStore.getScenario(
             scenarioName.value
           );
-        } catch (e) {
+        } catch (e: any) {
           if (e.status !== 404) {
             handleHttpError(e);
           }
@@ -120,7 +121,7 @@ export default {
 
     return { title, scenarioForm, save, saveDisabled };
   },
-};
+});
 </script>
 
 <style scoped></style>

@@ -2,16 +2,16 @@
   <pre ref="codeBlock" :class="languageClass">{{ code }}</pre>
 </template>
 
-<script>
+<script lang="ts">
 import hljs from "highlight.js/lib/core";
 import { computed, onMounted, ref, watch } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "CodeHighlight",
   props: {
     language: {
       type: String,
-      required: true,
       default: "plaintext",
     },
     code: {
@@ -21,7 +21,7 @@ export default {
   },
   setup(props) {
     // Refs
-    const codeBlock = ref(null);
+    const codeBlock = ref<HTMLElement>();
 
     // Computed
     const languageClass = computed(() => props.language);
@@ -46,7 +46,7 @@ export default {
 
     return { codeBlock, languageClass };
   },
-};
+});
 </script>
 
 <style scoped></style>

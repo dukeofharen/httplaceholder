@@ -13,15 +13,15 @@
   </div>
 </template>
 
-<script>
-import Sidebar from "@/components/Sidebar";
-import { computed, onMounted, watch } from "vue";
+<script lang="ts">
+import Sidebar from "@/components/Sidebar.vue";
+import { computed, defineComponent, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useUsersStore } from "@/store/users";
 import { useMetadataStore } from "@/store/metadata";
 import { useGeneralStore } from "@/store/general";
 
-export default {
+export default defineComponent({
   components: { Sidebar },
   setup() {
     const userStore = useUsersStore();
@@ -30,7 +30,7 @@ export default {
     const router = useRouter();
 
     // Functions
-    const setDarkTheme = (darkTheme) => {
+    const setDarkTheme = (darkTheme: boolean) => {
       const bodyElement = document.body;
       const darkName = "dark-theme";
       const lightName = "light-theme";
@@ -63,7 +63,7 @@ export default {
       }
     });
   },
-};
+});
 </script>
 
 <style lang="scss">

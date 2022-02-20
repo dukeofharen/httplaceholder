@@ -27,11 +27,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Modal } from "bootstrap";
 import { onMounted, ref, watch } from "vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Modal",
   props: {
     title: {
@@ -62,16 +63,20 @@ export default {
   },
   setup(props, { emit }) {
     // Template refs
-    const modal = ref(null);
+    const modal = ref<HTMLElement>();
 
     // Functions
     const showModal = () => {
-      const currentModal = Modal.getOrCreateInstance(modal.value);
-      currentModal.show();
+      if (modal.value) {
+        const currentModal = Modal.getOrCreateInstance(modal.value);
+        currentModal.show();
+      }
     };
     const hideModal = () => {
-      const currentModal = Modal.getOrCreateInstance(modal.value);
-      currentModal.hide();
+      if (modal.value) {
+        const currentModal = Modal.getOrCreateInstance(modal.value);
+        currentModal.hide();
+      }
     };
 
     // Methods
@@ -98,9 +103,11 @@ export default {
         hideModal();
       }
 
-      modal.value.addEventListener("hidden.bs.modal", () => {
-        emit("close");
-      });
+      if (modal.value) {
+        modal.value.addEventListener("hidden.bs.modal", () => {
+          emit("close");
+        });
+      }
     });
 
     // Watch
@@ -114,7 +121,7 @@ export default {
 
     return { onYesClick, onNoClick, modal };
   },
-};
+});
 </script>
 
 <style scoped></style>

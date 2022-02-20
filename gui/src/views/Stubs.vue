@@ -146,10 +146,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useRoute } from "vue-router";
 import { computed, onMounted, ref, watch } from "vue";
-import Stub from "@/components/stub/Stub";
+import Stub from "@/components/stub/Stub.vue";
 import { resources } from "@/constants/resources";
 import yaml from "js-yaml";
 import { handleHttpError } from "@/utils/error";
@@ -159,8 +159,11 @@ import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
 import { useStubsStore } from "@/store/stubs";
 import { useGeneralStore } from "@/store/general";
+import { defineComponent } from "vue";
+import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
+import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
 
-export default {
+export default defineComponent({
   name: "Stubs",
   components: { Stub },
   setup() {
@@ -170,29 +173,33 @@ export default {
     const route = useRoute();
 
     // Data
-    const stubs = ref([]);
+    const stubs = ref<FullStubOverviewModel[]>([]);
     const showDeleteAllStubsModal = ref(false);
-    const tenants = ref([]);
+    const tenants = ref<string[]>([]);
     const showDisableStubsModal = ref(false);
     const showEnableStubsModal = ref(false);
     const showDeleteStubsModal = ref(false);
 
     const saveSearchFilters = generalStore.getSaveSearchFilters;
-    let savedFilter = {};
+    let savedFilter: StubSavedFilterModel = {
+      stubFilter: "",
+      selectedTenantName: "",
+    };
     if (saveSearchFilters) {
       savedFilter = getStubFilterForm() || {};
     }
 
     const filter = ref({
-      stubFilter: route.query.filter || savedFilter.stubFilter || "",
+      stubFilter:
+        (route.query.filter as string) || savedFilter.stubFilter || "",
       selectedTenantName:
-        route.query.tenant || savedFilter.selectedTenantName || "",
+        (route.query.tenant as string) || savedFilter.selectedTenantName || "",
     });
 
     // Functions
-    const filterStubs = (input) => {
+    const filterStubs = (input: FullStubOverviewModel[]) => {
       let stubsResult = input;
-      const compare = (a, b) => {
+      const compare = (a: FullStubOverviewModel, b: FullStubOverviewModel) => {
         if (a.stub.id < b.stub.id) return -1;
         if (a.stub.id > b.stub.id) return 1;
         return 0;
@@ -256,7 +263,7 @@ export default {
       }
     };
     const disableStubs = async () => {
-      const disableStub = async (stubIdToDisable) => {
+      const disableStub = async (stubIdToDisable: string) => {
         try {
           await stubStore.disableStub(stubIdToDisable);
         } catch (e) {
@@ -274,7 +281,7 @@ export default {
       await loadData();
     };
     const enableStubs = async () => {
-      const enableStub = async (stubIdToEnable) => {
+      const enableStub = async (stubIdToEnable: string) => {
         try {
           await stubStore.enableStub(stubIdToEnable);
         } catch (e) {
@@ -292,7 +299,7 @@ export default {
       await loadData();
     };
     const deleteStubs = async () => {
-      const deleteStub = async (stubIdToDelete) => {
+      const deleteStub = async (stubIdToDelete: string) => {
         try {
           await stubStore.deleteStub(stubIdToDelete);
         } catch (e) {
@@ -353,7 +360,7 @@ export default {
       filteredNonReadOnlyStubs,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

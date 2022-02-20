@@ -77,8 +77,8 @@
   </accordion-item>
 </template>
 
-<script>
-import { computed, ref } from "vue";
+<script lang="ts">
+import { computed, type PropType, ref } from "vue";
 import yaml from "js-yaml";
 import { resources } from "@/constants/resources";
 import { setIntermediateStub } from "@/utils/session";
@@ -87,12 +87,15 @@ import dayjs from "dayjs";
 import { handleHttpError } from "@/utils/error";
 import { success } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
+import { defineComponent } from "vue";
+import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
+import type { FullStubModel } from "@/domain/stub/full-stub-model";
 
-export default {
+export default defineComponent({
   name: "Stub",
   props: {
     overviewStub: {
-      type: Object,
+      type: Object as PropType<FullStubOverviewModel>,
       required: true,
     },
   },
@@ -106,7 +109,7 @@ export default {
 
     // Data
     const overviewStubValue = ref(props.overviewStub);
-    const fullStub = ref(null);
+    const fullStub = ref<FullStubModel>();
     const showDeleteModal = ref(false);
     const accordionOpened = ref(false);
 
@@ -165,12 +168,14 @@ export default {
       }
     };
     const enableOrDisable = async () => {
-      try {
-        const enabled = await stubStore.flipEnabled(getStubId());
-        fullStub.value.stub.enabled = enabled;
-        overviewStubValue.value.stub.enabled = enabled;
-      } catch (e) {
-        handleHttpError(e);
+      if (fullStub.value) {
+        try {
+          const enabled = await stubStore.flipEnabled(getStubId());
+          fullStub.value.stub.enabled = enabled;
+          overviewStubValue.value.stub.enabled = enabled;
+        } catch (e) {
+          handleHttpError(e);
+        }
       }
     };
     const deleteStub = async () => {
@@ -204,7 +209,7 @@ export default {
       scenario,
     };
   },
-};
+});
 </script>
 
 <style scoped>

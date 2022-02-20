@@ -19,8 +19,10 @@
   </a>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   name: "SidebarMenuItem",
   props: {
     item: {
@@ -28,7 +30,7 @@ export default {
       required: true,
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

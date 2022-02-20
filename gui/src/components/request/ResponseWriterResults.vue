@@ -16,8 +16,11 @@
   </accordion-item>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, type PropType } from "vue";
+import type { StubResponseWriterResultModel } from "@/domain/request/stub-response-writer-result-model";
+
+export default defineComponent({
   name: "ResponseWriterResults",
   props: {
     correlationId: {
@@ -25,11 +28,11 @@ export default {
       required: true,
     },
     stubResponseWriterResults: {
-      type: Array,
+      type: Array as PropType<StubResponseWriterResultModel[]>,
       required: true,
     },
   },
-};
+});
 </script>
 
 <style scoped>

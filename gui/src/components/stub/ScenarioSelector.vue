@@ -28,24 +28,25 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { onMounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useScenariosStore } from "@/store/scenarios";
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "ScenarioSelector",
   setup() {
     const scenarioStore = useScenariosStore();
     const stubFormStore = useStubFormStore();
 
     // Data
-    const scenarios = ref([]);
-    const scenario = ref([]);
+    const scenarios = ref<string[]>([]);
+    const scenario = ref("");
 
     // Methods
-    const scenarioSelected = (scenario) => {
+    const scenarioSelected = (scenario: string) => {
       stubFormStore.setScenario(scenario);
       stubFormStore.closeFormHelper();
     };
@@ -65,7 +66,7 @@ export default {
 
     return { scenarios, scenarioSelected, scenario };
   },
-};
+});
 </script>
 
 <style scoped></style>

@@ -59,7 +59,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, watch, ref } from "vue";
 import { resources } from "@/constants/resources";
@@ -67,12 +67,14 @@ import { simpleEditorThreshold } from "@/constants/technical";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
 import { clearIntermediateStub, getIntermediateStub } from "@/utils/session";
-import FormHelperSelector from "@/components/stub/FormHelperSelector";
-import StubFormButtons from "@/components/stub/StubFormButtons";
-import SimpleEditor from "@/components/simpleEditor/SimpleEditor";
+import FormHelperSelector from "@/components/stub/FormHelperSelector.vue";
+import StubFormButtons from "@/components/stub/StubFormButtons.vue";
+import SimpleEditor from "@/components/simpleEditor/SimpleEditor.vue";
 import { error } from "@/utils/toast";
 import { useStubsStore } from "@/store/stubs";
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
+import { vsprintf } from "sprintf-js";
 
 const editorTypes = {
   none: "none",
@@ -80,7 +82,7 @@ const editorTypes = {
   simple: "simple",
 };
 
-export default {
+export default defineComponent({
   name: "StubForm",
   components: { SimpleEditor, FormHelperSelector, StubFormButtons },
   setup() {
@@ -99,7 +101,7 @@ export default {
     const selectedEditorType = ref(editorTypes.none);
 
     // Computed
-    const stubId = computed(() => route.params.stubId);
+    const stubId = computed(() => route.params.stubId as string);
     const newStub = computed(() => !route.params.stubId);
     const title = computed(() => (newStub.value ? "Add stub" : "Update stub"));
     const input = computed({
@@ -143,9 +145,9 @@ export default {
         try {
           const fullStub = await stubStore.getStub(stubId.value);
           input.value = yaml.dump(fullStub.stub);
-        } catch (e) {
+        } catch (e: any) {
           if (e.status === 404) {
-            error(resources.stubNotFound.format(stubId.value));
+            error(vsprintf(resources.stubNotFound, [stubId.value]));
             await router.push({ name: "StubForm" });
           } else {
             handleHttpError(e);
@@ -174,7 +176,7 @@ export default {
       editorType,
     };
   },
-};
+});
 </script>
 
 <style scoped></style>

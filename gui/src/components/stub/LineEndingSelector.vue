@@ -11,11 +11,12 @@
   </div>
 </template>
 
-<script>
-import { lineEndingTypes } from "@/constants/stubFormResources";
+<script lang="ts">
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
+import { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 
-export default {
+export default defineComponent({
   name: "LineEndingSelector",
   setup() {
     const stubFormStore = useStubFormStore();
@@ -24,27 +25,27 @@ export default {
     const types = [
       {
         name: "As provided in response body",
-        value: null,
+        value: undefined,
       },
       {
         name: "UNIX line endings",
-        value: lineEndingTypes.unix,
+        value: LineEndingType.Unix,
       },
       {
         name: "Windows line endings",
-        value: lineEndingTypes.windows,
+        value: LineEndingType.Windows,
       },
     ];
 
     // Methods
-    const lineEndingSelected = (value) => {
+    const lineEndingSelected = (value: LineEndingType | undefined) => {
       stubFormStore.setLineEndings(value);
       stubFormStore.closeFormHelper();
     };
 
     return { types, lineEndingSelected };
   },
-};
+});
 </script>
 
 <style scoped></style>

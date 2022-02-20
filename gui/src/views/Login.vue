@@ -38,15 +38,16 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { computed, ref } from "vue";
 import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { error } from "@/utils/toast";
-import { useUsersStore } from "@/store/users";
+import { type AuthenticationInput, useUsersStore } from "@/store/users";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "Login",
   setup() {
     const userStore = useUsersStore();
@@ -69,9 +70,9 @@ export default {
         await userStore.authenticate({
           username: username.value,
           password: password.value,
-        });
+        } as AuthenticationInput);
         await router.push({ name: "Requests" });
-      } catch (e) {
+      } catch (e: any) {
         if (e.status === 401) {
           error(resources.credentialsIncorrect);
         } else {
@@ -82,7 +83,7 @@ export default {
 
     return { username, password, logIn, buttonEnabled };
   },
-};
+});
 </script>
 
 <style scoped></style>

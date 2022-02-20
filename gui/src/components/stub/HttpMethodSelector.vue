@@ -11,24 +11,25 @@
   </div>
 </template>
 
-<script>
-import { httpMethods } from "@/constants/stubFormResources";
+<script lang="ts">
 import { useStubFormStore } from "@/store/stubForm";
+import { defineComponent } from "vue";
+import { httpMethods } from "@/domain/stubForm/http-methods";
 
-export default {
+export default defineComponent({
   name: "HttpMethodSelector",
   setup() {
     const stubFormStore = useStubFormStore();
 
     // Methods
-    const methodSelected = (method) => {
+    const methodSelected = (method: string) => {
       stubFormStore.setMethod(method);
       stubFormStore.closeFormHelper();
     };
 
     return { httpMethods, methodSelected };
   },
-};
+});
 </script>
 
 <style scoped></style>

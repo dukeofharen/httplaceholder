@@ -2,7 +2,7 @@ variables:
   DEBIAN_IMAGE: debian:stable-slim
   PWSH_IMAGE: mcr.microsoft.com/powershell:latest
   DOTNET_IMAGE: mcr.microsoft.com/dotnet/sdk:6.0
-  NODE_IMAGE: node:lts-alpine3.9
+  NODE_IMAGE: node:lts-stretch-slim
   DOCKER_IMAGE: docker:latest
 
 stages:
