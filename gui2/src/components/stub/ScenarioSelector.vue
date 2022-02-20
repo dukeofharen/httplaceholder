@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { onMounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useScenariosStore } from "@/store/scenarios";
@@ -42,11 +42,11 @@ export default defineComponent({
     const stubFormStore = useStubFormStore();
 
     // Data
-    const scenarios = ref([]);
-    const scenario = ref([]);
+    const scenarios = ref<string[]>([]);
+    const scenario = ref("");
 
     // Methods
-    const scenarioSelected = (scenario) => {
+    const scenarioSelected = (scenario: string) => {
       stubFormStore.setScenario(scenario);
       stubFormStore.closeFormHelper();
     };
