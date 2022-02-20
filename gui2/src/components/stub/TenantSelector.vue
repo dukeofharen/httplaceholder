@@ -28,7 +28,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { onMounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { useTenantsStore } from "@/store/tenants";
@@ -42,11 +42,11 @@ export default defineComponent({
     const stubFormStore = useStubFormStore();
 
     // Data
-    const tenantNames = ref([]);
+    const tenantNames = ref<string[]>([]);
     const tenant = ref("");
 
     // Methods
-    const tenantSelected = (tenant) => {
+    const tenantSelected = (tenant: string) => {
       stubFormStore.setTenant(tenant);
       stubFormStore.closeFormHelper();
     };
