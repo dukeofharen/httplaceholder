@@ -14,10 +14,11 @@
   </accordion-item>
 </template>
 
-<script>
-import { computed } from "vue";
+<script lang="ts">
+import { computed, type PropType } from "vue";
 import StubExecutionResult from "@/components/request/StubExecutionResult.vue";
 import { defineComponent } from "vue";
+import type { StubExecutionResultModel } from "@/domain/request/stub-execution-result-model";
 
 export default defineComponent({
   name: "StubExecutionResults",
@@ -28,14 +29,14 @@ export default defineComponent({
       required: true,
     },
     stubExecutionResults: {
-      type: Array,
+      type: Array as PropType<StubExecutionResultModel[]>,
       required: true,
     },
   },
   setup(props) {
     // Computed
     const orderedStubExecutionResults = computed(() => {
-      const compare = (a) => {
+      const compare = (a: StubExecutionResultModel) => {
         if (a.passed) return -1;
         if (!a.passed) return 1;
         return 0;
