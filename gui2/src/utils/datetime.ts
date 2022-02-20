@@ -1,7 +1,7 @@
 import { dateTimeFormat } from "@/constants/technical";
 import dayjs from "dayjs";
 
-export function formatDateTime(input: string) {
+export function formatDateTime(input: string): string | undefined {
   if (!input) {
     return;
   }
@@ -9,7 +9,7 @@ export function formatDateTime(input: string) {
   return dayjs(input).format(dateTimeFormat);
 }
 
-export function formatFromNow(input: string) {
+export function formatFromNow(input: string): string | undefined {
   if (!input) {
     return;
   }

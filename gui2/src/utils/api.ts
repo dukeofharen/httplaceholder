@@ -20,7 +20,7 @@ export type HttpError = {
   status: number;
 };
 
-const handleResponse = async (response: Response) => {
+const handleResponse = async (response: Response): Promise<any> => {
   const headers: Headers = {};
   response.headers.forEach((value, key) => (headers[key] = value));
   const contentType = headers["content-type"];
@@ -60,17 +60,17 @@ function prepareRequest(input: any): PreparedRequest {
   }
 }
 
-const handleBeforeSend = (url: string, request: RequestInit) => {
+const handleBeforeSend = (url: string, request: RequestInit): void => {
   for (const handler of beforeSendHandlers) {
     handler(url, request);
   }
 };
 
-export function addBeforeSendHandler(action: BeforeSendHandler) {
+export function addBeforeSendHandler(action: BeforeSendHandler): void {
   beforeSendHandlers.push(action);
 }
 
-export function get(url: string, options?: RequestOptions) {
+export function get(url: string, options?: RequestOptions): Promise<any> {
   options = options || {
     headers: {},
   };
@@ -82,7 +82,7 @@ export function get(url: string, options?: RequestOptions) {
   return fetch(url, request).then(handleResponse);
 }
 
-export function del(url: string, options?: RequestOptions) {
+export function del(url: string, options?: RequestOptions): Promise<any> {
   options = options || {
     headers: {},
   };
@@ -94,7 +94,11 @@ export function del(url: string, options?: RequestOptions) {
   return fetch(url, request).then(handleResponse);
 }
 
-export function put(url: string, body: any, options?: RequestOptions) {
+export function put(
+  url: string,
+  body: any,
+  options?: RequestOptions
+): Promise<any> {
   const preparedRequest = prepareRequest(body);
   options = options || {
     headers: {},
@@ -112,7 +116,11 @@ export function put(url: string, body: any, options?: RequestOptions) {
   return fetch(url, request).then(handleResponse);
 }
 
-export function post(url: string, body: any, options?: RequestOptions) {
+export function post(
+  url: string,
+  body: any,
+  options?: RequestOptions
+): Promise<any> {
   const preparedRequest = prepareRequest(body);
   options = options || {
     headers: {},

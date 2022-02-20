@@ -10,11 +10,11 @@ import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
 import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-model";
 import { SessionKey } from "@/constants/session-key";
 
-export function getIntermediateStub(): any {
+export function getIntermediateStub(): string {
   return getSession(SessionKey.intermediateStub);
 }
 
-export function setIntermediateStub(stub: any) {
+export function setIntermediateStub(stub: string) {
   setSession(SessionKey.intermediateStub, stub);
 }
 

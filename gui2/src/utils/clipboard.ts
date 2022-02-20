@@ -1,4 +1,4 @@
-function fallbackCopyTextToClipboard(text: string) {
+function fallbackCopyTextToClipboard(text: string): void {
   const textArea = document.createElement("textarea");
   textArea.value = text;
 

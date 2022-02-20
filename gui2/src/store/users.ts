@@ -25,7 +25,7 @@ export const useUsersStore = defineStore({
     getUserToken: (state) => state.userToken,
   },
   actions: {
-    async authenticate(input: AuthenticationInput) {
+    async authenticate(input: AuthenticationInput): Promise<any> {
       const username = input.username;
       const password = input.password;
       const token = toBase64(`${username}:${password}`);
@@ -47,7 +47,7 @@ export const useUsersStore = defineStore({
         return Promise.reject(e);
       }
     },
-    logOut() {
+    logOut(): void {
       clearUserToken();
       this.userToken = "";
       document.cookie = `HttPlaceholderLoggedin=;expires=${new Date(

@@ -1,4 +1,4 @@
-export function downloadBlob(filename: string, data: any) {
+export function downloadBlob(filename: string, data: any): void {
   let blob = data;
   if (typeof data === "string") {
     blob = new Blob([data], { type: "application/octet-stream" });

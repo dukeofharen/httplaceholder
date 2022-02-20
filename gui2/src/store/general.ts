@@ -25,7 +25,7 @@ export const useGeneralStore = defineStore({
     getSaveSearchFilters: (state): boolean => state.settings.saveSearchFilters,
   },
   actions: {
-    storeSettings(settings: SettingsModel) {
+    storeSettings(settings: SettingsModel): void {
       this.settings = settings;
       setSettings(settings);
     },

@@ -18,12 +18,12 @@ export const useRequestsStore = defineStore({
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },
-    clearRequests() {
+    clearRequests(): Promise<any> {
       return del("/ph-api/requests")
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },
-    deleteRequest(correlationId: string) {
+    deleteRequest(correlationId: string): Promise<any> {
       return del(`/ph-api/requests/${correlationId}`)
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));

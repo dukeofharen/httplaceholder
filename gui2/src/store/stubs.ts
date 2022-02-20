@@ -52,12 +52,12 @@ export const useStubsStore = defineStore({
       await put(`/ph-api/stubs/${stubId}`, stub);
       return stub.enabled;
     },
-    deleteStub(stubId: string) {
+    deleteStub(stubId: string): Promise<any> {
       return del(`/ph-api/stubs/${stubId}`)
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },
-    deleteStubs() {
+    deleteStubs(): Promise<any> {
       return del("/ph-api/stubs")
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
@@ -71,13 +71,15 @@ export const useStubsStore = defineStore({
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },
-    updateStub(payload: UpdateStubInputModel) {
+    updateStub(payload: UpdateStubInputModel): Promise<any> {
       const parsedObject = yaml.load(payload.input);
       return put(`/ph-api/stubs/${payload.stubId}`, parsedObject)
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },
-    createStubBasedOnRequest(payload: CreateStubBasedOnRequestInputModel) {
+    createStubBasedOnRequest(
+      payload: CreateStubBasedOnRequestInputModel
+    ): Promise<FullStubModel> {
       return post(`/ph-api/requests/${payload.correlationId}/stubs`, {
         doNotCreateStub:
           payload.doNotCreateStub !== null ? payload.doNotCreateStub : false,
