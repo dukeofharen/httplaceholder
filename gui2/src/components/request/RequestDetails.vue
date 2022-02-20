@@ -100,7 +100,9 @@ export default defineComponent({
     const showQueryParameters = computed(
       () => requestParams.value?.url?.includes("?") || false
     );
-    const showRequestBody = computed(() => requestParams.value?.body || false);
+    const showRequestBody = computed(
+      () => !!requestParams.value?.body || false
+    );
     const showStubExecutionResults = computed(
       () =>
         props.request?.stubExecutionResults &&

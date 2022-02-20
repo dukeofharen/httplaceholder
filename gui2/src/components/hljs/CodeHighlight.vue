@@ -12,7 +12,6 @@ export default defineComponent({
   props: {
     language: {
       type: String,
-      required: true,
       default: "plaintext",
     },
     code: {
