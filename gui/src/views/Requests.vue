@@ -63,7 +63,7 @@
         class="badge bg-secondary clear-filter me-2"
         v-if="filter.urlStubIdFilter"
         @click="filter.urlStubIdFilter = ''"
-        >Stub ID, req.ID, URL:
+        >Stub ID / req.ID / URL:
         <strong>{{ filter.urlStubIdFilter }} &times;</strong></span
       >
       <span
@@ -248,5 +248,7 @@ export default defineComponent({
 <style scoped>
 .clear-filter {
   cursor: pointer;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 </style>
