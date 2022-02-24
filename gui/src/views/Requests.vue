@@ -58,6 +58,21 @@
         </button>
       </div>
     </div>
+    <div v-if="showFilterBadges" class="col-md-12 mb-3">
+      <span
+        class="badge bg-secondary clear-filter me-2"
+        v-if="filter.urlStubIdFilter"
+        @click="filter.urlStubIdFilter = ''"
+        >Stub ID, req.ID, URL:
+        <strong>{{ filter.urlStubIdFilter }} &times;</strong></span
+      >
+      <span
+        class="badge bg-secondary clear-filter me-2"
+        v-if="filter.selectedTenantName"
+        @click="filter.selectedTenantName = ''"
+        >Tenant: <strong>{{ filter.selectedTenantName }} &times;</strong></span
+      >
+    </div>
     <accordion v-if="requests.length">
       <Request
         v-for="request of filteredRequests"
@@ -162,6 +177,9 @@ export default defineComponent({
 
       return result;
     });
+    const showFilterBadges = computed(
+      () => filter.value.urlStubIdFilter || filter.value.selectedTenantName
+    );
 
     // Methods
     const loadRequests = async () => {
@@ -221,9 +239,14 @@ export default defineComponent({
       tenants,
       filter,
       showDeleteAllRequestsModal,
+      showFilterBadges,
     };
   },
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.clear-filter {
+  cursor: pointer;
+}
+</style>
