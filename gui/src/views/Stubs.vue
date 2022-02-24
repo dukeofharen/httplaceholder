@@ -128,6 +128,21 @@
       </div>
     </div>
 
+    <div v-if="showFilterBadges" class="col-md-12 mb-3">
+      <span
+        class="badge bg-secondary clear-filter me-2"
+        v-if="filter.stubFilter"
+        @click="filter.stubFilter = ''"
+        >Stub ID: <strong>{{ filter.stubFilter }} &times;</strong></span
+      >
+      <span
+        class="badge bg-secondary clear-filter me-2"
+        v-if="filter.selectedTenantName"
+        @click="filter.selectedTenantName = ''"
+        >Tenant: <strong>{{ filter.selectedTenantName }} &times;</strong></span
+      >
+    </div>
+
     <accordion v-if="stubs.length">
       <Stub
         v-for="stub of filteredStubs"
@@ -229,6 +244,9 @@ export default defineComponent({
     );
     const disableMutationButtons = computed(
       () => !filteredNonReadOnlyStubs.value.length
+    );
+    const showFilterBadges = computed(
+      () => filter.value.stubFilter || filter.value.selectedTenantName
     );
 
     // Methods
@@ -358,9 +376,16 @@ export default defineComponent({
       deleteStubs,
       disableMutationButtons,
       filteredNonReadOnlyStubs,
+      showFilterBadges,
     };
   },
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.clear-filter {
+  cursor: pointer;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+</style>
