@@ -13,9 +13,11 @@
 - Replaced Vuex with Pinia for state storage in the frontend application (https://github.com/dukeofharen/httplaceholder/pull/218).
 - Use Vite as build system and migrated all JavaScript to TypeScript (https://github.com/dukeofharen/httplaceholder/pull/219).
 - Added badges that show the currently active filters and added a simple way to clear the filters (https://github.com/dukeofharen/httplaceholder/pull/220).
+- Added stub validator to check that only 1 response writer is active in the stub (https://github.com/dukeofharen/httplaceholder/pull/221).
 
 # BREAKING CHANGES
 - As mentioned before, the "clean old requests" job is now enabled by default. If you want HttPlaceholder to continue cleaning requests in the old way, set `cleanOldRequestsInBackgroundJob` to `false` to not get a bigger bill on your serverless database than needed.
+- Like described above, it is now not possible anymore to define more than 1 response writer. Before this, it would be useless to do this anyway because only 1 response body writer can be used, but it is now not possible anymore.
 
 [1.4.0]
 - Use Roboto Mono as font for user interface.
