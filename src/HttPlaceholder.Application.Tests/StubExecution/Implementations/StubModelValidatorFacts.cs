@@ -129,10 +129,7 @@ public class StubModelValidatorFacts
         var model = new StubModel
         {
             Id = "stub-1",
-            Response = new StubResponseModel
-            {
-                Image = new StubResponseImageModel {BackgroundColor = colorHexCode}
-            }
+            Response = new StubResponseModel {Image = new StubResponseImageModel {BackgroundColor = colorHexCode}}
         };
 
         // Act
@@ -263,11 +260,60 @@ public class StubModelValidatorFacts
         var result = _validator.ValidateStubModel(model).ToArray();
         if (expectedError == null)
         {
-            Assert.IsFalse(result.Any(), $"No validation errors expected, but got at least one: {string.Join(Environment.NewLine, result)}");
+            Assert.IsFalse(result.Any(),
+                $"No validation errors expected, but got at least one: {string.Join(Environment.NewLine, result)}");
         }
         else
         {
             Assert.AreEqual(result.First(), expectedError);
+        }
+    }
+
+    [DataTestMethod]
+    [DataRow(null, null, null, null, null, null, false)]
+    [DataRow("text", null, null, null, null, null, false)]
+    [DataRow(null, "xml", null, null, null, null, false)]
+    [DataRow(null, null, "json", null, null, null, false)]
+    [DataRow(null, null, null, "html", null, null, false)]
+    [DataRow(null, null, null, null, "base64", null, false)]
+    [DataRow(null, null, null, null, null, "file", false)]
+    [DataRow("text", "xml", null, null, null, null, true)]
+    [DataRow(null, "xml", "json", null, null, null, true)]
+    [DataRow(null, null, "json", "html", null, null, true)]
+    [DataRow(null, null, null, "html", "base64", null, true)]
+    [DataRow(null, null, null, null, "base64", "file", true)]
+    [DataRow("text", "xml", "json", "html", "base64", "file", true)]
+    public void ValidateStubModel_ResponseValidation(string text, string xml, string json, string html, string base64,
+        string file, bool shouldReturnError)
+    {
+        // Arrange
+        var model = new StubModel
+        {
+            Id = "stub",
+            Response = new StubResponseModel
+            {
+                Text = text,
+                Xml = xml,
+                Json = json,
+                Html = html,
+                Base64 = base64,
+                File = file
+            }
+        };
+
+        // Act
+        var result = _validator.ValidateStubModel(model);
+
+        // Assert
+        const string errorToCheck =
+            "Only one of the response body fields (text, json, xml, html, base64, file) can be set";
+        if (shouldReturnError)
+        {
+            Assert.IsTrue(result.Any(r => r == errorToCheck));
+        }
+        else
+        {
+            Assert.IsFalse(result.Any(r => r == errorToCheck));
         }
     }
 }
