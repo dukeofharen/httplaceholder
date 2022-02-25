@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Common.Validation;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
@@ -37,9 +38,8 @@ internal class StubModelValidator : IStubModelValidator
             result.Add($"Value for 'ExtraDuration' cannot be higher than '{allowedMillis}'.");
         }
 
-        // Validate scenario variables.
         ValidateScenarioVariables(stub, result);
-
+        ValidateResponseBody(stub, result);
         return result;
     }
 
@@ -96,6 +96,23 @@ internal class StubModelValidator : IStubModelValidator
         {
             validationErrors.Add(
                 "Scenario condition checkers and response writers can not be set if no 'scenario' is provided.");
+        }
+    }
+
+    private static void ValidateResponseBody(StubModel stub, ICollection<string> validationErrors)
+    {
+        var response = stub?.Response;
+        if (response == null)
+        {
+            return;
+        }
+
+        var count = StringHelper.CountNumberOfNonWhitespaceStrings(response.Text, response.Json, response.Xml,
+            response.Html, response.Base64, response.File);
+        if (count > 1)
+        {
+            validationErrors.Add(
+                "Only one of the response body fields (text, json, xml, html, base64, file) can be set");
         }
     }
 }

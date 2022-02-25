@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace HttPlaceholder.Common.Utilities;
 
@@ -56,4 +57,12 @@ public static class StringHelper
 
         return input;
     }
+
+    /// <summary>
+    /// A method which receives a list of strings and returns the number of strings which are neither null or whitespace.
+    /// </summary>
+    /// <param name="strings">The list of strings.</param>
+    /// <returns>The number of instances where the string is neither null or whitespace.</returns>
+    public static int CountNumberOfNonWhitespaceStrings(params string[] strings) =>
+        strings.AsQueryable().Count(s => !string.IsNullOrWhiteSpace(s));
 }
