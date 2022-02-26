@@ -173,7 +173,7 @@ import { getStubFilterForm, setStubFilterForm } from "@/utils/session";
 import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
 import { useStubsStore } from "@/store/stubs";
-import { useGeneralStore } from "@/store/general";
+import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
 import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
 import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
@@ -185,7 +185,7 @@ export default defineComponent({
   setup() {
     const tenantStore = useTenantsStore();
     const stubStore = useStubsStore();
-    const generalStore = useGeneralStore();
+    const generalStore = useSettingsStore();
     const route = useRoute();
 
     // Data

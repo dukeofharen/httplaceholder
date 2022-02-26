@@ -36,14 +36,14 @@
 
 <script lang="ts">
 import { ref } from "vue";
-import { useGeneralStore } from "@/store/general";
+import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
 import type { SettingsModel } from "@/domain/settings-model";
 
 export default defineComponent({
   name: "Settings",
   setup() {
-    const generalStore = useGeneralStore();
+    const generalStore = useSettingsStore();
 
     // Data
     const settings = ref<SettingsModel>(generalStore.getSettings);

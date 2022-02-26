@@ -10,8 +10,8 @@ const savedSettings: SettingsModel = getSettings() || {
   darkTheme: false,
   saveSearchFilters: true,
 };
-export const useGeneralStore = defineStore({
-  id: "general",
+export const useSettingsStore = defineStore({
+  id: "settings",
   state: () =>
     ({
       settings: <SettingsModel>{

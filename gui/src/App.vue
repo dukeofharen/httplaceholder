@@ -19,14 +19,14 @@ import { computed, defineComponent, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useUsersStore } from "@/store/users";
 import { useMetadataStore } from "@/store/metadata";
-import { useGeneralStore } from "@/store/general";
+import { useSettingsStore } from "@/store/settings";
 
 export default defineComponent({
   components: { Sidebar },
   setup() {
     const userStore = useUsersStore();
     const metadataStore = useMetadataStore();
-    const generalStore = useGeneralStore();
+    const generalStore = useSettingsStore();
     const router = useRouter();
 
     // Functions
