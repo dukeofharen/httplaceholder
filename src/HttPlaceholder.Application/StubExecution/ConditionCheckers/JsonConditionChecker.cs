@@ -152,7 +152,7 @@ public class JsonConditionChecker : IConditionChecker
         return passed;
     }
 
-    private static bool HandleString(string text, JToken jToken, List<string> logging)
+    private static bool HandleString(string text, JToken jToken, ICollection<string> logging)
     {
         switch (jToken.Type)
         {
@@ -165,9 +165,19 @@ public class JsonConditionChecker : IConditionChecker
 
                 return passed;
             case JTokenType.Boolean:
+                var boolInStub = (bool)((JValue)jToken).Value;
                 if (bool.TryParse(text, out var parsedBool))
                 {
-                    return parsedBool == (bool)((JValue)jToken).Value;
+                    return parsedBool == boolInStub;
+                }
+                else
+                {
+                    // Handle the boolean that is passed in the JSON as string. The condition might be a regex that needs to be checked.
+                    var boolAsString = boolInStub.ToString().ToLower();
+                    if (StringHelper.IsRegexMatchOrSubstring(boolAsString, text))
+                    {
+                        return true;
+                    }
                 }
 
                 logging.Add($"Value '{text}' not recognized as valid boolean.");
