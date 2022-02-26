@@ -47,6 +47,12 @@
             >
               {{ enableDisableText }}
             </button>
+            <button
+              class="btn btn-success btn-sm me-2 btn-mobile"
+              @click="downloadStub"
+            >
+              Download
+            </button>
             <router-link
               v-if="hasScenario"
               class="btn btn-success btn-sm me-2 btn-mobile"
@@ -90,6 +96,7 @@ import { useStubsStore } from "@/store/stubs";
 import { defineComponent } from "vue";
 import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
 import type { FullStubModel } from "@/domain/stub/full-stub-model";
+import { downloadBlob } from "@/utils/download";
 
 export default defineComponent({
   name: "Stub",
@@ -188,6 +195,18 @@ export default defineComponent({
         handleHttpError(e);
       }
     };
+    const downloadStub = async () => {
+      try {
+        const fullStub = await stubStore.getStub(getStubId());
+        const stub = fullStub.stub;
+        const downloadString = `${resources.downloadStubsHeader}\n${yaml.dump(
+          stub
+        )}`;
+        downloadBlob(`${stub.id}-stub.yml`, downloadString);
+      } catch (e) {
+        handleHttpError(e);
+      }
+    };
 
     return {
       showDetails,
@@ -207,6 +226,7 @@ export default defineComponent({
       accordionOpened,
       hasScenario,
       scenario,
+      downloadStub,
     };
   },
 });
