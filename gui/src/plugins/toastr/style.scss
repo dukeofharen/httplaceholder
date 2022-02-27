@@ -7,6 +7,9 @@
 
 #toast-container > div{
     opacity: 0.95;
+    box-shadow: 0 0 #fff;
+    -webkit-box-shadow: 0 0 #fff;
+    -moz-box-shadow: 0 0 #fff;
 }
 
 #toast-container .toast {
