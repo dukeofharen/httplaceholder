@@ -134,7 +134,7 @@ public class JsonConditionChecker : IConditionChecker
             return false;
         }
 
-        // Create a temp list for logging the list results. If the request passes, the logging is
+        // Create a temp list for logging the list results. If the request passes, the logging is added to the final list.
         var tempListLogging = new List<string>();
         var passedConditionCount =
             (from configuredObj in list
