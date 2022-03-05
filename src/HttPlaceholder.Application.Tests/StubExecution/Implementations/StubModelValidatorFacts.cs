@@ -316,4 +316,36 @@ public class StubModelValidatorFacts
             Assert.IsFalse(result.Any(r => r == errorToCheck));
         }
     }
+
+    [DataTestMethod]
+    [DataRow(204, true)]
+    [DataRow(200, false)]
+    public void ValidateStubModel_ResponseValidation_ResponseSetAndStatusIs204(int statusCode, bool shouldReturnError)
+    {
+        // Arrange
+        var model = new StubModel
+        {
+            Id = "stub",
+            Response = new StubResponseModel
+            {
+                StatusCode = statusCode,
+                Text = "Some response"
+            }
+        };
+
+        // Act
+        var result = _validator.ValidateStubModel(model);
+
+        // Assert
+        const string errorToCheck =
+            "When HTTP status code is 204, no response body can be set.";
+        if (shouldReturnError)
+        {
+            Assert.IsTrue(result.Any(r => r == errorToCheck));
+        }
+        else
+        {
+            Assert.IsFalse(result.Any(r => r == errorToCheck));
+        }
+    }
 }
