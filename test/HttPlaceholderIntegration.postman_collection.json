@@ -8336,6 +8336,51 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "Bug: allow unknown YAML properties",
+							"item": [
+								{
+									"name": "Create stub",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: stub-test-123\ntenant: integration\nconditions:\n  method: POST\n  unknownField: 'unknown field'\n  url:\n    path: /test-123\nresponse:\n  text: OK TEST 123"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				}
