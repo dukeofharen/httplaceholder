@@ -28,7 +28,7 @@ export default defineComponent({
   setup() {
     const userStore = useUsersStore();
     const metadataStore = useMetadataStore();
-    const generalStore = useSettingsStore();
+    const settingsStore = useSettingsStore();
     const router = useRouter();
 
     // Functions
@@ -46,7 +46,7 @@ export default defineComponent({
     };
 
     // Computed
-    const darkTheme = computed(() => generalStore.getDarkTheme);
+    const darkTheme = computed(() => settingsStore.getDarkTheme);
 
     // Watch
     watch(darkTheme, (darkTheme) => setDarkTheme(darkTheme));
