@@ -5,7 +5,7 @@
 <script lang="ts">
 import { onMounted, ref, watch } from "vue";
 import CodeMirror from "codemirror";
-import { useGeneralStore } from "@/store/general";
+import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -21,7 +21,7 @@ export default defineComponent({
     },
   },
   setup(props, { emit }) {
-    const generalStore = useGeneralStore();
+    const generalStore = useSettingsStore();
 
     // Refs
     const editor = ref<HTMLTextAreaElement>();

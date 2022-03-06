@@ -1,5 +1,6 @@
 type BeforeSendHandler = { (url: string, request: RequestInit): void };
 const beforeSendHandlers: BeforeSendHandler[] = [];
+import { useHttpStore } from "@/store/http";
 
 export interface RequestOptions {
   headers: object | undefined;
@@ -37,7 +38,15 @@ const handleResponse = async (response: Response): Promise<any> => {
     };
   }
 
+  const httpStore = useHttpStore();
+  httpStore.decreaseNumberOfCurrentHttpCalls();
   return isJson ? response.json() : response.text();
+};
+
+const handleError = (error: any): void => {
+  const httpStore = useHttpStore();
+  httpStore.decreaseNumberOfCurrentHttpCalls();
+  throw error;
 };
 
 function prepareRequest(input: any): PreparedRequest {
@@ -79,7 +88,9 @@ export function get(url: string, options?: RequestOptions): Promise<any> {
     headers: options.headers || {},
   };
   handleBeforeSend(url, request);
-  return fetch(url, request).then(handleResponse);
+  const httpSore = useHttpStore();
+  httpSore.increaseNumberOfCurrentHttpCalls();
+  return fetch(url, request).then(handleResponse).catch(handleError);
 }
 
 export function del(url: string, options?: RequestOptions): Promise<any> {
@@ -91,7 +102,9 @@ export function del(url: string, options?: RequestOptions): Promise<any> {
     headers: options.headers || {},
   };
   handleBeforeSend(url, request);
-  return fetch(url, request).then(handleResponse);
+  const httpSore = useHttpStore();
+  httpSore.increaseNumberOfCurrentHttpCalls();
+  return fetch(url, request).then(handleResponse).catch(handleError);
 }
 
 export function put(
@@ -113,7 +126,9 @@ export function put(
     body: preparedRequest.body,
   };
   handleBeforeSend(url, request);
-  return fetch(url, request).then(handleResponse);
+  const httpSore = useHttpStore();
+  httpSore.increaseNumberOfCurrentHttpCalls();
+  return fetch(url, request).then(handleResponse).catch(handleError);
 }
 
 export function post(
@@ -135,5 +150,7 @@ export function post(
     body: preparedRequest.body,
   };
   handleBeforeSend(url, request);
-  return fetch(url, request).then(handleResponse);
+  const httpSore = useHttpStore();
+  httpSore.increaseNumberOfCurrentHttpCalls();
+  return fetch(url, request).then(handleResponse).catch(handleError);
 }

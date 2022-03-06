@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
@@ -109,10 +110,15 @@ internal class StubModelValidator : IStubModelValidator
 
         var count = StringHelper.CountNumberOfNonWhitespaceStrings(response.Text, response.Json, response.Xml,
             response.Html, response.Base64, response.File);
-        if (count > 1)
+        switch (count)
         {
-            validationErrors.Add(
-                "Only one of the response body fields (text, json, xml, html, base64, file) can be set");
+            case 1 when response.StatusCode == (int)HttpStatusCode.NoContent:
+                validationErrors.Add("When HTTP status code is 204, no response body can be set.");
+                break;
+            case > 1:
+                validationErrors.Add(
+                    "Only one of the response body fields (text, json, xml, html, base64, file) can be set");
+                break;
         }
     }
 }

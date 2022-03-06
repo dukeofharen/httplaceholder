@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
+﻿using HttPlaceholder.Common.Utilities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace HttPlaceholder.Formatters;
 
@@ -15,8 +14,8 @@ public static class FormatterUtilities
     /// <param name="options">The <see cref="MvcOptions"/>.</param>
     public static MvcOptions AddYamlFormatting(this MvcOptions options)
     {
-        options.InputFormatters.Add(new YamlInputFormatter(new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build()));
-        options.OutputFormatters.Add(new YamlOutputFormatter(new SerializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build()));
+        options.InputFormatters.Add(new YamlInputFormatter(YamlUtilities.BuildDeserializer()));
+        options.OutputFormatters.Add(new YamlOutputFormatter(YamlUtilities.BuildSerializer()));
         options.FormatterMappings.SetMediaTypeMappingForFormat("yaml", MediaTypeHeaderValues.ApplicationYaml);
         return options;
     }

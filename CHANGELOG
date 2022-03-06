@@ -15,6 +15,12 @@
 - Added badges that show the currently active filters and added a simple way to clear the filters (https://github.com/dukeofharen/httplaceholder/pull/220).
 - Added stub validator to check that only 1 response writer is active in the stub (https://github.com/dukeofharen/httplaceholder/pull/221).
 - Added a button to the stub element in the UI to download the stub as single .yml file (https://github.com/dukeofharen/httplaceholder/pull/222).
+- Added date/time to stubs .yml after download (https://github.com/dukeofharen/httplaceholder/pull/223).
+- Increased the character count where the CodeMirror editor automatically switches to the simple editor from 2000 to 4000 (https://github.com/dukeofharen/httplaceholder/pull/223).
+- Added extra logic to JSON condition checker so boolean values can now also be checked by a regex (https://github.com/dukeofharen/httplaceholder/pull/223).
+- Added CSS spinner to show when asynchronous (HTTP) calls are working (https://github.com/dukeofharen/httplaceholder/pull/223).
+- Show validation error when stub response text is set and HTTP status code is 204 (https://github.com/dukeofharen/httplaceholder/pull/223).
+- Added fix so it is now possible to also send YAML to the API which contains fields that are not in the schema (https://github.com/dukeofharen/httplaceholder/pull/223).
 
 # BREAKING CHANGES
 - As mentioned before, the "clean old requests" job is now enabled by default. If you want HttPlaceholder to continue cleaning requests in the old way, set `cleanOldRequestsInBackgroundJob` to `false` to not get a bigger bill on your serverless database than needed.

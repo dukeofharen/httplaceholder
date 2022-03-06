@@ -84,6 +84,29 @@ public class JsonConditionCheckerFacts
         Assert.IsTrue(string.IsNullOrWhiteSpace(result.Log));
     }
 
+    [TestMethod] public void Validate_ConditionsObject_BooleanConditionIsRegex_ShouldReturnValid()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<JsonConditionChecker>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var jsonConditions = new Dictionary<object, object>
+        {
+            {"boolValue", "^(true|false)$"}
+        };
+        var conditions = new StubConditionsModel {Json = jsonConditions};
+
+        mockHttpContextService
+            .Setup(m => m.GetBody())
+            .Returns(@"{""boolValue"": true}");
+
+        // Act
+        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+        Assert.IsTrue(string.IsNullOrWhiteSpace(result.Log));
+    }
+
     [TestMethod]
     public void Validate_ConditionsObject_JsonIsCorrupt_ShouldReturnInvalid()
     {
@@ -260,7 +283,7 @@ public class JsonConditionCheckerFacts
     }
 
     [TestMethod]
-    public void ConvertJsonConditions_InputIsSomethingEls_ShouldConvertToString()
+    public void ConvertJsonConditions_InputIsSomethingElse_ShouldConvertToString()
     {
         // Arrange
         var input = 123;
@@ -278,7 +301,6 @@ public class JsonConditionCheckerFacts
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonConditionChecker>();
-        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
 
         // Act
         var result = checker.CheckSubmittedJson(123, JToken.Parse("{}"), new List<string>());

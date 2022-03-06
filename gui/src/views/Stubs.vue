@@ -173,10 +173,11 @@ import { getStubFilterForm, setStubFilterForm } from "@/utils/session";
 import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
 import { useStubsStore } from "@/store/stubs";
-import { useGeneralStore } from "@/store/general";
+import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
 import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
 import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
+import dayjs from "dayjs";
 
 export default defineComponent({
   name: "Stubs",
@@ -184,7 +185,7 @@ export default defineComponent({
   setup() {
     const tenantStore = useTenantsStore();
     const stubStore = useStubsStore();
-    const generalStore = useGeneralStore();
+    const generalStore = useSettingsStore();
     const route = useRoute();
 
     // Data
@@ -342,7 +343,8 @@ export default defineComponent({
         const downloadString = `${resources.downloadStubsHeader}\n${yaml.dump(
           stubs
         )}`;
-        downloadBlob("stubs.yml", downloadString);
+        const dateTime = dayjs().format("YYYY-MM-DD_HH-mm");
+        downloadBlob(`${dateTime}-stubs.yml`, downloadString);
       } catch (e) {
         handleHttpError(e);
       }

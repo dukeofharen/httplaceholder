@@ -99,7 +99,7 @@ import { getRequestFilterForm, setRequestFilterForm } from "@/utils/session";
 import { success } from "@/utils/toast";
 import { useTenantsStore } from "@/store/tenants";
 import { useRequestsStore } from "@/store/requests";
-import { useGeneralStore } from "@/store/general";
+import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
 import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
 import type { RequestSavedFilterModel } from "@/domain/request-saved-filter-model";
@@ -110,7 +110,7 @@ export default defineComponent({
   setup() {
     const tenantStore = useTenantsStore();
     const requestStore = useRequestsStore();
-    const generalStore = useGeneralStore();
+    const generalStore = useSettingsStore();
     const route = useRoute();
 
     // Data
