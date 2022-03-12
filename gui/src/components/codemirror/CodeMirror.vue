@@ -41,10 +41,19 @@ export default defineComponent({
         );
         cmInstance.setOption("extraKeys", {
           Tab: (cm) => {
-            // Make sure inserts spaces instead of tabs.
-            const currentIndent = cm.getOption("indentUnit") || 0;
-            const spaces = Array(currentIndent + 1).join(" ");
-            cm.replaceSelection(spaces);
+            if (cm.somethingSelected()) {
+              cm.indentSelection("add");
+            } else {
+              // Make sure inserts spaces instead of tabs.
+              const currentIndent = cm.getOption("indentUnit") || 0;
+              const spaces = Array(currentIndent + 1).join(" ");
+              cm.replaceSelection(spaces);
+            }
+          },
+          "Shift-Tab": (cm) => {
+            if (cm.somethingSelected()) {
+              cm.indentSelection("subtract");
+            }
           },
         });
         if (generalStore.getDarkTheme) {
