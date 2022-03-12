@@ -126,6 +126,38 @@ public class UpdateStubCommandHandlerFacts
     }
 
     [TestMethod]
+    public async Task Handle_StubIdsAreTheSame_ShouldNotDeleteStubs()
+    {
+        // Arrange
+        var mockStubModelValidator = _mocker.GetMock<IStubModelValidator>();
+        var mockStubContext = _mocker.GetMock<IStubContext>();
+        var handler = _mocker.CreateInstance<UpdateStubCommandHandler>();
+
+        var stub = new StubModel {Id = "stub1"};
+        var request = new UpdateStubCommand("Stub1", stub);
+
+        mockStubModelValidator
+            .Setup(m => m.ValidateStubModel(stub))
+            .Returns(Array.Empty<string>());
+
+        var existingStub = new FullStubModel
+        {
+            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}
+        };
+        mockStubContext
+            .Setup(m => m.GetStubAsync(stub.Id))
+            .ReturnsAsync(existingStub);
+
+        // Act
+        await handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id), Times.Never);
+        mockStubContext.Verify(m => m.DeleteStubAsync(request.StubId), Times.Never);
+        mockStubContext.Verify(m => m.AddStubAsync(stub), Times.Once);
+    }
+
+    [TestMethod]
     public async Task Handle_NoValidationErrors_ShouldUpdateStub()
     {
         // Arrange
