@@ -57,8 +57,8 @@
               v-if="hasScenario"
               class="btn btn-success btn-sm me-2 btn-mobile"
               :to="{ name: 'ScenarioForm', params: { scenario: scenario } }"
-              >Set scenario</router-link
-            >
+              >Set scenario
+            </router-link>
             <button
               v-if="!isReadOnly"
               class="btn btn-danger btn-sm me-2 btn-mobile"
@@ -180,6 +180,14 @@ export default defineComponent({
           const enabled = await stubStore.flipEnabled(getStubId());
           fullStub.value.stub.enabled = enabled;
           overviewStubValue.value.stub.enabled = enabled;
+          let message;
+          if (enabled) {
+            message = resources.stubEnabledSuccessfully;
+          } else {
+            message = resources.stubDisabledSuccessfully;
+          }
+
+          success(message);
         } catch (e) {
           handleHttpError(e);
         }

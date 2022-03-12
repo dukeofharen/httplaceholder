@@ -12,6 +12,8 @@ export const resources = {
   stubUpdatedSuccessfully: "Stub was updated successfully.",
   stubsDisabledSuccessfully: "Stubs were disabled successfully.",
   stubsEnabledSuccessfully: "Stubs were enabled successfully.",
+  stubEnabledSuccessfully: "Stub was enabled successfully.",
+  stubDisabledSuccessfully: "Stub was disabled successfully.",
   filteredStubsDeletedSuccessfully: "Stubs were deleted successfully.",
   stubNotFound: "Stub with ID %s was not found.",
   stubsInFileAddedSuccessfully: "Stubs in file '%s' were added successfully.",

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,9 +48,12 @@ public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
             throw new ValidationException(string.Format(exceptionFormat, request.Stub.Id));
         }
 
-        // Delete stub with same ID.
-        await _stubContext.DeleteStubAsync(request.StubId);
-        await _stubContext.DeleteStubAsync(request.Stub.Id);
+        // Delete the stub if the ID has changed.
+        if (!string.Equals(request.StubId, request.Stub.Id, StringComparison.OrdinalIgnoreCase))
+        {
+            await _stubContext.DeleteStubAsync(request.StubId);
+            await _stubContext.DeleteStubAsync(request.Stub.Id);
+        }
 
         await _stubContext.AddStubAsync(request.Stub);
 
