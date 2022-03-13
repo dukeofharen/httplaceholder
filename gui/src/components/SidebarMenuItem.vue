@@ -17,6 +17,16 @@
     <i class="fs-5" :class="'bi-' + item.icon"></i>
     <strong class="mb-1 d-none d-md-inline ms-3">{{ item.title }}</strong>
   </a>
+  <a
+    v-if="item.url"
+    class="list-group-item list-group-item-action menu-item"
+    :title="item.title"
+    :href="item.url"
+    :target="item.targetBlank ? '_blank' : ''"
+  >
+    <i class="fs-5" :class="'bi-' + item.icon"></i>
+    <strong class="mb-1 d-none d-md-inline ms-3">{{ item.title }}</strong>
+  </a>
 </template>
 
 <script lang="ts">
