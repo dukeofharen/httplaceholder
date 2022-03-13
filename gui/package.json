@@ -46,6 +46,8 @@
     "eslint-plugin-vue": "^8.2.0",
     "fs-extra": "^10.0.1",
     "jsdom": "^19.0.0",
+    "marked": "^4.0.12",
+    "mustache": "^4.2.0",
     "prettier": "^2.5.1",
     "sass": "^1.49.8",
     "start-server-and-test": "^1.14.0",

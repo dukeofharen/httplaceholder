@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const fsPromises = require("fs/promises");
+const { readFileSync, writeFileSync } = require("fs");
 const { copySync, exists, ensureDirSync, removeSync } = require("fs-extra");
 
 const readFile = async (filePath) => {
@@ -14,4 +15,6 @@ module.exports = {
   removeSync,
   writeFile: fsPromises.writeFile,
   readdir: fsPromises.readdir,
+  readFileSync,
+  writeFileSync,
 };

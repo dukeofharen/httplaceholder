@@ -5,7 +5,11 @@ const {
   ensureDirSync,
   removeSync,
   copySync,
+  readFileSync,
+  writeFileSync,
 } = require("./helper/file");
+const { parse } = require("marked");
+const { render } = require("mustache");
 
 const publicRootDir = join(__dirname, "../public");
 const publicDocsRootDir = join(publicRootDir, "docs");
@@ -21,3 +25,13 @@ ensureDirSync(publicDocsRootDir);
 
 console.log(`Copying contents from ${docsRootDir} to ${publicDocsRootDir}`);
 copySync(docsRootDir, publicDocsRootDir);
+
+const docsMdPath = join(publicDocsRootDir, "docs.md");
+const docsHtmlPath = join(publicDocsRootDir, "index.html");
+const docsTemplatePath = join(__dirname, "docs-template.html");
+const docsMdContents = readFileSync(docsMdPath).toString();
+const parsedDocs = parse(docsMdContents);
+const docsTemplate = readFileSync(docsTemplatePath).toString();
+const renderedDocs = render(docsTemplate, { contents: parsedDocs });
+console.log(`Writing file ${docsHtmlPath}.`);
+writeFileSync(docsHtmlPath, renderedDocs);
