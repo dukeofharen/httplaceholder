@@ -22,6 +22,7 @@
 - Show validation error when stub response text is set and HTTP status code is 204 (https://github.com/dukeofharen/httplaceholder/pull/223).
 - Added fix so it is now possible to also send YAML to the API which contains fields that are not in the schema (https://github.com/dukeofharen/httplaceholder/pull/223).
 - When updating a stub and the ID has not changed, do not delete the stub as this is pointless (https://github.com/dukeofharen/httplaceholder/pull/225).
+- Fixed indenting issue in CodeMirror editor (https://github.com/dukeofharen/httplaceholder/pull/226).
 
 # BREAKING CHANGES
 - As mentioned before, the "clean old requests" job is now enabled by default. If you want HttPlaceholder to continue cleaning requests in the old way, set `cleanOldRequestsInBackgroundJob` to `false` to not get a bigger bill on your serverless database than needed.
