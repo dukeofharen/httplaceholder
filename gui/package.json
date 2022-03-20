@@ -2,11 +2,12 @@
   "name": "gui",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 10001",
-    "build": "npm run lint && npm run typecheck && vue-tsc --noEmit && vite build",
+    "dev": "npm run parse-docs && vite --host 0.0.0.0 --port 10001",
+    "build": "npm run lint && npm run typecheck && npm run parse-docs && vue-tsc --noEmit && vite build",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "parse-docs": "node scripts/docs-parsing/parse-docs.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
@@ -43,7 +44,10 @@
     "@vue/tsconfig": "^0.1.3",
     "eslint": "^8.5.0",
     "eslint-plugin-vue": "^8.2.0",
+    "fs-extra": "^10.0.1",
     "jsdom": "^19.0.0",
+    "marked": "^4.0.12",
+    "mustache": "^4.2.0",
     "prettier": "^2.5.1",
     "sass": "^1.49.8",
     "start-server-and-test": "^1.14.0",

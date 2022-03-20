@@ -16,6 +16,9 @@ export default defineConfig({
       "/ph-api": {
         target: "http://localhost:5000",
       },
+      "/swagger": {
+        target: "http://localhost:5000",
+      },
       "/requestHub": {
         target: "http://localhost:5000",
         ws: true,

@@ -42,3 +42,12 @@ response:
   exampleHarInput: har,
   exampleOpenApiInput: openapi,
 };
+
+export function renderDocLink(hashTag?: string) {
+  let docsUrl = "docs/docs.html";
+  if (hashTag) {
+    docsUrl += `#${hashTag}`;
+  }
+
+  return docsUrl;
+}

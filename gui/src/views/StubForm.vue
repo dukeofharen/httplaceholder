@@ -5,13 +5,7 @@
     <div class="row">
       <div class="col-md-12">
         Fill in the stub below in YAML format and click on "Save". For examples,
-        visit
-        <a
-          href="https://github.com/dukeofharen/httplaceholder"
-          target="_blank"
-          class="break-word"
-          >https://github.com/dukeofharen/httplaceholder</a
-        >.
+        <a :href="docsUrl" target="_blank" class="break-word">read the docs</a>.
       </div>
     </div>
 
@@ -62,7 +56,7 @@
 <script lang="ts">
 import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, watch, ref } from "vue";
-import { resources } from "@/constants/resources";
+import { renderDocLink, resources } from "@/constants/resources";
 import { simpleEditorThreshold } from "@/constants/technical";
 import { handleHttpError } from "@/utils/error";
 import yaml from "js-yaml";
@@ -99,6 +93,7 @@ export default defineComponent({
       line: true,
     };
     const selectedEditorType = ref(editorTypes.none);
+    const docsUrl = renderDocLink("samples");
 
     // Computed
     const stubId = computed(() => route.params.stubId as string);
@@ -174,6 +169,7 @@ export default defineComponent({
       editorTypes,
       selectedEditorType,
       editorType,
+      docsUrl,
     };
   },
 });

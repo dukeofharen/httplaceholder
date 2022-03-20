@@ -71,6 +71,13 @@ export default defineComponent({
         hideWhenAuthEnabledAndNotLoggedIn: true,
       },
       {
+        title: "Docs",
+        icon: "file-earmark-text",
+        url: "docs/index.html",
+        targetBlank: true,
+        onlyShowWhenLoggedInAndAuthEnabled: false,
+      },
+      {
         title: "Settings",
         icon: "wrench",
         routeName: "Settings",
@@ -99,7 +106,8 @@ export default defineComponent({
           (i.hideWhenAuthEnabledAndNotLoggedIn &&
             authEnabled &&
             isAuthenticated) ||
-          (i.hideWhenAuthEnabledAndNotLoggedIn && !authEnabled)
+          (i.hideWhenAuthEnabledAndNotLoggedIn && !authEnabled) ||
+          i.onlyShowWhenLoggedInAndAuthEnabled === false
       );
     });
 

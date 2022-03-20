@@ -112,6 +112,7 @@ You need, of course, to download HttPlaceholder to your Windows machine. Just fo
 If you've completed the steps above, execute the following steps:
 
 - Create a new site in IIS and (optionally) fill in a hostname and the location to the HttPlaceholder binaries.
+
   ![Step 1](img/iis_step1.png)
 
 - Now, you need to setup the configuration. For this, you need to rename the file `_web.config` in the HttPlaceholder installation folder to `web.config`. You can modify the `web.config` to look like this.
@@ -777,6 +778,7 @@ The JSON condition checker can be used to check if the posted JSON is posted acc
     }
 ]
 ```
+
 ### JSONPath
 
 Using the JSONPath condition checker, you can check the posted JSON body to see if it contains the correct elements. It is possible to add multiple conditions.

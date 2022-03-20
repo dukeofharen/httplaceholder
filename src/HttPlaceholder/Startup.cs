@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace HttPlaceholder;
 
@@ -77,7 +78,11 @@ public class Startup
     {
         services
             .AddMvc()
-            .AddNewtonsoftJson(o => o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore)
+            .AddNewtonsoftJson(o =>
+            {
+                o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                o.SerializerSettings.Converters.Add(new StringEnumConverter());
+            })
             .AddApplicationPart(Assembly.GetExecutingAssembly());
         services.Configure<MvcOptions>(o =>
         {

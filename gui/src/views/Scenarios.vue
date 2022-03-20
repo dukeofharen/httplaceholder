@@ -3,6 +3,12 @@
     <h1>Scenarios</h1>
 
     <div class="col-md-12 mb-3">
+      Scenarios can be used to make stubs stateful. On this page, you can manage
+      the scenarios in HttPlaceholder. To read more about scenarios, go to
+      <a :href="docsUrl" target="_blank">the documentation</a>.
+    </div>
+
+    <div class="col-md-12 mb-3">
       <router-link
         class="btn btn-success me-2 btn-mobile full-width"
         :to="{ name: 'ScenarioForm' }"
@@ -62,7 +68,7 @@
 <script lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
-import { resources } from "@/constants/resources";
+import { renderDocLink, resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { useScenariosStore } from "@/store/scenarios";
 import { defineComponent } from "vue";
@@ -76,6 +82,7 @@ export default defineComponent({
     // Data
     const scenarios = ref<ScenarioModel[]>([]);
     const clearAllScenariosModal = ref(false);
+    const docsUrl = renderDocLink("request-scenario");
 
     // Computed
     const filteredScenarios = computed(() => {
@@ -125,6 +132,7 @@ export default defineComponent({
       clearAllScenariosModal,
       clearAllScenarios,
       deleteScenario,
+      docsUrl,
     };
   },
 });
