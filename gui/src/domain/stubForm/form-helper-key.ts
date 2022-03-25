@@ -12,6 +12,7 @@ export enum FormHelperKey {
   Redirect = "redirect",
   LineEndings = "lineEndings",
   Scenario = "scenario",
+  DynamicMode = "dynamicMode",
 }
 
 export function getValues(): string[] {

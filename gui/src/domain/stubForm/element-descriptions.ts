@@ -47,6 +47,8 @@ export const elementDescriptions = {
   responseBodyHtml: "Let the stub return an HTML response.",
   responseBodyBase64:
     "Let the stub return a binary in the form of Base64. When executing the stub, the Base64 string will be decoded and returned to the client.",
+  responseDynamicMode:
+    "Dynamic mode makes it possible to add variables to the response body or response headers of the stub.",
   responseHeaders:
     "Provide a set of headers that should be added to the response. Place a header on a new line in the form of 'key: value'.",
   responseContentType: "This sets the Content-Type response header.",
