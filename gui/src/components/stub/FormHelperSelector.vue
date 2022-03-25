@@ -91,6 +91,9 @@
           <ScenarioSelector
             v-if="currentSelectedFormHelper === FormHelperKey.Scenario"
           />
+          <SetDynamicMode
+            v-if="currentSelectedFormHelper === FormHelperKey.DynamicMode"
+          />
         </div>
       </div>
     </div>
@@ -106,6 +109,7 @@ import ResponseBodyHelper from "@/components/stub/ResponseBodyHelper.vue";
 import RedirectSelector from "@/components/stub/RedirectSelector.vue";
 import LineEndingSelector from "@/components/stub/LineEndingSelector.vue";
 import ScenarioSelector from "@/components/stub/ScenarioSelector.vue";
+import SetDynamicMode from "@/components/stub/SetDynamicMode.vue";
 import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
 import { useStubFormStore } from "@/store/stubForm";
@@ -127,6 +131,7 @@ export default defineComponent({
     TenantSelector,
     HttpMethodSelector,
     ScenarioSelector,
+    SetDynamicMode,
   },
   setup() {
     const stubFormStore = useStubFormStore();

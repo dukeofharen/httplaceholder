@@ -178,6 +178,11 @@ export const stubFormHelpers = [
     formHelperToOpen: FormHelperKey.ResponseBodyBase64,
   },
   {
+    title: "Enable / disable dynamic mode",
+    subTitle: elementDescriptions.responseDynamicMode,
+    formHelperToOpen: FormHelperKey.DynamicMode,
+  },
+  {
     title: "Response headers",
     subTitle: elementDescriptions.responseHeaders,
     defaultValueMutation: (store: any) => store.setDefaultResponseHeaders(),
