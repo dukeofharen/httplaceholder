@@ -26,9 +26,9 @@
 <script lang="ts">
 import { renderDocLink } from "@/constants/resources";
 import { useStubFormStore } from "@/store/stubForm";
-import { computed } from "vue";
+import { computed, defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "SetDynamicMode",
   setup() {
     const stubFormStore = useStubFormStore();
@@ -44,7 +44,7 @@ export default {
 
     return { docUrl, dynamicModeEnabled };
   },
-};
+});
 </script>
 
 <style scoped></style>
