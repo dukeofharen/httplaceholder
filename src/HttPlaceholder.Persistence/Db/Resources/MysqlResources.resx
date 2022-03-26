@@ -120,12 +120,12 @@
   <data name="MigrateScript" xml:space="preserve">
       <value>/*Table structure for table `requests` */
 CREATE TABLE IF NOT EXISTS `requests` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `correlation_id` VARCHAR(100) NOT NULL,
-  `executing_stub_id` VARCHAR(100) DEFAULT NULL,
-  `request_begin_time` DATETIME NOT NULL,
-  `request_end_time` DATETIME DEFAULT NULL,
-  `json` LONGTEXT NOT NULL,
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `correlation_id` VARCHAR(100) NOT NULL,
+    `executing_stub_id` VARCHAR(100) DEFAULT NULL,
+    `request_begin_time` DATETIME NOT NULL,
+    `request_end_time` DATETIME DEFAULT NULL,
+    `json` LONGTEXT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_correlation_id` (`correlation_id`),
   KEY `ix_executing_stub_id` (`executing_stub_id`),
@@ -135,10 +135,10 @@ CREATE TABLE IF NOT EXISTS `requests` (
 
 /*Table structure for table `stubs` */
 CREATE TABLE IF NOT EXISTS `stubs` (
-  `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
-  `stub_id` VARCHAR(255) NOT NULL,
-  `stub` LONGTEXT NOT NULL,
-  `stub_type` VARCHAR(20) NOT NULL,
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `stub_id` VARCHAR(255) NOT NULL,
+    `stub` LONGTEXT NOT NULL,
+    `stub_type` VARCHAR(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_stub_id` (`stub_id`)
 ) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
@@ -158,6 +158,35 @@ WHERE NOT EXISTS (SELECT * FROM metadata);
 
 /*Modify executing_stub_id column in requests table*/
 ALTER TABLE requests MODIFY `executing_stub_id` VARCHAR(255) DEFAULT NULL;
+
+/*Add responses table*/
+CREATE TABLE IF NOT EXISTS `responses` (
+    `id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+    `http_status_code` INT NOT NULL,
+    `headers` LONGTEXT NOT NULL,
+    `content` LONGTEXT NOT NULL,
+    `content_is_base64` TINYINT(1) NOT NULL,
+    FOREIGN KEY (id) REFERENCES requests(id) ON DELETE CASCADE
+) ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8MB4;
+
+/*Add "has_response" field to "requests" table*/
+SET @dbname = DATABASE();
+SET @tablename = "requests";
+SET @columnname = "has_response";
+SET @preparedStatement = (SELECT IF(
+  (
+    SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE
+      (table_name = @tablename)
+      AND (table_schema = @dbname)
+      AND (column_name = @columnname)
+  ) &gt; 0,
+  "SELECT 1",
+  CONCAT("ALTER TABLE ", @tablename, " ADD ", @columnname, " TINYINT(1);")
+));
+PREPARE alterIfNotExists FROM @preparedStatement;
+EXECUTE alterIfNotExists;
+DEALLOCATE PREPARE alterIfNotExists;
 
 /*Add code for custom migrations here*/
 /*SET @dbname = DATABASE();
