@@ -135,7 +135,6 @@ IF (SELECT COUNT(*) FROM sys.indexes WHERE name = 'ix_stub_id' AND object_id = O
 		[stub_id] ASC
 	) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY];
 
-
 -- Create requests table and indices
 IF OBJECT_ID(N'dbo.requests', N'U') IS NULL
 BEGIN
@@ -171,6 +170,36 @@ BEGIN
 END;
 
 -- Modify executing_stub_id column in requests table
-ALTER TABLE [dbo].[requests] ALTER COLUMN executing_stub_id [nvarchar](255) NULL;</value>
+ALTER TABLE [dbo].[requests] ALTER COLUMN executing_stub_id [nvarchar](255) NULL;
+
+--- Add foreign keys to other tables (because I forgot :( )
+IF (SELECT COUNT(*) FROM sys.indexes WHERE name = 'PK_Stubs' AND object_id = OBJECT_ID('dbo.stubs')) = 0
+BEGIN
+	ALTER TABLE stubs ADD CONSTRAINT PK_Stubs PRIMARY KEY NONCLUSTERED (id);
+END;
+
+IF (SELECT COUNT(*) FROM sys.indexes WHERE name = 'PK_Requests' AND object_id = OBJECT_ID('dbo.requests')) = 0
+BEGIN
+	ALTER TABLE requests ADD CONSTRAINT PK_Requests PRIMARY KEY NONCLUSTERED (id);
+END;
+
+IF (SELECT COUNT(*) FROM sys.indexes WHERE name = 'PK_Metadata' AND object_id = OBJECT_ID('dbo.metadata')) = 0
+BEGIN
+	ALTER TABLE metadata ADD CONSTRAINT PK_Metadata PRIMARY KEY NONCLUSTERED (id);
+END;
+
+-- Add responses table
+IF OBJECT_ID(N'dbo.responses', N'U') IS NULL
+BEGIN
+    CREATE TABLE [dbo].[responses](
+        [id] [bigint] IDENTITY(1,1) NOT NULL,
+        [http_status_code] [int] NOT NULL,
+        [headers] [nvarchar](max) NOT NULL,
+        [content] [nvarchar](max) NOT NULL,
+        [content_is_base64] [tinyint] NOT NULL,
+        CONSTRAINT PK_Responses PRIMARY KEY NONCLUSTERED (id),
+        CONSTRAINT FK_Responses_Requests FOREIGN KEY (id) REFERENCES requests (id)
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+END;</value>
   </data>
 </root>
