@@ -48,7 +48,7 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
             var checkScript = _fileService.ReadAllText(checkFilePath);
             _logger.LogDebug($"Checking file {checkFileName}.");
             var checkResult = await ctx.ExecuteScalarAsync<int>(checkScript);
-            if (checkResult >= 1)
+            if (checkResult > 0)
             {
                 _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration will not be executed.");
             }
@@ -61,7 +61,7 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
         }
     }
 
-    private string GetDatabaseMigrationsFolder()
+    internal string GetDatabaseMigrationsFolder()
     {
         if (!string.IsNullOrWhiteSpace(
                 _configuration.GetConnectionString(MysqlDbConnectionFactory.ConnectionStringKey)))
