@@ -8,47 +8,52 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Dapper" Version="2.0.123" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-        <PackageReference Include="MySqlConnector" Version="2.1.0" />
-        <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-        <PackageReference Include="System.Data.SQLite" Version="1.0.115.5" />
+        <PackageReference Include="Dapper" Version="2.0.123"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0"/>
+        <PackageReference Include="MySqlConnector" Version="2.1.0"/>
+        <PackageReference Include="System.Data.SqlClient" Version="4.8.3"/>
+        <PackageReference Include="System.Data.SQLite" Version="1.0.115.5"/>
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
+        <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj"/>
     </ItemGroup>
     <ItemGroup>
-      <Compile Update="Db\Resources\MysqlResources.Designer.cs">
-        <DependentUpon>MysqlResources.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-      </Compile>
-      <Compile Update="Db\Resources\SqliteResources.Designer.cs">
-        <DependentUpon>SqliteResources.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-      </Compile>
-      <Compile Update="Db\Resources\SqlServerResources.Designer.cs">
-        <DependentUpon>SqlServerResources.resx</DependentUpon>
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-      </Compile>
+        <Compile Update="Db\Resources\MysqlResources.Designer.cs">
+            <DependentUpon>MysqlResources.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+        <Compile Update="Db\Resources\SqliteResources.Designer.cs">
+            <DependentUpon>SqliteResources.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
+        <Compile Update="Db\Resources\SqlServerResources.Designer.cs">
+            <DependentUpon>SqlServerResources.resx</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
-      <EmbeddedResource Update="Db\Resources\MysqlResources.resx">
-        <LastGenOutput>MysqlResources.Designer.cs</LastGenOutput>
-        <Generator>ResXFileCodeGenerator</Generator>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Db\Resources\SqliteResources.resx">
-        <LastGenOutput>SqliteResources.Designer.cs</LastGenOutput>
-        <Generator>ResXFileCodeGenerator</Generator>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Db\Resources\SqlServerResources.resx">
-        <LastGenOutput>SqlServerResources.Designer.cs</LastGenOutput>
-        <Generator>ResXFileCodeGenerator</Generator>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Db\Resources\MysqlResources.resx">
+            <LastGenOutput>MysqlResources.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Db\Resources\SqliteResources.resx">
+            <LastGenOutput>SqliteResources.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Db\Resources\SqlServerResources.resx">
+            <LastGenOutput>SqlServerResources.Designer.cs</LastGenOutput>
+            <Generator>ResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="SqlScripts\Migrations\*\*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 </Project>
