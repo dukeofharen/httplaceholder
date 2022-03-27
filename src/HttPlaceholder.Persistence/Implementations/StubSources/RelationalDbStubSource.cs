@@ -1,11 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
+using HttPlaceholder.Persistence.Db.Implementations;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
@@ -23,17 +29,29 @@ internal class RelationalDbStubSource : IWritableStubSource
     private readonly IQueryStore _queryStore;
     private readonly IDatabaseContextFactory _databaseContextFactory;
     private readonly IRelationalDbStubCache _relationalDbStubCache;
+    private readonly IFileService _fileService;
+    private readonly IConfiguration _configuration;
+    private readonly IAssemblyService _assemblyService;
+    private readonly ILogger<RelationalDbStubSource> _logger;
 
     public RelationalDbStubSource(
         IOptions<SettingsModel> options,
         IQueryStore queryStore,
         IDatabaseContextFactory databaseContextFactory,
-        IRelationalDbStubCache relationalDbStubCache)
+        IRelationalDbStubCache relationalDbStubCache,
+        IFileService fileService,
+        IConfiguration configuration,
+        IAssemblyService assemblyService,
+        ILogger<RelationalDbStubSource> logger)
     {
         _settings = options.Value;
         _queryStore = queryStore;
         _databaseContextFactory = databaseContextFactory;
         _relationalDbStubCache = relationalDbStubCache;
+        _fileService = fileService;
+        _configuration = configuration;
+        _assemblyService = assemblyService;
+        _logger = logger;
     }
 
     /// <inheritdoc />
@@ -155,9 +173,60 @@ internal class RelationalDbStubSource : IWritableStubSource
     public async Task PrepareStubSourceAsync()
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        await ctx.ExecuteAsync(_queryStore.MigrationsQuery);
+        var dbFolder = GetDatabaseMigrationsFolder();
+        var migrationsRootFolder = Path.Combine(_assemblyService.GetExecutingAssemblyRootPath(),
+            "SqlScripts/Migrations", dbFolder);
+        var migrationFiles = _fileService.GetFiles(migrationsRootFolder, "*.migration.sql").OrderBy(f => f);
+        foreach (var file in migrationFiles)
+        {
+            var fileBaseName = Path.GetFileName(file).Split('.').First();
+            var checkFileName = $"{fileBaseName}.check.sql";
+            var checkFilePath = Path.Combine(migrationsRootFolder, checkFileName);
+            if (!_fileService.FileExists(checkFilePath))
+            {
+                throw new InvalidOperationException($"Could not find file {checkFilePath}");
+            }
+
+            // The check script will be loaded. It is expected that the script returns an 1 or higher if the migration should NOT be executed and a "0" if the migration SHOULD be executed.
+            var checkScript = _fileService.ReadAllText(checkFilePath);
+            _logger.LogDebug($"Checking file {checkFileName}.");
+            var checkResult = await ctx.ExecuteScalarAsync<int>(checkScript);
+            if (checkResult >= 1)
+            {
+                _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration will not be executed.");
+            }
+            else
+            {
+                _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration {file} will be executed.");
+                var migrationScript = _fileService.ReadAllText(file);
+                await ctx.ExecuteAsync(migrationScript);
+            }
+        }
 
         // Also initialize the cache at startup.
         await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
+    }
+
+    private string GetDatabaseMigrationsFolder()
+    {
+        if (!string.IsNullOrWhiteSpace(
+                _configuration.GetConnectionString(MysqlDbConnectionFactory.ConnectionStringKey)))
+        {
+            return "mysql";
+        }
+
+        if (!string.IsNullOrWhiteSpace(
+                _configuration.GetConnectionString(SqliteDbConnectionFactory.ConnectionStringKey)))
+        {
+            return "sqlite";
+        }
+
+        if (!string.IsNullOrWhiteSpace(
+                _configuration.GetConnectionString(SqlServerDbConnectionFactory.ConnectionStringKey)))
+        {
+            return "mssql";
+        }
+
+        throw new InvalidOperationException("Could not determine migrations folder for relational DB.");
     }
 }

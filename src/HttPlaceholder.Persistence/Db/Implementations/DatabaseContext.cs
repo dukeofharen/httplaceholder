@@ -34,5 +34,10 @@ internal class DatabaseContext : IDatabaseContext
         await _dbConnection.QueryAsync<TResult>(sql, param);
 
     /// <inheritdoc />
-    public IEnumerable<TResult> Query<TResult>(string sql, object param = null) => _dbConnection.Query<TResult>(sql, param);
+    public IEnumerable<TResult> Query<TResult>(string sql, object param = null) =>
+        _dbConnection.Query<TResult>(sql, param);
+
+    /// <inheritdoc />
+    public Task<T> ExecuteScalarAsync<T>(string sql, object param = null) =>
+        _dbConnection.ExecuteScalarAsync<T>(sql, param);
 }

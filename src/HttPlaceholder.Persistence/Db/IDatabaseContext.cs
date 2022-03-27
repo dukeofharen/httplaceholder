@@ -51,4 +51,13 @@ public interface IDatabaseContext : IDisposable
     /// <typeparam name="TResult">The type the result should deserialize to.</typeparam>
     /// <returns>A list of results.</returns>
     IEnumerable<TResult> Query<TResult>(string sql, object param = null);
+
+    /// <summary>
+    /// Execute parameterized SQL that selects a single value.
+    /// </summary>
+    /// <typeparam name="T">The type to return.</typeparam>
+    /// <param name="sql">The SQL to execute.</param>
+    /// <param name="param">The parameters to use for this command.</param>
+    /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
+    Task<T> ExecuteScalarAsync<T>(string sql, object param = null);
 }
