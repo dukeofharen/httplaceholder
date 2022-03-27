@@ -1,6 +1,4 @@
-﻿using HttPlaceholder.Persistence.Db.Resources;
-
-namespace HttPlaceholder.Persistence.Db.Implementations;
+﻿namespace HttPlaceholder.Persistence.Db.Implementations;
 
 /// <summary>
 /// A store that contains queries for working with MS SQL Server.
@@ -76,7 +74,4 @@ WHERE stub_id = @StubId";
     /// <inheritdoc />
     public string UpdateStubUpdateTrackingIdQuery =>
         "UPDATE metadata SET stub_update_tracking_id = @StubUpdateTrackingId";
-
-    /// <inheritdoc />
-    public string MigrationsQuery => SqlServerResources.MigrateScript;
 }

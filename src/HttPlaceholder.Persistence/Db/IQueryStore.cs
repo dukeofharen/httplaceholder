@@ -69,9 +69,4 @@ public interface IQueryStore
     /// Returns the query for updating the "stub update tracking ID".
     /// </summary>
     string UpdateStubUpdateTrackingIdQuery { get; }
-
-    /// <summary>
-    /// Returns the query that will migrate the database to the latest version.
-    /// </summary>
-    string MigrationsQuery { get; }
 }
