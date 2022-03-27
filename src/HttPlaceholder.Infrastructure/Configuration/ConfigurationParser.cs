@@ -99,6 +99,7 @@ public class ConfigurationParser
         argsDictionary.EnsureEntryExists(ConfigKeys.OldRequestsQueueLengthKey, DefaultOldRequestsQueueLength);
         argsDictionary.EnsureEntryExists(ConfigKeys.MaximumExtraDurationMillisKey, DefaultMaximumExtraDuration);
         argsDictionary.EnsureEntryExists(ConfigKeys.CleanOldRequestsInBackgroundJob, CleanOldRequestsInBackgroundJob);
+        argsDictionary.EnsureEntryExists(ConfigKeys.StoreResponses, StoreResponses);
 
         // Determine and set file storage location.
         string fileStorageLocation = null;

@@ -34,4 +34,9 @@ public class StorageSettingsModel
     /// Gets or sets whether the deletion of old requests should be done in a background job.
     /// </summary>
     public bool CleanOldRequestsInBackgroundJob { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the responses as returned by HttPlaceholder should be stored.
+    /// </summary>
+    public bool StoreResponses { get; set; }
 }

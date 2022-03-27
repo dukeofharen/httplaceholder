@@ -68,6 +68,11 @@ public static class Constants
     public const bool CleanOldRequestsInBackgroundJob = true;
 
     /// <summary>
+    /// Whether the responses should be stored by default.
+    /// </summary>
+    public const bool StoreResponses = false;
+
+    /// <summary>
     /// The default maximum "extra duration" milliseconds.
     /// </summary>
     public const int DefaultMaximumExtraDuration = 60000;

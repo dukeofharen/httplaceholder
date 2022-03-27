@@ -196,6 +196,7 @@ public class ConfigurationParserFacts
         Assert.AreEqual("40", result["Storage:OldRequestsQueueLength"]);
         Assert.AreEqual("60000", result["Stub:MaximumExtraDurationMillis"]);
         Assert.AreEqual("True", result["Storage:CleanOldRequestsInBackgroundJob"]);
+        Assert.AreEqual("False", result["Storage:StoreResponses"]);
     }
 
     [DataTestMethod]
