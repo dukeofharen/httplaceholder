@@ -1,4 +1,3 @@
--- Check whether the stubs table already exists
 SELECT COUNT(*)
 FROM sqlite_schema AS m
 WHERE m.type = 'table'
