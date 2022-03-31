@@ -129,6 +129,12 @@ public interface IStubContext
     Task<IEnumerable<string>> GetTenantNamesAsync();
 
     /// <summary>
+    /// Saves a response.
+    /// </summary>
+    /// <param name="responseModel">The response to be saved.</param>
+    Task SaveResponseAsync(ResponseModel responseModel);
+
+    /// <summary>
     /// Prepares all stub sources.
     /// </summary>
     Task PrepareAsync();

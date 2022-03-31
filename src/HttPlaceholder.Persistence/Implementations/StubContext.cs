@@ -221,6 +221,9 @@ internal class StubContext : IStubContext
         .Distinct();
 
     /// <inheritdoc />
+    public Task SaveResponseAsync(ResponseModel responseModel) => throw new NotImplementedException();
+
+    /// <inheritdoc />
     public async Task PrepareAsync()
     {
         foreach (var source in _stubSources)
