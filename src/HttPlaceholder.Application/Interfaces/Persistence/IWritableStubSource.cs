@@ -63,4 +63,10 @@ public interface IWritableStubSource : IStubSource
     /// Clean all old requests.
     /// </summary>
     Task CleanOldRequestResultsAsync();
+
+    /// <summary>
+    /// Saves a response.
+    /// </summary>
+    /// <param name="responseModel">The response to be saved.</param>
+    Task SaveResponseAsync(ResponseModel responseModel);
 }

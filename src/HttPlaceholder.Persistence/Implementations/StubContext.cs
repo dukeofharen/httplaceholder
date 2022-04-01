@@ -221,7 +221,11 @@ internal class StubContext : IStubContext
         .Distinct();
 
     /// <inheritdoc />
-    public Task SaveResponseAsync(ResponseModel responseModel) => throw new NotImplementedException();
+    public async Task SaveResponseAsync(ResponseModel responseModel)
+    {
+        var source = GetWritableStubSource();
+        await source.SaveResponseAsync(responseModel);
+    }
 
     /// <inheritdoc />
     public async Task PrepareAsync()
