@@ -412,6 +412,28 @@ public class StubContextFacts
     }
 
     [TestMethod]
+    public async Task GetResponseAsync_HappyFlow()
+    {
+        // arrange
+        var correlationId = Guid.NewGuid().ToString();
+        var response = new ResponseModel();
+        var stubSource = new Mock<IWritableStubSource>();
+        stubSource
+            .Setup(m => m.GetResponseAsync(correlationId))
+            .ReturnsAsync(response);
+
+        _stubSources.Add(stubSource.Object);
+
+        var context = _mocker.CreateInstance<StubContext>();
+
+        // act
+        var result = await context.GetResponseAsync(correlationId);
+
+        // assert
+        Assert.AreEqual(response, result);
+    }
+
+    [TestMethod]
     public async Task GetRequestResultsByStubIdAsync_HappyFlow()
     {
         // arrange

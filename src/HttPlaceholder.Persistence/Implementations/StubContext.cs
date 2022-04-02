@@ -192,6 +192,13 @@ internal class StubContext : IStubContext
     }
 
     /// <inheritdoc />
+    public async Task<ResponseModel> GetResponseAsync(string correlationId)
+    {
+        var source = GetWritableStubSource();
+        return await source.GetResponseAsync(correlationId);
+    }
+
+    /// <inheritdoc />
     public async Task DeleteAllRequestResultsAsync()
     {
         var source = GetWritableStubSource();

@@ -107,6 +107,13 @@ public interface IStubContext
     Task<RequestResultModel> GetRequestResultAsync(string correlationId);
 
     /// <summary>
+    /// Retrieves a specific <see cref="ResponseModel"/> based on request correlation ID.
+    /// </summary>
+    /// <param name="correlationId">The request correlation ID.</param>
+    /// <returns>A <see cref="ResponseModel"/>.</returns>
+    Task<ResponseModel> GetResponseAsync(string correlationId);
+
+    /// <summary>
     /// Deletes all requests.
     /// </summary>
     Task DeleteAllRequestResultsAsync();
