@@ -31,12 +31,32 @@ public class InMemoryStubSourceFacts
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
         var request = CreateRequestResultModel();
+        var response = CreateResponseModel();
 
         // Act
-        await source.AddRequestResultAsync(request);
+        await source.AddRequestResultAsync(request, response);
 
         // Assert
         Assert.AreEqual(request, source.RequestResultModels.Single());
+        Assert.AreEqual(response, source.StubResponses.Single());
+        Assert.AreEqual(response, source.RequestResponseMap[request]);
+        Assert.IsTrue(request.HasResponse);
+    }
+
+    [TestMethod]
+    public async Task AddRequestResultAsync_HappyFlow_ResponseNotSet()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        var request = CreateRequestResultModel();
+
+        // Act
+        await source.AddRequestResultAsync(request, null);
+
+        // Assert
+        Assert.IsFalse(source.StubResponses.Any());
+        Assert.IsFalse(source.RequestResponseMap.Any());
+        Assert.IsFalse(request.HasResponse);
     }
 
     [TestMethod]
@@ -76,6 +96,7 @@ public class InMemoryStubSourceFacts
         Assert.AreEqual(requestModel.ExecutingStubId, overviewRequest.ExecutingStubId);
         Assert.AreEqual(requestModel.RequestBeginTime, overviewRequest.RequestBeginTime);
         Assert.AreEqual(requestModel.RequestEndTime, overviewRequest.RequestEndTime);
+        Assert.AreEqual(requestModel.HasResponse, overviewRequest.HasResponse);
     }
 
     [TestMethod]
@@ -100,14 +121,16 @@ public class InMemoryStubSourceFacts
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
-        var request = CreateRequestResultModel();
-        source.RequestResultModels.Add(request);
+        source.RequestResultModels.Add(CreateRequestResultModel());
+        source.StubResponses.Add(CreateResponseModel());
 
         // Act
         await source.DeleteAllRequestResultsAsync();
 
         // Assert
         Assert.IsFalse(source.RequestResultModels.Any());
+        Assert.IsFalse(source.StubResponses.Any());
+        Assert.IsFalse(source.RequestResponseMap.Any());
     }
 
     [TestMethod]
@@ -127,19 +150,51 @@ public class InMemoryStubSourceFacts
     }
 
     [TestMethod]
-    public async Task DeleteRequestAsync_RequestFound_ShouldReturnTrue()
+    public async Task DeleteRequestAsync_RequestFound_ShouldReturnTrue_NoResponse()
     {
         // Arrange
         var source = _mocker.CreateInstance<InMemoryStubSource>();
-        var request = CreateRequestResultModel();
-        source.RequestResultModels.Add(request);
+        var request1 = CreateRequestResultModel();
+        var request2 = CreateRequestResultModel();
+        source.RequestResultModels.Add(request1);
+        source.RequestResultModels.Add(request2);
+
+        var response2 = CreateResponseModel();
+        source.StubResponses.Add(response2);
+        source.RequestResponseMap.Add(request2, response2);
 
         // Act
-        var result = await source.DeleteRequestAsync(request.CorrelationId);
+        var result = await source.DeleteRequestAsync(request1.CorrelationId);
 
         // Assert
         Assert.IsTrue(result);
-        Assert.IsFalse(source.RequestResultModels.Any());
+        Assert.IsFalse(source.RequestResultModels.Any(r => r == request1));
+        Assert.IsTrue(source.StubResponses.All(r => r == response2));
+        Assert.IsTrue(source.RequestResponseMap.All(r => r.Key == request2));
+    }
+
+    [TestMethod]
+    public async Task DeleteRequestAsync_RequestFound_ShouldReturnTrue_WithResponse()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        var request1 = CreateRequestResultModel();
+        var request2 = CreateRequestResultModel();
+        source.RequestResultModels.Add(request1);
+        source.RequestResultModels.Add(request2);
+
+        var response2 = CreateResponseModel();
+        source.StubResponses.Add(response2);
+        source.RequestResponseMap.Add(request2, response2);
+
+        // Act
+        var result = await source.DeleteRequestAsync(request2.CorrelationId);
+
+        // Assert
+        Assert.IsTrue(result);
+        Assert.IsFalse(source.RequestResultModels.Any(r => r == request2));
+        Assert.IsFalse(source.StubResponses.Any(r => r == response2));
+        Assert.IsFalse(source.RequestResponseMap.Any(r => r.Key == request2));
     }
 
     [TestMethod]
@@ -269,9 +324,21 @@ public class InMemoryStubSourceFacts
             return request;
         }
 
+        ResponseModel CreateAndAddResponseModel(RequestResultModel request)
+        {
+            var response = CreateResponseModel();
+            source.StubResponses.Add(response);
+            source.RequestResponseMap.Add(request, response);
+            return response;
+        }
+
         var now = DateTime.Now;
         var request1 = CreateAndAddRequestResultModel(now.AddSeconds(-1));
+        var response1 = CreateAndAddResponseModel(request1);
+
         var request2 = CreateAndAddRequestResultModel(now.AddSeconds(-10));
+        var response2 = CreateAndAddResponseModel(request2);
+
         var request3 = CreateAndAddRequestResultModel(now.AddSeconds(-9));
 
         // Act
@@ -280,8 +347,15 @@ public class InMemoryStubSourceFacts
         // Assert
         Assert.AreEqual(2, source.RequestResultModels.Count);
         Assert.IsTrue(source.RequestResultModels.Contains(request1));
+        Assert.IsTrue(source.StubResponses.Any(r => r == response1));
+        Assert.IsTrue(source.RequestResponseMap.Any(r => r.Key == request1));
+
         Assert.IsFalse(source.RequestResultModels.Contains(request2));
+        Assert.IsFalse(source.StubResponses.Any(r => r == response2));
+        Assert.IsFalse(source.RequestResponseMap.Any(r => r.Key == request2));
+
         Assert.IsTrue(source.RequestResultModels.Contains(request3));
+        Assert.IsFalse(source.RequestResponseMap.Any(r => r.Key == request3));
     }
 
     private static RequestResultModel CreateRequestResultModel()
@@ -301,12 +375,21 @@ public class InMemoryStubSourceFacts
             StubTenant = _faker.Random.Word(),
             ExecutingStubId = _faker.Random.Words(),
             RequestBeginTime = _faker.Date.Past(),
-            RequestEndTime = _faker.Date.Past()
+            RequestEndTime = _faker.Date.Past(),
+            HasResponse = false
         };
     }
 
     private static StubModel CreateStubModel() => new()
     {
         Id = _faker.Random.Word(), Tenant = _faker.Random.Word(), Enabled = _faker.Random.Bool()
+    };
+
+    private static ResponseModel CreateResponseModel() => new()
+    {
+        Body = _faker.Random.Bytes(100),
+        BodyIsBinary = true,
+        Headers = {{_faker.Random.Word(), _faker.Random.Word()}},
+        StatusCode = _faker.Random.Int(100, 599)
     };
 }
