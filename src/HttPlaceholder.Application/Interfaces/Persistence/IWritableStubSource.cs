@@ -49,6 +49,13 @@ public interface IWritableStubSource : IStubSource
     Task<RequestResultModel> GetRequestAsync(string correlationId);
 
     /// <summary>
+    /// Gets a <see cref="ResponseModel"/> by request correlation ID.
+    /// </summary>
+    /// <param name="correlationId">The request correlation ID.</param>
+    /// <returns>The response.</returns>
+    Task<ResponseModel> GetResponseAsync(string correlationId);
+
+    /// <summary>
     /// Deletes all requests.
     /// </summary>
     Task DeleteAllRequestResultsAsync();

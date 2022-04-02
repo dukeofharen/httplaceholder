@@ -117,6 +117,56 @@ public class InMemoryStubSourceFacts
     }
 
     [TestMethod]
+    public async Task GetResponseAsync_RequestNotFound_ShouldReturnNull()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        var request = CreateRequestResultModel();
+        source.RequestResultModels.Add(request);
+
+        // Act
+        var result = await source.GetResponseAsync(request.CorrelationId + "1");
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public async Task GetResponseAsync_ResponseNotFound_ShouldReturnNull()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+        var request = CreateRequestResultModel();
+        source.RequestResultModels.Add(request);
+
+        // Act
+        var result = await source.GetResponseAsync(request.CorrelationId);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public async Task GetResponseAsync_HappyFlow()
+    {
+        // Arrange
+        var source = _mocker.CreateInstance<InMemoryStubSource>();
+
+        var request = CreateRequestResultModel();
+        source.RequestResultModels.Add(request);
+
+        var response = CreateResponseModel();
+        source.StubResponses.Add(response);
+        source.RequestResponseMap.Add(request, response);
+
+        // Act
+        var result = await source.GetResponseAsync(request.CorrelationId);
+
+        // Assert
+        Assert.AreEqual(response, result);
+    }
+
+    [TestMethod]
     public async Task DeleteAllRequestResultsAsync_HappyFlow()
     {
         // Arrange

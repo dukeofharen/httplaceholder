@@ -78,7 +78,23 @@ internal class InMemoryStubSource : IWritableStubSource
     {
         lock (_lock)
         {
-            return Task.FromResult(RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId));
+            return Task.FromResult(GetRequest(correlationId));
+        }
+    }
+
+    /// <inheritdoc />
+    public Task<ResponseModel> GetResponseAsync(string correlationId)
+    {
+        lock (_lock)
+        {
+            var nullValue = Task.FromResult((ResponseModel)null);
+            var request = GetRequest(correlationId);
+            if (request == null)
+            {
+                return nullValue;
+            }
+
+            return !RequestResponseMap.ContainsKey(request) ? nullValue : Task.FromResult(RequestResponseMap[request]);
         }
     }
 
@@ -186,4 +202,7 @@ internal class InMemoryStubSource : IWritableStubSource
             RequestResponseMap.Remove(request);
         }
     }
+
+    private RequestResultModel GetRequest(string correlationId) =>
+        RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId);
 }
