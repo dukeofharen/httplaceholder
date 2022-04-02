@@ -17,7 +17,6 @@ public class GetRequestQueryHandler : IRequestHandler<GetRequestQuery, RequestRe
     /// <summary>
     /// Constructs a <see cref="GetRequestQueryHandler"/> instance.
     /// </summary>
-    /// <param name="stubContext"></param>
     public GetRequestQueryHandler(IStubContext stubContext)
     {
         _stubContext = stubContext;

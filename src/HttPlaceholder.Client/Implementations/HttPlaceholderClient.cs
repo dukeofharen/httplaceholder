@@ -143,6 +143,19 @@ namespace HttPlaceholder.Client.Implementations
         }
 
         /// <inheritdoc />
+        public async Task<ResponseDto> GetResponseAsync(string correlationId)
+        {
+            using var response = await HttpClient.GetAsync($"/ph-api/requests/{correlationId}/response");
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttPlaceholderClientException(response.StatusCode, content);
+            }
+
+            return JsonConvert.DeserializeObject<ResponseDto>(content);
+        }
+
+        /// <inheritdoc />
         public async Task DeleteAllRequestsAsync()
         {
             using var response = await HttpClient.DeleteAsync("/ph-api/requests");

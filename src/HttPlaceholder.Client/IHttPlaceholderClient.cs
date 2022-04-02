@@ -39,6 +39,7 @@ namespace HttPlaceholder.Client
         /// Retrieves all requests made to HttPlaceholder as overview.
         /// </summary>
         /// <returns>The request overview.</returns>
+        /// <returns>The request overview.</returns>
         Task<IEnumerable<RequestOverviewDto>> GetRequestOverviewAsync();
 
         /// <summary>
@@ -47,6 +48,13 @@ namespace HttPlaceholder.Client
         /// <param name="correlationId">The request correlation ID.</param>
         /// <returns>The request.</returns>
         Task<RequestResultDto> GetRequestAsync(string correlationId);
+
+        /// <summary>
+        /// Retrieves a response by correlation ID.
+        /// </summary>
+        /// <param name="correlationId">The request correlation ID.</param>
+        /// <returns>The response.</returns>
+        Task<ResponseDto> GetResponseAsync(string correlationId);
 
         /// <summary>
         /// Deletes all requests.
