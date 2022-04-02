@@ -175,7 +175,7 @@ public class StubHandlingMiddlewareFacts
         httpContextServiceMock.Verify(m => m.AddHeader("X-Header1", "val1"));
         httpContextServiceMock.Verify(m => m.AddHeader("X-Header2", "val2"));
         httpContextServiceMock.Verify(m => m.WriteAsync(stubResponse.Body));
-        stubContextMock.Verify(m => m.AddRequestResultAsync(requestResultModel));
+        stubContextMock.Verify(m => m.AddRequestResultAsync(requestResultModel, stubResponse));
         requestNotifyMock.Verify(m => m.NewRequestReceivedAsync(mappedRequest));
         Assert.IsFalse(_mockLogger.Contains(LogLevel.Information, "Request: "));
     }

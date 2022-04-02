@@ -86,6 +86,7 @@ public class StubHandlingMiddleware
         var correlation = Guid.NewGuid().ToString();
         var requestLogger = _requestLoggerFactory.GetRequestLogger();
         requestLogger.SetCorrelationId(correlation);
+        ResponseModel response = null;
         try
         {
             // Enable rewind here to be able to read the posted body multiple times.
@@ -101,7 +102,7 @@ public class StubHandlingMiddleware
 
             _httpContextService.ClearResponse();
             _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
-            var response = await _stubRequestExecutor.ExecuteRequestAsync();
+            response = await _stubRequestExecutor.ExecuteRequestAsync();
             _httpContextService.SetStatusCode(response.StatusCode);
             foreach (var (key, value) in response.Headers)
             {
@@ -142,7 +143,7 @@ public class StubHandlingMiddleware
             _logger.LogInformation($"Request: {jsonLoggingResult}");
         }
 
-        await _stubContext.AddRequestResultAsync(loggingResult);
+        await _stubContext.AddRequestResultAsync(loggingResult, response);
 
         // We need to map the model to a DTO here, because the frontend expects that.
         await _requestNotify.NewRequestReceivedAsync(_mapper.Map<RequestOverviewDto>(loggingResult));

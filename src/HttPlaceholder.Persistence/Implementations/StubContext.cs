@@ -146,7 +146,7 @@ internal class StubContext : IStubContext
     }
 
     /// <inheritdoc />
-    public async Task AddRequestResultAsync(RequestResultModel requestResult)
+    public async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel response)
     {
         var source = GetWritableStubSource();
 
@@ -160,7 +160,7 @@ internal class StubContext : IStubContext
             ? await GetStubAsync(requestResult.ExecutingStubId)
             : null;
         requestResult.StubTenant = stub?.Stub?.Tenant;
-        await source.AddRequestResultAsync(requestResult);
+        await source.AddRequestResultAsync(requestResult, _settings.Storage?.StoreResponses == true ? response : null);
     }
 
     /// <inheritdoc />
@@ -219,13 +219,6 @@ internal class StubContext : IStubContext
         .Where(n => !string.IsNullOrWhiteSpace(n))
         .OrderBy(n => n)
         .Distinct();
-
-    /// <inheritdoc />
-    public async Task SaveResponseAsync(ResponseModel responseModel)
-    {
-        var source = GetWritableStubSource();
-        await source.SaveResponseAsync(responseModel);
-    }
 
     /// <inheritdoc />
     public async Task PrepareAsync()

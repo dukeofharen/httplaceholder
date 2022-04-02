@@ -237,6 +237,7 @@ public class StubContextFacts
     {
         // arrange
         var stubSource = new Mock<IWritableStubSource>();
+        _settings.Storage.StoreResponses = true;
 
         var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
         stubSource
@@ -244,8 +245,9 @@ public class StubContextFacts
             .ReturnsAsync(stub);
 
         var request = new RequestResultModel {ExecutingStubId = stub.Id};
+        var response = new ResponseModel();
         stubSource
-            .Setup(m => m.AddRequestResultAsync(request))
+            .Setup(m => m.AddRequestResultAsync(request, response))
             .Returns(Task.CompletedTask);
 
         _stubSources.Add(stubSource.Object);
@@ -253,13 +255,42 @@ public class StubContextFacts
         var context = _mocker.CreateInstance<StubContext>();
 
         // act
-        await context.AddRequestResultAsync(request);
+        await context.AddRequestResultAsync(request, response);
 
         // assert
-        stubSource.Verify(m => m.AddRequestResultAsync(request), Times.Once);
+        stubSource.Verify(m => m.AddRequestResultAsync(request, response), Times.Once);
         stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Once);
 
         Assert.AreEqual(stub.Tenant, request.StubTenant);
+    }
+
+    [TestMethod]
+    public async Task AddRequestResultAsync_HappyFlow_DoNotStoreResponse()
+    {
+        // arrange
+        var stubSource = new Mock<IWritableStubSource>();
+        _settings.Storage.StoreResponses = false;
+
+        var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
+        stubSource
+            .Setup(m => m.GetStubAsync(stub.Id))
+            .ReturnsAsync(stub);
+
+        var request = new RequestResultModel {ExecutingStubId = stub.Id};
+        var response = new ResponseModel();
+        stubSource
+            .Setup(m => m.AddRequestResultAsync(request, response))
+            .Returns(Task.CompletedTask);
+
+        _stubSources.Add(stubSource.Object);
+
+        var context = _mocker.CreateInstance<StubContext>();
+
+        // act
+        await context.AddRequestResultAsync(request, response);
+
+        // assert
+        stubSource.Verify(m => m.AddRequestResultAsync(request, null), Times.Once);
     }
 
     [TestMethod]
@@ -267,6 +298,7 @@ public class StubContextFacts
     {
         // arrange
         _settings.Storage.CleanOldRequestsInBackgroundJob = true;
+        _settings.Storage.StoreResponses = true;
 
         var stubSource = new Mock<IWritableStubSource>();
 
@@ -276,8 +308,9 @@ public class StubContextFacts
             .ReturnsAsync(stub);
 
         var request = new RequestResultModel {ExecutingStubId = stub.Id};
+        var response = new ResponseModel();
         stubSource
-            .Setup(m => m.AddRequestResultAsync(request))
+            .Setup(m => m.AddRequestResultAsync(request, response))
             .Returns(Task.CompletedTask);
 
         _stubSources.Add(stubSource.Object);
@@ -285,10 +318,10 @@ public class StubContextFacts
         var context = _mocker.CreateInstance<StubContext>();
 
         // act
-        await context.AddRequestResultAsync(request);
+        await context.AddRequestResultAsync(request, response);
 
         // assert
-        stubSource.Verify(m => m.AddRequestResultAsync(request), Times.Once);
+        stubSource.Verify(m => m.AddRequestResultAsync(request, response), Times.Once);
         stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Never);
     }
 
@@ -594,23 +627,5 @@ public class StubContextFacts
         // assert
         stubSource1.Verify(m => m.PrepareStubSourceAsync(), Times.Once);
         stubSource2.Verify(m => m.PrepareStubSourceAsync(), Times.Once);
-    }
-
-    [TestMethod]
-    public async Task SaveResponseAsync_HappyFlow()
-    {
-        // arrange
-        var stubSource = new Mock<IWritableStubSource>();
-        _stubSources.Add(stubSource.Object);
-
-        var responseModel = new ResponseModel();
-
-        var context = _mocker.CreateInstance<StubContext>();
-
-        // act
-        await context.SaveResponseAsync(responseModel);
-
-        // assert
-        stubSource.Verify(m => m.SaveResponseAsync(responseModel), Times.Once);
     }
 }

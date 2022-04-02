@@ -49,7 +49,7 @@ public class FileSystemStubSourceFacts
             .Setup(m => m.WriteAllText(filePath, It.Is<string>(c => c.Contains(request.CorrelationId))));
 
         // Act / assert
-        await source.AddRequestResultAsync(request);
+        await source.AddRequestResultAsync(request, null); // TODO
     }
 
     [TestMethod]

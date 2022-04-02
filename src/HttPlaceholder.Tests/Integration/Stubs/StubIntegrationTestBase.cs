@@ -25,6 +25,7 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
     protected Mock<IDateTime> DateTimeMock;
     protected MockHttpMessageHandler MockHttp;
     protected readonly IList<RequestResultModel> Requests = new List<RequestResultModel>();
+    protected readonly IList<ResponseModel> Responses = new List<ResponseModel>();
 
     protected void InitializeStubIntegrationTest(string yamlFileName)
     {
@@ -58,8 +59,12 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             new Mock<IStubModelValidator>().Object);
         _writableStubSourceMock = new Mock<IWritableStubSource>();
         _writableStubSourceMock
-            .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>()))
-            .Callback<RequestResultModel>(Requests.Add);
+            .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>(), It.IsAny<ResponseModel>()))
+            .Callback<RequestResultModel, ResponseModel>((req, res) =>
+            {
+                Requests.Add(req);
+                Responses.Add(res);
+            });
 
         MockHttp = new MockHttpMessageHandler();
         var mockHttpClientFactory = new Mock<IHttpClientFactory>();

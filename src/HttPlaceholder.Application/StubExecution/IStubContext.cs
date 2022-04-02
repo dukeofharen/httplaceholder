@@ -77,7 +77,8 @@ public interface IStubContext
     /// Adds a <see cref="RequestResultModel"/>.
     /// </summary>
     /// <param name="requestResult">The request to add.</param>
-    Task AddRequestResultAsync(RequestResultModel requestResult);
+    /// <param name="responseModel">The response that belongs to the request.</param>
+    Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel);
 
     /// <summary>
     /// Retrieves a list of <see cref="RequestResultModel"/>.
@@ -127,12 +128,6 @@ public interface IStubContext
     /// </summary>
     /// <returns>A list with all tenant names.</returns>
     Task<IEnumerable<string>> GetTenantNamesAsync();
-
-    /// <summary>
-    /// Saves a response.
-    /// </summary>
-    /// <param name="responseModel">The response to be saved.</param>
-    Task SaveResponseAsync(ResponseModel responseModel);
 
     /// <summary>
     /// Prepares all stub sources.

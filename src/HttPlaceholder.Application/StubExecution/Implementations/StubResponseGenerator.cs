@@ -13,19 +13,13 @@ internal class StubResponseGenerator : IStubResponseGenerator
 {
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IEnumerable<IResponseWriter> _responseWriters;
-    private readonly IStubContext _stubContext;
-    private readonly SettingsModel _settings;
 
     public StubResponseGenerator(
         IRequestLoggerFactory requestLoggerFactory,
-        IEnumerable<IResponseWriter> responseWriters,
-        IOptions<SettingsModel> options,
-        IStubContext stubContext)
+        IEnumerable<IResponseWriter> responseWriters)
     {
         _requestLoggerFactory = requestLoggerFactory;
         _responseWriters = responseWriters;
-        _stubContext = stubContext;
-        _settings = options.Value;
     }
 
     /// <inheritdoc/>
@@ -40,11 +34,6 @@ internal class StubResponseGenerator : IStubResponseGenerator
             {
                 requestLogger.SetResponseWriterResult(result);
             }
-        }
-
-        if (_settings.Storage?.StoreResponses == true)
-        {
-            await _stubContext.SaveResponseAsync(response);
         }
 
         return response;

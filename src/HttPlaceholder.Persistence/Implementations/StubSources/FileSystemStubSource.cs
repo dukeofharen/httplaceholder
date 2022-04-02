@@ -32,7 +32,7 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task AddRequestResultAsync(RequestResultModel requestResult)
+    public Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel)
     {
         var path = GetRequestsFolder();
         var filePath = Path.Combine(path, $"{requestResult.CorrelationId}.json");

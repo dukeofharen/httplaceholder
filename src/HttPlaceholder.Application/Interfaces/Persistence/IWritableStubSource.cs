@@ -26,7 +26,8 @@ public interface IWritableStubSource : IStubSource
     /// Add a <see cref="RequestResultModel"/>.
     /// </summary>
     /// <param name="requestResult">The request.</param>
-    Task AddRequestResultAsync(RequestResultModel requestResult);
+    /// /// <param name="responseModel">The response that belongs to the request.</param>
+    Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel);
 
     /// <summary>
     /// Gets a list of <see cref="RequestResultModel"/>.
@@ -63,10 +64,4 @@ public interface IWritableStubSource : IStubSource
     /// Clean all old requests.
     /// </summary>
     Task CleanOldRequestResultsAsync();
-
-    /// <summary>
-    /// Saves a response.
-    /// </summary>
-    /// <param name="responseModel">The response to be saved.</param>
-    Task SaveResponseAsync(ResponseModel responseModel);
 }

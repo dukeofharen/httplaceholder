@@ -97,38 +97,4 @@ public class StubResponseGeneratorFacts
         // assert
         Assert.AreEqual(404, result.StatusCode);
     }
-
-    [TestMethod]
-    public async Task GenerateResponseAsync_StoreResponsesFalse_ShouldNotStoreResponses()
-    {
-        // Arrange
-        var stub = new StubModel();
-        _settings.Storage.StoreResponses = false;
-
-        var stubContextMock = _mocker.GetMock<IStubContext>();
-        var generator = _mocker.CreateInstance<StubResponseGenerator>();
-
-        // Act
-        var result = await generator.GenerateResponseAsync(stub);
-
-        // Assert
-        stubContextMock.Verify(m => m.SaveResponseAsync(result), Times.Never);
-    }
-
-    [TestMethod]
-    public async Task GenerateResponseAsync_StoreResponsesTrue_ShouldStoreResponses()
-    {
-        // Arrange
-        var stub = new StubModel();
-        _settings.Storage.StoreResponses = true;
-
-        var stubContextMock = _mocker.GetMock<IStubContext>();
-        var generator = _mocker.CreateInstance<StubResponseGenerator>();
-
-        // Act
-        var result = await generator.GenerateResponseAsync(stub);
-
-        // Assert
-        stubContextMock.Verify(m => m.SaveResponseAsync(result));
-    }
 }
