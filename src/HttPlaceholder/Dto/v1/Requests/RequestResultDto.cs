@@ -49,4 +49,9 @@ public class RequestResultDto : IMapFrom<RequestResultModel>, IMapTo<RequestResu
     /// Gets or sets the request end time.
     /// </summary>
     public DateTime RequestEndTime { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether a response is saved for this request.
+    /// </summary>
+    public bool HasResponse { get; set; }
 }
