@@ -8,7 +8,7 @@ internal class SqliteQueryStore : IQueryStore
     /// <inheritdoc />
     public string GetRequestsQuery => @"SELECT
   id,
-  correlation_id AS CorelationId,
+  correlation_id AS CorrelationId,
   executing_stub_id AS ExecutingStubId,
   request_begin_time AS RequestBeginTime,
   request_end_time AS RequestEndTime,
@@ -19,7 +19,7 @@ FROM requests";
     /// <inheritdoc />
     public string GetRequestQuery => @"SELECT
   id,
-  correlation_id AS CorelationId,
+  correlation_id AS CorrelationId,
   executing_stub_id AS ExecutingStubId,
   request_begin_time AS RequestBeginTime,
   request_end_time AS RequestEndTime,
