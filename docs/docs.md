@@ -1848,7 +1848,15 @@ httplaceholder --oldRequestsQueueLength 100
 
 The maximum number of HTTP requests that the in memory stub source (used for the REST API) should store before truncating old records. Default: 40.
 
-### Run the cleaning of requests in the background
+### Storing responses (optional)
+
+```bash
+httplaceholder --storeResponses true
+```
+
+Whether to store the responses as returned by HttPlaceholder stubs, if a request was matched with a stub. This might be handy when troubleshooting an issue. This is disabled by default, as leaving this option on might bloat your data storage.
+
+### Run the cleaning of requests in the background (optional)
 
 ```bash
 httplaceholder --cleanOldRequestsInBackgroundJob
@@ -1917,6 +1925,7 @@ If you just installed HttPlaceholder, a file called `_config.json` is available 
     "httpsPort": "5050",
     "inputFile": null,
     "oldRequestsQueueLength": 40,
+    "storeResponses": false,
     "pfxPassword": null,
     "pfxPath": null,
     "port": "5000",
@@ -2016,7 +2025,7 @@ You have several options here.
 
 ### Request details
 
-When clicking on any of the requests, the request details will be displayed. You can view the actual request being made; the URL, the headers, the query parameters, the stubs that are matched etc.
+When clicking on any of the requests, the request details will be displayed. You can view the actual request being made; the URL, the headers, the query parameters, the sent response, the stubs that are matched etc.
 
 ![](img/ui/request_details.png)
 
