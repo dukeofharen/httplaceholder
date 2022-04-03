@@ -26,7 +26,7 @@ public interface IWritableStubSource : IStubSource
     /// Add a <see cref="RequestResultModel"/>.
     /// </summary>
     /// <param name="requestResult">The request.</param>
-    /// /// <param name="responseModel">The response that belongs to the request.</param>
+    /// <param name="responseModel">The response that belongs to the request.</param>
     Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel);
 
     /// <summary>
