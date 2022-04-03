@@ -11,6 +11,7 @@ export interface RequestResultModel {
   stubTenant: string;
   requestBeginTime: string;
   requestEndTime: string;
+  hasResponse: boolean;
 }
 
 export function getDefaultRequestResultModel(): RequestResultModel {
@@ -29,5 +30,6 @@ export function getDefaultRequestResultModel(): RequestResultModel {
     stubExecutionResults: [],
     stubResponseWriterResults: [],
     stubTenant: "",
+    hasResponse: false,
   };
 }

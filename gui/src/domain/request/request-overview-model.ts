@@ -6,4 +6,5 @@ export interface RequestOverviewModel {
   stubTenant: string;
   requestBeginTime: string;
   requestEndTime: string;
+  hasResponse: boolean;
 }
