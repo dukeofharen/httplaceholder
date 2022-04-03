@@ -22,6 +22,11 @@ public static class Constants
     public const string RequestsFolderName = "requests";
 
     /// <summary>
+    /// The responses folder name.
+    /// </summary>
+    public const string ResponsesFolderName = "responses";
+
+    /// <summary>
     /// The metadata file name.
     /// </summary>
     public const string MetadataFileName = "metadata.json";
@@ -66,6 +71,11 @@ public static class Constants
     /// Whether the CleanOldRequests job is enabled by default.
     /// </summary>
     public const bool CleanOldRequestsInBackgroundJob = true;
+
+    /// <summary>
+    /// Whether the responses should be stored by default.
+    /// </summary>
+    public const bool StoreResponses = false;
 
     /// <summary>
     /// The default maximum "extra duration" milliseconds.

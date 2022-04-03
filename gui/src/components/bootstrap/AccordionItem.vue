@@ -43,6 +43,7 @@ export default defineComponent({
       } else {
         if (openedValue.value === null) {
           openedValue.value = true;
+          emit("opened");
         } else {
           openedValue.value = !openedValue.value;
           if (openedValue.value) {

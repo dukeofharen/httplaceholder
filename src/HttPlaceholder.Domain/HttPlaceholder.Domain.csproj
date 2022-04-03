@@ -8,12 +8,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
-        <PackageReference Include="YamlDotNet" Version="11.2.1"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="YamlDotNet" Version="11.2.1" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj"/>
+        <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
     </ItemGroup>
 
 </Project>

@@ -35,6 +35,7 @@
         <div class="accordion">
           <RequestHeaders :request="request" />
           <QueryParams v-if="showQueryParameters" :request="request" />
+          <RequestResponse v-if="request.hasResponse" :request="request" />
         </div>
       </div>
       <div class="col-md-12 mb-3" v-if="showRequestBody">
@@ -64,6 +65,7 @@ import { computed, type PropType } from "vue";
 import { formatDateTime, getDuration } from "@/utils/datetime";
 import RequestHeaders from "@/components/request/RequestHeaders.vue";
 import QueryParams from "@/components/request/QueryParams.vue";
+import RequestResponse from "@/components/request/RequestResponse.vue";
 import StubExecutionResults from "@/components/request/StubExecutionResults.vue";
 import ResponseWriterResults from "@/components/request/ResponseWriterResults.vue";
 import RequestBody from "@/components/request/RequestBody.vue";
@@ -78,6 +80,7 @@ export default defineComponent({
     RequestHeaders,
     QueryParams,
     ResponseWriterResults,
+    RequestResponse,
   },
   props: {
     request: {

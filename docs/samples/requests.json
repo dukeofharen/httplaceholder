@@ -1753,6 +1753,40 @@
 							"response": []
 						},
 						{
+							"name": "GET response",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "pass",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/requests/537111f3-c38f-4ba0-83b9-929abdb0bf19/response",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"requests",
+										"537111f3-c38f-4ba0-83b9-929abdb0bf19",
+										"response"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "POST create stub by existing request",
 							"request": {
 								"method": "POST",

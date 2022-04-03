@@ -23,7 +23,7 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         var correlation = Guid.NewGuid().ToString();
-        StubSource.RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
+        StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
 
         // Act
         using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests");
@@ -41,7 +41,7 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         var correlation = Guid.NewGuid().ToString();
-        StubSource.RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
+        StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
 
         // Act
         using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}1");
@@ -55,7 +55,7 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Arrange
         var correlation = Guid.NewGuid().ToString();
-        StubSource.RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
+        StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
 
         // Act
         using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}");
@@ -68,11 +68,52 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     }
 
     [TestMethod]
+    public async Task RestApiIntegration_Request_GetResponse_RequestNotFound_ShouldReturn404()
+    {
+        // Arrange
+        var correlation = Guid.NewGuid().ToString();
+        var request = new RequestResultModel {CorrelationId = correlation};
+        var responseModel = new ResponseModel();
+        StubSource.RequestResultModels.Add(request);
+        StubSource.StubResponses.Add(responseModel);
+        StubSource.RequestResponseMap.Add(request, responseModel);
+
+        // Act
+        using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}1/response");
+
+        // Assert
+        Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [TestMethod]
+    public async Task RestApiIntegration_Request_GetResponse_RequestFound_ShouldReturnResponse()
+    {
+        // Arrange
+        var correlation = Guid.NewGuid().ToString();
+        var request = new RequestResultModel {CorrelationId = correlation};
+        var responseModel = new ResponseModel {Body = new byte[] {1, 2, 3}, StatusCode = 200, BodyIsBinary = true};
+        StubSource.RequestResultModels.Add(request);
+        StubSource.StubResponses.Add(responseModel);
+        StubSource.RequestResponseMap.Add(request, responseModel);
+
+        // Act
+        using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/{correlation}/response");
+        var content = await response.Content.ReadAsStringAsync();
+        var result = JsonConvert.DeserializeObject<ResponseDto>(content);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.Body.SequenceEqual(responseModel.Body));
+        Assert.AreEqual(responseModel.StatusCode, result.StatusCode);
+        Assert.AreEqual(responseModel.BodyIsBinary, result.BodyIsBinary);
+    }
+
+    [TestMethod]
     public async Task RestApiIntegration_Request_GetOverview()
     {
         // Arrange
         var correlation = Guid.NewGuid().ToString();
-        StubSource.RequestResultModels.Add(new RequestResultModel { CorrelationId = correlation });
+        StubSource.RequestResultModels.Add(new RequestResultModel {CorrelationId = correlation});
 
         // Act
         using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/requests/overview");
@@ -89,8 +130,8 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     public async Task RestApiIntegration_Request_GetByStubId()
     {
         // Arrange
-        StubSource.RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub2" });
-        StubSource.RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub1" });
+        StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
+        StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
 
         // Act
         using var response = await Client.GetAsync($"{TestServer.BaseAddress}ph-api/stubs/stub1/requests");
@@ -107,8 +148,8 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     public async Task RestApiIntegration_Request_DeleteAllRequests()
     {
         // Perform a few requests.
-        StubSource.RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub2" });
-        StubSource.RequestResultModels.Add(new RequestResultModel { ExecutingStubId = "stub1" });
+        StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub2"});
+        StubSource.RequestResultModels.Add(new RequestResultModel {ExecutingStubId = "stub1"});
 
         // Act
         using var response = await Client.DeleteAsync($"{TestServer.BaseAddress}ph-api/requests");
@@ -123,9 +164,9 @@ public class RestApiRequestIntegrationTests : RestApiIntegrationTestBase
     {
         // Perform a few requests.
         var request1 =
-            new RequestResultModel { ExecutingStubId = "stub1", CorrelationId = Guid.NewGuid().ToString() };
+            new RequestResultModel {ExecutingStubId = "stub1", CorrelationId = Guid.NewGuid().ToString()};
         var request2 =
-            new RequestResultModel { ExecutingStubId = "stub2", CorrelationId = Guid.NewGuid().ToString() };
+            new RequestResultModel {ExecutingStubId = "stub2", CorrelationId = Guid.NewGuid().ToString()};
         StubSource.RequestResultModels.Add(request1);
         StubSource.RequestResultModels.Add(request2);
 

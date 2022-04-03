@@ -26,7 +26,8 @@ public interface IWritableStubSource : IStubSource
     /// Add a <see cref="RequestResultModel"/>.
     /// </summary>
     /// <param name="requestResult">The request.</param>
-    Task AddRequestResultAsync(RequestResultModel requestResult);
+    /// <param name="responseModel">The response that belongs to the request.</param>
+    Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel);
 
     /// <summary>
     /// Gets a list of <see cref="RequestResultModel"/>.
@@ -46,6 +47,13 @@ public interface IWritableStubSource : IStubSource
     /// <param name="correlationId">The request correlation ID.</param>
     /// <returns>The request.</returns>
     Task<RequestResultModel> GetRequestAsync(string correlationId);
+
+    /// <summary>
+    /// Gets a <see cref="ResponseModel"/> by request correlation ID.
+    /// </summary>
+    /// <param name="correlationId">The request correlation ID.</param>
+    /// <returns>The response.</returns>
+    Task<ResponseModel> GetResponseAsync(string correlationId);
 
     /// <summary>
     /// Deletes all requests.

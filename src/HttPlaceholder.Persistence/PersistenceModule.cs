@@ -89,6 +89,7 @@ public static class PersistenceModule
             services.AddSingleton<IStubSource, RelationalDbStubSource>();
             services.AddSingleton<IDatabaseContextFactory, DatabaseContextFactory>();
             services.AddSingleton<IRelationalDbStubCache, RelationalDbStubCache>();
+            services.AddSingleton<IRelationalDbMigrator, RelationalDbMigrator>();
         }
 
         // The YAML stub source should always be registered.

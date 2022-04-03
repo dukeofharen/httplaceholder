@@ -25,6 +25,7 @@
 - Fixed indenting issue in CodeMirror editor (https://github.com/dukeofharen/httplaceholder/pull/226).
 - Added docs to user interface (https://github.com/dukeofharen/httplaceholder/pull/227).
 - Added separate form helper for enabling / disabling dynamic mode (https://github.com/dukeofharen/httplaceholder/pull/228).
+- Added possibility to log a response per request (https://github.com/dukeofharen/httplaceholder/issues/229).
 
 # BREAKING CHANGES
 - As mentioned before, the "clean old requests" job is now enabled by default. If you want HttPlaceholder to continue cleaning requests in the old way, set `cleanOldRequestsInBackgroundJob` to `false` to not get a bigger bill on your serverless database than needed.

@@ -36,28 +36,58 @@ public class FileSystemStubSourceFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public async Task AddRequestResultAsync_HappyFlow()
+    public async Task AddRequestResultAsync_HappyFlow_NoResponse()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, "requests");
-        var request = new RequestResultModel { CorrelationId = "bla123" };
-        var filePath = Path.Combine(requestsFolder, $"{request.CorrelationId}.json");
+        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
+        var request = new RequestResultModel {CorrelationId = "bla123"};
+        var requestFilePath = Path.Combine(requestsFolder, $"{request.CorrelationId}.json");
+        var responseFilePath = Path.Combine(responsesFolder, $"{request.CorrelationId}.json");
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
-        fileServiceMock
-            .Setup(m => m.WriteAllText(filePath, It.Is<string>(c => c.Contains(request.CorrelationId))));
+        // Act
+        await source.AddRequestResultAsync(request, null);
 
-        // Act / assert
-        await source.AddRequestResultAsync(request);
+        // Assert
+        fileServiceMock
+            .Verify(m => m.WriteAllText(requestFilePath, It.Is<string>(c => c.Contains(request.CorrelationId))));
+        fileServiceMock
+            .Verify(m => m.WriteAllText(responseFilePath, It.IsAny<string>()), Times.Never);
+        Assert.IsFalse(request.HasResponse);
+    }
+
+    [TestMethod]
+    public async Task AddRequestResultAsync_HappyFlow_WithResponse()
+    {
+        // Arrange
+        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
+        var request = new RequestResultModel {CorrelationId = "bla123"};
+        var response = new ResponseModel {StatusCode = 200};
+        var requestFilePath = Path.Combine(requestsFolder, $"{request.CorrelationId}.json");
+        var responseFilePath = Path.Combine(responsesFolder, $"{request.CorrelationId}.json");
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        // Act
+        await source.AddRequestResultAsync(request, response);
+
+        // Assert
+        fileServiceMock
+            .Verify(m => m.WriteAllText(requestFilePath, It.Is<string>(c => c.Contains(request.CorrelationId))));
+        fileServiceMock
+            .Verify(m => m.WriteAllText(responseFilePath, It.Is<string>(c => c.Contains("200"))));
+        Assert.IsTrue(request.HasResponse);
     }
 
     [TestMethod]
     public async Task AddStubAsync_HappyFlow()
     {
         // Arrange
-        var stubsFolder = Path.Combine(StorageFolder, "stubs");
-        var stub = new StubModel { Id = "situation-01" };
+        var stubsFolder = Path.Combine(StorageFolder, Constants.StubsFolderName);
+        var stub = new StubModel {Id = "situation-01"};
         var filePath = Path.Combine(stubsFolder, $"{stub.Id}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -77,7 +107,7 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsFolder = Path.Combine(StorageFolder, "requests");
+        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
         var expectedPath = Path.Combine(requestsFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -99,7 +129,7 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsFolder = Path.Combine(StorageFolder, "requests");
+        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
         var expectedPath = Path.Combine(requestsFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -110,7 +140,7 @@ public class FileSystemStubSourceFacts
             .Returns(true);
         fileServiceMock
             .Setup(m => m.ReadAllText(expectedPath))
-            .Returns(JsonConvert.SerializeObject(new RequestResultModel { CorrelationId = correlationId }));
+            .Returns(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = correlationId}));
 
         // Act
         var result = await source.GetRequestAsync(correlationId);
@@ -120,10 +150,58 @@ public class FileSystemStubSourceFacts
     }
 
     [TestMethod]
+    public async Task GetResponseAsync_ResponseNotFound_ShouldReturnNull()
+    {
+        // Arrange
+        var correlationId = Guid.NewGuid().ToString();
+        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
+        var expectedPath = Path.Combine(responsesFolder, $"{correlationId}.json");
+
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        fileServiceMock
+            .Setup(m => m.FileExists(expectedPath))
+            .Returns(false);
+
+        // Act
+        var result = await source.GetResponseAsync(correlationId);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public async Task GetResponseAsync_ResponseFound_ShouldReturnResponse()
+    {
+        // Arrange
+        var correlationId = Guid.NewGuid().ToString();
+        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
+        var expectedPath = Path.Combine(responsesFolder, $"{correlationId}.json");
+
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        fileServiceMock
+            .Setup(m => m.FileExists(expectedPath))
+            .Returns(true);
+        fileServiceMock
+            .Setup(m => m.ReadAllText(expectedPath))
+            .Returns(JsonConvert.SerializeObject(new ResponseModel {StatusCode = 200}));
+
+        // Act
+        var result = await source.GetResponseAsync(correlationId);
+
+        // Assert
+        Assert.AreEqual(200, result.StatusCode);
+    }
+
+    [TestMethod]
     public async Task DeleteAllRequestResultsAsync_HappyFlow()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, "requests");
+        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -139,8 +217,23 @@ public class FileSystemStubSourceFacts
         fileServiceMock
             .Setup(m => m.DeleteFile(It.Is<string>(f => files.Contains(f))));
 
-        // Act / assert
+        var responsePath1 = Path.Combine(responsesFolder, "request-01.json");
+        var responsePath2 = Path.Combine(responsesFolder, "request-02.json");
+
+        fileServiceMock
+            .Setup(m => m.FileExists(responsePath1))
+            .Returns(false);
+        fileServiceMock
+            .Setup(m => m.FileExists(responsePath2))
+            .Returns(true);
+
+        // Act
         await source.DeleteAllRequestResultsAsync();
+
+        // Assert
+        fileServiceMock.Verify(m => m.DeleteFile(It.IsAny<string>()), Times.Exactly(3));
+        fileServiceMock.Verify(m => m.DeleteFile(responsePath1), Times.Never);
+        fileServiceMock.Verify(m => m.DeleteFile(responsePath2));
     }
 
     [TestMethod]
@@ -148,16 +241,14 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var expectedPath = Path.Combine(
-            _options.Value.Storage.FileStorageLocation,
-            Constants.RequestsFolderName,
-            $"{correlationId}.json");
+        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, Constants.RequestsFolderName);
+        var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(expectedPath))
+            .Setup(m => m.FileExists(expectedRequestPath))
             .Returns(false);
 
         // Act
@@ -169,20 +260,52 @@ public class FileSystemStubSourceFacts
     }
 
     [TestMethod]
-    public async Task DeleteRequestAsync_RequestExists_ShouldDeleteFileAndReturnTrue()
+    public async Task DeleteRequestAsync_RequestExists_ResponseDoesntExist_ShouldDeleteFileAndReturnTrue()
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var expectedPath = Path.Combine(
-            _options.Value.Storage.FileStorageLocation,
-            Constants.RequestsFolderName,
-            $"{correlationId}.json");
+        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, Constants.RequestsFolderName);
+        var responsesPath = Path.Combine(_options.Value.Storage.FileStorageLocation, Constants.ResponsesFolderName);
+        var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
+        var expectedResponsePath = Path.Combine(responsesPath, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(expectedPath))
+            .Setup(m => m.FileExists(expectedRequestPath))
+            .Returns(true);
+        fileServiceMock
+            .Setup(m => m.FileExists(expectedResponsePath))
+            .Returns(false);
+
+        // Act
+        var result = await source.DeleteRequestAsync(correlationId);
+
+        // Assert
+        Assert.IsTrue(result);
+        fileServiceMock.Verify(m => m.DeleteFile(expectedRequestPath));
+        fileServiceMock.Verify(m => m.DeleteFile(expectedResponsePath), Times.Never);
+    }
+
+    [TestMethod]
+    public async Task DeleteRequestAsync_RequestExists_ResponseExists_ShouldDeleteFileAndReturnTrue()
+    {
+        // Arrange
+        var correlationId = Guid.NewGuid().ToString();
+        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, Constants.RequestsFolderName);
+        var responsesPath = Path.Combine(_options.Value.Storage.FileStorageLocation, Constants.ResponsesFolderName);
+        var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
+        var expectedResponsePath = Path.Combine(responsesPath, $"{correlationId}.json");
+
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        fileServiceMock
+            .Setup(m => m.FileExists(expectedRequestPath))
+            .Returns(true);
+        fileServiceMock
+            .Setup(m => m.FileExists(expectedResponsePath))
             .Returns(true);
 
         // Act
@@ -190,14 +313,15 @@ public class FileSystemStubSourceFacts
 
         // Assert
         Assert.IsTrue(result);
-        fileServiceMock.Verify(m => m.DeleteFile(expectedPath));
+        fileServiceMock.Verify(m => m.DeleteFile(expectedRequestPath));
+        fileServiceMock.Verify(m => m.DeleteFile(expectedResponsePath));
     }
 
     [TestMethod]
     public async Task DeleteStubAsync_StubDoesntExist_ShouldReturnFalse()
     {
         // Arrange
-        var stubsFolder = Path.Combine(StorageFolder, "stubs");
+        var stubsFolder = Path.Combine(StorageFolder, Constants.StubsFolderName);
         const string stubId = "situation-01";
         var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
 
@@ -221,7 +345,7 @@ public class FileSystemStubSourceFacts
     public async Task DeleteStubAsync_RequestExist_ShouldDeleteRequestAndReturnTrue()
     {
         // Arrange
-        var stubsFolder = Path.Combine(StorageFolder, "stubs");
+        var stubsFolder = Path.Combine(StorageFolder, Constants.StubsFolderName);
         const string stubId = "situation-01";
         var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
 
@@ -271,7 +395,7 @@ public class FileSystemStubSourceFacts
     public async Task GetRequestResultsAsync_HappyFlow()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, "requests");
+        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -286,8 +410,8 @@ public class FileSystemStubSourceFacts
 
         var requestFileContents = new[]
         {
-            JsonConvert.SerializeObject(new RequestResultModel { CorrelationId = "request-01" }),
-            JsonConvert.SerializeObject(new RequestResultModel { CorrelationId = "request-02" })
+            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-01"}),
+            JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = "request-02"})
         };
 
         for (var i = 0; i < files.Length; i++)
@@ -312,7 +436,7 @@ public class FileSystemStubSourceFacts
     public async Task GetRequestResultsOverviewAsync_HappyFlow()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, "requests");
+        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -329,11 +453,15 @@ public class FileSystemStubSourceFacts
         {
             JsonConvert.SerializeObject(new RequestResultModel
             {
-                CorrelationId = "request-01", RequestParameters = new RequestParametersModel()
+                CorrelationId = "request-01",
+                RequestParameters = new RequestParametersModel(),
+                HasResponse = true
             }),
             JsonConvert.SerializeObject(new RequestResultModel
             {
-                CorrelationId = "request-02", RequestParameters = new RequestParametersModel()
+                CorrelationId = "request-02",
+                RequestParameters = new RequestParametersModel(),
+                HasResponse = false
             })
         };
 
@@ -359,7 +487,8 @@ public class FileSystemStubSourceFacts
     public async Task CleanOldRequestResultsAsync_HappyFlow()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, "requests");
+        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json"),
@@ -385,70 +514,25 @@ public class FileSystemStubSourceFacts
                 .Returns(lastWriteDateTime);
         }
 
+        var responsePath2 = Path.Combine(responsesFolder, "request-02.json");
+        fileServiceMock
+            .Setup(m => m.FileExists(responsePath2))
+            .Returns(true);
+
         // Act
         await source.CleanOldRequestResultsAsync();
 
         // Assert
-        fileServiceMock.Verify(m => m.DeleteFile(It.IsAny<string>()), Times.Once);
+        fileServiceMock.Verify(m => m.DeleteFile(It.IsAny<string>()), Times.Exactly(2));
         fileServiceMock.Verify(m => m.DeleteFile(files[1]));
+        fileServiceMock.Verify(m => m.DeleteFile(responsePath2));
     }
-
-    // [TestMethod]
-    // public async Task CleanOldRequestResultsAsync_HappyFlow()
-    // {
-    //     // Arrange
-    //     var requestsFolder = Path.Combine(StorageFolder, "requests");
-    //     var files = new[]
-    //     {
-    //         Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json"),
-    //         Path.Combine(requestsFolder, "request-03.json")
-    //     };
-    //
-    //     _fileServiceMock
-    //         .Setup(m => m.GetFiles(requestsFolder, "*.json"))
-    //         .Returns(files);
-    //
-    //     var requestFileContents = new[]
-    //     {
-    //         JsonConvert.SerializeObject(new RequestResultModel
-    //         {
-    //             CorrelationId = "request-01", RequestEndTime = DateTime.Now.AddHours(-2)
-    //         }),
-    //         JsonConvert.SerializeObject(new RequestResultModel
-    //         {
-    //             CorrelationId = "request-02", RequestEndTime = DateTime.Now.AddHours(-1)
-    //         }),
-    //         JsonConvert.SerializeObject(new RequestResultModel
-    //         {
-    //             CorrelationId = "request-03", RequestEndTime = DateTime.Now.AddMinutes(-30)
-    //         })
-    //     };
-    //
-    //     for (var i = 0; i < files.Length; i++)
-    //     {
-    //         var file = files[i];
-    //         var contents = requestFileContents[i];
-    //         _fileServiceMock
-    //             .Setup(m => m.ReadAllText(file))
-    //             .Returns(contents);
-    //     }
-    //
-    //     _fileServiceMock
-    //         .Setup(m => m.DeleteFile(files[0]));
-    //
-    //     // Act
-    //     await _source.CleanOldRequestResultsAsync();
-    //
-    //     // Assert
-    //     _fileServiceMock
-    //         .Verify(m => m.DeleteFile(It.IsAny<string>()), Times.Once);
-    // }
 
     [TestMethod]
     public async Task GetStubsAsync_HappyFlow()
     {
         // Arrange
-        var stubs = new[] { new StubModel { Id = "stub1" } };
+        var stubs = new[] {new StubModel {Id = "stub1"}};
 
         var fileSystemStubCacheMock = _mocker.GetMock<IFileSystemStubCache>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
@@ -468,7 +552,7 @@ public class FileSystemStubSourceFacts
     public async Task GetStubAsync_StubFound_ShouldReturnStub()
     {
         // Arrange
-        var stubs = new[] { new StubModel { Id = "stub1" }, new StubModel { Id = "stub2" } };
+        var stubs = new[] {new StubModel {Id = "stub1"}, new StubModel {Id = "stub2"}};
 
         var fileSystemStubCacheMock = _mocker.GetMock<IFileSystemStubCache>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
@@ -488,7 +572,7 @@ public class FileSystemStubSourceFacts
     public async Task GetStubAsync_StubNotFound_ShouldReturnNull()
     {
         // Arrange
-        var stubs = new[] { new StubModel { Id = "stub1" }, new StubModel { Id = "stub2" } };
+        var stubs = new[] {new StubModel {Id = "stub1"}, new StubModel {Id = "stub2"}};
 
         var fileSystemStubCacheMock = _mocker.GetMock<IFileSystemStubCache>();
         var source = _mocker.CreateInstance<FileSystemStubSource>();
@@ -510,8 +594,8 @@ public class FileSystemStubSourceFacts
         // Arrange
         var stubs = new[]
         {
-            new StubModel { Id = "stub1", Tenant = "tenant1", Enabled = true },
-            new StubModel { Id = "stub2", Tenant = "tenant2", Enabled = false }
+            new StubModel {Id = "stub1", Tenant = "tenant1", Enabled = true},
+            new StubModel {Id = "stub2", Tenant = "tenant2", Enabled = false}
         };
 
         var fileSystemStubCacheMock = _mocker.GetMock<IFileSystemStubCache>();
@@ -548,8 +632,8 @@ public class FileSystemStubSourceFacts
         await source.PrepareStubSourceAsync();
 
         // Assert
-        fileServiceMock.Verify(m => m.DirectoryExists(It.IsAny<string>()), Times.Exactly(2));
-        fileServiceMock.Verify(m => m.CreateDirectory(It.IsAny<string>()), Times.Exactly(2));
+        fileServiceMock.Verify(m => m.DirectoryExists(It.IsAny<string>()), Times.Exactly(3));
+        fileServiceMock.Verify(m => m.CreateDirectory(It.IsAny<string>()), Times.Exactly(3));
         fileSystemStubCacheMock.Verify(m => m.GetOrUpdateStubCache());
     }
 }

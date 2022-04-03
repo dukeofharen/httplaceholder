@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HttPlaceholder (SQLite)" type="DotNetProject" factoryName=".NET Project">
     <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net6.0/HttPlaceholder" />
-    <option name="PROGRAM_PARAMETERS" value="-V" />
+    <option name="PROGRAM_PARAMETERS" value="-V --storeResponses" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <envs>
-      <env name="sqliteConnectionString" value="Data Source=$USER_HOME$/CodeMetadata/httplaceholder/httplaceholder.db" />
+      <env name="sqliteConnectionString" value="Data Source=$USER_HOME$/CodeMetadata/httplaceholder/httplaceholder.db;Foreign Keys=True" />
     </envs>
     <option name="USE_EXTERNAL_CONSOLE" value="0" />
     <option name="USE_MONO" value="0" />

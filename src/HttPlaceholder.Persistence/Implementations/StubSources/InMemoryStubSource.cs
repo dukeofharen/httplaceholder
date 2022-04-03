@@ -19,6 +19,10 @@ internal class InMemoryStubSource : IWritableStubSource
 
     internal readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
     internal readonly IList<StubModel> StubModels = new List<StubModel>();
+    internal readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
+
+    internal readonly IDictionary<RequestResultModel, ResponseModel> RequestResponseMap =
+        new Dictionary<RequestResultModel, ResponseModel>();
 
     public InMemoryStubSource(IOptions<SettingsModel> options)
     {
@@ -26,10 +30,17 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task AddRequestResultAsync(RequestResultModel requestResult)
+    public Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel)
     {
         lock (_lock)
         {
+            if (responseModel != null)
+            {
+                requestResult.HasResponse = true;
+                StubResponses.Add(responseModel);
+                RequestResponseMap.Add(requestResult, responseModel);
+            }
+
             RequestResultModels.Add(requestResult);
             return Task.CompletedTask;
         }
@@ -57,7 +68,8 @@ internal class InMemoryStubSource : IWritableStubSource
             StubTenant = r.StubTenant,
             ExecutingStubId = r.ExecutingStubId,
             RequestBeginTime = r.RequestBeginTime,
-            RequestEndTime = r.RequestEndTime
+            RequestEndTime = r.RequestEndTime,
+            HasResponse = r.HasResponse
         }).ToArray();
     }
 
@@ -66,7 +78,23 @@ internal class InMemoryStubSource : IWritableStubSource
     {
         lock (_lock)
         {
-            return Task.FromResult(RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId));
+            return Task.FromResult(GetRequest(correlationId));
+        }
+    }
+
+    /// <inheritdoc />
+    public Task<ResponseModel> GetResponseAsync(string correlationId)
+    {
+        lock (_lock)
+        {
+            var nullValue = Task.FromResult((ResponseModel)null);
+            var request = GetRequest(correlationId);
+            if (request == null)
+            {
+                return nullValue;
+            }
+
+            return !RequestResponseMap.ContainsKey(request) ? nullValue : Task.FromResult(RequestResponseMap[request]);
         }
     }
 
@@ -76,6 +104,8 @@ internal class InMemoryStubSource : IWritableStubSource
         lock (_lock)
         {
             RequestResultModels.Clear();
+            StubResponses.Clear();
+            RequestResponseMap.Clear();
             return Task.CompletedTask;
         }
     }
@@ -92,6 +122,7 @@ internal class InMemoryStubSource : IWritableStubSource
             }
 
             RequestResultModels.Remove(request);
+            RemoveResponse(request);
             return Task.FromResult(true);
         }
     }
@@ -131,7 +162,7 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync()  =>
+    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
         (await GetStubsAsync())
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
@@ -152,6 +183,7 @@ internal class InMemoryStubSource : IWritableStubSource
             foreach (var request in requests)
             {
                 RequestResultModels.Remove(request);
+                RemoveResponse(request);
             }
 
             return Task.CompletedTask;
@@ -160,4 +192,17 @@ internal class InMemoryStubSource : IWritableStubSource
 
     /// <inheritdoc />
     public Task PrepareStubSourceAsync() => Task.CompletedTask;
+
+    private void RemoveResponse(RequestResultModel request)
+    {
+        if (RequestResponseMap.ContainsKey(request))
+        {
+            var response = RequestResponseMap[request];
+            StubResponses.Remove(response);
+            RequestResponseMap.Remove(request);
+        }
+    }
+
+    private RequestResultModel GetRequest(string correlationId) =>
+        RequestResultModels.FirstOrDefault(r => r.CorrelationId == correlationId);
 }

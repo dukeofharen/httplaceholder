@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { del, get } from "@/utils/api";
 import type { RequestOverviewModel } from "@/domain/request/request-overview-model";
 import type { RequestResultModel } from "@/domain/request/request-result-model";
+import type { ResponseModel } from "@/domain/request/response-model";
 
 export const useRequestsStore = defineStore({
   id: "requests",
@@ -15,6 +16,11 @@ export const useRequestsStore = defineStore({
     },
     getRequest(correlationId: string): Promise<RequestResultModel> {
       return get(`/ph-api/requests/${correlationId}`)
+        .then((response) => Promise.resolve(response))
+        .catch((error) => Promise.reject(error));
+    },
+    getResponse(correlationId: string): Promise<ResponseModel> {
+      return get(`/ph-api/requests/${correlationId}/response`)
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },

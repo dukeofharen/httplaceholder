@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
@@ -23,23 +24,28 @@ internal class RelationalDbStubSource : IWritableStubSource
     private readonly IQueryStore _queryStore;
     private readonly IDatabaseContextFactory _databaseContextFactory;
     private readonly IRelationalDbStubCache _relationalDbStubCache;
+    private readonly IRelationalDbMigrator _relationalDbMigrator;
 
     public RelationalDbStubSource(
         IOptions<SettingsModel> options,
         IQueryStore queryStore,
         IDatabaseContextFactory databaseContextFactory,
-        IRelationalDbStubCache relationalDbStubCache)
+        IRelationalDbStubCache relationalDbStubCache,
+        IRelationalDbMigrator relationalDbMigrator)
     {
         _settings = options.Value;
         _queryStore = queryStore;
         _databaseContextFactory = databaseContextFactory;
         _relationalDbStubCache = relationalDbStubCache;
+        _relationalDbMigrator = relationalDbMigrator;
     }
 
     /// <inheritdoc />
-    public async Task AddRequestResultAsync(RequestResultModel requestResult)
+    public async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
+        var hasResponse = responseModel != null;
+        requestResult.HasResponse = hasResponse;
         var json = JsonConvert.SerializeObject(requestResult);
         await ctx.ExecuteAsync(_queryStore.AddRequestQuery,
             new
@@ -48,8 +54,21 @@ internal class RelationalDbStubSource : IWritableStubSource
                 requestResult.ExecutingStubId,
                 requestResult.RequestBeginTime,
                 requestResult.RequestEndTime,
-                Json = json
+                Json = json,
+                HasResponse = hasResponse
             });
+        if (hasResponse)
+        {
+            await ctx.ExecuteAsync(_queryStore.AddResponseQuery,
+                new
+                {
+                    requestResult.CorrelationId,
+                    responseModel.StatusCode,
+                    Headers = JsonConvert.SerializeObject(responseModel.Headers),
+                    Body = responseModel.Body != null ? Convert.ToBase64String(responseModel.Body) : string.Empty,
+                    responseModel.BodyIsBinary
+                });
+        }
     }
 
     /// <inheritdoc />
@@ -66,7 +85,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     public async Task<bool> DeleteRequestAsync(string correlationId)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        var updatedRows = await ctx.ExecuteAsync(_queryStore.DeleteRequestQuery, new{CorrelationId = correlationId});
+        var updatedRows = await ctx.ExecuteAsync(_queryStore.DeleteRequestQuery, new {CorrelationId = correlationId});
         return updatedRows > 0;
     }
 
@@ -81,7 +100,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
     {
-        // This method is not optimized right now.
+        // TODO This method is not optimized right now.
         var requests = await GetRequestResultsAsync();
         return requests.Select(r => new RequestOverviewModel
         {
@@ -91,7 +110,8 @@ internal class RelationalDbStubSource : IWritableStubSource
             StubTenant = r.StubTenant,
             ExecutingStubId = r.ExecutingStubId,
             RequestBeginTime = r.RequestBeginTime,
-            RequestEndTime = r.RequestEndTime
+            RequestEndTime = r.RequestEndTime,
+            HasResponse = r.HasResponse
         }).ToArray();
     }
 
@@ -103,6 +123,27 @@ internal class RelationalDbStubSource : IWritableStubSource
             _queryStore.GetRequestQuery,
             new {CorrelationId = correlationId});
         return result == null ? null : JsonConvert.DeserializeObject<RequestResultModel>(result.Json);
+    }
+
+    /// <inheritdoc />
+    public async Task<ResponseModel> GetResponseAsync(string correlationId)
+    {
+        using var ctx = _databaseContextFactory.CreateDatabaseContext();
+        var result = await ctx.QueryFirstOrDefaultAsync<DbResponseModel>(
+            _queryStore.GetResponseQuery,
+            new {CorrelationId = correlationId});
+        if (result == null)
+        {
+            return null;
+        }
+
+        return new ResponseModel
+        {
+            Body = Convert.FromBase64String(result.Body),
+            Headers = JsonConvert.DeserializeObject<Dictionary<string, string>>(result.Headers),
+            StatusCode = result.StatusCode,
+            BodyIsBinary = result.BodyIsBinary
+        };
     }
 
     /// <inheritdoc />
@@ -155,7 +196,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     public async Task PrepareStubSourceAsync()
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        await ctx.ExecuteAsync(_queryStore.MigrationsQuery);
+        await _relationalDbMigrator.MigrateAsync(ctx);
 
         // Also initialize the cache at startup.
         await _relationalDbStubCache.GetOrUpdateStubCache(ctx);

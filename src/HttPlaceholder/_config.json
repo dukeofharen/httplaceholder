@@ -4,6 +4,7 @@
     "httpsPort": "5050",
     "inputFile": null,
     "oldRequestsQueueLength": 40,
+    "storeResponses": false,
     "pfxPassword": null,
     "pfxPath": null,
     "port": "5000",

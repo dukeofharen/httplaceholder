@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="HttPlaceholder (in-memory)" type="DotNetProject" factoryName=".NET Project">
     <option name="EXE_PATH" value="$PROJECT_DIR$/HttPlaceholder/bin/Debug/net6.0/HttPlaceholder" />
-    <option name="PROGRAM_PARAMETERS" value="-V --useInMemoryStorage" />
+    <option name="PROGRAM_PARAMETERS" value="-V --useInMemoryStorage --storeresponses" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HttPlaceholder" />
     <option name="PASS_PARENT_ENVS" value="1" />
     <option name="USE_EXTERNAL_CONSOLE" value="0" />

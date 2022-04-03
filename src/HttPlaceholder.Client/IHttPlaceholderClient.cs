@@ -49,6 +49,13 @@ namespace HttPlaceholder.Client
         Task<RequestResultDto> GetRequestAsync(string correlationId);
 
         /// <summary>
+        /// Retrieves a response by correlation ID.
+        /// </summary>
+        /// <param name="correlationId">The request correlation ID.</param>
+        /// <returns>The response.</returns>
+        Task<ResponseDto> GetResponseAsync(string correlationId);
+
+        /// <summary>
         /// Deletes all requests.
         /// </summary>
         Task DeleteAllRequestsAsync();

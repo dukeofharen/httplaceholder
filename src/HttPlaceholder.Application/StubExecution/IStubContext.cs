@@ -77,7 +77,8 @@ public interface IStubContext
     /// Adds a <see cref="RequestResultModel"/>.
     /// </summary>
     /// <param name="requestResult">The request to add.</param>
-    Task AddRequestResultAsync(RequestResultModel requestResult);
+    /// <param name="responseModel">The response that belongs to the request.</param>
+    Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel);
 
     /// <summary>
     /// Retrieves a list of <see cref="RequestResultModel"/>.
@@ -104,6 +105,13 @@ public interface IStubContext
     /// <param name="correlationId">The request correlation ID.</param>
     /// <returns>A <see cref="RequestResultModel"/>.</returns>
     Task<RequestResultModel> GetRequestResultAsync(string correlationId);
+
+    /// <summary>
+    /// Retrieves a specific <see cref="ResponseModel"/> based on request correlation ID.
+    /// </summary>
+    /// <param name="correlationId">The request correlation ID.</param>
+    /// <returns>A <see cref="ResponseModel"/>.</returns>
+    Task<ResponseModel> GetResponseAsync(string correlationId);
 
     /// <summary>
     /// Deletes all requests.

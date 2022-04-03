@@ -55,6 +55,16 @@ public static class ConfigKeys
     public const string OldRequestsQueueLengthKey = "oldRequestsQueueLength";
 
     /// <summary>
+    /// Constant for storeResponses.
+    /// </summary>
+    [ConfigKey(
+        Description = "whether the responses as returned by HttPlaceholder should be stored. Default: false",
+        Example = "true",
+        ConfigPath = "Storage:StoreResponses",
+        IsBoolValue = true)]
+    public const string StoreResponses = "storeResponses";
+
+    /// <summary>
     /// Constant for cleanOldRequestsInBackgroundJob.
     /// </summary>
     [ConfigKey(

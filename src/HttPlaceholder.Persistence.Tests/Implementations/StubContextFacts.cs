@@ -10,18 +10,26 @@ using HttPlaceholder.Persistence.Implementations;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations;
 
 [TestClass]
 public class StubContextFacts
 {
+    private readonly AutoMocker _mocker = new();
     private readonly IList<IStubSource> _stubSources = new List<IStubSource>();
     private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
-    private StubContext _context;
 
     [TestInitialize]
-    public void Initialize() => _context = new StubContext(_stubSources, Options.Create(_settings));
+    public void Initialize()
+    {
+        _mocker.Use<IEnumerable<IStubSource>>(_stubSources);
+        _mocker.Use(Options.Create(_settings));
+    }
+
+    [TestCleanup]
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public async Task GetStubsAsync_HappyFlow()
@@ -45,8 +53,10 @@ public class StubContextFacts
         _stubSources.Add(stubSource1.Object);
         _stubSources.Add(stubSource2.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = (await _context.GetStubsAsync()).ToArray();
+        var result = (await context.GetStubsAsync()).ToArray();
 
         // assert
         Assert.AreEqual(3, result.Length);
@@ -77,8 +87,10 @@ public class StubContextFacts
         _stubSources.Add(stubSource1.Object);
         _stubSources.Add(stubSource2.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = (await _context.GetStubsOverviewAsync()).ToArray();
+        var result = (await context.GetStubsOverviewAsync()).ToArray();
 
         // assert
         Assert.AreEqual(3, result.Length);
@@ -109,8 +121,10 @@ public class StubContextFacts
         _stubSources.Add(stubSource1.Object);
         _stubSources.Add(stubSource2.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = (await _context.GetStubsAsync("tenant1")).ToArray();
+        var result = (await context.GetStubsAsync("tenant1")).ToArray();
 
         // assert
         Assert.AreEqual(2, result.Length);
@@ -134,8 +148,10 @@ public class StubContextFacts
         _stubSources.Add(writableStubSource.Object);
         _stubSources.Add(readOnlyStubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act / assert
-        await Assert.ThrowsExceptionAsync<ConflictException>(() => _context.AddStubAsync(stubToBeAdded));
+        await Assert.ThrowsExceptionAsync<ConflictException>(() => context.AddStubAsync(stubToBeAdded));
     }
 
     [TestMethod]
@@ -157,8 +173,10 @@ public class StubContextFacts
         _stubSources.Add(stubSource.Object);
         _stubSources.Add(readOnlyStubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        await _context.AddStubAsync(stubToBeAdded);
+        await context.AddStubAsync(stubToBeAdded);
 
         // assert
         stubSource.Verify(m => m.AddStubAsync(stubToBeAdded), Times.Once);
@@ -176,8 +194,10 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = await _context.DeleteStubAsync(stubId);
+        var result = await context.DeleteStubAsync(stubId);
 
         // assert
         Assert.IsTrue(result);
@@ -203,8 +223,10 @@ public class StubContextFacts
         _stubSources.Add(stubSource1.Object);
         _stubSources.Add(stubSource2.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = await _context.GetStubAsync("stub2");
+        var result = await context.GetStubAsync("stub2");
 
         // assert
         Assert.AreEqual(stub2, result.Stub);
@@ -215,6 +237,7 @@ public class StubContextFacts
     {
         // arrange
         var stubSource = new Mock<IWritableStubSource>();
+        _settings.Storage.StoreResponses = true;
 
         var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
         stubSource
@@ -222,20 +245,52 @@ public class StubContextFacts
             .ReturnsAsync(stub);
 
         var request = new RequestResultModel {ExecutingStubId = stub.Id};
+        var response = new ResponseModel();
         stubSource
-            .Setup(m => m.AddRequestResultAsync(request))
+            .Setup(m => m.AddRequestResultAsync(request, response))
             .Returns(Task.CompletedTask);
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        await _context.AddRequestResultAsync(request);
+        await context.AddRequestResultAsync(request, response);
 
         // assert
-        stubSource.Verify(m => m.AddRequestResultAsync(request), Times.Once);
+        stubSource.Verify(m => m.AddRequestResultAsync(request, response), Times.Once);
         stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Once);
 
         Assert.AreEqual(stub.Tenant, request.StubTenant);
+    }
+
+    [TestMethod]
+    public async Task AddRequestResultAsync_HappyFlow_DoNotStoreResponse()
+    {
+        // arrange
+        var stubSource = new Mock<IWritableStubSource>();
+        _settings.Storage.StoreResponses = false;
+
+        var stub = new StubModel {Id = "stub1", Tenant = "tenant1"};
+        stubSource
+            .Setup(m => m.GetStubAsync(stub.Id))
+            .ReturnsAsync(stub);
+
+        var request = new RequestResultModel {ExecutingStubId = stub.Id};
+        var response = new ResponseModel();
+        stubSource
+            .Setup(m => m.AddRequestResultAsync(request, response))
+            .Returns(Task.CompletedTask);
+
+        _stubSources.Add(stubSource.Object);
+
+        var context = _mocker.CreateInstance<StubContext>();
+
+        // act
+        await context.AddRequestResultAsync(request, response);
+
+        // assert
+        stubSource.Verify(m => m.AddRequestResultAsync(request, null), Times.Once);
     }
 
     [TestMethod]
@@ -243,6 +298,7 @@ public class StubContextFacts
     {
         // arrange
         _settings.Storage.CleanOldRequestsInBackgroundJob = true;
+        _settings.Storage.StoreResponses = true;
 
         var stubSource = new Mock<IWritableStubSource>();
 
@@ -252,17 +308,20 @@ public class StubContextFacts
             .ReturnsAsync(stub);
 
         var request = new RequestResultModel {ExecutingStubId = stub.Id};
+        var response = new ResponseModel();
         stubSource
-            .Setup(m => m.AddRequestResultAsync(request))
+            .Setup(m => m.AddRequestResultAsync(request, response))
             .Returns(Task.CompletedTask);
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        await _context.AddRequestResultAsync(request);
+        await context.AddRequestResultAsync(request, response);
 
         // assert
-        stubSource.Verify(m => m.AddRequestResultAsync(request), Times.Once);
+        stubSource.Verify(m => m.AddRequestResultAsync(request, response), Times.Once);
         stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Never);
     }
 
@@ -273,8 +332,10 @@ public class StubContextFacts
         var stubSource = new Mock<IWritableStubSource>();
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        await _context.CleanOldRequestResultsAsync();
+        await context.CleanOldRequestResultsAsync();
 
         // assert
         stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Once);
@@ -294,8 +355,10 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = (await _context.GetRequestResultsAsync()).ToArray();
+        var result = (await context.GetRequestResultsAsync()).ToArray();
 
         // assert
         Assert.AreEqual(request2, result[0]);
@@ -316,8 +379,10 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = (await _context.GetRequestResultsOverviewAsync()).ToArray();
+        var result = (await context.GetRequestResultsOverviewAsync()).ToArray();
 
         // assert
         Assert.AreEqual(request2, result[0]);
@@ -337,11 +402,35 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = await _context.GetRequestResultAsync(correlationId);
+        var result = await context.GetRequestResultAsync(correlationId);
 
         // assert
         Assert.AreEqual(request, result);
+    }
+
+    [TestMethod]
+    public async Task GetResponseAsync_HappyFlow()
+    {
+        // arrange
+        var correlationId = Guid.NewGuid().ToString();
+        var response = new ResponseModel();
+        var stubSource = new Mock<IWritableStubSource>();
+        stubSource
+            .Setup(m => m.GetResponseAsync(correlationId))
+            .ReturnsAsync(response);
+
+        _stubSources.Add(stubSource.Object);
+
+        var context = _mocker.CreateInstance<StubContext>();
+
+        // act
+        var result = await context.GetResponseAsync(correlationId);
+
+        // assert
+        Assert.AreEqual(response, result);
     }
 
     [TestMethod]
@@ -368,8 +457,10 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = (await _context.GetRequestResultsByStubIdAsync("stub1")).ToArray();
+        var result = (await context.GetRequestResultsByStubIdAsync("stub1")).ToArray();
 
         // assert
         Assert.AreEqual(2, result.Length);
@@ -388,8 +479,10 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        await _context.DeleteAllRequestResultsAsync();
+        await context.DeleteAllRequestResultsAsync();
 
         // assert
         stubSource.Verify(m => m.DeleteAllRequestResultsAsync(), Times.Once);
@@ -407,8 +500,10 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = await _context.DeleteRequestAsync(correlationId);
+        var result = await context.DeleteRequestAsync(correlationId);
 
         // assert
         Assert.IsTrue(result);
@@ -432,8 +527,10 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        await _context.DeleteAllStubsAsync(tenant);
+        await context.DeleteAllStubsAsync(tenant);
 
         // assert
         stubSource.Verify(m => m.DeleteStubAsync(stub1.Id), Times.Once);
@@ -457,8 +554,10 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        await _context.DeleteAllStubsAsync();
+        await context.DeleteAllStubsAsync();
 
         // assert
         stubSource.Verify(m => m.DeleteStubAsync(stub1.Id), Times.Once);
@@ -486,8 +585,10 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        await _context.UpdateAllStubs(tenant1, newStubs);
+        await context.UpdateAllStubs(tenant1, newStubs);
 
         // assert
         stubSource.Verify(m => m.DeleteStubAsync(stub1.Id), Times.Once);
@@ -519,8 +620,10 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        var result = (await _context.GetTenantNamesAsync()).ToArray();
+        var result = (await context.GetTenantNamesAsync()).ToArray();
 
         // assert
         Assert.AreEqual(2, result.Length);
@@ -538,8 +641,10 @@ public class StubContextFacts
         _stubSources.Add(stubSource1.Object);
         _stubSources.Add(stubSource2.Object);
 
+        var context = _mocker.CreateInstance<StubContext>();
+
         // act
-        await _context.PrepareAsync();
+        await context.PrepareAsync();
 
         // assert
         stubSource1.Verify(m => m.PrepareStubSourceAsync(), Times.Once);
