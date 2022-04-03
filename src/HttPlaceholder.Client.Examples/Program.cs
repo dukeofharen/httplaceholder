@@ -43,6 +43,9 @@ internal static class Program
             // Get request.
             var request = await client.GetRequestAsync(requestOverview.First().CorrelationId);
 
+            // Get response for request.
+            var response = await client.GetResponseAsync(requestOverview.First().CorrelationId);
+
             // Create stub for request.
             var createdStubFromRequest =
                 await client.CreateStubForRequestAsync(requestOverview.First().CorrelationId);
