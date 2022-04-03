@@ -12,7 +12,8 @@ internal class MysqlQueryStore : IQueryStore
   executing_stub_id AS ExecutingStubId,
   request_begin_time AS RequestBeginTime,
   request_end_time AS RequestEndTime,
-  `json`
+  `json`,
+  has_response AS HasResponse
 FROM requests";
 
     /// <inheritdoc />

@@ -1793,10 +1793,12 @@ HttPlaceholder has functionality to save all requests and stubs to a MySQL datab
 <img src="img/sqlite.png" width="100" />
 
 ```bash
-httplaceholder --sqliteConnectionString "Data Source=C:\tmp\httplaceholder.db"
+httplaceholder --sqliteConnectionString "Data Source=C:\tmp\httplaceholder.db;Foreign Keys=True"
 ```
 
 HttPlaceholder has functionality to save all requests and stubs to a SQLite database. You can use SQLite by providing the connection string as seen above. HttPlaceholder will create the file if it doesn't exist and will populate the database with the necessary tables.
+
+It is important to set "Foreign Keys" to "True" in the connection string, else foreign key support is disabled.
 
 ### SQL Server connection (optional)
 
