@@ -1,10 +1,10 @@
 -- Create responses table
 CREATE TABLE IF NOT EXISTS `responses`
 (
-    `id`                INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    `http_status_code`  INT     NOT NULL,
-    `headers`           TEXT    NOT NULL,
-    `content`           TEXT    NOT NULL,
-    `content_is_base64` INT     NOT NULL,
+    `id`             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `status_code`    INT     NOT NULL,
+    `headers`        TEXT    NOT NULL,
+    `body`           TEXT    NOT NULL,
+    `body_is_binary` INT     NOT NULL,
     FOREIGN KEY (id) REFERENCES requests (id)
 );
