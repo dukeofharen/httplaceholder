@@ -65,7 +65,7 @@ internal class RelationalDbStubSource : IWritableStubSource
                     requestResult.CorrelationId,
                     responseModel.StatusCode,
                     Headers = JsonConvert.SerializeObject(responseModel.Headers),
-                    Body = Convert.ToBase64String(responseModel.Body),
+                    Body = responseModel.Body != null ? Convert.ToBase64String(responseModel.Body) : string.Empty,
                     responseModel.BodyIsBinary
                 });
         }
