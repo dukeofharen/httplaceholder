@@ -47,7 +47,7 @@ WHERE req.correlation_id = @CorrelationId";
     /// <inheritdoc />
     public string AddRequestQuery => @"INSERT INTO requests
 (correlation_id, executing_stub_id, request_begin_time, request_end_time, `json`, has_response)
-VALUES (@CorrelationId, @ExecutingStubid, @RequestBeginTime, @RequestEndTime, @Json, @HasResponse)";
+VALUES (@CorrelationId, @ExecutingStubId, @RequestBeginTime, @RequestEndTime, @Json, @HasResponse)";
 
     /// <inheritdoc />
     public string AddResponseQuery => @"INSERT INTO responses (id, status_code, headers, body, body_is_binary)
