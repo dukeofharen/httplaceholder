@@ -16,6 +16,11 @@ public interface IQueryStore
     string GetRequestQuery { get; }
 
     /// <summary>
+    /// Returns the query for getting a specific response.
+    /// </summary>
+    string GetResponseQuery { get; }
+
+    /// <summary>
     /// Returns the query for deleting all requests.
     /// </summary>
     string DeleteAllRequestsQuery { get; }
@@ -29,6 +34,11 @@ public interface IQueryStore
     /// Returns the query for adding a request.
     /// </summary>
     string AddRequestQuery { get; }
+
+    /// <summary>
+    /// Returns the query for adding a response.
+    /// </summary>
+    string AddResponseQuery { get; }
 
     /// <summary>
     /// Returns the query for adding a stub.
