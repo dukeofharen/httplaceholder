@@ -1773,13 +1773,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{rootUrl}}ph-api/requests/7172d054-f7d9-4c77-b39d-a881d972aa4e",
+									"raw": "{{rootUrl}}ph-api/requests/537111f3-c38f-4ba0-83b9-929abdb0bf19/response",
 									"host": [
 										"{{rootUrl}}ph-api"
 									],
 									"path": [
 										"requests",
-										"7172d054-f7d9-4c77-b39d-a881d972aa4e"
+										"537111f3-c38f-4ba0-83b9-929abdb0bf19",
+										"response"
 									]
 								}
 							},
