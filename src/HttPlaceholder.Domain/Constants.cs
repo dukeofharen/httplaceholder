@@ -22,6 +22,11 @@ public static class Constants
     public const string RequestsFolderName = "requests";
 
     /// <summary>
+    /// The responses folder name.
+    /// </summary>
+    public const string ResponsesFolderName = "responses";
+
+    /// <summary>
     /// The metadata file name.
     /// </summary>
     public const string MetadataFileName = "metadata.json";

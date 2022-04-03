@@ -34,10 +34,19 @@ internal class FileSystemStubSource : IWritableStubSource
     /// <inheritdoc />
     public Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel)
     {
-        var path = GetRequestsFolder();
-        var filePath = Path.Combine(path, $"{requestResult.CorrelationId}.json");
-        var contents = JsonConvert.SerializeObject(requestResult);
-        _fileService.WriteAllText(filePath, contents);
+        var requestsFolder = GetRequestsFolder();
+        var responsesFolder = GetResponsesFolder();
+        if (responseModel != null)
+        {
+            requestResult.HasResponse = true;
+            var responseFilePath = Path.Combine(responsesFolder, ConstructResponseFilename(requestResult.CorrelationId));
+            var responseContents = JsonConvert.SerializeObject(responseModel);
+            _fileService.WriteAllText(responseFilePath, responseContents);
+        }
+
+        var requestFilePath = Path.Combine(requestsFolder, ConstructRequestFilename(requestResult.CorrelationId));
+        var requestContents = JsonConvert.SerializeObject(requestResult);
+        _fileService.WriteAllText(requestFilePath, requestContents);
         return Task.CompletedTask;
     }
 
@@ -45,7 +54,7 @@ internal class FileSystemStubSource : IWritableStubSource
     public Task AddStubAsync(StubModel stub)
     {
         var path = GetStubsFolder();
-        var filePath = Path.Combine(path, $"{stub.Id}.json");
+        var filePath = Path.Combine(path, ConstructStubFilename(stub.Id));
         var contents = JsonConvert.SerializeObject(stub);
         _fileService.WriteAllText(filePath, contents);
         _fileSystemStubCache.ClearStubCache();
@@ -65,7 +74,8 @@ internal class FileSystemStubSource : IWritableStubSource
             StubTenant = r.StubTenant,
             ExecutingStubId = r.ExecutingStubId,
             RequestBeginTime = r.RequestBeginTime,
-            RequestEndTime = r.RequestEndTime
+            RequestEndTime = r.RequestEndTime,
+            HasResponse = r.HasResponse
         }).ToArray();
     }
 
@@ -73,7 +83,7 @@ internal class FileSystemStubSource : IWritableStubSource
     public Task<RequestResultModel> GetRequestAsync(string correlationId)
     {
         var path = GetRequestsFolder();
-        var filePath = Path.Combine(path, $"{correlationId}.json");
+        var filePath = Path.Combine(path, ConstructRequestFilename(correlationId));
         if (!_fileService.FileExists(filePath))
         {
             return Task.FromResult((RequestResultModel)null);
@@ -84,13 +94,28 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
+    public Task<ResponseModel> GetResponseAsync(string correlationId)
+    {
+        var path = GetResponsesFolder();
+        var filePath = Path.Combine(path, ConstructResponseFilename(correlationId));
+        if (!_fileService.FileExists(filePath))
+        {
+            return Task.FromResult((ResponseModel)null);
+        }
+
+        var contents = _fileService.ReadAllText(filePath);
+        return Task.FromResult(JsonConvert.DeserializeObject<ResponseModel>(contents));
+    }
+
+    /// <inheritdoc />
     public Task DeleteAllRequestResultsAsync()
     {
-        var path = GetRequestsFolder();
-        var files = _fileService.GetFiles(path, "*.json");
+        var requestsPath = GetRequestsFolder();
+        var files = _fileService.GetFiles(requestsPath, "*.json");
         foreach (var filePath in files)
         {
             _fileService.DeleteFile(filePath);
+            DeleteResponse(filePath);
         }
 
         return Task.CompletedTask;
@@ -99,14 +124,21 @@ internal class FileSystemStubSource : IWritableStubSource
     /// <inheritdoc />
     public Task<bool> DeleteRequestAsync(string correlationId)
     {
-        var path = GetRequestsFolder();
-        var filePath = Path.Combine(path, $"{correlationId}.json");
-        if (!_fileService.FileExists(filePath))
+        var requestsPath = GetRequestsFolder();
+        var responsesPath = GetResponsesFolder();
+        var requestFilePath = Path.Combine(requestsPath, ConstructRequestFilename(correlationId));
+        if (!_fileService.FileExists(requestFilePath))
         {
             return Task.FromResult(false);
         }
 
-        _fileService.DeleteFile(filePath);
+        var responseFilePath = Path.Combine(responsesPath, ConstructResponseFilename(correlationId));
+        if (_fileService.FileExists(responseFilePath))
+        {
+            _fileService.DeleteFile(responseFilePath);
+        }
+
+        _fileService.DeleteFile(requestFilePath);
         return Task.FromResult(true);
     }
 
@@ -114,7 +146,7 @@ internal class FileSystemStubSource : IWritableStubSource
     public Task<bool> DeleteStubAsync(string stubId)
     {
         var path = GetStubsFolder();
-        var filePath = Path.Combine(path, $"{stubId}.json");
+        var filePath = Path.Combine(path, ConstructStubFilename(stubId));
         if (!_fileService.FileExists(filePath))
         {
             return Task.FromResult(false);
@@ -169,6 +201,7 @@ internal class FileSystemStubSource : IWritableStubSource
         foreach (var filePath in filePathsAndDates)
         {
             _fileService.DeleteFile(filePath.path);
+            DeleteResponse(filePath.path);
         }
 
         return Task.CompletedTask;
@@ -181,6 +214,12 @@ internal class FileSystemStubSource : IWritableStubSource
         if (!_fileService.DirectoryExists(requestsFolder))
         {
             _fileService.CreateDirectory(requestsFolder);
+        }
+
+        var responsesFolder = GetResponsesFolder();
+        if (!_fileService.DirectoryExists(responsesFolder))
+        {
+            _fileService.CreateDirectory(responsesFolder);
         }
 
         var stubsFolder = GetStubsFolder();
@@ -198,4 +237,24 @@ internal class FileSystemStubSource : IWritableStubSource
 
     private string GetRequestsFolder() =>
         Path.Combine(_settings.Storage?.FileStorageLocation, Constants.RequestsFolderName);
+
+    private string GetResponsesFolder() =>
+        Path.Combine(_settings.Storage?.FileStorageLocation, Constants.ResponsesFolderName);
+
+    private void DeleteResponse(string filePath)
+    {
+        var responsesPath = GetResponsesFolder();
+        var responseFileName = Path.GetFileName(filePath);
+        var responseFilePath = Path.Combine(responsesPath, responseFileName);
+        if (_fileService.FileExists(responseFilePath))
+        {
+            _fileService.DeleteFile(responseFilePath);
+        }
+    }
+
+    private static string ConstructStubFilename(string stubId) => $"{stubId}.json";
+
+    private static string ConstructRequestFilename(string correlationId) => $"{correlationId}.json";
+
+    private static string ConstructResponseFilename(string correlationId) => $"{correlationId}.json";
 }
