@@ -39,7 +39,6 @@ namespace HttPlaceholder.Client
         /// Retrieves all requests made to HttPlaceholder as overview.
         /// </summary>
         /// <returns>The request overview.</returns>
-        /// <returns>The request overview.</returns>
         Task<IEnumerable<RequestOverviewDto>> GetRequestOverviewAsync();
 
         /// <summary>
