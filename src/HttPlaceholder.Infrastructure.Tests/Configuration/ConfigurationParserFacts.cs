@@ -248,8 +248,8 @@ public class ConfigurationParserFacts
 
     [DataTestMethod]
     [DataRow("filestoragelocation")]
-    // [DataRow("fileStorageLocation")]
-    // [DataRow("FILESTORAGELOCATION")]
+    [DataRow("fileStorageLocation")]
+    [DataRow("FILESTORAGELOCATION")]
     public void DefaultValues_FileStorageLocationSet_ShouldNotCreateFolderInHomeDir(string key)
     {
         // Arrange

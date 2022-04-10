@@ -102,6 +102,16 @@ public class ConfigurationParser
         argsDictionary.EnsureEntryExists(ConfigKeys.StoreResponses, StoreResponses);
 
         // Determine and set file storage location.
+        SetDefaultFileStorageLocation(argsDictionary);
+    }
+
+    private void SetDefaultFileStorageLocation(IDictionary<string, string> argsDictionary)
+    {
+        if (argsDictionary.ContainsKeyCaseInsensitive(ConfigKeys.FileStorageLocationKey))
+        {
+            return;
+        }
+
         string fileStorageLocation = null;
         var windowsProfilePath = _envService.GetEnvironmentVariable("USERPROFILE");
         var unixProfilePath = _envService.GetEnvironmentVariable("HOME");
