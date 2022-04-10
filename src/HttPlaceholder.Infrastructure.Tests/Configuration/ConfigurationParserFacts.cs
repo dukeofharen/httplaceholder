@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using HttPlaceholder.Common;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -243,6 +244,27 @@ public class ConfigurationParserFacts
         {
             Assert.IsFalse(result.Any(x => x.Key == key));
         }
+    }
+
+    [DataTestMethod]
+    [DataRow("filestoragelocation")]
+    // [DataRow("fileStorageLocation")]
+    // [DataRow("FILESTORAGELOCATION")]
+    public void DefaultValues_FileStorageLocationSet_ShouldNotCreateFolderInHomeDir(string key)
+    {
+        // Arrange
+        const string fileStorageLocation = "/home/duco/stubs";
+        var args = ToArgs($"--{key} {fileStorageLocation}");
+
+        // Act
+        var result = _parser.ParseConfiguration(args);
+
+        // Assert
+        var pair = result.CaseInsensitiveSearchPair("Storage:FileStorageLocation");
+        Assert.AreEqual(fileStorageLocation, pair.Value);
+        _envServiceMock.Verify(m => m.IsOs(It.IsAny<OSPlatform>()), Times.Never);
+        _fileServiceMock.Verify(m => m.DirectoryExists(It.IsAny<string>()), Times.Never);
+        _fileServiceMock.Verify(m => m.CreateDirectory(It.IsAny<string>()), Times.Never);
     }
 
     [TestMethod]
