@@ -1768,7 +1768,7 @@ httplaceholder --fileStorageLocation C:\tmp\storage
 
 This configuration value can be used to configure where you want to save the stubs (which are created through the API). The files will be saved as plain JSON files.
 
-By default, if you start the application, a folder called `.httplaceholder` will be added to your user profile folder. On Windows, this will be `C:\Users\<username>\.httplaceholder` and on Unix like systems (in this case Linux and OS X) this will be `/home/<username>/.httplaceholder`. If HttPlaceholder couldn't determine your OS or your profile folder is in a non-standard location, the "in memory stub source" is used, which means your data will be cleared when you start HttPlaceholder.
+If you have NOT configured the file storage location yourself, by default, if you start the application, a folder called `.httplaceholder` will be added to your user profile folder. On Windows, this will be `C:\Users\<username>\.httplaceholder` and on Unix like systems (in this case Linux and OS X) this will be `/home/<username>/.httplaceholder`. If HttPlaceholder couldn't determine your OS or your profile folder is in a non-standard location, the "in memory stub source" is used, which means your data will be cleared when you start HttPlaceholder.
 
 ### Use in memory storage (optional)
 

@@ -57,4 +57,13 @@ public static class CollectionUtilities
         var pair = dict.CaseInsensitiveSearchPair(key);
         return string.IsNullOrWhiteSpace(pair.Key) ? null : pair.Value;
     }
+
+    /// <summary>
+    /// Checks if a key exists in a dictionary in a case insensitive way.
+    /// </summary>
+    /// <param name="dict">The dictionary to look in.</param>
+    /// <param name="key">The key to look for.</param>
+    /// <returns>True if the key was found. False otherwise.</returns>
+    public static bool ContainsKeyCaseInsensitive(this IDictionary<string, string> dict, string key) =>
+        dict.Keys.Any(k => string.Equals(k, key, StringComparison.OrdinalIgnoreCase));
 }

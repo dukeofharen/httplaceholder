@@ -81,4 +81,22 @@ public class CollectionUtilitiesFacts
         // Assert
         Assert.AreEqual(expectedValue, result);
     }
+
+    [DataTestMethod]
+    [DataRow("key1", true)]
+    [DataRow("Key1", true)]
+    [DataRow("KEY1", true)]
+    [DataRow("key11", false)]
+    [DataRow("key3", false)]
+    public void ContainsKeyCaseInsensitive_HappyFlow(string input, bool expectedResult)
+    {
+        // Arrange
+        var dict = new Dictionary<string, string> {{"key1", "val1"}, {"key2", "val2"}};
+
+        // Act
+        var result = dict.ContainsKeyCaseInsensitive(input);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+    }
 }
