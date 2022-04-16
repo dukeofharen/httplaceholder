@@ -1,6 +1,6 @@
 ﻿using System;
 using HttPlaceholder.Resources;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using static HttPlaceholder.Utilities.ProgramUtilities;
 

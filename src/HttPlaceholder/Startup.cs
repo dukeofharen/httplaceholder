@@ -50,24 +50,20 @@ public class Startup
     /// <param name="app">The application builder.</param>
     /// <param name="preloadStubs">Whether to preload the stubs or not.</param>
     /// <param name="settings">The HttPlaceholder settings.</param>
-    public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, SettingsModel settings)
-    {
-        var enableUserInterface = settings?.Gui?.EnableUserInterface == true;
+    public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, SettingsModel settings) =>
         app
             .UseHttPlaceholder()
             .UseOpenApi()
             .UseSwaggerUi3()
-            .UseGui(enableUserInterface)
+            .UseGui(settings?.Gui?.EnableUserInterface == true)
             .UsePhStatic()
-            .PreloadStubs(preloadStubs);
-        app
+            .PreloadStubs(preloadStubs)
             .UseRouting()
             .UseEndpoints(options =>
             {
                 options.MapHub<RequestHub>("/requestHub");
                 options.MapControllers();
             });
-    }
 
     /// <summary>
     /// Configures the service collection.
