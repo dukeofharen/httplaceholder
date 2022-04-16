@@ -68,6 +68,7 @@ public class StubHandlingMiddleware
     /// </summary>
     public async Task Invoke(HttpContext context)
     {
+        // TODO split this method in multiple methods.
         var path = _httpContextService.Path;
         if (_settings?.Stub?.HealthcheckOnRootUrl == true && path == "/")
         {

@@ -29,7 +29,7 @@ public static class ConfigKeys
     /// Constant for httpsPort.
     /// </summary>
     [ConfigKey(
-        Description = "the port HttPlaceholder should run under when HTTPS is enabled",
+        Description = "the port HttPlaceholder should run under when HTTPS is enabled. Listen on multiple ports by separating ports with comma.",
         Example = "5050",
         ConfigPath = "Web:HttpsPort")]
     public const string HttpsPortKey = "httpsPort";
@@ -84,6 +84,25 @@ public static class ConfigKeys
     public const string PfxPasswordKey = "pfxPassword";
 
     /// <summary>
+    /// Constant for readProxyHeaders.
+    /// </summary>
+    [ConfigKey(
+        Description = "whether the proxy headers 'X-Forwarded-For', 'X-Forwarded-Host' and 'X-Forwarded-Proto' should be taken into account when determining the IP, hostname and protocol",
+        Example = "true",
+        IsBoolValue = true,
+        ConfigPath = "Web:ReadProxyHeaders")]
+    public const string ReadProxyHeaders = "readProxyHeaders";
+
+    /// <summary>
+    /// Constant for safeProxyIps.
+    /// </summary>
+    [ConfigKey(
+        Description = "the proxy IPs which are considered safe when reading the 'X-Forwarded-For', 'X-Forwarded-Host' and 'X-Forwarded-Proto' headers. Localhost is always permitted. Separate multiple IPs by using a comma.",
+        Example = "1.1.1.1,2.2.2.2",
+        ConfigPath = "Web:SafeProxyIps")]
+    public const string SafeProxyIps = "safeProxyIps";
+
+    /// <summary>
     /// Constant for pfxPath.
     /// </summary>
     [ConfigKey(
@@ -97,7 +116,7 @@ public static class ConfigKeys
     /// Constant for port.
     /// </summary>
     [ConfigKey(
-        Description = "the HTTP port HttPlaceholder should run under",
+        Description = "the HTTP port HttPlaceholder should run under. Listen on multiple ports by separating ports with comma.",
         Example = "5000",
         ConfigPath = "Web:HttpPort")]
     public const string PortKey = "port";

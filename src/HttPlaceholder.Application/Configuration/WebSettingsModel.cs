@@ -29,4 +29,14 @@ public class WebSettingsModel
     /// Gets or sets the password for the private key.
     /// </summary>
     public string PfxPassword { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the proxy headers should be read and parsed.
+    /// </summary>
+    public bool ReadProxyHeaders { get; set; }
+
+    /// <summary>
+    /// Gets or sets a comma delimited list of IPs that are considered to be safe for reading the proxy
+    /// </summary>
+    public string SafeProxyIps { get; set; }
 }

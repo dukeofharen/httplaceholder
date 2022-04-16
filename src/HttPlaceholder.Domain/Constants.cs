@@ -53,6 +53,11 @@ public static class Constants
     public const string DefaultPfxPassword = "1234";
 
     /// <summary>
+    /// Whether the proxy headers should be read by default.
+    /// </summary>
+    public const bool ReadProxyHeaders = true;
+
+    /// <summary>
     /// Whether HTTPS is enabled by default.
     /// </summary>
     public const bool UseHttps = true;

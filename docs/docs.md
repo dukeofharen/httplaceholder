@@ -1777,6 +1777,22 @@ You can define multiple ports for HttPlaceholder to listen on. To do this, separ
 httplaceholder --port "80,81" --httpsPort "443,4430" --useHttps true
 ```
 
+### Read proxy headers
+
+By default, when running behind a reverse proxy (e.g. Apache, Nginx etc.) the IP address received is not the actual IP address of the client. To get the actual IP address, you can read the proxy headers. HttPlaceholder can read the `X-Forwarded-For`, `X-Forwarded-Host` and `X-Forwarded-Proto` headers. Because you can not blindly trust anyone for sending any of these headers, it is important to check for the IP address of the calling party. Proxy headers sent by a client with a "localhost" IP will always be allowed. You can specify multiple IPs by specifying the configuration value `safeProxyIps`.
+
+```bash
+httplaceholder --safeProxyIps "1.1.1.1,2.2.2.2"
+```
+
+By default, the reading of proxy headers is enabled. You can disable it by providing the following configuration value:
+
+```bash
+httplaceholder --readProxyHeaders false
+```
+
+By disabling the reading of the proxy headers, the IP, host and protocol as received by the client are always used.
+
 ## Authentication
 
 ### REST API Authentication (optional)

@@ -100,6 +100,7 @@ public class ConfigurationParser
         argsDictionary.EnsureEntryExists(ConfigKeys.MaximumExtraDurationMillisKey, DefaultMaximumExtraDuration);
         argsDictionary.EnsureEntryExists(ConfigKeys.CleanOldRequestsInBackgroundJob, CleanOldRequestsInBackgroundJob);
         argsDictionary.EnsureEntryExists(ConfigKeys.StoreResponses, StoreResponses);
+        argsDictionary.EnsureEntryExists(ConfigKeys.ReadProxyHeaders, ReadProxyHeaders);
 
         // Determine and set file storage location.
         SetDefaultFileStorageLocation(argsDictionary);

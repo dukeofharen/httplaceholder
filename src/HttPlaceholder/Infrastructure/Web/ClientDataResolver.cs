@@ -31,7 +31,7 @@ public class ClientDataResolver : IClientDataResolver
         var request = _httpContextAccessor.HttpContext.Request;
         var ip = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress;
         var (key, value) = request.Headers.FirstOrDefault(h =>
-            h.Key?.Equals(ForwardedHeaderKey, StringComparison.OrdinalIgnoreCase) == true);
+            h.Key.Equals(ForwardedHeaderKey, StringComparison.OrdinalIgnoreCase));
         if (key == null || !RequestIsFromLoopback(ip))
         {
             return ip.ToString();
