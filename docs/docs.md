@@ -1785,6 +1785,14 @@ By default, when running behind a reverse proxy (e.g. Apache, Nginx etc.) the IP
 httplaceholder --safeProxyIps "1.1.1.1,2.2.2.2"
 ```
 
+The `safeProxyIps` configuration value can also contain CIDR addresses, so you can allow a whole range if needed.
+
+```bash
+httplaceholder --safeProxyIps "10.0.0.0/24"
+```
+
+If you start HttPlaceholder like this, IPs 10.0.0.0 to 10.0.0.255 are allowed.
+
 By default, the reading of proxy headers is enabled. You can disable it by providing the following configuration value:
 
 ```bash

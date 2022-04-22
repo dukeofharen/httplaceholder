@@ -32,6 +32,7 @@ public class ClientIpResolverFacts
     [DataRow(true, "1.2.3.4", "8.8.8.8", "1.2.3.4", "8.8.8.8")]
     [DataRow(true, "1.2.3.4", "8.8.8.8", "1.2.3.4,5.6.7.8", "8.8.8.8")]
     [DataRow(true, "1.2.3.4", "7.7.7.7, 8.8.8.8", "1.2.3.4,5.6.7.8", "7.7.7.7")]
+    [DataRow(true, "10.0.0.40", "8.8.8.8", "10.0.0.0/24", "8.8.8.8")]
     [DataRow(true, "127.0.0.1", "8.8.8.8", "", "8.8.8.8")]
     [DataRow(true, "::ffff:127.0.0.1", "8.8.8.8", "", "8.8.8.8")]
     public void GetClientIp_HappyFlow(
@@ -62,6 +63,7 @@ public class ClientIpResolverFacts
     [DataRow(true, "1.2.3.4", "localhost", "xhost", "1.2.3.4", "xhost")]
     [DataRow(true, "1.2.3.4", "localhost", "xhost", "1.2.3.4,5.6.7.8", "xhost")]
     [DataRow(true, "1.2.3.4", "localhost", "xhost1, xhost2", "1.2.3.4", "xhost1")]
+    [DataRow(true, "10.0.0.40", "localhost", "xhost", "10.0.0.0/24", "xhost")]
     [DataRow(true, "127.0.0.1", "localhost", "xhost", "1.2.3.4", "xhost")]
     [DataRow(true, "::ffff:127.0.0.1", "localhost", "xhost", "1.2.3.4", "xhost")]
     public void GetHost_HappyFlow(
@@ -94,6 +96,7 @@ public class ClientIpResolverFacts
     [DataRow(true, "1.2.3.4", false, "https", "1.2.3.4", true)]
     [DataRow(true, "1.2.3.4", false, "https", "1.2.3.4,5.6.7.8", true)]
     [DataRow(true, "1.2.3.4", false, "http, https", "1.2.3.4,5.6.7.8", false)]
+    [DataRow(true, "10.0.0.40", false, "https", "10.0.0.0/24", true)]
     [DataRow(true, "127.0.0.1", false, "https", "1.2.3.4", true)]
     [DataRow(true, "::ffff:127.0.0.1", false, "https", "1.2.3.4", true)]
     public void IsHttps_HappyFlow(

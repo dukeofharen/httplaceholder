@@ -7,6 +7,7 @@ using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NetTools;
 
 namespace HttPlaceholder.Infrastructure.Web;
 
@@ -20,7 +21,7 @@ public class ClientDataResolver : IClientDataResolver
     // I've seen Nginx use this IP when reverse proxying. .NET loopback check doesn't recognize this IP as loopback IP.
     private static IPAddress NginxProxyIp { get; } = IPAddress.Parse("::ffff:127.0.0.1");
     private bool _parsedProxyIpsInitialized;
-    private readonly IList<IPAddress> _parsedProxyIps = new List<IPAddress>();
+    private readonly List<IPAddress> _parsedProxyIps = new List<IPAddress>();
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<ClientDataResolver> _logger;
     private readonly SettingsModel _settings;
@@ -89,7 +90,15 @@ public class ClientDataResolver : IClientDataResolver
                                Array.Empty<string>();
             foreach (var proxyIp in safeProxyIps)
             {
-                if (IPAddress.TryParse(proxyIp, out var parsedIp))
+                if (proxyIp.Contains("/"))
+                {
+                    // Input is probably a CIDR, so parse it to a range.
+                    if (IPAddressRange.TryParse(proxyIp, out var range))
+                    {
+                        _parsedProxyIps.AddRange(range);
+                    }
+                }
+                else if (IPAddress.TryParse(proxyIp, out var parsedIp))
                 {
                     _parsedProxyIps.Add(parsedIp);
                 }
