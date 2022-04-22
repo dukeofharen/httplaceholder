@@ -31,7 +31,8 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
     /// <inheritdoc />
     public string GetJsonExample(OpenApiMediaType mediaType)
     {
-        var example = mediaType?.Example ?? mediaType?.Schema?.Example ?? mediaType?.Examples?.Values.FirstOrDefault()?.Value;
+        var example = mediaType?.Example ??
+                      mediaType?.Schema?.Example ?? mediaType?.Examples?.Values.FirstOrDefault()?.Value;
         if (example == null)
         {
             return null;
@@ -52,7 +53,8 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
 
     public object GetExampleForParameter(OpenApiParameter parameter)
     {
-        var example = parameter?.Example ?? parameter?.Schema?.Example ?? parameter?.Examples?.Values.FirstOrDefault()?.Value;
+        var example = parameter?.Example ??
+                      parameter?.Schema?.Example ?? parameter?.Examples?.Values.FirstOrDefault()?.Value;
         return example == null ? null : ExtractExampleFromOpenApiAny(example);
     }
 
@@ -159,7 +161,7 @@ internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
         using var stringWriter = new StringWriter();
         example.Write(
             new OpenApiJsonWriter(stringWriter,
-                new OpenApiWriterSettings {ReferenceInline = ReferenceInlineSetting.InlineAllReferences}),
+                new OpenApiWriterSettings {InlineExternalReferences = true, InlineLocalReferences = true}),
             OpenApiSpecVersion.OpenApi3_0);
         var result = stringWriter.ToString();
         return result;

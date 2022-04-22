@@ -25,6 +25,7 @@ public class StubHandlingMiddleware
 {
     private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub"};
 
+    private const string CorrelationHeaderKey = "X-HttPlaceholder-Correlation";
     private readonly RequestDelegate _next;
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextService _httpContextService;
@@ -82,57 +83,21 @@ public class StubHandlingMiddleware
             return;
         }
 
-        const string correlationHeaderKey = "X-HttPlaceholder-Correlation";
-        var correlation = Guid.NewGuid().ToString();
+        var correlationId = Guid.NewGuid().ToString();
         var requestLogger = _requestLoggerFactory.GetRequestLogger();
-        requestLogger.SetCorrelationId(correlation);
+        requestLogger.SetCorrelationId(correlationId);
         ResponseModel response = null;
         try
         {
-            // Enable rewind here to be able to read the posted body multiple times.
-            _httpContextService.EnableRewind();
-
-            // Log the request here
-            requestLogger.LogRequestParameters(
-                _httpContextService.Method,
-                _httpContextService.DisplayUrl,
-                _httpContextService.GetBody(),
-                _clientDataResolver.GetClientIp(),
-                _httpContextService.GetHeaders());
-
-            _httpContextService.ClearResponse();
-            _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
-            response = await _stubRequestExecutor.ExecuteRequestAsync();
-            _httpContextService.SetStatusCode(response.StatusCode);
-            foreach (var (key, value) in response.Headers)
-            {
-                _httpContextService.AddHeader(key, value);
-            }
-
-            if (response.Body != null)
-            {
-                await _httpContextService.WriteAsync(response.Body);
-            }
+            response = await HandleRequest(correlationId);
         }
         catch (RequestValidationException e)
         {
-            _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
-            _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
-            if (_settings?.Gui?.EnableUserInterface == true)
-            {
-                var pageContents =
-                    StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.RootUrl);
-                _httpContextService.AddHeader("Content-Type", Constants.HtmlMime);
-                await _httpContextService.WriteAsync(pageContents);
-            }
-
-            _logger.LogInformation($"Request validation exception thrown: {e.Message}");
+            await HandleRequestValidationException(correlationId, e);
         }
         catch (Exception e)
         {
-            _httpContextService.SetStatusCode(HttpStatusCode.InternalServerError);
-            _httpContextService.TryAddHeader(correlationHeaderKey, correlation);
-            _logger.LogWarning($"Unexpected exception thrown: {e}");
+            HandleException(correlationId, e);
         }
 
         var loggingResult = requestLogger.GetResult();
@@ -147,5 +112,58 @@ public class StubHandlingMiddleware
 
         // We need to map the model to a DTO here, because the frontend expects that.
         await _requestNotify.NewRequestReceivedAsync(_mapper.Map<RequestOverviewDto>(loggingResult));
+    }
+
+    private void HandleException(string correlationId, Exception e)
+    {
+        _httpContextService.SetStatusCode(HttpStatusCode.InternalServerError);
+        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlationId);
+        _logger.LogWarning($"Unexpected exception thrown: {e}");
+    }
+
+    private async Task HandleRequestValidationException(string correlation, RequestValidationException e)
+    {
+        _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
+        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
+        if (_settings?.Gui?.EnableUserInterface == true)
+        {
+            var pageContents =
+                StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.RootUrl);
+            _httpContextService.AddHeader("Content-Type", Constants.HtmlMime);
+            await _httpContextService.WriteAsync(pageContents);
+        }
+
+        _logger.LogInformation($"Request validation exception thrown: {e.Message}");
+    }
+
+    private async Task<ResponseModel> HandleRequest(string correlation)
+    {
+        var requestLogger = _requestLoggerFactory.GetRequestLogger();
+        // Enable rewind here to be able to read the posted body multiple times.
+        _httpContextService.EnableRewind();
+
+        // Log the request here
+        requestLogger.LogRequestParameters(
+            _httpContextService.Method,
+            _httpContextService.DisplayUrl,
+            _httpContextService.GetBody(),
+            _clientDataResolver.GetClientIp(),
+            _httpContextService.GetHeaders());
+
+        _httpContextService.ClearResponse();
+        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
+        var response = await _stubRequestExecutor.ExecuteRequestAsync();
+        _httpContextService.SetStatusCode(response.StatusCode);
+        foreach (var (key, value) in response.Headers)
+        {
+            _httpContextService.AddHeader(key, value);
+        }
+
+        if (response.Body != null)
+        {
+            await _httpContextService.WriteAsync(response.Body);
+        }
+
+        return response;
     }
 }

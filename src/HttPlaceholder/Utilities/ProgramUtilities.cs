@@ -8,10 +8,10 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Configuration;
 using HttPlaceholder.Resources;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 
 namespace HttPlaceholder.Utilities;
@@ -21,9 +21,9 @@ namespace HttPlaceholder.Utilities;
 /// </summary>
 public static class ProgramUtilities
 {
-    private static readonly string[] _verboseArgs = { "-V", "--verbose" };
-    private static readonly string[] _versionArgs = { "-v", "--version" };
-    private static readonly string[] _helpArgs = { "-h", "--help", "-?" };
+    private static readonly string[] _verboseArgs = {"-V", "--verbose"};
+    private static readonly string[] _versionArgs = {"-v", "--version"};
+    private static readonly string[] _helpArgs = {"-h", "--help", "-?"};
 
     /// <summary>
     /// Configure the logging.
@@ -65,7 +65,7 @@ public static class ProgramUtilities
     /// </summary>
     /// <param name="args">The command line arguments.</param>
     /// <returns>The web host.</returns>
-    public static IWebHost BuildWebHost(string[] args)
+    public static IHost BuildWebHost(string[] args)
     {
         var configParser = new ConfigurationParser();
         var argsDictionary = configParser.ParseConfiguration(args);
@@ -74,12 +74,15 @@ public static class ProgramUtilities
         HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary, args)), args, _verboseArgs,
             false);
 
-        return WebHost.CreateDefaultBuilder(args)
+        return Host.CreateDefaultBuilder(args)
             .UseSerilog()
             .ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(argsDictionary))
-            .UseStartup<Startup>()
-            .UseKestrel(options => ConfigureKestrel(options, settings))
-            .UseIIS()
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>()
+                    .UseKestrel(options => ConfigureKestrel(options, settings))
+                    .UseIIS();
+            })
             .Build();
     }
 

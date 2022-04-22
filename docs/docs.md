@@ -65,6 +65,13 @@
   - [Reverse proxy](#reverse-proxy)
 - **[REST API](#rest-api)**
 - **[Configuration](#configuration)**
+  - [Configuration properties](#configuration-properties)
+  - [Web](#web)
+  - [Authentication](#authentication)
+  - [Storage](#storage)
+  - [GUI](#gui)
+  - [Stub](#stub)
+  - [Config JSON file](#config-json-file)
 - **[Samples](#samples)**
 - **[Management interface](#management-interface)**
   - [How to get there](#how-to-get-there)
@@ -1740,6 +1747,72 @@ If you want to see all possible configuration parameters, append `-h`, `-?` or `
 httplaceholder --help
 ```
 
+## Web
+
+### Use HTTPS (optional)
+
+```bash
+httplaceholder --useHttps true
+```
+
+### HTTPS certificates (optional)
+
+```bash
+httplaceholder --pfxPath C:\path\to\privatekey.pfx --pfxPassword 11223344
+```
+
+Define the private key used for hosting the stub with HTTPS. If no pfx path and pfx password are set, the default .pfx file, shipped with HttPlaceholder, is used.
+
+### HTTP(S) port (optional)
+
+```bash
+httplaceholder --port 80 --httpsPort 443 --useHttps true
+```
+
+Defines which ports the stub should be available at. Default value of `port` (the HTTP port) is `5000` and default value of `httpsPort` is `5050`.
+
+You can define multiple ports for HttPlaceholder to listen on. To do this, separate the port numbers with ",", like this:
+
+```bash
+httplaceholder --port "80,81" --httpsPort "443,4430" --useHttps true
+```
+
+### Read proxy headers
+
+By default, when running behind a reverse proxy (e.g. Apache, Nginx etc.) the IP address received is not the actual IP address of the client. To get the actual IP address, you can read the proxy headers. HttPlaceholder can read the `X-Forwarded-For`, `X-Forwarded-Host` and `X-Forwarded-Proto` headers. Because you can not blindly trust anyone for sending any of these headers, it is important to check for the IP address of the calling party. Proxy headers sent by a client with a "localhost" IP will always be allowed. You can specify multiple IPs by specifying the configuration value `safeProxyIps`.
+
+```bash
+httplaceholder --safeProxyIps "1.1.1.1,2.2.2.2"
+```
+
+The `safeProxyIps` configuration value can also contain CIDR addresses, so you can allow a whole range if needed.
+
+```bash
+httplaceholder --safeProxyIps "10.0.0.0/24"
+```
+
+If you start HttPlaceholder like this, IPs 10.0.0.0 to 10.0.0.255 are allowed.
+
+By default, the reading of proxy headers is enabled. You can disable it by providing the following configuration value:
+
+```bash
+httplaceholder --readProxyHeaders false
+```
+
+By disabling the reading of the proxy headers, the IP, host and protocol as received by the client are always used.
+
+## Authentication
+
+### REST API Authentication (optional)
+
+```bash
+httplaceholder --apiUsername user --apiPassword pass
+```
+
+The username and password that should be sent (using basic authentication) when communicating with the REST API. If these values are not set, the API is available for everyone.
+
+## Storage
+
 ### Input file (optional)
 
 ```bash
@@ -1759,6 +1832,22 @@ httplaceholder --inputFile "C:\path\to\stubsfolder,C:\path\to\file.yml"
 ```
 
 Make sure to surround the value with double quotes if you run the command from PowerShell.
+
+### Enable / disable request logging on the terminal (optional)
+
+```bash
+httplaceholder --enableRequestLogging false
+```
+
+If this property is set to false, no detailed request logging will be written to the terminal anymore. Default: true.
+
+### Request logging (optional)
+
+```bash
+httplaceholder --oldRequestsQueueLength 100
+```
+
+The maximum number of HTTP requests that the in memory stub source (used for the REST API) should store before truncating old records. Default: 40.
 
 ### File store (optional)
 
@@ -1810,51 +1899,7 @@ httplaceholder --sqlServerConnectionString "Server=localhost,2433;Database=httpl
 
 HttPlaceholder has functionality to save all requests and stubs to a Microsoft SQL Server database. You can connect to a database by providing a connection string as seen above. You already need to have an empty database created for HttPlaceholder. HttPlaceholder will create tables itself (if they aren't created yet).
 
-### Use HTTPS (optional)
-
-```bash
-httplaceholder --useHttps true
-```
-
 Whether to also use HTTPS. Possible values: `true` or `false`. Default: `true`
-
-### HTTPS certificates (optional)
-
-```bash
-httplaceholder --pfxPath C:\path\to\privatekey.pfx --pfxPassword 11223344
-```
-
-Define the private key used for hosting the stub with HTTPS. If no pfx path and pfx password are set, the default .pfx file, shipped with HttPlaceholder, is used.
-
-### HTTP(S) port (optional)
-
-```bash
-httplaceholder --port 80 --httpsPort 443 --useHttps true
-```
-
-Defines which ports the stub should be available at. Default value of `port` (the HTTP port) is `5000` and default value of `httpsPort` is `5050`.
-
-You can define multiple ports for HttPlaceholder to listen on. To do this, separate the port numbers with ",", like this:
-
-```bash
-httplaceholder --port "80,81" --httpsPort "443,4430" --useHttps true
-```
-
-### Request logging (optional)
-
-```bash
-httplaceholder --oldRequestsQueueLength 100
-```
-
-The maximum number of HTTP requests that the in memory stub source (used for the REST API) should store before truncating old records. Default: 40.
-
-### Storing responses (optional)
-
-```bash
-httplaceholder --storeResponses true
-```
-
-Whether to store the responses as returned by HttPlaceholder stubs, if a request was matched with a stub. This might be handy when troubleshooting an issue. This is disabled by default, as leaving this option on might bloat your data storage.
 
 ### Run the cleaning of requests in the background (optional)
 
@@ -1868,21 +1913,15 @@ The "old way" of cleaning old requests was not deleted because running the sched
 
 Also, take a look at [here](#request-logging-optional) for more information.
 
-### REST API Authentication (optional)
+### Storing responses (optional)
 
 ```bash
-httplaceholder --apiUsername user --apiPassword pass
+httplaceholder --storeResponses true
 ```
 
-The username and password that should be sent (using basic authentication) when communicating with the REST API. If these values are not set, the API is available for everyone.
+Whether to store the responses as returned by HttPlaceholder stubs, if a request was matched with a stub. This might be handy when troubleshooting an issue. This is disabled by default, as leaving this option on might bloat your data storage.
 
-### Enable / disable request logging on the terminal (optional)
-
-```bash
-httplaceholder --enableRequestLogging false
-```
-
-If this property is set to false, no detailed request logging will be written to the terminal anymore. Default: true.
+## GUI
 
 ### Enable or disable user interface (optional)
 
@@ -1891,6 +1930,8 @@ httplaceholder --enableUserInterface false
 ```
 
 If this property is set to false, the user interface won't appear when you go to http://httplaceholderhost:port/ph-ui. This might be handy in situations where you only want to deploy the HttPlaceholder application as API / stub engine.
+
+## Stub
 
 ### Enable health check on root URL (optional)
 
@@ -1914,7 +1955,7 @@ httplaceholder --maximumExtraDurationMillisKey 10000
 
 This property can be used to configure how many milliseconds the "extraDuration" response writer (see [responses](#extra-duration)) can take. The default value is 60.000 (so 1 minute).
 
-### Config JSON location
+## Config JSON file
 
 If you just installed HttPlaceholder, a file called `_config.json` is available in the installation folder. This JSON file contains all possible configuration settings and a default value per setting. You can copy this file to any location on your PC. Don't put the config file in the installation folder, because these files will be overwritten when an update is installed.
 
