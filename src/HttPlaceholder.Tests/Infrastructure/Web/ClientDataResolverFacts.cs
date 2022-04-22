@@ -1,225 +1,121 @@
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Infrastructure.Web;
 using HttPlaceholder.TestUtilities.Http;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Infrastructure.Web;
 
 [TestClass]
 public class ClientIpResolverFacts
 {
-    private readonly MockHttpContext _mockContext = new();
-    private ClientDataResolver _resolver;
+    private readonly AutoMocker _mocker = new();
+    private readonly SettingsModel _settings = new() {Web = new WebSettingsModel()};
+    private readonly MockHttpContext _mockHttpContext = new();
 
     [TestInitialize]
-    public void Setup()
+    public void Initialize()
     {
-        var accessorMock = new Mock<IHttpContextAccessor>();
-        accessorMock
+        _mocker.Use(Options.Create(_settings));
+        var httpContextAccessorMock = _mocker.GetMock<IHttpContextAccessor>();
+        httpContextAccessorMock
             .Setup(m => m.HttpContext)
-            .Returns(_mockContext);
-        _resolver = new ClientDataResolver(accessorMock.Object);
-    }
-
-    [TestMethod]
-    public void ClientDataResolver_GetClientIp_IpIsLoopback_ForwardedHeaderSet_ShouldReturnForwardedIp()
-    {
-        // Arrange
-        const string loopbackIp = "127.0.0.1";
-        const string forwardedIp = "123.123.123.123";
-        _mockContext.SetIp(loopbackIp);
-        _mockContext.Request.Headers.Add("X-Forwarded-For", $"{forwardedIp}, 127.0.0.1");
-
-        // Act
-        var ip = _resolver.GetClientIp();
-
-        // Assert
-        Assert.AreEqual(forwardedIp, ip);
-    }
-
-    [TestMethod]
-    public void ClientDataResolver_GetClientIp_IpIsLoopback_ForwardedHeaderNotSet_ShouldReturnLoopbackIp()
-    {
-        // Arrange
-        const string loopbackIp = "127.0.0.1";
-        _mockContext.SetIp(loopbackIp);
-
-        // Act
-        var ip = _resolver.GetClientIp();
-
-        // Assert
-        Assert.AreEqual(loopbackIp, ip);
-    }
-
-    [TestMethod]
-    public void ClientDataResolver_GetClientIp_IpIsNotLoopback_ForwardedHeaderSet_ShouldReturnLoopbackIp()
-    {
-        // Arrange
-        const string externalIp = "222.222.222.222";
-        const string forwardedIp = "123.123.123.123";
-        _mockContext.SetIp(externalIp);
-        _mockContext.Request.Headers.Add("X-Forwarded-For", $"{forwardedIp}, 127.0.0.1");
-
-        // Act
-        var ip = _resolver.GetClientIp();
-
-        // Assert
-        Assert.AreEqual(externalIp, ip);
+            .Returns(_mockHttpContext);
     }
 
     [DataTestMethod]
-    [DataRow("127.0.0.1", true)]
-    [DataRow("::1", true)]
-    [DataRow("0000:0000:0000:0000:0000:0000:0000:0001", true)]
-    [DataRow("::ffff:127.0.0.1", true)]
-    [DataRow("128.0.0.1", false)]
-    [DataRow("112.112.112.112", false)]
-    public void ClientDataResolver_GetClientIp_LoopbackIps(string ip, bool isLoopback)
+    [DataRow(false, "1.2.3.4", "8.8.8.8", "", "1.2.3.4")]
+    [DataRow(true, "1.2.3.4", "8.8.8.8", "", "1.2.3.4")]
+    [DataRow(true, "1.2.3.4", "8.8.8.8", "2.2.2.2", "1.2.3.4")]
+    [DataRow(true, "1.2.3.4", "8.8.8.8", "1.2.3.4", "8.8.8.8")]
+    [DataRow(true, "1.2.3.4", "8.8.8.8", "1.2.3.4,5.6.7.8", "8.8.8.8")]
+    [DataRow(true, "1.2.3.4", "7.7.7.7, 8.8.8.8", "1.2.3.4,5.6.7.8", "7.7.7.7")]
+    [DataRow(true, "127.0.0.1", "8.8.8.8", "", "8.8.8.8")]
+    [DataRow(true, "::ffff:127.0.0.1", "8.8.8.8", "", "8.8.8.8")]
+    public void GetClientIp_HappyFlow(
+        bool shouldReadProxyHeaders,
+        string actualIp,
+        string xHeaderValue,
+        string whitelistedIps,
+        string expectedIp)
     {
         // Arrange
-        const string forwardedIp = "123.123.123.123";
-        _mockContext.SetIp(ip);
-        _mockContext.Request.Headers.Add("X-Forwarded-For", $"{forwardedIp}, 127.0.0.1");
+        var resolver = _mocker.CreateInstance<ClientDataResolver>();
+        _settings.Web.ReadProxyHeaders = shouldReadProxyHeaders;
+        _settings.Web.SafeProxyIps = whitelistedIps;
+        _mockHttpContext.SetIp(actualIp);
+        _mockHttpContext.Request.Headers.Add("x-forwarded-for", xHeaderValue);
 
         // Act
-        var result = _resolver.GetClientIp();
+        var result = resolver.GetClientIp();
 
         // Assert
-        Assert.AreEqual(isLoopback ? forwardedIp : ip, result);
+        Assert.AreEqual(expectedIp, result);
     }
 
-    [TestMethod]
-    public void ClientDataResolver_GetHost_IpIsLoopback_ForwardedHeaderSet_ShouldReturnForwardedHost()
+    [DataTestMethod]
+    [DataRow(false, "1.2.3.4", "localhost", "xhost", "", "localhost")]
+    [DataRow(true, "1.2.3.4", "localhost", "xhost", "", "localhost")]
+    [DataRow(true, "1.2.3.4", "localhost", "xhost", "2.2.2.2", "localhost")]
+    [DataRow(true, "1.2.3.4", "localhost", "xhost", "1.2.3.4", "xhost")]
+    [DataRow(true, "1.2.3.4", "localhost", "xhost", "1.2.3.4,5.6.7.8", "xhost")]
+    [DataRow(true, "1.2.3.4", "localhost", "xhost1, xhost2", "1.2.3.4", "xhost1")]
+    [DataRow(true, "127.0.0.1", "localhost", "xhost", "1.2.3.4", "xhost")]
+    [DataRow(true, "::ffff:127.0.0.1", "localhost", "xhost", "1.2.3.4", "xhost")]
+    public void GetHost_HappyFlow(
+        bool shouldReadProxyHeaders,
+        string actualIp,
+        string actualHost,
+        string xHeaderValue,
+        string whitelistedIps,
+        string expectedHost)
     {
         // Arrange
-        const string loopbackIp = "127.0.0.1";
-        _mockContext.SetIp(loopbackIp);
-
-        const string forwardedHost = "httplaceholder.com";
-        _mockContext.Request.Headers.Add("X-Forwarded-Host", forwardedHost);
+        var resolver = _mocker.CreateInstance<ClientDataResolver>();
+        _settings.Web.ReadProxyHeaders = shouldReadProxyHeaders;
+        _settings.Web.SafeProxyIps = whitelistedIps;
+        _mockHttpContext.SetIp(actualIp);
+        _mockHttpContext.SetHost(actualHost);
+        _mockHttpContext.Request.Headers.Add("x-forwarded-host", xHeaderValue);
 
         // Act
-        var host = _resolver.GetHost();
+        var result = resolver.GetHost();
 
         // Assert
-        Assert.AreEqual(forwardedHost, host);
+        Assert.AreEqual(expectedHost, result);
     }
 
-    [TestMethod]
-    public void ClientDataResolver_GetHost_IpIsNotLoopback_ForwardedHeaderSet_ShouldReturnActualHost()
+    [DataTestMethod]
+    [DataRow(false, "1.2.3.4", true, "", "", true)]
+    [DataRow(false, "1.2.3.4", false, "", "", false)]
+    [DataRow(true, "1.2.3.4", false, "https", "2.2.2.2", false)]
+    [DataRow(true, "1.2.3.4", false, "https", "1.2.3.4", true)]
+    [DataRow(true, "1.2.3.4", false, "https", "1.2.3.4,5.6.7.8", true)]
+    [DataRow(true, "1.2.3.4", false, "http, https", "1.2.3.4,5.6.7.8", false)]
+    [DataRow(true, "127.0.0.1", false, "https", "1.2.3.4", true)]
+    [DataRow(true, "::ffff:127.0.0.1", false, "https", "1.2.3.4", true)]
+    public void IsHttps_HappyFlow(
+        bool shouldReadProxyHeaders,
+        string actualIp,
+        bool actualHttps,
+        string xHeaderValue,
+        string whitelistedIps,
+        bool expectedHttps)
     {
         // Arrange
-        const string loopbackIp = "111.111.111.111";
-        _mockContext.SetIp(loopbackIp);
-
-        const string forwardedHost = "httplaceholder.com";
-        _mockContext.Request.Headers.Add("X-Forwarded-Host", forwardedHost);
-
-        const string actualHost = "localhost";
-        _mockContext.SetHost(actualHost);
+        var resolver = _mocker.CreateInstance<ClientDataResolver>();
+        _settings.Web.ReadProxyHeaders = shouldReadProxyHeaders;
+        _settings.Web.SafeProxyIps = whitelistedIps;
+        _mockHttpContext.SetIp(actualIp);
+        _mockHttpContext.SetHttps(actualHttps);
+        _mockHttpContext.Request.Headers.Add("x-forwarded-proto", xHeaderValue);
 
         // Act
-        var host = _resolver.GetHost();
+        var result = resolver.IsHttps();
 
         // Assert
-        Assert.AreEqual(actualHost, host);
-    }
-
-    [TestMethod]
-    public void ClientDataResolver_GetHost_IpIsLoopback_ForwardedHeaderNotSet_ShouldReturnActualHost()
-    {
-        // Arrange
-        const string loopbackIp = "127.0.0.1";
-        _mockContext.SetIp(loopbackIp);
-
-        const string actualHost = "localhost";
-        _mockContext.SetHost(actualHost);
-
-        // Act
-        var host = _resolver.GetHost();
-
-        // Assert
-        Assert.AreEqual(actualHost, host);
-    }
-
-    [TestMethod]
-    public void ClientDataResolver_IsHttps_IpIsLoopback_ForwardedHeaderSet_Https_ShouldReturnTrue()
-    {
-        // Arrange
-        const string loopbackIp = "127.0.0.1";
-        _mockContext.SetIp(loopbackIp);
-
-        _mockContext.Request.Headers.Add("X-Forwarded-Proto", "https");
-
-        // Act
-        var isHttps = _resolver.IsHttps();
-
-        // Assert
-        Assert.IsTrue(isHttps);
-    }
-
-    [TestMethod]
-    public void ClientDataResolver_IsHttps_IpIsLoopback_ForwardedHeaderSet_Http_ShouldReturnFalse()
-    {
-        // Arrange
-        const string loopbackIp = "127.0.0.1";
-        _mockContext.SetIp(loopbackIp);
-
-        _mockContext.Request.Headers.Add("X-Forwarded-Proto", "http");
-
-        // Act
-        var isHttps = _resolver.IsHttps();
-
-        // Assert
-        Assert.IsFalse(isHttps);
-    }
-
-    [TestMethod]
-    public void ClientDataResolver_IsHttps_IpIsNotLoopback_ForwardedHeaderNotSet_Https_ShouldReturnTrue()
-    {
-        // Arrange
-        const string loopbackIp = "123.123.123.123";
-        _mockContext.SetIp(loopbackIp);
-
-        _mockContext.SetHttps(true);
-
-        // Act
-        var isHttps = _resolver.IsHttps();
-
-        // Assert
-        Assert.IsTrue(isHttps);
-    }
-
-    [TestMethod]
-    public void ClientDataResolver_IsHttps_IpIsLoopback_ForwardedHeaderNotSet_Http_ShouldReturnTrue()
-    {
-        // Arrange
-        const string loopbackIp = "123.123.123.123";
-        _mockContext.SetIp(loopbackIp);
-
-        _mockContext.SetHttps(false);
-
-        // Act
-        var isHttps = _resolver.IsHttps();
-
-        // Assert
-        Assert.IsFalse(isHttps);
-    }
-
-    [TestMethod]
-    public void ClientDataResolver_IsHttps_IpIsLoopback_ForwardedHeaderNotSet_Https_ShouldReturnTrue()
-    {
-        // Arrange
-        const string loopbackIp = "127.0.0.1";
-        _mockContext.SetIp(loopbackIp);
-
-        _mockContext.SetHttps(true);
-
-        // Act
-        var isHttps = _resolver.IsHttps();
-
-        // Assert
-        Assert.IsTrue(isHttps);
+        Assert.AreEqual(expectedHttps, result);
     }
 }

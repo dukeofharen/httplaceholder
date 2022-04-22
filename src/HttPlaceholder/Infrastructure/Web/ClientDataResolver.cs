@@ -19,8 +19,8 @@ public class ClientDataResolver : IClientDataResolver
 
     // I've seen Nginx use this IP when reverse proxying. .NET loopback check doesn't recognize this IP as loopback IP.
     private static IPAddress NginxProxyIp { get; } = IPAddress.Parse("::ffff:127.0.0.1");
-    private static bool _parsedProxyIpsInitialized;
-    private static IList<IPAddress> _parsedProxyIps = new List<IPAddress>();
+    private bool _parsedProxyIpsInitialized;
+    private readonly IList<IPAddress> _parsedProxyIps = new List<IPAddress>();
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<ClientDataResolver> _logger;
     private readonly SettingsModel _settings;
