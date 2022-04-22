@@ -4,5 +4,6 @@
    "port": 5000,
    "useHttps": true,
    "enableRequestLogging": true,
-   "sqliteConnectionString": "Data Source=/etc/httplaceholder/data.db"
+   "safeProxyIps": "10.0.2.0/24",
+   "sqliteConnectionString": "Data Source=/etc/httplaceholder/data.db;Foreign Keys=True"
 }
