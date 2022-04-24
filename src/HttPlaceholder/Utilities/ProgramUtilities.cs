@@ -148,7 +148,7 @@ public static class ProgramUtilities
         builder.AppendLine(ManPage.ExplanationHeader);
         builder.AppendLine();
 
-        foreach (var constant in ConfigurationParser.GetConfigKeyMetadata())
+        foreach (var constant in ConfigurationHelper.GetConfigKeyMetadata())
         {
             builder.AppendLine($"--{constant.Key}: {constant.Description} (e.g. {constant.Example})");
         }
