@@ -8519,6 +8519,46 @@
 										}
 									],
 									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: stub-test-123\ntenant: integration\nconditions:\n  method: POST\n  unknownField: 'unknown field'\n  url:\n    path: /test-123\nresponse:\n  text: OK TEST 123"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update stub",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
 										"method": "PUT",
 										"header": [
 											{
@@ -8539,46 +8579,6 @@
 											"path": [
 												"stubs",
 												"update-stub-test"
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "Update stub",
-									"event": [
-										{
-											"listen": "test",
-											"script": {
-												"exec": [
-													"pm.test(\"Status code is 200\", function () {",
-													"    pm.response.to.have.status(200);",
-													"});"
-												],
-												"type": "text/javascript"
-											}
-										}
-									],
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Content-Type",
-												"value": "text/yaml",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "id: stub-test-123\ntenant: integration\nconditions:\n  method: POST\n  unknownField: 'unknown field'\n  url:\n    path: /test-123\nresponse:\n  text: OK TEST 123"
-										},
-										"url": {
-											"raw": "{{rootUrl}}ph-api/stubs",
-											"host": [
-												"{{rootUrl}}ph-api"
-											],
-											"path": [
-												"stubs"
 											]
 										}
 									},
