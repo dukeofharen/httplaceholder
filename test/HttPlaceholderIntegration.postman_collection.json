@@ -8456,7 +8456,52 @@
 							]
 						},
 						{
-							"name": "Bug: allow unknown YAML properties",
+							"name": "Bugfix: allow unknown YAML properties",
+							"item": [
+								{
+									"name": "Create stub",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: update-stub-test\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /update-stub-test\nresponse:\n  text: OK UPDATE STUB TEST"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Bugfix: updating of stub",
 							"item": [
 								{
 									"name": "Create stub",
@@ -8493,6 +8538,47 @@
 											],
 											"path": [
 												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update stub",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: update-stub-test\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /update-stub-test\nresponse:\n  text: OK UPDATE STUB TEST"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs/update-stub-test",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs",
+												"update-stub-test"
 											]
 										}
 									},
