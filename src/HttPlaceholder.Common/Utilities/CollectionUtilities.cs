@@ -59,6 +59,30 @@ public static class CollectionUtilities
     }
 
     /// <summary>
+    /// Looks for a string value in a dictionary in a case insensitive way.
+    /// </summary>
+    /// <param name="dict">The dictionary to look in.</param>
+    /// <param name="key">The key to look for.</param>
+    /// <param name="value">The found value.</param>
+    /// <returns>Whether a value was found.</returns>
+    public static bool TryGetCaseInsensitive(
+        this IDictionary<string, string> dict,
+        string key,
+        out string value)
+    {
+        var foundValue = dict.CaseInsensitiveSearch(key);
+        if (foundValue == null)
+        {
+            value = null;
+            return false;
+        }
+
+        value = foundValue;
+        return true;
+
+    }
+
+    /// <summary>
     /// Checks if a key exists in a dictionary in a case insensitive way.
     /// </summary>
     /// <param name="dict">The dictionary to look in.</param>
