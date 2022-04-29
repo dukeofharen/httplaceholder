@@ -68,11 +68,6 @@ public class ConfigurationParser
 
         foreach (var constant in configMetadata)
         {
-            if (string.IsNullOrWhiteSpace(constant.Key))
-            {
-                continue;
-            }
-
             // Add the environment variables to the configuration.
             var envVar = envVars.CaseInsensitiveSearch(constant.Key);
             if (!string.IsNullOrWhiteSpace(envVar))
@@ -143,16 +138,25 @@ public class ConfigurationParser
             if (string.IsNullOrWhiteSpace(value) && constant.IsBoolValue == true)
             {
                 // The property is a boolean and no value was provided. Interpret this as "true".
-                value = "True";
+                value = "true";
             }
 
             result.Add(constant.Key, value);
         }
 
         EnsureDefaultValuesAreAdded(result);
-        return result.ToDictionary(
-            r => configMetadata.Single(m => m.Key == r.Key).Path,
-            r => r.Value);
+        var finalResult = new Dictionary<string, string>();
+        foreach (var item in result)
+        {
+            var constant =
+                configMetadata.FirstOrDefault(m => string.Equals(item.Key, m.Key, StringComparison.OrdinalIgnoreCase));
+            if (constant != null && !string.IsNullOrWhiteSpace(constant.Path))
+            {
+                finalResult.Add(constant.Path, item.Value);
+            }
+        }
+
+        return finalResult;
     }
 
     private void EnsureDefaultValuesAreAdded(IDictionary<string, string> configDictionary)

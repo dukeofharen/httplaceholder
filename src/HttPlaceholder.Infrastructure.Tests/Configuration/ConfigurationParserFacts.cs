@@ -14,11 +14,17 @@ namespace HttPlaceholder.Infrastructure.Tests.Configuration;
 [TestClass]
 public class ConfigurationParserFacts
 {
-    private const string ExampleConfig = @"
+    private readonly string _exampleArgs = "--usehttps --port 8080 --httpsPort 4430 --inputFile /var/stubs --configJsonLocation /var/httpl_config.json";
+
+    private readonly IDictionary<string, string> _exampleEnv = new Dictionary<string, string>
+    {
+        {"port", "9999"}, {"oldRequestsQueueLength", "100"}
+    };
+
+    private readonly string _exampleConfigJson = @"
 {
-    ""apiUsername"": ""user"",
-    ""apiPassword"": ""pass"",
-    ""enableUserInterface"": false
+    ""enableUserInterface"": true,
+    ""storeResponses"": false
 }";
 
     private const string ExampleConfigWithWeirdCasing = @"
@@ -46,305 +52,149 @@ public class ConfigurationParserFacts
     }
 
     [TestMethod]
-    public void ArgsArray_ShouldParseCorrectly()
+    public void ParseConfiguration_HappyFlow()
     {
         // Arrange
-        var args = ToArgs("--apiUsername user --apiPassword pass");
-
-        // Act
-        var result = _parser.ParseConfiguration(args);
-
-        // Assert
-        Assert.AreEqual("user", result["Authentication:ApiUsername"]);
-        Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
-    }
-
-    [TestMethod]
-    public void ArgsArray_BoolArgsWithoutValue_ShouldInterpretAsTrue()
-    {
-        // Arrange
-        var args = ToArgs("--useHttps --enableRequestLogging --enableUserInterface --port 5001");
-
-        // Act
-        var result = _parser.ParseConfiguration(args);
-
-        // Assert
-        Assert.AreEqual("5001", result["Web:HttpPort"]);
-        Assert.AreEqual("True", result["Web:UseHttps"]);
-        Assert.AreEqual("True", result["Storage:EnableRequestLogging"]);
-        Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
-    }
-
-    [TestMethod]
-    public void ArgsArray_BoolArgsWithValue_ShouldTakeThatValue()
-    {
-        // Arrange
-        var args = ToArgs("--useHttps false --port 5001");
-
-        // Act
-        var result = _parser.ParseConfiguration(args);
-
-        // Assert
-        Assert.AreEqual("5001", result["Web:HttpPort"]);
-        Assert.AreEqual("false", result["Web:UseHttps"]);
-    }
-
-    [TestMethod]
-    public void ReadConfigFileFromArgsArray_FileNotFound_ShouldThrowFileNotFoundException()
-    {
-        // Arrange
-        const string path = "/tmp/config.json";
-        var args = ToArgs($"--configjsonlocation {path}");
-
-        _fileServiceMock
-            .Setup(m => m.FileExists(path))
-            .Returns(false);
-
-        // Act / Assert
-        Assert.ThrowsException<FileNotFoundException>(() => _parser.ParseConfiguration(args));
-    }
-
-    [TestMethod]
-    public void ReadConfigFileFromArgsArray_FileFound_ShouldParseCorrectly()
-    {
-        // Arrange
-        const string path = "/tmp/config.json";
-        var args = ToArgs($"--configjsonlocation {path}");
-
-        _fileServiceMock
-            .Setup(m => m.FileExists(path))
-            .Returns(true);
-
-        _fileServiceMock
-            .Setup(m => m.ReadAllText(path))
-            .Returns(ExampleConfig);
-
-        // Act
-        var result = _parser.ParseConfiguration(args);
-
-        // Assert
-        Assert.AreEqual("user", result["Authentication:ApiUsername"]);
-        Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
-        Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
-    }
-
-    [TestMethod]
-    public void ReadConfigFileFromArgsArray_FileFound_CaseInsensitiveCheck()
-    {
-        // Arrange
-        const string path = "/tmp/config.json";
-        var args = ToArgs($"--configJSONlocAtion {path}");
-
-        _fileServiceMock
-            .Setup(m => m.FileExists(path))
-            .Returns(true);
-
-        _fileServiceMock
-            .Setup(m => m.ReadAllText(path))
-            .Returns(ExampleConfig);
-
-        // Act
-        var result = _parser.ParseConfiguration(args);
-
-        // Assert
-        Assert.AreEqual("user", result["Authentication:ApiUsername"]);
-        Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
-        Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
-    }
-
-    [TestMethod]
-    public void ReadConfigFileFromEnvVar_FileFound_ShouldParseCorrectly()
-    {
-        // Arrange
-        const string path = "/tmp/config.json";
-        var args = Array.Empty<string>();
-        var envVars = new Dictionary<string, string> {{"configjsonlocation", path}};
-
+        var args = _exampleArgs.Split(' ');
         _envServiceMock
             .Setup(m => m.GetEnvironmentVariables())
-            .Returns(envVars);
-
+            .Returns(_exampleEnv);
         _fileServiceMock
-            .Setup(m => m.FileExists(path))
+            .Setup(m => m.FileExists("/var/httpl_config.json"))
             .Returns(true);
-
         _fileServiceMock
-            .Setup(m => m.ReadAllText(path))
-            .Returns(ExampleConfig);
+            .Setup(m => m.ReadAllText("/var/httpl_config.json"))
+            .Returns(_exampleConfigJson);
 
         // Act
         var result = _parser.ParseConfiguration(args);
 
         // Assert
-        Assert.AreEqual("user", result["Authentication:ApiUsername"]);
-        Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
-        Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
+        Assert.AreEqual(12, result.Count);
+        Assert.AreEqual("true", result["Web:UseHttps"]);
+        Assert.AreEqual("8080", result["Web:HttpPort"]);
+        Assert.AreEqual("4430", result["Web:HttpsPort"]);
+        Assert.AreEqual("/var/stubs", result["Storage:InputFile"]);
+        Assert.AreEqual("100", result["Storage:OldRequestsQueueLength"]);
+        Assert.AreEqual("true", result["Gui:EnableUserInterface"]);
+        Assert.AreEqual("false", result["Storage:StoreResponses"]);
     }
 
-    [TestMethod]
-    public void DefaultValues_ShouldBeSetCorrectly()
-    {
-        // Act
-        var result = _parser.ParseConfiguration(Array.Empty<string>());
+     [TestMethod]
+     public void DefaultValues_ShouldBeSetCorrectly()
+     {
+         // Act
+         var result = _parser.ParseConfiguration(Array.Empty<string>());
 
-        // Assert
-        Assert.AreEqual(11, result.Count);
-        Assert.AreEqual("5000", result["Web:HttpPort"]);
-        Assert.IsFalse(string.IsNullOrWhiteSpace(result["Web:PfxPath"]));
-        Assert.AreEqual("1234", result["Web:PfxPassword"]);
-        Assert.AreEqual("5050", result["Web:HttpsPort"]);
-        Assert.AreEqual("True", result["Web:UseHttps"]);
-        Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
-        Assert.AreEqual("40", result["Storage:OldRequestsQueueLength"]);
-        Assert.AreEqual("60000", result["Stub:MaximumExtraDurationMillis"]);
-        Assert.AreEqual("True", result["Storage:CleanOldRequestsInBackgroundJob"]);
-        Assert.AreEqual("False", result["Storage:StoreResponses"]);
-        Assert.AreEqual("True", result["Web:ReadProxyHeaders"]);
-    }
+         // Assert
+         Assert.AreEqual(11, result.Count);
+         Assert.AreEqual("5000", result["Web:HttpPort"]);
+         Assert.IsFalse(string.IsNullOrWhiteSpace(result["Web:PfxPath"]));
+         Assert.AreEqual("1234", result["Web:PfxPassword"]);
+         Assert.AreEqual("5050", result["Web:HttpsPort"]);
+         Assert.AreEqual("True", result["Web:UseHttps"]);
+         Assert.AreEqual("True", result["Gui:EnableUserInterface"]);
+         Assert.AreEqual("40", result["Storage:OldRequestsQueueLength"]);
+         Assert.AreEqual("60000", result["Stub:MaximumExtraDurationMillis"]);
+         Assert.AreEqual("True", result["Storage:CleanOldRequestsInBackgroundJob"]);
+         Assert.AreEqual("False", result["Storage:StoreResponses"]);
+         Assert.AreEqual("True", result["Web:ReadProxyHeaders"]);
+     }
 
-    [DataTestMethod]
-    [DataRow("WINDOWS", "C:\\Users\\duco", "C:\\Users\\duco\\.httplaceholder", false, true, true)]
-    [DataRow("WINDOWS", "C:\\Users\\duco", "C:\\Users\\duco\\.httplaceholder", true, false, true)]
-    [DataRow("LINUX", "/home/duco", "/home/duco/.httplaceholder", false, true, true)]
-    [DataRow("LINUX", "/home/duco", "/home/duco/.httplaceholder", true, false, true)]
-    [DataRow("OSX", "/home/duco", "/home/duco/.httplaceholder", false, true, true)]
-    [DataRow("OSX", "/home/duco", "/home/duco/.httplaceholder", false, false, true)]
-    [DataRow(null, "", "", false, false, false)]
-    public void ShouldSetDefaultFileStorageLocationSuccessfully(
-        string platform,
-        string userHomeFolder,
-        string expectedFileStorageLocation,
-        bool folderAlreadyExists,
-        bool shouldCreateFolder,
-        bool fileStorageLocationShouldBeSet)
-    {
-        // Arrange
-        if (!string.IsNullOrWhiteSpace(platform))
-        {
-            var os = OSPlatform.Create(platform);
-            _envServiceMock.Setup(m => m.IsOs(os)).Returns(true);
-            _fileServiceMock.Setup(m => m.DirectoryExists(userHomeFolder)).Returns(true);
-            _fileServiceMock.Setup(m => m.DirectoryExists(expectedFileStorageLocation)).Returns(folderAlreadyExists);
-        }
+     [DataTestMethod]
+     [DataRow("WINDOWS", "C:\\Users\\duco", "C:\\Users\\duco\\.httplaceholder", true)]
+     [DataRow("LINUX", "/home/duco", "/home/duco/.httplaceholder", true)]
+     [DataRow("OSX", "/home/duco", "/home/duco/.httplaceholder", true)]
+     [DataRow(null, "", "", false)]
+     public void ShouldSetDefaultFileStorageLocationSuccessfully(
+         string platform,
+         string userHomeFolder,
+         string expectedFileStorageLocation,
+         bool fileStorageLocationShouldBeSet)
+     {
+         // Arrange
+         if (!string.IsNullOrWhiteSpace(platform))
+         {
+             var os = OSPlatform.Create(platform);
+             _envServiceMock.Setup(m => m.IsOs(os)).Returns(true);
+             _fileServiceMock.Setup(m => m.DirectoryExists(userHomeFolder)).Returns(true);
+         }
 
-        _envServiceMock.Setup(m => m.GetEnvironmentVariable("USERPROFILE")).Returns(userHomeFolder);
-        _envServiceMock.Setup(m => m.GetEnvironmentVariable("HOME")).Returns(userHomeFolder);
+         _envServiceMock.Setup(m => m.GetEnvironmentVariable("USERPROFILE")).Returns(userHomeFolder);
+         _envServiceMock.Setup(m => m.GetEnvironmentVariable("HOME")).Returns(userHomeFolder);
 
-        // Act
-        var result = _parser.ParseConfiguration(Array.Empty<string>());
+         // Act
+         var result = _parser.ParseConfiguration(Array.Empty<string>());
 
-        // Assert
-        const string key = "Storage:FileStorageLocation";
-        if (fileStorageLocationShouldBeSet)
-        {
-            Assert.AreEqual(expectedFileStorageLocation, result[key]);
-            _fileServiceMock.Verify(
-                m => m.CreateDirectory(expectedFileStorageLocation),
-                Times.Exactly(folderAlreadyExists ? 0 : 1));
-        }
-        else
-        {
-            Assert.IsFalse(result.Any(x => x.Key == key));
-        }
-    }
+         // Assert
+         const string key = "Storage:FileStorageLocation";
+         if (fileStorageLocationShouldBeSet)
+         {
+             Assert.AreEqual(expectedFileStorageLocation, result[key]);
+         }
+         else
+         {
+             Assert.IsFalse(result.Any(x => x.Key == key));
+         }
+     }
 
-    [DataTestMethod]
-    [DataRow("filestoragelocation")]
-    [DataRow("fileStorageLocation")]
-    [DataRow("FILESTORAGELOCATION")]
-    public void DefaultValues_FileStorageLocationSet_ShouldNotCreateFolderInHomeDir(string key)
-    {
-        // Arrange
-        const string fileStorageLocation = "/home/duco/stubs";
-        var args = ToArgs($"--{key} {fileStorageLocation}");
 
-        // Act
-        var result = _parser.ParseConfiguration(args);
+     [TestMethod]
+     public void ArgsArray_ShouldOverrideDefaultValue()
+     {
+         // Arrange
+         var args = "--port 5001 --httpsPort 5051".Split(' ');
 
-        // Assert
-        var pair = result.CaseInsensitiveSearchPair("Storage:FileStorageLocation");
-        Assert.AreEqual(fileStorageLocation, pair.Value);
-        _envServiceMock.Verify(m => m.IsOs(It.IsAny<OSPlatform>()), Times.Never);
-        _fileServiceMock.Verify(m => m.DirectoryExists(It.IsAny<string>()), Times.Never);
-        _fileServiceMock.Verify(m => m.CreateDirectory(It.IsAny<string>()), Times.Never);
-    }
+         // Act
+         var result = _parser.ParseConfiguration(args);
 
-    [TestMethod]
-    public void ArgsArray_ShouldOverrideDefaultValue()
-    {
-        // Arrange
-        var args = ToArgs("--port 5001 --httpsPort 5051");
+         // Assert
+         Assert.AreEqual("5001", result["Web:HttpPort"]);
+         Assert.AreEqual("5051", result["Web:HttpsPort"]);
+     }
 
-        // Act
-        var result = _parser.ParseConfiguration(args);
 
-        // Assert
-        Assert.AreEqual("5001", result["Web:HttpPort"]);
-        Assert.AreEqual("5051", result["Web:HttpsPort"]);
-    }
+     [TestMethod]
+     public void EnvVariablesAndArgsArray_CheckCaseInsensitivity()
+     {
+         // Arrange
+         var args = "--POrT 5001 --httpsPORT 5051".Split(' ');
+         var env = new Dictionary<string, string> {{"FILEStorageLocation", "/tmp/stubs"}};
 
-    [TestMethod]
-    public void EnvVariables_ShouldOverrideArgsArray()
-    {
-        // Arrange
-        var args = ToArgs("--port 5001 --httpsPort 5051");
-        var env = new Dictionary<string, string> {{"port", "5002"}, {"httpsPort", "5052"}};
+         _envServiceMock
+             .Setup(m => m.GetEnvironmentVariables())
+             .Returns(env);
 
-        _envServiceMock
-            .Setup(m => m.GetEnvironmentVariables())
-            .Returns(env);
+         // Act
+         var result = _parser.ParseConfiguration(args);
 
-        // Act
-        var result = _parser.ParseConfiguration(args);
+         // Assert
+         Assert.AreEqual("5001", result["Web:HttpPort"]);
+         Assert.AreEqual("5051", result["Web:HttpsPort"]);
+         Assert.AreEqual("/tmp/stubs", result["Storage:FileStorageLocation"]);
+     }
 
-        // Assert
-        Assert.AreEqual("5002", result["Web:HttpPort"]);
-        Assert.AreEqual("5052", result["Web:HttpsPort"]);
-    }
+     [TestMethod]
+     public void ReadConfigFileFromArgsArray_CheckCaseInsensitivity()
+     {
+         // Arrange
+         const string path = "/tmp/config.json";
+         var args = $"--configjsonlocation {path}".Split(' ');
 
-    [TestMethod]
-    public void EnvVariablesAndArgsArray_CheckCaseInsensitivity()
-    {
-        // Arrange
-        var args = ToArgs("--POrT 5001 --httpsPORT 5051");
-        var env = new Dictionary<string, string> {{"FILEStorageLocation", "/tmp/stubs"}};
+         _fileServiceMock
+             .Setup(m => m.FileExists(path))
+             .Returns(true);
 
-        _envServiceMock
-            .Setup(m => m.GetEnvironmentVariables())
-            .Returns(env);
+         _fileServiceMock
+             .Setup(m => m.ReadAllText(path))
+             .Returns(ExampleConfigWithWeirdCasing);
 
-        // Act
-        var result = _parser.ParseConfiguration(args);
+         // Act
+         var result = _parser.ParseConfiguration(args);
 
-        // Assert
-        Assert.AreEqual("5001", result["Web:HttpPort"]);
-        Assert.AreEqual("5051", result["Web:HttpsPort"]);
-        Assert.AreEqual("/tmp/stubs", result["Storage:FileStorageLocation"]);
-    }
-
-    [TestMethod]
-    public void ReadConfigFileFromArgsArray_CheckCaseInsensitivity()
-    {
-        // Arrange
-        const string path = "/tmp/config.json";
-        var args = ToArgs($"--configjsonlocation {path}");
-
-        _fileServiceMock
-            .Setup(m => m.FileExists(path))
-            .Returns(true);
-
-        _fileServiceMock
-            .Setup(m => m.ReadAllText(path))
-            .Returns(ExampleConfigWithWeirdCasing);
-
-        // Act
-        var result = _parser.ParseConfiguration(args);
-
-        // Assert
-        Assert.AreEqual("user", result["Authentication:ApiUsername"]);
-        Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
-        Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
-    }
-
-    private static string[] ToArgs(string input) => input.Split(' ');
+         // Assert
+         Assert.AreEqual("user", result["Authentication:ApiUsername"]);
+         Assert.AreEqual("pass", result["Authentication:ApiPassword"]);
+         Assert.AreEqual("false", result["Gui:EnableUserInterface"]);
+     }
 }
