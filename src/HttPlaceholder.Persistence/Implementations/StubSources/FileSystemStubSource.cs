@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -210,6 +211,12 @@ internal class FileSystemStubSource : IWritableStubSource
     /// <inheritdoc />
     public Task PrepareStubSourceAsync()
     {
+        var rootFolder = GetRootFolder();
+        if (!_fileService.DirectoryExists(rootFolder))
+        {
+            _fileService.CreateDirectory(rootFolder);
+        }
+
         var requestsFolder = GetRequestsFolder();
         if (!_fileService.DirectoryExists(requestsFolder))
         {
@@ -232,14 +239,25 @@ internal class FileSystemStubSource : IWritableStubSource
         return Task.CompletedTask;
     }
 
+    private string GetRootFolder()
+    {
+        var folder = _settings.Storage?.FileStorageLocation;
+        if (string.IsNullOrWhiteSpace(folder))
+        {
+            throw new InvalidOperationException("File storage location unexpectedly not set.");
+        }
+
+        return folder;
+    }
+
     private string GetStubsFolder() =>
-        Path.Combine(_settings.Storage?.FileStorageLocation, Constants.StubsFolderName);
+        Path.Combine(GetRootFolder(), Constants.StubsFolderName);
 
     private string GetRequestsFolder() =>
-        Path.Combine(_settings.Storage?.FileStorageLocation, Constants.RequestsFolderName);
+        Path.Combine(GetRootFolder(), Constants.RequestsFolderName);
 
     private string GetResponsesFolder() =>
-        Path.Combine(_settings.Storage?.FileStorageLocation, Constants.ResponsesFolderName);
+        Path.Combine(GetRootFolder(), Constants.ResponsesFolderName);
 
     private void DeleteResponse(string filePath)
     {

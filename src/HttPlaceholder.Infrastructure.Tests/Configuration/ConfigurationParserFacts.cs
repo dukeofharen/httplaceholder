@@ -24,7 +24,8 @@ public class ConfigurationParserFacts
     private readonly string _exampleConfigJson = @"
 {
     ""enableUserInterface"": true,
-    ""storeResponses"": false
+    ""storeResponses"": false,
+    ""oldRequestsQueueLength"": 101
 }";
 
     private const string ExampleConfigWithWeirdCasing = @"
