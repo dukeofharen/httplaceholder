@@ -138,7 +138,6 @@ public class ConfigurationParserFacts
          }
      }
 
-
      [TestMethod]
      public void ArgsArray_ShouldOverrideDefaultValue()
      {
