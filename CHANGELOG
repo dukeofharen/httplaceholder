@@ -1,3 +1,9 @@
+[1.4.3]
+- Fixed a bug where you could not specify the `fileStorageLocation` as environment variable (https://github.com/dukeofharen/httplaceholder/issues/234).
+
+# BREAKING CHANGES
+-
+
 [1.4.2]
 - Fixed a bug where HttPlaceholder would create a `.httplaceholder` folder in the user home directory even if the `fileStorageLocation` configuration value was set (https://github.com/dukeofharen/httplaceholder/issues/232).
 - Added possibility for providing a list of safe IPs to HttPlaceholder for reading and using the `X-Forwarded-For`, `X-Forwarded-Host` and `X-Forwarded-Proto` headers (https://github.com/dukeofharen/httplaceholder/pull/235).

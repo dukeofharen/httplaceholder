@@ -83,6 +83,24 @@ public class CollectionUtilitiesFacts
     }
 
     [DataTestMethod]
+    [DataRow("var1", "value1", true)]
+    [DataRow("VAr1", "value1", true)]
+    [DataRow("var2", "value2", true)]
+    [DataRow("var3", null, false)]
+    public void TryGetCaseInsensitive_ShouldReturnCorrectValue(string key, string expectedValue, bool expectedResult)
+    {
+        // Arrange
+        var dictionary = new Dictionary<string, string> {{"var1", "value1"}, {"var2", "value2"}};
+
+        // Act
+        var result = dictionary.TryGetCaseInsensitive(key, out var foundValue);
+
+        // Assert
+        Assert.AreEqual(expectedValue, foundValue);
+        Assert.AreEqual(expectedResult, result);
+    }
+
+    [DataTestMethod]
     [DataRow("key1", true)]
     [DataRow("Key1", true)]
     [DataRow("KEY1", true)]

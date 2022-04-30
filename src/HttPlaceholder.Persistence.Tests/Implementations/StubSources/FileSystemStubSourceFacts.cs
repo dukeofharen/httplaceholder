@@ -632,8 +632,19 @@ public class FileSystemStubSourceFacts
         await source.PrepareStubSourceAsync();
 
         // Assert
-        fileServiceMock.Verify(m => m.DirectoryExists(It.IsAny<string>()), Times.Exactly(3));
-        fileServiceMock.Verify(m => m.CreateDirectory(It.IsAny<string>()), Times.Exactly(3));
+        fileServiceMock.Verify(m => m.DirectoryExists(It.IsAny<string>()), Times.Exactly(4));
+        fileServiceMock.Verify(m => m.CreateDirectory(It.IsAny<string>()), Times.Exactly(4));
         fileSystemStubCacheMock.Verify(m => m.GetOrUpdateStubCache());
+    }
+
+    [TestMethod]
+    public async Task PrepareStubSourceAsync_FileStorageLocationNotSet_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        _options.Value.Storage.FileStorageLocation = null;
+        var source = _mocker.CreateInstance<FileSystemStubSource>();
+
+        // Act
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => source.PrepareStubSourceAsync());
     }
 }
