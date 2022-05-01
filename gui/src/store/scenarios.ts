@@ -6,7 +6,7 @@ import type { ScenarioStateRequestModel } from "@/domain/scenario/scenario-state
 export interface ScenarioInputModel {
   scenario: string;
   state: string;
-  hitCount: number;
+  hitCount: number | undefined;
 }
 
 export const useScenariosStore = defineStore({

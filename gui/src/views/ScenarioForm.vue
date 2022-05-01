@@ -44,7 +44,7 @@
 
 <script lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { resources } from "@/constants/resources";
 import { shouldSave } from "@/utils/event";
@@ -63,7 +63,7 @@ export default defineComponent({
     const scenarioForm = ref<ScenarioInputModel>({
       scenario: "",
       state: "",
-      hitCount: 0,
+      hitCount: undefined,
     });
 
     // Computed
@@ -117,6 +117,25 @@ export default defineComponent({
     });
     onUnmounted(() =>
       document.removeEventListener("keydown", keydownEventListener)
+    );
+
+    // Watches
+    watch(
+      scenarioForm,
+      () => {
+        let hitCount = scenarioForm.value.hitCount as any;
+        if (typeof hitCount !== "string") {
+          hitCount = hitCount + "";
+        }
+
+        const regex = /[^0-9]+/gi;
+        const cleanedHitCount = hitCount.replace(regex, "");
+        const parsedHitCount = parseInt(cleanedHitCount);
+        scenarioForm.value.hitCount = isNaN(parsedHitCount)
+          ? undefined
+          : parsedHitCount;
+      },
+      { deep: true }
     );
 
     return { title, scenarioForm, save, saveDisabled };
