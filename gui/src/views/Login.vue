@@ -39,18 +39,20 @@
 </template>
 
 <script lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { resources } from "@/constants/resources";
 import { handleHttpError } from "@/utils/error";
 import { useRouter } from "vue-router";
 import { error } from "@/utils/toast";
 import { type AuthenticationInput, useUsersStore } from "@/store/users";
 import { defineComponent } from "vue";
+import { useMetadataStore } from "@/store/metadata";
 
 export default defineComponent({
   name: "Login",
   setup() {
     const userStore = useUsersStore();
+    const metadataStore = useMetadataStore();
     const router = useRouter();
 
     // Data
@@ -80,6 +82,16 @@ export default defineComponent({
         }
       }
     };
+
+    // Lifecycle
+    onMounted(async () => {
+      if (
+        !metadataStore.getAuthenticationEnabled ||
+        userStore.getAuthenticated
+      ) {
+        await router.push({ name: "Requests" });
+      }
+    });
 
     return { username, password, logIn, buttonEnabled };
   },
