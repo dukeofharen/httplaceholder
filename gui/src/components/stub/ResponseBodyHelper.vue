@@ -243,6 +243,7 @@ export default defineComponent({
 
     // Watch
     watch(responseBodyType, () => {
+      console.log(responseBodyType);
       cmOptions.value.htmlMode = false;
       cmOptions.value.mode = "";
       switch (responseBodyType.value) {
@@ -258,6 +259,8 @@ export default defineComponent({
           cmOptions.value.mode = { name: "javascript", json: true };
           break;
       }
+
+      insert();
     });
     watch(responseBody, () => {
       if (setInputTimeout) {
