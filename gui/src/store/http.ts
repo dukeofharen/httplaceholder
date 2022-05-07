@@ -3,7 +3,7 @@ import { defineStore } from "pinia";
 type HttpState = {
   numberOfCurrentHttpCalls: number;
   showLoader: boolean;
-  showLoaderTimeout: number;
+  showLoaderTimeout: any;
 };
 
 export const useHttpStore = defineStore({
