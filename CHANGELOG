@@ -1,5 +1,10 @@
 [1.4.3]
 - Fixed a bug where you could not specify the `fileStorageLocation` as environment variable (https://github.com/dukeofharen/httplaceholder/issues/234).
+- Several small changes (https://github.com/dukeofharen/httplaceholder/pull/238):
+    - When using the "response body form helper" and the type is changed, the type is now immediately changed in the stub contents.
+    - Prevent non-numeric fields from being filled in in the hit count in the scenario form.
+    - When not logged in or authentication is disabled, immediately redirect to requests overview page if the login page is visited.
+    - Added delay for showing loader.
 
 # BREAKING CHANGES
 -
