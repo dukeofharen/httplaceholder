@@ -67,21 +67,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss">
-body {
-  margin: 0;
-  padding: 0;
-  font-family: "Roboto Mono", sans-serif !important;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.1s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

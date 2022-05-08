@@ -258,6 +258,8 @@ export default defineComponent({
           cmOptions.value.mode = { name: "javascript", json: true };
           break;
       }
+
+      insert();
     });
     watch(responseBody, () => {
       if (setInputTimeout) {
