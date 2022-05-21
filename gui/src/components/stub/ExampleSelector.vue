@@ -1,6 +1,12 @@
 <template>
+  <modal
+    title="Insert this example?"
+    bodyText="You have unsaved changes."
+    :yes-click-function="insert"
+    :show-modal="showWarningModal"
+    @close="showWarningModal = false"
+  />
   <div>
-    {{ formIsDirty }}
     <select class="form-select" v-model="selectedExample">
       <option v-for="example of examples" :key="example.id" :value="example.id">
         {{ example.title }}
@@ -14,7 +20,7 @@
   <div class="mt-3">
     <button
       class="btn btn-primary"
-      @click="insert"
+      @click="preInsert"
       :disabled="!exampleSelected"
     >
       Insert
@@ -42,6 +48,7 @@ export default defineComponent({
       id: "",
     });
     const selectedExample = ref("");
+    const showWarningModal = ref(false);
 
     // Computed
     const example = computed<ExampleModel | undefined>(() => {
@@ -57,11 +64,21 @@ export default defineComponent({
       return examples.find((e) => e.id === selectedExample.value);
     });
     const exampleSelected = computed(() => example.value && example.value.id);
-    const formIsDirty = computed(() => stubFormStore.getFormIsDirty);
 
     // Methods
+    const preInsert = () => {
+      if (!exampleSelected.value) {
+        return;
+      }
+
+      if (stubFormStore.getFormIsDirty) {
+        showWarningModal.value = true;
+      } else {
+        insert();
+      }
+    };
     const insert = () => {
-      if (!exampleSelected.value || !example.value) {
+      if (!example.value) {
         return;
       }
 
@@ -71,11 +88,12 @@ export default defineComponent({
 
     return {
       insert,
+      preInsert,
       examples,
       selectedExample,
       example,
       exampleSelected,
-      formIsDirty,
+      showWarningModal,
     };
   },
 });
