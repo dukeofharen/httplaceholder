@@ -3,6 +3,9 @@ import { del, get, post, put } from "@/utils/api";
 import yaml from "js-yaml";
 import type { FullStubModel } from "@/domain/stub/full-stub-model";
 import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
+import { useStubFormStore } from "@/store/stubForm";
+
+const stubFormStore = useStubFormStore();
 
 export interface UpdateStubInputModel {
   input: string;
@@ -68,13 +71,19 @@ export const useStubsStore = defineStore({
         ? parsedObject
         : [parsedObject];
       return post("/ph-api/stubs/multiple", stubsArray)
-        .then((response) => Promise.resolve(response))
+        .then((response) => {
+          stubFormStore.setFormIsDirty(false);
+          return Promise.resolve(response);
+        })
         .catch((error) => Promise.reject(error));
     },
     updateStub(payload: UpdateStubInputModel): Promise<any> {
       const parsedObject = yaml.load(payload.input);
       return put(`/ph-api/stubs/${payload.stubId}`, parsedObject)
-        .then((response) => Promise.resolve(response))
+        .then((response) => {
+          stubFormStore.setFormIsDirty(false);
+          return Promise.resolve(response);
+        })
         .catch((error) => Promise.reject(error));
     },
     createStubBasedOnRequest(

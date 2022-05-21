@@ -147,6 +147,7 @@ export default defineComponent({
         try {
           const fullStub = await stubStore.getStub(stubId.value);
           input.value = yaml.dump(fullStub.stub);
+          stubFormStore.setFormIsDirty(false);
         } catch (e: any) {
           if (e.status === 404) {
             error(vsprintf(resources.stubNotFound, [stubId.value]));
