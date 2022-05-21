@@ -1,4 +1,4 @@
-# This stub reads query paramters from the request and parses them in the response.
+# This stub reads query parameters from the request and parses them in the response.
 - id: dynamic-query-example-txt
   tenant: 14-dynamic
   conditions:

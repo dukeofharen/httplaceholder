@@ -1,0 +1,19 @@
+title: 2. Simple POST + body checking with regular expressions
+description: Stub with a simple request body check with regular expressions.
+stub: |
+  id: simple-post
+  conditions:
+    method: POST
+    url:
+      path: \busers\b
+    body:
+      - \busername\b
+      - \bjohn\b
+    headers:
+      X-Api-Key: 123abc
+      X-Another-Secret: \b72354deg\b
+  response:
+    statusCode: 200
+    text: '{"result": true}'
+    headers:
+      Content-Type: application/json

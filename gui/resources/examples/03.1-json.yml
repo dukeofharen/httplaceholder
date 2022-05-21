@@ -1,0 +1,14 @@
+title: 3.1. Check JSON request body
+description: Stub for checking JSON body.
+stub: |
+  id: json-object
+  conditions:
+    method: POST
+    json:
+      username: ^username$
+      subObject:
+        strValue: stringInput
+        boolValue: true
+        doubleValue: 1.23
+  response:
+    text: JSON check successful!

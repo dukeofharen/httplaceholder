@@ -1,8 +1,7 @@
-id: 01-get
 title: 1. Simple GET
 description: Stub for simple GET that expects a certain path and query parameters and returns JSON.
 stub: |
-  id: 1-simple-get
+  id: simple-get
   conditions:
     method: GET
     url:
