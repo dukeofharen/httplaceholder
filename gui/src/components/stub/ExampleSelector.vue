@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { computed, defineComponent, onMounted, ref } from "vue";
 import { getExamples } from "@/utils/examples";
 import { useStubFormStore } from "@/store/stubForm";
 import type { ExampleModel } from "@/domain/example-model";
@@ -40,17 +40,20 @@ export default defineComponent({
     const stubFormStore = useStubFormStore();
 
     // Data
-    const examples = getExamples();
-    examples.unshift({
-      stub: "",
-      title: "Select an example...",
-      description: "",
-      id: "",
-    });
     const selectedExample = ref("");
     const showWarningModal = ref(false);
 
     // Computed
+    const examples = computed(() => {
+      const examplesResult = getExamples();
+      examplesResult.unshift({
+        stub: "",
+        title: "Select an example...",
+        description: "",
+        id: "",
+      });
+      return examplesResult;
+    });
     const example = computed<ExampleModel | undefined>(() => {
       if (!selectedExample.value) {
         return {
@@ -61,7 +64,7 @@ export default defineComponent({
         };
       }
 
-      return examples.find((e) => e.id === selectedExample.value);
+      return examples.value.find((e) => e.id === selectedExample.value);
     });
     const exampleSelected = computed(() => example.value && example.value.id);
 
@@ -85,6 +88,9 @@ export default defineComponent({
       stubFormStore.setInput(example.value.stub);
       stubFormStore.closeFormHelper();
     };
+
+    // Lifecycle
+    onMounted(() => {});
 
     return {
       insert,
