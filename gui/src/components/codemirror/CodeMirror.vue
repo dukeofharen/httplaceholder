@@ -36,9 +36,11 @@ export default defineComponent({
     const initializeCodemirror = () => {
       if (editor.value) {
         cmInstance = CodeMirror.fromTextArea(editor.value, props.options);
-        cmInstance.on("change", () =>
-          emit("update:modelValue", cmInstance.getValue())
-        );
+        cmInstance.on("change", () => {
+          if (props.modelValue !== cmInstance.getValue()) {
+            emit("update:modelValue", cmInstance.getValue());
+          }
+        });
         cmInstance.setOption("extraKeys", {
           Tab: (cm) => {
             if (cm.somethingSelected()) {
@@ -70,7 +72,7 @@ export default defineComponent({
     // Watch
     watch(
       () => props.modelValue,
-      (newModelValue) => {
+      (newModelValue, oldModelValue) => {
         if (cmInstance && cmInstance.getValue() !== newModelValue) {
           cmInstance.setValue(newModelValue);
         }
