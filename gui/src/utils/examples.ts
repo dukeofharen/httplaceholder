@@ -1,12 +1,6 @@
 import type { ExampleModel } from "@/domain/example-model";
+import examples from "@/constants/stub-examples.json";
 
 export function getExamples(): ExampleModel[] {
-  return [
-    {
-      stub: "id: example\ntenant: abc123",
-      title: "stub title",
-      description: "stub description",
-      id: "example-id",
-    },
-  ];
+  return examples as ExampleModel[];
 }
