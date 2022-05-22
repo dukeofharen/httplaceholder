@@ -101,13 +101,7 @@ export default defineComponent({
     const title = computed(() => (newStub.value ? "Add stub" : "Update stub"));
     const input = computed({
       get: () => stubFormStore.getInput,
-      set: (value) => {
-        console.groupCollapsed("name to show to identify trace");
-        console.log(value);
-        console.trace(); // hidden in collapsed group
-        console.groupEnd();
-        stubFormStore.setInput(value);
-      },
+      set: (value) => stubFormStore.setInput(value),
     });
     const showFormHelperSelector = computed(
       () => !stubFormStore.getInputHasMultipleStubs
