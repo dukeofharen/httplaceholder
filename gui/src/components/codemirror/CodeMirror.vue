@@ -72,7 +72,7 @@ export default defineComponent({
     // Watch
     watch(
       () => props.modelValue,
-      (newModelValue, oldModelValue) => {
+      (newModelValue) => {
         if (cmInstance && cmInstance.getValue() !== newModelValue) {
           cmInstance.setValue(newModelValue);
         }

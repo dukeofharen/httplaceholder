@@ -13,23 +13,19 @@
       </option>
     </select>
   </div>
-  <div class="mt-3" v-if="exampleSelected">
+  <div class="mt-3" v-if="example">
     <span>{{ example.description }}</span>
     <code-highlight class="mt-2" language="yaml" :code="example.stub" />
   </div>
   <div class="mt-3">
-    <button
-      class="btn btn-primary"
-      @click="preInsert"
-      :disabled="!exampleSelected"
-    >
+    <button class="btn btn-primary" @click="preInsert" :disabled="!example">
       Insert
     </button>
   </div>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
+import { computed, defineComponent, ref } from "vue";
 import { getExamples } from "@/utils/examples";
 import { useStubFormStore } from "@/store/stubForm";
 import type { ExampleModel } from "@/domain/example-model";
@@ -56,21 +52,15 @@ export default defineComponent({
     });
     const example = computed<ExampleModel | undefined>(() => {
       if (!selectedExample.value) {
-        return {
-          stub: "",
-          title: "",
-          id: "",
-          description: "",
-        };
+        return undefined;
       }
 
       return examples.value.find((e) => e.id === selectedExample.value);
     });
-    const exampleSelected = computed(() => example.value && example.value.id);
 
     // Methods
     const preInsert = () => {
-      if (!exampleSelected.value) {
+      if (!example.value) {
         return;
       }
 
@@ -89,16 +79,12 @@ export default defineComponent({
       stubFormStore.closeFormHelper();
     };
 
-    // Lifecycle
-    onMounted(() => {});
-
     return {
       insert,
       preInsert,
       examples,
       selectedExample,
       example,
-      exampleSelected,
       showWarningModal,
     };
   },
