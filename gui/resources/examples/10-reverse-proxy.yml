@@ -1,0 +1,15 @@
+title: 10. Reverse proxy
+description: An example where HttPlaceholder can be used as reverse proxy.
+stub: |
+  id: reverse-proxy
+  conditions:
+    url:
+      path: /todos
+  response:
+    reverseProxy:
+      url: https://jsonplaceholder.typicode.com/todos
+      appendQueryString: true
+      appendPath: true
+      replaceRootUrl: true
+  priority: 0
+  enabled: true

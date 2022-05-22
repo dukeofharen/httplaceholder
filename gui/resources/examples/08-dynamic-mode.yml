@@ -1,0 +1,15 @@
+title: 8. Dynamic mode (variables in responses)
+description: An example of how you can add variables to response body and headers.
+stub: |
+  id: dynamic-mode
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-mode.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Header: ((query:query_parameter))
+    text: |
+      Random UUID: ((uuid))
+      Current date / time: ((localnow:yyyy-MM-dd HH:mm:ss))

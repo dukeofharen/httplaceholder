@@ -1,4 +1,5 @@
 export const elementDescriptions = {
+  example: "Pick an example from the list to start creating your stub.",
   tenant:
     "The stub also has a 'tenant' field defined. This is a free text field which is optional. This field makes it possible to do operations of multiple stubs at once (e.g. delete all stubs with a specific tenant, get all stubs of a specific tenant or update all stubs of a specific tenant).",
   scenario:

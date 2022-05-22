@@ -13,6 +13,7 @@ export enum FormHelperKey {
   LineEndings = "lineEndings",
   Scenario = "scenario",
   DynamicMode = "dynamicMode",
+  Example = "example",
 }
 
 export function getValues(): string[] {

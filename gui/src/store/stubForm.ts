@@ -13,6 +13,7 @@ type StubFormState = {
   input: string;
   inputHasMultipleStubs: boolean;
   currentSelectedFormHelper: FormHelperKey;
+  formIsDirty: boolean;
 };
 
 export interface SetResponseInput {
@@ -45,12 +46,14 @@ export const useStubFormStore = defineStore({
       input: "",
       inputHasMultipleStubs: false,
       currentSelectedFormHelper: FormHelperKey.None,
+      formIsDirty: false,
     } as StubFormState),
   getters: {
     getInput: (state): string => state.input,
     getInputLength: (state): number => state.input.length,
     getCurrentSelectedFormHelper: (state): FormHelperKey =>
       state.currentSelectedFormHelper,
+    getFormIsDirty: (state): boolean => state.formIsDirty,
     getResponseBodyType(state): ResponseBodyType {
       return handle(() => {
         const parsed = parseInput(state.input);
@@ -126,8 +129,12 @@ export const useStubFormStore = defineStore({
     closeFormHelper(): void {
       this.currentSelectedFormHelper = FormHelperKey.None;
     },
+    setFormIsDirty(formIsDirty: boolean) {
+      this.formIsDirty = formIsDirty;
+    },
     setInput(input: string): void {
       this.input = input;
+      this.formIsDirty = true;
       this.inputHasMultipleStubs = /^-/gm.test(input);
     },
     setDefaultDescription(): void {
@@ -135,7 +142,7 @@ export const useStubFormStore = defineStore({
         const parsed = parseInput(this.input);
         if (parsed) {
           parsed.description = defaultValues.description;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -144,7 +151,7 @@ export const useStubFormStore = defineStore({
         const parsed = parseInput(this.input);
         if (parsed) {
           parsed.priority = defaultValues.priority;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -161,7 +168,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.url.path = defaultValues.urlPath;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -178,7 +185,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.url.fullPath = defaultValues.fullPath;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -202,7 +209,7 @@ export const useStubFormStore = defineStore({
             ...parsed.conditions.url.query,
             ...defaultValues.query,
           };
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -219,7 +226,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.url.isHttps = true;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -233,7 +240,7 @@ export const useStubFormStore = defineStore({
 
           parsed.conditions.basicAuthentication =
             defaultValues.basicAuthentication;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -253,7 +260,7 @@ export const useStubFormStore = defineStore({
             ...parsed.conditions.headers,
             ...defaultValues.requestHeaders,
           };
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -272,7 +279,7 @@ export const useStubFormStore = defineStore({
           parsed.conditions.body = parsed.conditions.body.concat(
             defaultValues.requestBody
           );
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -291,7 +298,7 @@ export const useStubFormStore = defineStore({
           parsed.conditions.form = parsed.conditions.form.concat(
             defaultValues.formBody
           );
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -304,7 +311,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.clientIp = defaultValues.clientIp;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -317,7 +324,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.host = defaultValues.hostname;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -336,7 +343,7 @@ export const useStubFormStore = defineStore({
           parsed.conditions.jsonPath = parsed.conditions.jsonPath.concat(
             defaultValues.jsonPath
           );
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -349,7 +356,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.json = defaultValues.jsonObject;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -362,7 +369,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.json = defaultValues.jsonArray;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -381,7 +388,7 @@ export const useStubFormStore = defineStore({
           parsed.conditions.xpath = parsed.conditions.xpath.concat(
             defaultValues.xpath
           );
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -394,7 +401,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.method = method;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -403,7 +410,7 @@ export const useStubFormStore = defineStore({
         const parsed = parseInput(this.input);
         if (parsed) {
           parsed.tenant = tenant;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -412,7 +419,7 @@ export const useStubFormStore = defineStore({
         const parsed = parseInput(this.input);
         if (parsed) {
           parsed.scenario = scenario;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -425,7 +432,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.statusCode = code;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -464,7 +471,7 @@ export const useStubFormStore = defineStore({
               break;
           }
 
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -486,7 +493,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.contentType = contentType;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -506,7 +513,7 @@ export const useStubFormStore = defineStore({
             ...parsed.response.headers,
             ...defaultValues.responseHeaders,
           };
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -519,7 +526,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.extraDuration = defaultValues.extraDuration;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -532,7 +539,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.temporaryRedirect = defaultValues.redirect;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -545,7 +552,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.permanentRedirect = defaultValues.redirect;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -563,7 +570,7 @@ export const useStubFormStore = defineStore({
             parsed.response.lineEndings = lineEndings;
           }
 
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -581,7 +588,7 @@ export const useStubFormStore = defineStore({
             delete parsed.response.enableDynamicMode;
           }
 
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -594,7 +601,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.reverseProxy = defaultValues.reverseProxy;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -603,7 +610,7 @@ export const useStubFormStore = defineStore({
         const parsed = parseInput(this.input);
         if (parsed) {
           parsed.enabled = false;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -616,7 +623,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.contentType = defaultValues.responseContentType;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -629,7 +636,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.image = defaultValues.image;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -646,7 +653,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.scenario.minHits = defaultValues.minHits;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -663,7 +670,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.scenario.maxHits = defaultValues.maxHits;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -680,7 +687,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.conditions.scenario.exactHits = defaultValues.exactHits;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -698,7 +705,7 @@ export const useStubFormStore = defineStore({
 
           parsed.conditions.scenario.scenarioState =
             defaultValues.scenarioState;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -715,7 +722,7 @@ export const useStubFormStore = defineStore({
           }
 
           parsed.response.scenario.clearState = true;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },
@@ -733,7 +740,7 @@ export const useStubFormStore = defineStore({
 
           parsed.response.scenario.setScenarioState =
             defaultValues.newScenarioState;
-          this.input = yaml.dump(parsed);
+          this.setInput(yaml.dump(parsed));
         }
       });
     },

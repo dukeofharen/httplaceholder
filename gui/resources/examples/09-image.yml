@@ -1,0 +1,18 @@
+title: 9. Image
+description: An example where the stub returns a generated image in the response.
+stub: |
+  id: image-jpeg
+  conditions:
+    method: GET
+    url:
+      path: /stub-image.jpg
+  response:
+    image:
+      type: jpeg
+      width: 1024
+      height: 256
+      backgroundColor: '#f700ff'
+      text: Test image JPEG!
+      fontSize: 7
+      jpegQuality: 80
+      wordWrap: false

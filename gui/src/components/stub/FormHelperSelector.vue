@@ -46,6 +46,9 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-body">
+          <ExampleSelector
+            v-if="currentSelectedFormHelper === FormHelperKey.Example"
+          />
           <HttpMethodSelector
             v-if="currentSelectedFormHelper === FormHelperKey.HttpMethod"
           />
@@ -120,10 +123,12 @@ import {
 } from "@/domain/stubForm/stub-form-helpers";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
+import ExampleSelector from "@/components/stub/ExampleSelector.vue";
 
 export default defineComponent({
   name: "FormHelperSelector",
   components: {
+    ExampleSelector,
     LineEndingSelector,
     RedirectSelector,
     ResponseBodyHelper,

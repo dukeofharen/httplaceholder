@@ -5,6 +5,7 @@
     - Prevent non-numeric fields from being filled in in the hit count in the scenario form.
     - When not logged in or authentication is disabled, immediately redirect to requests overview page if the login page is visited.
     - Added delay for showing loader.
+- Added the possibility to select an example when creating a stub (https://github.com/dukeofharen/httplaceholder/issues/239).
 
 # BREAKING CHANGES
 -

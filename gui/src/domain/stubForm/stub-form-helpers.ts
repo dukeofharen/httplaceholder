@@ -11,6 +11,11 @@ export interface StubFormHelper {
 
 export const stubFormHelpers = [
   {
+    title: "Add example",
+    subTitle: elementDescriptions.example,
+    formHelperToOpen: FormHelperKey.Example,
+  },
+  {
     title: "Add general information",
     isMainItem: true,
   },

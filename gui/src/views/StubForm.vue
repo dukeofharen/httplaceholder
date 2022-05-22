@@ -135,11 +135,13 @@ export default defineComponent({
           clearIntermediateStub();
         } else {
           input.value = resources.defaultStub;
+          stubFormStore.setFormIsDirty(false);
         }
       } else {
         try {
           const fullStub = await stubStore.getStub(stubId.value);
           input.value = yaml.dump(fullStub.stub);
+          stubFormStore.setFormIsDirty(false);
         } catch (e: any) {
           if (e.status === 404) {
             error(vsprintf(resources.stubNotFound, [stubId.value]));
