@@ -144,6 +144,31 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     }
 
     [TestMethod]
+    public async Task StubIntegration_RegularGet_Dynamic_RootUrl()
+    {
+        // arrange
+        const string query = "?var1=value1&var2=value2";
+        var url = $"{TestServer.BaseAddress}dynamic-root-url.txt{query}";
+        var baseUrl = TestServer.BaseAddress.OriginalString.TrimEnd('/');
+        var expectedResult = $"URL: {baseUrl}";
+
+        ClientIpResolverMock
+            .Setup(m => m.GetHost())
+            .Returns("localhost");
+
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual(expectedResult, content);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
+
+        Assert.AreEqual(baseUrl, response.Headers.Single(h => h.Key == "X-Header").Value.Single());
+    }
+
+    [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_ClientIp()
     {
         // arrange
