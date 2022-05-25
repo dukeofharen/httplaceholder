@@ -1497,28 +1497,28 @@ Let's say you do the following GET request: `http://localhost:5000/dynamic-displ
 URL: http://localhost:5000/dynamic-display-url.txt?var1=value&var2=value2
 ```
 
-### Display URL
+### Root URL
 
-The display URL body parser makes it possible to write the complete URL to the response.
+The root URL body parser makes it possible to write the root URL (so URL without path + query string) to the response.
 
 ```yml
-- id: dynamic-display-url-example
+- id: dynamic-root-url-example
   conditions:
     method: GET
     url:
-      path: /dynamic-display-url.txt
+      path: /dynamic-root-url.txt
   response:
     enableDynamicMode: true
-    text: 'URL: ((display_url))'
+    text: 'URL: ((root_url))'
     headers:
-      X-Header: ((display_url))
+      X-Header: ((root_url))
   priority: 0
 ```
 
-Let's say you do the following GET request: `http://localhost:5000/dynamic-display-url.txt?var1=value&var2=value2`. The response text will look like this:
+Let's say you do the following GET request: `http://localhost:5000/dynamic-root-url.txt?var1=value&var2=value2`. The response text will look like this:
 
 ```
-URL: http://localhost:5000/dynamic-display-url.txt?var1=value&var2=value2
+URL: http://localhost:5000
 ```
 
 ### Client IP
