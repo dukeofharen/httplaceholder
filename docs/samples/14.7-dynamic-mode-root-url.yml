@@ -1,0 +1,13 @@
+# The root URL of the current request is written to the response.
+- id: dynamic-root-url-example
+  tenant: 14-dynamic
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-root-url.txt
+  response:
+    enableDynamicMode: true
+    text: 'URL: ((root_url))'
+    headers:
+      X-Header: ((root_url))
+  priority: 0

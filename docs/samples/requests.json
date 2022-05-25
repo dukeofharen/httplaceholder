@@ -815,7 +815,33 @@
 					]
 				},
 				{
-					"name": "7 Client IP",
+					"name": "7 Root URL",
+					"item": [
+						{
+							"name": "Regular",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-root-url.txt?testvar=value1",
+									"host": [
+										"{{rootUrl}}dynamic-root-url",
+										"txt"
+									],
+									"query": [
+										{
+											"key": "testvar",
+											"value": "value1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "8 Client IP",
 					"item": [
 						{
 							"name": "Regular",
@@ -835,7 +861,7 @@
 					]
 				},
 				{
-					"name": "8 Current date and time",
+					"name": "9 Current date and time",
 					"item": [
 						{
 							"name": "Local",
@@ -870,7 +896,7 @@
 					]
 				},
 				{
-					"name": "9 JSONPath",
+					"name": "10 JSONPath",
 					"item": [
 						{
 							"name": "JSONPath",
