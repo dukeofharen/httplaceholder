@@ -3711,6 +3711,33 @@
 									"response": []
 								},
 								{
+									"name": "[Create stub] Root URL",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-root-url\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /dynamic-mode-root-url\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-RootUrl: 'Header root url: ((root_url))'\n  text: 'Root url: ((root_url))'"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "[Create stub] Client IP",
 									"request": {
 										"method": "POST",
@@ -4047,6 +4074,60 @@
 											"raw": "{{rootUrl}}dynamic-mode-display-url?q1=var1&q2=var2",
 											"host": [
 												"{{rootUrl}}dynamic-mode-display-url"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "var1"
+												},
+												{
+													"key": "q2",
+													"value": "var2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test root URL",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"const rootUrl = pm.collectionVariables.get(\"rootUrl\");",
+													"const expectedDisplayUrl = rootUrl.substr(0, rootUrl.lastIndexOf('/'));",
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"Root url: \" + expectedDisplayUrl);",
+													"});",
+													"",
+													"pm.test(\"Header is correct\", function () {",
+													"    pm.expect(pm.response.headers.get('X-RootUrl')).is.eq(\"Header root url: \" + expectedDisplayUrl);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Header-1",
+												"type": "text",
+												"value": "val1"
+											},
+											{
+												"key": "X-Header-2",
+												"type": "text",
+												"value": "val2"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-root-url?q1=var1&q2=var2",
+											"host": [
+												"{{rootUrl}}dynamic-mode-root-url"
 											],
 											"query": [
 												{
