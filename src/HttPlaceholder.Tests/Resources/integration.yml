@@ -338,6 +338,18 @@
       X-Header: ((display_url))
   priority: 0
 
+- id: dynamic-root-url-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-root-url.txt
+  response:
+    enableDynamicMode: true
+    text: 'URL: ((root_url))'
+    headers:
+      X-Header: ((root_url))
+  priority: 0
+
 - id: dynamic-client-ip-example
   conditions:
     method: GET

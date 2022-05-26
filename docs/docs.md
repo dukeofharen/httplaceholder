@@ -59,6 +59,7 @@
     - [Posted form values](#form-post)
     - [Request body](#request-body-parser)
     - [Display URL](#display-url)
+    - [Root URL](#root-url)
     - [Client IP](#client-ip)
     - [Local and UTC date & time](#local-and-utc-date--time)
     - [JSONPath](#jsonpath-parser)
@@ -1494,6 +1495,30 @@ Let's say you do the following GET request: `http://localhost:5000/dynamic-displ
 
 ```
 URL: http://localhost:5000/dynamic-display-url.txt?var1=value&var2=value2
+```
+
+### Root URL
+
+The root URL body parser makes it possible to write the root URL (so URL without path + query string) to the response.
+
+```yml
+- id: dynamic-root-url-example
+  conditions:
+    method: GET
+    url:
+      path: /dynamic-root-url.txt
+  response:
+    enableDynamicMode: true
+    text: 'URL: ((root_url))'
+    headers:
+      X-Header: ((root_url))
+  priority: 0
+```
+
+Let's say you do the following GET request: `http://localhost:5000/dynamic-root-url.txt?var1=value&var2=value2`. The response text will look like this:
+
+```
+URL: http://localhost:5000
 ```
 
 ### Client IP

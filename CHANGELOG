@@ -6,6 +6,7 @@
     - When not logged in or authentication is disabled, immediately redirect to requests overview page if the login page is visited.
     - Added delay for showing loader.
 - Added the possibility to select an example when creating a stub (https://github.com/dukeofharen/httplaceholder/issues/239).
+- Added variable handler for inserting root URL in stub response (https://github.com/dukeofharen/httplaceholder/issues/241).
 
 # BREAKING CHANGES
 -

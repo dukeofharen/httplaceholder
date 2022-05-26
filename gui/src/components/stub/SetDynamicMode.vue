@@ -20,6 +20,9 @@
         >
       </div>
     </div>
+    <div class="col-md-12 mt-3">
+      <button class="btn btn-danger" @click="close">Close</button>
+    </div>
   </div>
 </template>
 
@@ -42,7 +45,12 @@ export default defineComponent({
       set: (value: boolean) => stubFormStore.setDynamicMode(value),
     });
 
-    return { docUrl, dynamicModeEnabled };
+    // Methods
+    const close = () => {
+      stubFormStore.closeFormHelper();
+    };
+
+    return { docUrl, dynamicModeEnabled, close };
   },
 });
 </script>
