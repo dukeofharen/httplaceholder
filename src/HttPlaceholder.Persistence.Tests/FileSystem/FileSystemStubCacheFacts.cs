@@ -172,6 +172,123 @@ public class FileSystemStubCacheFacts
             cache.GetOrUpdateStubCache().SequenceEqual(cache.GetOrUpdateStubCache()));
     }
 
+    [TestMethod]
+    public void AddOrReplaceStub_ItemFound_ShouldReplaceItem()
+    {
+        // Arrange
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+
+        var existingStub = new StubModel {Id = "stub1"};
+        Assert.IsTrue(cache.StubCache.TryAdd(existingStub.Id, existingStub));
+
+        var newStub = new StubModel {Id = "stub1"};
+
+        // Act
+        cache.AddOrReplaceStub(newStub);
+
+        // Assert
+        Assert.IsFalse(cache.StubCache.Values.Any(s => s == existingStub));
+        Assert.IsTrue(cache.StubCache.Values.Any(s => s == newStub));
+    }
+
+    [TestMethod]
+    public void AddOrReplaceStub_ItemNotFound_ShouldAddItem()
+    {
+        // Arrange
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+
+        var existingStub = new StubModel {Id = "stub2"};
+        Assert.IsTrue(cache.StubCache.TryAdd(existingStub.Id, existingStub));
+
+        var newStub = new StubModel {Id = "stub1"};
+
+        // Act
+        cache.AddOrReplaceStub(newStub);
+
+        // Assert
+        Assert.IsTrue(cache.StubCache.Values.Any(s => s == existingStub));
+        Assert.IsTrue(cache.StubCache.Values.Any(s => s == newStub));
+    }
+
+    [TestMethod]
+    public void AddOrReplaceStub_ShouldUpdateMetadata()
+    {
+        // Arrange
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+        var mockFileService = _mocker.GetMock<IFileService>();
+
+        var trackingId = Guid.NewGuid().ToString();
+        cache.StubUpdateTrackingId = trackingId;
+
+        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
+        string capturedMetadata = null;
+        mockFileService
+            .Setup(m => m.WriteAllText(expectedPath, It.IsAny<string>()))
+            .Callback<string, string>((_, metadata) => capturedMetadata = metadata);
+
+        // Act
+        cache.AddOrReplaceStub(new StubModel {Id = "stub1"});
+
+        // Assert
+        var parsedCapturedMetadata = JsonConvert.DeserializeObject<FileStorageMetadataModel>(capturedMetadata);
+        Assert.IsNotNull(parsedCapturedMetadata);
+        Assert.AreNotEqual(trackingId, cache.StubUpdateTrackingId);
+        Assert.AreEqual(parsedCapturedMetadata.StubUpdateTrackingId, cache.StubUpdateTrackingId);
+    }
+
+    [TestMethod]
+    public void DeleteStub_ItemFound_ShouldDeleteItemAndUpdateMetadata()
+    {
+        // Arrange
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+        var mockFileService = _mocker.GetMock<IFileService>();
+
+        var trackingId = Guid.NewGuid().ToString();
+        cache.StubUpdateTrackingId = trackingId;
+
+        var stub = new StubModel {Id = "stub1"};
+        Assert.IsTrue(cache.StubCache.TryAdd(stub.Id, stub));
+
+        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
+        string capturedMetadata = null;
+        mockFileService
+            .Setup(m => m.WriteAllText(expectedPath, It.IsAny<string>()))
+            .Callback<string, string>((_, metadata) => capturedMetadata = metadata);
+
+        // Act
+        cache.DeleteStub(stub.Id);
+
+        // Assert
+        Assert.AreEqual(0, cache.StubCache.Count);
+
+        var parsedCapturedMetadata = JsonConvert.DeserializeObject<FileStorageMetadataModel>(capturedMetadata);
+        Assert.IsNotNull(parsedCapturedMetadata);
+        Assert.AreNotEqual(trackingId, cache.StubUpdateTrackingId);
+        Assert.AreEqual(parsedCapturedMetadata.StubUpdateTrackingId, cache.StubUpdateTrackingId);
+    }
+
+    [TestMethod]
+    public void DeleteStub_ItemNotFound_ShouldNotDeleteItem()
+    {
+        // Arrange
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+        var mockFileService = _mocker.GetMock<IFileService>();
+
+        var trackingId = Guid.NewGuid().ToString();
+        cache.StubUpdateTrackingId = trackingId;
+
+        var stub = new StubModel {Id = "stub2"};
+        Assert.IsTrue(cache.StubCache.TryAdd(stub.Id, stub));
+
+        // Act
+        cache.DeleteStub("stub1");
+
+        // Assert
+        Assert.IsTrue(cache.StubCache.Values.Any(s => s == stub));
+        mockFileService.Verify(m => m.WriteAllText(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        Assert.AreEqual(trackingId, cache.StubUpdateTrackingId);
+    }
+
     private void SetupMetadata(string trackingId)
     {
         var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
