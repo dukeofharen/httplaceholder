@@ -30,10 +30,32 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
     }
 
     /// <inheritdoc />
-    public Task AddOrReplaceStubAsync(IDatabaseContext ctx, StubModel stubModel) => throw new NotImplementedException();
+    public async Task AddOrReplaceStubAsync(IDatabaseContext ctx, StubModel stubModel)
+    {
+        var item = StubCache.ContainsKey(stubModel.Id) ? StubCache[stubModel.Id] : null;
+        if (item != null)
+        {
+            StubCache.Remove(stubModel.Id, out _);
+        }
+
+        if (!StubCache.TryAdd(stubModel.Id, stubModel))
+        {
+            _logger.LogWarning("Could not add stub with ID '{}' to cache.", stubModel.Id);
+        }
+
+        var newId = await UpdateTrackingIdAsync(ctx);
+        UpdateLocalStubUpdateTrackingId(newId);
+    }
 
     /// <inheritdoc />
-    public Task DeleteStubAsync(IDatabaseContext ctx, string stubId) => throw new NotImplementedException();
+    public async Task DeleteStubAsync(IDatabaseContext ctx, string stubId)
+    {
+        if (StubCache.TryRemove(stubId, out _))
+        {
+            var newId = await UpdateTrackingIdAsync(ctx);
+            UpdateLocalStubUpdateTrackingId(newId);
+        }
+    }
 
     /// <inheritdoc />
     public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(IDatabaseContext ctx)
@@ -107,5 +129,20 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
         }
 
         return StubCache.Values;
+    }
+
+    private void UpdateLocalStubUpdateTrackingId(string trackingId)
+    {
+        lock (_cacheUpdateLock)
+        {
+            StubUpdateTrackingId = trackingId;
+        }
+    }
+
+    private async Task<string> UpdateTrackingIdAsync(IDatabaseContext ctx)
+    {
+        var newId = Guid.NewGuid().ToString();
+        await ctx.ExecuteAsync(_queryStore.UpdateStubUpdateTrackingIdQuery, new {StubUpdateTrackingId = newId});
+        return newId;
     }
 }
