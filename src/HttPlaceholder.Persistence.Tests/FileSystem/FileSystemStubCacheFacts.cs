@@ -94,26 +94,6 @@ public class FileSystemStubCacheFacts
     }
 
     [TestMethod]
-    public void ClearStubCache_ShouldClearStubCacheAndTrackingId()
-    {
-        // Arrange
-        var trackingId = Guid.NewGuid().ToString();
-        SetupMetadata(trackingId);
-
-        _cache.StubCache = new List<StubModel>();
-        _cache.StubUpdateTrackingId = trackingId;
-
-        // Act
-        _cache.ClearStubCache();
-
-        // Assert
-        Assert.IsNull(_cache.StubCache);
-        Assert.IsNotNull(_cache.StubUpdateTrackingId);
-        Assert.AreNotEqual(trackingId, _cache.StubUpdateTrackingId);
-        _mockFileService.Verify(m => m.WriteAllText(It.IsAny<string>(), It.IsAny<string>()));
-    }
-
-    [TestMethod]
     public void GetOrUpdateStubCache_StubCacheIsNull_ShouldInitializeCache()
     {
         // Arrange
@@ -138,7 +118,6 @@ public class FileSystemStubCacheFacts
         SetupMetadata(trackingId);
         SetupStubs();
 
-        _cache.StubCache = new List<StubModel>();
         _cache.StubUpdateTrackingId = Guid.NewGuid().ToString();
 
         // Act
@@ -167,8 +146,7 @@ public class FileSystemStubCacheFacts
         // Assert
         Assert.AreEqual(2, result.Length);
 
-        Assert.AreEqual(stub1.Id, result[0].Id);
-        Assert.AreEqual(stub2.Id, result[1].Id);
+        Assert.IsTrue(result.All(s => s.Id == stub1.Id || s.Id == stub2.Id));
     }
 
     [TestMethod]
@@ -183,9 +161,8 @@ public class FileSystemStubCacheFacts
         SetupStubs(stub1, stub2);
 
         // Act / Assert
-        Assert.AreEqual(
-            _cache.GetOrUpdateStubCache(),
-            _cache.GetOrUpdateStubCache());
+        Assert.IsTrue(
+            _cache.GetOrUpdateStubCache().SequenceEqual(_cache.GetOrUpdateStubCache()));
     }
 
     private void SetupMetadata(string trackingId)
