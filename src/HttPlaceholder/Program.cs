@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using HttPlaceholder.Resources;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -6,6 +7,7 @@ using static HttPlaceholder.Utilities.ProgramUtilities;
 
 namespace HttPlaceholder;
 
+[ExcludeFromCodeCoverage]
 internal static class Program
 {
     public static int Main(string[] args)
