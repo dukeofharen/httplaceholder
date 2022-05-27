@@ -175,7 +175,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     public async Task<IEnumerable<StubModel>> GetStubsAsync()
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        return await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
+        return await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx);
     }
 
     /// <inheritdoc />
@@ -188,7 +188,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     public async Task<StubModel> GetStubAsync(string stubId)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        var stubs = await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
+        var stubs = await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx);
         return stubs.FirstOrDefault(s => s.Id == stubId);
     }
 
@@ -199,6 +199,6 @@ internal class RelationalDbStubSource : IWritableStubSource
         await _relationalDbMigrator.MigrateAsync(ctx);
 
         // Also initialize the cache at startup.
-        await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
+        await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx);
     }
 }

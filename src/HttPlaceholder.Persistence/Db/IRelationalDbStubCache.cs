@@ -14,7 +14,7 @@ public interface IRelationalDbStubCache
     /// </summary>
     /// <param name="ctx">The database context.</param>
     /// <returns>A list of <see cref="StubModel"/>.</returns>
-    Task<IEnumerable<StubModel>> GetOrUpdateStubCache(IDatabaseContext ctx);
+    Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(IDatabaseContext ctx);
 
     /// <summary>
     /// Adds or updates a stub in the cache.

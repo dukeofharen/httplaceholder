@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HttPlaceholder.Common.Utilities;
@@ -17,7 +18,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
 
     private static readonly object _cacheUpdateLock = new();
     internal string StubUpdateTrackingId;
-    internal IList<StubModel> StubCache;
+    internal readonly ConcurrentDictionary<string, StubModel> StubCache = new();
 
     private readonly IQueryStore _queryStore;
     private readonly ILogger<RelationalDbStubCache> _logger;
@@ -29,23 +30,13 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
     }
 
     /// <inheritdoc />
-    public void ClearStubCache(IDatabaseContext ctx)
-    {
-        // Clear the in memory stub cache.
-        lock (_cacheUpdateLock)
-        {
-            _logger.LogInformation("Clearing the relational DB stub cache.");
-            StubCache = null;
-            var newId = Guid.NewGuid().ToString();
-            StubUpdateTrackingId = newId;
-            ctx.Execute(
-                _queryStore.UpdateStubUpdateTrackingIdQuery,
-                new {StubUpdateTrackingId = newId});
-        }
-    }
+    public Task AddOrReplaceStubAsync(IDatabaseContext ctx, StubModel stubModel) => throw new NotImplementedException();
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCache(IDatabaseContext ctx)
+    public Task DeleteStubAsync(IDatabaseContext ctx, string stubId) => throw new NotImplementedException();
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(IDatabaseContext ctx)
     {
         var shouldUpdateCache = false;
 
@@ -66,10 +57,11 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
                 shouldUpdateCache = true;
             }
         }
-        else if (StubCache == null || StubUpdateTrackingId == null)
+        else if (StubUpdateTrackingId == null)
         {
             // The local cache hasn't been initialized yet. Do that now.
-            _logger.LogInformation("Initializing the cache, because either the local stub cache or tracking ID is not set yet.");
+            _logger.LogInformation(
+                "Initializing the cache, because either the local stub cache or tracking ID is not set yet.");
             StubUpdateTrackingId = stubUpdateTrackingId;
             shouldUpdateCache = true;
         }
@@ -78,7 +70,8 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
             lock (_cacheUpdateLock)
             {
                 // ID has been changed. Update the stub cache.
-                _logger.LogInformation("Initializing the cache, because the tracking ID in the database has been changed.");
+                _logger.LogInformation(
+                    "Initializing the cache, because the tracking ID in the database has been changed.");
                 StubUpdateTrackingId = stubUpdateTrackingId;
                 shouldUpdateCache = true;
             }
@@ -86,32 +79,33 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
 
         if (shouldUpdateCache)
         {
-            lock (_cacheUpdateLock)
+            var queryResults = ctx.Query<DbStubModel>(_queryStore.GetStubsQuery);
+            StubCache.Clear();
+            foreach (var queryResult in queryResults)
             {
-                var queryResults = ctx.Query<DbStubModel>(_queryStore.GetStubsQuery);
-                var result = new List<StubModel>();
-                foreach (var queryResult in queryResults)
+                StubModel stub;
+                switch (queryResult.StubType)
                 {
-                    switch (queryResult.StubType)
-                    {
-                        case StubJsonType:
-                            result.Add(JsonConvert.DeserializeObject<StubModel>(queryResult.Stub));
-                            break;
+                    case StubJsonType:
+                        stub = JsonConvert.DeserializeObject<StubModel>(queryResult.Stub);
+                        break;
 
-                        case StubYamlType:
-                            result.Add(YamlUtilities.Parse<StubModel>(queryResult.Stub));
-                            break;
+                    case StubYamlType:
+                        stub = YamlUtilities.Parse<StubModel>(queryResult.Stub);
+                        break;
 
-                        default:
-                            throw new NotImplementedException(
-                                $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.");
-                    }
+                    default:
+                        throw new NotImplementedException(
+                            $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.");
                 }
 
-                StubCache = result;
+                if (!StubCache.TryAdd(stub.Id, stub))
+                {
+                    _logger.LogWarning("Could not add stub with ID '{}' to cache.", stub.Id);
+                }
             }
         }
 
-        return StubCache;
+        return StubCache.Values;
     }
 }

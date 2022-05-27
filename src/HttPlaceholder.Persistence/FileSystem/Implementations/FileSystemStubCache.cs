@@ -41,7 +41,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
         // Check if the "stub update tracking ID" variable has a new value.
         var metadata = EnsureAndGetMetadata();
-        if (StubCache == null || StubUpdateTrackingId == null)
+        if (StubUpdateTrackingId == null)
         {
             // The local cache hasn't been initialized yet. Do that now.
             _logger.LogInformation(
