@@ -22,7 +22,7 @@ public class FileSystemStubSourceFacts
     private const string StorageFolder = @"C:\storage";
 
     private readonly AutoMocker _mocker = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
+    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
 
     [TestInitialize]
     public void Initialize()

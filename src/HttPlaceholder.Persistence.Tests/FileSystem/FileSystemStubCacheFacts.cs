@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.AutoMock;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Tests.FileSystem;
@@ -20,44 +21,39 @@ namespace HttPlaceholder.Persistence.Tests.FileSystem;
 public class FileSystemStubCacheFacts
 {
     private const string FileStorageLocation = "/etc/httplaceholder";
-    private readonly Mock<ILogger<FileSystemStubCache>> _mockLogger = new();
-    private readonly Mock<IFileService> _mockFileService = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
-    private FileSystemStubCache _cache;
+    private readonly AutoMocker _mocker = new();
+    private readonly SettingsModel _settings = MockSettingsFactory.GetSettings();
 
     [TestInitialize]
     public void Initialize()
     {
-        _options.Value.Storage.FileStorageLocation = FileStorageLocation;
-        _cache = new FileSystemStubCache(
-            _mockLogger.Object,
-            _mockFileService.Object,
-            _options);
+        _settings.Storage.FileStorageLocation = FileStorageLocation;
+        _mocker.Use(Options.Create(_settings));
     }
 
     [TestCleanup]
-    public void Cleanup()
-    {
-        _mockLogger.VerifyAll();
-        _mockFileService.VerifyAll();
-    }
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void EnsureAndGetMetadata_MetadataDoesntExistYet_ShouldCreateMetadata()
     {
         // Arrange
-        var expectedPath = Path.Join(_options.Value.Storage.FileStorageLocation, Constants.MetadataFileName);
-        _mockFileService
+        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
+
+        var mockFileService = _mocker.GetMock<IFileService>();
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+
+        mockFileService
             .Setup(m => m.FileExists(expectedPath))
             .Returns(false);
 
         string capturedMetadata = null;
-        _mockFileService
+        mockFileService
             .Setup(m => m.WriteAllText(expectedPath, It.IsAny<string>()))
             .Callback<string, string>((_, metadata) => capturedMetadata = metadata);
 
         // Act
-        var result = _cache.EnsureAndGetMetadata();
+        var result = cache.EnsureAndGetMetadata();
 
         // Assert
         Assert.IsNotNull(result);
@@ -75,18 +71,21 @@ public class FileSystemStubCacheFacts
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
 
-        var expectedPath = Path.Join(_options.Value.Storage.FileStorageLocation, Constants.MetadataFileName);
-        _mockFileService
+        var mockFileService = _mocker.GetMock<IFileService>();
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+
+        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
+        mockFileService
             .Setup(m => m.FileExists(expectedPath))
             .Returns(true);
 
         var metadataContents = @$"{{""StubUpdateTrackingId"": ""{trackingId}""}}";
-        _mockFileService
+        mockFileService
             .Setup(m => m.ReadAllText(expectedPath))
             .Returns(metadataContents);
 
         // Act
-        var result = _cache.EnsureAndGetMetadata();
+        var result = cache.EnsureAndGetMetadata();
 
         // Assert
         Assert.IsNotNull(result);
@@ -101,13 +100,15 @@ public class FileSystemStubCacheFacts
         SetupMetadata(trackingId);
         SetupStubs();
 
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+
         // Act
-        var result = _cache.GetOrUpdateStubCache();
+        var result = cache.GetOrUpdateStubCache();
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsNotNull(_cache.StubCache);
-        Assert.AreEqual(trackingId, _cache.StubUpdateTrackingId);
+        Assert.IsNotNull(cache.StubCache);
+        Assert.AreEqual(trackingId, cache.StubUpdateTrackingId);
     }
 
     [TestMethod]
@@ -118,15 +119,17 @@ public class FileSystemStubCacheFacts
         SetupMetadata(trackingId);
         SetupStubs();
 
-        _cache.StubUpdateTrackingId = Guid.NewGuid().ToString();
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+
+        cache.StubUpdateTrackingId = Guid.NewGuid().ToString();
 
         // Act
-        var result = _cache.GetOrUpdateStubCache();
+        var result = cache.GetOrUpdateStubCache();
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.IsNotNull(_cache.StubCache);
-        Assert.AreEqual(trackingId, _cache.StubUpdateTrackingId);
+        Assert.IsNotNull(cache.StubCache);
+        Assert.AreEqual(trackingId, cache.StubUpdateTrackingId);
     }
 
     [TestMethod]
@@ -140,8 +143,10 @@ public class FileSystemStubCacheFacts
         var stub2 = new StubModel {Id = "stub2"};
         SetupStubs(stub1, stub2);
 
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+
         // Act
-        var result = _cache.GetOrUpdateStubCache().ToArray();
+        var result = cache.GetOrUpdateStubCache().ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -160,27 +165,34 @@ public class FileSystemStubCacheFacts
         var stub2 = new StubModel {Id = "stub2"};
         SetupStubs(stub1, stub2);
 
+        var cache = _mocker.CreateInstance<FileSystemStubCache>();
+
         // Act / Assert
         Assert.IsTrue(
-            _cache.GetOrUpdateStubCache().SequenceEqual(_cache.GetOrUpdateStubCache()));
+            cache.GetOrUpdateStubCache().SequenceEqual(cache.GetOrUpdateStubCache()));
     }
 
     private void SetupMetadata(string trackingId)
     {
-        var expectedPath = Path.Join(_options.Value.Storage.FileStorageLocation, Constants.MetadataFileName);
-        _mockFileService
+        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
+
+        var mockFileService = _mocker.GetMock<IFileService>();
+
+        mockFileService
             .Setup(m => m.FileExists(expectedPath))
             .Returns(true);
 
         var metadataContents = @$"{{""StubUpdateTrackingId"": ""{trackingId}""}}";
-        _mockFileService
+        mockFileService
             .Setup(m => m.ReadAllText(expectedPath))
             .Returns(metadataContents);
     }
 
     private void SetupStubs(params StubModel[] stubs)
     {
-        var expectedPath = Path.Combine(_options.Value.Storage?.FileStorageLocation, Constants.StubsFolderName);
+        var expectedPath = Path.Combine(_settings.Storage?.FileStorageLocation, Constants.StubsFolderName);
+
+        var mockFileService = _mocker.GetMock<IFileService>();
 
         var counter = 0;
         var filePaths = new List<string>();
@@ -188,13 +200,13 @@ public class FileSystemStubCacheFacts
         {
             var filePath = $"stub{counter}.json";
             filePaths.Add(filePath);
-            _mockFileService
+            mockFileService
                 .Setup(m => m.ReadAllText(filePath))
                 .Returns(JsonConvert.SerializeObject(stub));
             counter++;
         }
 
-        _mockFileService
+        mockFileService
             .Setup(m => m.GetFiles(expectedPath, "*.json"))
             .Returns(filePaths.ToArray());
     }
