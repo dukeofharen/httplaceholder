@@ -178,6 +178,7 @@ import { defineComponent } from "vue";
 import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
 import type { StubSavedFilterModel } from "@/domain/stub-saved-filter-model";
 import dayjs from "dayjs";
+import { vsprintf } from "sprintf-js";
 
 export default defineComponent({
   name: "Stubs",
@@ -290,13 +291,11 @@ export default defineComponent({
         }
       };
       const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id);
-      const promises = [];
       for (const stubId of stubIds) {
-        promises.push(disableStub(stubId));
+        await disableStub(stubId);
+        success(vsprintf(resources.stubEnabledSuccessfully, [stubId]));
       }
 
-      await Promise.all(promises);
-      success(resources.stubsDisabledSuccessfully);
       await loadData();
     };
     const enableStubs = async () => {
@@ -308,13 +307,11 @@ export default defineComponent({
         }
       };
       const stubIds = filteredNonReadOnlyStubs.value.map((fs) => fs.stub.id);
-      const promises = [];
       for (const stubId of stubIds) {
-        promises.push(enableStub(stubId));
+        await enableStub(stubId);
+        success(vsprintf(resources.stubDisabledSuccessfully, [stubId]));
       }
 
-      await Promise.all(promises);
-      success(resources.stubsEnabledSuccessfully);
       await loadData();
     };
     const deleteStubs = async () => {
