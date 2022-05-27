@@ -70,7 +70,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
             {
                 if (!StubCache.TryAdd(item.Id, item))
                 {
-                    _logger.LogWarning("Could not add stub with ID '{}' to cache.", item.Id);
+                    _logger.LogWarning($"Could not add stub with ID '{item.Id}' to cache.");
                 }
             }
         }
@@ -89,7 +89,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
         if (!StubCache.TryAdd(stubModel.Id, stubModel))
         {
-            _logger.LogWarning("Could not add stub with ID '{}' to cache.", stubModel.Id);
+            _logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
         }
 
         var metadata = UpdateMetadata(GetMetadataPath());

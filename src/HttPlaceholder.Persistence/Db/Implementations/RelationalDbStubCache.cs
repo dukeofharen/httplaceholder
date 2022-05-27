@@ -40,7 +40,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
 
         if (!StubCache.TryAdd(stubModel.Id, stubModel))
         {
-            _logger.LogWarning("Could not add stub with ID '{}' to cache.", stubModel.Id);
+            _logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
         }
 
         var newId = await UpdateTrackingIdAsync(ctx);
@@ -105,25 +105,17 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
             StubCache.Clear();
             foreach (var queryResult in queryResults)
             {
-                StubModel stub;
-                switch (queryResult.StubType)
+                var stub = queryResult.StubType switch
                 {
-                    case StubJsonType:
-                        stub = JsonConvert.DeserializeObject<StubModel>(queryResult.Stub);
-                        break;
-
-                    case StubYamlType:
-                        stub = YamlUtilities.Parse<StubModel>(queryResult.Stub);
-                        break;
-
-                    default:
-                        throw new NotImplementedException(
-                            $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.");
-                }
+                    StubJsonType => JsonConvert.DeserializeObject<StubModel>(queryResult.Stub),
+                    StubYamlType => YamlUtilities.Parse<StubModel>(queryResult.Stub),
+                    _ => throw new NotImplementedException(
+                        $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.")
+                };
 
                 if (!StubCache.TryAdd(stub.Id, stub))
                 {
-                    _logger.LogWarning("Could not add stub with ID '{}' to cache.", stub.Id);
+                    _logger.LogWarning($"Could not add stub with ID '{stub.Id}' to cache.");
                 }
             }
         }
