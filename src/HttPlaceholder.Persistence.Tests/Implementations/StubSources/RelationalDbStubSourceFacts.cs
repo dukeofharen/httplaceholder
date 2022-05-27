@@ -171,7 +171,8 @@ public class RelationalDbStubSourceFacts
         Assert.AreEqual(JsonConvert.SerializeObject(stub), parsedParam["Stub"].ToString());
         Assert.AreEqual("json", parsedParam["StubType"].ToString());
 
-        _mocker.GetMock<IRelationalDbStubCache>().Verify(m => m.ClearStubCache(_mockDatabaseContext.Object));
+        _mocker.GetMock<IRelationalDbStubCache>()
+            .Verify(m => m.AddOrReplaceStubAsync(_mockDatabaseContext.Object, stub));
     }
 
     [TestMethod]
@@ -478,7 +479,8 @@ public class RelationalDbStubSourceFacts
         var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
         Assert.AreEqual(stubId, parsedParam["StubId"].ToString());
 
-        _mocker.GetMock<IRelationalDbStubCache>().Verify(m => m.ClearStubCache(_mockDatabaseContext.Object));
+        _mocker.GetMock<IRelationalDbStubCache>()
+            .Verify(m => m.DeleteStubAsync(_mockDatabaseContext.Object, stubId));
     }
 
     [TestMethod]

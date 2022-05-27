@@ -78,7 +78,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         var json = JsonConvert.SerializeObject(stub);
         await ctx.ExecuteAsync(_queryStore.AddStubQuery,
             new {StubId = stub.Id, Stub = json, StubType = StubJsonType});
-        _relationalDbStubCache.ClearStubCache(ctx);
+        await _relationalDbStubCache.AddOrReplaceStubAsync(ctx, stub);
     }
 
     /// <inheritdoc />
@@ -158,7 +158,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var updated = await ctx.ExecuteAsync(_queryStore.DeleteStubQuery, new {StubId = stubId});
-        _relationalDbStubCache.ClearStubCache(ctx);
+        await _relationalDbStubCache.DeleteStubAsync(ctx, stubId);
         return updated > 0;
     }
 

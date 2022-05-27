@@ -17,8 +17,16 @@ public interface IRelationalDbStubCache
     Task<IEnumerable<StubModel>> GetOrUpdateStubCache(IDatabaseContext ctx);
 
     /// <summary>
-    /// Clears the stub cache.
+    /// Adds or updates a stub in the cache.
     /// </summary>
     /// <param name="ctx">The database context.</param>
-    void ClearStubCache(IDatabaseContext ctx);
+    /// <param name="stubModel">The stub to be added or updated.</param>
+    Task AddOrReplaceStubAsync(IDatabaseContext ctx, StubModel stubModel);
+
+    /// <summary>
+    /// Deletes a stub from the cache.
+    /// </summary>
+    /// <param name="ctx">The database context.</param>
+    /// <param name="stubId">The ID of the stub that should be deleted.</param>
+    Task DeleteStubAsync(IDatabaseContext ctx, string stubId);
 }

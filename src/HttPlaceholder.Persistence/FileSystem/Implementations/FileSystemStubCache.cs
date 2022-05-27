@@ -18,7 +18,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
 {
     private static readonly object _cacheUpdateLock = new();
     internal string StubUpdateTrackingId;
-    internal ConcurrentDictionary<string, StubModel> StubCache = new();
+    internal readonly ConcurrentDictionary<string, StubModel> StubCache = new();
 
     private readonly ILogger<FileSystemStubCache> _logger;
     private readonly IFileService _fileService;
