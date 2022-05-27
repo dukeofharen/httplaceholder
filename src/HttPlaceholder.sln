@@ -37,15 +37,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Application.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttPlaceholder.Persistence.Tests", "HttPlaceholder.Persistence.Tests\HttPlaceholder.Persistence.Tests.csproj", "{A5B2F18A-8F5B-4BF7-A99D-C94A61A7361E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{24AA6028-9B71-40C6-91D7-1B53D0EF2CEE}"
-ProjectSection(SolutionItems) = preProject
-	..\Dockerfile = ..\Dockerfile
-	..\LICENSE.txt = ..\LICENSE.txt
-	..\README.md = ..\README.md
-	..\.dockerignore = ..\.dockerignore
-	..\.gitignore = ..\.gitignore
-EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Infrastructure.Tests", "HttPlaceholder.Infrastructure.Tests\HttPlaceholder.Infrastructure.Tests.csproj", "{7A443534-C454-4DF9-816D-A7A0BF1E9184}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Common.Tests", "HttPlaceholder.Common.Tests\HttPlaceholder.Common.Tests.csproj", "{4DA53660-BEB0-442C-8349-A013A2E56196}"

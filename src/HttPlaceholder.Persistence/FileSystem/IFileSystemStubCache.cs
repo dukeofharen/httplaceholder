@@ -15,7 +15,14 @@ public interface IFileSystemStubCache
     IEnumerable<StubModel> GetOrUpdateStubCache();
 
     /// <summary>
-    /// Clears the stub cache.
+    /// Adds or updates a stub in the cache.
     /// </summary>
-    void ClearStubCache();
+    /// <param name="stubModel">The stub to be added or updated.</param>
+    void AddOrReplaceStub(StubModel stubModel);
+
+    /// <summary>
+    /// Deletes a stub from the cache.
+    /// </summary>
+    /// <param name="stubId">The ID of the stub that should be deleted.</param>
+    void DeleteStub(string stubId);
 }
