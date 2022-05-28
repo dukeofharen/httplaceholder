@@ -32,7 +32,6 @@ public class PathConditionChecker : IConditionChecker
         }
 
         var path = _httpContextService.Path;
-        // if (StringHelper.IsRegexMatchOrSubstring(path, pathCondition))
         if (_stringChecker.CheckString(path, pathCondition))
         {
             // The path matches the provided regex. Add the stub ID to the resulting list.
