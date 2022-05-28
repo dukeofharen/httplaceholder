@@ -52,14 +52,14 @@ internal class ReverseProxyResponseWriter : IResponseWriter
         if (appendPath)
         {
             proxyUrl = proxyUrl.EnsureEndsWith("/") + _httpContextService.Path.TrimStart('/');
-            if (!string.IsNullOrWhiteSpace(stub.Conditions?.Url?.Path))
+            var path = GetPath(stub);
+            if (!string.IsNullOrWhiteSpace(path))
             {
                 // If the path condition is set, make sure the configured path is stripped from the proxy URL
-                var configuredPath = stub.Conditions.Url.Path;
-                var index = proxyUrl.IndexOf(configuredPath, StringComparison.OrdinalIgnoreCase);
+                var index = proxyUrl.IndexOf(path, StringComparison.OrdinalIgnoreCase);
                 if (index > -1)
                 {
-                    proxyUrl = proxyUrl.Remove(index, configuredPath.Length);
+                    proxyUrl = proxyUrl.Remove(index, path.Length);
                 }
             }
         }
@@ -110,9 +110,10 @@ internal class ReverseProxyResponseWriter : IResponseWriter
             var rootUrlParts = proxyUrl.Split(new[] {"/"}, StringSplitOptions.RemoveEmptyEntries);
             var rootUrl = $"{rootUrlParts[0]}//{rootUrlParts[1]}";
             var httPlaceholderRootUrl = _httpContextService.RootUrl;
-            if (appendPath && !string.IsNullOrWhiteSpace(stub.Conditions?.Url?.Path))
+            var path = GetPath(stub);
+            if (appendPath && !string.IsNullOrWhiteSpace(path))
             {
-                httPlaceholderRootUrl += stub.Conditions.Url.Path.EnsureStartsWith("/");
+                httPlaceholderRootUrl += path.EnsureStartsWith("/");
             }
 
             contentAsString = contentAsString.Replace(rootUrl, httPlaceholderRootUrl);
@@ -137,5 +138,22 @@ internal class ReverseProxyResponseWriter : IResponseWriter
 
         response.StatusCode = (int)responseMessage.StatusCode;
         return StubResponseWriterResultModel.IsExecuted(GetType().Name, log);
+    }
+
+    private string GetPath(StubModel stub)
+    {
+        var pathModel = stub.Conditions?.Url?.Path;
+        if (pathModel is string path)
+        {
+            return path;
+        }
+
+        if (pathModel is StubConditionStringCheckingModel checkingModel)
+        {
+            return checkingModel.StringEquals ??
+                   checkingModel.StringEqualsCi ?? checkingModel.StartsWith ?? checkingModel.StartsWithCi;
+        }
+
+        return null;
     }
 }
