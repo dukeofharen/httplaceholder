@@ -119,11 +119,11 @@ public class StubConditionStringCheckingModel
     /// Gets or sets the present check.
     /// </summary>
     [YamlMember(Alias = "present")]
-    public bool Present { get; set; }
+    public bool? Present { get; set; }
 
     /// <summary>
     /// Gets or sets the present check.
     /// </summary>
     [YamlMember(Alias = "notpresent")]
-    public bool NotPresent { get; set; }
+    public bool? NotPresent { get; set; }
 }
