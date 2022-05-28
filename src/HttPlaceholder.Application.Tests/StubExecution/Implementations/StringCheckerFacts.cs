@@ -374,6 +374,11 @@ public class StringCheckerFacts
     }
 
     [DataTestMethod]
+    [DataRow("teststring", "test", "string", true)]
+    [DataRow("teststring", "test", "tring", true)]
+    [DataRow("teststring", "tri", "tring", true)]
+    [DataRow("teststring", "tri", "String", false)]
+    [DataRow("teststring", "testt", "tring", false)]
     public void CheckString_MultipleChecks(string input, string contains, string endsWith, bool shouldSucceed)
     {
         // Arrange
