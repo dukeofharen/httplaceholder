@@ -12,7 +12,7 @@ public class StubUrlConditionModel
     /// Gets or sets the path.
     /// </summary>
     [YamlMember(Alias = "path")]
-    public string Path { get; set; }
+    public object Path { get; set; }
 
     /// <summary>
     /// Gets or sets the query.

@@ -14,7 +14,7 @@ public class StubUrlConditionDto : IMapFrom<StubUrlConditionModel>, IMapTo<StubU
     /// Gets or sets the path.
     /// </summary>
     [YamlMember(Alias = "path")]
-    public string Path { get; set; }
+    public object Path { get; set; }
 
     /// <summary>
     /// Gets or sets the query.

@@ -1,4 +1,5 @@
-﻿using YamlDotNet.Serialization;
+﻿using Newtonsoft.Json;
+using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Domain;
 
@@ -11,24 +12,28 @@ public class StubConditionStringCheckingModel
     /// Gets or sets the equals check.
     /// </summary>
     [YamlMember(Alias = "equals")]
+    [JsonProperty("equals")]
     public string StringEquals { get; set; }
 
     /// <summary>
     /// Gets or sets the non case sensitive equals check.
     /// </summary>
     [YamlMember(Alias = "equalsci")]
+    [JsonProperty("equalsci")]
     public string StringEqualsCi { get; set; }
 
     /// <summary>
     /// Gets or sets the notequals check.
     /// </summary>
     [YamlMember(Alias = "notequals")]
+    [JsonProperty("notequals")]
     public string StringNotEquals { get; set; }
 
     /// <summary>
     /// Gets or sets the non case sensitive notequals check.
     /// </summary>
     [YamlMember(Alias = "notequalsci")]
+    [JsonProperty("notequalsci")]
     public string StringNotEqualsCi { get; set; }
 
     /// <summary>
