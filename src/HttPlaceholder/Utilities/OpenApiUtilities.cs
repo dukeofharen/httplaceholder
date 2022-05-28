@@ -2,6 +2,7 @@
 using System.Linq;
 using HttPlaceholder.Attributes;
 using NJsonSchema;
+using NJsonSchema.Generation;
 using NSwag;
 
 namespace HttPlaceholder.Utilities;
@@ -38,6 +39,14 @@ public static class OpenApiUtilities
                             foreach (var oneOfType in oneOfProperty.Types)
                             {
                                 var oneOfTypeSchema = JsonSchema.FromType(oneOfType);
+                                foreach (var schemaProp in oneOfTypeSchema.Properties)
+                                {
+                                    if (schemaProp.Value.Type.HasFlag(JsonObjectType.Null))
+                                    {
+                                        schemaProp.Value.Type = (JsonObjectType)(schemaProp.Value.Type - JsonObjectType.Null);
+                                    }
+                                }
+
                                 var isPrimitiveOrString = oneOfType.IsPrimitive || oneOfType == typeof(string);
                                 if (!isPrimitiveOrString &&
                                     !document.Components.Schemas.Any(s => s.Key.Equals(oneOfType.Name)))
@@ -52,7 +61,15 @@ public static class OpenApiUtilities
 
                             foreach (var oneOfType in oneOfProperty.ItemsTypes)
                             {
-                                var oneOfTypeSchema = JsonSchema.FromType(oneOfType);
+                                var oneOfTypeSchema = JsonSchema.FromType(oneOfType, new JsonSchemaGeneratorSettings{GenerateCustomNullableProperties = false});
+                                foreach (var schemaProp in oneOfTypeSchema.Properties)
+                                {
+                                    if (schemaProp.Value.Type.HasFlag(JsonObjectType.Null))
+                                    {
+                                        schemaProp.Value.Type = (JsonObjectType)(schemaProp.Value.Type - JsonObjectType.Null);
+                                    }
+                                }
+
                                 var isPrimitiveOrString = oneOfType.IsPrimitive || oneOfType == typeof(string);
                                 if (!isPrimitiveOrString &&
                                     !document.Components.Schemas.Any(s => s.Key.Equals(oneOfType.Name)))
