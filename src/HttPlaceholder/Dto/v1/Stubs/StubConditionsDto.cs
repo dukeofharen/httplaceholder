@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Attributes;
 using HttPlaceholder.Domain;
 using YamlDotNet.Serialization;
 
@@ -8,6 +9,7 @@ namespace HttPlaceholder.Dto.v1.Stubs;
 /// <summary>
 /// A model for storing all conditions for a stub.
 /// </summary>
+[CustomOpenApi]
 public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubConditionsModel>
 {
     /// <summary>
@@ -50,6 +52,7 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     /// Gets or sets the json path.
     /// </summary>
     [YamlMember(Alias = "jsonPath")]
+    [OneOf(ItemsTypes = new[]{typeof(string), typeof(StubJsonPathDto)})]
     public IEnumerable<object> JsonPath { get; set; }
 
     /// <summary>

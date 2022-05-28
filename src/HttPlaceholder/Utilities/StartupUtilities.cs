@@ -122,6 +122,16 @@ public static class StartupUtilities
         .UseMiddleware<ApiExceptionHandlingMiddleware>()
         .UseMiddleware<StubHandlingMiddleware>();
 
+    /// <summary>
+    /// Adds an OpenAPI document to HttPlaceholder with custom configuration.
+    /// </summary>
+    /// <param name="app">The application builder.</param>
+    public static IApplicationBuilder UseCustomOpenApi(this IApplicationBuilder app) =>
+        app.UseOpenApi(config =>
+        {
+            config.PostProcess = (document, _) => OpenApiUtilities.PostProcessOpenApiDocument(document);
+        });
+
     private static IServiceCollection AddWebInfrastructure(this IServiceCollection services)
     {
         services.TryAddSingleton<IClientDataResolver, ClientDataResolver>();

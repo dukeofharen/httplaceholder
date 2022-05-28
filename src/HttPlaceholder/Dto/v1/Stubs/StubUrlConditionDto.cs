@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Attributes;
 using HttPlaceholder.Domain;
 using YamlDotNet.Serialization;
 
@@ -8,12 +9,14 @@ namespace HttPlaceholder.Dto.v1.Stubs;
 /// <summary>
 /// A model for storing information about the URL condition checkers.
 /// </summary>
+[CustomOpenApi]
 public class StubUrlConditionDto : IMapFrom<StubUrlConditionModel>, IMapTo<StubUrlConditionModel>
 {
     /// <summary>
     /// Gets or sets the path.
     /// </summary>
     [YamlMember(Alias = "path")]
+    [OneOf(Types = new[]{typeof(string), typeof(StubConditionStringCheckingDto)})]
     public object Path { get; set; }
 
     /// <summary>
