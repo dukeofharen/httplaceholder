@@ -1,14 +1,14 @@
 ﻿using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 
-namespace HttPlaceholder.Domain;
+namespace HttPlaceholder.Dto.v1.Stubs;
 
 /// <summary>
 /// A model that contains several keywords for handling string checking.
 /// </summary>
-public class StubConditionStringCheckingModel
+public class StubConditionStringCheckingDto
 {
-    /// <summary>
+     /// <summary>
     /// Gets or sets the equals check.
     /// </summary>
     [YamlMember(Alias = "equals")]
