@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using HttPlaceholder.Attributes;
 using NJsonSchema;
-using NJsonSchema.Generation;
 using NSwag;
 
 namespace HttPlaceholder.Utilities;
@@ -18,71 +18,84 @@ public static class OpenApiUtilities
     /// <param name="document">The OpenAPI document.</param>
     public static void PostProcessOpenApiDocument(OpenApiDocument document)
     {
-        var customOpenApiClasses = AppDomain.CurrentDomain.GetAssemblies()
-                    .SelectMany(a => a.GetTypes())
-                    .Where(t => t.IsDefined(typeof(CustomOpenApiAttribute), false))
-                    .ToArray();
-                foreach (var type in customOpenApiClasses)
+        var customOpenApiClasses = GetCustomOpenApiClasses();
+        foreach (var type in customOpenApiClasses)
+        {
+            var properties = type.GetProperties();
+            foreach (var property in properties)
+            {
+                var oneOfProperty = GetOneOfAttribute(property);
+                if (oneOfProperty != null)
                 {
-                    var properties = type.GetProperties();
-                    foreach (var property in properties)
+                    var schemaProperty = GetSchemaProperty(document, type, property);
+                    foreach (var oneOfType in oneOfProperty.Types)
                     {
-                        var oneOfProperty = property
-                            .GetCustomAttributes(typeof(OneOfAttribute), false)
-                            .Cast<OneOfAttribute>()
-                            .FirstOrDefault();
-                        if (oneOfProperty != null)
-                        {
-                            var schema = document.Components.Schemas[type.Name];
-                            var schemaProperty = schema.ActualProperties.Single(p =>
-                                p.Key.Equals(property.Name, StringComparison.OrdinalIgnoreCase)).Value;
-                            foreach (var oneOfType in oneOfProperty.Types)
-                            {
-                                var oneOfTypeSchema = JsonSchema.FromType(oneOfType);
-                                foreach (var schemaProp in oneOfTypeSchema.Properties)
-                                {
-                                    if (schemaProp.Value.Type.HasFlag(JsonObjectType.Null))
-                                    {
-                                        schemaProp.Value.Type = (JsonObjectType)(schemaProp.Value.Type - JsonObjectType.Null);
-                                    }
-                                }
+                        UpdateSchema(document, oneOfType, schemaProperty, schemaProperty);
+                    }
 
-                                var isPrimitiveOrString = oneOfType.IsPrimitive || oneOfType == typeof(string);
-                                if (!isPrimitiveOrString &&
-                                    !document.Components.Schemas.Any(s => s.Key.Equals(oneOfType.Name)))
-                                {
-                                    document.Components.Schemas.Add(oneOfType.Name, oneOfTypeSchema);
-                                }
-
-                                schemaProperty.OneOf.Add(isPrimitiveOrString
-                                    ? oneOfTypeSchema
-                                    : new JsonSchema {Reference = oneOfTypeSchema});
-                            }
-
-                            foreach (var oneOfType in oneOfProperty.ItemsTypes)
-                            {
-                                var oneOfTypeSchema = JsonSchema.FromType(oneOfType, new JsonSchemaGeneratorSettings{GenerateCustomNullableProperties = false});
-                                foreach (var schemaProp in oneOfTypeSchema.Properties)
-                                {
-                                    if (schemaProp.Value.Type.HasFlag(JsonObjectType.Null))
-                                    {
-                                        schemaProp.Value.Type = (JsonObjectType)(schemaProp.Value.Type - JsonObjectType.Null);
-                                    }
-                                }
-
-                                var isPrimitiveOrString = oneOfType.IsPrimitive || oneOfType == typeof(string);
-                                if (!isPrimitiveOrString &&
-                                    !document.Components.Schemas.Any(s => s.Key.Equals(oneOfType.Name)))
-                                {
-                                    document.Components.Schemas.Add(oneOfType.Name, oneOfTypeSchema);
-                                }
-
-                                schemaProperty.Item.OneOf.Add(isPrimitiveOrString
-                                    ? oneOfTypeSchema
-                                    : new JsonSchema {Reference = oneOfTypeSchema});
-                            }
-                        }
+                    foreach (var oneOfType in oneOfProperty.ItemsTypes)
+                    {
+                        UpdateSchema(document, oneOfType, schemaProperty, schemaProperty.Item);
                     }
                 }
+            }
+        }
+    }
+
+    private static void UpdateSchema(
+        OpenApiDocument document,
+        Type oneOfType,
+        JsonSchemaProperty schemaProperty,
+        JsonSchema schemaToUpdate)
+    {
+        var oneOfTypeSchema = JsonSchema.FromType(oneOfType);
+        RemoveNullTypes(oneOfTypeSchema);
+
+        var isPrimitiveOrString = IsPrimitiveOrString(oneOfType);
+        if (!isPrimitiveOrString &&
+            !document.Components.Schemas.Any(s => s.Key.Equals(oneOfType.Name)))
+        {
+            document.Components.Schemas.Add(oneOfType.Name, oneOfTypeSchema);
+        }
+
+        schemaToUpdate.OneOf.Add(isPrimitiveOrString
+            ? oneOfTypeSchema
+            : new JsonSchema {Reference = oneOfTypeSchema});
+    }
+
+    private static bool IsPrimitiveOrString(Type oneOfType) => oneOfType.IsPrimitive || oneOfType == typeof(string);
+
+    private static void RemoveNullTypes(JsonSchema oneOfTypeSchema)
+    {
+        foreach (var schemaProp in oneOfTypeSchema.Properties)
+        {
+            if (schemaProp.Value.Type.HasFlag(JsonObjectType.Null))
+            {
+                schemaProp.Value.Type = (JsonObjectType) (schemaProp.Value.Type - JsonObjectType.Null);
+            }
+        }
+    }
+
+    private static JsonSchemaProperty GetSchemaProperty(OpenApiDocument document, Type type, PropertyInfo property)
+    {
+        var schema = document.Components.Schemas[type.Name];
+        var schemaProperty = schema.ActualProperties.Single(p =>
+            p.Key.Equals(property.Name, StringComparison.OrdinalIgnoreCase)).Value;
+        return schemaProperty;
+    }
+
+    private static OneOfAttribute GetOneOfAttribute(PropertyInfo property) =>
+        property
+            .GetCustomAttributes(typeof(OneOfAttribute), false)
+            .Cast<OneOfAttribute>()
+            .FirstOrDefault();
+
+    private static Type[] GetCustomOpenApiClasses()
+    {
+        var customOpenApiClasses = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(a => a.GetTypes())
+            .Where(t => t.IsDefined(typeof(CustomOpenApiAttribute), false))
+            .ToArray();
+        return customOpenApiClasses;
     }
 }
