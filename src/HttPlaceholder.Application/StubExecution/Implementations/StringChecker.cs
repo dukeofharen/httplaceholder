@@ -48,7 +48,7 @@ internal class StringChecker : IStringChecker
 
         if (!string.IsNullOrWhiteSpace(checkingModel.StringNotEqualsCi))
         {
-            result &= !string.Equals(input, checkingModel.StringNotEquals, StringComparison.OrdinalIgnoreCase);
+            result &= !string.Equals(input, checkingModel.StringNotEqualsCi, StringComparison.OrdinalIgnoreCase);
         }
 
         if (!string.IsNullOrWhiteSpace(checkingModel.Contains))
@@ -83,7 +83,7 @@ internal class StringChecker : IStringChecker
 
         if (!string.IsNullOrWhiteSpace(checkingModel.DoesNotStartWith))
         {
-            result &= !input.StartsWith(checkingModel.DoesNotEndWith);
+            result &= !input.StartsWith(checkingModel.DoesNotStartWith);
         }
 
         if (!string.IsNullOrWhiteSpace(checkingModel.DoesNotStartWithCi))
