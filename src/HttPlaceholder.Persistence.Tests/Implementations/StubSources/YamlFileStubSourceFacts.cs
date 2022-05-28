@@ -20,7 +20,7 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
 public class YamlFileStubSourceFacts
 {
     private readonly AutoMocker _mocker = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
+    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
     private readonly MockLogger<YamlFileStubSource> _mockLogger = new();
 
     [TestInitialize]

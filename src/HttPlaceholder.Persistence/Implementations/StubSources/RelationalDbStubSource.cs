@@ -78,7 +78,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         var json = JsonConvert.SerializeObject(stub);
         await ctx.ExecuteAsync(_queryStore.AddStubQuery,
             new {StubId = stub.Id, Stub = json, StubType = StubJsonType});
-        _relationalDbStubCache.ClearStubCache(ctx);
+        await _relationalDbStubCache.AddOrReplaceStubAsync(ctx, stub);
     }
 
     /// <inheritdoc />
@@ -158,7 +158,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var updated = await ctx.ExecuteAsync(_queryStore.DeleteStubQuery, new {StubId = stubId});
-        _relationalDbStubCache.ClearStubCache(ctx);
+        await _relationalDbStubCache.DeleteStubAsync(ctx, stubId);
         return updated > 0;
     }
 
@@ -175,7 +175,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     public async Task<IEnumerable<StubModel>> GetStubsAsync()
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        return await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
+        return await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx);
     }
 
     /// <inheritdoc />
@@ -188,7 +188,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     public async Task<StubModel> GetStubAsync(string stubId)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        var stubs = await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
+        var stubs = await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx);
         return stubs.FirstOrDefault(s => s.Id == stubId);
     }
 
@@ -199,6 +199,6 @@ internal class RelationalDbStubSource : IWritableStubSource
         await _relationalDbMigrator.MigrateAsync(ctx);
 
         // Also initialize the cache at startup.
-        await _relationalDbStubCache.GetOrUpdateStubCache(ctx);
+        await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx);
     }
 }

@@ -171,7 +171,8 @@ public class RelationalDbStubSourceFacts
         Assert.AreEqual(JsonConvert.SerializeObject(stub), parsedParam["Stub"].ToString());
         Assert.AreEqual("json", parsedParam["StubType"].ToString());
 
-        _mocker.GetMock<IRelationalDbStubCache>().Verify(m => m.ClearStubCache(_mockDatabaseContext.Object));
+        _mocker.GetMock<IRelationalDbStubCache>()
+            .Verify(m => m.AddOrReplaceStubAsync(_mockDatabaseContext.Object, stub));
     }
 
     [TestMethod]
@@ -478,7 +479,8 @@ public class RelationalDbStubSourceFacts
         var parsedParam = JObject.Parse(JsonConvert.SerializeObject(capturedParam));
         Assert.AreEqual(stubId, parsedParam["StubId"].ToString());
 
-        _mocker.GetMock<IRelationalDbStubCache>().Verify(m => m.ClearStubCache(_mockDatabaseContext.Object));
+        _mocker.GetMock<IRelationalDbStubCache>()
+            .Verify(m => m.DeleteStubAsync(_mockDatabaseContext.Object, stubId));
     }
 
     [TestMethod]
@@ -525,7 +527,7 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
@@ -549,7 +551,7 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
@@ -578,7 +580,7 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object))
             .ReturnsAsync(cachedStubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
@@ -598,7 +600,7 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
@@ -621,6 +623,6 @@ public class RelationalDbStubSourceFacts
 
         // Assert
         _mocker.GetMock<IRelationalDbMigrator>().Verify(m => m.MigrateAsync(_mockDatabaseContext.Object));
-        _mocker.GetMock<IRelationalDbStubCache>().Verify(m => m.GetOrUpdateStubCache(_mockDatabaseContext.Object));
+        _mocker.GetMock<IRelationalDbStubCache>().Verify(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object));
     }
 }

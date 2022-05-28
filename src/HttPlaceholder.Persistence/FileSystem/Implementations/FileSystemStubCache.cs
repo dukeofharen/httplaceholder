@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,7 +18,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
 {
     private static readonly object _cacheUpdateLock = new();
     internal string StubUpdateTrackingId;
-    internal IList<StubModel> StubCache;
+    internal readonly ConcurrentDictionary<string, StubModel> StubCache = new();
 
     private readonly ILogger<FileSystemStubCache> _logger;
     private readonly IFileService _fileService;
@@ -40,68 +41,78 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
         // Check if the "stub update tracking ID" variable has a new value.
         var metadata = EnsureAndGetMetadata();
-        if (StubCache == null || StubUpdateTrackingId == null)
+        if (StubUpdateTrackingId == null)
         {
             // The local cache hasn't been initialized yet. Do that now.
             _logger.LogInformation(
                 "Initializing the cache, because either the local stub cache or tracking ID is not set yet.");
-            StubUpdateTrackingId = metadata?.StubUpdateTrackingId ?? Guid.NewGuid().ToString();
+            UpdateLocalStubUpdateTrackingId(metadata?.StubUpdateTrackingId ?? Guid.NewGuid().ToString());
             shouldUpdateCache = true;
         }
         else if (StubUpdateTrackingId != metadata.StubUpdateTrackingId)
         {
             // ID has been changed. Update the stub cache.
             _logger.LogInformation("Initializing the cache, because the tracking ID on disk has been changed.");
-            StubUpdateTrackingId = metadata.StubUpdateTrackingId;
+            UpdateLocalStubUpdateTrackingId(metadata.StubUpdateTrackingId);
             shouldUpdateCache = true;
         }
 
         if (shouldUpdateCache)
         {
-            lock (_cacheUpdateLock)
+            var path = GetStubsFolder();
+            var files = _fileService.GetFiles(path, "*.json");
+            StubCache.Clear();
+            var newCache = files
+                .Select(filePath => _fileService
+                    .ReadAllText(filePath))
+                .Select(JsonConvert.DeserializeObject<StubModel>);
+            foreach (var item in newCache)
             {
-                var path = GetStubsFolder();
-                var files = _fileService.GetFiles(path, "*.json");
-                StubCache = files
-                    .Select(filePath => _fileService
-                        .ReadAllText(filePath))
-                    .Select(JsonConvert.DeserializeObject<StubModel>).ToList();
+                if (!StubCache.TryAdd(item.Id, item))
+                {
+                    _logger.LogWarning($"Could not add stub with ID '{item.Id}' to cache.");
+                }
             }
         }
 
-        return StubCache;
+        return StubCache.Values;
     }
 
     /// <inheritdoc />
-    public void ClearStubCache()
+    public void AddOrReplaceStub(StubModel stubModel)
     {
-        // Clear the in memory stub cache.
-        _logger.LogInformation("Clearing the file system stub cache.");
-        lock (_cacheUpdateLock)
+        var item = StubCache.ContainsKey(stubModel.Id) ? StubCache[stubModel.Id] : null;
+        if (item != null)
         {
-            var metadata = EnsureAndGetMetadata();
-            StubCache = null;
-            var newId = Guid.NewGuid().ToString();
-            StubUpdateTrackingId = newId;
-            metadata.StubUpdateTrackingId = newId;
-            _fileService.WriteAllText(
-                Path.Combine(_settings.Storage?.FileStorageLocation, Constants.MetadataFileName),
-                JsonConvert.SerializeObject(metadata));
+            StubCache.Remove(stubModel.Id, out _);
+        }
+
+        if (!StubCache.TryAdd(stubModel.Id, stubModel))
+        {
+            _logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
+        }
+
+        var metadata = UpdateMetadata(GetMetadataPath());
+        UpdateLocalStubUpdateTrackingId(metadata.StubUpdateTrackingId);
+    }
+
+    /// <inheritdoc />
+    public void DeleteStub(string stubId)
+    {
+        if (StubCache.TryRemove(stubId, out _))
+        {
+            var metadata = UpdateMetadata(GetMetadataPath());
+            UpdateLocalStubUpdateTrackingId(metadata.StubUpdateTrackingId);
         }
     }
 
     internal FileStorageMetadataModel EnsureAndGetMetadata()
     {
-        var rootPath = _settings.Storage?.FileStorageLocation;
-        var path = Path.Combine(rootPath, Constants.MetadataFileName);
+        var path = GetMetadataPath();
         FileStorageMetadataModel model;
         if (!_fileService.FileExists(path))
         {
-            lock (_cacheUpdateLock)
-            {
-                model = new FileStorageMetadataModel {StubUpdateTrackingId = Guid.NewGuid().ToString()};
-                _fileService.WriteAllText(path, JsonConvert.SerializeObject(model));
-            }
+            model = UpdateMetadata(path);
         }
         else
         {
@@ -110,6 +121,33 @@ internal class FileSystemStubCache : IFileSystemStubCache
         }
 
         return model;
+    }
+
+    private string GetMetadataPath()
+    {
+        var rootPath = _settings.Storage?.FileStorageLocation;
+        var path = Path.Combine(rootPath, Constants.MetadataFileName);
+        return path;
+    }
+
+    private FileStorageMetadataModel UpdateMetadata(string path)
+    {
+        FileStorageMetadataModel model;
+        lock (_cacheUpdateLock)
+        {
+            model = new FileStorageMetadataModel {StubUpdateTrackingId = Guid.NewGuid().ToString()};
+            _fileService.WriteAllText(path, JsonConvert.SerializeObject(model));
+        }
+
+        return model;
+    }
+
+    private void UpdateLocalStubUpdateTrackingId(string trackingId)
+    {
+        lock (_cacheUpdateLock)
+        {
+            StubUpdateTrackingId = trackingId;
+        }
     }
 
     private string GetStubsFolder() =>

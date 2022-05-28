@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -19,6 +20,7 @@ namespace HttPlaceholder.Utilities;
 /// <summary>
 /// A utility class for handling the starting of HttPlaceholder.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class ProgramUtilities
 {
     private static readonly string[] _verboseArgs = {"-V", "--verbose"};

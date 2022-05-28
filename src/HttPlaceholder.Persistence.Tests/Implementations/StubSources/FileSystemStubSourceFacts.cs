@@ -22,7 +22,7 @@ public class FileSystemStubSourceFacts
     private const string StorageFolder = @"C:\storage";
 
     private readonly AutoMocker _mocker = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
+    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
 
     [TestInitialize]
     public void Initialize()
@@ -99,7 +99,7 @@ public class FileSystemStubSourceFacts
 
         // Act / assert
         await source.AddStubAsync(stub);
-        fileSystemStubCacheMock.Verify(m => m.ClearStubCache());
+        fileSystemStubCacheMock.Verify(m => m.AddOrReplaceStub(stub));
     }
 
     [TestMethod]
@@ -338,7 +338,7 @@ public class FileSystemStubSourceFacts
 
         // Assert
         Assert.IsFalse(result);
-        fileSystemStubCacheMock.Verify(m => m.ClearStubCache(), Times.Never);
+        fileSystemStubCacheMock.Verify(m => m.DeleteStub(It.IsAny<string>()), Times.Never);
     }
 
     [TestMethod]
@@ -362,7 +362,7 @@ public class FileSystemStubSourceFacts
 
         // Assert
         Assert.IsTrue(result);
-        fileSystemStubCacheMock.Verify(m => m.ClearStubCache());
+        fileSystemStubCacheMock.Verify(m => m.DeleteStub(stubId));
     }
 
     [TestMethod]
@@ -388,7 +388,7 @@ public class FileSystemStubSourceFacts
 
         // Assert
         Assert.IsTrue(result);
-        fileSystemStubCacheMock.Verify(m => m.ClearStubCache());
+        fileSystemStubCacheMock.Verify(m => m.DeleteStub(stubId));
     }
 
     [TestMethod]

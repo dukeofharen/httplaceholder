@@ -97,6 +97,7 @@ import { defineComponent } from "vue";
 import type { FullStubOverviewModel } from "@/domain/stub/full-stub-overview-model";
 import type { FullStubModel } from "@/domain/stub/full-stub-model";
 import { downloadBlob } from "@/utils/download";
+import { vsprintf } from "sprintf-js";
 
 export default defineComponent({
   name: "Stub",
@@ -182,9 +183,13 @@ export default defineComponent({
           overviewStubValue.value.stub.enabled = enabled;
           let message;
           if (enabled) {
-            message = resources.stubEnabledSuccessfully;
+            message = vsprintf(resources.stubEnabledSuccessfully, [
+              getStubId(),
+            ]);
           } else {
-            message = resources.stubDisabledSuccessfully;
+            message = vsprintf(resources.stubDisabledSuccessfully, [
+              getStubId(),
+            ]);
           }
 
           success(message);

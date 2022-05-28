@@ -14,7 +14,7 @@ namespace HttPlaceholder.Tests.Integration;
 
 public abstract class IntegrationTestBase
 {
-    protected readonly IOptions<SettingsModel> Options = MockSettingsFactory.GetSettings();
+    protected readonly IOptions<SettingsModel> Options = MockSettingsFactory.GetOptions();
 
     protected SettingsModel Settings => Options.Value;
 

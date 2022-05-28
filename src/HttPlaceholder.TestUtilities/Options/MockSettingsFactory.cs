@@ -5,16 +5,14 @@ namespace HttPlaceholder.TestUtilities.Options;
 
 public static class MockSettingsFactory
 {
-    public static IOptions<SettingsModel> GetSettings()
+    public static SettingsModel GetSettings() => new()
     {
-        var settings = new SettingsModel
-        {
-            Authentication = new AuthenticationSettingsModel(),
-            Storage = new StorageSettingsModel(),
-            Web = new WebSettingsModel(),
-            Gui = new GuiSettingsModel(),
-            Stub = new StubSettingsModel()
-        };
-        return Microsoft.Extensions.Options.Options.Create(settings);
-    }
+        Authentication = new AuthenticationSettingsModel(),
+        Storage = new StorageSettingsModel(),
+        Web = new WebSettingsModel(),
+        Gui = new GuiSettingsModel(),
+        Stub = new StubSettingsModel()
+    };
+
+    public static IOptions<SettingsModel> GetOptions() => Microsoft.Extensions.Options.Options.Create(GetSettings());
 }

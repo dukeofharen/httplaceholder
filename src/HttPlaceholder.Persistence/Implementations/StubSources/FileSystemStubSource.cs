@@ -58,7 +58,7 @@ internal class FileSystemStubSource : IWritableStubSource
         var filePath = Path.Combine(path, ConstructStubFilename(stub.Id));
         var contents = JsonConvert.SerializeObject(stub);
         _fileService.WriteAllText(filePath, contents);
-        _fileSystemStubCache.ClearStubCache();
+        _fileSystemStubCache.AddOrReplaceStub(stub);
         return Task.CompletedTask;
     }
 
@@ -154,7 +154,7 @@ internal class FileSystemStubSource : IWritableStubSource
         }
 
         _fileService.DeleteFile(filePath);
-        _fileSystemStubCache.ClearStubCache();
+        _fileSystemStubCache.DeleteStub(stubId);
         return Task.FromResult(true);
     }
 

@@ -15,7 +15,7 @@ public class LoginServiceFacts
 {
     private readonly Dictionary<string, string> _cookies = new();
     private readonly MockHttpContext _mockHttpContext = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetSettings();
+    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
     private LoginService _service;
 
     [TestInitialize]
