@@ -968,6 +968,67 @@ It is possible to check if a hostname in a request is correct. This condition ca
 
 ## String checking keywords
 
+Many request condition checkers take a string as input. Take the [path](#path) condition checker as example. It can be configured like this:
+
+```yml
+- id: path-check
+  conditions:
+    url:
+      path: /users
+  response:
+    text: OK
+```
+
+By providing the path as string, when the stub is executed, the value will be used as regular expression. This means that both `/users`, `/users/1` etc. are correct values for the request condition checker. This is very flexible, but might also surprise new users a bit who might think the request condition checker checks if the strings are equal. This can be fixed by providing the correct regex value, but since that is not always the most user friendly option, an extra option was added to check string values for request condition checkers in HttPlaceholder.
+
+To make the string checking a bit more specific, a few keywords were added that you can use. Let's take a look at the example below:
+
+```yml
+- id: path-check
+  conditions:
+    url:
+      path:
+        equals: /users
+  response:
+    text: OK
+```
+
+In this example, keyword `equals` is added to the `path` variable. If the stub is executed, it will check if the path is exactly equal to `/users`. `/users/1` will not succeed anymore. Besides this, it is also possible to combine multiple keywords. Take a look at this example:
+
+```yml
+- id: path-check
+  conditions:
+    url:
+      path:
+        startswith: /us
+        endswith: ers
+  response:
+    text: OK
+```
+
+It will check if the path begins with `/us` and ends with `ers`, so path `/users` will still succeed.
+
+The following keywords can be used:
+
+- `equals`: checks if the input is exactly equal to this string, case sensitive.
+- `equalsci`: same as keyword above, but case insensitive.
+- `notequals`: checks if the input is not equal to this string, case sensitive.
+- `notequalsci`: same as keyword above, but case insensitive.
+- `contains`: checks if the input contains this string, case sensitive.
+- `containsci`: same as keyword above, but case insensitive.
+- `notcontains`: checks if the input does not contain this string, case sensitive.
+- `notcontainsci`: same as keyword above, but case insensitive.
+- `startswith`: checks if the input starts with this string, case sensitive.
+- `startswithci`: same as keyword above, but case insensitive.
+- `doesnotstartwith`: checks if the input does not start with this string, case sensitive.
+- `doesnotstartwithci`: same as keyword above, but case insensitive.
+- `endswith`: checks if the input ends with this string, case sensitive.
+- `endswithci`: same as keyword above, but case insensitive.
+- `doesnotendwith`: checks if the input does not end with this string, case sensitive.
+- `doesnotendwithci`: same as keyword above, but case insensitive.
+- `regex`: checks if the input matches this regular expression.
+- `regexnomatches`: checks if the input does not match this regular expression
+
 # Response writers
 
 If a request succeeds and a stub is found, the configured response will be returned. There are several "response writers" within HttPlaceholder which can be used to arrange your response. These will be explained in this paragraph.
