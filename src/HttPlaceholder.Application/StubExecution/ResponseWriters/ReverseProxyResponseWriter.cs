@@ -156,6 +156,8 @@ internal class ReverseProxyResponseWriter : IResponseWriter
 
         var checkingModel = StringConditionUtilities.ConvertCondition(pathModel);
         return checkingModel.StringEquals ??
-               checkingModel.StringEqualsCi ?? checkingModel.StartsWith ?? checkingModel.StartsWithCi;
+               checkingModel.StringEqualsCi ??
+               checkingModel.StartsWith ??
+               checkingModel.StartsWithCi;
     }
 }
