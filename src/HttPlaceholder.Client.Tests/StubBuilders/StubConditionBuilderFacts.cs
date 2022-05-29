@@ -47,6 +47,31 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithPathDto()
+    {
+        // Act
+        var dto = new StubConditionStringCheckingDto {StringEquals = "/users"};
+        var conditions = StubConditionBuilder.Begin()
+            .WithPath(dto)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(dto, conditions.Url.Path);
+    }
+
+    [TestMethod]
+    public void WithPathBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithPath(StringCheckingDtoBuilder.Begin().StringEquals("/users"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual("/users", ((StubConditionStringCheckingDto)conditions.Url.Path).StringEquals);
+    }
+
+    [TestMethod]
     public void WithQueryStringParameter()
     {
         // Act
