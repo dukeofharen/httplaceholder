@@ -9,6 +9,11 @@ public sealed class StringCheckingDtoBuilder
 {
     private readonly StubConditionStringCheckingDto _dto = new();
 
+    private StringCheckingDtoBuilder()
+    {
+
+    }
+
     /// <summary>
     /// Creates a new <see cref="StringCheckingDtoBuilder"/> instance.
     /// </summary>

@@ -87,6 +87,39 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithQueryStringParameterDto()
+    {
+        // Act
+        var dto1 = new StubConditionStringCheckingDto {StringEquals = "val1"};
+        var dto2 = new StubConditionStringCheckingDto {StringEquals = "val1"};
+
+        var conditions = StubConditionBuilder.Begin()
+            .WithQueryStringParameter("q1", dto1)
+            .WithQueryStringParameter("q2", dto2)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Url.Query.Count);
+        Assert.AreEqual(dto1, conditions.Url.Query["q1"]);
+        Assert.AreEqual(dto2, conditions.Url.Query["q2"]);
+    }
+
+    [TestMethod]
+    public void WithQueryStringParameterBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithQueryStringParameter("q1", StringCheckingDtoBuilder.Begin().StringEquals("val1"))
+            .WithQueryStringParameter("q2", StringCheckingDtoBuilder.Begin().StringEquals("val2"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Url.Query.Count);
+        Assert.AreEqual("val1", ((StubConditionStringCheckingDto)conditions.Url.Query["q1"]).StringEquals);
+        Assert.AreEqual("val2", ((StubConditionStringCheckingDto)conditions.Url.Query["q2"]).StringEquals);
+    }
+
+    [TestMethod]
     public void WithFullPath()
     {
         // Act

@@ -102,7 +102,7 @@ public class CreateStubsFacts : BaseClientTest
                     Url = new StubUrlConditionDto
                     {
                         Path = "/testtesttest",
-                        Query = new Dictionary<string, string> {{"id", "13"}}
+                        Query = new Dictionary<string, object> {{"id", "13"}}
                     }
                 },
                 Response = new StubResponseDto {StatusCode = 200, Text = "OK my dude!"}
@@ -117,7 +117,7 @@ public class CreateStubsFacts : BaseClientTest
                     Url = new StubUrlConditionDto
                     {
                         Path = "/testtesttest",
-                        Query = new Dictionary<string, string> {{"id", "13"}}
+                        Query = new Dictionary<string, object> {{"id", "13"}}
                     }
                 },
                 Response = new StubResponseDto {StatusCode = 200, Text = "OK my dude!"}

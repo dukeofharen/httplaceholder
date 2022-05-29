@@ -89,8 +89,38 @@ namespace HttPlaceholder.Client.StubBuilders
         public StubConditionBuilder WithQueryStringParameter(string key, string value)
         {
             EnsureUrlConditions();
-            _conditions.Url.Query ??= new Dictionary<string, string>();
+            _conditions.Url.Query ??= new Dictionary<string, object>();
             _conditions.Url.Query.Add(key, value);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a query parameter to the request definition.
+        /// This method can be called multiple times to add multiple query parameters.
+        /// </summary>
+        /// <param name="key">The query parameter key.</param>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithQueryStringParameter(string key, StubConditionStringCheckingDto checkingDto)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.Query ??= new Dictionary<string, object>();
+            _conditions.Url.Query.Add(key, checkingDto);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a query parameter to the request definition.
+        /// This method can be called multiple times to add multiple query parameters.
+        /// </summary>
+        /// <param name="key">The query parameter key.</param>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithQueryStringParameter(string key, StringCheckingDtoBuilder builder)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.Query ??= new Dictionary<string, object>();
+            _conditions.Url.Query.Add(key, builder.Build());
             return this;
         }
 
