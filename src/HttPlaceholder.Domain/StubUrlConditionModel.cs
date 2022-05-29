@@ -18,7 +18,7 @@ public class StubUrlConditionModel
     /// Gets or sets the query.
     /// </summary>
     [YamlMember(Alias = "query")]
-    public IDictionary<string, string> Query { get; set; } = new Dictionary<string, string>();
+    public IDictionary<string, object> Query { get; set; } = new Dictionary<string, object>();
 
     /// <summary>
     /// Gets or sets the full path.

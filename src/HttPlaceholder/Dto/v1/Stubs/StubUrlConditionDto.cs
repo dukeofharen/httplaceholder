@@ -23,7 +23,7 @@ public class StubUrlConditionDto : IMapFrom<StubUrlConditionModel>, IMapTo<StubU
     /// Gets or sets the query.
     /// </summary>
     [YamlMember(Alias = "query")]
-    public IDictionary<string, string> Query { get; set; }
+    public IDictionary<string, object> Query { get; set; }
 
     /// <summary>
     /// Gets or sets the full path.
