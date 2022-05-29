@@ -24,7 +24,7 @@ public class StubUrlConditionModel
     /// Gets or sets the full path.
     /// </summary>
     [YamlMember(Alias = "fullPath")]
-    public string FullPath { get; set; }
+    public object FullPath { get; set; }
 
     /// <summary>
     /// Gets or sets the is HTTPS.

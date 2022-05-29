@@ -29,7 +29,8 @@ public class StubUrlConditionDto : IMapFrom<StubUrlConditionModel>, IMapTo<StubU
     /// Gets or sets the full path.
     /// </summary>
     [YamlMember(Alias = "fullPath")]
-    public string FullPath { get; set; }
+    [OneOf(Types = new[]{typeof(string), typeof(StubConditionStringCheckingDto)})]
+    public object FullPath { get; set; }
 
     /// <summary>
     /// Gets or sets the is HTTPS.
