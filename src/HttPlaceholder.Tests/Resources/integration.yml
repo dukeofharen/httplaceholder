@@ -41,7 +41,8 @@
   conditions:
     method: GET
     url:
-      fullPath: /index.php?success=true
+      fullPath:
+        equals: /index.php?success=true
   response:
     statusCode: 200
     text: DONE!
