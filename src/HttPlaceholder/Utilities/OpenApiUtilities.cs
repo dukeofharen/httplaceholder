@@ -48,13 +48,15 @@ public static class OpenApiUtilities
         Type oneOfType,
         JsonSchema schemaToUpdate)
     {
-        var oneOfTypeSchema = JsonSchema.FromType(oneOfType);
-        RemoveNullTypes(oneOfTypeSchema);
-
         var isPrimitiveOrString = IsPrimitiveOrString(oneOfType);
-        if (!isPrimitiveOrString &&
-            !document.Components.Schemas.Any(s => s.Key.Equals(oneOfType.Name)))
+        var schemaIsNew = !document.Components.Schemas.ContainsKey(oneOfType.Name);
+        var oneOfTypeSchema = schemaIsNew ?
+            JsonSchema.FromType(oneOfType) :
+            document.Components.Schemas[oneOfType.Name];
+
+        if (!isPrimitiveOrString && schemaIsNew)
         {
+            RemoveNullTypes(oneOfTypeSchema);
             document.Components.Schemas.Add(oneOfType.Name, oneOfTypeSchema);
         }
 
