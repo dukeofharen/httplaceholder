@@ -173,6 +173,75 @@
 									]
 								},
 								{
+									"name": "Get with query (old way)",
+									"item": [
+										{
+											"name": "[Create stub] Get with query",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "text/yaml",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "id: get-query-old-way\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path: /get-query-old-way\n  query:\n    q1: val1\n    q2: val2\nresponse:\n  text: OK QUERY OLD WAY"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/stubs",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"stubs"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Test get old way",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Body is correct\", function () {",
+															"    pm.response.to.have.body(\"OK QUERY OLD WAY\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{rootUrl}}get-query-old-way?q1=val1&q2=val2",
+													"host": [
+														"{{rootUrl}}get-query-old-way"
+													],
+													"query": [
+														{
+															"key": "q1",
+															"value": "val1"
+														},
+														{
+															"key": "q2",
+															"value": "val2"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
 									"name": "Get with full path (old way)",
 									"item": [
 										{
@@ -254,7 +323,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: get-path-query-and-headers\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /get\n    query:\n      q1: val1\n      q2: val2\n  headers:\n    X-Header-1: value1\n    X-Header-2: value2\nresponse:\n  text: OK PATH, QUERY AND HEADERS"
+											"raw": "id: get-path-query-and-headers\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /get\n    query:\n      q1:\n        equals: val1\n      q2:\n        equals: val2\n  headers:\n    X-Header-1: value1\n    X-Header-2: value2\nresponse:\n  text: OK PATH, QUERY AND HEADERS"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -282,6 +351,33 @@
 										"body": {
 											"mode": "raw",
 											"raw": "id: get-with-full-path\ntenant: integration\nconditions:\n  method: GET\n  url:\n    fullPath:\n      equals: /fullPath?q1=val1&q2=val2\nresponse:\n  text: OK FULL PATH"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Get with query: presence check",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "text/yaml",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: get-presence-check\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /get-presence-check\n    query:\n      q1:\n        present: true\n      q2:\n        present: true\n      q3:\n        present: false\nresponse:\n  text: OK GET PRESENCE CHECK"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -554,6 +650,84 @@
 												},
 												{
 													"key": "q2",
+													"value": "val3"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test get with query presence check",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK GET PRESENCE CHECK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}get-presence-check?q1=val1&q2=val3",
+											"host": [
+												"{{rootUrl}}get-presence-check"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val3"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test get with query presence check: contains invalid query param",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}get-presence-check?q1=val1&q2=val2&q3=val3",
+											"host": [
+												"{{rootUrl}}get-presence-check"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val2"
+												},
+												{
+													"key": "q3",
 													"value": "val3"
 												}
 											]
