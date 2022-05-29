@@ -431,7 +431,7 @@
     method: GET
     url:
       path:
-        equals: /todoitems
+        startswith: /todoitems
   response:
     reverseProxy:
       url: https://jsonplaceholder.typicode.com
@@ -444,7 +444,7 @@
     method: POST
     url:
       path:
-        equals: /todoitems
+        startswith: /todoitems
   response:
     reverseProxy:
       url: https://jsonplaceholder.typicode.com

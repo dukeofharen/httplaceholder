@@ -17,7 +17,7 @@ public class StubContentTypeIntegrationTest : StubIntegrationTestBase
     public async Task StubIntegration_ContentType_ShouldReturnCorrectContentType()
     {
         // Arrange
-        var url = $"{TestServer.BaseAddress}/content-type.csv";
+        var url = $"{TestServer.BaseAddress}content-type.csv";
 
         // Act
         using var response = await Client.GetAsync(url);

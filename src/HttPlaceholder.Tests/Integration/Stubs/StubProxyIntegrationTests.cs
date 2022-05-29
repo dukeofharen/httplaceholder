@@ -34,6 +34,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
 
         // Act / Assert
         using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("OK from Proxy", content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -55,6 +56,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
 
         // Act / Assert
         using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("OK from Proxy", content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
@@ -80,6 +82,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
 
         // Act / Assert
         using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("OK from Proxy", content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
