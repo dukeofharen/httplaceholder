@@ -99,6 +99,31 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithFullPathDto()
+    {
+        // Act
+        var dto = new StubConditionStringCheckingDto {StringEquals = "/users"};
+        var conditions = StubConditionBuilder.Begin()
+            .WithFullPath(dto)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(dto, conditions.Url.FullPath);
+    }
+
+    [TestMethod]
+    public void WithFullPathBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithFullPath(StringCheckingDtoBuilder.Begin().StringEquals("/users"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual("/users", ((StubConditionStringCheckingDto)conditions.Url.FullPath).StringEquals);
+    }
+
+    [TestMethod]
     public void WithHttpsEnabled()
     {
         // Act

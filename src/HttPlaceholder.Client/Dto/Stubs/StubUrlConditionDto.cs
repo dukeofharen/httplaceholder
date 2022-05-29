@@ -20,7 +20,7 @@ namespace HttPlaceholder.Client.Dto.Stubs
         /// <summary>
         /// Gets or sets the full path.
         /// </summary>
-        public string FullPath { get; set; }
+        public object FullPath { get; set; }
 
         /// <summary>
         /// Gets or sets the is HTTPS.

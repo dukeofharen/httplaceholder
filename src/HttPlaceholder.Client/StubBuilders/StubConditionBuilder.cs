@@ -108,6 +108,32 @@ namespace HttPlaceholder.Client.StubBuilders
         }
 
         /// <summary>
+        /// Adds a full path to the request definition.
+        /// The full path is the path + query parameters.
+        /// </summary>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithFullPath(StubConditionStringCheckingDto checkingDto)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.FullPath = checkingDto;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a full path to the request definition.
+        /// The full path is the path + query parameters.
+        /// </summary>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithFullPath(StringCheckingDtoBuilder builder)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.FullPath = builder.Build();
+            return this;
+        }
+
+        /// <summary>
         /// Adds a rule to the request definition that the request should be made over HTTPS.
         /// </summary>
         /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
