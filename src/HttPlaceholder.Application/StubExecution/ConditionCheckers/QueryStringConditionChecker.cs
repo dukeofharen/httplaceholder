@@ -42,12 +42,8 @@ public class QueryStringConditionChecker : IConditionChecker
                 var checkingModel = StringConditionUtilities.ConvertCondition(condition.Value);
                 if (checkingModel.Present != null)
                 {
-                    if (checkingModel.Present.Value && queryString.ContainsKey(condition.Key))
-                    {
-                        validQueryStrings++;
-                    }
-
-                    if (!checkingModel.Present.Value && !queryString.ContainsKey(condition.Key))
+                    if ((checkingModel.Present.Value && queryString.ContainsKey(condition.Key)) ||
+                        (!checkingModel.Present.Value && !queryString.ContainsKey(condition.Key)))
                     {
                         validQueryStrings++;
                     }
