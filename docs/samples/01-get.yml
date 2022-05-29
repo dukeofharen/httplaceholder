@@ -43,7 +43,8 @@
   conditions:
     method: GET
     url:
-      fullPath: /users?filter=first_name
+      fullPath:
+        equals: /users?filter=first_name
   response:
     statusCode: 200
     text: |
