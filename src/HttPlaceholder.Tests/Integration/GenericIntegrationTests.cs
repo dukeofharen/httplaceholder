@@ -70,6 +70,10 @@ public class GenericIntegrationTests : IntegrationTestBase
         Assert.AreEqual("string", pathSchema.OneOf[0].Type);
         Assert.AreEqual("StubConditionStringCheckingDto", pathSchema.OneOf[1].Title);
 
+        var fullPathSchema = stubUrlConditionDtoSchema.Properties["fullPath"];
+        Assert.AreEqual("string", fullPathSchema.OneOf[0].Type);
+        Assert.AreEqual("StubConditionStringCheckingDto", fullPathSchema.OneOf[1].Title);
+
         // Assert StubConditionsDto
         var stubConditionsDtoSchema = openapi.Components.Schemas["StubConditionsDto"];
         var jsonPathItemsSchema = stubConditionsDtoSchema.Properties["jsonPath"].Items;
