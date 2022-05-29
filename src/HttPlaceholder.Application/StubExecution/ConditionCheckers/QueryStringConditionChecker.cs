@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -12,13 +12,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class QueryStringConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
+    private readonly IStringChecker _stringChecker;
 
     /// <summary>
     /// Constructs a <see cref="QueryStringConditionChecker"/> instance.
     /// </summary>
-    public QueryStringConditionChecker(IHttpContextService httpContextService)
+    public QueryStringConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {
         _httpContextService = httpContextService;
+        _stringChecker = stringChecker;
     }
 
     /// <inheritdoc />
@@ -26,7 +28,7 @@ public class QueryStringConditionChecker : IConditionChecker
     {
         var result = new ConditionCheckResultModel();
         var queryStringConditions = stub.Conditions?.Url?.Query;
-        if (queryStringConditions == null || queryStringConditions?.Any() != true)
+        if (queryStringConditions == null || queryStringConditions.Any() != true)
         {
             return result;
         }
@@ -35,6 +37,25 @@ public class QueryStringConditionChecker : IConditionChecker
         var queryString = _httpContextService.GetQueryStringDictionary();
         foreach (var condition in queryStringConditions)
         {
+            if (condition.Value is not string)
+            {
+                var checkingModel = StringConditionUtilities.ConvertCondition(condition.Value);
+                if (checkingModel.Present != null)
+                {
+                    if (checkingModel.Present.Value && queryString.ContainsKey(condition.Key))
+                    {
+                        validQueryStrings++;
+                    }
+
+                    if (!checkingModel.Present.Value && !queryString.ContainsKey(condition.Key))
+                    {
+                        validQueryStrings++;
+                    }
+
+                    continue;
+                }
+            }
+
             // Check whether the condition query is available in the actual query string.
             if (!queryString.TryGetValue(condition.Key, out var queryValue))
             {
@@ -42,8 +63,7 @@ public class QueryStringConditionChecker : IConditionChecker
             }
 
             // Check whether the condition query value is available in the actual query string.
-            var value = condition.Value ?? string.Empty;
-            if (!StringHelper.IsRegexMatchOrSubstring(queryValue, value))
+            if (!_stringChecker.CheckString(queryValue, condition.Value))
             {
                 // If the check failed, it means the query string is incorrect and the condition should fail.
                 result.Log = $"Query string condition '{condition.Key}: {condition.Value}' failed.";

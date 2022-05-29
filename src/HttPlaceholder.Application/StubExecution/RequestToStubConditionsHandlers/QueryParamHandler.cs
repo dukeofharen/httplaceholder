@@ -22,7 +22,7 @@ internal class QueryParamHandler : IRequestToStubConditionsHandler
             return Task.FromResult(false);
         }
 
-        conditions.Url.Query = query.ToDictionary(q => q.Key, q => q.Value.ToString());
+        conditions.Url.Query = query.ToDictionary(q => q.Key, q => (object)q.Value.ToString()); // TODO
         return Task.FromResult(true);
     }
 
