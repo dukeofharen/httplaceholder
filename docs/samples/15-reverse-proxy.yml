@@ -58,7 +58,8 @@
       path:
         equals: /items
       query:
-        id: 14
+        id:
+          equals: 14
   response:
     text: OK
 
