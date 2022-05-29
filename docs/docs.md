@@ -534,7 +534,7 @@ This condition checker looks a lot like the path checker, but this checker also 
 
 ### Query string
 
-This condition checker can check the query string in a name-value collection like way. The condition can both check on substring and regular expressions.
+This condition checker can check the query string in a name-value collection like way. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 - id: situation-01
@@ -552,6 +552,25 @@ This condition checker can check the query string in a name-value collection lik
 **Correct request**
 - Method: GET
 - URL: http://localhost:5000/anyPath?id=14&filter=last_name
+
+Besides this, the request condition checker can also be used to check if a query string should be present or not, without checking the value. Let's take a look at the following example:
+
+```yml
+- id: situation-01
+  conditions:
+    method: GET
+    url:
+      query:
+        id:
+          present: true
+        filter:
+          present: false
+  response:
+    statusCode: 200
+    text: OK
+```
+
+In this case, the `id` parameter should be sent, but the `filter` parameter should not.
 
 ### Is HTTPS
 
