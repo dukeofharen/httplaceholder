@@ -514,14 +514,15 @@ The path condition is used to check a part of the URL path (so the part after ht
 
 ### Full path
 
-This condition checker looks a lot like the path checker, but this checker also checks extra URL parameters, like the query string. The condition can both check on substring and regular expressions.
+This condition checker looks a lot like the path checker, but this checker also checks extra URL parameters, like the query string. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 - id: situation-01
   conditions:
     method: GET
     url:
-      fullPath: /users?filter=first_name
+      fullPath:
+        equals: /users?filter=first_name
   response:
     statusCode: 200
     text: OK
