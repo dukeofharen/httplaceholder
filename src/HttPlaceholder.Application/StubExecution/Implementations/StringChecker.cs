@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Newtonsoft.Json;
@@ -29,7 +30,7 @@ internal class StringChecker : IStringChecker
             return StringHelper.IsRegexMatchOrSubstring(input, stringCondition);
         }
 
-        var checkingModel = ConvertCondition(condition);
+        var checkingModel = StringConditionUtilities.ConvertCondition(condition);
         var result = true;
         if (!string.IsNullOrWhiteSpace(checkingModel.StringEquals))
         {
@@ -124,23 +125,5 @@ internal class StringChecker : IStringChecker
         }
 
         return result;
-    }
-
-    internal static StubConditionStringCheckingModel ConvertCondition(object condition)
-    {
-        //Condition can be: JObject (if in cache), Dictionary<object, object> (if added just now)
-        if (condition is Dictionary<object, object> dictionary)
-        {
-            var intermediateJson = JsonConvert.SerializeObject(dictionary);
-            return JsonConvert.DeserializeObject<StubConditionStringCheckingModel>(intermediateJson);
-        }
-
-        if (condition is JObject jObject)
-        {
-            return jObject.ToObject<StubConditionStringCheckingModel>();
-        }
-
-        throw new InvalidOperationException(
-            $"Object of type '{condition.GetType()}' not supported for serializing to '{typeof(StubConditionStringCheckingModel)}'.");
     }
 }

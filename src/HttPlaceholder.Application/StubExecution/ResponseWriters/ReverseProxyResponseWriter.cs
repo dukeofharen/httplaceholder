@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
@@ -143,17 +144,18 @@ internal class ReverseProxyResponseWriter : IResponseWriter
     private string GetPath(StubModel stub)
     {
         var pathModel = stub.Conditions?.Url?.Path;
+        if (pathModel == null)
+        {
+            return null;
+        }
+
         if (pathModel is string path)
         {
             return path;
         }
 
-        if (pathModel is StubConditionStringCheckingModel checkingModel)
-        {
-            return checkingModel.StringEquals ??
-                   checkingModel.StringEqualsCi ?? checkingModel.StartsWith ?? checkingModel.StartsWithCi;
-        }
-
-        return null;
+        var checkingModel = StringConditionUtilities.ConvertCondition(pathModel);
+        return checkingModel.StringEquals ??
+               checkingModel.StringEqualsCi ?? checkingModel.StartsWith ?? checkingModel.StartsWithCi;
     }
 }

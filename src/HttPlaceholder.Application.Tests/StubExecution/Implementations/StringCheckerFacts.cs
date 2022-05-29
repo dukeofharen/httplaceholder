@@ -391,43 +391,6 @@ public class StringCheckerFacts
         Assert.AreEqual(shouldSucceed, result);
     }
 
-    [TestMethod]
-    public void ConvertCondition_ConditionIsDictionary_ShouldConvert()
-    {
-        // Arrange
-        var dict = new Dictionary<object, object> {{"equals", "/path"}, {"notcontainsci", "somestring"}};
-
-        // Act
-        var result = StringChecker.ConvertCondition(dict);
-
-        // Assert
-        Assert.IsNotNull(result);
-        Assert.AreEqual("/path", result.StringEquals);
-        Assert.AreEqual("somestring", result.NotContainsCi);
-    }
-
-    [TestMethod]
-    public void ConvertCondition_ConditionIsJObject_ShouldConvert()
-    {
-        // Arrange
-        var jsonString = @"{""equals"": ""/path"", ""notcontainsci"": ""somestring""}";
-
-        // Act
-        var result = StringChecker.ConvertCondition(JObject.Parse(jsonString));
-
-        // Assert
-        Assert.IsNotNull(result);
-        Assert.AreEqual("/path", result.StringEquals);
-        Assert.AreEqual("somestring", result.NotContainsCi);
-    }
-
-    [TestMethod]
-    public void ConvertCondition_ConditionIsUnrecognized_ShouldThrowInvalidOperationException()
-    {
-        // Act / Assert
-        Assert.ThrowsException<InvalidOperationException>(() => StringChecker.ConvertCondition(1234));
-    }
-
     private static JObject Convert(StubConditionStringCheckingModel input)
     {
         var json = JsonConvert.SerializeObject(input);
