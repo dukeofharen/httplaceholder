@@ -120,10 +120,4 @@ public class StubConditionStringCheckingDto
     /// </summary>
     [JsonProperty("present", NullValueHandling = NullValueHandling.Ignore)]
     public bool? Present { get; set; }
-
-    /// <summary>
-    /// Gets or sets the present check.
-    /// </summary>
-    [JsonProperty("notpresent", NullValueHandling = NullValueHandling.Ignore)]
-    public bool? NotPresent { get; set; }
 }

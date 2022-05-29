@@ -140,11 +140,4 @@ public class StubConditionStringCheckingDto
     [YamlMember(Alias = "present")]
     [JsonProperty("present")]
     public bool? Present { get; set; }
-
-    /// <summary>
-    /// Gets or sets the present check.
-    /// </summary>
-    [YamlMember(Alias = "notpresent")]
-    [JsonProperty("notpresent")]
-    public bool? NotPresent { get; set; }
 }
