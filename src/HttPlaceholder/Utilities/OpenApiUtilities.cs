@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using HttPlaceholder.Attributes;
@@ -18,25 +19,25 @@ public static class OpenApiUtilities
     /// <param name="document">The OpenAPI document.</param>
     public static void PostProcessOpenApiDocument(OpenApiDocument document)
     {
-        var customOpenApiClasses = GetCustomOpenApiClasses();
-        foreach (var type in customOpenApiClasses)
+        foreach (var type in GetCustomOpenApiClasses())
         {
-            var properties = type.GetProperties();
-            foreach (var property in properties)
+            foreach (var property in type.GetProperties())
             {
                 var oneOfProperty = GetOneOfAttribute(property);
-                if (oneOfProperty != null)
+                if (oneOfProperty == null)
                 {
-                    var schemaProperty = GetSchemaProperty(document, type, property);
-                    foreach (var oneOfType in oneOfProperty.Types)
-                    {
-                        UpdateSchema(document, oneOfType, schemaProperty, schemaProperty);
-                    }
+                    continue;
+                }
 
-                    foreach (var oneOfType in oneOfProperty.ItemsTypes)
-                    {
-                        UpdateSchema(document, oneOfType, schemaProperty, schemaProperty.Item);
-                    }
+                var schemaProperty = GetSchemaProperty(document, type, property);
+                foreach (var oneOfType in oneOfProperty.Types)
+                {
+                    UpdateSchema(document, oneOfType, schemaProperty);
+                }
+
+                foreach (var oneOfType in oneOfProperty.ItemsTypes)
+                {
+                    UpdateSchema(document, oneOfType, schemaProperty.Item);
                 }
             }
         }
@@ -45,7 +46,6 @@ public static class OpenApiUtilities
     private static void UpdateSchema(
         OpenApiDocument document,
         Type oneOfType,
-        JsonSchemaProperty schemaProperty,
         JsonSchema schemaToUpdate)
     {
         var oneOfTypeSchema = JsonSchema.FromType(oneOfType);
@@ -90,12 +90,8 @@ public static class OpenApiUtilities
             .Cast<OneOfAttribute>()
             .FirstOrDefault();
 
-    private static Type[] GetCustomOpenApiClasses()
-    {
-        var customOpenApiClasses = AppDomain.CurrentDomain.GetAssemblies()
+    private static IEnumerable<Type> GetCustomOpenApiClasses() =>
+        AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(a => a.GetTypes())
-            .Where(t => t.IsDefined(typeof(CustomOpenApiAttribute), false))
-            .ToArray();
-        return customOpenApiClasses;
-    }
+            .Where(t => t.IsDefined(typeof(CustomOpenApiAttribute), false));
 }
