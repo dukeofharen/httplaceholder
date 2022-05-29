@@ -10,120 +10,120 @@ public class StubConditionStringCheckingDto
     /// <summary>
     /// Gets or sets the equals check.
     /// </summary>
-    [JsonProperty("equals")]
+    [JsonProperty("equals", NullValueHandling = NullValueHandling.Ignore)]
     public string StringEquals { get; set; }
 
     /// <summary>
     /// Gets or sets the non case sensitive equals check.
     /// </summary>
-    [JsonProperty("equalsci")]
+    [JsonProperty("equalsci", NullValueHandling = NullValueHandling.Ignore)]
     public string StringEqualsCi { get; set; }
 
     /// <summary>
     /// Gets or sets the notequals check.
     /// </summary>
-    [JsonProperty("notequals")]
+    [JsonProperty("notequals", NullValueHandling = NullValueHandling.Ignore)]
     public string StringNotEquals { get; set; }
 
     /// <summary>
     /// Gets or sets the non case sensitive notequals check.
     /// </summary>
-    [JsonProperty("notequalsci")]
+    [JsonProperty("notequalsci", NullValueHandling = NullValueHandling.Ignore)]
     public string StringNotEqualsCi { get; set; }
 
     /// <summary>
     /// Gets or sets the contains check.
     /// </summary>
-    [JsonProperty("contains")]
+    [JsonProperty("contains", NullValueHandling = NullValueHandling.Ignore)]
     public string Contains { get; set; }
 
     /// <summary>
     /// Gets or sets the non case sensitive contains check.
     /// </summary>
-    [JsonProperty("containsci")]
+    [JsonProperty("containsci", NullValueHandling = NullValueHandling.Ignore)]
     public string ContainsCi { get; set; }
 
     /// <summary>
     /// Gets or sets the not contains check.
     /// </summary>
-    [JsonProperty("notcontains")]
+    [JsonProperty("notcontains", NullValueHandling = NullValueHandling.Ignore)]
     public string NotContains { get; set; }
 
     /// <summary>
     /// Gets or sets the non case sensitive not contains check.
     /// </summary>
-    [JsonProperty("notcontainsci")]
+    [JsonProperty("notcontainsci", NullValueHandling = NullValueHandling.Ignore)]
     public string NotContainsCi { get; set; }
 
     /// <summary>
     /// Gets or sets the startswith check.
     /// </summary>
-    [JsonProperty("startswith")]
+    [JsonProperty("startswith", NullValueHandling = NullValueHandling.Ignore)]
     public string StartsWith { get; set; }
 
     /// <summary>
     /// Gets or sets the non case sensitive startswith check.
     /// </summary>
-    [JsonProperty("startswithci")]
+    [JsonProperty("startswithci", NullValueHandling = NullValueHandling.Ignore)]
     public string StartsWithCi { get; set; }
 
     /// <summary>
     /// Gets or sets the doesnotstartwith check.
     /// </summary>
-    [JsonProperty("doesnotstartwith")]
+    [JsonProperty("doesnotstartwith", NullValueHandling = NullValueHandling.Ignore)]
     public string DoesNotStartWith { get; set; }
 
     /// <summary>
     /// Gets or sets the non case sensitive doesnotstartwith check.
     /// </summary>
-    [JsonProperty("doesnotstartwithci")]
+    [JsonProperty("doesnotstartwithci", NullValueHandling = NullValueHandling.Ignore)]
     public string DoesNotStartWithCi { get; set; }
 
     /// <summary>
     /// Gets or sets the endswith check.
     /// </summary>
-    [JsonProperty("endswith")]
+    [JsonProperty("endswith", NullValueHandling = NullValueHandling.Ignore)]
     public string EndsWith { get; set; }
 
     /// <summary>
     /// Gets or sets the non case sensitive endswith check.
     /// </summary>
-    [JsonProperty("endswithci")]
+    [JsonProperty("endswithci", NullValueHandling = NullValueHandling.Ignore)]
     public string EndsWithCi { get; set; }
 
     /// <summary>
     /// Gets or sets the doesnotendwith check.
     /// </summary>
-    [JsonProperty("doesnotendwith")]
+    [JsonProperty("doesnotendwith", NullValueHandling = NullValueHandling.Ignore)]
     public string DoesNotEndWith { get; set; }
 
     /// <summary>
     /// Gets or sets the non case sensitive doesnotstartwith check.
     /// </summary>
-    [JsonProperty("doesnotendwithci")]
+    [JsonProperty("doesnotendwithci", NullValueHandling = NullValueHandling.Ignore)]
     public string DoesNotEndWithCi { get; set; }
 
     /// <summary>
     /// Gets or sets the regex check.
     /// </summary>
-    [JsonProperty("regex")]
+    [JsonProperty("regex", NullValueHandling = NullValueHandling.Ignore)]
     public string Regex { get; set; }
 
     /// <summary>
     /// Gets or sets the regexnomatches check.
     /// </summary>
-    [JsonProperty("regexnomatches")]
+    [JsonProperty("regexnomatches", NullValueHandling = NullValueHandling.Ignore)]
     public string RegexNoMatches { get; set; }
 
     /// <summary>
     /// Gets or sets the present check.
     /// </summary>
-    [JsonProperty("present")]
+    [JsonProperty("present", NullValueHandling = NullValueHandling.Ignore)]
     public bool? Present { get; set; }
 
     /// <summary>
     /// Gets or sets the present check.
     /// </summary>
-    [JsonProperty("notpresent")]
+    [JsonProperty("notpresent", NullValueHandling = NullValueHandling.Ignore)]
     public bool? NotPresent { get; set; }
 }
