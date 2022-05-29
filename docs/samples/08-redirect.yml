@@ -17,6 +17,7 @@
   conditions:
     method: GET
     url:
-      path: /permanent-redirect
+      path:
+        equals: /permanent-redirect
   response:
     permanentRedirect: https://reddit.com

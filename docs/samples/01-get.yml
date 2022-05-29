@@ -59,7 +59,8 @@
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
       query:
         id: ^[0-9]+$
   response:

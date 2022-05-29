@@ -25,7 +25,8 @@
   conditions:
     method: POST
     url:
-      path: /thingy
+      path:
+        equals: /thingy
     headers:
       Content-Type: application/soap+xml; charset=utf-8
     xpath:

@@ -18,7 +18,8 @@
   tenant: 10-hostname
   conditions:
     url:
-      path: /host-2
+      path:
+        equals: /host-2
     method: GET
     host: http(.*)
   response:

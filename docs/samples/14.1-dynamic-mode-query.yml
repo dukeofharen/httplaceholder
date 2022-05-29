@@ -18,7 +18,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-encoded-query.txt
+      path:
+        equals: /dynamic-encoded-query.txt
   response:
     enableDynamicMode: true
     headers:
