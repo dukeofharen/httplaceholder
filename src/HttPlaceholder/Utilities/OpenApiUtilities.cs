@@ -30,6 +30,11 @@ public static class OpenApiUtilities
                 }
 
                 var schemaProperty = GetSchemaProperty(document, type, property);
+                foreach (var oneOfType in oneOfProperty.AdditionalPropertiesTypes)
+                {
+                    UpdateSchema(document, oneOfType, schemaProperty.AdditionalPropertiesSchema);
+                }
+
                 foreach (var oneOfType in oneOfProperty.Types)
                 {
                     UpdateSchema(document, oneOfType, schemaProperty);

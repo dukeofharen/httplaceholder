@@ -17,4 +17,9 @@ public class OneOfAttribute : Attribute
     /// Gets or sets the items types for the oneOf property.
     /// </summary>
     public Type[] ItemsTypes { get; set; } = Type.EmptyTypes;
+
+    /// <summary>
+    /// Gets or sets the additional properties types for the oneOf property.
+    /// </summary>
+    public Type[] AdditionalPropertiesTypes { get; set; } = Type.EmptyTypes;
 }

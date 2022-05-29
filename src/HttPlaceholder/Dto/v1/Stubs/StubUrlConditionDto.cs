@@ -23,6 +23,7 @@ public class StubUrlConditionDto : IMapFrom<StubUrlConditionModel>, IMapTo<StubU
     /// Gets or sets the query.
     /// </summary>
     [YamlMember(Alias = "query")]
+    [OneOf(AdditionalPropertiesTypes = new[]{typeof(string), typeof(StubConditionStringCheckingDto)})]
     public IDictionary<string, object> Query { get; set; }
 
     /// <summary>

@@ -61,7 +61,7 @@ public class GenericIntegrationTests : IntegrationTestBase
 
         // Assert StubConditionStringCheckingDto
         var stubConditionStringCheckingDtoSchema = openapi.Components.Schemas["StubConditionStringCheckingDto"];
-        Assert.AreEqual(20, stubConditionStringCheckingDtoSchema.Properties.Count);
+        Assert.AreEqual(19, stubConditionStringCheckingDtoSchema.Properties.Count);
         Assert.IsFalse(stubConditionStringCheckingDtoSchema.Properties.Any(p => p.Value.Type == "null"));
 
         // Assert StubUrlConditionDto
@@ -73,6 +73,10 @@ public class GenericIntegrationTests : IntegrationTestBase
         var fullPathSchema = stubUrlConditionDtoSchema.Properties["fullPath"];
         Assert.AreEqual("string", fullPathSchema.OneOf[0].Type);
         Assert.AreEqual("StubConditionStringCheckingDto", fullPathSchema.OneOf[1].Title);
+
+        var querySchema = stubUrlConditionDtoSchema.Properties["query"];
+        Assert.AreEqual("string", querySchema.AdditionalProperties.OneOf[0].Type);
+        Assert.AreEqual("StubConditionStringCheckingDto", querySchema.AdditionalProperties.OneOf[1].Title);
 
         // Assert StubConditionsDto
         var stubConditionsDtoSchema = openapi.Components.Schemas["StubConditionsDto"];
