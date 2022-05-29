@@ -5,7 +5,8 @@
       path:
         equals: /locatieserver/v3/suggest
       query:
-        q: 9761BP
+        q:
+          equals: 9761BP
   response:
     text: '{"response":{"numFound":23,"start":0,"maxScore":18.281225,"docs":[{"type":"postcode","weergavenaam":"Kluivingskampenweg, 9761BP Eelde","id":"pcd-bdae7c76ab31b82843622995d7fc6dc0","score":18.281225},{"type":"adres","weergavenaam":"Kluivingskampenweg 2, 9761BP Eelde","id":"adr-2cc23fc54b239a2950d51d5ebd53cc01","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 4, 9761BP Eelde","id":"adr-944da34116f6e8581fbd45bdd17b14e0","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 6, 9761BP Eelde","id":"adr-47ceeb1363d64573c99e2d4ad84d48c2","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 8, 9761BP Eelde","id":"adr-afc3f5b08ec70f826b96a6d7d6830d46","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 10, 9761BP Eelde","id":"adr-040f22edf264c14927e7f19cc25fc6e1","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 12, 9761BP Eelde","id":"adr-f2852527a3c4bcb42d94e54b8c6f9edb","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 14, 9761BP Eelde","id":"adr-fedda4e2e57cc1b5811bb144fe100b7b","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 16, 9761BP Eelde","id":"adr-98f0172560c106af255db0f184647b0a","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 18, 9761BP Eelde","id":"adr-7db80c25c0ba276bbc91809da561b25d","score":13.532177}]},"highlighting":{"pcd-bdae7c76ab31b82843622995d7fc6dc0":{"suggest":["Kluivingskampenweg, <b>9761BP</b> Eelde"]},"adr-2cc23fc54b239a2950d51d5ebd53cc01":{"suggest":["Kluivingskampenweg 2, <b>9761BP</b> Eelde"]},"adr-944da34116f6e8581fbd45bdd17b14e0":{"suggest":["Kluivingskampenweg 4, <b>9761BP</b> Eelde"]},"adr-47ceeb1363d64573c99e2d4ad84d48c2":{"suggest":["Kluivingskampenweg 6, <b>9761BP</b> Eelde"]},"adr-afc3f5b08ec70f826b96a6d7d6830d46":{"suggest":["Kluivingskampenweg 8, <b>9761BP</b> Eelde"]},"adr-040f22edf264c14927e7f19cc25fc6e1":{"suggest":["Kluivingskampenweg 10, <b>9761BP</b> Eelde"]},"adr-f2852527a3c4bcb42d94e54b8c6f9edb":{"suggest":["Kluivingskampenweg 12, <b>9761BP</b> Eelde"]},"adr-fedda4e2e57cc1b5811bb144fe100b7b":{"suggest":["Kluivingskampenweg 14, <b>9761BP</b> Eelde"]},"adr-98f0172560c106af255db0f184647b0a":{"suggest":["Kluivingskampenweg 16, <b>9761BP</b> Eelde"]},"adr-7db80c25c0ba276bbc91809da561b25d":{"suggest":["Kluivingskampenweg 18, <b>9761BP</b> Eelde"]}},"spellcheck":{"suggestions":[],"collations":[]}}'
     headers:
@@ -18,7 +19,8 @@
       path:
         equals: /locatieserver/v3/suggest
       query:
-        q: 9752EM
+        q:
+          equals: 9752EM
   response:
     statusCode: 200
     text: '{"response":{"numFound":18,"start":0,"maxScore":18.590792,"docs":[{"type":"postcode","weergavenaam":"Bilderdijklaan, 9752EM Haren Gn","id":"pcd-2c0f87a02efb7cae11067a7f25c19434","score":18.590792},{"type":"adres","weergavenaam":"Bilderdijklaan 1, 9752EM Haren Gn","id":"adr-f9c0d3f418f20e7f36a81c404b8a73ea","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 1-G01, 9752EM Haren Gn","id":"adr-7cdc662784bedebf4a7f8939a98958f0","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 1-G02, 9752EM Haren Gn","id":"adr-9de7f11bae558af42840b6787ece9408","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 3, 9752EM Haren Gn","id":"adr-131cb5feced7a09226c6f361c34897a8","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 5, 9752EM Haren Gn","id":"adr-31115f2857b203b9b4610cb9133071c2","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 7, 9752EM Haren Gn","id":"adr-0021ac3bbfc8191cdb6465cce446537e","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 9, 9752EM Haren Gn","id":"adr-6608d1ddbda149fcff9656ea6ebbe32c","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 11, 9752EM Haren Gn","id":"adr-0e1b780d12c8f950c374975dfd5cf981","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 13, 9752EM Haren Gn","id":"adr-b747faf3a7b15f8af48fc6d4b298a1e6","score":12.104727}]},"highlighting":{"pcd-2c0f87a02efb7cae11067a7f25c19434":{"suggest":["Bilderdijklaan, <b>9752EM</b> Haren Gn"]},"adr-f9c0d3f418f20e7f36a81c404b8a73ea":{"suggest":["Bilderdijklaan 1, <b>9752EM</b> Haren Gn"]},"adr-7cdc662784bedebf4a7f8939a98958f0":{"suggest":["Bilderdijklaan 1-G01, <b>9752EM</b> Haren Gn"]},"adr-9de7f11bae558af42840b6787ece9408":{"suggest":["Bilderdijklaan 1-G02, <b>9752EM</b> Haren Gn"]},"adr-131cb5feced7a09226c6f361c34897a8":{"suggest":["Bilderdijklaan 3, <b>9752EM</b> Haren Gn"]},"adr-31115f2857b203b9b4610cb9133071c2":{"suggest":["Bilderdijklaan 5, <b>9752EM</b> Haren Gn"]},"adr-0021ac3bbfc8191cdb6465cce446537e":{"suggest":["Bilderdijklaan 7, <b>9752EM</b> Haren Gn"]},"adr-6608d1ddbda149fcff9656ea6ebbe32c":{"suggest":["Bilderdijklaan 9, <b>9752EM</b> Haren Gn"]},"adr-0e1b780d12c8f950c374975dfd5cf981":{"suggest":["Bilderdijklaan 11, <b>9752EM</b> Haren Gn"]},"adr-b747faf3a7b15f8af48fc6d4b298a1e6":{"suggest":["Bilderdijklaan 13, <b>9752EM</b> Haren Gn"]}},"spellcheck":{"suggestions":[],"collations":[]}}'
@@ -32,7 +34,8 @@
       path:
         equals: /locatieserver/v3/suggest
       query:
-        q: 9468BA
+        q:
+          equals: 9468BA
   response:
     statusCode: 200
     json: '{"response":{"numFound":20,"start":0,"maxScore":19.57536,"docs":[{"type":"postcode","weergavenaam":"Veldweg, 9468BA Annen","id":"pcd-576e880f66d91b6a811b2c46df200fbf","score":19.57536},{"type":"adres","weergavenaam":"Veldweg 1, 9468BA Annen","id":"adr-036fa7e6db5320501485f09499c23c0a","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 3, 9468BA Annen","id":"adr-4a49c2a64099c742333bb54c0435cbff","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 5, 9468BA Annen","id":"adr-25ccc3d6d3da00acc4bc37938eb75985","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 7, 9468BA Annen","id":"adr-912f28a3e1afdabb1fb4377fc9a18a93","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 9, 9468BA Annen","id":"adr-f1c0e763a38ef7aa6cd309ca64bf58e9","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 11, 9468BA Annen","id":"adr-5fd9fdbd85cbdb56e76f290711d7c6c4","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 13, 9468BA Annen","id":"adr-e25166b65e6198922a363b243ddf6817","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 15, 9468BA Annen","id":"adr-1615ca5f8b96f06a16dad39de30b3f0d","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 17, 9468BA Annen","id":"adr-f894a9b79fbc94fc08b819b32cd2370f","score":13.226929}]},"highlighting":{"pcd-576e880f66d91b6a811b2c46df200fbf":{"suggest":["Veldweg, <b>9468BA</b> Annen"]},"adr-036fa7e6db5320501485f09499c23c0a":{"suggest":["Veldweg 1, <b>9468BA</b> Annen"]},"adr-4a49c2a64099c742333bb54c0435cbff":{"suggest":["Veldweg 3, <b>9468BA</b> Annen"]},"adr-25ccc3d6d3da00acc4bc37938eb75985":{"suggest":["Veldweg 5, <b>9468BA</b> Annen"]},"adr-912f28a3e1afdabb1fb4377fc9a18a93":{"suggest":["Veldweg 7, <b>9468BA</b> Annen"]},"adr-f1c0e763a38ef7aa6cd309ca64bf58e9":{"suggest":["Veldweg 9, <b>9468BA</b> Annen"]},"adr-5fd9fdbd85cbdb56e76f290711d7c6c4":{"suggest":["Veldweg 11, <b>9468BA</b> Annen"]},"adr-e25166b65e6198922a363b243ddf6817":{"suggest":["Veldweg 13, <b>9468BA</b> Annen"]},"adr-1615ca5f8b96f06a16dad39de30b3f0d":{"suggest":["Veldweg 15, <b>9468BA</b> Annen"]},"adr-f894a9b79fbc94fc08b819b32cd2370f":{"suggest":["Veldweg 17, <b>9468BA</b> Annen"]}},"spellcheck":{"suggestions":[],"collations":[]}}'
@@ -56,7 +59,8 @@
       path:
         equals: /query
       query:
-        email: sjaak@gmail.com
+        email:
+          equals: sjaak@gmail.com
   response:
     text: url-query-param-url-encoded OK
 
@@ -590,8 +594,10 @@
       path:
         equals: /url
       query:
-        query1: val1
-        query2: val2
+        query1:
+          equals: val1
+        query2:
+          equals: val2
   response:
     text: OK condition priority check!
 
