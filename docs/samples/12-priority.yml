@@ -13,7 +13,8 @@
   conditions:
     method: GET
     url:
-      path: /not-fallback
+      path:
+        equals: /not-fallback
   response:
     statusCode: 200
     text: OK

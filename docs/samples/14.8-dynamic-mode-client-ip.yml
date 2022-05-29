@@ -4,7 +4,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-client-ip.txt
+      path:
+        equals: /dynamic-client-ip.txt
   response:
     enableDynamicMode: true
     text: 'IP: ((client_ip))'

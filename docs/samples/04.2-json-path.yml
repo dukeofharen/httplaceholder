@@ -4,7 +4,8 @@
   conditions:
     method: PUT
     url:
-      path: /users
+      path:
+        equals: /users
     headers:
       Content-Type: application/json
     jsonPath:
@@ -17,7 +18,8 @@
   conditions:
     method: PUT
     url:
-      path: /users
+      path:
+        equals: /users
     headers:
       Content-Type: application/json
     jsonPath:
@@ -31,7 +33,8 @@
   conditions:
     method: PUT
     url:
-      path: /users
+      path:
+        equals: /users
     headers:
       Content-Type: application/json
     jsonPath:

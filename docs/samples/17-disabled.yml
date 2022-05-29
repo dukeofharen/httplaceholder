@@ -5,7 +5,8 @@
   conditions:
     method: GET
     url:
-      path: /enabled
+      path:
+        equals: /enabled
   response:
     text: This stub is enabled.
 
@@ -15,6 +16,7 @@
   conditions:
     method: GET
     url:
-      path: /disabled
+      path:
+        equals: /disabled
   response:
     text: This stub is disabled.

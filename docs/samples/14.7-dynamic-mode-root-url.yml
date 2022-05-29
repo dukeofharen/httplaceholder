@@ -4,7 +4,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-root-url.txt
+      path:
+        equals: /dynamic-root-url.txt
   response:
     enableDynamicMode: true
     text: 'URL: ((root_url))'

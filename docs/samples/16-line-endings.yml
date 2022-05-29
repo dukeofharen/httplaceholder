@@ -4,7 +4,8 @@
   conditions:
     method: GET
     url:
-      path: /unix-line-endings
+      path:
+        equals: /unix-line-endings
   response:
     lineEndings: unix
     text: |
@@ -19,7 +20,8 @@
   conditions:
     method: GET
     url:
-      path: /windows-line-endings
+      path:
+        equals: /windows-line-endings
   response:
     lineEndings: windows
     text: |

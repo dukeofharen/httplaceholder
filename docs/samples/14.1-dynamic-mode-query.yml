@@ -4,7 +4,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-query.txt
+      path:
+        equals: /dynamic-query.txt
   response:
     enableDynamicMode: true
     headers:

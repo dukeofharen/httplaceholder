@@ -4,7 +4,8 @@
   conditions:
     method: GET
     url:
-      path: /slooooow
+      path:
+        equals: /slooooow
       query:
         id: 12
         filter: first_name

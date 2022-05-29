@@ -4,7 +4,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-request-header.txt
+      path:
+        equals: /dynamic-request-header.txt
   response:
     enableDynamicMode: true
     text: 'API key: ((request_header:X-Api-Key))'

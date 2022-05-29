@@ -7,7 +7,8 @@
   conditions:
     method: GET
     url:
-      path: /todos
+      path:
+        equals: /todos
   response:
     json: |
       [
@@ -26,7 +27,8 @@
   conditions:
     method: GET
     url:
-      path: /todos/1
+      path:
+        equals: /todos/1
   response:
     json: |
       {
@@ -39,7 +41,8 @@
   conditions:
     method: GET
     url:
-      path: /todos/2
+      path:
+        equals: /todos/2
   response:
     json: |
       {
@@ -52,7 +55,8 @@
   conditions:
     method: GET
     url:
-      path: /items
+      path:
+        equals: /items
       query:
         id: 14
   response:
@@ -63,7 +67,8 @@
   tenant: 15-reverse-proxy
   conditions:
     url:
-      path: /todoitems
+      path:
+        equals: /todoitems
   response:
     reverseProxy:
       url: http://localhost:5000
@@ -73,7 +78,8 @@
   tenant: 15-reverse-proxy
   conditions:
     url:
-      path: /itemsproxy
+      path:
+        equals: /itemsproxy
   response:
     reverseProxy:
       url: http://localhost:5000/items

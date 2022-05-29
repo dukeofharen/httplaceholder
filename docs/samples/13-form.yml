@@ -4,7 +4,8 @@
   conditions:
     method: POST
     url:
-      path: /form
+      path:
+        equals: /form
     form:
       - key: key1
         value: sjaak

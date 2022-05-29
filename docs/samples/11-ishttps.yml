@@ -4,7 +4,8 @@
   conditions:
     method: GET
     url:
-      path: /ishttps-ok
+      path:
+        equals: /ishttps-ok
       isHttps: true
   response:
     statusCode: 200
