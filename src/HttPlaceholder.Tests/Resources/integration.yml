@@ -2,7 +2,8 @@
   conditions:
     method: GET
     url:
-      path: \blocatieserver\/v3\/suggest\b
+      path:
+        equals: /locatieserver/v3/suggest
       query:
         q: 9761BP
   response:
@@ -14,7 +15,8 @@
   conditions:
     method: GET
     url:
-      path: \blocatieserver\/v3\/suggest\b
+      path:
+        equals: /locatieserver/v3/suggest
       query:
         q: 9752EM
   response:
@@ -27,7 +29,8 @@
   conditions:
     method: GET
     url:
-      path: \blocatieserver\/v3\/suggest\b
+      path:
+        equals: /locatieserver/v3/suggest
       query:
         q: 9468BA
   response:
@@ -49,7 +52,8 @@
   conditions:
     method: GET
     url:
-      path: /query
+      path:
+        equals: /query
       query:
         email: sjaak@gmail.com
   response:
@@ -59,7 +63,8 @@
   conditions:
     method: GET
     url:
-      path: /User.svc
+      path:
+        equals: /User.svc
     basicAuthentication:
       username: duco
       password: geheim
@@ -90,7 +95,8 @@
   conditions:
     method: POST
     url:
-      path: /InStock
+      path:
+        equals: /InStock
     headers:
       Content-Type: application/soap+xml; charset=utf-8
     xpath:
@@ -108,7 +114,8 @@
   conditions:
     method: POST
     url:
-      path: /InStock
+      path:
+        equals: /InStock
     headers:
       Content-Type: application/soap+xml; charset=utf-8
     xpath:
@@ -123,7 +130,8 @@
   conditions:
     method: POST
     url:
-      path: /InStock
+      path:
+        equals: /InStock
     headers:
       Content-Type: application/soap+xml; charset=utf-8
     xpath:
@@ -138,7 +146,8 @@
   conditions:
     method: POST
     url:
-      path: /xml
+      path:
+        equals: /xml
     headers:
       Content-Type: application/soap+xml; charset=utf-8
     xpath:
@@ -151,7 +160,8 @@
   conditions:
     method: PUT
     url:
-      path: /users
+      path:
+        equals: /users
     headers:
       Content-Type: application/json
     jsonPath:
@@ -163,7 +173,8 @@
   conditions:
     method: PUT
     url:
-      path: /users
+      path:
+        equals: /users
     headers:
       Content-Type: application/json
     jsonPath:
@@ -176,7 +187,8 @@
   conditions:
     method: GET
     url:
-      path: /temp-redirect
+      path:
+        equals: /temp-redirect
   response:
     temporaryRedirect: https://google.com
 
@@ -184,7 +196,8 @@
   conditions:
     method: GET
     url:
-      path: /permanent-redirect
+      path:
+        equals: /permanent-redirect
   response:
     permanentRedirect: https://reddit.com
 
@@ -192,7 +205,7 @@
   conditions:
     method: GET
     url:
-      path: /client-ip-1
+      path:
     clientIp: 127.0.0.1
   response:
     statusCode: 200
@@ -202,7 +215,8 @@
   conditions:
     method: GET
     url:
-      path: /client-ip-2
+      path:
+        equals: /client-ip-2
     clientIp: '127.0.0.0/29'
   response:
     statusCode: 200
@@ -220,7 +234,8 @@
   conditions:
     method: GET
     url:
-      path: /ishttps-ok
+      path:
+        equals: /ishttps-ok
       isHttps: true
   response:
     statusCode: 200
@@ -230,7 +245,8 @@
   conditions:
     method: POST
     url:
-      path: /form
+      path:
+        equals: /form
     form:
       - key: key1
         value: sjaak
@@ -245,7 +261,8 @@
   conditions:
     method: POST
     url:
-      path: /form
+      path:
+        equals: /form
     form:
       - key: email
         value: sjaak@gmail.com
@@ -256,7 +273,8 @@
   conditions:
     method: GET
     url:
-      path: /index.html
+      path:
+        equals: /index.html
   response:
     statusCode: 200
     html: |
@@ -276,7 +294,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-query.txt
+      path:
+        equals: /dynamic-query.txt
   response:
     enableDynamicMode: true
     text: The value is ((query:queryString1)) ((query_encoded:queryString2))
@@ -285,7 +304,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-uuid.txt
+      path:
+        equals: /dynamic-uuid.txt
   response:
     enableDynamicMode: true
     text: The value is ((uuid))
@@ -294,7 +314,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-request-header.txt
+      path:
+        equals: /dynamic-request-header.txt
   response:
     enableDynamicMode: true
     text: 'API key: ((request_header:X-Api-Key))'
@@ -306,7 +327,8 @@
   conditions:
     method: POST
     url:
-      path: /dynamic-form-post.txt
+      path:
+        equals: /dynamic-form-post.txt
   response:
     enableDynamicMode: true
     text: 'Posted: ((form_post:formval1))'
@@ -318,7 +340,8 @@
   conditions:
     method: POST
     url:
-      path: /dynamic-request-body.txt
+      path:
+        equals: /dynamic-request-body.txt
   response:
     enableDynamicMode: true
     text: 'Posted: ((request_body))'
@@ -330,7 +353,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-display-url.txt
+      path:
+        equals: /dynamic-display-url.txt
   response:
     enableDynamicMode: true
     text: 'URL: ((display_url))'
@@ -342,7 +366,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-root-url.txt
+      path:
+        equals: /dynamic-root-url.txt
   response:
     enableDynamicMode: true
     text: 'URL: ((root_url))'
@@ -354,7 +379,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-client-ip.txt
+      path:
+        equals: /dynamic-client-ip.txt
   response:
     enableDynamicMode: true
     text: 'IP: ((client_ip))'
@@ -366,7 +392,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-local-now.txt
+      path:
+        equals: /dynamic-local-now.txt
   response:
     enableDynamicMode: true
     text: 'Local now: ((localnow:yyyy-MM-dd HH:mm:ss))'
@@ -378,7 +405,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-utc-now.txt
+      path:
+        equals: /dynamic-utc-now.txt
   response:
     enableDynamicMode: true
     text: 'UTC now: ((utcnow:yyyy-MM-dd HH:mm:ss))'
@@ -390,7 +418,8 @@
   conditions:
     method: POST
     url:
-      path: /dynamic-mode-jsonpath.txt
+      path:
+        equals: /dynamic-mode-jsonpath.txt
   response:
     enableDynamicMode: true
     headers:
@@ -401,7 +430,8 @@
   conditions:
     method: GET
     url:
-      path: /todoitems
+      path:
+        equals: /todoitems
   response:
     reverseProxy:
       url: https://jsonplaceholder.typicode.com
@@ -413,7 +443,8 @@
   conditions:
     method: POST
     url:
-      path: /todoitems
+      path:
+        equals: /todoitems
   response:
     reverseProxy:
       url: https://jsonplaceholder.typicode.com
@@ -425,7 +456,8 @@
   conditions:
     method: GET
     url:
-      path: /unix-line-endings
+      path:
+        equals: /unix-line-endings
   response:
     lineEndings: unix
     text: |
@@ -439,7 +471,8 @@
   conditions:
     method: GET
     url:
-      path: /windows-line-endings
+      path:
+        equals: /windows-line-endings
   response:
     lineEndings: windows
     text: |
@@ -454,7 +487,8 @@
   conditions:
     method: GET
     url:
-      path: /enabled
+      path:
+        equals: /enabled
   response:
     text: This stub is enabled.
 
@@ -463,7 +497,8 @@
   conditions:
     method: GET
     url:
-      path: /disabled
+      path:
+        equals: /disabled
   response:
     text: This stub is disabled.
 
@@ -471,7 +506,8 @@
   conditions:
     method: GET
     url:
-      path: /content-type.csv
+      path:
+        equals: /content-type.csv
   response:
     statusCode: 200
     text: 'id,name,amount\n1,DukeOfHaren,20'
@@ -482,7 +518,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.jpg
+      path:
+        equals: /stub-image.jpg
   response:
     image:
       type: jpeg
@@ -499,7 +536,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.png
+      path:
+        equals: /stub-image.png
   response:
     image:
       type: png
@@ -515,7 +553,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.bmp
+      path:
+        equals: /stub-image.bmp
   response:
     image:
       type: bmp
@@ -531,7 +570,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.gif
+      path:
+        equals: /stub-image.gif
   response:
     image:
       type: gif
@@ -546,7 +586,8 @@
   conditions:
     method: GET
     url:
-      path: /url
+      path:
+        equals: /url
       query:
         query1: val1
         query2: val2
@@ -557,7 +598,8 @@
   conditions:
     method: GET
     url:
-      path: /text.txt
+      path:
+        equals: /text.txt
   response:
     statusCode: 200
     headers:
@@ -568,7 +610,8 @@
   conditions:
     method: GET
     url:
-      path: /image.jpg
+      path:
+        equals: /image.jpg
   response:
     statusCode: 200
     headers:

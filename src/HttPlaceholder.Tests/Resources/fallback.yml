@@ -6,7 +6,8 @@
   conditions:
     method: GET
     url:
-      path: \blocatieserver\/v3\/suggest\b
+      path:
+        equals: /locatieserver/v3/suggest
       query:
         q: 9761BP
   response:
