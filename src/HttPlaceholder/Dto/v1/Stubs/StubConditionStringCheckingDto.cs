@@ -8,7 +8,7 @@ namespace HttPlaceholder.Dto.v1.Stubs;
 /// </summary>
 public class StubConditionStringCheckingDto
 {
-     /// <summary>
+    /// <summary>
     /// Gets or sets the equals check.
     /// </summary>
     [YamlMember(Alias = "equals")]

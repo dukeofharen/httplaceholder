@@ -46,12 +46,36 @@ namespace HttPlaceholder.Client.StubBuilders
         /// <summary>
         /// Sets the URL path for the request definition.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The URL path.</param>
         /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
         public StubConditionBuilder WithPath(string path)
         {
             EnsureUrlConditions();
             _conditions.Url.Path = path;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the URL path for the request definition.
+        /// </summary>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPath(StubConditionStringCheckingDto checkingDto)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.Path = checkingDto;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the URL path for the request definition.
+        /// </summary>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPath(StringCheckingDtoBuilder builder)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.Path = builder.Build();
             return this;
         }
 
