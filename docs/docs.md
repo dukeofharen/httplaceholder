@@ -542,8 +542,10 @@ This condition checker can check the query string in a name-value collection lik
     method: GET
     url:
       query:
-        id: 14
-        filter: last_name
+        id:
+          equals: 14
+        filter:
+          equals: last_name
   response:
     statusCode: 200
     text: OK
@@ -659,17 +661,18 @@ This condition checker can check whether the sent headers match with the headers
 
 ### Raw body
 
-This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions.
+This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `contains` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 - id: situation-01
   conditions:
     method: POST
     url:
-      path: \busers\b
+      path:
+        equals: /users
     body:
-      - \busername\b
-      - \bjohn\b
+      - contains: username
+      - contains: john
   response:
     statusCode: 200
     text: '{"result": true}'
