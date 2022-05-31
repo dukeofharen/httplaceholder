@@ -196,6 +196,37 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithPostedBodyCheckDto()
+    {
+        // Act
+        var dto1 = new StubConditionStringCheckingDto();
+        var dto2 = new StubConditionStringCheckingDto();
+
+        var conditions = StubConditionBuilder.Begin()
+            .WithPostedBodyCheck(dto1)
+            .WithPostedBodyCheck(dto2)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Body.Count());
+        Assert.AreEqual(dto1, conditions.Body.ElementAt(0));
+        Assert.AreEqual(dto2, conditions.Body.ElementAt(1));
+    }
+
+    [TestMethod]
+    public void WithPostedBodyCheckBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithPostedBodyCheck(StringCheckingDtoBuilder.Begin().Contains("value1"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual(1, conditions.Body.Count());
+        Assert.AreEqual("value1", ((StubConditionStringCheckingDto)conditions.Body.ElementAt(0)).Contains);
+    }
+
+    [TestMethod]
     public void WithPostedFormValue()
     {
         // Act

@@ -201,6 +201,34 @@ namespace HttPlaceholder.Client.StubBuilders
         }
 
         /// <summary>
+        /// Adds a check on request body.
+        /// </summary>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPostedBodyCheck(StubConditionStringCheckingDto checkingDto)
+        {
+            var bodyConditions =
+                _conditions.Body != null ? (List<object>)_conditions.Body : new List<object>();
+            bodyConditions.Add(checkingDto);
+            _conditions.Body = bodyConditions;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on request body.
+        /// </summary>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPostedBodyCheck(StringCheckingDtoBuilder builder)
+        {
+            var bodyConditions =
+                _conditions.Body != null ? (List<object>)_conditions.Body : new List<object>();
+            bodyConditions.Add(builder.Build());
+            _conditions.Body = bodyConditions;
+            return this;
+        }
+
+        /// <summary>
         /// Adds a check on posted form value to the request definition.
         /// This method can be called multiple times to add multiple posted form conditions.
         /// </summary>
