@@ -20,7 +20,7 @@ namespace HttPlaceholder.Client.Dto.Stubs
         /// <summary>
         /// Gets or sets the body.
         /// </summary>
-        public IEnumerable<string> Body { get; set; }
+        public IEnumerable<object> Body { get; set; }
 
         /// <summary>
         /// Gets or sets the form.

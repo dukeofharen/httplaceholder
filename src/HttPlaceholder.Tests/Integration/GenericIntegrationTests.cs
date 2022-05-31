@@ -83,6 +83,10 @@ public class GenericIntegrationTests : IntegrationTestBase
         var jsonPathItemsSchema = stubConditionsDtoSchema.Properties["jsonPath"].Items;
         Assert.AreEqual("string", jsonPathItemsSchema.OneOf[0].Type);
         Assert.AreEqual("StubJsonPathDto", jsonPathItemsSchema.OneOf[1].Title);
+
+        var bodySchema = stubConditionsDtoSchema.Properties["body"].Items;
+        Assert.AreEqual("string", bodySchema.OneOf[0].Type);
+        Assert.AreEqual("StubConditionStringCheckingDto", bodySchema.OneOf[1].Title);
     }
 
     [TestMethod]

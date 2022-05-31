@@ -28,7 +28,8 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     /// Gets or sets the body.
     /// </summary>
     [YamlMember(Alias = "body")]
-    public IEnumerable<string> Body { get; set; }
+    [OneOf(ItemsTypes = new[]{typeof(string), typeof(StubConditionStringCheckingDto)})]
+    public IEnumerable<object> Body { get; set; }
 
     /// <summary>
     /// Gets or sets the form.

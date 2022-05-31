@@ -24,7 +24,7 @@ public class StubConditionsModel
     /// Gets or sets the body.
     /// </summary>
     [YamlMember(Alias = "body")]
-    public IEnumerable<string> Body { get; set; }
+    public IEnumerable<object> Body { get; set; }
 
     /// <summary>
     /// Gets or sets the form.
