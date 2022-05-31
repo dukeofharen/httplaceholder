@@ -1,37 +1,31 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using System.Linq;
+using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
 [TestClass]
 public class BodyConditionCheckerFacts
 {
-    private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
-    private BodyConditionChecker _checker;
-
-    [TestInitialize]
-    public void Initialize() =>
-        _checker = new BodyConditionChecker(
-            _httpContextServiceMock.Object);
+    private readonly AutoMocker _mocker = new();
 
     [TestCleanup]
-    public void Cleanup() => _httpContextServiceMock.VerifyAll();
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void BodyConditionChecker_Validate_StubsFound_ButNoBodyConditions_ShouldReturnNotExecuted()
     {
         // arrange
-        var conditions = new StubConditionsModel
-        {
-            Body = null
-        };
+        var checker = _mocker.CreateInstance<BodyConditionChecker>();
+        var conditions = new StubConditionsModel {Body = null};
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -42,21 +36,18 @@ public class BodyConditionCheckerFacts
     {
         // arrange
         const string body = "this is a test";
-        var conditions = new StubConditionsModel
-        {
-            Body = new[]
-            {
-                @"\bthat\b",
-                @"\btree\b"
-            }
-        };
 
-        _httpContextServiceMock
+        var checker = _mocker.CreateInstance<BodyConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+
+        var conditions = new StubConditionsModel {Body = new[] {@"\bthat\b", @"\btree\b"}};
+
+        httpContextServiceMock
             .Setup(m => m.GetBody())
             .Returns(body);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -67,21 +58,26 @@ public class BodyConditionCheckerFacts
     {
         // arrange
         const string body = "this is a test";
-        var conditions = new StubConditionsModel
-        {
-            Body = new[]
-            {
-                @"\bthis\b",
-                @"\btree\b"
-            }
-        };
 
-        _httpContextServiceMock
+        var checker = _mocker.CreateInstance<BodyConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
+
+        var conditions = new StubConditionsModel {Body = new[] {@"\bthis\b", @"\btree\b"}};
+
+        httpContextServiceMock
             .Setup(m => m.GetBody())
             .Returns(body);
 
+        stringCheckerMock
+            .Setup(m => m.CheckString(body, conditions.Body.ElementAt(0)))
+            .Returns(true);
+        stringCheckerMock
+            .Setup(m => m.CheckString(body, conditions.Body.ElementAt(1)))
+            .Returns(false);
+
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -92,45 +88,23 @@ public class BodyConditionCheckerFacts
     {
         // arrange
         const string body = "this is a test";
-        var conditions = new StubConditionsModel
-        {
-            Body = new[]
-            {
-                "this is a test"
-            }
-        };
 
-        _httpContextServiceMock
+        var checker = _mocker.CreateInstance<BodyConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
+
+        var conditions = new StubConditionsModel {Body = new[] {"this is a test"}};
+
+        httpContextServiceMock
             .Setup(m => m.GetBody())
             .Returns(body);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
-
-        // assert
-        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-    }
-
-    [TestMethod]
-    public void BodyConditionChecker_Validate_StubsFound_HappyFlow_Regex()
-    {
-        // arrange
-        const string body = "this is a test";
-        var conditions = new StubConditionsModel
-        {
-            Body = new[]
-            {
-                @"\bthis\b",
-                @"\btest\b"
-            }
-        };
-
-        _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+        stringCheckerMock
+            .Setup(m => m.CheckString(body, conditions.Body.ElementAt(0)))
+            .Returns(true);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
