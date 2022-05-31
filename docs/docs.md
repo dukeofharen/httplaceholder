@@ -2180,9 +2180,10 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
   * Dynamic mode - form post: [.yml](samples/14.4-dynamic-mode-form-post.yml)
   * Dynamic mode - request body: [.yml](samples/14.5-dynamic-mode-request-body.yml)
   * Dynamic mode - display URL: [.yml](samples/14.6-dynamic-mode-display-url.yml)
-  * Dynamic mode - client IP: [.yml](samples/14.7-dynamic-mode-client-ip.yml)
-  * Dynamic mode - current local or UTC date and time: [.yml](samples/14.8-dynamic-mode-datetime-now.yml)
-  * Dynamic mode - JSONPath: [.yml](samples/14.9-dynamic-mode-jsonpath.yml)
+  * Dynamic mode - root URL: [.yml](samples/14.7-dynamic-mode-root-url.yml)
+  * Dynamic mode - client IP: [.yml](samples/14.8-dynamic-mode-client-ip.yml)
+  * Dynamic mode - current local or UTC date and time: [.yml](samples/14.9-dynamic-mode-datetime-now.yml)
+  * Dynamic mode - JSONPath: [.yml](samples/14.10-dynamic-mode-jsonpath.yml)
 * Scenarios:
   * Scenarios - hit counter: [.yml](samples/20.1-scenario-hit-counter.yml)
   * Scenarios - state checking and setting: [.yml](samples/20.2-state-checking.yml)
