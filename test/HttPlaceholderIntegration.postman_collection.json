@@ -741,6 +741,69 @@
 							"name": "2. Post with body",
 							"item": [
 								{
+									"name": "Post with body (old way)",
+									"item": [
+										{
+											"name": "[Create stub] Post with body condition checkers",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "text/yaml",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "id: post-and-check-body-old-way\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path:\n      equals: /post-and-check-body-old-way\n  body:\n    - contains: value1\n    - contains: value2\nresponse:\n  text: OK POST AND CHECK BODY OLD WAY"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/stubs",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"stubs"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Test post with body condition checkers Copy",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Body is correct\", function () {",
+															"    pm.response.to.have.body(\"OK POST AND CHECK BODY OLD WAY\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "value1\nvalue2"
+												},
+												"url": {
+													"raw": "{{rootUrl}}post-and-check-body-old-way",
+													"host": [
+														"{{rootUrl}}post-and-check-body-old-way"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
 									"name": "[Create stub] Post with body condition checkers",
 									"request": {
 										"method": "POST",
@@ -753,7 +816,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: post-and-check-body\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path:\n      equals: /post\n  body:\n    - \\bvalue1\\b\n    - \\bvalue2\\b\nresponse:\n  text: OK POST AND CHECK BODY"
+											"raw": "id: post-and-check-body\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path:\n      equals: /post\n  body:\n    - contains: value1\n    - contains: value2\nresponse:\n  text: OK POST AND CHECK BODY"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",

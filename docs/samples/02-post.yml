@@ -7,8 +7,8 @@
       path:
         equals: /users
     body:
-      - \busername\b
-      - \bjohn\b
+      - contains: username
+      - contains: john
     headers:
       X-Api-Key: 123abc
       X-Another-Secret: \b72354deg\b
