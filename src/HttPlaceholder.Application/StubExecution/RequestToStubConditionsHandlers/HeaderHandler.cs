@@ -27,7 +27,7 @@ internal class HeaderHandler : IRequestToStubConditionsHandler
         // and filter some headers out.
         conditions.Headers = request.Headers
             .Where(h => !_headersToStrip.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
-            .ToDictionary(d => d.Key, d => Regex.Escape(d.Value));
+            .ToDictionary(d => d.Key, d => (object)Regex.Escape(d.Value)); // TODO
         return Task.FromResult(true);
     }
 

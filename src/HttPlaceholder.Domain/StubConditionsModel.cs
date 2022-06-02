@@ -36,7 +36,7 @@ public class StubConditionsModel
     /// Gets or sets the headers.
     /// </summary>
     [YamlMember(Alias = "headers")]
-    public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+    public IDictionary<string, object> Headers { get; set; } = new Dictionary<string, object>();
 
     /// <summary>
     /// Gets or sets the xpath.

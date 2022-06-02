@@ -37,6 +37,7 @@ public class QueryStringConditionChecker : IConditionChecker
         var queryString = _httpContextService.GetQueryStringDictionary();
         foreach (var condition in queryStringConditions)
         {
+            // Do a present check, if needed.
             if (condition.Value is not string)
             {
                 var checkingModel = StringConditionUtilities.ConvertCondition(condition.Value);

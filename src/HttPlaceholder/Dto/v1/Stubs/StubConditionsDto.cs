@@ -28,7 +28,7 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     /// Gets or sets the body.
     /// </summary>
     [YamlMember(Alias = "body")]
-    [OneOf(ItemsTypes = new[]{typeof(string), typeof(StubConditionStringCheckingDto)})]
+    [OneOf(ItemsTypes = new[] {typeof(string), typeof(StubConditionStringCheckingDto)})]
     public IEnumerable<object> Body { get; set; }
 
     /// <summary>
@@ -41,7 +41,8 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     /// Gets or sets the headers.
     /// </summary>
     [YamlMember(Alias = "headers")]
-    public IDictionary<string, string> Headers { get; set; }
+    [OneOf(AdditionalPropertiesTypes = new[] {typeof(string), typeof(StubConditionStringCheckingDto)})]
+    public IDictionary<string, object> Headers { get; set; }
 
     /// <summary>
     /// Gets or sets the xpath.
@@ -53,7 +54,7 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     /// Gets or sets the json path.
     /// </summary>
     [YamlMember(Alias = "jsonPath")]
-    [OneOf(ItemsTypes = new[]{typeof(string), typeof(StubJsonPathDto)})]
+    [OneOf(ItemsTypes = new[] {typeof(string), typeof(StubJsonPathDto)})]
     public IEnumerable<object> JsonPath { get; set; }
 
     /// <summary>
