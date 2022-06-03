@@ -263,6 +263,38 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithRequestHeaderDto()
+    {
+        // Act
+        var dto1 = new StubConditionStringCheckingDto {StringEquals = "val1"};
+        var dto2 = new StubConditionStringCheckingDto {StringEquals = "val2"};
+        var conditions = StubConditionBuilder.Begin()
+            .WithRequestHeader("X-Header-1", dto1)
+            .WithRequestHeader("X-Header-2", dto2)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Headers.Count);
+        Assert.AreEqual(dto1, conditions.Headers["X-Header-1"]);
+        Assert.AreEqual(dto2, conditions.Headers["X-Header-2"]);
+    }
+
+    [TestMethod]
+    public void WithRequestHeaderBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithRequestHeader("X-Header-1", StringCheckingDtoBuilder.Begin().StringEquals("val1"))
+            .WithRequestHeader("X-Header-2", StringCheckingDtoBuilder.Begin().StringEquals("val2"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Headers.Count);
+        Assert.AreEqual("val1", ((StubConditionStringCheckingDto)conditions.Headers["X-Header-1"]).StringEquals);
+        Assert.AreEqual("val2", ((StubConditionStringCheckingDto)conditions.Headers["X-Header-2"]).StringEquals);
+    }
+
+    [TestMethod]
     public void WithXPathCondition()
     {
         // Act

@@ -254,8 +254,36 @@ namespace HttPlaceholder.Client.StubBuilders
         /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
         public StubConditionBuilder WithRequestHeader(string key, string value)
         {
-            _conditions.Headers ??= new Dictionary<string, string>();
+            _conditions.Headers ??= new Dictionary<string, object>();
             _conditions.Headers.Add(key, value);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on request header to the request definition.
+        /// This method can be called multiple times to add multiple request header conditions.
+        /// </summary>
+        /// <param name="key">The request header key.</param>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithRequestHeader(string key, StubConditionStringCheckingDto checkingDto)
+        {
+            _conditions.Headers ??= new Dictionary<string, object>();
+            _conditions.Headers.Add(key, checkingDto);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on request header to the request definition.
+        /// This method can be called multiple times to add multiple request header conditions.
+        /// </summary>
+        /// <param name="key">The request header key.</param>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithRequestHeader(string key, StringCheckingDtoBuilder builder)
+        {
+            _conditions.Headers ??= new Dictionary<string, object>();
+            _conditions.Headers.Add(key, builder.Build());
             return this;
         }
 
