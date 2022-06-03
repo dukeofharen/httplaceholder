@@ -1,5 +1,9 @@
-﻿using HttPlaceholder.Application.StubExecution;
+﻿using System.Collections.Generic;
+using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Domain;
 using Moq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.TestUtilities;
 
@@ -14,4 +18,13 @@ public static class TestObjectFactory
             .Returns(requestLoggerMock.Object);
         return requestLoggerFactoryMock.Object;
     }
+
+    public static Dictionary<object, object> Convert(StubConditionStringCheckingModel input)
+    {
+        var json = JsonConvert.SerializeObject(input);
+        return JsonConvert.DeserializeObject<Dictionary<object, object>>(json);
+    }
+
+    public static Dictionary<object, object> CreateStringCheckingModel(bool? present = null) =>
+        Convert(new StubConditionStringCheckingModel {Present = present});
 }

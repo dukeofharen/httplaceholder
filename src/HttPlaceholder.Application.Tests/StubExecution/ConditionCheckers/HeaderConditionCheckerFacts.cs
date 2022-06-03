@@ -1,184 +1,197 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
+using HttPlaceholder.TestUtilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using Moq.AutoMock;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
 [TestClass]
 public class HeaderConditionCheckerFacts
 {
-    private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
-    private HeaderConditionChecker _checker;
-
-    [TestInitialize]
-    public void Initialize() =>
-        _checker = new HeaderConditionChecker(
-            _httpContextServiceMock.Object);
+    private readonly AutoMocker _mocker = new();
 
     [TestCleanup]
-    public void Cleanup() => _httpContextServiceMock.VerifyAll();
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void HeaderConditionCheckerValidateAsync_StubsFound_ButNoHeaderConditions_ShouldReturnNotExecuted()
+    public void Validate_StubsFound_ButNoHeaderConditions_ShouldReturnNotExecuted()
     {
         // arrange
-        var conditions = new StubConditionsModel
-        {
-            Headers = null
-        };
+        var conditions = new StubConditionsModel {Headers = null};
+        var checker = _mocker.CreateInstance<HeaderConditionChecker>();
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void HeaderConditionCheckerValidateAsync_StubsFound_AllHeadersIncorrect_ShouldReturnInvalid()
+    public void Validate_AllConditionsFail_ShouldReturnInvalid()
     {
-        // arrange
-        var headers = new Dictionary<string, string>
-        {
-            { "X-Api-Key", "1" },
-            { "X-Another-Secret", "2" }
-        };
+        // Arrange
         var conditions = new StubConditionsModel
         {
-            Headers = new Dictionary<string, string>
-            {
-                {"X-Api-Key", "2"},
-                {"X-Another-Secret", "3"}
-            }
+            Headers = new Dictionary<string, object> {{"Header-1", "Value-1"}, {"Header-2", "Value-2"}}
         };
 
-        _httpContextServiceMock
+        var headers = new Dictionary<string, string> {{"Header-1", "bla1"}, {"Header-2", "bla2"}};
+
+        var checker = _mocker.CreateInstance<HeaderConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
+        httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
+        stringCheckerMock
+            .Setup(m => m.CheckString("bla1", "Value-1"))
+            .Returns(false);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
+        // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void HeaderConditionCheckerValidateAsync_StubsFound_OneHeaderValueMissing_ShouldReturnInvalid()
+    public void Validate_1ConditionFails_ShouldReturnInvalid()
     {
-        // arrange
-        var headers = new Dictionary<string, string>
-        {
-            { "X-Api-Key", "1" },
-            { "X-Another-Secret", "2" }
-        };
+        // Arrange
         var conditions = new StubConditionsModel
         {
-            Headers = new Dictionary<string, string>
-            {
-                {"X-Api-Key", "2"}
-            }
+            Headers = new Dictionary<string, object> {{"Header-1", "Value-1"}, {"Header-2", "Value-2"}}
         };
 
-        _httpContextServiceMock
+        var headers = new Dictionary<string, string> {{"Header-1", "bla1"}, {"Header-2", "bla2"}};
+
+        var checker = _mocker.CreateInstance<HeaderConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
+        httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
+        stringCheckerMock
+            .Setup(m => m.CheckString("bla1", "Value-1"))
+            .Returns(true);
+        stringCheckerMock
+            .Setup(m => m.CheckString("bla2", "Value-2"))
+            .Returns(false);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
+        // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void HeaderConditionCheckerValidateAsync_StubsFound_OnlyOneHeaderCorrect_ShouldReturnInvalid()
+    public void Validate_AllConditionsSucceed_ShouldReturnValid()
     {
-        // arrange
-        var headers = new Dictionary<string, string>
-        {
-            { "X-Api-Key", "1" },
-            { "X-Another-Secret", "2" }
-        };
+        // Arrange
         var conditions = new StubConditionsModel
         {
-            Headers = new Dictionary<string, string>
-            {
-                {"X-Api-Key", "1"},
-                {"X-Another-Secret", "3"}
-            }
+            Headers = new Dictionary<string, object> {{"Header-1", "Value-1"}, {"Header-2", "Value-2"}}
         };
 
-        _httpContextServiceMock
+        var headers = new Dictionary<string, string> {{"Header-1", "bla1"}, {"Header-2", "bla2"}};
+
+        var checker = _mocker.CreateInstance<HeaderConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
+        httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
+        stringCheckerMock
+            .Setup(m => m.CheckString("bla1", "Value-1"))
+            .Returns(true);
+        stringCheckerMock
+            .Setup(m => m.CheckString("bla2", "Value-2"))
+            .Returns(true);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
-        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-    }
-
-    [TestMethod]
-    public void HeaderConditionCheckerValidateAsync_StubsFound_HappyFlow()
-    {
-        // arrange
-        var headers = new Dictionary<string, string>
-        {
-            { "X-Api-Key", "123abc" },
-            { "X-Another-Secret", "blaaaaah 123" }
-        };
-        var conditions = new StubConditionsModel
-        {
-            Headers = new Dictionary<string, string>
-            {
-                {"X-Api-Key", "123abc"},
-                {"X-Another-Secret", @"\bblaaaaah\b"}
-            }
-        };
-
-        _httpContextServiceMock
-            .Setup(m => m.GetHeaders())
-            .Returns(headers);
-
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
-
-        // assert
+        // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
-    [TestMethod]
-    public void HeaderConditionCheckerValidateAsync_StubsFound_HappyFlow_CaseInsensitiveCheck()
+    public static IEnumerable<object[]> GetPresentData()
     {
-        // arrange
-        var headers = new Dictionary<string, string>
+        yield return new object[]
         {
-            { "X-Api-Key", "123abc" },
-            { "X-Another-Secret", "blaaaaah 123" }
-        };
-        var conditions = new StubConditionsModel
-        {
-            Headers = new Dictionary<string, string>
+            new Dictionary<string, object>
             {
-                {"x-api-key", "123abc"},
-                {"x-another-secret", @"\bblaaaaah\b"}
-            }
+                {"Header-1", TestObjectFactory.CreateStringCheckingModel(true)},
+                {"Header-2", TestObjectFactory.CreateStringCheckingModel(false)}
+            },
+            new Dictionary<string, string> {{"Header-1", "someval"}}, true
         };
+        yield return new object[]
+        {
+            new Dictionary<string, object>
+            {
+                {"Header-1", TestObjectFactory.CreateStringCheckingModel(true)},
+                {"Header-2", TestObjectFactory.CreateStringCheckingModel(false)}
+            },
+            new Dictionary<string, string> {{"header-1", "someval"}}, true
+        };
+        yield return new object[]
+        {
+            new Dictionary<string, object>
+            {
+                {"Header-1", TestObjectFactory.CreateStringCheckingModel(true)},
+                {"Header-2", TestObjectFactory.CreateStringCheckingModel(false)}
+            },
+            new Dictionary<string, string> {{"Header-1", "someval"}, {"Header-2", "someval"}}, false
+        };
+        yield return new object[]
+        {
+            new Dictionary<string, object>
+            {
+                {"Header-1", TestObjectFactory.CreateStringCheckingModel(true)},
+                {"Header-2", TestObjectFactory.CreateStringCheckingModel(false)}
+            },
+            new Dictionary<string, string> {{"header-1", "someval"}, {"header-2", "someval"}}, false
+        };
+        yield return new object[]
+        {
+            new Dictionary<string, object>
+            {
+                {"Header-1", TestObjectFactory.CreateStringCheckingModel(true)},
+                {"Header-2", TestObjectFactory.CreateStringCheckingModel(false)}
+            },
+            new Dictionary<string, string> {{"header-1", "someval"}, {"header-5", "someval"}}, true
+        };
+    }
 
-        _httpContextServiceMock
+    [DataTestMethod]
+    [DynamicData(nameof(GetPresentData), DynamicDataSourceType.Method)]
+    public void Validate_Present(
+        Dictionary<string, object> headerConditions,
+        Dictionary<string, string> headers,
+        bool shouldSucceed)
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<HeaderConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result =
+            checker.Validate(new StubModel {Conditions = new StubConditionsModel {Headers = headerConditions}});
 
-        // assert
-        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+        // Assert
+        Assert.AreEqual(shouldSucceed ? ConditionValidationType.Valid : ConditionValidationType.Invalid, result.ConditionValidation);
     }
 }
