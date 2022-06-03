@@ -638,14 +638,15 @@ This condition checker can check whether the sent basic authentication matches w
 
 ## Request headers
 
-This condition checker can check whether the sent headers match with the headers in the stub. The condition can both check on substring and regular expressions.
+This condition checker can check whether the sent headers match with the headers in the stub. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 - id: basic-auth
   conditions:
     method: GET
     headers:
-      X-Api-Key: secret123
+      X-Api-Key:
+        equals: secret123
   response:
     statusCode: 200
     text: OK
@@ -891,7 +892,8 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
       path:
         equals: /xpath-test
     headers:
-      Content-Type: application/soap+xml; charset=utf-8
+      Content-Type:
+        contains: application/soap+xml
     xpath:
       - queryString: /object/a[text() = 'TEST']
   response:
@@ -909,7 +911,8 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
       path:
         equals: /xpath-test
     headers:
-      Content-Type: application/soap+xml; charset=utf-8
+      Content-Type:
+        contains: application/soap+xml
     xpath:
       - queryString: /object/a[text() = 'TEST']
         namespaces:
