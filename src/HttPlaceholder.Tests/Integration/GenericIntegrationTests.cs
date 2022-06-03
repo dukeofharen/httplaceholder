@@ -87,6 +87,10 @@ public class GenericIntegrationTests : IntegrationTestBase
         var bodySchema = stubConditionsDtoSchema.Properties["body"].Items;
         Assert.AreEqual("string", bodySchema.OneOf[0].Type);
         Assert.AreEqual("StubConditionStringCheckingDto", bodySchema.OneOf[1].Title);
+
+        var headersSchema = stubConditionsDtoSchema.Properties["headers"];
+        Assert.AreEqual("string", headersSchema.AdditionalProperties.OneOf[0].Type);
+        Assert.AreEqual("StubConditionStringCheckingDto", headersSchema.AdditionalProperties.OneOf[1].Title);
     }
 
     [TestMethod]
