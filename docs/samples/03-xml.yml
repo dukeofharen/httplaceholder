@@ -8,7 +8,8 @@
       path:
         equals: /InStock
     headers:
-      Content-Type: application/soap+xml; charset=utf-8
+      Content-Type:
+        contains: application/soap+xml
     xpath:
       - queryString: /soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'GOOG']
         namespaces:
@@ -28,7 +29,8 @@
       path:
         equals: /thingy
     headers:
-      Content-Type: application/soap+xml; charset=utf-8
+      Content-Type:
+        contains: application/soap+xml
     xpath:
       - queryString: /object/a[text() = 'TEST']
   response:

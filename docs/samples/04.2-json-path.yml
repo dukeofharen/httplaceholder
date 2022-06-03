@@ -21,7 +21,8 @@
       path:
         equals: /users
     headers:
-      Content-Type: application/json
+      Content-Type:
+        contains: application/json
     jsonPath:
       - query: $.phoneNumbers[0].type
         expectedValue: home
@@ -36,7 +37,8 @@
       path:
         equals: /users
     headers:
-      Content-Type: application/json
+      Content-Type:
+        contains: application/json
     jsonPath:
       - "$.phoneNumbers[?(@.type=='iPhone')]"
       - query: $.firstName
