@@ -54,6 +54,20 @@
   response:
     text: headers-presence-check-ok
 
+- id: query-string-presence-check
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /query-string-presence-check
+      query:
+        q1:
+          equals: val1
+        q2:
+          equals: val2
+  response:
+    text: query-string-presence-check-ok
+
 - id: full-path-check
   conditions:
     method: GET
