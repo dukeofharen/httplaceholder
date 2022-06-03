@@ -1,0 +1,43 @@
+- id: path-old-way
+  conditions:
+    url:
+      path: /path-old-way
+  response:
+    text: path-old-way-ok
+
+- id: full-path-old-way
+  conditions:
+    url:
+      fullPath: /full-path-old-way?q1=val1
+  response:
+    text: full-path-old-way-ok
+
+- id: query-old-way
+  conditions:
+    url:
+      path: /query-old-way
+      query:
+        q1: val1
+        q2: val2
+  response:
+    text: query-old-way-ok
+
+- id: body-old-way
+  conditions:
+    url:
+      path: /body-old-way
+    body:
+      - val1
+      - val2
+  response:
+    text: body-old-way-ok
+
+- id: headers-old-way
+  conditions:
+    url:
+      path: /headers-old-way
+    headers:
+      Header-1: val1
+      Header-2: val2
+  response:
+    text: headers-old-way-ok

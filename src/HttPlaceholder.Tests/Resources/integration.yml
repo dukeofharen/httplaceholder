@@ -40,6 +40,20 @@
     statusCode: 200
     json: '{"response":{"numFound":20,"start":0,"maxScore":19.57536,"docs":[{"type":"postcode","weergavenaam":"Veldweg, 9468BA Annen","id":"pcd-576e880f66d91b6a811b2c46df200fbf","score":19.57536},{"type":"adres","weergavenaam":"Veldweg 1, 9468BA Annen","id":"adr-036fa7e6db5320501485f09499c23c0a","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 3, 9468BA Annen","id":"adr-4a49c2a64099c742333bb54c0435cbff","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 5, 9468BA Annen","id":"adr-25ccc3d6d3da00acc4bc37938eb75985","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 7, 9468BA Annen","id":"adr-912f28a3e1afdabb1fb4377fc9a18a93","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 9, 9468BA Annen","id":"adr-f1c0e763a38ef7aa6cd309ca64bf58e9","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 11, 9468BA Annen","id":"adr-5fd9fdbd85cbdb56e76f290711d7c6c4","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 13, 9468BA Annen","id":"adr-e25166b65e6198922a363b243ddf6817","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 15, 9468BA Annen","id":"adr-1615ca5f8b96f06a16dad39de30b3f0d","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 17, 9468BA Annen","id":"adr-f894a9b79fbc94fc08b819b32cd2370f","score":13.226929}]},"highlighting":{"pcd-576e880f66d91b6a811b2c46df200fbf":{"suggest":["Veldweg, <b>9468BA</b> Annen"]},"adr-036fa7e6db5320501485f09499c23c0a":{"suggest":["Veldweg 1, <b>9468BA</b> Annen"]},"adr-4a49c2a64099c742333bb54c0435cbff":{"suggest":["Veldweg 3, <b>9468BA</b> Annen"]},"adr-25ccc3d6d3da00acc4bc37938eb75985":{"suggest":["Veldweg 5, <b>9468BA</b> Annen"]},"adr-912f28a3e1afdabb1fb4377fc9a18a93":{"suggest":["Veldweg 7, <b>9468BA</b> Annen"]},"adr-f1c0e763a38ef7aa6cd309ca64bf58e9":{"suggest":["Veldweg 9, <b>9468BA</b> Annen"]},"adr-5fd9fdbd85cbdb56e76f290711d7c6c4":{"suggest":["Veldweg 11, <b>9468BA</b> Annen"]},"adr-e25166b65e6198922a363b243ddf6817":{"suggest":["Veldweg 13, <b>9468BA</b> Annen"]},"adr-1615ca5f8b96f06a16dad39de30b3f0d":{"suggest":["Veldweg 15, <b>9468BA</b> Annen"]},"adr-f894a9b79fbc94fc08b819b32cd2370f":{"suggest":["Veldweg 17, <b>9468BA</b> Annen"]}},"spellcheck":{"suggestions":[],"collations":[]}}'
 
+- id: headers-presence-check
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /headers-presence-check
+    headers:
+      Header-1:
+        present: true
+      Header-2:
+        present: false
+  response:
+    text: headers-presence-check-ok
+
 - id: full-path-check
   conditions:
     method: GET
