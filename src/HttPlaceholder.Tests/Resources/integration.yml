@@ -301,6 +301,22 @@
   response:
     text: form-ok OK
 
+- id: form-present-check
+  conditions:
+    method: POST
+    url:
+      path:
+        equals: /form
+    form:
+      - key: key1
+        value:
+          present: true
+      - key: key2
+        value:
+          present: false
+  response:
+    text: form-present-check-ok
+
 - id: form-ok-url-encoded
   conditions:
     method: POST
