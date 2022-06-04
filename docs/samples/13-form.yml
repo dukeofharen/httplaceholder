@@ -8,10 +8,13 @@
         equals: /form
     form:
       - key: key1
-        value: sjaak
+        value:
+          equals: sjaak
       - key: key2
-        value: bob
+        value:
+          equals: bob
       - key: key2
-        value: ducoo
+        value:
+          equals: ducoo
   response:
     text: Form OK
