@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -149,7 +150,48 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}headers-old-way";
-        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url), Headers = {{"Header-1", "val1"}, {"Header-2", "val3"}}};
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Get,
+            RequestUri = new Uri(url),
+            Headers = {{"Header-1", "val1"}, {"Header-2", "val3"}}
+        };
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_OldWay_Form_Succeeds()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}form-old-way";
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(url),
+            Content = new FormUrlEncodedContent(new Dictionary<string, string> {{"key1", "val1"}, {"key2", "val2"}, {"key3", "val3"}})
+        };
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual("form-old-way-ok", content);
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_OldWay_Form_Fails()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}form-old-way";
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(url),
+            Content = new FormUrlEncodedContent(new Dictionary<string, string> {{"key1", "val1"}, {"key2", "val3"}, {"key3", "val3"}})
+        };
 
         // act / assert
         using var response = await Client.SendAsync(request);
