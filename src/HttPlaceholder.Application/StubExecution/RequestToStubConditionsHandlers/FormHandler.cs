@@ -39,7 +39,7 @@ internal class FormHandler : IRequestToStubConditionsHandler
         conditions.Form = form.Select(f => new StubFormModel
         {
             Key = f.Key,
-            Value = f.Value
+            Value = f.Value.ToString()
         });
 
         return Task.FromResult(true);
