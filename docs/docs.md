@@ -693,7 +693,7 @@ This condition checker can check whether the posted body corresponds to the give
 
 ### Form
 
-The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions.
+The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 - id: form-ok
@@ -704,11 +704,14 @@ The form value condition checker can check whether the posted form values corres
         equals: /form
     form:
       - key: key1
-        value: sjaak
+        value:
+          equals: sjaak
       - key: key2
-        value: bob
+        value:
+          equals: bob
       - key: key2
-        value: ducoo
+        value:
+          equals: ducoo
   response:
     text: OK
 ```
