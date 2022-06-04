@@ -2237,6 +2237,80 @@
 							"name": "10. Form",
 							"item": [
 								{
+									"name": "Old way",
+									"item": [
+										{
+											"name": "[Create stub] Get with path, query and headers Copy",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "text/yaml",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "id: form-old-way\nconditions:\n  method: POST\n  url:\n    path: /form-old-way\n  form:\n    - key: key1\n      value: val1\n    - key: key2\n      value: val2\nresponse:\n  text: form-old-way-ok"
+												},
+												"url": {
+													"raw": "{{rootUrl}}ph-api/stubs",
+													"host": [
+														"{{rootUrl}}ph-api"
+													],
+													"path": [
+														"stubs"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Test form old way",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Body is correct\", function () {",
+															"    pm.response.to.have.body(\"form-old-way-ok\");",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "formdata",
+													"formdata": [
+														{
+															"key": "key1",
+															"value": "val1",
+															"type": "text"
+														},
+														{
+															"key": "key2",
+															"value": "val2",
+															"type": "text"
+														}
+													]
+												},
+												"url": {
+													"raw": "{{rootUrl}}form-old-way",
+													"host": [
+														"{{rootUrl}}form-old-way"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
 									"name": "[Create stub] Post with form",
 									"request": {
 										"method": "POST",
@@ -2249,7 +2323,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: post-with-form\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path:\n      equals: /post-with-form\n  form:\n    - key: key1\n      value: val1\n    - key: key2\n      value: val2-1\n    - key: key2\n      value: val2-2\nresponse:\n  text: OK FORM"
+											"raw": "id: post-with-form\ntenant: integration\nconditions:\n  method: POST\n  url:\n    path:\n      equals: /post-with-form\n  form:\n    - key: key1\n      value:\n        equals: val1\n    - key: key2\n      value:\n        equals: val2-1\n    - key: key2\n      value:\n        equals: val2-2\n    - key: key3\n      value:\n        present: true\n    - key: key4\n      value:\n        present: false\nresponse:\n  text: OK FORM"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -2298,6 +2372,11 @@
 													"key": "key2",
 													"value": "val2-2",
 													"type": "text"
+												},
+												{
+													"key": "key3",
+													"value": "any value",
+													"type": "text"
 												}
 											]
 										},
@@ -2344,6 +2423,63 @@
 												{
 													"key": "key2",
 													"value": "val2-3",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{rootUrl}}post-with-form",
+											"host": [
+												"{{rootUrl}}post-with-form"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test POST with form data: presence check fails",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK FALLBACK\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "key1",
+													"value": "val1",
+													"type": "text"
+												},
+												{
+													"key": "key2",
+													"value": "val2-1",
+													"type": "text"
+												},
+												{
+													"key": "key2",
+													"value": "val2-2",
+													"type": "text"
+												},
+												{
+													"key": "key3",
+													"value": "any value",
+													"type": "text"
+												},
+												{
+													"key": "key4",
+													"value": "should NOT be filled",
 													"type": "text"
 												}
 											]
