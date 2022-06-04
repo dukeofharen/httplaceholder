@@ -8,6 +8,7 @@ namespace HttPlaceholder.Dto.v1.Stubs;
 /// <summary>
 /// A model for storing data for the form condition checker.
 /// </summary>
+[CustomOpenApi]
 public class StubFormDto : IMapFrom<StubFormModel>, IMapTo<StubFormModel>
 {
     /// <summary>
