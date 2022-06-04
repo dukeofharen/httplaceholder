@@ -248,6 +248,51 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithPostedFormValueDto()
+    {
+        // Act
+        var dto1 = new StubConditionStringCheckingDto();
+        var dto2 = new StubConditionStringCheckingDto();
+
+        var conditions = StubConditionBuilder.Begin()
+            .WithPostedFormValue("form1", dto1)
+            .WithPostedFormValue("form2", dto2)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Form.Count());
+
+        var form1 = conditions.Form.ElementAt(0);
+        Assert.AreEqual("form1", form1.Key);
+        Assert.AreEqual(dto1, form1.Value);
+
+        var form2 = conditions.Form.ElementAt(1);
+        Assert.AreEqual("form2", form2.Key);
+        Assert.AreEqual(dto2, form2.Value);
+    }
+
+    [TestMethod]
+    public void WithPostedFormValueBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithPostedFormValue("form1", StringCheckingDtoBuilder.Begin().StringEquals("val1"))
+            .WithPostedFormValue("form2", StringCheckingDtoBuilder.Begin().StringEquals("val2"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Form.Count());
+
+        var form1 = conditions.Form.ElementAt(0);
+        Assert.AreEqual("form1", form1.Key);
+        Assert.AreEqual("val1", ((StubConditionStringCheckingDto)form1.Value).StringEquals);
+
+        var form2 = conditions.Form.ElementAt(1);
+        Assert.AreEqual("form2", form2.Key);
+        Assert.AreEqual("val2", ((StubConditionStringCheckingDto)form2.Value).StringEquals);
+    }
+
+    [TestMethod]
     public void WithRequestHeader()
     {
         // Act

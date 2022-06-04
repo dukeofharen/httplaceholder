@@ -13,6 +13,6 @@
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
-        public string Value { get; set; }
+        public object Value { get; set; }
     }
 }

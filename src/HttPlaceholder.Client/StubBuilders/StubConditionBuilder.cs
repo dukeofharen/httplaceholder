@@ -246,6 +246,40 @@ namespace HttPlaceholder.Client.StubBuilders
         }
 
         /// <summary>
+        /// Adds a check on posted form value to the request definition.
+        /// This method can be called multiple times to add multiple posted form conditions.
+        /// </summary>
+        /// <param name="key">The posted form key.</param>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPostedFormValue(string key, StubConditionStringCheckingDto checkingDto)
+        {
+            var formConditions = _conditions.Form != null
+                ? (List<StubFormDto>)_conditions.Form
+                : new List<StubFormDto>();
+            formConditions.Add(new StubFormDto {Key = key, Value = checkingDto});
+            _conditions.Form = formConditions;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on posted form value to the request definition.
+        /// This method can be called multiple times to add multiple posted form conditions.
+        /// </summary>
+        /// <param name="key">The posted form key.</param>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPostedFormValue(string key, StringCheckingDtoBuilder builder)
+        {
+            var formConditions = _conditions.Form != null
+                ? (List<StubFormDto>)_conditions.Form
+                : new List<StubFormDto>();
+            formConditions.Add(new StubFormDto {Key = key, Value = builder.Build()});
+            _conditions.Form = formConditions;
+            return this;
+        }
+
+        /// <summary>
         /// Adds a check on request header to the request definition.
         /// This method can be called multiple times to add multiple request header conditions.
         /// </summary>
