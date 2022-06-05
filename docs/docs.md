@@ -273,8 +273,10 @@ HttPlaceholder supports HTTPS. See [configuration](#configuration) for more info
       path:
         equals: /users
       query:
-        id: 12
-        filter: first_name
+        id:
+          equals: 12
+        filter:
+          equals: first_name
   response:
     statusCode: 200
     text: |
@@ -321,8 +323,10 @@ Under the "conditions" element, you describe how the request should look like. I
       path:
         equals: /users
       query:
-        id: 15
-        filter: last_name
+        id:
+          equals: 15
+        filter:
+          equals: last_name
   response:
     statusCode: 200
     text: |
@@ -1336,8 +1340,10 @@ Whenever you want to simulate a busy web service, you can use the "extraDuration
       path:
         equals: /users
       query:
-        id: 12
-        filter: first_name
+        id:
+          equals: 12
+        filter:
+          equals: first_name
   response:
     statusCode: 200
     text: |
