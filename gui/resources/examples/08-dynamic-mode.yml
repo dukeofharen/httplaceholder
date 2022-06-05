@@ -5,7 +5,8 @@ stub: |
   conditions:
     method: GET
     url:
-      path: /dynamic-mode.txt
+      path:
+        equals: /dynamic-mode.txt
   response:
     enableDynamicMode: true
     headers:

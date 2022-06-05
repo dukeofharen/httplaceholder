@@ -5,7 +5,8 @@ stub: |
   conditions:
     method: GET
     url:
-      path: /stub-image.jpg
+      path:
+        equals: /stub-image.jpg
   response:
     image:
       type: jpeg

@@ -5,7 +5,8 @@ stub: |
   conditions:
     method: GET
     url:
-      path: /slooooow
+      path:
+        equals: /slooooow
   response:
     json: |
       {

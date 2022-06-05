@@ -7,7 +7,8 @@ stub: |
     conditions:
       method: GET
       url:
-        path: /min-hits
+        path:
+          equals: /min-hits
     response:
       text: OK, number of hits increased
 
@@ -17,7 +18,8 @@ stub: |
     conditions:
       method: GET
       url:
-        path: /min-hits
+        path:
+          equals: /min-hits
       scenario:
         minHits: 3
     response:

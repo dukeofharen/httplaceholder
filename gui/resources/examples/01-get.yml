@@ -5,10 +5,13 @@ stub: |
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
       query:
-        id: 12
-        filter: first_name
+        id:
+          equals: 12
+        filter:
+          equals: first_name
   response:
     statusCode: 200
     json: |
