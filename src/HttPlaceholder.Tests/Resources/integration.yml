@@ -266,7 +266,8 @@
 - id: host
   conditions:
     method: GET
-    host: httplaceholder.com
+    host:
+      equals: httplaceholder.com
   response:
     statusCode: 200
     text: host OK

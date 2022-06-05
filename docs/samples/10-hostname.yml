@@ -8,7 +8,8 @@
       path:
         equals: /host-1
     method: GET
-    host: httplaceholder.local
+    host:
+      equals: httplaceholder.local
   response:
     statusCode: 200
     text: host-1 OK
@@ -21,7 +22,8 @@
       path:
         equals: /host-2
     method: GET
-    host: http(.*)
+    host:
+      regex: http(.*)
   response:
     statusCode: 200
     text: host-2 OK

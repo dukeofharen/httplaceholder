@@ -25,10 +25,10 @@ public class StubHttpsIntegrationTests : StubIntegrationTestBase
         {
             RequestUri = new Uri(url)
         };
-        ClientIpResolverMock
+        ClientDataResolverMock
             .Setup(m => m.GetClientIp())
             .Returns("127.0.0.1");
-        ClientIpResolverMock
+        ClientDataResolverMock
             .Setup(m => m.IsHttps())
             .Returns(true);
 

@@ -25,7 +25,7 @@ public class StubClientIpConditionsIntegrationTests : StubIntegrationTestBase
             RequestUri = new Uri(url)
         };
 
-        ClientIpResolverMock
+        ClientDataResolverMock
             .Setup(m => m.GetClientIp())
             .Returns("127.0.0.1");
 
@@ -46,7 +46,7 @@ public class StubClientIpConditionsIntegrationTests : StubIntegrationTestBase
             RequestUri = new Uri(url)
         };
 
-        ClientIpResolverMock
+        ClientDataResolverMock
             .Setup(m => m.GetClientIp())
             .Returns("127.0.0.5");
 

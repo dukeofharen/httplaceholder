@@ -54,3 +54,11 @@
         value: val2
   response:
     text: form-old-way-ok
+
+- id: host-old-way
+  conditions:
+    url:
+      path: /host-old-way
+    host: httplaceholder.com
+  response:
+    text: host-old-way-ok

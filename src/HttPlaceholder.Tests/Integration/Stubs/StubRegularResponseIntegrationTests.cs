@@ -27,7 +27,7 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
             RequestUri = new Uri(url)
         };
         request.Headers.Add("X-Forwarded-Host", "httplaceholder.com");
-        ClientIpResolverMock
+        ClientDataResolverMock
             .Setup(m => m.GetClientIp())
             .Returns("127.0.0.1");
 

@@ -73,7 +73,7 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     /// Gets or sets the host.
     /// </summary>
     [YamlMember(Alias = "host")]
-    [OneOf(Types = new[] {typeof(string), typeof(StubJsonPathDto)})]
+    [OneOf(Types = new[] {typeof(string), typeof(StubConditionStringCheckingDto)})]
     public object Host { get; set; }
 
     /// <summary>

@@ -171,7 +171,10 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         {
             Method = HttpMethod.Post,
             RequestUri = new Uri(url),
-            Content = new FormUrlEncodedContent(new Dictionary<string, string> {{"key1", "val1"}, {"key2", "val2"}, {"key3", "val3"}})
+            Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                {"key1", "val1"}, {"key2", "val2"}, {"key3", "val3"}
+            })
         };
 
         // act / assert
@@ -190,7 +193,48 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         {
             Method = HttpMethod.Post,
             RequestUri = new Uri(url),
-            Content = new FormUrlEncodedContent(new Dictionary<string, string> {{"key1", "val1"}, {"key2", "val3"}, {"key3", "val3"}})
+            Content = new FormUrlEncodedContent(new Dictionary<string, string>
+            {
+                {"key1", "val1"}, {"key2", "val3"}, {"key3", "val3"}
+            })
+        };
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_OldWay_Host_Succeeds()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}host-old-way";
+        ClientDataResolverMock
+            .Setup(m => m.GetHost())
+            .Returns("httplaceholder.com");
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Get, RequestUri = new Uri(url)
+        };
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual("host-old-way-ok", content);
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_OldWay_Host_Fails()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}host-old-way";
+        ClientDataResolverMock
+            .Setup(m => m.GetHost())
+            .Returns("httplaceholder.net");
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Get, RequestUri = new Uri(url)
         };
 
         // act / assert

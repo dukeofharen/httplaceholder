@@ -127,7 +127,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}dynamic-display-url.txt{query}";
         var expectedResult = $"URL: {url}";
 
-        ClientIpResolverMock
+        ClientDataResolverMock
             .Setup(m => m.GetHost())
             .Returns("localhost");
 
@@ -152,7 +152,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var baseUrl = TestServer.BaseAddress.OriginalString.TrimEnd('/');
         var expectedResult = $"URL: {baseUrl}";
 
-        ClientIpResolverMock
+        ClientDataResolverMock
             .Setup(m => m.GetHost())
             .Returns("localhost");
 
@@ -176,7 +176,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}dynamic-client-ip.txt";
         const string expectedResult = $"IP: {ip}";
 
-        ClientIpResolverMock
+        ClientDataResolverMock
             .Setup(m => m.GetClientIp())
             .Returns(ip);
 
