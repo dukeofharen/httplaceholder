@@ -55,7 +55,7 @@ namespace HttPlaceholder.Client.Dto.Stubs
         /// <summary>
         /// Gets or sets the host.
         /// </summary>
-        public string Host { get; set; }
+        public object Host { get; set; }
 
         /// <summary>
         /// Gets or sets the JSON condition model.

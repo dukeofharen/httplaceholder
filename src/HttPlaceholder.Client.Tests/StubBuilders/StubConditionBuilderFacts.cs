@@ -429,6 +429,32 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithHostDto()
+    {
+        // Act
+        var dto = new StubConditionStringCheckingDto {StringEquals = "httplaceholder.com"};
+
+        var conditions = StubConditionBuilder.Begin()
+            .WithHost(dto)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(dto, conditions.Host);
+    }
+
+    [TestMethod]
+    public void WithHostBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithHost(StringCheckingDtoBuilder.Begin().StringEquals("httplaceholder.com"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual("httplaceholder.com", ((StubConditionStringCheckingDto)conditions.Host).StringEquals);
+    }
+
+    [TestMethod]
     public void WithJsonObject()
     {
         // Act

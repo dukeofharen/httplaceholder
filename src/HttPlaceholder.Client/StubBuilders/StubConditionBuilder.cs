@@ -406,6 +406,28 @@ namespace HttPlaceholder.Client.StubBuilders
         }
 
         /// <summary>
+        /// Adds a check on hostname to the request definition.
+        /// </summary>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithHost(StubConditionStringCheckingDto checkingDto)
+        {
+            _conditions.Host = checkingDto;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on hostname to the request definition.
+        /// </summary>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithHost(StringCheckingDtoBuilder builder)
+        {
+            _conditions.Host = builder.Build();
+            return this;
+        }
+
+        /// <summary>
         /// Adds a check on JSON object to the request definition.
         /// </summary>
         /// <param name="jsonObject">The JSON object. This can be any plain old C# object or a dynamic object.</param>
