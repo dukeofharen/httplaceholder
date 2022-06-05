@@ -641,7 +641,7 @@ This condition checker can check whether the sent basic authentication matches w
 This condition checker can check whether the sent headers match with the headers in the stub. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
-- id: basic-auth
+- id: header-check
   conditions:
     method: GET
     headers:
@@ -657,6 +657,24 @@ This condition checker can check whether the sent headers match with the headers
 - URL: http://localhost:5000/anyPath
 - Headers:
   - X-Api-Key: secret123
+
+Besides this, the request condition checker can also be used to check if a header should be present or not, without checking the value. Let's take a look at the following example:
+
+```yml
+- id: header-check
+  conditions:
+    method: GET
+    headers:
+      X-Api-Key:
+        present: true
+      X-Header-2:
+        present: false
+  response:
+    statusCode: 200
+    text: OK
+```
+
+In this case, the `X-Api-Key` header should be sent but the `X-Header-2` header should not.
 
 ## Request body
 
@@ -723,6 +741,28 @@ The form value condition checker can check whether the posted form values corres
 ```
 key1=sjaak&key2=bob&key2=ducoo
 ```
+
+Besides this, the request condition checker can also be used to check if a form value should be present or not, without checking the value. Let's take a look at the following example:
+
+```yml
+- id: form-ok
+  conditions:
+    method: POST
+    url:
+      path:
+        equals: /form
+    form:
+      - key: key1
+        value:
+          present: true
+      - key: key2
+        value:
+          present: false
+  response:
+    text: OK
+```
+
+In this case, the `key1` value should be sent but the `key2` value not.
 
 ### JSON
 
