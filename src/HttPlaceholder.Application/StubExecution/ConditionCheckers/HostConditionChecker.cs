@@ -1,5 +1,4 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -11,13 +10,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class HostConditionChecker : IConditionChecker
 {
     private readonly IClientDataResolver _clientDataResolver;
+    private readonly IStringChecker _stringChecker;
 
     /// <summary>
     /// Constructs a <see cref="HostConditionChecker"/> instance.
     /// </summary>
-    public HostConditionChecker(IClientDataResolver clientDataResolver)
+    public HostConditionChecker(IClientDataResolver clientDataResolver, IStringChecker stringChecker)
     {
         _clientDataResolver = clientDataResolver;
+        _stringChecker = stringChecker;
     }
 
     /// <inheritdoc />
@@ -31,7 +32,7 @@ public class HostConditionChecker : IConditionChecker
         }
 
         var host = _clientDataResolver.GetHost();
-        result.ConditionValidation = !StringHelper.IsRegexMatchOrSubstring(host, hostCondition)
+        result.ConditionValidation = !_stringChecker.CheckString(host, hostCondition)
             ? ConditionValidationType.Invalid
             : ConditionValidationType.Valid;
 
