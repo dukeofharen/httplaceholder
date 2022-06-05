@@ -95,6 +95,10 @@ public class GenericIntegrationTests : IntegrationTestBase
         var formSchema = openapi.Components.Schemas["StubFormDto"];
         Assert.AreEqual("string", formSchema.Properties["value"].OneOf[0].Type);
         Assert.AreEqual("StubConditionStringCheckingDto", formSchema.Properties["value"].OneOf[1].Title);
+
+        var hostSchema = stubConditionsDtoSchema.Properties["host"];
+        Assert.AreEqual("string", hostSchema.OneOf[0].Type);
+        Assert.AreEqual("StubConditionStringCheckingDto", hostSchema.OneOf[1].Title);
     }
 
     [TestMethod]

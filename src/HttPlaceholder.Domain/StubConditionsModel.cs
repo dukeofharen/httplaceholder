@@ -66,7 +66,7 @@ public class StubConditionsModel
     /// Gets or sets the host.
     /// </summary>
     [YamlMember(Alias = "host")]
-    public string Host { get; set; }
+    public object Host { get; set; }
 
     /// <summary>
     /// Gets or sets the JSON condition model.
