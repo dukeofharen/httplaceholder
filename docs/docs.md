@@ -972,24 +972,15 @@ It is also possible to set a condition to check the the client IP. A condition c
 
 ## Hostname
 
-It is possible to check if a hostname in a request is correct. This condition can be used with regular expressions if needed.
+It is possible to check if a hostname in a request is correct. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 # Check the hostname on full name.
 - id: host-1
   conditions:
     method: GET
-    host: httplaceholder.com
-  response:
-    statusCode: 200
-    text: OK
-```
-
-```yml
-- id: host-2
-  conditions:
-    method: GET
-    host: http(.*)
+    host:
+      equals: httplaceholder.com
   response:
     statusCode: 200
     text: OK
