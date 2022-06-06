@@ -1091,7 +1091,7 @@ The following keywords can be used:
 - `doesnotendwith`: checks if the input does not end with this string, case sensitive.
 - `doesnotendwithci`: same as keyword above, but case insensitive.
 - `regex`: checks if the input matches this regular expression.
-- `regexnomatches`: checks if the input does not match this regular expression
+- `regexnomatches`: checks if the input does not match this regular expression.
 
 # Response writers
 
