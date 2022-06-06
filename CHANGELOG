@@ -7,7 +7,8 @@
     - Added delay for showing loader.
 - Added the possibility to select an example when creating a stub (https://github.com/dukeofharen/httplaceholder/issues/239).
 - Added variable handler for inserting root URL in stub response (https://github.com/dukeofharen/httplaceholder/issues/241).
-- Changes stub caching logic, so stub cache is not cleared after every mutation (https://github.com/dukeofharen/httplaceholder/issues/244). 
+- Changes stub caching logic, so stub cache is not cleared after every mutation (https://github.com/dukeofharen/httplaceholder/issues/244).
+- Introduce more flexibility in the stub request conditions, by letting users select more specific keywords when configuring request stub conditions (https://github.com/dukeofharen/httplaceholder/issues/246). 
 
 # BREAKING CHANGES
 -
