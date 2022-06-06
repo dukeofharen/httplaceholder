@@ -8,6 +8,7 @@ import { vsprintf } from "sprintf-js";
 import type { StubModel } from "@/domain/stub/stub-model";
 import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
+import type { StringCheckingKeyword } from "@/constants/string-checking-keywords";
 
 type StubFormState = {
   input: string;
@@ -155,7 +156,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultPath(): void {
+    setDefaultPath(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -167,12 +168,16 @@ export const useStubFormStore = defineStore({
             parsed.conditions.url = {};
           }
 
-          parsed.conditions.url.path = defaultValues.urlPath;
+          if (!parsed.conditions.url.path) {
+            parsed.conditions.url.path = {};
+          }
+
+          parsed.conditions.url.path[keyword.key] = defaultValues.urlPath;
           this.setInput(yaml.dump(parsed));
         }
       });
     },
-    setDefaultFullPath(): void {
+    setDefaultFullPath(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -184,12 +189,16 @@ export const useStubFormStore = defineStore({
             parsed.conditions.url = {};
           }
 
-          parsed.conditions.url.fullPath = defaultValues.fullPath;
+          if (!parsed.conditions.url.fullPath) {
+            parsed.conditions.url.fullPath = {};
+          }
+
+          parsed.conditions.url.fullPath[keyword.key] = defaultValues.fullPath;
           this.setInput(yaml.dump(parsed));
         }
       });
     },
-    setDefaultQuery(): void {
+    setDefaultQuery(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -205,10 +214,12 @@ export const useStubFormStore = defineStore({
             parsed.conditions.url.query = {};
           }
 
-          parsed.conditions.url.query = {
-            ...parsed.conditions.url.query,
-            ...defaultValues.query,
-          };
+          for (const key of Object.keys(defaultValues.query)) {
+            parsed.conditions.url.query[key] = {};
+            parsed.conditions.url.query[key][keyword.key] =
+              keyword.key === "present" ? true : defaultValues.query[key];
+          }
+
           this.setInput(yaml.dump(parsed));
         }
       });
@@ -244,7 +255,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultRequestHeaders(): void {
+    setDefaultRequestHeaders(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -256,15 +267,19 @@ export const useStubFormStore = defineStore({
             parsed.conditions.headers = {};
           }
 
-          parsed.conditions.headers = {
-            ...parsed.conditions.headers,
-            ...defaultValues.requestHeaders,
-          };
+          for (const key of Object.keys(defaultValues.requestHeaders)) {
+            parsed.conditions.headers[key] = {};
+            parsed.conditions.headers[key][keyword.key] =
+              keyword.key === "present"
+                ? true
+                : defaultValues.requestHeaders[key];
+          }
+
           this.setInput(yaml.dump(parsed));
         }
       });
     },
-    setDefaultRequestBody(): void {
+    setDefaultRequestBody(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -276,14 +291,17 @@ export const useStubFormStore = defineStore({
             parsed.conditions.body = [];
           }
 
-          parsed.conditions.body = parsed.conditions.body.concat(
-            defaultValues.requestBody
-          );
+          for (const body of defaultValues.requestBody) {
+            const newBody: any = {};
+            newBody[keyword.key] = body;
+            parsed.conditions.body.push(newBody);
+          }
+
           this.setInput(yaml.dump(parsed));
         }
       });
     },
-    setDefaultFormBody(): void {
+    setDefaultFormBody(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -295,9 +313,16 @@ export const useStubFormStore = defineStore({
             parsed.conditions.form = [];
           }
 
-          parsed.conditions.form = parsed.conditions.form.concat(
-            defaultValues.formBody
-          );
+          for (const key of Object.keys(defaultValues.formBody)) {
+            const val = {} as any;
+            val[keyword.key] =
+              keyword.key === "present" ? true : defaultValues.formBody[key];
+            parsed.conditions.form.push({
+              key: key,
+              value: val,
+            });
+          }
+
           this.setInput(yaml.dump(parsed));
         }
       });
@@ -315,7 +340,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultHostname(): void {
+    setDefaultHostname(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -323,7 +348,11 @@ export const useStubFormStore = defineStore({
             parsed.conditions = {};
           }
 
-          parsed.conditions.host = defaultValues.hostname;
+          if (!parsed.conditions.host) {
+            parsed.conditions.host = {};
+          }
+
+          parsed.conditions.host[keyword.key] = defaultValues.hostname;
           this.setInput(yaml.dump(parsed));
         }
       });

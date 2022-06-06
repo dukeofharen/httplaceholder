@@ -87,7 +87,7 @@ public class BasicAuthenticationHandlerFacts
         var auth = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
         var conditions = new StubConditionsModel
         {
-            Headers = new Dictionary<string, string> {{"Authorization", auth}}
+            Headers = new Dictionary<string, object> {{"Authorization", auth}}
         };
         var request = new HttpRequestModel
         {

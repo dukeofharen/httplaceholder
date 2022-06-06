@@ -42,33 +42,33 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
         Assert.AreEqual(3, stubs.Length);
 
         var stub1 = stubs[0];
-        Assert.AreEqual("generated-e4794bda9f0b95c6aa9247606a85fe50", stub1.Id);
+        Assert.AreEqual("generated-22f8ed85b2241640528efec4ae5bd33f", stub1.Id);
         Assert.AreEqual("GET", stub1.Conditions.Method);
-        Assert.AreEqual("/_nuxt/fonts/fa-solid-900.3eb06c7.woff2", stub1.Conditions.Url.Path);
+        Assert.AreEqual("/_nuxt/fonts/fa-solid-900.3eb06c7.woff2", ((StubConditionStringCheckingModel)stub1.Conditions.Url.Path).StringEquals);
         var headers1 = stub1.Conditions.Headers;
         Assert.AreEqual(2, headers1.Count);
-        Assert.AreEqual("https://site\\.com", headers1["Origin"]);
-        Assert.AreEqual("deflate,\\ gzip,\\ br", headers1["Accept-Encoding"]);
+        Assert.AreEqual("https://site.com", ((StubConditionStringCheckingModel)headers1["Origin"]).StringEquals);
+        Assert.AreEqual("deflate, gzip, br", ((StubConditionStringCheckingModel)headers1["Accept-Encoding"]).StringEquals);
 
         var stub2 = stubs[1];
-        Assert.AreEqual("generated-9d03812abe18fdc50318ab30989ce946", stub2.Id);
+        Assert.AreEqual("generated-1e78d2e6d17136fa61b805001bc2ce2a", stub2.Id);
         Assert.AreEqual("GET", stub2.Conditions.Method);
-        Assert.AreEqual("/_nuxt/css/4cda201.css", stub2.Conditions.Url.Path);
+        Assert.AreEqual("/_nuxt/css/4cda201.css", ((StubConditionStringCheckingModel)stub2.Conditions.Url.Path).StringEquals);
         var headers2 = stub2.Conditions.Headers;
         Assert.AreEqual(4, headers2.Count);
-        Assert.AreEqual("site\\.com", headers2["authority"]);
-        Assert.AreEqual("en-US,en;q=0\\.9,nl;q=0\\.8", headers2["accept-language"]);
-        Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=", headers2["cookie"]);
-        Assert.AreEqual("deflate,\\ gzip,\\ br", headers2["Accept-Encoding"]);
+        Assert.AreEqual("site.com", ((StubConditionStringCheckingModel)headers2["authority"]).StringEquals);
+        Assert.AreEqual("en-US,en;q=0.9,nl;q=0.8", ((StubConditionStringCheckingModel)headers2["accept-language"]).StringEquals);
+        Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=", ((StubConditionStringCheckingModel)headers2["cookie"]).StringEquals);
+        Assert.AreEqual("deflate, gzip, br", ((StubConditionStringCheckingModel)headers2["Accept-Encoding"]).StringEquals);
 
         var stub3 = stubs[2];
-        Assert.AreEqual("generated-dd585104a80d6ef390d8fc174748d5b4", stub3.Id);
+        Assert.AreEqual("generated-50b342b404703ddfa4c39d16c6fb0184", stub3.Id);
         Assert.AreEqual("GET", stub3.Conditions.Method);
-        Assert.AreEqual("/_nuxt/1d6c3a9.js", stub3.Conditions.Url.Path);
+        Assert.AreEqual("/_nuxt/1d6c3a9.js", ((StubConditionStringCheckingModel)stub3.Conditions.Url.Path).StringEquals);
         var headers3 = stub3.Conditions.Headers;
         Assert.AreEqual(3, headers3.Count);
-        Assert.AreEqual("site\\.com", headers3["authority"]);
-        Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=", headers3["cookie"]);
-        Assert.AreEqual("deflate,\\ gzip,\\ br", headers3["Accept-Encoding"]);
+        Assert.AreEqual("site.com", ((StubConditionStringCheckingModel)headers3["authority"]).StringEquals);
+        Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=", ((StubConditionStringCheckingModel)headers3["cookie"]).StringEquals);
+        Assert.AreEqual("deflate, gzip, br", ((StubConditionStringCheckingModel)headers3["Accept-Encoding"]).StringEquals);
     }
 }

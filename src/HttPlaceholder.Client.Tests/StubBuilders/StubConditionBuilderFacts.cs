@@ -47,6 +47,31 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithPathDto()
+    {
+        // Act
+        var dto = new StubConditionStringCheckingDto {StringEquals = "/users"};
+        var conditions = StubConditionBuilder.Begin()
+            .WithPath(dto)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(dto, conditions.Url.Path);
+    }
+
+    [TestMethod]
+    public void WithPathBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithPath(StringCheckingDtoBuilder.Begin().StringEquals("/users"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual("/users", ((StubConditionStringCheckingDto)conditions.Url.Path).StringEquals);
+    }
+
+    [TestMethod]
     public void WithQueryStringParameter()
     {
         // Act
@@ -62,6 +87,39 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithQueryStringParameterDto()
+    {
+        // Act
+        var dto1 = new StubConditionStringCheckingDto {StringEquals = "val1"};
+        var dto2 = new StubConditionStringCheckingDto {StringEquals = "val1"};
+
+        var conditions = StubConditionBuilder.Begin()
+            .WithQueryStringParameter("q1", dto1)
+            .WithQueryStringParameter("q2", dto2)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Url.Query.Count);
+        Assert.AreEqual(dto1, conditions.Url.Query["q1"]);
+        Assert.AreEqual(dto2, conditions.Url.Query["q2"]);
+    }
+
+    [TestMethod]
+    public void WithQueryStringParameterBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithQueryStringParameter("q1", StringCheckingDtoBuilder.Begin().StringEquals("val1"))
+            .WithQueryStringParameter("q2", StringCheckingDtoBuilder.Begin().StringEquals("val2"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Url.Query.Count);
+        Assert.AreEqual("val1", ((StubConditionStringCheckingDto)conditions.Url.Query["q1"]).StringEquals);
+        Assert.AreEqual("val2", ((StubConditionStringCheckingDto)conditions.Url.Query["q2"]).StringEquals);
+    }
+
+    [TestMethod]
     public void WithFullPath()
     {
         // Act
@@ -71,6 +129,31 @@ public class StubConditionBuilderFacts
 
         // Assert
         Assert.AreEqual("/full-path", conditions.Url.FullPath);
+    }
+
+    [TestMethod]
+    public void WithFullPathDto()
+    {
+        // Act
+        var dto = new StubConditionStringCheckingDto {StringEquals = "/users"};
+        var conditions = StubConditionBuilder.Begin()
+            .WithFullPath(dto)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(dto, conditions.Url.FullPath);
+    }
+
+    [TestMethod]
+    public void WithFullPathBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithFullPath(StringCheckingDtoBuilder.Begin().StringEquals("/users"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual("/users", ((StubConditionStringCheckingDto)conditions.Url.FullPath).StringEquals);
     }
 
     [TestMethod]
@@ -113,6 +196,37 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithPostedBodyCheckDto()
+    {
+        // Act
+        var dto1 = new StubConditionStringCheckingDto();
+        var dto2 = new StubConditionStringCheckingDto();
+
+        var conditions = StubConditionBuilder.Begin()
+            .WithPostedBodyCheck(dto1)
+            .WithPostedBodyCheck(dto2)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Body.Count());
+        Assert.AreEqual(dto1, conditions.Body.ElementAt(0));
+        Assert.AreEqual(dto2, conditions.Body.ElementAt(1));
+    }
+
+    [TestMethod]
+    public void WithPostedBodyCheckBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithPostedBodyCheck(StringCheckingDtoBuilder.Begin().Contains("value1"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual(1, conditions.Body.Count());
+        Assert.AreEqual("value1", ((StubConditionStringCheckingDto)conditions.Body.ElementAt(0)).Contains);
+    }
+
+    [TestMethod]
     public void WithPostedFormValue()
     {
         // Act
@@ -134,6 +248,51 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithPostedFormValueDto()
+    {
+        // Act
+        var dto1 = new StubConditionStringCheckingDto();
+        var dto2 = new StubConditionStringCheckingDto();
+
+        var conditions = StubConditionBuilder.Begin()
+            .WithPostedFormValue("form1", dto1)
+            .WithPostedFormValue("form2", dto2)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Form.Count());
+
+        var form1 = conditions.Form.ElementAt(0);
+        Assert.AreEqual("form1", form1.Key);
+        Assert.AreEqual(dto1, form1.Value);
+
+        var form2 = conditions.Form.ElementAt(1);
+        Assert.AreEqual("form2", form2.Key);
+        Assert.AreEqual(dto2, form2.Value);
+    }
+
+    [TestMethod]
+    public void WithPostedFormValueBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithPostedFormValue("form1", StringCheckingDtoBuilder.Begin().StringEquals("val1"))
+            .WithPostedFormValue("form2", StringCheckingDtoBuilder.Begin().StringEquals("val2"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Form.Count());
+
+        var form1 = conditions.Form.ElementAt(0);
+        Assert.AreEqual("form1", form1.Key);
+        Assert.AreEqual("val1", ((StubConditionStringCheckingDto)form1.Value).StringEquals);
+
+        var form2 = conditions.Form.ElementAt(1);
+        Assert.AreEqual("form2", form2.Key);
+        Assert.AreEqual("val2", ((StubConditionStringCheckingDto)form2.Value).StringEquals);
+    }
+
+    [TestMethod]
     public void WithRequestHeader()
     {
         // Act
@@ -146,6 +305,38 @@ public class StubConditionBuilderFacts
         Assert.AreEqual(2, conditions.Headers.Count);
         Assert.AreEqual("val1", conditions.Headers["X-Header-1"]);
         Assert.AreEqual("val2", conditions.Headers["X-Header-2"]);
+    }
+
+    [TestMethod]
+    public void WithRequestHeaderDto()
+    {
+        // Act
+        var dto1 = new StubConditionStringCheckingDto {StringEquals = "val1"};
+        var dto2 = new StubConditionStringCheckingDto {StringEquals = "val2"};
+        var conditions = StubConditionBuilder.Begin()
+            .WithRequestHeader("X-Header-1", dto1)
+            .WithRequestHeader("X-Header-2", dto2)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Headers.Count);
+        Assert.AreEqual(dto1, conditions.Headers["X-Header-1"]);
+        Assert.AreEqual(dto2, conditions.Headers["X-Header-2"]);
+    }
+
+    [TestMethod]
+    public void WithRequestHeaderBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithRequestHeader("X-Header-1", StringCheckingDtoBuilder.Begin().StringEquals("val1"))
+            .WithRequestHeader("X-Header-2", StringCheckingDtoBuilder.Begin().StringEquals("val2"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual(2, conditions.Headers.Count);
+        Assert.AreEqual("val1", ((StubConditionStringCheckingDto)conditions.Headers["X-Header-1"]).StringEquals);
+        Assert.AreEqual("val2", ((StubConditionStringCheckingDto)conditions.Headers["X-Header-2"]).StringEquals);
     }
 
     [TestMethod]
@@ -235,6 +426,32 @@ public class StubConditionBuilderFacts
 
         // Assert
         Assert.AreEqual("httplaceholder.com", conditions.Host);
+    }
+
+    [TestMethod]
+    public void WithHostDto()
+    {
+        // Act
+        var dto = new StubConditionStringCheckingDto {StringEquals = "httplaceholder.com"};
+
+        var conditions = StubConditionBuilder.Begin()
+            .WithHost(dto)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(dto, conditions.Host);
+    }
+
+    [TestMethod]
+    public void WithHostBuilder()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithHost(StringCheckingDtoBuilder.Begin().StringEquals("httplaceholder.com"))
+            .Build();
+
+        // Assert
+        Assert.AreEqual("httplaceholder.com", ((StubConditionStringCheckingDto)conditions.Host).StringEquals);
     }
 
     [TestMethod]

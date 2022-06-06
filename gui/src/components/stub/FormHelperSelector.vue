@@ -97,6 +97,17 @@
           <SetDynamicMode
             v-if="currentSelectedFormHelper === FormHelperKey.DynamicMode"
           />
+          <SetPath v-if="currentSelectedFormHelper === FormHelperKey.Path" />
+          <SetFullPath
+            v-if="currentSelectedFormHelper === FormHelperKey.FullPath"
+          />
+          <SetQuery v-if="currentSelectedFormHelper === FormHelperKey.Query" />
+          <SetBody v-if="currentSelectedFormHelper === FormHelperKey.Body" />
+          <SetHeader
+            v-if="currentSelectedFormHelper === FormHelperKey.Header"
+          />
+          <SetForm v-if="currentSelectedFormHelper === FormHelperKey.Form" />
+          <SetHost v-if="currentSelectedFormHelper === FormHelperKey.Host" />
         </div>
       </div>
     </div>
@@ -113,6 +124,8 @@ import RedirectSelector from "@/components/stub/RedirectSelector.vue";
 import LineEndingSelector from "@/components/stub/LineEndingSelector.vue";
 import ScenarioSelector from "@/components/stub/ScenarioSelector.vue";
 import SetDynamicMode from "@/components/stub/SetDynamicMode.vue";
+import SetPath from "@/components/stub/SetPath.vue";
+import SetFullPath from "@/components/stub/SetFullPath.vue";
 import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
 import { useStubFormStore } from "@/store/stubForm";
@@ -124,10 +137,21 @@ import {
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
 import ExampleSelector from "@/components/stub/ExampleSelector.vue";
+import SetQuery from "@/components/stub/SetQuery.vue";
+import SetBody from "@/components/stub/SetBody.vue";
+import SetHeader from "@/components/stub/SetHeader.vue";
+import SetForm from "@/components/stub/SetForm.vue";
+import SetHost from "@/components/stub/SetHost.vue";
 
 export default defineComponent({
   name: "FormHelperSelector",
   components: {
+    SetHost,
+    SetForm,
+    SetHeader,
+    SetBody,
+    SetQuery,
+    SetFullPath,
     ExampleSelector,
     LineEndingSelector,
     RedirectSelector,
@@ -137,6 +161,7 @@ export default defineComponent({
     HttpMethodSelector,
     ScenarioSelector,
     SetDynamicMode,
+    SetPath,
   },
   setup() {
     const stubFormStore = useStubFormStore();

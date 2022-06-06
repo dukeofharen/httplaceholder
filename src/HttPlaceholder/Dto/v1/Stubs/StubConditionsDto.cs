@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Attributes;
 using HttPlaceholder.Domain;
 using YamlDotNet.Serialization;
 
@@ -8,6 +9,7 @@ namespace HttPlaceholder.Dto.v1.Stubs;
 /// <summary>
 /// A model for storing all conditions for a stub.
 /// </summary>
+[CustomOpenApi]
 public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubConditionsModel>
 {
     /// <summary>
@@ -26,7 +28,8 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     /// Gets or sets the body.
     /// </summary>
     [YamlMember(Alias = "body")]
-    public IEnumerable<string> Body { get; set; }
+    [OneOf(ItemsTypes = new[] {typeof(string), typeof(StubConditionStringCheckingDto)})]
+    public IEnumerable<object> Body { get; set; }
 
     /// <summary>
     /// Gets or sets the form.
@@ -38,7 +41,8 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     /// Gets or sets the headers.
     /// </summary>
     [YamlMember(Alias = "headers")]
-    public IDictionary<string, string> Headers { get; set; }
+    [OneOf(AdditionalPropertiesTypes = new[] {typeof(string), typeof(StubConditionStringCheckingDto)})]
+    public IDictionary<string, object> Headers { get; set; }
 
     /// <summary>
     /// Gets or sets the xpath.
@@ -50,6 +54,7 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     /// Gets or sets the json path.
     /// </summary>
     [YamlMember(Alias = "jsonPath")]
+    [OneOf(ItemsTypes = new[] {typeof(string), typeof(StubJsonPathDto)})]
     public IEnumerable<object> JsonPath { get; set; }
 
     /// <summary>
@@ -68,7 +73,8 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     /// Gets or sets the host.
     /// </summary>
     [YamlMember(Alias = "host")]
-    public string Host { get; set; }
+    [OneOf(Types = new[] {typeof(string), typeof(StubConditionStringCheckingDto)})]
+    public object Host { get; set; }
 
     /// <summary>
     /// Gets or sets the JSON condition model.

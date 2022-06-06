@@ -51,7 +51,7 @@ public class HeaderHandlerFacts
         // Assert
         Assert.IsTrue(result);
         Assert.AreEqual(2, stub.Headers.Count);
-        Assert.AreEqual("123", stub.Headers["X-Api-Key"]);
-        Assert.AreEqual("bla", stub.Headers["X-Bla"]);
+        Assert.AreEqual("123", ((StubConditionStringCheckingModel)stub.Headers["X-Api-Key"]).StringEquals);
+        Assert.AreEqual("bla", ((StubConditionStringCheckingModel)stub.Headers["X-Bla"]).StringEquals);
     }
 }

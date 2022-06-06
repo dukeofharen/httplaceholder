@@ -10,7 +10,7 @@ export const defaultValues = {
   query: {
     query1: "val1",
     query2: "val2",
-  },
+  } as any,
   basicAuthentication: {
     username: "username",
     password: "password",
@@ -18,18 +18,12 @@ export const defaultValues = {
   requestHeaders: {
     Header1: "val1",
     Header2: "val2",
-  },
+  } as any,
   requestBody: ["val1", "val2"],
-  formBody: [
-    {
-      key: "key1",
-      value: "val1",
-    },
-    {
-      key: "key2",
-      value: "val2",
-    },
-  ],
+  formBody: {
+    key1: "val1",
+    key2: "val2",
+  } as any,
   clientIp: "127.0.0.1",
   hostname: "httplaceholder.com",
   jsonPath: [

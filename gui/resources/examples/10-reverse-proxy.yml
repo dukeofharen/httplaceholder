@@ -4,7 +4,8 @@ stub: |
   id: reverse-proxy
   conditions:
     url:
-      path: /todos
+      path:
+        equals: /todos
   response:
     reverseProxy:
       url: https://jsonplaceholder.typicode.com/todos

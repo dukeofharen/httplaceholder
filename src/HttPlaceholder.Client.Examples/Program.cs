@@ -61,7 +61,7 @@ internal static class Program
                 .WithId("test-stub-124")
                 .WithTenant("tenant1")
                 .WithConditions(StubConditionBuilder.Begin()
-                    .WithPath("/test-path")
+                    .WithPath(StringCheckingDtoBuilder.Begin().StringEquals("/test-path"))
                     .WithHttpMethod(HttpMethod.Get))
                 .WithResponse(StubResponseBuilder.Begin()
                     .WithJsonBody(new {key1 = "val1", key2 = "val2"})));

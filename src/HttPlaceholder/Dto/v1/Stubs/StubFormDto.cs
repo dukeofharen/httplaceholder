@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Attributes;
 using HttPlaceholder.Domain;
 using YamlDotNet.Serialization;
 
@@ -7,6 +8,7 @@ namespace HttPlaceholder.Dto.v1.Stubs;
 /// <summary>
 /// A model for storing data for the form condition checker.
 /// </summary>
+[CustomOpenApi]
 public class StubFormDto : IMapFrom<StubFormModel>, IMapTo<StubFormModel>
 {
     /// <summary>
@@ -19,5 +21,6 @@ public class StubFormDto : IMapFrom<StubFormModel>, IMapTo<StubFormModel>
     /// Gets or sets the value.
     /// </summary>
     [YamlMember(Alias = "value")]
-    public string Value { get; set; }
+    [OneOf(Types = new[]{typeof(string), typeof(StubConditionStringCheckingDto)})]
+    public object Value { get; set; }
 }

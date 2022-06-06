@@ -5,6 +5,7 @@ stub: |
   conditions:
     method: GET
     url:
-      path: /temp-redirect
+      path:
+        equals: /temp-redirect
   response:
     temporaryRedirect: https://google.com

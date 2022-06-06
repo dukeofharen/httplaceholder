@@ -16,7 +16,7 @@ public class StubLineEndingsIntegrationTests : StubIntegrationTestBase
     public async Task StubIntegration_LineEndings_Unix()
     {
         // Arrange
-        var url = $"{TestServer.BaseAddress}/unix-line-endings";
+        var url = $"{TestServer.BaseAddress}unix-line-endings";
 
         // Act
         using var response = await Client.GetAsync(url);
@@ -30,7 +30,7 @@ public class StubLineEndingsIntegrationTests : StubIntegrationTestBase
     public async Task StubIntegration_LineEndings_Windows()
     {
         // Arrange
-        var url = $"{TestServer.BaseAddress}/windows-line-endings";
+        var url = $"{TestServer.BaseAddress}windows-line-endings";
 
         // Act
         using var response = await Client.GetAsync(url);

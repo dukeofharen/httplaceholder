@@ -6,7 +6,8 @@
   conditions:
     method: GET
     url:
-      path: /temp-redirect
+      path:
+        equals: /temp-redirect
   response:
     temporaryRedirect: https://google.com
 
@@ -16,6 +17,7 @@
   conditions:
     method: GET
     url:
-      path: /permanent-redirect
+      path:
+        equals: /permanent-redirect
   response:
     permanentRedirect: https://reddit.com

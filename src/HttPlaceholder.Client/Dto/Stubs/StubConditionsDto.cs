@@ -20,7 +20,7 @@ namespace HttPlaceholder.Client.Dto.Stubs
         /// <summary>
         /// Gets or sets the body.
         /// </summary>
-        public IEnumerable<string> Body { get; set; }
+        public IEnumerable<object> Body { get; set; }
 
         /// <summary>
         /// Gets or sets the form.
@@ -30,7 +30,7 @@ namespace HttPlaceholder.Client.Dto.Stubs
         /// <summary>
         /// Gets or sets the headers.
         /// </summary>
-        public IDictionary<string, string> Headers { get; set; }
+        public IDictionary<string, object> Headers { get; set; }
 
         /// <summary>
         /// Gets or sets the xpath.
@@ -55,7 +55,7 @@ namespace HttPlaceholder.Client.Dto.Stubs
         /// <summary>
         /// Gets or sets the host.
         /// </summary>
-        public string Host { get; set; }
+        public object Host { get; set; }
 
         /// <summary>
         /// Gets or sets the JSON condition model.

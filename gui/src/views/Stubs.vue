@@ -156,7 +156,7 @@
       <router-link :to="{ name: 'StubForm' }">Add stubs</router-link>
       or
       <router-link :to="{ name: 'ImportStubs' }">Import stubs</router-link>
-      .
+      <span>.</span>
     </div>
   </div>
 </template>

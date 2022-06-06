@@ -53,7 +53,7 @@ public class Startup
     public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, SettingsModel settings) =>
         app
             .UseHttPlaceholder()
-            .UseOpenApi()
+            .UseCustomOpenApi()
             .UseSwaggerUi3()
             .UseGui(settings?.Gui?.EnableUserInterface == true)
             .UsePhStatic()

@@ -22,7 +22,8 @@ internal class QueryParamHandler : IRequestToStubConditionsHandler
             return Task.FromResult(false);
         }
 
-        conditions.Url.Query = query.ToDictionary(q => q.Key, q => q.Value.ToString());
+        conditions.Url.Query = query.ToDictionary(q => q.Key,
+            q => new StubConditionStringCheckingModel {StringEquals = q.Value} as object);
         return Task.FromResult(true);
     }
 

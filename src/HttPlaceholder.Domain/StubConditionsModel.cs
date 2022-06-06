@@ -24,7 +24,7 @@ public class StubConditionsModel
     /// Gets or sets the body.
     /// </summary>
     [YamlMember(Alias = "body")]
-    public IEnumerable<string> Body { get; set; }
+    public IEnumerable<object> Body { get; set; }
 
     /// <summary>
     /// Gets or sets the form.
@@ -36,7 +36,7 @@ public class StubConditionsModel
     /// Gets or sets the headers.
     /// </summary>
     [YamlMember(Alias = "headers")]
-    public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+    public IDictionary<string, object> Headers { get; set; } = new Dictionary<string, object>();
 
     /// <summary>
     /// Gets or sets the xpath.
@@ -66,7 +66,7 @@ public class StubConditionsModel
     /// Gets or sets the host.
     /// </summary>
     [YamlMember(Alias = "host")]
-    public string Host { get; set; }
+    public object Host { get; set; }
 
     /// <summary>
     /// Gets or sets the JSON condition model.

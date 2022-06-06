@@ -1,8 +1,6 @@
-import type { HashMap } from "@/domain/hash-map";
-
 export interface StubUrlConditionModel {
-  path?: string;
-  query?: HashMap;
-  fullPath?: string;
+  path?: any;
+  query?: any;
+  fullPath?: any;
   isHttps?: boolean;
 }

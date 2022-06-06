@@ -24,6 +24,6 @@ public class PathHandlerFacts
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual("/A/Path", conditions.Url.Path);
+        Assert.AreEqual("/A/Path", ((StubConditionStringCheckingModel)conditions.Url.Path).StringEquals);
     }
 }

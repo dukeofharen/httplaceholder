@@ -56,17 +56,17 @@ export const stubFormHelpers = [
   {
     title: "URL path",
     subTitle: elementDescriptions.urlPath,
-    defaultValueMutation: (store: any) => store.setDefaultPath(),
+    formHelperToOpen: FormHelperKey.Path,
   },
   {
     title: "Full path",
     subTitle: elementDescriptions.fullPath,
-    defaultValueMutation: (store: any) => store.setDefaultFullPath(),
+    formHelperToOpen: FormHelperKey.FullPath,
   },
   {
     title: "Query string",
     subTitle: elementDescriptions.queryString,
-    defaultValueMutation: (store: any) => store.setDefaultQuery(),
+    formHelperToOpen: FormHelperKey.Query,
   },
   {
     title: "HTTPS",
@@ -81,17 +81,17 @@ export const stubFormHelpers = [
   {
     title: "Headers",
     subTitle: elementDescriptions.headers,
-    defaultValueMutation: (store: any) => store.setDefaultRequestHeaders(),
+    formHelperToOpen: FormHelperKey.Header,
   },
   {
     title: "Request body",
     subTitle: elementDescriptions.body,
-    defaultValueMutation: (store: any) => store.setDefaultRequestBody(),
+    formHelperToOpen: FormHelperKey.Body,
   },
   {
     title: "Form body",
     subTitle: elementDescriptions.formBody,
-    defaultValueMutation: (store: any) => store.setDefaultFormBody(),
+    formHelperToOpen: FormHelperKey.Form,
   },
   {
     title: "Client IP",
@@ -101,7 +101,7 @@ export const stubFormHelpers = [
   {
     title: "Hostname",
     subTitle: elementDescriptions.hostname,
-    defaultValueMutation: (store: any) => store.setDefaultHostname(),
+    formHelperToOpen: FormHelperKey.Host,
   },
   {
     title: "JSONPath",

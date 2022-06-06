@@ -1,225 +1,240 @@
 ﻿using System;
+using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
+using HttPlaceholder.TestUtilities;
 using Microsoft.Extensions.Primitives;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
 [TestClass]
 public class FormValueConditionCheckerFacts
 {
-    private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
-    private FormValueConditionChecker _checker;
-
-    [TestInitialize]
-    public void Initialize() => _checker = new FormValueConditionChecker(_httpContextServiceMock.Object);
+    private readonly AutoMocker _mocker = new();
 
     [TestCleanup]
-    public void Cleanup() => _httpContextServiceMock.VerifyAll();
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void FormValueConditionChecker_Validate_StubsFound_ButNoFormConditions_ShouldReturnNotExecuted()
+    public void Validate_StubsFound_ButNoFormConditions_ShouldReturnNotExecuted()
     {
         // arrange
-        var conditions = new StubConditionsModel
-        {
-            Form = null
-        };
+        var conditions = new StubConditionsModel {Form = null};
+        var checker = _mocker.CreateInstance<FormValueConditionChecker>();
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void FormValueConditionChecker_Validate_FormInputIsCorrupt_ShouldReturnInvalid()
+    public void Validate_FormKeyNotFound_ShouldReturnInvalid()
     {
-        // arrange
-        var conditions = new StubConditionsModel
-        {
-            Form = new[]
-            {
-                new StubFormModel
-                {
-                    Key = "key1",
-                    Value = "value1"
-                }
-            }
-        };
+        // Arrange
+        var checker = _mocker.CreateInstance<FormValueConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
 
-        _httpContextServiceMock
-            .Setup(m => m.GetFormValues())
-            .Throws(new InvalidOperationException("Incorrect Content-Type: application/json"));
-
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
-
-        // assert
-        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        Assert.AreEqual("Incorrect Content-Type: application/json", result.Log);
-    }
-
-    [TestMethod]
-    public void FormValueConditionChecker_Validate_AllConditionsIncorrect_ShouldReturnInvalid()
-    {
-        // arrange
-        var conditions = new StubConditionsModel
-        {
-            Form = new[]
-            {
-                new StubFormModel
-                {
-                    Key = "key1",
-                    Value = "value1"
-                },
-                new StubFormModel
-                {
-                    Key = "key2",
-                    Value = "value2"
-                }
-            }
-        };
-
-        var form = new[]
-        {
-            ( "key3", new StringValues("value3") ),
-            ( "key4", new StringValues("value4") )
-        };
-        _httpContextServiceMock
+        var conditions = new StubConditionsModel {Form = new[] {new StubFormModel {Key = "key3", Value = "val1.1"}}};
+        var form = new (string, StringValues)[] {("key1", "val3"), ("key2", "val4")};
+        httpContextServiceMock
             .Setup(m => m.GetFormValues())
             .Returns(form);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
 
-        // assert
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+
+        // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void FormValueConditionChecker_Validate_OneConditionIncorrect_ShouldReturnInvalid()
+    public void Validate_AllConditionsFail_ShouldReturnInvalid()
     {
-        // arrange
+        // Arrange
+        var checker = _mocker.CreateInstance<FormValueConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
+
         var conditions = new StubConditionsModel
         {
             Form = new[]
             {
-                new StubFormModel
-                {
-                    Key = "key1",
-                    Value = "value1"
-                },
-                new StubFormModel
-                {
-                    Key = "key2",
-                    Value = "value2"
-                }
+                new StubFormModel {Key = "key1", Value = "val1.1"},
+                new StubFormModel {Key = "key1", Value = "val1.2"},
+                new StubFormModel {Key = "key2", Value = "val2"}
             }
         };
-
-        var form = new[]
-        {
-            ( "key1", new StringValues("value1") ),
-            ( "key2", new StringValues("value3") )
-        };
-        _httpContextServiceMock
+        var form = new (string, StringValues)[] {("key1", "val3"), ("key2", "val4")};
+        httpContextServiceMock
             .Setup(m => m.GetFormValues())
             .Returns(form);
+        stringCheckerMock
+            .Setup(m => m.CheckString("val3", "val1.1"))
+            .Returns(false);
+        stringCheckerMock
+            .Setup(m => m.CheckString("val3", "val1.2"))
+            .Returns(false);
+        stringCheckerMock
+            .Setup(m => m.CheckString("val4", "val2"))
+            .Returns(false);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
+        // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void FormValueConditionChecker_Validate_AllConditionsCorrect_ShouldReturnValid_FullText()
+    public void Validate_OneConditionFails_ShouldReturnInvalid()
     {
-        // arrange
+        // Arrange
+        var checker = _mocker.CreateInstance<FormValueConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
+
         var conditions = new StubConditionsModel
         {
             Form = new[]
             {
-                new StubFormModel
-                {
-                    Key = "key1",
-                    Value = "value1"
-                },
-                new StubFormModel
-                {
-                    Key = "key2",
-                    Value = "value2"
-                },
-                new StubFormModel
-                {
-                    Key = "key2",
-                    Value = "value3"
-                }
+                new StubFormModel {Key = "key1", Value = "val1.1"},
+                new StubFormModel {Key = "key1", Value = "val1.2"},
+                new StubFormModel {Key = "key2", Value = "val2"}
             }
         };
-
-        var form = new[]
-        {
-            ( "key1", new StringValues("value1") ),
-            ( "key2", new StringValues(new[] { "value2", "value3" }) )
-        };
-        _httpContextServiceMock
+        var form = new (string, StringValues)[] {("key1", "val3"), ("key2", "val4")};
+        httpContextServiceMock
             .Setup(m => m.GetFormValues())
             .Returns(form);
+        stringCheckerMock
+            .Setup(m => m.CheckString("val3", "val1.1"))
+            .Returns(true);
+        stringCheckerMock
+            .Setup(m => m.CheckString("val3", "val1.2"))
+            .Returns(false);
+        stringCheckerMock
+            .Setup(m => m.CheckString("val4", "val2"))
+            .Returns(true);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
+
+    [TestMethod]
+    public void Validate_AllConditionsSucceed_ShouldReturnValid()
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<FormValueConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
+
+        var conditions = new StubConditionsModel
+        {
+            Form = new[]
+            {
+                new StubFormModel {Key = "key1", Value = "val 3"},
+                new StubFormModel {Key = "key2", Value = "val4"}
+            }
+        };
+        var form = new (string, StringValues)[] {("key1", "val%203"), ("key2", "val4")};
+        httpContextServiceMock
+            .Setup(m => m.GetFormValues())
+            .Returns(form);
+        stringCheckerMock
+            .Setup(m => m.CheckString("val 3", "val 3"))
+            .Returns(true);
+        stringCheckerMock
+            .Setup(m => m.CheckString("val4", "val4"))
+            .Returns(true);
+
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+
+        // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void FormValueConditionChecker_Validate_AllConditionsCorrect_ShouldReturnValid_Regex()
+    public void Validate_InvalidOperationException_ShouldReturnInvalid()
     {
-        // arrange
-        var conditions = new StubConditionsModel
-        {
-            Form = new[]
-            {
-                new StubFormModel
-                {
-                    Key = "key1",
-                    Value = "value1"
-                },
-                new StubFormModel
-                {
-                    Key = "key2",
-                    Value = @"\bthis\b"
-                },
-                new StubFormModel
-                {
-                    Key = "key2",
-                    Value = "value3"
-                }
-            }
-        };
+        // Arrange
+        var checker = _mocker.CreateInstance<FormValueConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
 
-        var form = new[]
-        {
-            ( "key1", new StringValues("value1") ),
-            ( "key2", new StringValues(new[] { "this is a value", "value3" }) )
-        };
-        _httpContextServiceMock
+        var conditions = new StubConditionsModel {Form = new[] {new StubFormModel()}};
+        httpContextServiceMock
             .Setup(m => m.GetFormValues())
-            .Returns(form);
+            .Throws(new InvalidOperationException());
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-        // assert
-        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
+        // Assert
+        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
+    }
+
+    public static IEnumerable<object[]> GetPresentData()
+    {
+        yield return new object[]
+        {
+            new[]
+            {
+                new StubFormModel {Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true)},
+                new StubFormModel {Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false)}
+            },
+            new[] {("key1", new StringValues("somevalue")), ("key3", new StringValues("somevalue"))}, true
+        };
+        yield return new object[]
+        {
+            new[]
+            {
+                new StubFormModel {Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true)},
+                new StubFormModel {Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false)}
+            },
+            new[] {("key1", new StringValues("somevalue"))}, true
+        };
+        yield return new object[]
+        {
+            new[]
+            {
+                new StubFormModel {Key = "key1", Value = TestObjectFactory.CreateStringCheckingModel(true)},
+                new StubFormModel {Key = "key2", Value = TestObjectFactory.CreateStringCheckingModel(false)}
+            },
+            new[] {("key1", new StringValues("somevalue")), ("key2", new StringValues("somevalue"))}, false
+        };
+    }
+
+    [DataTestMethod]
+    [DynamicData(nameof(GetPresentData), DynamicDataSourceType.Method)]
+    public void Validate_Present(
+        StubFormModel[] formConditions,
+        (string, StringValues)[] formValues,
+        bool shouldSucceed)
+    {
+        // Arrange
+        var checker = _mocker.CreateInstance<FormValueConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        httpContextServiceMock
+            .Setup(m => m.GetFormValues())
+            .Returns(formValues);
+
+        // Act
+        var result = checker.Validate(new StubModel {Conditions = new StubConditionsModel {Form = formConditions}});
+
+        // Assert
+        Assert.AreEqual(shouldSucceed ? ConditionValidationType.Valid : ConditionValidationType.Invalid,
+            result.ConditionValidation);
     }
 }

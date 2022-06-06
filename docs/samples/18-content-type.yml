@@ -3,7 +3,8 @@
   conditions:
     method: GET
     url:
-      path: /content-type.csv
+      path:
+        equals: /content-type.csv
   response:
     statusCode: 200
     text: 'id,name,amount\n1,DukeOfHaren,20'

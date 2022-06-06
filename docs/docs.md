@@ -33,6 +33,7 @@
     - [XPath](#xpath)
   - [Client IP validation](#client-ip-validation)
   - [Hostname](#hostname)
+  - [String checking keywords](#string-checking-keywords)
 - **[Response writers](#response-writers)**
   - [Response body](#response-body)
     - [Text](#text-response)
@@ -269,10 +270,13 @@ HttPlaceholder supports HTTPS. See [configuration](#configuration) for more info
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
       query:
-        id: 12
-        filter: first_name
+        id:
+          equals: 12
+        filter:
+          equals: first_name
   response:
     statusCode: 200
     text: |
@@ -316,10 +320,13 @@ Under the "conditions" element, you describe how the request should look like. I
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
       query:
-        id: 15
-        filter: last_name
+        id:
+          equals: 15
+        filter:
+          equals: last_name
   response:
     statusCode: 200
     text: |
@@ -349,7 +356,8 @@ A free text field where you can specify where the stub is for. It is optional.
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
   response:
     statusCode: 200
     text: OK
@@ -365,7 +373,8 @@ Describes whether the stub is enabled or not. If no `enabled` field is provided,
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
   response:
     text: This stub is disabled.
 ```
@@ -383,7 +392,8 @@ The scenario makes it possible to configure your stubs to return different respo
   scenario: scenario-name
   conditions:
     url:
-      path: /the-url
+      path:
+        equals: /the-url
   response:
     text: OK!
 ```
@@ -398,7 +408,8 @@ Whenever a stub that is attached to a scenario is hit, the hit counter for that 
   conditions:
     method: GET
     url:
-      path: /min-hits
+      path:
+        equals: /min-hits
   response:
     text: OK, number of hits increased
 
@@ -407,7 +418,8 @@ Whenever a stub that is attached to a scenario is hit, the hit counter for that 
   conditions:
     method: GET
     url:
-      path: /min-hits
+      path:
+        equals: /min-hits
     scenario:
       minHits: 3
   response:
@@ -434,7 +446,8 @@ A scenario can be in a specific state. A state is represented as a simple string
   conditions:
     method: GET
     url:
-      path: /state-check
+      path:
+        equals: /state-check
     scenario:
       scenarioState: Start
   response:
@@ -447,7 +460,8 @@ A scenario can be in a specific state. A state is represented as a simple string
   conditions:
     method: GET
     url:
-      path: /state-check
+      path:
+        equals: /state-check
     scenario:
       scenarioState: state-2
   response:
@@ -475,7 +489,8 @@ There are cases when a request matches multiple stub. If this is the case, you c
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
   response:
     statusCode: 200
     text: OK
@@ -487,49 +502,31 @@ In the scenario above, if you got to url `http://httplaceholder/users`, both stu
 
 ### Path
 
-The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions.
+The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 - id: situation-01
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
   response:
     statusCode: 200
     text: OK
 ```
-
-**Correct request**
-- Method: GET
-- URL: http://localhost:5000/users/1
-
-```yml
-- id: situation-01
-  conditions:
-    method: GET
-    url:
-      # Now with regex. Path should exactly match /users in this case.
-      path: ^/users$
-  response:
-    statusCode: 200
-    text: OK
-```
-
-**Correct request**
-- Method: GET
-- URL: http://localhost:5000/users
 
 ### Full path
 
-This condition checker looks a lot like the path checker, but this checker also checks extra URL parameters, like the query string. The condition can both check on substring and regular expressions.
+This condition checker looks a lot like the path checker, but this checker also checks extra URL parameters, like the query string. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 - id: situation-01
   conditions:
     method: GET
     url:
-      fullPath: /users?filter=first_name
+      fullPath:
+        equals: /users?filter=first_name
   response:
     statusCode: 200
     text: OK
@@ -541,7 +538,7 @@ This condition checker looks a lot like the path checker, but this checker also 
 
 ### Query string
 
-This condition checker can check the query string in a name-value collection like way. The condition can both check on substring and regular expressions.
+This condition checker can check the query string in a name-value collection like way. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 - id: situation-01
@@ -549,8 +546,10 @@ This condition checker can check the query string in a name-value collection lik
     method: GET
     url:
       query:
-        id: 14
-        filter: last_name
+        id:
+          equals: 14
+        filter:
+          equals: last_name
   response:
     statusCode: 200
     text: OK
@@ -559,6 +558,25 @@ This condition checker can check the query string in a name-value collection lik
 **Correct request**
 - Method: GET
 - URL: http://localhost:5000/anyPath?id=14&filter=last_name
+
+Besides this, the request condition checker can also be used to check if a query string should be present or not, without checking the value. Let's take a look at the following example:
+
+```yml
+- id: situation-01
+  conditions:
+    method: GET
+    url:
+      query:
+        id:
+          present: true
+        filter:
+          present: false
+  response:
+    statusCode: 200
+    text: OK
+```
+
+In this case, the `id` parameter should be sent, but the `filter` parameter should not.
 
 ### Is HTTPS
 
@@ -569,7 +587,8 @@ This condition checker can be used to verify if a request uses HTTPS or not. To 
   conditions:
     method: GET
     url:
-      path: /ishttps-ok
+      path:
+        equals: /ishttps-ok
       isHttps: true
   response:
     statusCode: 200
@@ -623,14 +642,15 @@ This condition checker can check whether the sent basic authentication matches w
 
 ## Request headers
 
-This condition checker can check whether the sent headers match with the headers in the stub. The condition can both check on substring and regular expressions.
+This condition checker can check whether the sent headers match with the headers in the stub. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
-- id: basic-auth
+- id: header-check
   conditions:
     method: GET
     headers:
-      X-Api-Key: secret123
+      X-Api-Key:
+        equals: secret123
   response:
     statusCode: 200
     text: OK
@@ -642,21 +662,40 @@ This condition checker can check whether the sent headers match with the headers
 - Headers:
   - X-Api-Key: secret123
 
+Besides this, the request condition checker can also be used to check if a header should be present or not, without checking the value. Let's take a look at the following example:
+
+```yml
+- id: header-check
+  conditions:
+    method: GET
+    headers:
+      X-Api-Key:
+        present: true
+      X-Header-2:
+        present: false
+  response:
+    statusCode: 200
+    text: OK
+```
+
+In this case, the `X-Api-Key` header should be sent but the `X-Header-2` header should not.
+
 ## Request body
 
 ### Raw body
 
-This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions.
+This condition checker can check whether the posted body corresponds to the given rules in the stub. It is possible to add multiple conditions. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `contains` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 - id: situation-01
   conditions:
     method: POST
     url:
-      path: \busers\b
+      path:
+        equals: /users
     body:
-      - \busername\b
-      - \bjohn\b
+      - contains: username
+      - contains: john
   response:
     statusCode: 200
     text: '{"result": true}'
@@ -676,21 +715,25 @@ This condition checker can check whether the posted body corresponds to the give
 
 ### Form
 
-The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can both check on substring and regular expressions.
+The form value condition checker can check whether the posted form values correspond to the given rules in the stub. It is possible to add multiple conditions. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 - id: form-ok
   conditions:
     method: POST
     url:
-      path: /form
+      path:
+        equals: /form
     form:
       - key: key1
-        value: sjaak
+        value:
+          equals: sjaak
       - key: key2
-        value: bob
+        value:
+          equals: bob
       - key: key2
-        value: ducoo
+        value:
+          equals: ducoo
   response:
     text: OK
 ```
@@ -702,6 +745,28 @@ The form value condition checker can check whether the posted form values corres
 ```
 key1=sjaak&key2=bob&key2=ducoo
 ```
+
+Besides this, the request condition checker can also be used to check if a form value should be present or not, without checking the value. Let's take a look at the following example:
+
+```yml
+- id: form-ok
+  conditions:
+    method: POST
+    url:
+      path:
+        equals: /form
+    form:
+      - key: key1
+        value:
+          present: true
+      - key: key2
+        value:
+          present: false
+  response:
+    text: OK
+```
+
+In this case, the `key1` value should be sent but the `key2` value not.
 
 ### JSON
 
@@ -798,7 +863,8 @@ Using the JSONPath condition checker, you can check the posted JSON body to see 
   conditions:
     method: PUT
     url:
-      path: /users
+      path:
+        equals: /users
     jsonPath:
       - "$.phoneNumbers[?(@.type=='iPhone')]"
   response:
@@ -814,7 +880,8 @@ The `expectedValue` variable of this condition can be used with regular expressi
   conditions:This
     method: PUT
     url:
-      path: /users
+      path:
+        equals: /users
     jsonPath:
       - query: $.phoneNumbers[0].type
         expectedValue: iPhone
@@ -831,7 +898,8 @@ Both JSONPath condition types can be combined.
   conditions:
     method: PUT
     url:
-      path: /users
+      path:
+        equals: /users
     jsonPath:
       - $.name
       - query: $.phoneNumbers[0].type
@@ -868,9 +936,11 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
   conditions:
     method: POST
     url:
-      path: /xpath-test
+      path:
+        equals: /xpath-test
     headers:
-      Content-Type: application/soap+xml; charset=utf-8
+      Content-Type:
+        contains: application/soap+xml
     xpath:
       - queryString: /object/a[text() = 'TEST']
   response:
@@ -885,9 +955,11 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
   conditions:
     method: POST
     url:
-      path: /xpath-test
+      path:
+        equals: /xpath-test
     headers:
-      Content-Type: application/soap+xml; charset=utf-8
+      Content-Type:
+        contains: application/soap+xml
     xpath:
       - queryString: /object/a[text() = 'TEST']
         namespaces:
@@ -920,7 +992,8 @@ It is also possible to set a condition to check the the client IP. A condition c
   conditions:
     method: GET
     url:
-      path: /client-ip-1
+      path:
+        equals: /client-ip-1
     clientIp: 127.0.0.1
   response:
     statusCode: 200
@@ -933,7 +1006,8 @@ It is also possible to set a condition to check the the client IP. A condition c
   conditions:
     method: GET
     url:
-      path: /client-ip-2
+      path:
+        equals: /client-ip-2
     clientIp: '127.0.0.0/29'
   response:
     statusCode: 200
@@ -942,28 +1016,82 @@ It is also possible to set a condition to check the the client IP. A condition c
 
 ## Hostname
 
-It is possible to check if a hostname in a request is correct. This condition can be used with regular expressions if needed.
+It is possible to check if a hostname in a request is correct. The condition can be filled with both a string (which is always a regular expression) or an object containing keywords. In the examples below, keyword `equals` is used, but many more options are available for use. Click [here](#string-checking-keywords) for more information about the keywords.
 
 ```yml
 # Check the hostname on full name.
 - id: host-1
   conditions:
     method: GET
-    host: httplaceholder.com
+    host:
+      equals: httplaceholder.com
   response:
     statusCode: 200
     text: OK
 ```
 
+## String checking keywords
+
+Many request condition checkers take a string as input. Take the [path](#path) condition checker as example. It can be configured like this:
+
 ```yml
-- id: host-2
+- id: path-check
   conditions:
-    method: GET
-    host: http(.*)
+    url:
+      path: /users
   response:
-    statusCode: 200
     text: OK
 ```
+
+By providing the path as string, when the stub is executed, the value will be used as regular expression. This means that both `/users`, `/users/1` etc. are correct values for the request condition checker. This is very flexible, but might also surprise new users a bit who might think the request condition checker checks if the strings are equal. This can be fixed by providing the correct regex value, but since that is not always the most user friendly option, an extra option was added to check string values for request condition checkers in HttPlaceholder.
+
+To make the string checking a bit more specific, a few keywords were added that you can use. Let's take a look at the example below:
+
+```yml
+- id: path-check
+  conditions:
+    url:
+      path:
+        equals: /users
+  response:
+    text: OK
+```
+
+In this example, keyword `equals` is added to the `path` variable. If the stub is executed, it will check if the path is exactly equal to `/users`. `/users/1` will not succeed anymore. Besides this, it is also possible to combine multiple keywords. Take a look at this example:
+
+```yml
+- id: path-check
+  conditions:
+    url:
+      path:
+        startswith: /us
+        endswith: ers
+  response:
+    text: OK
+```
+
+It will check if the path begins with `/us` and ends with `ers`, so path `/users` will still succeed.
+
+The following keywords can be used:
+
+- `equals`: checks if the input is exactly equal to this string, case sensitive.
+- `equalsci`: same as keyword above, but case insensitive.
+- `notequals`: checks if the input is not equal to this string, case sensitive.
+- `notequalsci`: same as keyword above, but case insensitive.
+- `contains`: checks if the input contains this string, case sensitive.
+- `containsci`: same as keyword above, but case insensitive.
+- `notcontains`: checks if the input does not contain this string, case sensitive.
+- `notcontainsci`: same as keyword above, but case insensitive.
+- `startswith`: checks if the input starts with this string, case sensitive.
+- `startswithci`: same as keyword above, but case insensitive.
+- `doesnotstartwith`: checks if the input does not start with this string, case sensitive.
+- `doesnotstartwithci`: same as keyword above, but case insensitive.
+- `endswith`: checks if the input ends with this string, case sensitive.
+- `endswithci`: same as keyword above, but case insensitive.
+- `doesnotendwith`: checks if the input does not end with this string, case sensitive.
+- `doesnotendwithci`: same as keyword above, but case insensitive.
+- `regex`: checks if the input matches this regular expression.
+- `regexnomatches`: checks if the input does not match this regular expression.
 
 # Response writers
 
@@ -980,7 +1108,8 @@ To return a plain text response, use the "text" response writer. If no Content-T
   conditions:
     method: GET
     url:
-      path: /text.txt
+      path:
+        equals: /text.txt
   response:
     statusCode: 200
     text: It works!
@@ -995,7 +1124,8 @@ This is a shortcut for returning a JSON string. This response writer sets the "C
   conditions:
     method: GET
     url:
-      path: /text.json
+      path:
+        equals: /text.json
   response:
     statusCode: 200
     json: '{"msg": "All OK!"}'
@@ -1010,7 +1140,8 @@ This is a shortcut for returning an XML string. This response writer sets the "C
   conditions:
     method: GET
     url:
-      path: /text.json
+      path:
+        equals: /text.json
   response:
     statusCode: 200
     xml: <xml></xml>
@@ -1025,7 +1156,8 @@ This is a shortcut for returning an HTML string. This response writer sets the "
   conditions:
     method: GET
     url:
-      path: /index.html
+      path:
+        equals: /index.html
   response:
     statusCode: 200
     html: |
@@ -1051,7 +1183,8 @@ You can also specify a base64 string which should be decoded and returned by Htt
   conditions:
     method: GET
     url:
-      path: /text.txt
+      path:
+        equals: /text.txt
   response:
     statusCode: 200
     base64: SXQgd29ya3Mh
@@ -1069,7 +1202,8 @@ To set the HTTP status code of a response, use the "statusCode" response writer.
   conditions:
     method: GET
     url:
-      path: /text.txt
+      path:
+        equals: /text.txt
   response:
     statusCode: 200
     text: It works!
@@ -1086,7 +1220,8 @@ To return a set of HTTP headers with your response, use the "headers" response w
   conditions:
     method: GET
     url:
-      path: /text.txt
+      path:
+        equals: /text.txt
   response:
     statusCode: 200
     text: It works!
@@ -1104,7 +1239,8 @@ Instead of setting a header with the content type, you can also use the `content
   conditions:
     method: GET
     url:
-      path: /content-type.csv
+      path:
+        equals: /content-type.csv
   response:
     statusCode: 200
     text: 'id,name,amount\n1,DukeOfHaren,20'
@@ -1122,7 +1258,8 @@ id: image-example
 conditions:
   method: GET
   url:
-    path: /image.png
+    path:
+      equals: /image.png
 response:
   image:
     type: png
@@ -1164,7 +1301,8 @@ If you don't specify the full path, HttPlaceholder will look in the same folder 
   conditions:
     method: GET
     url:
-      path: /cat_file.jpg
+      path:
+        equals: /cat_file.jpg
   response:
     statusCode: 200
     file: cat_file.jpg
@@ -1181,7 +1319,8 @@ You can also use the full path to a file.
   conditions:
     method: GET
     url:
-      path: /cat_file.jpg
+      path:
+        equals: /cat_file.jpg
   response:
     statusCode: 200
     file: C:\files\cat_file.jpg
@@ -1198,10 +1337,13 @@ Whenever you want to simulate a busy web service, you can use the "extraDuration
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
       query:
-        id: 12
-        filter: first_name
+        id:
+          equals: 12
+        filter:
+          equals: first_name
   response:
     statusCode: 200
     text: |
@@ -1222,7 +1364,8 @@ The permanent and temporary redirect response writers are short hands for defini
   conditions:
     method: GET
     url:
-      path: /temp-redirect
+      path:
+        equals: /temp-redirect
   response:
     temporaryRedirect: https://google.com
 ```
@@ -1232,7 +1375,8 @@ The permanent and temporary redirect response writers are short hands for defini
   conditions:
     method: GET
     url:
-      path: /permanent-redirect
+      path:
+        equals: /permanent-redirect
   response:
     permanentRedirect: https://reddit.com
 ```
@@ -1248,7 +1392,8 @@ In some cases, you might want to enforce which types of line endings are returne
   conditions:
     method: GET
     url:
-      path: /unix-line-endings
+      path:
+        equals: /unix-line-endings
   response:
     lineEndings: unix
     text: |
@@ -1266,7 +1411,8 @@ In some cases, you might want to enforce which types of line endings are returne
   conditions:
     method: GET
     url:
-      path: /windows-line-endings
+      path:
+        equals: /windows-line-endings
   response:
     lineEndings: windows
     text: |
@@ -1291,7 +1437,8 @@ scenario: scenario-state
 conditions:
   method: GET
   url:
-    path: /state-check
+    path:
+      equals: /state-check
   scenario:
     scenarioState: Start
 response:
@@ -1312,7 +1459,8 @@ scenario: scenario-state
 conditions:
   method: GET
   url:
-    path: /state-check
+    path:
+      equals: /state-check
   scenario:
     scenarioState: state-2
 response:
@@ -1334,7 +1482,8 @@ Variables are written like this `((function_name))` or `((function_name:input))`
   conditions:
     method: GET
     url:
-      path: /dynamic.txt
+      path:
+        equals: /dynamic.txt
   response:
     enableDynamicMode: true
     headers:
@@ -1351,7 +1500,8 @@ The query string parser makes it possible to write request query string paramete
   conditions:
     method: GET
     url:
-      path: /dynamic-query.txt
+      path:
+        equals: /dynamic-query.txt
   response:
     enableDynamicMode: true
     headers:
@@ -1366,7 +1516,8 @@ Let's say you make the request `http://localhost:5000/dynamic-query.txt?response
   conditions:
     method: GET
     url:
-      path: /dynamic-encoded-query.txt
+      path:
+        equals: /dynamic-encoded-query.txt
   response:
     enableDynamicMode: true
     headers:
@@ -1385,7 +1536,8 @@ The UUID parser makes it possible to insert a random UUID to the response.
   conditions:
     method: GET
     url:
-      path: /dynamic-uuid.txt
+      path:
+        equals: /dynamic-uuid.txt
   response:
     enableDynamicMode: true
     text: ((uuid))
@@ -1405,7 +1557,8 @@ The request headers parser makes it possible to write request header values to t
   conditions:
     method: GET
     url:
-      path: /dynamic-request-header.txt
+      path:
+        equals: /dynamic-request-header.txt
   response:
     enableDynamicMode: true
     text: 'API key: ((request_header:X-Api-Key))'
@@ -1425,7 +1578,8 @@ The form post parser makes it possible to write posted form values to the respon
   conditions:
     method: POST
     url:
-      path: /dynamic-form-post.txt
+      path:
+        equals: /dynamic-form-post.txt
   response:
     enableDynamicMode: true
     text: 'Posted: ((form_post:formval1))'
@@ -1455,7 +1609,8 @@ The request body parser makes it possible to write the complete posted body to t
   conditions:
     method: POST
     url:
-      path: /dynamic-request-body.txt
+      path:
+        equals: /dynamic-request-body.txt
   response:
     enableDynamicMode: true
     text: 'Posted: ((request_body))'
@@ -1482,7 +1637,8 @@ The display URL body parser makes it possible to write the complete URL to the r
   conditions:
     method: GET
     url:
-      path: /dynamic-display-url.txt
+      path:
+        equals: /dynamic-display-url.txt
   response:
     enableDynamicMode: true
     text: 'URL: ((display_url))'
@@ -1506,7 +1662,8 @@ The root URL body parser makes it possible to write the root URL (so URL without
   conditions:
     method: GET
     url:
-      path: /dynamic-root-url.txt
+      path:
+        equals: /dynamic-root-url.txt
   response:
     enableDynamicMode: true
     text: 'URL: ((root_url))'
@@ -1530,7 +1687,8 @@ The client IP body parser makes it possible to write the IP address of the reque
   conditions:
     method: GET
     url:
-      path: /dynamic-client-ip.txt
+      path:
+        equals: /dynamic-client-ip.txt
   response:
     enableDynamicMode: true
     text: 'IP: ((client_ip))'
@@ -1565,12 +1723,13 @@ IP: 192.168.178.15
 
 These two body parsers can insert the current local date & time or the UTC date & time in the response body or headers.
 
-```
+```yml
 - id: dynamic-local-now-example
   conditions:
       method: GET
       url:
-          path: /dynamic-local-now.txt
+        path:
+          equals: /dynamic-local-now.txt
   response:
       enableDynamicMode: true
       text: 'Local now: ((localnow:yyyy-MM-dd HH:mm:ss))'
@@ -1582,7 +1741,8 @@ These two body parsers can insert the current local date & time or the UTC date 
   conditions:
       method: GET
       url:
-          path: /dynamic-utc-now.txt
+        path:
+          equals: /dynamic-utc-now.txt
   response:
       enableDynamicMode: true
       text: 'UTC now: ((utcnow:yyyy-MM-dd HH:mm:ss))'
@@ -1618,7 +1778,8 @@ tenant: 14-dynamic
 conditions:
   method: POST
   url:
-    path: /dynamic-mode-jsonpath.txt
+    path:
+      equals: /dynamic-mode-jsonpath.txt
 response:
   enableDynamicMode: true
   text: ((jsonpath:$.values[1].title))
@@ -1665,11 +1826,12 @@ HttPlaceholder contains a very simple reverse proxy as response option. In short
 
 Scenario: `https://jsonplaceholder.typicode.com/todos` is an API for testing purposes which returns a list of todo items. We want to configure HttPlaceholder to proxy the requests to this URL and return the response of that call to the client.
 
-```
+```yml
 - id: reverse-proxy-1
   conditions:
     url:
-      path: /todos
+      path:
+        equals: /todos
   response:
     reverseProxy:
       url: https://jsonplaceholder.typicode.com/todos
@@ -2061,9 +2223,10 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
   * Dynamic mode - form post: [.yml](samples/14.4-dynamic-mode-form-post.yml)
   * Dynamic mode - request body: [.yml](samples/14.5-dynamic-mode-request-body.yml)
   * Dynamic mode - display URL: [.yml](samples/14.6-dynamic-mode-display-url.yml)
-  * Dynamic mode - client IP: [.yml](samples/14.7-dynamic-mode-client-ip.yml)
-  * Dynamic mode - current local or UTC date and time: [.yml](samples/14.8-dynamic-mode-datetime-now.yml)
-  * Dynamic mode - JSONPath: [.yml](samples/14.9-dynamic-mode-jsonpath.yml)
+  * Dynamic mode - root URL: [.yml](samples/14.7-dynamic-mode-root-url.yml)
+  * Dynamic mode - client IP: [.yml](samples/14.8-dynamic-mode-client-ip.yml)
+  * Dynamic mode - current local or UTC date and time: [.yml](samples/14.9-dynamic-mode-datetime-now.yml)
+  * Dynamic mode - JSONPath: [.yml](samples/14.10-dynamic-mode-jsonpath.yml)
 * Scenarios:
   * Scenarios - hit counter: [.yml](samples/20.1-scenario-hit-counter.yml)
   * Scenarios - state checking and setting: [.yml](samples/20.2-state-checking.yml)

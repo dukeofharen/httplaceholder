@@ -22,7 +22,7 @@ internal class BodyHandler : IRequestToStubConditionsHandler
             return Task.FromResult(false);
         }
 
-        conditions.Body = new[] { request.Body };
+        conditions.Body = new[] {new StubConditionStringCheckingModel {StringEquals = request.Body}};
         return Task.FromResult(true);
     }
 

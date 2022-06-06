@@ -46,12 +46,36 @@ namespace HttPlaceholder.Client.StubBuilders
         /// <summary>
         /// Sets the URL path for the request definition.
         /// </summary>
-        /// <param name="path"></param>
+        /// <param name="path">The URL path.</param>
         /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
         public StubConditionBuilder WithPath(string path)
         {
             EnsureUrlConditions();
             _conditions.Url.Path = path;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the URL path for the request definition.
+        /// </summary>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPath(StubConditionStringCheckingDto checkingDto)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.Path = checkingDto;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the URL path for the request definition.
+        /// </summary>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPath(StringCheckingDtoBuilder builder)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.Path = builder.Build();
             return this;
         }
 
@@ -65,8 +89,38 @@ namespace HttPlaceholder.Client.StubBuilders
         public StubConditionBuilder WithQueryStringParameter(string key, string value)
         {
             EnsureUrlConditions();
-            _conditions.Url.Query ??= new Dictionary<string, string>();
+            _conditions.Url.Query ??= new Dictionary<string, object>();
             _conditions.Url.Query.Add(key, value);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a query parameter to the request definition.
+        /// This method can be called multiple times to add multiple query parameters.
+        /// </summary>
+        /// <param name="key">The query parameter key.</param>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithQueryStringParameter(string key, StubConditionStringCheckingDto checkingDto)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.Query ??= new Dictionary<string, object>();
+            _conditions.Url.Query.Add(key, checkingDto);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a query parameter to the request definition.
+        /// This method can be called multiple times to add multiple query parameters.
+        /// </summary>
+        /// <param name="key">The query parameter key.</param>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithQueryStringParameter(string key, StringCheckingDtoBuilder builder)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.Query ??= new Dictionary<string, object>();
+            _conditions.Url.Query.Add(key, builder.Build());
             return this;
         }
 
@@ -80,6 +134,32 @@ namespace HttPlaceholder.Client.StubBuilders
         {
             EnsureUrlConditions();
             _conditions.Url.FullPath = fullPath;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a full path to the request definition.
+        /// The full path is the path + query parameters.
+        /// </summary>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithFullPath(StubConditionStringCheckingDto checkingDto)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.FullPath = checkingDto;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a full path to the request definition.
+        /// The full path is the path + query parameters.
+        /// </summary>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithFullPath(StringCheckingDtoBuilder builder)
+        {
+            EnsureUrlConditions();
+            _conditions.Url.FullPath = builder.Build();
             return this;
         }
 
@@ -121,6 +201,34 @@ namespace HttPlaceholder.Client.StubBuilders
         }
 
         /// <summary>
+        /// Adds a check on request body.
+        /// </summary>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPostedBodyCheck(StubConditionStringCheckingDto checkingDto)
+        {
+            var bodyConditions =
+                _conditions.Body != null ? (List<object>)_conditions.Body : new List<object>();
+            bodyConditions.Add(checkingDto);
+            _conditions.Body = bodyConditions;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on request body.
+        /// </summary>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPostedBodyCheck(StringCheckingDtoBuilder builder)
+        {
+            var bodyConditions =
+                _conditions.Body != null ? (List<object>)_conditions.Body : new List<object>();
+            bodyConditions.Add(builder.Build());
+            _conditions.Body = bodyConditions;
+            return this;
+        }
+
+        /// <summary>
         /// Adds a check on posted form value to the request definition.
         /// This method can be called multiple times to add multiple posted form conditions.
         /// </summary>
@@ -138,6 +246,40 @@ namespace HttPlaceholder.Client.StubBuilders
         }
 
         /// <summary>
+        /// Adds a check on posted form value to the request definition.
+        /// This method can be called multiple times to add multiple posted form conditions.
+        /// </summary>
+        /// <param name="key">The posted form key.</param>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPostedFormValue(string key, StubConditionStringCheckingDto checkingDto)
+        {
+            var formConditions = _conditions.Form != null
+                ? (List<StubFormDto>)_conditions.Form
+                : new List<StubFormDto>();
+            formConditions.Add(new StubFormDto {Key = key, Value = checkingDto});
+            _conditions.Form = formConditions;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on posted form value to the request definition.
+        /// This method can be called multiple times to add multiple posted form conditions.
+        /// </summary>
+        /// <param name="key">The posted form key.</param>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithPostedFormValue(string key, StringCheckingDtoBuilder builder)
+        {
+            var formConditions = _conditions.Form != null
+                ? (List<StubFormDto>)_conditions.Form
+                : new List<StubFormDto>();
+            formConditions.Add(new StubFormDto {Key = key, Value = builder.Build()});
+            _conditions.Form = formConditions;
+            return this;
+        }
+
+        /// <summary>
         /// Adds a check on request header to the request definition.
         /// This method can be called multiple times to add multiple request header conditions.
         /// </summary>
@@ -146,8 +288,36 @@ namespace HttPlaceholder.Client.StubBuilders
         /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
         public StubConditionBuilder WithRequestHeader(string key, string value)
         {
-            _conditions.Headers ??= new Dictionary<string, string>();
+            _conditions.Headers ??= new Dictionary<string, object>();
             _conditions.Headers.Add(key, value);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on request header to the request definition.
+        /// This method can be called multiple times to add multiple request header conditions.
+        /// </summary>
+        /// <param name="key">The request header key.</param>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithRequestHeader(string key, StubConditionStringCheckingDto checkingDto)
+        {
+            _conditions.Headers ??= new Dictionary<string, object>();
+            _conditions.Headers.Add(key, checkingDto);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on request header to the request definition.
+        /// This method can be called multiple times to add multiple request header conditions.
+        /// </summary>
+        /// <param name="key">The request header key.</param>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithRequestHeader(string key, StringCheckingDtoBuilder builder)
+        {
+            _conditions.Headers ??= new Dictionary<string, object>();
+            _conditions.Headers.Add(key, builder.Build());
             return this;
         }
 
@@ -232,6 +402,28 @@ namespace HttPlaceholder.Client.StubBuilders
         public StubConditionBuilder WithHost(string hostname)
         {
             _conditions.Host = hostname;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on hostname to the request definition.
+        /// </summary>
+        /// <param name="checkingDto">The DTO that contains the keywords.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithHost(StubConditionStringCheckingDto checkingDto)
+        {
+            _conditions.Host = checkingDto;
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a check on hostname to the request definition.
+        /// </summary>
+        /// <param name="builder">The builder that is used to build the <see cref="StubConditionStringCheckingDto"/>.</param>
+        /// <returns>The current <see cref="StubConditionBuilder"/>.</returns>
+        public StubConditionBuilder WithHost(StringCheckingDtoBuilder builder)
+        {
+            _conditions.Host = builder.Build();
             return this;
         }
 

@@ -5,7 +5,8 @@
   conditions:
     method: GET
     url:
-      path: /style.css
+      path:
+        equals: /style.css
   response:
     statusCode: 200
     headers:
@@ -26,7 +27,8 @@
   conditions:
     method: GET
     url:
-      path: /image.png
+      path:
+        equals: /image.png
   response:
     statusCode: 200
     headers:
@@ -39,7 +41,8 @@
   conditions:
     method: GET
     url:
-      path: index.html
+      path:
+        equals: /index.html
   response:
     statusCode: 200
     html: |

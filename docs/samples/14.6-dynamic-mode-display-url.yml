@@ -4,7 +4,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-display-url.txt
+      path:
+        equals: /dynamic-display-url.txt
   response:
     enableDynamicMode: true
     text: 'URL: ((display_url))'

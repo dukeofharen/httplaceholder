@@ -2,9 +2,11 @@
   conditions:
     method: GET
     url:
-      path: \blocatieserver\/v3\/suggest\b
+      path:
+        equals: /locatieserver/v3/suggest
       query:
-        q: 9761BP
+        q:
+          equals: 9761BP
   response:
     text: '{"response":{"numFound":23,"start":0,"maxScore":18.281225,"docs":[{"type":"postcode","weergavenaam":"Kluivingskampenweg, 9761BP Eelde","id":"pcd-bdae7c76ab31b82843622995d7fc6dc0","score":18.281225},{"type":"adres","weergavenaam":"Kluivingskampenweg 2, 9761BP Eelde","id":"adr-2cc23fc54b239a2950d51d5ebd53cc01","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 4, 9761BP Eelde","id":"adr-944da34116f6e8581fbd45bdd17b14e0","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 6, 9761BP Eelde","id":"adr-47ceeb1363d64573c99e2d4ad84d48c2","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 8, 9761BP Eelde","id":"adr-afc3f5b08ec70f826b96a6d7d6830d46","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 10, 9761BP Eelde","id":"adr-040f22edf264c14927e7f19cc25fc6e1","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 12, 9761BP Eelde","id":"adr-f2852527a3c4bcb42d94e54b8c6f9edb","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 14, 9761BP Eelde","id":"adr-fedda4e2e57cc1b5811bb144fe100b7b","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 16, 9761BP Eelde","id":"adr-98f0172560c106af255db0f184647b0a","score":13.532177},{"type":"adres","weergavenaam":"Kluivingskampenweg 18, 9761BP Eelde","id":"adr-7db80c25c0ba276bbc91809da561b25d","score":13.532177}]},"highlighting":{"pcd-bdae7c76ab31b82843622995d7fc6dc0":{"suggest":["Kluivingskampenweg, <b>9761BP</b> Eelde"]},"adr-2cc23fc54b239a2950d51d5ebd53cc01":{"suggest":["Kluivingskampenweg 2, <b>9761BP</b> Eelde"]},"adr-944da34116f6e8581fbd45bdd17b14e0":{"suggest":["Kluivingskampenweg 4, <b>9761BP</b> Eelde"]},"adr-47ceeb1363d64573c99e2d4ad84d48c2":{"suggest":["Kluivingskampenweg 6, <b>9761BP</b> Eelde"]},"adr-afc3f5b08ec70f826b96a6d7d6830d46":{"suggest":["Kluivingskampenweg 8, <b>9761BP</b> Eelde"]},"adr-040f22edf264c14927e7f19cc25fc6e1":{"suggest":["Kluivingskampenweg 10, <b>9761BP</b> Eelde"]},"adr-f2852527a3c4bcb42d94e54b8c6f9edb":{"suggest":["Kluivingskampenweg 12, <b>9761BP</b> Eelde"]},"adr-fedda4e2e57cc1b5811bb144fe100b7b":{"suggest":["Kluivingskampenweg 14, <b>9761BP</b> Eelde"]},"adr-98f0172560c106af255db0f184647b0a":{"suggest":["Kluivingskampenweg 16, <b>9761BP</b> Eelde"]},"adr-7db80c25c0ba276bbc91809da561b25d":{"suggest":["Kluivingskampenweg 18, <b>9761BP</b> Eelde"]}},"spellcheck":{"suggestions":[],"collations":[]}}'
     headers:
@@ -14,9 +16,11 @@
   conditions:
     method: GET
     url:
-      path: \blocatieserver\/v3\/suggest\b
+      path:
+        equals: /locatieserver/v3/suggest
       query:
-        q: 9752EM
+        q:
+          equals: 9752EM
   response:
     statusCode: 200
     text: '{"response":{"numFound":18,"start":0,"maxScore":18.590792,"docs":[{"type":"postcode","weergavenaam":"Bilderdijklaan, 9752EM Haren Gn","id":"pcd-2c0f87a02efb7cae11067a7f25c19434","score":18.590792},{"type":"adres","weergavenaam":"Bilderdijklaan 1, 9752EM Haren Gn","id":"adr-f9c0d3f418f20e7f36a81c404b8a73ea","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 1-G01, 9752EM Haren Gn","id":"adr-7cdc662784bedebf4a7f8939a98958f0","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 1-G02, 9752EM Haren Gn","id":"adr-9de7f11bae558af42840b6787ece9408","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 3, 9752EM Haren Gn","id":"adr-131cb5feced7a09226c6f361c34897a8","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 5, 9752EM Haren Gn","id":"adr-31115f2857b203b9b4610cb9133071c2","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 7, 9752EM Haren Gn","id":"adr-0021ac3bbfc8191cdb6465cce446537e","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 9, 9752EM Haren Gn","id":"adr-6608d1ddbda149fcff9656ea6ebbe32c","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 11, 9752EM Haren Gn","id":"adr-0e1b780d12c8f950c374975dfd5cf981","score":12.104727},{"type":"adres","weergavenaam":"Bilderdijklaan 13, 9752EM Haren Gn","id":"adr-b747faf3a7b15f8af48fc6d4b298a1e6","score":12.104727}]},"highlighting":{"pcd-2c0f87a02efb7cae11067a7f25c19434":{"suggest":["Bilderdijklaan, <b>9752EM</b> Haren Gn"]},"adr-f9c0d3f418f20e7f36a81c404b8a73ea":{"suggest":["Bilderdijklaan 1, <b>9752EM</b> Haren Gn"]},"adr-7cdc662784bedebf4a7f8939a98958f0":{"suggest":["Bilderdijklaan 1-G01, <b>9752EM</b> Haren Gn"]},"adr-9de7f11bae558af42840b6787ece9408":{"suggest":["Bilderdijklaan 1-G02, <b>9752EM</b> Haren Gn"]},"adr-131cb5feced7a09226c6f361c34897a8":{"suggest":["Bilderdijklaan 3, <b>9752EM</b> Haren Gn"]},"adr-31115f2857b203b9b4610cb9133071c2":{"suggest":["Bilderdijklaan 5, <b>9752EM</b> Haren Gn"]},"adr-0021ac3bbfc8191cdb6465cce446537e":{"suggest":["Bilderdijklaan 7, <b>9752EM</b> Haren Gn"]},"adr-6608d1ddbda149fcff9656ea6ebbe32c":{"suggest":["Bilderdijklaan 9, <b>9752EM</b> Haren Gn"]},"adr-0e1b780d12c8f950c374975dfd5cf981":{"suggest":["Bilderdijklaan 11, <b>9752EM</b> Haren Gn"]},"adr-b747faf3a7b15f8af48fc6d4b298a1e6":{"suggest":["Bilderdijklaan 13, <b>9752EM</b> Haren Gn"]}},"spellcheck":{"suggestions":[],"collations":[]}}'
@@ -27,18 +31,49 @@
   conditions:
     method: GET
     url:
-      path: \blocatieserver\/v3\/suggest\b
+      path:
+        equals: /locatieserver/v3/suggest
       query:
-        q: 9468BA
+        q:
+          equals: 9468BA
   response:
     statusCode: 200
     json: '{"response":{"numFound":20,"start":0,"maxScore":19.57536,"docs":[{"type":"postcode","weergavenaam":"Veldweg, 9468BA Annen","id":"pcd-576e880f66d91b6a811b2c46df200fbf","score":19.57536},{"type":"adres","weergavenaam":"Veldweg 1, 9468BA Annen","id":"adr-036fa7e6db5320501485f09499c23c0a","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 3, 9468BA Annen","id":"adr-4a49c2a64099c742333bb54c0435cbff","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 5, 9468BA Annen","id":"adr-25ccc3d6d3da00acc4bc37938eb75985","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 7, 9468BA Annen","id":"adr-912f28a3e1afdabb1fb4377fc9a18a93","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 9, 9468BA Annen","id":"adr-f1c0e763a38ef7aa6cd309ca64bf58e9","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 11, 9468BA Annen","id":"adr-5fd9fdbd85cbdb56e76f290711d7c6c4","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 13, 9468BA Annen","id":"adr-e25166b65e6198922a363b243ddf6817","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 15, 9468BA Annen","id":"adr-1615ca5f8b96f06a16dad39de30b3f0d","score":13.226929},{"type":"adres","weergavenaam":"Veldweg 17, 9468BA Annen","id":"adr-f894a9b79fbc94fc08b819b32cd2370f","score":13.226929}]},"highlighting":{"pcd-576e880f66d91b6a811b2c46df200fbf":{"suggest":["Veldweg, <b>9468BA</b> Annen"]},"adr-036fa7e6db5320501485f09499c23c0a":{"suggest":["Veldweg 1, <b>9468BA</b> Annen"]},"adr-4a49c2a64099c742333bb54c0435cbff":{"suggest":["Veldweg 3, <b>9468BA</b> Annen"]},"adr-25ccc3d6d3da00acc4bc37938eb75985":{"suggest":["Veldweg 5, <b>9468BA</b> Annen"]},"adr-912f28a3e1afdabb1fb4377fc9a18a93":{"suggest":["Veldweg 7, <b>9468BA</b> Annen"]},"adr-f1c0e763a38ef7aa6cd309ca64bf58e9":{"suggest":["Veldweg 9, <b>9468BA</b> Annen"]},"adr-5fd9fdbd85cbdb56e76f290711d7c6c4":{"suggest":["Veldweg 11, <b>9468BA</b> Annen"]},"adr-e25166b65e6198922a363b243ddf6817":{"suggest":["Veldweg 13, <b>9468BA</b> Annen"]},"adr-1615ca5f8b96f06a16dad39de30b3f0d":{"suggest":["Veldweg 15, <b>9468BA</b> Annen"]},"adr-f894a9b79fbc94fc08b819b32cd2370f":{"suggest":["Veldweg 17, <b>9468BA</b> Annen"]}},"spellcheck":{"suggestions":[],"collations":[]}}'
+
+- id: headers-presence-check
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /headers-presence-check
+    headers:
+      Header-1:
+        present: true
+      Header-2:
+        present: false
+  response:
+    text: headers-presence-check-ok
+
+- id: query-string-presence-check
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /query-string-presence-check
+      query:
+        q1:
+          equals: val1
+        q2:
+          equals: val2
+  response:
+    text: query-string-presence-check-ok
 
 - id: full-path-check
   conditions:
     method: GET
     url:
-      fullPath: /index.php?success=true
+      fullPath:
+        equals: /index.php?success=true
   response:
     statusCode: 200
     text: DONE!
@@ -49,9 +84,11 @@
   conditions:
     method: GET
     url:
-      path: /query
+      path:
+        equals: /query
       query:
-        email: sjaak@gmail.com
+        email:
+          equals: sjaak@gmail.com
   response:
     text: url-query-param-url-encoded OK
 
@@ -59,7 +96,8 @@
   conditions:
     method: GET
     url:
-      path: /User.svc
+      path:
+        equals: /User.svc
     basicAuthentication:
       username: duco
       password: geheim
@@ -75,11 +113,13 @@
     url:
       path: \busers\b
     body:
-      - \busername\b
-      - \bjohn\b
+      - contains: username
+      - contains: john
     headers:
-      X-Api-Key: 123abc
-      X-Another-Secret: \bsjaaaaaak\b
+      X-Api-Key:
+        equals: 123abc
+      X-Another-Secret:
+        contains: sjaaaaaak
   response:
     statusCode: 200
     text: '{"result": true}'
@@ -90,9 +130,11 @@
   conditions:
     method: POST
     url:
-      path: /InStock
+      path:
+        equals: /InStock
     headers:
-      Content-Type: application/soap+xml; charset=utf-8
+      Content-Type:
+        contains: application/soap+xml
     xpath:
       - queryString: /soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'GOOG']
         namespaces:
@@ -108,9 +150,11 @@
   conditions:
     method: POST
     url:
-      path: /InStock
+      path:
+        equals: /InStock
     headers:
-      Content-Type: application/soap+xml; charset=utf-8
+      Content-Type:
+        contains: application/soap+xml
     xpath:
       - queryString: /soap:Envelope/soap:Body/m:GetStockPrice/m:StockName[text() = 'SJAAK']
   response:
@@ -123,9 +167,11 @@
   conditions:
     method: POST
     url:
-      path: /InStock
+      path:
+        equals: /InStock
     headers:
-      Content-Type: application/soap+xml; charset=utf-8
+      Content-Type:
+        contains: application/soap+xml
     xpath:
       - queryString: /object/a[text() = 'TEST']
   response:
@@ -138,9 +184,11 @@
   conditions:
     method: POST
     url:
-      path: /xml
+      path:
+        equals: /xml
     headers:
-      Content-Type: application/soap+xml; charset=utf-8
+      Content-Type:
+        contains: application/soap+xml
     xpath:
       - queryString: /object/a[text() = 'TEST']
   response:
@@ -151,9 +199,11 @@
   conditions:
     method: PUT
     url:
-      path: /users
+      path:
+        equals: /users
     headers:
-      Content-Type: application/json
+      Content-Type:
+        contains: application/json
     jsonPath:
       - "$.phoneNumbers[?(@.type=='iPhone')]"
   response:
@@ -163,9 +213,11 @@
   conditions:
     method: PUT
     url:
-      path: /users
+      path:
+        equals: /users
     headers:
-      Content-Type: application/json
+      Content-Type:
+        contains: application/json
     jsonPath:
       - query: '$.people[0].firstName'
         expectedValue: John
@@ -176,7 +228,8 @@
   conditions:
     method: GET
     url:
-      path: /temp-redirect
+      path:
+        equals: /temp-redirect
   response:
     temporaryRedirect: https://google.com
 
@@ -184,7 +237,8 @@
   conditions:
     method: GET
     url:
-      path: /permanent-redirect
+      path:
+        equals: /permanent-redirect
   response:
     permanentRedirect: https://reddit.com
 
@@ -192,7 +246,7 @@
   conditions:
     method: GET
     url:
-      path: /client-ip-1
+      path:
     clientIp: 127.0.0.1
   response:
     statusCode: 200
@@ -202,7 +256,8 @@
   conditions:
     method: GET
     url:
-      path: /client-ip-2
+      path:
+        equals: /client-ip-2
     clientIp: '127.0.0.0/29'
   response:
     statusCode: 200
@@ -211,7 +266,8 @@
 - id: host
   conditions:
     method: GET
-    host: httplaceholder.com
+    host:
+      equals: httplaceholder.com
   response:
     statusCode: 200
     text: host OK
@@ -220,7 +276,8 @@
   conditions:
     method: GET
     url:
-      path: /ishttps-ok
+      path:
+        equals: /ishttps-ok
       isHttps: true
   response:
     statusCode: 200
@@ -230,25 +287,47 @@
   conditions:
     method: POST
     url:
-      path: /form
+      path:
+        equals: /form
     form:
       - key: key1
-        value: sjaak
+        value:
+          equals: sjaak
       - key: key2
-        value: bob
+        value:
+          equals: bob
       - key: key2
-        value: ducoo
+        value:
+          equals: ducoo
   response:
     text: form-ok OK
+
+- id: form-present-check
+  conditions:
+    method: POST
+    url:
+      path:
+        equals: /form
+    form:
+      - key: key1
+        value:
+          present: true
+      - key: key2
+        value:
+          present: false
+  response:
+    text: form-present-check-ok
 
 - id: form-ok-url-encoded
   conditions:
     method: POST
     url:
-      path: /form
+      path:
+        equals: /form
     form:
       - key: email
-        value: sjaak@gmail.com
+        value:
+          equals: sjaak@gmail.com
   response:
     text: form-ok-url-encoded OK
 
@@ -256,7 +335,8 @@
   conditions:
     method: GET
     url:
-      path: /index.html
+      path:
+        equals: /index.html
   response:
     statusCode: 200
     html: |
@@ -276,7 +356,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-query.txt
+      path:
+        equals: /dynamic-query.txt
   response:
     enableDynamicMode: true
     text: The value is ((query:queryString1)) ((query_encoded:queryString2))
@@ -285,7 +366,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-uuid.txt
+      path:
+        equals: /dynamic-uuid.txt
   response:
     enableDynamicMode: true
     text: The value is ((uuid))
@@ -294,7 +376,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-request-header.txt
+      path:
+        equals: /dynamic-request-header.txt
   response:
     enableDynamicMode: true
     text: 'API key: ((request_header:X-Api-Key))'
@@ -306,7 +389,8 @@
   conditions:
     method: POST
     url:
-      path: /dynamic-form-post.txt
+      path:
+        equals: /dynamic-form-post.txt
   response:
     enableDynamicMode: true
     text: 'Posted: ((form_post:formval1))'
@@ -318,7 +402,8 @@
   conditions:
     method: POST
     url:
-      path: /dynamic-request-body.txt
+      path:
+        equals: /dynamic-request-body.txt
   response:
     enableDynamicMode: true
     text: 'Posted: ((request_body))'
@@ -330,7 +415,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-display-url.txt
+      path:
+        equals: /dynamic-display-url.txt
   response:
     enableDynamicMode: true
     text: 'URL: ((display_url))'
@@ -342,7 +428,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-root-url.txt
+      path:
+        equals: /dynamic-root-url.txt
   response:
     enableDynamicMode: true
     text: 'URL: ((root_url))'
@@ -354,7 +441,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-client-ip.txt
+      path:
+        equals: /dynamic-client-ip.txt
   response:
     enableDynamicMode: true
     text: 'IP: ((client_ip))'
@@ -366,7 +454,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-local-now.txt
+      path:
+        equals: /dynamic-local-now.txt
   response:
     enableDynamicMode: true
     text: 'Local now: ((localnow:yyyy-MM-dd HH:mm:ss))'
@@ -378,7 +467,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-utc-now.txt
+      path:
+        equals: /dynamic-utc-now.txt
   response:
     enableDynamicMode: true
     text: 'UTC now: ((utcnow:yyyy-MM-dd HH:mm:ss))'
@@ -390,7 +480,8 @@
   conditions:
     method: POST
     url:
-      path: /dynamic-mode-jsonpath.txt
+      path:
+        equals: /dynamic-mode-jsonpath.txt
   response:
     enableDynamicMode: true
     headers:
@@ -401,7 +492,8 @@
   conditions:
     method: GET
     url:
-      path: /todoitems
+      path:
+        startswith: /todoitems
   response:
     reverseProxy:
       url: https://jsonplaceholder.typicode.com
@@ -413,7 +505,8 @@
   conditions:
     method: POST
     url:
-      path: /todoitems
+      path:
+        startswith: /todoitems
   response:
     reverseProxy:
       url: https://jsonplaceholder.typicode.com
@@ -425,7 +518,8 @@
   conditions:
     method: GET
     url:
-      path: /unix-line-endings
+      path:
+        equals: /unix-line-endings
   response:
     lineEndings: unix
     text: |
@@ -439,7 +533,8 @@
   conditions:
     method: GET
     url:
-      path: /windows-line-endings
+      path:
+        equals: /windows-line-endings
   response:
     lineEndings: windows
     text: |
@@ -454,7 +549,8 @@
   conditions:
     method: GET
     url:
-      path: /enabled
+      path:
+        equals: /enabled
   response:
     text: This stub is enabled.
 
@@ -463,7 +559,8 @@
   conditions:
     method: GET
     url:
-      path: /disabled
+      path:
+        equals: /disabled
   response:
     text: This stub is disabled.
 
@@ -471,7 +568,8 @@
   conditions:
     method: GET
     url:
-      path: /content-type.csv
+      path:
+        equals: /content-type.csv
   response:
     statusCode: 200
     text: 'id,name,amount\n1,DukeOfHaren,20'
@@ -482,7 +580,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.jpg
+      path:
+        equals: /stub-image.jpg
   response:
     image:
       type: jpeg
@@ -499,7 +598,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.png
+      path:
+        equals: /stub-image.png
   response:
     image:
       type: png
@@ -515,7 +615,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.bmp
+      path:
+        equals: /stub-image.bmp
   response:
     image:
       type: bmp
@@ -531,7 +632,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.gif
+      path:
+        equals: /stub-image.gif
   response:
     image:
       type: gif
@@ -546,10 +648,13 @@
   conditions:
     method: GET
     url:
-      path: /url
+      path:
+        equals: /url
       query:
-        query1: val1
-        query2: val2
+        query1:
+          equals: val1
+        query2:
+          equals: val2
   response:
     text: OK condition priority check!
 
@@ -557,7 +662,8 @@
   conditions:
     method: GET
     url:
-      path: /text.txt
+      path:
+        equals: /text.txt
   response:
     statusCode: 200
     headers:
@@ -568,7 +674,8 @@
   conditions:
     method: GET
     url:
-      path: /image.jpg
+      path:
+        equals: /image.jpg
   response:
     statusCode: 200
     headers:

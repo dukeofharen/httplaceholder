@@ -3,7 +3,8 @@
   conditions:
     method: GET
     url:
-      path: /scenario-min-max-hits
+      path:
+        equals: /scenario-min-max-hits
   response:
     text: Ok, hits are increased
 
@@ -12,7 +13,8 @@
   conditions:
     method: GET
     url:
-      path: /scenario-min-max-hits
+      path:
+        equals: /scenario-min-max-hits
     scenario:
       minHits: 2
       maxHits: 4
@@ -24,7 +26,8 @@
   conditions:
     method: GET
     url:
-      path: /scenario-exact-hits
+      path:
+        equals: /scenario-exact-hits
   response:
     text: Ok, hits are increased
 
@@ -33,7 +36,8 @@
   conditions:
     method: GET
     url:
-      path: /scenario-exact-hits
+      path:
+        equals: /scenario-exact-hits
     scenario:
       exactHits: 2
   response:
@@ -44,7 +48,8 @@
   conditions:
     method: GET
     url:
-      path: /scenario-state
+      path:
+        equals: /scenario-state
     scenario:
       scenarioState: Start
   response:
@@ -57,7 +62,8 @@
   conditions:
     method: GET
     url:
-      path: /scenario-state
+      path:
+        equals: /scenario-state
     scenario:
       scenarioState: state-1
   response:
@@ -70,7 +76,8 @@
   conditions:
     method: GET
     url:
-      path: /scenario-state
+      path:
+        equals: /scenario-state
     scenario:
       scenarioState: state-2
   response:

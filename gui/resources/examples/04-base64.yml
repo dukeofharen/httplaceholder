@@ -5,7 +5,8 @@ stub: |
   conditions:
     method: GET
     url:
-      path: /base64
+      path:
+        equals: /base64
   response:
     contentType: text/plain
     base64: UW1GelpUWTBJR052Ym5SbGJuUnpDZz09

@@ -4,13 +4,16 @@
   conditions:
     method: POST
     url:
-      path: \busers\b
+      path:
+        equals: /users
     body:
-      - \busername\b
-      - \bjohn\b
+      - contains: username
+      - contains: john
     headers:
-      X-Api-Key: 123abc
-      X-Another-Secret: \b72354deg\b
+      X-Api-Key:
+        equals: 123abc
+      X-Another-Secret:
+        contains: 72354deg
   response:
     statusCode: 200
     text: '{"result": true}'

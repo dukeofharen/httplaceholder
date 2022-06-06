@@ -12,19 +12,19 @@ public class StubUrlConditionModel
     /// Gets or sets the path.
     /// </summary>
     [YamlMember(Alias = "path")]
-    public string Path { get; set; }
+    public object Path { get; set; }
 
     /// <summary>
     /// Gets or sets the query.
     /// </summary>
     [YamlMember(Alias = "query")]
-    public IDictionary<string, string> Query { get; set; } = new Dictionary<string, string>();
+    public IDictionary<string, object> Query { get; set; } = new Dictionary<string, object>();
 
     /// <summary>
     /// Gets or sets the full path.
     /// </summary>
     [YamlMember(Alias = "fullPath")]
-    public string FullPath { get; set; }
+    public object FullPath { get; set; }
 
     /// <summary>
     /// Gets or sets the is HTTPS.

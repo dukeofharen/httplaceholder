@@ -4,7 +4,8 @@
   conditions:
     method: POST
     url:
-      path: /dynamic-mode-jsonpath.txt
+      path:
+        equals: /dynamic-mode-jsonpath.txt
   response:
     enableDynamicMode: true
     text: ((jsonpath:$.values[1].title))

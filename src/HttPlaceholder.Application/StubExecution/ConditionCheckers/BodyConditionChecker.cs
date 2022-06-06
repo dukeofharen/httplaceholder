@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -12,13 +11,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class BodyConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
+    private readonly IStringChecker _stringChecker;
 
     /// <summary>
     /// Constructs a <see cref="BodyConditionChecker"/> instance.
     /// </summary>
-    public BodyConditionChecker(IHttpContextService httpContextService)
+    public BodyConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {
         _httpContextService = httpContextService;
+        _stringChecker = stringChecker;
     }
 
     /// <inheritdoc />
@@ -36,7 +37,7 @@ public class BodyConditionChecker : IConditionChecker
         var validBodyConditions = 0;
         foreach (var condition in bodyConditions)
         {
-            if (!StringHelper.IsRegexMatchOrSubstring(body, condition))
+            if (!_stringChecker.CheckString(body, condition))
             {
                 // If the check failed, it means the query string is incorrect and the condition should fail.
                 result.Log = $"Body condition '{condition}' failed.";

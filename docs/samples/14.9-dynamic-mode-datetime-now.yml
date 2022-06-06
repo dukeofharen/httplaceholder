@@ -4,7 +4,8 @@
   conditions:
       method: GET
       url:
-          path: /dynamic-local-now.txt
+          path:
+            equals: /dynamic-local-now.txt
   response:
       enableDynamicMode: true
       text: 'Local now: ((localnow:yyyy-MM-dd HH:mm:ss))'
@@ -17,7 +18,8 @@
   conditions:
       method: GET
       url:
-          path: /dynamic-utc-now.txt
+          path:
+            equals: /dynamic-utc-now.txt
   response:
       enableDynamicMode: true
       text: 'UTC now: ((utcnow:yyyy-MM-dd HH:mm:ss))'

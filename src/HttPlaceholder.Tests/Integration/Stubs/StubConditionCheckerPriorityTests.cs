@@ -23,7 +23,7 @@ public class StubConditionCheckerPriorityTests : StubIntegrationTestBase
         StubIntegration_ConditionCheckerPriority_MethodIsIncorrect_ShouldNotExecuteMoreComplexChecker()
     {
         // Arrange
-        var url = $"{BaseAddress}/url";
+        var url = $"{BaseAddress}url";
         var request = new HttpRequestMessage(HttpMethod.Post, url);
 
         // Act
@@ -47,7 +47,7 @@ public class StubConditionCheckerPriorityTests : StubIntegrationTestBase
         StubIntegration_ConditionCheckerPriority_RequestIsCorrect_ShouldAlsoExecuteTheMoreComplexConditionCheckers()
     {
         // Arrange
-        var url = $"{BaseAddress}/url?query1=val1&query2=val2";
+        var url = $"{BaseAddress}url?query1=val1&query2=val2";
         var request = new HttpRequestMessage(HttpMethod.Get, url);
 
         // Act

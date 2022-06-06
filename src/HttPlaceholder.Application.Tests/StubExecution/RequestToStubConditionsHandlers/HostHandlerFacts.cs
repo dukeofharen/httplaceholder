@@ -23,7 +23,7 @@ public class HostHandlerFacts
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual("httplaceholder.com", conditions.Host);
+        Assert.AreEqual("httplaceholder.com", ((StubConditionStringCheckingModel)conditions.Host).StringEquals);
     }
 
     [TestMethod]
@@ -38,7 +38,7 @@ public class HostHandlerFacts
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual("httplaceholder.com", conditions.Host);
+        Assert.AreEqual("httplaceholder.com", ((StubConditionStringCheckingModel)conditions.Host).StringEquals);
     }
 
     [TestMethod]
@@ -53,6 +53,6 @@ public class HostHandlerFacts
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual("httplaceholder.com:5000", conditions.Host);
+        Assert.AreEqual("httplaceholder.com:5000", ((StubConditionStringCheckingModel)conditions.Host).StringEquals);
     }
 }

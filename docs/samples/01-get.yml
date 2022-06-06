@@ -4,10 +4,13 @@
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
       query:
-        id: 12
-        filter: first_name
+        id:
+          equals: 12
+        filter:
+          equals: first_name
   response:
     statusCode: 200
     text: |
@@ -22,10 +25,13 @@
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
       query:
-        id: 14
-        filter: last_name
+        id:
+          equals: 14
+        filter:
+          equals: last_name
   response:
     statusCode: 200
     text: |
@@ -41,7 +47,8 @@
   conditions:
     method: GET
     url:
-      fullPath: /users?filter=first_name
+      fullPath:
+        equals: /users?filter=first_name
   response:
     statusCode: 200
     text: |
@@ -57,9 +64,11 @@
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
       query:
-        id: ^[0-9]+$
+        id:
+          regex: ^[0-9]+$
   response:
     statusCode: 404
     headers:

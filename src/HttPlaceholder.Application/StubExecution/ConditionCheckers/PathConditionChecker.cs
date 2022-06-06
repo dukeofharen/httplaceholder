@@ -1,5 +1,4 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -11,13 +10,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class PathConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
+    private readonly IStringChecker _stringChecker;
 
     /// <summary>
     /// Constructs a <see cref="PathConditionChecker"/> instance.
     /// </summary>
-    public PathConditionChecker(IHttpContextService httpContextService)
+    public PathConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {
         _httpContextService = httpContextService;
+        _stringChecker = stringChecker;
     }
 
     /// <inheritdoc />
@@ -25,13 +26,13 @@ public class PathConditionChecker : IConditionChecker
     {
         var result = new ConditionCheckResultModel();
         var pathCondition = stub.Conditions?.Url?.Path;
-        if (string.IsNullOrEmpty(pathCondition))
+        if (pathCondition == null)
         {
             return result;
         }
 
         var path = _httpContextService.Path;
-        if (StringHelper.IsRegexMatchOrSubstring(path, pathCondition))
+        if (_stringChecker.CheckString(path, pathCondition))
         {
             // The path matches the provided regex. Add the stub ID to the resulting list.
             result.ConditionValidation = ConditionValidationType.Valid;

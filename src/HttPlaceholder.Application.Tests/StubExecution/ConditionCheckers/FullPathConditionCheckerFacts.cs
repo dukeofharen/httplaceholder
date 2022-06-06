@@ -1,114 +1,87 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
 [TestClass]
 public class FullPathConditionCheckerFacts
 {
-    private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
-    private FullPathConditionChecker _checker;
-
-    [TestInitialize]
-    public void Initialize() =>
-        _checker = new FullPathConditionChecker(
-            _httpContextServiceMock.Object);
+    private readonly AutoMocker _mocker = new();
 
     [TestCleanup]
-    public void Cleanup() => _httpContextServiceMock.VerifyAll();
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void FullPathConditionChecker_Validate_StubsFound_ButNoPathConditions_ShouldReturnNotExecuted()
     {
-        // arrange
-        var conditions = new StubConditionsModel
-        {
-            Url = new StubUrlConditionModel
-            {
-                FullPath = null
-            }
-        };
+        // Arrange
+        var checker = _mocker.CreateInstance<FullPathConditionChecker>();
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {FullPath = null}};
 
-        // assert
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+
+        // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
     public void FullPathConditionChecker_Validate_StubsFound_WrongPath_ShouldReturnInvalid()
     {
-        // arrange
+        // Arrange
         const string path = "/login?success=true";
-        var conditions = new StubConditionsModel
-        {
-            Url = new StubUrlConditionModel
-            {
-                FullPath = "/login?success=false"
-            }
-        };
 
-        _httpContextServiceMock
+        var checker = _mocker.CreateInstance<FullPathConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
+
+        var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {FullPath = "/login?success=false"}};
+
+        httpContextServiceMock
             .Setup(m => m.FullPath)
             .Returns(path);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        stringCheckerMock
+            .Setup(m => m.CheckString(path, conditions.Url.FullPath))
+            .Returns(false);
 
-        // assert
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+
+        // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
     public void FullPathConditionChecker_Validate_StubsFound_HappyFlow_CompleteUrl()
     {
-        // arrange
+        // Arrange
         const string path = "/login?success=true";
-        var conditions = new StubConditionsModel
-        {
-            Url = new StubUrlConditionModel
-            {
-                FullPath = "/login?success=true"
-            }
-        };
 
-        _httpContextServiceMock
+        var checker = _mocker.CreateInstance<FullPathConditionChecker>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
+
+        var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {FullPath = "/login?success=true"}};
+
+        httpContextServiceMock
             .Setup(m => m.FullPath)
             .Returns(path);
 
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        stringCheckerMock
+            .Setup(m => m.CheckString(path, conditions.Url.FullPath))
+            .Returns(true);
 
-        // assert
-        Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-    }
+        // Act
+        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
 
-    [TestMethod]
-    public void FullPathConditionChecker_Validate_StubsFound_HappyFlow_Regex()
-    {
-        // arrange
-        const string path = "/locatieserver/v3/suggest";
-        var conditions = new StubConditionsModel
-        {
-            Url = new StubUrlConditionModel
-            {
-                FullPath = @"\blocatieserver\/v3\/suggest\b"
-            }
-        };
-
-        _httpContextServiceMock
-            .Setup(m => m.FullPath)
-            .Returns(path);
-
-        // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
-
-        // assert
+        // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 }

@@ -114,4 +114,50 @@ public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
         using var response = await Client.SendAsync(request);
         Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
     }
+
+    [TestMethod]
+    public async Task StubIntegration_RegularPost_PresentCheck_Ok()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}form";
+        var request = new HttpRequestMessage
+        {
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Post,
+            Content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("key1", "someval"),
+                new KeyValuePair<string, string>("key3", "bob")
+            })
+        };
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual("form-present-check-ok", content);
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_RegularPost_PresentCheck_Nok()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}form";
+        var request = new HttpRequestMessage
+        {
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Post,
+            Content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("key1", "someval"),
+                new KeyValuePair<string, string>("key2", "should not be here"),
+                new KeyValuePair<string, string>("key3", "bob")
+            })
+        };
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
+    }
 }

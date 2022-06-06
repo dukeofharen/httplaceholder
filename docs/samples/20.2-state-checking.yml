@@ -6,7 +6,8 @@
   conditions:
     method: GET
     url:
-      path: /state-check
+      path:
+        equals: /state-check
     scenario:
       scenarioState: Start
   response:
@@ -20,7 +21,8 @@
   conditions:
     method: GET
     url:
-      path: /state-check
+      path:
+        equals: /state-check
     scenario:
       scenarioState: state-2
   response:
@@ -34,7 +36,8 @@
   conditions:
     method: GET
     url:
-      path: /state-check
+      path:
+        equals: /state-check
     scenario:
       scenarioState: state-3
   response:

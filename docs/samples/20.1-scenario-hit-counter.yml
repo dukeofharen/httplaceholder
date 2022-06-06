@@ -7,7 +7,8 @@
   conditions:
     method: GET
     url:
-      path: /min-hits
+      path:
+        equals: /min-hits
   response:
     text: OK, number of hits increased
 
@@ -17,7 +18,8 @@
   conditions:
     method: GET
     url:
-      path: /min-hits
+      path:
+        equals: /min-hits
     scenario:
       minHits: 3
   response:
@@ -32,7 +34,8 @@
   conditions:
     method: GET
     url:
-      path: /max-hits
+      path:
+        equals: /max-hits
     scenario:
       maxHits: 3
   response:
@@ -44,7 +47,8 @@
   conditions:
     method: GET
     url:
-      path: /max-hits
+      path:
+        equals: /max-hits
   response:
     text: OK, max hits reached. Clearing state.
     scenario:
@@ -57,7 +61,8 @@
   conditions:
     method: GET
     url:
-      path: /exact-hits
+      path:
+        equals: /exact-hits
   response:
     text: OK, number of hits increased
 
@@ -67,7 +72,8 @@
   conditions:
     method: GET
     url:
-      path: /exact-hits
+      path:
+        equals: /exact-hits
     scenario:
       exactHits: 3
   response:

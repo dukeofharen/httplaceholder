@@ -4,7 +4,8 @@
   conditions:
     method: POST
     url:
-      path: /dynamic-request-body.txt
+      path:
+        equals: /dynamic-request-body.txt
   response:
     enableDynamicMode: true
     text: 'Posted: ((request_body))'

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -14,13 +14,15 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 public class FormValueConditionChecker : IConditionChecker
 {
     private readonly IHttpContextService _httpContextService;
+    private readonly IStringChecker _stringChecker;
 
     /// <summary>
     /// Constructs a <see cref="FormValueConditionChecker"/> instance.
     /// </summary>
-    public FormValueConditionChecker(IHttpContextService httpContextService)
+    public FormValueConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {
         _httpContextService = httpContextService;
+        _stringChecker = stringChecker;
     }
 
     /// <inheritdoc />
@@ -39,6 +41,22 @@ public class FormValueConditionChecker : IConditionChecker
             var validConditions = 0;
             foreach (var condition in formConditions)
             {
+                // Do a present check, if needed.
+                if (condition.Value is not string)
+                {
+                    var checkingModel = StringConditionUtilities.ConvertCondition(condition.Value);
+                    if (checkingModel.Present != null)
+                    {
+                        if ((checkingModel.Present.Value && form.Any(f => f.Item1.Equals(condition.Key))) ||
+                            (!checkingModel.Present.Value && !form.Any(f => f.Item1.Equals(condition.Key))))
+                        {
+                            validConditions++;
+                        }
+
+                        continue;
+                    }
+                }
+
                 var (formKey, formValues) = form.FirstOrDefault(f => f.Item1 == condition.Key);
                 if (formKey == null)
                 {
@@ -48,8 +66,7 @@ public class FormValueConditionChecker : IConditionChecker
                 }
 
                 validConditions += formValues
-                    .Count(value =>
-                        StringHelper.IsRegexMatchOrSubstring(HttpUtility.UrlDecode(value), condition.Value));
+                    .Count(value => _stringChecker.CheckString(HttpUtility.UrlDecode(value), condition.Value));
             }
 
             // If the number of succeeded conditions is equal to the actual number of conditions,

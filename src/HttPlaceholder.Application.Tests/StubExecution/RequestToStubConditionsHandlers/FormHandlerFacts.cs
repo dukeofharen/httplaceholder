@@ -89,8 +89,8 @@ public class FormHandlerFacts
         Assert.IsTrue(result);
 
         var formDict = conditions.Form.ToDictionary(f => f.Key, f => f.Value);
-        Assert.AreEqual("val1", formDict["form1"]);
-        Assert.AreEqual("val2", formDict["form2"]);
+        Assert.AreEqual("val1", ((StubConditionStringCheckingModel)formDict["form1"]).StringEquals);
+        Assert.AreEqual("val2", ((StubConditionStringCheckingModel)formDict["form2"]).StringEquals);
         Assert.IsFalse(conditions.Body.Any());
     }
 }

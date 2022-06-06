@@ -4,7 +4,8 @@
   conditions:
     method: GET
     url:
-      path: /dynamic-uuid.txt
+      path:
+        equals: /dynamic-uuid.txt
   response:
     enableDynamicMode: true
     text: ((uuid))

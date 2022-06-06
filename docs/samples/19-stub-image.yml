@@ -4,7 +4,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.jpg
+      path:
+        equals: /stub-image.jpg
   response:
     image:
       type: jpeg
@@ -21,7 +22,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.png
+      path:
+        equals: /stub-image.png
   response:
     image:
       type: png
@@ -37,7 +39,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image-font-color.png
+      path:
+        equals: /stub-image-font-color.png
   response:
     image:
       type: png
@@ -54,7 +57,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image-with-very-long-text.png
+      path:
+        equals: /stub-image-with-very-long-text.png
   response:
     image:
       type: png
@@ -70,7 +74,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image-transparency.png
+      path:
+        equals: /stub-image-transparency.png
   response:
     image:
       type: png
@@ -86,7 +91,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.bmp
+      path:
+        equals: /stub-image.bmp
   response:
     image:
       type: bmp
@@ -102,7 +108,8 @@
   conditions:
     method: GET
     url:
-      path: /stub-image.gif
+      path:
+        equals: /stub-image.gif
   response:
     image:
       type: gif

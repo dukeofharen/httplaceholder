@@ -4,10 +4,13 @@
   conditions:
     method: GET
     url:
-      path: /auth
+      path:
+        equals: /auth
       query:
-        id: 12
-        filter: first_name
+        id:
+          equals: 12
+        filter:
+          equals: first_name
     basicAuthentication:
       username: user
       password: pass

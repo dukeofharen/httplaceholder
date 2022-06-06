@@ -17,5 +17,5 @@ public class StubFormModel
     /// Gets or sets the value.
     /// </summary>
     [YamlMember(Alias = "value")]
-    public string Value { get; set; }
+    public object Value { get; set; }
 }
