@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-12 mt-3" v-if="keywords.length">
-      <strong>Select a way to check the URL path</strong>
+      <strong>Select a way to check the full path</strong>
       <div class="list-group mt-2">
         <button
           v-for="(keyword, index) of keywords"
@@ -27,13 +27,13 @@ import {
 import { useStubFormStore } from "@/store/stubForm";
 
 export default defineComponent({
-  name: "SetPath",
+  name: "SetFullPath",
   setup() {
     const stubFormStore = useStubFormStore();
 
     // Methods
     const keywordSelected = (keyword: StringCheckingKeyword) => {
-      stubFormStore.setDefaultPath(keyword);
+      stubFormStore.setDefaultFullPath(keyword);
       stubFormStore.closeFormHelper();
     };
 

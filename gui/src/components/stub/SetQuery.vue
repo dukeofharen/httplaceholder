@@ -27,17 +27,17 @@ import {
 import { useStubFormStore } from "@/store/stubForm";
 
 export default defineComponent({
-  name: "SetPath",
+  name: "SetQuery",
   setup() {
     const stubFormStore = useStubFormStore();
 
     // Methods
     const keywordSelected = (keyword: StringCheckingKeyword) => {
-      stubFormStore.setDefaultPath(keyword);
+      stubFormStore.setDefaultQuery(keyword);
       stubFormStore.closeFormHelper();
     };
 
-    return { keywords: getStringCheckingKeywords(false), keywordSelected };
+    return { keywords: getStringCheckingKeywords(true), keywordSelected };
   },
 });
 </script>

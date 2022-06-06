@@ -97,7 +97,11 @@
           <SetDynamicMode
             v-if="currentSelectedFormHelper === FormHelperKey.DynamicMode"
           />
-          <SetPath v-if="currentSelectedFormHelper === FormHelperKey.SetPath" />
+          <SetPath v-if="currentSelectedFormHelper === FormHelperKey.Path" />
+          <SetFullPath
+            v-if="currentSelectedFormHelper === FormHelperKey.FullPath"
+          />
+          <SetQuery v-if="currentSelectedFormHelper === FormHelperKey.Query" />
         </div>
       </div>
     </div>
@@ -115,6 +119,7 @@ import LineEndingSelector from "@/components/stub/LineEndingSelector.vue";
 import ScenarioSelector from "@/components/stub/ScenarioSelector.vue";
 import SetDynamicMode from "@/components/stub/SetDynamicMode.vue";
 import SetPath from "@/components/stub/SetPath.vue";
+import SetFullPath from "@/components/stub/SetFullPath.vue";
 import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
 import { useStubFormStore } from "@/store/stubForm";
@@ -126,10 +131,13 @@ import {
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
 import ExampleSelector from "@/components/stub/ExampleSelector.vue";
+import SetQuery from "@/components/stub/SetQuery.vue";
 
 export default defineComponent({
   name: "FormHelperSelector",
   components: {
+    SetQuery,
+    SetFullPath,
     ExampleSelector,
     LineEndingSelector,
     RedirectSelector,

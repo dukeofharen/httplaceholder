@@ -56,17 +56,17 @@ export const stubFormHelpers = [
   {
     title: "URL path",
     subTitle: elementDescriptions.urlPath,
-    formHelperToOpen: FormHelperKey.SetPath,
+    formHelperToOpen: FormHelperKey.Path,
   },
   {
     title: "Full path",
     subTitle: elementDescriptions.fullPath,
-    defaultValueMutation: (store: any) => store.setDefaultFullPath(),
+    formHelperToOpen: FormHelperKey.FullPath,
   },
   {
     title: "Query string",
     subTitle: elementDescriptions.queryString,
-    defaultValueMutation: (store: any) => store.setDefaultQuery(),
+    formHelperToOpen: FormHelperKey.Query,
   },
   {
     title: "HTTPS",

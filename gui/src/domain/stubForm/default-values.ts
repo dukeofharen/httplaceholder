@@ -10,7 +10,7 @@ export const defaultValues = {
   query: {
     query1: "val1",
     query2: "val2",
-  },
+  } as any,
   basicAuthentication: {
     username: "username",
     password: "password",

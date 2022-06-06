@@ -14,7 +14,9 @@ export enum FormHelperKey {
   Scenario = "scenario",
   DynamicMode = "dynamicMode",
   Example = "example",
-  SetPath = "setPath",
+  Path = "path",
+  FullPath = "fullPath",
+  Query = "query",
 }
 
 export function getValues(): string[] {
