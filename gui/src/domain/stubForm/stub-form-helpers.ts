@@ -101,7 +101,7 @@ export const stubFormHelpers = [
   {
     title: "Hostname",
     subTitle: elementDescriptions.hostname,
-    defaultValueMutation: (store: any) => store.setDefaultHostname(),
+    formHelperToOpen: FormHelperKey.Host,
   },
   {
     title: "JSONPath",

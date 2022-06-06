@@ -340,7 +340,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultHostname(): void {
+    setDefaultHostname(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -348,7 +348,11 @@ export const useStubFormStore = defineStore({
             parsed.conditions = {};
           }
 
-          parsed.conditions.host = defaultValues.hostname;
+          if (!parsed.conditions.host) {
+            parsed.conditions.host = {};
+          }
+
+          parsed.conditions.host[keyword.key] = defaultValues.hostname;
           this.setInput(yaml.dump(parsed));
         }
       });

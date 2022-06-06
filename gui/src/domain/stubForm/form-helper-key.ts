@@ -20,6 +20,7 @@ export enum FormHelperKey {
   Body = "body",
   Header = "header",
   Form = "form",
+  Host = "host",
 }
 
 export function getValues(): string[] {

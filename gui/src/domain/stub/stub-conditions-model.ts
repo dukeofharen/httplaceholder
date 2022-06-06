@@ -15,7 +15,7 @@ export interface StubConditionsModel {
   jsonPath?: any[];
   basicAuthentication?: StubBasicAuthenticationModel;
   clientIp?: string;
-  host?: string;
+  host?: any;
   json?: any;
   scenario?: StubConditionsScenarioModel;
 }

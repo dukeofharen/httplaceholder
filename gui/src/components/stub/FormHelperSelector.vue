@@ -107,6 +107,7 @@
             v-if="currentSelectedFormHelper === FormHelperKey.Header"
           />
           <SetForm v-if="currentSelectedFormHelper === FormHelperKey.Form" />
+          <SetHost v-if="currentSelectedFormHelper === FormHelperKey.Host" />
         </div>
       </div>
     </div>
@@ -140,10 +141,12 @@ import SetQuery from "@/components/stub/SetQuery.vue";
 import SetBody from "@/components/stub/SetBody.vue";
 import SetHeader from "@/components/stub/SetHeader.vue";
 import SetForm from "@/components/stub/SetForm.vue";
+import SetHost from "@/components/stub/SetHost.vue";
 
 export default defineComponent({
   name: "FormHelperSelector",
   components: {
+    SetHost,
     SetForm,
     SetHeader,
     SetBody,
