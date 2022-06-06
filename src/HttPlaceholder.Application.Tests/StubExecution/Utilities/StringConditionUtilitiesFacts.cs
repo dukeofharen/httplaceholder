@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using HttPlaceholder.Application.StubExecution.Utilities;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
@@ -37,6 +38,19 @@ public class StringConditionUtilitiesFacts
         Assert.IsNotNull(result);
         Assert.AreEqual("/path", result.StringEquals);
         Assert.AreEqual("somestring", result.NotContainsCi);
+    }
+
+    [TestMethod]
+    public void ConvertCondition_ConditionIsModel_ShouldReturnAsIs()
+    {
+        // Arrange
+        var model = new StubConditionStringCheckingModel {StringEquals = "123"};
+
+        // Act
+        var result = StringConditionUtilities.ConvertCondition(model);
+
+        // Assert
+        Assert.AreEqual(model, result);
     }
 
     [TestMethod]

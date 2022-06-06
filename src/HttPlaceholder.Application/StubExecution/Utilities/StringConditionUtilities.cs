@@ -30,6 +30,11 @@ public class StringConditionUtilities
             return jObject.ToObject<StubConditionStringCheckingModel>();
         }
 
+        if (condition is StubConditionStringCheckingModel model)
+        {
+            return model;
+        }
+
         throw new InvalidOperationException(
             $"Object of type '{condition.GetType()}' not supported for serializing to '{typeof(StubConditionStringCheckingModel)}'.");
     }

@@ -49,9 +49,9 @@ public class RestApiImportOpenApiPetStoreTests : RestApiIntegrationTestBase
 
         Assert.AreEqual("GET", stub.Conditions.Method);
         Assert.AreEqual("tenant1", stub.Tenant);
-        Assert.AreEqual("/v1/pets", stub.Conditions.Url.Path);
-        Assert.AreEqual("42", stub.Conditions.Url.Query["limit"]);
-        Assert.AreEqual("petstore.swagger.io", stub.Conditions.Host);
+        Assert.AreEqual("/v1/pets", ((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals);
+        Assert.AreEqual("42", ((StubConditionStringCheckingModel)stub.Conditions.Url.Query["limit"]).StringEquals);
+        Assert.AreEqual("petstore.swagger.io", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
 
         Assert.AreEqual(200, stub.Response.StatusCode);
         Assert.AreEqual(Constants.JsonMime, stub.Response.ContentType);
