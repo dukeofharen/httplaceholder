@@ -301,7 +301,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultFormBody(): void {
+    setDefaultFormBody(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -313,9 +313,16 @@ export const useStubFormStore = defineStore({
             parsed.conditions.form = [];
           }
 
-          parsed.conditions.form = parsed.conditions.form.concat(
-            defaultValues.formBody
-          );
+          for (const key of Object.keys(defaultValues.formBody)) {
+            const val = {} as any;
+            val[keyword.key] =
+              keyword.key === "present" ? true : defaultValues.formBody[key];
+            parsed.conditions.form.push({
+              key: key,
+              value: val,
+            });
+          }
+
           this.setInput(yaml.dump(parsed));
         }
       });

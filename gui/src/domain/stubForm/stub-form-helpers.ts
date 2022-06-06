@@ -91,7 +91,7 @@ export const stubFormHelpers = [
   {
     title: "Form body",
     subTitle: elementDescriptions.formBody,
-    defaultValueMutation: (store: any) => store.setDefaultFormBody(),
+    formHelperToOpen: FormHelperKey.Form,
   },
   {
     title: "Client IP",
