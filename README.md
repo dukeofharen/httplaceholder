@@ -124,10 +124,13 @@ dotnet tool install --global HttPlaceholder --version "1.*"
   conditions:
     method: GET
     url:
-      path: /users
+      path:
+        equals: /users
       query:
-        id: 12
-        filter: first_name
+        id:
+          equals: 12
+        filter:
+          equals: first_name
   response:
     statusCode: 200
     text: |
