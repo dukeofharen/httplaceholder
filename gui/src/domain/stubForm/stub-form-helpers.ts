@@ -81,7 +81,7 @@ export const stubFormHelpers = [
   {
     title: "Headers",
     subTitle: elementDescriptions.headers,
-    defaultValueMutation: (store: any) => store.setDefaultRequestHeaders(),
+    formHelperToOpen: FormHelperKey.Header,
   },
   {
     title: "Request body",

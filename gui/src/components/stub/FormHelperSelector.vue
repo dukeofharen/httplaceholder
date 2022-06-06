@@ -103,6 +103,9 @@
           />
           <SetQuery v-if="currentSelectedFormHelper === FormHelperKey.Query" />
           <SetBody v-if="currentSelectedFormHelper === FormHelperKey.Body" />
+          <SetHeader
+            v-if="currentSelectedFormHelper === FormHelperKey.Header"
+          />
         </div>
       </div>
     </div>
@@ -134,10 +137,12 @@ import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
 import ExampleSelector from "@/components/stub/ExampleSelector.vue";
 import SetQuery from "@/components/stub/SetQuery.vue";
 import SetBody from "@/components/stub/SetBody.vue";
+import SetHeader from "@/components/stub/SetHeader.vue";
 
 export default defineComponent({
   name: "FormHelperSelector",
   components: {
+    SetHeader,
     SetBody,
     SetQuery,
     SetFullPath,

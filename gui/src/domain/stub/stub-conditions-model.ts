@@ -10,7 +10,7 @@ export interface StubConditionsModel {
   url?: StubUrlConditionModel;
   body?: any[];
   form?: StubFormModel[];
-  headers?: HashMap;
+  headers?: any;
   xpath?: StubXpathModel[];
   jsonPath?: any[];
   basicAuthentication?: StubBasicAuthenticationModel;

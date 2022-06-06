@@ -255,7 +255,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultRequestHeaders(): void {
+    setDefaultRequestHeaders(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -267,10 +267,14 @@ export const useStubFormStore = defineStore({
             parsed.conditions.headers = {};
           }
 
-          parsed.conditions.headers = {
-            ...parsed.conditions.headers,
-            ...defaultValues.requestHeaders,
-          };
+          for (const key of Object.keys(defaultValues.requestHeaders)) {
+            parsed.conditions.headers[key] = {};
+            parsed.conditions.headers[key][keyword.key] =
+              keyword.key === "present"
+                ? true
+                : defaultValues.requestHeaders[key];
+          }
+
           this.setInput(yaml.dump(parsed));
         }
       });

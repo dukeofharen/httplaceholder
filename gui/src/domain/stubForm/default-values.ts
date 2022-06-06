@@ -18,7 +18,7 @@ export const defaultValues = {
   requestHeaders: {
     Header1: "val1",
     Header2: "val2",
-  },
+  } as any,
   requestBody: ["val1", "val2"],
   formBody: [
     {

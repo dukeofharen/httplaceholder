@@ -18,6 +18,7 @@ export enum FormHelperKey {
   FullPath = "fullPath",
   Query = "query",
   Body = "body",
+  Header = "header",
 }
 
 export function getValues(): string[] {
