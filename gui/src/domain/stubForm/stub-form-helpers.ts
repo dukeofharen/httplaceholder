@@ -56,7 +56,7 @@ export const stubFormHelpers = [
   {
     title: "URL path",
     subTitle: elementDescriptions.urlPath,
-    defaultValueMutation: (store: any) => store.setDefaultPath(),
+    formHelperToOpen: FormHelperKey.SetPath,
   },
   {
     title: "Full path",

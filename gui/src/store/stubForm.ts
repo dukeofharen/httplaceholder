@@ -8,6 +8,7 @@ import { vsprintf } from "sprintf-js";
 import type { StubModel } from "@/domain/stub/stub-model";
 import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
+import type { StringCheckingKeyword } from "@/constants/string-checking-keywords";
 
 type StubFormState = {
   input: string;
@@ -155,7 +156,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultPath(): void {
+    setDefaultPath(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -167,7 +168,11 @@ export const useStubFormStore = defineStore({
             parsed.conditions.url = {};
           }
 
-          parsed.conditions.url.path = defaultValues.urlPath;
+          if (!parsed.conditions.url.path) {
+            parsed.conditions.url.path = {};
+          }
+
+          parsed.conditions.url.path[keyword.key] = defaultValues.urlPath;
           this.setInput(yaml.dump(parsed));
         }
       });
