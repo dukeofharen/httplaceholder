@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-12 mt-3" v-if="keywords.length">
-      <strong>Select a way to check the query parameters</strong>
+      <strong>Select a way to check the request body</strong>
       <div class="list-group mt-2">
         <button
           v-for="(keyword, index) of keywords"
@@ -27,17 +27,17 @@ import {
 import { useStubFormStore } from "@/store/stubForm";
 
 export default defineComponent({
-  name: "SetQuery",
+  name: "SetBody",
   setup() {
     const stubFormStore = useStubFormStore();
 
     // Methods
     const keywordSelected = (keyword: StringCheckingKeyword) => {
-      stubFormStore.setDefaultQuery(keyword);
+      stubFormStore.setDefaultRequestBody(keyword);
       stubFormStore.closeFormHelper();
     };
 
-    return { keywords: getStringCheckingKeywords(true), keywordSelected };
+    return { keywords: getStringCheckingKeywords(false), keywordSelected };
   },
 });
 </script>

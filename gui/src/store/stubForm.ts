@@ -275,7 +275,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setDefaultRequestBody(): void {
+    setDefaultRequestBody(keyword: StringCheckingKeyword): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
@@ -287,9 +287,12 @@ export const useStubFormStore = defineStore({
             parsed.conditions.body = [];
           }
 
-          parsed.conditions.body = parsed.conditions.body.concat(
-            defaultValues.requestBody
-          );
+          for (const body of defaultValues.requestBody) {
+            const newBody: any = {};
+            newBody[keyword.key] = body;
+            parsed.conditions.body.push(newBody);
+          }
+
           this.setInput(yaml.dump(parsed));
         }
       });

@@ -8,7 +8,7 @@ import type { StubConditionsScenarioModel } from "@/domain/stub/stub-conditions-
 export interface StubConditionsModel {
   method?: string;
   url?: StubUrlConditionModel;
-  body?: string[];
+  body?: any[];
   form?: StubFormModel[];
   headers?: HashMap;
   xpath?: StubXpathModel[];
