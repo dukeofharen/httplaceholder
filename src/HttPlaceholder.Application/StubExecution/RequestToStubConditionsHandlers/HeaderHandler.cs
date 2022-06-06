@@ -13,7 +13,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// </summary>
 internal class HeaderHandler : IRequestToStubConditionsHandler
 {
-    private static readonly IEnumerable<string> _headersToStrip = new[] { "Postman-Token", "Host" };
+    private static readonly IEnumerable<string> _headersToStrip = new[] {"Postman-Token", "Host"};
 
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
@@ -27,7 +27,8 @@ internal class HeaderHandler : IRequestToStubConditionsHandler
         // and filter some headers out.
         conditions.Headers = request.Headers
             .Where(h => !_headersToStrip.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
-            .ToDictionary(d => d.Key, d => (object)Regex.Escape(d.Value)); // TODO
+            .ToDictionary(d => d.Key,
+                d => new StubConditionStringCheckingModel {StringEquals = d.Value} as object);
         return Task.FromResult(true);
     }
 

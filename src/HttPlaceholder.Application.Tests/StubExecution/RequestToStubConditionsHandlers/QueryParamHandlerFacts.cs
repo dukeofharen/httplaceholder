@@ -42,7 +42,7 @@ public class QueryParamHandlerFacts
         // Assert
         Assert.IsTrue(result);
         Assert.AreEqual(2, conditions.Url.Query.Count);
-        Assert.AreEqual("val1", conditions.Url.Query["query1"]);
-        Assert.AreEqual("val2", conditions.Url.Query["query2"]);
+        Assert.AreEqual("val1", ((StubConditionStringCheckingModel)conditions.Url.Query["query1"]).StringEquals);
+        Assert.AreEqual("val2", ((StubConditionStringCheckingModel)conditions.Url.Query["query2"]).StringEquals);
     }
 }

@@ -23,7 +23,7 @@ internal class FormHandler : IRequestToStubConditionsHandler
             return Task.FromResult(false);
         }
 
-        var supportedContentTypes = new[] { Constants.UrlEncodedFormMime, Constants.MultipartFormDataMime };
+        var supportedContentTypes = new[] {Constants.UrlEncodedFormMime, Constants.MultipartFormDataMime};
         if (
             !supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)) ||
             string.IsNullOrWhiteSpace(request.Body))
@@ -38,8 +38,7 @@ internal class FormHandler : IRequestToStubConditionsHandler
         var form = reader.ReadForm();
         conditions.Form = form.Select(f => new StubFormModel
         {
-            Key = f.Key,
-            Value = f.Value.ToString()
+            Key = f.Key, Value = new StubConditionStringCheckingModel {StringEquals = f.Value}
         });
 
         return Task.FromResult(true);

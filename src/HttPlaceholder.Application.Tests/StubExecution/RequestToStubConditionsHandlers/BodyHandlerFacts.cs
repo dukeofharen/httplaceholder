@@ -55,6 +55,6 @@ public class BodyHandlerFacts
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual(body, conditions.Body.Single());
+        Assert.AreEqual(body, ((StubConditionStringCheckingModel)conditions.Body.Single()).StringEquals);
     }
 }

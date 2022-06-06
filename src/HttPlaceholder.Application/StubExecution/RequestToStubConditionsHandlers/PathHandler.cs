@@ -14,7 +14,7 @@ internal class PathHandler : IRequestToStubConditionsHandler
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
     {
         var uri = new Uri(request.Url);
-        conditions.Url.Path = uri.LocalPath;
+        conditions.Url.Path = new StubConditionStringCheckingModel {StringEquals = uri.LocalPath};
         return Task.FromResult(true);
     }
 

@@ -20,7 +20,7 @@ internal class HostHandler : IRequestToStubConditionsHandler
             host += $":{uri.Port}";
         }
 
-        conditions.Host = host;
+        conditions.Host = new StubConditionStringCheckingModel{StringEquals = host};
         return Task.FromResult(true);
     }
 
