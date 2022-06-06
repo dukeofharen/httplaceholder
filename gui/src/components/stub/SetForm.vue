@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-12 mt-3" v-if="keywords.length">
-      <strong>Select a way to check the request headers</strong>
+      <strong>Select a way to check the request form body</strong>
       <div class="list-group mt-2">
         <button
           v-for="(keyword, index) of keywords"
