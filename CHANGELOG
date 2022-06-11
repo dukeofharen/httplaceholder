@@ -1,5 +1,6 @@
-[vnext]
+[2022.6.11]
 - Clear form helper filter if form helper is selected (https://github.com/dukeofharen/httplaceholder/pull/248).
+- Changed versioning again (to a format that `dotnet tool` accepts) (https://github.com/dukeofharen/httplaceholder/pull/249).
 
 # BREAKING CHANGES
 - 
