@@ -173,7 +173,6 @@ export default defineComponent({
     // Data
     const showFormHelperItems = ref(false);
     const formHelperItems = ref();
-    const formHelperFilter = ref("");
 
     // Methods
     const onFormHelperItemClick = (item: StubFormHelper) => {
@@ -184,6 +183,7 @@ export default defineComponent({
       }
 
       showFormHelperItems.value = false;
+      formHelperFilter.value = "";
     };
     const openFormHelperList = () => {
       showFormHelperItems.value = true;
@@ -216,6 +216,10 @@ export default defineComponent({
           .toLowerCase()
           .includes(formHelperFilter.value.toLowerCase());
       });
+    });
+    const formHelperFilter = computed({
+      get: () => stubFormStore.getFormHelperSelectorFilter,
+      set: (value) => stubFormStore.setFormHelperSelectorFilter(value),
     });
 
     // Watch

@@ -1,3 +1,9 @@
+[1.4.4]
+- Clear form helper filter if form helper is selected (https://github.com/dukeofharen/httplaceholder/pull/248).
+
+# BREAKING CHANGES
+- 
+
 [1.4.3]
 - Fixed a bug where you could not specify the `fileStorageLocation` as environment variable (https://github.com/dukeofharen/httplaceholder/issues/234).
 - Several small changes (https://github.com/dukeofharen/httplaceholder/pull/238):

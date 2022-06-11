@@ -14,6 +14,7 @@ type StubFormState = {
   input: string;
   inputHasMultipleStubs: boolean;
   currentSelectedFormHelper: FormHelperKey;
+  formHelperSelectorFilter: string;
   formIsDirty: boolean;
 };
 
@@ -48,6 +49,7 @@ export const useStubFormStore = defineStore({
       inputHasMultipleStubs: false,
       currentSelectedFormHelper: FormHelperKey.None,
       formIsDirty: false,
+      formHelperSelectorFilter: "",
     } as StubFormState),
   getters: {
     getInput: (state): string => state.input,
@@ -55,6 +57,8 @@ export const useStubFormStore = defineStore({
     getCurrentSelectedFormHelper: (state): FormHelperKey =>
       state.currentSelectedFormHelper,
     getFormIsDirty: (state): boolean => state.formIsDirty,
+    getFormHelperSelectorFilter: (state): string =>
+      state.formHelperSelectorFilter,
     getResponseBodyType(state): ResponseBodyType {
       return handle(() => {
         const parsed = parseInput(state.input);
@@ -137,6 +141,9 @@ export const useStubFormStore = defineStore({
       this.input = input;
       this.formIsDirty = true;
       this.inputHasMultipleStubs = /^-/gm.test(input);
+    },
+    setFormHelperSelectorFilter(filter: string) {
+      this.formHelperSelectorFilter = filter;
     },
     setDefaultDescription(): void {
       handle(() => {
