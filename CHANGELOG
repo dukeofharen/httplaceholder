@@ -1,4 +1,4 @@
-[1.4.4]
+[vnext]
 - Clear form helper filter if form helper is selected (https://github.com/dukeofharen/httplaceholder/pull/248).
 
 # BREAKING CHANGES
