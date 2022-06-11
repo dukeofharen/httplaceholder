@@ -110,7 +110,7 @@ Run the following command to run a basic HttPlaceholder container: `docker run -
 **Install as .NET tool**
 
 ```bash
-dotnet tool install --global HttPlaceholder --version "1.*"
+dotnet tool install --global HttPlaceholder
 ```
 
 ### Example
