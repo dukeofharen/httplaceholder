@@ -11,6 +11,7 @@ stages:
   - build-ui
   - build-server
   - build-docs
+  - pre-publish
   - publish
 
 set-version:
@@ -124,6 +125,14 @@ create-nuget-client-docs:
     paths:
       - dist
     expire_in: 1 week
+
+pre-publish-check:
+  image: $DEBIAN_IMAGE
+  stage: pre-publish
+  when: manual
+  script:
+    - chmod +x ./scripts/build/pre-publish-check.sh
+    - ./scripts/build/pre-publish-check.sh
 
 docker-build:
   image: $DOCKER_IMAGE
