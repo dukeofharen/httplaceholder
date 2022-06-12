@@ -1,9 +1,16 @@
+[vnext]
+
+# BREAKING CHANGES
+-
+
 [2022.6.11]
 - Clear form helper filter if form helper is selected (https://github.com/dukeofharen/httplaceholder/pull/248).
 - Changed versioning again (to a format that `dotnet tool` accepts) (https://github.com/dukeofharen/httplaceholder/pull/249).
 
 # BREAKING CHANGES
-- 
+- Not really, besides the fact that the versioning is back at what it was before. I made the stupid decision in November 2021 to change the versioning from date (so `2021.11.11.123`) to semver (so `1.2.3.123`). This worked up to a certain point, but the .NET tool installation went wrong because a "newer" version was found every time, which meant you needed to deinstall the old version and install the new version.
+
+From this point on, the date format is used again for versioning and I try to make as few breaking changes as possible. Sometimes, I have no choice and have to enable a specific feature by default (which was off or non existant before), but try to make it as configurable as possible.
 
 [1.4.3]
 - Fixed a bug where you could not specify the `fileStorageLocation` as environment variable (https://github.com/dukeofharen/httplaceholder/issues/234).
