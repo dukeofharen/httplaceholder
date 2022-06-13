@@ -27,4 +27,9 @@ public class ConfigKeyAttribute : Attribute
     /// Indicates whether the config value is a boolean.
     /// </summary>
     public bool IsBoolValue { get; set; }
+
+    /// <summary>
+    /// Gets or sets the type of the config key.
+    /// </summary>
+    public ConfigKeyType ConfigKeyType { get; set; }
 }

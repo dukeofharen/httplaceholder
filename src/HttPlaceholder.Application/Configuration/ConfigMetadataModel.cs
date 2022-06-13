@@ -11,6 +11,11 @@ public class ConfigMetadataModel
     public string Key { get; set; }
 
     /// <summary>
+    /// Gets or sets the configuration item name.
+    /// </summary>
+    public string DisplayKey { get; set; }
+
+    /// <summary>
     /// Gets or sets the configuration item description.
     /// </summary>
     public string Description { get; set; }
@@ -29,4 +34,9 @@ public class ConfigMetadataModel
     /// Gets or sets the configuration item is a boolean.
     /// </summary>
     public bool? IsBoolValue { get; set; }
+
+    /// <summary>
+    /// Gets or sets the type of the config key.
+    /// </summary>
+    public ConfigKeyType ConfigKeyType { get; set; }
 }

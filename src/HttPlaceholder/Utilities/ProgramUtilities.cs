@@ -150,12 +150,23 @@ public static class ProgramUtilities
         builder.AppendLine(ManPage.ExplanationHeader);
         builder.AppendLine();
 
-        foreach (var constant in ConfigurationHelper.GetConfigKeyMetadata())
+        var metadata = ConfigurationHelper.GetConfigKeyMetadata();
+        var configKeyTypes = ConfigKeys.GetConfigKeyTypes();
+        var groupedMetadata = metadata
+            .Select(m => (Type: configKeyTypes[m.ConfigKeyType], ConfigMetadataModel: m))
+            .GroupBy(m => m.Type)
+            .OrderBy(g => g.Key);
+        foreach (var group in groupedMetadata)
         {
-            builder.AppendLine($"--{constant.Key}: {constant.Description} (e.g. {constant.Example})");
+            builder.AppendLine($"{group.Key}:");
+            foreach (var constant in group)
+            {
+                builder.AppendLine($"--{constant.ConfigMetadataModel.DisplayKey}: {constant.ConfigMetadataModel.Description} (e.g. {constant.ConfigMetadataModel.Example})");
+            }
+
+            builder.AppendLine();
         }
 
-        builder.AppendLine();
         builder.AppendLine(ManPage.CmdExample);
 
         return builder.ToString();
