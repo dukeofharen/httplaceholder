@@ -1,5 +1,6 @@
 [vnext]
 - Order stub execution results in UI alphabetically (https://github.com/dukeofharen/httplaceholder/pull/250/files).
+- Sort and group configuration items in help page in terminal (https://github.com/dukeofharen/httplaceholder/pull/250/files).
 
 # BREAKING CHANGES
 -
