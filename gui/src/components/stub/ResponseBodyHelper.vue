@@ -84,6 +84,13 @@
       <button class="btn btn-primary" @click="minifyJson">Minify JSON</button>
     </div>
 
+    <div v-if="responseBodyType === ResponseBodyType.xml">
+      <button class="btn btn-primary me-2" @click="prettifyXml">
+        Prettify XML
+      </button>
+      <button class="btn btn-primary" @click="minifyXml">Minify XML</button>
+    </div>
+
     <div>
       <button class="btn btn-danger" @click="close">Close</button>
     </div>
@@ -112,6 +119,7 @@ import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 import { elementDescriptions } from "@/domain/stubForm/element-descriptions";
 import { UploadButtonType } from "@/domain/upload-button-type";
 import { warning } from "@/utils/toast";
+import xmlFormatter from "xml-formatter";
 
 export default defineComponent({
   name: "ResponseBodyHelper",
@@ -237,6 +245,22 @@ export default defineComponent({
     const prettifyJson = () => formatJson(2);
     const minifyJson = () => formatJson(0);
 
+    const formatXml = (minify: boolean) => {
+      try {
+        const options = minify
+          ? {
+              indentation: "",
+              lineSeparator: "",
+            }
+          : {};
+        responseBody.value = xmlFormatter(responseBody.value, options);
+      } catch (e) {
+        warning(`Error occurred while formatting XML: ${e}`);
+      }
+    };
+    const prettifyXml = () => formatXml(false);
+    const minifyXml = () => formatXml(true);
+
     // Lifecycle
     onMounted(async () => {
       responseBodyType.value =
@@ -310,6 +334,8 @@ export default defineComponent({
       UploadButtonType,
       prettifyJson,
       minifyJson,
+      prettifyXml,
+      minifyXml,
     };
   },
 });
