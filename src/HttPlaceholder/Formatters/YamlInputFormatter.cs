@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Net;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using YamlDotNet.Serialization;
 
 namespace HttPlaceholder.Formatters;
@@ -29,7 +35,7 @@ public class YamlInputFormatter : TextInputFormatter
     }
 
     /// <inheritdoc />
-    public override Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
+    public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
     {
         if (context == null)
         {
@@ -49,11 +55,14 @@ public class YamlInputFormatter : TextInputFormatter
         try
         {
             var model = _deserializer.Deserialize(streamReader, type);
-            return InputFormatterResult.SuccessAsync(model);
+            return await InputFormatterResult.SuccessAsync(model);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return InputFormatterResult.FailureAsync();
+            var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<YamlInputFormatter>>();
+            logger.LogWarning(ex, "Error occurred while deserializing YAML.");
+            context.ModelState.AddModelError("yaml", ex.Message);
+            return await InputFormatterResult.FailureAsync();
         }
     }
 }
