@@ -17,7 +17,7 @@ public class StringCheckerFacts
     public void CheckString_InputIsNull_ShouldThrowArgumentNullException()
     {
         // Act
-        var exception = Assert.ThrowsException<ArgumentNullException>(() => _checker.CheckString(null, null));
+        var exception = Assert.ThrowsException<ArgumentNullException>(() => _checker.CheckString(null, null, out _));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("input"));
@@ -27,7 +27,7 @@ public class StringCheckerFacts
     public void CheckString_ConditionIsNull_ShouldThrowArgumentNullException()
     {
         // Act
-        var exception = Assert.ThrowsException<ArgumentNullException>(() => _checker.CheckString("text", null));
+        var exception = Assert.ThrowsException<ArgumentNullException>(() => _checker.CheckString("text", null, out _));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("condition"));
@@ -37,20 +37,22 @@ public class StringCheckerFacts
     public void CheckString_ConditionIsString_RegexSucceeds_ShouldReturnTrue()
     {
         // Act
-        var result = _checker.CheckString("text", "text");
+        var result = _checker.CheckString("text", "text", out var outputForLogging);
 
         // Assert
         Assert.IsTrue(result);
+        Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
     }
 
     [TestMethod]
     public void CheckString_ConditionIsString_RegexFails_ShouldReturnFalse()
     {
         // Act
-        var result = _checker.CheckString("text", "incorrectregex");
+        var result = _checker.CheckString("text", "incorrectregex", out var outputForLogging);
 
         // Assert
         Assert.IsFalse(result);
+        Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
     }
 
     [DataTestMethod]
@@ -65,10 +67,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {StringEquals = stringEquals});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -83,10 +93,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {StringEqualsCi = stringEqualsCi});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -101,10 +119,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {StringNotEquals = stringNotEquals});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -119,10 +145,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {StringNotEqualsCi = stringNotEqualsCi});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -137,10 +171,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {Contains = contains});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -155,10 +197,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {ContainsCi = containsCi});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -173,10 +223,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {NotContains = notContains});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -191,10 +249,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {NotContainsCi = notContainsCi});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -208,10 +274,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {StartsWith = startsWith});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -225,10 +299,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {StartsWithCi = startsWithCi});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -242,10 +324,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {DoesNotStartWith = doesNotStartWith});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -259,10 +349,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {DoesNotStartWithCi = doesNotStartWithCi});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -278,10 +376,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {EndsWith = endsWith});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -297,10 +403,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {EndsWithCi = endsWithCi});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -316,10 +430,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {DoesNotEndWith = doesNotEndWith});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -335,10 +457,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {DoesNotEndWithCi = doesNotEndWithCi});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -351,10 +481,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {Regex = regex});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -367,10 +505,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {RegexNoMatches = regexNoMatches});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     [DataTestMethod]
@@ -385,10 +531,18 @@ public class StringCheckerFacts
         var condition = Convert(new StubConditionStringCheckingModel {Contains = contains, EndsWith = endsWith});
 
         // Act
-        var result = _checker.CheckString(input, condition);
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
 
         // Assert
         Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
     }
 
     private static JObject Convert(StubConditionStringCheckingModel input)

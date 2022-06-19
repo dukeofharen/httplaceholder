@@ -74,8 +74,9 @@ public class QueryStringConditionCheckerFacts
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
 
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString("1", "2"))
+            .Setup(m => m.CheckString("1", "2", out outputForLogging))
             .Returns(false);
 
         // Act
@@ -103,8 +104,9 @@ public class QueryStringConditionCheckerFacts
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
 
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString("1", "2"))
+            .Setup(m => m.CheckString("1", "2", out outputForLogging))
             .Returns(false);
 
         // Act
@@ -132,12 +134,12 @@ public class QueryStringConditionCheckerFacts
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
 
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString("1", "1"))
+            .Setup(m => m.CheckString("1", "1", out outputForLogging))
             .Returns(true);
-
         stringCheckerMock
-            .Setup(m => m.CheckString("2", "3"))
+            .Setup(m => m.CheckString("2", "3", out outputForLogging))
             .Returns(false);
 
         // Act
@@ -165,12 +167,12 @@ public class QueryStringConditionCheckerFacts
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(query);
 
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString("1", "1"))
+            .Setup(m => m.CheckString("1", "1", out outputForLogging))
             .Returns(true);
-
         stringCheckerMock
-            .Setup(m => m.CheckString("2", "2"))
+            .Setup(m => m.CheckString("2", "2", out outputForLogging))
             .Returns(true);
 
         // Act

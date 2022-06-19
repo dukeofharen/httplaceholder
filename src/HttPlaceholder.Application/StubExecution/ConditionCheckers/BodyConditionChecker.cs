@@ -37,10 +37,10 @@ public class BodyConditionChecker : IConditionChecker
         var validBodyConditions = 0;
         foreach (var condition in bodyConditions)
         {
-            if (!_stringChecker.CheckString(body, condition))
+            if (!_stringChecker.CheckString(body, condition, out var outputForLogging))
             {
-                // If the check failed, it means the query string is incorrect and the condition should fail.
-                result.Log = $"Body condition '{condition}' failed.";
+                // If the check failed, it means the body condition is incorrect and the condition should fail.
+                result.Log = $"Body condition '{outputForLogging}' failed.";
                 break;
             }
 

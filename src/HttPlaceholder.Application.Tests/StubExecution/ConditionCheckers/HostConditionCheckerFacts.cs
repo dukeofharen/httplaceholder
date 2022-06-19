@@ -45,8 +45,9 @@ public class HostConditionCheckerFacts
             .Returns(host);
 
         var conditions = new StubConditionsModel {Host = "host.com"};
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString(host, "host.com"))
+            .Setup(m => m.CheckString(host, "host.com", out outputForLogging))
             .Returns(false);
 
         // act
@@ -70,8 +71,9 @@ public class HostConditionCheckerFacts
             .Returns(host);
 
         var conditions = new StubConditionsModel {Host = "actualhost.com"};
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString(host, "actualhost.com"))
+            .Setup(m => m.CheckString(host, "actualhost.com", out outputForLogging))
             .Returns(true);
 
         // act

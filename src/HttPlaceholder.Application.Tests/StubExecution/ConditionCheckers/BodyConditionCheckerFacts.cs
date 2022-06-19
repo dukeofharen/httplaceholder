@@ -69,11 +69,12 @@ public class BodyConditionCheckerFacts
             .Setup(m => m.GetBody())
             .Returns(body);
 
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString(body, conditions.Body.ElementAt(0)))
+            .Setup(m => m.CheckString(body, conditions.Body.ElementAt(0), out outputForLogging))
             .Returns(true);
         stringCheckerMock
-            .Setup(m => m.CheckString(body, conditions.Body.ElementAt(1)))
+            .Setup(m => m.CheckString(body, conditions.Body.ElementAt(1), out outputForLogging))
             .Returns(false);
 
         // act
@@ -99,8 +100,9 @@ public class BodyConditionCheckerFacts
             .Setup(m => m.GetBody())
             .Returns(body);
 
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString(body, conditions.Body.ElementAt(0)))
+            .Setup(m => m.CheckString(body, conditions.Body.ElementAt(0), out outputForLogging))
             .Returns(true);
 
         // act

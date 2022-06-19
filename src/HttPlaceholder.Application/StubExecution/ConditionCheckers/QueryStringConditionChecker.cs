@@ -60,10 +60,10 @@ public class QueryStringConditionChecker : IConditionChecker
             }
 
             // Check whether the condition query value is available in the actual query string.
-            if (!_stringChecker.CheckString(queryValue, condition.Value))
+            if (!_stringChecker.CheckString(queryValue, condition.Value, out var outputForLogging))
             {
                 // If the check failed, it means the query string is incorrect and the condition should fail.
-                result.Log = $"Query string condition '{condition.Key}: {condition.Value}' failed.";
+                result.Log = $"Query string condition '{condition.Key}: {outputForLogging}' failed.";
                 break;
             }
 

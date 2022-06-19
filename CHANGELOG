@@ -7,6 +7,7 @@
 - Updated form body viewer in UI to correctly show request body if the sent body isn't actually a valid form body (https://github.com/dukeofharen/httplaceholder/pull/250/files).
 - Updated "request to stub" handler for form body. When form handler yields no results (e.g. form body is invalid) the handler will not be executed (https://github.com/dukeofharen/httplaceholder/pull/250/files).
 - Updated "update stub" endpoint so an HTTP 404 is returned when the stub ID in the URL does not exist (https://github.com/dukeofharen/httplaceholder/pull/250/files).
+- Fixed logging for condition checkers (https://github.com/dukeofharen/httplaceholder/pull/250/files).
 
 # BREAKING CHANGES
 - Update stub call now returns HTTP 404 if the stub ID in the URL does not exist. This was HTTP 204 before.
@@ -18,7 +19,7 @@
 # BREAKING CHANGES
 - Not really, besides the fact that the versioning is back at what it was before. I made the stupid decision in November 2021 to change the versioning from date (so `2021.11.11.123`) to semver (so `1.2.3.123`). This worked up to a certain point, but the .NET tool installation went wrong because a "newer" version was found every time, which meant you needed to de-install the old version and install the new version.
 
-From this point on, the date format is used again for versioning and I try to make as few breaking changes as possible. Sometimes, I have no choice and have to enable a specific feature by default (which was off or non existant before), but try to make it as configurable as possible.
+From this point on, the date format is used again for versioning and I try to make as few breaking changes as possible. Sometimes, I have no choice and have to enable a specific feature by default (which was off or non existent before), but try to make it as configurable as possible.
 
 [1.4.3]
 - Fixed a bug where you could not specify the `fileStorageLocation` as environment variable (https://github.com/dukeofharen/httplaceholder/issues/234).

@@ -32,7 +32,7 @@ public class HostConditionChecker : IConditionChecker
         }
 
         var host = _clientDataResolver.GetHost();
-        result.ConditionValidation = !_stringChecker.CheckString(host, hostCondition)
+        result.ConditionValidation = !_stringChecker.CheckString(host, hostCondition, out _)
             ? ConditionValidationType.Invalid
             : ConditionValidationType.Valid;
 

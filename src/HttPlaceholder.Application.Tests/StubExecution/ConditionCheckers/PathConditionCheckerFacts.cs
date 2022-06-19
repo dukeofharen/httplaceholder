@@ -59,8 +59,9 @@ public class PathConditionCheckerFacts
             .Setup(m => m.Path)
             .Returns(path);
 
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString(path, conditions.Url.Path))
+            .Setup(m => m.CheckString(path, conditions.Url.Path, out outputForLogging))
             .Returns(false);
 
         // act
@@ -92,8 +93,9 @@ public class PathConditionCheckerFacts
             .Setup(m => m.Path)
             .Returns(path);
 
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString(path, conditions.Url.Path))
+            .Setup(m => m.CheckString(path, conditions.Url.Path, out outputForLogging))
             .Returns(true);
 
         // act

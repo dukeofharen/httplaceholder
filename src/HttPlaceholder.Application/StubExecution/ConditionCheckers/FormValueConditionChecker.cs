@@ -66,7 +66,7 @@ public class FormValueConditionChecker : IConditionChecker
                 }
 
                 validConditions += formValues
-                    .Count(value => _stringChecker.CheckString(HttpUtility.UrlDecode(value), condition.Value));
+                    .Count(value => _stringChecker.CheckString(HttpUtility.UrlDecode(value), condition.Value, out _));
             }
 
             // If the number of succeeded conditions is equal to the actual number of conditions,
