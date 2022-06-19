@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Domain;
 using MediatR;
 
 namespace HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
@@ -37,7 +38,12 @@ public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
         // Check that the stub is not read-only.
         const string exceptionFormat = "Stub with ID '{0}' is read-only; it can not be updated through the API.";
         var oldStub = await _stubContext.GetStubAsync(request.StubId);
-        if (oldStub?.Metadata?.ReadOnly == true)
+        if (oldStub == null)
+        {
+            throw new NotFoundException(nameof(StubModel), request.StubId);
+        }
+
+        if (oldStub.Metadata?.ReadOnly == true)
         {
             throw new ValidationException(string.Format(exceptionFormat, request.StubId));
         }

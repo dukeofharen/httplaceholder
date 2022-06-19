@@ -58,6 +58,7 @@ public class StubController : BaseApiController
     [HttpPut("{stubId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult> Update([FromBody] StubDto stub, string stubId)
     {
