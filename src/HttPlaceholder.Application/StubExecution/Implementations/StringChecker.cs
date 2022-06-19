@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Domain;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
@@ -13,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 internal class StringChecker : IStringChecker
 {
     /// <inheritdoc />
-    public bool CheckString(string input, object condition)
+    public bool CheckString(string input, object condition, out string outputForLogging)
     {
         if (input == null)
         {
@@ -27,7 +23,9 @@ internal class StringChecker : IStringChecker
 
         if (condition is string stringCondition)
         {
-            return StringHelper.IsRegexMatchOrSubstring(input, stringCondition);
+            var regexResult = StringHelper.IsRegexMatchOrSubstring(input, stringCondition);
+            outputForLogging = !regexResult ? stringCondition : string.Empty;
+            return regexResult;
         }
 
         var checkingModel = StringConditionUtilities.ConvertCondition(condition);
@@ -124,6 +122,7 @@ internal class StringChecker : IStringChecker
             result &= !regex.IsMatch(input);
         }
 
+        outputForLogging = result ? string.Empty : checkingModel.ToString();
         return result;
     }
 }

@@ -3,8 +3,15 @@ export function formFormat(form: string): string {
   const formParts = form.split("&");
   for (const formPart of formParts) {
     const parts = formPart.split("=");
-    result +=
-      decodeURIComponent(parts[0]) + "=" + decodeURIComponent(parts[1]) + "\n";
+    if (parts.length > 1) {
+      result +=
+        decodeURIComponent(parts[0]) +
+        "=" +
+        decodeURIComponent(parts[1]) +
+        "\n";
+    } else {
+      result += formPart;
+    }
   }
 
   return result;

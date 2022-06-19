@@ -62,10 +62,10 @@ public class HeaderConditionChecker : IConditionChecker
             }
 
             // Check whether the condition header value is available in the actual headers.
-            if (!_stringChecker.CheckString(headerValue, condition.Value))
+            if (!_stringChecker.CheckString(headerValue, condition.Value, out var outputForLogging))
             {
                 // If the check failed, it means the header is incorrect and the condition should fail.
-                result.Log = $"Header condition '{condition.Key}: {condition.Value}' failed.";
+                result.Log = $"Header condition '{condition.Key}: {outputForLogging}' failed.";
                 break;
             }
 

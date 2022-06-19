@@ -36,10 +36,10 @@
 </template>
 
 <script lang="ts">
-import UploadStubs from "@/components/stub/UploadStubs.vue";
-import ImportCurl from "@/components/stub/ImportCurl.vue";
-import ImportHar from "@/components/stub/ImportHar.vue";
-import ImportOpenApi from "@/components/stub/ImportOpenApi.vue";
+import UploadStubs from "@/components/import/UploadStubs.vue";
+import ImportCurl from "@/components/import/ImportCurl.vue";
+import ImportHar from "@/components/import/ImportHar.vue";
+import ImportOpenApi from "@/components/import/ImportOpenApi.vue";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { defineComponent } from "vue";

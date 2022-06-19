@@ -32,14 +32,14 @@ public class FullPathConditionChecker : IConditionChecker
         }
 
         var path = _httpContextService.FullPath;
-        if (_stringChecker.CheckString(path, fullPathCondition))
+        if (_stringChecker.CheckString(path, fullPathCondition, out var outputForLogging))
         {
             // The path matches the provided regex. Add the stub ID to the resulting list.
             result.ConditionValidation = ConditionValidationType.Valid;
         }
         else
         {
-            result.Log = $"Condition '{fullPathCondition}' did not pass for request.";
+            result.Log = $"Condition '{outputForLogging}' did not pass for request.";
             result.ConditionValidation = ConditionValidationType.Invalid;
         }
 

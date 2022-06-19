@@ -51,8 +51,10 @@ public class HeaderConditionCheckerFacts
         httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
+
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString("bla1", "Value-1"))
+            .Setup(m => m.CheckString("bla1", "Value-1", out outputForLogging))
             .Returns(false);
 
         // Act
@@ -79,11 +81,13 @@ public class HeaderConditionCheckerFacts
         httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
+
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString("bla1", "Value-1"))
+            .Setup(m => m.CheckString("bla1", "Value-1", out outputForLogging))
             .Returns(true);
         stringCheckerMock
-            .Setup(m => m.CheckString("bla2", "Value-2"))
+            .Setup(m => m.CheckString("bla2", "Value-2", out outputForLogging))
             .Returns(false);
 
         // Act
@@ -110,11 +114,13 @@ public class HeaderConditionCheckerFacts
         httpContextServiceMock
             .Setup(m => m.GetHeaders())
             .Returns(headers);
+
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString("bla1", "Value-1"))
+            .Setup(m => m.CheckString("bla1", "Value-1", out outputForLogging))
             .Returns(true);
         stringCheckerMock
-            .Setup(m => m.CheckString("bla2", "Value-2"))
+            .Setup(m => m.CheckString("bla2", "Value-2", out outputForLogging))
             .Returns(true);
 
         // Act

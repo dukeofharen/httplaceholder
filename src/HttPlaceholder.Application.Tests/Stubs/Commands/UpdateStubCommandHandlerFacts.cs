@@ -50,6 +50,29 @@ public class UpdateStubCommandHandlerFacts
     }
 
     [TestMethod]
+    public async Task Handle_OldStubDoesNotExist_ShouldThrowValidationException()
+    {
+        // Arrange
+        var mockStubModelValidator = _mocker.GetMock<IStubModelValidator>();
+        var mockStubContext = _mocker.GetMock<IStubContext>();
+        var handler = _mocker.CreateInstance<UpdateStubCommandHandler>();
+
+        var stub = new StubModel {Id = "stub1"};
+        var request = new UpdateStubCommand("new-stub-id", stub);
+
+        mockStubModelValidator
+            .Setup(m => m.ValidateStubModel(stub))
+            .Returns(Array.Empty<string>());
+        mockStubContext
+            .Setup(m => m.GetStubAsync(request.StubId))
+            .ReturnsAsync((FullStubModel) null);
+
+        // Act / Assert
+        await Assert.ThrowsExceptionAsync<NotFoundException>(() =>
+                handler.Handle(request, CancellationToken.None));
+    }
+
+    [TestMethod]
     public async Task Handle_OldStubIsReadonly_ShouldThrowValidationException()
     {
         // Arrange
@@ -139,6 +162,14 @@ public class UpdateStubCommandHandlerFacts
         mockStubModelValidator
             .Setup(m => m.ValidateStubModel(stub))
             .Returns(Array.Empty<string>());
+
+        var previousStub = new FullStubModel
+        {
+            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}
+        };
+        mockStubContext
+            .Setup(m => m.GetStubAsync(request.StubId))
+            .ReturnsAsync(previousStub);
 
         var existingStub = new FullStubModel
         {

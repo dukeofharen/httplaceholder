@@ -77,14 +77,16 @@ public class FormValueConditionCheckerFacts
         httpContextServiceMock
             .Setup(m => m.GetFormValues())
             .Returns(form);
+
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString("val3", "val1.1"))
+            .Setup(m => m.CheckString("val3", "val1.1", out outputForLogging))
             .Returns(false);
         stringCheckerMock
-            .Setup(m => m.CheckString("val3", "val1.2"))
+            .Setup(m => m.CheckString("val3", "val1.2", out outputForLogging))
             .Returns(false);
         stringCheckerMock
-            .Setup(m => m.CheckString("val4", "val2"))
+            .Setup(m => m.CheckString("val4", "val2", out outputForLogging))
             .Returns(false);
 
         // Act
@@ -115,14 +117,16 @@ public class FormValueConditionCheckerFacts
         httpContextServiceMock
             .Setup(m => m.GetFormValues())
             .Returns(form);
+
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString("val3", "val1.1"))
+            .Setup(m => m.CheckString("val3", "val1.1", out outputForLogging))
             .Returns(true);
         stringCheckerMock
-            .Setup(m => m.CheckString("val3", "val1.2"))
+            .Setup(m => m.CheckString("val3", "val1.2", out outputForLogging))
             .Returns(false);
         stringCheckerMock
-            .Setup(m => m.CheckString("val4", "val2"))
+            .Setup(m => m.CheckString("val4", "val2", out outputForLogging))
             .Returns(true);
 
         // Act
@@ -152,11 +156,13 @@ public class FormValueConditionCheckerFacts
         httpContextServiceMock
             .Setup(m => m.GetFormValues())
             .Returns(form);
+
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString("val 3", "val 3"))
+            .Setup(m => m.CheckString("val 3", "val 3", out outputForLogging))
             .Returns(true);
         stringCheckerMock
-            .Setup(m => m.CheckString("val4", "val4"))
+            .Setup(m => m.CheckString("val4", "val4", out outputForLogging))
             .Returns(true);
 
         // Act

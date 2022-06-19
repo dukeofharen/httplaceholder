@@ -116,16 +116,16 @@
 
 <script lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from "vue";
-import HttpMethodSelector from "@/components/stub/HttpMethodSelector.vue";
-import TenantSelector from "@/components/stub/TenantSelector.vue";
-import HttpStatusCodeSelector from "@/components/stub/HttpStatusCodeSelector.vue";
-import ResponseBodyHelper from "@/components/stub/ResponseBodyHelper.vue";
-import RedirectSelector from "@/components/stub/RedirectSelector.vue";
-import LineEndingSelector from "@/components/stub/LineEndingSelector.vue";
-import ScenarioSelector from "@/components/stub/ScenarioSelector.vue";
-import SetDynamicMode from "@/components/stub/SetDynamicMode.vue";
-import SetPath from "@/components/stub/SetPath.vue";
-import SetFullPath from "@/components/stub/SetFullPath.vue";
+import HttpMethodSelector from "@/components/stubForm/formHelper/HttpMethodSelector.vue";
+import TenantSelector from "@/components/stubForm/formHelper/TenantSelector.vue";
+import HttpStatusCodeSelector from "@/components/stubForm/formHelper/HttpStatusCodeSelector.vue";
+import ResponseBodyHelper from "@/components/stubForm/formHelper/ResponseBodyHelper.vue";
+import RedirectSelector from "@/components/stubForm/formHelper/RedirectSelector.vue";
+import LineEndingSelector from "@/components/stubForm/formHelper/LineEndingSelector.vue";
+import ScenarioSelector from "@/components/stubForm/formHelper/ScenarioSelector.vue";
+import SetDynamicMode from "@/components/stubForm/formHelper/SetDynamicMode.vue";
+import SetPath from "@/components/stubForm/formHelper/SetPath.vue";
+import SetFullPath from "@/components/stubForm/formHelper/SetFullPath.vue";
 import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
 import { useStubFormStore } from "@/store/stubForm";
@@ -136,12 +136,12 @@ import {
 } from "@/domain/stubForm/stub-form-helpers";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 import { ResponseBodyType } from "@/domain/stubForm/response-body-type";
-import ExampleSelector from "@/components/stub/ExampleSelector.vue";
-import SetQuery from "@/components/stub/SetQuery.vue";
-import SetBody from "@/components/stub/SetBody.vue";
-import SetHeader from "@/components/stub/SetHeader.vue";
-import SetForm from "@/components/stub/SetForm.vue";
-import SetHost from "@/components/stub/SetHost.vue";
+import ExampleSelector from "@/components/stubForm/formHelper/ExampleSelector.vue";
+import SetQuery from "@/components/stubForm/formHelper/SetQuery.vue";
+import SetBody from "@/components/stubForm/formHelper/SetBody.vue";
+import SetHeader from "@/components/stubForm/formHelper/SetHeader.vue";
+import SetForm from "@/components/stubForm/formHelper/SetForm.vue";
+import SetHost from "@/components/stubForm/formHelper/SetHost.vue";
 
 export default defineComponent({
   name: "FormHelperSelector",

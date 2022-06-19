@@ -25,10 +25,12 @@ public static class ConfigurationHelper
             select new ConfigMetadataModel
             {
                 Key = (constant.GetValue(constant) as string)?.ToLower(),
+                DisplayKey = constant.GetValue(constant) as string,
                 Description = ParseAttribute<string>(attribute, "Description", true),
                 Example = ParseAttribute<string>(attribute, "Example", true),
                 Path = ParseAttribute<string>(attribute, "ConfigPath", false),
-                IsBoolValue = ParseAttribute<bool?>(attribute, "IsBoolValue", false)
+                IsBoolValue = ParseAttribute<bool?>(attribute, "IsBoolValue", false),
+                ConfigKeyType = ParseAttribute<ConfigKeyType>(attribute, "ConfigKeyType", true)
             }).ToList();
 
     private static TValue ParseAttribute<TValue>(CustomAttributeData attribute, string memberName, bool shouldExist)

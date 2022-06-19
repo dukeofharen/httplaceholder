@@ -35,15 +35,21 @@ export default defineComponent({
   },
   setup(props) {
     // Computed
+    const compare = (
+      a: StubExecutionResultModel,
+      b: StubExecutionResultModel
+    ) => {
+      if (a.stubId > b.stubId) return 1;
+      if (a.stubId < b.stubId) return -1;
+      return 0;
+    };
     const orderedStubExecutionResults = computed(() => {
-      const compare = (a: StubExecutionResultModel) => {
-        if (a.passed) return -1;
-        if (!a.passed) return 1;
-        return 0;
-      };
-      const results = props.stubExecutionResults;
-      results.sort(compare);
-      return results;
+      const allResults = props.stubExecutionResults;
+      const passedResults = allResults.filter((r) => r.passed);
+      passedResults.sort(compare);
+      const otherResults = allResults.filter((r) => !r.passed);
+      otherResults.sort(compare);
+      return passedResults.concat(otherResults);
     });
 
     return {

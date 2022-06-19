@@ -67,6 +67,24 @@ public class FormHandlerFacts
         Assert.IsNull(conditions.Form);
     }
 
+    [TestMethod]
+    public async Task FormHandler_FormReaderReturnsNoValues_ShouldReturnFalse()
+    {
+        // Arrange
+        var request = new HttpRequestModel
+        {
+            Headers = new Dictionary<string, string> { { "Content-Type", Constants.UrlEncodedFormMime } }, Body = "invalid form body"
+        };
+        var conditions = new StubConditionsModel {Body = new[] {"body1", "body2"}};
+
+        // Act
+        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+
+        // Assert
+        Assert.IsFalse(result);
+        Assert.AreEqual(2, conditions.Body.Count());
+    }
+
     [DataTestMethod]
     [DataRow(Constants.UrlEncodedFormMime)]
     [DataRow($"{Constants.UrlEncodedFormMime}; charset=UTF-8")]

@@ -10,6 +10,7 @@ public interface IStringChecker
     /// </summary>
     /// <param name="input">The string to check.</param>
     /// <param name="condition">The condition to check against.</param>
+    /// <param name="outputForLogging">The value that can be used in logging. Only set if the validation failed.</param>
     /// <returns>True if the condition passed; false otherwise.</returns>
-    bool CheckString(string input, object condition);
+    bool CheckString(string input, object condition, out string outputForLogging);
 }

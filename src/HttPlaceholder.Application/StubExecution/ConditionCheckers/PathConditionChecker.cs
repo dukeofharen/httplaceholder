@@ -32,14 +32,14 @@ public class PathConditionChecker : IConditionChecker
         }
 
         var path = _httpContextService.Path;
-        if (_stringChecker.CheckString(path, pathCondition))
+        if (_stringChecker.CheckString(path, pathCondition, out var outputForLogging))
         {
             // The path matches the provided regex. Add the stub ID to the resulting list.
             result.ConditionValidation = ConditionValidationType.Valid;
         }
         else
         {
-            result.Log = $"Condition '{pathCondition}' did not pass for request.";
+            result.Log = $"Condition '{outputForLogging}' did not pass for request.";
             result.ConditionValidation = ConditionValidationType.Invalid;
         }
 

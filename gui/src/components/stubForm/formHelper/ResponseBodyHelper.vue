@@ -21,22 +21,19 @@
     </div>
 
     <div v-if="responseBodyType === ResponseBodyType.base64">
-      <div>
-        <div class="hint">
-          You can upload a <strong>file</strong> for use in the Base64 response
-          or click on "show text input" and insert
-          <strong>plain text</strong> that will be encoded to Base64 on
-          inserting.
-        </div>
-        <upload-button
-          button-text="Upload a file"
-          @uploaded="onUploaded"
-          :result-type="UploadButtonType.Base64"
-        />
-        <button class="btn btn-primary" @click="showBase64TextInput = true">
-          Show text input
-        </button>
+      <div class="hint">
+        You can upload a <strong>file</strong> for use in the Base64 response or
+        click on "show text input" and insert <strong>plain text</strong> that
+        will be encoded to Base64 on inserting.
       </div>
+      <upload-button
+        button-text="Upload a file"
+        @uploaded="onUploaded"
+        :result-type="UploadButtonType.Base64"
+      />
+      <button class="btn btn-primary" @click="showBase64TextInput = true">
+        Show text input
+      </button>
     </div>
 
     <div v-if="showDynamicModeRow">
@@ -80,6 +77,20 @@
       />
     </div>
 
+    <div v-if="responseBodyType === ResponseBodyType.json">
+      <button class="btn btn-primary me-2" @click="prettifyJson">
+        Prettify JSON
+      </button>
+      <button class="btn btn-primary" @click="minifyJson">Minify JSON</button>
+    </div>
+
+    <div v-if="responseBodyType === ResponseBodyType.xml">
+      <button class="btn btn-primary me-2" @click="prettifyXml">
+        Prettify XML
+      </button>
+      <button class="btn btn-primary" @click="minifyXml">Minify XML</button>
+    </div>
+
     <div>
       <button class="btn btn-danger" @click="close">Close</button>
     </div>
@@ -107,6 +118,8 @@ import type { MetadataModel } from "@/domain/metadata/metadata-model";
 import type { FileUploadedModel } from "@/domain/file-uploaded-model";
 import { elementDescriptions } from "@/domain/stubForm/element-descriptions";
 import { UploadButtonType } from "@/domain/upload-button-type";
+import { warning } from "@/utils/toast";
+import xmlFormatter from "xml-formatter";
 
 export default defineComponent({
   name: "ResponseBodyHelper",
@@ -218,6 +231,35 @@ export default defineComponent({
       insert();
       stubFormStore.closeFormHelper();
     };
+    const formatJson = (spaces: number) => {
+      try {
+        responseBody.value = JSON.stringify(
+          JSON.parse(responseBody.value),
+          null,
+          spaces
+        );
+      } catch (e) {
+        warning(`Error occurred while formatting JSON: ${e}`);
+      }
+    };
+    const prettifyJson = () => formatJson(2);
+    const minifyJson = () => formatJson(0);
+
+    const formatXml = (minify: boolean) => {
+      try {
+        const options = minify
+          ? {
+              indentation: "",
+              lineSeparator: "",
+            }
+          : {};
+        responseBody.value = xmlFormatter(responseBody.value, options);
+      } catch (e) {
+        warning(`Error occurred while formatting XML: ${e}`);
+      }
+    };
+    const prettifyXml = () => formatXml(false);
+    const minifyXml = () => formatXml(true);
 
     // Lifecycle
     onMounted(async () => {
@@ -290,6 +332,10 @@ export default defineComponent({
       ResponseBodyType,
       elementDescriptions,
       UploadButtonType,
+      prettifyJson,
+      minifyJson,
+      prettifyXml,
+      minifyXml,
     };
   },
 });

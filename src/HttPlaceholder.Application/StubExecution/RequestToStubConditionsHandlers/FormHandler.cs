@@ -31,11 +31,16 @@ internal class FormHandler : IRequestToStubConditionsHandler
             return Task.FromResult(false);
         }
 
+        var reader = new FormReader(request.Body);
+        var form = reader.ReadForm();
+        if (!form.Any())
+        {
+            return Task.FromResult(false);
+        }
+
         // If the body condition is already set, clear it here.
         conditions.Body = Array.Empty<string>();
 
-        var reader = new FormReader(request.Body);
-        var form = reader.ReadForm();
         conditions.Form = form.Select(f => new StubFormModel
         {
             Key = f.Key, Value = new StubConditionStringCheckingModel {StringEquals = f.Value}

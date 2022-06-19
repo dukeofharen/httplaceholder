@@ -47,8 +47,9 @@ public class FullPathConditionCheckerFacts
             .Setup(m => m.FullPath)
             .Returns(path);
 
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString(path, conditions.Url.FullPath))
+            .Setup(m => m.CheckString(path, conditions.Url.FullPath, out outputForLogging))
             .Returns(false);
 
         // Act
@@ -74,8 +75,9 @@ public class FullPathConditionCheckerFacts
             .Setup(m => m.FullPath)
             .Returns(path);
 
+        string outputForLogging;
         stringCheckerMock
-            .Setup(m => m.CheckString(path, conditions.Url.FullPath))
+            .Setup(m => m.CheckString(path, conditions.Url.FullPath, out outputForLogging))
             .Returns(true);
 
         // Act
