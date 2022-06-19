@@ -4,6 +4,8 @@
 - Added option to response body helper to format JSON and XML strings (https://github.com/dukeofharen/httplaceholder/pull/250/files).
 - Updated YAML input formatting so a neat error message is returned if the YAML is invalid (https://github.com/dukeofharen/httplaceholder/pull/250/files).
 - Added option to go to stub when viewing stub execution result under request (https://github.com/dukeofharen/httplaceholder/pull/250/files).
+- Updated form body viewer in UI to correctly show request body if the sent body isn't actually a valid form body (https://github.com/dukeofharen/httplaceholder/pull/250/files).
+- Updated "request to stub" handler for form body. When form handler yields no results (e.g. form body is invalid) the handler will not be executed (https://github.com/dukeofharen/httplaceholder/pull/250/files).
 
 # BREAKING CHANGES
 -
