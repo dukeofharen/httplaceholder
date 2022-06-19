@@ -15,6 +15,11 @@
       <span>)</span>
     </template>
     <template v-slot:accordion-body>
+      <span
+        ><button class="btn btn-success btn-sm" @click="goToStub">
+          Go to stub
+        </button></span
+      >
       <div v-if="!result.conditions.length">
         No condition checkers executed for this stub.
       </div>
@@ -49,6 +54,7 @@
 import { defineComponent, type PropType } from "vue";
 import type { StubExecutionResultModel } from "@/domain/request/stub-execution-result-model";
 import { ConditionValidationType } from "@/domain/request/enums/condition-validation-type";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: "StubExecutionResult",
@@ -62,8 +68,17 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
-    return { ConditionValidationType };
+  setup(props) {
+    const router = useRouter();
+
+    // Methods
+    const goToStub = async () => {
+      await router.push({
+        name: "Stubs",
+        query: { filter: props.result.stubId },
+      });
+    };
+    return { ConditionValidationType, goToStub };
   },
 });
 </script>
