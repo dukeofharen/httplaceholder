@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Common;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
@@ -29,7 +30,7 @@ internal class UtcNowResponseVariableParsingHandler : IResponseVariableParsingHa
     public string Example => "((utcnow:yyyy-MM-dd HH:mm:ss))";
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches)
+    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
         if (!enumerable.Any())

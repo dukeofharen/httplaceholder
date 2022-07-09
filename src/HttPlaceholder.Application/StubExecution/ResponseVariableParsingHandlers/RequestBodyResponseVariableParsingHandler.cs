@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
@@ -27,7 +28,7 @@ internal class RequestBodyResponseVariableParsingHandler : IResponseVariablePars
     public string Example => "((request_body))";
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches)
+    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var matchArray = matches as Match[] ?? matches.ToArray();
         if (!matchArray.Any())

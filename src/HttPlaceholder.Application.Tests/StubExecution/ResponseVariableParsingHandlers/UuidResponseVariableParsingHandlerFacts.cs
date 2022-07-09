@@ -2,6 +2,7 @@
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
@@ -19,7 +20,7 @@ public class UuidResponseVariableParsingHandlerFacts
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = _parsingHandler.Parse(input, matches);
+        var result = _parsingHandler.Parse(input, matches, new StubModel());
 
         // assert
         var parts = result.Split(' ');

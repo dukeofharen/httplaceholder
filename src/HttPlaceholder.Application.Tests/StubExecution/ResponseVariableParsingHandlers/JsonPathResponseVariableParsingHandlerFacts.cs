@@ -1,6 +1,7 @@
 ﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.AutoMock;
 
@@ -20,7 +21,7 @@ public class JsonPathResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches);
+        var result = handler.Parse(input, matches, new StubModel());
 
         // Assert
         Assert.AreEqual(input, result);
@@ -41,7 +42,7 @@ public class JsonPathResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches);
+        var result = handler.Parse(input, matches, new StubModel());
 
         // Assert
         Assert.AreEqual(" ", result);
@@ -71,7 +72,7 @@ public class JsonPathResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches);
+        var result = handler.Parse(input, matches, new StubModel());
 
         // Assert
         Assert.AreEqual("Value2 Value1", result);

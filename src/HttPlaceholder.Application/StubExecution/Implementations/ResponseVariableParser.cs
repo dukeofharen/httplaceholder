@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
@@ -22,7 +23,7 @@ internal class ResponseVariableParser : IResponseVariableParser
     }
 
     /// <inheritdoc/>
-    public string Parse(string input)
+    public string Parse(string input, StubModel stub)
     {
         var matches = VarRegex.Matches(input).Cast<Match>().ToArray();
         foreach (var handler in _handlers)
@@ -30,7 +31,7 @@ internal class ResponseVariableParser : IResponseVariableParser
             var handlerMatches = matches
                 .Where(m => m.Groups.Count > 1 && string.Equals(m.Groups[1].Value, handler.Name,
                     StringComparison.OrdinalIgnoreCase));
-            input = handler.Parse(input, handlerMatches);
+            input = handler.Parse(input, handlerMatches, stub);
         }
 
         return input;
