@@ -4533,6 +4533,113 @@
 									"response": []
 								},
 								{
+									"name": "[Create stub] Scenario state",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-scenario-state\nscenario: dynamic-mode-scenario-state\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /dynamic-mode-scenario-state\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Value: '((scenario_state)) ((scenario_state:scenario123))'\n  text: '((scenario_state)) ((scenario_state:scenario123))'"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Set scenario dynamic-mode-scenario-state",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"state\": \"cool_state_1\",\n    \"hitCount\": 10\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios/dynamic-mode-scenario-state",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios",
+												"dynamic-mode-scenario-state"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Set scenario scenario123",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"state\": \"cool_state_2\",\n    \"hitCount\": 10\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios/scenario123",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios",
+												"scenario123"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Test UUID",
 									"event": [
 										{
@@ -4967,6 +5074,43 @@
 											"raw": "{{rootUrl}}dynamic-mode-jsonpath",
 											"host": [
 												"{{rootUrl}}dynamic-mode-jsonpath"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test scenario state",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.expect(pm.response.text()).to.eql(\"cool_state_1 cool_state_2\");",
+													"});",
+													"",
+													"pm.test(\"Contains correct header\", function () {",
+													"    pm.expect(pm.response.headers.get('X-Value')).to.eql(\"cool_state_1 cool_state_2\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Forwarded-For",
+												"type": "text",
+												"value": "11.22.33.44"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-scenario-state",
+											"host": [
+												"{{rootUrl}}dynamic-mode-scenario-state"
 											]
 										}
 									},
