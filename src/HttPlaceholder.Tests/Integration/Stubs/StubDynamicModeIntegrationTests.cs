@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Dto.v1.Scenarios;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
@@ -270,5 +271,26 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         Assert.AreEqual(expectedResult, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         Assert.AreEqual("Value1", response.Headers.Single(h => h.Key == "X-Value").Value.Single());
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_RegularGet_Dynamic_ScenarioState()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}dynamic-mode-scenario-state.txt";
+        await SetScenario("dynamic-mode-scenario-state", new ScenarioStateInputDto {State = "cool_state_1"});
+        await SetScenario("scenario123", new ScenarioStateInputDto {State = "cool_state_2"});
+        const string expectedResult = $"cool_state_1 cool_state_2";
+
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual(expectedResult, content);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
+
+        Assert.AreEqual(expectedResult, response.Headers.Single(h => h.Key == "X-Value").Value.Single());
     }
 }
