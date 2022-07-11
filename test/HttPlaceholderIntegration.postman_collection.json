@@ -4560,6 +4560,33 @@
 									"response": []
 								},
 								{
+									"name": "[Create stub] Scenario hit count",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-scenario-hitcount\nscenario: dynamic-mode-scenario-hitcount\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /dynamic-mode-scenario-hitcount\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Value: '((scenario_hitcount)) ((scenario_hitcount:scenario123))'\n  text: '((scenario_hitcount)) ((scenario_hitcount:scenario123))'"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "Set scenario dynamic-mode-scenario-state",
 									"event": [
 										{
@@ -4594,6 +4621,46 @@
 											"path": [
 												"scenarios",
 												"dynamic-mode-scenario-state"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Set scenario dynamic-mode-scenario-hitcount",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"state\": \"cool_state_111\",\n    \"hitCount\": 4\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/scenarios/dynamic-mode-scenario-hitcount",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"scenarios",
+												"dynamic-mode-scenario-hitcount"
 											]
 										}
 									},
@@ -5111,6 +5178,43 @@
 											"raw": "{{rootUrl}}dynamic-mode-scenario-state",
 											"host": [
 												"{{rootUrl}}dynamic-mode-scenario-state"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test scenario hit count",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.expect(pm.response.text()).to.eql(\"5 10\");",
+													"});",
+													"",
+													"pm.test(\"Contains correct header\", function () {",
+													"    pm.expect(pm.response.headers.get('X-Value')).to.eql(\"5 10\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Forwarded-For",
+												"type": "text",
+												"value": "11.22.33.44"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-scenario-hitcount",
+											"host": [
+												"{{rootUrl}}dynamic-mode-scenario-hitcount"
 											]
 										}
 									},
