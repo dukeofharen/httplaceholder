@@ -293,4 +293,25 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
 
         Assert.AreEqual(expectedResult, response.Headers.Single(h => h.Key == "X-Value").Value.Single());
     }
+
+    [TestMethod]
+    public async Task StubIntegration_RegularGet_Dynamic_ScenarioHitCount()
+    {
+        // arrange
+        var url = $"{TestServer.BaseAddress}dynamic-mode-scenario-hitcount.txt";
+        await SetScenario("dynamic-mode-scenario-hitcount", new ScenarioStateInputDto {HitCount = 3});
+        await SetScenario("scenario123", new ScenarioStateInputDto {HitCount = 123});
+        const string expectedResult = "4 123";
+
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+        // act / assert
+        using var response = await Client.SendAsync(request);
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual(expectedResult, content);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
+
+        Assert.AreEqual(expectedResult, response.Headers.Single(h => h.Key == "X-Value").Value.Single());
+    }
 }
