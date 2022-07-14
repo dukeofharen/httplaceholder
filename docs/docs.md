@@ -2227,6 +2227,7 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
   * Dynamic mode - client IP: [.yml](samples/14.8-dynamic-mode-client-ip.yml)
   * Dynamic mode - current local or UTC date and time: [.yml](samples/14.9-dynamic-mode-datetime-now.yml)
   * Dynamic mode - JSONPath: [.yml](samples/14.10-dynamic-mode-jsonpath.yml)
+  * Dynamic mode - scenario state / hit count: [.yml](samples/14.11-dynamic-mode-scenario-state-hitcount.yml)
 * Scenarios:
   * Scenarios - hit counter: [.yml](samples/20.1-scenario-hit-counter.yml)
   * Scenarios - state checking and setting: [.yml](samples/20.2-state-checking.yml)

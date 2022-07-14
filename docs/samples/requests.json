@@ -923,6 +923,81 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "11 Scenario state / hit count",
+					"item": [
+						{
+							"name": "Set scenario scenario123",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 204\", function () {",
+											"    pm.response.to.have.status(204);",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"state\": \"cool_state_1\",\n    \"hitCount\": 10\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/scenarios/scenario123",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"scenarios",
+										"scenario123"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "State",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-mode-scenario-state.txt",
+									"host": [
+										"{{rootUrl}}dynamic-mode-scenario-state",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Hit count",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-mode-scenario-hitcount.txt",
+									"host": [
+										"{{rootUrl}}dynamic-mode-scenario-hitcount",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
