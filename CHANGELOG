@@ -1,13 +1,14 @@
 [vnext]
-- Order stub execution results in UI alphabetically (https://github.com/dukeofharen/httplaceholder/pull/250/files).
-- Sort and group configuration items in help page in terminal (https://github.com/dukeofharen/httplaceholder/pull/250/files).
-- Added option to response body helper to format JSON and XML strings (https://github.com/dukeofharen/httplaceholder/pull/250/files).
-- Updated YAML input formatting so a neat error message is returned if the YAML is invalid (https://github.com/dukeofharen/httplaceholder/pull/250/files).
-- Added option to go to stub when viewing stub execution result under request (https://github.com/dukeofharen/httplaceholder/pull/250/files).
-- Updated form body viewer in UI to correctly show request body if the sent body isn't actually a valid form body (https://github.com/dukeofharen/httplaceholder/pull/250/files).
-- Updated "request to stub" handler for form body. When form handler yields no results (e.g. form body is invalid) the handler will not be executed (https://github.com/dukeofharen/httplaceholder/pull/250/files).
-- Updated "update stub" endpoint so an HTTP 404 is returned when the stub ID in the URL does not exist (https://github.com/dukeofharen/httplaceholder/pull/250/files).
-- Fixed logging for condition checkers (https://github.com/dukeofharen/httplaceholder/pull/250/files).
+- Order stub execution results in UI alphabetically (https://github.com/dukeofharen/httplaceholder/pull/250).
+- Sort and group configuration items in help page in terminal (https://github.com/dukeofharen/httplaceholder/pull/250).
+- Added option to response body helper to format JSON and XML strings (https://github.com/dukeofharen/httplaceholder/pull/250).
+- Updated YAML input formatting so a neat error message is returned if the YAML is invalid (https://github.com/dukeofharen/httplaceholder/pull/250).
+- Added option to go to stub when viewing stub execution result under request (https://github.com/dukeofharen/httplaceholder/pull/250).
+- Updated form body viewer in UI to correctly show request body if the sent body isn't actually a valid form body (https://github.com/dukeofharen/httplaceholder/pull/250).
+- Updated "request to stub" handler for form body. When form handler yields no results (e.g. form body is invalid) the handler will not be executed (https://github.com/dukeofharen/httplaceholder/pull/250).
+- Updated "update stub" endpoint so an HTTP 404 is returned when the stub ID in the URL does not exist (https://github.com/dukeofharen/httplaceholder/pull/250).
+- Fixed logging for condition checkers (https://github.com/dukeofharen/httplaceholder/pull/250).
+- Added response body parsers for scenario state and hit count (https://github.com/dukeofharen/httplaceholder/issues/182).
 
 # BREAKING CHANGES
 - Update stub call now returns HTTP 404 if the stub ID in the URL does not exist. This was HTTP 204 before.

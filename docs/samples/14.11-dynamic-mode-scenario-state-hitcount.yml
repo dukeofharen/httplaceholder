@@ -1,0 +1,30 @@
+# Response variable handler for inserting scenario state or scenario hit count in the response body.
+- id: dynamic-mode-scenario-state
+  scenario: dynamic-mode-scenario-state
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /dynamic-mode-scenario-state.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Value: 'Current scenario state: ((scenario_state)), scenario123 state: ((scenario_state:scenario123))'
+    text: |
+      Current scenario state: ((scenario_state))
+      scenario123 state: ((scenario_state:scenario123))
+
+- id: dynamic-mode-scenario-hitcount
+  scenario: dynamic-mode-scenario-hitcount
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /dynamic-mode-scenario-hitcount.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Value: 'Current scenario hit count: ((scenario_hitcount)), scenario123 hit count: ((scenario_hitcount:scenario123))'
+    text: |
+      Current scenario hit count: ((scenario_hitcount))
+      scneario123 hit count: ((scenario_hitcount:scenario123))

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
@@ -20,7 +21,7 @@ internal class UuidResponseVariableParsingHandler : IResponseVariableParsingHand
     public string Example => "((uuid))";
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches) =>
+    public string Parse(string input, IEnumerable<Match> matches, StubModel stub) =>
         (from match
                 in matches
             where match.Groups.Count == 3

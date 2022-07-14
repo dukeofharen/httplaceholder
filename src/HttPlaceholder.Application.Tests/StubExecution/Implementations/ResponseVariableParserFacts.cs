@@ -2,6 +2,7 @@
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Match = System.Text.RegularExpressions.Match;
@@ -40,28 +41,29 @@ public class ResponseVariableParserFacts
     }
 
     [TestMethod]
-    public void VaribaleParser_Parse_HappyFlow()
+    public void VariableParser_Parse_HappyFlow()
     {
         // arrange
         const string input = @"((handler1:value1)) ((handler2))
 ((handler1:bla))
 ((handler-x))";
 
+        var stub = new StubModel();
         _handler1
             .Setup(m =>
-                m.Parse(input, It.Is<IEnumerable<Match>>(matches => matches.Any(match => match.Groups[2].Value == "value1" || match.Groups[2].Value == "bla"))))
-            .Returns<string, IEnumerable<Match>>((r, _) => r);
+                m.Parse(input, It.Is<IEnumerable<Match>>(matches => matches.Any(match => match.Groups[2].Value == "value1" || match.Groups[2].Value == "bla")), stub))
+            .Returns<string, IEnumerable<Match>, StubModel>((r, _, _) => r);
         _handler2
             .Setup(m =>
-                m.Parse(input, It.Is<IEnumerable<Match>>(matches => matches.Any(match => string.IsNullOrWhiteSpace(match.Groups[2].Value)))))
-            .Returns<string, IEnumerable<Match>>((r, _) => r);
+                m.Parse(input, It.Is<IEnumerable<Match>>(matches => matches.Any(match => string.IsNullOrWhiteSpace(match.Groups[2].Value))), stub))
+            .Returns<string, IEnumerable<Match>, StubModel>((r, _, _) => r);
 
         // act
-        var result = _parser.Parse(input);
+        var result = _parser.Parse(input, stub);
 
         // assert
         Assert.AreEqual(input, result);
-        _handler1.Verify(m => m.Parse(input, It.IsAny<IEnumerable<Match>>()), Times.Once);
-        _handler2.Verify(m => m.Parse(input, It.IsAny<IEnumerable<Match>>()), Times.Once);
+        _handler1.Verify(m => m.Parse(input, It.IsAny<IEnumerable<Match>>(), stub), Times.Once);
+        _handler2.Verify(m => m.Parse(input, It.IsAny<IEnumerable<Match>>(), stub), Times.Once);
     }
 }

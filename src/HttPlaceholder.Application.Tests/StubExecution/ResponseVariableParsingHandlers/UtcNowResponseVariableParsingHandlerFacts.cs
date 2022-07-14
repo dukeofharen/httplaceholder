@@ -3,6 +3,7 @@ using System.Globalization;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Common;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -36,7 +37,7 @@ public class UtcNowResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = _parsingHandler.Parse(input, matches);
+        var result = _parsingHandler.Parse(input, matches, new StubModel());
 
         // Assert
         Assert.AreEqual("21-08-2019 20:29:17", result);
@@ -50,7 +51,7 @@ public class UtcNowResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = _parsingHandler.Parse(input, matches);
+        var result = _parsingHandler.Parse(input, matches, new StubModel());
 
         // Assert
         Assert.AreEqual(_now.ToString(CultureInfo.InvariantCulture), result);

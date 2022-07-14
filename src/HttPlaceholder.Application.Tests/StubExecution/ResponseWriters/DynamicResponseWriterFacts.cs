@@ -58,7 +58,7 @@ public class DynamicResponseWriterFacts
 
         // assert
         Assert.IsTrue(result.Executed);
-        _variableParserMock.Verify(m => m.Parse(It.IsAny<string>()), Times.Never);
+        _variableParserMock.Verify(m => m.Parse(It.IsAny<string>(), stub), Times.Never);
     }
 
     [TestMethod]
@@ -79,15 +79,15 @@ public class DynamicResponseWriterFacts
         };
 
         _variableParserMock
-            .Setup(m => m.Parse(It.IsAny<string>()))
-            .Returns<string>(i => i);
+            .Setup(m => m.Parse(It.IsAny<string>(), stub))
+            .Returns<string, StubModel>((i, _) => i);
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response);
 
         // assert
         Assert.IsTrue(result.Executed);
-        _variableParserMock.Verify(m => m.Parse(body), Times.Once);
+        _variableParserMock.Verify(m => m.Parse(body, stub), Times.Once);
     }
 
     [TestMethod]
@@ -112,7 +112,7 @@ public class DynamicResponseWriterFacts
 
         // assert
         Assert.IsTrue(result.Executed);
-        _variableParserMock.Verify(m => m.Parse(It.IsAny<string>()), Times.Never);
+        _variableParserMock.Verify(m => m.Parse(It.IsAny<string>(), stub), Times.Never);
     }
 
     [TestMethod]
@@ -138,16 +138,16 @@ public class DynamicResponseWriterFacts
         };
 
         _variableParserMock
-            .Setup(m => m.Parse(It.IsAny<string>()))
-            .Returns<string>(i => i);
+            .Setup(m => m.Parse(It.IsAny<string>(), stub))
+            .Returns<string, StubModel>((i, _) => i);
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response);
 
         // assert
         Assert.IsTrue(result.Executed);
-        _variableParserMock.Verify(m => m.Parse(body), Times.Once);
-        _variableParserMock.Verify(m => m.Parse("Header1"), Times.Once);
-        _variableParserMock.Verify(m => m.Parse("Header2"), Times.Once);
+        _variableParserMock.Verify(m => m.Parse(body, stub), Times.Once);
+        _variableParserMock.Verify(m => m.Parse("Header1", stub), Times.Once);
+        _variableParserMock.Verify(m => m.Parse("Header2", stub), Times.Once);
     }
 }

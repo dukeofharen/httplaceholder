@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
@@ -23,7 +24,7 @@ internal class RootUrlResponseVariableParsingHandler : IResponseVariableParsingH
 
     public string Example => "((root_url))";
 
-    public string Parse(string input, IEnumerable<Match> matches)
+    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
         if (!enumerable.Any())

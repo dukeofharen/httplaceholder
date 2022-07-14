@@ -2,15 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using HttPlaceholder.Dto.v1.Scenarios;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
@@ -79,5 +83,17 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
                 (typeof(IFileService), FileServiceMock.Object), (typeof(IDateTime), DateTimeMock.Object),
                 (typeof(IHttpClientFactory), mockHttpClientFactory.Object)
             }, new IStubSource[] {_stubSource, _writableStubSourceMock.Object});
+    }
+
+    protected async Task SetScenario(string scenarioName, ScenarioStateInputDto scenario)
+    {
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Put,
+            RequestUri = new Uri($"{BaseAddress}ph-api/scenarios/{scenarioName}"),
+            Content = new StringContent(JsonConvert.SerializeObject(scenario), Encoding.UTF8, Constants.JsonMime)
+        };
+        var response = await Client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
     }
 }

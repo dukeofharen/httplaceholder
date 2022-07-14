@@ -2,6 +2,7 @@
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
+using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.AutoMock;
 
@@ -32,7 +33,7 @@ public class EncodedQueryStringResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = parsingHandler.Parse(input, matches);
+        var result = parsingHandler.Parse(input, matches, new StubModel());
 
         // Assert
         Assert.AreEqual(expectedResult, result);

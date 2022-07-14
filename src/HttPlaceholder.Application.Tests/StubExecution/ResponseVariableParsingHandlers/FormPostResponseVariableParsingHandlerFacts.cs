@@ -2,6 +2,7 @@
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
+using HttPlaceholder.Domain;
 using Microsoft.Extensions.Primitives;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -40,7 +41,7 @@ public class FormPostResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = parsingHandler.Parse(input, matches);
+        var result = parsingHandler.Parse(input, matches, new StubModel());
 
         // Assert
         Assert.AreEqual(expectedResult, result);
@@ -62,7 +63,7 @@ public class FormPostResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = parsingHandler.Parse(input, matches);
+        var result = parsingHandler.Parse(input, matches, new StubModel());
 
         // Assert
         Assert.AreEqual(expectedResult, result);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Domain;
 using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -29,7 +30,7 @@ internal class FormPostResponseVariableParsingHandler : IResponseVariableParsing
     public string Example => "((form_post:form_key))";
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches)
+    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
         if (!enumerable.Any())

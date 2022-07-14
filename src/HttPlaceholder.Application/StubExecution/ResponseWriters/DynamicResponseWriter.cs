@@ -32,7 +32,7 @@ internal class DynamicResponseWriter : IResponseWriter
         // Try to parse and replace the variables in the body.
         if (!response.BodyIsBinary && response.Body != null)
         {
-            var parsedBody = _responseVariableParser.Parse(Encoding.UTF8.GetString(response.Body));
+            var parsedBody = _responseVariableParser.Parse(Encoding.UTF8.GetString(response.Body), stub);
             response.Body = Encoding.UTF8.GetBytes(parsedBody);
         }
 
@@ -40,7 +40,7 @@ internal class DynamicResponseWriter : IResponseWriter
         var keys = response.Headers.Keys.ToArray();
         foreach (var key in keys)
         {
-            response.Headers[key] = _responseVariableParser.Parse(response.Headers[key]);
+            response.Headers[key] = _responseVariableParser.Parse(response.Headers[key], stub);
         }
 
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));

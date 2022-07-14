@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -35,7 +36,7 @@ internal class JsonPathResponseVariableParsingHandler : IResponseVariableParsing
     public string Example => "((jsonpath:$.values[1].title))";
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches)
+    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var matchArray = matches as Match[] ?? matches.ToArray();
         if (!matchArray.Any())

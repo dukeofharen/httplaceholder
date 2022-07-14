@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
@@ -27,7 +28,7 @@ internal class EncodedQueryStringResponseVariableParsingHandler : IResponseVaria
     public string Example => "((query_encoded:query_string_key))";
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches)
+    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var queryDict = _httpContextService.GetQueryStringDictionary();
         foreach (var match in matches)

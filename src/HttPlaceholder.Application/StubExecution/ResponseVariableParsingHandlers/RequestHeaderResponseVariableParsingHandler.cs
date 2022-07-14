@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
@@ -27,7 +28,7 @@ internal class RequestHeaderResponseVariableParsingHandler : IResponseVariablePa
     public string Example => "((request_header:X-Api-Key))";
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches)
+    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var headers = _httpContextService.GetHeaders();
         foreach (var match in matches)

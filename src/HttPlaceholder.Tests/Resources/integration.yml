@@ -488,6 +488,32 @@
       X-Value: '((jsonpath:$.values[0].title))'
     text: 'JSONPath result: ((jsonpath:$.values[1].title))'
 
+- id: dynamic-mode-scenario-state
+  scenario: dynamic-mode-scenario-state
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /dynamic-mode-scenario-state.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Value: '((scenario_state)) ((scenario_state:scenario123))'
+    text: '((scenario_state)) ((scenario_state:scenario123))'
+
+- id: dynamic-mode-scenario-hitcount
+  scenario: dynamic-mode-scenario-hitcount
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /dynamic-mode-scenario-hitcount.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Value: '((scenario_hitcount)) ((scenario_hitcount:scenario123))'
+    text: '((scenario_hitcount)) ((scenario_hitcount:scenario123))'
+
 - id: proxy-test-1
   conditions:
     method: GET
