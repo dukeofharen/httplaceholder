@@ -64,6 +64,7 @@
     - [Client IP](#client-ip)
     - [Local and UTC date & time](#local-and-utc-date--time)
     - [JSONPath](#jsonpath-parser)
+    - [Scenario state / hit count](#scenario-state--hit-count)
   - [Reverse proxy](#reverse-proxy)
 - **[REST API](#rest-api)**
 - **[Configuration](#configuration)**
@@ -1818,6 +1819,76 @@ POST
 The response will look like this:
 ```
 Value2
+```
+
+### Scenario state / hit count
+
+These body parsers can be used to insert either the scenario state or the scenario hit count in the response. Read more about scenarios [here](#request-scenario). By default, when you insert any of the body parsers, the state or hit count of the scenario the stub is in will be looked up. You can pass the scenario name of another scenario to fetch the values for that scenario.
+
+```yml
+- id: dynamic-mode-scenario-state
+  scenario: dynamic-mode-scenario-state
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /dynamic-mode-scenario-state.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Value: 'Current scenario state: ((scenario_state)), scenario123 state: ((scenario_state:scenario123))'
+    text: |
+      Current scenario state: ((scenario_state))
+      scenario123 state: ((scenario_state:scenario123))
+
+- id: dynamic-mode-scenario-hitcount
+  scenario: dynamic-mode-scenario-hitcount
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /dynamic-mode-scenario-hitcount.txt
+  response:
+    enableDynamicMode: true
+    headers:
+      X-Value: 'Current scenario hit count: ((scenario_hitcount)), scenario123 hit count: ((scenario_hitcount:scenario123))'
+    text: |
+      Current scenario hit count: ((scenario_hitcount))
+      scneario123 hit count: ((scenario_hitcount:scenario123))
+```
+
+Let's say the state of scenario `scenario123` is "Waiting" and the hit count is "10".
+
+**URL**
+```
+http://localhost:5000/dynamic-mode-scenario-state.txt
+```
+
+**Method**
+```
+GET
+```
+
+The response will look like this:
+```
+Current scenario state: Start
+scenario123 state: Waiting
+```
+
+**URL**
+```
+http://localhost:5000/dynamic-mode-scenario-hitcount.txt
+```
+
+**Method**
+```
+GET
+```
+
+The response will look like this:
+```
+Current scenario hit count: 1
+scenario123 hit count: 10
 ```
 
 ## Reverse proxy
