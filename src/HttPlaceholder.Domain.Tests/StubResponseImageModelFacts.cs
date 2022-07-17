@@ -10,7 +10,7 @@ public class StubResponseImageModelFacts
     public void Hash_ShouldCalculateCorrectHash()
     {
         // Arrange
-        var model = new StubResponseImageModel
+        var model = new StubResponseImageModelx
         {
             Height = 512,
             Text = "Test text",

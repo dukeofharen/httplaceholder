@@ -39,6 +39,11 @@ test:
   script:
     - cd src
     - dotnet test
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-ui:
   image: $NODE_IMAGE
