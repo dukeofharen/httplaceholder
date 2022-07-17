@@ -6,17 +6,25 @@ variables:
   DOCKER_IMAGE: docker:latest
 
 stages:
-  - prepare-version
+  - prepare
   - test
   - build-ui
   - build-server
   - build-docs
+  - post-build
   - pre-publish
   - publish
 
+set-build-pending:
+  image: $DEBIAN_IMAGE
+  stage: prepare
+  script:
+    - chmod +x ./scripts/build/set-build-status.sh
+    - ./scripts/build/set-build-status.sh pending
+
 set-version:
   image: $DEBIAN_IMAGE
-  stage: prepare-version
+  stage: prepare
   script:
     - chmod +x ./scripts/build/set-version.sh
     - ./scripts/build/set-version.sh "$CI_PIPELINE_IID"
@@ -31,6 +39,11 @@ test:
   script:
     - cd src
     - dotnet test
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-ui:
   image: $NODE_IMAGE
@@ -42,6 +55,11 @@ build-ui:
     paths:
       - gui/dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-windows:
   image: $DOTNET_IMAGE
@@ -55,6 +73,11 @@ build-windows:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-linux:
   image: $DOTNET_IMAGE
@@ -67,6 +90,11 @@ build-linux:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-osx:
   image: $DOTNET_IMAGE
@@ -79,6 +107,11 @@ build-osx:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-tool:
   image: $DOTNET_IMAGE
@@ -91,6 +124,11 @@ build-tool:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-nuget-client:
   image: $DOTNET_IMAGE
@@ -103,6 +141,11 @@ build-nuget-client:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 create-open-api-file:
   image: $DOTNET_IMAGE
@@ -114,6 +157,11 @@ create-open-api-file:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 create-nuget-client-docs:
   image: $DEBIAN_IMAGE
@@ -125,6 +173,18 @@ create-nuget-client-docs:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
+
+set-build-success:
+  image: $DEBIAN_IMAGE
+  stage: post-build
+  script:
+    - chmod +x ./scripts/build/set-build-status.sh
+    - ./scripts/build/set-build-status.sh success
 
 pre-publish-check:
   image: $DEBIAN_IMAGE
