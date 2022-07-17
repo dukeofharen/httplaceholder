@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo apt install curl
 STATE="${1-failure}"
 DESCRIPTION=""
 if [ "$STATE" = "failure" ] || [ "$STATE" = "error" ]; then
