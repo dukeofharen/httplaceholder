@@ -18,4 +18,4 @@ curl \
   -H "Accept: application/vnd.github+json" \
   -H "Authorization: token $GITHUB_API_KEY" \
   https://api.github.com/repos/dukeofharen/httplaceholder/statuses/$CI_COMMIT_SHA \
-  -d "{\"state\":\"$STATE\",\"target_url\":\"https://gitlab.com/ducode/httplaceholder/-/pipelines/$CI_CONCURRENT_ID\",\"description\":\"$DESCRIPTION\",\"context\":\"continuous-integration/gitlab-ci\"}"
+  -d "{\"state\":\"$STATE\",\"target_url\":\"https://gitlab.com/ducode/httplaceholder/-/pipelines/$CI_PIPELINE_ID\",\"description\":\"$DESCRIPTION\",\"context\":\"continuous-integration/gitlab-ci\"}"
