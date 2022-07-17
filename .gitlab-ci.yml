@@ -55,6 +55,11 @@ build-ui:
     paths:
       - gui/dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-windows:
   image: $DOTNET_IMAGE
@@ -68,6 +73,11 @@ build-windows:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-linux:
   image: $DOTNET_IMAGE
@@ -80,6 +90,11 @@ build-linux:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-osx:
   image: $DOTNET_IMAGE
@@ -92,6 +107,11 @@ build-osx:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-tool:
   image: $DOTNET_IMAGE
@@ -104,6 +124,11 @@ build-tool:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-nuget-client:
   image: $DOTNET_IMAGE
@@ -116,6 +141,11 @@ build-nuget-client:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 create-open-api-file:
   image: $DOTNET_IMAGE
@@ -127,6 +157,11 @@ create-open-api-file:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 create-nuget-client-docs:
   image: $DEBIAN_IMAGE
@@ -138,6 +173,11 @@ create-nuget-client-docs:
     paths:
       - dist
     expire_in: 1 week
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 set-build-success:
   image: $DEBIAN_IMAGE
