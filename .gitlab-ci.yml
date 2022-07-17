@@ -11,6 +11,7 @@ stages:
   - build-ui
   - build-server
   - build-docs
+  - post-build
   - pre-publish
   - publish
 
@@ -132,6 +133,13 @@ create-nuget-client-docs:
     paths:
       - dist
     expire_in: 1 week
+
+set-build-success:
+  image: $DEBIAN_IMAGE
+  stage: post-build
+  script:
+    - chmod +x ./scripts/build/set-build-status.sh
+    - ./scripts/build/set-build-status.sh success
 
 pre-publish-check:
   image: $DEBIAN_IMAGE
