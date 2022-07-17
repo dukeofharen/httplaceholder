@@ -1,4 +1,5 @@
 #!/bin/bash
+apt update
 apt install curl
 STATE="${1-failure}"
 DESCRIPTION=""
