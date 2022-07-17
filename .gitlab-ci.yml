@@ -6,7 +6,7 @@ variables:
   DOCKER_IMAGE: docker:latest
 
 stages:
-  - prepare-version
+  - prepare
   - test
   - build-ui
   - build-server
@@ -14,9 +14,16 @@ stages:
   - pre-publish
   - publish
 
+set-build-pending:
+  image: $DEBIAN_IMAGE
+  stage: prepare
+  script:
+    - chmod +x ./scripts/build/set-build-status.sh
+    - ./scripts/build/set-build-status.sh pending
+
 set-version:
   image: $DEBIAN_IMAGE
-  stage: prepare-version
+  stage: prepare
   script:
     - chmod +x ./scripts/build/set-version.sh
     - ./scripts/build/set-version.sh "$CI_PIPELINE_IID"
