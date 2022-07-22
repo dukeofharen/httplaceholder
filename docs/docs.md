@@ -8,6 +8,7 @@
   - [Docker](#docker)
   - [Hosting](#hosting)
 - **[Getting started](#getting-started)**
+- **[Stub anatomy](#stub-anatomy)**
 - **[Request conditions](#request-conditions)**
   - [General](#general-stub-info)
   - [Description](#description)
@@ -306,6 +307,44 @@ HttPlaceholder supports HTTPS. See [configuration](#configuration) for more info
   ![](img/request_in_ui.png)
 
 For more sophisticated examples, go to the paragraph [samples](#samples) to view samples for all supported HTTP condition checkers and response writers.
+
+# Stub anatomy
+
+A stub is simply a piece of YAML that contains instructions for HttPlaceholder for how the request should look like and what the response should look like when a request was matched against this stub. Besides this, some extra metadata can be provided to the stub. For reference, take a look at the example below.
+
+```yml
+- id: situation-03
+  tenant: users-api
+  scenario: users-api-scenario
+  priority: 1
+  description: Description of the stub.
+  enabled: true
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /users
+      query:
+        id:
+          equals: 15
+        filter:
+          equals: last_name
+  response:
+    statusCode: 200
+    json: |
+      {
+        "last_name": "Jackson"
+      }
+```
+
+- `id`: the unique ID of the stub. This should ALWAYS be filled in.
+- `conditions`: all the conditions a request should match before the stub is picked. Read more about it [here](#request-conditions).
+- `response`: the response that should be returned if the request matches according to the conditions. Read more about it [here](#response-writers).
+- `tenant`: a way to group several stubs together. Read more about it [here](#tenants).
+- `scenario`: a way to put a stub under a scenario. If the stub is part of a scenario, it will be possible for the stub to check for the scenario hit count or the scenario state. It is also possible to set the scenario state or clear the scenario state. Multiple stubs can be part of the same scenario. To read more about it, go [here](#scenarios) or [here](#request-scenario).
+- `priority`: a way to give a priority to a stub. If multiple stubs are found for a request, the stub with the highest priority will take precedence. Read more about it [here](#priority).
+- `description`: just a simple way for you to specify what the stub is for.
+- `enabled`: simple way of specifying if a stub is enabled or disabled. Read more about it [here](#enabled).
 
 # Request conditions
 
