@@ -1,7 +1,6 @@
 import os
 import shutil
-
-# TODO copy changelog
+import re
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 mkdocs_docs_path = os.path.join(dir_path, 'docs')
@@ -30,10 +29,17 @@ for line in lines:
     if line.startswith('# Installation'):
         add_line = True
     if add_line:
-        lines_result.append(line)
+        lines_result.append(line.rstrip('\n'))
 
+docs_md = '\n'.join(lines_result)
+docs_md = re.sub('^#### ', '##### ', docs_md)
+docs_md = re.sub('^#### ', '##### ', docs_md)
+docs_md = re.sub('^### ', '#### ', docs_md)
+docs_md = re.sub('^## ', '### ', docs_md)
+docs_md = re.sub('^# ', '## ', docs_md)
+docs_md = '# HttPlaceholder documentation\n\n' + docs_md
 docs_md_file_write = open(docs_md_copy_path, 'w')
-docs_md_file_write.writelines(lines_result)
+docs_md_file_write.write(docs_md)
 docs_md_file_write.close()
 
 # Copy img folder
