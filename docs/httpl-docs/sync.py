@@ -15,6 +15,11 @@ docs_md_path = os.path.join(dir_path, '..', 'docs.md')
 docs_md_copy_path = os.path.join(mkdocs_docs_path, 'index.md')
 shutil.copyfile(docs_md_path, docs_md_copy_path)
 
+# Copy CHANGELOG file
+changelog_path = os.path.join(dir_path, '..', '..', 'CHANGELOG')
+changelog_path_copy_path = os.path.join(mkdocs_docs_path, 'CHANGELOG')
+shutil.copyfile(changelog_path, changelog_path_copy_path)
+
 # Remove table of contents from copied file.
 docs_md_file_read = open(docs_md_copy_path)
 lines = docs_md_file_read.readlines()
@@ -31,12 +36,14 @@ docs_md_file_write = open(docs_md_copy_path, 'w')
 docs_md_file_write.writelines(lines_result)
 docs_md_file_write.close()
 
+# Copy img folder
 img_path = os.path.join(dir_path, '..', 'img')
 img_copy_path = os.path.join(mkdocs_docs_path, 'img')
 if os.path.isdir(img_copy_path):
     shutil.rmtree(img_copy_path)
 shutil.copytree(img_path, img_copy_path)
 
+# Copy samples folder
 samples_path = os.path.join(dir_path, '..', 'samples')
 samples_copy_path = os.path.join(mkdocs_docs_path, 'samples')
 if os.path.isdir(samples_copy_path):
