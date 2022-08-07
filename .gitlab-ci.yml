@@ -4,13 +4,15 @@ variables:
   DOTNET_IMAGE: mcr.microsoft.com/dotnet/sdk:6.0
   NODE_IMAGE: node:lts-stretch-slim
   DOCKER_IMAGE: docker:latest
+  PYTHON_IMAGE: python:slim-bullseye
 
 stages:
   - prepare
   - test
+  - build-docs
   - build-ui
   - build-server
-  - build-docs
+  - build-package-docs
   - post-build
   - pre-publish
   - publish
@@ -44,6 +46,17 @@ test:
     -   chmod +x ./scripts/build/set-build-status.sh
     -   ./scripts/build/set-build-status.sh failure
     - fi
+
+build-docs:
+  image: $PYTHON_IMAGE
+  stage: build-docs
+  script:
+    - chmod +x ./scripts/build/build-docs.sh
+    - ./scripts/build/build-docs.sh
+  artifacts:
+    paths:
+      - docs/httpl-docs/site
+    expire_in: 1 week
 
 build-ui:
   image: $NODE_IMAGE
@@ -165,7 +178,7 @@ create-open-api-file:
 
 create-nuget-client-docs:
   image: $DEBIAN_IMAGE
-  stage: build-docs
+  stage: build-package-docs
   script:
     - chmod +x ./scripts/build/build-nuget-client-docs.sh
     - ./scripts/build/build-nuget-client-docs.sh
