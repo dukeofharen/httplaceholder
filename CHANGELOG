@@ -1,4 +1,4 @@
-[vnext]
+[2022.8.7]
 - Order stub execution results in UI alphabetically (https://github.com/dukeofharen/httplaceholder/pull/250).
 - Sort and group configuration items in help page in terminal (https://github.com/dukeofharen/httplaceholder/pull/250).
 - Added option to response body helper to format JSON and XML strings (https://github.com/dukeofharen/httplaceholder/pull/250).
@@ -9,6 +9,7 @@
 - Updated "update stub" endpoint so an HTTP 404 is returned when the stub ID in the URL does not exist (https://github.com/dukeofharen/httplaceholder/pull/250).
 - Fixed logging for condition checkers (https://github.com/dukeofharen/httplaceholder/pull/250).
 - Added response body parsers for scenario state and hit count (https://github.com/dukeofharen/httplaceholder/issues/182).
+- Added MkDocs project for the documentation. Release documentation as separate artifact and also package the documentation with the HttPlaceholder user interface (https://github.com/dukeofharen/httplaceholder/pull/254).
 
 # BREAKING CHANGES
 - Update stub call now returns HTTP 404 if the stub ID in the URL does not exist. This was HTTP 204 before.
