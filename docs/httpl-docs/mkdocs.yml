@@ -1,2 +1,3 @@
 site_name: HttPlaceholder documentation
 theme: readthedocs
+site_description: HttPlaceholder documentation - Quickly stub away any HTTP service
