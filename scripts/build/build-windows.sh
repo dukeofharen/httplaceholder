@@ -16,7 +16,9 @@ BIN_DIR=$ROOT_DIR/bin
 INSTALL_SCRIPT_DIR=$DIR/installscripts/windows
 
 # Create dist dir
-mkdir $DIST_DIR
+if [ ! -d "$DIST_DIR" ]; then
+  mkdir "$DIST_DIR"
+fi
 
 # Publish application
 cd src/HttPlaceholder
