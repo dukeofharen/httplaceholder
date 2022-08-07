@@ -32,11 +32,16 @@ for line in lines:
         lines_result.append(line.rstrip('\n'))
 
 docs_md = '\n'.join(lines_result)
-docs_md = re.sub('^#### ', '##### ', docs_md)
-docs_md = re.sub('^#### ', '##### ', docs_md)
-docs_md = re.sub('^### ', '#### ', docs_md)
-docs_md = re.sub('^## ', '### ', docs_md)
-docs_md = re.sub('^# ', '## ', docs_md)
+
+
+def re_replace(find, replace, input):
+    return re.sub(find, replace, input, flags=re.M)
+
+
+docs_md = re_replace('^#### ', '##### ', docs_md)
+docs_md = re_replace('^### ', '#### ', docs_md)
+docs_md = re_replace('^## ', '### ', docs_md)
+docs_md = re_replace('^# ', '## ', docs_md)
 docs_md = '# HttPlaceholder documentation\n\n' + docs_md
 docs_md_file_write = open(docs_md_copy_path, 'w')
 docs_md_file_write.write(docs_md)
