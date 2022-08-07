@@ -78,6 +78,13 @@ export default defineComponent({
         onlyShowWhenLoggedInAndAuthEnabled: false,
       },
       {
+        title: "API Docs",
+        icon: "file-earmark-text",
+        url: "swagger/index.html",
+        targetBlank: true,
+        onlyShowWhenLoggedInAndAuthEnabled: false,
+      },
+      {
         title: "Settings",
         icon: "wrench",
         routeName: "Settings",

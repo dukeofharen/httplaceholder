@@ -7,7 +7,9 @@ ROOT_DIR=$DIR/../..
 DIST_DIR=$ROOT_DIR/dist
 SWAGGER_GEN_DIR=$ROOT_DIR/src/HttPlaceholder.SwaggerGenerator
 
-mkdir $DIST_DIR
+if [ ! -d "$DIST_DIR" ]; then
+  mkdir "$DIST_DIR"
+fi
 
 # Run OpenAPI tool
 cd $SWAGGER_GEN_DIR
