@@ -2,8 +2,7 @@
 set -e
 set -u
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-ROOT_PATH="$DIR/../.."
+ROOT_PATH=$(pwd)
 GUI_PATH="$ROOT_PATH/gui"
 GUI_PUBLIC_PATH="$GUI_PATH/public"
 GUI_DOCS_PATH="$GUI_PUBLIC_PATH/docs"
