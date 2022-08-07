@@ -8,7 +8,7 @@ variables:
 
 stages:
   - prepare
-#  - test
+  - test
   - build-docs
   - build-ui
   - build-server
@@ -35,17 +35,17 @@ set-version:
       - version.txt
     expire_in: 1 week
 
-#test:
-#  image: $DOTNET_IMAGE
-#  stage: test
-#  script:
-#    - cd src
-#    - dotnet test
-#  after_script:
-#    - if [ $CI_JOB_STATUS == 'failed' ]; then
-#    -   chmod +x ./scripts/build/set-build-status.sh
-#    -   ./scripts/build/set-build-status.sh failure
-#    - fi
+test:
+  image: $DOTNET_IMAGE
+  stage: test
+  script:
+    - cd src
+    - dotnet test
+  after_script:
+    - if [ $CI_JOB_STATUS == 'failed' ]; then
+    -   chmod +x ./scripts/build/set-build-status.sh
+    -   ./scripts/build/set-build-status.sh failure
+    - fi
 
 build-docs:
   image: $PYTHON_IMAGE
