@@ -165,6 +165,7 @@ The Docker container uses the configuration values as specified [here](#configur
 ```shell
 docker run -p 8080:8080 -p 4430:4430 --env port=8080 --env httpsPort=4430 dukeofharen/httplaceholder:latest
 ```
+By default, HttPlaceholder in Docker is configured to read [YAML stub files](#input-file-optional) from path `/var/httplaceholder`. Also, by default, stubs that are made through the UI / API and requests are saved in the home directory under `/root/.httplaceholder`. Mounting these folders as Docker volumes allows you to save the stub data on your host machine.
 
 ### Docker Compose examples
 
