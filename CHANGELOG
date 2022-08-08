@@ -1,3 +1,6 @@
+[vnext]
+- Fixed link to API docs (https://github.com/dukeofharen/httplaceholder/pull/256).
+
 [2022.8.7]
 - Order stub execution results in UI alphabetically (https://github.com/dukeofharen/httplaceholder/pull/250).
 - Sort and group configuration items in help page in terminal (https://github.com/dukeofharen/httplaceholder/pull/250).
