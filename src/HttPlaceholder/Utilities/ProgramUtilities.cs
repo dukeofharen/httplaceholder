@@ -33,9 +33,7 @@ public static class ProgramUtilities
     /// <param name="args">The command line arguments.</param>
     public static void ConfigureLogging(IEnumerable<string> args)
     {
-        var env = Environment.GetEnvironmentVariable("verbose");
-        var verbose = args.Any(_verboseArgs.Contains) ||
-                      string.Equals(env, "true", StringComparison.OrdinalIgnoreCase);
+        var verbose = IsVerbose(args);
         var loggingConfig = new LoggerConfiguration();
         loggingConfig = verbose
             ? loggingConfig.MinimumLevel.Debug()
@@ -73,8 +71,10 @@ public static class ProgramUtilities
         var argsDictionary = configParser.ParseConfiguration(args);
         var settings = DeserializeSettings(argsDictionary);
 
-        HandleArgument(() => Console.WriteLine(GetVerbosePage(argsDictionary, args)), args, _verboseArgs,
-            false);
+        if (IsVerbose(args))
+        {
+            Console.WriteLine(GetVerbosePage(argsDictionary, args));
+        }
 
         return Host.CreateDefaultBuilder(args)
             .UseSerilog()
@@ -221,5 +221,12 @@ public static class ProgramUtilities
         }
 
         return (httpPortsResult, httpsPortsResult);
+    }
+
+    private static bool IsVerbose(IEnumerable<string> args)
+    {
+        var env = Environment.GetEnvironmentVariable("verbose");
+        return args.Any(_verboseArgs.Contains) ||
+               string.Equals(env, "true", StringComparison.OrdinalIgnoreCase);
     }
 }
