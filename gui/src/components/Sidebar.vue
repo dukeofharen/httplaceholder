@@ -80,7 +80,7 @@ export default defineComponent({
       {
         title: "API Docs",
         icon: "file-earmark-text",
-        url: "swagger/index.html",
+        url: "/swagger/index.html",
         targetBlank: true,
         onlyShowWhenLoggedInAndAuthEnabled: false,
       },

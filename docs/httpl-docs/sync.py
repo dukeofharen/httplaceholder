@@ -42,7 +42,7 @@ docs_md = re_replace('^#### ', '##### ', docs_md)
 docs_md = re_replace('^### ', '#### ', docs_md)
 docs_md = re_replace('^## ', '### ', docs_md)
 docs_md = re_replace('^# ', '## ', docs_md)
-docs_md = '![](img/logo.png)\n\n' + docs_md
+docs_md = '# HttPlaceholder documentation\n![](img/logo.png)\n\n' + docs_md
 docs_md_file_write = open(docs_md_copy_path, 'w')
 docs_md_file_write.write(docs_md)
 docs_md_file_write.close()

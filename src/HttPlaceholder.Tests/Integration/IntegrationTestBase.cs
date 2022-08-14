@@ -33,7 +33,7 @@ public abstract class IntegrationTestBase
             .AddInMemoryCollection(new Dictionary<string, string>
             {
                 { "Storage:InputFile", @"C:\tmp" },
-                { "Storage:CleanOldRequestsInBackgroundJob", "true" },
+                { "Storage:CleanOldRequestsInBackgroundJob", "true" }
             })
             .Build();
         var startup = new Startup(config);

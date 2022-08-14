@@ -98,7 +98,11 @@ Follow these steps to install / update HttPlaceholder. If you update HttPlacehol
 
 ## Dotnet global tool (cross platform)
 
-Make sure you have installed the correct .NET SDK (at least .NET 6) for your OS (see https://dotnet.microsoft.com/download). When the .NET SDK is installed, run `dotnet tool install --global HttPlaceholder` to install HttPlaceholder.
+Make sure you have installed the correct .NET SDK (at least .NET 6) for your OS (see https://dotnet.microsoft.com/download). When the .NET SDK is installed, run the following command to install HttPlaceholder:
+
+```shell
+dotnet tool install --global HttPlaceholder
+```
 
 ## Windows
 
@@ -148,7 +152,9 @@ HttPlaceholder has a Docker image; it can be found [here](https://hub.docker.com
 
 This is a very basic example for running HttPlaceholder locally from the command line.
 
-`docker run -p 5000:5000 dukeofharen/httplaceholder:latest`
+```shell
+docker run -p 5000:5000 dukeofharen/httplaceholder:latest
+```
 
 HttPlaceholder can now be reached on `http://localhost:5000` (or `http://localhost:5000/ph-ui` to get to the management interface).
 
@@ -156,7 +162,10 @@ HttPlaceholder can now be reached on `http://localhost:5000` (or `http://localho
 
 The Docker container uses the configuration values as specified [here](#configuration). Here is an example of starting the HttPlaceholder container with different ports for HTTP and HTTPS:
 
-`docker run -p 8080:8080 -p 4430:4430 --env port=8080 --env httpsPort=4430 dukeofharen/httplaceholder:latest`
+```shell
+docker run -p 8080:8080 -p 4430:4430 --env port=8080 --env httpsPort=4430 dukeofharen/httplaceholder:latest
+```
+By default, HttPlaceholder in Docker is configured to read [YAML stub files](#input-file-optional) from path `/var/httplaceholder`. Also, by default, stubs that are made through the UI / API and requests are saved in the home directory under `/root/.httplaceholder`. Mounting these folders as Docker volumes allows you to save the stub data on your host machine.
 
 ### Docker Compose examples
 
@@ -198,7 +207,7 @@ If you've completed the steps above, execute the following steps:
 
 - Now, you need to setup the configuration. For this, you need to rename the file `_web.config` in the HttPlaceholder installation folder to `web.config`. You can modify the `web.config` to look like this.
 
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <location path="." inheritInChildApplications="false">
@@ -220,14 +229,14 @@ If you've completed the steps above, execute the following steps:
 In the example above, all the standard output logging will be written to a file and HttPlaceholder is configured to store its data in a SQLite database (all the configuration values are explained [here](#configuration)). While this seems like a nice solution, if you have multiple configuration items, it might be better if you create a separate `config.json` file and point to that file in your `web.config`. You then might have these two files:
 
 *config.json*
-```
+```json
 {
     "sqliteConnectionString": "Data Source=C:\httplaceholderdata\httplaceholder.db"
 }
 ``` 
 
 *web.config*
-```
+```xml
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <location path="." inheritInChildApplications="false">
@@ -916,7 +925,7 @@ The `expectedValue` variable of this condition can be used with regular expressi
 
 ```yml
 - id: jpath-test
-  conditions:This
+  conditions:
     method: PUT
     url:
       path:
@@ -2567,7 +2576,7 @@ All methods exposed by the API are available in the client and you can build stu
 ### Getting started with the .NET client
 
 You can see some examples in the following
-project: https://github.com/dukeofharen/httplaceholder/tree/master/src/HttPlaceholder.Client.Examples.
+project: <https://github.com/dukeofharen/httplaceholder/tree/master/src/HttPlaceholder.Client.Examples>.
 
 #### When using .NET Core service collection
 

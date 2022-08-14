@@ -141,7 +141,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter
         return StubResponseWriterResultModel.IsExecuted(GetType().Name, log);
     }
 
-    private string GetPath(StubModel stub)
+    private static string GetPath(StubModel stub)
     {
         var pathModel = stub.Conditions?.Url?.Path;
         if (pathModel == null)

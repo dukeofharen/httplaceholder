@@ -206,7 +206,7 @@ public class OpenApiFakeDataGeneratorFacts
             Properties = new Dictionary<string, OpenApiSchema>
             {
                 {"stringKey", new OpenApiSchema {Type = "string"}},
-                {"intKey", new OpenApiSchema {Type = "integer"}},
+                {"intKey", new OpenApiSchema {Type = "integer"}}
             }
         };
 
@@ -229,7 +229,7 @@ public class OpenApiFakeDataGeneratorFacts
             Properties = new Dictionary<string, OpenApiSchema>
             {
                 {"stringKey", new OpenApiSchema {Type = "string"}},
-                {"intKey", new OpenApiSchema {Type = "integer"}},
+                {"intKey", new OpenApiSchema {Type = "integer"}}
             }
         };
 
@@ -255,7 +255,7 @@ public class OpenApiFakeDataGeneratorFacts
                 Properties = new Dictionary<string, OpenApiSchema>
                 {
                     {"stringKey", new OpenApiSchema {Type = "string"}},
-                    {"intKey", new OpenApiSchema {Type = "integer"}},
+                    {"intKey", new OpenApiSchema {Type = "integer"}}
                 }
             }
         };

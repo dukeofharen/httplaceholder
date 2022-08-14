@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
+﻿using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 

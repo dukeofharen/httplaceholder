@@ -29,7 +29,7 @@ public class StringConditionUtilitiesFacts
     public void ConvertCondition_ConditionIsJObject_ShouldConvert()
     {
         // Arrange
-        var jsonString = @"{""equals"": ""/path"", ""notcontainsci"": ""somestring""}";
+        const string jsonString = @"{""equals"": ""/path"", ""notcontainsci"": ""somestring""}";
 
         // Act
         var result = StringConditionUtilities.ConvertCondition(JObject.Parse(jsonString));

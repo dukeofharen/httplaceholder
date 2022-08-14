@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

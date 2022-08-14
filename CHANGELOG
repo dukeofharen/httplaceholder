@@ -1,3 +1,12 @@
+[vnext]
+- Fixed link to API docs (https://github.com/dukeofharen/httplaceholder/pull/256).
+- The YAML file stub contents are no longer logged when there are any YAML stub files and the logging is set to verbose (https://github.com/dukeofharen/httplaceholder/pull/256).
+- When setting verbose logging on with environment variable, it now also logs the configuration (https://github.com/dukeofharen/httplaceholder/pull/256).
+- Removed .NET client doc generation. Not that interesting, we already have an example project and the code is already documented for anyone interested (https://github.com/dukeofharen/httplaceholder/pull/256).
+
+# BREAKING CHANGES
+- Minor one, but the YAML file stub contents are no longer logged when there are any YAML stub files and the logging is set to verbose.
+
 [2022.8.7]
 - Order stub execution results in UI alphabetically (https://github.com/dukeofharen/httplaceholder/pull/250).
 - Sort and group configuration items in help page in terminal (https://github.com/dukeofharen/httplaceholder/pull/250).

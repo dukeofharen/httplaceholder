@@ -3,7 +3,6 @@ using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using Moq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.TestUtilities;
 

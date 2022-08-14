@@ -170,14 +170,12 @@ public class JsonConditionChecker : IConditionChecker
                 {
                     return parsedBool == boolInStub;
                 }
-                else
+
+                // Handle the boolean that is passed in the JSON as string. The condition might be a regex that needs to be checked.
+                var boolAsString = boolInStub.ToString().ToLower();
+                if (StringHelper.IsRegexMatchOrSubstring(boolAsString, text))
                 {
-                    // Handle the boolean that is passed in the JSON as string. The condition might be a regex that needs to be checked.
-                    var boolAsString = boolInStub.ToString().ToLower();
-                    if (StringHelper.IsRegexMatchOrSubstring(boolAsString, text))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
 
                 logging.Add($"Value '{text}' not recognized as valid boolean.");

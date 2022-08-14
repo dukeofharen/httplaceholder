@@ -133,7 +133,7 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
 
                 if (string.IsNullOrWhiteSpace(request.Url) && _urlRegex.IsMatch(part))
                 {
-                    var matches = _urlRegex.Matches(part).Cast<Match>().ToArray();
+                    var matches = _urlRegex.Matches(part).ToArray();
                     if (matches.Length == 1)
                     {
                         request.Url = matches[0].Value;
@@ -208,7 +208,7 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
                 // The first part in a header string is the key.
                 key = new string(part.ToCharArray().Skip(1).ToArray()).TrimEnd(':');
             }
-            else if (part[part.Length - 1] == boundaryCharacter && !part.EndsWith(escapedBoundaryCharacter))
+            else if (part[^1] == boundaryCharacter && !part.EndsWith(escapedBoundaryCharacter))
             {
                 // The last part is found. Append it and break.
                 headerBuilder.Append(new string(part.ToCharArray().Take(part.Length - 1).ToArray()));
@@ -225,7 +225,7 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
         return (key, headerBuilder.ToString(), counter - 1);
     }
 
-    private static (string body, int newNeedle) ParseBody(int needle, string[] parts)
+    private static (string body, int newNeedle) ParseBody(int needle, IEnumerable<string> parts)
     {
         var extractedParts = parts.Skip(needle + 1).ToArray();
         var boundaryCharacter = extractedParts[0][0];
@@ -243,7 +243,7 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
             !part.StartsWith(escapedBoundaryCharacter);
 
         bool PartEndsWithBoundaryChar(string part) => !string.IsNullOrWhiteSpace(part) &&
-                                                      part[part.Length - 1] == boundaryCharacter &&
+                                                      part[^1] == boundaryCharacter &&
                                                       !part.EndsWith(escapedBoundaryCharacter);
 
         var bodyBuilder = new StringBuilder(); // Hah nice

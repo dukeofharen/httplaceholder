@@ -1,50 +1,49 @@
 ﻿using System;
 
-namespace HttPlaceholder.Client.Configuration
-{
-    /// <summary>
-    /// Class that is used to store the HttPlaceholder client configuration.
-    /// </summary>
-    public class HttPlaceholderClientConfiguration
-    {
-        private string _rootUrl;
+namespace HttPlaceholder.Client.Configuration;
 
-        /// <summary>
-        /// The root URL of the HttPlaceholder instance. The URL will be appended with "/" if it does not end with a "/" yet.
-        /// </summary>
-        public string RootUrl
+/// <summary>
+/// Class that is used to store the HttPlaceholder client configuration.
+/// </summary>
+public class HttPlaceholderClientConfiguration
+{
+    private string _rootUrl;
+
+    /// <summary>
+    /// The root URL of the HttPlaceholder instance. The URL will be appended with "/" if it does not end with a "/" yet.
+    /// </summary>
+    public string RootUrl
+    {
+        get => _rootUrl;
+        set
         {
-            get => _rootUrl;
-            set
+            if (!string.IsNullOrWhiteSpace(value))
             {
-                if (!string.IsNullOrWhiteSpace(value))
-                {
-                    _rootUrl = value.EndsWith("/") ? value : $"{value}/";
-                }
+                _rootUrl = value.EndsWith("/") ? value : $"{value}/";
             }
         }
+    }
 
-        /// <summary>
-        /// The username of the HttPlaceholder instance.
-        /// </summary>
-        public string Username { get; set; }
+    /// <summary>
+    /// The username of the HttPlaceholder instance.
+    /// </summary>
+    public string Username { get; set; }
 
-        /// <summary>
-        /// The password of the HttPlaceholder instance.
-        /// </summary>
-        public string Password { get; set; }
+    /// <summary>
+    /// The password of the HttPlaceholder instance.
+    /// </summary>
+    public string Password { get; set; }
 
-        /// <summary>
-        /// Validates the HttPlaceholder configuration.
-        /// </summary>
-        /// <exception cref="ArgumentException"></exception>
-        public void Validate()
+    /// <summary>
+    /// Validates the HttPlaceholder configuration.
+    /// </summary>
+    /// <exception cref="ArgumentException"></exception>
+    public void Validate()
+    {
+        if (string.IsNullOrWhiteSpace(RootUrl))
         {
-            if (string.IsNullOrWhiteSpace(RootUrl))
-            {
-                throw new ArgumentException(
-                    $"No value set for {nameof(RootUrl)} in HttPlaceholder configuration.");
-            }
+            throw new ArgumentException(
+                $"No value set for {nameof(RootUrl)} in HttPlaceholder configuration.");
         }
     }
 }

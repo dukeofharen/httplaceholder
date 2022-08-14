@@ -8,7 +8,6 @@ using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.FileSystem.Implementations;
 using HttPlaceholder.Persistence.FileSystem.Models;
 using HttPlaceholder.TestUtilities.Options;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

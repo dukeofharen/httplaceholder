@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
-using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 

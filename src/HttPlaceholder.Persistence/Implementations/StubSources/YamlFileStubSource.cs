@@ -90,8 +90,6 @@ internal class YamlFileStubSource : IStubSource
                 // Load the stubs.
                 var input = _fileService.ReadAllText(file);
                 _logger.LogInformation($"Parsing .yml file '{file}'.");
-                _logger.LogDebug($"File contents of '{file}': '{input}'");
-
                 try
                 {
                     IEnumerable<StubModel> stubs;

@@ -39,7 +39,7 @@ public class HostConditionCheckerFacts
         var stringCheckerMock = _mocker.GetMock<IStringChecker>();
         var clientDataResolverMock = _mocker.GetMock<IClientDataResolver>();
 
-        var host = "actualhost.com";
+        const string host = "actualhost.com";
         clientDataResolverMock
             .Setup(m => m.GetHost())
             .Returns(host);
@@ -65,7 +65,7 @@ public class HostConditionCheckerFacts
         var stringCheckerMock = _mocker.GetMock<IStringChecker>();
         var clientDataResolverMock = _mocker.GetMock<IClientDataResolver>();
 
-        var host = "actualhost.com";
+        const string host = "actualhost.com";
         clientDataResolverMock
             .Setup(m => m.GetHost())
             .Returns(host);

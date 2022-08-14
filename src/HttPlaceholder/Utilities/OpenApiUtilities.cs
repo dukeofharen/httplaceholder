@@ -83,7 +83,7 @@ public static class OpenApiUtilities
         }
     }
 
-    private static JsonSchemaProperty GetSchemaProperty(OpenApiDocument document, Type type, PropertyInfo property)
+    private static JsonSchemaProperty GetSchemaProperty(OpenApiDocument document, MemberInfo type, MemberInfo property)
     {
         var schema = document.Components.Schemas[type.Name];
         var schemaProperty = schema.ActualProperties.Single(p =>
@@ -91,7 +91,7 @@ public static class OpenApiUtilities
         return schemaProperty;
     }
 
-    private static OneOfAttribute GetOneOfAttribute(PropertyInfo property) =>
+    private static OneOfAttribute GetOneOfAttribute(ICustomAttributeProvider property) =>
         property
             .GetCustomAttributes(typeof(OneOfAttribute), false)
             .Cast<OneOfAttribute>()

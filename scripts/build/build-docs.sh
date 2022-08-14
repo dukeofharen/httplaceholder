@@ -10,4 +10,5 @@ fi
 cd "$DIR/docs/httpl-docs"
 python sync.py
 mkdocs build
-tar -czvf docs.tar.gz $DIST_FOLDER
+tar -czvf docs.tar.gz site
+cp docs.tar.gz $DIST_FOLDER
