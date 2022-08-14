@@ -2,6 +2,7 @@
 - Fixed link to API docs (https://github.com/dukeofharen/httplaceholder/pull/256).
 - The YAML file stub contents are no longer logged when there are any YAML stub files and the logging is set to verbose (https://github.com/dukeofharen/httplaceholder/pull/256).
 - When setting verbose logging on with environment variable, it now also logs the configuration (https://github.com/dukeofharen/httplaceholder/pull/256).
+- 
 
 # BREAKING CHANGES
 - Minor one, but the YAML file stub contents are no longer logged when there are any YAML stub files and the logging is set to verbose.

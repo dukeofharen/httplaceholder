@@ -12,7 +12,6 @@ stages:
   - build-docs
   - build-ui
   - build-server
-  - build-package-docs
   - post-build
   - pre-publish
   - publish
@@ -172,22 +171,6 @@ create-open-api-file:
   script:
     - chmod +x ./scripts/build/create-open-api-file.sh
     - ./scripts/build/create-open-api-file.sh
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-  after_script:
-    - if [ $CI_JOB_STATUS == 'failed' ]; then
-    -   chmod +x ./scripts/build/set-build-status.sh
-    -   ./scripts/build/set-build-status.sh failure
-    - fi
-
-create-nuget-client-docs:
-  image: $DEBIAN_IMAGE
-  stage: build-package-docs
-  script:
-    - chmod +x ./scripts/build/build-nuget-client-docs.sh
-    - ./scripts/build/build-nuget-client-docs.sh
   artifacts:
     paths:
       - dist
