@@ -2576,7 +2576,7 @@ All methods exposed by the API are available in the client and you can build stu
 ### Getting started with the .NET client
 
 You can see some examples in the following
-project: https://github.com/dukeofharen/httplaceholder/tree/master/src/HttPlaceholder.Client.Examples.
+project: <https://github.com/dukeofharen/httplaceholder/tree/master/src/HttPlaceholder.Client.Examples>.
 
 #### When using .NET Core service collection
 
