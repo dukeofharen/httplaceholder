@@ -23,8 +23,7 @@ internal class ScenarioHitCountVariableParsingHandler : IResponseVariableParsing
     /// <inheritdoc />
     public string FullName => "Scenario hit count";
 
-    /// <inheritdoc />
-    public string Example => "((scenario_hitcount:scenario name))";
+    public string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

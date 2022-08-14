@@ -25,7 +25,7 @@ internal class EncodedQueryStringResponseVariableParsingHandler : IResponseVaria
     public string FullName => "URL encoded query string";
 
     /// <inheritdoc />
-    public string Example => "((query_encoded:query_string_key))";
+    public string[] Examples => new[] {$"(({Name}:query_string_key))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

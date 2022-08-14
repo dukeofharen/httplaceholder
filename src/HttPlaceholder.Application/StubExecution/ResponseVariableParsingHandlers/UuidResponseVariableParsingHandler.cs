@@ -18,7 +18,7 @@ internal class UuidResponseVariableParsingHandler : IResponseVariableParsingHand
     public string FullName => "UUID";
 
     /// <inheritdoc />
-    public string Example => "((uuid))";
+    public string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub) =>

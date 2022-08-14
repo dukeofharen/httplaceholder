@@ -25,7 +25,7 @@ internal class RequestBodyResponseVariableParsingHandler : IResponseVariablePars
     public string FullName => "Full request body";
 
     /// <inheritdoc />
-    public string Example => "((request_body))";
+    public string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

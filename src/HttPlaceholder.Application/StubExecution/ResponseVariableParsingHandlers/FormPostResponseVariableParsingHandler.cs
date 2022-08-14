@@ -27,7 +27,7 @@ internal class FormPostResponseVariableParsingHandler : IResponseVariableParsing
     public string FullName => "Form post";
 
     /// <inheritdoc />
-    public string Example => "((form_post:form_key))";
+    public string[] Examples => new[] {$"(({Name}:form_key))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

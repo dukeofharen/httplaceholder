@@ -25,7 +25,7 @@ internal class RequestHeaderResponseVariableParsingHandler : IResponseVariablePa
     public string FullName => "Request header";
 
     /// <inheritdoc />
-    public string Example => "((request_header:X-Api-Key))";
+    public string[] Examples => new[] {$"(({Name}:X-Api-Key))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

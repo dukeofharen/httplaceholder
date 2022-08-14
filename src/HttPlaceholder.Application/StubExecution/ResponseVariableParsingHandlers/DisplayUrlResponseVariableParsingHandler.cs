@@ -25,7 +25,7 @@ internal class DisplayUrlResponseVariableParsingHandler : IResponseVariableParsi
     public string FullName => "Display URL";
 
     /// <inheritdoc />
-    public string Example => "((display_url))";
+    public string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

@@ -18,11 +18,14 @@ internal class RootUrlResponseVariableParsingHandler : IResponseVariableParsingH
         _httpContextService = httpContextService;
     }
 
+    /// <inheritdoc />
     public string Name => "root_url";
 
+    /// <inheritdoc />
     public string FullName => "Root URL";
 
-    public string Example => "((root_url))";
+    /// <inheritdoc />
+    public string[] Examples => new[] {$"(({Name}))"};
 
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {

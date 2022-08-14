@@ -33,7 +33,7 @@ internal class JsonPathResponseVariableParsingHandler : IResponseVariableParsing
     public string FullName => "JSONPath";
 
     /// <inheritdoc />
-    public string Example => "((jsonpath:$.values[1].title))";
+    public string[] Examples => new[] {$"(({Name}:$.values[1].title))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

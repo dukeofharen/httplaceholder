@@ -26,7 +26,7 @@ internal class LocalNowResponseVariableParsingHandler : IResponseVariableParsing
     public string FullName => "Local date / time";
 
     /// <inheritdoc />
-    public string Example => "((localnow:yyyy-MM-dd HH:mm:ss))";
+    public string[] Examples => new[] {$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

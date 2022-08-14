@@ -25,7 +25,7 @@ internal class ClientIpResponseVariableParsingHandler : IResponseVariableParsing
     public string FullName => "Client IP";
 
     /// <inheritdoc />
-    public string Example => "((client_ip))";
+    public string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

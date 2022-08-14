@@ -36,7 +36,7 @@ public class GetMetadataQueryHandler : IRequestHandler<GetMetadataQuery, Metadat
         var result = new MetadataModel
         {
             Version = _assemblyService.GetAssemblyVersion(),
-            VariableHandlers = handlers.Select(h => new VariableHandlerModel(h.Name, h.FullName, h.Example))
+            VariableHandlers = handlers.Select(h => new VariableHandlerModel(h.Name, h.FullName, h.Examples))
         };
         return Task.FromResult(result);
     }

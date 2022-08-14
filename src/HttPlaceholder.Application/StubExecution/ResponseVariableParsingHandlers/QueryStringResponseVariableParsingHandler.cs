@@ -24,7 +24,7 @@ internal class QueryStringResponseVariableParsingHandler : IResponseVariablePars
     public string FullName => "Query string";
 
     /// <inheritdoc />
-    public string Example => "((query:query_string_key))";
+    public string[] Examples => new[] {$"(({Name}:query_string_key))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

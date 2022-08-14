@@ -24,7 +24,7 @@ internal class ScenarioStateVariableParsingHandler : IResponseVariableParsingHan
     public string FullName => "Scenario state";
 
     /// <inheritdoc />
-    public string Example => "((scenario_state:scenario name))";
+    public string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)

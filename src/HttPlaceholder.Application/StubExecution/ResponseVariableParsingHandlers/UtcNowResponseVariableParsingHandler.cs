@@ -27,7 +27,7 @@ internal class UtcNowResponseVariableParsingHandler : IResponseVariableParsingHa
     public string FullName => "UTC date / time";
 
     /// <inheritdoc />
-    public string Example => "((utcnow:yyyy-MM-dd HH:mm:ss))";
+    public string[] Examples => new[] {$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"};
 
     /// <inheritdoc />
     public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
