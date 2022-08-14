@@ -255,7 +255,7 @@ public class ScenarioServiceFacts
 
         // Assert
         scenarioStateStoreMock.Verify(m =>
-            m.AddScenario(scenarioName, It.Is<ScenarioStateModel>(m => m.State == Constants.DefaultScenarioState)));
+            m.AddScenario(scenarioName, It.Is<ScenarioStateModel>(model => model.State == Constants.DefaultScenarioState)));
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input), Times.Never);
     }
 
