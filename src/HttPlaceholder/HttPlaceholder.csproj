@@ -23,6 +23,7 @@
         <Copyright>Ducode</Copyright>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>logo.png</PackageIcon>
+        <PackageProjectUrl>https://httplaceholder.org</PackageProjectUrl>
     </PropertyGroup>
     <ItemGroup>
         <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath="" />

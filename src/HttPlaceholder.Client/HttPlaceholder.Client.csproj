@@ -7,13 +7,14 @@
         <RepositoryType>git</RepositoryType>
         <Copyright>Ducode</Copyright>
         <AssemblyTitle>HttPlaceholder NuGet Client</AssemblyTitle>
-        <Description>HttPlaceholder NuGet Client</Description>
+        <Description>.NET client for HttPlaceholder - A very flexible cross platform HTTP stub application.</Description>
         <Company>Ducode</Company>
         <Authors>Ducode</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>logo.png</PackageIcon>
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PackageProjectUrl>https://httplaceholder.org</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>
