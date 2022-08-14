@@ -10,12 +10,12 @@ public class VariableHandlerModel
     /// </summary>
     /// <param name="name">The name.</param>
     /// <param name="fullName">The full name.</param>
-    /// <param name="example">An example.</param>
-    public VariableHandlerModel(string name, string fullName, string example)
+    /// <param name="examples">The examples.</param>
+    public VariableHandlerModel(string name, string fullName, string[] examples)
     {
         Name = name;
         FullName = fullName;
-        Example = example;
+        Examples = examples;
     }
 
     /// <summary>
@@ -31,5 +31,10 @@ public class VariableHandlerModel
     /// <summary>
     /// Gets or sets a short instruction on how to use the variable handler.
     /// </summary>
-    public string Example { get; }
+    public string Example => string.Join(' ', Examples);
+
+    /// <summary>
+    /// Gets or sets one or more examples.
+    /// </summary>
+    public string[] Examples { get; }
 }

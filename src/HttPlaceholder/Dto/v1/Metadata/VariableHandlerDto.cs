@@ -22,4 +22,9 @@ public class VariableHandlerDto : IMapFrom<VariableHandlerModel>
     /// Gets or sets a short instruction on how to use the variable handler.
     /// </summary>
     public string Example { get; set; }
+
+    /// <summary>
+    /// Gets or sets one or more examples.
+    /// </summary>
+    public string[] Examples { get; set; }
 }
