@@ -7,8 +7,6 @@ using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.TestUtilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq.AutoMock;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 

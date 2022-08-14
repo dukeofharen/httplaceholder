@@ -14,7 +14,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 /// <inheritdoc />
 internal class HarStubGenerator : IHarStubGenerator
 {
-    private static string[] _responseHeadersToStrip = new[] {"content-length", "content-encoding"};
+    private static string[] _responseHeadersToStrip = {"content-length", "content-encoding"};
 
     private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
     private readonly IHttpResponseToStubResponseService _httpResponseToStubResponseService;

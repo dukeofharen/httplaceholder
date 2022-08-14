@@ -25,7 +25,7 @@ internal class ResponseVariableParser : IResponseVariableParser
     /// <inheritdoc/>
     public string Parse(string input, StubModel stub)
     {
-        var matches = VarRegex.Matches(input).Cast<Match>().ToArray();
+        var matches = VarRegex.Matches(input).ToArray();
         foreach (var handler in _handlers)
         {
             var handlerMatches = matches

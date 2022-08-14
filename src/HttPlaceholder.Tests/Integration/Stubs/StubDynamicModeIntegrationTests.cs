@@ -280,7 +280,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}dynamic-mode-scenario-state.txt";
         await SetScenario("dynamic-mode-scenario-state", new ScenarioStateInputDto {State = "cool_state_1"});
         await SetScenario("scenario123", new ScenarioStateInputDto {State = "cool_state_2"});
-        const string expectedResult = $"cool_state_1 cool_state_2";
+        const string expectedResult = "cool_state_1 cool_state_2";
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
 

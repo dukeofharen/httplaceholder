@@ -528,7 +528,7 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     /// <inheritdoc />
     public async Task<string[]> GetScheduledJobNamesAsync()
     {
-        using var response = await HttpClient.GetAsync($"/ph-api/scheduledJob");
+        using var response = await HttpClient.GetAsync("/ph-api/scheduledJob");
         var content = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {

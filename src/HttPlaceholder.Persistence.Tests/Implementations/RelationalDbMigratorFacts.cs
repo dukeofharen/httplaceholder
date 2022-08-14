@@ -103,7 +103,7 @@ public class RelationalDbMigratorFacts
         Assert.AreEqual("Could not determine migrations folder for relational DB.", exception.Message);
     }
 
-    private void SetupMigrations(string rootFolder, TestMigrationInput[] inputs)
+    private void SetupMigrations(string rootFolder, IEnumerable<TestMigrationInput> inputs)
     {
         var mockFileService = _mocker.GetMock<IFileService>();
         var filesList = new List<string>();

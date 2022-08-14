@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using HttPlaceholder.Common;
-using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -14,14 +12,14 @@ namespace HttPlaceholder.Infrastructure.Tests.Configuration;
 [TestClass]
 public class ConfigurationParserFacts
 {
-    private readonly string _exampleArgs = "--usehttps --port 8080 --httpsPort 4430 --inputFile /var/stubs --configJsonLocation /var/httpl_config.json";
+    private const string ExampleArgs = "--usehttps --port 8080 --httpsPort 4430 --inputFile /var/stubs --configJsonLocation /var/httpl_config.json";
 
     private readonly IDictionary<string, string> _exampleEnv = new Dictionary<string, string>
     {
         {"port", "9999"}, {"oldRequestsQueueLength", "100"}
     };
 
-    private readonly string _exampleConfigJson = @"
+    private const string ExampleConfigJson = @"
 {
     ""enableUserInterface"": true,
     ""storeResponses"": false,
@@ -56,7 +54,7 @@ public class ConfigurationParserFacts
     public void ParseConfiguration_HappyFlow()
     {
         // Arrange
-        var args = _exampleArgs.Split(' ');
+        var args = ExampleArgs.Split(' ');
         _envServiceMock
             .Setup(m => m.GetEnvironmentVariables())
             .Returns(_exampleEnv);
@@ -65,7 +63,7 @@ public class ConfigurationParserFacts
             .Returns(true);
         _fileServiceMock
             .Setup(m => m.ReadAllText("/var/httpl_config.json"))
-            .Returns(_exampleConfigJson);
+            .Returns(ExampleConfigJson);
 
         // Act
         var result = _parser.ParseConfiguration(args);

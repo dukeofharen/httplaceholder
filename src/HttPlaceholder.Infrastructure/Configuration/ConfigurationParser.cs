@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Configuration.Attributes;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure.Implementations;
@@ -57,7 +55,7 @@ public class ConfigurationParser
     }
 
     private IDictionary<string, string> ParseEnvironment(
-        IList<ConfigMetadataModel> configMetadata)
+        IEnumerable<ConfigMetadataModel> configMetadata)
     {
         var result = new Dictionary<string, string>();
         var envVars = _envService.GetEnvironmentVariables();
@@ -83,7 +81,7 @@ public class ConfigurationParser
         IDictionary<string, string> envResult,
         IDictionary<string, string> argsResult)
     {
-        var key = ConfigKeys.ConfigJsonLocationKey;
+        const string key = ConfigKeys.ConfigJsonLocationKey;
         var configJsonPath = argsResult.CaseInsensitiveSearch(key);
         if (string.IsNullOrWhiteSpace(configJsonPath))
         {

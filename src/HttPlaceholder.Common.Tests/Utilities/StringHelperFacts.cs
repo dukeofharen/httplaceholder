@@ -10,8 +10,8 @@ public class StringHelperFacts
     public void IsRegexMatchOrSubstring_IsNotAMatch_ShouldReturnFalse()
     {
         // Arrange
-        var input = "input";
-        var regex = "input1";
+        const string input = "input";
+        const string regex = "input1";
 
         // Act
         var result = StringHelper.IsRegexMatchOrSubstring(input, regex);
@@ -24,8 +24,8 @@ public class StringHelperFacts
     public void IsRegexMatchOrSubstring_IsAMatch_ShouldReturnTrue()
     {
         // Arrange
-        var input = "input";
-        var regex = "input";
+        const string input = "input";
+        const string regex = "input";
 
         // Act
         var result = StringHelper.IsRegexMatchOrSubstring(input, regex);

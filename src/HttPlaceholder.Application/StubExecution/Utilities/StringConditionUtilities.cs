@@ -18,24 +18,21 @@ public class StringConditionUtilities
     /// <returns>The converted <see cref="StubConditionStringCheckingModel"/>.</returns>
     public static StubConditionStringCheckingModel ConvertCondition(object condition)
     {
-        //Condition can be: JObject (if in cache), Dictionary<object, object> (if added just now)
-        if (condition is Dictionary<object, object> dictionary)
+        switch (condition)
         {
-            var intermediateJson = JsonConvert.SerializeObject(dictionary);
-            return JsonConvert.DeserializeObject<StubConditionStringCheckingModel>(intermediateJson);
+            //Condition can be: JObject (if in cache), Dictionary<object, object> (if added just now)
+            case Dictionary<object, object> dictionary:
+            {
+                var intermediateJson = JsonConvert.SerializeObject(dictionary);
+                return JsonConvert.DeserializeObject<StubConditionStringCheckingModel>(intermediateJson);
+            }
+            case JObject jObject:
+                return jObject.ToObject<StubConditionStringCheckingModel>();
+            case StubConditionStringCheckingModel model:
+                return model;
+            default:
+                throw new InvalidOperationException(
+                    $"Object of type '{condition.GetType()}' not supported for serializing to '{typeof(StubConditionStringCheckingModel)}'.");
         }
-
-        if (condition is JObject jObject)
-        {
-            return jObject.ToObject<StubConditionStringCheckingModel>();
-        }
-
-        if (condition is StubConditionStringCheckingModel model)
-        {
-            return model;
-        }
-
-        throw new InvalidOperationException(
-            $"Object of type '{condition.GetType()}' not supported for serializing to '{typeof(StubConditionStringCheckingModel)}'.");
     }
 }

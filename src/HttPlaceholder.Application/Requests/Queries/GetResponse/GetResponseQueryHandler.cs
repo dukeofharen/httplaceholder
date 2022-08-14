@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Application.Requests.Queries.GetRequest;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using MediatR;

@@ -4,7 +4,6 @@ using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Moq.AutoMock;
 using Newtonsoft.Json.Linq;
 
@@ -239,7 +238,7 @@ public class JsonConditionCheckerFacts
     public void ConvertJsonConditions_InputIsString_ShouldReturnInputAsIs()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = JsonConditionChecker.ConvertJsonConditions(input);
@@ -286,7 +285,7 @@ public class JsonConditionCheckerFacts
     public void ConvertJsonConditions_InputIsSomethingElse_ShouldConvertToString()
     {
         // Arrange
-        var input = 123;
+        const int input = 123;
 
         // Act
         var result = JsonConditionChecker.ConvertJsonConditions(input);

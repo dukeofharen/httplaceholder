@@ -45,7 +45,7 @@ internal class OpenApiToStubConverter : IOpenApiToStubConverter
             Tenant = tenant,
             Description = line.Operation.Summary,
             Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request),
-            Response = await _httpResponseToStubResponseService.ConvertToResponseAsync(response),
+            Response = await _httpResponseToStubResponseService.ConvertToResponseAsync(response)
         };
         stub.EnsureStubId();
         return stub;
