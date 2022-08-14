@@ -52,7 +52,7 @@
         <div class="hint mb-2">{{ elementDescriptions.dynamicMode }}</div>
         <VariableHandlerSelector
           :variable-parser-items="variableParserItems"
-          @handlerSelected="insertVariableHandlerExample($event)"
+          @exampleSelected="insertVariableHandlerExample($event)"
         />
       </div>
     </div>

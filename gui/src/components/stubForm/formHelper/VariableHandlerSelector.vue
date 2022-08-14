@@ -15,6 +15,17 @@
       {{ item.name }}
     </option>
   </select>
+  <select
+    v-if="showExamplesList"
+    class="form-select mt-2"
+    @change="onExampleSelected($event)"
+    v-model="selectedExample"
+  >
+    <option value="">Select an example to insert in the response...</option>
+    <option v-for="(example, index) of examples" :key="index" :value="example">
+      {{ example }}
+    </option>
+  </select>
 </template>
 
 <script lang="ts">
@@ -31,6 +42,9 @@ export default defineComponent({
   setup(props, { emit }) {
     // Data
     const selectedVariableHandler = ref("");
+    const selectedExample = ref("");
+    const examples = ref([] as string[]);
+    const showExamplesList = ref(false);
 
     // Computed
     const sortedVariableParserItems = computed(() => {
@@ -61,9 +75,23 @@ export default defineComponent({
       );
       if (handler) {
         if (handler.examples.length === 1) {
-          emit("handlerSelected", handler.examples[0]);
+          emit("exampleSelected", handler.examples[0]);
           setTimeout(() => (selectedVariableHandler.value = ""), 10);
+        } else {
+          showExamplesList.value = true;
+          examples.value = handler.examples;
         }
+      }
+    };
+    const onExampleSelected = (event: Event) => {
+      const element: HTMLInputElement = event.target as HTMLInputElement;
+      const value = element.value;
+      if (value) {
+        emit("exampleSelected", value);
+        setTimeout(() => (selectedVariableHandler.value = ""), 10);
+        setTimeout(() => (selectedExample.value = ""), 10);
+        showExamplesList.value = false;
+        examples.value = [];
       }
     };
 
@@ -71,6 +99,10 @@ export default defineComponent({
       sortedVariableParserItems,
       onHandlerSelected,
       selectedVariableHandler,
+      showExamplesList,
+      selectedExample,
+      examples,
+      onExampleSelected,
     };
   },
 });
