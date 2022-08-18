@@ -1,0 +1,1 @@
+This body parsers can be used to insert the scenario hit count in the response. By default, when you insert any of the body parsers, the hit count of the scenario the stub is in will be looked up. You can pass the scenario name of another scenario to fetch the values for that scenario.
