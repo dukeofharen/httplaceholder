@@ -5,20 +5,17 @@ using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
 
 [TestClass]
 public class QueryStringResponseVariableParsingHandlerFacts
 {
-    private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
-    private QueryStringResponseVariableParsingHandler _parsingHandler;
-
-    [TestInitialize]
-    public void Initialize() => _parsingHandler = new QueryStringResponseVariableParsingHandler(_httpContextServiceMock.Object);
+    private readonly AutoMocker _mocker = new();
 
     [TestCleanup]
-    public void Cleanup() => _httpContextServiceMock.VerifyAll();
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void QueryStringHandlerFacts_Parse_HappyFlow()
@@ -32,13 +29,16 @@ public class QueryStringResponseVariableParsingHandlerFacts
         };
         const string expectedResult = "Query var 1: https://google.com, query var 2: , query var 3: value3";
 
-        _httpContextServiceMock
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var handler = _mocker.CreateInstance<QueryStringResponseVariableParsingHandler>();
+
+        httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(queryDict);
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = _parsingHandler.Parse(input, matches, new StubModel());
+        var result = handler.Parse(input, matches, new StubModel());
 
         // assert
         Assert.AreEqual(expectedResult, result);
@@ -56,13 +56,16 @@ public class QueryStringResponseVariableParsingHandlerFacts
         };
         const string expectedResult = "Query var 1: , query var 2: , query var 3: ";
 
-        _httpContextServiceMock
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var handler = _mocker.CreateInstance<QueryStringResponseVariableParsingHandler>();
+
+        httpContextServiceMock
             .Setup(m => m.GetQueryStringDictionary())
             .Returns(queryDict);
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = _parsingHandler.Parse(input, matches, new StubModel());
+        var result = handler.Parse(input, matches, new StubModel());
 
         // assert
         Assert.AreEqual(expectedResult, result);

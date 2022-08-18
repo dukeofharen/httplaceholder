@@ -4,20 +4,17 @@ using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
 
 [TestClass]
 public class RequestBodyResponseVariableParsingHandlerFacts
 {
-    private readonly Mock<IHttpContextService> _httpContextServiceMock = new();
-    private RequestBodyResponseVariableParsingHandler _parsingHandler;
-
-    [TestInitialize]
-    public void Initialize() => _parsingHandler = new RequestBodyResponseVariableParsingHandler(_httpContextServiceMock.Object);
+    private readonly AutoMocker _mocker = new();
 
     [TestCleanup]
-    public void Cleanup() => _httpContextServiceMock.VerifyAll();
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void RequestBodyVariableHandler_Parse_HappyFlow()
@@ -28,13 +25,16 @@ public class RequestBodyResponseVariableParsingHandlerFacts
 
         const string expectedResult = "Posted content: POSTED BODY";
 
-        _httpContextServiceMock
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var handler = _mocker.CreateInstance<RequestBodyResponseVariableParsingHandler>();
+
+        httpContextServiceMock
             .Setup(m => m.GetBody())
             .Returns(body);
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = _parsingHandler.Parse(input, matches, new StubModel());
+        var result = handler.Parse(input, matches, new StubModel());
 
         // assert
         Assert.AreEqual(expectedResult, result);

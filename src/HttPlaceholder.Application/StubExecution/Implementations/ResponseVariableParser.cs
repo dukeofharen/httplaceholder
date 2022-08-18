@@ -28,6 +28,7 @@ internal class ResponseVariableParser : IResponseVariableParser
         var matches = VarRegex.Matches(input).ToArray();
         foreach (var handler in _handlers)
         {
+            // TODO make this a bit more efficient (e.g. directly filter for found placeholders).
             var handlerMatches = matches
                 .Where(m => m.Groups.Count > 1 && string.Equals(m.Groups[1].Value, handler.Name,
                     StringComparison.OrdinalIgnoreCase));

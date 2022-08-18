@@ -5,7 +5,7 @@ using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
 
@@ -13,21 +13,10 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsing
 public class LocalNowResponseVariableParsingHandlerFacts
 {
     private static readonly DateTime _now = new(2019, 8, 21, 20, 29, 17, DateTimeKind.Local);
-    private readonly Mock<IDateTime> _dateTimeMock = new();
-    private LocalNowResponseVariableParsingHandler _parsingHandler;
-
-    [TestInitialize]
-    public void Initialize()
-    {
-        _dateTimeMock
-            .Setup(m => m.Now)
-            .Returns(_now);
-
-        _parsingHandler = new LocalNowResponseVariableParsingHandler(_dateTimeMock.Object);
-    }
+    private readonly AutoMocker _mocker = new();
 
     [TestCleanup]
-    public void Cleanup() => _dateTimeMock.VerifyAll();
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void LocalNowVariableHandler_Parse_HappyFlow_FormatSet()
@@ -35,9 +24,16 @@ public class LocalNowResponseVariableParsingHandlerFacts
         // Arrange
         const string input = "((localnow:dd-MM-yyyy HH:mm:ss))";
 
+        var dateTimeMock = _mocker.GetMock<IDateTime>();
+        dateTimeMock
+            .Setup(m => m.Now)
+            .Returns(_now);
+
+        var handler = _mocker.CreateInstance<LocalNowResponseVariableParsingHandler>();
+
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = _parsingHandler.Parse(input, matches, new StubModel());
+        var result = handler.Parse(input, matches, new StubModel());
 
         // Assert
         Assert.AreEqual("21-08-2019 20:29:17", result);
@@ -49,9 +45,16 @@ public class LocalNowResponseVariableParsingHandlerFacts
         // Arrange
         const string input = "((localnow))";
 
+        var dateTimeMock = _mocker.GetMock<IDateTime>();
+        dateTimeMock
+            .Setup(m => m.Now)
+            .Returns(_now);
+
+        var handler = _mocker.CreateInstance<LocalNowResponseVariableParsingHandler>();
+
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = _parsingHandler.Parse(input, matches, new StubModel());
+        var result = handler.Parse(input, matches, new StubModel());
 
         // Assert
         Assert.AreEqual(_now.ToString(CultureInfo.InvariantCulture), result);

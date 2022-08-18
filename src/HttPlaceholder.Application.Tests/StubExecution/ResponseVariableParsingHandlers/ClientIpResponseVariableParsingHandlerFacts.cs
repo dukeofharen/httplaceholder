@@ -4,20 +4,17 @@ using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
 
 [TestClass]
 public class ClientIpResponseVariableParsingHandlerFacts
 {
-    private readonly Mock<IClientDataResolver> _clientIpResolverMock = new();
-    private ClientIpResponseVariableParsingHandler _parsingHandler;
-
-    [TestInitialize]
-    public void Initialize() => _parsingHandler = new ClientIpResponseVariableParsingHandler(_clientIpResolverMock.Object);
+    private readonly AutoMocker _mocker = new();
 
     [TestCleanup]
-    public void Cleanup() => _clientIpResolverMock.VerifyAll();
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void RequestBodyVariableHandler_Parse_HappyFlow()
@@ -28,13 +25,16 @@ public class ClientIpResponseVariableParsingHandlerFacts
 
         const string expectedResult = $"IP: {ip}";
 
-        _clientIpResolverMock
+        var clientDataResolverMock = _mocker.GetMock<IClientDataResolver>();
+        var handler = _mocker.CreateInstance<ClientIpResponseVariableParsingHandler>();
+
+        clientDataResolverMock
             .Setup(m => m.GetClientIp())
             .Returns(ip);
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = _parsingHandler.Parse(input, matches, new StubModel());
+        var result = handler.Parse(input, matches, new StubModel());
 
         // assert
         Assert.AreEqual(expectedResult, result);
