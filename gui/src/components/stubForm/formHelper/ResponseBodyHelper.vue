@@ -128,7 +128,6 @@ export default defineComponent({
     // Data
     const responseBodyType = ref<ResponseBodyType>(ResponseBodyType.text);
     const responseBody = ref("");
-    const enableDynamicMode = ref<boolean | undefined>();
     const showBase64TextInput = ref(false);
     const responseBodyTypeItems = getValues();
     const metadata = ref<MetadataModel>();
@@ -147,9 +146,7 @@ export default defineComponent({
     const showDynamicModeRow = computed(
       () => responseBodyType.value !== ResponseBodyType.base64
     );
-    const showVariableParsers = computed(
-      () => showDynamicModeRow.value && enableDynamicMode.value
-    );
+    const showVariableParsers = computed(() => showDynamicModeRow.value);
     const showResponseBodyTypeDropdown = computed(
       () => !props.presetResponseBodyType
     );
@@ -165,6 +162,10 @@ export default defineComponent({
         responseBodyType.value !== ResponseBodyType.base64 ||
         showBase64TextInput.value
     );
+    const enableDynamicMode = computed({
+      get: () => stubFormStore.getDynamicMode,
+      set: (value) => stubFormStore.setDynamicMode(value),
+    });
 
     // Methods
     const onUploaded = (file: FileUploadedModel) => {

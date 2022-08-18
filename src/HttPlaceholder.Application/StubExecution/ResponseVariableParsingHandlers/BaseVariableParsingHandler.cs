@@ -15,15 +15,13 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHandler
 {
     private readonly Lazy<string> _loadedDescription;
-    private readonly IFileService _fileService;
 
     protected BaseVariableParsingHandler(IFileService fileService)
     {
-        _fileService = fileService;
         _loadedDescription = new Lazy<string>(() =>
         {
-            var path = Path.Combine(AssemblyHelper.GetExecutingAssemblyRootPath(), "Files", "Yaml", $"{Name}-description.yaml");
-            return _fileService.ReadAllText(path);
+            var path = Path.Combine(AssemblyHelper.GetExecutingAssemblyRootPath(), "Files", "Markdown", $"{Name}-description.md");
+            return fileService.ReadAllText(path);
         });
     }
 
