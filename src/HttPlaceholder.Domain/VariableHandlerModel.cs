@@ -11,11 +11,13 @@ public class VariableHandlerModel
     /// <param name="name">The name.</param>
     /// <param name="fullName">The full name.</param>
     /// <param name="examples">The examples.</param>
-    public VariableHandlerModel(string name, string fullName, string[] examples)
+    /// <param name="description">The description.</param>
+    public VariableHandlerModel(string name, string fullName, string[] examples, string description)
     {
         Name = name;
         FullName = fullName;
         Examples = examples;
+        Description = description;
     }
 
     /// <summary>
@@ -37,4 +39,9 @@ public class VariableHandlerModel
     /// Gets or sets one or more examples.
     /// </summary>
     public string[] Examples { get; }
+
+    /// <summary>
+    /// Gets or sets the description.
+    /// </summary>
+    public string Description { get; }
 }

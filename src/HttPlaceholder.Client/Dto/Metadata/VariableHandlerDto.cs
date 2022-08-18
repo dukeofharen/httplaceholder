@@ -19,4 +19,9 @@ public class VariableHandlerDto
     /// Gets or sets a short instruction on how to use the variable handler.
     /// </summary>
     public string Example { get; set; }
+
+    /// <summary>
+    /// Gets or sets the description.
+    /// </summary>
+    public string Description { get; }
 }
