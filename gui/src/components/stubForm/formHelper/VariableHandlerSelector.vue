@@ -1,31 +1,30 @@
 <template>
-  <select
-    class="form-select"
-    @change="onHandlerSelected($event)"
-    v-model="selectedVariableHandler"
-  >
-    <option value="">
-      Select a variable handler to insert in the response...
-    </option>
-    <option
+  <button class="btn btn-primary mt-2 mb-2" @click="showHandlersList = true">
+    Insert variable handler
+  </button>
+  <div class="list-group mt-2" v-if="showHandlersList">
+    <button
       v-for="item of sortedVariableParserItems"
-      :key="item.key"
-      :value="item.key"
+      :key="item.name"
+      class="list-group-item list-group-item-action fw-bold"
+      @click="handlerSelected(item)"
     >
-      {{ item.name }}
-    </option>
-  </select>
-  <select
-    v-if="showExamplesList"
-    class="form-select mt-2"
-    @change="onExampleSelected($event)"
-    v-model="selectedExample"
-  >
-    <option value="">Select an example to insert in the response...</option>
-    <option v-for="(example, index) of examples" :key="index" :value="example">
-      {{ example }}
-    </option>
-  </select>
+      <strong class="mb-1">{{ item.fullName }}</strong
+      ><br />
+      <small v-if="item.description">{{ item.description }}</small>
+      <!-- TODO Parse YAML here -->
+    </button>
+  </div>
+  <div class="list-group mt-2" v-if="showExamplesList">
+    <button
+      v-for="(example, index) of examples"
+      :key="index"
+      class="list-group-item list-group-item-action fw-bold"
+      @click="exampleSelected(example)"
+    >
+      <strong class="mb-1">{{ example }}</strong>
+    </button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -41,9 +40,8 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     // Data
-    const selectedVariableHandler = ref("");
-    const selectedExample = ref("");
     const examples = ref([] as string[]);
+    const showHandlersList = ref(false);
     const showExamplesList = ref(false);
 
     // Computed
@@ -52,57 +50,39 @@ export default defineComponent({
         return [];
       }
 
-      const result = props.variableParserItems.map((h) => ({
-        key: h.name,
-        name: h.fullName,
-        example: h.example,
-      }));
-
+      const result = props.variableParserItems;
       result.sort((a, b) => {
-        if (a.name > b.name) return 1;
-        if (a.name < b.name) return -1;
+        if (a.fullName > b.fullName) return 1;
+        if (a.fullName < b.fullName) return -1;
         return 0;
       });
-
       return result;
     });
 
     // Methods
-    const onHandlerSelected = (event: Event) => {
-      const element: HTMLInputElement = event.target as HTMLInputElement;
-      const handler = props.variableParserItems?.find(
-        (h) => h.name === element.value
-      );
-      if (handler) {
-        if (handler.examples.length === 1) {
-          emit("exampleSelected", handler.examples[0]);
-          setTimeout(() => (selectedVariableHandler.value = ""), 10);
-        } else {
-          showExamplesList.value = true;
-          examples.value = handler.examples;
-        }
+    const handlerSelected = (handler: VariableHandlerModel) => {
+      if (handler.examples.length === 1) {
+        emit("exampleSelected", handler.examples[0]);
+      } else {
+        showExamplesList.value = true;
+        examples.value = handler.examples;
       }
+
+      showHandlersList.value = false;
     };
-    const onExampleSelected = (event: Event) => {
-      const element: HTMLInputElement = event.target as HTMLInputElement;
-      const value = element.value;
-      if (value) {
-        emit("exampleSelected", value);
-        setTimeout(() => (selectedVariableHandler.value = ""), 10);
-        setTimeout(() => (selectedExample.value = ""), 10);
-        showExamplesList.value = false;
-        examples.value = [];
-      }
+    const exampleSelected = (example: string) => {
+      emit("exampleSelected", example);
+      showExamplesList.value = false;
+      showHandlersList.value = false;
     };
 
     return {
       sortedVariableParserItems,
-      onHandlerSelected,
-      selectedVariableHandler,
       showExamplesList,
-      selectedExample,
       examples,
-      onExampleSelected,
+      handlerSelected,
+      showHandlersList,
+      exampleSelected,
     };
   },
 });

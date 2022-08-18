@@ -3,4 +3,5 @@ export interface VariableHandlerModel {
   fullName: string;
   example: string;
   examples: string[];
+  description: string;
 }
