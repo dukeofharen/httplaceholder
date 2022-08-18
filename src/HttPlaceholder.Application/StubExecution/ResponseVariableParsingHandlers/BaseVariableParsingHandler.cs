@@ -22,7 +22,7 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
         _fileService = fileService;
         _loadedDescription = new Lazy<string>(() =>
         {
-            var path = Path.Combine(AssemblyHelper.GetEntryAssemblyRootPath(), "Yaml", $"{Name}-description.yaml");
+            var path = Path.Combine(AssemblyHelper.GetExecutingAssemblyRootPath(), "Files", "Yaml", $"{Name}-description.yaml");
             return _fileService.ReadAllText(path);
         });
     }

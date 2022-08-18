@@ -27,4 +27,9 @@ public class VariableHandlerDto : IMapFrom<VariableHandlerModel>
     /// Gets or sets one or more examples.
     /// </summary>
     public string[] Examples { get; set; }
+
+    /// <summary>
+    /// Gets or sets the description.
+    /// </summary>
+    public string Description { get; set; }
 }
