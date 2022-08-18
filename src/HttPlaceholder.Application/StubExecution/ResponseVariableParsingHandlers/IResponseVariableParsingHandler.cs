@@ -21,6 +21,11 @@ public interface IResponseVariableParsingHandler
     string FullName { get; }
 
     /// <summary>
+    /// Gets the variable parsing handler description.
+    /// </summary>
+    string GetDescription();
+
+    /// <summary>
     /// Gets or sets the variable parsing handler examples.
     /// </summary>
     string[] Examples { get; }

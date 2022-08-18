@@ -10,27 +10,27 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler to insert the UTC date/time into the response. An optional date/time format can be provided (based on the .NET date/time formatting strings).
 /// </summary>
-internal class UtcNowResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class UtcNowResponseVariableParsingHandler : BaseVariableParsingHandler
 {
     private readonly IDateTime _dateTime;
 
-    public UtcNowResponseVariableParsingHandler(IDateTime dateTime)
+    public UtcNowResponseVariableParsingHandler(IDateTime dateTime, IFileService fileService) : base(fileService)
     {
         _dateTime = dateTime;
     }
 
 
     /// <inheritdoc />
-    public string Name => "utcnow";
+    public override string Name => "utcnow";
 
     /// <inheritdoc />
-    public string FullName => "UTC date / time";
+    public override string FullName => "UTC date / time";
 
     /// <inheritdoc />
-    public string[] Examples => new[] {$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"};
+    public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"};
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
         if (!enumerable.Any())

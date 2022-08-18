@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
@@ -9,26 +10,26 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert a request header in the response.
 /// </summary>
-internal class RequestHeaderResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class RequestHeaderResponseVariableParsingHandler : BaseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
 
-    public RequestHeaderResponseVariableParsingHandler(IHttpContextService httpContextService)
+    public RequestHeaderResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) : base(fileService)
     {
         _httpContextService = httpContextService;
     }
 
     /// <inheritdoc />
-    public string Name => "request_header";
+    public override string Name => "request_header";
 
     /// <inheritdoc />
-    public string FullName => "Request header";
+    public override string FullName => "Request header";
 
     /// <inheritdoc />
-    public string[] Examples => new[] {$"(({Name}:X-Api-Key))"};
+    public override string[] Examples => new[] {$"(({Name}:X-Api-Key))"};
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var headers = _httpContextService.GetHeaders();
         foreach (var match in matches)

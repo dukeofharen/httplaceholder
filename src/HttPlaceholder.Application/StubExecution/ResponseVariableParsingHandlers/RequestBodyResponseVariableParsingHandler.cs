@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -9,26 +10,26 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert the posted request body in the response.
 /// </summary>
-internal class RequestBodyResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
 
-    public RequestBodyResponseVariableParsingHandler(IHttpContextService httpContextService)
+    public RequestBodyResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) : base(fileService)
     {
         _httpContextService = httpContextService;
     }
 
     /// <inheritdoc />
-    public string Name => "request_body";
+    public override string Name => "request_body";
 
     /// <inheritdoc />
-    public string FullName => "Full request body";
+    public override string FullName => "Full request body";
 
     /// <inheritdoc />
-    public string[] Examples => new[] {$"(({Name}))"};
+    public override string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var matchArray = matches as Match[] ?? matches.ToArray();
         if (!matchArray.Any())

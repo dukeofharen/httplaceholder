@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -9,26 +10,27 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert the client IP in the response.
 /// </summary>
-internal class ClientIpResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class ClientIpResponseVariableParsingHandler : BaseVariableParsingHandler
 {
     private readonly IClientDataResolver _clientDataResolver;
 
-    public ClientIpResponseVariableParsingHandler(IClientDataResolver clientDataResolver)
+    public ClientIpResponseVariableParsingHandler(IClientDataResolver clientDataResolver, IFileService fileService) :
+        base(fileService)
     {
         _clientDataResolver = clientDataResolver;
     }
 
     /// <inheritdoc />
-    public string Name => "client_ip";
+    public override string Name => "client_ip";
 
     /// <inheritdoc />
-    public string FullName => "Client IP";
+    public override string FullName => "Client IP";
 
     /// <inheritdoc />
-    public string[] Examples => new[] {$"(({Name}))"};
+    public override string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
         if (!enumerable.Any())

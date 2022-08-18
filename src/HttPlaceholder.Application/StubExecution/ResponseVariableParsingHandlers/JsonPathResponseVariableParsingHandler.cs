@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
@@ -13,30 +14,31 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to query the posted JSON string based on a JSONPath expression. The result is put in the response.
 /// </summary>
-internal class JsonPathResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
     private readonly ILogger<JsonPathResponseVariableParsingHandler> _logger;
 
     public JsonPathResponseVariableParsingHandler(
         IHttpContextService httpContextService,
-        ILogger<JsonPathResponseVariableParsingHandler> logger)
+        ILogger<JsonPathResponseVariableParsingHandler> logger,
+        IFileService fileService) : base(fileService)
     {
         _httpContextService = httpContextService;
         _logger = logger;
     }
 
     /// <inheritdoc />
-    public string Name => "jsonpath";
+    public override string Name => "jsonpath";
 
     /// <inheritdoc />
-    public string FullName => "JSONPath";
+    public override string FullName => "JSONPath";
 
     /// <inheritdoc />
-    public string[] Examples => new[] {$"(({Name}:$.values[1].title))"};
+    public override string[] Examples => new[] {$"(({Name}:$.values[1].title))"};
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var matchArray = matches as Match[] ?? matches.ToArray();
         if (!matchArray.Any())
