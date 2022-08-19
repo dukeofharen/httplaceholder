@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Bogus;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
@@ -12,16 +11,11 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
 {
-    private static readonly string[] _locales =
-    {
-        "af_ZA", "fr_CH", "ar", "ge", "az", "hr", "cz", "id_ID", "de", "it", "de_AT", "ja", "de_CH", "ko", "el",
-        "lv", "en", "nb_NO", "en_AU", "ne", "en_AU_ocker", "nl", "en_BORK", "nl_BE", "en_CA", "pl", "en_GB",
-        "pt_BR", "en_IE", "pt_PT", "en_IND", "ro", "en_NG", "ru", "en_US", "sk", "en_ZA", "sv", "es", "tr", "es_MX",
-        "uk", "fa", "vi", "fi", "zh_CN", "fr", "zh_TW", "fr_CA", "zu_ZA"
-    };
+    private readonly IFakerService _fakerService;
 
-    public FakeDataVariableParsingHandler(IFileService fileService) : base(fileService)
+    public FakeDataVariableParsingHandler(IFileService fileService, IFakerService fakerService) : base(fileService)
     {
+        _fakerService = fakerService;
     }
 
     /// <inheritdoc />
@@ -36,13 +30,37 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
     public override string GetDescription()
     {
         var description = base.GetDescription();
-        description = description.Replace("[LOCALES]", string.Join(", ", _locales.Select(l => $"_{l}_")));
+        description = description.Replace("[LOCALES]",
+            string.Join(", ", _fakerService.GetLocales().Select(l => $"_{l}_")));
         return description;
     }
 
     /// <inheritdoc />
     public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
+        var enumerable = matches as Match[] ?? matches.ToArray();
+        if (!enumerable.Any())
+        {
+            return input;
+        }
+
+        foreach (var match in enumerable)
+        {
+            var fakeDataInput = ParseFakeDataInput(match.Groups[2].Value);
+            input = input.Replace(match.Value, _fakerService.GenerateFakeData(fakeDataInput.generator, fakeDataInput.locale, fakeDataInput.formatting));
+        }
+
         return input;
+    }
+
+    private static (string locale, string generator, string formatting) ParseFakeDataInput(string input)
+    {
+        var parts = input.Split(':');
+        return parts.Length switch
+        {
+            1 => (string.Empty, parts[0], string.Empty),
+            2 => (parts[0], parts[1], string.Empty),
+            _ => (parts[0], parts[1], parts[2])
+        };
     }
 }

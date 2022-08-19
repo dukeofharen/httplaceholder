@@ -11,12 +11,23 @@ public class FakeDataGeneratorModel
     /// <summary>
     /// Constructs a <see cref="FakeDataGeneratorModel"/> instance.
     /// </summary>
-    public FakeDataGeneratorModel(string name, string formatting, Func<string, string> formatterFunction)
+    public FakeDataGeneratorModel(string name, string formatting, Func<Faker, string, string> formatterFunction)
     {
         Name = name;
         Formatting = formatting;
         FormatterFunction = formatterFunction;
     }
+
+    /// <summary>
+    /// Constructs a <see cref="FakeDataGeneratorModel"/> instance.
+    /// </summary>
+    public FakeDataGeneratorModel(string name, Func<Faker, string, string> formatterFunction)
+    {
+        Name = name;
+        FormatterFunction = formatterFunction;
+    }
+
+
 
     /// <summary>
     /// Gets or sets the name.
@@ -26,10 +37,11 @@ public class FakeDataGeneratorModel
     /// <summary>
     /// Gets or sets the formatting.
     /// </summary>
-    public string Formatting { get; }
+    public string Formatting { get; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the formatter function.
+    /// First type argument is the faker, second type argument is the formatting and the output type is the result.
     /// </summary>
     public Func<Faker, string, string> FormatterFunction { get; }
 }

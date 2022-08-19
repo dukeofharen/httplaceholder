@@ -14,6 +14,12 @@ public interface IFakerService
     FakeDataGeneratorModel[] GetGenerators();
 
     /// <summary>
+    /// Returns a list of available Faker locales.
+    /// </summary>
+    /// <returns>The list of locales.</returns>
+    string[] GetLocales();
+
+    /// <summary>
     /// Generates fake data.
     /// </summary>
     /// <param name="generator"></param>
