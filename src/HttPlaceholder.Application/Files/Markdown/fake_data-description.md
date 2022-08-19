@@ -8,6 +8,6 @@ The fake data makes it possible to insert random data to the response. The fake 
 - Date: past, past_offset, soon, soon_offset, future, future_offset, recent, recent_offset, month, weekday,  timezone_string
 - Finance: account, account_name, amount, currency_name, currency_code, currency_symbol, credit_card_number, credit_card_cvv, routing_number, bic, iban, bitcoin_address, ethereum_address, litecoin_address
 - System: file_name, directory_path, file_path, common_file_name, mime_type, common_file_type, common_file_ext, file_type, file_ext, semver, android_id, apple_push_token
-- Commerce: department, price, product_name, product, product_adjective, product_description, ean8, ean13, ean
+- Commerce: department, price, product_name, product, product_adjective, product_description, ean8, ean13
 
 The following locales are supported: [LOCALES].
