@@ -11,7 +11,7 @@ public class FakeDataGeneratorModel
     /// <summary>
     /// Constructs a <see cref="FakeDataGeneratorModel"/> instance.
     /// </summary>
-    public FakeDataGeneratorModel(string name, string formatting, Func<Faker, string, string> formatterFunction)
+    public FakeDataGeneratorModel(string name, string formatting, Func<Faker, string, string, string> formatterFunction)
     {
         Name = name;
         Formatting = formatting;
@@ -21,7 +21,7 @@ public class FakeDataGeneratorModel
     /// <summary>
     /// Constructs a <see cref="FakeDataGeneratorModel"/> instance.
     /// </summary>
-    public FakeDataGeneratorModel(string name, Func<Faker, string, string> formatterFunction)
+    public FakeDataGeneratorModel(string name, Func<Faker, string, string, string> formatterFunction)
     {
         Name = name;
         FormatterFunction = formatterFunction;
@@ -39,7 +39,7 @@ public class FakeDataGeneratorModel
 
     /// <summary>
     /// Gets or sets the formatter function.
-    /// First type argument is the faker, second type argument is the formatting and the output type is the result.
+    /// First type argument is the faker, second type argument is the formatting, third type argument is the locale and the output type is the result.
     /// </summary>
-    public Func<Faker, string, string> FormatterFunction { get; }
+    public Func<Faker, string, string, string> FormatterFunction { get; }
 }
