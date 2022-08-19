@@ -99,7 +99,6 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
 
     private string[] InitializeExamples()
     {
-        // TODO add examples with locale
         var result = new List<string>();
         foreach (var locale in _fakerService.GetLocales())
         {
