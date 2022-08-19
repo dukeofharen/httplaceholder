@@ -43,7 +43,6 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
     /// <inheritdoc />
     public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
-        var faker = new Faker();
         return input;
     }
 }
