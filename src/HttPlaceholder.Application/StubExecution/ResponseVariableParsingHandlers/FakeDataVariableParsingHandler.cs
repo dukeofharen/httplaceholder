@@ -101,12 +101,17 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
     {
         // TODO add examples with locale
         var result = new List<string>();
+        foreach (var locale in _fakerService.GetLocales())
+        {
+            result.Add($"(({Name}:{locale}:first_name))");
+        }
+
         foreach (var generator in _fakerService.GetGenerators())
         {
-            result.Add($"((fake_data:{generator.Name}))");
+            result.Add($"(({Name}:{generator.Name}))");
             if (!string.IsNullOrWhiteSpace(generator.Formatting))
             {
-                result.Add($"((fake_data:{generator.Name}:{generator.Formatting}))");
+                result.Add($"(({Name}:{generator.Name}:{generator.Formatting}))");
             }
         }
 
