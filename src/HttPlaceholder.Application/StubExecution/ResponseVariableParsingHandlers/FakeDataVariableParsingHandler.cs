@@ -71,7 +71,7 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
         var formatting = string.Empty;
 
         var locales = _fakerService.GetLocales();
-        if (locales.Any(l => string.Equals(l, locale, StringComparison.OrdinalIgnoreCase)))
+        if (locales.Any(l => string.Equals(l, parts[0], StringComparison.OrdinalIgnoreCase)))
         {
             // First part is locale, so treat it like that.
             locale = parts[0];

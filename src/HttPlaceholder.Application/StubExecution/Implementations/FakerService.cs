@@ -68,47 +68,46 @@ internal class FakerService : IFakerService
         new("url", (faker, formatting, locale) => faker.Internet.Url()),
         new("url_with_path", (faker, formatting, locale) => faker.Internet.UrlWithPath()),
         new("url_rooted_path", (faker, formatting, locale) => faker.Internet.UrlRootedPath()),
-        new("lorem", (faker, formatting, locale) => faker.Lorem.Word()),
-        new("words", "3",
+        new("lorem", (faker, formatting, locale) => faker.Lorem.Word()), new("words", "3",
             (faker, formatting, locale) => string.Join(' ', faker.Lorem.Words(ConvertToInt(formatting, 3)))),
-        new("letter", "1", (faker, formatting, locale) => faker.Lorem.Letter()), // TODO formatting
-        new("sentence", "5", (faker, formatting, locale) => faker.Lorem.Sentence()), // TODO formatting
-        new("sentences", "3", (faker, formatting, locale) => faker.Lorem.Sentences()), // TODO formatting
-        new("paragraph", "3", (faker, formatting, locale) => faker.Lorem.Paragraph()), // TODO formatting
-        new("paragraphs", "3", (faker, formatting, locale) => faker.Lorem.Paragraphs()), // TODO formatting
+        new("letter", "1", (faker, formatting, locale) => faker.Lorem.Letter(ConvertToInt(formatting, 1))),
+        new("sentence", "5", (faker, formatting, locale) => faker.Lorem.Sentence(ConvertToInt(formatting, 5))),
+        new("sentences", "3", (faker, formatting, locale) => faker.Lorem.Sentences(ConvertToInt(formatting, 3))),
+        new("paragraph", "3", (faker, formatting, locale) => faker.Lorem.Paragraph(ConvertToInt(formatting, 3))),
+        new("paragraphs", "3", (faker, formatting, locale) => faker.Lorem.Paragraphs(ConvertToInt(formatting, 3))),
         new("text", (faker, formatting, locale) => faker.Lorem.Text()),
-        new("lines", "3", (faker, formatting, locale) => faker.Lorem.Lines()), // TODO formatting
-        new("slug", "3", (faker, formatting, locale) => faker.Lorem.Slug()), // TODO formatting
-        new("past", DefaultDatetimeFormat,
+        new("lines", "3", (faker, formatting, locale) => faker.Lorem.Lines(ConvertToInt(formatting, 3))),
+        new("slug", "3", (faker, formatting, locale) => faker.Lorem.Slug(ConvertToInt(formatting, 3))), new("past",
+            DefaultDatetimeFormat,
             (faker, formatting, locale) =>
-                faker.Date.Past().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+                ConvertDateTime(faker.Date.Past(), formatting, locale)),
         new("past_offset", DefaultDatetimeFormat,
             (faker, formatting, locale) =>
-                faker.Date.PastOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+                ConvertDateTimeOffset(faker.Date.PastOffset(), formatting, locale)),
         new("soon", DefaultDatetimeFormat,
             (faker, formatting, locale) =>
-                faker.Date.Soon().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+                ConvertDateTime(faker.Date.Soon(), formatting, locale)),
         new("soon_offset", DefaultDatetimeFormat,
             (faker, formatting, locale) =>
-                faker.Date.SoonOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+                ConvertDateTimeOffset(faker.Date.SoonOffset(), formatting, locale)),
         new("future", DefaultDatetimeFormat,
             (faker, formatting, locale) =>
-                faker.Date.Future().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+                ConvertDateTime(faker.Date.Future(), formatting, locale)),
         new("future_offset", DefaultDatetimeFormat,
             (faker, formatting, locale) =>
-                faker.Date.FutureOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+                ConvertDateTimeOffset(faker.Date.FutureOffset(), formatting, locale)),
         new("recent", DefaultDatetimeFormat,
             (faker, formatting, locale) =>
-                faker.Date.Recent().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+                ConvertDateTime(faker.Date.Recent(), formatting, locale)),
         new("recent_offset", DefaultDatetimeFormat,
             (faker, formatting, locale) =>
-                faker.Date.RecentOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+                ConvertDateTimeOffset(faker.Date.RecentOffset(), formatting, locale)),
         new("month", (faker, formatting, locale) => faker.Date.Month()),
         new("weekday", (faker, formatting, locale) => faker.Date.Weekday()),
         new("timezone_string", (faker, formatting, locale) => faker.Date.TimeZoneString()),
         new("account", (faker, formatting, locale) => faker.Finance.Account()),
         new("account_name", (faker, formatting, locale) => faker.Finance.AccountName()), new("amount", "0.00",
-            (faker, formatting, locale) => faker.Finance.Amount().ToString()), // TODO formatting AND locale
+            (faker, formatting, locale) => ConvertDecimal(faker.Finance.Amount(), formatting, locale)),
         new("currency_name", (faker, formatting, locale) => faker.Finance.Currency().Description),
         new("currency_code", (faker, formatting, locale) => faker.Finance.Currency().Code),
         new("currency_symbol", (faker, formatting, locale) => faker.Finance.Currency().Symbol),
@@ -184,4 +183,25 @@ internal class FakerService : IFakerService
 
     private static int ConvertToInt(string input, int defaultValue) =>
         !int.TryParse(input, out var result) ? defaultValue : result;
+
+    private static string ConvertDateTime(DateTime input, string formatting, string locale) =>
+        input.ToString(formatting, GetCultureInfo(locale));
+
+    private static string ConvertDateTimeOffset(DateTimeOffset input, string formatting, string locale) =>
+        input.ToString(formatting, GetCultureInfo(locale));
+
+    private static string ConvertDecimal(decimal input, string formatting, string locale) =>
+        input.ToString(formatting, GetCultureInfo(locale));
+
+    private static CultureInfo GetCultureInfo(string locale)
+    {
+        var cultureInfo = CultureInfo.InvariantCulture;
+        try
+        {
+            cultureInfo = new CultureInfo(locale);
+        }
+        catch (CultureNotFoundException) { }
+
+        return cultureInfo;
+    }
 }
