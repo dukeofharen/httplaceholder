@@ -611,7 +611,6 @@ export const useStubFormStore = defineStore({
       });
     },
     setDynamicMode(value: boolean | undefined): void {
-      console.log(value);
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {

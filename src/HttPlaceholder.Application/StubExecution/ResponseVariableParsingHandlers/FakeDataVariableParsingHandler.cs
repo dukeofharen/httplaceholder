@@ -8,7 +8,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert fake person data.
+/// Response variable parsing handler that is used to insert fake data.
 /// </summary>
 internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
 {
@@ -25,7 +25,7 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
     public override string Name => "fake_data";
 
     /// <inheritdoc />
-    public override string FullName => "Fake person data";
+    public override string FullName => "Fake data";
 
     /// <inheritdoc />
     public override string[] Examples => _exampleLazy.Value;

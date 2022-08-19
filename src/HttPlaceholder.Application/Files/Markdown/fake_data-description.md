@@ -1,4 +1,4 @@
-The fake data makes it possible to insert random data to the response. The fake data is generated using [Bogus](https://github.com/bchavez/Bogus). You can insert the following data:
+The fake data makes it possible to insert random data to the response. The fake data is generated using <a href="https://github.com/bchavez/Bogus" target="_blank">Bogus</a>. You can insert the following data:
 
 - Address: zipcode, city, street_address, city_prefix, city_suffix, street_name, building_number, street_suffix, secondary_address, county, country, full_address, country_code, state, state_abbreviation, direction, cardinal_direction, ordinal_direction
 - Name: first_name, last_name, full_name, prefix, suffix, job_title, job_descriptor, job_area, job_type

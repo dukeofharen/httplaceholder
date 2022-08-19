@@ -18,11 +18,24 @@
     </button>
   </div>
   <div class="list-group mt-2" v-if="showExamplesList">
+    <small
+      v-if="selectedHandler"
+      v-html="parseMarkdown(selectedHandler.description)"
+    />
     <span class="list-group-item list-group-item-action fw-bold"
       >Select an example to insert in the response...</span
     >
+    <div class="list-group-item list-group-item-action fw-bold">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filter examples..."
+        v-model="exampleFilter"
+        ref="exampleFilterInput"
+      />
+    </div>
     <button
-      v-for="(example, index) of examples"
+      v-for="(example, index) of filteredExamples"
       :key="index"
       class="list-group-item list-group-item-action fw-bold"
       @click="exampleSelected(example)"
@@ -45,13 +58,23 @@ export default defineComponent({
       type: Array as PropType<VariableHandlerModel[]>,
     },
   },
+  emits: {
+    exampleSelected() {
+      return true;
+    },
+  },
   setup(props, { emit }) {
     const stubFormStore = useStubFormStore();
+
+    // Refs
+    const exampleFilterInput = ref<HTMLInputElement>();
 
     // Data
     const examples = ref([] as string[]);
     const showHandlersList = ref(false);
     const showExamplesList = ref(false);
+    const selectedHandler = ref<VariableHandlerModel | null>();
+    const exampleFilter = ref("");
 
     // Computed
     const sortedVariableParserItems = computed(() => {
@@ -67,6 +90,15 @@ export default defineComponent({
       });
       return result;
     });
+    const filteredExamples = computed(() => {
+      if (!exampleFilter.value) {
+        return examples.value;
+      }
+
+      return examples.value.filter((e) =>
+        e.toLowerCase().includes(exampleFilter.value.toLowerCase())
+      );
+    });
 
     // Methods
     const handlerSelected = (handler: VariableHandlerModel) => {
@@ -75,7 +107,13 @@ export default defineComponent({
         stubFormStore.setDynamicMode(true);
       } else {
         showExamplesList.value = true;
+        selectedHandler.value = handler;
         examples.value = handler.examples;
+        setTimeout(() => {
+          if (exampleFilterInput.value) {
+            exampleFilterInput.value?.focus();
+          }
+        }, 10);
       }
 
       showHandlersList.value = false;
@@ -85,6 +123,8 @@ export default defineComponent({
       showExamplesList.value = false;
       showHandlersList.value = false;
       stubFormStore.setDynamicMode(true);
+      selectedHandler.value = null;
+      exampleFilter.value = "";
     };
     const parseMarkdown = (input: string) => {
       return marked.parse(input);
@@ -98,6 +138,10 @@ export default defineComponent({
       showHandlersList,
       exampleSelected,
       parseMarkdown,
+      selectedHandler,
+      exampleFilter,
+      exampleFilterInput,
+      filteredExamples,
     };
   },
 });
