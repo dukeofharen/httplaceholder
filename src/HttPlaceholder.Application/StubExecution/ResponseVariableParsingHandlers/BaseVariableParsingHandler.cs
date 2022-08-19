@@ -32,7 +32,7 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
     public abstract string FullName { get; }
 
     /// <inheritdoc />
-    public string GetDescription() => _loadedDescription.Value;
+    public virtual string GetDescription() => _loadedDescription.Value;
 
     /// <inheritdoc />
     public abstract string[] Examples { get; }
