@@ -11,3 +11,10 @@ The fake data makes it possible to insert random data to the response. The fake 
 - Commerce: department, price, product_name, product, product_adjective, product_description, ean8, ean13
 
 The following locales are supported: [LOCALES].
+
+This handler can be inserted in the following ways:
+
+- `((fake_data:first_name))` (only specify the generator).
+- `((fake_data:en_US:first_name))` (specify generator and locale).
+- `((fake_data:past:yyyy-MM-dd HH:mm:ss))` (specify generator and formatting string, if applicable).
+- `((fake_data:en_US:past:yyyy-MM-dd HH:mm:ss))` (specify generator, locale and formatting string, if applicable).

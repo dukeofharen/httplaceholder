@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Common;
@@ -11,11 +12,13 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// </summary>
 internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
 {
+    private readonly Lazy<string[]> _exampleLazy;
     private readonly IFakerService _fakerService;
 
     public FakeDataVariableParsingHandler(IFileService fileService, IFakerService fakerService) : base(fileService)
     {
         _fakerService = fakerService;
+        _exampleLazy = new Lazy<string[]>(InitializeExamples);
     }
 
     /// <inheritdoc />
@@ -25,7 +28,7 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
     public override string FullName => "Fake person data";
 
     /// <inheritdoc />
-    public override string[] Examples => new string[] { };
+    public override string[] Examples => _exampleLazy.Value;
 
     public override string GetDescription()
     {
@@ -47,20 +50,65 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
         foreach (var match in enumerable)
         {
             var fakeDataInput = ParseFakeDataInput(match.Groups[2].Value);
-            input = input.Replace(match.Value, _fakerService.GenerateFakeData(fakeDataInput.generator, fakeDataInput.locale, fakeDataInput.formatting));
+            input = input.Replace(match.Value,
+                _fakerService.GenerateFakeData(fakeDataInput.generator, fakeDataInput.locale,
+                    fakeDataInput.formatting));
         }
 
         return input;
     }
 
-    private static (string locale, string generator, string formatting) ParseFakeDataInput(string input)
+    private (string locale, string generator, string formatting) ParseFakeDataInput(string input)
     {
         var parts = input.Split(':');
-        return parts.Length switch
+        if (parts.Length == 0)
         {
-            1 => (string.Empty, parts[0], string.Empty),
-            2 => (parts[0], parts[1], string.Empty),
-            _ => (parts[0], parts[1], parts[2])
-        };
+            return (string.Empty, string.Empty, string.Empty);
+        }
+
+        var locale = string.Empty;
+        var generator = string.Empty;
+        var formatting = string.Empty;
+
+        var locales = _fakerService.GetLocales();
+        if (locales.Any(l => string.Equals(l, locale, StringComparison.OrdinalIgnoreCase)))
+        {
+            // First part is locale, so treat it like that.
+            locale = parts[0];
+            if (parts.Length > 1)
+            {
+                generator = parts[1];
+            }
+
+            if (parts.Length > 2)
+            {
+                formatting = parts[2];
+            }
+        }
+        else
+        {
+            generator = parts[0];
+            if (parts.Length > 1)
+            {
+                formatting = parts[1];
+            }
+        }
+
+        return (locale, generator, formatting);
+    }
+
+    private string[] InitializeExamples()
+    {
+        var result = new List<string>();
+        foreach (var generator in _fakerService.GetGenerators())
+        {
+            result.Add($"((fake_data:{generator.Name}))");
+            if (!string.IsNullOrWhiteSpace(generator.Formatting))
+            {
+                result.Add($"((fake_data:{generator.Name}:{generator.Formatting}))");
+            }
+        }
+
+        return result.ToArray();
     }
 }

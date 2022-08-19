@@ -10,6 +10,7 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 /// <inheritdoc />
 internal class FakerService : IFakerService
 {
+    private const string DefaultDatetimeFormat = "yyyy-MM-dd HH:mm:ss";
     private static readonly string[] _locales =
     {
         "af_ZA", "fr_CH", "ar", "ge", "az", "hr", "cz", "id_ID", "de", "it", "de_AT", "ja", "de_CH", "ko", "el",
@@ -67,35 +68,35 @@ internal class FakerService : IFakerService
         new("url_with_path", (faker, formatting) => faker.Internet.UrlWithPath()),
         new("url_rooted_path", (faker, formatting) => faker.Internet.UrlRootedPath()),
         new("lorem", (faker, formatting) => faker.Lorem.Word()),
-        new("words", (faker, formatting) => string.Join(' ', faker.Lorem.Words())), // TODO formatting
-        new("letter", (faker, formatting) => faker.Lorem.Letter()), // TODO formatting
-        new("sentence", (faker, formatting) => faker.Lorem.Sentence()), // TODO formatting
-        new("sentences", (faker, formatting) => faker.Lorem.Sentences()), // TODO formatting
-        new("paragraph", (faker, formatting) => faker.Lorem.Paragraph()), // TODO formatting
-        new("paragraphs", (faker, formatting) => faker.Lorem.Paragraphs()), // TODO formatting
+        new("words", "3", (faker, formatting) => string.Join(' ', faker.Lorem.Words())), // TODO formatting
+        new("letter", "1", (faker, formatting) => faker.Lorem.Letter()), // TODO formatting
+        new("sentence", "5", (faker, formatting) => faker.Lorem.Sentence()), // TODO formatting
+        new("sentences", "3", (faker, formatting) => faker.Lorem.Sentences()), // TODO formatting
+        new("paragraph", "3", (faker, formatting) => faker.Lorem.Paragraph()), // TODO formatting
+        new("paragraphs", "3", (faker, formatting) => faker.Lorem.Paragraphs()), // TODO formatting
         new("text", (faker, formatting) => faker.Lorem.Text()),
-        new("lines", (faker, formatting) => faker.Lorem.Lines()), // TODO formatting
-        new("slug", (faker, formatting) => faker.Lorem.Slug()), // TODO formatting
-        new("past", (faker, formatting) => faker.Date.Past().ToString(CultureInfo.InvariantCulture)), // TODO formatting
-        new("past_offset",
-            (faker, formatting) => faker.Date.PastOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting
-        new("soon", (faker, formatting) => faker.Date.Soon().ToString(CultureInfo.InvariantCulture)), // TODO formatting
-        new("soon_offset",
-            (faker, formatting) => faker.Date.SoonOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting
-        new("future",
-            (faker, formatting) => faker.Date.Future().ToString(CultureInfo.InvariantCulture)), // TODO formatting
-        new("future_offset",
-            (faker, formatting) => faker.Date.FutureOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting
-        new("recent",
-            (faker, formatting) => faker.Date.Recent().ToString(CultureInfo.InvariantCulture)), // TODO formatting
-        new("recent_offset",
-            (faker, formatting) => faker.Date.RecentOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting
+        new("lines", "3", (faker, formatting) => faker.Lorem.Lines()), // TODO formatting
+        new("slug", "3", (faker, formatting) => faker.Lorem.Slug()), // TODO formatting
+        new("past", DefaultDatetimeFormat, (faker, formatting) => faker.Date.Past().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+        new("past_offset", DefaultDatetimeFormat,
+            (faker, formatting) => faker.Date.PastOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+        new("soon", DefaultDatetimeFormat, (faker, formatting) => faker.Date.Soon().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+        new("soon_offset", DefaultDatetimeFormat,
+            (faker, formatting) => faker.Date.SoonOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+        new("future", DefaultDatetimeFormat,
+            (faker, formatting) => faker.Date.Future().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+        new("future_offset", DefaultDatetimeFormat,
+            (faker, formatting) => faker.Date.FutureOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+        new("recent", DefaultDatetimeFormat,
+            (faker, formatting) => faker.Date.Recent().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
+        new("recent_offset", DefaultDatetimeFormat,
+            (faker, formatting) => faker.Date.RecentOffset().ToString(CultureInfo.InvariantCulture)), // TODO formatting AND locale
         new("month", (faker, formatting) => faker.Date.Month()),
         new("weekday", (faker, formatting) => faker.Date.Weekday()),
         new("timezone_string", (faker, formatting) => faker.Date.TimeZoneString()),
         new("account", (faker, formatting) => faker.Finance.Account()),
         new("account_name", (faker, formatting) => faker.Finance.AccountName()),
-        new("amount", (faker, formatting) => faker.Finance.Amount().ToString()), // TODO formatting
+        new("amount", "0.00", (faker, formatting) => faker.Finance.Amount().ToString()), // TODO formatting AND locale
         new("currency_name", (faker, formatting) => faker.Finance.Currency().Description),
         new("currency_code", (faker, formatting) => faker.Finance.Currency().Code),
         new("currency_symbol", (faker, formatting) => faker.Finance.Currency().Symbol),
@@ -159,6 +160,7 @@ internal class FakerService : IFakerService
             locale = "en";
         }
 
+        // TODO cache faker per locale for later use.
         var faker = new Faker(locale);
         return generatorModel.FormatterFunction(faker, generatorModel.Formatting);
     }

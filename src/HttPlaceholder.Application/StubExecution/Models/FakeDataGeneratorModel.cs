@@ -27,8 +27,6 @@ public class FakeDataGeneratorModel
         FormatterFunction = formatterFunction;
     }
 
-
-
     /// <summary>
     /// Gets or sets the name.
     /// </summary>
