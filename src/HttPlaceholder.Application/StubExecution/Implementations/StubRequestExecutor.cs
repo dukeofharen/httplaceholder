@@ -92,7 +92,7 @@ internal class StubRequestExecutor : IStubRequestExecutor
         }
 
         var finalStub = _finalStubDeterminer.DetermineFinalStub(foundStubs);
-        _scenarioService.IncreaseHitCount(finalStub.Scenario);
+        await _scenarioService.IncreaseHitCountAsync(finalStub.Scenario);
         requestLogger.SetExecutingStubId(finalStub.Id);
         var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub);
         return response;

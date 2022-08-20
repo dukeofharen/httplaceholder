@@ -180,6 +180,6 @@ public class StubRequestExecutorFacts
         // assert
         Assert.AreEqual(expectedResponseModel, response);
 
-        _mocker.GetMock<IScenarioService>().Verify(m => m.IncreaseHitCount(_stub2.Stub.Scenario));
+        _mocker.GetMock<IScenarioService>().Verify(m => m.IncreaseHitCountAsync(_stub2.Stub.Scenario));
     }
 }

@@ -22,7 +22,7 @@ namespace HttPlaceholder.Middleware;
 /// </summary>
 public class StubHandlingMiddleware
 {
-    private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub"};
+    private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub"};
 
     private const string CorrelationHeaderKey = "X-HttPlaceholder-Correlation";
     private readonly RequestDelegate _next;

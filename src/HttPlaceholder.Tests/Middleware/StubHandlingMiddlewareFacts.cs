@@ -80,6 +80,7 @@ public class StubHandlingMiddlewareFacts
     [DataRow("/ph-static")]
     [DataRow("/swagger")]
     [DataRow("/requestHub")]
+    [DataRow("/scenarioHub")]
     public async Task Invoke_SegmentToBeIgnored_ShouldCallNextDirectly(string segment)
     {
         // Arrange

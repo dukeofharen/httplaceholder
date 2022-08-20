@@ -13,7 +13,7 @@ public interface IScenarioService
     /// Increases the hit count of a specific scenario.
     /// </summary>
     /// <param name="scenario">The scenario name. Is case insensitive.</param>
-    void IncreaseHitCount(string scenario);
+    Task IncreaseHitCountAsync(string scenario);
 
     /// <summary>
     /// Get the hit count of a specific scenario.

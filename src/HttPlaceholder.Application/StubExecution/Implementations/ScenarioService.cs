@@ -19,19 +19,22 @@ internal class ScenarioService : IScenarioService
     }
 
     /// <inheritdoc />
-    public void IncreaseHitCount(string scenario)
+    public async Task IncreaseHitCountAsync(string scenario)
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
             return;
         }
 
+        ScenarioStateModel scenarioState;
         lock (_scenarioStateStore.GetScenarioLock(scenario))
         {
-            var scenarioState = GetOrAddScenarioState(scenario);
+            scenarioState = GetOrAddScenarioState(scenario);
             scenarioState.HitCount++;
             _scenarioStateStore.UpdateScenario(scenario, scenarioState);
         }
+
+        await _scenarioNotify.ScenarioSetAsync(scenarioState);
     }
 
     /// <inheritdoc />
