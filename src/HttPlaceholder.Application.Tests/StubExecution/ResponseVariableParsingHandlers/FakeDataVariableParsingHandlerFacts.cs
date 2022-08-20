@@ -23,6 +23,7 @@ public class FakeDataVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [DataTestMethod]
+    [DataRow("", "", "", "")]
     [DataRow("first_name", "first_name", "", "")]
     [DataRow("en_US:first_name", "first_name", "en_US", "")]
     [DataRow("past:yyyy-MM-dd HH:mm:ss", "past", "", "yyyy-MM-dd HH:mm:ss")]
