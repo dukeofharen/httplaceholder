@@ -4545,7 +4545,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: dynamic-mode-scenario-state\nscenario: dynamic-mode-scenario-state\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /dynamic-mode-scenario-state\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Value: '((scenario_state)) ((scenario_state:scenario123))'\n  text: '((scenario_state)) ((scenario_state:scenario123))'"
+											"raw": "id: dynamic-mode-scenario-state\nscenario: dynamic-mode-scenario-state\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /dynamic-mode-scenario-state\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Value: '((scenario_state)) ((scenario_state:scenario123))'\n  text: '((scenario_state)) ((scenario_state:scenario123))'"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -4572,7 +4572,34 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "id: dynamic-mode-scenario-hitcount\nscenario: dynamic-mode-scenario-hitcount\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /dynamic-mode-scenario-hitcount\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Value: '((scenario_hitcount)) ((scenario_hitcount:scenario123))'\n  text: '((scenario_hitcount)) ((scenario_hitcount:scenario123))'"
+											"raw": "id: dynamic-mode-scenario-hitcount\nscenario: dynamic-mode-scenario-hitcount\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /dynamic-mode-scenario-hitcount\nresponse:\n  enableDynamicMode: true\n  headers:\n    X-Value: '((scenario_hitcount)) ((scenario_hitcount:scenario123))'\n  text: '((scenario_hitcount)) ((scenario_hitcount:scenario123))'"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Fake data",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: dynamic-mode-fake-data\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /dynamic-mode-fake-data\nresponse:\n  enableDynamicMode: true\n  contentType: text/plain;charset=utf-8\n  text: |\n    Examples with locale:\n    first_name: ((fake_data:pt_BR:first_name))\n    soon: ((fake_data:tr:soon:yyyy MMMM dd))\n    Address:\n    zipcode: ((fake_data:zipcode))\n    city: ((fake_data:city))\n    street_address: ((fake_data:street_address))\n    city_prefix: ((fake_data:city_prefix))\n    city_suffix: ((fake_data:city_suffix))\n    street_name: ((fake_data:street_name))\n    building_number: ((fake_data:building_number))\n    street_suffix: ((fake_data:street_suffix))\n    secondary_address: ((fake_data:secondary_address))\n    county: ((fake_data:county))\n    country: ((fake_data:country))\n    full_address: ((fake_data:full_address))\n    country_code: ((fake_data:country_code))\n    state: ((fake_data:state))\n    state_abbreviation: ((fake_data:state_abbreviation))\n    direction: ((fake_data:direction))\n    cardinal_direction: ((fake_data:cardinal_direction))\n    ordinal_direction: ((fake_data:ordinal_direction))\n    Name:\n    first_name: ((fake_data:first_name))\n    last_name: ((fake_data:last_name))\n    full_name: ((fake_data:full_name))\n    prefix: ((fake_data:prefix))\n    suffix: ((fake_data:suffix))\n    job_title: ((fake_data:job_title))\n    job_descriptor: ((fake_data:job_descriptor))\n    job_area: ((fake_data:job_area))\n    job_type: ((fake_data:job_type))\n    Phone:\n    phone_number: ((fake_data:phone_number))\n    Internet:\n    email: ((fake_data:email))\n    example_email: ((fake_data:example_email))\n    user_name: ((fake_data:user_name))\n    user_name_unicode: ((fake_data:user_name_unicode))\n    domain_name: ((fake_data:domain_name))\n    domain_word: ((fake_data:domain_word))\n    domain_suffix: ((fake_data:domain_suffix))\n    ip: ((fake_data:ip))\n    port: ((fake_data:port))\n    ipv6: ((fake_data:ipv6))\n    user_agent: ((fake_data:user_agent))\n    mac: ((fake_data:mac))\n    password: ((fake_data:password))\n    color: ((fake_data:color))\n    protocol: ((fake_data:protocol))\n    url: ((fake_data:url))\n    url_with_path: ((fake_data:url_with_path))\n    url_rooted_path: ((fake_data:url_rooted_path))\n    Lorem:\n    word: ((fake_data:word))\n    words: ((fake_data:words))\n    words with formatting: ((fake_data:words:10))\n    letter: ((fake_data:letter))\n    letter with formatting: ((fake_data:letter:30))\n    sentence: ((fake_data:sentence))\n    sentence with formatting: ((fake_data:sentence:20))\n    sentences: ((fake_data:sentences))\n    sentences with formatting: ((fake_data:sentences:10))\n    paragraph: ((fake_data:paragraph))\n    paragraph with formatting: ((fake_data:paragraph:10))\n    paragraphs: ((fake_data:paragraphs))\n    paragraphs with formatting: ((fake_data:paragraphs:8))\n    text: ((fake_data:text))\n    lines: ((fake_data:lines))\n    lines with formatting: ((fake_data:lines:10))\n    slug: ((fake_data:slug))\n    slug with formatting: ((fake_data:slug:10))\n    Date:\n    past: ((fake_data:past))\n    past with formatting: ((fake_data:past:yyyy-MM-dd))\n    past_offset: ((fake_data:past_offset))\n    past_offset with formatting: ((fake_data:past_offset:yyyy-MM-dd))\n    soon: ((fake_data:soon))\n    soon with formatting: ((fake_data:soon:yyyy-MM-dd))\n    soon_offset: ((fake_data:soon_offset))\n    soon_offset with formatting: ((fake_data:soon_offset:yyyy-MM-dd))\n    future: ((fake_data:future))\n    future_with_formatting: ((fake_data:future:yyyy-MM-dd))\n    future_offset: ((fake_data:future_offset))\n    future_offset with formatting: ((fake_data:future_offset:yyyy-MM-dd))\n    recent: ((fake_data:recent))\n    recent with formatting: ((fake_data:recent:yyyy-MM-dd))\n    recent_offset: ((fake_data:recent_offset))\n    recent_offset with formatting: ((fake_data:recent_offset:yyyy-MM-dd))\n    month: ((fake_data:month))\n    weekday: ((fake_data:weekday))\n    timezone_string: ((fake_data:timezone_string))\n    Finance:\n    account: ((fake_data:account))\n    account_name: ((fake_data:account_name))\n    amount: ((fake_data:amount))\n    amount with formatting: ((fake_data:amount:0.000))\n    currency_name: ((fake_data:currency_name))\n    currency_code: ((fake_data:currency_code))\n    credit_card_number: ((fake_data:credit_card_number))\n    credit_card_cvv: ((fake_data:credit_card_cvv))\n    routing_number: ((fake_data:routing_number))\n    bic: ((fake_data:bic))\n    iban: ((fake_data:iban))\n    bitcoin_address: ((fake_data:bitcoin_address))\n    ethereum_address: ((fake_data:ethereum_address))\n    litecoin_address: ((fake_data:litecoin_address))\n    System:\n    file_name: ((fake_data:file_name))\n    directory_path: ((fake_data:directory_path))\n    file_path: ((fake_data:file_path))\n    common_file_name: ((fake_data:common_file_name))\n    mime_type: ((fake_data:mime_type))\n    common_file_type: ((fake_data:common_file_type))\n    common_file_ext: ((fake_data:common_file_ext))\n    file_type: ((fake_data:file_type))\n    file_ext: ((fake_data:file_ext))\n    semver: ((fake_data:semver))\n    android_id: ((fake_data:android_id))\n    apple_push_token: ((fake_data:apple_push_token))\n    Commerce:\n    department: ((fake_data:department))\n    price: ((fake_data:price))\n    product_name: ((fake_data:product_name))\n    product: ((fake_data:product))\n    product_adjective: ((fake_data:product_adjective))\n    product_description: ((fake_data:product_description))\n    ean8: ((fake_data:ean8))\n    ean13: ((fake_data:ean13))\npriority: 0"
 										},
 										"url": {
 											"raw": "{{rootUrl}}ph-api/stubs",
@@ -5215,6 +5242,40 @@
 											"raw": "{{rootUrl}}dynamic-mode-scenario-hitcount",
 											"host": [
 												"{{rootUrl}}dynamic-mode-scenario-hitcount"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Test fake data",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.expect(pm.response.text()).to.contain(\"first_name\");",
+													"    pm.expect(pm.response.text()).to.not.contain(\"((\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "X-Forwarded-For",
+												"type": "text",
+												"value": "11.22.33.44"
+											}
+										],
+										"url": {
+											"raw": "{{rootUrl}}dynamic-mode-fake-data",
+											"host": [
+												"{{rootUrl}}dynamic-mode-fake-data"
 											]
 										}
 									},
