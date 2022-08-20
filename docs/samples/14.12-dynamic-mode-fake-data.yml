@@ -71,14 +71,22 @@
       Lorem:
       word: ((fake_data:word))
       words: ((fake_data:words))
+      words with formatting: ((fake_data:words:10))
       letter: ((fake_data:letter))
+      letter with formatting: ((fake_data:letter:30))
       sentence: ((fake_data:sentence))
+      sentence with formatting: ((fake_data:sentence:20))
       sentences: ((fake_data:sentences))
+      sentences with formatting: ((fake_data:sentences:10))
       paragraph: ((fake_data:paragraph))
+      paragraph with formatting: ((fake_data:paragraph:10))
       paragraphs: ((fake_data:paragraphs))
+      paragraphs with formatting: ((fake_data:paragraphs:8))
       text: ((fake_data:text))
       lines: ((fake_data:lines))
+      lines with formatting: ((fake_data:lines:10))
       slug: ((fake_data:slug))
+      slug with formatting: ((fake_data:slug:10))
 
       Date:
       past: ((fake_data:past))
