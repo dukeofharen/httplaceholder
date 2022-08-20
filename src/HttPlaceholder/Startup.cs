@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Formatters;
+using HttPlaceholder.Hubs;
 using HttPlaceholder.Hubs.Implementations;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Builder;
@@ -59,11 +60,9 @@ public class Startup
             .UsePhStatic()
             .PreloadStubs(preloadStubs)
             .UseRouting()
-            .UseEndpoints(options =>
-            {
-                options.MapHub<RequestHub>("/requestHub");
-                options.MapControllers();
-            });
+            .UseEndpoints(options => options
+                .ConfigureSignalR()
+                .MapControllers());
 
     /// <summary>
     /// Configures the service collection.
