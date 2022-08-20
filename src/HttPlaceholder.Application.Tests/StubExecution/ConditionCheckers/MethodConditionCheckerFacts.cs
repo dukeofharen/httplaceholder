@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -22,7 +23,7 @@ public class MethodConditionCheckerFacts
     public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
     [TestMethod]
-    public void MethodConditionChecker_Validate_StubsFound_ButNoMethodConditions_ShouldReturnNotExecuted()
+    public async Task MethodConditionChecker_ValidateAsync_StubsFound_ButNoMethodConditions_ShouldReturnNotExecuted()
     {
         // arrange
         var conditions = new StubConditionsModel
@@ -31,14 +32,14 @@ public class MethodConditionCheckerFacts
         };
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void MethodConditionChecker_Validate_StubsFound_WrongMethod_ShouldReturnInvalid()
+    public async Task MethodConditionChecker_ValidateAsync_StubsFound_WrongMethod_ShouldReturnInvalid()
     {
         // arrange
         var conditions = new StubConditionsModel
@@ -51,14 +52,14 @@ public class MethodConditionCheckerFacts
             .Returns("GET");
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void MethodConditionChecker_Validate_StubsFound_HappyFlow()
+    public async Task MethodConditionChecker_ValidateAsync_StubsFound_HappyFlow()
     {
         // arrange
         var conditions = new StubConditionsModel
@@ -71,7 +72,7 @@ public class MethodConditionCheckerFacts
             .Returns("GET");
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

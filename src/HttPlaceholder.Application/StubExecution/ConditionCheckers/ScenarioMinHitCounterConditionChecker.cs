@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Domain;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
@@ -19,13 +20,13 @@ public class ScenarioMinHitCounterConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var minHits = stub.Conditions?.Scenario?.MinHits;
         if (minHits == null)
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var scenario = stub.Scenario;
@@ -47,7 +48,7 @@ public class ScenarioMinHitCounterConditionChecker : IConditionChecker
             result.ConditionValidation = ConditionValidationType.Valid;
         }
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

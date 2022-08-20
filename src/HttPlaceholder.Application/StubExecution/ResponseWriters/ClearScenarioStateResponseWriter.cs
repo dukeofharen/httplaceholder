@@ -16,15 +16,15 @@ internal class ClearScenarioStateResponseWriter : IResponseWriter
     }
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (stub.Response.Scenario?.ClearState != true || string.IsNullOrWhiteSpace(stub.Scenario))
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
-        _scenarioService.DeleteScenario(stub.Scenario);
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
+        await _scenarioService.DeleteScenarioAsync(stub.Scenario);
+        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 
     /// <inheritdoc />

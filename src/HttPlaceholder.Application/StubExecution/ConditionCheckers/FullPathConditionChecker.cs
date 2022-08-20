@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -22,13 +23,13 @@ public class FullPathConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var fullPathCondition = stub.Conditions?.Url?.FullPath;
         if (fullPathCondition == null)
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var path = _httpContextService.FullPath;
@@ -43,7 +44,7 @@ public class FullPathConditionChecker : IConditionChecker
             result.ConditionValidation = ConditionValidationType.Invalid;
         }
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.StubExecution;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
@@ -18,7 +19,7 @@ public class ScenarioStateConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void Validate_ScenarioOnStubNotSet_ShouldReturnNotExecuted()
+    public async Task ValidateAsync_ScenarioOnStubNotSet_ShouldReturnNotExecuted()
     {
         // Arrange
         var stub = CreateStub(string.Empty, "state1");
@@ -26,14 +27,14 @@ public class ScenarioStateConditionCheckerFacts
         var checker = _mocker.CreateInstance<ScenarioStateConditionChecker>();
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_ScenarioStateOnStubNotSet_ShouldReturnNotExecuted()
+    public async Task ValidateAsync_ScenarioStateOnStubNotSet_ShouldReturnNotExecuted()
     {
         // Arrange
         var stub = CreateStub("state1", string.Empty);
@@ -41,14 +42,14 @@ public class ScenarioStateConditionCheckerFacts
         var checker = _mocker.CreateInstance<ScenarioStateConditionChecker>();
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_ScenarioStateNotSet_ShouldAddScenario_InitialState_ShouldReturnValid()
+    public async Task ValidateAsync_ScenarioStateNotSet_ShouldAddScenario_InitialState_ShouldReturnValid()
     {
         // Arrange
         const string scenario = "scenario-1";
@@ -62,15 +63,15 @@ public class ScenarioStateConditionCheckerFacts
             .Returns((ScenarioStateModel)null);
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        scenarioServiceMock.Verify(m => m.SetScenario(scenario, It.IsAny<ScenarioStateModel>()));
+        scenarioServiceMock.Verify(m => m.SetScenarioAsync(scenario, It.IsAny<ScenarioStateModel>()));
     }
 
     [TestMethod]
-    public void Validate_ScenarioStateNotSet_ShouldAddScenario_NonInitialState_ShouldReturnInvalid()
+    public async Task ValidateAsync_ScenarioStateNotSet_ShouldAddScenario_NonInitialState_ShouldReturnInvalid()
     {
         // Arrange
         const string scenario = "scenario-1";
@@ -84,16 +85,16 @@ public class ScenarioStateConditionCheckerFacts
             .Returns((ScenarioStateModel)null);
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
         Assert.AreEqual("Scenario 'scenario-1' is in state 'Start', but 'state-1' was expected.", result.Log);
-        scenarioServiceMock.Verify(m => m.SetScenario(scenario, It.IsAny<ScenarioStateModel>()));
+        scenarioServiceMock.Verify(m => m.SetScenarioAsync(scenario, It.IsAny<ScenarioStateModel>()));
     }
 
     [TestMethod]
-    public void Validate_ScenarioStateNotCorrect_ShouldReturnInvalid()
+    public async Task ValidateAsync_ScenarioStateNotCorrect_ShouldReturnInvalid()
     {
         // Arrange
         const string scenario = "scenario-1";
@@ -110,7 +111,7 @@ public class ScenarioStateConditionCheckerFacts
             });
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -124,7 +125,7 @@ public class ScenarioStateConditionCheckerFacts
     [DataRow(" STATE-1 ")]
     [DataRow(" STATE-1")]
     [DataRow("state-1 ")]
-    public void Validate_ScenarioStateCorrect_ShouldReturnValid(string currentState)
+    public async Task ValidateAsync_ScenarioStateCorrect_ShouldReturnValid(string currentState)
     {
         // Arrange
         const string scenario = "scenario-1";
@@ -141,7 +142,7 @@ public class ScenarioStateConditionCheckerFacts
             });
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

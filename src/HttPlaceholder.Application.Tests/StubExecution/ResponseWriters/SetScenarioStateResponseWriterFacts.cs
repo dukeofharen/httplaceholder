@@ -32,7 +32,7 @@ public class SetScenarioStateResponseWriterFacts
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("SetScenarioStateResponseWriter", result.ResponseWriterName);
         scenarioServiceMock.Verify(m => m.GetScenario(It.IsAny<string>()), Times.Never);
-        scenarioServiceMock.Verify(m => m.SetScenario(It.IsAny<string>(), It.IsAny<ScenarioStateModel>()),
+        scenarioServiceMock.Verify(m => m.SetScenarioAsync(It.IsAny<string>(), It.IsAny<ScenarioStateModel>()),
             Times.Never);
     }
 
@@ -51,7 +51,7 @@ public class SetScenarioStateResponseWriterFacts
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("SetScenarioStateResponseWriter", result.ResponseWriterName);
         scenarioServiceMock.Verify(m => m.GetScenario(It.IsAny<string>()), Times.Never);
-        scenarioServiceMock.Verify(m => m.SetScenario(It.IsAny<string>(), It.IsAny<ScenarioStateModel>()),
+        scenarioServiceMock.Verify(m => m.SetScenarioAsync(It.IsAny<string>(), It.IsAny<ScenarioStateModel>()),
             Times.Never);
     }
 
@@ -70,7 +70,7 @@ public class SetScenarioStateResponseWriterFacts
             .Returns((ScenarioStateModel)null);
         ScenarioStateModel actualScenarioStateModel = null;
         scenarioServiceMock
-            .Setup(m => m.SetScenario(scenario, It.IsAny<ScenarioStateModel>()))
+            .Setup(m => m.SetScenarioAsync(scenario, It.IsAny<ScenarioStateModel>()))
             .Callback<string, ScenarioStateModel>((_, m) => actualScenarioStateModel = m);
 
         // Act
@@ -100,7 +100,7 @@ public class SetScenarioStateResponseWriterFacts
             .Setup(m => m.GetScenario(scenario))
             .Returns(currentScenarioState);
         scenarioServiceMock
-            .Setup(m => m.SetScenario(scenario, currentScenarioState));
+            .Setup(m => m.SetScenarioAsync(scenario, currentScenarioState));
 
         // Act
         var result = await writer.WriteToResponseAsync(stub, new ResponseModel());

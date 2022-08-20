@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common.Utilities;
@@ -25,13 +26,13 @@ public class HeaderConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var headerConditions = stub.Conditions?.Headers;
         if (headerConditions == null || headerConditions.Any() != true)
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var validHeaders = 0;
@@ -77,7 +78,7 @@ public class HeaderConditionChecker : IConditionChecker
         result.ConditionValidation = validHeaders == headerConditions.Count
             ? ConditionValidationType.Valid
             : ConditionValidationType.Invalid;
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

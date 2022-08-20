@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.StubExecution;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -16,21 +17,21 @@ public class ScenarioMinHitCounterConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void Validate_MinHitsConditionNotSet_ShouldReturnNotExecuted()
+    public async Task ValidateAsync_MinHitsConditionNotSet_ShouldReturnNotExecuted()
     {
         // Arrange
         var stub = CreateStub(null, "min-hits");
         var checker = _mocker.CreateInstance<ScenarioMinHitCounterConditionChecker>();
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_ActualHitCountIsNull_ShouldReturnInvalid()
+    public async Task ValidateAsync_ActualHitCountIsNull_ShouldReturnInvalid()
     {
         // Arrange
         var stub = CreateStub(1, "min-hits");
@@ -42,7 +43,7 @@ public class ScenarioMinHitCounterConditionCheckerFacts
             .Returns((int?)null);
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -50,7 +51,7 @@ public class ScenarioMinHitCounterConditionCheckerFacts
     }
 
     [TestMethod]
-    public void Validate_HitCountIsNotMet_ShouldReturnInvalid()
+    public async Task ValidateAsync_HitCountIsNotMet_ShouldReturnInvalid()
     {
         // Arrange
         var stub = CreateStub(3, "min-hits");
@@ -62,7 +63,7 @@ public class ScenarioMinHitCounterConditionCheckerFacts
             .Returns(1);
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -70,7 +71,7 @@ public class ScenarioMinHitCounterConditionCheckerFacts
     }
 
     [TestMethod]
-    public void Validate_HitCountIsMet_ShouldReturnValid()
+    public async Task ValidateAsync_HitCountIsMet_ShouldReturnValid()
     {
         // Arrange
         var stub = CreateStub(3, "min-hits");
@@ -82,7 +83,7 @@ public class ScenarioMinHitCounterConditionCheckerFacts
             .Returns(2);
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
@@ -17,7 +18,7 @@ public class HostConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void Validate_NoConditionFound_ShouldReturnNotExecuted()
+    public async Task ValidateAsync_NoConditionFound_ShouldReturnNotExecuted()
     {
         // arrange
         var checker = _mocker.CreateInstance<HostConditionChecker>();
@@ -25,14 +26,14 @@ public class HostConditionCheckerFacts
         var conditions = new StubConditionsModel {Host = null};
 
         // act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_ConditionFails_ShouldReturnInvalid()
+    public async Task ValidateAsync_ConditionFails_ShouldReturnInvalid()
     {
         // arrange
         var checker = _mocker.CreateInstance<HostConditionChecker>();
@@ -51,14 +52,14 @@ public class HostConditionCheckerFacts
             .Returns(false);
 
         // act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_ConditionSucceeds_ShouldReturnValid()
+    public async Task ValidateAsync_ConditionSucceeds_ShouldReturnValid()
     {
         // arrange
         var checker = _mocker.CreateInstance<HostConditionChecker>();
@@ -77,7 +78,7 @@ public class HostConditionCheckerFacts
             .Returns(true);
 
         // act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

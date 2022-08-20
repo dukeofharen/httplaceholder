@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
@@ -23,22 +24,22 @@ public class BasicAuthenticationConditionCheckerFacts
     public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
     [TestMethod]
-    public void
-        BasicAuthenticationConditionChecker_Validate_StubsFound_ButNoBasicAuthenticationCondition_ShouldReturnNotExecuted()
+    public async Task
+        BasicAuthenticationConditionChecker_ValidateAsync_StubsFound_ButNoBasicAuthenticationCondition_ShouldReturnNotExecuted()
     {
         // arrange
         var conditions = new StubConditionsModel {BasicAuthentication = null};
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void
-        BasicAuthenticationConditionChecker_Validate_StubsFound_NoUsernameAndPasswordSet_ShouldReturnNotExecuted()
+    public async Task
+        BasicAuthenticationConditionChecker_ValidateAsync_StubsFound_NoUsernameAndPasswordSet_ShouldReturnNotExecuted()
     {
         // arrange
         var conditions = new StubConditionsModel
@@ -47,14 +48,14 @@ public class BasicAuthenticationConditionCheckerFacts
         };
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void BasicAuthenticationConditionChecker_Validate_NoAuthorizationHeader_ShouldReturnInvalid()
+    public async Task BasicAuthenticationConditionChecker_ValidateAsync_NoAuthorizationHeader_ShouldReturnInvalid()
     {
         // arrange
         var conditions = new StubConditionsModel
@@ -72,14 +73,14 @@ public class BasicAuthenticationConditionCheckerFacts
             .Returns(headers);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void BasicAuthenticationConditionChecker_Validate_BasicAuthenticationIncorrect_ShouldReturnInvalid()
+    public async Task BasicAuthenticationConditionChecker_ValidateAsync_BasicAuthenticationIncorrect_ShouldReturnInvalid()
     {
         // arrange
         var conditions = new StubConditionsModel
@@ -97,14 +98,14 @@ public class BasicAuthenticationConditionCheckerFacts
             .Returns(headers);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void BasicAuthenticationConditionChecker_Validate_HappyFlow()
+    public async Task BasicAuthenticationConditionChecker_ValidateAsync_HappyFlow()
     {
         // arrange
         var conditions = new StubConditionsModel
@@ -122,7 +123,7 @@ public class BasicAuthenticationConditionCheckerFacts
             .Returns(headers);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

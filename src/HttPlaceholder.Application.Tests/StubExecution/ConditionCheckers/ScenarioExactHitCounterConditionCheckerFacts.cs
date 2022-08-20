@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.StubExecution;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -16,21 +17,21 @@ public class ScenarioExactHitCounterConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void Validate_ExactHitsConditionNotSet_ShouldReturnNotExecuted()
+    public async Task ValidateAsync_ExactHitsConditionNotSet_ShouldReturnNotExecuted()
     {
         // Arrange
         var stub = CreateStub(null, "exact-hits");
         var checker = _mocker.CreateInstance<ScenarioExactHitCounterConditionChecker>();
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_ActualHitCountIsNull_ShouldReturnInvalid()
+    public async Task ValidateAsync_ActualHitCountIsNull_ShouldReturnInvalid()
     {
         // Arrange
         var stub = CreateStub(1, "exact-hits");
@@ -42,7 +43,7 @@ public class ScenarioExactHitCounterConditionCheckerFacts
             .Returns((int?)null);
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -50,7 +51,7 @@ public class ScenarioExactHitCounterConditionCheckerFacts
     }
 
     [TestMethod]
-    public void Validate_HitCountIsNotMet_ShouldReturnInvalid()
+    public async Task ValidateAsync_HitCountIsNotMet_ShouldReturnInvalid()
     {
         // Arrange
         var stub = CreateStub(3, "exact-hits");
@@ -62,7 +63,7 @@ public class ScenarioExactHitCounterConditionCheckerFacts
             .Returns(3);
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -71,7 +72,7 @@ public class ScenarioExactHitCounterConditionCheckerFacts
     }
 
     [TestMethod]
-    public void Validate_HitCountIsMet_ShouldReturnValid()
+    public async Task ValidateAsync_HitCountIsMet_ShouldReturnValid()
     {
         // Arrange
         var stub = CreateStub(3, "exact-hits");
@@ -83,7 +84,7 @@ public class ScenarioExactHitCounterConditionCheckerFacts
             .Returns(2);
 
         // Act
-        var result = checker.Validate(stub);
+        var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

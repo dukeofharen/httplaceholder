@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
@@ -24,13 +25,13 @@ public class XPathConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var xpathConditions = stub.Conditions?.Xpath?.ToArray() ?? Array.Empty<StubXpathModel>();
         if (!xpathConditions.Any())
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var validXpaths = 0;
@@ -79,7 +80,7 @@ public class XPathConditionChecker : IConditionChecker
             result.Log = ex.Message;
         }
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

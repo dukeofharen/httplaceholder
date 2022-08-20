@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Domain;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
@@ -12,7 +13,7 @@ public interface IConditionChecker
     /// </summary>
     /// <param name="stub">The <see cref="StubModel"/> for which the conditions should be checked.</param>
     /// <returns>A <see cref="ConditionCheckResultModel"/> containing the stub execution results.</returns>
-    ConditionCheckResultModel Validate(StubModel stub);
+    Task<ConditionCheckResultModel> ValidateAsync(StubModel stub);
 
     /// <summary>
     /// The priority of the given condition checker. The higher the number, the earlier this condition checker will be executed.

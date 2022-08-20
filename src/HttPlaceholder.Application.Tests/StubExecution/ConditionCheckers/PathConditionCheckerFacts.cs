@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
@@ -17,7 +18,7 @@ public class PathConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void PathConditionChecker_Validate_StubsFound_ButNoPathConditions_ShouldReturnNotExecuted()
+    public async Task PathConditionChecker_ValidateAsync_StubsFound_ButNoPathConditions_ShouldReturnNotExecuted()
     {
         // arrange
         var checker = _mocker.CreateInstance<PathConditionChecker>();
@@ -30,14 +31,14 @@ public class PathConditionCheckerFacts
         };
 
         // act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void PathConditionChecker_Validate_StubsFound_WrongPath_ShouldReturnInvalid()
+    public async Task PathConditionChecker_ValidateAsync_StubsFound_WrongPath_ShouldReturnInvalid()
     {
         // arrange
         const string path = "/login";
@@ -64,14 +65,14 @@ public class PathConditionCheckerFacts
             .Returns(false);
 
         // act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void PathConditionChecker_Validate_StubsFound_HappyFlow_CompleteUrl()
+    public async Task PathConditionChecker_ValidateAsync_StubsFound_HappyFlow_CompleteUrl()
     {
         // arrange
         const string path = "/locatieserver/v3/suggest";
@@ -98,7 +99,7 @@ public class PathConditionCheckerFacts
             .Returns(true);
 
         // act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

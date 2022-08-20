@@ -54,7 +54,7 @@ internal class StubRequestExecutor : IStubRequestExecutor
                 var validationResults = new List<ConditionCheckResultModel>();
                 foreach (var checker in orderedConditionCheckers)
                 {
-                    var validationResult = checker.Validate(stub);
+                    var validationResult = await checker.ValidateAsync(stub);
                     validationResult.CheckerName = checker.GetType().Name;
                     validationResults.Add(validationResult);
                     if (validationResult.ConditionValidation == ConditionValidationType.Invalid)

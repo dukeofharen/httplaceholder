@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -23,13 +24,13 @@ public class ClientIpConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var clientIpCondition = stub.Conditions?.ClientIp;
         if (clientIpCondition == null)
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var clientIp = IPAddress.Parse(_clientDataResolver.GetClientIp());
@@ -39,7 +40,7 @@ public class ClientIpConditionChecker : IConditionChecker
             ? ConditionValidationType.Valid
             : ConditionValidationType.Invalid;
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -22,7 +23,7 @@ public class ClientIpConditionCheckerFacts
     public void Cleanup() => _clientIpResolverMock.VerifyAll();
 
     [TestMethod]
-    public void ClientIpConditionChecker_Validate_ConditionNotSet_ShouldReturnNotExecuted()
+    public async Task ClientIpConditionChecker_ValidateAsync_ConditionNotSet_ShouldReturnNotExecuted()
     {
         // arrange
         const string stubId = "stub1";
@@ -32,14 +33,14 @@ public class ClientIpConditionCheckerFacts
         };
 
         // act
-        var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void ClientIpConditionChecker_Validate_SingleIp_NotEqual_ShouldReturnInvalid()
+    public async Task ClientIpConditionChecker_ValidateAsync_SingleIp_NotEqual_ShouldReturnInvalid()
     {
         // arrange
         const string stubId = "stub1";
@@ -54,14 +55,14 @@ public class ClientIpConditionCheckerFacts
             .Returns(clientIp);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void ClientIpConditionChecker_Validate_SingleIp_Equal_ShouldReturnValid()
+    public async Task ClientIpConditionChecker_ValidateAsync_SingleIp_Equal_ShouldReturnValid()
     {
         // arrange
         const string stubId = "stub1";
@@ -76,14 +77,14 @@ public class ClientIpConditionCheckerFacts
             .Returns(clientIp);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void ClientIpConditionChecker_Validate_IpRange_NotInRange_ShouldReturnInvalid()
+    public async Task ClientIpConditionChecker_ValidateAsync_IpRange_NotInRange_ShouldReturnInvalid()
     {
         // arrange
         const string stubId = "stub1";
@@ -98,14 +99,14 @@ public class ClientIpConditionCheckerFacts
             .Returns(clientIp);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void ClientIpConditionChecker_Validate_IpRange_InRange_ShouldReturnValid()
+    public async Task ClientIpConditionChecker_ValidateAsync_IpRange_InRange_ShouldReturnValid()
     {
         // arrange
         const string stubId = "stub1";
@@ -120,7 +121,7 @@ public class ClientIpConditionCheckerFacts
             .Returns(clientIp);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = stubId, Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
@@ -24,13 +25,13 @@ public class QueryStringConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var queryStringConditions = stub.Conditions?.Url?.Query;
         if (queryStringConditions == null || queryStringConditions.Any() != true)
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var validQueryStrings = 0;
@@ -76,7 +77,7 @@ public class QueryStringConditionChecker : IConditionChecker
             ? ConditionValidationType.Valid
             : ConditionValidationType.Invalid;
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

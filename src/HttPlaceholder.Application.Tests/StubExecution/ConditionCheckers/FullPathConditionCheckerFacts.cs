@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
@@ -17,7 +18,7 @@ public class FullPathConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void FullPathConditionChecker_Validate_StubsFound_ButNoPathConditions_ShouldReturnNotExecuted()
+    public async Task FullPathConditionChecker_ValidateAsync_StubsFound_ButNoPathConditions_ShouldReturnNotExecuted()
     {
         // Arrange
         var checker = _mocker.CreateInstance<FullPathConditionChecker>();
@@ -25,14 +26,14 @@ public class FullPathConditionCheckerFacts
         var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {FullPath = null}};
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void FullPathConditionChecker_Validate_StubsFound_WrongPath_ShouldReturnInvalid()
+    public async Task FullPathConditionChecker_ValidateAsync_StubsFound_WrongPath_ShouldReturnInvalid()
     {
         // Arrange
         const string path = "/login?success=true";
@@ -53,14 +54,14 @@ public class FullPathConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void FullPathConditionChecker_Validate_StubsFound_HappyFlow_CompleteUrl()
+    public async Task FullPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_CompleteUrl()
     {
         // Arrange
         const string path = "/login?success=true";
@@ -81,7 +82,7 @@ public class FullPathConditionCheckerFacts
             .Returns(true);
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
