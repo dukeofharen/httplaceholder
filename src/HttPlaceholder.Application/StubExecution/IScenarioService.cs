@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.StubExecution;
@@ -39,17 +40,17 @@ public interface IScenarioService
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
     /// <param name="scenarioState">The scenario state.</param>
-    void SetScenario(string scenario, ScenarioStateModel scenarioState);
+    Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState);
 
     /// <summary>
     /// Clears a scenario state.
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
     /// <returns>True if scenario was found and deleted; false otherwise.</returns>
-    bool DeleteScenario(string scenario);
+    Task<bool> DeleteScenarioAsync(string scenario);
 
     /// <summary>
     /// Deletes all scenarios.
     /// </summary>
-    void DeleteAllScenarios();
+    Task DeleteAllScenariosAsync();
 }

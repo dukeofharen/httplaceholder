@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 
@@ -8,10 +10,12 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 internal class ScenarioService : IScenarioService
 {
     private readonly IScenarioStateStore _scenarioStateStore;
+    private readonly IScenarioNotify _scenarioNotify;
 
-    public ScenarioService(IScenarioStateStore scenarioStateStore)
+    public ScenarioService(IScenarioStateStore scenarioStateStore, IScenarioNotify scenarioNotify)
     {
         _scenarioStateStore = scenarioStateStore;
+        _scenarioNotify = scenarioNotify;
     }
 
     /// <inheritdoc />
@@ -52,7 +56,7 @@ internal class ScenarioService : IScenarioService
     public ScenarioStateModel GetScenario(string scenario) => _scenarioStateStore.GetScenario(scenario);
 
     /// <inheritdoc />
-    public void SetScenario(string scenario, ScenarioStateModel scenarioState)
+    public async Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState)
     {
         if (string.IsNullOrWhiteSpace(scenario) || scenarioState == null)
         {
@@ -86,24 +90,34 @@ internal class ScenarioService : IScenarioService
                 _scenarioStateStore.UpdateScenario(scenario, scenarioState);
             }
         }
+
+        await _scenarioNotify.ScenarioSetAsync(scenarioState);
     }
 
     /// <inheritdoc />
-    public bool DeleteScenario(string scenario)
+    public async Task<bool> DeleteScenarioAsync(string scenario)
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
             return false;
         }
 
+        bool result;
         lock (_scenarioStateStore.GetScenarioLock(scenario))
         {
-            return _scenarioStateStore.DeleteScenario(scenario);
+            result = _scenarioStateStore.DeleteScenario(scenario);
         }
+
+        await _scenarioNotify.ScenarioDeletedAsync(scenario);
+        return result;
     }
 
     /// <inheritdoc />
-    public void DeleteAllScenarios() => _scenarioStateStore.DeleteAllScenarios();
+    public async Task DeleteAllScenariosAsync()
+    {
+        _scenarioStateStore.DeleteAllScenarios();
+        await _scenarioNotify.AllScenariosDeletedAsync();
+    }
 
     private ScenarioStateModel GetOrAddScenarioState(string scenario) =>
         _scenarioStateStore.GetScenario(scenario) ??
