@@ -973,9 +973,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{rootUrl}}dynamic-mode-scenario-state.txt",
+									"raw": "{{rootUrl}}dynamic-mode-fake-data.txt",
 									"host": [
-										"{{rootUrl}}dynamic-mode-scenario-state",
+										"{{rootUrl}}dynamic-mode-fake-data",
 										"txt"
 									]
 								}
@@ -991,6 +991,26 @@
 									"raw": "{{rootUrl}}dynamic-mode-scenario-hitcount.txt",
 									"host": [
 										"{{rootUrl}}dynamic-mode-scenario-hitcount",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "12 Fake data",
+					"item": [
+						{
+							"name": "Fake data",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-mode-scenario-state.txt",
+									"host": [
+										"{{rootUrl}}dynamic-mode-scenario-state",
 										"txt"
 									]
 								}
