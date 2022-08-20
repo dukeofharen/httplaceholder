@@ -34,7 +34,7 @@ public class RestApiMetadataIntegrationTests : RestApiIntegrationTestBase
 
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(metadata.Version));
-        Assert.AreEqual(14, metadata.VariableHandlers.Count());
+        Assert.AreEqual(15, metadata.VariableHandlers.Count());
     }
 
     [TestMethod]

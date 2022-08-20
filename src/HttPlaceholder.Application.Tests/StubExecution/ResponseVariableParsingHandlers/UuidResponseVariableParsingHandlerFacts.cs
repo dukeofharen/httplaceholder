@@ -4,13 +4,17 @@ using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
 
 [TestClass]
 public class UuidResponseVariableParsingHandlerFacts
 {
-    private readonly UuidResponseVariableParsingHandler _parsingHandler = new();
+    private readonly AutoMocker _mocker = new();
+
+    [TestCleanup]
+    public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
     public void UuidVariableHandler_Parse_HappyFlow()
@@ -18,9 +22,11 @@ public class UuidResponseVariableParsingHandlerFacts
         // arrange
         const string input = "((uuid)) ((uuid:nonsense))";
 
+        var handler = _mocker.CreateInstance<UuidResponseVariableParsingHandler>();
+
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = _parsingHandler.Parse(input, matches, new StubModel());
+        var result = handler.Parse(input, matches, new StubModel());
 
         // assert
         var parts = result.Split(' ');

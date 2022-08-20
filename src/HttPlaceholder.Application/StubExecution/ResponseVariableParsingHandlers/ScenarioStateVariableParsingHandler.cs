@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -8,26 +9,26 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable handler that is used to insert the state of a specific scenario in the response
 /// </summary>
-internal class ScenarioStateVariableParsingHandler : IResponseVariableParsingHandler
+internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler
 {
     private readonly IScenarioStateStore _scenarioStateStore;
 
-    public ScenarioStateVariableParsingHandler(IScenarioStateStore scenarioStateStore)
+    public ScenarioStateVariableParsingHandler(IScenarioStateStore scenarioStateStore, IFileService fileService) : base(fileService)
     {
         _scenarioStateStore = scenarioStateStore;
     }
 
     /// <inheritdoc />
-    public string Name => "scenario_state";
+    public override string Name => "scenario_state";
 
     /// <inheritdoc />
-    public string FullName => "Scenario state";
+    public override string FullName => "Scenario state";
 
     /// <inheritdoc />
-    public string Example => "((scenario_state:scenario name))";
+    public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
         if (!enumerable.Any())

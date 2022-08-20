@@ -17,7 +17,9 @@ public class GetMetadataFacts : BaseClientTest
         {
             ""name"": ""client_ip"",
             ""fullName"": ""Client IP variable handler"",
-            ""example"": ""((client_ip))""
+            ""example"": ""((client_ip))"",
+            ""description"": ""Client IP"",
+            ""examples"": [""((client_ip))""]
         },
         {
             ""name"": ""display_url"",
@@ -68,5 +70,7 @@ public class GetMetadataFacts : BaseClientTest
         Assert.AreEqual("client_ip", variableHandlers[0].Name);
         Assert.AreEqual("Client IP variable handler", variableHandlers[0].FullName);
         Assert.AreEqual("((client_ip))", variableHandlers[0].Example);
+        Assert.AreEqual("((client_ip))", variableHandlers[0].Examples[0]);
+        Assert.AreEqual("Client IP", variableHandlers[0].Description);
     }
 }

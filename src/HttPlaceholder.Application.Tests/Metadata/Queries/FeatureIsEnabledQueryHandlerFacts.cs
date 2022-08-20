@@ -7,7 +7,7 @@ using HttPlaceholder.Domain.Enums;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace HttPlaceholder.Application.Tests.Metadata.FeatureIsEnabled;
+namespace HttPlaceholder.Application.Tests.Metadata.Queries;
 
 [TestClass]
 public class FeatureIsEnabledQueryHandlerFacts

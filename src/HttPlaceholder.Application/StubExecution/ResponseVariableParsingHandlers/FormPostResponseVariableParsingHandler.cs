@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Primitives;
 
@@ -11,26 +12,26 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert a given posted form value in the response.
 /// </summary>
-internal class FormPostResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandler
 {
     private readonly IHttpContextService _httpContextService;
 
-    public FormPostResponseVariableParsingHandler(IHttpContextService httpContextService)
+    public FormPostResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) : base(fileService)
     {
         _httpContextService = httpContextService;
     }
 
     /// <inheritdoc />
-    public string Name => "form_post";
+    public override string Name => "form_post";
 
     /// <inheritdoc />
-    public string FullName => "Form post";
+    public override string FullName => "Form post";
 
     /// <inheritdoc />
-    public string Example => "((form_post:form_key))";
+    public override string[] Examples => new[] {$"(({Name}:form_key))"};
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
         if (!enumerable.Any())

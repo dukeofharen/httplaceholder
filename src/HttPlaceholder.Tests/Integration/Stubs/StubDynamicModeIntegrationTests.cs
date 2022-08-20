@@ -22,13 +22,13 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_Query()
     {
-        // arrange
+        // Arrange
         const string query1Val = "John";
         const string query2Val = "=";
         var expectedResult = $"The value is {query1Val} {WebUtility.UrlEncode(query2Val)}";
         var url = $"{TestServer.BaseAddress}dynamic-query.txt?queryString1={query1Val}&queryString2={query2Val}";
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.GetAsync(url);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -39,10 +39,10 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_Uuid()
     {
-        // arrange
+        // Arrange
         var url = $"{TestServer.BaseAddress}dynamic-uuid.txt";
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.GetAsync(url);
         var content = await response.Content.ReadAsStringAsync();
         Assert.IsTrue(Guid.TryParse(content.Replace("The value is ", string.Empty), out _));
@@ -53,7 +53,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_RequestHeaders()
     {
-        // arrange
+        // Arrange
         var apiKey = Guid.NewGuid().ToString();
         var expectedResult = $"API key: {apiKey}";
         var url = $"{TestServer.BaseAddress}dynamic-request-header.txt";
@@ -61,7 +61,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Add("X-Api-Key", apiKey);
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -74,7 +74,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularPost_Dynamic_FormPost()
     {
-        // arrange
+        // Arrange
         const string expectedResult = "Posted: Value 1!";
         var url = $"{TestServer.BaseAddress}dynamic-form-post.txt";
 
@@ -87,7 +87,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
             })
         };
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -100,7 +100,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularPost_Dynamic_RequestBody()
     {
-        // arrange
+        // Arrange
         const string expectedResult = "Posted: Test123";
         var url = $"{TestServer.BaseAddress}dynamic-request-body.txt";
         const string body = "Test123";
@@ -110,7 +110,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
             Content = new StringContent(body)
         };
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -123,7 +123,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_DisplayUrl()
     {
-        // arrange
+        // Arrange
         const string query = "?var1=value1&var2=value2";
         var url = $"{TestServer.BaseAddress}dynamic-display-url.txt{query}";
         var expectedResult = $"URL: {url}";
@@ -134,7 +134,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -147,7 +147,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_RootUrl()
     {
-        // arrange
+        // Arrange
         const string query = "?var1=value1&var2=value2";
         var url = $"{TestServer.BaseAddress}dynamic-root-url.txt{query}";
         var baseUrl = TestServer.BaseAddress.OriginalString.TrimEnd('/');
@@ -159,7 +159,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -172,7 +172,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_ClientIp()
     {
-        // arrange
+        // Arrange
         const string ip = "11.22.33.44";
         var url = $"{TestServer.BaseAddress}dynamic-client-ip.txt";
         const string expectedResult = $"IP: {ip}";
@@ -183,7 +183,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -196,7 +196,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_LocalNow()
     {
-        // arrange
+        // Arrange
         var url = $"{TestServer.BaseAddress}dynamic-local-now.txt";
         const string expectedDateTime = "2019-08-21 20:41:51";
         const string expectedResult = $"Local now: {expectedDateTime}";
@@ -208,7 +208,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -221,7 +221,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_UtcNow()
     {
-        // arrange
+        // Arrange
         var url = $"{TestServer.BaseAddress}dynamic-utc-now.txt";
         const string expectedDateTime = "2019-08-21 20:41:51";
         const string expectedResult = $"UTC now: {expectedDateTime}";
@@ -233,7 +233,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -246,7 +246,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularPost_Dynamic_JsonPath()
     {
-        // arrange
+        // Arrange
         const string expectedResult = "JSONPath result: Value2";
         var url = $"{TestServer.BaseAddress}dynamic-mode-jsonpath.txt";
         const string body = @"{
@@ -265,7 +265,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
             Content = new StringContent(body)
         };
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -276,7 +276,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_ScenarioState()
     {
-        // arrange
+        // Arrange
         var url = $"{TestServer.BaseAddress}dynamic-mode-scenario-state.txt";
         await SetScenario("dynamic-mode-scenario-state", new ScenarioStateInputDto {State = "cool_state_1"});
         await SetScenario("scenario123", new ScenarioStateInputDto {State = "cool_state_2"});
@@ -284,7 +284,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -297,7 +297,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_ScenarioHitCount()
     {
-        // arrange
+        // Arrange
         var url = $"{TestServer.BaseAddress}dynamic-mode-scenario-hitcount.txt";
         await SetScenario("dynamic-mode-scenario-hitcount", new ScenarioStateInputDto {HitCount = 3});
         await SetScenario("scenario123", new ScenarioStateInputDto {HitCount = 123});
@@ -305,7 +305,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
 
         var request = new HttpRequestMessage(HttpMethod.Get, url);
 
-        // act / assert
+        // Act / Assert
         using var response = await Client.SendAsync(request);
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(expectedResult, content);
@@ -313,5 +313,21 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
 
         Assert.AreEqual(expectedResult, response.Headers.Single(h => h.Key == "X-Value").Value.Single());
+    }
+
+    [TestMethod]
+    public async Task StubIntegration_RegularGet_Dynamic_FakeData()
+    {
+        // Arrange
+        var url = $"{TestServer.BaseAddress}dynamic-mode-fake-data.txt";
+
+        // Act
+        using var response = await Client.GetAsync(url);
+
+        // Assert
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.IsTrue(content.Contains("first_name:"));
+        Assert.IsFalse(content.Contains("(("));
     }
 }

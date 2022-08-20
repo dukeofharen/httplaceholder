@@ -50,22 +50,10 @@
       </div>
       <div v-if="showVariableParsers" class="mt-2">
         <div class="hint mb-2">{{ elementDescriptions.dynamicMode }}</div>
-        <select
-          class="form-select"
-          v-model="selectedVariableHandler"
-          @change="insertVariableHandler"
-        >
-          <option value="">
-            Select a variable handler to insert in the response...
-          </option>
-          <option
-            v-for="item of variableParserItems"
-            :key="item.key"
-            :value="item.key"
-          >
-            {{ item.name }}
-          </option>
-        </select>
+        <VariableHandlerSelector
+          :variable-parser-items="variableParserItems"
+          @exampleSelected="insertVariableHandlerExample($event)"
+        />
       </div>
     </div>
 
@@ -120,9 +108,11 @@ import { elementDescriptions } from "@/domain/stubForm/element-descriptions";
 import { UploadButtonType } from "@/domain/upload-button-type";
 import { warning } from "@/utils/toast";
 import xmlFormatter from "xml-formatter";
+import VariableHandlerSelector from "@/components/stubForm/formHelper/VariableHandlerSelector.vue";
 
 export default defineComponent({
   name: "ResponseBodyHelper",
+  components: { VariableHandlerSelector },
   props: {
     presetResponseBodyType: {
       type: String as PropType<ResponseBodyType>,
@@ -138,11 +128,11 @@ export default defineComponent({
     // Data
     const responseBodyType = ref<ResponseBodyType>(ResponseBodyType.text);
     const responseBody = ref("");
-    const enableDynamicMode = ref<boolean | undefined>();
     const showBase64TextInput = ref(false);
     const responseBodyTypeItems = getValues();
     const metadata = ref<MetadataModel>();
     const selectedVariableHandler = ref("");
+    const showExamples = ref(false);
     const cmOptions = ref({
       tabSize: 4,
       mode: "" as any,
@@ -156,9 +146,7 @@ export default defineComponent({
     const showDynamicModeRow = computed(
       () => responseBodyType.value !== ResponseBodyType.base64
     );
-    const showVariableParsers = computed(
-      () => showDynamicModeRow.value && enableDynamicMode.value
-    );
+    const showVariableParsers = computed(() => showDynamicModeRow.value);
     const showResponseBodyTypeDropdown = computed(
       () => !props.presetResponseBodyType
     );
@@ -167,25 +155,17 @@ export default defineComponent({
         return [];
       }
 
-      const result = metadata.value.variableHandlers.map((h) => ({
-        key: h.name,
-        name: h.fullName,
-        example: h.example,
-      }));
-
-      result.sort((a, b) => {
-        if (a.name > b.name) return 1;
-        if (a.name < b.name) return -1;
-        return 0;
-      });
-
-      return result;
+      return metadata.value.variableHandlers;
     });
     const showResponseBody = computed(
       () =>
         responseBodyType.value !== ResponseBodyType.base64 ||
         showBase64TextInput.value
     );
+    const enableDynamicMode = computed({
+      get: () => stubFormStore.getDynamicMode,
+      set: (value) => stubFormStore.setDynamicMode(value),
+    });
 
     // Methods
     const onUploaded = (file: FileUploadedModel) => {
@@ -202,17 +182,9 @@ export default defineComponent({
       stubFormStore.closeFormHelper();
       showBase64TextInput.value = false;
     };
-    const insertVariableHandler = () => {
-      if (codeEditor.value && codeEditor.value.replaceSelection) {
-        if (metadata.value) {
-          const handler = metadata.value.variableHandlers.find(
-            (h) => h.name === selectedVariableHandler.value
-          );
-          if (handler) {
-            setTimeout(() => (selectedVariableHandler.value = ""), 10);
-            codeEditor.value.replaceSelection(handler.example);
-          }
-        }
+    const insertVariableHandlerExample = (example: string) => {
+      if (codeEditor.value && codeEditor.value.replaceSelection && example) {
+        codeEditor.value.replaceSelection(example);
       }
     };
     const insert = () => {
@@ -323,7 +295,6 @@ export default defineComponent({
       responseBody,
       showResponseBody,
       insert,
-      insertVariableHandler,
       close,
       onUploaded,
       showResponseBodyTypeDropdown,
@@ -336,6 +307,8 @@ export default defineComponent({
       minifyJson,
       prettifyXml,
       minifyXml,
+      showExamples,
+      insertVariableHandlerExample,
     };
   },
 });

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -8,26 +9,26 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable handler that is used to insert the hit count of a specific scenario in the response
 /// </summary>
-internal class ScenarioHitCountVariableParsingHandler : IResponseVariableParsingHandler
+internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandler
 {
     private readonly IScenarioStateStore _scenarioStateStore;
 
-    public ScenarioHitCountVariableParsingHandler(IScenarioStateStore scenarioStateStore)
+    public ScenarioHitCountVariableParsingHandler(IScenarioStateStore scenarioStateStore, IFileService fileService) :
+        base(fileService)
     {
         _scenarioStateStore = scenarioStateStore;
     }
 
     /// <inheritdoc />
-    public string Name => "scenario_hitcount";
+    public override string Name => "scenario_hitcount";
 
     /// <inheritdoc />
-    public string FullName => "Scenario hit count";
+    public override string FullName => "Scenario hit count";
+
+    public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
-    public string Example => "((scenario_hitcount:scenario name))";
-
-    /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
         if (!enumerable.Any())

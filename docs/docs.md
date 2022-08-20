@@ -66,6 +66,7 @@
     - [Local and UTC date & time](#local-and-utc-date--time)
     - [JSONPath](#jsonpath-parser)
     - [Scenario state / hit count](#scenario-state--hit-count)
+    - [Fake data](#fake-data)
   - [Reverse proxy](#reverse-proxy)
 - **[REST API](#rest-api)**
 - **[Configuration](#configuration)**
@@ -1938,6 +1939,65 @@ Current scenario hit count: 1
 scenario123 hit count: 10
 ```
 
+### Fake data
+
+This body parser can be used to insert fake data in the response. The fake data is generated using [Bogus](https://github.com/bchavez/Bogus). The following data can be inserted using this parser:
+
+- Address: zipcode, city, street_address, city_prefix, city_suffix, street_name, building_number, street_suffix, secondary_address, county, country, full_address, country_code, state, state_abbreviation, direction, cardinal_direction, ordinal_direction
+- Name: first_name, last_name, full_name, prefix, suffix, job_title, job_descriptor, job_area, job_type
+- Phone: phone_number
+- Internet: email, example_email, user_name, user_name_unicode, domain_name, domain_word, domain_suffix, ip, port, ipv6, user_agent, mac, password, color, protocol, url, url_with_path, url_rooted_path
+- Lorem: word, words, letter, sentence, sentences, paragraph, paragraphs, text, lines, slug
+- Date: past, past_offset, soon, soon_offset, future, future_offset, recent, recent_offset, month, weekday, timezone_string
+- Finance: account, account_name, amount, currency_name, currency_code, credit_card_number, credit_card_cvv, routing_number, bic, iban, bitcoin_address, ethereum_address, litecoin_address
+- System: file_name, directory_path, file_path, common_file_name, mime_type, common_file_type, common_file_ext, file_type, file_ext, semver, android_id, apple_push_token
+- Commerce: department, price, product_name, product, product_adjective, product_description, ean8, ean13
+
+The following locales are supported (can be found on the [Bogus documentation](https://github.com/bchavez/Bogus)): af_ZA, fr_CH, ar, ge, az, hr, cz, id_ID, de, it, de_AT, ja, de_CH, ko, el, lv, en, nb_NO, en_AU, ne, en_AU_ocker, nl, en_BORK, nl_BE, en_CA, pl, en_GB, pt_BR, en_IE, pt_PT, en_IND, ro, en_NG, ru, en_US, sk, en_ZA, sv, es, tr, es_MX, uk, fa, vi, fi, zh_CN, fr, zh_TW, fr_CA, zu_ZA
+
+The parser cane be inserted in the following ways:
+
+- `((fake_data:first_name))` (only specify the generator).
+- `((fake_data:en_US:first_name))` (specify generator and locale).
+- `((fake_data:past:yyyy-MM-dd HH:mm:ss))` (specify generator and formatting string, if applicable).
+- `((fake_data:en_US:past:yyyy-MM-dd HH:mm:ss))` (specify locale, generator and formatting string, if applicable).
+
+```yml
+- id: dynamic-mode-fake-data
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /dynamic-mode-fake-data.txt
+  response:
+    enableDynamicMode: true
+    contentType: text/plain;charset=utf-8
+    text: |
+      first_name: ((fake_data:pt_BR:first_name))
+      soon: ((fake_data:tr:soon:yyyy MMMM dd))
+  priority: 0
+```
+
+A request / response might look like this:
+
+**URL**
+```
+http://localhost:5000/dynamic-mode-fake-data.txt
+```
+
+**Method**
+```
+GET
+```
+
+The response will look something like this:
+```
+first_name: Isabela
+soon: 2022 Ağustos 20
+```
+
+A stub with all the possible fake data types can be found [here](samples/14.12-dynamic-mode-fake-data.yml) (or go to [samples](#samples)).
+
 ## Reverse proxy
 
 HttPlaceholder contains a very simple reverse proxy as response option. In short, if you want to route some requests (or any request that doesn't match any other stub) to an external web service, you can do this with the reverse proxy response writer. Here are some examples that you can use.
@@ -2335,20 +2395,21 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Set response content type: [.yml](samples/18-content-type.yml)
 * Stub images: [.yml](samples/19-stub-image.yml)
 * Dynamic mode:
-  * Dynamic mode - query strings: [.yml](samples/14.1-dynamic-mode-query.yml)
-  * Dynamic mode - UUIDs: [.yml](samples/14.2-dynamic-mode-uuid.yml)
-  * Dynamic mode - request headers: [.yml](samples/14.3-dynamic-mode-request-header.yml)
-  * Dynamic mode - form post: [.yml](samples/14.4-dynamic-mode-form-post.yml)
-  * Dynamic mode - request body: [.yml](samples/14.5-dynamic-mode-request-body.yml)
-  * Dynamic mode - display URL: [.yml](samples/14.6-dynamic-mode-display-url.yml)
-  * Dynamic mode - root URL: [.yml](samples/14.7-dynamic-mode-root-url.yml)
-  * Dynamic mode - client IP: [.yml](samples/14.8-dynamic-mode-client-ip.yml)
-  * Dynamic mode - current local or UTC date and time: [.yml](samples/14.9-dynamic-mode-datetime-now.yml)
-  * Dynamic mode - JSONPath: [.yml](samples/14.10-dynamic-mode-jsonpath.yml)
-  * Dynamic mode - scenario state / hit count: [.yml](samples/14.11-dynamic-mode-scenario-state-hitcount.yml)
+    * Dynamic mode - query strings: [.yml](samples/14.1-dynamic-mode-query.yml)
+    * Dynamic mode - UUIDs: [.yml](samples/14.2-dynamic-mode-uuid.yml)
+    * Dynamic mode - request headers: [.yml](samples/14.3-dynamic-mode-request-header.yml)
+    * Dynamic mode - form post: [.yml](samples/14.4-dynamic-mode-form-post.yml)
+    * Dynamic mode - request body: [.yml](samples/14.5-dynamic-mode-request-body.yml)
+    * Dynamic mode - display URL: [.yml](samples/14.6-dynamic-mode-display-url.yml)
+    * Dynamic mode - root URL: [.yml](samples/14.7-dynamic-mode-root-url.yml)
+    * Dynamic mode - client IP: [.yml](samples/14.8-dynamic-mode-client-ip.yml)
+    * Dynamic mode - current local or UTC date and time: [.yml](samples/14.9-dynamic-mode-datetime-now.yml)
+    * Dynamic mode - JSONPath: [.yml](samples/14.10-dynamic-mode-jsonpath.yml)
+    * Dynamic mode - scenario state / hit count: [.yml](samples/14.11-dynamic-mode-scenario-state-hitcount.yml)
+    * Dynamic mode - fake data: [.yml](samples/14.12-dynamic-mode-fake-data.yml)
 * Scenarios:
-  * Scenarios - hit counter: [.yml](samples/20.1-scenario-hit-counter.yml)
-  * Scenarios - state checking and setting: [.yml](samples/20.2-state-checking.yml)
+    * Scenarios - hit counter: [.yml](samples/20.1-scenario-hit-counter.yml)
+    * Scenarios - state checking and setting: [.yml](samples/20.2-state-checking.yml)
 
 # Management interface
 

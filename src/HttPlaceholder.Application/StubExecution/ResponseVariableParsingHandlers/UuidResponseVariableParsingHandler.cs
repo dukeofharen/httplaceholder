@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -9,19 +10,23 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler for generating a random UUID and putting it in the response.
 /// </summary>
-internal class UuidResponseVariableParsingHandler : IResponseVariableParsingHandler
+internal class UuidResponseVariableParsingHandler : BaseVariableParsingHandler
 {
-    /// <inheritdoc />
-    public string Name => "uuid";
+    public UuidResponseVariableParsingHandler(IFileService fileService) : base(fileService)
+    {
+    }
 
     /// <inheritdoc />
-    public string FullName => "UUID";
+    public override string Name => "uuid";
 
     /// <inheritdoc />
-    public string Example => "((uuid))";
+    public override string FullName => "UUID";
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches, StubModel stub) =>
+    public override string[] Examples => new[] {$"(({Name}))"};
+
+    /// <inheritdoc />
+    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub) =>
         (from match
                 in matches
             where match.Groups.Count == 3
