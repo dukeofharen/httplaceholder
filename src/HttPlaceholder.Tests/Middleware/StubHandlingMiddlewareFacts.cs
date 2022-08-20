@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
-using AutoMapper;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Dto.v1.Requests;
-using HttPlaceholder.Hubs;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.TestUtilities.Logging;
 using Microsoft.AspNetCore.Http;
@@ -108,8 +105,6 @@ public class StubHandlingMiddlewareFacts
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var clientDataResolverMock = _mocker.GetMock<IClientDataResolver>();
         var stubContextMock = _mocker.GetMock<IStubContext>();
-        var requestNotifyMock = _mocker.GetMock<IRequestNotify>();
-        var mapperMock = _mocker.GetMock<IMapper>();
         var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
 
         const string requestPath = "/stub-path";
@@ -158,11 +153,6 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.GetResult())
             .Returns(requestResultModel);
 
-        var mappedRequest = new RequestOverviewDto();
-        mapperMock
-            .Setup(m => m.Map<RequestOverviewDto>(requestResultModel))
-            .Returns(mappedRequest);
-
         // Act
         await middleware.Invoke(null);
 
@@ -176,7 +166,6 @@ public class StubHandlingMiddlewareFacts
         httpContextServiceMock.Verify(m => m.AddHeader("X-Header2", "val2"));
         httpContextServiceMock.Verify(m => m.WriteAsync(stubResponse.Body));
         stubContextMock.Verify(m => m.AddRequestResultAsync(requestResultModel, stubResponse));
-        requestNotifyMock.Verify(m => m.NewRequestReceivedAsync(mappedRequest));
         Assert.IsFalse(_mockLogger.Contains(LogLevel.Information, "Request: "));
     }
 

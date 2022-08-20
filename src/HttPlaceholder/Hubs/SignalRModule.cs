@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Application.Infrastructure.Newtonsoft;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Hubs.Implementations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;

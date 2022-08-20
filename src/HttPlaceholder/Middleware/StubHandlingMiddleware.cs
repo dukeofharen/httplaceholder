@@ -6,10 +6,9 @@ using AutoMapper;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Dto.v1.Requests;
-using HttPlaceholder.Hubs;
 using HttPlaceholder.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -33,9 +32,7 @@ public class StubHandlingMiddleware
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IStubContext _stubContext;
     private readonly IStubRequestExecutor _stubRequestExecutor;
-    private readonly IRequestNotify _requestNotify;
     private readonly SettingsModel _settings;
-    private readonly IMapper _mapper;
 
     /// <summary>
     /// Constructs a <see cref="StubHandlingMiddleware"/> instance.
@@ -46,21 +43,17 @@ public class StubHandlingMiddleware
         IHttpContextService httpContextService,
         ILogger<StubHandlingMiddleware> logger,
         IRequestLoggerFactory requestLoggerFactory,
-        IRequestNotify requestNotify,
         IStubContext stubContext,
         IStubRequestExecutor stubRequestExecutor,
-        IOptions<SettingsModel> options,
-        IMapper mapper)
+        IOptions<SettingsModel> options)
     {
         _next = next;
         _clientDataResolver = clientDataResolver;
         _httpContextService = httpContextService;
         _logger = logger;
         _requestLoggerFactory = requestLoggerFactory;
-        _requestNotify = requestNotify;
         _stubContext = stubContext;
         _stubRequestExecutor = stubRequestExecutor;
-        _mapper = mapper;
         _settings = options.Value;
     }
 
@@ -109,9 +102,6 @@ public class StubHandlingMiddleware
         }
 
         await _stubContext.AddRequestResultAsync(loggingResult, response);
-
-        // We need to map the model to a DTO here, because the frontend expects that.
-        await _requestNotify.NewRequestReceivedAsync(_mapper.Map<RequestOverviewDto>(loggingResult));
     }
 
     private void HandleException(string correlationId, Exception e)
