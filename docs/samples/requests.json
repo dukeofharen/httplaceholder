@@ -973,9 +973,9 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{rootUrl}}dynamic-mode-fake-data.txt",
+									"raw": "{{rootUrl}}dynamic-mode-scenario-state.txt",
 									"host": [
-										"{{rootUrl}}dynamic-mode-fake-data",
+										"{{rootUrl}}dynamic-mode-scenario-state",
 										"txt"
 									]
 								}
