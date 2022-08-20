@@ -42,7 +42,7 @@ response:
 };
 
 export function renderDocLink(hashTag?: string) {
-  let docsUrl = "docs/docs.html";
+  let docsUrl = "docs/index.html";
   if (hashTag) {
     docsUrl += `#${hashTag}`;
   }
