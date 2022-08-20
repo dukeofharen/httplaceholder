@@ -13,12 +13,14 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
 {
     private readonly Lazy<string[]> _exampleLazy;
+    private readonly Lazy<string> _descriptionLazy;
     private readonly IFakerService _fakerService;
 
     public FakeDataVariableParsingHandler(IFileService fileService, IFakerService fakerService) : base(fileService)
     {
         _fakerService = fakerService;
         _exampleLazy = new Lazy<string[]>(InitializeExamples);
+        _descriptionLazy = new Lazy<string>(InitializeDescription);
     }
 
     /// <inheritdoc />
@@ -30,13 +32,7 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
     /// <inheritdoc />
     public override string[] Examples => _exampleLazy.Value;
 
-    public override string GetDescription()
-    {
-        var description = base.GetDescription();
-        description = description.Replace("[LOCALES]",
-            string.Join(", ", _fakerService.GetLocales().Select(l => $"_{l}_")));
-        return description;
-    }
+    public override string GetDescription() => _descriptionLazy.Value;
 
     /// <inheritdoc />
     public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
@@ -58,9 +54,9 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
         return input;
     }
 
-    private (string locale, string generator, string formatting) ParseFakeDataInput(string input)
+    internal (string locale, string generator, string formatting) ParseFakeDataInput(string input)
     {
-        var parts = input.Split(':');
+        var parts = input.Split(':', 3);
         if (parts.Length == 0)
         {
             return (string.Empty, string.Empty, string.Empty);
@@ -90,7 +86,7 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
             generator = parts[0];
             if (parts.Length > 1)
             {
-                formatting = parts[1];
+                formatting = string.Join(':', parts.Skip(1).Take(parts.Length - 1));
             }
         }
 
@@ -115,5 +111,13 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
         }
 
         return result.ToArray();
+    }
+
+    private string InitializeDescription()
+    {
+        var description = base.GetDescription();
+        description = description.Replace("[LOCALES]",
+            string.Join(", ", _fakerService.GetLocales().Select(l => $"_{l}_")));
+        return description;
     }
 }

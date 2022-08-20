@@ -17,4 +17,4 @@ This handler can be inserted in the following ways:
 - `((fake_data:first_name))` (only specify the generator).
 - `((fake_data:en_US:first_name))` (specify generator and locale).
 - `((fake_data:past:yyyy-MM-dd HH:mm:ss))` (specify generator and formatting string, if applicable).
-- `((fake_data:en_US:past:yyyy-MM-dd HH:mm:ss))` (specify generator, locale and formatting string, if applicable).
+- `((fake_data:en_US:past:yyyy-MM-dd HH:mm:ss))` (specify locale, generator and formatting string, if applicable).
