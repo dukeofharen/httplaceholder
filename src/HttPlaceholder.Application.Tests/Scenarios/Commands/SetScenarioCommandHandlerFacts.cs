@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain.Entities;
@@ -16,7 +17,7 @@ public class SetScenarioCommandHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void Handle_HappyFlow()
+    public async Task Handle_HappyFlow()
     {
         // Arrange
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
@@ -24,7 +25,7 @@ public class SetScenarioCommandHandlerFacts
         var request = new SetScenarioCommand(new ScenarioStateModel(), "scenario-1");
 
         // Act
-        handler.Handle(request, CancellationToken.None);
+        await handler.Handle(request, CancellationToken.None);
 
         // Assert
         scenarioServiceMock.Verify(m => m.SetScenarioAsync(request.ScenarioName, request.ScenarioStateModel));
