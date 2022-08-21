@@ -120,4 +120,22 @@ public class StubConditionStringCheckingDto
     /// </summary>
     [JsonProperty("present", NullValueHandling = NullValueHandling.Ignore)]
     public bool? Present { get; set; }
+
+    /// <summary>
+    /// Gets or sets the min length check.
+    /// </summary>
+    [JsonProperty("minlength", NullValueHandling = NullValueHandling.Ignore)]
+    public int? MinLength { get; set; }
+
+    /// <summary>
+    /// Gets or sets the max length check.
+    /// </summary>
+    [JsonProperty("maxlength", NullValueHandling = NullValueHandling.Ignore)]
+    public int? MaxLength { get; set; }
+
+    /// <summary>
+    /// Gets or sets the exact length check.
+    /// </summary>
+    [JsonProperty("exactlength", NullValueHandling = NullValueHandling.Ignore)]
+    public int? ExactLength { get; set; }
 }

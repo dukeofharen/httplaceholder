@@ -140,4 +140,25 @@ public class StubConditionStringCheckingDto
     [YamlMember(Alias = "present")]
     [JsonProperty("present")]
     public bool? Present { get; set; }
+
+    /// <summary>
+    /// Gets or sets the min length check.
+    /// </summary>
+    [YamlMember(Alias = "minlength")]
+    [JsonProperty("minlength")]
+    public int? MinLength { get; set; }
+
+    /// <summary>
+    /// Gets or sets the max length check.
+    /// </summary>
+    [YamlMember(Alias = "maxlength")]
+    [JsonProperty("maxlength")]
+    public int? MaxLength { get; set; }
+
+    /// <summary>
+    /// Gets or sets the exact length check.
+    /// </summary>
+    [YamlMember(Alias = "exactlength")]
+    [JsonProperty("exactlength")]
+    public int? ExactLength { get; set; }
 }

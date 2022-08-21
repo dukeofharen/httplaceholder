@@ -141,6 +141,27 @@ public class StubConditionStringCheckingModel
     [JsonProperty("present", NullValueHandling = NullValueHandling.Ignore)]
     public bool? Present { get; set; }
 
+    /// <summary>
+    /// Gets or sets the min length check.
+    /// </summary>
+    [YamlMember(Alias = "minlength")]
+    [JsonProperty("minlength", NullValueHandling = NullValueHandling.Ignore)]
+    public int? MinLength { get; set; }
+
+    /// <summary>
+    /// Gets or sets the max length check.
+    /// </summary>
+    [YamlMember(Alias = "maxlength")]
+    [JsonProperty("maxlength", NullValueHandling = NullValueHandling.Ignore)]
+    public int? MaxLength { get; set; }
+
+    /// <summary>
+    /// Gets or sets the exact length check.
+    /// </summary>
+    [YamlMember(Alias = "exactlength")]
+    [JsonProperty("exactlength", NullValueHandling = NullValueHandling.Ignore)]
+    public int? ExactLength { get; set; }
+
     /// <inheritdoc />
     public override string ToString() => JsonConvert.SerializeObject(this);
 }
