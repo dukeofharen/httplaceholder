@@ -179,7 +179,8 @@ export const useStubFormStore = defineStore({
             parsed.conditions.url.path = {};
           }
 
-          parsed.conditions.url.path[keyword.key] = defaultValues.urlPath;
+          parsed.conditions.url.path[keyword.key] =
+            keyword.defaultValue || defaultValues.urlPath;
           this.setInput(yaml.dump(parsed));
         }
       });
@@ -200,7 +201,8 @@ export const useStubFormStore = defineStore({
             parsed.conditions.url.fullPath = {};
           }
 
-          parsed.conditions.url.fullPath[keyword.key] = defaultValues.fullPath;
+          parsed.conditions.url.fullPath[keyword.key] =
+            keyword.defaultValue || defaultValues.fullPath;
           this.setInput(yaml.dump(parsed));
         }
       });
@@ -224,7 +226,9 @@ export const useStubFormStore = defineStore({
           for (const key of Object.keys(defaultValues.query)) {
             parsed.conditions.url.query[key] = {};
             parsed.conditions.url.query[key][keyword.key] =
-              keyword.key === "present" ? true : defaultValues.query[key];
+              keyword.key === "present"
+                ? true
+                : keyword.defaultValue || defaultValues.query[key];
           }
 
           this.setInput(yaml.dump(parsed));
@@ -279,7 +283,7 @@ export const useStubFormStore = defineStore({
             parsed.conditions.headers[key][keyword.key] =
               keyword.key === "present"
                 ? true
-                : defaultValues.requestHeaders[key];
+                : keyword.defaultValue || defaultValues.requestHeaders[key];
           }
 
           this.setInput(yaml.dump(parsed));
@@ -300,7 +304,7 @@ export const useStubFormStore = defineStore({
 
           for (const body of defaultValues.requestBody) {
             const newBody: any = {};
-            newBody[keyword.key] = body;
+            newBody[keyword.key] = keyword.defaultValue || body;
             parsed.conditions.body.push(newBody);
           }
 
@@ -323,7 +327,9 @@ export const useStubFormStore = defineStore({
           for (const key of Object.keys(defaultValues.formBody)) {
             const val = {} as any;
             val[keyword.key] =
-              keyword.key === "present" ? true : defaultValues.formBody[key];
+              keyword.key === "present"
+                ? true
+                : keyword.defaultValue || defaultValues.formBody[key];
             parsed.conditions.form.push({
               key: key,
               value: val,
@@ -359,7 +365,8 @@ export const useStubFormStore = defineStore({
             parsed.conditions.host = {};
           }
 
-          parsed.conditions.host[keyword.key] = defaultValues.hostname;
+          parsed.conditions.host[keyword.key] =
+            keyword.defaultValue || defaultValues.hostname;
           this.setInput(yaml.dump(parsed));
         }
       });
