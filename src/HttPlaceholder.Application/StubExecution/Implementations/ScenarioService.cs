@@ -29,7 +29,7 @@ internal class ScenarioService : IScenarioService
         ScenarioStateModel scenarioState;
         lock (_scenarioStateStore.GetScenarioLock(scenario))
         {
-            scenarioState = GetOrAddScenarioState(scenario);
+            scenarioState = GetOrAddScenarioState(scenario, out _);
             scenarioState.HitCount++;
             _scenarioStateStore.UpdateScenario(scenario, scenarioState);
         }
@@ -38,18 +38,26 @@ internal class ScenarioService : IScenarioService
     }
 
     /// <inheritdoc />
-    public int? GetHitCount(string scenario)
+    public async Task<int?> GetHitCountAsync(string scenario)
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
             return null;
         }
 
+        ScenarioStateModel scenarioState;
+        bool scenarioAdded;
         lock (_scenarioStateStore.GetScenarioLock(scenario))
         {
-            var scenarioState = GetOrAddScenarioState(scenario);
-            return scenarioState.HitCount;
+            scenarioState = GetOrAddScenarioState(scenario, out scenarioAdded);
         }
+
+        if (scenarioAdded)
+        {
+            await _scenarioNotify.ScenarioSetAsync(scenarioState);
+        }
+
+        return scenarioState.HitCount;
     }
 
     /// <inheritdoc />
@@ -122,9 +130,18 @@ internal class ScenarioService : IScenarioService
         await _scenarioNotify.AllScenariosDeletedAsync();
     }
 
-    private ScenarioStateModel GetOrAddScenarioState(string scenario) =>
-        _scenarioStateStore.GetScenario(scenario) ??
-        _scenarioStateStore.AddScenario(
-            scenario,
-            new ScenarioStateModel(scenario));
+    private ScenarioStateModel GetOrAddScenarioState(string scenario, out bool scenarioAdded)
+    {
+        scenarioAdded = false;
+        var scenarioModel = _scenarioStateStore.GetScenario(scenario);
+        if (scenarioModel == null)
+        {
+            scenarioModel = _scenarioStateStore.AddScenario(
+                scenario,
+                new ScenarioStateModel(scenario));
+            scenarioAdded = true;
+        }
+
+        return scenarioModel;
+    }
 }

@@ -20,17 +20,17 @@ public class ScenarioMinHitCounterConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var minHits = stub.Conditions?.Scenario?.MinHits;
         if (minHits == null)
         {
-            return Task.FromResult(result);
+            return result;
         }
 
         var scenario = stub.Scenario;
-        var rawHitCount = _scenarioService.GetHitCount(scenario);
+        var rawHitCount = await _scenarioService.GetHitCountAsync(scenario);
         var actualHitCount = rawHitCount + 1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
         if (actualHitCount == null)
         {
@@ -48,7 +48,7 @@ public class ScenarioMinHitCounterConditionChecker : IConditionChecker
             result.ConditionValidation = ConditionValidationType.Valid;
         }
 
-        return Task.FromResult(result);
+        return result;
     }
 
     /// <inheritdoc />

@@ -113,23 +113,24 @@ public class ScenarioServiceFacts
     }
 
     [TestMethod]
-    public void GetHitCount_ScenarioNotSet_ShouldReturnNull()
+    public async Task GetHitCountAsync_ScenarioNotSet_ShouldReturnNull()
     {
         // Arrange
         var service = _mocker.CreateInstance<ScenarioService>();
 
         // Act
-        var result = service.GetHitCount(string.Empty);
+        var result = await service.GetHitCountAsync(string.Empty);
 
         // Assert
         Assert.IsNull(result);
     }
 
     [TestMethod]
-    public void GetHitCount_ScenarioSet_ShouldReturnHitCount()
+    public async Task GetHitCountAsync_ScenarioSet_ScenarioAlreadyExists_ShouldReturnHitCount()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+        var scenarioNotifyMock = _mocker.GetMock<IScenarioNotify>();
         var service = _mocker.CreateInstance<ScenarioService>();
         const string scenario = "SCENARIO-1";
 
@@ -143,10 +144,40 @@ public class ScenarioServiceFacts
             .Returns(scenarioState);
 
         // Act
-        var result = service.GetHitCount(scenario);
+        var result = await service.GetHitCountAsync(scenario);
 
         // Assert
         Assert.AreEqual(2, result);
+        scenarioNotifyMock.Verify(m => m.ScenarioSetAsync(scenarioState), Times.Never);
+    }
+
+    [TestMethod]
+    public async Task GetHitCountAsync_ScenarioSet_ScenarioDoesNotExistYet_ShouldReturnHitCount()
+    {
+        // Arrange
+        var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+        var scenarioNotifyMock = _mocker.GetMock<IScenarioNotify>();
+        var service = _mocker.CreateInstance<ScenarioService>();
+        const string scenario = "SCENARIO-1";
+
+        scenarioStateStoreMock
+            .Setup(m => m.GetScenarioLock(scenario))
+            .Returns(new object());
+
+        var scenarioState = new ScenarioStateModel {Scenario = scenario, HitCount = 2};
+        scenarioStateStoreMock
+            .Setup(m => m.GetScenario(scenario))
+            .Returns((ScenarioStateModel)null);
+        scenarioStateStoreMock
+            .Setup(m => m.AddScenario(scenario, It.Is<ScenarioStateModel>(s => s.Scenario == scenario.ToLower())))
+            .Returns(scenarioState);
+
+        // Act
+        var result = await service.GetHitCountAsync(scenario);
+
+        // Assert
+        Assert.AreEqual(2, result);
+        scenarioNotifyMock.Verify(m => m.ScenarioSetAsync(scenarioState), Times.Once);
     }
 
     [TestMethod]

@@ -4,6 +4,7 @@ using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
@@ -39,8 +40,8 @@ public class ScenarioMinHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCount(stub.Scenario))
-            .Returns((int?)null);
+            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .ReturnsAsync((int?)null);
 
         // Act
         var result = await checker.ValidateAsync(stub);
@@ -59,15 +60,16 @@ public class ScenarioMinHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCount(stub.Scenario))
-            .Returns(1);
+            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .ReturnsAsync(1);
 
         // Act
         var result = await checker.ValidateAsync(stub);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        Assert.AreEqual("Scenario 'min-hits' should have at least '3' hits, but only '2' hits were counted.", result.Log);
+        Assert.AreEqual("Scenario 'min-hits' should have at least '3' hits, but only '2' hits were counted.",
+            result.Log);
     }
 
     [TestMethod]
@@ -79,8 +81,8 @@ public class ScenarioMinHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCount(stub.Scenario))
-            .Returns(2);
+            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .ReturnsAsync(2);
 
         // Act
         var result = await checker.ValidateAsync(stub);

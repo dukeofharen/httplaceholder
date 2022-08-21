@@ -4,6 +4,7 @@ using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
@@ -39,8 +40,8 @@ public class ScenarioExactHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCount(stub.Scenario))
-            .Returns((int?)null);
+            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .ReturnsAsync((int?)null);
 
         // Act
         var result = await checker.ValidateAsync(stub);
@@ -59,8 +60,8 @@ public class ScenarioExactHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCount(stub.Scenario))
-            .Returns(3);
+            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .ReturnsAsync(3);
 
         // Act
         var result = await checker.ValidateAsync(stub);
@@ -80,8 +81,8 @@ public class ScenarioExactHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCount(stub.Scenario))
-            .Returns(2);
+            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .ReturnsAsync(2);
 
         // Act
         var result = await checker.ValidateAsync(stub);

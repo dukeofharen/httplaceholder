@@ -20,7 +20,7 @@ public interface IScenarioService
     /// </summary>
     /// <param name="scenario">The scenario name. Is case insensitive.</param>
     /// <returns>The hit count.</returns>
-    int? GetHitCount(string scenario);
+    Task<int?> GetHitCountAsync(string scenario);
 
     /// <summary>
     /// Returns all scenarios.
