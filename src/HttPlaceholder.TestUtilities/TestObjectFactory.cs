@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
+using Microsoft.AspNetCore.SignalR;
 using Moq;
 using Newtonsoft.Json;
 
@@ -26,4 +27,21 @@ public static class TestObjectFactory
 
     public static Dictionary<object, object> CreateStringCheckingModel(bool? present = null) =>
         Convert(new StubConditionStringCheckingModel {Present = present});
+
+    public static (IHubContext<T> hubContext, Mock<IClientProxy> clientProxyMock) CreateHubMock<T>() where T : Hub
+    {
+        var hubContextMock = new Mock<IHubContext<T>>();
+        var hubClientsMock = new Mock<IHubClients>();
+        var clientProxyMock = new Mock<IClientProxy>();
+
+        hubContextMock
+            .Setup(m => m.Clients)
+            .Returns(hubClientsMock.Object);
+
+        hubClientsMock
+            .Setup(m => m.All)
+            .Returns(clientProxyMock.Object);
+
+        return (hubContextMock.Object, clientProxyMock);
+    }
 }
