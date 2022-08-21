@@ -8,7 +8,7 @@ using Moq.AutoMock;
 namespace HttPlaceholder.Tests.Hubs;
 
 [TestClass]
-public class RequestHubFacts
+public class BaseHubFacts
 {
     private readonly AutoMocker _mocker = new();
 
@@ -19,7 +19,7 @@ public class RequestHubFacts
     public async Task OnConnectedAsync_NotAuthorized_ShouldThrowInvalidOperationException()
     {
         // Arrange
-        var hub = _mocker.CreateInstance<RequestHub>();
+        var hub = _mocker.CreateInstance<TestHub>();
         var loginServiceMock = _mocker.GetMock<ILoginService>();
         loginServiceMock
             .Setup(m => m.CheckLoginCookie())
@@ -33,7 +33,7 @@ public class RequestHubFacts
     public async Task OnConnectedAsync_Authorized_ShouldContinue()
     {
         // Arrange
-        var hub = _mocker.CreateInstance<RequestHub>();
+        var hub = _mocker.CreateInstance<TestHub>();
         var loginServiceMock = _mocker.GetMock<ILoginService>();
         loginServiceMock
             .Setup(m => m.CheckLoginCookie())
@@ -41,5 +41,12 @@ public class RequestHubFacts
 
         // Act / Assert
         await hub.OnConnectedAsync();
+    }
+
+    public class TestHub : BaseHub
+    {
+        public TestHub(ILoginService loginService) : base(loginService)
+        {
+        }
     }
 }
