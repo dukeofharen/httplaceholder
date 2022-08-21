@@ -520,11 +520,12 @@ public class StringCheckerFacts
 
     [DataTestMethod]
     [DataRow("teststring", -10, false)]
-    [DataRow("teststring", 0, false)]
-    [DataRow("teststring", 1, false)]
-    [DataRow("teststring", 9, false)]
+    [DataRow("teststring", 0, true)]
+    [DataRow("teststring", 1, true)]
+    [DataRow("teststring", 9, true)]
     [DataRow("teststring", 10, true)]
-    [DataRow("teststring", 20, true)]
+    [DataRow("teststring", 11, false)]
+    [DataRow("teststring", 20, false)]
     public void CheckString_MinLength(string input, int minLength, bool shouldSucceed)
     {
         // Arrange
@@ -547,16 +548,46 @@ public class StringCheckerFacts
 
     [DataTestMethod]
     [DataRow("teststring", -10, false)]
-    [DataRow("teststring", 0, true)]
-    [DataRow("teststring", 1, true)]
-    [DataRow("teststring", 9, true)]
+    [DataRow("teststring", 0, false)]
+    [DataRow("teststring", 1, false)]
+    [DataRow("teststring", 9, false)]
     [DataRow("teststring", 10, true)]
-    [DataRow("teststring", 11, false)]
-    [DataRow("teststring", 20, false)]
+    [DataRow("teststring", 11, true)]
+    [DataRow("teststring", 20, true)]
     public void CheckString_MaxLength(string input, int maxLength, bool shouldSucceed)
     {
         // Arrange
         var condition = Convert(new StubConditionStringCheckingModel {MaxLength = maxLength});
+
+        // Act
+        var result = _checker.CheckString(input, condition, out var outputForLogging);
+
+        // Assert
+        Assert.AreEqual(shouldSucceed, result);
+        if (shouldSucceed)
+        {
+            Assert.IsTrue(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+        else
+        {
+            Assert.IsFalse(string.IsNullOrWhiteSpace(outputForLogging));
+        }
+    }
+
+    [DataTestMethod]
+    [DataRow("teststring", -10, 10, false)]
+    [DataRow("teststring", 0, 10, true)]
+    [DataRow("teststring", 1, 10, true)]
+    [DataRow("teststring", 1, 11, true)]
+    [DataRow("teststring", 1, 9, false)]
+    [DataRow("teststring", 5, 5, false)]
+    [DataRow("teststring", 9, 20, true)]
+    [DataRow("teststring", 10, 20, true)]
+    [DataRow("teststring", 11, 20, false)]
+    public void CheckString_MinAndMaxLength(string input, int minLength, int maxLength, bool shouldSucceed)
+    {
+        // Arrange
+        var condition = Convert(new StubConditionStringCheckingModel {MinLength = minLength, MaxLength = maxLength});
 
         // Act
         var result = _checker.CheckString(input, condition, out var outputForLogging);
