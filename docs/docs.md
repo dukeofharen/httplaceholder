@@ -1141,6 +1141,9 @@ The following keywords can be used:
 - `doesnotendwithci`: same as keyword above, but case insensitive.
 - `regex`: checks if the input matches this regular expression.
 - `regexnomatches`: checks if the input does not match this regular expression.
+- `minlength`: checks if the input has a minimum (inclusive) length.
+- `maxlength`: checks if the input has a maximum (inclusive) length.
+- `exactlength`: checks if the input has an exact length.
 
 # Response writers
 
