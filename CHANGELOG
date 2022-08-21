@@ -6,6 +6,7 @@
 - Make it possible to select multiple examples when you are inserting a variable parsing handler in the stub response (https://github.com/dukeofharen/httplaceholder/issues/262).
 - Make it possible to insert fake data in the stub response using [Bogus](https://github.com/bchavez/Bogus) (https://github.com/dukeofharen/httplaceholder/issues/72).
 - Update UI whenever a scenario is added, updated or deleted (https://github.com/dukeofharen/httplaceholder/issues/259).
+- Added 3 more string checker options: minlength, maxlength and exactlength (https://github.com/dukeofharen/httplaceholder/issues/257).
 
 # BREAKING CHANGES
 - Minor one, but the YAML file stub contents are no longer logged when there are any YAML stub files and the logging is set to verbose.

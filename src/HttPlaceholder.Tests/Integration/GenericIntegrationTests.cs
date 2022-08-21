@@ -61,7 +61,7 @@ public class GenericIntegrationTests : IntegrationTestBase
 
         // Assert StubConditionStringCheckingDto
         var stubConditionStringCheckingDtoSchema = openapi.Components.Schemas["StubConditionStringCheckingDto"];
-        Assert.AreEqual(19, stubConditionStringCheckingDtoSchema.Properties.Count);
+        Assert.AreEqual(22, stubConditionStringCheckingDtoSchema.Properties.Count);
         Assert.IsFalse(stubConditionStringCheckingDtoSchema.Properties.Any(p => p.Value.Type == "null"));
 
         // Assert StubUrlConditionDto

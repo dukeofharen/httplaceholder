@@ -2,6 +2,7 @@ export interface StringCheckingKeyword {
   key: string;
   name: string;
   description: string;
+  defaultValue?: any;
 }
 
 export function getStringCheckingKeywords(
@@ -103,6 +104,24 @@ export function getStringCheckingKeywords(
       key: "regexnomatches",
       name: "Regular expression no matches",
       description: "checks if the input does not match this regular expression",
+    },
+    {
+      key: "minlength",
+      name: "Minimum length",
+      description: "checks if the input has a minimum (inclusive) length",
+      defaultValue: 10,
+    },
+    {
+      key: "maxlength",
+      name: "Maximum length",
+      description: "checks if the input has a maximum (inclusive) length",
+      defaultValue: 10,
+    },
+    {
+      key: "exactlength",
+      name: "Exact length",
+      description: "checks if the input has an exact length",
+      defaultValue: 10,
     },
   ];
   if (insertPresent) {

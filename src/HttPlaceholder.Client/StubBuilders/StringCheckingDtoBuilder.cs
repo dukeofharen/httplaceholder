@@ -219,6 +219,39 @@ public sealed class StringCheckingDtoBuilder
     }
 
     /// <summary>
+    /// Sets the minimum length check.
+    /// </summary>
+    /// <param name="minLength">The minimum (inclusive) amount of characters the string should be long.</param>
+    /// <returns>The current <see cref="StringCheckingDtoBuilder"/>.</returns>
+    public StringCheckingDtoBuilder MinLength(int minLength)
+    {
+        _dto.MinLength = minLength;
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the maximum length check.
+    /// </summary>
+    /// <param name="maxLength">The maximum (inclusive) amount of characters the string should be long.</param>
+    /// <returns>The current <see cref="StringCheckingDtoBuilder"/>.</returns>
+    public StringCheckingDtoBuilder MaxLength(int maxLength)
+    {
+        _dto.MaxLength = maxLength;
+        return this;
+    }
+
+    /// <summary>
+    /// Sets the exact length check.
+    /// </summary>
+    /// <param name="exactLength">The exact amount of characters the string should be long.</param>
+    /// <returns>The current <see cref="StringCheckingDtoBuilder"/>.</returns>
+    public StringCheckingDtoBuilder ExactLength(int exactLength)
+    {
+        _dto.ExactLength = exactLength;
+        return this;
+    }
+
+    /// <summary>
     /// Builds the string checking DTO.
     /// </summary>
     /// <returns>The built <see cref="StubConditionStringCheckingDto"/>.</returns>

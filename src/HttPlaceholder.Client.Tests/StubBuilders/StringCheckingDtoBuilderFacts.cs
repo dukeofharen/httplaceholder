@@ -241,4 +241,43 @@ public class StringCheckingDtoBuilderFacts
         // Assert
         Assert.AreEqual(input, _builder.Build().RegexNoMatches);
     }
+
+    [TestMethod]
+    public void MinLength()
+    {
+        // Arrange
+        const int input = 10;
+
+        // Act
+        _builder.MinLength(input);
+
+        // Assert
+        Assert.AreEqual(input, _builder.Build().MinLength);
+    }
+
+    [TestMethod]
+    public void MaxLength()
+    {
+        // Arrange
+        const int input = 10;
+
+        // Act
+        _builder.MaxLength(input);
+
+        // Assert
+        Assert.AreEqual(input, _builder.Build().MaxLength);
+    }
+
+    [TestMethod]
+    public void ExactLength()
+    {
+        // Arrange
+        const int input = 10;
+
+        // Act
+        _builder.ExactLength(input);
+
+        // Assert
+        Assert.AreEqual(input, _builder.Build().ExactLength);
+    }
 }

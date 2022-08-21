@@ -122,6 +122,21 @@ internal class StringChecker : IStringChecker
             result &= !regex.IsMatch(input);
         }
 
+        if (checkingModel.MinLength != null)
+        {
+            result &= checkingModel.MinLength >= 0 && input.Length >= checkingModel.MinLength;
+        }
+
+        if (checkingModel.MaxLength != null)
+        {
+            result &= checkingModel.MaxLength >= 0 && input.Length <= checkingModel.MaxLength;
+        }
+
+        if (checkingModel.ExactLength != null)
+        {
+            result &= checkingModel.ExactLength >= 0 && input.Length == checkingModel.ExactLength;
+        }
+
         outputForLogging = result ? string.Empty : checkingModel.ToString();
         return result;
     }
