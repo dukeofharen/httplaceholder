@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
@@ -23,7 +24,7 @@ public class XPathConditionCheckerFacts
     public void Cleanup() => _httpContextServiceMock.VerifyAll();
 
     [TestMethod]
-    public void XPathConditionChecker_Validate_StubsFound_ButNoXPathConditions_ShouldReturnNotExecuted()
+    public async Task XPathConditionChecker_ValidateAsync_StubsFound_ButNoXPathConditions_ShouldReturnNotExecuted()
     {
         // arrange
         var conditions = new StubConditionsModel
@@ -32,14 +33,14 @@ public class XPathConditionCheckerFacts
         };
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void XPathConditionChecker_Validate_StubsFound_XmlIsCorrupt_ShouldReturnInvalid()
+    public async Task XPathConditionChecker_ValidateAsync_StubsFound_XmlIsCorrupt_ShouldReturnInvalid()
     {
         // arrange
         const string body = @"<?xml version=""1.0""?>
@@ -74,7 +75,7 @@ public class XPathConditionCheckerFacts
             .Returns(body);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -82,7 +83,7 @@ public class XPathConditionCheckerFacts
     }
 
     [TestMethod]
-    public void XPathConditionChecker_Validate_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
+    public async Task XPathConditionChecker_ValidateAsync_StubsFound_AllXPathConditionsIncorrect_ShouldReturnInvalid()
     {
         // arrange
         const string body = @"<?xml version=""1.0""?>
@@ -126,14 +127,14 @@ public class XPathConditionCheckerFacts
             .Returns(body);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void XPathConditionChecker_Validate_StubsFound_OnlyOneXPathConditionCorrect_ShouldReturnInvalid()
+    public async Task XPathConditionChecker_ValidateAsync_StubsFound_OnlyOneXPathConditionCorrect_ShouldReturnInvalid()
     {
         // arrange
         const string body = @"<?xml version=""1.0""?>
@@ -177,14 +178,14 @@ public class XPathConditionCheckerFacts
             .Returns(body);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces()
+    public async Task XPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithNamespaces()
     {
         // arrange
         const string body = @"<?xml version=""1.0""?>
@@ -228,14 +229,14 @@ public class XPathConditionCheckerFacts
             .Returns(body);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithNamespaces_FilteredByRegex()
+    public async Task XPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithNamespaces_FilteredByRegex()
     {
         // arrange
         const string body = @"<?xml version=""1.0""?>
@@ -269,14 +270,14 @@ public class XPathConditionCheckerFacts
             .Returns(body);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void XPathConditionChecker_Validate_StubsFound_HappyFlow_WithoutNamespaces()
+    public async Task XPathConditionChecker_ValidateAsync_StubsFound_HappyFlow_WithoutNamespaces()
     {
         // arrange
         const string body = @"<?xml version=""1.0""?>
@@ -304,7 +305,7 @@ public class XPathConditionCheckerFacts
             .Returns(body);
 
         // act
-        var result = _checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

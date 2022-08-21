@@ -1,5 +1,8 @@
 ﻿using HttPlaceholder.Application.Infrastructure.Newtonsoft;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Hubs.Implementations;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Hubs;
@@ -20,6 +23,18 @@ public static class SignalRModule
             .AddNewtonsoftJsonProtocol(options =>
                 options.PayloadSerializerSettings.ContractResolver = new CamelCaseExceptDictionaryKeysResolver());
         services.AddTransient<IRequestNotify, RequestNotify>();
+        services.AddTransient<IScenarioNotify, ScenarioNotify>();
         return services;
+    }
+
+    /// <summary>
+    /// Configures SignalR.
+    /// </summary>
+    /// <param name="options">The endpoint route builder options.</param>
+    public static IEndpointRouteBuilder ConfigureSignalR(this IEndpointRouteBuilder options)
+    {
+        options.MapHub<RequestHub>("/requestHub");
+        options.MapHub<ScenarioHub>("/scenarioHub");
+        return options;
     }
 }

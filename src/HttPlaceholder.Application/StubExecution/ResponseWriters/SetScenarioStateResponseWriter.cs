@@ -29,7 +29,7 @@ internal class SetScenarioStateResponseWriter : IResponseWriter
         var scenarioState = _scenarioService.GetScenario(scenario) ?? new ScenarioStateModel(scenario);
 
         scenarioState.State = stub.Response.Scenario.SetScenarioState;
-        _scenarioService.SetScenario(scenario, scenarioState);
+        _scenarioService.SetScenarioAsync(scenario, scenarioState);
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }
 

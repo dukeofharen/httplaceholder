@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -22,13 +23,13 @@ public class HostConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var hostCondition = stub.Conditions?.Host;
         if (hostCondition == null)
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var host = _clientDataResolver.GetHost();
@@ -36,7 +37,7 @@ public class HostConditionChecker : IConditionChecker
             ? ConditionValidationType.Invalid
             : ConditionValidationType.Valid;
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

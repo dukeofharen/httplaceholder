@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -25,13 +26,13 @@ public class JsonPathConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var jsonPathConditions = stub.Conditions?.JsonPath?.ToArray();
         if (jsonPathConditions == null || jsonPathConditions?.Any() != true)
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var validJsonPaths = 0;
@@ -89,7 +90,7 @@ public class JsonPathConditionChecker : IConditionChecker
             ? ConditionValidationType.Valid
             : ConditionValidationType.Invalid;
 
-        return result;
+        return Task.FromResult(result);
     }
 
     internal static StubJsonPathModel ConvertJsonPathCondition(string stubId, object condition)

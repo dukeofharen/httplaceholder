@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
@@ -18,21 +19,21 @@ public class BodyConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void BodyConditionChecker_Validate_StubsFound_ButNoBodyConditions_ShouldReturnNotExecuted()
+    public async Task BodyConditionChecker_ValidateAsync_StubsFound_ButNoBodyConditions_ShouldReturnNotExecuted()
     {
         // arrange
         var checker = _mocker.CreateInstance<BodyConditionChecker>();
         var conditions = new StubConditionsModel {Body = null};
 
         // act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void BodyConditionChecker_Validate_StubsFound_AllBodyConditionsIncorrect_ShouldReturnInvalid()
+    public async Task BodyConditionChecker_ValidateAsync_StubsFound_AllBodyConditionsIncorrect_ShouldReturnInvalid()
     {
         // arrange
         const string body = "this is a test";
@@ -47,14 +48,14 @@ public class BodyConditionCheckerFacts
             .Returns(body);
 
         // act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void BodyConditionChecker_Validate_StubsFound_OnlyOneBodyConditionCorrect_ShouldReturnInvalid()
+    public async Task BodyConditionChecker_ValidateAsync_StubsFound_OnlyOneBodyConditionCorrect_ShouldReturnInvalid()
     {
         // arrange
         const string body = "this is a test";
@@ -78,14 +79,14 @@ public class BodyConditionCheckerFacts
             .Returns(false);
 
         // act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void BodyConditionChecker_Validate_StubsFound_HappyFlow_FullText()
+    public async Task BodyConditionChecker_ValidateAsync_StubsFound_HappyFlow_FullText()
     {
         // arrange
         const string body = "this is a test";
@@ -106,7 +107,7 @@ public class BodyConditionCheckerFacts
             .Returns(true);
 
         // act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

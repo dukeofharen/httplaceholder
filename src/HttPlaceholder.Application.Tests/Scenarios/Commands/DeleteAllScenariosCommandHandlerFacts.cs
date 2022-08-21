@@ -26,6 +26,6 @@ public class DeleteAllScenariosCommandHandlerFacts
         await handler.Handle(new DeleteAllScenariosCommand(), CancellationToken.None);
 
         // Assert
-        scenarioServiceMock.Verify(m => m.DeleteAllScenarios());
+        scenarioServiceMock.Verify(m => m.DeleteAllScenariosAsync());
     }
 }

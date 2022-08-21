@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
@@ -16,10 +17,12 @@ internal class StubContext : IStubContext
 {
     private readonly IEnumerable<IStubSource> _stubSources;
     private readonly SettingsModel _settings;
+    private readonly IRequestNotify _requestNotify;
 
-    public StubContext(IEnumerable<IStubSource> stubSources, IOptions<SettingsModel> options)
+    public StubContext(IEnumerable<IStubSource> stubSources, IOptions<SettingsModel> options, IRequestNotify requestNotify)
     {
         _stubSources = stubSources;
+        _requestNotify = requestNotify;
         _settings = options.Value;
     }
 
@@ -161,6 +164,7 @@ internal class StubContext : IStubContext
             : null;
         requestResult.StubTenant = stub?.Stub?.Tenant;
         await source.AddRequestResultAsync(requestResult, _settings.Storage?.StoreResponses == true ? response : null);
+        await _requestNotify.NewRequestReceivedAsync(requestResult);
     }
 
     /// <inheritdoc />

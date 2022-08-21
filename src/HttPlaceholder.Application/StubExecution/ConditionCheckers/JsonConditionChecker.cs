@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -26,12 +27,12 @@ public class JsonConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         if (stub.Conditions?.Json == null)
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var convertedJsonConditions = ConvertJsonConditions(stub.Conditions.Json);
@@ -52,7 +53,7 @@ public class JsonConditionChecker : IConditionChecker
             result.Log = ex.Message;
         }
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

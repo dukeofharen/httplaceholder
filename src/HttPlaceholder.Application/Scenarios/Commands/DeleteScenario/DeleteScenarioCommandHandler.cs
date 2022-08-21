@@ -22,13 +22,13 @@ public class DeleteScenarioCommandHandler : IRequestHandler<DeleteScenarioComman
     }
 
     /// <inheritdoc />
-    public Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken)
     {
-        if (!_scenarioService.DeleteScenario(request.ScenarioName))
+        if (!await _scenarioService.DeleteScenarioAsync(request.ScenarioName))
         {
             throw new NotFoundException($"Scenario '{request.ScenarioName}' not found.");
         }
 
-        return Unit.Task;
+        return Unit.Value;
     }
 }

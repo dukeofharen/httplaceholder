@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
@@ -21,21 +22,21 @@ public class FormValueConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void Validate_StubsFound_ButNoFormConditions_ShouldReturnNotExecuted()
+    public async Task ValidateAsync_StubsFound_ButNoFormConditions_ShouldReturnNotExecuted()
     {
         // arrange
         var conditions = new StubConditionsModel {Form = null};
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
 
         // act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_FormKeyNotFound_ShouldReturnInvalid()
+    public async Task ValidateAsync_FormKeyNotFound_ShouldReturnInvalid()
     {
         // Arrange
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
@@ -50,14 +51,14 @@ public class FormValueConditionCheckerFacts
 
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_AllConditionsFail_ShouldReturnInvalid()
+    public async Task ValidateAsync_AllConditionsFail_ShouldReturnInvalid()
     {
         // Arrange
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
@@ -90,14 +91,14 @@ public class FormValueConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_OneConditionFails_ShouldReturnInvalid()
+    public async Task ValidateAsync_OneConditionFails_ShouldReturnInvalid()
     {
         // Arrange
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
@@ -130,14 +131,14 @@ public class FormValueConditionCheckerFacts
             .Returns(true);
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_AllConditionsSucceed_ShouldReturnValid()
+    public async Task ValidateAsync_AllConditionsSucceed_ShouldReturnValid()
     {
         // Arrange
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
@@ -166,14 +167,14 @@ public class FormValueConditionCheckerFacts
             .Returns(true);
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_InvalidOperationException_ShouldReturnInvalid()
+    public async Task ValidateAsync_InvalidOperationException_ShouldReturnInvalid()
     {
         // Arrange
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
@@ -185,7 +186,7 @@ public class FormValueConditionCheckerFacts
             .Throws(new InvalidOperationException());
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -224,7 +225,7 @@ public class FormValueConditionCheckerFacts
 
     [DataTestMethod]
     [DynamicData(nameof(GetPresentData), DynamicDataSourceType.Method)]
-    public void Validate_Present(
+    public async Task ValidateAsync_Present(
         StubFormModel[] formConditions,
         (string, StringValues)[] formValues,
         bool shouldSucceed)
@@ -237,7 +238,7 @@ public class FormValueConditionCheckerFacts
             .Returns(formValues);
 
         // Act
-        var result = checker.Validate(new StubModel {Conditions = new StubConditionsModel {Form = formConditions}});
+        var result = await checker.ValidateAsync(new StubModel {Conditions = new StubConditionsModel {Form = formConditions}});
 
         // Assert
         Assert.AreEqual(shouldSucceed ? ConditionValidationType.Valid : ConditionValidationType.Invalid,

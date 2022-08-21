@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -21,13 +22,13 @@ public class MethodConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var methodCondition = stub.Conditions?.Method;
         if (string.IsNullOrEmpty(methodCondition))
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var method = _httpContextService.Method;
@@ -42,7 +43,7 @@ public class MethodConditionChecker : IConditionChecker
             result.ConditionValidation = ConditionValidationType.Invalid;
         }
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

@@ -5,12 +5,12 @@ namespace HttPlaceholder.Hubs.Implementations;
 /// <summary>
 /// The request SignalR hub.
 /// </summary>
-public class RequestHub : BaseHub
+public class ScenarioHub : BaseHub
 {
     /// <summary>
-    /// Constructs a <see cref="RequestHub"/> instance.
+    /// Constructs a <see cref="ScenarioHub"/> instance.
     /// </summary>
-    public RequestHub(ILoginService loginService) : base(loginService)
+    public ScenarioHub(ILoginService loginService) : base(loginService)
     {
     }
 }

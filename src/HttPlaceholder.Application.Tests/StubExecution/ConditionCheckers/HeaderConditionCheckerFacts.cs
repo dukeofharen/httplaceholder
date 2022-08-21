@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
@@ -19,21 +20,21 @@ public class HeaderConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void Validate_StubsFound_ButNoHeaderConditions_ShouldReturnNotExecuted()
+    public async Task ValidateAsync_StubsFound_ButNoHeaderConditions_ShouldReturnNotExecuted()
     {
         // arrange
         var conditions = new StubConditionsModel {Headers = null};
         var checker = _mocker.CreateInstance<HeaderConditionChecker>();
 
         // act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_AllConditionsFail_ShouldReturnInvalid()
+    public async Task ValidateAsync_AllConditionsFail_ShouldReturnInvalid()
     {
         // Arrange
         var conditions = new StubConditionsModel
@@ -56,14 +57,14 @@ public class HeaderConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_1ConditionFails_ShouldReturnInvalid()
+    public async Task ValidateAsync_1ConditionFails_ShouldReturnInvalid()
     {
         // Arrange
         var conditions = new StubConditionsModel
@@ -89,14 +90,14 @@ public class HeaderConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_AllConditionsSucceed_ShouldReturnValid()
+    public async Task ValidateAsync_AllConditionsSucceed_ShouldReturnValid()
     {
         // Arrange
         var conditions = new StubConditionsModel
@@ -122,7 +123,7 @@ public class HeaderConditionCheckerFacts
             .Returns(true);
 
         // Act
-        var result = checker.Validate(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -179,7 +180,7 @@ public class HeaderConditionCheckerFacts
 
     [DataTestMethod]
     [DynamicData(nameof(GetPresentData), DynamicDataSourceType.Method)]
-    public void Validate_Present(
+    public async Task ValidateAsync_Present(
         Dictionary<string, object> headerConditions,
         Dictionary<string, string> headers,
         bool shouldSucceed)
@@ -193,7 +194,7 @@ public class HeaderConditionCheckerFacts
 
         // Act
         var result =
-            checker.Validate(new StubModel {Conditions = new StubConditionsModel {Headers = headerConditions}});
+            await checker.ValidateAsync(new StubModel {Conditions = new StubConditionsModel {Headers = headerConditions}});
 
         // Assert
         Assert.AreEqual(shouldSucceed ? ConditionValidationType.Valid : ConditionValidationType.Invalid, result.ConditionValidation);

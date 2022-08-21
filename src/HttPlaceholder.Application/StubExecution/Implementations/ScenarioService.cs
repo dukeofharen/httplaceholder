@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 
@@ -8,41 +10,54 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 internal class ScenarioService : IScenarioService
 {
     private readonly IScenarioStateStore _scenarioStateStore;
+    private readonly IScenarioNotify _scenarioNotify;
 
-    public ScenarioService(IScenarioStateStore scenarioStateStore)
+    public ScenarioService(IScenarioStateStore scenarioStateStore, IScenarioNotify scenarioNotify)
     {
         _scenarioStateStore = scenarioStateStore;
+        _scenarioNotify = scenarioNotify;
     }
 
     /// <inheritdoc />
-    public void IncreaseHitCount(string scenario)
+    public async Task IncreaseHitCountAsync(string scenario)
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
             return;
         }
 
+        ScenarioStateModel scenarioState;
         lock (_scenarioStateStore.GetScenarioLock(scenario))
         {
-            var scenarioState = GetOrAddScenarioState(scenario);
+            scenarioState = GetOrAddScenarioState(scenario, out _);
             scenarioState.HitCount++;
             _scenarioStateStore.UpdateScenario(scenario, scenarioState);
         }
+
+        await _scenarioNotify.ScenarioSetAsync(scenarioState);
     }
 
     /// <inheritdoc />
-    public int? GetHitCount(string scenario)
+    public async Task<int?> GetHitCountAsync(string scenario)
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
             return null;
         }
 
+        ScenarioStateModel scenarioState;
+        bool scenarioAdded;
         lock (_scenarioStateStore.GetScenarioLock(scenario))
         {
-            var scenarioState = GetOrAddScenarioState(scenario);
-            return scenarioState.HitCount;
+            scenarioState = GetOrAddScenarioState(scenario, out scenarioAdded);
         }
+
+        if (scenarioAdded)
+        {
+            await _scenarioNotify.ScenarioSetAsync(scenarioState);
+        }
+
+        return scenarioState.HitCount;
     }
 
     /// <inheritdoc />
@@ -52,7 +67,7 @@ internal class ScenarioService : IScenarioService
     public ScenarioStateModel GetScenario(string scenario) => _scenarioStateStore.GetScenario(scenario);
 
     /// <inheritdoc />
-    public void SetScenario(string scenario, ScenarioStateModel scenarioState)
+    public async Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState)
     {
         if (string.IsNullOrWhiteSpace(scenario) || scenarioState == null)
         {
@@ -86,28 +101,47 @@ internal class ScenarioService : IScenarioService
                 _scenarioStateStore.UpdateScenario(scenario, scenarioState);
             }
         }
+
+        await _scenarioNotify.ScenarioSetAsync(scenarioState);
     }
 
     /// <inheritdoc />
-    public bool DeleteScenario(string scenario)
+    public async Task<bool> DeleteScenarioAsync(string scenario)
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
             return false;
         }
 
+        bool result;
         lock (_scenarioStateStore.GetScenarioLock(scenario))
         {
-            return _scenarioStateStore.DeleteScenario(scenario);
+            result = _scenarioStateStore.DeleteScenario(scenario);
         }
+
+        await _scenarioNotify.ScenarioDeletedAsync(scenario);
+        return result;
     }
 
     /// <inheritdoc />
-    public void DeleteAllScenarios() => _scenarioStateStore.DeleteAllScenarios();
+    public async Task DeleteAllScenariosAsync()
+    {
+        _scenarioStateStore.DeleteAllScenarios();
+        await _scenarioNotify.AllScenariosDeletedAsync();
+    }
 
-    private ScenarioStateModel GetOrAddScenarioState(string scenario) =>
-        _scenarioStateStore.GetScenario(scenario) ??
-        _scenarioStateStore.AddScenario(
-            scenario,
-            new ScenarioStateModel(scenario));
+    private ScenarioStateModel GetOrAddScenarioState(string scenario, out bool scenarioAdded)
+    {
+        scenarioAdded = false;
+        var scenarioModel = _scenarioStateStore.GetScenario(scenario);
+        if (scenarioModel == null)
+        {
+            scenarioModel = _scenarioStateStore.AddScenario(
+                scenario,
+                new ScenarioStateModel(scenario));
+            scenarioAdded = true;
+        }
+
+        return scenarioModel;
+    }
 }

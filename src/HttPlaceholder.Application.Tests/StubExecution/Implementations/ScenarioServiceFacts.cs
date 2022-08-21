@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Domain;
@@ -18,24 +20,27 @@ public class ScenarioServiceFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void IncreaseHitCount_ScenarioIsEmpty_ShouldNotIncreaseHitCount()
+    public async Task IncreaseHitCountAsync_ScenarioIsEmpty_ShouldNotIncreaseHitCount()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+        var scenarioNotifyMock = _mocker.GetMock<IScenarioNotify>();
         var service = _mocker.CreateInstance<ScenarioService>();
 
         // Act
-        service.IncreaseHitCount(string.Empty);
+        await service.IncreaseHitCountAsync(string.Empty);
 
         // Assert
         scenarioStateStoreMock.Verify(m => m.GetScenarioLock(It.IsAny<string>()), Times.Never());
+        scenarioNotifyMock.Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>()), Times.Never);
     }
 
     [TestMethod]
-    public void IncreaseHitCount_ScenarioIsNotEmpty_ScenarioIsFound_ShouldIncreaseHitCount()
+    public async Task IncreaseHitCountAsync_ScenarioIsNotEmpty_ScenarioIsFound_ShouldIncreaseHitCount()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+        var scenarioNotifyMock = _mocker.GetMock<IScenarioNotify>();
         var service = _mocker.CreateInstance<ScenarioService>();
 
         const string scenario = "scenario-1";
@@ -55,18 +60,20 @@ public class ScenarioServiceFacts
             .Callback<string, ScenarioStateModel>((_, ssm) => capturedScenarioStateModel = ssm);
 
         // Act
-        service.IncreaseHitCount(scenario);
+        await service.IncreaseHitCountAsync(scenario);
 
         // Assert
         Assert.IsNotNull(capturedScenarioStateModel);
         Assert.AreEqual(3, capturedScenarioStateModel.HitCount);
+        scenarioNotifyMock.Verify(m => m.ScenarioSetAsync(scenarioState), Times.Once);
     }
 
     [TestMethod]
-    public void IncreaseHitCount_ScenarioIsNotEmpty_ScenarioIsNotFound_ShouldCreateScenarioAndIncreaseHitCount()
+    public async Task IncreaseHitCountAsync_ScenarioIsNotEmpty_ScenarioIsNotFound_ShouldCreateScenarioAndIncreaseHitCount()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+        var scenarioNotifyMock = _mocker.GetMock<IScenarioNotify>();
         var service = _mocker.CreateInstance<ScenarioService>();
 
         const string scenario = "SCENARIO-1";
@@ -91,7 +98,7 @@ public class ScenarioServiceFacts
             .Callback<string, ScenarioStateModel>((_, ssm) => capturedScenarioStateModel = ssm);
 
         // Act
-        service.IncreaseHitCount(scenario);
+        await service.IncreaseHitCountAsync(scenario);
 
         // Assert
         Assert.IsNotNull(capturedCreatedScenarioStateModel);
@@ -102,26 +109,28 @@ public class ScenarioServiceFacts
         Assert.AreEqual(1, capturedScenarioStateModel.HitCount);
         Assert.AreEqual("Start", capturedScenarioStateModel.State);
         Assert.AreEqual(scenario.ToLower(), capturedScenarioStateModel.Scenario);
+        scenarioNotifyMock.Verify(m => m.ScenarioSetAsync(capturedScenarioStateModel), Times.Once);
     }
 
     [TestMethod]
-    public void GetHitCount_ScenarioNotSet_ShouldReturnNull()
+    public async Task GetHitCountAsync_ScenarioNotSet_ShouldReturnNull()
     {
         // Arrange
         var service = _mocker.CreateInstance<ScenarioService>();
 
         // Act
-        var result = service.GetHitCount(string.Empty);
+        var result = await service.GetHitCountAsync(string.Empty);
 
         // Assert
         Assert.IsNull(result);
     }
 
     [TestMethod]
-    public void GetHitCount_ScenarioSet_ShouldReturnHitCount()
+    public async Task GetHitCountAsync_ScenarioSet_ScenarioAlreadyExists_ShouldReturnHitCount()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+        var scenarioNotifyMock = _mocker.GetMock<IScenarioNotify>();
         var service = _mocker.CreateInstance<ScenarioService>();
         const string scenario = "SCENARIO-1";
 
@@ -135,10 +144,40 @@ public class ScenarioServiceFacts
             .Returns(scenarioState);
 
         // Act
-        var result = service.GetHitCount(scenario);
+        var result = await service.GetHitCountAsync(scenario);
 
         // Assert
         Assert.AreEqual(2, result);
+        scenarioNotifyMock.Verify(m => m.ScenarioSetAsync(scenarioState), Times.Never);
+    }
+
+    [TestMethod]
+    public async Task GetHitCountAsync_ScenarioSet_ScenarioDoesNotExistYet_ShouldReturnHitCount()
+    {
+        // Arrange
+        var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
+        var scenarioNotifyMock = _mocker.GetMock<IScenarioNotify>();
+        var service = _mocker.CreateInstance<ScenarioService>();
+        const string scenario = "SCENARIO-1";
+
+        scenarioStateStoreMock
+            .Setup(m => m.GetScenarioLock(scenario))
+            .Returns(new object());
+
+        var scenarioState = new ScenarioStateModel {Scenario = scenario, HitCount = 2};
+        scenarioStateStoreMock
+            .Setup(m => m.GetScenario(scenario))
+            .Returns((ScenarioStateModel)null);
+        scenarioStateStoreMock
+            .Setup(m => m.AddScenario(scenario, It.Is<ScenarioStateModel>(s => s.Scenario == scenario.ToLower())))
+            .Returns(scenarioState);
+
+        // Act
+        var result = await service.GetHitCountAsync(scenario);
+
+        // Assert
+        Assert.AreEqual(2, result);
+        scenarioNotifyMock.Verify(m => m.ScenarioSetAsync(scenarioState), Times.Once);
     }
 
     [TestMethod]
@@ -181,33 +220,35 @@ public class ScenarioServiceFacts
     }
 
     [TestMethod]
-    public void SetScenario_ScenarioNotSet_ShouldNotAddOrUpdateScenario()
+    public async Task SetScenarioAsync_ScenarioNotSet_ShouldNotAddOrUpdateScenario()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
         var service = _mocker.CreateInstance<ScenarioService>();
 
         // Act
-        service.SetScenario(string.Empty, null);
+        await service.SetScenarioAsync(string.Empty, null);
 
         scenarioStateStoreMock.Verify(m => m.GetScenarioLock(It.IsAny<string>()), Times.Never);
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>()), Times.Never);
     }
 
     [TestMethod]
-    public void SetScenario_ScenarioStateNotSet_ShouldNotAddOrUpdateScenario()
+    public async Task SetScenarioAsync_ScenarioStateNotSet_ShouldNotAddOrUpdateScenario()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
         var service = _mocker.CreateInstance<ScenarioService>();
 
         // Act
-        service.SetScenario("scenario-1", null);
+        await service.SetScenarioAsync("scenario-1", null);
 
         scenarioStateStoreMock.Verify(m => m.GetScenarioLock(It.IsAny<string>()), Times.Never);
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>()), Times.Never);
     }
 
     [TestMethod]
-    public void SetScenario_ScenarioDoesNotExist_ShouldAddScenario()
+    public async Task SetScenarioAsync_ScenarioDoesNotExist_ShouldAddScenario()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
@@ -225,15 +266,16 @@ public class ScenarioServiceFacts
             .Returns((ScenarioStateModel)null);
 
         // Act
-        service.SetScenario(scenarioName, input);
+        await service.SetScenarioAsync(scenarioName, input);
 
         // Assert
         scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input));
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input), Times.Never);
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>()), Times.Once);
     }
 
     [TestMethod]
-    public void SetScenario_ScenarioInputStateIsNotSet_ShouldSetStateToDefaultState()
+    public async Task SetScenarioAsync_ScenarioInputStateIsNotSet_ShouldSetStateToDefaultState()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
@@ -251,16 +293,17 @@ public class ScenarioServiceFacts
             .Returns((ScenarioStateModel)null);
 
         // Act
-        service.SetScenario(scenarioName, input);
+        await service.SetScenarioAsync(scenarioName, input);
 
         // Assert
         scenarioStateStoreMock.Verify(m =>
             m.AddScenario(scenarioName, It.Is<ScenarioStateModel>(model => model.State == Constants.DefaultScenarioState)));
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input), Times.Never);
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>()), Times.Once);
     }
 
     [TestMethod]
-    public void SetScenario_ScenarioExists_ShouldUpdateScenario()
+    public async Task SetScenarioAsync_ScenarioExists_ShouldUpdateScenario()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
@@ -278,16 +321,17 @@ public class ScenarioServiceFacts
             .Returns(new ScenarioStateModel());
 
         // Act
-        service.SetScenario(scenarioName, input);
+        await service.SetScenarioAsync(scenarioName, input);
 
         // Assert
         scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input), Times.Never);
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input));
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>()), Times.Once);
     }
 
     [TestMethod]
-    public void
-        SetScenario_ScenarioExists_ProvidedScenarioHitCountIsNotSet_ShouldUpdateScenarioWithExistingHitCount()
+    public async Task
+        SetScenarioAsync_ScenarioExists_ProvidedScenarioHitCountIsNotSet_ShouldUpdateScenarioWithExistingHitCount()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
@@ -305,17 +349,18 @@ public class ScenarioServiceFacts
             .Returns(new ScenarioStateModel {HitCount = 11});
 
         // Act
-        service.SetScenario(scenarioName, input);
+        await service.SetScenarioAsync(scenarioName, input);
 
         // Assert
         scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input), Times.Never);
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input));
         Assert.AreEqual(11, input.HitCount);
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>()), Times.Once);
     }
 
     [TestMethod]
-    public void
-        SetScenario_ScenarioExists_ProvidedScenarioStateIsNotSet_ShouldUpdateScenarioWithExistingState()
+    public async Task
+        SetScenarioAsync_ScenarioExists_ProvidedScenarioStateIsNotSet_ShouldUpdateScenarioWithExistingState()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
@@ -333,31 +378,33 @@ public class ScenarioServiceFacts
             .Returns(new ScenarioStateModel {State = "current-state"});
 
         // Act
-        service.SetScenario(scenarioName, input);
+        await service.SetScenarioAsync(scenarioName, input);
 
         // Assert
         scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input), Times.Never);
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input));
         Assert.AreEqual("current-state", input.State);
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>()), Times.Once);
     }
 
     [TestMethod]
-    public void DeleteScenario_ScenarioNotSet_ShouldReturnFalse()
+    public async Task DeleteScenarioAsync_ScenarioNotSet_ShouldReturnFalse()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
         var service = _mocker.CreateInstance<ScenarioService>();
 
         // Act
-        var result = service.DeleteScenario(string.Empty);
+        var result = await service.DeleteScenarioAsync(string.Empty);
 
         // Assert
         Assert.IsFalse(result);
         scenarioStateStoreMock.Verify(m => m.GetScenarioLock(It.IsAny<string>()), Times.Never);
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioDeletedAsync(It.IsAny<string>()), Times.Never);
     }
 
     [TestMethod]
-    public void DeleteScenario_ScenarioSet_ShouldDeleteScenario()
+    public async Task DeleteScenarioAsync_ScenarioSet_ShouldDeleteScenario()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
@@ -373,23 +420,25 @@ public class ScenarioServiceFacts
             .Returns(true);
 
         // Act
-        var result = service.DeleteScenario(scenarioName);
+        var result = await service.DeleteScenarioAsync(scenarioName);
 
         // Assert
         Assert.IsTrue(result);
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioDeletedAsync(scenarioName), Times.Once);
     }
 
     [TestMethod]
-    public void DeleteAllScenarios_HappyFlow()
+    public async Task DeleteAllScenariosAsync_HappyFlow()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
         var service = _mocker.CreateInstance<ScenarioService>();
 
         // Act
-        service.DeleteAllScenarios();
+        await service.DeleteAllScenariosAsync();
 
         // Assert
         scenarioStateStoreMock.Verify(m => m.DeleteAllScenarios());
+        _mocker.GetMock<IScenarioNotify>().Verify(m => m.AllScenariosDeletedAsync(), Times.Once);
     }
 }

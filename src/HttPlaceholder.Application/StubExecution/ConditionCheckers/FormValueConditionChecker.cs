@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
@@ -26,13 +27,13 @@ public class FormValueConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var formConditions = stub.Conditions?.Form?.ToArray() ?? Array.Empty<StubFormModel>();
         if (!formConditions.Any())
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         try
@@ -88,7 +89,7 @@ public class FormValueConditionChecker : IConditionChecker
             result.ConditionValidation = ConditionValidationType.Invalid;
         }
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

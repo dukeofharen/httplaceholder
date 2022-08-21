@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
@@ -19,7 +20,7 @@ public class JsonPathConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void Validate_JsonPathConditionsNull_ShouldReturnDefaultResult()
+    public async Task ValidateAsync_JsonPathConditionsNull_ShouldReturnDefaultResult()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
@@ -27,14 +28,14 @@ public class JsonPathConditionCheckerFacts
         var conditions = new StubConditionsModel {JsonPath = null};
 
         // Act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_JsonPathConditionsEmpty_ShouldReturnDefaultResult()
+    public async Task ValidateAsync_JsonPathConditionsEmpty_ShouldReturnDefaultResult()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
@@ -42,14 +43,14 @@ public class JsonPathConditionCheckerFacts
         var conditions = new StubConditionsModel {JsonPath = Array.Empty<object>()};
 
         // Act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_OnlyTextBasedConditions_CorrectJson_ShouldPass()
+    public async Task ValidateAsync_OnlyTextBasedConditions_CorrectJson_ShouldPass()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
@@ -73,14 +74,14 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_OnlyTextBasedConditions_IncorrectJson_ShouldFail()
+    public async Task ValidateAsync_OnlyTextBasedConditions_IncorrectJson_ShouldFail()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
@@ -104,14 +105,14 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_TextAndObjectBased_CorrectJson_ShouldPass()
+    public async Task ValidateAsync_TextAndObjectBased_CorrectJson_ShouldPass()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
@@ -142,14 +143,14 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_TextAndObjectBased_IncorrectJson_TextFails_ShouldFail()
+    public async Task ValidateAsync_TextAndObjectBased_IncorrectJson_TextFails_ShouldFail()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
@@ -180,14 +181,14 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_TextAndObjectBased_IncorrectJson_ObjectFails_ShouldFail()
+    public async Task ValidateAsync_TextAndObjectBased_IncorrectJson_ObjectFails_ShouldFail()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
@@ -218,14 +219,14 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_ObjectBased_CorrectJson_ShouldPass()
+    public async Task ValidateAsync_ObjectBased_CorrectJson_ShouldPass()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
@@ -261,14 +262,14 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void Validate_ObjectBased_IncorrectJson_ShouldFail()
+    public async Task ValidateAsync_ObjectBased_IncorrectJson_ShouldFail()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonPathConditionChecker>();
@@ -304,14 +305,14 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = checker.Validate(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public void ConvertJsonPathCondition_InputIsJObject_ShouldReturnStubJsonPathModelCorrectly()
+    public async Task ConvertJsonPathCondition_InputIsJObject_ShouldReturnStubJsonPathModelCorrectly()
     {
         // Arrange
         var input = JObject.FromObject(new {query = "jpath query", expectedValue = "expected value"});
@@ -325,7 +326,7 @@ public class JsonPathConditionCheckerFacts
     }
 
     [TestMethod]
-    public void ConvertJsonPathCondition_InputIsObjectDictionary_ShouldReturnStubJsonPathModelCorrectly()
+    public async Task ConvertJsonPathCondition_InputIsObjectDictionary_ShouldReturnStubJsonPathModelCorrectly()
     {
         // Arrange
         var input = new Dictionary<object, object> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
@@ -339,7 +340,7 @@ public class JsonPathConditionCheckerFacts
     }
 
     [TestMethod]
-    public void ConvertJsonPathCondition_InputIsStringDictionary_ShouldReturnStubJsonPathModelCorrectly()
+    public async Task ConvertJsonPathCondition_InputIsStringDictionary_ShouldReturnStubJsonPathModelCorrectly()
     {
         // Arrange
         var input = new Dictionary<string, string> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
@@ -353,7 +354,7 @@ public class JsonPathConditionCheckerFacts
     }
 
     [TestMethod]
-    public void ConvertJsonPathCondition_InputIsUnknown_ShouldThrowInvalidOperationException()
+    public async Task ConvertJsonPathCondition_InputIsUnknown_ShouldThrowInvalidOperationException()
     {
         // Arrange
         var input = new object();
@@ -368,7 +369,7 @@ public class JsonPathConditionCheckerFacts
     }
 
     [TestMethod]
-    public void ConvertJsonPathCondition_QueryIsNotSet_ShouldThrowInvalidOperationException()
+    public async Task ConvertJsonPathCondition_QueryIsNotSet_ShouldThrowInvalidOperationException()
     {
         // Arrange
         var input = new Dictionary<object, object> {{"query", string.Empty}, {"expectedValue", "expected value"}};

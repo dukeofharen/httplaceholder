@@ -1,4 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using System.Threading.Tasks;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -20,13 +21,13 @@ public class IsHttpsConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var condition = stub.Conditions?.Url?.IsHttps;
         if (condition == null)
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var shouldBeHttps = condition.Value;
@@ -35,7 +36,7 @@ public class IsHttpsConditionChecker : IConditionChecker
             ? ConditionValidationType.Valid
             : ConditionValidationType.Invalid;
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

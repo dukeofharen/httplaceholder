@@ -21,9 +21,9 @@ public class DeleteAllScenariosCommandHandler : IRequestHandler<DeleteAllScenari
     }
 
     /// <inheritdoc />
-    public Task<Unit> Handle(DeleteAllScenariosCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(DeleteAllScenariosCommand request, CancellationToken cancellationToken)
     {
-        _scenarioService.DeleteAllScenarios();
-        return Unit.Task;
+        await _scenarioService.DeleteAllScenariosAsync();
+        return Unit.Value;
     }
 }

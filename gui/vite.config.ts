@@ -23,6 +23,10 @@ export default defineConfig({
         target: "http://localhost:5000",
         ws: true,
       },
+      "/scenarioHub": {
+        target: "http://localhost:5000",
+        ws: true,
+      },
     },
   },
   base: "",

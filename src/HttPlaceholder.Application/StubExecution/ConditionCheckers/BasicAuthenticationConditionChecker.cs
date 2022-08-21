@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -22,7 +23,7 @@ public class BasicAuthenticationConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public ConditionCheckResultModel Validate(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
     {
         var result = new ConditionCheckResultModel();
         var basicAuthenticationCondition = stub.Conditions?.BasicAuthentication;
@@ -30,7 +31,7 @@ public class BasicAuthenticationConditionChecker : IConditionChecker
             (string.IsNullOrWhiteSpace(basicAuthenticationCondition.Username) &&
              string.IsNullOrWhiteSpace(basicAuthenticationCondition.Password)))
         {
-            return result;
+            return Task.FromResult(result);
         }
 
         var headers = _httpContextService.GetHeaders();
@@ -60,7 +61,7 @@ public class BasicAuthenticationConditionChecker : IConditionChecker
             }
         }
 
-        return result;
+        return Task.FromResult(result);
     }
 
     /// <inheritdoc />

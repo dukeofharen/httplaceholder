@@ -32,7 +32,7 @@
     <div class="col-md-12">
       <ul class="list-group">
         <li
-          v-for="scenario of filteredScenarios"
+          v-for="scenario of sortedScenarios"
           :key="scenario.scenario"
           class="list-group-item list-group-item-action"
         >
@@ -66,13 +66,14 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, onUnmounted, ref } from "vue";
 import { handleHttpError } from "@/utils/error";
 import { renderDocLink, resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { useScenariosStore } from "@/store/scenarios";
 import { defineComponent } from "vue";
 import type { ScenarioModel } from "@/domain/scenario/scenario-model";
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 
 export default defineComponent({
   name: "Scenarios",
@@ -83,9 +84,10 @@ export default defineComponent({
     const scenarios = ref<ScenarioModel[]>([]);
     const clearAllScenariosModal = ref(false);
     const docsUrl = renderDocLink("request-scenario");
+    let signalrConnection: HubConnection;
 
     // Computed
-    const filteredScenarios = computed(() => {
+    const sortedScenarios = computed(() => {
       let scenariosResult = scenarios.value;
       const compare = (a: ScenarioModel, b: ScenarioModel) => {
         if (a.scenario < b.scenario) return -1;
@@ -95,6 +97,39 @@ export default defineComponent({
       scenariosResult.sort(compare);
       return scenariosResult;
     });
+
+    // Functions
+    const initializeSignalR = async () => {
+      signalrConnection = new HubConnectionBuilder()
+        .withUrl("/scenarioHub")
+        .build();
+      signalrConnection.on("ScenarioSet", (scenario: ScenarioModel) => {
+        const foundScenario = scenarios.value.find(
+          (s) => s.scenario === scenario.scenario
+        );
+        if (foundScenario) {
+          scenarios.value = scenarios.value.filter((s) => s !== foundScenario);
+        }
+
+        scenarios.value.push(scenario);
+      });
+      signalrConnection.on("ScenarioDeleted", (scenarioName: string) => {
+        const foundScenario = scenarios.value.find(
+          (s) => s.scenario === scenarioName
+        );
+        if (foundScenario) {
+          scenarios.value = scenarios.value.filter(
+            (s) => s.scenario !== scenarioName
+          );
+        }
+      });
+      signalrConnection.on("AllScenariosDeleted", () => (scenarios.value = []));
+      try {
+        await signalrConnection.start();
+      } catch (err: any) {
+        console.log(err.toString());
+      }
+    };
 
     // Methods
     const loadScenarios = async () => {
@@ -124,11 +159,18 @@ export default defineComponent({
     };
 
     // Lifecycle
-    onMounted(async () => await loadScenarios());
+    onMounted(
+      async () => await Promise.all([loadScenarios(), initializeSignalR()])
+    );
+    onUnmounted(() => {
+      if (signalrConnection) {
+        signalrConnection.stop();
+      }
+    });
 
     return {
       scenarios,
-      filteredScenarios,
+      sortedScenarios,
       clearAllScenariosModal,
       clearAllScenarios,
       deleteScenario,

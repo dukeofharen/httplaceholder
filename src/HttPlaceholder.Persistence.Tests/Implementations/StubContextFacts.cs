@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
+using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.Implementations;
 using Microsoft.Extensions.Options;
@@ -315,6 +316,7 @@ public class StubContextFacts
 
         _stubSources.Add(stubSource.Object);
 
+        var requestNotifyMock = _mocker.GetMock<IRequestNotify>();
         var context = _mocker.CreateInstance<StubContext>();
 
         // act
@@ -323,6 +325,7 @@ public class StubContextFacts
         // assert
         stubSource.Verify(m => m.AddRequestResultAsync(request, response), Times.Once);
         stubSource.Verify(m => m.CleanOldRequestResultsAsync(), Times.Never);
+        requestNotifyMock.Verify(m => m.NewRequestReceivedAsync(request), Times.Once);
     }
 
     [TestMethod]

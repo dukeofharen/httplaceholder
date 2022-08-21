@@ -54,7 +54,7 @@ internal class StubRequestExecutor : IStubRequestExecutor
                 var validationResults = new List<ConditionCheckResultModel>();
                 foreach (var checker in orderedConditionCheckers)
                 {
-                    var validationResult = checker.Validate(stub);
+                    var validationResult = await checker.ValidateAsync(stub);
                     validationResult.CheckerName = checker.GetType().Name;
                     validationResults.Add(validationResult);
                     if (validationResult.ConditionValidation == ConditionValidationType.Invalid)
@@ -92,7 +92,7 @@ internal class StubRequestExecutor : IStubRequestExecutor
         }
 
         var finalStub = _finalStubDeterminer.DetermineFinalStub(foundStubs);
-        _scenarioService.IncreaseHitCount(finalStub.Scenario);
+        await _scenarioService.IncreaseHitCountAsync(finalStub.Scenario);
         requestLogger.SetExecutingStubId(finalStub.Id);
         var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub);
         return response;
