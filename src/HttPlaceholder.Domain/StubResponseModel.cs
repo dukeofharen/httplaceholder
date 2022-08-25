@@ -114,4 +114,10 @@ public class StubResponseModel
     /// </summary>
     [YamlMember(Alias = "scenario")]
     public StubResponseScenarioModel Scenario { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the connection should be aborted.
+    /// </summary>
+    [YamlMember(Alias = "abortConnection")]
+    public bool AbortConnection { get; set; }
 }
