@@ -20,4 +20,9 @@ public interface IResponseWriter
     /// The priority of the given response writer. The higher the number, the earlier this response writer is executed.
     /// </summary>
     int Priority { get; }
+
+    /// <summary>
+    /// Specified whether the response execution should stub if the specific response writer was executed. Defaults to false.
+    /// </summary>
+    bool ShouldStopIfWriterRan => false;
 }

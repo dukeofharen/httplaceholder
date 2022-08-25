@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
+using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
@@ -54,7 +55,8 @@ public class HttpContextService : IHttpContextService
     }
 
     /// <inheritdoc />
-    public string RootUrl {
+    public string RootUrl
+    {
         get
         {
             var proto = _clientDataResolver.IsHttps() ? "https" : "http";
@@ -148,7 +150,6 @@ public class HttpContextService : IHttpContextService
 
         httpContext.Response.Headers.Add(key, values);
         return true;
-
     }
 
     /// <inheritdoc />
@@ -182,4 +183,7 @@ public class HttpContextService : IHttpContextService
 
     /// <inheritdoc />
     public void SetUser(ClaimsPrincipal principal) => _httpContextAccessor.HttpContext.User = principal;
+
+    /// <inheritdoc />
+    public void AbortConnection() => _httpContextAccessor.HttpContext?.Features.Get<IConnectionLifetimeFeature>()?.Abort();
 }

@@ -28,9 +28,15 @@ internal class StubResponseGenerator : IStubResponseGenerator
         foreach (var writer in _responseWriters.OrderByDescending(w => w.Priority))
         {
             var result = await writer.WriteToResponseAsync(stub, response);
-            if (result?.Executed == true)
+            if (result?.Executed != true)
             {
-                requestLogger.SetResponseWriterResult(result);
+                continue;
+            }
+
+            requestLogger.SetResponseWriterResult(result);
+            if (writer.ShouldStopIfWriterRan)
+            {
+                break;
             }
         }
 
