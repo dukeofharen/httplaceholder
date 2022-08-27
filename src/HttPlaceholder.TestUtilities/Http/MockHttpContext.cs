@@ -22,6 +22,7 @@ public class MockHttpContext : HttpContext
         HttpResponseMock = new Mock<HttpResponse>();
         HttpRequestMock = new Mock<HttpRequest>();
         ServiceProviderMock = new Mock<IServiceProvider>();
+        FeatureCollectionMock = new Mock<IFeatureCollection>();
         Items = new Dictionary<object, object>();
         Session = new MockSession();
 
@@ -57,6 +58,10 @@ public class MockHttpContext : HttpContext
     public Mock<HttpResponse> HttpResponseMock { get; }
 
     public Mock<IServiceProvider> ServiceProviderMock { get; }
+
+    public Mock<IFeatureCollection> FeatureCollectionMock { get; }
+
+    public override IFeatureCollection Features => FeatureCollectionMock.Object;
 
     public int GetStatusCode() => _statusCode;
 
@@ -101,15 +106,6 @@ public class MockHttpContext : HttpContext
             .Returns(isHttps);
 
     public override void Abort() => throw new NotImplementedException();
-
-    public void VerifyAll()
-    {
-        ConnectionInfoMock.VerifyAll();
-        HttpRequestMock.VerifyAll();
-        HttpResponseMock.VerifyAll();
-    }
-
-    public override IFeatureCollection Features { get; }
 
     public override HttpRequest Request => HttpRequestMock.Object;
 

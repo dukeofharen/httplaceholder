@@ -7,9 +7,11 @@ using System.Text;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Infrastructure.Web;
 using HttPlaceholder.TestUtilities.Http;
+using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Infrastructure.Web;
@@ -338,5 +340,23 @@ public class HttpContextServiceFacts
 
         // Assert
         Assert.AreEqual(_mockHttpContext.User, principal);
+    }
+
+    [TestMethod]
+    public void AbortConnection_HappyFlow()
+    {
+        // Arrange
+        var service = _mocker.CreateInstance<HttpContextService>();
+        var connectionLifetimeFeatureMock = new Mock<IConnectionLifetimeFeature>();
+        _mockHttpContext
+            .FeatureCollectionMock
+            .Setup(m => m.Get<IConnectionLifetimeFeature>())
+            .Returns(connectionLifetimeFeatureMock.Object);
+
+        // Act
+        service.AbortConnection();
+
+        // Assert
+        connectionLifetimeFeatureMock.Verify(m => m.Abort());
     }
 }

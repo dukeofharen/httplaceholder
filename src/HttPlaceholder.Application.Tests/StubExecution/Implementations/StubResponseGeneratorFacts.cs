@@ -97,4 +97,38 @@ public class StubResponseGeneratorFacts
         // assert
         Assert.AreEqual(404, result.StatusCode);
     }
+
+    [TestMethod]
+    public async Task StubResponseGenerator_GenerateResponseAsync_HappyFlow_ShouldStopIfWriterWasConfiguredToStop()
+    {
+        // arrange
+        var stub = new StubModel();
+
+        var writeResult1 = StubResponseWriterResultModel.IsExecuted(GetType().Name);
+        _responseWriterMock1
+            .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
+            .Callback<StubModel, ResponseModel>((_, r) => r.StatusCode = 401)
+            .ReturnsAsync(writeResult1);
+        _responseWriterMock1
+            .Setup(m => m.Priority)
+            .Returns(2);
+        _responseWriterMock1
+            .Setup(m => m.ShouldStopIfWriterRan)
+            .Returns(true);
+
+        _responseWriterMock2
+            .Setup(m => m.Priority)
+            .Returns(1);
+
+        var generator = _mocker.CreateInstance<StubResponseGenerator>();
+
+        // act
+        var result = await generator.GenerateResponseAsync(stub);
+
+        // assert
+        Assert.AreEqual(401, result.StatusCode);
+
+        _responseWriterMock1.Verify(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()));
+        _responseWriterMock2.Verify(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()), Times.Never);
+    }
 }
