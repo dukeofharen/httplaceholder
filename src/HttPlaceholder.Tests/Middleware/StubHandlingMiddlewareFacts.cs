@@ -171,6 +171,39 @@ public class StubHandlingMiddlewareFacts
     }
 
     [TestMethod]
+    public async Task Invoke_ExecuteStub_HappyFlow_AbortConnection()
+    {
+        // Arrange
+        var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+
+        httpContextServiceMock
+            .Setup(m => m.Path)
+            .Returns("/path");
+
+        var stubResponse = new ResponseModel
+        {
+            AbortConnection = true
+        };
+        stubRequestExecutorMock
+            .Setup(m => m.ExecuteRequestAsync())
+            .ReturnsAsync(stubResponse);
+
+        var requestResultModel = new RequestResultModel();
+        _requestLoggerMock
+            .Setup(m => m.GetResult())
+            .Returns(requestResultModel);
+
+        // Act
+        await middleware.Invoke(null);
+
+        // Assert
+        Assert.IsFalse(_nextCalled);
+        httpContextServiceMock.Verify(m => m.AbortConnection());
+    }
+
+    [TestMethod]
     public async Task Invoke_ExecuteStub_HappyFlow_NoRequestBody_ShouldNotWriteRequestBody()
     {
         // Arrange

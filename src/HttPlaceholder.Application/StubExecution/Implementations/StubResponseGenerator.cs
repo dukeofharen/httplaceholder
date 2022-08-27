@@ -34,10 +34,6 @@ internal class StubResponseGenerator : IStubResponseGenerator
             }
 
             requestLogger.SetResponseWriterResult(result);
-            if (writer.ShouldStopIfWriterRan)
-            {
-                break;
-            }
         }
 
         return response;

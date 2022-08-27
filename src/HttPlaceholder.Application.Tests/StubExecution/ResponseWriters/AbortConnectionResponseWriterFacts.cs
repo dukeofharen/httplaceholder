@@ -1,9 +1,7 @@
 ﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
@@ -20,33 +18,33 @@ public class AbortConnectionResponseWriterFacts
     public async Task WriteToResponseAsync_AbortConnectionNotSet_ShouldReturnNotExecuted()
     {
         // Arrange
-        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var writer = _mocker.CreateInstance<AbortConnectionResponseWriter>();
 
         var stub = new StubModel {Response = new StubResponseModel {AbortConnection = false}};
+        var response = new ResponseModel();
 
         // Act
-        var result = await writer.WriteToResponseAsync(stub, new ResponseModel());
+        var result = await writer.WriteToResponseAsync(stub, response);
 
         // Assert
         Assert.IsFalse(result.Executed);
-        httpContextServiceMock.Verify(m => m.AbortConnection(), Times.Never);
+        Assert.IsFalse(response.AbortConnection);
     }
 
     [TestMethod]
     public async Task WriteToResponseAsync_AbortConnectionSet_ShouldReturnExecuted()
     {
         // Arrange
-        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var writer = _mocker.CreateInstance<AbortConnectionResponseWriter>();
 
         var stub = new StubModel {Response = new StubResponseModel {AbortConnection = true}};
+        var response = new ResponseModel();
 
         // Act
-        var result = await writer.WriteToResponseAsync(stub, new ResponseModel());
+        var result = await writer.WriteToResponseAsync(stub, response);
 
         // Assert
         Assert.IsTrue(result.Executed);
-        httpContextServiceMock.Verify(m => m.AbortConnection());
+        Assert.IsTrue(response.AbortConnection);
     }
 }

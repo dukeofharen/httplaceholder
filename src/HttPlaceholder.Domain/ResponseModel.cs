@@ -29,4 +29,9 @@ public class ResponseModel
     /// Gets or sets the headers.
     /// </summary>
     public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+
+    /// <summary>
+    /// Gets or sets whether the connection should be aborted.
+    /// </summary>
+    public bool AbortConnection { get; set; }
 }
