@@ -1362,6 +1362,25 @@
 			]
 		},
 		{
+			"name": "21 Abort connection",
+			"item": [
+				{
+					"name": "Abort connection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}response-abort-connection",
+							"host": [
+								"{{rootUrl}}response-abort-connection"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "REST API",
 			"item": [
 				{
