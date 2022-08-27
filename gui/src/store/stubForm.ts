@@ -648,6 +648,19 @@ export const useStubFormStore = defineStore({
         }
       });
     },
+    setAbortConnection(): void {
+      handle(() => {
+        const parsed = parseInput(this.input);
+        if (parsed) {
+          if (!parsed.response) {
+            parsed.response = {};
+          }
+
+          parsed.response.abortConnection = true;
+          this.setInput(yaml.dump(parsed));
+        }
+      });
+    },
     setStubDisabled(): void {
       handle(() => {
         const parsed = parseInput(this.input);
