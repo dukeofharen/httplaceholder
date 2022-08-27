@@ -68,6 +68,7 @@
     - [Scenario state / hit count](#scenario-state--hit-count)
     - [Fake data](#fake-data)
   - [Reverse proxy](#reverse-proxy)
+  - [Abort connection](#abort-connection)
 - **[REST API](#rest-api)**
 - **[Configuration](#configuration)**
   - [Configuration properties](#configuration-properties)
@@ -2029,6 +2030,23 @@ Also, the variable `appendQueryString` is set to true (which is by default false
 
 Finally, there is also a reverse proxy setting called `replaceRootUrl` (which is by default false). If this is set to true, any reference of `https://jsonplaceholder.typicode.com` (so the **root** URL of your reverse proxy URL) will be replaced by the root URL of HttPlaceholder (e.g. `http://localhost:5000`). The replacing will be done in the reverse proxy response body and response headers.
 
+## Abort connection
+
+There might be situations where you want to check how your application reacts when the connection was reset / aborted. In this case, you can add "abortConnection" to the response to simulate this behavior.
+
+```yml
+- id: response-abort-connection
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /response-abort-connection
+  response:
+    abortConnection: true
+```
+
+When you call the url `http://localhost:5000/response-abort-connection`, the connection will immediately be aborted.
+
 # REST API
 
 Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to the following collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection, scenario collection, scheduled job collection, import collection and users collection.
@@ -2397,6 +2415,7 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Enable / disable stub: [.yml](samples/17-disabled.yml)
 * Set response content type: [.yml](samples/18-content-type.yml)
 * Stub images: [.yml](samples/19-stub-image.yml)
+* Abort connection: [.yml](samples/21-abort-connection.yml)
 * Dynamic mode:
     * Dynamic mode - query strings: [.yml](samples/14.1-dynamic-mode-query.yml)
     * Dynamic mode - UUIDs: [.yml](samples/14.2-dynamic-mode-uuid.yml)
