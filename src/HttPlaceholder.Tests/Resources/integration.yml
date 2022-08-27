@@ -836,6 +836,15 @@
   response:
     text: OK condition priority check!
 
+- id: response-abort-connection
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /response-abort-connection
+  response:
+    abortConnection: true
+
 - id: file
   conditions:
     method: GET
