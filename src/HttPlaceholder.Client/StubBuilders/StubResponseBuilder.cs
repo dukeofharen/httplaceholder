@@ -318,6 +318,16 @@ public sealed class StubResponseBuilder
     }
 
     /// <summary>
+    /// Determines that the connection should be reset if the stub was hit.
+    /// </summary>
+    /// <returns>The current <see cref="StubResponseBuilder"/>.</returns>
+    public StubResponseBuilder AbortConnection()
+    {
+        _response.AbortConnection = true;
+        return this;
+    }
+
+    /// <summary>
     /// Builds the response definition.
     /// </summary>
     /// <returns>The built <see cref="StubResponseDto"/>.</returns>

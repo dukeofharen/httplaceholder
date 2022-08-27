@@ -319,4 +319,16 @@ public class StubResponseBuilderFacts
         // Assert
         Assert.AreEqual("new-state", response.Scenario.SetScenarioState);
     }
+
+    [TestMethod]
+    public void AbortConnection()
+    {
+        // Act
+        var response = StubResponseBuilder.Begin()
+            .AbortConnection()
+            .Build();
+
+        // Assert
+        Assert.IsTrue(response.AbortConnection);
+    }
 }
