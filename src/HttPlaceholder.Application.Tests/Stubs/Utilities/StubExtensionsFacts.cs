@@ -46,6 +46,6 @@ public class StubExtensionsFacts
 
         // Assert
         Assert.AreEqual(stub.Id, result);
-        Assert.AreEqual("generated-0636a401deba2996db19d55558faf594", result);
+        Assert.AreEqual("generated-2f06ac203bd36135ac352ce504c1a256", result);
     }
 }

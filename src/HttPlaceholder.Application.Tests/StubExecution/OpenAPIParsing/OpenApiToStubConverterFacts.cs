@@ -99,7 +99,7 @@ public class OpenApiToStubConverterFacts
         Assert.AreEqual(stubResponse, result.Response);
         Assert.AreEqual(tenant, result.Tenant);
         Assert.AreEqual("API to get users", result.Description);
-        Assert.AreEqual("generated-416d7b14b641c49beeb0367da7d1633e", result.Id);
+        Assert.AreEqual("generated-1de2339d58b51db6b159ae0ba321a56d", result.Id);
 
         Assert.IsNotNull(capturedRequest);
         Assert.AreEqual(requestBody, capturedRequest.Body);

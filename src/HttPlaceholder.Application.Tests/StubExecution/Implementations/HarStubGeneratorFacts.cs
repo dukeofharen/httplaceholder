@@ -196,8 +196,8 @@ public class HarStubGeneratorFacts
         stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>()), Times.Never);
         stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>()), Times.Never);
 
-        Assert.AreEqual("generated-a22213cc9fdf81135c7a96ade31fd2c9", result[0].Stub.Id);
-        Assert.AreEqual("generated-a22213cc9fdf81135c7a96ade31fd2c9", result[1].Stub.Id);
-        Assert.AreEqual("generated-a22213cc9fdf81135c7a96ade31fd2c9", result[2].Stub.Id);
+        Assert.AreEqual("generated-4a14f2ed47bc9ec209d7ea218807f59d", result[0].Stub.Id);
+        Assert.AreEqual("generated-4a14f2ed47bc9ec209d7ea218807f59d", result[1].Stub.Id);
+        Assert.AreEqual("generated-4a14f2ed47bc9ec209d7ea218807f59d", result[2].Stub.Id);
     }
 }
