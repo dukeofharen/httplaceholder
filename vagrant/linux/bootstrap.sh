@@ -12,16 +12,20 @@ apt install -y dotnet6
 apt install -y python3-pip
 
 # Install Node.js
+#curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+#. "$HOME/.nvm/nvm.sh"
+#nvm install --lts
+#nvm use --lts
 NODE_BIN_PATH=/bin/node
 if [ ! -f "$NODE_BIN_PATH" ]; then
-    echo "Node not installled; installing now."
+    echo "Node not installed; installing now."
     wget https://nodejs.org/dist/v16.14.0/node-v16.14.0-linux-x64.tar.xz -O node.tar.xz
     NODE_EXTRACT_PATH=/opt/node
     if [ -d "$NODE_EXTRACT_PATH" ]; then
         echo "Deleting path $NODE_EXTRACT_PATH"
         rm -r $NODE_EXTRACT_PATH
     fi
-    
+
     mkdir $NODE_EXTRACT_PATH
     tar -xf node.tar.xz -C $NODE_EXTRACT_PATH
     ln -sf /opt/node/node-v16.14.0-linux-x64/bin/node /bin/node
@@ -62,8 +66,8 @@ if [ -d "dist" ]; then
   rm -r "dist"
 fi
 
-npm install
-npm run build
+sudo npm install
+sudo npm run build
 
 GUI_PATH=$INSTALL_PATH/gui
 if [ -d "$GUI_PATH" ]; then
