@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -20,10 +21,9 @@ public class StubResponseAbortConnectionIntegrationTests : StubIntegrationTestBa
         var url = $"{TestServer.BaseAddress}response-abort-connection";
 
         // Act
-        using var response = await Client.GetAsync(url);
+        var exception = await Assert.ThrowsExceptionAsync<Exception>(() => Client.GetAsync(url));
 
         // Assert
-        // Not really possible to test an aborted connection in an integration test, so let's test it like this.
-        Assert.IsTrue(Requests.Any(r => r.ExecutingStubId == "response-abort-connection"));
+        Assert.IsTrue(exception.Message.Contains("The application aborted the request."));
     }
 }
