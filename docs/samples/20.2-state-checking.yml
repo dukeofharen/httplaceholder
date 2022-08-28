@@ -1,5 +1,4 @@
 # The following stubs do set the scenario state and also check the scenario state.
-
 - id: scenario-state-1
   tenant: 20.2-state-checking
   scenario: scenario-state

@@ -1,0 +1,12 @@
+# There might be situations where you want to check how your application reacts when the connection was reset / aborted.
+# In this case, you can add "abortConnection" to the response to simulate this behavior.
+- id: response-abort-connection
+  tenant: 21-abort-connection
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /response-abort-connection
+  response:
+    extraDuration: 2000
+    abortConnection: true

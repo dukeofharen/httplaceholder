@@ -228,8 +228,8 @@ public class YamlFileStubSourceFacts
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
-        Assert.AreEqual("generated-997fdb292414c5c102ee78b4dacd2e2a", ids[0]);
-        Assert.AreEqual("generated-bbcd60e6a97b00ab25bb732d14027f19", ids[1]);
+        Assert.AreEqual("generated-7c8d3f2482be14cc60f5f764b4c3415d", ids[0]);
+        Assert.AreEqual("generated-0539e62e2cc798d5a9aa74909fb531c6", ids[1]);
         AssertNoWarningsOrErrors();
     }
 

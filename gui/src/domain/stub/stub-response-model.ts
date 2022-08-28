@@ -22,4 +22,5 @@ export interface StubResponseModel {
   lineEndings?: LineEndingType;
   image?: StubResponseImageModel;
   scenario?: StubResponseScenarioModel;
+  abortConnection?: boolean;
 }

@@ -141,8 +141,14 @@ public class StubHandlingMiddleware
             _httpContextService.GetHeaders());
 
         _httpContextService.ClearResponse();
-        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
         var response = await _stubRequestExecutor.ExecuteRequestAsync();
+        if (response.AbortConnection)
+        {
+            _httpContextService.AbortConnection();
+            return response;
+        }
+
+        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
         _httpContextService.SetStatusCode(response.StatusCode);
         foreach (var (key, value) in response.Headers)
         {

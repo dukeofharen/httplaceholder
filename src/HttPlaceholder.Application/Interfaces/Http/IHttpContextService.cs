@@ -141,4 +141,9 @@ public interface IHttpContextService
     /// </summary>
     /// <param name="principal">The user.</param>
     void SetUser(ClaimsPrincipal principal);
+
+    /// <summary>
+    /// Aborts the current HTTP request / response.
+    /// </summary>
+    void AbortConnection();
 }

@@ -92,4 +92,9 @@ public class StubResponseDto
     /// Gets or sets the response scenario variables.
     /// </summary>
     public StubResponseScenarioDto Scenario { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the connection should be aborted.
+    /// </summary>
+    public bool AbortConnection { get; set; }
 }

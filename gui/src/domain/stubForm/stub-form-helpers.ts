@@ -223,6 +223,11 @@ export const stubFormHelpers = [
     defaultValueMutation: (store: any) => store.setDefaultReverseProxy(),
   },
   {
+    title: "Abort connection",
+    subTitle: elementDescriptions.abortConnection,
+    defaultValueMutation: (store: any) => store.setAbortConnection(),
+  },
+  {
     title: "Clear scenario state",
     subTitle: elementDescriptions.clearState,
     defaultValueMutation: (store: any) => store.setClearState(),
