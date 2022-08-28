@@ -185,5 +185,5 @@ public class HttpContextService : IHttpContextService
     public void SetUser(ClaimsPrincipal principal) => _httpContextAccessor.HttpContext.User = principal;
 
     /// <inheritdoc />
-    public void AbortConnection() => _httpContextAccessor.HttpContext?.Features.Get<IConnectionLifetimeFeature>()?.Abort();
+    public void AbortConnection() => _httpContextAccessor.HttpContext.Abort();
 }

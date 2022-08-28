@@ -347,16 +347,11 @@ public class HttpContextServiceFacts
     {
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
-        var connectionLifetimeFeatureMock = new Mock<IConnectionLifetimeFeature>();
-        _mockHttpContext
-            .FeatureCollectionMock
-            .Setup(m => m.Get<IConnectionLifetimeFeature>())
-            .Returns(connectionLifetimeFeatureMock.Object);
 
         // Act
         service.AbortConnection();
 
         // Assert
-        connectionLifetimeFeatureMock.Verify(m => m.Abort());
+        Assert.IsTrue(_mockHttpContext.AbortCalled);
     }
 }

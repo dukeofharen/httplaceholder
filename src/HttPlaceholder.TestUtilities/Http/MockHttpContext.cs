@@ -61,6 +61,8 @@ public class MockHttpContext : HttpContext
 
     public Mock<IFeatureCollection> FeatureCollectionMock { get; }
 
+    public bool AbortCalled { get; private set; }
+
     public override IFeatureCollection Features => FeatureCollectionMock.Object;
 
     public int GetStatusCode() => _statusCode;
@@ -105,7 +107,7 @@ public class MockHttpContext : HttpContext
             .Setup(m => m.IsHttps)
             .Returns(isHttps);
 
-    public override void Abort() => throw new NotImplementedException();
+    public override void Abort() => AbortCalled = true;
 
     public override HttpRequest Request => HttpRequestMock.Object;
 
