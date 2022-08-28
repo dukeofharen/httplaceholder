@@ -30,10 +30,8 @@ internal class StubResponseGenerator : IStubResponseGenerator
             var result = await writer.WriteToResponseAsync(stub, response);
             if (result?.Executed != true)
             {
-                continue;
+                requestLogger.SetResponseWriterResult(result);
             }
-
-            requestLogger.SetResponseWriterResult(result);
         }
 
         return response;
