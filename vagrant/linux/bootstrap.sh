@@ -68,20 +68,21 @@ npm run build
 GUI_PATH=$INSTALL_PATH/gui
 if [ -d "$GUI_PATH" ]; then
   echo "Re-creating folder $GUI_PATH"
-  rm -r "$GUI_PATH"
-  mkdir "$GUI_PATH"  
+  rm -r "$GUI_PATH"  
 fi
 
+mkdir "$GUI_PATH"
 cp -r dist/. "$GUI_PATH"
 
 # Build docs for use in UI
 DOCS_SOURCE_DIR="$NEW_SOURCE_PATH/docs/httpl-docs"
 GUI_DOCS_DIR="$GUI_PATH/docs"
 if [ -d "$GUI_DOCS_DIR" ]; then
-  echo "Re-creating folder $GUI_DOCS_DIR"
+  echo "Deleting folder $GUI_DOCS_DIR"
   rm -r "$GUI_DOCS_DIR"
-  mkdir "$GUI_DOCS_DIR"
 fi
+
+mkdir "$GUI_DOCS_DIR"
 
 echo "Building documentation"
 cd "$DOCS_SOURCE_DIR"

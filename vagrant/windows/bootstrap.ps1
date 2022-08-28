@@ -42,12 +42,13 @@ Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpRedirect
 Enable-WindowsOptionalFeature -Online -FeatureName IIS-ApplicationDevelopment
 
 # Install dependencies
-& choco install dotnet-windowshosting --version=6.0.0 -y
-& choco install dotnet-sdk --version=6.0.100 -y
-& choco install nodejs --version=16.13.0 -y
+& choco install dotnet-windowshosting --version=6.0.8 -y
+& choco install dotnet-sdk --version=6.0.400 -y
+& choco install nodejs --version=16.17.0 -y
+& choco install python --version=3.10.6 -y
 
 # Set correct path
-$env:PATH = "C:\Program Files\nodejs;C:\Program Files\dotnet;$($env:PATH)"
+$env:PATH = "C:\Python310;C:\Python310\scripts;C:\Program Files\nodejs;C:\Program Files\dotnet;$($env:PATH)"
 
 # For some inexplicable reason, the NuGet source is not added when the SDK is installed, so we do it here.
 Write-Host "Adding Nuget source"
@@ -73,7 +74,7 @@ if (Test-Path $sourcePath) {
     Remove-Item $sourcePath -Recurse -Force
 }
 
-& robocopy C:\httplaceholder $sourcePath /E /Z /ZB /R:5 /W:5 /TBD /NP /V /XD bin obj node_modules
+& robocopy C:\httplaceholder $sourcePath /E /Z /ZB /R:5 /W:5 /TBD /NP /V /XD bin obj node_modules TestResults .git
 
 # Build HttPlaceholder
 $projectPath = "$sourcePath\src\HttPlaceholder\HttPlaceholder.csproj"
@@ -81,16 +82,44 @@ $projectPath = "$sourcePath\src\HttPlaceholder\HttPlaceholder.csproj"
 
 # Build HttPlaceholder GUI
 $guiProjectPath = "$sourcePath\gui"
+$guiDistFolder = "$guiProjectPath/dist"
+$guiDestinationFolder = "$installPath/gui"
+if (Test-Path $guiDistFolder) {
+    Write-Host "Removing folder $guiDistFolder"
+    Remove-Item $guiDistFolder -Recurse -Force
+}
+
+if (Test-Path $guiDestinationFolder) {
+    Write-Host "Removing folder $guiDestinationFolder"
+    Remove-Item $guiDestinationFolder -Recurse -Force
+}
+
+New-Item -ItemType Directory $guiDestinationFolder
 cd $guiProjectPath
 & npm install
 & npm run build
-Copy-item "$guiProjectPath/dist/*" "$installPath/gui" -Recurse -Container -Force
+Copy-item "$guiDistFolder/*" $guiDestinationFolder -Recurse -Container -Force
+
+# Build docs for use in UI
+$docsSourceDir = "$sourcePath/docs/httpl-docs"
+$guiDocsDir = "$guiDestinationFolder/docs"
+if (Test-Path $guiDocsDir) {
+    echo "Removing folder $guiDocsDir"
+    Remove-Item $guiDocsDir -Recurse -Force
+}
+
+New-Item -ItemType Directory $guiDocsDir
+cd $docsSourceDir
+& pip install mkdocs
+& python sync.py
+& mkdocs build
+Copy-item "site/*" $guiDocsDir -Recurse -Container -Force
 
 # Create logs folder and set rights.
 $logsPath = "C:\logs\httplaceholder"
 if (!(Test-Path $logsPath)) {
     Write-Host "Creating directory $logsPath"
-    New-Item -ItemType Directory $logsPath   
+    New-Item -ItemType Directory $logsPath
 }
 
 Give-Full-Rights -path $logsPath -user $iisUser
