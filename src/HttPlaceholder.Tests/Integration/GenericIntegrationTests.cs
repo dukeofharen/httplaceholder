@@ -64,6 +64,11 @@ public class GenericIntegrationTests : IntegrationTestBase
         Assert.AreEqual(22, stubConditionStringCheckingDtoSchema.Properties.Count);
         Assert.IsFalse(stubConditionStringCheckingDtoSchema.Properties.Any(p => p.Value.Type == "null"));
 
+        // Assert StubConditionStringCheckingDto
+        var stubExtraDurationDtoSchema = openapi.Components.Schemas["StubExtraDurationDto"];
+        Assert.AreEqual(2, stubExtraDurationDtoSchema.Properties.Count);
+        Assert.IsFalse(stubConditionStringCheckingDtoSchema.Properties.Any(p => p.Value.Type == "null"));
+
         // Assert StubUrlConditionDto
         var stubUrlConditionDtoSchema = openapi.Components.Schemas["StubUrlConditionDto"];
         var pathSchema = stubUrlConditionDtoSchema.Properties["path"];

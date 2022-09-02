@@ -5,7 +5,7 @@ namespace HttPlaceholder.Dto.v1.Stubs;
 /// <summary>
 /// A model for storing "extra duration" metadata.
 /// </summary>
-public class StubExtraDurationModel
+public class StubExtraDurationDto
 {
     /// <summary>
     /// Gets or sets the minimum duration.
