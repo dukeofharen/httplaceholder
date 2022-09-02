@@ -96,4 +96,66 @@ public class ExtraDurationResponseWriterFacts
         Assert.IsNotNull(capturedDuration);
         Assert.IsTrue(capturedDuration is >= 10000 and <= 20000);
     }
+
+    [TestMethod]
+    public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow_Dto_MinNotSet()
+    {
+        // arrange
+        var stub = new StubModel
+        {
+            Response = new StubResponseModel
+            {
+                ExtraDuration = new StubExtraDurationModel
+                {
+                    Max = 20000
+                }
+            }
+        };
+
+        var response = new ResponseModel();
+        int? capturedDuration = null;
+        _asyncServiceMock
+            .Setup(m => m.DelayAsync(It.IsAny<int>()))
+            .Callback<int>(d => capturedDuration = d)
+            .Returns(Task.CompletedTask);
+
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
+
+        // assert
+        Assert.IsTrue(result.Executed);
+        Assert.IsNotNull(capturedDuration);
+        Assert.IsTrue(capturedDuration is >= 0 and <= 20000, $"Actual duration: {capturedDuration}");
+    }
+
+    [TestMethod]
+    public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow_Dto_MaxNotSet()
+    {
+        // arrange
+        var stub = new StubModel
+        {
+            Response = new StubResponseModel
+            {
+                ExtraDuration = new StubExtraDurationModel
+                {
+                    Min = 15000
+                }
+            }
+        };
+
+        var response = new ResponseModel();
+        int? capturedDuration = null;
+        _asyncServiceMock
+            .Setup(m => m.DelayAsync(It.IsAny<int>()))
+            .Callback<int>(d => capturedDuration = d)
+            .Returns(Task.CompletedTask);
+
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
+
+        // assert
+        Assert.IsTrue(result.Executed);
+        Assert.IsNotNull(capturedDuration);
+        Assert.IsTrue(capturedDuration is >= 15000 and <= 25000);
+    }
 }

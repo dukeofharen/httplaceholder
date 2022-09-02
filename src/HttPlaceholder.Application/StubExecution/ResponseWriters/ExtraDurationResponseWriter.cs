@@ -41,7 +41,7 @@ internal class ExtraDurationResponseWriter : IResponseWriter
         {
             var durationDto = ConversionUtilities.Convert<StubExtraDurationModel>(stub.Response.ExtraDuration);
             var min = durationDto?.Min ?? 0;
-            var max = durationDto?.Max ?? 10000;
+            var max = durationDto?.Max ?? (durationDto?.Min ?? 0) + 10000;
             duration = _random.Next(min, max);
         }
 
