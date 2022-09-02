@@ -62,6 +62,38 @@ public class ExtraDurationResponseWriterFacts
 
         // assert
         Assert.IsTrue(result.Executed);
-        _asyncServiceMock.Verify(m => m.DelayAsync(stub.Response.ExtraDuration.Value), Times.Once);
+        _asyncServiceMock.Verify(m => m.DelayAsync((int)stub.Response.ExtraDuration), Times.Once);
+    }
+
+    [TestMethod]
+    public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow_Dto()
+    {
+        // arrange
+        var stub = new StubModel
+        {
+            Response = new StubResponseModel
+            {
+                ExtraDuration = new StubExtraDurationModel
+                {
+                    Min = 10000,
+                    Max = 20000
+                }
+            }
+        };
+
+        var response = new ResponseModel();
+        int? capturedDuration = null;
+        _asyncServiceMock
+            .Setup(m => m.DelayAsync(It.IsAny<int>()))
+            .Callback<int>(d => capturedDuration = d)
+            .Returns(Task.CompletedTask);
+
+        // act
+        var result = await _writer.WriteToResponseAsync(stub, response);
+
+        // assert
+        Assert.IsTrue(result.Executed);
+        Assert.IsNotNull(capturedDuration);
+        Assert.IsTrue(capturedDuration is >= 10000 and <= 20000);
     }
 }

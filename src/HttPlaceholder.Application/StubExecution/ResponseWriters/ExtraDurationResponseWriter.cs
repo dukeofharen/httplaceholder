@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
@@ -9,6 +11,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// </summary>
 internal class ExtraDurationResponseWriter : IResponseWriter
 {
+    private static Random _random = new();
     private readonly IAsyncService _asyncService;
 
     public ExtraDurationResponseWriter(
@@ -24,12 +27,24 @@ internal class ExtraDurationResponseWriter : IResponseWriter
     public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         // Simulate sluggish response here, if configured.
-        if (stub.Response?.ExtraDuration.HasValue != true)
+        if (stub.Response?.ExtraDuration == null)
         {
             return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
-        var duration = stub.Response.ExtraDuration.Value;
+        int duration;
+        if (stub.Response.ExtraDuration is int extraDuration)
+        {
+            duration = extraDuration;
+        }
+        else
+        {
+            var durationDto = ConversionUtilities.Convert<StubExtraDurationModel>(stub.Response.ExtraDuration);
+            var min = durationDto?.Min ?? 0;
+            var max = durationDto?.Max ?? 10000;
+            duration = _random.Next(min, max);
+        }
+
         await _asyncService.DelayAsync(duration);
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }

@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
@@ -28,7 +29,7 @@ internal class StringChecker : IStringChecker
             return regexResult;
         }
 
-        var checkingModel = StringConditionUtilities.ConvertCondition(condition);
+        var checkingModel = ConversionUtilities.Convert<StubConditionStringCheckingModel>(condition);
         var result = true;
         if (!string.IsNullOrWhiteSpace(checkingModel.StringEquals))
         {

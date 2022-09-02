@@ -57,7 +57,7 @@ public class StubResponseDto : IMapFrom<StubResponseModel>, IMapTo<StubResponseM
     /// Gets or sets the duration of the extra.
     /// </summary>
     [YamlMember(Alias = "extraDuration")]
-    public int? ExtraDuration { get; set; }
+    public object ExtraDuration { get; set; }
 
     /// <summary>
     /// Gets or sets the json.
