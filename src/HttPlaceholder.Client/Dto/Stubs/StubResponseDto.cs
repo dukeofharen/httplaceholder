@@ -46,7 +46,7 @@ public class StubResponseDto
     /// <summary>
     /// Gets or sets the duration of the extra.
     /// </summary>
-    public int? ExtraDuration { get; set; }
+    public object ExtraDuration { get; set; }
 
     /// <summary>
     /// Gets or sets the json.
