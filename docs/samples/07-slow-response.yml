@@ -20,3 +20,28 @@
     extraDuration: 10000
     headers:
       Content-Type: application/json
+
+# You can also set the "min" and "max" properties to "extraDuration". If you configure it like this, a random values between these 2 numbers will be taken and waited.
+- id: slow-min-max
+  tenant: 07-slow-response
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /slooooow-min-max
+      query:
+        id:
+          equals: 12
+        filter:
+          equals: first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "John"
+      }
+    extraDuration:
+      min: 10000
+      max: 20000
+    headers:
+      Content-Type: application/json

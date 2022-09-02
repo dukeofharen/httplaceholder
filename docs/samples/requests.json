@@ -413,6 +413,33 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Regular min/max",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}slooooow-min-max?id=12&filter=first_name",
+							"host": [
+								"{{rootUrl}}slooooow-min-max"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "12"
+								},
+								{
+									"key": "filter",
+									"value": "first_name"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
