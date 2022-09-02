@@ -1408,6 +1408,35 @@ Whenever you want to simulate a busy web service, you can use the "extraDuration
       Content-Type: application/json
 ```
 
+It is also possible to set a min and max number of milliseconds. If you do this, a random value between these value will be picked for HttPlaceholder to wait before the response is returned.
+
+```yml
+- id: slow-min-max
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /users-min-max
+      query:
+        id:
+          equals: 12
+        filter:
+          equals: first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "John"
+      }
+    extraDuration:
+      min: 10000
+      max: 20000
+    headers:
+      Content-Type: application/json
+```
+
+In this case, a value between 10.000 and 20.000 milliseconds will be randomly picked. If you only provide `max`, a value between 0 and the max value will be picked. If you only provide `min`, a value between the min value + 10.000 will be picked.
+
 ## Permanent and temporary redirects
 
 The permanent and temporary redirect response writers are short hands for defining redirects in you stub. If you set an URL on the "temporaryRedirect" property, HttPlaceholder will redirect the user with an HTTP 307, and when you use the "permanentRedirect" an HTTP 301.
