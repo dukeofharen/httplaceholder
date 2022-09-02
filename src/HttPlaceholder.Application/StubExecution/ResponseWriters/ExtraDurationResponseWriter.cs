@@ -33,7 +33,7 @@ internal class ExtraDurationResponseWriter : IResponseWriter
         }
 
         int duration;
-        if (stub.Response.ExtraDuration is int extraDuration)
+        if (stub.Response.ExtraDuration is int extraDuration || (stub.Response.ExtraDuration is string durationAsString && int.TryParse(durationAsString, out extraDuration)))
         {
             duration = extraDuration;
         }

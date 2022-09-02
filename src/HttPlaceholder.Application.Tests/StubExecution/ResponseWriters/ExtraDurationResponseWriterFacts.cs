@@ -43,15 +43,17 @@ public class ExtraDurationResponseWriterFacts
         _asyncServiceMock.Verify(m => m.DelayAsync(It.IsAny<int>()), Times.Never);
     }
 
-    [TestMethod]
-    public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow()
+    [DataTestMethod]
+    [DataRow(10, 10)]
+    [DataRow("10", 10)]
+    public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow(object input, int valuePassedToDelay)
     {
         // arrange
         var stub = new StubModel
         {
             Response = new StubResponseModel
             {
-                ExtraDuration = 10
+                ExtraDuration = input
             }
         };
 
@@ -62,7 +64,7 @@ public class ExtraDurationResponseWriterFacts
 
         // assert
         Assert.IsTrue(result.Executed);
-        _asyncServiceMock.Verify(m => m.DelayAsync((int)stub.Response.ExtraDuration), Times.Once);
+        _asyncServiceMock.Verify(m => m.DelayAsync(valuePassedToDelay), Times.Once);
     }
 
     [TestMethod]
