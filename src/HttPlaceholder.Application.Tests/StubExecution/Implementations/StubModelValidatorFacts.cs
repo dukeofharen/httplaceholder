@@ -94,6 +94,31 @@ public class StubModelValidatorFacts
     }
 
     [DataTestMethod]
+    [DataRow(10, 9, 10, null)]
+    [DataRow(10, 10, 11, "Value for 'ExtraDuration.Max' cannot be higher than '10'.")]
+    [DataRow(10, 11, 12, "Value for 'ExtraDuration.Min' cannot be higher than '10'.")]
+    [DataRow(10, 9, 8, "ExtraDuration.Min should be lower than or equal to ExtraDuration.Max.")]
+    public void ValidateStubModel_ValidateExtraDurationMillis_Model(int configuredMillis, int? min, int? max, string expectedError)
+    {
+        // Arrange
+        _settings.Stub.MaximumExtraDurationMillis = configuredMillis;
+        var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel
+        {
+            Min = min,
+            Max = max
+        }}};
+
+        // Act
+        var result = _validator.ValidateStubModel(model).ToArray();
+
+        // Assert
+        Assert.AreEqual(
+            expectedError != null,
+            result.Any(r => r == expectedError),
+            $"Actual error messages: {string.Join(", ", result)}");
+    }
+
+    [DataTestMethod]
     [DataRow(LineEndingType.Unix, true)]
     [DataRow(LineEndingType.Windows, true)]
     [DataRow(null, true)]
