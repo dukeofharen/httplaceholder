@@ -43,7 +43,8 @@ internal class StubModelValidator : IStubModelValidator
         const string errorTemplate = "Value for '{0}' cannot be higher than '{1}'.";
         var extraDuration = stub?.Response?.ExtraDuration;
         var allowedMillis = _settings.Stub?.MaximumExtraDurationMillis;
-        if (extraDuration is int extraDurationMillis)
+        if (extraDuration is int extraDurationMillis ||
+            (extraDuration is string duration && int.TryParse(duration, out extraDurationMillis)))
         {
             if (extraDurationMillis > 0 && extraDurationMillis > allowedMillis)
             {

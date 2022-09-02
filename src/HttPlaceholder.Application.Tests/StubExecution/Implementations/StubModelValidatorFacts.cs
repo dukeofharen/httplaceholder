@@ -74,9 +74,11 @@ public class StubModelValidatorFacts
     [DataTestMethod]
     [DataRow(10, 10, true)]
     [DataRow(10, 9, true)]
+    [DataRow(10, "9", true)]
     [DataRow(10, 11, false)]
+    [DataRow(10, "11", false)]
     [DataRow(10, null, true)]
-    public void ValidateStubModel_ValidateExtraDurationMillis(int configuredMillis, int? stubMillis,
+    public void ValidateStubModel_ValidateExtraDurationMillis(int configuredMillis, object stubMillis,
         bool shouldSucceed)
     {
         // Arrange
