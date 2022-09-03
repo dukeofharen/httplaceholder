@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,6 +19,21 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
 
     [TestCleanup]
     public void Cleanup() => CleanupIntegrationTest();
+
+    [TestMethod]
+    public async Task StubIntegration_ReturnsXHttPlaceholderExecutedStubHeader()
+    {
+        // Arrange
+        var url = $"{TestServer.BaseAddress}test";
+        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+
+        // Act
+        using var response = await Client.SendAsync(request);
+
+        // Assert
+        Assert.IsTrue(response.IsSuccessStatusCode);
+        Assert.AreEqual("test-stub", response.Headers.Single(h => h.Key == "X-HttPlaceholder-ExecutedStub").Value.Single());
+    }
 
     [TestMethod]
     public async Task StubIntegration_ReturnsXHttPlaceholderCorrelationHeader()

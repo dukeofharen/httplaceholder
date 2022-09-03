@@ -1,4 +1,12 @@
-﻿- id: postcode-eelde
+﻿- id: test-stub
+  conditions:
+    url:
+      path:
+        equals: /test
+  response:
+    text: OK TEST
+
+- id: postcode-eelde
   conditions:
     method: GET
     url:

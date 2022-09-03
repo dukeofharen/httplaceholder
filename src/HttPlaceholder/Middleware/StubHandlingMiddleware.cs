@@ -25,6 +25,7 @@ public class StubHandlingMiddleware
     private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub"};
 
     private const string CorrelationHeaderKey = "X-HttPlaceholder-Correlation";
+    private const string ExecutedStubHeaderKey = "X-HttPlaceholder-ExecutedStub";
     private readonly RequestDelegate _next;
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextService _httpContextService;
@@ -149,6 +150,12 @@ public class StubHandlingMiddleware
         }
 
         _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
+        var requestResult = requestLogger.GetResult();
+        if (!string.IsNullOrWhiteSpace(requestResult.ExecutingStubId))
+        {
+            _httpContextService.TryAddHeader(ExecutedStubHeaderKey, requestResult.ExecutingStubId);
+        }
+
         _httpContextService.SetStatusCode(response.StatusCode);
         foreach (var (key, value) in response.Headers)
         {

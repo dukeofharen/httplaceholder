@@ -2088,6 +2088,8 @@ The REST API accepts both JSON and YAML strings (when doing a POST or PUT). If y
 
 If you have enabled authentication (see [config](#configuration) for more information), you also need to provide an `Authorization` header with the correct basic authentication. So if, for example, the username is `user` and the password is `pass`, the following value should be used for the `Authorization` header: `Basic dXNlcjpwYXNz`. For every call in the REST API, a `401 Unauthorized` is returned if the authentication is incorrect.
 
+NOTE! Any date/time that is used in the API is UTC!
+
 ## Stubs
 
 A stub is a combination of condition checkers and response writers that will be executed when a valid request is sent.

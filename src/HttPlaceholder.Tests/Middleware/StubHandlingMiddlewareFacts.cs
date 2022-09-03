@@ -149,7 +149,7 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.ExecuteRequestAsync())
             .ReturnsAsync(stubResponse);
 
-        var requestResultModel = new RequestResultModel();
+        var requestResultModel = new RequestResultModel {ExecutingStubId = "stub123"};
         _requestLoggerMock
             .Setup(m => m.GetResult())
             .Returns(requestResultModel);
@@ -162,6 +162,7 @@ public class StubHandlingMiddlewareFacts
         httpContextServiceMock.Verify(m => m.EnableRewind());
         httpContextServiceMock.Verify(m => m.ClearResponse());
         httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-Correlation", It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-ExecutedStub", requestResultModel.ExecutingStubId));
         httpContextServiceMock.Verify(m => m.SetStatusCode(stubResponse.StatusCode));
         httpContextServiceMock.Verify(m => m.AddHeader("X-Header1", "val1"));
         httpContextServiceMock.Verify(m => m.AddHeader("X-Header2", "val2"));
