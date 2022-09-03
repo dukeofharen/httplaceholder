@@ -25,6 +25,7 @@ public class StubHandlingMiddleware
     private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub"};
 
     private const string CorrelationHeaderKey = "X-HttPlaceholder-Correlation";
+    private const string ExecutedStubHeaderKey = "X-HttPlaceholder-ExecutedStub";
     private readonly RequestDelegate _next;
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextService _httpContextService;
@@ -94,6 +95,11 @@ public class StubHandlingMiddleware
         }
 
         var loggingResult = requestLogger.GetResult();
+        if (!string.IsNullOrWhiteSpace(loggingResult.ExecutingStubId))
+        {
+            _httpContextService.TryAddHeader(ExecutedStubHeaderKey, loggingResult.ExecutingStubId);
+        }
+
         var jsonLoggingResult = JObject.FromObject(loggingResult);
         var enableRequestLogging = _settings?.Storage?.EnableRequestLogging ?? false;
         if (enableRequestLogging)
