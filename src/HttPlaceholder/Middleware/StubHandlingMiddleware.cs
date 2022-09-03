@@ -95,11 +95,6 @@ public class StubHandlingMiddleware
         }
 
         var loggingResult = requestLogger.GetResult();
-        if (!string.IsNullOrWhiteSpace(loggingResult.ExecutingStubId))
-        {
-            _httpContextService.TryAddHeader(ExecutedStubHeaderKey, loggingResult.ExecutingStubId);
-        }
-
         var jsonLoggingResult = JObject.FromObject(loggingResult);
         var enableRequestLogging = _settings?.Storage?.EnableRequestLogging ?? false;
         if (enableRequestLogging)
@@ -155,6 +150,12 @@ public class StubHandlingMiddleware
         }
 
         _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
+        var requestResult = requestLogger.GetResult();
+        if (!string.IsNullOrWhiteSpace(requestResult.ExecutingStubId))
+        {
+            _httpContextService.TryAddHeader(ExecutedStubHeaderKey, requestResult.ExecutingStubId);
+        }
+
         _httpContextService.SetStatusCode(response.StatusCode);
         foreach (var (key, value) in response.Headers)
         {
