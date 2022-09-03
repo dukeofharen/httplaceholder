@@ -12,7 +12,7 @@ export interface StubResponseModel {
   base64?: string;
   file?: string;
   headers?: HashMap;
-  extraDuration?: number;
+  extraDuration?: any;
   json?: string;
   xml?: string;
   html?: string;
