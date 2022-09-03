@@ -1,5 +1,5 @@
 [vnext]
-- If stub is executed, return "X-HttPlaceholder-ExecutedStub" header with stub ID ().
+- If stub is executed, return "X-HttPlaceholder-ExecutedStub" header with stub ID (https://github.com/dukeofharen/httplaceholder/pull/269).
 
 [2022.9.3]
 - Fixed link to API docs (https://github.com/dukeofharen/httplaceholder/pull/256).
