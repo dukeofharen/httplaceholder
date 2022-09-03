@@ -8,16 +8,16 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Application.Tests.StubExecution.Utilities;
 
 [TestClass]
-public class StringConditionUtilitiesFacts
+public class ConversionUtilitiesFacts
 {
     [TestMethod]
-    public void ConvertCondition_ConditionIsDictionary_ShouldConvert()
+    public void Convert_ConditionIsDictionary_ShouldConvert()
     {
         // Arrange
         var dict = new Dictionary<object, object> {{"equals", "/path"}, {"notcontainsci", "somestring"}};
 
         // Act
-        var result = StringConditionUtilities.ConvertCondition(dict);
+        var result = ConversionUtilities.Convert<StubConditionStringCheckingModel>(dict);
 
         // Assert
         Assert.IsNotNull(result);
@@ -26,13 +26,13 @@ public class StringConditionUtilitiesFacts
     }
 
     [TestMethod]
-    public void ConvertCondition_ConditionIsJObject_ShouldConvert()
+    public void Convert_ConditionIsJObject_ShouldConvert()
     {
         // Arrange
         const string jsonString = @"{""equals"": ""/path"", ""notcontainsci"": ""somestring""}";
 
         // Act
-        var result = StringConditionUtilities.ConvertCondition(JObject.Parse(jsonString));
+        var result = ConversionUtilities.Convert<StubConditionStringCheckingModel>(JObject.Parse(jsonString));
 
         // Assert
         Assert.IsNotNull(result);
@@ -41,22 +41,22 @@ public class StringConditionUtilitiesFacts
     }
 
     [TestMethod]
-    public void ConvertCondition_ConditionIsModel_ShouldReturnAsIs()
+    public void Convert_ConditionIsModel_ShouldReturnAsIs()
     {
         // Arrange
         var model = new StubConditionStringCheckingModel {StringEquals = "123"};
 
         // Act
-        var result = StringConditionUtilities.ConvertCondition(model);
+        var result = ConversionUtilities.Convert<StubConditionStringCheckingModel>(model);
 
         // Assert
         Assert.AreEqual(model, result);
     }
 
     [TestMethod]
-    public void ConvertCondition_ConditionIsUnrecognized_ShouldThrowInvalidOperationException()
+    public void Convert_ConditionIsUnrecognized_ShouldThrowInvalidOperationException()
     {
         // Act / Assert
-        Assert.ThrowsException<InvalidOperationException>(() => StringConditionUtilities.ConvertCondition(1234));
+        Assert.ThrowsException<InvalidOperationException>(() => ConversionUtilities.Convert<StubConditionStringCheckingModel>(1234));
     }
 }

@@ -41,7 +41,7 @@ public class QueryStringConditionChecker : IConditionChecker
             // Do a present check, if needed.
             if (condition.Value is not string)
             {
-                var checkingModel = StringConditionUtilities.ConvertCondition(condition.Value);
+                var checkingModel = ConversionUtilities.Convert<StubConditionStringCheckingModel>(condition.Value);
                 if (checkingModel.Present != null)
                 {
                     if ((checkingModel.Present.Value && queryString.ContainsKey(condition.Key)) ||

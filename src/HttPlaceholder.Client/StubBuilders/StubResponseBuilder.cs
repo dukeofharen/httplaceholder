@@ -171,6 +171,40 @@ public sealed class StubResponseBuilder
     }
 
     /// <summary>
+    /// Adds a number of milliseconds the stub should wait extra before returning.
+    /// </summary>
+    /// <param name="min">The minimum number of milliseconds to wait.</param>
+    /// <returns>The current <see cref="StubResponseBuilder"/>.</returns>
+    public StubResponseBuilder WithMinimumExtraDuration(int min)
+    {
+        _response.ExtraDuration = new StubExtraDurationDto {Min = min};
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a number of milliseconds the stub should wait extra before returning.
+    /// </summary>
+    /// <param name="min">The minimum number of milliseconds to wait.</param>
+    /// <param name="max">The maximum number of milliseconds to wait.</param>
+    /// <returns>The current <see cref="StubResponseBuilder"/>.</returns>
+    public StubResponseBuilder WithExtraDuration(int min, int max)
+    {
+        _response.ExtraDuration = new StubExtraDurationDto {Min = min, Max = max};
+        return this;
+    }
+
+    /// <summary>
+    /// Adds a number of milliseconds the stub should wait extra before returning.
+    /// </summary>
+    /// <param name="dto">The <see cref="StubExtraDurationDto"/> that contains the min and max values.</param>
+    /// <returns>The current <see cref="StubResponseBuilder"/>.</returns>
+    public StubResponseBuilder WithExtraDuration(StubExtraDurationDto dto)
+    {
+        _response.ExtraDuration = dto;
+        return this;
+    }
+
+    /// <summary>
     /// Adds a temporary redirect to the response definition.
     /// </summary>
     /// <param name="url">The URL to redirect to.</param>
@@ -220,7 +254,8 @@ public sealed class StubResponseBuilder
     /// <param name="appendPath">If set to true, appends the path that appears "after" the configured "path" condition to the proxied URL.</param>
     /// <param name="replaceRootUrl">If set to true, will replace the root URL of the proxied response with the URL of HttPlaceholder.</param>
     /// <returns>The current <see cref="StubResponseBuilder"/>.</returns>
-    public StubResponseBuilder WithReverseProxy(string url, bool? appendQueryString, bool? appendPath, bool? replaceRootUrl)
+    public StubResponseBuilder WithReverseProxy(string url, bool? appendQueryString, bool? appendPath,
+        bool? replaceRootUrl)
     {
         _response.ReverseProxy = new StubResponseReverseProxyDto
         {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Attributes;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using YamlDotNet.Serialization;
@@ -9,6 +10,7 @@ namespace HttPlaceholder.Dto.v1.Stubs;
 /// <summary>
 /// A model for storing all possible response parameters for a stub.
 /// </summary>
+[CustomOpenApi]
 public class StubResponseDto : IMapFrom<StubResponseModel>, IMapTo<StubResponseModel>
 {
     /// <summary>
@@ -57,7 +59,8 @@ public class StubResponseDto : IMapFrom<StubResponseModel>, IMapTo<StubResponseM
     /// Gets or sets the duration of the extra.
     /// </summary>
     [YamlMember(Alias = "extraDuration")]
-    public int? ExtraDuration { get; set; }
+    [OneOf(Types = new[]{typeof(int), typeof(StubExtraDurationDto)})]
+    public object ExtraDuration { get; set; }
 
     /// <summary>
     /// Gets or sets the json.

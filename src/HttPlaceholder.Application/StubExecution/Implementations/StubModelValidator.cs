@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Common.Validation;
@@ -31,17 +32,44 @@ internal class StubModelValidator : IStubModelValidator
         var result = new List<string>();
         HandleValidationResult(result, validationResults);
 
-        // Validate extra duration.
-        var extraDurationMillis = stub?.Response?.ExtraDuration ?? 0;
-        var allowedMillis = _settings.Stub?.MaximumExtraDurationMillis;
-        if (extraDurationMillis > 0 && extraDurationMillis > allowedMillis)
-        {
-            result.Add($"Value for 'ExtraDuration' cannot be higher than '{allowedMillis}'.");
-        }
-
+        ValidateExtraDuration(stub, result);
         ValidateScenarioVariables(stub, result);
         ValidateResponseBody(stub, result);
         return result;
+    }
+
+    private void ValidateExtraDuration(StubModel stub, List<string> result)
+    {
+        const string errorTemplate = "Value for '{0}' cannot be higher than '{1}'.";
+        var extraDuration = stub?.Response?.ExtraDuration;
+        var allowedMillis = _settings.Stub?.MaximumExtraDurationMillis;
+        if (extraDuration is int extraDurationMillis ||
+            (extraDuration is string duration && int.TryParse(duration, out extraDurationMillis)))
+        {
+            if (extraDurationMillis > 0 && extraDurationMillis > allowedMillis)
+            {
+                result.Add(string.Format(errorTemplate, "ExtraDuration", allowedMillis));
+            }
+        }
+        else if (extraDuration != null)
+        {
+            var extraDurationModel = ConversionUtilities.Convert<StubExtraDurationModel>(extraDuration);
+            if (extraDurationModel?.Min > 0 && extraDurationModel.Min > allowedMillis)
+            {
+                result.Add(string.Format(errorTemplate, "ExtraDuration.Min", allowedMillis));
+            }
+
+            if (extraDurationModel?.Max > 0 && extraDurationModel.Max > allowedMillis)
+            {
+                result.Add(string.Format(errorTemplate, "ExtraDuration.Max", allowedMillis));
+            }
+
+            if (extraDurationModel != null && extraDurationModel.Min.HasValue && extraDurationModel.Max.HasValue &&
+                extraDurationModel.Min > extraDurationModel.Max)
+            {
+                result.Add("ExtraDuration.Min should be lower than or equal to ExtraDuration.Max.");
+            }
+        }
     }
 
     private static void HandleValidationResult(ICollection<string> result,

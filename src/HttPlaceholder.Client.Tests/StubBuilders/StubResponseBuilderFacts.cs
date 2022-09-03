@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using HttPlaceholder.Client.Dto.Enums;
+using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.StubBuilders;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -166,6 +167,44 @@ public class StubResponseBuilderFacts
 
         // Assert
         Assert.AreEqual(15000, response.ExtraDuration);
+    }
+
+    [TestMethod]
+    public void WithMinimumExtraDuration()
+    {
+        // Act
+        var response = StubResponseBuilder.Begin()
+            .WithMinimumExtraDuration(10000)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(10000, ((StubExtraDurationDto)response.ExtraDuration).Min);
+    }
+
+    [TestMethod]
+    public void WithExtraDurationMinMax()
+    {
+        // Act
+        var response = StubResponseBuilder.Begin()
+            .WithExtraDuration(10000, 15000)
+            .Build();
+
+        // Assert
+        Assert.AreEqual(10000, ((StubExtraDurationDto)response.ExtraDuration).Min);
+        Assert.AreEqual(15000, ((StubExtraDurationDto)response.ExtraDuration).Max);
+    }
+
+    [TestMethod]
+    public void WithExtraDurationModel()
+    {
+        // Act
+        var response = StubResponseBuilder.Begin()
+            .WithExtraDuration(new StubExtraDurationDto{Min = 10000, Max = 15000})
+            .Build();
+
+        // Assert
+        Assert.AreEqual(10000, ((StubExtraDurationDto)response.ExtraDuration).Min);
+        Assert.AreEqual(15000, ((StubExtraDurationDto)response.ExtraDuration).Max);
     }
 
     [TestMethod]
