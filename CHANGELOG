@@ -1,3 +1,6 @@
+[vnext]
+- If stub is executed, return "X-HttPlaceholder-ExecutedStub" header with stub ID ().
+
 [2022.9.3]
 - Fixed link to API docs (https://github.com/dukeofharen/httplaceholder/pull/256).
 - The YAML file stub contents are no longer logged when there are any YAML stub files and the logging is set to verbose (https://github.com/dukeofharen/httplaceholder/pull/256).
