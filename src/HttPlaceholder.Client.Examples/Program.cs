@@ -187,6 +187,9 @@ curl 'https://site.com/_nuxt/1d6c3a9.js' \
 
             // Get a list of scheduled job names.
             var scheduledJobNames = await client.GetScheduledJobNamesAsync();
+
+            // Retrieve the configuration.
+            var config = await client.GetConfigurationAsync();
         }
         catch (Exception ex)
         {
