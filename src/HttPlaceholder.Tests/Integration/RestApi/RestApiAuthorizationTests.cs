@@ -20,6 +20,7 @@ public class RestApiAuthorizationTests : RestApiIntegrationTestBase
     [DataTestMethod]
     [DataRow("ph-api/metadata", "GET", false, false)]
     [DataRow("ph-api/requests", "GET", true, false)]
+    [DataRow("ph-api/configuration", "GET", true, false)]
     [DataRow("ph-api/requests/3b392b80-b35f-4a4d-be01-e95d2d42d869", "GET", true, false)]
     [DataRow("ph-api/requests/overview", "GET", true, false)]
     [DataRow("ph-api/requests", "DELETE", true, false)]
