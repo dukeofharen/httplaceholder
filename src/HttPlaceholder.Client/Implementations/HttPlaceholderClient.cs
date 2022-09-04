@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using HttPlaceholder.Client.Dto.Configuration;
 using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
@@ -536,5 +537,18 @@ public class HttPlaceholderClient : IHttPlaceholderClient
         }
 
         return JsonConvert.DeserializeObject<string[]>(content);
+    }
+
+    /// <inheritdoc />
+    public async Task<IEnumerable<ConfigurationDto>> GetConfigurationAsync()
+    {
+        using var response = await HttpClient.GetAsync("/ph-api/configuration");
+        var content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new HttPlaceholderClientException(response.StatusCode, content);
+        }
+
+        return JsonConvert.DeserializeObject<IEnumerable<ConfigurationDto>>(content);
     }
 }
