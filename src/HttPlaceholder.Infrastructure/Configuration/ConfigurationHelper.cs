@@ -32,7 +32,8 @@ public class ConfigurationHelper : IConfigurationHelper
                 Example = ParseAttribute<string>(attribute, "Example", true),
                 Path = ParseAttribute<string>(attribute, "ConfigPath", false),
                 IsBoolValue = ParseAttribute<bool?>(attribute, "IsBoolValue", false),
-                ConfigKeyType = ParseAttribute<ConfigKeyType>(attribute, "ConfigKeyType", true)
+                ConfigKeyType = ParseAttribute<ConfigKeyType>(attribute, "ConfigKeyType", true),
+                IsSecretValue = ParseAttribute<bool?>(attribute, "IsSecretValue", false)
             }).ToList();
 
     private static TValue ParseAttribute<TValue>(CustomAttributeData attribute, string memberName, bool shouldExist)

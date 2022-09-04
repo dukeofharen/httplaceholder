@@ -30,6 +30,11 @@ public class ConfigKeyAttribute : Attribute
     public bool IsBoolValue { get; set; }
 
     /// <summary>
+    /// Indicates whether the config value contains a secret.
+    /// </summary>
+    public bool IsSecretValue { get; set; }
+
+    /// <summary>
     /// Gets or sets the type of the config key.
     /// </summary>
     public ConfigKeyType ConfigKeyType { get; set; }
