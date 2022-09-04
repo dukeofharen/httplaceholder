@@ -223,6 +223,7 @@ public class ReverseProxyResponseWriterFacts
             {"Token", "abc123"},
             {"Some-Date", "2020-08-16"},
             {"X-HttPlaceholder-Correlation", "correlation"},
+            {"X-HttPlaceholder-ExecutedStub", "stub-id"},
             {"Transfer-Encoding", "chunked"}
         };
         mockHttp

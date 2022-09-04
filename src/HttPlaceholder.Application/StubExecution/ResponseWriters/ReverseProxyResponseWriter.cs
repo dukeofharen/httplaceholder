@@ -23,7 +23,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter
 
     private static readonly string[] _excludedResponseHeaderNames =
     {
-        "x-httplaceholder-correlation", "transfer-encoding", "content-length"
+        "x-httplaceholder-correlation", "x-httplaceholder-executedstub", "transfer-encoding", "content-length"
     };
 
     private readonly IHttpClientFactory _httpClientFactory;
