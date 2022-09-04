@@ -2671,6 +2671,7 @@ On the settings page you can configure all kinds of settings for HttPlaceholder 
 
 - Dark theme: turns the dark theme on or off.
 - Persist search filters on stubs and request screens: when this option is on, the filters on the stubs and is persisted between page navigations.
+- View the configuration HttPlaceholder was started with.
 
 # Tools and client libraries
 

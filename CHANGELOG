@@ -1,5 +1,6 @@
 [vnext]
 - If stub is executed, return "X-HttPlaceholder-ExecutedStub" header with stub ID (https://github.com/dukeofharen/httplaceholder/pull/269).
+- Show the configuration as "read only" values in the user interface (https://github.com/dukeofharen/httplaceholder/issues/261).
 
 [2022.9.3]
 - Fixed link to API docs (https://github.com/dukeofharen/httplaceholder/pull/256).
