@@ -47,7 +47,11 @@ public class GetConfigurationQueryHandler : IRequestHandler<GetConfigurationQuer
             var value = item.IsSecretValue == true ? "***" : configItem.Value;
             result.Add(new ConfigurationModel
             {
-                Key = item.Key, Path = item.Path, ConfigKeyType = item.ConfigKeyType, Value = value
+                Key = item.Key,
+                Path = item.Path,
+                ConfigKeyType = item.ConfigKeyType,
+                Description = item.Description,
+                Value = value
             });
         }
 

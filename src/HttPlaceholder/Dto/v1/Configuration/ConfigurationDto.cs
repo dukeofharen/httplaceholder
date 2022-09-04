@@ -20,6 +20,11 @@ public class ConfigurationDto : IMapFrom<ConfigurationModel>
     public string Path { get; set; }
 
     /// <summary>
+    /// Gets or sets the configuration item description.
+    /// </summary>
+    public string Description { get; set; }
+
+    /// <summary>
     /// Gets or sets the type of the config key.
     /// </summary>
     public ConfigKeyType ConfigKeyType { get; set; }
