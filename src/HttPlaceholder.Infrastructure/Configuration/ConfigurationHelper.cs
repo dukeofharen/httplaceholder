@@ -5,6 +5,7 @@ using System.Reflection;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Attributes;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Infrastructure.Configuration;
 

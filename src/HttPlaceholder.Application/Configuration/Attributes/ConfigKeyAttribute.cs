@@ -1,4 +1,5 @@
 ﻿using System;
+using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.Configuration.Attributes;
 

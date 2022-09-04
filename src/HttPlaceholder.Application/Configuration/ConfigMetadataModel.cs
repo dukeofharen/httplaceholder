@@ -1,3 +1,5 @@
+using HttPlaceholder.Domain.Enums;
+
 namespace HttPlaceholder.Application.Configuration;
 
 /// <summary>

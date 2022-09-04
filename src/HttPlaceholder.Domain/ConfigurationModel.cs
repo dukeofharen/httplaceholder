@@ -1,11 +1,11 @@
 ﻿using HttPlaceholder.Domain.Enums;
 
-namespace HttPlaceholder.Dto.v1.Configuration;
+namespace HttPlaceholder.Domain;
 
 /// <summary>
 /// A class for storing the data of a configuration item.
 /// </summary>
-public class ConfigurationDto
+public class ConfigurationModel
 {
     /// <summary>
     /// Gets or sets the configuration item key.

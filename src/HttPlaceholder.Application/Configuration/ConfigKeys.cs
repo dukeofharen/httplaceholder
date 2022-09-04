@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Configuration.Attributes;
+using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.Configuration;
 
@@ -274,40 +275,4 @@ public static class ConfigKeys
             {ConfigKeyType.Stub, "Stub"},
             {ConfigKeyType.Configuration, "Configuration"}
         };
-}
-
-/// <summary>
-/// Enum for specifying the config key type.
-/// </summary>
-public enum ConfigKeyType
-{
-    /// <summary>
-    /// Authentication type.
-    /// </summary>
-    Authentication,
-
-    /// <summary>
-    /// Web type.
-    /// </summary>
-    Web,
-
-    /// <summary>
-    /// Storage type.
-    /// </summary>
-    Storage,
-
-    /// <summary>
-    /// GUI type.
-    /// </summary>
-    Gui,
-
-    /// <summary>
-    /// Stub type.
-    /// </summary>
-    Stub,
-
-    /// <summary>
-    /// Configuration type.
-    /// </summary>
-    Configuration
 }
