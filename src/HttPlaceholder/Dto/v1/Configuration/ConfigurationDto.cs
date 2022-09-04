@@ -1,11 +1,13 @@
-﻿using HttPlaceholder.Domain.Enums;
+﻿using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Domain;
+using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Dto.v1.Configuration;
 
 /// <summary>
 /// A class for storing the data of a configuration item.
 /// </summary>
-public class ConfigurationDto
+public class ConfigurationDto : IMapFrom<ConfigurationModel>
 {
     /// <summary>
     /// Gets or sets the configuration item key.

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Configuration.Queries.GetConfiguration;
 using HttPlaceholder.Authorization;
-using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Dto.v1.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,18 +21,6 @@ public class ConfigurationController : BaseApiController
     /// <returns>OK, with the configuration.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ConfigurationDto>>> GetConfiguration()
-    {
-        await Task.CompletedTask;
-        return Ok(new[]
-        {
-            new ConfigurationDto
-            {
-                Key = "abc",
-                Path = "ewqr2543:ety6354t",
-                Value = "moi",
-                ConfigKeyType = ConfigKeyType.Authentication
-            }
-        });
-    }
+    public async Task<ActionResult<IEnumerable<ConfigurationDto>>> GetConfiguration() =>
+        Ok(Mapper.Map<IEnumerable<ConfigurationDto>>(await Mediator.Send(new GetConfigurationQuery())));
 }
