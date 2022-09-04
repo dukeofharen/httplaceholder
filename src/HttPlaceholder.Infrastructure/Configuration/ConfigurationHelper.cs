@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Attributes;
+using HttPlaceholder.Application.Interfaces.Configuration;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Enums;
 
@@ -12,13 +13,13 @@ namespace HttPlaceholder.Infrastructure.Configuration;
 /// <summary>
 /// A class that contains several configuration related methods.
 /// </summary>
-public static class ConfigurationHelper
+public class ConfigurationHelper : IConfigurationHelper
 {
     /// <summary>
     /// Returns a list of all possible configuration keys and its metadata.
     /// </summary>
     /// <returns>A list of <see cref="ConfigMetadataModel"/>.</returns>
-    public static IList<ConfigMetadataModel> GetConfigKeyMetadata() =>
+    public IList<ConfigMetadataModel> GetConfigKeyMetadata() =>
         (from constant
                 in ReflectionUtilities.GetConstants(typeof(ConfigKeys))
             let attribute = constant.CustomAttributes.FirstOrDefault()
