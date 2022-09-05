@@ -1,3 +1,5 @@
+using HttPlaceholder.Domain.Enums;
+
 namespace HttPlaceholder.Application.Configuration;
 
 /// <summary>
@@ -39,4 +41,9 @@ public class ConfigMetadataModel
     /// Gets or sets the type of the config key.
     /// </summary>
     public ConfigKeyType ConfigKeyType { get; set; }
+
+    /// <summary>
+    /// Indicates whether the config value contains a secret.
+    /// </summary>
+    public bool? IsSecretValue { get; set; }
 }

@@ -6,11 +6,13 @@ namespace HttPlaceholder.Infrastructure.Tests.Configuration;
 [TestClass]
 public class ConfigurationHelperFacts
 {
+    private readonly ConfigurationHelper _configurationHelper = new();
+
     [TestMethod]
     public void GetConfigKeyMetadata_HappyFlow()
     {
         // Act
-        var result = ConfigurationHelper.GetConfigKeyMetadata();
+        var result = _configurationHelper.GetConfigKeyMetadata();
 
         // Assert
         Assert.AreEqual(23, result.Count);

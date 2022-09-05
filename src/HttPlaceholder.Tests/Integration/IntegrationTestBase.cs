@@ -24,21 +24,25 @@ public abstract class IntegrationTestBase
 
     protected string BaseAddress => TestServer.BaseAddress.ToString();
 
-    protected void InitializeIntegrationTest((Type, object)[] servicesToReplace = null, IEnumerable<IStubSource> stubSources = null)
+    protected void InitializeIntegrationTest((Type, object)[] servicesToReplace = null,
+        IEnumerable<IStubSource> stubSources = null)
     {
         servicesToReplace ??= Array.Empty<(Type, object)>();
-        servicesToReplace = servicesToReplace.Concat(new (Type, object)[] { (typeof(IOptions<SettingsModel>), Options) }).ToArray();
         stubSources ??= Array.Empty<IStubSource>();
         var config = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string>
             {
-                { "Storage:InputFile", @"C:\tmp" },
-                { "Storage:CleanOldRequestsInBackgroundJob", "true" }
+                {"Storage:InputFile", @"C:\tmp"}, {"Storage:CleanOldRequestsInBackgroundJob", "true"}
             })
             .Build();
+        servicesToReplace = servicesToReplace.Concat(new (Type, object)[]
+        {
+            (typeof(IOptions<SettingsModel>), Options), (typeof(IConfiguration), config)
+        }).ToArray();
         var startup = new Startup(config);
         TestServer = new TestServer(new WebHostBuilder()
-            .ConfigureServices(services => TestStartup.ConfigureServices(startup, services, servicesToReplace, stubSources))
+            .ConfigureServices(services =>
+                TestStartup.ConfigureServices(startup, services, servicesToReplace, stubSources))
             .Configure(app => TestStartup.Configure(startup, app, null)));
         Client = TestServer.CreateClient();
         AfterTestServerStart();

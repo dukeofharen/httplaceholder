@@ -1,4 +1,5 @@
 ﻿using System;
+using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.Configuration.Attributes;
 
@@ -27,6 +28,11 @@ public class ConfigKeyAttribute : Attribute
     /// Indicates whether the config value is a boolean.
     /// </summary>
     public bool IsBoolValue { get; set; }
+
+    /// <summary>
+    /// Indicates whether the config value contains a secret.
+    /// </summary>
+    public bool IsSecretValue { get; set; }
 
     /// <summary>
     /// Gets or sets the type of the config key.

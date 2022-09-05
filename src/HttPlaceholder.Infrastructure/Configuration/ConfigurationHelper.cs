@@ -4,20 +4,22 @@ using System.Linq;
 using System.Reflection;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Attributes;
+using HttPlaceholder.Application.Interfaces.Configuration;
 using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Infrastructure.Configuration;
 
 /// <summary>
 /// A class that contains several configuration related methods.
 /// </summary>
-public static class ConfigurationHelper
+public class ConfigurationHelper : IConfigurationHelper
 {
     /// <summary>
     /// Returns a list of all possible configuration keys and its metadata.
     /// </summary>
     /// <returns>A list of <see cref="ConfigMetadataModel"/>.</returns>
-    public static IList<ConfigMetadataModel> GetConfigKeyMetadata() =>
+    public IList<ConfigMetadataModel> GetConfigKeyMetadata() =>
         (from constant
                 in ReflectionUtilities.GetConstants(typeof(ConfigKeys))
             let attribute = constant.CustomAttributes.FirstOrDefault()
@@ -30,7 +32,8 @@ public static class ConfigurationHelper
                 Example = ParseAttribute<string>(attribute, "Example", true),
                 Path = ParseAttribute<string>(attribute, "ConfigPath", false),
                 IsBoolValue = ParseAttribute<bool?>(attribute, "IsBoolValue", false),
-                ConfigKeyType = ParseAttribute<ConfigKeyType>(attribute, "ConfigKeyType", true)
+                ConfigKeyType = ParseAttribute<ConfigKeyType>(attribute, "ConfigKeyType", true),
+                IsSecretValue = ParseAttribute<bool?>(attribute, "IsSecretValue", false)
             }).ToList();
 
     private static TValue ParseAttribute<TValue>(CustomAttributeData attribute, string memberName, bool shouldExist)

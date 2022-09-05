@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Configuration.Attributes;
+using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.Configuration;
 
@@ -25,7 +26,8 @@ public static class ConfigKeys
         Description = "the password for securing the REST API",
         Example = "pass",
         ConfigPath = "Authentication:ApiPassword",
-        ConfigKeyType = ConfigKeyType.Authentication)]
+        ConfigKeyType = ConfigKeyType.Authentication,
+        IsSecretValue = true)]
     public const string ApiPasswordKey = "apiPassword";
 
     /// <summary>
@@ -91,7 +93,8 @@ public static class ConfigKeys
         Description = "the password for the .pfx file which should be used in the case HTTPS is enabled",
         Example = "112233",
         ConfigPath = "Web:PfxPassword",
-        ConfigKeyType = ConfigKeyType.Web)]
+        ConfigKeyType = ConfigKeyType.Web,
+        IsSecretValue = true)]
     public const string PfxPasswordKey = "pfxPassword";
 
     /// <summary>
@@ -192,7 +195,8 @@ public static class ConfigKeys
         Example =
             "Server=localhost;Database=httplaceholder;Uid=httplaceholder;Pwd=httplaceholder;Allow User Variables=true",
         ConfigPath = "ConnectionStrings:MySql",
-        ConfigKeyType = ConfigKeyType.Storage)]
+        ConfigKeyType = ConfigKeyType.Storage,
+        IsSecretValue = true)]
     public const string MysqlConnectionStringKey = "mysqlConnectionString";
 
     /// <summary>
@@ -212,7 +216,8 @@ public static class ConfigKeys
         Description = "a connection string that needs to be filled in if you want to use MSSQL",
         Example = "Server=localhost,2433;Database=httplaceholder;User Id=sa;Password=Password123",
         ConfigPath = "ConnectionStrings:SqlServer",
-        ConfigKeyType = ConfigKeyType.Storage)]
+        ConfigKeyType = ConfigKeyType.Storage,
+        IsSecretValue = true)]
     public const string SqlServerConnectionStringKey = "sqlServerConnectionString";
 
     /// <summary>
@@ -274,40 +279,4 @@ public static class ConfigKeys
             {ConfigKeyType.Stub, "Stub"},
             {ConfigKeyType.Configuration, "Configuration"}
         };
-}
-
-/// <summary>
-/// Enum for specifying the config key type.
-/// </summary>
-public enum ConfigKeyType
-{
-    /// <summary>
-    /// Authentication type.
-    /// </summary>
-    Authentication,
-
-    /// <summary>
-    /// Web type.
-    /// </summary>
-    Web,
-
-    /// <summary>
-    /// Storage type.
-    /// </summary>
-    Storage,
-
-    /// <summary>
-    /// GUI type.
-    /// </summary>
-    Gui,
-
-    /// <summary>
-    /// Stub type.
-    /// </summary>
-    Stub,
-
-    /// <summary>
-    /// Configuration type.
-    /// </summary>
-    Configuration
 }

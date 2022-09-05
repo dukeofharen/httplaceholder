@@ -2871,6 +2871,31 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "Configuration",
+					"item": [
+						{
+							"name": "GET configuration",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}ph-api/configuration",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"configuration"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}

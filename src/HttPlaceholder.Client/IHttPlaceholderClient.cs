@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HttPlaceholder.Client.Dto.Configuration;
 using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
@@ -277,4 +278,10 @@ public interface IHttPlaceholderClient
     /// </summary>
     /// <returns>An array containing all active scheduled job names.</returns>
     Task<string[]> GetScheduledJobNamesAsync();
+
+    /// <summary>
+    /// Gets a list of configuration items.
+    /// </summary>
+    /// <returns>List of <see cref="ConfigurationDto"/>.</returns>
+    Task<IEnumerable<ConfigurationDto>> GetConfigurationAsync();
 }

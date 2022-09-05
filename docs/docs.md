@@ -2078,7 +2078,7 @@ When you call the url `http://localhost:5000/response-abort-connection`, the con
 
 # REST API
 
-Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to the following collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection, scenario collection, scheduled job collection, import collection and users collection.
+Like many other automation and development tools, HttPlaceholder has a REST API that you can use to automate the creation of stubs. By default, the stubs and requests are stored in the `.httplaceholder` folder of the current logged in user (you can change this behavior; see [config](#configuration)). The REST API gives you access to the following collections: the stubs collection, the requests collection (to see all requests that are made to HttPlaceholder), users collection, tenants collection, scenario collection, scheduled job collection, import collection, configuration collection and users collection.
 
 Click [here](https://github.com/dukeofharen/httplaceholder/releases/latest) if you want the swagger.json file. Using this swagger.json file, you can easily create a REST client for your favourite programming language (e.g. using a tool like [autorest](https://github.com/Azure/autorest)).
 
@@ -2671,6 +2671,7 @@ On the settings page you can configure all kinds of settings for HttPlaceholder 
 
 - Dark theme: turns the dark theme on or off.
 - Persist search filters on stubs and request screens: when this option is on, the filters on the stubs and is persisted between page navigations.
+- View the configuration HttPlaceholder was started with.
 
 # Tools and client libraries
 
