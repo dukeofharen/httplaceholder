@@ -112,4 +112,28 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.AreEqual("nginx", stub.Response.Headers["server"]);
         Assert.AreEqual(string.Empty, stub.Response.Text);
     }
+
+    [TestMethod]
+    public async Task RestApiIntegration_Import_ImportHar_RequestHeaderSizeIsNull_ShouldWork()
+    {
+        // Arrange
+        var content = await File.ReadAllTextAsync("Resources/har_headerssize_null.txt");
+
+        // Post HAR to API.
+        var url = $"{BaseAddress}ph-api/import/har?doNotCreateStub=false&tenant=tenant1";
+        var apiRequest = new HttpRequestMessage
+        {
+            RequestUri = new Uri(url),
+            Method = HttpMethod.Post,
+            Content = new StringContent(content, Encoding.UTF8, Constants.TextMime)
+        };
+        var harResponse = await Client.SendAsync(apiRequest);
+        harResponse.EnsureSuccessStatusCode();
+
+        // Get and check the stubs.
+        var stubs = StubSource.StubModels.ToArray();
+
+        // Assert stubs.
+        Assert.AreEqual(1, stubs.Length);
+    }
 }

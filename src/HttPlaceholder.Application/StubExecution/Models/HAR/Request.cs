@@ -53,7 +53,7 @@ public class Request
     /// Gets or sets headers size.
     /// </summary>
     [JsonProperty("headersSize")]
-    public int HeadersSize { get; set; }
+    public int? HeadersSize { get; set; }
 
     /// <summary>
     /// Gets or sets body size.
