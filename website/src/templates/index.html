@@ -1,0 +1,45 @@
+<div class="portfolio">
+    <p>
+        Duco, Netherlands based (web) developer, currently working for
+        <a href="https://quintor.nl">Quintor</a>. Many years of experience in the .NET stack (ASP.NET (Core), SQL
+        Server, Windows etc.), frontend development (Vue, Angular, HTML etc.) and is currently mastering the Java stack
+        (Spring Boot).
+    </p>
+    <h1>&gt; blog</h1>
+
+    {{#posts}}
+    <h2><a href="{{{rootUrl}}}/posts/{{postKey}}">{{title}}</a> ({{formattedDateShort}})</h2>
+    {{/posts}}
+    <h2><a href="{{{rootUrl}}}/posts">More posts</a></h2>
+
+    <h1>&gt; projects</h1>
+    <div>
+        <h2><a href="https://httplaceholder.com">HttPlaceholder</a> (active)</h2>
+        <p>HTTP stub application for easily stubbing away any kind of HTTP call.</p>
+    </div>
+    <div>
+        <h2><a href="https://budgetkar.nl">Budgetkar</a> (active)</h2>
+        <p>Netherlands based company where customers can rent trailers.</p>
+    </div>
+    <div>
+        <h2><a href="https://github.com/dukeofharen/armyknife">Armyknife console app</a> (inactive)</h2>
+        <p>The old Armyknife, which came in a console app. Still works, but not actively developed.</p>
+    </div>
+    <div>
+        <h2><a href="https://github.com/dukeofharen/iforgot">IForgot</a> (inactive)</h2>
+        <p>Simple console app for Windows which takes a screenshot every x seconds of all your screens. Still works, but
+            not
+            actively developed.</p>
+    </div>
+    <div>
+        <h2><a href="https://github.com/dukeofharen/wolk">Wolk</a> (inactive)</h2>
+        <p>Self-hosted web application for taking notes, todo items etc. Still works, but not actively developed.</p>
+    </div>
+    <h1>&gt; get in touch</h1>
+    <p>
+        <a href="mailto:blog@ducode.org">mail</a><br/>
+        <a href="https://github.com/dukeofharen">github</a><br/>
+        <a href="https://twitter.com/ducodotnet">twitter</a><br/>
+        <a href="https://www.linkedin.com/in/ducowinterwerp/">linkedin</a>
+    </p>
+</div>

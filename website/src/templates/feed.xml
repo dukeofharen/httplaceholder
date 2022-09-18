@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+        <title>Ducode.org</title>
+        <link>{{{rootUrl}}}</link>
+        <description>Duco's blog</description>
+        <image>
+            <url>{{{rootUrl}}}/static/favicon.png</url>
+            <title>Ducode.org</title>
+            <link>{{{rootUrl}}}</link>
+        </image>
+        <language>en-US</language>
+        {{#posts}}
+        <item>
+            <title>{{title}}</title>
+            <link>{{{rootUrl}}}/posts/{{postKey}}</link>
+            <description>{{description}}</description>
+            <pubDate>{{formattedDateRss}}</pubDate>
+        </item>
+        {{/posts}}
+    </channel>
+</rss>

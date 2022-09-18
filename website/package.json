@@ -1,0 +1,20 @@
+{
+  "name": "ducodeportfolio",
+  "version": "1.0.0",
+  "description": "Duco's site",
+  "scripts": {
+    "build-site-dev": "node ./lib/build-site.js dev",
+    "build-site-prod": "node ./lib/build-site.js prod",
+    "new-post": "node ./scripts/new-post.js",
+    "serve": "npm run build-site-dev && http-server dist"
+  },
+  "author": "Duco Winterwerp",
+  "license": "ISC",
+  "devDependencies": {
+    "dayjs": "^1.10.7",
+    "fs-extra": "^10.0.0",
+    "http-server": "^14.0.0",
+    "marked": "^4.0.8",
+    "mustache": "^4.2.0"
+  }
+}
