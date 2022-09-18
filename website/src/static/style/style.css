@@ -8,11 +8,6 @@ img {
     max-width: 100%;
 }
 
-.portfolio {
-    width: 600px;
-    max-width: 100%;
-}
-
 a:link,
 a:active,
 a:hover,
@@ -62,6 +57,7 @@ h2 {
 .content {
     margin: 0 auto;
     text-align: justify;
+    padding: 10px;
 }
 
 @media (min-width: 576px) {
@@ -86,4 +82,14 @@ h2 {
     .content {
         width: 1100px;
     }
+}
+
+/* Home */
+.home .logo {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.home .logo img {
+    width: 350px;
 }
