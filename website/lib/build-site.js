@@ -4,6 +4,11 @@ const dayjs = require("dayjs");
 const marked = require("marked");
 const {renderTemplateAndWriteFile, renderTemplate} = require("./helper/template");
 
+const prodUrl = "https://httplaceholder.org";
+const postPrefix = "HttPlaceholder";
+const homePageTitle = "HttPlaceholder -  Quickly stub away any HTTP service";
+const tutorialsPageTitle = "HttPlaceholder - tutorials";
+
 const loadPosts = async () => {
     const postsPath = join(__dirname, "../src/posts");
     const posts = (await readdir(postsPath))
@@ -62,7 +67,7 @@ const loadPosts = async () => {
 (async () => {
     try {
         // Determine root URL.
-        const rootUrl = process.argv.length > 2 && process.argv[2] === "dev" ? "http://localhost:8080" : "https://ducode.org";
+        const rootUrl = process.argv.length > 2 && process.argv[2] === "dev" ? "http://localhost:8080" : prodUrl;
 
         const distPath = join(__dirname, "../dist");
         const srcPath = join(__dirname, "../src");
@@ -92,7 +97,7 @@ const loadPosts = async () => {
                 rootUrl
             });
             await renderTemplateAndWriteFile("template.html", postPath, {
-                pageTitle: `Ducode.org - ${post.title}`,
+                pageTitle: `${postPrefix} - ${post.title}`,
                 body: renderedBlogPost,
                 rootUrl
             });
@@ -106,7 +111,7 @@ const loadPosts = async () => {
             rootUrl
         });
         await renderTemplateAndWriteFile("template.html", indexPath, {
-            pageTitle: "Ducode.org - Duco: (web) developer from NL",
+            pageTitle: homePageTitle,
             body: renderedHomePage,
             rootUrl
         });
@@ -118,17 +123,10 @@ const loadPosts = async () => {
             rootUrl
         });
         await renderTemplateAndWriteFile("template.html", postsPagePath, {
-            pageTitle: "Ducode.org - blog posts",
+            pageTitle: tutorialsPageTitle,
             body: renderedPostsPage,
             rootUrl
         });
-
-        // Write RSS feed.
-        const feedPath = join(distPath, "feed.xml");
-        await renderTemplateAndWriteFile("feed.xml", feedPath, {
-            posts,
-            rootUrl
-        })
     } catch (e) {
         console.error(e);
         process.exit(1);

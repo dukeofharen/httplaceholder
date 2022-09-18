@@ -6,12 +6,24 @@
     <link rel="canonical" href="{{{rootUrl}}}"/>
     <link rel="stylesheet" type="text/css" href="{{{rootUrl}}}/static/style/style.css"/>
     <link rel="shortcut icon" type="image/png" href="{{{rootUrl}}}/static/favicon.png"/>
-    <link rel="alternate" type="application/rss+xml" title="Duco's blog" href="{{{rootUrl}}}/feed.xml" />
-    <script defer data-domain="ducode.org" src="https://stats.ducode.org/js/plausible.js"></script>
+    <script defer data-domain="httplaceholder.org" src="https://stats.ducode.org/js/plausible.js"></script>
 
     <title>{{pageTitle}}</title>
 </head>
 <body>
-{{{body}}}
+<nav class="main-nav">
+    <div class="logo">
+        <img src="{{{rootUrl}}}/static/img/logo_single.png" alt="HttPlaceholder" />
+    </div>
+    <div class="menu-items">
+        <a href="/">Home</a>
+        <a href="/download.html">Download</a>
+        <a href="/docs.html">Documentation</a>
+        <a href="/tutorials.html">Tutorials</a>
+    </div>
+</nav>
+<div class="content">
+    {{{body}}}
+</div>
 </body>
 </html>

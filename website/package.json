@@ -1,14 +1,14 @@
 {
-  "name": "ducodeportfolio",
+  "name": "httplaceholdersite",
   "version": "1.0.0",
-  "description": "Duco's site",
+  "description": "HttPlaceholder site",
   "scripts": {
     "build-site-dev": "node ./lib/build-site.js dev",
     "build-site-prod": "node ./lib/build-site.js prod",
     "new-post": "node ./scripts/new-post.js",
     "serve": "npm run build-site-dev && http-server dist"
   },
-  "author": "Duco Winterwerp",
+  "author": "dukeofharen",
   "license": "ISC",
   "devDependencies": {
     "dayjs": "^1.10.7",
