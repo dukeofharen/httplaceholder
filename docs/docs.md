@@ -125,7 +125,7 @@ The only thing needed to use HttPlaceholder on your local development machine, i
 Alternatively, to install HttPlaceholder on Linux, run the following command in your terminal (make sure you're running as administrator):
 
 ```bash
-sudo curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-linux.sh | sudo bash
+curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-linux.sh | bash
 ```
 
 This is a self contained version of HttPlaceholder: no SDK has to be installed to run it.
@@ -141,7 +141,7 @@ The only thing needed to use HttPlaceholder on your local development machine, i
 To install HttPlaceholder on Mac OS X, run the following command in your terminal (make sure you're running as administrator):
 
 ```bash
-sudo curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | sudo bash
+curl -o- https://raw.githubusercontent.com/dukeofharen/httplaceholder/master/scripts/install-mac.sh | bash
 ```
 
 This is a self contained version of HttPlaceholder: no SDK has to be installed to run it.
