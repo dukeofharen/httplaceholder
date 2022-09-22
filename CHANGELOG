@@ -2,7 +2,7 @@
 - If stub is executed, return "X-HttPlaceholder-ExecutedStub" header with stub ID (https://github.com/dukeofharen/httplaceholder/pull/269).
 - Show the configuration as "read only" values in the user interface (https://github.com/dukeofharen/httplaceholder/issues/261).
 - Fixed bug where "headersSize" in "request" in HAR can not be null (https://github.com/dukeofharen/httplaceholder/issues/271).
-- Install scripts does not have to be called as sudo (https://github.com/dukeofharen/httplaceholder/pull/272).
+- Install scripts do not have to be called as sudo (https://github.com/dukeofharen/httplaceholder/pull/272).
 
 [2022.9.3]
 - Fixed link to API docs (https://github.com/dukeofharen/httplaceholder/pull/256).
