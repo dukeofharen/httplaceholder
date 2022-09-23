@@ -19,8 +19,56 @@
             </li>
         </ul>
     </div>
-    
+
     <div class="getting-started">
-<!--         TODO installation & small demo -->
+        <h1>Getting started</h1>
+
+        <p>
+            Let's take a look at a short demo.
+        </p>
+
+        <ul>
+            <li>Install HttPlaceholder (see <a href="{{{rootUrl}}}/download.html">Download</a>).</li>
+            <li>Create a new .yaml file (e.g. <span><code>stub.yaml</code></span>).</li>
+            <li>
+                Copy and paste these contents in your new file:<br/>
+                <pre><code>
+- id: situation-01
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /users
+      query:
+        id:
+          equals: 12
+        filter:
+          equals: first_name
+  response:
+    statusCode: 200
+    text: |
+      {
+        "first_name": "John"
+      }
+    headers:
+      Content-Type: application/json
+                </code></pre>
+            </li>
+            <li>Open the terminal in the folder you've added the <code>stub.yaml</code> file and run the following
+                command: <code>httplaceholder</code>. HttPlaceholder will now start and will load the stubs in the
+                current folder.<br/><img src="{{{rootUrl}}}/static/img/httplaceholder_running.png"/>
+            </li>
+            <li>Perform a specific HTTP call to HttPlaceholder so your provided response will be returned.
+                <ul>
+                    <li>For Linux / Mac (cURL needs to be installed): <code>curl
+                        "http://localhost:5000/users?id=12&filter=first_name" -D-</code></li>
+                    <li>For Windows (uses Powershell): <code>(Invoke-WebRequest
+                        "http://localhost:5000/users?id=12&filter=first_name").RawContent</code></li>
+                </ul>
+            </li>
+            <li>You can view and inspect the performed requests in the user interface at http://localhost:5000/ph-ui.</li>
+        </ul>
+        
+        <p>For more sophisticated examples, go to the <a href="{{{rootUrl}}}/docs/index.html#samples">samples</a> to view samples for all supported HTTP condition checkers and response writers. Learn more about HttPlaceholder by reading the <a href="{{{rootUrl}}}/docs/index.html">documentation</a>.</p>
     </div>
 </div>
