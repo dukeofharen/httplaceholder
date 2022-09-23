@@ -8,6 +8,7 @@ const prodUrl = "https://httplaceholder.org";
 const postPrefix = "HttPlaceholder";
 const homePageTitle = "HttPlaceholder -  Quickly stub away any HTTP service";
 const tutorialsPageTitle = "HttPlaceholder - tutorials";
+const downloadsPageTitle = "HttPlaceholder - downloads";
 
 const loadPosts = async () => {
     const postsPath = join(__dirname, "../src/posts");
@@ -104,15 +105,24 @@ const loadPosts = async () => {
         }
 
         // Load and write home page.
-        const postCap = 5;
         const indexPath = join(distPath, "index.html");
         const renderedHomePage = await renderTemplate("index.html", {
-            posts: posts.slice(0, postCap),
             rootUrl
         });
         await renderTemplateAndWriteFile("template.html", indexPath, {
             pageTitle: homePageTitle,
             body: renderedHomePage,
+            rootUrl
+        });
+
+        // Load and write downloads page.
+        const downloadsPath = join(distPath, "download.html");
+        const renderedDownloadsPage = await renderTemplate("download.html", {
+            rootUrl
+        });
+        await renderTemplateAndWriteFile("template.html", downloadsPath, {
+            pageTitle: downloadsPageTitle,
+            body: renderedDownloadsPage,
             rootUrl
         });
 
