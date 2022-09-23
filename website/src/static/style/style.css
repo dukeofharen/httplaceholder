@@ -1,3 +1,35 @@
 .logo{
     height: 64px;
 }
+
+.home-logo {
+    display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    .home-logo.dark {
+        display: block;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .home-logo.light {
+        display: block;
+    }
+}
+
+.request-in-ui {
+    display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    .request-in-ui.dark {
+        display: block;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .request-in-ui.light {
+        display: block;
+    }
+}
