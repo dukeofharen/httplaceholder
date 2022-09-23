@@ -4,25 +4,28 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <link rel="canonical" href="{{{rootUrl}}}"/>
-    <link rel="stylesheet" type="text/css" href="{{{rootUrl}}}/static/style/style.css"/>
+        <link rel="stylesheet" type="text/css" href="{{{rootUrl}}}/static/style/style.css"/>
+    <link rel="stylesheet" type="text/css" href="{{{rootUrl}}}/static/style/pico.min.css"/>
     <link rel="shortcut icon" type="image/png" href="{{{rootUrl}}}/static/favicon.png"/>
     <script defer data-domain="httplaceholder.org" src="https://stats.ducode.org/js/plausible.js"></script>
 
     <title>{{pageTitle}}</title>
 </head>
 <body>
-<nav class="main-nav">
-    <div class="logo">
-        <img src="{{{rootUrl}}}/static/img/logo_single.png" alt="HttPlaceholder" />
-    </div>
-    <div class="menu-items">
-        <a href="/">Home</a>
-        <a href="/download.html">Download</a>
-        <a href="/docs.html">Documentation</a>
-        <a href="/tutorials.html">Tutorials</a>
-    </div>
+<nav class="container-fluid">
+    <ul>
+        <li><a href="{{{rootUrl}}}" aria-label="Back home">
+            <img src="{{{rootUrl}}}/static/img/logo_single.png" class="logo" alt="HttPlaceholder" />
+        </a></li>
+    </ul>
+    <ul>
+        <li><a href="{{{rootUrl}}}" class="secondary">Home</a></li>
+        <li><a href="{{{rootUrl}}}/download.html" class="secondary">Download</a></li>
+        <li><a href="{{{rootUrl}}}/docs" class="secondary">Documentation</a></li>
+        <li><a href="{{{rootUrl}}}/tutorials.html" class="secondary">Tutorials</a></li>
+    </ul>
 </nav>
-<div class="content">
+<div class="container">
     {{{body}}}
 </div>
 </body>
