@@ -33,3 +33,7 @@ html[data-theme="light"] .request-in-ui.light {
 #theme-switcher {
     cursor: pointer;
 }
+
+.footer {
+    text-align: center;
+}
