@@ -25,3 +25,11 @@ html[data-theme="dark"] .request-in-ui.dark {
 html[data-theme="light"] .request-in-ui.light {
     display: block;
 }
+
+.theme-switch {
+    display: none;
+}
+
+#theme-switcher {
+    cursor: pointer;
+}
