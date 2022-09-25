@@ -1,0 +1,8 @@
+HttPlaceholder lets you stub away any HTTP service you can think of. It's a labour of love by Duco (also going by the nicknames "Duke of Haren" and "Ducode" online).
+
+W      : https://httplaceholder.org
+         https://ducode.org
+E      : httplaceholder@ducode.org
+Twitter: https://twitter.com/ducodotnet
+GitHub : https://github.com/dukeofharen/httplaceholder
+Docker : https://hub.docker.com/r/dukeofharen/httplaceholder
