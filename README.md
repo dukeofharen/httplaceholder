@@ -65,6 +65,8 @@ HttPlaceholder:
 * can easily be hosted on any server.
 * can use many different HTTP condition checkers and response writers to make your HTTP stubs as specific as you need.
 
+Also visit the website: https://httplaceholder.org/
+
 ### Built With
 
 - [.NET 6](https://dotnet.microsoft.com/apps/aspnet)

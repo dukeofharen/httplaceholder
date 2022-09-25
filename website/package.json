@@ -1,0 +1,22 @@
+{
+  "name": "httplaceholdersite",
+  "version": "1.0.0",
+  "description": "HttPlaceholder site",
+  "scripts": {
+    "build-site-dev": "node ./lib/build-site.js dev",
+    "build-site-prod": "node ./lib/build-site.js prod",
+    "patch-docs": "node ./lib/patch-docs.js",
+    "new-post": "node ./scripts/new-post.js",
+    "serve": "npm run build-site-dev && http-server dist"
+  },
+  "author": "dukeofharen",
+  "license": "ISC",
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "dayjs": "^1.10.7",
+    "fs-extra": "^10.0.0",
+    "http-server": "^14.0.0",
+    "marked": "^4.0.8",
+    "mustache": "^4.2.0"
+  }
+}

@@ -1,0 +1,65 @@
+.logo {
+    max-height: 64px;
+}
+
+.home-logo {
+    display: none;
+}
+
+html[data-theme="dark"] .home-logo.dark {
+    display: block;
+}
+
+html[data-theme="light"] .home-logo.light {
+    display: block;
+}
+
+.request-in-ui {
+    display: none;
+}
+
+html[data-theme="dark"] .request-in-ui.dark {
+    display: block;
+}
+
+html[data-theme="light"] .request-in-ui.light {
+    display: block;
+}
+
+.theme-switch {
+    display: none;
+}
+
+#theme-switcher {
+    cursor: pointer;
+}
+
+.footer {
+    text-align: center;
+}
+
+.mt-1 {
+    margin-top: .25rem !important
+}
+
+.mt-2 {
+    margin-top: .5rem !important
+}
+
+.mt-3 {
+    margin-top: 1rem !important
+}
+
+.copyable-script {
+    position: relative;
+}
+.copyable-script pre > code {
+    padding-left: 42px;
+}
+
+.copyable-script .copy-icon {
+    position: absolute;
+    top: 22px;
+    left: 14px;
+    cursor: pointer;
+}
