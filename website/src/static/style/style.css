@@ -59,7 +59,12 @@ html[data-theme="light"] .request-in-ui.light {
 
 .copyable-script .copy-icon {
     position: absolute;
-    top: 22px;
+    top: 20px;
     left: 14px;
     cursor: pointer;
+}
+
+.download-icon {
+    position: relative;
+    bottom: 2px;
 }
