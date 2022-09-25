@@ -4,7 +4,8 @@ const dayjs = require("dayjs");
 const marked = require("marked");
 const {renderTemplateAndWriteFile, renderTemplate} = require("./helper/template");
 
-const prodUrl = "https://httplaceholder.org";
+const devUrl = "";
+const prodUrl = "";
 const postPrefix = "HttPlaceholder";
 const homePageTitle = "HttPlaceholder -  Quickly stub away any HTTP service";
 const tutorialsPageTitle = "HttPlaceholder - tutorials";
@@ -68,7 +69,7 @@ const loadPosts = async () => {
 (async () => {
     try {
         // Determine root URL.
-        const rootUrl = process.argv.length > 2 && process.argv[2] === "dev" ? "http://localhost:8080" : prodUrl;
+        const rootUrl = process.argv.length > 2 && process.argv[2] === "dev" ? devUrl : prodUrl;
 
         const distPath = join(__dirname, "../dist");
         const srcPath = join(__dirname, "../src");
