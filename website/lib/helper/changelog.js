@@ -3,7 +3,6 @@ const {readFile} = require("./file");
 const marked = require("marked");
 
 const finalizeVersions = (versions) => {
-    console.log(versions);
     versions = versions.filter(v => v.version !== "vnext");
     for (const version of versions) {
         const rawContents = version.lines.join("\n").trim();
