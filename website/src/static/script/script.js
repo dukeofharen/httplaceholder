@@ -46,6 +46,7 @@ function switchTheme(theme) {
     }
 
     html.setAttribute("data-theme", newTheme);
+    localStorage.theme = newTheme;
 
     const themeSwitcherIcons = document.getElementsByClassName("theme-switch");
     for (let i = 0, max = themeSwitcherIcons.length; i < max; i++) {
@@ -72,7 +73,7 @@ function setupCopyableScripts() {
 }
 
 window.addEventListener('DOMContentLoaded', function () {
-    const theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? themeType.dark : themeType.light;
+    let theme = localStorage.theme ? localStorage.theme : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? themeType.dark : themeType.light;
     switchTheme(theme);
 
     const themeSwitcherButton = document.getElementById("theme-switcher");
