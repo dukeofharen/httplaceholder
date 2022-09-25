@@ -4,4 +4,7 @@ set -u
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 bash $DIR/build.sh
-scp -r $DIR/../dist/* budgetkar@budgetkar.nl:/var/www/httplaceholder.org
+
+echo "Provide SSH port:"
+read PORT
+scp -P $PORT -r $DIR/../dist/* httplaceholder@httplaceholder.org:/var/www/httplaceholder.org
