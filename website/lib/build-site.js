@@ -29,7 +29,7 @@ const changelogPageTitle = "HttPlaceholder - changelog";
         await ensureDir(distPath);
 
         // Copy static files to dist.
-        await copy(staticPath, join(distPath, "static"));
+        await copy(`${staticPath}/.`, distPath);
 
         // Load and write posts.
         const posts = await loadPosts();
