@@ -5,7 +5,7 @@
   "scripts": {
     "build-site-dev": "node ./lib/build-site.js dev",
     "build-site-prod": "node ./lib/build-site.js prod",
-    "add-plausible-to-docs": "node ./lib/add-plausible-to-docs.js",
+    "patch-docs": "node ./lib/patch-docs.js",
     "new-post": "node ./scripts/new-post.js",
     "serve": "npm run build-site-dev && http-server dist"
   },

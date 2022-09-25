@@ -23,4 +23,4 @@ cp -r "$DOCS_DIST_DIR/." "$SITE_DIST_DIR/docs"
 
 # Add Plausible script to docs
 cd $DIR
-npm run add-plausible-to-docs
+npm run patch-docs
