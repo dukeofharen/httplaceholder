@@ -1,7 +1,8 @@
 const {join} = require("path");
 const {exists, remove, ensureDir, copy} = require("./helper/file");
-const {renderTemplateAndWriteFile, renderTemplate} = require("./helper/template");
-const loadPosts = require("./loadPosts")
+const {renderPage} = require("./helper/template");
+const loadPosts = require("./helper/loadPosts");
+const parseChangelog = require("./helper/changelog");
 
 const devUrl = "";
 const prodUrl = "";
@@ -9,20 +10,7 @@ const postPrefix = "HttPlaceholder";
 const homePageTitle = "HttPlaceholder -  Quickly stub away any HTTP service";
 const tutorialsPageTitle = "HttPlaceholder - tutorials";
 const downloadsPageTitle = "HttPlaceholder - downloads";
-
-const renderPage = async (distPath, rootUrl, htmlFileName, htmlDistFileName, pageTitle, extraProperties) => {
-    const htmlDestinationPath = join(distPath, htmlDistFileName);
-    let properties = {
-        pageTitle: pageTitle,
-        rootUrl
-    };
-    if (extraProperties) {
-        properties = Object.assign(properties, extraProperties)
-    }
-    
-    properties.body = await renderTemplate(htmlFileName, properties);
-    await renderTemplateAndWriteFile("template.html", htmlDestinationPath, properties);
-}
+const changelogPageTitle = "HttPlaceholder - changelog";
 
 (async () => {
     try {
@@ -49,7 +37,7 @@ const renderPage = async (distPath, rootUrl, htmlFileName, htmlDistFileName, pag
         for (const post of posts) {
             const postFolderPath = join(postsPath, post.postKey);
             await ensureDir(postFolderPath);
-            
+
             await renderPage(postFolderPath, rootUrl, "blog.html", "index.html", `${postPrefix} - ${post.title}`, {
                 title: post.title,
                 contents: post.markdown,
@@ -60,7 +48,12 @@ const renderPage = async (distPath, rootUrl, htmlFileName, htmlDistFileName, pag
         // Load and write pages.
         await renderPage(distPath, rootUrl, "index.html", "index.html", homePageTitle);
         await renderPage(distPath, rootUrl, "download.html", "download.html", downloadsPageTitle);
-        await renderPage(postsPath, rootUrl, "posts.html", "index.html", tutorialsPageTitle, {posts});
+        if (posts.length) {
+            await renderPage(postsPath, rootUrl, "posts.html", "index.html", tutorialsPageTitle, {posts});
+        }
+        
+        const changelog = await parseChangelog();
+        await renderPage(distPath, rootUrl, "changelog.html", "changelog.html", changelogPageTitle, {changelog})
     } catch (e) {
         console.error(e);
         process.exit(1);

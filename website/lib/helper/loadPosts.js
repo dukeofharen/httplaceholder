@@ -1,10 +1,10 @@
 const {join} = require("path");
-const {readdir, readFile} = require("./helper/file");
+const {readdir, readFile} = require("./file");
 const dayjs = require("dayjs");
 const marked = require("marked");
 
 const loadPosts = async () => {
-    const postsPath = join(__dirname, "../src/posts");
+    const postsPath = join(__dirname, "../../src/posts");
     const posts = (await readdir(postsPath))
         .filter(f => f.endsWith(".md"));
     const result = [];

@@ -15,7 +15,22 @@ const renderTemplateAndWriteFile = async (templateName, destinationPath, options
     await writeFile(destinationPath, renderedTemplate);
 };
 
+const renderPage = async (distPath, rootUrl, htmlFileName, htmlDistFileName, pageTitle, extraProperties) => {
+    const htmlDestinationPath = join(distPath, htmlDistFileName);
+    let properties = {
+        pageTitle: pageTitle,
+        rootUrl
+    };
+    if (extraProperties) {
+        properties = Object.assign(properties, extraProperties)
+    }
+
+    properties.body = await renderTemplate(htmlFileName, properties);
+    await renderTemplateAndWriteFile("template.html", htmlDestinationPath, properties);
+}
+
 module.exports = {
     renderTemplate,
-    renderTemplateAndWriteFile
+    renderTemplateAndWriteFile,
+    renderPage
 };
