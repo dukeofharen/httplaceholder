@@ -25,6 +25,10 @@ function switchTheme(theme) {
     themeIconElement.style.display = "inline";
 }
 
+function setupCopyableScripts() {
+    
+}
+
 window.addEventListener('DOMContentLoaded', function () {
     const theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? themeType.dark : themeType.light;
     switchTheme(theme);
@@ -32,5 +36,5 @@ window.addEventListener('DOMContentLoaded', function () {
     const themeSwitcherButton = document.getElementById("theme-switcher");
     themeSwitcherButton.addEventListener("click", function() {
         switchTheme();
-    })
+    });
 });

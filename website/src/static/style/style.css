@@ -49,3 +49,17 @@ html[data-theme="light"] .request-in-ui.light {
 .mt-3 {
     margin-top: 1rem !important
 }
+
+.copyable-script {
+    position: relative;
+}
+.copyable-script pre > code {
+    padding-left: 42px;
+}
+
+.copyable-script .copy-icon {
+    position: absolute;
+    top: 22px;
+    left: 14px;
+    cursor: pointer;
+}
