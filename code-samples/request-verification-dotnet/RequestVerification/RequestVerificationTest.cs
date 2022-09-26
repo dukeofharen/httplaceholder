@@ -1,0 +1,104 @@
+using System.Net;
+using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Containers;
+using HttPlaceholder.Client;
+using HttPlaceholder.Client.Configuration;
+using HttPlaceholder.Client.StubBuilders;
+
+namespace RequestVerification;
+
+[TestClass]
+public class RequestVerificationTest
+{
+    [TestMethod]
+    public async Task TestRequestVerification()
+    {
+        // Start a HttPlaceholder Docker container.
+        // Make sure you can execute Docker on your system without sudo, or else the container can't start.
+        await using var testcontainers = BuildTestContainer();
+        await testcontainers.StartAsync();
+
+        // Create a HttPlaceholder client instance.
+        var client = HttPlaceholderClientFactory.CreateHttPlaceholderClient(new HttPlaceholderClientConfiguration
+        {
+            RootUrl = "http://localhost:1337"
+        });
+
+        // Create a stub.
+        var stub = StubBuilder.Begin()
+            .WithId("some-stub-id")
+            .WithConditions(StubConditionBuilder.Begin()
+                .WithHttpMethod(HttpMethod.Get)
+                .WithPath("/someUrl")
+                .WithQueryStringParameter("queryParam", StringCheckingDtoBuilder.Begin().StringEquals("someValue")))
+            .WithResponse(StubResponseBuilder.Begin()
+                .WithTextResponseBody("This is the response!"))
+            .Build();
+        await client.CreateStubAsync(stub);
+
+        // Perform a request.
+        var httpClient = new HttpClient();
+        using var response = await httpClient.GetAsync("http://localhost:1337/someUrl?queryParam=someValue");
+        response.EnsureSuccessStatusCode();
+        var contents = await response.Content.ReadAsStringAsync();
+
+        // Assert response text.
+        Assert.AreEqual("This is the response!", contents);
+
+        // Now, let's verify through the API a request for the specific stub has been called.
+        var requests = await client.GetRequestsByStubIdAsync("some-stub-id");
+        Assert.AreEqual(1, requests.Count());
+    }
+
+    [TestMethod]
+    public async Task TestRequestVerification_VerificationFails()
+    {
+        // Start a HttPlaceholder Docker container.
+        // Make sure you can execute Docker on your system without sudo, or else the container can't start.
+        await using var testcontainers = BuildTestContainer();
+        await testcontainers.StartAsync();
+
+        // Create a HttPlaceholder client instance.
+        var client = HttPlaceholderClientFactory.CreateHttPlaceholderClient(
+            new HttPlaceholderClientConfiguration
+            {
+                RootUrl = "http://localhost:1337"
+            });
+
+        // Create a stub.
+        var stub = StubBuilder.Begin()
+            .WithId("some-stub-id")
+            .WithConditions(StubConditionBuilder.Begin()
+                .WithHttpMethod(HttpMethod.Get)
+                .WithPath("/someUrl")
+                .WithQueryStringParameter("queryParam",
+                    StringCheckingDtoBuilder.Begin().StringEquals("someValue")))
+            .WithResponse(StubResponseBuilder.Begin()
+                .WithTextResponseBody("This is the response!"))
+            .Build();
+        await client.CreateStubAsync(stub);
+
+        // Perform a request.
+        var httpClient = new HttpClient();
+        using var response = await httpClient.GetAsync("http://localhost:1337/someUrl?queryParam=wrongValue");
+
+        // Assert status code.
+        // Since we called the request incorrectly, it should return HTTP 501.
+        Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
+
+        // Now, let's verify through the API a request for the specific stub has NOT been called.
+        var requests = await client.GetRequestsByStubIdAsync("some-stub-id");
+        Assert.AreEqual(0, requests.Count());
+    }
+
+    private static TestcontainersContainer BuildTestContainer()
+    {
+        return new TestcontainersBuilder<TestcontainersContainer>()
+            .WithImage("dukeofharen/httplaceholder:2022.9.3.59")
+            .WithName("httplaceholder")
+            .WithPortBinding(1337, 5000)
+            .WithExposedPort(5000)
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5000))
+            .Build();
+    }
+}
