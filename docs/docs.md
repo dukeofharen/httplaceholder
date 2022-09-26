@@ -2679,7 +2679,7 @@ On the settings page you can configure all kinds of settings for HttPlaceholder 
 ## HttPlaceholder REST API client for .NET
 
 There is a NuGet package available for HttPlaceholder. You can find this client
-here: https://www.nuget.org/packages/HttPlaceholder.Client/.
+here: <https://www.nuget.org/packages/HttPlaceholder.Client/>.
 
 ### General
 
