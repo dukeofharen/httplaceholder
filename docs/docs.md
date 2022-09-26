@@ -387,8 +387,9 @@ Under the "conditions" element, you describe how the request should look like. I
       Content-Type: application/json
 ```
 
-This example uses both conditions. This means that when:
-- The URL path contains "/users"
+This means that when:
+
+- The URL path equals "/users"
 - A query string with name "id" and value "15" is sent.
 - A query string with name "filter" and value "last_name" is sent.
 
@@ -2776,5 +2777,6 @@ var createdStub = await client.CreateStubAsync(StubBuilder.Begin()
 This method is a bit shorter and is more readable.              
 
 ---
+
 
 &copy; 2022 [Ducode.org](https://ducode.org) | [HttPlaceholder.org](https://httplaceholder.org)
