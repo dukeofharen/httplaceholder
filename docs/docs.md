@@ -2681,6 +2681,7 @@ On the settings page you can configure all kinds of settings for HttPlaceholder 
 There is a NuGet package available for HttPlaceholder. You can find this client
 here: <https://www.nuget.org/packages/HttPlaceholder.Client/>.
 
+
 ### General
 
 This client was built from the ground up. It exposes methods for easily adding the HttPlaceholder client to
@@ -2762,12 +2763,14 @@ verbose very quick, another way of adding stubs with the client has been added: 
 builder which can also be used to create new stubs. Here is the same example, but now with using the StubBuilder:
 
 ```c#
+using static HttPlaceholder.Client.Utilities.DtoExtensions;
+
 ...
 var createdStub = await client.CreateStubAsync(StubBuilder.Begin()
     .WithId("test-stub-123")
     .WithConditions(StubConditionBuilder.Begin()
         .WithHttpMethod(HttpMethod.Get)
-        .WithPath("/test-path"))
+        .WithPath(StringEquals("/test-path"))
     .WithResponse(StubResponseBuilder.Begin()
         .WithHttpStatusCode(HttpStatusCode.Ok)
         .WithJsonBody(new {key1 = "val1", key2 = "val2"})));
@@ -2777,6 +2780,5 @@ var createdStub = await client.CreateStubAsync(StubBuilder.Begin()
 This method is a bit shorter and is more readable.              
 
 ---
-
 
 &copy; 2022 [Ducode.org](https://ducode.org) | [HttPlaceholder.org](https://httplaceholder.org)
