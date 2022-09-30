@@ -4,6 +4,8 @@ using DotNet.Testcontainers.Containers;
 using HttPlaceholder.Client;
 using HttPlaceholder.Client.Configuration;
 using HttPlaceholder.Client.StubBuilders;
+using static HttPlaceholder.Client.Utilities.DtoExtensions;
+using static HttPlaceholder.Client.Verification.Dto.TimesModel;
 
 namespace RequestVerification;
 
@@ -30,7 +32,7 @@ public class RequestVerificationTest
             .WithConditions(StubConditionBuilder.Begin()
                 .WithHttpMethod(HttpMethod.Get)
                 .WithPath("/someUrl")
-                .WithQueryStringParameter("queryParam", StringCheckingDtoBuilder.Begin().StringEquals("someValue")))
+                .WithQueryStringParameter("queryParam", StringEquals("someValue")))
             .WithResponse(StubResponseBuilder.Begin()
                 .WithTextResponseBody("This is the response!"))
             .Build();
@@ -46,8 +48,7 @@ public class RequestVerificationTest
         Assert.AreEqual("This is the response!", contents);
 
         // Now, let's verify through the API a request for the specific stub has been called.
-        var requests = await client.GetRequestsByStubIdAsync("some-stub-id");
-        Assert.AreEqual(1, requests.Count());
+        (await client.VerifyStubCalledAsync("some-stub-id", ExactlyOnce(), DateTime.UtcNow.AddSeconds(-10))).EnsureVerificationPassed();
     }
 
     [TestMethod]
@@ -87,8 +88,7 @@ public class RequestVerificationTest
         Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
 
         // Now, let's verify through the API a request for the specific stub has NOT been called.
-        var requests = await client.GetRequestsByStubIdAsync("some-stub-id");
-        Assert.AreEqual(0, requests.Count());
+        (await client.VerifyStubCalledAsync("some-stub-id", Never(), DateTime.UtcNow.AddSeconds(-10))).EnsureVerificationPassed();
     }
 
     private static TestcontainersContainer BuildTestContainer()
