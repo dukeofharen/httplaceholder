@@ -17,6 +17,16 @@ public class TimesModelFacts
     }
 
     [TestMethod]
+    public void ExactlyOnce_HappyFlow()
+    {
+        // Act
+        var result = ExactlyOnce();
+
+        // Assert
+        Assert.AreEqual(1, result.ExactHits);
+    }
+
+    [TestMethod]
     public void AtLeastOnce_HappyFlow()
     {
         // Act
@@ -73,5 +83,20 @@ public class TimesModelFacts
 
         // Assert
         Assert.AreEqual(input, result.MaxHits);
+    }
+
+    [TestMethod]
+    public void Between_HappyFlow()
+    {
+        // Arrange
+        var atLeast = 2;
+        var atMost = 3;
+
+            // Act
+            var result = Between(atLeast, atMost);
+
+        // Assert
+        Assert.AreEqual(atLeast, result.MinHits);
+        Assert.AreEqual(atMost, result.MaxHits);
     }
 }

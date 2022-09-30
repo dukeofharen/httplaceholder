@@ -26,6 +26,11 @@ public class TimesModel
     public static TimesModel Never() => new() {ExactHits = 0};
 
     /// <summary>
+    /// The stub should have been hit exactly once.
+    /// </summary>
+    public static TimesModel ExactlyOnce() => new() {ExactHits = 1};
+
+    /// <summary>
     /// The stub should have been hit at least once.
     /// </summary>
     public static TimesModel AtLeastOnce() => new() {MinHits = 1};
@@ -49,4 +54,9 @@ public class TimesModel
     /// The stub should have at most been hit this amount of times.
     /// </summary>
     public static TimesModel AtMost(int atMost) => new() {MaxHits = atMost};
+
+    /// <summary>
+    /// The stub should have been hit between these 2 numbers.
+    /// </summary>
+    public static TimesModel Between(int atLeast, int atMost) => new() {MinHits = atLeast, MaxHits = atMost};
 }
