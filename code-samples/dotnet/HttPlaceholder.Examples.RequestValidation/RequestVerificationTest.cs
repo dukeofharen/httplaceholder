@@ -7,7 +7,9 @@ using HttPlaceholder.Client.StubBuilders;
 using static HttPlaceholder.Client.Utilities.DtoExtensions;
 using static HttPlaceholder.Client.Verification.Dto.TimesModel;
 
-namespace RequestVerification;
+namespace HttPlaceholder.Examples.RequestValidation;
+
+// TODO add docs to docs.md about verification
 
 [TestClass]
 public class RequestVerificationTest
