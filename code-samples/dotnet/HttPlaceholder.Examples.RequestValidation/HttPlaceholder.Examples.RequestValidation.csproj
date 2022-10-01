@@ -17,4 +17,8 @@
         <PackageReference Include="Testcontainers" Version="2.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\HttPlaceholder.Client\HttPlaceholder.Client.csproj" />
+    </ItemGroup>
+
 </Project>

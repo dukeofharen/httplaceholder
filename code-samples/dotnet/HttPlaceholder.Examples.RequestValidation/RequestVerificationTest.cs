@@ -48,7 +48,7 @@ public class RequestVerificationTest
         Assert.AreEqual("This is the response!", contents);
 
         // Now, let's verify through the API a request for the specific stub has been called.
-        (await client.VerifyStubCalledAsync("some-stub-id", ExactlyOnce(), DateTime.UtcNow.AddSeconds(-10))).EnsureVerificationPassed();
+        await client.VerifyStubCalledAsync("some-stub-id", ExactlyOnce(), DateTime.UtcNow.AddSeconds(-10));
     }
 
     [TestMethod]
@@ -88,7 +88,7 @@ public class RequestVerificationTest
         Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
 
         // Now, let's verify through the API a request for the specific stub has NOT been called.
-        (await client.VerifyStubCalledAsync("some-stub-id", Never(), DateTime.UtcNow.AddSeconds(-10))).EnsureVerificationPassed();
+        await client.VerifyStubCalledAsync("some-stub-id", Never(), DateTime.UtcNow.AddSeconds(-10));
     }
 
     private static TestcontainersContainer BuildTestContainer()
