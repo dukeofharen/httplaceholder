@@ -23,16 +23,4 @@ public class VerificationResultModel
     /// Gets or sets the requests.
     /// </summary>
     public IEnumerable<RequestResultDto> Requests { get; set; }
-
-    /// <summary>
-    /// Throws a <see cref="StubVerificationFailedException"/> when the validation failed; nothing otherwise.
-    /// </summary>
-    /// <exception cref="StubVerificationFailedException">Thrown when the validation failed.</exception>
-    public void EnsureVerificationPassed()
-    {
-        if (!Passed)
-        {
-            throw new StubVerificationFailedException(Message);
-        }
-    }
 }

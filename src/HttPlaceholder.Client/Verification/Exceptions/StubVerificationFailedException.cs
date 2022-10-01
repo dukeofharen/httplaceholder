@@ -1,4 +1,5 @@
 ﻿using System;
+using HttPlaceholder.Client.Verification.Dto;
 
 namespace HttPlaceholder.Client.Verification.Exceptions;
 
@@ -10,7 +11,13 @@ public class StubVerificationFailedException : Exception
     /// <summary>
     /// Constructs a <see cref="StubVerificationFailedException"/> instance.
     /// </summary>
-    public StubVerificationFailedException(string message) : base(message)
+    public StubVerificationFailedException(string message, VerificationResultModel resultModel) : base(message)
     {
+        VerificationResultModel = resultModel;
     }
+
+    /// <summary>
+    /// Gets or sets the verification result.
+    /// </summary>
+    public VerificationResultModel VerificationResultModel { get; }
 }

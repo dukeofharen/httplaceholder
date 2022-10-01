@@ -15,6 +15,7 @@ using HttPlaceholder.Client.Dto.Users;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.StubBuilders;
 using HttPlaceholder.Client.Verification.Dto;
+using HttPlaceholder.Client.Verification.Exceptions;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Client.Implementations;
@@ -600,12 +601,16 @@ public class HttPlaceholderClient : IHttPlaceholderClient
             }
         }
 
-        var validationMessage = validationMessages.Any()
-            ? $"Validation failed. {string.Join(" ", validationMessages)}"
-            : string.Empty;
-        return new VerificationResultModel
+        var passed = !validationMessages.Any();
+        var validationMessage = passed
+            ? string.Empty
+            : $"Validation failed. {string.Join(" ", validationMessages)}";
+        var result = new VerificationResultModel {Message = validationMessage, Passed = passed, Requests = requests};
+        if (!passed)
         {
-            Message = validationMessage, Passed = !validationMessages.Any(), Requests = requests
-        };
+            throw new StubVerificationFailedException(validationMessage, result);
+        }
+
+        return result;
     }
 }
