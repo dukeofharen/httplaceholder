@@ -1,6 +1,6 @@
 const {join} = require("path");
 const {exists, remove, ensureDir, copy} = require("./helper/file");
-const {renderPage} = require("./helper/template");
+const {renderPage, render} = require("./helper/template");
 const loadPosts = require("./helper/loadPosts");
 const parseChangelog = require("./helper/changelog");
 
@@ -54,7 +54,8 @@ const changelogPageTitle = "HttPlaceholder - changelog";
         }
 
         const changelog = await parseChangelog();
-        await renderPage(distPath, rootUrl, "changelog.html", "changelog.html", changelogPageTitle, {changelog})
+        await renderPage(distPath, rootUrl, "changelog.html", "changelog.html", changelogPageTitle, {changelog});
+        await render(distPath, rootUrl, "sitemap.xml", "sitemap.xml", {posts});
     } catch (e) {
         console.error(e);
         process.exit(1);

@@ -43,6 +43,7 @@ const loadPosts = async () => {
             formattedDate: date.format("YYYY-MM-DD HH:mm"),
             formattedDateShort: date.format("MMM DD 'YY"),
             formattedDateRss: date.format("ddd, DD MMM YYYY"),
+            formattedDateSitemap: date.format("YYYY-MM-DD"),
             cleanedPost,
             markdown: marked.marked(cleanedPost)
         })
