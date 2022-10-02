@@ -9,16 +9,12 @@ using static HttPlaceholder.Client.Verification.Dto.TimesModel;
 
 namespace HttPlaceholder.Examples.RequestValidation;
 
-// TODO add docs to docs.md about verification
-
 [TestClass]
 public class RequestVerificationTest
 {
     [TestMethod]
     public async Task TestRequestVerification()
     {
-        // Start a HttPlaceholder Docker container.
-        // Make sure you can execute Docker on your system without sudo, or else the container can't start.
         await using var testcontainers = BuildTestContainer();
         await testcontainers.StartAsync();
 
@@ -56,8 +52,7 @@ public class RequestVerificationTest
     [TestMethod]
     public async Task TestRequestVerification_VerificationFails()
     {
-        // Start a HttPlaceholder Docker container.
-        // Make sure you can execute Docker on your system without sudo, or else the container can't start.
+        
         await using var testcontainers = BuildTestContainer();
         await testcontainers.StartAsync();
 
@@ -95,6 +90,8 @@ public class RequestVerificationTest
 
     private static TestcontainersContainer BuildTestContainer()
     {
+        // Start a HttPlaceholder Docker container.
+        // Make sure you can execute Docker on your system without sudo, or else the container can't start.
         return new TestcontainersBuilder<TestcontainersContainer>()
             .WithImage("dukeofharen/httplaceholder:2022.9.3.59")
             .WithName("httplaceholder")

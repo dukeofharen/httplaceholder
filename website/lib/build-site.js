@@ -33,6 +33,7 @@ const changelogPageTitle = "HttPlaceholder - changelog";
 
         // Load and write posts.
         const posts = await loadPosts();
+        const homepagePosts = posts.slice(0, 5);
         const postsPath = join(distPath, "posts");
         for (const post of posts) {
             const postFolderPath = join(postsPath, post.postKey);
@@ -46,12 +47,12 @@ const changelogPageTitle = "HttPlaceholder - changelog";
         }
 
         // Load and write pages.
-        await renderPage(distPath, rootUrl, "index.html", "index.html", homePageTitle);
+        await renderPage(distPath, rootUrl, "index.html", "index.html", homePageTitle, {posts: homepagePosts, hasPosts: !!homepagePosts.length});
         await renderPage(distPath, rootUrl, "download.html", "download.html", downloadsPageTitle);
         if (posts.length) {
             await renderPage(postsPath, rootUrl, "posts.html", "index.html", tutorialsPageTitle, {posts});
         }
-        
+
         const changelog = await parseChangelog();
         await renderPage(distPath, rootUrl, "changelog.html", "changelog.html", changelogPageTitle, {changelog})
     } catch (e) {

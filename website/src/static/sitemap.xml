@@ -19,6 +19,12 @@
         <priority>0.7</priority>
     </url>
     <url>
+        <loc>https://httplaceholder.org/posts</loc>
+        <lastmod>2022-10-02</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
         <loc>https://httplaceholder.org/changelog.html</loc>
         <lastmod>2022-09-25</lastmod>
         <changefreq>weekly</changefreq>

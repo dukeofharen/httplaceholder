@@ -73,3 +73,15 @@
         samples for all supported HTTP condition checkers and response writers. Learn more about HttPlaceholder by
         reading the <a href="{{{rootUrl}}}/docs/index.html">documentation</a>.</p>
 </div>
+
+{{#hasPosts}}
+<div class="blog-items">
+    <h2>Posts / tutorials</h2>
+    <ul>
+    {{#posts}}
+    <li><a href="{{{rootUrl}}}/posts/{{postKey}}">{{title}}</a> ({{formattedDateShort}})</li>
+    {{/posts}}
+    </ul>
+    <a href="{{rootUrl}}/posts">More posts</a>
+</div>
+{{/hasPosts}}
