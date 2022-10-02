@@ -2779,6 +2779,34 @@ var createdStub = await client.CreateStubAsync(StubBuilder.Begin()
 
 This method is a bit shorter and is more readable.              
 
+#### Stub request validation
+
+It is possible to verify if a certain stub has been hit by a request. The verification method on the client has several overloads which you can use to more broadly or more specifically verify a a stub. The most basic method you can call is this one:
+
+```c#
+await client.VerifyStubCalledAsync("stub-id-to-be-checked");
+```
+
+Whenever at least one request for this specific stub was made, the method continues like normal. When no requests were made, an exception will be thrown with more details.
+
+Another overload allows you to specify the number of times a request should have been hit. The example below checks if the stub has been hit exactly 3 times. The `TimesModel` class contains more static methods you can use to specify the amount of times a stub should have been hit (or you can instantiate your own TimesModel if you prefer to do so).
+
+```c#
+await client.VerifyStubCalledAsync("stub-id-to-be-checked", TimesModel.Exactly(3));
+```
+
+Another overload allows you to specify the earliest time the request for a specific stub should been hit. Take a look at the example below. With this verification call, ONLY stubs that are made between now and 10 seconds ago (it is very important to use `UtcNow`, because that's how HttPlaceholder stores the timestamps of the request) are taken into consideration.
+
+```c#
+await client.VerifyStubCalledAsync("stub-id-to-be-checked", DateTime.UtcNow.AddSeconds(-10));
+```
+
+The last overload is a combination of all the overloads, so you can specify the stub ID, number of times the stub should have been hit and the earliest time the request should have been made.
+
+```c#
+await client.VerifyStubCalledAsync("stub-id-to-be-checked", TimesModel.ExactlyOnce(), DateTime.UtcNow.AddSeconds(-10));
+```
+
 ---
 
 &copy; 2022 [Ducode.org](https://ducode.org) | [HttPlaceholder.org](https://httplaceholder.org)
