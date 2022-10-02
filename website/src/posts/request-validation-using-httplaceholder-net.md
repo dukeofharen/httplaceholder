@@ -16,7 +16,7 @@ The code can be found [here](https://github.com/dukeofharen/httplaceholder/blob/
 
 ## Setting up the container
 
-The following code makes sure to start a Docker container with HttPlaceholder and maps the application to port `1337.`
+The following code makes sure to start a Docker container with HttPlaceholder and maps the application to port `1337`.
 
 ```c#
 var container = new TestcontainersBuilder<TestcontainersContainer>()
