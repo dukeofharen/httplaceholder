@@ -8,6 +8,7 @@ using HttPlaceholder.Client.Dto.Scenarios;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.StubBuilders;
 using Microsoft.Extensions.DependencyInjection;
+using static HttPlaceholder.Client.Utilities.DtoExtensions;
 
 namespace HttPlaceholder.Client.Examples;
 
@@ -61,7 +62,7 @@ internal static class Program
                 .WithId("test-stub-124")
                 .WithTenant("tenant1")
                 .WithConditions(StubConditionBuilder.Begin()
-                    .WithPath(StringCheckingDtoBuilder.Begin().StringEquals("/test-path"))
+                    .WithPath(StringEquals("/test-path"))
                     .WithHttpMethod(HttpMethod.Get))
                 .WithResponse(StubResponseBuilder.Begin()
                     .WithJsonBody(new {key1 = "val1", key2 = "val2"})));

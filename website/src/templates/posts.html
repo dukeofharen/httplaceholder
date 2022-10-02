@@ -1,5 +1,10 @@
-<div class="portfolio">
-    {{#posts}}
-    <h2><a href="{{{rootUrl}}}/posts/{{postKey}}">{{title}}</a> ({{formattedDateShort}})</h2>
-    {{/posts}}
+<div class="posts">
+    <h1>Posts and tutorials</h1>
+    <div class="blog-items">
+        <ul>
+            {{#posts}}
+            <li><a href="{{{rootUrl}}}/posts/{{postKey}}">{{title}}</a> ({{formattedDateShort}})</li>
+            {{/posts}}
+        </ul>
+    </div>
 </div>

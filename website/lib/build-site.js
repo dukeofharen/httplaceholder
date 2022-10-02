@@ -1,6 +1,6 @@
 const {join} = require("path");
 const {exists, remove, ensureDir, copy} = require("./helper/file");
-const {renderPage} = require("./helper/template");
+const {renderPage, render} = require("./helper/template");
 const loadPosts = require("./helper/loadPosts");
 const parseChangelog = require("./helper/changelog");
 
@@ -33,6 +33,7 @@ const changelogPageTitle = "HttPlaceholder - changelog";
 
         // Load and write posts.
         const posts = await loadPosts();
+        const homepagePosts = posts.slice(0, 5);
         const postsPath = join(distPath, "posts");
         for (const post of posts) {
             const postFolderPath = join(postsPath, post.postKey);
@@ -46,14 +47,15 @@ const changelogPageTitle = "HttPlaceholder - changelog";
         }
 
         // Load and write pages.
-        await renderPage(distPath, rootUrl, "index.html", "index.html", homePageTitle);
+        await renderPage(distPath, rootUrl, "index.html", "index.html", homePageTitle, {posts: homepagePosts, hasPosts: !!homepagePosts.length});
         await renderPage(distPath, rootUrl, "download.html", "download.html", downloadsPageTitle);
         if (posts.length) {
             await renderPage(postsPath, rootUrl, "posts.html", "index.html", tutorialsPageTitle, {posts});
         }
-        
+
         const changelog = await parseChangelog();
-        await renderPage(distPath, rootUrl, "changelog.html", "changelog.html", changelogPageTitle, {changelog})
+        await renderPage(distPath, rootUrl, "changelog.html", "changelog.html", changelogPageTitle, {changelog});
+        await render(distPath, rootUrl, "sitemap.xml", "sitemap.xml", {posts});
     } catch (e) {
         console.error(e);
         process.exit(1);

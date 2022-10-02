@@ -1,3 +1,7 @@
+h1, h2 {
+    margin-bottom: 10px !important;
+}
+
 .logo {
     max-height: 64px;
 }
@@ -53,6 +57,7 @@ html[data-theme="light"] .request-in-ui.light {
 .copyable-script {
     position: relative;
 }
+
 .copyable-script pre > code {
     padding-left: 42px;
 }
@@ -67,4 +72,13 @@ html[data-theme="light"] .request-in-ui.light {
 .download-icon {
     position: relative;
     bottom: 2px;
+}
+
+.blog-items ul {
+    padding-left: 0;
+}
+
+.blog-items ul li {
+    list-style: none;
+    font-size: 1.2em;
 }

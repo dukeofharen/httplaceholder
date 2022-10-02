@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -13,6 +14,8 @@ using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Dto.Users;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.StubBuilders;
+using HttPlaceholder.Client.Verification.Dto;
+using HttPlaceholder.Client.Verification.Exceptions;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Client.Implementations;
@@ -550,5 +553,64 @@ public class HttPlaceholderClient : IHttPlaceholderClient
         }
 
         return JsonConvert.DeserializeObject<IEnumerable<ConfigurationDto>>(content);
+    }
+
+    /// <inheritdoc />
+    public Task<VerificationResultModel> VerifyStubCalledAsync(string stubId) =>
+        VerifyStubCalledAsyncInternal(stubId, null, null);
+
+    /// <inheritdoc />
+    public Task<VerificationResultModel> VerifyStubCalledAsync(string stubId, TimesModel times) =>
+        VerifyStubCalledAsyncInternal(stubId, times, null);
+
+    /// <inheritdoc />
+    public Task<VerificationResultModel> VerifyStubCalledAsync(string stubId, TimesModel times,
+        DateTime minimumRequestTime) => VerifyStubCalledAsyncInternal(stubId, times, minimumRequestTime);
+
+    /// <inheritdoc />
+    public Task<VerificationResultModel> VerifyStubCalledAsync(string stubId, DateTime minimumRequestTime) =>
+        VerifyStubCalledAsyncInternal(stubId, null, minimumRequestTime);
+
+    internal async Task<VerificationResultModel> VerifyStubCalledAsyncInternal(
+        string stubId,
+        TimesModel times,
+        DateTime? minimumRequestTime)
+    {
+        var validationMessages = new List<string>();
+        var requests = (await GetRequestsByStubIdAsync(stubId)).ToArray();
+        if (minimumRequestTime.HasValue)
+        {
+            requests = requests.Where(r => r.RequestBeginTime > minimumRequestTime).ToArray();
+        }
+
+        times ??= TimesModel.AtLeastOnce();
+        if (times.ExactHits.HasValue && requests.Length != times.ExactHits)
+        {
+            validationMessages.Add($"Counted '{requests.Length}' requests, but expected '{times.ExactHits}'.");
+        }
+        else
+        {
+            if (times.MinHits.HasValue && requests.Length < times.MinHits)
+            {
+                validationMessages.Add($"Counted '{requests.Length}', but expected at least '{times.MinHits}'.");
+            }
+
+            if (times.MaxHits.HasValue && requests.Length > times.MaxHits)
+            {
+                validationMessages.Add($"Counted '{requests.Length}', but expected at most '{times.MaxHits}'.");
+            }
+        }
+
+        var passed = !validationMessages.Any();
+        var validationMessage = passed
+            ? string.Empty
+            : $"Validation failed. {string.Join(" ", validationMessages)}";
+        var result = new VerificationResultModel {Message = validationMessage, Passed = passed, Requests = requests};
+        if (!passed)
+        {
+            throw new StubVerificationFailedException(validationMessage, result);
+        }
+
+        return result;
     }
 }

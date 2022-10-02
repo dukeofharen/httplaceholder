@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Client", "..\..\src\HttPlaceholder.Client\HttPlaceholder.Client.csproj", "{2B6E05E8-15DF-4398-98FC-D5DB643ADF16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Examples.RequestValidation", "HttPlaceholder.Examples.RequestValidation\HttPlaceholder.Examples.RequestValidation.csproj", "{B83BBADC-A6DF-438C-A03A-AE4031A1D8FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B6E05E8-15DF-4398-98FC-D5DB643ADF16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B6E05E8-15DF-4398-98FC-D5DB643ADF16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B6E05E8-15DF-4398-98FC-D5DB643ADF16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B6E05E8-15DF-4398-98FC-D5DB643ADF16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B83BBADC-A6DF-438C-A03A-AE4031A1D8FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B83BBADC-A6DF-438C-A03A-AE4031A1D8FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B83BBADC-A6DF-438C-A03A-AE4031A1D8FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B83BBADC-A6DF-438C-A03A-AE4031A1D8FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Configuration;
 using HttPlaceholder.Client.Dto.Enums;
@@ -9,6 +10,7 @@ using HttPlaceholder.Client.Dto.ScheduledJobs;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Dto.Users;
 using HttPlaceholder.Client.StubBuilders;
+using HttPlaceholder.Client.Verification.Dto;
 
 namespace HttPlaceholder.Client;
 
@@ -284,4 +286,36 @@ public interface IHttPlaceholderClient
     /// </summary>
     /// <returns>List of <see cref="ConfigurationDto"/>.</returns>
     Task<IEnumerable<ConfigurationDto>> GetConfigurationAsync();
+
+    /// <summary>
+    /// Verifies that a stub with the specified stubId has been called.
+    /// </summary>
+    /// <param name="stubId">The stub ID.</param>
+    /// <returns>The <see cref="VerificationResultModel"/>.</returns>
+    Task<VerificationResultModel> VerifyStubCalledAsync(string stubId);
+
+    /// <summary>
+    /// Verifies that a stub with the specified stubId has been called.
+    /// </summary>
+    /// <param name="stubId">The stub ID.</param>
+    /// <param name="times">A model to verify the number of times a stub has been called.</param>
+    /// <returns>The <see cref="VerificationResultModel"/>.</returns>
+    Task<VerificationResultModel> VerifyStubCalledAsync(string stubId, TimesModel times);
+
+    /// <summary>
+    /// Verifies that a stub with the specified stubId has been called.
+    /// </summary>
+    /// <param name="stubId">The stub ID.</param>
+    /// <param name="times">A model to verify the number of times a stub has been called.</param>
+    /// <param name="minimumRequestTime">The minimum date/time in UTC the request(s) should have been called.</param>
+    /// <returns>The <see cref="VerificationResultModel"/>.</returns>
+    Task<VerificationResultModel> VerifyStubCalledAsync(string stubId, TimesModel times, DateTime minimumRequestTime);
+
+    /// <summary>
+    /// Verifies that a stub with the specified stubId has been called.
+    /// </summary>
+    /// <param name="stubId">The stub ID.</param>
+    /// <param name="minimumRequestTime">The minimum date/time in UTC the request(s) should have been called.</param>
+    /// <returns>The <see cref="VerificationResultModel"/>.</returns>
+    Task<VerificationResultModel> VerifyStubCalledAsync(string stubId, DateTime minimumRequestTime);
 }
