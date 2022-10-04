@@ -73,6 +73,7 @@ public class StubModelValidatorFacts
 
     [DataTestMethod]
     [DataRow(10, 10, true)]
+    [DataRow(10, (long)10, true)]
     [DataRow(10, 9, true)]
     [DataRow(10, "9", true)]
     [DataRow(10, 11, false)]
