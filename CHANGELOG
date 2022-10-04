@@ -1,3 +1,6 @@
+[2022.10.4]
+- Fixed bug where passing "extraDuration" as integer in JSON would throw an exception (https://github.com/dukeofharen/httplaceholder/issues/281).
+
 [2022.10.2]
 - If stub is executed, return "X-HttPlaceholder-ExecutedStub" header with stub ID (https://github.com/dukeofharen/httplaceholder/pull/269).
 - Show the configuration as "read only" values in the user interface (https://github.com/dukeofharen/httplaceholder/issues/261).
