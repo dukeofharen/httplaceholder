@@ -33,9 +33,10 @@ internal class ExtraDurationResponseWriter : IResponseWriter
         }
 
         int duration;
-        if (stub.Response.ExtraDuration is int extraDuration || (stub.Response.ExtraDuration is string durationAsString && int.TryParse(durationAsString, out extraDuration)))
+        var parsedDuration = ConversionUtilities.ParseInteger(stub.Response.ExtraDuration);
+        if (parsedDuration != null)
         {
-            duration = extraDuration;
+            duration = parsedDuration.Value;
         }
         else
         {
