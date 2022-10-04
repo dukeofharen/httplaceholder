@@ -38,21 +38,12 @@ internal class StubModelValidator : IStubModelValidator
         return result;
     }
 
-    private static int? ParseInteger(object input) =>
-        input switch
-        {
-            int inputInt => inputInt,
-            long inputLong => (int)inputLong,
-            string duration when int.TryParse(duration, out var parsedInput) => parsedInput,
-            _ => null
-        };
-
     private void ValidateExtraDuration(StubModel stub, List<string> result)
     {
         const string errorTemplate = "Value for '{0}' cannot be higher than '{1}'.";
         var extraDuration = stub?.Response?.ExtraDuration;
         var allowedMillis = _settings.Stub?.MaximumExtraDurationMillis;
-        var parsedDuration = ParseInteger(extraDuration);
+        var parsedDuration = ConversionUtilities.ParseInteger(extraDuration);
         if (parsedDuration.HasValue)
         {
             if (parsedDuration.Value > 0 && parsedDuration.Value > allowedMillis)

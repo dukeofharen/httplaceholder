@@ -59,4 +59,18 @@ public class ConversionUtilitiesFacts
         // Act / Assert
         Assert.ThrowsException<InvalidOperationException>(() => ConversionUtilities.Convert<StubConditionStringCheckingModel>(1234));
     }
+
+    [DataTestMethod]
+    [DataRow(3, 3)]
+    [DataRow((long)3, 3)]
+    [DataRow("3", 3)]
+    [DataRow(false, null)]
+    public void ParseInteger_HappyFlow(object input, object expectedResult)
+    {
+        // Act
+        var result = ConversionUtilities.ParseInteger(input);
+
+        // Assert
+        Assert.AreEqual(expectedResult, result);
+    }
 }

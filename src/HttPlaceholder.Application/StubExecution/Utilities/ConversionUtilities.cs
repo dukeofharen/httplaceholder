@@ -36,4 +36,18 @@ public static class ConversionUtilities
                     $"Object of type '{input.GetType()}' not supported for serializing to '{typeof(StubConditionStringCheckingModel)}'.");
         }
     }
+
+    /// <summary>
+    /// Accepts an object as input and parsed it to a nullable int.
+    /// </summary>
+    /// <param name="input">The object to be converted.</param>
+    /// <returns>The parsed int, or null if it could not be parsed.</returns>
+    public static int? ParseInteger(object input) =>
+        input switch
+        {
+            int inputInt => inputInt,
+            long inputLong => (int)inputLong,
+            string duration when int.TryParse(duration, out var parsedInput) => parsedInput,
+            _ => null
+        };
 }
