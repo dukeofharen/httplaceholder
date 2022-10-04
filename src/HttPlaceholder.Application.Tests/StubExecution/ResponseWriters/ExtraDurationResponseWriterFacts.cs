@@ -45,6 +45,7 @@ public class ExtraDurationResponseWriterFacts
 
     [DataTestMethod]
     [DataRow(10, 10)]
+    [DataRow((long)10, 10)]
     [DataRow("10", 10)]
     public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow(object input, int valuePassedToDelay)
     {
