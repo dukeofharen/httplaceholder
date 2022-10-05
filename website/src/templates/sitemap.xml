@@ -13,7 +13,7 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://httplaceholder.org/docs</loc>
+        <loc>https://httplaceholder.org/docs/</loc>
         <lastmod>2022-09-25</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
@@ -25,14 +25,14 @@
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://httplaceholder.org/posts</loc>
+        <loc>https://httplaceholder.org/posts/</loc>
         <lastmod>2022-10-02</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     {{#posts}}
     <url>
-        <loc>https://httplaceholder.org/posts/{{postKey}}</loc>
+        <loc>https://httplaceholder.org/posts/{{postKey}}/</loc>
         <lastmod>{{formattedDateSitemap}}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
