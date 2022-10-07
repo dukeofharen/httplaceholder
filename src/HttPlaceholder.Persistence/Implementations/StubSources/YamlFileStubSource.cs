@@ -103,7 +103,7 @@ internal class YamlFileStubSource : IStubSource
                         stubs = new[] {YamlUtilities.Parse<StubModel>(input)};
                     }
 
-                    ParseAndValidateStubs(stubs);
+                    stubs = ParseAndValidateStubs(file, stubs);
                     result.AddRange(stubs);
                     _stubLoadDateTime = DateTime.Now;
                 }
@@ -141,24 +141,32 @@ internal class YamlFileStubSource : IStubSource
     private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
         files.Max(f => _fileService.GetLastWriteTime(f));
 
-    private void ParseAndValidateStubs(IEnumerable<StubModel> stubs)
+    private IEnumerable<StubModel> ParseAndValidateStubs(string filename, IEnumerable<StubModel> stubs)
     {
+        var result = new List<StubModel>();
         foreach (var stub in stubs)
         {
             if (string.IsNullOrWhiteSpace(stub.Id))
             {
-                // If no ID is set, calculate a unique ID based on the stub contents.
-                stub.EnsureStubId();
+                // If no ID is set, log a warning as the stub is invalid.
+                _logger.LogWarning($"Stub in file '{filename}' has no 'id' field defined, so is not a valid stub.");
+                continue;
             }
 
-            var results = _stubModelValidator.ValidateStubModel(stub).ToArray();
-            if (results.Any())
+            // Right now, stubs loaded from YAML files are allowed to have validation errors.
+            // They are NOT allowed to have no ID however.
+            var validationResults = _stubModelValidator.ValidateStubModel(stub).ToArray();
+            if (validationResults.Any())
             {
-                results = results.Select(r => $"- {r}").ToArray();
+                validationResults = validationResults.Select(r => $"- {r}").ToArray();
                 _logger.LogWarning(
-                    $"Validation warnings encountered for stub '{stub.Id}':\n{string.Join("\n", results)}");
+                    $"Validation warnings encountered for stub '{stub.Id}':\n{string.Join("\n", validationResults)}");
             }
+
+            result.Add(stub);
         }
+
+        return result;
     }
 
     private static string StripIllegalCharacters(string input) => input.Replace("\"", string.Empty);

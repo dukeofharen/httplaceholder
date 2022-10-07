@@ -200,7 +200,7 @@ public class YamlFileStubSourceFacts
     }
 
     [TestMethod]
-    public async Task YamlFileStubSource_GetStubsAsync_StubsHaveNoId_IdShouldBeCalculated()
+    public async Task YamlFileStubSource_GetStubsAsync_StubsHaveNoId_ShouldLogWarnings()
     {
         // Arrange
         var source = _mocker.CreateInstance<YamlFileStubSource>();
@@ -228,9 +228,11 @@ public class YamlFileStubSourceFacts
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
-        Assert.AreEqual("generated-7c8d3f2482be14cc60f5f764b4c3415d", ids[0]);
-        Assert.AreEqual("generated-0539e62e2cc798d5a9aa74909fb531c6", ids[1]);
-        AssertNoWarningsOrErrors();
+        Assert.AreEqual(0, ids.Length);
+        Assert.AreEqual(2, _mockLogger
+            .Entries
+            .Count(e => e.LogLevel == LogLevel.Warning &&
+                        e.State == $"Stub in file '{files[0]}' has no 'id' field defined, so is not a valid stub."));
     }
 
     [TestMethod]
