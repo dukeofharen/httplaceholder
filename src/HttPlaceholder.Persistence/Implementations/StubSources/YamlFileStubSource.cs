@@ -45,37 +45,7 @@ internal class YamlFileStubSource : IStubSource
     /// <inheritdoc />
     public Task<IEnumerable<StubModel>> GetStubsAsync()
     {
-        var inputFileLocation = _settings.Storage?.InputFile;
-        var fileLocations = new List<string>();
-        if (string.IsNullOrEmpty(inputFileLocation))
-        {
-            // If the input file location is not set, try looking in the current directory for .yml files.
-            var currentDirectory = _fileService.GetCurrentDirectory();
-            var yamlFiles = _fileService.GetFiles(currentDirectory, _extensions);
-            fileLocations.AddRange(yamlFiles);
-        }
-        else
-        {
-            // Split file path: it is possible to supply multiple locations.
-            var parts = inputFileLocation.Split(Constants.InputFileSeparators,
-                StringSplitOptions.RemoveEmptyEntries);
-            parts = parts.Select(StripIllegalCharacters).ToArray();
-            foreach (var part in parts)
-            {
-                var location = part.Trim();
-                _logger.LogInformation($"Reading location '{location}'.");
-                if (_fileService.IsDirectory(location))
-                {
-                    var yamlFiles = _fileService.GetFiles(location, _extensions);
-                    fileLocations.AddRange(yamlFiles);
-                }
-                else
-                {
-                    fileLocations.Add(location);
-                }
-            }
-        }
-
+        var fileLocations = GetYamlFileLocations();
         if (fileLocations.Count == 0)
         {
             _logger.LogInformation("No .yml input files found.");
@@ -92,19 +62,7 @@ internal class YamlFileStubSource : IStubSource
                 _logger.LogInformation($"Parsing .yml file '{file}'.");
                 try
                 {
-                    IEnumerable<StubModel> stubs;
-
-                    if (YamlIsArray(input))
-                    {
-                        stubs = YamlUtilities.Parse<List<StubModel>>(input);
-                    }
-                    else
-                    {
-                        stubs = new[] {YamlUtilities.Parse<StubModel>(input)};
-                    }
-
-                    stubs = ParseAndValidateStubs(file, stubs);
-                    result.AddRange(stubs);
+                    result.AddRange(ParseAndValidateStubs(input, file));
                     _stubLoadDateTime = DateTime.Now;
                 }
                 catch (YamlException ex)
@@ -141,7 +99,22 @@ internal class YamlFileStubSource : IStubSource
     private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
         files.Max(f => _fileService.GetLastWriteTime(f));
 
-    private IEnumerable<StubModel> ParseAndValidateStubs(string filename, IEnumerable<StubModel> stubs)
+    private IEnumerable<StubModel> ParseAndValidateStubs(string input, string file)
+    {
+        IEnumerable<StubModel> stubs;
+        if (YamlIsArray(input))
+        {
+            stubs = YamlUtilities.Parse<List<StubModel>>(input);
+        }
+        else
+        {
+            stubs = new[] {YamlUtilities.Parse<StubModel>(input)};
+        }
+
+        return ValidateStubs(file, stubs);
+    }
+
+    private IEnumerable<StubModel> ValidateStubs(string filename, IEnumerable<StubModel> stubs)
     {
         var result = new List<StubModel>();
         foreach (var stub in stubs)
@@ -174,4 +147,40 @@ internal class YamlFileStubSource : IStubSource
     private static bool YamlIsArray(string yaml) => yaml
         .Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None)
         .Any(l => l.StartsWith("-"));
+
+    private List<string> GetYamlFileLocations()
+    {
+        var inputFileLocation = _settings.Storage?.InputFile;
+        var fileLocations = new List<string>();
+        if (string.IsNullOrEmpty(inputFileLocation))
+        {
+            // If the input file location is not set, try looking in the current directory for .yml files.
+            var currentDirectory = _fileService.GetCurrentDirectory();
+            var yamlFiles = _fileService.GetFiles(currentDirectory, _extensions);
+            fileLocations.AddRange(yamlFiles);
+        }
+        else
+        {
+            // Split file path: it is possible to supply multiple locations.
+            var parts = inputFileLocation.Split(Constants.InputFileSeparators,
+                StringSplitOptions.RemoveEmptyEntries);
+            parts = parts.Select(StripIllegalCharacters).ToArray();
+            foreach (var part in parts)
+            {
+                var location = part.Trim();
+                _logger.LogInformation($"Reading location '{location}'.");
+                if (_fileService.IsDirectory(location))
+                {
+                    var yamlFiles = _fileService.GetFiles(location, _extensions);
+                    fileLocations.AddRange(yamlFiles);
+                }
+                else
+                {
+                    fileLocations.Add(location);
+                }
+            }
+        }
+
+        return fileLocations;
+    }
 }
