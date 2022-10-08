@@ -72,6 +72,13 @@ public interface IFileService
     bool DirectoryExists(string path);
 
     /// <summary>
+    /// Checks whether a directory exists.
+    /// </summary>
+    /// <param name="path">The directory path.</param>
+    /// <returns>True if the directory exists, false otherwise.</returns>
+    Task<bool> DirectoryExistsAsync(string path);
+
+    /// <summary>
     /// Creates a directory.
     /// </summary>
     /// <param name="path">The directory path.</param>

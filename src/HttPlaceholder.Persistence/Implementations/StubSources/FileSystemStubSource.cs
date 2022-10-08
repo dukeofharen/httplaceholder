@@ -204,34 +204,33 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task PrepareStubSourceAsync()
+    public async Task PrepareStubSourceAsync()
     {
         var rootFolder = GetRootFolder();
-        if (!_fileService.DirectoryExists(rootFolder))
+        if (!await _fileService.DirectoryExistsAsync(rootFolder))
         {
             _fileService.CreateDirectory(rootFolder);
         }
 
         var requestsFolder = GetRequestsFolder();
-        if (!_fileService.DirectoryExists(requestsFolder))
+        if (!await _fileService.DirectoryExistsAsync(requestsFolder))
         {
             _fileService.CreateDirectory(requestsFolder);
         }
 
         var responsesFolder = GetResponsesFolder();
-        if (!_fileService.DirectoryExists(responsesFolder))
+        if (!await _fileService.DirectoryExistsAsync(responsesFolder))
         {
             _fileService.CreateDirectory(responsesFolder);
         }
 
         var stubsFolder = GetStubsFolder();
-        if (!_fileService.DirectoryExists(stubsFolder))
+        if (!await _fileService.DirectoryExistsAsync(stubsFolder))
         {
             _fileService.CreateDirectory(stubsFolder);
         }
 
         _fileSystemStubCache.GetOrUpdateStubCache();
-        return Task.CompletedTask;
     }
 
     private string GetRootFolder()

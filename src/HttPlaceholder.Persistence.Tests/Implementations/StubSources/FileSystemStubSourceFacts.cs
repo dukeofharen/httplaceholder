@@ -632,7 +632,7 @@ public class FileSystemStubSourceFacts
         await source.PrepareStubSourceAsync();
 
         // Assert
-        fileServiceMock.Verify(m => m.DirectoryExists(It.IsAny<string>()), Times.Exactly(4));
+        fileServiceMock.Verify(m => m.DirectoryExistsAsync(It.IsAny<string>()), Times.Exactly(4));
         fileServiceMock.Verify(m => m.CreateDirectory(It.IsAny<string>()), Times.Exactly(4));
         fileSystemStubCacheMock.Verify(m => m.GetOrUpdateStubCache());
     }
