@@ -101,8 +101,8 @@ public class FileResponseWriterFacts
         var response = new ResponseModel();
 
         _stubRootPathResolverMock
-            .Setup(m => m.GetStubRootPaths())
-            .Returns(stubRootPaths);
+            .Setup(m => m.GetStubRootPathsAsync())
+            .ReturnsAsync(stubRootPaths);
 
         _fileServiceMock
             .Setup(m => m.FileExistsAsync(stub.Response.File))
@@ -142,8 +142,8 @@ public class FileResponseWriterFacts
         var response = new ResponseModel();
 
         _stubRootPathResolverMock
-            .Setup(m => m.GetStubRootPaths())
-            .Returns(stubRootPaths);
+            .Setup(m => m.GetStubRootPathsAsync())
+            .ReturnsAsync(stubRootPaths);
 
         _fileServiceMock
             .Setup(m => m.FileExistsAsync(stub.Response.File))

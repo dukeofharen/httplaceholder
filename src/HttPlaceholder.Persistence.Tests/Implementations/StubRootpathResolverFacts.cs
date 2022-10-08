@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Implementations;
@@ -33,18 +34,18 @@ public class StubRootPathResolverFacts
     }
 
     [TestMethod]
-    public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
+    public async Task StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
     {
         // arrange
         const string inputFile = @"C:\stubs";
         _options.Value.Storage.InputFile = inputFile;
 
         _fileServiceMock
-            .Setup(m => m.IsDirectory(inputFile))
-            .Returns(true);
+            .Setup(m => m.IsDirectoryAsync(inputFile))
+            .ReturnsAsync(true);
 
         // act
-        var result = _resolver.GetStubRootPaths();
+        var result = await _resolver.GetStubRootPathsAsync();
 
         // assert
         Assert.AreEqual(1, result.Length);
@@ -52,7 +53,7 @@ public class StubRootPathResolverFacts
     }
 
     [TestMethod]
-    public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
+    public async Task StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
     {
         // arrange
         var inputFilePath =
@@ -62,11 +63,11 @@ public class StubRootPathResolverFacts
         _options.Value.Storage.InputFile = inputFile;
 
         _fileServiceMock
-            .Setup(m => m.IsDirectory(inputFile))
-            .Returns(false);
+            .Setup(m => m.IsDirectoryAsync(inputFile))
+            .ReturnsAsync(false);
 
         // act
-        var result = _resolver.GetStubRootPaths();
+        var result = await _resolver.GetStubRootPathsAsync();
 
         // assert
         Assert.AreEqual(1, result.Length);
@@ -76,7 +77,7 @@ public class StubRootPathResolverFacts
     [DataTestMethod]
     [DataRow(",")]
     [DataRow("%%")]
-    public void StubRootPathResolver_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths(string separator)
+    public async Task StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths(string separator)
     {
         // arrange
         var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
@@ -87,14 +88,14 @@ public class StubRootPathResolverFacts
         _options.Value.Storage.InputFile = inputFilePath;
 
         _fileServiceMock
-            .Setup(m => m.IsDirectory(path1))
-            .Returns(true);
+            .Setup(m => m.IsDirectoryAsync(path1))
+            .ReturnsAsync(true);
         _fileServiceMock
-            .Setup(m => m.IsDirectory(path2))
-            .Returns(false);
+            .Setup(m => m.IsDirectoryAsync(path2))
+            .ReturnsAsync(false);
 
         // act
-        var result = _resolver.GetStubRootPaths();
+        var result = await _resolver.GetStubRootPathsAsync();
 
         // assert
         Assert.AreEqual(2, result.Length);
@@ -103,7 +104,7 @@ public class StubRootPathResolverFacts
     }
 
     [TestMethod]
-    public void StubRootPathResolver_GetStubRootPath_InputFileNotSet_ShouldReturnAssemblyPath()
+    public async Task StubRootPathResolverAsync_GetStubRootPath_InputFileNotSet_ShouldReturnAssemblyPath()
     {
         // arrange
         var assemblyPath = Path.Combine(@"C:\stubs\bin");
@@ -113,7 +114,7 @@ public class StubRootPathResolverFacts
             .Returns(assemblyPath);
 
         // act
-        var result = _resolver.GetStubRootPaths();
+        var result = await _resolver.GetStubRootPathsAsync();
 
         // assert
         Assert.AreEqual(1, result.Length);

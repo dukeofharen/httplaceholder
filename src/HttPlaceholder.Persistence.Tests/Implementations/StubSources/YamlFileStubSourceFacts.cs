@@ -176,8 +176,8 @@ public class YamlFileStubSourceFacts
             .Returns(files);
 
         fileServiceMock
-            .Setup(m => m.IsDirectory(inputFile))
-            .Returns(true);
+            .Setup(m => m.IsDirectoryAsync(inputFile))
+            .ReturnsAsync(true);
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0]))
@@ -216,8 +216,8 @@ public class YamlFileStubSourceFacts
             .Returns(files);
 
         fileServiceMock
-            .Setup(m => m.IsDirectory(inputFile))
-            .Returns(true);
+            .Setup(m => m.IsDirectoryAsync(inputFile))
+            .ReturnsAsync(true);
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0]))
@@ -252,8 +252,8 @@ public class YamlFileStubSourceFacts
             .Returns(files);
 
         fileServiceMock
-            .Setup(m => m.IsDirectory(inputFile))
-            .Returns(true);
+            .Setup(m => m.IsDirectoryAsync(inputFile))
+            .ReturnsAsync(true);
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0]))

@@ -45,7 +45,7 @@ internal class YamlFileStubSource : IStubSource
     /// <inheritdoc />
     public async Task<IEnumerable<StubModel>> GetStubsAsync()
     {
-        var fileLocations = GetYamlFileLocations();
+        var fileLocations = await GetYamlFileLocationsAsync();
         if (fileLocations.Count == 0)
         {
             _logger.LogInformation("No .yml input files found.");
@@ -148,7 +148,7 @@ internal class YamlFileStubSource : IStubSource
         .Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None)
         .Any(l => l.StartsWith("-"));
 
-    private List<string> GetYamlFileLocations()
+    private async Task<List<string>> GetYamlFileLocationsAsync()
     {
         var inputFileLocation = _settings.Storage?.InputFile;
         var fileLocations = new List<string>();
@@ -169,7 +169,7 @@ internal class YamlFileStubSource : IStubSource
             {
                 var location = part.Trim();
                 _logger.LogInformation($"Reading location '{location}'.");
-                if (_fileService.IsDirectory(location))
+                if (await _fileService.IsDirectoryAsync(location))
                 {
                     var yamlFiles = _fileService.GetFiles(location, _extensions);
                     fileLocations.AddRange(yamlFiles);

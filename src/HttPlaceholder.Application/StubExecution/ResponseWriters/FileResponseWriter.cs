@@ -41,7 +41,7 @@ internal class FileResponseWriter : IResponseWriter
         else
         {
             // File doesn't exist, but might exist in the file root folder.
-            var stubRootPaths = _stubRootPathResolver.GetStubRootPaths();
+            var stubRootPaths = await _stubRootPathResolver.GetStubRootPathsAsync();
             foreach (var path in stubRootPaths)
             {
 

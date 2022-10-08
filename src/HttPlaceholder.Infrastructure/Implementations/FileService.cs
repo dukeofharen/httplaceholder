@@ -31,13 +31,13 @@ public class FileService : IFileService
     public bool FileExists(string path) => File.Exists(path);
 
     /// <inheritdoc />
-    public Task<bool> FileExistsAsync(string path) => Task.Run(() => File.Exists(path));
+    public Task<bool> FileExistsAsync(string path) => Task.Run(() => FileExists(path));
 
     /// <inheritdoc />
     public bool DirectoryExists(string path) => Directory.Exists(path);
 
     /// <inheritdoc />
-    public Task<bool> DirectoryExistsAsync(string path) => Task.Run(() => Directory.Exists(path));
+    public Task<bool> DirectoryExistsAsync(string path) => Task.Run(() => DirectoryExists(path));
 
     /// <inheritdoc />
     public Task CreateDirectoryAsync(string path) => Task.Run(() => Directory.CreateDirectory(path));
@@ -52,8 +52,8 @@ public class FileService : IFileService
     public DateTime GetLastWriteTime(string path) => File.GetLastWriteTime(path);
 
     /// <inheritdoc />
-    public bool IsDirectory(string path) =>
-        (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory;
+    public Task<bool> IsDirectoryAsync(string path) => Task.Run(() =>
+        (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory);
 
     /// <inheritdoc />
     public string[] GetFiles(string path, string searchPattern) => Directory.GetFiles(path, searchPattern);

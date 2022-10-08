@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
@@ -27,18 +28,21 @@ internal class StubRootPathResolver : IStubRootPathResolver
     }
 
     /// <inheritdoc />
-    public string[] GetStubRootPaths()
+    public async Task<string[]> GetStubRootPathsAsync()
     {
         // First, check the "inputFile" configuration property and extract the directory of this folder.
         var inputFile = _settings.Storage?.InputFile;
-        if (inputFile != null)
+        if (inputFile == null)
         {
-            return inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
-                .Select(f => _fileService.IsDirectory(f) ? f : Path.GetDirectoryName(f))
-                .ToArray();
+            // If no input file was provided, return the assembly path instead.
+            return new[] {_assemblyService.GetEntryAssemblyRootPath()};
         }
 
-        // If no input file was provided, return the assembly path instead.
-        return new[] {_assemblyService.GetEntryAssemblyRootPath()};
+        var tasks = inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
+            .Select(GetDirectoryAsync)
+            .ToArray();
+        return await Task.WhenAll(tasks);
     }
+
+    private async Task<string> GetDirectoryAsync(string filename) => await _fileService.IsDirectoryAsync(filename) ? filename : Path.GetDirectoryName(filename);
 }

@@ -108,7 +108,7 @@ public interface IFileService
     /// </summary>
     /// <param name="path">The directory path.</param>
     /// <returns>True if the path is a directory, false otherwise.</returns>
-    bool IsDirectory(string path);
+    Task<bool> IsDirectoryAsync(string path);
 
     /// <summary>
     /// Returns a list of files.
