@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -92,7 +94,7 @@ public class FileSystemStubCacheFacts
     }
 
     [TestMethod]
-    public void GetOrUpdateStubCache_StubCacheIsNull_ShouldInitializeCache()
+    public async Task GetOrUpdateStubCacheAsync_StubCacheIsNull_ShouldInitializeCache()
     {
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
@@ -102,7 +104,7 @@ public class FileSystemStubCacheFacts
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
         // Act
-        var result = cache.GetOrUpdateStubCache();
+        var result = await cache.GetOrUpdateStubCacheAsync(CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -111,7 +113,7 @@ public class FileSystemStubCacheFacts
     }
 
     [TestMethod]
-    public void GetOrUpdateStubCache_TrackingIdHasChanged_ShouldInitializeCache()
+    public async Task GetOrUpdateStubCacheAsync_TrackingIdHasChanged_ShouldInitializeCache()
     {
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
@@ -123,7 +125,7 @@ public class FileSystemStubCacheFacts
         cache.StubUpdateTrackingId = Guid.NewGuid().ToString();
 
         // Act
-        var result = cache.GetOrUpdateStubCache();
+        var result = await cache.GetOrUpdateStubCacheAsync(CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -132,7 +134,7 @@ public class FileSystemStubCacheFacts
     }
 
     [TestMethod]
-    public void GetOrUpdateStubCache_CheckDeserializationOfStubs()
+    public async Task GetOrUpdateStubCacheAsync_CheckDeserializationOfStubs()
     {
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
@@ -145,7 +147,7 @@ public class FileSystemStubCacheFacts
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
         // Act
-        var result = cache.GetOrUpdateStubCache().ToArray();
+        var result = (await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -154,7 +156,7 @@ public class FileSystemStubCacheFacts
     }
 
     [TestMethod]
-    public void GetOrUpdateStubCache_CallTwice_ShouldReturnSameStubCache()
+    public async Task GetOrUpdateStubCacheAsync_CallTwice_ShouldReturnSameStubCache()
     {
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
@@ -168,7 +170,7 @@ public class FileSystemStubCacheFacts
 
         // Act / Assert
         Assert.IsTrue(
-            cache.GetOrUpdateStubCache().SequenceEqual(cache.GetOrUpdateStubCache()));
+            (await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)).SequenceEqual(await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)));
     }
 
     [TestMethod]

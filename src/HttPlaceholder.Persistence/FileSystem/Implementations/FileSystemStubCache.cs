@@ -3,6 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -35,7 +37,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
     }
 
     /// <inheritdoc />
-    public IEnumerable<StubModel> GetOrUpdateStubCache()
+    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(CancellationToken cancellationToken)
     {
         var shouldUpdateCache = false;
 
@@ -60,11 +62,11 @@ internal class FileSystemStubCache : IFileSystemStubCache
         if (shouldUpdateCache)
         {
             var path = GetStubsFolder();
-            var files = _fileService.GetFiles(path, "*.json");
+            var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
             StubCache.Clear();
-            var newCache = files
-                .Select(filePath => _fileService
-                    .ReadAllText(filePath))
+            var newCache = (await Task.WhenAll(files
+                    .Select(filePath => _fileService
+                        .ReadAllTextAsync(filePath, cancellationToken))))
                 .Select(JsonConvert.DeserializeObject<StubModel>);
             foreach (var item in newCache)
             {
