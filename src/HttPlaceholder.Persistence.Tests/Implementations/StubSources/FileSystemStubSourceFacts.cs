@@ -215,7 +215,7 @@ public class FileSystemStubSourceFacts
             .Returns(files);
 
         fileServiceMock
-            .Setup(m => m.DeleteFile(It.Is<string>(f => files.Contains(f))));
+            .Setup(m => m.DeleteFileAsync(It.Is<string>(f => files.Contains(f))));
 
         var responsePath1 = Path.Combine(responsesFolder, "request-01.json");
         var responsePath2 = Path.Combine(responsesFolder, "request-02.json");
@@ -231,9 +231,9 @@ public class FileSystemStubSourceFacts
         await source.DeleteAllRequestResultsAsync();
 
         // Assert
-        fileServiceMock.Verify(m => m.DeleteFile(It.IsAny<string>()), Times.Exactly(3));
-        fileServiceMock.Verify(m => m.DeleteFile(responsePath1), Times.Never);
-        fileServiceMock.Verify(m => m.DeleteFile(responsePath2));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>()), Times.Exactly(3));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath1), Times.Never);
+        fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath2));
     }
 
     [TestMethod]
@@ -256,7 +256,7 @@ public class FileSystemStubSourceFacts
 
         // Assert
         Assert.IsFalse(result);
-        fileServiceMock.Verify(m => m.DeleteFile(It.IsAny<string>()), Times.Never);
+        fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>()), Times.Never);
     }
 
     [TestMethod]
@@ -284,8 +284,8 @@ public class FileSystemStubSourceFacts
 
         // Assert
         Assert.IsTrue(result);
-        fileServiceMock.Verify(m => m.DeleteFile(expectedRequestPath));
-        fileServiceMock.Verify(m => m.DeleteFile(expectedResponsePath), Times.Never);
+        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedRequestPath));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedResponsePath), Times.Never);
     }
 
     [TestMethod]
@@ -313,8 +313,8 @@ public class FileSystemStubSourceFacts
 
         // Assert
         Assert.IsTrue(result);
-        fileServiceMock.Verify(m => m.DeleteFile(expectedRequestPath));
-        fileServiceMock.Verify(m => m.DeleteFile(expectedResponsePath));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedRequestPath));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedResponsePath));
     }
 
     [TestMethod]
@@ -381,7 +381,7 @@ public class FileSystemStubSourceFacts
             .Setup(m => m.FileExistsAsync(filePath))
             .ReturnsAsync(true);
         fileServiceMock
-            .Setup(m => m.DeleteFile(filePath));
+            .Setup(m => m.DeleteFileAsync(filePath));
 
         // Act
         var result = await source.DeleteStubAsync(stubId);
@@ -523,9 +523,9 @@ public class FileSystemStubSourceFacts
         await source.CleanOldRequestResultsAsync();
 
         // Assert
-        fileServiceMock.Verify(m => m.DeleteFile(It.IsAny<string>()), Times.Exactly(2));
-        fileServiceMock.Verify(m => m.DeleteFile(files[1]));
-        fileServiceMock.Verify(m => m.DeleteFile(responsePath2));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>()), Times.Exactly(2));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(files[1]));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath2));
     }
 
     [TestMethod]

@@ -46,7 +46,7 @@ public class FileService : IFileService
     public string GetTempPath() => Path.GetTempPath();
 
     /// <inheritdoc />
-    public void DeleteFile(string path) => File.Delete(path);
+    public Task DeleteFileAsync(string path) => Task.Run(() => File.Delete(path));
 
     /// <inheritdoc />
     public DateTime GetLastWriteTime(string path) => File.GetLastWriteTime(path);

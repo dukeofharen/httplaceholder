@@ -94,7 +94,7 @@ public interface IFileService
     /// Deletes a file.
     /// </summary>
     /// <param name="path">The file path.</param>
-    void DeleteFile(string path);
+    Task DeleteFileAsync(string path);
 
     /// <summary>
     /// Gets the last write date and time of a specific file.

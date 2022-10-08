@@ -114,7 +114,7 @@ internal class FileSystemStubSource : IWritableStubSource
         var files = _fileService.GetFiles(requestsPath, "*.json");
         foreach (var filePath in files)
         {
-            _fileService.DeleteFile(filePath);
+            await _fileService.DeleteFileAsync(filePath);
             await DeleteResponseAsync(filePath);
         }
     }
@@ -133,10 +133,10 @@ internal class FileSystemStubSource : IWritableStubSource
         var responseFilePath = Path.Combine(responsesPath, ConstructResponseFilename(correlationId));
         if (await _fileService.FileExistsAsync(responseFilePath))
         {
-            _fileService.DeleteFile(responseFilePath);
+            await _fileService.DeleteFileAsync(responseFilePath);
         }
 
-        _fileService.DeleteFile(requestFilePath);
+        await _fileService.DeleteFileAsync(requestFilePath);
         return true;
     }
 
@@ -150,7 +150,7 @@ internal class FileSystemStubSource : IWritableStubSource
             return false;
         }
 
-        _fileService.DeleteFile(filePath);
+        await _fileService.DeleteFileAsync(filePath);
         _fileSystemStubCache.DeleteStub(stubId);
         return true;
     }
@@ -198,7 +198,7 @@ internal class FileSystemStubSource : IWritableStubSource
             .Skip(maxLength);
         foreach (var filePath in filePathsAndDates)
         {
-            _fileService.DeleteFile(filePath.path);
+            await _fileService.DeleteFileAsync(filePath.path);
             await DeleteResponseAsync(filePath.path);
         }
     }
@@ -260,7 +260,7 @@ internal class FileSystemStubSource : IWritableStubSource
         var responseFilePath = Path.Combine(responsesPath, responseFileName);
         if (await _fileService.FileExistsAsync(responseFilePath))
         {
-            _fileService.DeleteFile(responseFilePath);
+            await _fileService.DeleteFileAsync(responseFilePath);
         }
     }
 
