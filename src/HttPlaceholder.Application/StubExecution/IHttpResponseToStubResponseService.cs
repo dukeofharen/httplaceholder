@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 using HttPlaceholder.Domain;
@@ -15,6 +16,7 @@ public interface IHttpResponseToStubResponseService
     /// Converts a <see cref="HttpResponseModel"/> to <see cref="StubResponseModel"/>.
     /// </summary>
     /// <param name="response">The HTTP response.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The <see cref="StubResponseModel"/>.</returns>
-    Task<StubResponseModel> ConvertToResponseAsync(HttpResponseModel response);
+    Task<StubResponseModel> ConvertToResponseAsync(HttpResponseModel response, CancellationToken cancellationToken);
 }

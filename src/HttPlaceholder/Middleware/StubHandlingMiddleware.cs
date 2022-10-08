@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using HttPlaceholder.Application.Configuration;
@@ -63,11 +64,12 @@ public class StubHandlingMiddleware
     /// </summary>
     public async Task Invoke(HttpContext context)
     {
+        var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
         var path = _httpContextService.Path;
         if (_settings?.Stub?.HealthcheckOnRootUrl == true && path == "/")
         {
             _httpContextService.SetStatusCode(HttpStatusCode.OK);
-            await _httpContextService.WriteAsync("OK");
+            await _httpContextService.WriteAsync("OK", cancellationToken);
             return;
         }
 
@@ -83,11 +85,15 @@ public class StubHandlingMiddleware
         ResponseModel response = null;
         try
         {
-            response = await HandleRequest(correlationId);
+            response = await HandleRequest(correlationId, cancellationToken);
         }
         catch (RequestValidationException e)
         {
-            await HandleRequestValidationException(correlationId, e);
+            await HandleRequestValidationException(correlationId, e, cancellationToken);
+        }
+        catch (TaskCanceledException e)
+        {
+            _logger.LogInformation(e, "Request was cancelled.");
         }
         catch (Exception e)
         {
@@ -102,7 +108,7 @@ public class StubHandlingMiddleware
             _logger.LogInformation($"Request: {jsonLoggingResult}");
         }
 
-        await _stubContext.AddRequestResultAsync(loggingResult, response);
+        await _stubContext.AddRequestResultAsync(loggingResult, response, cancellationToken);
     }
 
     private void HandleException(string correlationId, Exception e)
@@ -112,7 +118,7 @@ public class StubHandlingMiddleware
         _logger.LogWarning($"Unexpected exception thrown: {e}");
     }
 
-    private async Task HandleRequestValidationException(string correlation, RequestValidationException e)
+    private async Task HandleRequestValidationException(string correlation, RequestValidationException e, CancellationToken cancellationToken)
     {
         _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
         _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
@@ -121,13 +127,13 @@ public class StubHandlingMiddleware
             var pageContents =
                 StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.RootUrl);
             _httpContextService.AddHeader("Content-Type", Constants.HtmlMime);
-            await _httpContextService.WriteAsync(pageContents);
+            await _httpContextService.WriteAsync(pageContents, cancellationToken);
         }
 
         _logger.LogInformation($"Request validation exception thrown: {e.Message}");
     }
 
-    private async Task<ResponseModel> HandleRequest(string correlation)
+    private async Task<ResponseModel> HandleRequest(string correlation, CancellationToken cancellationToken)
     {
         var requestLogger = _requestLoggerFactory.GetRequestLogger();
         // Enable rewind here to be able to read the posted body multiple times.
@@ -142,7 +148,7 @@ public class StubHandlingMiddleware
             _httpContextService.GetHeaders());
 
         _httpContextService.ClearResponse();
-        var response = await _stubRequestExecutor.ExecuteRequestAsync();
+        var response = await _stubRequestExecutor.ExecuteRequestAsync(cancellationToken);
         if (response.AbortConnection)
         {
             _httpContextService.AbortConnection();
@@ -164,7 +170,7 @@ public class StubHandlingMiddleware
 
         if (response.Body != null)
         {
-            await _httpContextService.WriteAsync(response.Body);
+            await _httpContextService.WriteAsync(response.Body, cancellationToken);
         }
 
         return response;

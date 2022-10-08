@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
@@ -11,7 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 internal class IsHttpsHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)
     {
         if (!request.Url.StartsWith("https", StringComparison.OrdinalIgnoreCase))
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HttPlaceholder.Persistence.Db;
@@ -13,9 +14,10 @@ public interface IDatabaseContext : IDisposable
     /// Executes a query.
     /// </summary>
     /// <param name="sql">The SQL query.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <param name="param">A dynamic object that contains the variables for the query.</param>
     /// <returns>The number of records that are updated.</returns>
-    Task<int> ExecuteAsync(string sql, object param = null);
+    Task<int> ExecuteAsync(string sql, CancellationToken cancellationToken, object param = null);
 
     /// <summary>
     /// Executes a query.
@@ -29,19 +31,21 @@ public interface IDatabaseContext : IDisposable
     /// Executes a query and return the first record that was found, or null if nothing was found.
     /// </summary>
     /// <param name="sql">The SQL query.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <param name="param">A dynamic object that contains the variables for the query.</param>
     /// <typeparam name="TResult">The type the result should deserialize to.</typeparam>
     /// <returns>The result.</returns>
-    Task<TResult> QueryFirstOrDefaultAsync<TResult>(string sql, object param = null);
+    Task<TResult> QueryFirstOrDefaultAsync<TResult>(string sql, CancellationToken cancellationToken, object param = null);
 
     /// <summary>
     /// Executes a query and returns the list of results
     /// </summary>
     /// <param name="sql">The SQL query.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <param name="param">A dynamic object that contains the variables for the query.</param>
     /// <typeparam name="TResult">The type the result should deserialize to.</typeparam>
     /// <returns>A list of results.</returns>
-    Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, object param = null);
+    Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, CancellationToken cancellationToken, object param = null);
 
     /// <summary>
     /// Executes a query and returns the list of results
@@ -57,7 +61,8 @@ public interface IDatabaseContext : IDisposable
     /// </summary>
     /// <typeparam name="T">The type to return.</typeparam>
     /// <param name="sql">The SQL to execute.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <param name="param">The parameters to use for this command.</param>
     /// <returns>The first cell returned, as <typeparamref name="T"/>.</returns>
-    Task<T> ExecuteScalarAsync<T>(string sql, object param = null);
+    Task<T> ExecuteScalarAsync<T>(string sql, CancellationToken cancellationToken, object param = null);
 }

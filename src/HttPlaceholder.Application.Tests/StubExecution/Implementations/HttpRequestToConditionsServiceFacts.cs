@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.Models;
@@ -31,10 +32,10 @@ public class HttpRequestToConditionsServiceFacts
         var request = new HttpRequestModel();
 
         // Act
-        var result = await service.ConvertToConditionsAsync(request);
+        var result = await service.ConvertToConditionsAsync(request, CancellationToken.None);
 
         // Assert
-        _handlerMock1.Verify(m => m.HandleStubGenerationAsync(request, result));
-        _handlerMock2.Verify(m => m.HandleStubGenerationAsync(request, result));
+        _handlerMock1.Verify(m => m.HandleStubGenerationAsync(request, result, It.IsAny<CancellationToken>()));
+        _handlerMock2.Verify(m => m.HandleStubGenerationAsync(request, result, It.IsAny<CancellationToken>()));
     }
 }

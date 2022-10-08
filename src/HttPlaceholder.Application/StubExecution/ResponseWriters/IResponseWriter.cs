@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -13,8 +14,9 @@ public interface IResponseWriter
     /// </summary>
     /// <param name="stub">The matched stub.</param>
     /// <param name="response">The response that will eventually be returned to the client.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A <see cref="StubResponseWriterResultModel"/> which contains data about the execution of this response writer.</returns>
-    Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response);
+    Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken);
 
     /// <summary>
     /// The priority of the given response writer. The higher the number, the earlier this response writer is executed.

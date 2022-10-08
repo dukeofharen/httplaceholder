@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -34,7 +35,7 @@ public class DynamicResponseWriterFacts
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);
@@ -54,7 +55,7 @@ public class DynamicResponseWriterFacts
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -83,7 +84,7 @@ public class DynamicResponseWriterFacts
             .Returns<string, StubModel>((i, _) => i);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -108,7 +109,7 @@ public class DynamicResponseWriterFacts
         };
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -142,7 +143,7 @@ public class DynamicResponseWriterFacts
             .Returns<string, StubModel>((i, _) => i);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -22,7 +23,7 @@ public class HeaderHandlerFacts
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -46,7 +47,7 @@ public class HeaderHandlerFacts
         var stub = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, stub);
+        var result = await _handler.HandleStubGenerationAsync(request, stub, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

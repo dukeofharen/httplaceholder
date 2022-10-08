@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain.Entities;
 
@@ -13,14 +14,16 @@ public interface IScenarioService
     /// Increases the hit count of a specific scenario.
     /// </summary>
     /// <param name="scenario">The scenario name. Is case insensitive.</param>
-    Task IncreaseHitCountAsync(string scenario);
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task IncreaseHitCountAsync(string scenario, CancellationToken cancellationToken);
 
     /// <summary>
     /// Get the hit count of a specific scenario.
     /// </summary>
     /// <param name="scenario">The scenario name. Is case insensitive.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The hit count.</returns>
-    Task<int?> GetHitCountAsync(string scenario);
+    Task<int?> GetHitCountAsync(string scenario, CancellationToken cancellationToken);
 
     /// <summary>
     /// Returns all scenarios.
@@ -40,17 +43,20 @@ public interface IScenarioService
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
     /// <param name="scenarioState">The scenario state.</param>
-    Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState);
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState, CancellationToken cancellationToken);
 
     /// <summary>
     /// Clears a scenario state.
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>True if scenario was found and deleted; false otherwise.</returns>
-    Task<bool> DeleteScenarioAsync(string scenario);
+    Task<bool> DeleteScenarioAsync(string scenario, CancellationToken cancellationToken);
 
     /// <summary>
     /// Deletes all scenarios.
     /// </summary>
-    Task DeleteAllScenariosAsync();
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task DeleteAllScenariosAsync(CancellationToken cancellationToken);
 }

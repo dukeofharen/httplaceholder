@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
@@ -33,7 +34,7 @@ public class IsHttpsConditionCheckerFacts
         };
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -56,7 +57,7 @@ public class IsHttpsConditionCheckerFacts
             .Returns(false);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -79,7 +80,7 @@ public class IsHttpsConditionCheckerFacts
             .Returns(true);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Authorization;
@@ -33,12 +34,13 @@ public class ScheduledJobController : BaseApiController
     /// Runs a specified scheduled job.
     /// </summary>
     /// <param name="jobName">The name of the scheduled job to run.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK.</returns>
     [HttpPost("{jobName}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> RunScheduledJob([FromRoute] string jobName)
+    public async Task<ActionResult> RunScheduledJob([FromRoute] string jobName, CancellationToken cancellationToken)
     {
         var message = "OK";
         var job = _hostedServices.FirstOrDefault(s =>
@@ -51,7 +53,7 @@ public class ScheduledJobController : BaseApiController
         var statusCode = HttpStatusCode.OK;
         try
         {
-            await job.ProcessAsync();
+            await job.ProcessAsync(cancellationToken);
         }
         catch (Exception ex)
         {

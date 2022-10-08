@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
@@ -24,7 +25,7 @@ public class ClientIpConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var clientIpCondition = stub.Conditions?.ClientIp;

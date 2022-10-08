@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Domain;
@@ -28,14 +29,14 @@ internal class CurlStubGenerator : ICurlStubGenerator
 
     /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> GenerateCurlStubsAsync(string input, bool doNotCreateStub,
-        string tenant)
+        string tenant, CancellationToken cancellationToken)
     {
         _logger.LogDebug($"Creating stubs based on cURL command {input}.");
         var requests = _curlToHttpRequestMapper.MapCurlCommandsToHttpRequest(input);
         var results = new List<FullStubModel>();
         foreach (var request in requests)
         {
-            var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request);
+            var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request, cancellationToken);
             var stub = new StubModel
             {
                 Tenant = tenant,
@@ -46,20 +47,20 @@ internal class CurlStubGenerator : ICurlStubGenerator
 
             // Generate an ID based on the created stub.
             stub.EnsureStubId();
-            results.Add(await CreateStub(doNotCreateStub, stub));
+            results.Add(await CreateStub(doNotCreateStub, stub, cancellationToken));
         }
 
         return results;
     }
 
-    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, StubModel stub)
+    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, StubModel stub, CancellationToken cancellationToken)
     {
         if (doNotCreateStub)
         {
             return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
         }
 
-        await _stubContext.DeleteStubAsync(stub.Id);
-        return await _stubContext.AddStubAsync(stub);
+        await _stubContext.DeleteStubAsync(stub.Id, cancellationToken);
+        return await _stubContext.AddStubAsync(stub, cancellationToken);
     }
 }

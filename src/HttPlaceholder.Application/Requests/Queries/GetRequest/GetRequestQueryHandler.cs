@@ -25,7 +25,7 @@ public class GetRequestQueryHandler : IRequestHandler<GetRequestQuery, RequestRe
     /// <inheritdoc />
     public async Task<RequestResultModel> Handle(GetRequestQuery request, CancellationToken cancellationToken)
     {
-        var result = await _stubContext.GetRequestResultAsync(request.CorrelationId);
+        var result = await _stubContext.GetRequestResultAsync(request.CorrelationId, cancellationToken);
         if (result == null)
         {
             throw new NotFoundException("request", request.CorrelationId);

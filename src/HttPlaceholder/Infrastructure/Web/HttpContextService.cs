@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.AspNetCore.Http;
@@ -166,18 +167,18 @@ public class HttpContextService : IHttpContextService
     }
 
     /// <inheritdoc />
-    public async Task WriteAsync(byte[] body)
+    public async Task WriteAsync(byte[] body, CancellationToken cancellationToken)
     {
         var httpContext = _httpContextAccessor.HttpContext;
-        await httpContext.Response.Body.WriteAsync(body, 0, body.Length);
+        await httpContext.Response.Body.WriteAsync(body, 0, body.Length, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task WriteAsync(string body)
+    public async Task WriteAsync(string body, CancellationToken cancellationToken)
     {
         var httpContext = _httpContextAccessor.HttpContext;
         var bodyBytes = Encoding.UTF8.GetBytes(body);
-        await httpContext.Response.Body.WriteAsync(bodyBytes, 0, bodyBytes.Length);
+        await httpContext.Response.Body.WriteAsync(bodyBytes, 0, bodyBytes.Length, cancellationToken);
     }
 
     /// <inheritdoc />

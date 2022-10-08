@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
@@ -14,6 +15,7 @@ public interface IRequestStubGenerator
     /// <param name="requestCorrelationId">The correlation ID of the HTTP request.</param>
     /// <param name="doNotCreateStub">If set to true, the stub will not directly be added to the underlying storage but only returned.
     /// If set to false, will also add it to the underlying storage.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The added <see cref="FullStubModel"/>.</returns>
-    Task<FullStubModel> GenerateStubBasedOnRequestAsync(string requestCorrelationId, bool doNotCreateStub);
+    Task<FullStubModel> GenerateStubBasedOnRequestAsync(string requestCorrelationId, bool doNotCreateStub, CancellationToken cancellationToken);
 }

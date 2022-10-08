@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -35,6 +36,7 @@ public class ApiExceptionHandlingMiddleware
     {
         if (_httpContextService.Path?.Contains("ph-api/") == true)
         {
+            var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
             try
             {
                 await _next(context);
@@ -55,13 +57,13 @@ public class ApiExceptionHandlingMiddleware
             {
                 _httpContextService.SetStatusCode(HttpStatusCode.BadRequest);
                 _httpContextService.AddHeader("Content-Type", Constants.JsonMime);
-                await _httpContextService.WriteAsync(JsonConvert.SerializeObject(new[] {ex.Message}));
+                await _httpContextService.WriteAsync(JsonConvert.SerializeObject(new[] {ex.Message}), cancellationToken);
             }
             catch (ValidationException ex)
             {
                 _httpContextService.SetStatusCode(HttpStatusCode.BadRequest);
                 _httpContextService.AddHeader("Content-Type", Constants.JsonMime);
-                await _httpContextService.WriteAsync(JsonConvert.SerializeObject(ex.ValidationErrors));
+                await _httpContextService.WriteAsync(JsonConvert.SerializeObject(ex.ValidationErrors), cancellationToken);
             }
         }
         else

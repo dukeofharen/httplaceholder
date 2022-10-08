@@ -37,7 +37,7 @@ public class AddStubCommandHandler : IRequestHandler<AddStubCommand, FullStubMod
         }
 
         // Delete stub with same ID.
-        await _stubContext.DeleteStubAsync(request.Stub.Id);
-        return await _stubContext.AddStubAsync(request.Stub);
+        await _stubContext.DeleteStubAsync(request.Stub.Id, cancellationToken);
+        return await _stubContext.AddStubAsync(request.Stub, cancellationToken);
     }
 }

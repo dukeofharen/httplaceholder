@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -23,13 +24,13 @@ internal class HttpRequestToConditionsService : IHttpRequestToConditionsService
     }
 
     /// <inheritdoc/>
-    public async Task<StubConditionsModel> ConvertToConditionsAsync(HttpRequestModel request)
+    public async Task<StubConditionsModel> ConvertToConditionsAsync(HttpRequestModel request, CancellationToken cancellationToken)
     {
         var conditions = new StubConditionsModel();
         foreach (var handler in _handlers.OrderByDescending(w => w.Priority))
         {
             var executed =
-                await handler.HandleStubGenerationAsync(request, conditions);
+                await handler.HandleStubGenerationAsync(request, conditions, cancellationToken);
             _logger.LogDebug(
                 $"Handler '{handler.GetType().Name}' " + (executed ? "executed" : "not executed") + ".");
         }

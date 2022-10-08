@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios;
 using HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
@@ -24,36 +25,40 @@ public class ScenarioController : BaseApiController
     /// <summary>
     /// Gets all scenarios.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with all scenarios.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ScenarioStateDto>>> GetAllScenarioStates() =>
+    public async Task<ActionResult<IEnumerable<ScenarioStateDto>>> GetAllScenarioStates(CancellationToken cancellationToken) =>
         Ok(Mapper.Map<IEnumerable<ScenarioStateDto>>(await Mediator.Send(new GetAllScenariosQuery())));
 
     /// <summary>
     /// Gets a specific scenario.
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The <see cref="ScenarioStateDto"/>.</returns>
     [HttpGet("{scenario}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ScenarioStateDto>> GetScenario([FromRoute] string scenario) =>
-        Ok(Mapper.Map<ScenarioStateDto>(await Mediator.Send(new GetScenarioQuery(scenario))));
+    public async Task<ActionResult<ScenarioStateDto>> GetScenario([FromRoute] string scenario, CancellationToken cancellationToken) =>
+        Ok(Mapper.Map<ScenarioStateDto>(await Mediator.Send(new GetScenarioQuery(scenario), cancellationToken)));
 
     /// <summary>
     /// Sets the scenario state to a new value.
     /// </summary>
     /// <param name="scenarioState">The new scenario state.</param>
     /// <param name="scenario">The scenario name.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>No content.</returns>
     [HttpPut("{scenario}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> SetScenario([FromBody] ScenarioStateInputDto scenarioState,
-        [FromRoute] string scenario)
+        [FromRoute] string scenario,
+        CancellationToken cancellationToken)
     {
         var input = Mapper.MapAndSet<ScenarioStateModel>(scenarioState, _ => _.Scenario = scenario);
-        await Mediator.Send(new SetScenarioCommand(input, scenario));
+        await Mediator.Send(new SetScenarioCommand(input, scenario), cancellationToken);
         return NoContent();
     }
 
@@ -61,25 +66,27 @@ public class ScenarioController : BaseApiController
     /// Deletes / clears a scenario.
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>No content.</returns>
     [HttpDelete("{scenario}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> DeleteScenario([FromRoute] string scenario)
+    public async Task<ActionResult> DeleteScenario([FromRoute] string scenario, CancellationToken cancellationToken)
     {
-        await Mediator.Send(new DeleteScenarioCommand(scenario));
+        await Mediator.Send(new DeleteScenarioCommand(scenario), cancellationToken);
         return NoContent();
     }
 
     /// <summary>
     /// Deletes all scenarios.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>No content.</returns>
     [HttpDelete]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult> DeleteAllScenarios()
+    public async Task<ActionResult> DeleteAllScenarios(CancellationToken cancellationToken)
     {
-        await Mediator.Send(new DeleteAllScenariosCommand());
+        await Mediator.Send(new DeleteAllScenariosCommand(), cancellationToken);
         return NoContent();
     }
 }

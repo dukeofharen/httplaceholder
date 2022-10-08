@@ -44,7 +44,7 @@ public class RequestNotifyFacts
             .Returns(mappedDto);
 
         // Act
-        await notify.NewRequestReceivedAsync(input);
+        await notify.NewRequestReceivedAsync(input, CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("RequestReceived", It.Is<object[]>(o => o.Single() == mappedDto),

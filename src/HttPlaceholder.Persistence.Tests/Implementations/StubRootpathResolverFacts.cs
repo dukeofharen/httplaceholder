@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
@@ -41,11 +42,11 @@ public class StubRootPathResolverFacts
         _options.Value.Storage.InputFile = inputFile;
 
         _fileServiceMock
-            .Setup(m => m.IsDirectoryAsync(inputFile))
+            .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // act
-        var result = await _resolver.GetStubRootPathsAsync();
+        var result = await _resolver.GetStubRootPathsAsync(CancellationToken.None);
 
         // assert
         Assert.AreEqual(1, result.Length);
@@ -63,11 +64,11 @@ public class StubRootPathResolverFacts
         _options.Value.Storage.InputFile = inputFile;
 
         _fileServiceMock
-            .Setup(m => m.IsDirectoryAsync(inputFile))
+            .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // act
-        var result = await _resolver.GetStubRootPathsAsync();
+        var result = await _resolver.GetStubRootPathsAsync(CancellationToken.None);
 
         // assert
         Assert.AreEqual(1, result.Length);
@@ -88,14 +89,14 @@ public class StubRootPathResolverFacts
         _options.Value.Storage.InputFile = inputFilePath;
 
         _fileServiceMock
-            .Setup(m => m.IsDirectoryAsync(path1))
+            .Setup(m => m.IsDirectoryAsync(path1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
         _fileServiceMock
-            .Setup(m => m.IsDirectoryAsync(path2))
+            .Setup(m => m.IsDirectoryAsync(path2, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // act
-        var result = await _resolver.GetStubRootPathsAsync();
+        var result = await _resolver.GetStubRootPathsAsync(CancellationToken.None);
 
         // assert
         Assert.AreEqual(2, result.Length);
@@ -114,7 +115,7 @@ public class StubRootPathResolverFacts
             .Returns(assemblyPath);
 
         // act
-        var result = await _resolver.GetStubRootPathsAsync();
+        var result = await _resolver.GetStubRootPathsAsync(CancellationToken.None);
 
         // assert
         Assert.AreEqual(1, result.Length);

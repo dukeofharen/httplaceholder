@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Db;
@@ -42,7 +43,7 @@ public class RelationalDbMigratorFacts
         // Act
         var exception =
             await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
-                migrator.MigrateAsync(_mockDatabaseContext.Object));
+                migrator.MigrateAsync(_mockDatabaseContext.Object, CancellationToken.None));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("Could not find file"));
@@ -64,10 +65,10 @@ public class RelationalDbMigratorFacts
         var migrator = _mocker.CreateInstance<RelationalDbMigrator>();
 
         // Act
-        await migrator.MigrateAsync(_mockDatabaseContext.Object);
+        await migrator.MigrateAsync(_mockDatabaseContext.Object, CancellationToken.None);
 
         // Assert
-        _mockDatabaseContext.Verify(m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+        _mockDatabaseContext.Verify(m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<object>()), Times.Once);
     }
 
     [DataTestMethod]
@@ -113,30 +114,30 @@ public class RelationalDbMigratorFacts
             filesList.Add(migrationFilePath);
             var checkFilePath = Path.Join(rootFolder, $"{input.Key}.check.sql");
             mockFileService
-                .Setup(m => m.FileExistsAsync(checkFilePath))
+                .Setup(m => m.FileExistsAsync(checkFilePath, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(input.CheckFileFound);
             if (input.CheckFileFound)
             {
                 var checkScript = Guid.NewGuid().ToString();
                 mockFileService
-                    .Setup(m => m.ReadAllTextAsync(checkFilePath))
+                    .Setup(m => m.ReadAllTextAsync(checkFilePath, It.IsAny<CancellationToken>()))
                     .ReturnsAsync(checkScript);
                 _mockDatabaseContext
-                    .Setup(m => m.ExecuteScalarAsync<int>(checkScript, It.IsAny<object>()))
+                    .Setup(m => m.ExecuteScalarAsync<int>(checkScript, It.IsAny<CancellationToken>(), It.IsAny<object>()))
                     .ReturnsAsync(input.CheckResult);
                 if (input.CheckResult == 0)
                 {
                     var migrationScript = Guid.NewGuid().ToString();
                     mockFileService
-                        .Setup(m => m.ReadAllTextAsync(migrationFilePath))
+                        .Setup(m => m.ReadAllTextAsync(migrationFilePath, It.IsAny<CancellationToken>()))
                         .ReturnsAsync(migrationScript);
-                    _mockDatabaseContext.Setup(m => m.ExecuteAsync(migrationScript, It.IsAny<object>()));
+                    _mockDatabaseContext.Setup(m => m.ExecuteAsync(migrationScript, It.IsAny<CancellationToken>(), It.IsAny<object>()));
                 }
             }
         }
 
         mockFileService
-            .Setup(m => m.GetFilesAsync(rootFolder, "*.migration.sql"))
+            .Setup(m => m.GetFilesAsync(rootFolder, "*.migration.sql", It.IsAny<CancellationToken>()))
             .ReturnsAsync(filesList.ToArray);
     }
 

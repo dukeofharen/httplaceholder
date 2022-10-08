@@ -27,5 +27,5 @@ public class
     /// <inheritdoc />
     public async Task<IEnumerable<RequestOverviewModel>> Handle(GetRequestsOverviewQuery request,
         CancellationToken cancellationToken) =>
-        await _stubContext.GetRequestResultsOverviewAsync();
+        await _stubContext.GetRequestResultsOverviewAsync(cancellationToken);
 }

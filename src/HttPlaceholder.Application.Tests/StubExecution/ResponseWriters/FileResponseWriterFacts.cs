@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -44,7 +45,7 @@ public class FileResponseWriterFacts
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);
@@ -67,15 +68,15 @@ public class FileResponseWriterFacts
         var response = new ResponseModel();
 
         _fileServiceMock
-            .Setup(m => m.FileExistsAsync(stub.Response.File))
+            .Setup(m => m.FileExistsAsync(stub.Response.File, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         _fileServiceMock
-            .Setup(m => m.ReadAllBytesAsync(stub.Response.File))
+            .Setup(m => m.ReadAllBytesAsync(stub.Response.File, It.IsAny<CancellationToken>()))
             .ReturnsAsync(body);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -101,23 +102,23 @@ public class FileResponseWriterFacts
         var response = new ResponseModel();
 
         _stubRootPathResolverMock
-            .Setup(m => m.GetStubRootPathsAsync())
+            .Setup(m => m.GetStubRootPathsAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubRootPaths);
 
         _fileServiceMock
-            .Setup(m => m.FileExistsAsync(stub.Response.File))
+            .Setup(m => m.FileExistsAsync(stub.Response.File, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         _fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedFolder))
+            .Setup(m => m.FileExistsAsync(expectedFolder, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         _fileServiceMock
-            .Setup(m => m.ReadAllBytesAsync(expectedFolder))
+            .Setup(m => m.ReadAllBytesAsync(expectedFolder, It.IsAny<CancellationToken>()))
             .ReturnsAsync(body);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -142,19 +143,19 @@ public class FileResponseWriterFacts
         var response = new ResponseModel();
 
         _stubRootPathResolverMock
-            .Setup(m => m.GetStubRootPathsAsync())
+            .Setup(m => m.GetStubRootPathsAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubRootPaths);
 
         _fileServiceMock
-            .Setup(m => m.FileExistsAsync(stub.Response.File))
+            .Setup(m => m.FileExistsAsync(stub.Response.File, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         _fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedFolder))
+            .Setup(m => m.FileExistsAsync(expectedFolder, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);

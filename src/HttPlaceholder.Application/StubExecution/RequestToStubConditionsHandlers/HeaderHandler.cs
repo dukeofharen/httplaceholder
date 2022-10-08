@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
@@ -15,7 +16,7 @@ internal class HeaderHandler : IRequestToStubConditionsHandler
     private static readonly IEnumerable<string> _headersToStrip = new[] {"Postman-Token", "Host"};
 
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)
     {
         if (!request.Headers.Any())
         {

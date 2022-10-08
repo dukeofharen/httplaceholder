@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -24,7 +25,7 @@ public class AbortConnectionResponseWriterFacts
         var response = new ResponseModel();
 
         // Act
-        var result = await writer.WriteToResponseAsync(stub, response);
+        var result = await writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result.Executed);
@@ -41,7 +42,7 @@ public class AbortConnectionResponseWriterFacts
         var response = new ResponseModel();
 
         // Act
-        var result = await writer.WriteToResponseAsync(stub, response);
+        var result = await writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);

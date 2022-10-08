@@ -319,13 +319,13 @@ public class FileSystemStubCacheFacts
             var filePath = $"stub{counter}.json";
             filePaths.Add(filePath);
             mockFileService
-                .Setup(m => m.ReadAllText(filePath))
-                .Returns(JsonConvert.SerializeObject(stub));
+                .Setup(m => m.ReadAllTextAsync(filePath, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(JsonConvert.SerializeObject(stub));
             counter++;
         }
 
         mockFileService
-            .Setup(m => m.GetFiles(expectedPath, "*.json"))
-            .Returns(filePaths.ToArray());
+            .Setup(m => m.GetFilesAsync(expectedPath, "*.json", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(filePaths.ToArray());
     }
 }

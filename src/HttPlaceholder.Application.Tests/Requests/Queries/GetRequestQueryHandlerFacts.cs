@@ -30,7 +30,7 @@ public class GetRequestQueryHandlerFacts
         var query = new GetRequestQuery {CorrelationId = correlationId};
 
         _mockStubContext
-            .Setup(m => m.GetRequestResultAsync(correlationId))
+            .Setup(m => m.GetRequestResultAsync(correlationId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((RequestResultModel)null);
 
         // Act / Assert
@@ -46,7 +46,7 @@ public class GetRequestQueryHandlerFacts
 
         var expectedResult = new RequestResultModel {CorrelationId = correlationId};
         _mockStubContext
-            .Setup(m => m.GetRequestResultAsync(correlationId))
+            .Setup(m => m.GetRequestResultAsync(correlationId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);
 
         // Act

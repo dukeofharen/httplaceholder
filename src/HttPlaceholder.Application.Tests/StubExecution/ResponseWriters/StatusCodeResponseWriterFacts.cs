@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -25,7 +26,7 @@ public class StatusCodeResponseWriterFacts
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -47,7 +48,7 @@ public class StatusCodeResponseWriterFacts
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -72,7 +73,7 @@ public class StatusCodeResponseWriterFacts
         };
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);

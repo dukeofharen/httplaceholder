@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
@@ -25,7 +26,7 @@ public class JsonHandlerFacts
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await handler.HandleStubGenerationAsync(request, conditions);
+        var result = await handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -41,7 +42,7 @@ public class JsonHandlerFacts
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await handler.HandleStubGenerationAsync(request, conditions);
+        var result = await handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -61,7 +62,7 @@ public class JsonHandlerFacts
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await handler.HandleStubGenerationAsync(request, conditions);
+        var result = await handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -81,7 +82,7 @@ public class JsonHandlerFacts
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await handler.HandleStubGenerationAsync(request, conditions);
+        var result = await handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

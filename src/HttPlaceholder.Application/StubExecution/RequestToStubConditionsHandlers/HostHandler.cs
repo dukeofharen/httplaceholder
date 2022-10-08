@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
@@ -11,7 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 internal class HostHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)
     {
         var uri = new Uri(request.Url);
         var host = uri.Host;

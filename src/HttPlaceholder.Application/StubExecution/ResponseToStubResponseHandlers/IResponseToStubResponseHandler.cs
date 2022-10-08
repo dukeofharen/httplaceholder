@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
@@ -14,8 +15,9 @@ public interface IResponseToStubResponseHandler
     /// </summary>
     /// <param name="response">The response.</param>
     /// <param name="stubResponseModel">The response for the stub that is being generated.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>True if the handler has been executed; false otherwise.</returns>
-    Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel);
+    Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel, CancellationToken cancellationToken);
 
     /// <summary>
     /// A priority in which the handler should be executed. The higher the number, the earlier it is executed.

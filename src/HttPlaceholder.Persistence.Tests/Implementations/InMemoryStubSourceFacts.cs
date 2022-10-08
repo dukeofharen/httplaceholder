@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Bogus;
 using HttPlaceholder.Application.Configuration;
@@ -34,7 +35,7 @@ public class InMemoryStubSourceFacts
         var response = CreateResponseModel();
 
         // Act
-        await source.AddRequestResultAsync(request, response);
+        await source.AddRequestResultAsync(request, response, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(request, source.RequestResultModels.Single());
@@ -51,7 +52,7 @@ public class InMemoryStubSourceFacts
         var request = CreateRequestResultModel();
 
         // Act
-        await source.AddRequestResultAsync(request, null);
+        await source.AddRequestResultAsync(request, null, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(source.StubResponses.Any());
@@ -67,7 +68,7 @@ public class InMemoryStubSourceFacts
         var stub = new StubModel();
 
         // Act
-        await source.AddStubAsync(stub);
+        await source.AddStubAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stub, source.StubModels.Single());
@@ -82,7 +83,7 @@ public class InMemoryStubSourceFacts
         source.RequestResultModels.Add(requestModel);
 
         // Act
-        var result = (await source.GetRequestResultsOverviewAsync()).ToArray();
+        var result = (await source.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
@@ -110,7 +111,7 @@ public class InMemoryStubSourceFacts
         source.RequestResultModels.Add(request2);
 
         // Act
-        var result = await source.GetRequestAsync(request2.CorrelationId);
+        var result = await source.GetRequestAsync(request2.CorrelationId, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(request2, result);
@@ -125,7 +126,7 @@ public class InMemoryStubSourceFacts
         source.RequestResultModels.Add(request);
 
         // Act
-        var result = await source.GetResponseAsync(request.CorrelationId + "1");
+        var result = await source.GetResponseAsync(request.CorrelationId + "1", CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
@@ -140,7 +141,7 @@ public class InMemoryStubSourceFacts
         source.RequestResultModels.Add(request);
 
         // Act
-        var result = await source.GetResponseAsync(request.CorrelationId);
+        var result = await source.GetResponseAsync(request.CorrelationId, CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
@@ -160,7 +161,7 @@ public class InMemoryStubSourceFacts
         source.RequestResponseMap.Add(request, response);
 
         // Act
-        var result = await source.GetResponseAsync(request.CorrelationId);
+        var result = await source.GetResponseAsync(request.CorrelationId, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(response, result);
@@ -175,7 +176,7 @@ public class InMemoryStubSourceFacts
         source.StubResponses.Add(CreateResponseModel());
 
         // Act
-        await source.DeleteAllRequestResultsAsync();
+        await source.DeleteAllRequestResultsAsync(CancellationToken.None);
 
         // Assert
         Assert.IsFalse(source.RequestResultModels.Any());
@@ -192,7 +193,7 @@ public class InMemoryStubSourceFacts
         source.RequestResultModels.Add(request);
 
         // Act
-        var result = await source.DeleteRequestAsync(request.CorrelationId + "1");
+        var result = await source.DeleteRequestAsync(request.CorrelationId + "1", CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -214,7 +215,7 @@ public class InMemoryStubSourceFacts
         source.RequestResponseMap.Add(request2, response2);
 
         // Act
-        var result = await source.DeleteRequestAsync(request1.CorrelationId);
+        var result = await source.DeleteRequestAsync(request1.CorrelationId, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -238,7 +239,7 @@ public class InMemoryStubSourceFacts
         source.RequestResponseMap.Add(request2, response2);
 
         // Act
-        var result = await source.DeleteRequestAsync(request2.CorrelationId);
+        var result = await source.DeleteRequestAsync(request2.CorrelationId, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -256,7 +257,7 @@ public class InMemoryStubSourceFacts
         source.StubModels.Add(stub);
 
         // Act
-        var result = await source.DeleteStubAsync(stub.Id + "1");
+        var result = await source.DeleteStubAsync(stub.Id + "1", CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -272,7 +273,7 @@ public class InMemoryStubSourceFacts
         source.StubModels.Add(stub);
 
         // Act
-        var result = await source.DeleteStubAsync(stub.Id);
+        var result = await source.DeleteStubAsync(stub.Id, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -288,7 +289,7 @@ public class InMemoryStubSourceFacts
         source.RequestResultModels.Add(request);
 
         // Act
-        var result = await source.GetRequestResultsAsync();
+        var result = await source.GetRequestResultsAsync(CancellationToken.None);
 
         // Assert
         Assert.AreEqual(request, result.Single());
@@ -303,7 +304,7 @@ public class InMemoryStubSourceFacts
         source.StubModels.Add(stub);
 
         // Act
-        var result = await source.GetStubsAsync();
+        var result = await source.GetStubsAsync(CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stub, result.Single());
@@ -318,7 +319,7 @@ public class InMemoryStubSourceFacts
         source.StubModels.Add(stub);
 
         // Act
-        var result = (await source.GetStubsOverviewAsync()).ToArray();
+        var result = (await source.GetStubsOverviewAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
@@ -338,7 +339,7 @@ public class InMemoryStubSourceFacts
         source.StubModels.Add(stub);
 
         // Act
-        var result = await source.GetStubAsync(stub.Id + "1");
+        var result = await source.GetStubAsync(stub.Id + "1", CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
@@ -353,7 +354,7 @@ public class InMemoryStubSourceFacts
         source.StubModels.Add(stub);
 
         // Act
-        var result = await source.GetStubAsync(stub.Id);
+        var result = await source.GetStubAsync(stub.Id, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stub, result);
@@ -392,7 +393,7 @@ public class InMemoryStubSourceFacts
         var request3 = CreateAndAddRequestResultModel(now.AddSeconds(-9));
 
         // Act
-        await source.CleanOldRequestResultsAsync();
+        await source.CleanOldRequestResultsAsync(CancellationToken.None);
 
         // Assert
         Assert.AreEqual(2, source.RequestResultModels.Count);

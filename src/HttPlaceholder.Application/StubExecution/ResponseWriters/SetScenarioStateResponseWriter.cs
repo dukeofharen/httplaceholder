@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 
@@ -17,7 +18,7 @@ internal class SetScenarioStateResponseWriter : IResponseWriter
     }
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(stub.Response.Scenario?.SetScenarioState) ||
             string.IsNullOrWhiteSpace(stub.Scenario))
@@ -29,7 +30,7 @@ internal class SetScenarioStateResponseWriter : IResponseWriter
         var scenarioState = _scenarioService.GetScenario(scenario) ?? new ScenarioStateModel(scenario);
 
         scenarioState.State = stub.Response.Scenario.SetScenarioState;
-        _scenarioService.SetScenarioAsync(scenario, scenarioState);
+        _scenarioService.SetScenarioAsync(scenario, scenarioState, cancellationToken);
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }
 

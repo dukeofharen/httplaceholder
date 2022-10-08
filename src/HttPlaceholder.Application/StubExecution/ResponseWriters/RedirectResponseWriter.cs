@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
@@ -13,7 +14,7 @@ internal class RedirectResponseWriter : IResponseWriter
     public int Priority => 0;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         if (stub.Response?.TemporaryRedirect != null)
         {

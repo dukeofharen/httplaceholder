@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
@@ -13,7 +14,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 internal class QueryParamHandler : IRequestToStubConditionsHandler
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)
     {
         var uri = new Uri(request.Url);
         var query = QueryHelpers.ParseQuery(uri.Query);

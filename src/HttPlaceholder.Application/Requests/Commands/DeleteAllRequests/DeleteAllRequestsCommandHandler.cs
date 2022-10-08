@@ -23,7 +23,7 @@ public class DeleteAllRequestsCommandHandler : IRequestHandler<DeleteAllRequests
     /// <inheritdoc />
     public async Task<Unit> Handle(DeleteAllRequestsCommand request, CancellationToken cancellationToken)
     {
-        await _stubContext.DeleteAllRequestResultsAsync();
+        await _stubContext.DeleteAllRequestResultsAsync(cancellationToken);
         return Unit.Value;
     }
 }

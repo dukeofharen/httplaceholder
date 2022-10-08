@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
@@ -43,9 +44,9 @@ internal class YamlFileStubSource : IStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetStubsAsync()
+    public async Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken)
     {
-        var fileLocations = await GetYamlFileLocationsAsync();
+        var fileLocations = await GetYamlFileLocationsAsync(cancellationToken);
         if (fileLocations.Count == 0)
         {
             _logger.LogInformation("No .yml input files found.");
@@ -58,7 +59,7 @@ internal class YamlFileStubSource : IStubSource
             foreach (var file in fileLocations)
             {
                 // Load the stubs.
-                var input = await _fileService.ReadAllTextAsync(file);
+                var input = await _fileService.ReadAllTextAsync(file, cancellationToken);
                 _logger.LogInformation($"Parsing .yml file '{file}'.");
                 try
                 {
@@ -82,19 +83,19 @@ internal class YamlFileStubSource : IStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
-        (await GetStubsAsync())
+    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken) =>
+        (await GetStubsAsync(cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
     /// <inheritdoc />
-    public async Task<StubModel> GetStubAsync(string stubId) =>
-        (await GetStubsAsync()).FirstOrDefault(s => s.Id == stubId);
+    public async Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken) =>
+        (await GetStubsAsync(cancellationToken)).FirstOrDefault(s => s.Id == stubId);
 
     /// <inheritdoc />
-    public async Task PrepareStubSourceAsync() =>
+    public async Task PrepareStubSourceAsync(CancellationToken cancellationToken) =>
         // Check if the .yml files could be loaded.
-        await GetStubsAsync();
+        await GetStubsAsync(cancellationToken);
 
     private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
         files.Max(f => _fileService.GetLastWriteTime(f));
@@ -148,7 +149,7 @@ internal class YamlFileStubSource : IStubSource
         .Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None)
         .Any(l => l.StartsWith("-"));
 
-    private async Task<List<string>> GetYamlFileLocationsAsync()
+    private async Task<List<string>> GetYamlFileLocationsAsync(CancellationToken cancellationToken)
     {
         var inputFileLocation = _settings.Storage?.InputFile;
         var fileLocations = new List<string>();
@@ -156,7 +157,7 @@ internal class YamlFileStubSource : IStubSource
         {
             // If the input file location is not set, try looking in the current directory for .yml files.
             var currentDirectory = _fileService.GetCurrentDirectory();
-            var yamlFiles = await _fileService.GetFilesAsync(currentDirectory, _extensions);
+            var yamlFiles = await _fileService.GetFilesAsync(currentDirectory, _extensions, cancellationToken);
             fileLocations.AddRange(yamlFiles);
         }
         else
@@ -169,9 +170,9 @@ internal class YamlFileStubSource : IStubSource
             {
                 var location = part.Trim();
                 _logger.LogInformation($"Reading location '{location}'.");
-                if (await _fileService.IsDirectoryAsync(location))
+                if (await _fileService.IsDirectoryAsync(location, cancellationToken))
                 {
-                    var yamlFiles = await _fileService.GetFilesAsync(location, _extensions);
+                    var yamlFiles = await _fileService.GetFilesAsync(location, _extensions, cancellationToken);
                     fileLocations.AddRange(yamlFiles);
                 }
                 else

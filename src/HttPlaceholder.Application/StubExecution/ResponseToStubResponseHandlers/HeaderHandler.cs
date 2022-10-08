@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
@@ -10,7 +11,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandler
 internal class HeaderHandler : IResponseToStubResponseHandler
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel)
+    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel, CancellationToken cancellationToken)
     {
         stubResponseModel.Headers = response.Headers;
         return Task.FromResult(true);

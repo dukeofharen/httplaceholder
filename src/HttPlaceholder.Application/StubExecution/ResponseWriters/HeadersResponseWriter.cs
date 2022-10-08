@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
@@ -13,10 +14,10 @@ internal class HeadersResponseWriter : IResponseWriter
     public int Priority => 0;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         var stubResponseHeaders = stub.Response?.Headers;
-        if (stubResponseHeaders == null || stubResponseHeaders?.Any() != true)
+        if (stubResponseHeaders == null || stubResponseHeaders.Any() != true)
         {
             return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
         }

@@ -8,10 +8,6 @@ namespace HttPlaceholder.Infrastructure.Implementations;
 public class AsyncService : IAsyncService
 {
     /// <inheritdoc />
-    public async Task DelayAsync(int millis) =>
-        await Task.Delay(millis);
-
-    /// <inheritdoc />
     public async Task DelayAsync(int millis, CancellationToken cancellationToken) =>
         await Task.Delay(millis, cancellationToken);
 }

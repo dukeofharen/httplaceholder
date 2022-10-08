@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common;
@@ -24,7 +25,7 @@ internal class ExtraDurationResponseWriter : IResponseWriter
     public int Priority => 0;
 
     /// <inheritdoc />
-    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         // Simulate sluggish response here, if configured.
         if (stub.Response?.ExtraDuration == null)
@@ -46,7 +47,7 @@ internal class ExtraDurationResponseWriter : IResponseWriter
             duration = _random.Next(min, max);
         }
 
-        await _asyncService.DelayAsync(duration);
+        await _asyncService.DelayAsync(duration, cancellationToken);
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 }

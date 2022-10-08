@@ -30,7 +30,7 @@ public class GetResponseQueryHandlerFacts
         var query = new GetResponseQuery(correlationId);
 
         mockStubContext
-            .Setup(m => m.GetResponseAsync(correlationId))
+            .Setup(m => m.GetResponseAsync(correlationId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((ResponseModel)null);
 
         // Act / Assert
@@ -49,7 +49,7 @@ public class GetResponseQueryHandlerFacts
 
         var expectedResult = new ResponseModel();
         mockStubContext
-            .Setup(m => m.GetResponseAsync(correlationId))
+            .Setup(m => m.GetResponseAsync(correlationId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);
 
         // Act

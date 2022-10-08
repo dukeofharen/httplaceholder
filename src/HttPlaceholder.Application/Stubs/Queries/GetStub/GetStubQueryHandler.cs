@@ -25,7 +25,7 @@ public class GetStubQueryHandler : IRequestHandler<GetStubQuery, FullStubModel>
     /// <inheritdoc />
     public async Task<FullStubModel> Handle(GetStubQuery request, CancellationToken cancellationToken)
     {
-        var result = await _stubContext.GetStubAsync(request.StubId);
+        var result = await _stubContext.GetStubAsync(request.StubId, cancellationToken);
         if (result == null)
         {
             throw new NotFoundException(nameof(StubModel), request.StubId);

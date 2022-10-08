@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -36,11 +37,11 @@ public class ExtraDurationResponseWriterFacts
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);
-        _asyncServiceMock.Verify(m => m.DelayAsync(It.IsAny<int>()), Times.Never);
+        _asyncServiceMock.Verify(m => m.DelayAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [DataTestMethod]
@@ -61,11 +62,11 @@ public class ExtraDurationResponseWriterFacts
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
-        _asyncServiceMock.Verify(m => m.DelayAsync(valuePassedToDelay), Times.Once);
+        _asyncServiceMock.Verify(m => m.DelayAsync(valuePassedToDelay, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -87,12 +88,12 @@ public class ExtraDurationResponseWriterFacts
         var response = new ResponseModel();
         int? capturedDuration = null;
         _asyncServiceMock
-            .Setup(m => m.DelayAsync(It.IsAny<int>()))
-            .Callback<int>(d => capturedDuration = d)
+            .Setup(m => m.DelayAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Callback<int, CancellationToken>((d, _) => capturedDuration = d)
             .Returns(Task.CompletedTask);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -118,12 +119,12 @@ public class ExtraDurationResponseWriterFacts
         var response = new ResponseModel();
         int? capturedDuration = null;
         _asyncServiceMock
-            .Setup(m => m.DelayAsync(It.IsAny<int>()))
-            .Callback<int>(d => capturedDuration = d)
+            .Setup(m => m.DelayAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Callback<int, CancellationToken>((d, _) => capturedDuration = d)
             .Returns(Task.CompletedTask);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -149,12 +150,12 @@ public class ExtraDurationResponseWriterFacts
         var response = new ResponseModel();
         int? capturedDuration = null;
         _asyncServiceMock
-            .Setup(m => m.DelayAsync(It.IsAny<int>()))
-            .Callback<int>(d => capturedDuration = d)
+            .Setup(m => m.DelayAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Callback<int, CancellationToken>((d, _) => capturedDuration = d)
             .Returns(Task.CompletedTask);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);

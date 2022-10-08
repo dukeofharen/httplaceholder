@@ -30,6 +30,6 @@ public class CreateCurlStubCommandHandler : IRequestHandler<CreateCurlStubComman
         var tenant = string.IsNullOrWhiteSpace(request.Tenant)
             ? $"curl-import-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}"
             : request.Tenant;
-        return await _curlStubGenerator.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, tenant);
+        return await _curlStubGenerator.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, tenant, cancellationToken);
     }
 }

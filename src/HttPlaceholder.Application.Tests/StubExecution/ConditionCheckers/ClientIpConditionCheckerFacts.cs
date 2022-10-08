@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
@@ -33,7 +34,7 @@ public class ClientIpConditionCheckerFacts
         };
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -55,7 +56,7 @@ public class ClientIpConditionCheckerFacts
             .Returns(clientIp);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -77,7 +78,7 @@ public class ClientIpConditionCheckerFacts
             .Returns(clientIp);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -99,7 +100,7 @@ public class ClientIpConditionCheckerFacts
             .Returns(clientIp);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -121,7 +122,7 @@ public class ClientIpConditionCheckerFacts
             .Returns(clientIp);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions});
+        var result = await _checker.ValidateAsync(new StubModel{Id = stubId, Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -20,7 +21,7 @@ public class ScenarioMinHitCounterConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var minHits = stub.Conditions?.Scenario?.MinHits;
@@ -30,7 +31,7 @@ public class ScenarioMinHitCounterConditionChecker : IConditionChecker
         }
 
         var scenario = stub.Scenario;
-        var rawHitCount = await _scenarioService.GetHitCountAsync(scenario);
+        var rawHitCount = await _scenarioService.GetHitCountAsync(scenario, cancellationToken);
         var actualHitCount = rawHitCount + 1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
         if (actualHitCount == null)
         {

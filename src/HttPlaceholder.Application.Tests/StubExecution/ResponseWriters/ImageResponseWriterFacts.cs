@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common;
@@ -44,7 +45,7 @@ public class ImageResponseWriterFacts
         var response = new ResponseModel();
 
         // Act
-        var result = await _responseWriter.WriteToResponseAsync(stub, response);
+        var result = await _responseWriter.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result.Executed);
@@ -67,14 +68,14 @@ public class ImageResponseWriterFacts
         var cachedBytes = new byte[] {1, 2, 3, 4};
         var expectedCachePath = Path.Combine(_tempFolder, $"{stub.Response.Image.Hash}.bin");
         _mockFileService
-            .Setup(m => m.FileExistsAsync(expectedCachePath))
+            .Setup(m => m.FileExistsAsync(expectedCachePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
         _mockFileService
-            .Setup(m => m.ReadAllBytesAsync(expectedCachePath))
+            .Setup(m => m.ReadAllBytesAsync(expectedCachePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(cachedBytes);
 
         // Act
-        var result = await _responseWriter.WriteToResponseAsync(stub, response);
+        var result = await _responseWriter.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);
@@ -104,11 +105,11 @@ public class ImageResponseWriterFacts
 
         var expectedCachePath = Path.Combine(_tempFolder, $"{stub.Response.Image.Hash}.bin");
         _mockFileService
-            .Setup(m => m.FileExistsAsync(expectedCachePath))
+            .Setup(m => m.FileExistsAsync(expectedCachePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // Act
-        var result = await _responseWriter.WriteToResponseAsync(stub, response);
+        var result = await _responseWriter.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);
@@ -119,6 +120,6 @@ public class ImageResponseWriterFacts
         Assert.AreEqual(stub.Response.Image.Width, image.Width);
         Assert.AreEqual(expectedContentType, response.Headers["Content-Type"]);
         _mockFileService
-            .Verify(m => m.WriteAllBytesAsync(expectedCachePath, response.Body), Times.Once);
+            .Verify(m => m.WriteAllBytesAsync(expectedCachePath, response.Body, It.IsAny<CancellationToken>()), Times.Once);
     }
 }

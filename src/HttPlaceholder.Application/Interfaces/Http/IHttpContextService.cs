@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
 
@@ -128,13 +129,15 @@ public interface IHttpContextService
     /// Writes response body.
     /// </summary>
     /// <param name="body">The response body as byte array.</param>
-    Task WriteAsync(byte[] body);
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task WriteAsync(byte[] body, CancellationToken cancellationToken);
 
     /// <summary>
     /// Writes response body.
     /// </summary>
     /// <param name="body">The response body as string.</param>
-    Task WriteAsync(string body);
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task WriteAsync(string body, CancellationToken cancellationToken);
 
     /// <summary>
     /// Sets a user on the current HttpContext.

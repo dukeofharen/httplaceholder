@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using HttPlaceholder.Application;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -97,7 +98,7 @@ public static class StartupUtilities
 
         // Check if the stubs can be loaded.
         var stubContainer = app.ApplicationServices.GetService<IStubContext>();
-        stubContainer?.PrepareAsync().GetAwaiter().GetResult();
+        stubContainer?.PrepareAsync(CancellationToken.None).GetAwaiter().GetResult();
 
         return app;
     }

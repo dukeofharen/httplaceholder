@@ -96,7 +96,7 @@ public abstract class BackgroundService : ICustomHostedService
                     $"Executing hosted service with name '{GetType().Name}' and schedule '{Schedule}'");
                 try
                 {
-                    await ProcessAsync();
+                    await ProcessAsync(stoppingToken);
                 }
                 catch (Exception ex)
                 {
@@ -112,5 +112,5 @@ public abstract class BackgroundService : ICustomHostedService
     }
 
     /// <inheritdoc />
-    public abstract Task ProcessAsync();
+    public abstract Task ProcessAsync(CancellationToken cancellationToken);
 }

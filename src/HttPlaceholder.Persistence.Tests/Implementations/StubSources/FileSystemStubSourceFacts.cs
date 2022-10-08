@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
@@ -48,13 +49,13 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         // Act
-        await source.AddRequestResultAsync(request, null);
+        await source.AddRequestResultAsync(request, null, CancellationToken.None);
 
         // Assert
         fileServiceMock
-            .Verify(m => m.WriteAllTextAsync(requestFilePath, It.Is<string>(c => c.Contains(request.CorrelationId))));
+            .Verify(m => m.WriteAllTextAsync(requestFilePath, It.Is<string>(c => c.Contains(request.CorrelationId)), It.IsAny<CancellationToken>()));
         fileServiceMock
-            .Verify(m => m.WriteAllTextAsync(responseFilePath, It.IsAny<string>()), Times.Never);
+            .Verify(m => m.WriteAllTextAsync(responseFilePath, It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         Assert.IsFalse(request.HasResponse);
     }
 
@@ -72,13 +73,13 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         // Act
-        await source.AddRequestResultAsync(request, response);
+        await source.AddRequestResultAsync(request, response, CancellationToken.None);
 
         // Assert
         fileServiceMock
-            .Verify(m => m.WriteAllTextAsync(requestFilePath, It.Is<string>(c => c.Contains(request.CorrelationId))));
+            .Verify(m => m.WriteAllTextAsync(requestFilePath, It.Is<string>(c => c.Contains(request.CorrelationId)), It.IsAny<CancellationToken>()));
         fileServiceMock
-            .Verify(m => m.WriteAllTextAsync(responseFilePath, It.Is<string>(c => c.Contains("200"))));
+            .Verify(m => m.WriteAllTextAsync(responseFilePath, It.Is<string>(c => c.Contains("200")), It.IsAny<CancellationToken>()));
         Assert.IsTrue(request.HasResponse);
     }
 
@@ -95,10 +96,10 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.WriteAllTextAsync(filePath, It.Is<string>(c => c.Contains(stub.Id))));
+            .Setup(m => m.WriteAllTextAsync(filePath, It.Is<string>(c => c.Contains(stub.Id)), It.IsAny<CancellationToken>()));
 
         // Act / assert
-        await source.AddStubAsync(stub);
+        await source.AddStubAsync(stub, CancellationToken.None);
         fileSystemStubCacheMock.Verify(m => m.AddOrReplaceStub(stub));
     }
 
@@ -114,11 +115,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedPath))
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // Act
-        var result = await source.GetRequestAsync(correlationId);
+        var result = await source.GetRequestAsync(correlationId, CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
@@ -136,14 +137,14 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedPath))
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
         fileServiceMock
-            .Setup(m => m.ReadAllTextAsync(expectedPath))
+            .Setup(m => m.ReadAllTextAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = correlationId}));
 
         // Act
-        var result = await source.GetRequestAsync(correlationId);
+        var result = await source.GetRequestAsync(correlationId, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(correlationId, result.CorrelationId);
@@ -161,11 +162,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedPath))
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // Act
-        var result = await source.GetResponseAsync(correlationId);
+        var result = await source.GetResponseAsync(correlationId, CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
@@ -183,14 +184,14 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedPath))
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
         fileServiceMock
-            .Setup(m => m.ReadAllTextAsync(expectedPath))
+            .Setup(m => m.ReadAllTextAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(JsonConvert.SerializeObject(new ResponseModel {StatusCode = 200}));
 
         // Act
-        var result = await source.GetResponseAsync(correlationId);
+        var result = await source.GetResponseAsync(correlationId, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(200, result.StatusCode);
@@ -211,29 +212,29 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json"))
+            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json", It.IsAny<CancellationToken>()))
             .ReturnsAsync(files);
 
         fileServiceMock
-            .Setup(m => m.DeleteFileAsync(It.Is<string>(f => files.Contains(f))));
+            .Setup(m => m.DeleteFileAsync(It.Is<string>(f => files.Contains(f)), It.IsAny<CancellationToken>()));
 
         var responsePath1 = Path.Combine(responsesFolder, "request-01.json");
         var responsePath2 = Path.Combine(responsesFolder, "request-02.json");
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(responsePath1))
+            .Setup(m => m.FileExistsAsync(responsePath1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(responsePath2))
+            .Setup(m => m.FileExistsAsync(responsePath2, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
-        await source.DeleteAllRequestResultsAsync();
+        await source.DeleteAllRequestResultsAsync(CancellationToken.None);
 
         // Assert
-        fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>()), Times.Exactly(3));
-        fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath1), Times.Never);
-        fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath2));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Exactly(3));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath1, It.IsAny<CancellationToken>()), Times.Never);
+        fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath2, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -248,15 +249,15 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedRequestPath))
+            .Setup(m => m.FileExistsAsync(expectedRequestPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // Act
-        var result = await source.DeleteRequestAsync(correlationId);
+        var result = await source.DeleteRequestAsync(correlationId, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
-        fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>()), Times.Never);
+        fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [TestMethod]
@@ -273,19 +274,19 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedRequestPath))
+            .Setup(m => m.FileExistsAsync(expectedRequestPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedResponsePath))
+            .Setup(m => m.FileExistsAsync(expectedResponsePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // Act
-        var result = await source.DeleteRequestAsync(correlationId);
+        var result = await source.DeleteRequestAsync(correlationId, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
-        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedRequestPath));
-        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedResponsePath), Times.Never);
+        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedRequestPath, It.IsAny<CancellationToken>()));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedResponsePath, It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [TestMethod]
@@ -302,19 +303,19 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedRequestPath))
+            .Setup(m => m.FileExistsAsync(expectedRequestPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedResponsePath))
+            .Setup(m => m.FileExistsAsync(expectedResponsePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
-        var result = await source.DeleteRequestAsync(correlationId);
+        var result = await source.DeleteRequestAsync(correlationId, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
-        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedRequestPath));
-        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedResponsePath));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedRequestPath, It.IsAny<CancellationToken>()));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(expectedResponsePath, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -330,11 +331,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(filePath))
+            .Setup(m => m.FileExistsAsync(filePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // Act
-        var result = await source.DeleteStubAsync(stubId);
+        var result = await source.DeleteStubAsync(stubId, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -354,11 +355,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(filePath))
+            .Setup(m => m.FileExistsAsync(filePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
-        var result = await source.DeleteStubAsync(stubId);
+        var result = await source.DeleteStubAsync(stubId, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -378,13 +379,13 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(filePath))
+            .Setup(m => m.FileExistsAsync(filePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
         fileServiceMock
-            .Setup(m => m.DeleteFileAsync(filePath));
+            .Setup(m => m.DeleteFileAsync(filePath, It.IsAny<CancellationToken>()));
 
         // Act
-        var result = await source.DeleteStubAsync(stubId);
+        var result = await source.DeleteStubAsync(stubId, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -405,7 +406,7 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json"))
+            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json", It.IsAny<CancellationToken>()))
             .ReturnsAsync(files);
 
         var requestFileContents = new[]
@@ -419,12 +420,12 @@ public class FileSystemStubSourceFacts
             var file = files[i];
             var contents = requestFileContents[i];
             fileServiceMock
-                .Setup(m => m.ReadAllTextAsync(file))
+                .Setup(m => m.ReadAllTextAsync(file, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(contents);
         }
 
         // Act
-        var result = (await source.GetRequestResultsAsync()).ToArray();
+        var result = (await source.GetRequestResultsAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -446,7 +447,7 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json"))
+            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json", It.IsAny<CancellationToken>()))
             .ReturnsAsync(files);
 
         var requestFileContents = new[]
@@ -470,12 +471,12 @@ public class FileSystemStubSourceFacts
             var file = files[i];
             var contents = requestFileContents[i];
             fileServiceMock
-                .Setup(m => m.ReadAllTextAsync(file))
+                .Setup(m => m.ReadAllTextAsync(file, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(contents);
         }
 
         // Act
-        var result = (await source.GetRequestResultsOverviewAsync()).ToArray();
+        var result = (await source.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -499,7 +500,7 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json"))
+            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json", It.IsAny<CancellationToken>()))
             .ReturnsAsync(files);
 
         var fileDateTimeMapping = new[]
@@ -516,16 +517,16 @@ public class FileSystemStubSourceFacts
 
         var responsePath2 = Path.Combine(responsesFolder, "request-02.json");
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(responsePath2))
+            .Setup(m => m.FileExistsAsync(responsePath2, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
-        await source.CleanOldRequestResultsAsync();
+        await source.CleanOldRequestResultsAsync(CancellationToken.None);
 
         // Assert
-        fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>()), Times.Exactly(2));
-        fileServiceMock.Verify(m => m.DeleteFileAsync(files[1]));
-        fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath2));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(files[1], It.IsAny<CancellationToken>()));
+        fileServiceMock.Verify(m => m.DeleteFileAsync(responsePath2, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -538,11 +539,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCache())
-            .Returns(stubs);
+            .Setup(m => m.GetOrUpdateStubCacheAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(stubs);
 
         // Act
-        var result = await source.GetStubsAsync();
+        var result = await source.GetStubsAsync(CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs, result);
@@ -558,11 +559,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCache())
-            .Returns(stubs);
+            .Setup(m => m.GetOrUpdateStubCacheAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(stubs);
 
         // Act
-        var result = await source.GetStubAsync("stub2");
+        var result = await source.GetStubAsync("stub2", CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs[1], result);
@@ -578,11 +579,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCache())
-            .Returns(stubs);
+            .Setup(m => m.GetOrUpdateStubCacheAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(stubs);
 
         // Act
-        var result = await source.GetStubAsync("stub3");
+        var result = await source.GetStubAsync("stub3", CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
@@ -602,11 +603,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileSystemStubCacheMock
-            .Setup(m => m.GetOrUpdateStubCache())
-            .Returns(stubs);
+            .Setup(m => m.GetOrUpdateStubCacheAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(stubs);
 
         // Act
-        var result = (await source.GetStubsOverviewAsync()).ToArray();
+        var result = (await source.GetStubsOverviewAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -629,12 +630,12 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         // Act
-        await source.PrepareStubSourceAsync();
+        await source.PrepareStubSourceAsync(CancellationToken.None);
 
         // Assert
-        fileServiceMock.Verify(m => m.DirectoryExistsAsync(It.IsAny<string>()), Times.Exactly(4));
-        fileServiceMock.Verify(m => m.CreateDirectoryAsync(It.IsAny<string>()), Times.Exactly(4));
-        fileSystemStubCacheMock.Verify(m => m.GetOrUpdateStubCache());
+        fileServiceMock.Verify(m => m.DirectoryExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Exactly(4));
+        fileServiceMock.Verify(m => m.CreateDirectoryAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Exactly(4));
+        fileSystemStubCacheMock.Verify(m => m.GetOrUpdateStubCacheAsync(It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -645,6 +646,6 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         // Act
-        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => source.PrepareStubSourceAsync());
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => source.PrepareStubSourceAsync(CancellationToken.None));
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Persistence.FileSystem;
@@ -12,7 +14,7 @@ public interface IFileSystemStubCache
     /// Loads the stub cache to memory if it has not been done yet, returns the current cache or updates the current cache if something has changed.
     /// </summary>
     /// <returns>A list of <see cref="StubModel"/>.</returns>
-    IEnumerable<StubModel> GetOrUpdateStubCache();
+    Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(CancellationToken cancellationToken);
 
     /// <summary>
     /// Adds or updates a stub in the cache.

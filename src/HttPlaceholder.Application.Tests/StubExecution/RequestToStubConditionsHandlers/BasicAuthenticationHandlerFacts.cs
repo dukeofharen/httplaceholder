@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -23,7 +24,7 @@ public class BasicAuthenticationHandlerFacts
         var request = new HttpRequestModel { Headers = new Dictionary<string, string>() };
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -47,7 +48,7 @@ public class BasicAuthenticationHandlerFacts
         };
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -71,7 +72,7 @@ public class BasicAuthenticationHandlerFacts
         };
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -95,7 +96,7 @@ public class BasicAuthenticationHandlerFacts
         };
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

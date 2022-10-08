@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
@@ -22,7 +23,7 @@ public class ScenarioStateConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var state = stub.Conditions?.Scenario?.ScenarioState;
@@ -36,7 +37,7 @@ public class ScenarioStateConditionChecker : IConditionChecker
         if (scenarioState == null)
         {
             scenarioState = new ScenarioStateModel(scenario);
-            await _scenarioService.SetScenarioAsync(scenario, scenarioState);
+            await _scenarioService.SetScenarioAsync(scenario, scenarioState, cancellationToken);
         }
 
         if (!string.Equals(scenarioState.State.Trim(), state.Trim(), StringComparison.OrdinalIgnoreCase))

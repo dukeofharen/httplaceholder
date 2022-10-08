@@ -26,7 +26,7 @@ public class DeleteScenarioCommandHandlerFacts
 
         const string scenarioName = "scenario-1";
         scenarioServiceMock
-            .Setup(m => m.DeleteScenarioAsync(scenarioName))
+            .Setup(m => m.DeleteScenarioAsync(scenarioName, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // Act / Assert
@@ -43,13 +43,13 @@ public class DeleteScenarioCommandHandlerFacts
 
         const string scenarioName = "scenario-1";
         scenarioServiceMock
-            .Setup(m => m.DeleteScenarioAsync(scenarioName))
+            .Setup(m => m.DeleteScenarioAsync(scenarioName, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
         await handler.Handle(new DeleteScenarioCommand(scenarioName), CancellationToken.None);
 
         // Assert
-        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(scenarioName));
+        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(scenarioName, It.IsAny<CancellationToken>()));
     }
 }

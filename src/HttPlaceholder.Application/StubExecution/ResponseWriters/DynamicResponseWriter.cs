@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
@@ -21,13 +22,12 @@ internal class DynamicResponseWriter : IResponseWriter
     public int Priority => -10;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         if (stub.Response.EnableDynamicMode != true)
         {
             return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
         }
-
 
         // Try to parse and replace the variables in the body.
         if (!response.BodyIsBinary && response.Body != null)

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
@@ -27,7 +28,7 @@ public class Base64ResponseWriterFacts
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);
@@ -51,7 +52,7 @@ public class Base64ResponseWriterFacts
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);

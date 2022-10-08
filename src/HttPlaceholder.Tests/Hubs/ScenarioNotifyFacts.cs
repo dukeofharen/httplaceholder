@@ -44,7 +44,7 @@ public class ScenarioNotifyFacts
             .Returns(mappedDto);
 
         // Act
-        await notify.ScenarioSetAsync(input);
+        await notify.ScenarioSetAsync(input, CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("ScenarioSet", It.Is<object[]>(o => o.Single() == mappedDto),
@@ -60,7 +60,7 @@ public class ScenarioNotifyFacts
         const string scenarioName = "scenario";
 
         // Act
-        await notify.ScenarioDeletedAsync(scenarioName);
+        await notify.ScenarioDeletedAsync(scenarioName, CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("ScenarioDeleted", It.Is<object[]>(o => (string)o.Single() == scenarioName),
@@ -74,7 +74,7 @@ public class ScenarioNotifyFacts
         var notify = _mocker.CreateInstance<ScenarioNotify>();
 
         // Act
-        await notify.AllScenariosDeletedAsync();
+        await notify.AllScenariosDeletedAsync(CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("AllScenariosDeleted", It.IsAny<object[]>(),

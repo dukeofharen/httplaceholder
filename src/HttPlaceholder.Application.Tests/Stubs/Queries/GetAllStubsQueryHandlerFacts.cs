@@ -27,7 +27,7 @@ public class GetAllStubsQueryHandlerFacts
 
         var stubs = Array.Empty<FullStubModel>();
         mockStubContext
-            .Setup(m => m.GetStubsAsync())
+            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act

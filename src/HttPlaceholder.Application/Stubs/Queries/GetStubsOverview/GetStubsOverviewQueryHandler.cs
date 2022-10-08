@@ -27,5 +27,5 @@ public class
     public async Task<IEnumerable<FullStubOverviewModel>> Handle(
         GetStubsOverviewQuery request,
         CancellationToken cancellationToken) =>
-        await _stubContext.GetStubsOverviewAsync();
+        await _stubContext.GetStubsOverviewAsync(cancellationToken);
 }

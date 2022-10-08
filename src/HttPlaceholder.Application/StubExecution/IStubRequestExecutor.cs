@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution;
@@ -11,6 +12,7 @@ public interface IStubRequestExecutor
     /// <summary>
     /// Match all stubs against an incoming request.
     /// </summary>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The response to return to the client.</returns>
-    Task<ResponseModel> ExecuteRequestAsync();
+    Task<ResponseModel> ExecuteRequestAsync(CancellationToken cancellationToken);
 }

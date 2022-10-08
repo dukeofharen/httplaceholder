@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
@@ -39,10 +40,10 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
 
         FileServiceMock = new Mock<IFileService>();
         FileServiceMock
-            .Setup(m => m.ReadAllTextAsync(InputFilePath))
+            .Setup(m => m.ReadAllTextAsync(InputFilePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(integrationYml);
         FileServiceMock
-            .Setup(m => m.FileExistsAsync(InputFilePath))
+            .Setup(m => m.FileExistsAsync(InputFilePath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         DateTimeMock = new Mock<IDateTime>();
@@ -63,8 +64,8 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             new Mock<IStubModelValidator>().Object);
         _writableStubSourceMock = new Mock<IWritableStubSource>();
         _writableStubSourceMock
-            .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>(), It.IsAny<ResponseModel>()))
-            .Callback<RequestResultModel, ResponseModel>((req, res) =>
+            .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>(), It.IsAny<ResponseModel>(), It.IsAny<CancellationToken>()))
+            .Callback<RequestResultModel, ResponseModel, CancellationToken>((req, res, _) =>
             {
                 Requests.Add(req);
                 Responses.Add(res);

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.Interfaces.Signalling;
@@ -12,17 +13,19 @@ public interface IScenarioNotify
     /// A method to call after a scenario has been set.
     /// </summary>
     /// <param name="scenario">The scenario.</param>
-    Task ScenarioSetAsync(ScenarioStateModel scenario);
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task ScenarioSetAsync(ScenarioStateModel scenario, CancellationToken cancellationToken);
 
     /// <summary>
     /// A method to call after a scenario has been deleted.
     /// </summary>
     /// <param name="scenarioName">The scenario name.</param>
-    Task ScenarioDeletedAsync(string scenarioName);
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task ScenarioDeletedAsync(string scenarioName, CancellationToken cancellationToken);
 
     /// <summary>
     /// A method to call after all scenarios have been deleted.
     /// </summary>
-    /// <returns></returns>
-    Task AllScenariosDeletedAsync();
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task AllScenariosDeletedAsync(CancellationToken cancellationToken);
 }

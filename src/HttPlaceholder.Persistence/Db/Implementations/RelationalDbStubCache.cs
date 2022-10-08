@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -30,7 +31,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
     }
 
     /// <inheritdoc />
-    public async Task AddOrReplaceStubAsync(IDatabaseContext ctx, StubModel stubModel)
+    public async Task AddOrReplaceStubAsync(IDatabaseContext ctx, StubModel stubModel, CancellationToken cancellationToken)
     {
         var item = StubCache.ContainsKey(stubModel.Id) ? StubCache[stubModel.Id] : null;
         if (item != null)
@@ -43,28 +44,28 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
             _logger.LogWarning($"Could not add stub with ID '{stubModel.Id}' to cache.");
         }
 
-        var newId = await UpdateTrackingIdAsync(ctx);
+        var newId = await UpdateTrackingIdAsync(ctx, cancellationToken);
         UpdateLocalStubUpdateTrackingId(newId);
     }
 
     /// <inheritdoc />
-    public async Task DeleteStubAsync(IDatabaseContext ctx, string stubId)
+    public async Task DeleteStubAsync(IDatabaseContext ctx, string stubId, CancellationToken cancellationToken)
     {
         if (StubCache.TryRemove(stubId, out _))
         {
-            var newId = await UpdateTrackingIdAsync(ctx);
+            var newId = await UpdateTrackingIdAsync(ctx, cancellationToken);
             UpdateLocalStubUpdateTrackingId(newId);
         }
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(IDatabaseContext ctx)
+    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(IDatabaseContext ctx, CancellationToken cancellationToken)
     {
         var shouldUpdateCache = false;
 
         // Check if the "stub_update_tracking_id" field in the database has a new value.
         var stubUpdateTrackingId =
-            await ctx.QueryFirstOrDefaultAsync<string>(_queryStore.GetStubUpdateTrackingIdQuery);
+            await ctx.QueryFirstOrDefaultAsync<string>(_queryStore.GetStubUpdateTrackingIdQuery, cancellationToken);
         if (string.IsNullOrWhiteSpace(stubUpdateTrackingId))
         {
             lock (_cacheUpdateLock)
@@ -131,10 +132,10 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
         }
     }
 
-    private async Task<string> UpdateTrackingIdAsync(IDatabaseContext ctx)
+    private async Task<string> UpdateTrackingIdAsync(IDatabaseContext ctx, CancellationToken cancellationToken)
     {
         var newId = Guid.NewGuid().ToString();
-        await ctx.ExecuteAsync(_queryStore.UpdateStubUpdateTrackingIdQuery, new {StubUpdateTrackingId = newId});
+        await ctx.ExecuteAsync(_queryStore.UpdateStubUpdateTrackingIdQuery, cancellationToken, new {StubUpdateTrackingId = newId});
         return newId;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using Microsoft.Extensions.Logging;
@@ -32,9 +33,9 @@ public class CleanOldRequestsJob : BackgroundService
     public override string Description => "A job for cleaning old requests.";
 
     /// <inheritdoc />
-    public override async Task ProcessAsync()
+    public override async Task ProcessAsync(CancellationToken cancellationToken)
     {
         Logger.LogDebug("Cleaning old requests.");
-        await _stubContext.CleanOldRequestResultsAsync();
+        await _stubContext.CleanOldRequestResultsAsync(cancellationToken);
     }
 }

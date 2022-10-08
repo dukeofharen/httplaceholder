@@ -29,7 +29,7 @@ public class CreateOpenApiStubCommandHandlerFacts
         var expectedResult = Array.Empty<FullStubModel>();
         var request = new CreateOpenApiStubCommand("open api input", true, tenant);
         openApiStubGeneratorMock
-            .Setup(m => m.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, tenant))
+            .Setup(m => m.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, tenant, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);
 
         // Act
@@ -50,8 +50,8 @@ public class CreateOpenApiStubCommandHandlerFacts
         var request = new CreateOpenApiStubCommand("open api input", true, null);
         string capturedTenant = null;
         openApiStubGeneratorMock
-            .Setup(m => m.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, It.IsAny<string>()))
-            .Callback<string, bool, string>((_, _, tenant) => capturedTenant = tenant)
+            .Setup(m => m.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<string, bool, string, CancellationToken>((_, _, tenant, _) => capturedTenant = tenant)
             .ReturnsAsync(expectedResult);
 
         // Act

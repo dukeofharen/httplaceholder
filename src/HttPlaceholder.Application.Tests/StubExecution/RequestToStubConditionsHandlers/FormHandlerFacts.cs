@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
@@ -21,7 +22,7 @@ public class FormHandlerFacts
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -39,7 +40,7 @@ public class FormHandlerFacts
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -60,7 +61,7 @@ public class FormHandlerFacts
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -78,7 +79,7 @@ public class FormHandlerFacts
         var conditions = new StubConditionsModel {Body = new[] {"body1", "body2"}};
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -101,7 +102,7 @@ public class FormHandlerFacts
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

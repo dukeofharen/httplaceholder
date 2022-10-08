@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain.Entities;
@@ -23,16 +24,16 @@ public class ScenarioNotify : IScenarioNotify
     }
 
     /// <inheritdoc />
-    public async Task ScenarioSetAsync(ScenarioStateModel scenario)
+    public async Task ScenarioSetAsync(ScenarioStateModel scenario, CancellationToken cancellationToken)
     {
         var input = _mapper.Map<ScenarioStateDto>(scenario);
-        await _hubContext.Clients.All.SendAsync("ScenarioSet", input);
+        await _hubContext.Clients.All.SendAsync("ScenarioSet", input, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task ScenarioDeletedAsync(string scenarioName) =>
-        await _hubContext.Clients.All.SendAsync("ScenarioDeleted", scenarioName);
+    public async Task ScenarioDeletedAsync(string scenarioName, CancellationToken cancellationToken) =>
+        await _hubContext.Clients.All.SendAsync("ScenarioDeleted", scenarioName, cancellationToken);
 
     /// <inheritdoc />
-    public async Task AllScenariosDeletedAsync() => await _hubContext.Clients.All.SendAsync("AllScenariosDeleted");
+    public async Task AllScenariosDeletedAsync(CancellationToken cancellationToken) => await _hubContext.Clients.All.SendAsync("AllScenariosDeleted", cancellationToken);
 }

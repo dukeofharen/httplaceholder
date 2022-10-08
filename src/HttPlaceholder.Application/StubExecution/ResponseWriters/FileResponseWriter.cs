@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
@@ -26,7 +27,7 @@ internal class FileResponseWriter : IResponseWriter
     public int Priority => 0;
 
     /// <inheritdoc />
-    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         if (stub.Response?.File == null)
         {
@@ -34,19 +35,19 @@ internal class FileResponseWriter : IResponseWriter
         }
 
         string finalFilePath = null;
-        if (await  _fileService.FileExistsAsync(stub.Response.File))
+        if (await  _fileService.FileExistsAsync(stub.Response.File, cancellationToken))
         {
             finalFilePath = stub.Response.File;
         }
         else
         {
             // File doesn't exist, but might exist in the file root folder.
-            var stubRootPaths = await _stubRootPathResolver.GetStubRootPathsAsync();
+            var stubRootPaths = await _stubRootPathResolver.GetStubRootPathsAsync(cancellationToken);
             foreach (var path in stubRootPaths)
             {
 
                 var tempPath = Path.Combine(path, stub.Response.File);
-                if (await _fileService.FileExistsAsync(tempPath))
+                if (await _fileService.FileExistsAsync(tempPath, cancellationToken))
                 {
                     finalFilePath = tempPath;
                     break;
@@ -59,7 +60,7 @@ internal class FileResponseWriter : IResponseWriter
             return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
-        response.Body = await _fileService.ReadAllBytesAsync(finalFilePath);
+        response.Body = await _fileService.ReadAllBytesAsync(finalFilePath, cancellationToken);
         response.BodyIsBinary = true;
 
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);

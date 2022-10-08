@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -47,7 +48,7 @@ public class RelationalDbStubCacheFacts
             .Returns(insertIdQuery);
 
         mockDatabaseContext
-            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, null))
+            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, It.IsAny<CancellationToken>(), null))
             .ReturnsAsync(string.Empty);
 
         object capturedInsertParam = null;
@@ -56,7 +57,7 @@ public class RelationalDbStubCacheFacts
             .Callback<string, object>((_, param) => capturedInsertParam = param);
 
         // Act
-        var result = await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object);
+        var result = await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(capturedInsertParam);
@@ -86,11 +87,11 @@ public class RelationalDbStubCacheFacts
 
         var trackingId = Guid.NewGuid().ToString();
         mockDatabaseContext
-            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, null))
+            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, It.IsAny<CancellationToken>(), null))
             .ReturnsAsync(trackingId);
 
         // Act
-        var result = await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object);
+        var result = await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(trackingId, cache.StubUpdateTrackingId);
@@ -118,11 +119,11 @@ public class RelationalDbStubCacheFacts
 
         var newTrackingId = Guid.NewGuid().ToString();
         mockDatabaseContext
-            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, null))
+            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, It.IsAny<CancellationToken>(), null))
             .ReturnsAsync(newTrackingId);
 
         // Act
-        var result = await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object);
+        var result = await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(newTrackingId, cache.StubUpdateTrackingId);
@@ -155,7 +156,7 @@ public class RelationalDbStubCacheFacts
 
         var newTrackingId = Guid.NewGuid().ToString();
         mockDatabaseContext
-            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, null))
+            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, It.IsAny<CancellationToken>(), null))
             .ReturnsAsync(newTrackingId);
 
         var dbStubModels = new[]
@@ -180,7 +181,7 @@ public class RelationalDbStubCacheFacts
             .Returns(dbStubModels);
 
         // Act
-        var result = (await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object)).ToArray();
+        var result = (await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -211,7 +212,7 @@ public class RelationalDbStubCacheFacts
 
         var newTrackingId = Guid.NewGuid().ToString();
         mockDatabaseContext
-            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, null))
+            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, It.IsAny<CancellationToken>(), null))
             .ReturnsAsync(newTrackingId);
 
         var dbStubModels = new[]
@@ -225,7 +226,7 @@ public class RelationalDbStubCacheFacts
         // Act
         var exception =
             await Assert.ThrowsExceptionAsync<NotImplementedException>(() =>
-                cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object));
+                cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object, CancellationToken.None));
 
         // Assert
         Assert.AreEqual("StubType 'xml' not supported: stub 'stub-1'.", exception.Message);
@@ -249,13 +250,13 @@ public class RelationalDbStubCacheFacts
 
         var newTrackingId = Guid.NewGuid().ToString();
         mockDatabaseContext
-            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, null))
+            .Setup(m => m.QueryFirstOrDefaultAsync<string>(query, It.IsAny<CancellationToken>(), null))
             .ReturnsAsync(newTrackingId);
 
         // Act / Assert
         Assert.IsTrue(
-            (await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object))
-            .SequenceEqual(await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object)));
+            (await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object, CancellationToken.None))
+            .SequenceEqual(await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object, CancellationToken.None)));
     }
 
     [TestMethod]
@@ -271,7 +272,7 @@ public class RelationalDbStubCacheFacts
         var newStub = new StubModel {Id = "stub1"};
 
         // Act
-        await cache.AddOrReplaceStubAsync(mockDatabaseContext.Object, newStub);
+        await cache.AddOrReplaceStubAsync(mockDatabaseContext.Object, newStub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(1, cache.StubCache.Count);
@@ -291,7 +292,7 @@ public class RelationalDbStubCacheFacts
         var newStub = new StubModel {Id = "stub1"};
 
         // Act
-        await cache.AddOrReplaceStubAsync(mockDatabaseContext.Object, newStub);
+        await cache.AddOrReplaceStubAsync(mockDatabaseContext.Object, newStub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(2, cache.StubCache.Count);
@@ -319,11 +320,11 @@ public class RelationalDbStubCacheFacts
 
         object capturedInsertParam = null;
         mockDatabaseContext
-            .Setup(m => m.ExecuteAsync(updateTrackingIdQuery, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedInsertParam = param);
+            .Setup(m => m.ExecuteAsync(updateTrackingIdQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedInsertParam = param);
 
         // Act
-        await cache.AddOrReplaceStubAsync(mockDatabaseContext.Object, newStub);
+        await cache.AddOrReplaceStubAsync(mockDatabaseContext.Object, newStub, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(capturedInsertParam);
@@ -354,11 +355,11 @@ public class RelationalDbStubCacheFacts
 
         object capturedInsertParam = null;
         mockDatabaseContext
-            .Setup(m => m.ExecuteAsync(updateTrackingIdQuery, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedInsertParam = param);
+            .Setup(m => m.ExecuteAsync(updateTrackingIdQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedInsertParam = param);
 
         // Act
-        await cache.DeleteStubAsync(mockDatabaseContext.Object, stub.Id);
+        await cache.DeleteStubAsync(mockDatabaseContext.Object, stub.Id, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(0, cache.StubCache.Count);
@@ -384,11 +385,11 @@ public class RelationalDbStubCacheFacts
         Assert.IsTrue(cache.StubCache.TryAdd(stub.Id, stub));
 
         // Act
-        await cache.DeleteStubAsync(mockDatabaseContext.Object, "stub2");
+        await cache.DeleteStubAsync(mockDatabaseContext.Object, "stub2", CancellationToken.None);
 
         // Assert
         Assert.IsTrue(cache.StubCache.Values.Contains(stub));
         Assert.AreEqual(trackingId, cache.StubUpdateTrackingId);
-        mockDatabaseContext.Verify(m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Never);
+        mockDatabaseContext.Verify(m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<object>()), Times.Never);
     }
 }

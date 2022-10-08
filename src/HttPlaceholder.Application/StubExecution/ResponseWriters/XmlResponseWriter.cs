@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -14,7 +15,7 @@ internal class XmlResponseWriter : IResponseWriter
     public int Priority => 0;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         if (stub.Response?.Xml == null)
         {

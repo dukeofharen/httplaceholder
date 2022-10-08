@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -12,7 +13,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 internal class LineEndingResponseWriter : IResponseWriter
 {
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         var lineEndings = stub.Response.LineEndings;
         if (lineEndings is null or LineEndingType.NotSet)

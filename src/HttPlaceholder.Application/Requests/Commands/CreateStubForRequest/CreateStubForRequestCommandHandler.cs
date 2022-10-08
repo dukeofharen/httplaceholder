@@ -25,5 +25,5 @@ public class CreateStubForRequestCommandHandler : IRequestHandler<CreateStubForR
     public async Task<FullStubModel> Handle(
         CreateStubForRequestCommand request,
         CancellationToken cancellationToken) =>
-        await _requestStubGenerator.GenerateStubBasedOnRequestAsync(request.CorrelationId, request.DoNotCreateStub);
+        await _requestStubGenerator.GenerateStubBasedOnRequestAsync(request.CorrelationId, request.DoNotCreateStub, cancellationToken);
 }

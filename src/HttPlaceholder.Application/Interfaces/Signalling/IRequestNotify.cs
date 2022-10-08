@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.Interfaces.Signalling;
@@ -12,5 +13,6 @@ public interface IRequestNotify
     /// Handle the receiving of a new request.
     /// </summary>
     /// <param name="request">The request.</param>
-    Task NewRequestReceivedAsync(RequestResultModel request);
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task NewRequestReceivedAsync(RequestResultModel request, CancellationToken cancellationToken);
 }

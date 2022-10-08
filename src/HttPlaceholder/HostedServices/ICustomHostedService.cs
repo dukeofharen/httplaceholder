@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 
@@ -32,5 +33,6 @@ public interface ICustomHostedService : IHostedService
     /// <summary>
     /// Executed the hosted service.
     /// </summary>
-    Task ProcessAsync();
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task ProcessAsync(CancellationToken cancellationToken);
 }

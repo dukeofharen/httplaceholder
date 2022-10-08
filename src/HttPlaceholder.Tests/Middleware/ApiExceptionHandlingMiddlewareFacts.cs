@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -127,8 +128,8 @@ public class ApiExceptionHandlingMiddlewareFacts
 
         string capturedBody = null;
         mockHttpContextService
-            .Setup(m => m.WriteAsync(It.IsAny<string>()))
-            .Callback<string>(b => capturedBody = b)
+            .Setup(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<string, CancellationToken>((b, _) => capturedBody = b)
             .Returns(Task.CompletedTask);
         _exceptionToThrow = new ArgumentException("ERROR!");
 
@@ -157,8 +158,8 @@ public class ApiExceptionHandlingMiddlewareFacts
 
         string capturedBody = null;
         mockHttpContextService
-            .Setup(m => m.WriteAsync(It.IsAny<string>()))
-            .Callback<string>(b => capturedBody = b)
+            .Setup(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<string, CancellationToken>((b, _) => capturedBody = b)
             .Returns(Task.CompletedTask);
         _exceptionToThrow = new ValidationException("ERROR!");
 

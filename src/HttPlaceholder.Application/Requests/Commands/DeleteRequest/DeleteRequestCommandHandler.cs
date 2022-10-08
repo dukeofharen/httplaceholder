@@ -22,5 +22,5 @@ public class DeleteRequestCommandHandler : IRequestHandler<DeleteRequestCommand,
 
     /// <inheritdoc />
     public async Task<bool> Handle(DeleteRequestCommand request, CancellationToken cancellationToken) =>
-        await _stubContext.DeleteRequestAsync(request.CorrelationId);
+        await _stubContext.DeleteRequestAsync(request.CorrelationId, cancellationToken);
 }

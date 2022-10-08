@@ -24,7 +24,7 @@ public class DeleteStubsInTenantCommandHandler : IRequestHandler<DeleteStubsInTe
     /// <inheritdoc />
     public async Task<Unit> Handle(DeleteStubsInTenantCommand request, CancellationToken cancellationToken)
     {
-        await _stubContext.DeleteAllStubsAsync(request.Tenant);
+        await _stubContext.DeleteAllStubsAsync(request.Tenant, cancellationToken);
         return Unit.Value;
     }
 }

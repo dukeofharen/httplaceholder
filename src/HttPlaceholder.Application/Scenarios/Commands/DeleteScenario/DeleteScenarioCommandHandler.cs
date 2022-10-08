@@ -24,7 +24,7 @@ public class DeleteScenarioCommandHandler : IRequestHandler<DeleteScenarioComman
     /// <inheritdoc />
     public async Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken)
     {
-        if (!await _scenarioService.DeleteScenarioAsync(request.ScenarioName))
+        if (!await _scenarioService.DeleteScenarioAsync(request.ScenarioName, cancellationToken))
         {
             throw new NotFoundException($"Scenario '{request.ScenarioName}' not found.");
         }

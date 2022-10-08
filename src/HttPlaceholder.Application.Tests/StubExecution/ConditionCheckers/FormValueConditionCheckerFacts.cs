@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
@@ -29,7 +30,7 @@ public class FormValueConditionCheckerFacts
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
 
         // act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -51,7 +52,7 @@ public class FormValueConditionCheckerFacts
 
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -91,7 +92,7 @@ public class FormValueConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -131,7 +132,7 @@ public class FormValueConditionCheckerFacts
             .Returns(true);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -167,7 +168,7 @@ public class FormValueConditionCheckerFacts
             .Returns(true);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -186,7 +187,7 @@ public class FormValueConditionCheckerFacts
             .Throws(new InvalidOperationException());
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -238,7 +239,7 @@ public class FormValueConditionCheckerFacts
             .Returns(formValues);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Conditions = new StubConditionsModel {Form = formConditions}});
+        var result = await checker.ValidateAsync(new StubModel {Conditions = new StubConditionsModel {Form = formConditions}}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(shouldSucceed ? ConditionValidationType.Valid : ConditionValidationType.Invalid,

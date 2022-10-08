@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain;
@@ -19,7 +20,7 @@ internal class ScenarioService : IScenarioService
     }
 
     /// <inheritdoc />
-    public async Task IncreaseHitCountAsync(string scenario)
+    public async Task IncreaseHitCountAsync(string scenario, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
@@ -34,11 +35,11 @@ internal class ScenarioService : IScenarioService
             _scenarioStateStore.UpdateScenario(scenario, scenarioState);
         }
 
-        await _scenarioNotify.ScenarioSetAsync(scenarioState);
+        await _scenarioNotify.ScenarioSetAsync(scenarioState, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<int?> GetHitCountAsync(string scenario)
+    public async Task<int?> GetHitCountAsync(string scenario, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
@@ -54,7 +55,7 @@ internal class ScenarioService : IScenarioService
 
         if (scenarioAdded)
         {
-            await _scenarioNotify.ScenarioSetAsync(scenarioState);
+            await _scenarioNotify.ScenarioSetAsync(scenarioState, cancellationToken);
         }
 
         return scenarioState.HitCount;
@@ -67,7 +68,7 @@ internal class ScenarioService : IScenarioService
     public ScenarioStateModel GetScenario(string scenario) => _scenarioStateStore.GetScenario(scenario);
 
     /// <inheritdoc />
-    public async Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState)
+    public async Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(scenario) || scenarioState == null)
         {
@@ -102,11 +103,11 @@ internal class ScenarioService : IScenarioService
             }
         }
 
-        await _scenarioNotify.ScenarioSetAsync(scenarioState);
+        await _scenarioNotify.ScenarioSetAsync(scenarioState, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<bool> DeleteScenarioAsync(string scenario)
+    public async Task<bool> DeleteScenarioAsync(string scenario, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(scenario))
         {
@@ -119,15 +120,15 @@ internal class ScenarioService : IScenarioService
             result = _scenarioStateStore.DeleteScenario(scenario);
         }
 
-        await _scenarioNotify.ScenarioDeletedAsync(scenario);
+        await _scenarioNotify.ScenarioDeletedAsync(scenario, cancellationToken);
         return result;
     }
 
     /// <inheritdoc />
-    public async Task DeleteAllScenariosAsync()
+    public async Task DeleteAllScenariosAsync(CancellationToken cancellationToken)
     {
         _scenarioStateStore.DeleteAllScenarios();
-        await _scenarioNotify.AllScenariosDeletedAsync();
+        await _scenarioNotify.AllScenariosDeletedAsync(cancellationToken);
     }
 
     private ScenarioStateModel GetOrAddScenarioState(string scenario, out bool scenarioAdded)

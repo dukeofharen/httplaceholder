@@ -139,7 +139,7 @@ public class BackgroundServiceFacts
 
         public override string Description => "A succeeding background job.";
 
-        public override Task ProcessAsync()
+        public override Task ProcessAsync(CancellationToken cancellationToken)
         {
             ProcessCalled = true;
             return Task.CompletedTask;
@@ -163,7 +163,7 @@ public class BackgroundServiceFacts
 
         public override string Description => "A failing background job.";
 
-        public override Task ProcessAsync()
+        public override Task ProcessAsync(CancellationToken cancellationToken)
         {
             ProcessCalled = true;
             throw new InvalidOperationException("PROCESSING WENT WRONG!");

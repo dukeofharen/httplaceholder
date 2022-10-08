@@ -24,5 +24,5 @@ public class GetTenantNamesQueryHandler : IRequestHandler<GetTenantNamesQuery, I
 
     /// <inheritdoc />
     public async Task<IEnumerable<string>> Handle(GetTenantNamesQuery request, CancellationToken cancellationToken) =>
-        await _stubContext.GetTenantNamesAsync();
+        await _stubContext.GetTenantNamesAsync(cancellationToken);
 }

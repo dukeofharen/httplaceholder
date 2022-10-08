@@ -24,7 +24,7 @@ public class DeleteAllStubsCommandHandler : IRequestHandler<DeleteAllStubsComman
     /// <inheritdoc />
     public async Task<Unit> Handle(DeleteAllStubsCommand request, CancellationToken cancellationToken)
     {
-        await _stubContext.DeleteAllStubsAsync();
+        await _stubContext.DeleteAllStubsAsync(cancellationToken);
         return Unit.Value;
     }
 }

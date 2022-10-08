@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -27,7 +28,7 @@ public class FormValueConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var formConditions = stub.Conditions?.Form?.ToArray() ?? Array.Empty<StubFormModel>();

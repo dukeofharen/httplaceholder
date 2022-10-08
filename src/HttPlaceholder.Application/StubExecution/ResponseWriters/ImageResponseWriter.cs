@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Common;
@@ -29,7 +30,7 @@ internal class ImageResponseWriter : IResponseWriter
     }
 
     /// <inheritdoc />
-    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         var imgDefinition = stub.Response?.Image;
         if (imgDefinition == null || imgDefinition.Type == ResponseImageType.NotSet)
@@ -42,9 +43,9 @@ internal class ImageResponseWriter : IResponseWriter
 
         var cacheFilePath = Path.Combine(_fileService.GetTempPath(), $"{stubImage.Hash}.bin");
         byte[] bytes;
-        if (await _fileService.FileExistsAsync(cacheFilePath))
+        if (await _fileService.FileExistsAsync(cacheFilePath, cancellationToken))
         {
-            bytes = await _fileService.ReadAllBytesAsync(cacheFilePath);
+            bytes = await _fileService.ReadAllBytesAsync(cacheFilePath, cancellationToken);
         }
         else
         {
@@ -86,7 +87,7 @@ internal class ImageResponseWriter : IResponseWriter
             }
 
             bytes = ms.ToArray();
-            await _fileService.WriteAllBytesAsync(cacheFilePath, bytes);
+            await _fileService.WriteAllBytesAsync(cacheFilePath, bytes, cancellationToken);
         }
 
         response.Body = bytes;

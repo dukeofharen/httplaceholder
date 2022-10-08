@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Stubs;
@@ -200,7 +201,7 @@ response:
 
         var existingStub = new StubModel { Id = "situation-01" };
         ReadOnlyStubSource
-            .Setup(m => m.GetStubsAsync())
+            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] { existingStub });
 
         // Act

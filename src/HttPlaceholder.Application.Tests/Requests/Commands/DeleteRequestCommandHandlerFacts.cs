@@ -26,7 +26,7 @@ public class DeleteRequestCommandHandlerFacts
         // Arrange
         var request = new DeleteRequestCommand(Guid.NewGuid().ToString());
         _mockStubContext
-            .Setup(m => m.DeleteRequestAsync(request.CorrelationId))
+            .Setup(m => m.DeleteRequestAsync(request.CorrelationId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
@@ -34,6 +34,6 @@ public class DeleteRequestCommandHandlerFacts
 
         // Assert
         Assert.IsTrue(result);
-        _mockStubContext.Verify(m => m.DeleteRequestAsync(request.CorrelationId));
+        _mockStubContext.Verify(m => m.DeleteRequestAsync(request.CorrelationId, It.IsAny<CancellationToken>()));
     }
 }

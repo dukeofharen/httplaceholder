@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
@@ -10,7 +11,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 public class ContentTypeResponseWriter : IResponseWriter
 {
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(stub.Response?.ContentType))
         {

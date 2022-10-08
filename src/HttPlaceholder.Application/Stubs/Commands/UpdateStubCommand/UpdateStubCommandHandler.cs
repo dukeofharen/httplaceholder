@@ -36,7 +36,7 @@ public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
 
         // Check that the stub is not read-only.
         const string exceptionFormat = "Stub with ID '{0}' is read-only; it can not be updated through the API.";
-        var oldStub = await _stubContext.GetStubAsync(request.StubId);
+        var oldStub = await _stubContext.GetStubAsync(request.StubId, cancellationToken);
         if (oldStub == null)
         {
             throw new NotFoundException(nameof(StubModel), request.StubId);
@@ -47,15 +47,15 @@ public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
             throw new ValidationException(string.Format(exceptionFormat, request.StubId));
         }
 
-        var newStub = await _stubContext.GetStubAsync(request.Stub.Id);
+        var newStub = await _stubContext.GetStubAsync(request.Stub.Id, cancellationToken);
         if (newStub?.Metadata?.ReadOnly == true)
         {
             throw new ValidationException(string.Format(exceptionFormat, request.Stub.Id));
         }
 
-        await _stubContext.DeleteStubAsync(request.StubId);
-        await _stubContext.DeleteStubAsync(request.Stub.Id);
-        await _stubContext.AddStubAsync(request.Stub);
+        await _stubContext.DeleteStubAsync(request.StubId, cancellationToken);
+        await _stubContext.DeleteStubAsync(request.Stub.Id, cancellationToken);
+        await _stubContext.AddStubAsync(request.Stub, cancellationToken);
 
         return Unit.Value;
     }

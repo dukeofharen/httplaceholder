@@ -67,7 +67,7 @@ public class AddStubsCommandHandler : IRequestHandler<AddStubsCommand, IEnumerab
         }
 
         // Validated that no stubs with the same ID exist in readonly stub sources.
-        var stubsFromReadonlySource = await _stubContext.GetStubsFromReadOnlySourcesAsync();
+        var stubsFromReadonlySource = await _stubContext.GetStubsFromReadOnlySourcesAsync(cancellationToken);
         var duplicateStubs = stubsFromReadonlySource.Where(r =>
             stubsToAdd.Any(s => string.Equals(s.Id, r.Stub.Id, StringComparison.OrdinalIgnoreCase))).ToArray();
         if (duplicateStubs.Any())
@@ -80,8 +80,8 @@ public class AddStubsCommandHandler : IRequestHandler<AddStubsCommand, IEnumerab
         foreach (var stub in stubsToAdd)
         {
             // First, delete existing stub with same ID.
-            await _stubContext.DeleteStubAsync(stub.Id);
-            result.Add(await _stubContext.AddStubAsync(stub));
+            await _stubContext.DeleteStubAsync(stub.Id, cancellationToken);
+            result.Add(await _stubContext.AddStubAsync(stub, cancellationToken));
         }
 
         return result;

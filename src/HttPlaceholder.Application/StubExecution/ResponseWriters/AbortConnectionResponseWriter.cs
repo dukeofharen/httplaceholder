@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -9,7 +10,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 internal class AbortConnectionResponseWriter : IResponseWriter
 {
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         var abortConnection = stub.Response?.AbortConnection == true;
         if (!abortConnection)

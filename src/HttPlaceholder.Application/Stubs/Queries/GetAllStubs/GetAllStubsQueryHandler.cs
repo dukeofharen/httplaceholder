@@ -25,5 +25,5 @@ public class GetAllStubsQueryHandler : IRequestHandler<GetAllStubsQuery, IEnumer
 
     /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> Handle(GetAllStubsQuery request, CancellationToken cancellationToken) =>
-        await _stubContext.GetStubsAsync();
+        await _stubContext.GetStubsAsync(cancellationToken);
 }

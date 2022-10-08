@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.HostedServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.HostedServices;
@@ -22,9 +24,9 @@ public class CleanOldRequestsJobFacts
         var job = _mocker.CreateInstance<CleanOldRequestsJob>();
 
         // Act
-        await job.ProcessAsync();
+        await job.ProcessAsync(CancellationToken.None);
 
         // Assert
-        stubContextMock.Verify(m => m.CleanOldRequestResultsAsync());
+        stubContextMock.Verify(m => m.CleanOldRequestResultsAsync(It.IsAny<CancellationToken>()));
     }
 }

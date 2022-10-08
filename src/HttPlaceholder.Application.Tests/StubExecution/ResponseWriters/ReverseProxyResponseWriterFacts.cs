@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -34,7 +35,7 @@ public class ReverseProxyResponseWriterFacts
         var stub = new StubModel {Response = new StubResponseModel {ReverseProxy = null}};
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, null);
+        var result = await _writer.WriteToResponseAsync(stub, null, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result.Executed);
@@ -53,7 +54,7 @@ public class ReverseProxyResponseWriterFacts
         };
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, null);
+        var result = await _writer.WriteToResponseAsync(stub, null, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result.Executed);
@@ -129,7 +130,7 @@ public class ReverseProxyResponseWriterFacts
         var responseModel = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel);
+        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
@@ -187,7 +188,7 @@ public class ReverseProxyResponseWriterFacts
         var responseModel = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel);
+        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
@@ -249,7 +250,7 @@ public class ReverseProxyResponseWriterFacts
         responseModel.Headers.Add("Some-Date", "2020-08-11");
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel);
+        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
@@ -306,7 +307,7 @@ public class ReverseProxyResponseWriterFacts
         var responseModel = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel);
+        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
@@ -358,7 +359,7 @@ public class ReverseProxyResponseWriterFacts
         var responseModel = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel);
+        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
@@ -430,7 +431,7 @@ public class ReverseProxyResponseWriterFacts
         var responseModel = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel);
+        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedReplacementUrl, Encoding.UTF8.GetString(responseModel.Body));

@@ -26,7 +26,7 @@ public class CreateHarStubCommandHandlerFacts
         var command = new CreateHarStubCommand("har contents", true, tenant);
         var expectedResult = Array.Empty<FullStubModel>();
         generatorMock
-            .Setup(m => m.GenerateHarStubsAsync(command.Har, command.DoNotCreateStub, tenant))
+            .Setup(m => m.GenerateHarStubsAsync(command.Har, command.DoNotCreateStub, tenant, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);
 
         // Act
@@ -47,8 +47,8 @@ public class CreateHarStubCommandHandlerFacts
         var expectedResult = Array.Empty<FullStubModel>();
         string capturedTenant = null;
         generatorMock
-            .Setup(m => m.GenerateHarStubsAsync(command.Har, command.DoNotCreateStub, It.IsAny<string>()))
-            .Callback<string, bool, string>((_, _, tenant) => capturedTenant = tenant)
+            .Setup(m => m.GenerateHarStubsAsync(command.Har, command.DoNotCreateStub, It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<string, bool, string, CancellationToken>((_, _, tenant, _) => capturedTenant = tenant)
             .ReturnsAsync(expectedResult);
 
         // Act

@@ -12,12 +12,6 @@ public interface IAsyncService
     /// Starts a delay.
     /// </summary>
     /// <param name="millis">The number of milliseconds to wait.</param>
-    Task DelayAsync(int millis);
-
-    /// <summary>
-    /// Starts a delay.
-    /// </summary>
-    /// <param name="millis">The number of milliseconds to wait.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     Task DelayAsync(int millis, CancellationToken cancellationToken);
 }

@@ -25,5 +25,5 @@ public class GetByStubIdQueryHandler : IRequestHandler<GetByStubIdQuery, IEnumer
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestResultModel>> Handle(GetByStubIdQuery request, CancellationToken cancellationToken) =>
-        await _stubContext.GetRequestResultsByStubIdAsync(request.StubId);
+        await _stubContext.GetRequestResultsByStubIdAsync(request.StubId, cancellationToken);
 }

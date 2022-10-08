@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
@@ -26,7 +27,7 @@ public class BodyConditionCheckerFacts
         var conditions = new StubConditionsModel {Body = null};
 
         // act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -48,7 +49,7 @@ public class BodyConditionCheckerFacts
             .Returns(body);
 
         // act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -79,7 +80,7 @@ public class BodyConditionCheckerFacts
             .Returns(false);
 
         // act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -107,7 +108,7 @@ public class BodyConditionCheckerFacts
             .Returns(true);
 
         // act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

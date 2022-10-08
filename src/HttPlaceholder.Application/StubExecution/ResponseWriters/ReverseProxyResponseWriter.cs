@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
@@ -41,7 +42,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter
     public int Priority => -10;
 
     /// <inheritdoc />
-    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
     {
         if (stub.Response.ReverseProxy == null || string.IsNullOrWhiteSpace(stub.Response.ReverseProxy.Url))
         {
@@ -99,7 +100,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter
         }
 
         using var httpClient = _httpClientFactory.CreateClient("proxy");
-        using var responseMessage = await httpClient.SendAsync(request);
+        using var responseMessage = await httpClient.SendAsync(request, cancellationToken);
         var content = responseMessage.Content != null
             ? await responseMessage.Content.ReadAsByteArrayAsync()
             : Array.Empty<byte>();

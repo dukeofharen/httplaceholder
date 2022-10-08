@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
@@ -14,8 +15,9 @@ public interface IRequestToStubConditionsHandler
     /// </summary>
     /// <param name="request">The request.</param>
     /// <param name="conditions">The conditions for the stub that is being generated.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>True if the handler has been executed; false otherwise.</returns>
-    Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions);
+    Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken);
 
     /// <summary>
     /// A priority in which the handler should be executed. The higher the number, the earlier it is executed.

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 using HttPlaceholder.Domain;
@@ -19,7 +20,7 @@ public class StatusCodeHandlerFacts
         var stubResponse = new StubResponseModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(response, stubResponse);
+        var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -34,7 +35,7 @@ public class StatusCodeHandlerFacts
         var stubResponse = new StubResponseModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(response, stubResponse);
+        var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);

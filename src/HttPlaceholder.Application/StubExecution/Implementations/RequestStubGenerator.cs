@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using HttPlaceholder.Application.Exceptions;
@@ -32,10 +33,11 @@ internal class RequestStubGenerator : IRequestStubGenerator
     /// <inheritdoc />
     public async Task<FullStubModel> GenerateStubBasedOnRequestAsync(
         string requestCorrelationId,
-        bool doNotCreateStub)
+        bool doNotCreateStub,
+        CancellationToken cancellationToken)
     {
         _logger.LogDebug($"Creating stub based on request with corr.ID '{requestCorrelationId}'.");
-        var requestResult = await _stubContext.GetRequestResultAsync(requestCorrelationId);
+        var requestResult = await _stubContext.GetRequestResultAsync(requestCorrelationId, cancellationToken);
         if (requestResult == null)
         {
             throw new NotFoundException(nameof(RequestResultModel), requestCorrelationId);
@@ -44,7 +46,7 @@ internal class RequestStubGenerator : IRequestStubGenerator
         var request = _mapper.Map<HttpRequestModel>(requestResult.RequestParameters);
         var stub = new StubModel
         {
-            Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request),
+            Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request, cancellationToken),
             Response = { Text = "OK!" }
         };
 
@@ -59,8 +61,8 @@ internal class RequestStubGenerator : IRequestStubGenerator
         }
         else
         {
-            await _stubContext.DeleteStubAsync(stub.Id);
-            result = await _stubContext.AddStubAsync(stub);
+            await _stubContext.DeleteStubAsync(stub.Id, cancellationToken);
+            result = await _stubContext.AddStubAsync(stub, cancellationToken);
         }
 
         _logger.LogInformation($"Stub with ID '{stub.Id}' generated!");

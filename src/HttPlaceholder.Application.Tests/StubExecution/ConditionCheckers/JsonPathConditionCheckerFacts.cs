@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
@@ -28,7 +29,7 @@ public class JsonPathConditionCheckerFacts
         var conditions = new StubConditionsModel {JsonPath = null};
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -43,7 +44,7 @@ public class JsonPathConditionCheckerFacts
         var conditions = new StubConditionsModel {JsonPath = Array.Empty<object>()};
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -74,7 +75,7 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -105,7 +106,7 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -143,7 +144,7 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -181,7 +182,7 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -219,7 +220,7 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -262,7 +263,7 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -305,7 +306,7 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);

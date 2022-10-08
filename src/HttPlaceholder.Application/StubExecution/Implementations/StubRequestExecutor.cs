@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
@@ -40,11 +41,11 @@ internal class StubRequestExecutor : IStubRequestExecutor
     }
 
     /// <inheritdoc/>
-    public async Task<ResponseModel> ExecuteRequestAsync()
+    public async Task<ResponseModel> ExecuteRequestAsync(CancellationToken cancellationToken)
     {
         var requestLogger = _requestLoggerFactory.GetRequestLogger();
         var foundStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>();
-        var stubs = (await _stubContainer.GetStubsAsync()).Where(s => s.Stub.Enabled).ToArray();
+        var stubs = (await _stubContainer.GetStubsAsync(cancellationToken)).Where(s => s.Stub.Enabled).ToArray();
         var orderedConditionCheckers = _conditionCheckers.OrderByDescending(c => c.Priority).ToArray();
         foreach (var fullStub in stubs)
         {
@@ -54,7 +55,7 @@ internal class StubRequestExecutor : IStubRequestExecutor
                 var validationResults = new List<ConditionCheckResultModel>();
                 foreach (var checker in orderedConditionCheckers)
                 {
-                    var validationResult = await checker.ValidateAsync(stub);
+                    var validationResult = await checker.ValidateAsync(stub, cancellationToken);
                     validationResult.CheckerName = checker.GetType().Name;
                     validationResults.Add(validationResult);
                     if (validationResult.ConditionValidation == ConditionValidationType.Invalid)
@@ -92,9 +93,9 @@ internal class StubRequestExecutor : IStubRequestExecutor
         }
 
         var finalStub = _finalStubDeterminer.DetermineFinalStub(foundStubs);
-        await _scenarioService.IncreaseHitCountAsync(finalStub.Scenario);
+        await _scenarioService.IncreaseHitCountAsync(finalStub.Scenario, cancellationToken);
         requestLogger.SetExecutingStubId(finalStub.Id);
-        var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub);
+        var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub, cancellationToken);
         return response;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Import.Commands.CreateCurlStub;
 using HttPlaceholder.Application.Import.Commands.CreateHarStub;
@@ -23,15 +24,17 @@ public class ImportController : BaseApiController
     /// <param name="input">The data which should be added.</param>
     /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
     /// <param name="tenant">The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name will be generated.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with the generated stubs.</returns>
     [HttpPost("curl")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<FullStubDto>>> CreateCurlStubs(
         [FromBody] string input,
         [FromQuery] bool doNotCreateStub,
-        [FromQuery] string tenant) =>
+        [FromQuery] string tenant,
+        CancellationToken cancellationToken) =>
         Ok(Mapper.Map<IEnumerable<FullStubDto>>(
-            await Mediator.Send(new CreateCurlStubCommand(input, doNotCreateStub, tenant))));
+            await Mediator.Send(new CreateCurlStubCommand(input, doNotCreateStub, tenant), cancellationToken)));
 
     /// <summary>
     /// An endpoint that is used for creating stubs based on a HAR file (HTTP Archive).
@@ -39,15 +42,17 @@ public class ImportController : BaseApiController
     /// <param name="input">The raw HAR JSON input.</param>
     /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
     /// <param name="tenant">The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name will be generated.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with the generated stubs.</returns>
     [HttpPost("har")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<FullStubDto>>> CreateHarStubs(
         [FromBody] string input,
         [FromQuery] bool doNotCreateStub,
-        [FromQuery] string tenant) =>
+        [FromQuery] string tenant,
+        CancellationToken cancellationToken) =>
         Ok(Mapper.Map<IEnumerable<FullStubDto>>(
-            await Mediator.Send(new CreateHarStubCommand(input, doNotCreateStub, tenant))));
+            await Mediator.Send(new CreateHarStubCommand(input, doNotCreateStub, tenant), cancellationToken)));
 
     /// <summary>
     /// An endpoint that is used for creating stubs based on a OpenAPI definition.
@@ -56,13 +61,15 @@ public class ImportController : BaseApiController
     /// <param name="input">The raw OpenAPI JSON or YAML input.</param>
     /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
     /// <param name="tenant">The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name will be generated.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with the generated stubs.</returns>
     [HttpPost("openapi")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<FullStubDto>>> CreateOpenApiStubs(
         [FromBody] string input,
         [FromQuery] bool doNotCreateStub,
-        [FromQuery] string tenant) =>
+        [FromQuery] string tenant,
+        CancellationToken cancellationToken) =>
         Ok(Mapper.Map<IEnumerable<FullStubDto>>(
-            await Mediator.Send(new CreateOpenApiStubCommand(input, doNotCreateStub, tenant))));
+            await Mediator.Send(new CreateOpenApiStubCommand(input, doNotCreateStub, tenant), cancellationToken)));
 }

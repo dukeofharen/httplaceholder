@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
 using HttPlaceholder.Application.Stubs.Utilities;
@@ -25,7 +26,7 @@ internal class OpenApiToStubConverter : IOpenApiToStubConverter
     }
 
     /// <inheritdoc />
-    public async Task<StubModel> ConvertToStubAsync(OpenApiServer server, OpenApiLine line, string tenant)
+    public async Task<StubModel> ConvertToStubAsync(OpenApiServer server, OpenApiLine line, string tenant, CancellationToken cancellationToken)
     {
         var request = new HttpRequestModel
         {
@@ -44,8 +45,8 @@ internal class OpenApiToStubConverter : IOpenApiToStubConverter
         {
             Tenant = tenant,
             Description = line.Operation.Summary,
-            Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request),
-            Response = await _httpResponseToStubResponseService.ConvertToResponseAsync(response)
+            Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request, cancellationToken),
+            Response = await _httpResponseToStubResponseService.ConvertToResponseAsync(response, cancellationToken)
         };
         stub.EnsureStubId();
         return stub;

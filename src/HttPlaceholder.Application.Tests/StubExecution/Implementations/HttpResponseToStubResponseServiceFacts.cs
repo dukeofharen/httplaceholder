@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.Models;
@@ -31,10 +32,10 @@ public class HttpResponseToStubResponseServiceFacts
         var response = new HttpResponseModel();
 
         // Act
-        var result = await service.ConvertToResponseAsync(response);
+        var result = await service.ConvertToResponseAsync(response, CancellationToken.None);
 
         // Assert
-        _handlerMock1.Verify(m => m.HandleStubGenerationAsync(response, result));
-        _handlerMock2.Verify(m => m.HandleStubGenerationAsync(response, result));
+        _handlerMock1.Verify(m => m.HandleStubGenerationAsync(response, result, It.IsAny<CancellationToken>()));
+        _handlerMock2.Verify(m => m.HandleStubGenerationAsync(response, result, It.IsAny<CancellationToken>()));
     }
 }

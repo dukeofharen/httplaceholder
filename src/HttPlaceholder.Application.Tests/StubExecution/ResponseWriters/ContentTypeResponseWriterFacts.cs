@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -19,7 +20,7 @@ public class ContentTypeResponseWriterFacts
         var stub = new StubModel {Response = new StubResponseModel {ContentType = string.Empty}};
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Arrange
         Assert.IsFalse(result.Executed);
@@ -35,7 +36,7 @@ public class ContentTypeResponseWriterFacts
         var stub = new StubModel {Response = new StubResponseModel {ContentType = "text/csv"}};
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Arrange
         Assert.IsTrue(result.Executed);

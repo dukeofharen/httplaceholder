@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Common;
 
@@ -10,63 +11,63 @@ namespace HttPlaceholder.Infrastructure.Implementations;
 public class FileService : IFileService
 {
     /// <inheritdoc />
-    public Task<byte[]> ReadAllBytesAsync(string path) => File.ReadAllBytesAsync(path);
+    public Task<byte[]> ReadAllBytesAsync(string path, CancellationToken cancellationToken) => File.ReadAllBytesAsync(path, cancellationToken);
 
     /// <inheritdoc />
     public string ReadAllText(string path) => File.ReadAllText(path);
 
     /// <inheritdoc />
-    public Task<string> ReadAllTextAsync(string path) => File.ReadAllTextAsync(path);
+    public Task<string> ReadAllTextAsync(string path, CancellationToken cancellationToken) => File.ReadAllTextAsync(path, cancellationToken);
 
     /// <inheritdoc />
-    public Task WriteAllBytesAsync(string path, byte[] contents) => File.WriteAllBytesAsync(path, contents);
+    public Task WriteAllBytesAsync(string path, byte[] contents, CancellationToken cancellationToken) => File.WriteAllBytesAsync(path, contents, cancellationToken);
 
     /// <inheritdoc />
     public void WriteAllText(string path, string contents) => File.WriteAllText(path, contents);
 
     /// <inheritdoc />
-    public Task WriteAllTextAsync(string path, string contents) => File.WriteAllTextAsync(path, contents);
+    public Task WriteAllTextAsync(string path, string contents, CancellationToken cancellationToken) => File.WriteAllTextAsync(path, contents, cancellationToken);
 
     /// <inheritdoc />
     public bool FileExists(string path) => File.Exists(path);
 
     /// <inheritdoc />
-    public Task<bool> FileExistsAsync(string path) => Task.Run(() => FileExists(path));
+    public Task<bool> FileExistsAsync(string path, CancellationToken cancellationToken) => Task.Run(() => FileExists(path), cancellationToken);
 
     /// <inheritdoc />
     public bool DirectoryExists(string path) => Directory.Exists(path);
 
     /// <inheritdoc />
-    public Task<bool> DirectoryExistsAsync(string path) => Task.Run(() => DirectoryExists(path));
+    public Task<bool> DirectoryExistsAsync(string path, CancellationToken cancellationToken) => Task.Run(() => DirectoryExists(path), cancellationToken);
 
     /// <inheritdoc />
-    public Task CreateDirectoryAsync(string path) => Task.Run(() => Directory.CreateDirectory(path));
+    public Task CreateDirectoryAsync(string path, CancellationToken cancellationToken) => Task.Run(() => Directory.CreateDirectory(path), cancellationToken);
 
     /// <inheritdoc />
     public string GetTempPath() => Path.GetTempPath();
 
     /// <inheritdoc />
-    public Task DeleteFileAsync(string path) => Task.Run(() => File.Delete(path));
+    public Task DeleteFileAsync(string path, CancellationToken cancellationToken) => Task.Run(() => File.Delete(path), cancellationToken);
 
     /// <inheritdoc />
     public DateTime GetLastWriteTime(string path) => File.GetLastWriteTime(path);
 
     /// <inheritdoc />
-    public Task<bool> IsDirectoryAsync(string path) => Task.Run(() =>
-        (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory);
+    public Task<bool> IsDirectoryAsync(string path, CancellationToken cancellationToken) => Task.Run(() =>
+        (File.GetAttributes(path) & FileAttributes.Directory) == FileAttributes.Directory, cancellationToken);
 
     /// <inheritdoc />
     public string[] GetFiles(string path, string searchPattern) => Directory.GetFiles(path, searchPattern);
 
     /// <inheritdoc />
-    public Task<string[]> GetFilesAsync(string path, string searchPattern) =>
-        Task.Run(() => GetFiles(path, searchPattern));
+    public Task<string[]> GetFilesAsync(string path, string searchPattern, CancellationToken cancellationToken) =>
+        Task.Run(() => GetFiles(path, searchPattern), cancellationToken);
 
     /// <inheritdoc />
-    public Task<string[]> GetFilesAsync(string path, string[] allowedFileExtensions) =>
+    public Task<string[]> GetFilesAsync(string path, string[] allowedFileExtensions, CancellationToken cancellationToken) =>
         Task.Run(() => Directory.GetFiles(path)
             .Where(f => allowedFileExtensions.Any(e => f.ToLower().EndsWith(e)))
-            .ToArray());
+            .ToArray(), cancellationToken);
 
     /// <inheritdoc />
     public string GetCurrentDirectory() => Directory.GetCurrentDirectory();

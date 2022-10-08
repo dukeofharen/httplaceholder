@@ -25,5 +25,5 @@ public class GetAllRequestsQueryHandler : IRequestHandler<GetAllRequestsQuery, I
 
     /// <inheritdoc />
     public async Task<IEnumerable<RequestResultModel>> Handle(GetAllRequestsQuery request, CancellationToken cancellationToken) =>
-        await _stubContext.GetRequestResultsAsync();
+        await _stubContext.GetRequestResultsAsync(cancellationToken);
 }
