@@ -26,11 +26,11 @@ internal class FileResponseWriter : IResponseWriter
     public int Priority => 0;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
     {
         if (stub.Response?.File == null)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
         string finalFilePath = null;
@@ -56,12 +56,12 @@ internal class FileResponseWriter : IResponseWriter
 
         if (finalFilePath == null)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
-        response.Body = _fileService.ReadAllBytes(finalFilePath);
+        response.Body = await _fileService.ReadAllBytesAsync(finalFilePath);
         response.BodyIsBinary = true;
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
+        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 }

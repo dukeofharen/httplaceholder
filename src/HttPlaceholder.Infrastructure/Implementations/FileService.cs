@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Infrastructure.Implementations;
@@ -9,7 +10,7 @@ namespace HttPlaceholder.Infrastructure.Implementations;
 public class FileService : IFileService
 {
     /// <inheritdoc />
-    public byte[] ReadAllBytes(string path) => File.ReadAllBytes(path);
+    public Task<byte[]> ReadAllBytesAsync(string path) => File.ReadAllBytesAsync(path);
 
     /// <inheritdoc />
     public string ReadAllText(string path) => File.ReadAllText(path);

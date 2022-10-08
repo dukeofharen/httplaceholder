@@ -44,7 +44,7 @@ internal class ImageResponseWriter : IResponseWriter
         byte[] bytes;
         if (_fileService.FileExists(cacheFilePath))
         {
-            bytes = _fileService.ReadAllBytes(cacheFilePath);
+            bytes = await _fileService.ReadAllBytesAsync(cacheFilePath);
         }
         else
         {

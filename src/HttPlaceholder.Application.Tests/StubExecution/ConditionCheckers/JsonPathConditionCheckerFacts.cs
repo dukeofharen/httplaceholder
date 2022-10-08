@@ -312,7 +312,7 @@ public class JsonPathConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonPathCondition_InputIsJObject_ShouldReturnStubJsonPathModelCorrectly()
+    public void ConvertJsonPathCondition_InputIsJObject_ShouldReturnStubJsonPathModelCorrectly()
     {
         // Arrange
         var input = JObject.FromObject(new {query = "jpath query", expectedValue = "expected value"});
@@ -326,7 +326,7 @@ public class JsonPathConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonPathCondition_InputIsObjectDictionary_ShouldReturnStubJsonPathModelCorrectly()
+    public void ConvertJsonPathCondition_InputIsObjectDictionary_ShouldReturnStubJsonPathModelCorrectly()
     {
         // Arrange
         var input = new Dictionary<object, object> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
@@ -340,7 +340,7 @@ public class JsonPathConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonPathCondition_InputIsStringDictionary_ShouldReturnStubJsonPathModelCorrectly()
+    public void ConvertJsonPathCondition_InputIsStringDictionary_ShouldReturnStubJsonPathModelCorrectly()
     {
         // Arrange
         var input = new Dictionary<string, string> {{"query", "jpath query"}, {"expectedValue", "expected value"}};
@@ -354,7 +354,7 @@ public class JsonPathConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonPathCondition_InputIsUnknown_ShouldThrowInvalidOperationException()
+    public void ConvertJsonPathCondition_InputIsUnknown_ShouldThrowInvalidOperationException()
     {
         // Arrange
         var input = new object();
@@ -369,7 +369,7 @@ public class JsonPathConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonPathCondition_QueryIsNotSet_ShouldThrowInvalidOperationException()
+    public void ConvertJsonPathCondition_QueryIsNotSet_ShouldThrowInvalidOperationException()
     {
         // Arrange
         var input = new Dictionary<object, object> {{"query", string.Empty}, {"expectedValue", "expected value"}};

@@ -71,8 +71,8 @@ public class FileResponseWriterFacts
             .Returns(true);
 
         _fileServiceMock
-            .Setup(m => m.ReadAllBytes(stub.Response.File))
-            .Returns(body);
+            .Setup(m => m.ReadAllBytesAsync(stub.Response.File))
+            .ReturnsAsync(body);
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response);
@@ -113,8 +113,8 @@ public class FileResponseWriterFacts
             .Returns(true);
 
         _fileServiceMock
-            .Setup(m => m.ReadAllBytes(expectedFolder))
-            .Returns(body);
+            .Setup(m => m.ReadAllBytesAsync(expectedFolder))
+            .ReturnsAsync(body);
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response);

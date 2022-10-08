@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -62,8 +63,8 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
             .Setup(m => m.FileExists("text.txt"))
             .Returns(true);
         FileServiceMock
-            .Setup(m => m.ReadAllBytes("text.txt"))
-            .Returns(Encoding.UTF8.GetBytes(fileContents));
+            .Setup(m => m.ReadAllBytesAsync("text.txt"))
+            .ReturnsAsync(Encoding.UTF8.GetBytes(fileContents));
 
         // act / assert
         using var response = await Client.GetAsync(url);

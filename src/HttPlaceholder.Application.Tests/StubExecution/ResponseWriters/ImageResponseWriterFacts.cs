@@ -70,8 +70,8 @@ public class ImageResponseWriterFacts
             .Setup(m => m.FileExists(expectedCachePath))
             .Returns(true);
         _mockFileService
-            .Setup(m => m.ReadAllBytes(expectedCachePath))
-            .Returns(cachedBytes);
+            .Setup(m => m.ReadAllBytesAsync(expectedCachePath))
+            .ReturnsAsync(cachedBytes);
 
         // Act
         var result = await _responseWriter.WriteToResponseAsync(stub, response);

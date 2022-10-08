@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace HttPlaceholder.Common;
 
@@ -12,7 +13,7 @@ public interface IFileService
     /// </summary>
     /// <param name="path">The file path.</param>
     /// <returns>The file bytes.</returns>
-    byte[] ReadAllBytes(string path);
+    Task<byte[]> ReadAllBytesAsync(string path);
 
     /// <summary>
     /// Reads all text of a file.
