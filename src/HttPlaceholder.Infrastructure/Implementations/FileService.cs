@@ -40,7 +40,7 @@ public class FileService : IFileService
     public Task<bool> DirectoryExistsAsync(string path) => Task.Run(() => Directory.Exists(path));
 
     /// <inheritdoc />
-    public void CreateDirectory(string path) => Directory.CreateDirectory(path);
+    public Task CreateDirectoryAsync(string path) => Task.Run(() => Directory.CreateDirectory(path));
 
     /// <inheritdoc />
     public string GetTempPath() => Path.GetTempPath();

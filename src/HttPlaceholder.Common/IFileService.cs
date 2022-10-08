@@ -82,7 +82,7 @@ public interface IFileService
     /// Creates a directory.
     /// </summary>
     /// <param name="path">The directory path.</param>
-    void CreateDirectory(string path);
+    Task CreateDirectoryAsync(string path);
 
     /// <summary>
     /// Returns the temporary path of this PC.

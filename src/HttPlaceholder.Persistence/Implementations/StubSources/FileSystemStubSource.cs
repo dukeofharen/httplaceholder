@@ -209,25 +209,25 @@ internal class FileSystemStubSource : IWritableStubSource
         var rootFolder = GetRootFolder();
         if (!await _fileService.DirectoryExistsAsync(rootFolder))
         {
-            _fileService.CreateDirectory(rootFolder);
+            await _fileService.CreateDirectoryAsync(rootFolder);
         }
 
         var requestsFolder = GetRequestsFolder();
         if (!await _fileService.DirectoryExistsAsync(requestsFolder))
         {
-            _fileService.CreateDirectory(requestsFolder);
+            await _fileService.CreateDirectoryAsync(requestsFolder);
         }
 
         var responsesFolder = GetResponsesFolder();
         if (!await _fileService.DirectoryExistsAsync(responsesFolder))
         {
-            _fileService.CreateDirectory(responsesFolder);
+            await _fileService.CreateDirectoryAsync(responsesFolder);
         }
 
         var stubsFolder = GetStubsFolder();
         if (!await _fileService.DirectoryExistsAsync(stubsFolder))
         {
-            _fileService.CreateDirectory(stubsFolder);
+            await _fileService.CreateDirectoryAsync(stubsFolder);
         }
 
         _fileSystemStubCache.GetOrUpdateStubCache();
