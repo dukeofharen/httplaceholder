@@ -42,8 +42,8 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             .Setup(m => m.ReadAllTextAsync(InputFilePath))
             .ReturnsAsync(integrationYml);
         FileServiceMock
-            .Setup(m => m.FileExists(InputFilePath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(InputFilePath))
+            .ReturnsAsync(true);
 
         DateTimeMock = new Mock<IDateTime>();
         DateTimeMock

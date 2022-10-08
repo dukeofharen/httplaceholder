@@ -84,7 +84,7 @@ internal class FileSystemStubSource : IWritableStubSource
     {
         var path = GetRequestsFolder();
         var filePath = Path.Combine(path, ConstructRequestFilename(correlationId));
-        if (!_fileService.FileExists(filePath))
+        if (!await _fileService.FileExistsAsync(filePath))
         {
             return null;
         }
@@ -98,7 +98,7 @@ internal class FileSystemStubSource : IWritableStubSource
     {
         var path = GetResponsesFolder();
         var filePath = Path.Combine(path, ConstructResponseFilename(correlationId));
-        if (!_fileService.FileExists(filePath))
+        if (!await _fileService.FileExistsAsync(filePath))
         {
             return null;
         }
@@ -108,53 +108,51 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task DeleteAllRequestResultsAsync()
+    public async Task DeleteAllRequestResultsAsync()
     {
         var requestsPath = GetRequestsFolder();
         var files = _fileService.GetFiles(requestsPath, "*.json");
         foreach (var filePath in files)
         {
             _fileService.DeleteFile(filePath);
-            DeleteResponse(filePath);
+            await DeleteResponseAsync(filePath);
         }
-
-        return Task.CompletedTask;
     }
 
     /// <inheritdoc />
-    public Task<bool> DeleteRequestAsync(string correlationId)
+    public async Task<bool> DeleteRequestAsync(string correlationId)
     {
         var requestsPath = GetRequestsFolder();
         var responsesPath = GetResponsesFolder();
         var requestFilePath = Path.Combine(requestsPath, ConstructRequestFilename(correlationId));
-        if (!_fileService.FileExists(requestFilePath))
+        if (!await _fileService.FileExistsAsync(requestFilePath))
         {
-            return Task.FromResult(false);
+            return false;
         }
 
         var responseFilePath = Path.Combine(responsesPath, ConstructResponseFilename(correlationId));
-        if (_fileService.FileExists(responseFilePath))
+        if (await _fileService.FileExistsAsync(responseFilePath))
         {
             _fileService.DeleteFile(responseFilePath);
         }
 
         _fileService.DeleteFile(requestFilePath);
-        return Task.FromResult(true);
+        return true;
     }
 
     /// <inheritdoc />
-    public Task<bool> DeleteStubAsync(string stubId)
+    public async Task<bool> DeleteStubAsync(string stubId)
     {
         var path = GetStubsFolder();
         var filePath = Path.Combine(path, ConstructStubFilename(stubId));
-        if (!_fileService.FileExists(filePath))
+        if (!await _fileService.FileExistsAsync(filePath))
         {
-            return Task.FromResult(false);
+            return false;
         }
 
         _fileService.DeleteFile(filePath);
         _fileSystemStubCache.DeleteStub(stubId);
-        return Task.FromResult(true);
+        return true;
     }
 
     /// <inheritdoc />
@@ -188,7 +186,7 @@ internal class FileSystemStubSource : IWritableStubSource
         .ToArray();
 
     /// <inheritdoc />
-    public Task CleanOldRequestResultsAsync()
+    public async Task CleanOldRequestResultsAsync()
     {
         // TODO make this thread safe. What if multiple instances of HttPlaceholder are running?
         var path = GetRequestsFolder();
@@ -201,10 +199,8 @@ internal class FileSystemStubSource : IWritableStubSource
         foreach (var filePath in filePathsAndDates)
         {
             _fileService.DeleteFile(filePath.path);
-            DeleteResponse(filePath.path);
+            await DeleteResponseAsync(filePath.path);
         }
-
-        return Task.CompletedTask;
     }
 
     /// <inheritdoc />
@@ -258,12 +254,12 @@ internal class FileSystemStubSource : IWritableStubSource
     private string GetResponsesFolder() =>
         Path.Combine(GetRootFolder(), Constants.ResponsesFolderName);
 
-    private void DeleteResponse(string filePath)
+    private async Task DeleteResponseAsync(string filePath)
     {
         var responsesPath = GetResponsesFolder();
         var responseFileName = Path.GetFileName(filePath);
         var responseFilePath = Path.Combine(responsesPath, responseFileName);
-        if (_fileService.FileExists(responseFilePath))
+        if (await _fileService.FileExistsAsync(responseFilePath))
         {
             _fileService.DeleteFile(responseFilePath);
         }

@@ -114,8 +114,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(expectedPath))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(expectedPath))
+            .ReturnsAsync(false);
 
         // Act
         var result = await source.GetRequestAsync(correlationId);
@@ -136,8 +136,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(expectedPath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(expectedPath))
+            .ReturnsAsync(true);
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(expectedPath))
             .ReturnsAsync(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = correlationId}));
@@ -161,8 +161,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(expectedPath))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(expectedPath))
+            .ReturnsAsync(false);
 
         // Act
         var result = await source.GetResponseAsync(correlationId);
@@ -183,8 +183,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(expectedPath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(expectedPath))
+            .ReturnsAsync(true);
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(expectedPath))
             .ReturnsAsync(JsonConvert.SerializeObject(new ResponseModel {StatusCode = 200}));
@@ -221,11 +221,11 @@ public class FileSystemStubSourceFacts
         var responsePath2 = Path.Combine(responsesFolder, "request-02.json");
 
         fileServiceMock
-            .Setup(m => m.FileExists(responsePath1))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(responsePath1))
+            .ReturnsAsync(false);
         fileServiceMock
-            .Setup(m => m.FileExists(responsePath2))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(responsePath2))
+            .ReturnsAsync(true);
 
         // Act
         await source.DeleteAllRequestResultsAsync();
@@ -248,8 +248,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(expectedRequestPath))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(expectedRequestPath))
+            .ReturnsAsync(false);
 
         // Act
         var result = await source.DeleteRequestAsync(correlationId);
@@ -273,11 +273,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(expectedRequestPath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(expectedRequestPath))
+            .ReturnsAsync(true);
         fileServiceMock
-            .Setup(m => m.FileExists(expectedResponsePath))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(expectedResponsePath))
+            .ReturnsAsync(false);
 
         // Act
         var result = await source.DeleteRequestAsync(correlationId);
@@ -302,11 +302,11 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(expectedRequestPath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(expectedRequestPath))
+            .ReturnsAsync(true);
         fileServiceMock
-            .Setup(m => m.FileExists(expectedResponsePath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(expectedResponsePath))
+            .ReturnsAsync(true);
 
         // Act
         var result = await source.DeleteRequestAsync(correlationId);
@@ -330,8 +330,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(filePath))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(filePath))
+            .ReturnsAsync(false);
 
         // Act
         var result = await source.DeleteStubAsync(stubId);
@@ -354,8 +354,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(filePath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(filePath))
+            .ReturnsAsync(true);
 
         // Act
         var result = await source.DeleteStubAsync(stubId);
@@ -378,8 +378,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.FileExists(filePath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(filePath))
+            .ReturnsAsync(true);
         fileServiceMock
             .Setup(m => m.DeleteFile(filePath));
 
@@ -516,8 +516,8 @@ public class FileSystemStubSourceFacts
 
         var responsePath2 = Path.Combine(responsesFolder, "request-02.json");
         fileServiceMock
-            .Setup(m => m.FileExists(responsePath2))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(responsePath2))
+            .ReturnsAsync(true);
 
         // Act
         await source.CleanOldRequestResultsAsync();

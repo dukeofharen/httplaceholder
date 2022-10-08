@@ -60,8 +60,8 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}text.txt";
 
         FileServiceMock
-            .Setup(m => m.FileExists("text.txt"))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync("text.txt"))
+            .ReturnsAsync(true);
         FileServiceMock
             .Setup(m => m.ReadAllBytesAsync("text.txt"))
             .ReturnsAsync(Encoding.UTF8.GetBytes(fileContents));

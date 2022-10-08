@@ -31,6 +31,9 @@ public class FileService : IFileService
     public bool FileExists(string path) => File.Exists(path);
 
     /// <inheritdoc />
+    public Task<bool> FileExistsAsync(string path) => Task.Run(() => File.Exists(path));
+
+    /// <inheritdoc />
     public bool DirectoryExists(string path) => Directory.Exists(path);
 
     /// <inheritdoc />

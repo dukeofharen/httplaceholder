@@ -67,8 +67,8 @@ public class FileResponseWriterFacts
         var response = new ResponseModel();
 
         _fileServiceMock
-            .Setup(m => m.FileExists(stub.Response.File))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(stub.Response.File))
+            .ReturnsAsync(true);
 
         _fileServiceMock
             .Setup(m => m.ReadAllBytesAsync(stub.Response.File))
@@ -105,12 +105,12 @@ public class FileResponseWriterFacts
             .Returns(stubRootPaths);
 
         _fileServiceMock
-            .Setup(m => m.FileExists(stub.Response.File))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(stub.Response.File))
+            .ReturnsAsync(false);
 
         _fileServiceMock
-            .Setup(m => m.FileExists(expectedFolder))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(expectedFolder))
+            .ReturnsAsync(true);
 
         _fileServiceMock
             .Setup(m => m.ReadAllBytesAsync(expectedFolder))
@@ -146,12 +146,12 @@ public class FileResponseWriterFacts
             .Returns(stubRootPaths);
 
         _fileServiceMock
-            .Setup(m => m.FileExists(stub.Response.File))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(stub.Response.File))
+            .ReturnsAsync(false);
 
         _fileServiceMock
-            .Setup(m => m.FileExists(expectedFolder))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(expectedFolder))
+            .ReturnsAsync(false);
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response);

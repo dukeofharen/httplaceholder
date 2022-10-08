@@ -34,7 +34,7 @@ internal class FileResponseWriter : IResponseWriter
         }
 
         string finalFilePath = null;
-        if (_fileService.FileExists(stub.Response.File))
+        if (await  _fileService.FileExistsAsync(stub.Response.File))
         {
             finalFilePath = stub.Response.File;
         }
@@ -46,7 +46,7 @@ internal class FileResponseWriter : IResponseWriter
             {
 
                 var tempPath = Path.Combine(path, stub.Response.File);
-                if (_fileService.FileExists(tempPath))
+                if (await _fileService.FileExistsAsync(tempPath))
                 {
                     finalFilePath = tempPath;
                     break;

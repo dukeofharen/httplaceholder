@@ -67,8 +67,8 @@ public class ImageResponseWriterFacts
         var cachedBytes = new byte[] {1, 2, 3, 4};
         var expectedCachePath = Path.Combine(_tempFolder, $"{stub.Response.Image.Hash}.bin");
         _mockFileService
-            .Setup(m => m.FileExists(expectedCachePath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(expectedCachePath))
+            .ReturnsAsync(true);
         _mockFileService
             .Setup(m => m.ReadAllBytesAsync(expectedCachePath))
             .ReturnsAsync(cachedBytes);
@@ -104,8 +104,8 @@ public class ImageResponseWriterFacts
 
         var expectedCachePath = Path.Combine(_tempFolder, $"{stub.Response.Image.Hash}.bin");
         _mockFileService
-            .Setup(m => m.FileExists(expectedCachePath))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(expectedCachePath))
+            .ReturnsAsync(false);
 
         // Act
         var result = await _responseWriter.WriteToResponseAsync(stub, response);

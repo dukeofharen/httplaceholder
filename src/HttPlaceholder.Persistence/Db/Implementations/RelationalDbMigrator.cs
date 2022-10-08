@@ -39,7 +39,7 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
             var fileBaseName = Path.GetFileName(file).Split('.').First();
             var checkFileName = $"{fileBaseName}.check.sql";
             var checkFilePath = Path.Combine(migrationsRootFolder, checkFileName);
-            if (!_fileService.FileExists(checkFilePath))
+            if (!await _fileService.FileExistsAsync(checkFilePath))
             {
                 throw new InvalidOperationException($"Could not find file {checkFilePath}");
             }

@@ -42,7 +42,7 @@ internal class ImageResponseWriter : IResponseWriter
 
         var cacheFilePath = Path.Combine(_fileService.GetTempPath(), $"{stubImage.Hash}.bin");
         byte[] bytes;
-        if (_fileService.FileExists(cacheFilePath))
+        if (await _fileService.FileExistsAsync(cacheFilePath))
         {
             bytes = await _fileService.ReadAllBytesAsync(cacheFilePath);
         }

@@ -113,8 +113,8 @@ public class RelationalDbMigratorFacts
             filesList.Add(migrationFilePath);
             var checkFilePath = Path.Join(rootFolder, $"{input.Key}.check.sql");
             mockFileService
-                .Setup(m => m.FileExists(checkFilePath))
-                .Returns(input.CheckFileFound);
+                .Setup(m => m.FileExistsAsync(checkFilePath))
+                .ReturnsAsync(input.CheckFileFound);
             if (input.CheckFileFound)
             {
                 var checkScript = Guid.NewGuid().ToString();
