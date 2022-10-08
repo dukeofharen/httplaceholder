@@ -39,8 +39,8 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
 
         FileServiceMock = new Mock<IFileService>();
         FileServiceMock
-            .Setup(m => m.ReadAllText(InputFilePath))
-            .Returns(integrationYml);
+            .Setup(m => m.ReadAllTextAsync(InputFilePath))
+            .ReturnsAsync(integrationYml);
         FileServiceMock
             .Setup(m => m.FileExists(InputFilePath))
             .Returns(true);

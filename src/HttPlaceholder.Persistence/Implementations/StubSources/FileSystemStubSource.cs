@@ -40,7 +40,8 @@ internal class FileSystemStubSource : IWritableStubSource
         if (responseModel != null)
         {
             requestResult.HasResponse = true;
-            var responseFilePath = Path.Combine(responsesFolder, ConstructResponseFilename(requestResult.CorrelationId));
+            var responseFilePath =
+                Path.Combine(responsesFolder, ConstructResponseFilename(requestResult.CorrelationId));
             var responseContents = JsonConvert.SerializeObject(responseModel);
             _fileService.WriteAllText(responseFilePath, responseContents);
         }
@@ -81,31 +82,31 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task<RequestResultModel> GetRequestAsync(string correlationId)
+    public async Task<RequestResultModel> GetRequestAsync(string correlationId)
     {
         var path = GetRequestsFolder();
         var filePath = Path.Combine(path, ConstructRequestFilename(correlationId));
         if (!_fileService.FileExists(filePath))
         {
-            return Task.FromResult((RequestResultModel)null);
+            return null;
         }
 
-        var contents = _fileService.ReadAllText(filePath);
-        return Task.FromResult(JsonConvert.DeserializeObject<RequestResultModel>(contents));
+        var contents = await _fileService.ReadAllTextAsync(filePath);
+        return JsonConvert.DeserializeObject<RequestResultModel>(contents);
     }
 
     /// <inheritdoc />
-    public Task<ResponseModel> GetResponseAsync(string correlationId)
+    public async Task<ResponseModel> GetResponseAsync(string correlationId)
     {
         var path = GetResponsesFolder();
         var filePath = Path.Combine(path, ConstructResponseFilename(correlationId));
         if (!_fileService.FileExists(filePath))
         {
-            return Task.FromResult((ResponseModel)null);
+            return null;
         }
 
-        var contents = _fileService.ReadAllText(filePath);
-        return Task.FromResult(JsonConvert.DeserializeObject<ResponseModel>(contents));
+        var contents = await _fileService.ReadAllTextAsync(filePath);
+        return JsonConvert.DeserializeObject<ResponseModel>(contents);
     }
 
     /// <inheritdoc />
@@ -159,16 +160,16 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
+    public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
     {
         var path = GetRequestsFolder();
         var files = _fileService.GetFiles(path, "*.json");
         var result = files
             .Select(filePath => _fileService
-                .ReadAllText(filePath))
-            .Select(JsonConvert.DeserializeObject<RequestResultModel>).ToList();
-
-        return Task.FromResult(result.AsEnumerable());
+                .ReadAllTextAsync(filePath))
+            .ToArray();
+        var results = await Task.WhenAll(result);
+        return results.Select(JsonConvert.DeserializeObject<RequestResultModel>);
     }
 
     /// <inheritdoc />
@@ -185,7 +186,7 @@ internal class FileSystemStubSource : IWritableStubSource
     /// <inheritdoc />
     public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
         (await GetStubsAsync())
-        .Select(s => new StubOverviewModel { Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled })
+        .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
     /// <inheritdoc />

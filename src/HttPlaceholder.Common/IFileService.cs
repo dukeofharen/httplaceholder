@@ -23,6 +23,13 @@ public interface IFileService
     string ReadAllText(string path);
 
     /// <summary>
+    /// Reads all text of a file.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <returns>The file text.</returns>
+    Task<string> ReadAllTextAsync(string path);
+
+    /// <summary>
     /// Writes all bytes to a file.
     /// </summary>
     /// <param name="path">The file path.</param>

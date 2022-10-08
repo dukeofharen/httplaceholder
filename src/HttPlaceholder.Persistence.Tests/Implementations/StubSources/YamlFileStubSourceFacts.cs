@@ -53,12 +53,12 @@ public class YamlFileStubSourceFacts
             .Returns(files);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(files[0]))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[1]))
-            .Returns(TestResources.YamlFile2);
+            .Setup(m => m.ReadAllTextAsync(files[1]))
+            .ReturnsAsync(TestResources.YamlFile2);
 
         // Act
         var result = await source.GetStubsAsync();
@@ -110,12 +110,12 @@ public class YamlFileStubSourceFacts
         _options.Value.Storage.InputFile = string.Join(separator, files);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(files[0]))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[1]))
-            .Returns(TestResources.YamlFile2);
+            .Setup(m => m.ReadAllTextAsync(files[1]))
+            .ReturnsAsync(TestResources.YamlFile2);
 
         // Act
         var result = await source.GetStubsAsync();
@@ -140,12 +140,12 @@ public class YamlFileStubSourceFacts
         _options.Value.Storage.InputFile = string.Join(",", files);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(files[0]))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[1]))
-            .Returns("THIS IS INVALID YAML!");
+            .Setup(m => m.ReadAllTextAsync(files[1]))
+            .ReturnsAsync("THIS IS INVALID YAML!");
 
         // Act
         var result = await source.GetStubsAsync();
@@ -180,12 +180,12 @@ public class YamlFileStubSourceFacts
             .Returns(true);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(files[0]))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[1]))
-            .Returns(TestResources.YamlFile2);
+            .Setup(m => m.ReadAllTextAsync(files[1]))
+            .ReturnsAsync(TestResources.YamlFile2);
 
         // Act
         var result = await source.GetStubsAsync();
@@ -220,8 +220,8 @@ public class YamlFileStubSourceFacts
             .Returns(true);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile3);
+            .Setup(m => m.ReadAllTextAsync(files[0]))
+            .ReturnsAsync(TestResources.YamlFile3);
 
         // Act
         var result = await source.GetStubsAsync();
@@ -256,8 +256,8 @@ public class YamlFileStubSourceFacts
             .Returns(true);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile4);
+            .Setup(m => m.ReadAllTextAsync(files[0]))
+            .ReturnsAsync(TestResources.YamlFile4);
 
         // Act
         var result = await source.GetStubsAsync();
@@ -280,8 +280,8 @@ public class YamlFileStubSourceFacts
         _options.Value.Storage.InputFile = inputFile;
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(inputFile))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(inputFile))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         stubModelValidatorMock
             .Setup(m => m.ValidateStubModel(It.IsAny<StubModel>()))
@@ -313,8 +313,8 @@ public class YamlFileStubSourceFacts
         _options.Value.Storage.InputFile = inputFile;
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(inputFile))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(inputFile))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         // Act
         var result = (await source.GetStubsOverviewAsync()).ToArray();

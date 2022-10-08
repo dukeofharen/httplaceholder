@@ -43,13 +43,13 @@ internal class YamlFileStubSource : IStubSource
     }
 
     /// <inheritdoc />
-    public Task<IEnumerable<StubModel>> GetStubsAsync()
+    public async Task<IEnumerable<StubModel>> GetStubsAsync()
     {
         var fileLocations = GetYamlFileLocations();
         if (fileLocations.Count == 0)
         {
             _logger.LogInformation("No .yml input files found.");
-            return Task.FromResult(Array.Empty<StubModel>().AsEnumerable());
+            return Array.Empty<StubModel>().AsEnumerable();
         }
 
         if (_stubs == null || GetLastStubFileModificationDateTime(fileLocations) > _stubLoadDateTime)
@@ -58,7 +58,7 @@ internal class YamlFileStubSource : IStubSource
             foreach (var file in fileLocations)
             {
                 // Load the stubs.
-                var input = _fileService.ReadAllText(file);
+                var input = await _fileService.ReadAllTextAsync(file);
                 _logger.LogInformation($"Parsing .yml file '{file}'.");
                 try
                 {
@@ -78,7 +78,7 @@ internal class YamlFileStubSource : IStubSource
             _logger.LogInformation("No stub file contents changed in the meanwhile.");
         }
 
-        return Task.FromResult(_stubs);
+        return _stubs;
     }
 
     /// <inheritdoc />

@@ -119,8 +119,8 @@ public class RelationalDbMigratorFacts
             {
                 var checkScript = Guid.NewGuid().ToString();
                 mockFileService
-                    .Setup(m => m.ReadAllText(checkFilePath))
-                    .Returns(checkScript);
+                    .Setup(m => m.ReadAllTextAsync(checkFilePath))
+                    .ReturnsAsync(checkScript);
                 _mockDatabaseContext
                     .Setup(m => m.ExecuteScalarAsync<int>(checkScript, It.IsAny<object>()))
                     .ReturnsAsync(input.CheckResult);
@@ -128,8 +128,8 @@ public class RelationalDbMigratorFacts
                 {
                     var migrationScript = Guid.NewGuid().ToString();
                     mockFileService
-                        .Setup(m => m.ReadAllText(migrationFilePath))
-                        .Returns(migrationScript);
+                        .Setup(m => m.ReadAllTextAsync(migrationFilePath))
+                        .ReturnsAsync(migrationScript);
                     _mockDatabaseContext.Setup(m => m.ExecuteAsync(migrationScript, It.IsAny<object>()));
                 }
             }

@@ -139,8 +139,8 @@ public class FileSystemStubSourceFacts
             .Setup(m => m.FileExists(expectedPath))
             .Returns(true);
         fileServiceMock
-            .Setup(m => m.ReadAllText(expectedPath))
-            .Returns(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = correlationId}));
+            .Setup(m => m.ReadAllTextAsync(expectedPath))
+            .ReturnsAsync(JsonConvert.SerializeObject(new RequestResultModel {CorrelationId = correlationId}));
 
         // Act
         var result = await source.GetRequestAsync(correlationId);
@@ -186,8 +186,8 @@ public class FileSystemStubSourceFacts
             .Setup(m => m.FileExists(expectedPath))
             .Returns(true);
         fileServiceMock
-            .Setup(m => m.ReadAllText(expectedPath))
-            .Returns(JsonConvert.SerializeObject(new ResponseModel {StatusCode = 200}));
+            .Setup(m => m.ReadAllTextAsync(expectedPath))
+            .ReturnsAsync(JsonConvert.SerializeObject(new ResponseModel {StatusCode = 200}));
 
         // Act
         var result = await source.GetResponseAsync(correlationId);
@@ -419,8 +419,8 @@ public class FileSystemStubSourceFacts
             var file = files[i];
             var contents = requestFileContents[i];
             fileServiceMock
-                .Setup(m => m.ReadAllText(file))
-                .Returns(contents);
+                .Setup(m => m.ReadAllTextAsync(file))
+                .ReturnsAsync(contents);
         }
 
         // Act
@@ -470,8 +470,8 @@ public class FileSystemStubSourceFacts
             var file = files[i];
             var contents = requestFileContents[i];
             fileServiceMock
-                .Setup(m => m.ReadAllText(file))
-                .Returns(contents);
+                .Setup(m => m.ReadAllTextAsync(file))
+                .ReturnsAsync(contents);
         }
 
         // Act

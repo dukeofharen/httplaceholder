@@ -45,7 +45,7 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
             }
 
             // The check script will be loaded. It is expected that the script returns an 1 or higher if the migration should NOT be executed and a "0" if the migration SHOULD be executed.
-            var checkScript = _fileService.ReadAllText(checkFilePath);
+            var checkScript = await _fileService.ReadAllTextAsync(checkFilePath);
             _logger.LogDebug($"Checking file {checkFileName}.");
             var checkResult = await ctx.ExecuteScalarAsync<int>(checkScript);
             if (checkResult > 0)
@@ -55,7 +55,7 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
             else
             {
                 _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration {file} will be executed.");
-                var migrationScript = _fileService.ReadAllText(file);
+                var migrationScript = await _fileService.ReadAllTextAsync(file);
                 await ctx.ExecuteAsync(migrationScript);
             }
         }
