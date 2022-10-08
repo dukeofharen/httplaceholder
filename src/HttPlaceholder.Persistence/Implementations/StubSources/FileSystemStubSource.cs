@@ -33,7 +33,7 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel)
+    public async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel)
     {
         var requestsFolder = GetRequestsFolder();
         var responsesFolder = GetResponsesFolder();
@@ -43,24 +43,22 @@ internal class FileSystemStubSource : IWritableStubSource
             var responseFilePath =
                 Path.Combine(responsesFolder, ConstructResponseFilename(requestResult.CorrelationId));
             var responseContents = JsonConvert.SerializeObject(responseModel);
-            _fileService.WriteAllText(responseFilePath, responseContents);
+            await _fileService.WriteAllTextAsync(responseFilePath, responseContents);
         }
 
         var requestFilePath = Path.Combine(requestsFolder, ConstructRequestFilename(requestResult.CorrelationId));
         var requestContents = JsonConvert.SerializeObject(requestResult);
-        _fileService.WriteAllText(requestFilePath, requestContents);
-        return Task.CompletedTask;
+        await _fileService.WriteAllTextAsync(requestFilePath, requestContents);
     }
 
     /// <inheritdoc />
-    public Task AddStubAsync(StubModel stub)
+    public async Task AddStubAsync(StubModel stub)
     {
         var path = GetStubsFolder();
         var filePath = Path.Combine(path, ConstructStubFilename(stub.Id));
         var contents = JsonConvert.SerializeObject(stub);
-        _fileService.WriteAllText(filePath, contents);
+        await _fileService.WriteAllTextAsync(filePath, contents);
         _fileSystemStubCache.AddOrReplaceStub(stub);
-        return Task.CompletedTask;
     }
 
     /// <inheritdoc />

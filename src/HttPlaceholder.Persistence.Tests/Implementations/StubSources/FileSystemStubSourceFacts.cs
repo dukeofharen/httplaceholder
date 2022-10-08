@@ -52,9 +52,9 @@ public class FileSystemStubSourceFacts
 
         // Assert
         fileServiceMock
-            .Verify(m => m.WriteAllText(requestFilePath, It.Is<string>(c => c.Contains(request.CorrelationId))));
+            .Verify(m => m.WriteAllTextAsync(requestFilePath, It.Is<string>(c => c.Contains(request.CorrelationId))));
         fileServiceMock
-            .Verify(m => m.WriteAllText(responseFilePath, It.IsAny<string>()), Times.Never);
+            .Verify(m => m.WriteAllTextAsync(responseFilePath, It.IsAny<string>()), Times.Never);
         Assert.IsFalse(request.HasResponse);
     }
 
@@ -76,9 +76,9 @@ public class FileSystemStubSourceFacts
 
         // Assert
         fileServiceMock
-            .Verify(m => m.WriteAllText(requestFilePath, It.Is<string>(c => c.Contains(request.CorrelationId))));
+            .Verify(m => m.WriteAllTextAsync(requestFilePath, It.Is<string>(c => c.Contains(request.CorrelationId))));
         fileServiceMock
-            .Verify(m => m.WriteAllText(responseFilePath, It.Is<string>(c => c.Contains("200"))));
+            .Verify(m => m.WriteAllTextAsync(responseFilePath, It.Is<string>(c => c.Contains("200"))));
         Assert.IsTrue(request.HasResponse);
     }
 
@@ -95,7 +95,7 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.WriteAllText(filePath, It.Is<string>(c => c.Contains(stub.Id))));
+            .Setup(m => m.WriteAllTextAsync(filePath, It.Is<string>(c => c.Contains(stub.Id))));
 
         // Act / assert
         await source.AddStubAsync(stub);

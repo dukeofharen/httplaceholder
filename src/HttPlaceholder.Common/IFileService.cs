@@ -44,6 +44,13 @@ public interface IFileService
     void WriteAllText(string path, string contents);
 
     /// <summary>
+    /// Writes all text to a file.
+    /// </summary>
+    /// <param name="path">The file path.</param>
+    /// <param name="contents">The file contents.</param>
+    Task WriteAllTextAsync(string path, string contents);
+
+    /// <summary>
     /// Checks whether a file exists.
     /// </summary>
     /// <param name="path">The file path.</param>

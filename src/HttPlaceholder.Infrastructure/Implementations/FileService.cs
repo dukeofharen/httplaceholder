@@ -25,6 +25,9 @@ public class FileService : IFileService
     public void WriteAllText(string path, string contents) => File.WriteAllText(path, contents);
 
     /// <inheritdoc />
+    public Task WriteAllTextAsync(string path, string contents) => File.WriteAllTextAsync(path, contents);
+
+    /// <inheritdoc />
     public bool FileExists(string path) => File.Exists(path);
 
     /// <inheritdoc />
