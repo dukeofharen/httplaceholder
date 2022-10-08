@@ -211,8 +211,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.GetFiles(requestsFolder, "*.json"))
-            .Returns(files);
+            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json"))
+            .ReturnsAsync(files);
 
         fileServiceMock
             .Setup(m => m.DeleteFileAsync(It.Is<string>(f => files.Contains(f))));
@@ -405,8 +405,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.GetFiles(requestsFolder, "*.json"))
-            .Returns(files);
+            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json"))
+            .ReturnsAsync(files);
 
         var requestFileContents = new[]
         {
@@ -446,8 +446,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.GetFiles(requestsFolder, "*.json"))
-            .Returns(files);
+            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json"))
+            .ReturnsAsync(files);
 
         var requestFileContents = new[]
         {
@@ -499,8 +499,8 @@ public class FileSystemStubSourceFacts
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         fileServiceMock
-            .Setup(m => m.GetFiles(requestsFolder, "*.json"))
-            .Returns(files);
+            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json"))
+            .ReturnsAsync(files);
 
         var fileDateTimeMapping = new[]
         {

@@ -156,7 +156,7 @@ internal class YamlFileStubSource : IStubSource
         {
             // If the input file location is not set, try looking in the current directory for .yml files.
             var currentDirectory = _fileService.GetCurrentDirectory();
-            var yamlFiles = _fileService.GetFiles(currentDirectory, _extensions);
+            var yamlFiles = await _fileService.GetFilesAsync(currentDirectory, _extensions);
             fileLocations.AddRange(yamlFiles);
         }
         else
@@ -171,7 +171,7 @@ internal class YamlFileStubSource : IStubSource
                 _logger.LogInformation($"Reading location '{location}'.");
                 if (await _fileService.IsDirectoryAsync(location))
                 {
-                    var yamlFiles = _fileService.GetFiles(location, _extensions);
+                    var yamlFiles = await _fileService.GetFilesAsync(location, _extensions);
                     fileLocations.AddRange(yamlFiles);
                 }
                 else

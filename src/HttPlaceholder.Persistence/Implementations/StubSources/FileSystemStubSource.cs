@@ -111,7 +111,7 @@ internal class FileSystemStubSource : IWritableStubSource
     public async Task DeleteAllRequestResultsAsync()
     {
         var requestsPath = GetRequestsFolder();
-        var files = _fileService.GetFiles(requestsPath, "*.json");
+        var files = await _fileService.GetFilesAsync(requestsPath, "*.json");
         foreach (var filePath in files)
         {
             await _fileService.DeleteFileAsync(filePath);
@@ -159,7 +159,7 @@ internal class FileSystemStubSource : IWritableStubSource
     public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
     {
         var path = GetRequestsFolder();
-        var files = _fileService.GetFiles(path, "*.json");
+        var files = await _fileService.GetFilesAsync(path, "*.json");
         var result = files
             .Select(filePath => _fileService
                 .ReadAllTextAsync(filePath))
@@ -191,7 +191,7 @@ internal class FileSystemStubSource : IWritableStubSource
         // TODO make this thread safe. What if multiple instances of HttPlaceholder are running?
         var path = GetRequestsFolder();
         var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
-        var filePaths = _fileService.GetFiles(path, "*.json");
+        var filePaths = await _fileService.GetFilesAsync(path, "*.json");
         var filePathsAndDates = filePaths
             .Select(p => (path: p, lastWriteTime: _fileService.GetLastWriteTime(p)))
             .OrderByDescending(t => t.lastWriteTime)

@@ -59,10 +59,14 @@ public class FileService : IFileService
     public string[] GetFiles(string path, string searchPattern) => Directory.GetFiles(path, searchPattern);
 
     /// <inheritdoc />
-    public string[] GetFiles(string path, string[] allowedFileExtensions) =>
-        Directory.GetFiles(path)
+    public Task<string[]> GetFilesAsync(string path, string searchPattern) =>
+        Task.Run(() => GetFiles(path, searchPattern));
+
+    /// <inheritdoc />
+    public Task<string[]> GetFilesAsync(string path, string[] allowedFileExtensions) =>
+        Task.Run(() => Directory.GetFiles(path)
             .Where(f => allowedFileExtensions.Any(e => f.ToLower().EndsWith(e)))
-            .ToArray();
+            .ToArray());
 
     /// <inheritdoc />
     public string GetCurrentDirectory() => Directory.GetCurrentDirectory();

@@ -33,7 +33,7 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
         var dbFolder = GetDatabaseMigrationsFolder();
         var migrationsRootFolder = Path.Combine(_assemblyService.GetExecutingAssemblyRootPath(),
             "SqlScripts/Migrations", dbFolder);
-        var migrationFiles = _fileService.GetFiles(migrationsRootFolder, "*.migration.sql").OrderBy(f => f);
+        var migrationFiles = (await _fileService.GetFilesAsync(migrationsRootFolder, "*.migration.sql")).OrderBy(f => f);
         foreach (var file in migrationFiles)
         {
             var fileBaseName = Path.GetFileName(file).Split('.').First();

@@ -136,8 +136,8 @@ public class RelationalDbMigratorFacts
         }
 
         mockFileService
-            .Setup(m => m.GetFiles(rootFolder, "*.migration.sql"))
-            .Returns(filesList.ToArray);
+            .Setup(m => m.GetFilesAsync(rootFolder, "*.migration.sql"))
+            .ReturnsAsync(filesList.ToArray);
     }
 
     private void SetupConfig(string connectionStringKey)

@@ -122,9 +122,17 @@ public interface IFileService
     /// Returns a list of files.
     /// </summary>
     /// <param name="path">The directory path.</param>
+    /// <param name="searchPattern">A file search pattern to limit the number of files returned.</param>
+    /// <returns>An array of file names.</returns>
+    Task<string[]> GetFilesAsync(string path, string searchPattern);
+
+    /// <summary>
+    /// Returns a list of files.
+    /// </summary>
+    /// <param name="path">The directory path.</param>
     /// <param name="allowedFileExtensions">A list of file extensions to filter for.</param>
     /// <returns>An array of file names.</returns>
-    string[] GetFiles(string path, string[] allowedFileExtensions);
+    Task<string[]> GetFilesAsync(string path, string[] allowedFileExtensions);
 
     /// <summary>
     /// Returns the current directory the application is opened in.
