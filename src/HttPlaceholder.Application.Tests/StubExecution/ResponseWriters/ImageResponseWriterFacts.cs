@@ -119,6 +119,6 @@ public class ImageResponseWriterFacts
         Assert.AreEqual(stub.Response.Image.Width, image.Width);
         Assert.AreEqual(expectedContentType, response.Headers["Content-Type"]);
         _mockFileService
-            .Verify(m => m.WriteAllBytes(expectedCachePath, response.Body), Times.Once);
+            .Verify(m => m.WriteAllBytesAsync(expectedCachePath, response.Body), Times.Once);
     }
 }

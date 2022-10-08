@@ -19,7 +19,7 @@ public class FileService : IFileService
     public Task<string> ReadAllTextAsync(string path) => File.ReadAllTextAsync(path);
 
     /// <inheritdoc />
-    public void WriteAllBytes(string path, byte[] contents) => File.WriteAllBytes(path, contents);
+    public Task WriteAllBytesAsync(string path, byte[] contents) => File.WriteAllBytesAsync(path, contents);
 
     /// <inheritdoc />
     public void WriteAllText(string path, string contents) => File.WriteAllText(path, contents);

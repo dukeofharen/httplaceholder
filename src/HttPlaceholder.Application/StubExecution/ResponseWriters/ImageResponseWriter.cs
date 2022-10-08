@@ -86,7 +86,7 @@ internal class ImageResponseWriter : IResponseWriter
             }
 
             bytes = ms.ToArray();
-            _fileService.WriteAllBytes(cacheFilePath, bytes);
+            await _fileService.WriteAllBytesAsync(cacheFilePath, bytes);
         }
 
         response.Body = bytes;

@@ -34,7 +34,7 @@ public interface IFileService
     /// </summary>
     /// <param name="path">The file path.</param>
     /// <param name="contents">The file contents.</param>
-    void WriteAllBytes(string path, byte[] contents);
+    Task WriteAllBytesAsync(string path, byte[] contents);
 
     /// <summary>
     /// Writes all text to a file.
