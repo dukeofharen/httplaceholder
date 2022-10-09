@@ -22,7 +22,7 @@ public class BaseVariableParsingHandlerFacts
         const string description = "the description";
         fileServiceMock
             .Setup(m => m.ReadAllText(It.Is<string>(p =>
-                p.EndsWith(Path.Combine("Files", "Markdown", "TestVariableParsingHandler-description.md")))))
+                p.EndsWith(Path.Combine("Files", "VarParser", "TestVariableParsingHandler-description.md")))))
             .Returns(description);
 
         // Act

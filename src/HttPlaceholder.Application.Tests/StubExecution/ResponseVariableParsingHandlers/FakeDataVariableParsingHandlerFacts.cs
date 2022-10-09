@@ -67,7 +67,7 @@ public class FakeDataVariableParsingHandlerFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllText(It.Is<string>(p =>
-                p.EndsWith(Path.Combine("Files", "Markdown", "fake_data-description.md")))))
+                p.EndsWith(Path.Combine("Files", "VarParser", "fake_data-description.md")))))
             .Returns(description);
 
         fakerServiceMock

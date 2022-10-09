@@ -30,7 +30,8 @@ internal class ImageResponseWriter : IResponseWriter
     }
 
     /// <inheritdoc />
-    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
+        CancellationToken cancellationToken)
     {
         var imgDefinition = stub.Response?.Image;
         if (imgDefinition == null || imgDefinition.Type == ResponseImageType.NotSet)
@@ -51,7 +52,7 @@ internal class ImageResponseWriter : IResponseWriter
         {
             var collection = new FontCollection();
             collection.Install(Path.Combine(_assemblyService.GetExecutingAssemblyRootPath(),
-                "Manrope-Regular.ttf"));
+                "Files", "Manrope-Regular.ttf"));
             const string fontFamilyName = "Manrope";
             if (!collection.TryFind(fontFamilyName, out var family))
             {
