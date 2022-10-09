@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
@@ -9,9 +8,9 @@ using HttPlaceholder.Common.Utilities;
 namespace HttPlaceholder.Resources.Implementations;
 
 /// <inheritdoc />
-public class ResourcesService : IResourcesService
+internal class ResourcesService : IResourcesService
 {
-    private readonly ConcurrentDictionary<string, Lazy<string>> _resources = new();
+    internal readonly ConcurrentDictionary<string, Lazy<string>> _resources = new();
     private readonly IFileService _fileService;
 
     /// <summary>

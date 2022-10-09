@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Client.Examp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Resources", "HttPlaceholder.Resources\HttPlaceholder.Resources.csproj", "{39830A0C-53B7-4FE5-BBCF-C9E863BC0389}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttPlaceholder.Resources.Tests", "HttPlaceholder.Resources.Tests\HttPlaceholder.Resources.Tests.csproj", "{8EBF7A05-D197-4ED7-AF31-B16A542E8356}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -166,6 +168,12 @@ Global
 		{39830A0C-53B7-4FE5-BBCF-C9E863BC0389}.Release|Any CPU.Build.0 = Release|Any CPU
 		{39830A0C-53B7-4FE5-BBCF-C9E863BC0389}.Tool|Any CPU.ActiveCfg = Debug|Any CPU
 		{39830A0C-53B7-4FE5-BBCF-C9E863BC0389}.Tool|Any CPU.Build.0 = Debug|Any CPU
+		{8EBF7A05-D197-4ED7-AF31-B16A542E8356}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EBF7A05-D197-4ED7-AF31-B16A542E8356}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EBF7A05-D197-4ED7-AF31-B16A542E8356}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EBF7A05-D197-4ED7-AF31-B16A542E8356}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EBF7A05-D197-4ED7-AF31-B16A542E8356}.Tool|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EBF7A05-D197-4ED7-AF31-B16A542E8356}.Tool|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -193,6 +201,7 @@ Global
 		{5F893D76-91EE-4D42-849E-D7015C8EDE2E} = {287482AF-3481-44F5-B4D3-F17589B9261C}
 		{DDEAB02D-ECC1-4D0A-9BC3-9A7C10EA6E18} = {BA04C59E-2413-4460-85FC-DE322A1CBF02}
 		{39830A0C-53B7-4FE5-BBCF-C9E863BC0389} = {37ECDB20-4C9E-4A7B-AFB9-FDF5E2C64EC3}
+		{8EBF7A05-D197-4ED7-AF31-B16A542E8356} = {287482AF-3481-44F5-B4D3-F17589B9261C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B07D99A8-ABA7-4A66-9BA2-37E64043B834}
