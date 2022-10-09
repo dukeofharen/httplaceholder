@@ -45,6 +45,7 @@
         <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
         <ProjectReference Include="..\HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj" />
         <ProjectReference Include="..\HttPlaceholder.Persistence\HttPlaceholder.Persistence.csproj" />
+        <ProjectReference Include="..\HttPlaceholder.Resources\HttPlaceholder.Resources.csproj" />
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)|$(Platform)'!='Tool|AnyCPU'">
         <Content Update="_config.json">

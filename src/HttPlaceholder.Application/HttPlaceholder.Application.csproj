@@ -30,13 +30,4 @@
         <ProjectReference Include="..\HttPlaceholder.Domain\HttPlaceholder.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Content Include="Manrope-Regular.ttf">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Files\**\*">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
 </Project>
