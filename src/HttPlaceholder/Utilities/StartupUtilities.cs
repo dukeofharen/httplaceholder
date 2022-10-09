@@ -12,6 +12,7 @@ using HttPlaceholder.Infrastructure;
 using HttPlaceholder.Infrastructure.Web;
 using HttPlaceholder.Middleware;
 using HttPlaceholder.Persistence;
+using HttPlaceholder.Resources;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
@@ -42,6 +43,7 @@ public static class StartupUtilities
             .AddSignalRHubs()
             .AddHostedServices(configuration)
             .AddWebInfrastructure()
+            .AddResourcesModule()
             .AddAutoMapper(
                 config => config.AllowNullCollections = true,
                 typeof(Startup).Assembly,

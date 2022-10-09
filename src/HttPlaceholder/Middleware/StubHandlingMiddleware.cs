@@ -7,6 +7,7 @@ using AutoMapper;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
@@ -23,7 +24,10 @@ namespace HttPlaceholder.Middleware;
 /// </summary>
 public class StubHandlingMiddleware
 {
-    private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub"};
+    private static readonly string[] _segmentsToIgnore =
+    {
+        "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub"
+    };
 
     private const string CorrelationHeaderKey = "X-HttPlaceholder-Correlation";
     private const string ExecutedStubHeaderKey = "X-HttPlaceholder-ExecutedStub";
@@ -35,6 +39,7 @@ public class StubHandlingMiddleware
     private readonly IStubContext _stubContext;
     private readonly IStubRequestExecutor _stubRequestExecutor;
     private readonly SettingsModel _settings;
+    private readonly IResourcesService _resourcesService;
 
     /// <summary>
     /// Constructs a <see cref="StubHandlingMiddleware"/> instance.
@@ -47,7 +52,8 @@ public class StubHandlingMiddleware
         IRequestLoggerFactory requestLoggerFactory,
         IStubContext stubContext,
         IStubRequestExecutor stubRequestExecutor,
-        IOptions<SettingsModel> options)
+        IOptions<SettingsModel> options,
+        IResourcesService resourcesService)
     {
         _next = next;
         _clientDataResolver = clientDataResolver;
@@ -56,6 +62,7 @@ public class StubHandlingMiddleware
         _requestLoggerFactory = requestLoggerFactory;
         _stubContext = stubContext;
         _stubRequestExecutor = stubRequestExecutor;
+        _resourcesService = resourcesService;
         _settings = options.Value;
     }
 
@@ -118,14 +125,15 @@ public class StubHandlingMiddleware
         _logger.LogWarning($"Unexpected exception thrown: {e}");
     }
 
-    private async Task HandleRequestValidationException(string correlation, RequestValidationException e, CancellationToken cancellationToken)
+    private async Task HandleRequestValidationException(string correlation, RequestValidationException e,
+        CancellationToken cancellationToken)
     {
         _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
         _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
         if (_settings?.Gui?.EnableUserInterface == true)
         {
-            var pageContents =
-                StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.RootUrl);
+            var pageContents = _resourcesService.ReadAsString("Files/StubNotConfigured.html")
+                .Replace("[ROOT_URL]", _httpContextService.RootUrl);
             _httpContextService.AddHeader("Content-Type", Constants.HtmlMime);
             await _httpContextService.WriteAsync(pageContents, cancellationToken);
         }
