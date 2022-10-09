@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Middleware;
@@ -284,6 +285,7 @@ public class StubHandlingMiddlewareFacts
         var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+        var resourcesServiceMock = _mocker.GetMock<IResourcesService>();
 
         const string requestPath = "/stub-path";
 
@@ -294,6 +296,11 @@ public class StubHandlingMiddlewareFacts
         stubRequestExecutorMock
             .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
             .ThrowsAsync(new RequestValidationException("ERROR!"));
+
+        const string page501 = "Not implemented [ROOT_URL]";
+        resourcesServiceMock
+            .Setup(m => m.ReadAsString("Files/StubNotConfigured.html"))
+            .Returns(page501);
 
         var requestResultModel = new RequestResultModel();
         _requestLoggerMock
@@ -309,7 +316,7 @@ public class StubHandlingMiddlewareFacts
         httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-Correlation", It.IsAny<StringValues>()));
         httpContextServiceMock.Verify(m => m.AddHeader("Content-Type", Constants.HtmlMime));
         httpContextServiceMock.Verify(m =>
-            m.WriteAsync(It.Is<string>(b => b.Contains("HttPlaceholder - no stub configured")), It.IsAny<CancellationToken>()));
+            m.WriteAsync(It.Is<string>(b => b.Contains("Not implemented")), It.IsAny<CancellationToken>()));
         Assert.IsTrue(_mockLogger.Contains(LogLevel.Information, "Request validation exception thrown:"));
     }
 

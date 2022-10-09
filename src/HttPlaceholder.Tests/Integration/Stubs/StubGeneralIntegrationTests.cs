@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -41,6 +42,11 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
         // arrange
         var url = $"{TestServer.BaseAddress}bla";
 
+        var page501 = "<html><body>NOT IMPLEMENTED</body></html>";
+        FileServiceMock
+            .Setup(m => m.ReadAllText(It.Is<string>(p => p.Contains("StubNotConfigured.html"))))
+            .Returns(page501);
+
         // act / assert
         using var response = await Client.GetAsync(url);
         Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
@@ -54,6 +60,11 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9752EX";
+
+        var page501 = "<html><body>NOT IMPLEMENTED</body></html>";
+        FileServiceMock
+            .Setup(m => m.ReadAllText(It.Is<string>(p => p.Contains("StubNotConfigured.html"))))
+            .Returns(page501);
 
         // act / assert
         using var response = await Client.GetAsync(url);
