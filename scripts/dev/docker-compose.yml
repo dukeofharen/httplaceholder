@@ -8,9 +8,31 @@ services:
       MYSQL_USER: httplaceholder
       MYSQL_PASSWORD: httplaceholder
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - mysql5_data:/var/lib/mysql
+  mysql8:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: httplaceholder
+      MYSQL_USER: httplaceholder
+      MYSQL_PASSWORD: httplaceholder
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql8_data:/var/lib/mysql
+  mariadb:
+    image: mariadb:10.9
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: httplaceholder
+      MYSQL_USER: httplaceholder
+      MYSQL_PASSWORD: httplaceholder
+    ports:
+      - "3308:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
   mssql:
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
@@ -18,7 +40,7 @@ services:
       SA_PASSWORD: Password123!
       MSSQL_PID: Developer
     ports:
-      - 1433:1433
+      - "1433:1433"
     volumes:
       - mssql_data:/var/opt/mssql
       - ./mssql_initscripts:/usr/local/bin/initscripts
@@ -26,4 +48,6 @@ services:
 
 volumes:
   mysql5_data:
+  mysql8_data:
+  mariadb_data:
   mssql_data:
