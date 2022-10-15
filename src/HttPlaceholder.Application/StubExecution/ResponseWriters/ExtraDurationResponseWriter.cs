@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -10,9 +11,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to add an extra duration to the total execution time of the request.
 /// </summary>
-internal class ExtraDurationResponseWriter : IResponseWriter
+internal class ExtraDurationResponseWriter : IResponseWriter, ISingletonService
 {
-    private static Random _random = new();
+    private static readonly Random _random = new();
     private readonly IAsyncService _asyncService;
 
     public ExtraDurationResponseWriter(

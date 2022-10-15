@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.WebUtilities;
@@ -11,7 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// <summary>
 /// "Request to stub conditions handler" that is used to create form conditions.
 /// </summary>
-internal class FormHandler : IRequestToStubConditionsHandler
+internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)

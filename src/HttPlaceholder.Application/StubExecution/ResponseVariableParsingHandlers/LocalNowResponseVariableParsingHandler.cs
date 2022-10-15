@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
@@ -10,7 +11,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler to insert the local date/time into the response. An optional date/time format can be provided (based on the .NET date/time formatting strings).
 /// </summary>
-internal class LocalNowResponseVariableParsingHandler : BaseVariableParsingHandler
+internal class LocalNowResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IDateTime _dateTime;
 

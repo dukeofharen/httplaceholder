@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -10,7 +11,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 /// Condition checker to validate the HTTP method.
 /// </summary>
-public class MethodConditionChecker : IConditionChecker
+public class MethodConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -10,7 +11,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to search for a file on the OS and return that file to the client.
 /// </summary>
-internal class FileResponseWriter : IResponseWriter
+internal class FileResponseWriter : IResponseWriter, ISingletonService
 {
     private readonly IFileService _fileService;
     private readonly IStubRootPathResolver _stubRootPathResolver;

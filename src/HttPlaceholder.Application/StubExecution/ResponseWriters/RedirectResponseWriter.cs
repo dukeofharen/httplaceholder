@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -8,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to setup a temporary or permanent redirect.
 /// </summary>
-internal class RedirectResponseWriter : IResponseWriter
+internal class RedirectResponseWriter : IResponseWriter, ISingletonService
 {
     /// <inheritdoc />
     public int Priority => 0;

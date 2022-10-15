@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -11,8 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class StubRequestExecutor : IStubRequestExecutor
+internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
 {
     private readonly IEnumerable<IConditionChecker> _conditionCheckers;
     private readonly IFinalStubDeterminer _finalStubDeterminer;

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
@@ -11,7 +12,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 /// Condition checker for validating the query strings.
 /// </summary>
-public class QueryStringConditionChecker : IConditionChecker
+public class QueryStringConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
     private readonly IStringChecker _stringChecker;

@@ -13,8 +13,5 @@ public static class InfrastructureModule
     /// </summary>
     /// <param name="services">The service collection.</param>
     public static IServiceCollection AddInfrastructureModule(this IServiceCollection services) =>
-        services.Scan(scan => scan.FromCallingAssembly()
-            .AddClasses(c => c.AssignableTo<ISingletonService>())
-            .AsImplementedInterfaces(t => t != typeof(ISingletonService))
-            .WithSingletonLifetime());
+        services.Scan(scan => scan.FromCallingAssembly().RegisterDependencies());
 }

@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -9,7 +10,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 /// Condition checker that is used to verify the hostname.
 /// </summary>
-public class HostConditionChecker : IConditionChecker
+public class HostConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IStringChecker _stringChecker;

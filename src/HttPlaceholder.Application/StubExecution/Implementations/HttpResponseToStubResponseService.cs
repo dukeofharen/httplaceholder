@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 using HttPlaceholder.Domain;
@@ -9,8 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class HttpResponseToStubResponseService : IHttpResponseToStubResponseService
+internal class HttpResponseToStubResponseService : IHttpResponseToStubResponseService, ISingletonService
 {
     private readonly IEnumerable<IResponseToStubResponseHandler> _handlers;
     private readonly ILogger<HttpResponseToStubResponseService> _logger;

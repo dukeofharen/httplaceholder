@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class CurlStubGenerator : ICurlStubGenerator
+internal class CurlStubGenerator : ICurlStubGenerator, ISingletonService
 {
     private readonly ICurlToHttpRequestMapper _curlToHttpRequestMapper;
     private readonly ILogger<CurlStubGenerator> _logger;

@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
 using HttPlaceholder.Application.Stubs.Utilities;
@@ -8,8 +9,7 @@ using Microsoft.OpenApi.Models;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
-/// <inheritdoc />
-internal class OpenApiToStubConverter : IOpenApiToStubConverter
+internal class OpenApiToStubConverter : IOpenApiToStubConverter, ISingletonService
 {
     private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
     private readonly IHttpResponseToStubResponseService _httpResponseToStubResponseService;

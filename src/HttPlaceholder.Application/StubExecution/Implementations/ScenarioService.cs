@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class ScenarioService : IScenarioService
+internal class ScenarioService : IScenarioService, ISingletonService
 {
     private readonly IScenarioStateStore _scenarioStateStore;
     private readonly IScenarioNotify _scenarioNotify;

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common.Utilities;
@@ -12,7 +13,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 /// Condition checker that is used to validate the request headers.
 /// </summary>
-public class HeaderConditionChecker : IConditionChecker
+public class HeaderConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
     private readonly IStringChecker _stringChecker;

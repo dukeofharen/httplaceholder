@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
@@ -9,7 +10,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable handler that is used to insert the state of a specific scenario in the response
 /// </summary>
-internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler
+internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IScenarioStateStore _scenarioStateStore;
 

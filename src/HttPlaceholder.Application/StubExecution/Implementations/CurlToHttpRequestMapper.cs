@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -11,8 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
+internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonService
 {
     private static readonly Regex _urlRegex =
         new(

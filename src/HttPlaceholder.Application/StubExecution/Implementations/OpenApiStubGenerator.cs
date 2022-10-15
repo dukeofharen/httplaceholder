@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
 using HttPlaceholder.Domain;
@@ -11,8 +12,7 @@ using Microsoft.OpenApi.Models;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class OpenApiStubGenerator : IOpenApiStubGenerator
+internal class OpenApiStubGenerator : IOpenApiStubGenerator, ISingletonService
 {
     private readonly IStubContext _stubContext;
     private readonly IOpenApiParser _openApiParser;

@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -7,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to clear the scenario state of the stub (both hit counter and state).
 /// </summary>
-internal class ClearScenarioStateResponseWriter : IResponseWriter
+internal class ClearScenarioStateResponseWriter : IResponseWriter, ISingletonService
 {
     private readonly IScenarioService _scenarioService;
 

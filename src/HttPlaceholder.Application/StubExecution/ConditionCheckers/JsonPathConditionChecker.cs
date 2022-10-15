@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -14,7 +15,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 /// Condition checker that validates the incoming JSON request body against a list of JSONPath expressions.
 /// </summary>
-public class JsonPathConditionChecker : IConditionChecker
+public class JsonPathConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 

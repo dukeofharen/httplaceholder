@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Domain;
@@ -10,8 +11,7 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class RequestStubGenerator : IRequestStubGenerator
+internal class RequestStubGenerator : IRequestStubGenerator, ISingletonService
 {
     private readonly ILogger<RequestStubGenerator> _logger;
     private readonly IStubContext _stubContext;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.Models.HAR;
 using HttPlaceholder.Application.Stubs.Utilities;
@@ -12,10 +13,9 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class HarStubGenerator : IHarStubGenerator
+internal class HarStubGenerator : IHarStubGenerator, ISingletonService
 {
-    private static string[] _responseHeadersToStrip = {"content-length", "content-encoding"};
+    private static readonly string[] _responseHeadersToStrip = {"content-length", "content-encoding"};
 
     private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
     private readonly IHttpResponseToStubResponseService _httpResponseToStubResponseService;

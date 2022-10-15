@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Domain.Enums;
@@ -10,7 +11,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 /// Condition checker for validating whether the stub scenario is in a specific state.
 /// </summary>
-public class ScenarioStateConditionChecker : IConditionChecker
+public class ScenarioStateConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IScenarioService _scenarioService;
 

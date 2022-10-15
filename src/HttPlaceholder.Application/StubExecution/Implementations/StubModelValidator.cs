@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
@@ -11,8 +12,7 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class StubModelValidator : IStubModelValidator
+internal class StubModelValidator : IStubModelValidator, ISingletonService
 {
     private readonly IModelValidator _modelValidator;
     private readonly SettingsModel _settings;

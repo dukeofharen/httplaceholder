@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -18,7 +19,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to generate a random image (BMP, GIF, JPEG or PNG) with parameters (like quality, size etc.) and return it to the client.
 /// </summary>
-internal class ImageResponseWriter : IResponseWriter
+internal class ImageResponseWriter : IResponseWriter, ISingletonService
 {
     private readonly IAssemblyService _assemblyService;
     private readonly IFileService _fileService;

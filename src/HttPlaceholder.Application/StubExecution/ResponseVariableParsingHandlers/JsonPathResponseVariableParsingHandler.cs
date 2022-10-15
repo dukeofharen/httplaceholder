@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
@@ -14,7 +15,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to query the posted JSON string based on a JSONPath expression. The result is put in the response.
 /// </summary>
-internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandler
+internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
     private readonly ILogger<JsonPathResponseVariableParsingHandler> _logger;

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
@@ -9,8 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class HttpRequestToConditionsService : IHttpRequestToConditionsService
+internal class HttpRequestToConditionsService : IHttpRequestToConditionsService, ISingletonService
 {
     private readonly IEnumerable<IRequestToStubConditionsHandler> _handlers;
     private readonly ILogger<HttpRequestToConditionsService> _logger;

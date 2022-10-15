@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -9,7 +10,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 /// Condition checker that verifies if a request is done over HTTP or HTTPS.
 /// </summary>
-public class IsHttpsConditionChecker : IConditionChecker
+public class IsHttpsConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IClientDataResolver _clientDataResolver;
 

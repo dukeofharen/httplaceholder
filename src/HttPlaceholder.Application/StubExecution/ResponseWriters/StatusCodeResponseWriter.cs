@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -7,7 +8,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to set the HTTP status code.
 /// </summary>
-internal class StatusCodeResponseWriter : IResponseWriter
+internal class StatusCodeResponseWriter : IResponseWriter, ISingletonService
 {
     /// <inheritdoc />
     public int Priority => 0;

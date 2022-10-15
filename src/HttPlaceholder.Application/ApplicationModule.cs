@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,8 +22,10 @@ public static class ApplicationModule
         // Add MediatR
         services.AddMediatR(currentAssembly);
 
+        // Register implementations
+        services.Scan(scan => scan.FromCallingAssembly().RegisterDependencies());
+
         // Add other modules
-        services.AddStubExecutionModule();
         services.AddHttpClient("proxy").ConfigureHttpMessageHandlerBuilder(h =>
             h.PrimaryHandler = new HttpClientHandler
             {

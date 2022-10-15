@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -8,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used for storing the request body as base64. When the response writer is used, the response is base64 decoded and sent to the client.
 /// </summary>
-internal class Base64ResponseWriter : IResponseWriter
+internal class Base64ResponseWriter : IResponseWriter, ISingletonService
 {
     /// <inheritdoc />
     public int Priority => 0;

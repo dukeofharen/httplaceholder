@@ -2,13 +2,13 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class StubResponseGenerator : IStubResponseGenerator
+internal class StubResponseGenerator : IStubResponseGenerator, ISingletonService
 {
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IEnumerable<IResponseWriter> _responseWriters;

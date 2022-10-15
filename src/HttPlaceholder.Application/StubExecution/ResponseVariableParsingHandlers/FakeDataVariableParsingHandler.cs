@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
@@ -10,7 +11,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandle
 /// <summary>
 /// Response variable parsing handler that is used to insert fake data.
 /// </summary>
-internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
+internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly Lazy<string[]> _exampleLazy;
     private readonly Lazy<string> _descriptionLazy;

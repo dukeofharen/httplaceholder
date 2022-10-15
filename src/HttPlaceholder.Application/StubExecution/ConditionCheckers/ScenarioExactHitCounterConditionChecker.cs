@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -8,7 +9,7 @@ namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 /// <summary>
 /// Condition checker for validating whether the stub scenario has an exact number of hits.
 /// </summary>
-public class ScenarioExactHitCounterConditionChecker : IConditionChecker
+public class ScenarioExactHitCounterConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IScenarioService _scenarioService;
 

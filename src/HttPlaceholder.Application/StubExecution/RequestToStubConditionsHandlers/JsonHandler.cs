@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
@@ -14,7 +15,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// The content type should be JSON, the JSON should be correct and no request body should have been set for the stub yet.
 /// JSON objects and arrays are supported as root node.
 /// </summary>
-internal class JsonHandler : IRequestToStubConditionsHandler
+internal class JsonHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     private readonly ILogger<JsonHandler> _logger;
 

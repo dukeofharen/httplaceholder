@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
@@ -9,7 +10,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to return the given response as HTML.
 /// </summary>
-internal class HtmlResponseWriter : IResponseWriter
+internal class HtmlResponseWriter : IResponseWriter, ISingletonService
 {
     /// <inheritdoc />
     public int Priority => 0;
