@@ -1,9 +1,5 @@
-﻿using HttPlaceholder.Application.Interfaces.Configuration;
-using HttPlaceholder.Common;
-using HttPlaceholder.Infrastructure.Configuration;
-using HttPlaceholder.Infrastructure.Implementations;
+﻿using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace HttPlaceholder.Infrastructure;
 
@@ -16,15 +12,9 @@ public static class InfrastructureModule
     /// Register all classes in the Infrastructure project to the service collection.
     /// </summary>
     /// <param name="services">The service collection.</param>
-    public static IServiceCollection AddInfrastructureModule(this IServiceCollection services)
-    {
-        services.TryAddSingleton<IAssemblyService, AssemblyService>();
-        services.TryAddSingleton<IAsyncService, AsyncService>();
-        services.TryAddSingleton<IConfigurationHelper, ConfigurationHelper>();
-        services.TryAddSingleton<IDateTime, MachineDateTime>();
-        services.TryAddSingleton<IEnvService, EnvService>();
-        services.TryAddSingleton<IFileService, FileService>();
-        services.TryAddSingleton<IModelValidator, ModelValidator>();
-        return services;
-    }
+    public static IServiceCollection AddInfrastructureModule(this IServiceCollection services) =>
+        services.Scan(scan => scan.FromCallingAssembly()
+            .AddClasses(c => c.AssignableTo<ISingletonService>())
+            .AsImplementedInterfaces(t => t != typeof(ISingletonService))
+            .WithSingletonLifetime());
 }

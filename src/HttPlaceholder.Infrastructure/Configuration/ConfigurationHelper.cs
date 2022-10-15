@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Attributes;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Configuration;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Enums;
@@ -13,7 +14,7 @@ namespace HttPlaceholder.Infrastructure.Configuration;
 /// <summary>
 /// A class that contains several configuration related methods.
 /// </summary>
-public class ConfigurationHelper : IConfigurationHelper
+public class ConfigurationHelper : IConfigurationHelper, ISingletonService
 {
     /// <summary>
     /// Returns a list of all possible configuration keys and its metadata.

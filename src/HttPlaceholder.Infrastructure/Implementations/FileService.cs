@@ -3,12 +3,12 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Infrastructure.Implementations;
 
-/// <inheritdoc />
-public class FileService : IFileService
+internal class FileService : IFileService, ISingletonService
 {
     /// <inheritdoc />
     public Task<byte[]> ReadAllBytesAsync(string path, CancellationToken cancellationToken) => File.ReadAllBytesAsync(path, cancellationToken);

@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Infrastructure.Implementations;
 
-/// <inheritdoc />
-public class EnvService : IEnvService
+internal class EnvService : IEnvService, ISingletonService
 {
     /// <inheritdoc />
     public IDictionary<string, string> GetEnvironmentVariables() =>

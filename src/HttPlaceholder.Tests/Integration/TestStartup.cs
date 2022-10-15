@@ -12,6 +12,8 @@ public static class TestStartup
 {
     public static void ConfigureServices(Startup startup, IServiceCollection services, (Type, object)[] servicesToReplace, IEnumerable<IStubSource> stubSources)
     {
+        startup.ConfigureServices(services);
+
         // Delete old services
         var servicesToDelete = servicesToReplace
             .Select(str => str.Item1)
@@ -25,12 +27,10 @@ public static class TestStartup
         }
 
         // Add mock services
-        foreach (var (interfaceType, implemenationType) in servicesToReplace)
+        foreach (var (interfaceType, implementationType) in servicesToReplace)
         {
-            services.AddTransient(interfaceType, _ => implemenationType);
+            services.AddTransient(interfaceType, _ => implementationType);
         }
-
-        startup.ConfigureServices(services);
 
         // Replace all stub sources. The tests should prepare their own stub sources.
         serviceDescriptors = services
