@@ -2,13 +2,13 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain.Entities;
 
 namespace HttPlaceholder.Persistence.Implementations;
 
-/// <inheritdoc />
-internal class ScenarioStateStore : IScenarioStateStore
+internal class ScenarioStateStore : IScenarioStateStore, ISingletonService
 {
     internal readonly ConcurrentDictionary<string, ScenarioStateModel> Scenarios = new();
     internal readonly ConcurrentDictionary<string, object> ScenarioLocks = new();

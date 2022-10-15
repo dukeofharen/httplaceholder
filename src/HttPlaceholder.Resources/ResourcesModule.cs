@@ -1,5 +1,4 @@
-﻿using HttPlaceholder.Application.Interfaces.Resources;
-using HttPlaceholder.Resources.Implementations;
+﻿using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.Resources;
@@ -13,5 +12,5 @@ public static class ResourcesModule
     /// Adds the resources module classes.
     /// </summary>
     public static IServiceCollection AddResourcesModule(this IServiceCollection services) =>
-        services.AddSingleton<IResourcesService, ResourcesService>();
+        services.Scan(scan => scan.FromCallingAssembly().RegisterDependencies());
 }

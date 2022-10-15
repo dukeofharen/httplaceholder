@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
@@ -13,8 +14,7 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Implementations;
 
-/// <inheritdoc />
-internal class StubContext : IStubContext
+internal class StubContext : IStubContext, ISingletonService
 {
     private readonly IEnumerable<IStubSource> _stubSources;
     private readonly SettingsModel _settings;

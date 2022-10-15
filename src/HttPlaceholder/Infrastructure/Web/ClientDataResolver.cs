@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -11,8 +12,7 @@ using NetTools;
 
 namespace HttPlaceholder.Infrastructure.Web;
 
-/// <inheritdoc />
-public class ClientDataResolver : IClientDataResolver
+internal class ClientDataResolver : IClientDataResolver, ISingletonService
 {
     private const string ForwardedHeaderKey = "X-Forwarded-For";
     private const string ForwardedHostKey = "X-Forwarded-Host";

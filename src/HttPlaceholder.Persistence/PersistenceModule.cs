@@ -1,11 +1,10 @@
 ﻿using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Implementations;
 using HttPlaceholder.Persistence.FileSystem;
 using HttPlaceholder.Persistence.FileSystem.Implementations;
-using HttPlaceholder.Persistence.Implementations;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,9 +25,7 @@ public static class PersistenceModule
         this IServiceCollection services,
         IConfiguration configuration) =>
         services
-            .AddSingleton<IStubContext, StubContext>()
-            .AddSingleton<IStubRootPathResolver, StubRootPathResolver>()
-            .AddSingleton<IScenarioStateStore, ScenarioStateStore>()
+            .Scan(scan => scan.FromCallingAssembly().RegisterDependencies())
             .AddStubSources(configuration);
 
     /// <summary>

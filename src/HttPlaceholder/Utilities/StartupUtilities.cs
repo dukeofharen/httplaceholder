@@ -2,6 +2,7 @@
 using System.Threading;
 using HttPlaceholder.Application;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Authorization;
@@ -39,10 +40,9 @@ public static class StartupUtilities
             .AddInfrastructureModule()
             .AddApplicationModule()
             .AddPersistenceModule(configuration)
-            .AddAuthorizationModule()
+            .Scan(scan => scan.FromCallingAssembly().RegisterDependencies())
             .AddSignalRHubs()
             .AddHostedServices(configuration)
-            .AddWebInfrastructure()
             .AddResourcesModule()
             .AddAutoMapper(
                 config => config.AllowNullCollections = true,
@@ -134,11 +134,4 @@ public static class StartupUtilities
         {
             config.PostProcess = (document, _) => OpenApiUtilities.PostProcessOpenApiDocument(document);
         });
-
-    private static IServiceCollection AddWebInfrastructure(this IServiceCollection services)
-    {
-        services.TryAddSingleton<IClientDataResolver, ClientDataResolver>();
-        services.TryAddSingleton<IHttpContextService, HttpContextService>();
-        return services;
-    }
 }

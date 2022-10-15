@@ -6,14 +6,14 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Infrastructure.Web;
 
-/// <inheritdoc />
-public class HttpContextService : IHttpContextService
+internal class HttpContextService : IHttpContextService, ISingletonService
 {
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextAccessor _httpContextAccessor;
