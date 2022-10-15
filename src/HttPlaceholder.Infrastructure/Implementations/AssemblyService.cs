@@ -10,9 +10,6 @@ internal class AssemblyService : IAssemblyService, ISingletonService
     public string GetAssemblyVersion() => AssemblyHelper.GetAssemblyVersion();
 
     /// <inheritdoc />
-    public string GetCallingAssemblyRootPath() => AssemblyHelper.GetCallingAssemblyRootPath();
-
-    /// <inheritdoc />
     public string GetEntryAssemblyRootPath() => AssemblyHelper.GetEntryAssemblyRootPath();
 
     /// <inheritdoc />

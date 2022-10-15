@@ -35,55 +35,37 @@ public static class MapperProfileHelper
     /// <param name="assembly">The assembly to search for types in.</param>
     public static void InitializeProfile(this Profile profile, Assembly assembly)
     {
-        foreach (var map in LoadStandardMappings(assembly))
+        var types = assembly.GetExportedTypes();
+        foreach (var map in LoadStandardMappings(types))
         {
             profile.CreateMap(map.Source, map.Destination).ReverseMap();
         }
 
-        foreach (var map in LoadCustomMappings(assembly))
+        foreach (var map in LoadCustomMappings(types))
         {
             map.CreateMappings(profile);
         }
     }
 
-    private static IEnumerable<Map> LoadStandardMappings(Assembly rootAssembly)
-    {
-        var types = rootAssembly.GetExportedTypes();
-        var from = from type in types
-            from instance in type.GetInterfaces()
-            where
-                instance.IsGenericType && instance.GetGenericTypeDefinition() == typeof(IMapFrom<>) &&
-                !type.IsAbstract &&
-                !type.IsInterface
-            select new Map
-            {
-                Source = type.GetInterfaces().First().GetGenericArguments().First(),
-                Destination = type
-            };
-        var to = from type in types
-            from instance in type.GetInterfaces()
-            where
-                instance.IsGenericType && instance.GetGenericTypeDefinition() == typeof(IMapTo<>) &&
-                !type.IsAbstract &&
-                !type.IsInterface
-            select new Map
-            {
-                Source = type,
-                Destination = type.GetInterfaces().First().GetGenericArguments().First()
-            };
-        return from.Concat(to).ToList();
-    }
+    private static IEnumerable<Map> LoadStandardMappings(Type[] types) =>
+        GetMappings(types, typeof(IMapFrom<>))
+            .Concat(GetMappings(types, typeof(IMapTo<>)));
 
-    private static IEnumerable<IHaveCustomMapping> LoadCustomMappings(Assembly rootAssembly)
-    {
-        var types = rootAssembly.GetExportedTypes();
-        return (
-            from type in types
-            from instance in type.GetInterfaces()
-            where
-                typeof(IHaveCustomMapping).IsAssignableFrom(type) &&
-                !type.IsAbstract &&
-                !type.IsInterface
-            select (IHaveCustomMapping)Activator.CreateInstance(type)).ToList();
-    }
+    private static IEnumerable<Map> GetMappings(IEnumerable<Type> types, Type interfaceType) =>
+        from type in types
+        from instance in type.GetInterfaces()
+        where
+            instance.IsGenericType && instance.GetGenericTypeDefinition() == interfaceType &&
+            !type.IsAbstract &&
+            !type.IsInterface
+        select new Map {Source = type.GetInterfaces().First().GetGenericArguments().First(), Destination = type};
+
+    private static IEnumerable<IHaveCustomMapping> LoadCustomMappings(IEnumerable<Type> types) =>
+        from type in types
+        from instance in type.GetInterfaces()
+        where
+            typeof(IHaveCustomMapping).IsAssignableFrom(type) &&
+            !type.IsAbstract &&
+            !type.IsInterface
+        select (IHaveCustomMapping)Activator.CreateInstance(type);
 }

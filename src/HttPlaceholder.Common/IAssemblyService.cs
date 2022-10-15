@@ -22,10 +22,4 @@ public interface IAssemblyService
     /// </summary>
     /// <returns>The version as string.</returns>
     string GetAssemblyVersion();
-
-    /// <summary>
-    /// Returns the root path of the assembly that is calling this assembly.
-    /// </summary>
-    /// <returns>The root path of the calling assembly.</returns>
-    string GetCallingAssemblyRootPath();
 }
