@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace HttPlaceholder.Application.Interfaces.Resources;
+﻿namespace HttPlaceholder.Application.Interfaces.Resources;
 
 /// <summary>
 /// Describes a class that is used to read resources from the file system.

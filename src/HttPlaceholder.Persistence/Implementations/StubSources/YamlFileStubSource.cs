@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Application.Stubs.Utilities;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;

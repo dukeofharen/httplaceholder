@@ -96,12 +96,9 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISin
 
     private string[] InitializeExamples()
     {
-        var result = new List<string>();
-        foreach (var locale in _fakerService.GetLocales())
-        {
-            result.Add($"(({Name}:{locale}:first_name))");
-        }
-
+        var result = _fakerService.GetLocales()
+            .Select(locale => $"(({Name}:{locale}:first_name))")
+            .ToList();
         foreach (var generator in _fakerService.GetGenerators())
         {
             result.Add($"(({Name}:{generator.Name}))");

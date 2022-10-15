@@ -42,7 +42,6 @@ public class FormValueConditionCheckerFacts
         // Arrange
         var checker = _mocker.CreateInstance<FormValueConditionChecker>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-        var stringCheckerMock = _mocker.GetMock<IStringChecker>();
 
         var conditions = new StubConditionsModel {Form = new[] {new StubFormModel {Key = "key3", Value = "val1.1"}}};
         var form = new (string, StringValues)[] {("key1", "val3"), ("key2", "val4")};

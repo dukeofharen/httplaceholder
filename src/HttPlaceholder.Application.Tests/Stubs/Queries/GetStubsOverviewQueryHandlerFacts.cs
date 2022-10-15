@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Application.Stubs.Queries.GetAllStubs;
 using HttPlaceholder.Application.Stubs.Queries.GetStubsOverview;
 using HttPlaceholder.Domain;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

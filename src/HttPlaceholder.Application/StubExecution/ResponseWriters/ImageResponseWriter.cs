@@ -75,16 +75,16 @@ internal class ImageResponseWriter : IResponseWriter, ISingletonService
             switch (stubImage.Type)
             {
                 case ResponseImageType.Bmp:
-                    await image.SaveAsBmpAsync(ms);
+                    await image.SaveAsBmpAsync(ms, cancellationToken: cancellationToken);
                     break;
                 case ResponseImageType.Gif:
-                    await image.SaveAsGifAsync(ms);
+                    await image.SaveAsGifAsync(ms, cancellationToken: cancellationToken);
                     break;
                 case ResponseImageType.Jpeg:
-                    await image.SaveAsJpegAsync(ms, new JpegEncoder {Quality = stubImage.JpegQuality});
+                    await image.SaveAsJpegAsync(ms, new JpegEncoder {Quality = stubImage.JpegQuality}, cancellationToken: cancellationToken);
                     break;
                 default:
-                    await image.SaveAsPngAsync(ms);
+                    await image.SaveAsPngAsync(ms, cancellationToken: cancellationToken);
                     break;
             }
 

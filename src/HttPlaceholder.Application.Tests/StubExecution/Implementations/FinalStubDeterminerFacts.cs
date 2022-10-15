@@ -48,7 +48,7 @@ public class FinalStubDeterminerFacts
     }
 
     [TestMethod]
-    public void FinalStubDeterminer_DetermineFinalStub_MulitpleStubsFound_OnlyOneWithHighestPriority_ShouldReturnStubWithHighestPriority()
+    public void FinalStubDeterminer_DetermineFinalStub_MultipleStubsFound_OnlyOneWithHighestPriority_ShouldReturnStubWithHighestPriority()
     {
         // arrange
         var matchedStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>

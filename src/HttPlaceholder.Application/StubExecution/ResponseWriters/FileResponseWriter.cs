@@ -48,11 +48,13 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
             {
 
                 var tempPath = Path.Combine(path, stub.Response.File);
-                if (await _fileService.FileExistsAsync(tempPath, cancellationToken))
+                if (!await _fileService.FileExistsAsync(tempPath, cancellationToken))
                 {
-                    finalFilePath = tempPath;
-                    break;
+                    continue;
                 }
+
+                finalFilePath = tempPath;
+                break;
             }
         }
 

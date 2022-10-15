@@ -50,7 +50,7 @@ public class ConfigurationParser
     /// </summary>
     /// <param name="args">The command line arguments.</param>
     /// <returns>The parsed dictionary.</returns>
-    public IDictionary<string, string> ParseConfiguration(string[] args)
+    public IDictionary<string, string> ParseConfiguration(IEnumerable<string> args)
     {
         var configMetadata = _configurationHelper.GetConfigKeyMetadata();
         var envResult = ParseEnvironment(configMetadata);

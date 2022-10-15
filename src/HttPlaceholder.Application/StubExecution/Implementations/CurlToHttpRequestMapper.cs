@@ -131,13 +131,15 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
                     continue;
                 }
 
-                if (string.IsNullOrWhiteSpace(request.Url) && _urlRegex.IsMatch(part))
+                if (!string.IsNullOrWhiteSpace(request.Url) || !_urlRegex.IsMatch(part))
                 {
-                    var matches = _urlRegex.Matches(part).ToArray();
-                    if (matches.Length == 1)
-                    {
-                        request.Url = matches[0].Value;
-                    }
+                    continue;
+                }
+
+                var matches = _urlRegex.Matches(part).ToArray();
+                if (matches.Length == 1)
+                {
+                    request.Url = matches[0].Value;
                 }
             }
 

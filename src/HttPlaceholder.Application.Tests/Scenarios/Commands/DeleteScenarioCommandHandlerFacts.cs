@@ -35,7 +35,7 @@ public class DeleteScenarioCommandHandlerFacts
     }
 
     [TestMethod]
-    public async Task Handle_ScenarioFound_ShoulDeleteScenario()
+    public async Task Handle_ScenarioFound_ShouldDeleteScenario()
     {
         // Arrange
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();

@@ -36,16 +36,16 @@ public class ValidateObjectAttribute : ValidationAttribute
             }
         }
 
-        if (results.Count != 0)
+        if (results.Count == 0)
         {
-            var compositeResults =
-                new CompositeValidationResult($"Validation for {validationContext.DisplayName} failed!");
-            results.ForEach(compositeResults.AddResult);
-
-            return compositeResults;
+            return ValidationResult.Success;
         }
 
-        return ValidationResult.Success;
+        var compositeResults =
+            new CompositeValidationResult($"Validation for {validationContext.DisplayName} failed!");
+        results.ForEach(compositeResults.AddResult);
+
+        return compositeResults;
     }
 }
 

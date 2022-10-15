@@ -471,7 +471,7 @@ public class StubConditionBuilderFacts
     public void WithJsonArray()
     {
         // Act
-        var array = new[] {new {key = "val1"}, new {key = "val2"}};
+        object[] array = {new {key = "val1"}, new {key = "val2"}};
         var conditions = StubConditionBuilder.Begin()
             .WithJsonArray(array)
             .Build();

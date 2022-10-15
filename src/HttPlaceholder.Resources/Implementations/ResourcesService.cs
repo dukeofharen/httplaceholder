@@ -8,7 +8,6 @@ using HttPlaceholder.Common.Utilities;
 
 namespace HttPlaceholder.Resources.Implementations;
 
-/// <inheritdoc />
 internal class ResourcesService : IResourcesService, ISingletonService
 {
     private readonly ConcurrentDictionary<string, Lazy<string>> _resources = new();

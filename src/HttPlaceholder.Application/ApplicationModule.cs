@@ -1,6 +1,5 @@
 ﻿using System.Net.Http;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Application.StubExecution;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

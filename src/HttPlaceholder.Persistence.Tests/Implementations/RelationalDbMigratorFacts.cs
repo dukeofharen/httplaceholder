@@ -68,7 +68,8 @@ public class RelationalDbMigratorFacts
         await migrator.MigrateAsync(_mockDatabaseContext.Object, CancellationToken.None);
 
         // Assert
-        _mockDatabaseContext.Verify(m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<object>()), Times.Once);
+        _mockDatabaseContext.Verify(
+            m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<object>()), Times.Once);
     }
 
     [DataTestMethod]
@@ -116,23 +117,31 @@ public class RelationalDbMigratorFacts
             mockFileService
                 .Setup(m => m.FileExistsAsync(checkFilePath, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(input.CheckFileFound);
-            if (input.CheckFileFound)
+            if (!input.CheckFileFound)
+            {
+                continue;
+            }
+
             {
                 var checkScript = Guid.NewGuid().ToString();
                 mockFileService
                     .Setup(m => m.ReadAllTextAsync(checkFilePath, It.IsAny<CancellationToken>()))
                     .ReturnsAsync(checkScript);
                 _mockDatabaseContext
-                    .Setup(m => m.ExecuteScalarAsync<int>(checkScript, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+                    .Setup(m => m.ExecuteScalarAsync<int>(checkScript, It.IsAny<CancellationToken>(),
+                        It.IsAny<object>()))
                     .ReturnsAsync(input.CheckResult);
-                if (input.CheckResult == 0)
+                if (input.CheckResult != 0)
                 {
-                    var migrationScript = Guid.NewGuid().ToString();
-                    mockFileService
-                        .Setup(m => m.ReadAllTextAsync(migrationFilePath, It.IsAny<CancellationToken>()))
-                        .ReturnsAsync(migrationScript);
-                    _mockDatabaseContext.Setup(m => m.ExecuteAsync(migrationScript, It.IsAny<CancellationToken>(), It.IsAny<object>()));
+                    continue;
                 }
+
+                var migrationScript = Guid.NewGuid().ToString();
+                mockFileService
+                    .Setup(m => m.ReadAllTextAsync(migrationFilePath, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(migrationScript);
+                _mockDatabaseContext.Setup(m =>
+                    m.ExecuteAsync(migrationScript, It.IsAny<CancellationToken>(), It.IsAny<object>()));
             }
         }
 

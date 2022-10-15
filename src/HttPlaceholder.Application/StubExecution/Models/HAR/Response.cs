@@ -47,7 +47,7 @@ public class Response
     /// Gets or sets redirect url.
     /// </summary>
     [JsonProperty("redirectURL")]
-    public string RedirectURL { get; set; }
+    public string RedirectUrl { get; set; }
 
     /// <summary>
     /// Gets or sets headers size.

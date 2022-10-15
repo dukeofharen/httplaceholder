@@ -18,8 +18,8 @@ public class ResourcesServiceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var service = _mocker.CreateInstance<ResourcesService>();
 
-        var path = "Some/Path";
-        var contents = "file contents";
+        const string path = "Some/Path";
+        const string contents = "file contents";
         fileServiceMock
             .Setup(m => m.ReadAllText(It.Is<string>(p => p.Contains("Some") && p.Contains("Path"))))
             .Returns(contents);

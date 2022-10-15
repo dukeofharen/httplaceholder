@@ -8,7 +8,7 @@ public static class Constants
     /// <summary>
     /// An array of separator characters for providing multiple input file paths.
     /// </summary>
-    public static string[] InputFileSeparators = {"%%", ","};
+    public static readonly string[] InputFileSeparators = {"%%", ","};
 
     // File storage folder and file names.
     /// <summary>

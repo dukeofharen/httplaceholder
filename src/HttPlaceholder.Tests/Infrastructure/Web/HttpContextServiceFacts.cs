@@ -7,11 +7,9 @@ using System.Text;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Infrastructure.Web;
 using HttPlaceholder.TestUtilities.Http;
-using Microsoft.AspNetCore.Connections.Features;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Infrastructure.Web;

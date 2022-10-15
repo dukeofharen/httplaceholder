@@ -101,11 +101,13 @@ internal class FileSystemStubCache : IFileSystemStubCache
     /// <inheritdoc />
     public void DeleteStub(string stubId)
     {
-        if (StubCache.TryRemove(stubId, out _))
+        if (!StubCache.TryRemove(stubId, out _))
         {
-            var metadata = UpdateMetadata(GetMetadataPath());
-            UpdateLocalStubUpdateTrackingId(metadata.StubUpdateTrackingId);
+            return;
         }
+
+        var metadata = UpdateMetadata(GetMetadataPath());
+        UpdateLocalStubUpdateTrackingId(metadata.StubUpdateTrackingId);
     }
 
     internal FileStorageMetadataModel EnsureAndGetMetadata()

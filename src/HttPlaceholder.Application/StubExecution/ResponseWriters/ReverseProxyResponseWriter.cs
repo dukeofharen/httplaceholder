@@ -146,20 +146,20 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
     private static string GetPath(StubModel stub)
     {
         var pathModel = stub.Conditions?.Url?.Path;
-        if (pathModel == null)
+        switch (pathModel)
         {
-            return null;
+            case null:
+                return null;
+            case string path:
+                return path;
+            default:
+            {
+                var checkingModel = ConversionUtilities.Convert<StubConditionStringCheckingModel>(pathModel);
+                return checkingModel.StringEquals ??
+                       checkingModel.StringEqualsCi ??
+                       checkingModel.StartsWith ??
+                       checkingModel.StartsWithCi;
+            }
         }
-
-        if (pathModel is string path)
-        {
-            return path;
-        }
-
-        var checkingModel = ConversionUtilities.Convert<StubConditionStringCheckingModel>(pathModel);
-        return checkingModel.StringEquals ??
-               checkingModel.StringEqualsCi ??
-               checkingModel.StartsWith ??
-               checkingModel.StartsWithCi;
     }
 }

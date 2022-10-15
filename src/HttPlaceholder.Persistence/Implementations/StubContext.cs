@@ -140,14 +140,16 @@ internal class StubContext : IStubContext, ISingletonService
         foreach (var source in _stubSources)
         {
             var stub = await source.GetStubAsync(stubId, cancellationToken);
-            if (stub != null)
+            if (stub == null)
             {
-                result = new FullStubModel
-                {
-                    Stub = stub, Metadata = new StubMetadataModel {ReadOnly = source is not IWritableStubSource}
-                };
-                break;
+                continue;
             }
+
+            result = new FullStubModel
+            {
+                Stub = stub, Metadata = new StubMetadataModel {ReadOnly = source is not IWritableStubSource}
+            };
+            break;
         }
 
         return result;

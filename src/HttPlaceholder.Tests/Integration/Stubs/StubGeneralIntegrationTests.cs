@@ -42,7 +42,7 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
         // arrange
         var url = $"{TestServer.BaseAddress}bla";
 
-        var page501 = "<html><body>NOT IMPLEMENTED</body></html>";
+        const string page501 = "<html><body>NOT IMPLEMENTED</body></html>";
         FileServiceMock
             .Setup(m => m.ReadAllText(It.Is<string>(p => p.Contains("StubNotConfigured.html"))))
             .Returns(page501);
@@ -61,7 +61,7 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
         // arrange
         var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9752EX";
 
-        var page501 = "<html><body>NOT IMPLEMENTED</body></html>";
+        const string page501 = "<html><body>NOT IMPLEMENTED</body></html>";
         FileServiceMock
             .Setup(m => m.ReadAllText(It.Is<string>(p => p.Contains("StubNotConfigured.html"))))
             .Returns(page501);

@@ -31,7 +31,7 @@ public class GetMetadataQueryHandlerFacts
         var mock1 = CreateHandlerMock("handler1", "Handler 1", "Example 1", "Description 1");
         var mock2 = CreateHandlerMock("handler2", "Handler 2", "Example 2", "Description 2");
 
-        var version = "1.2.3.4";
+        const string version = "1.2.3.4";
         assemblyServiceMock
             .Setup(m => m.GetAssemblyVersion())
             .Returns(version);

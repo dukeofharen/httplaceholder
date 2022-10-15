@@ -2,7 +2,6 @@
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Formatters;
 using HttPlaceholder.Hubs;
-using HttPlaceholder.Hubs.Implementations;
 using HttPlaceholder.Utilities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -50,7 +50,7 @@ public class TimesModelFacts
     public void Exactly_HappyFlow()
     {
         // Arrange
-        var input = 2;
+        const int input = 2;
 
         // Act
         var result = Exactly(input);
@@ -63,7 +63,7 @@ public class TimesModelFacts
     public void AtLeast_HappyFlow()
     {
         // Arrange
-        var input = 2;
+        const int input = 2;
 
         // Act
         var result = AtLeast(input);
@@ -76,7 +76,7 @@ public class TimesModelFacts
     public void AtMost_HappyFlow()
     {
         // Arrange
-        var input = 2;
+        const int input = 2;
 
         // Act
         var result = AtMost(input);
@@ -89,11 +89,11 @@ public class TimesModelFacts
     public void Between_HappyFlow()
     {
         // Arrange
-        var atLeast = 2;
-        var atMost = 3;
+        const int atLeast = 2;
+        const int atMost = 3;
 
-            // Act
-            var result = Between(atLeast, atMost);
+        // Act
+        var result = Between(atLeast, atMost);
 
         // Assert
         Assert.AreEqual(atLeast, result.MinHits);

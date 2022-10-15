@@ -102,11 +102,9 @@ public class RelationalDbStubSourceFacts
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
-        object capturedAddRequestParam = null;
         object capturedAddResponseParam = null;
         _mockDatabaseContext
             .Setup(m => m.ExecuteAsync(addRequestQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))
-            .Callback<string, CancellationToken, object>((_, _, param) => capturedAddRequestParam = param)
             .ReturnsAsync(1);
         _mockDatabaseContext
             .Setup(m => m.ExecuteAsync(addResponseQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -144,7 +145,7 @@ public interface IFileService
     /// <param name="allowedFileExtensions">A list of file extensions to filter for.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>An array of file names.</returns>
-    Task<string[]> GetFilesAsync(string path, string[] allowedFileExtensions, CancellationToken cancellationToken);
+    Task<string[]> GetFilesAsync(string path, IEnumerable<string> allowedFileExtensions, CancellationToken cancellationToken);
 
     /// <summary>
     /// Returns the current directory the application is opened in.

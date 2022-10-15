@@ -90,7 +90,7 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
                                Array.Empty<string>();
             foreach (var proxyIp in safeProxyIps)
             {
-                if (proxyIp.Contains("/"))
+                if (proxyIp.Contains('/'))
                 {
                     // Input is probably a CIDR, so parse it to a range.
                     if (IPAddressRange.TryParse(proxyIp, out var range))

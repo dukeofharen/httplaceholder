@@ -503,7 +503,6 @@ public class OpenApiDataFillerFacts
     {
         // Arrange
         var filler = _mocker.CreateInstance<OpenApiDataFiller>();
-        var generatorMock = _mocker.GetMock<IOpenApiFakeDataGenerator>();
 
         const string basePath = "/api/users";
         var operation = new OpenApiOperation();

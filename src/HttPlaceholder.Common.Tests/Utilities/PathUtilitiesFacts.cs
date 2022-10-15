@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Common.Utilities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -37,5 +38,5 @@ public class PathUtilitiesFacts
         }
     }
 
-    private static string[] SplitPath(string path) => path.Split(new[] {"/", "\\"}, StringSplitOptions.None);
+    private static IEnumerable<string> SplitPath(string path) => path.Split(new[] {"/", "\\"}, StringSplitOptions.None);
 }

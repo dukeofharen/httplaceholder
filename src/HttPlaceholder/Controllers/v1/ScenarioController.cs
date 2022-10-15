@@ -30,7 +30,7 @@ public class ScenarioController : BaseApiController
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<ScenarioStateDto>>> GetAllScenarioStates(CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<IEnumerable<ScenarioStateDto>>(await Mediator.Send(new GetAllScenariosQuery())));
+        Ok(Mapper.Map<IEnumerable<ScenarioStateDto>>(await Mediator.Send(new GetAllScenariosQuery(), cancellationToken)));
 
     /// <summary>
     /// Gets a specific scenario.

@@ -41,14 +41,13 @@ public static class ImageSharpUtilities
         bool wordwrap) =>
         wordwrap
             ? processingContext.ApplyScalingWaterMarkWordWrap(font, text, color, padding)
-            : processingContext.ApplyScalingWaterMarkSimple(font, text, color, padding);
+            : processingContext.ApplyScalingWaterMarkSimple(font, text, color);
 
     private static IImageProcessingContext ApplyScalingWaterMarkSimple(
         this IImageProcessingContext processingContext,
         Font font,
         string text,
-        Color color,
-        float padding)
+        Color color)
     {
         var (width, height) = processingContext.GetCurrentSize();
 

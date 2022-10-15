@@ -196,12 +196,14 @@ internal class InMemoryStubSource : IWritableStubSource
 
     private void RemoveResponse(RequestResultModel request)
     {
-        if (RequestResponseMap.ContainsKey(request))
+        if (!RequestResponseMap.ContainsKey(request))
         {
-            var response = RequestResponseMap[request];
-            StubResponses.Remove(response);
-            RequestResponseMap.Remove(request);
+            return;
         }
+
+        var response = RequestResponseMap[request];
+        StubResponses.Remove(response);
+        RequestResponseMap.Remove(request);
     }
 
     private RequestResultModel GetRequest(string correlationId) =>

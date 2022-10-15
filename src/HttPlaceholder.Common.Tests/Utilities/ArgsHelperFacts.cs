@@ -48,5 +48,5 @@ public class ArgsHelperFacts
         Assert.AreEqual("value1", dict["var1"]);
     }
 
-    private static string[] GetArgs(string input) => input.Split(' ');
+    private static IEnumerable<string> GetArgs(string input) => input.Split(' ');
 }

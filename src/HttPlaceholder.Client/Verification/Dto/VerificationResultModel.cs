@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Client.Dto.Requests;
-using HttPlaceholder.Client.Verification.Exceptions;
 
 namespace HttPlaceholder.Client.Verification.Dto;
 

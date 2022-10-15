@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -64,7 +65,7 @@ internal class FileService : IFileService, ISingletonService
         Task.Run(() => GetFiles(path, searchPattern), cancellationToken);
 
     /// <inheritdoc />
-    public Task<string[]> GetFilesAsync(string path, string[] allowedFileExtensions, CancellationToken cancellationToken) =>
+    public Task<string[]> GetFilesAsync(string path, IEnumerable<string> allowedFileExtensions, CancellationToken cancellationToken) =>
         Task.Run(() => Directory.GetFiles(path)
             .Where(f => allowedFileExtensions.Any(e => f.ToLower().EndsWith(e)))
             .ToArray(), cancellationToken);
