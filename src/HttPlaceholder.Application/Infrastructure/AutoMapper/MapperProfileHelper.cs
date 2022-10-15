@@ -8,22 +8,6 @@ using HttPlaceholder.Application.Interfaces.Mappings;
 namespace HttPlaceholder.Application.Infrastructure.AutoMapper;
 
 /// <summary>
-/// A model for storing the source and destination of an AutoMapper mapping.
-/// </summary>
-public sealed class Map
-{
-    /// <summary>
-    /// Gets or sets the source type.
-    /// </summary>
-    public Type Source { get; set; }
-
-    /// <summary>
-    /// Gets or sets the destination type.
-    /// </summary>
-    public Type Destination { get; set; }
-}
-
-/// <summary>
 /// A helper class for initializing the AutoMapper profile.
 /// </summary>
 public static class MapperProfileHelper
@@ -47,18 +31,23 @@ public static class MapperProfileHelper
         }
     }
 
-    private static IEnumerable<Map> LoadStandardMappings(Type[] types) =>
-        GetMappings(types, typeof(IMapFrom<>))
-            .Concat(GetMappings(types, typeof(IMapTo<>)));
+    private static IEnumerable<Mapping> LoadStandardMappings(Type[] types)
+    {
+        var from = GetMappingTypes(types, typeof(IMapFrom<>));
+        var to = GetMappingTypes(types, typeof(IMapTo<>));
+        return from
+            .Select(t => new Mapping(GetGenericType(t), t))
+            .Concat(to.Select(t => new Mapping(t, GetGenericType(t))));
+    }
 
-    private static IEnumerable<Map> GetMappings(IEnumerable<Type> types, Type interfaceType) =>
+    private static IEnumerable<Type> GetMappingTypes(IEnumerable<Type> types, Type interfaceType) =>
         from type in types
         from instance in type.GetInterfaces()
         where
             instance.IsGenericType && instance.GetGenericTypeDefinition() == interfaceType &&
             !type.IsAbstract &&
             !type.IsInterface
-        select new Map {Source = type.GetInterfaces().First().GetGenericArguments().First(), Destination = type};
+        select type;
 
     private static IEnumerable<IHaveCustomMapping> LoadCustomMappings(IEnumerable<Type> types) =>
         from type in types
@@ -68,4 +57,19 @@ public static class MapperProfileHelper
             !type.IsAbstract &&
             !type.IsInterface
         select (IHaveCustomMapping)Activator.CreateInstance(type);
+
+    private static Type GetGenericType(Type type) => type.GetInterfaces().First().GetGenericArguments().First();
+
+    private sealed class Mapping
+    {
+        public Mapping(Type source, Type destination)
+        {
+            Source = source;
+            Destination = destination;
+        }
+
+        public Type Source { get; }
+
+        public Type Destination { get; }
+    }
 }
