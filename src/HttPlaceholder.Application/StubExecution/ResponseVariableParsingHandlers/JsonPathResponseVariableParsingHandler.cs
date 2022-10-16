@@ -39,14 +39,8 @@ internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}:$.values[1].title))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
-        var matchArray = matches as Match[] ?? matches.ToArray();
-        if (!matchArray.Any())
-        {
-            return input;
-        }
-
         var body = _httpContextService.GetBody();
         JObject jsonObject = null;
         try
@@ -58,7 +52,7 @@ internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandl
             _logger.LogInformation($"Exception occurred while trying to parse response body as JSON: {je}");
         }
 
-        return matchArray
+        return matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input,
                 (current, match) => current.Replace(match.Value, GetJsonPathValue(match, jsonObject)));

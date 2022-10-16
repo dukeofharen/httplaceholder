@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
@@ -38,5 +39,23 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
     public abstract string[] Examples { get; }
 
     /// <inheritdoc />
-    public abstract string Parse(string input, IEnumerable<Match> matches, StubModel stub);
+    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    {
+        var enumerable = matches as Match[] ?? matches.ToArray();
+        if (!enumerable.Any())
+        {
+            return input;
+        }
+
+        return InsertVariables(input, enumerable, stub);
+    }
+
+    /// <summary>
+    /// Inserts the given matches inside the given input.
+    /// </summary>
+    /// <param name="input">The response body.</param>
+    /// <param name="matches">The regex matches that have been found for this variable.</param>
+    /// <param name="stub">The matched stub.</param>
+    /// <returns>The parsed response body.</returns>
+    protected abstract string InsertVariables(string input, Match[] matches, StubModel stub);
 }

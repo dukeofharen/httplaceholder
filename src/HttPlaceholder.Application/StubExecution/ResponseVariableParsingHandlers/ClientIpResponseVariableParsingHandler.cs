@@ -31,16 +31,10 @@ internal class ClientIpResponseVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
-        var enumerable = matches as Match[] ?? matches.ToArray();
-        if (!enumerable.Any())
-        {
-            return input;
-        }
-
         var ip = _clientDataResolver.GetClientIp();
-        return enumerable
+        return matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input, (current, match) => current.Replace(match.Value, ip));
     }

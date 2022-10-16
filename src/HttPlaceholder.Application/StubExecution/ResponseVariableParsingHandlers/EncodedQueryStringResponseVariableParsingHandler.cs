@@ -30,7 +30,7 @@ internal class EncodedQueryStringResponseVariableParsingHandler : BaseVariablePa
     public override string[] Examples => new[] {$"(({Name}:query_string_key))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
         var queryDict = _httpContextService.GetQueryStringDictionary();
         foreach (var match in matches)

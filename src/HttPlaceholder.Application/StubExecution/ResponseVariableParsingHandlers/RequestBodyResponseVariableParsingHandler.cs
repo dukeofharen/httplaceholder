@@ -30,17 +30,11 @@ internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHa
     public override string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
-        var matchArray = matches as Match[] ?? matches.ToArray();
-        if (!matchArray.Any())
-        {
-            return input;
-        }
-
         var body = _httpContextService.GetBody();
 
-        return matchArray
+        return matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input, (current, match) => current.Replace(match.Value, body));
     }

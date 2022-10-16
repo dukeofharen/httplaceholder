@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -48,6 +47,6 @@ public class BaseVariableParsingHandlerFacts
         public override string Name => "TestVariableParsingHandler";
         public override string FullName { get; }
         public override string[] Examples { get; }
-        public override string Parse(string input, IEnumerable<Match> matches, StubModel stub) => throw new System.NotImplementedException();
+        protected override string InsertVariables(string input, Match[] matches, StubModel stub) => throw new System.NotImplementedException();
     }
 }

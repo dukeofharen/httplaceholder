@@ -36,15 +36,9 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISin
     public override string GetDescription() => _descriptionLazy.Value;
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
-        var enumerable = matches as Match[] ?? matches.ToArray();
-        if (!enumerable.Any())
-        {
-            return input;
-        }
-
-        foreach (var match in enumerable)
+        foreach (var match in matches)
         {
             var fakeDataInput = ParseFakeDataInput(match.Groups[2].Value);
             input = input.Replace(match.Value,

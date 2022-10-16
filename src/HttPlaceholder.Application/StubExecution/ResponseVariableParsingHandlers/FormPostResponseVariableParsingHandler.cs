@@ -32,14 +32,8 @@ internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}:form_key))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
-        var enumerable = matches as Match[] ?? matches.ToArray();
-        if (!enumerable.Any())
-        {
-            return input;
-        }
-
         ValueTuple<string, StringValues>[] formValues;
         try
         {
@@ -54,7 +48,7 @@ internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandl
         // TODO there can be multiple form values, so this should be fixed in the future.
         var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
 
-        foreach (var match in enumerable)
+        foreach (var match in matches)
         {
             var formValueName = match.Groups[2].Value;
             formDict.TryGetValue(formValueName, out var replaceValue);

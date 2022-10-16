@@ -30,7 +30,7 @@ internal class RequestHeaderResponseVariableParsingHandler : BaseVariableParsing
     public override string[] Examples => new[] {$"(({Name}:X-Api-Key))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
         var headers = _httpContextService.GetHeaders();
         foreach (var match in matches)

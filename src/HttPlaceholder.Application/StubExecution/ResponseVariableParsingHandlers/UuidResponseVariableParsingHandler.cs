@@ -27,7 +27,7 @@ internal class UuidResponseVariableParsingHandler : BaseVariableParsingHandler, 
     public override string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub) =>
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub) =>
         (from match
                 in matches
             where match.Groups.Count == 3
