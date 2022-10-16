@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -31,11 +30,8 @@ internal class DisplayUrlResponseVariableParsingHandler : BaseVariableParsingHan
     public override string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
-    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
-    {
-        var url = _httpContextService.DisplayUrl;
-        return matches
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub) =>
+        matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => current.Replace(match.Value, url));
-    }
+            .Aggregate(input, (current, match) => current.Replace(match.Value, _httpContextService.DisplayUrl));
 }

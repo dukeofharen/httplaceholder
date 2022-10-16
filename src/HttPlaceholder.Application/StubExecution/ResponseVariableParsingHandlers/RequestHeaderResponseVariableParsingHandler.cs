@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -33,14 +34,16 @@ internal class RequestHeaderResponseVariableParsingHandler : BaseVariableParsing
     protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
         var headers = _httpContextService.GetHeaders();
-        foreach (var match in matches)
-        {
-            var headerName = match.Groups[2].Value;
-            var replaceValue = headers.CaseInsensitiveSearch(headerName);
+        return matches
+            .Where(match => match.Groups.Count >= 3)
+            .Aggregate(input, (current, match) => InsertHeader(current, match, headers));
+    }
 
-            input = input.Replace(match.Value, replaceValue);
-        }
+    private static string InsertHeader(string current, Match match, IDictionary<string, string> headers)
+    {
+        var headerName = match.Groups[2].Value;
+        var replaceValue = headers.CaseInsensitiveSearch(headerName);
 
-        return input;
+        return current.Replace(match.Value, replaceValue);
     }
 }

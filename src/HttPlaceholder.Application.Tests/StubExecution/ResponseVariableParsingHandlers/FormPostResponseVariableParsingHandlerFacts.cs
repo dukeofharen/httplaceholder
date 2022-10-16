@@ -45,26 +45,4 @@ public class FormPostResponseVariableParsingHandlerFacts
         // Assert
         Assert.AreEqual(expectedResult, result);
     }
-
-    [TestMethod]
-    public void FormPostVariableHandler_ExceptionOccurredWhileParsingFormValues_ShouldReplaceEverythingWithEmptyString()
-    {
-        // Arrange
-        var parsingHandler = _mocker.CreateInstance<FormPostResponseVariableParsingHandler>();
-        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-
-        const string input = "Form var 1: ((form_post:var1)), Form var 2: ((form_post:var2)), Form var 3: ((form_post:var3))";
-        const string expectedResult = "Form var 1: , Form var 2: , Form var 3: ";
-
-        httpContextServiceMock
-            .Setup(m => m.GetFormValues())
-            .Throws(new Exception("ERROR!"));
-
-        // Act
-        var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = parsingHandler.Parse(input, matches, new StubModel());
-
-        // Assert
-        Assert.AreEqual(expectedResult, result);
-    }
 }

@@ -17,7 +17,8 @@ internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandl
 {
     private readonly IHttpContextService _httpContextService;
 
-    public FormPostResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) : base(fileService)
+    public FormPostResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) :
+        base(fileService)
     {
         _httpContextService = httpContextService;
     }
@@ -34,28 +35,22 @@ internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandl
     /// <inheritdoc />
     protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
-        ValueTuple<string, StringValues>[] formValues;
-        try
-        {
-            // We don't care about any exceptions here.
-            formValues = _httpContextService.GetFormValues();
-        }
-        catch
-        {
-            formValues = Array.Empty<(string, StringValues)>();
-        }
-
+        var formValues = _httpContextService.GetFormValues();
         // TODO there can be multiple form values, so this should be fixed in the future.
         var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
+        return matches
+            .Where(match => match.Groups.Count >= 3)
+            .Aggregate(input, (current, match) => InsertFormValue(current, match, formDict));
+    }
 
-        foreach (var match in matches)
+    private static string InsertFormValue(string current, Match match, IDictionary<string, string> formDict)
+    {
+        var formValueName = match.Groups[2].Value;
+        if (!formDict.TryGetValue(formValueName, out var replaceValue))
         {
-            var formValueName = match.Groups[2].Value;
-            formDict.TryGetValue(formValueName, out var replaceValue);
-
-            input = input.Replace(match.Value, replaceValue);
+            replaceValue = string.Empty;
         }
 
-        return input;
+        return current.Replace(match.Value, replaceValue);
     }
 }

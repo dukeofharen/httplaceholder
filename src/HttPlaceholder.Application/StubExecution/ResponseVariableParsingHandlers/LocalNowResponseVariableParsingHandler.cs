@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -33,14 +34,16 @@ internal class LocalNowResponseVariableParsingHandler : BaseVariableParsingHandl
     protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
         var now = _dateTime.Now;
-        foreach (var match in matches)
-        {
-            var dateTime = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value)
-                ? now.ToString(match.Groups[2].Value)
-                : now.ToString(CultureInfo.InvariantCulture);
-            input = input.Replace(match.Value, dateTime);
-        }
+        return matches
+            .Where(match => match.Groups.Count >= 2)
+            .Aggregate(input, (current, match) => InsertDateTime(current, match, now));
+    }
 
-        return input;
+    private static string InsertDateTime(string current, Match match, DateTime now)
+    {
+        var dateTime = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value)
+            ? now.ToString(match.Groups[2].Value)
+            : now.ToString(CultureInfo.InvariantCulture);
+        return current.Replace(match.Value, dateTime);
     }
 }

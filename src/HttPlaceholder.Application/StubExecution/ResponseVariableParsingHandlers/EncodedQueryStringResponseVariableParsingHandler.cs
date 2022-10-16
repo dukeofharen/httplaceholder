@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -33,15 +34,23 @@ internal class EncodedQueryStringResponseVariableParsingHandler : BaseVariablePa
     protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
         var queryDict = _httpContextService.GetQueryStringDictionary();
-        foreach (var match in matches)
-        {
-            var queryStringName = match.Groups[2].Value;
-            queryDict.TryGetValue(queryStringName, out var replaceValue);
+        return matches
+            .Where(match => match.Groups.Count >= 3)
+            .Aggregate(input, (current, match) => InsertQuery(current, match, queryDict));
+    }
 
+    private static string InsertQuery(string current, Match match, IDictionary<string, string> queryDict)
+    {
+        var queryStringName = match.Groups[2].Value;
+        if (!queryDict.TryGetValue(queryStringName, out var replaceValue))
+        {
+            replaceValue = string.Empty;
+        }
+        else
+        {
             replaceValue = WebUtility.UrlEncode(replaceValue);
-            input = input.Replace(match.Value, replaceValue);
         }
 
-        return input;
+        return current.Replace(match.Value, replaceValue);
     }
 }

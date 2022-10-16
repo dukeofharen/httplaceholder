@@ -33,7 +33,6 @@ internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHa
     protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
         var body = _httpContextService.GetBody();
-
         return matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input, (current, match) => current.Replace(match.Value, body));

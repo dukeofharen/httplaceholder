@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -28,10 +27,7 @@ internal class UuidResponseVariableParsingHandler : BaseVariableParsingHandler, 
 
     /// <inheritdoc />
     protected override string InsertVariables(string input, Match[] matches, StubModel stub) =>
-        (from match
-                in matches
-            where match.Groups.Count == 3
-            select new Regex(Regex.Escape(match.Value)))
-        .Aggregate(
-            input, (current, replaceRegex) => replaceRegex.Replace(current, Guid.NewGuid().ToString(), 1));
+        matches
+            .Where(match => match.Groups.Count >= 2)
+            .Aggregate(input, (current, match) => current.Replace(match.Value, Guid.NewGuid().ToString()));
 }

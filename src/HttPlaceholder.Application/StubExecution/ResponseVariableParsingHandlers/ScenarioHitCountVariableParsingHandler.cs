@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
@@ -29,24 +28,24 @@ internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
-    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
-    {
-        foreach (var match in matches)
-        {
-            int? hitCount = null;
-            var scenarioName = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value)
-                ? match.Groups[2].Value
-                : stub.Scenario ?? string.Empty;
-            if (!string.IsNullOrWhiteSpace(scenarioName))
-            {
-                var scenario = _scenarioStateStore.GetScenario(scenarioName);
-                hitCount = scenario?.HitCount;
-            }
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub) =>
+        matches
+            .Where(match => match.Groups.Count >= 2)
+            .Aggregate(input, (current, match) => InsertHitCount(current, match, stub));
 
-            var hitCountText = !hitCount.HasValue ? string.Empty : hitCount.Value.ToString();
-            input = input.Replace(match.Value, hitCountText);
+    private string InsertHitCount(string current, Match match, StubModel stub)
+    {
+        int? hitCount = null;
+        var scenarioName = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value)
+            ? match.Groups[2].Value
+            : stub.Scenario ?? string.Empty;
+        if (!string.IsNullOrWhiteSpace(scenarioName))
+        {
+            var scenario = _scenarioStateStore.GetScenario(scenarioName);
+            hitCount = scenario?.HitCount;
         }
 
-        return input;
+        var hitCountText = !hitCount.HasValue ? string.Empty : hitCount.Value.ToString();
+        return current.Replace(match.Value, hitCountText);
     }
 }

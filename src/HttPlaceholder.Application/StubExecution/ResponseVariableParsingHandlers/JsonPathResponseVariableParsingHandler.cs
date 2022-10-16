@@ -42,20 +42,25 @@ internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandl
     protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
         var body = _httpContextService.GetBody();
-        JObject jsonObject = null;
+        var json = ParseJson(body);
+        return matches
+            .Where(match => match.Groups.Count >= 2)
+            .Aggregate(input,
+                (current, match) => current.Replace(match.Value, GetJsonPathValue(match, json)));
+    }
+
+    private JObject ParseJson(string body)
+    {
         try
         {
-            jsonObject = JObject.Parse(body);
+            return JObject.Parse(body);
         }
         catch (JsonException je)
         {
             _logger.LogInformation($"Exception occurred while trying to parse response body as JSON: {je}");
         }
 
-        return matches
-            .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input,
-                (current, match) => current.Replace(match.Value, GetJsonPathValue(match, jsonObject)));
+        return null;
     }
 
     private static string GetJsonPathValue(Match match, JToken token)

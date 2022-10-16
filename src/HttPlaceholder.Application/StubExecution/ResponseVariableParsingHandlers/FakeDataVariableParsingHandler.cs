@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -36,17 +35,17 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISin
     public override string GetDescription() => _descriptionLazy.Value;
 
     /// <inheritdoc />
-    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
-    {
-        foreach (var match in matches)
-        {
-            var fakeDataInput = ParseFakeDataInput(match.Groups[2].Value);
-            input = input.Replace(match.Value,
-                _fakerService.GenerateFakeData(fakeDataInput.generator, fakeDataInput.locale,
-                    fakeDataInput.formatting));
-        }
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub) =>
+        matches
+            .Where(match => match.Groups.Count >= 3)
+            .Aggregate(input, InsertFakeData);
 
-        return input;
+    private string InsertFakeData(string current, Match match)
+    {
+        var fakeDataInput = ParseFakeDataInput(match.Groups[2].Value);
+        return current.Replace(match.Value,
+            _fakerService.GenerateFakeData(fakeDataInput.generator, fakeDataInput.locale,
+                fakeDataInput.formatting));
     }
 
     internal (string locale, string generator, string formatting) ParseFakeDataInput(string input)
