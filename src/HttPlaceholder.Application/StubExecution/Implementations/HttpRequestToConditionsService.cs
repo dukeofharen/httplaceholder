@@ -32,7 +32,7 @@ internal class HttpRequestToConditionsService : IHttpRequestToConditionsService,
             var executed =
                 await handler.HandleStubGenerationAsync(request, conditions, cancellationToken);
             _logger.LogDebug(
-                $"Handler '{handler.GetType().Name}' " + (executed ? "executed" : "not executed") + ".");
+                $"Handler '{handler.GetType().Name}' {(executed ? "executed" : "not executed")}.");
         }
 
         return conditions;

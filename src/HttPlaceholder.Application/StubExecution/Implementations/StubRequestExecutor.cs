@@ -18,7 +18,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
     private readonly IFinalStubDeterminer _finalStubDeterminer;
     private readonly ILogger<StubRequestExecutor> _logger;
     private readonly IRequestLoggerFactory _requestLoggerFactory;
-    private readonly IStubContext _stubContainer;
+    private readonly IStubContext _stubContext;
     private readonly IStubResponseGenerator _stubResponseGenerator;
     private readonly IScenarioService _scenarioService;
 
@@ -27,7 +27,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         IFinalStubDeterminer finalStubDeterminer,
         ILogger<StubRequestExecutor> logger,
         IRequestLoggerFactory requestLoggerFactory,
-        IStubContext stubContainer,
+        IStubContext stubContext,
         IStubResponseGenerator stubResponseGenerator,
         IScenarioService scenarioService)
     {
@@ -35,7 +35,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         _finalStubDeterminer = finalStubDeterminer;
         _logger = logger;
         _requestLoggerFactory = requestLoggerFactory;
-        _stubContainer = stubContainer;
+        _stubContext = stubContext;
         _stubResponseGenerator = stubResponseGenerator;
         _scenarioService = scenarioService;
     }
@@ -45,7 +45,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
     {
         var requestLogger = _requestLoggerFactory.GetRequestLogger();
         var foundStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>();
-        var stubs = (await _stubContainer.GetStubsAsync(cancellationToken)).Where(s => s.Stub.Enabled).ToArray();
+        var stubs = (await _stubContext.GetStubsAsync(cancellationToken)).Where(s => s.Stub.Enabled).ToArray();
         var orderedConditionCheckers = _conditionCheckers.OrderByDescending(c => c.Priority).ToArray();
         foreach (var fullStub in stubs)
         {
@@ -65,13 +65,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
                     }
                 }
 
-                var passed = (validationResults.All(r =>
-                                  r.ConditionValidation != ConditionValidationType.Invalid) &&
-                              validationResults.Any(r =>
-                                  r.ConditionValidation != ConditionValidationType.NotExecuted &&
-                                  r.ConditionValidation != ConditionValidationType.NotSet)) ||
-                             validationResults.All(
-                                 r => r.ConditionValidation == ConditionValidationType.NotExecuted);
+                var passed = RequestPassed(validationResults);
                 if (passed)
                 {
                     foundStubs.Add((stub, validationResults));
@@ -98,4 +92,15 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         var response = await _stubResponseGenerator.GenerateResponseAsync(finalStub, cancellationToken);
         return response;
     }
+
+    private static bool RequestPassed(IReadOnlyCollection<ConditionCheckResultModel> validationResults) =>
+        // Check whether the validation results do not contain "Invalid" and any other results besides "NotExecuted" and "NotSet" (so "Valid")
+        // OR if all the validation results are "NotExecuted".
+        (validationResults.All(r =>
+             r.ConditionValidation != ConditionValidationType.Invalid) &&
+         validationResults.Any(r =>
+             r.ConditionValidation != ConditionValidationType.NotExecuted &&
+             r.ConditionValidation != ConditionValidationType.NotSet)) ||
+        validationResults.All(
+            r => r.ConditionValidation == ConditionValidationType.NotExecuted);
 }
