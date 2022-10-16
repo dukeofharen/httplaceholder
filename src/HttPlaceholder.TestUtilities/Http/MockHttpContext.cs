@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Security.Claims;
+using System.Text;
 using System.Threading;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Primitives;
 using Moq;
 
 namespace HttPlaceholder.TestUtilities.Http;
@@ -106,6 +109,34 @@ public class MockHttpContext : HttpContext
         HttpRequestMock
             .Setup(m => m.IsHttps)
             .Returns(isHttps);
+
+    public void SetRequestHeaders(Dictionary<string, StringValues> headers) =>
+        HttpRequestMock
+            .Setup(m => m.Headers)
+            .Returns(new HeaderDictionary(headers));
+
+    public void SetRequestHeader(string key, string value) =>
+        HttpRequestMock
+            .Object
+            .Headers.Add(key, value);
+
+    public void SetForm(Dictionary<string, StringValues> form) =>
+        HttpRequestMock
+            .Setup(m => m.Form)
+            .Returns(new FormCollection(form));
+
+    public void SetBody(string body) =>
+        SetBody(Encoding.UTF8.GetBytes(body));
+
+    public void SetBody(byte[] body) =>
+        HttpRequestMock
+            .Setup(m => m.Body)
+            .Returns(new MemoryStream(body));
+
+    public void SetQuery(Dictionary<string, StringValues> query) =>
+        HttpRequestMock
+            .Setup(m => m.Query)
+            .Returns(new QueryCollection(query));
 
     public override void Abort() => AbortCalled = true;
 

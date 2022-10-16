@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Web;
 using HttPlaceholder.TestUtilities.Http;
 using Microsoft.AspNetCore.Http;
@@ -129,10 +131,7 @@ public class HttpContextServiceFacts
         var service = _mocker.CreateInstance<HttpContextService>();
 
         const string body = "THIS IS THE REQUEST BODY!";
-        _mockHttpContext
-            .HttpRequestMock
-            .Setup(m => m.Body)
-            .Returns(new MemoryStream(Encoding.UTF8.GetBytes(body)));
+        _mockHttpContext.SetBody(body);
 
         // Act
         var result = service.GetBody();
@@ -148,10 +147,7 @@ public class HttpContextServiceFacts
         var service = _mocker.CreateInstance<HttpContextService>();
 
         var body = new byte[] {1, 2, 3};
-        _mockHttpContext
-            .HttpRequestMock
-            .Setup(m => m.Body)
-            .Returns(new MemoryStream(body));
+        _mockHttpContext.SetBody(body);
 
         // Act
         var result = service.GetBodyAsBytes();
@@ -165,10 +161,7 @@ public class HttpContextServiceFacts
     {
         // Arrange
         var queryDict = new Dictionary<string, StringValues> {{"key1", "val1"}, {"key2", "val2"}};
-        _mockHttpContext
-            .HttpRequestMock
-            .Setup(m => m.Query)
-            .Returns(new QueryCollection(queryDict));
+        _mockHttpContext.SetQuery(queryDict);
 
         var service = _mocker.CreateInstance<HttpContextService>();
 
@@ -200,10 +193,7 @@ public class HttpContextServiceFacts
     {
         // Arrange
         var headerDict = new Dictionary<string, StringValues> {{"key1", "val1"}, {"key2", "val2"}};
-        _mockHttpContext
-            .HttpRequestMock
-            .Setup(m => m.Headers)
-            .Returns(new HeaderDictionary(headerDict));
+        _mockHttpContext.SetRequestHeaders(headerDict);
 
         var service = _mocker.CreateInstance<HttpContextService>();
 
@@ -232,14 +222,49 @@ public class HttpContextServiceFacts
     }
 
     [TestMethod]
-    public void GetFormValues_HappyFlow()
+    public void GetFormValues_NoContentTypeSet_ShouldReturnEmptyArray()
     {
         // Arrange
-        var formDict = new Dictionary<string, StringValues> {{"key1", "val1"}, {"key2", "val2"}};
+        var service = _mocker.CreateInstance<HttpContextService>();
+
+        // Act
+        var result = service.GetFormValues();
+
+        // Assert
+        Assert.AreEqual(0, result.Length);
+    }
+
+    [TestMethod]
+    public void GetFormValues_ErrorWhileReadingForm_ShouldReturnEmptyArray()
+    {
+        // Arrange
+        var service = _mocker.CreateInstance<HttpContextService>();
+        _mockHttpContext.SetRequestHeader("Content-Type", Constants.MultipartFormDataMime);
         _mockHttpContext
             .HttpRequestMock
             .Setup(m => m.Form)
-            .Returns(new FormCollection(formDict));
+            .Throws<InvalidOperationException>();
+
+        // Act
+        var result = service.GetFormValues();
+
+        // Assert
+        Assert.AreEqual(0, result.Length);
+    }
+
+    [DataTestMethod]
+    [DataRow("application/x-www-form-urlencoded")]
+    [DataRow("multipart/form-data")]
+    [DataRow("APPLICATION/X-WWW-FORM-URLENCODED")]
+    [DataRow("MULTIPART/FORM-DATA")]
+    [DataRow("application/x-www-form-urlencoded; encoding=utf-8")]
+    [DataRow("multipart/form-data; encoding=utf-8")]
+    public void GetFormValues_HappyFlow(string contentType)
+    {
+        // Arrange
+        var formDict = new Dictionary<string, StringValues> {{"key1", "val1"}, {"key2", "val2"}};
+        _mockHttpContext.SetForm(formDict);
+        _mockHttpContext.SetRequestHeader("Content-Type", contentType);
 
         var service = _mocker.CreateInstance<HttpContextService>();
 

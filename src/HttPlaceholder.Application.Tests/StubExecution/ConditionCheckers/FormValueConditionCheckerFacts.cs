@@ -173,25 +173,6 @@ public class FormValueConditionCheckerFacts
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
     }
 
-    [TestMethod]
-    public async Task ValidateAsync_InvalidOperationException_ShouldReturnInvalid()
-    {
-        // Arrange
-        var checker = _mocker.CreateInstance<FormValueConditionChecker>();
-        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
-
-        var conditions = new StubConditionsModel {Form = new[] {new StubFormModel()}};
-        httpContextServiceMock
-            .Setup(m => m.GetFormValues())
-            .Throws(new InvalidOperationException());
-
-        // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
-
-        // Assert
-        Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-    }
-
     public static IEnumerable<object[]> GetPresentData()
     {
         yield return new object[]

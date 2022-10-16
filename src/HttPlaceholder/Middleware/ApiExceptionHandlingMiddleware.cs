@@ -55,20 +55,23 @@ public class ApiExceptionHandlingMiddleware
             }
             catch (ArgumentException ex)
             {
-                _httpContextService.SetStatusCode(HttpStatusCode.BadRequest);
-                _httpContextService.AddHeader("Content-Type", Constants.JsonMime);
-                await _httpContextService.WriteAsync(JsonConvert.SerializeObject(new[] {ex.Message}), cancellationToken);
+                await WriteResponseBody(new[] {ex.Message}, HttpStatusCode.BadRequest, cancellationToken);
             }
             catch (ValidationException ex)
             {
-                _httpContextService.SetStatusCode(HttpStatusCode.BadRequest);
-                _httpContextService.AddHeader("Content-Type", Constants.JsonMime);
-                await _httpContextService.WriteAsync(JsonConvert.SerializeObject(ex.ValidationErrors), cancellationToken);
+                await WriteResponseBody(ex.ValidationErrors, HttpStatusCode.BadRequest, cancellationToken);
             }
         }
         else
         {
             await _next(context);
         }
+    }
+
+    private async Task WriteResponseBody(object body, HttpStatusCode httpStatusCode, CancellationToken cancellationToken)
+    {
+        _httpContextService.SetStatusCode(httpStatusCode);
+        _httpContextService.AddHeader("Content-Type", Constants.JsonMime);
+        await _httpContextService.WriteAsync(JsonConvert.SerializeObject(body), cancellationToken);
     }
 }

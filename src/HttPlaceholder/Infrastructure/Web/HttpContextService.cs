@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,13 +9,22 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Infrastructure.Web;
 
 internal class HttpContextService : IHttpContextService, ISingletonService
 {
+    private static readonly string[] _validFormContentTypes =
+    {
+        Constants.MultipartFormDataMime, Constants.UrlEncodedFormMime
+    };
+
+    private readonly ILogger<HttpContextService> _logger;
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -23,10 +33,12 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     /// </summary>
     public HttpContextService(
         IClientDataResolver clientDataResolver,
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        ILogger<HttpContextService> logger)
     {
         _clientDataResolver = clientDataResolver;
         _httpContextAccessor = httpContextAccessor;
+        _logger = logger;
     }
 
     /// <inheritdoc />
@@ -116,10 +128,29 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     /// <inheritdoc />
     public (string, StringValues)[] GetFormValues()
     {
-        var httpContext = _httpContextAccessor.HttpContext;
-        return httpContext.Request.Form
-            .Select(f => (f.Key, f.Value))
-            .ToArray();
+        var contentType = GetHeaders().CaseInsensitiveSearch("Content-Type");
+        if (string.IsNullOrWhiteSpace(contentType))
+        {
+            return Array.Empty<(string, StringValues)>();
+        }
+
+        if (!_validFormContentTypes.Any(ct => contentType.Contains(ct, StringComparison.OrdinalIgnoreCase)))
+        {
+            return Array.Empty<(string, StringValues)>();
+        }
+
+        try
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            return httpContext.Request.Form
+                .Select(f => (f.Key, f.Value))
+                .ToArray();
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Exception thrown while reading form data.");
+            return Array.Empty<(string, StringValues)>();
+        }
     }
 
     /// <inheritdoc />

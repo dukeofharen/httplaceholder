@@ -16,8 +16,6 @@ public class ApiHeadersMiddleware
     /// <summary>
     /// Constructs an <see cref="ApiHeadersMiddleware"/> instance.
     /// </summary>
-    /// <param name="next"></param>
-    /// <param name="httpContextService"></param>
     public ApiHeadersMiddleware(RequestDelegate next, IHttpContextService httpContextService)
     {
         _next = next;

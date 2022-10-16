@@ -10,6 +10,7 @@ namespace HttPlaceholder.Authorization.Implementations;
 
 internal class LoginService : ILoginService, ITransientService
 {
+    private const string LoginCookieKey = "HttPlaceholderLoggedin";
     private const string Salt = "83b2737f-7d85-4a0a-8113-b98ed4a255a1";
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly SettingsModel _settings;
@@ -34,14 +35,14 @@ internal class LoginService : ILoginService, ITransientService
 
         var expectedHash = CreateHash(username, password);
         var cookie =
-            _httpContextAccessor.HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == CookieKeys.LoginCookieKey);
+            _httpContextAccessor.HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == LoginCookieKey);
         return cookie.Value == expectedHash;
     }
 
     /// <inheritdoc />
     public void SetLoginCookie(string username, string password) =>
         _httpContextAccessor.HttpContext.Response.Cookies.Append(
-            CookieKeys.LoginCookieKey,
+            LoginCookieKey,
             CreateHash(username, password),
             new CookieOptions {HttpOnly = false, SameSite = SameSiteMode.Lax});
 
