@@ -37,7 +37,7 @@ public class PathConditionChecker : IConditionChecker, ISingletonService
         var path = _httpContextService.Path;
         if (_stringChecker.CheckString(path, pathCondition, out var outputForLogging))
         {
-            // The path matches the provided regex. Add the stub ID to the resulting list.
+            // The path matches.
             result.ConditionValidation = ConditionValidationType.Valid;
         }
         else
