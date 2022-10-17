@@ -40,13 +40,7 @@ public class AddStubsCommandHandler : IRequestHandler<AddStubsCommand, IEnumerab
         // Validate posted stubs.
         var stubsToAdd = request.Stubs.ToArray();
         var validationResults = stubsToAdd
-            .SelectMany(s =>
-            {
-                var validation = _stubModelValidator.ValidateStubModel(s);
-                return !string.IsNullOrWhiteSpace(s.Id)
-                    ? validation.Select(v => $"{s.Id}: {v}")
-                    : validation;
-            })
+            .SelectMany(Validate)
             .ToArray();
         if (validationResults.Any())
         {
@@ -85,5 +79,13 @@ public class AddStubsCommandHandler : IRequestHandler<AddStubsCommand, IEnumerab
         }
 
         return result;
+    }
+
+    private IEnumerable<string> Validate(StubModel s)
+    {
+        var validation = _stubModelValidator.ValidateStubModel(s);
+        return !string.IsNullOrWhiteSpace(s.Id)
+            ? validation.Select(v => $"{s.Id}: {v}")
+            : validation;
     }
 }

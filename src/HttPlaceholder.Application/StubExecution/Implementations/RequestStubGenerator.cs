@@ -5,6 +5,7 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.Stubs.Utilities;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
 
@@ -36,17 +37,13 @@ internal class RequestStubGenerator : IRequestStubGenerator, ISingletonService
         CancellationToken cancellationToken)
     {
         _logger.LogDebug($"Creating stub based on request with corr.ID '{requestCorrelationId}'.");
-        var requestResult = await _stubContext.GetRequestResultAsync(requestCorrelationId, cancellationToken);
-        if (requestResult == null)
-        {
-            throw new NotFoundException(nameof(RequestResultModel), requestCorrelationId);
-        }
-
+        var requestResult = await _stubContext.GetRequestResultAsync(requestCorrelationId, cancellationToken)
+            .IfNull(() => throw new NotFoundException(nameof(RequestResultModel), requestCorrelationId));
         var request = _mapper.Map<HttpRequestModel>(requestResult.RequestParameters);
         var stub = new StubModel
         {
             Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request, cancellationToken),
-            Response = { Text = "OK!" }
+            Response = {Text = "OK!"}
         };
 
         // Generate an ID based on the created stub.
@@ -55,7 +52,7 @@ internal class RequestStubGenerator : IRequestStubGenerator, ISingletonService
         FullStubModel result;
         if (doNotCreateStub)
         {
-            result = new FullStubModel { Stub = stub, Metadata = new StubMetadataModel() };
+            result = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
         }
         else
         {

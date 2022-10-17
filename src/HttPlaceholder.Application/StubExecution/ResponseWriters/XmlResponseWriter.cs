@@ -1,8 +1,4 @@
-﻿using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Common.Utilities;
+﻿using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;

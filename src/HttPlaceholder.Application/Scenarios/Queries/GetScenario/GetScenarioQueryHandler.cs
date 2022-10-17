@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Entities;
 using MediatR;
 
@@ -23,14 +24,7 @@ public class GetScenarioQueryHandler : IRequestHandler<GetScenarioQuery, Scenari
     }
 
     /// <inheritdoc />
-    public Task<ScenarioStateModel> Handle(GetScenarioQuery request, CancellationToken cancellationToken)
-    {
-        var scenario = _scenarioService.GetScenario(request.Scenario);
-        if (scenario == null)
-        {
-            throw new NotFoundException($"Scenario with name '{request.Scenario}'.");
-        }
-
-        return Task.FromResult(scenario);
-    }
+    public Task<ScenarioStateModel> Handle(GetScenarioQuery request, CancellationToken cancellationToken) =>
+        Task.FromResult(_scenarioService.GetScenario(request.Scenario)
+            .IfNull(() => throw new NotFoundException($"Scenario with name '{request.Scenario}'.")));
 }

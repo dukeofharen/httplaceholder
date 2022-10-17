@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Authorization;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Dto.v1.ScheduledJobs;
 using HttPlaceholder.HostedServices;
 using Microsoft.AspNetCore.Http;
@@ -44,12 +45,8 @@ public class ScheduledJobController : BaseApiController
     {
         var message = "OK";
         var job = _hostedServices.FirstOrDefault(s =>
-            string.Equals(jobName, s.Key, StringComparison.OrdinalIgnoreCase));
-        if (job == null)
-        {
-            throw new NotFoundException($"Hosted service with key '{jobName}'.");
-        }
-
+                string.Equals(jobName, s.Key, StringComparison.OrdinalIgnoreCase))
+            .IfNull(() => throw new NotFoundException($"Hosted service with key '{jobName}'."));
         var statusCode = HttpStatusCode.OK;
         try
         {

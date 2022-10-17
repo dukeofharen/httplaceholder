@@ -30,4 +30,27 @@ public class ValidationUtilitiesFacts
         // Act / Assert
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => task.IfNull(() => throw new InvalidOperationException()));
     }
+
+    [TestMethod]
+    public void IfNull_Value_ResultIsNotNull()
+    {
+        // Arrange
+        var value = "test123";
+
+        // Act
+        var result = value.IfNull(() => throw new InvalidOperationException());
+
+        // Assert
+        Assert.AreEqual(value, result);
+    }
+
+    [TestMethod]
+    public void IfNull_Value_ResultIsNull()
+    {
+        // Arrange
+        string value = null;
+
+        // Act / Assert
+        Assert.ThrowsException<InvalidOperationException>(() => value.IfNull(() => throw new InvalidOperationException()));
+    }
 }

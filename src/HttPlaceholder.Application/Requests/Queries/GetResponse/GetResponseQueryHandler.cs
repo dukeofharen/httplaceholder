@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using MediatR;
 
@@ -23,14 +24,7 @@ public class GetResponseQueryHandler : IRequestHandler<GetResponseQuery, Respons
     }
 
     /// <inheritdoc />
-    public async Task<ResponseModel> Handle(GetResponseQuery request, CancellationToken cancellationToken)
-    {
-        var result = await _stubContext.GetResponseAsync(request.CorrelationId, cancellationToken);
-        if (result == null)
-        {
-            throw new NotFoundException("response", request.CorrelationId);
-        }
-
-        return result;
-    }
+    public async Task<ResponseModel> Handle(GetResponseQuery request, CancellationToken cancellationToken) =>
+        await _stubContext.GetResponseAsync(request.CorrelationId, cancellationToken)
+            .IfNull(() => throw new NotFoundException("response", request.CorrelationId));
 }

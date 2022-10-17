@@ -25,4 +25,21 @@ public static class ValidationUtilities
 
         return result;
     }
+
+    /// <summary>
+    /// A method that executes a given action if the passed value is null.
+    /// </summary>
+    /// <param name="value">The value to check.</param>
+    /// <param name="action">The action to be executed if the task returns null.</param>
+    /// <typeparam name="T">The return type of the task.</typeparam>
+    /// <returns>The result of the executed task.</returns>
+    public static T IfNull<T>(this T value, Action action)
+    {
+        if (value == null)
+        {
+            action.Invoke();
+        }
+
+        return value;
+    }
 }
