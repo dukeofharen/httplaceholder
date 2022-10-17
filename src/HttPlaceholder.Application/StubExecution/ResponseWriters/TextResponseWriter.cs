@@ -1,8 +1,4 @@
-﻿using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Infrastructure.DependencyInjection;
-using HttPlaceholder.Common.Utilities;
+﻿using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -10,22 +6,17 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to return the given response as plain text.
 /// </summary>
-internal class TextResponseWriter : IResponseWriter, ISingletonService
+internal class TextResponseWriter : BaseBodyResponseWriter, ISingletonService
 {
     /// <inheritdoc />
-    public int Priority => 0;
+    protected override string GetContentType() => Constants.TextMime;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
-    {
-        if (stub.Response.Text == null)
-        {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
-        }
+    protected override string GetBodyFromStub(StubModel stub) => stub.Response?.Text;
 
-        response.Body = Encoding.UTF8.GetBytes(stub.Response.Text);
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.TextMime, false);
+    /// <inheritdoc />
+    protected override string GetWriterName() => GetType().Name;
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
-    }
+    /// <inheritdoc />
+    public override int Priority => 0;
 }

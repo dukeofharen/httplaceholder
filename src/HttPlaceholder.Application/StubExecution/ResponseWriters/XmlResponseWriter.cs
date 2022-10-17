@@ -10,23 +10,17 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to return the given response as XML.
 /// </summary>
-internal class XmlResponseWriter : IResponseWriter, ISingletonService
+internal class XmlResponseWriter : BaseBodyResponseWriter, ISingletonService
 {
     /// <inheritdoc />
-    public int Priority => 0;
+    protected override string GetContentType() => Constants.XmlTextMime;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
-    {
-        if (stub.Response?.Xml == null)
-        {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
-        }
+    protected override string GetBodyFromStub(StubModel stub) => stub.Response?.Xml;
 
-        var body = stub.Response.Xml;
-        response.Body = Encoding.UTF8.GetBytes(body);
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.XmlTextMime, false);
+    /// <inheritdoc />
+    protected override string GetWriterName() => GetType().Name;
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
-    }
+    /// <inheritdoc />
+    public override int Priority => 0;
 }

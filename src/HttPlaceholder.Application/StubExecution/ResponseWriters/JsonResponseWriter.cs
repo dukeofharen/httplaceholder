@@ -10,23 +10,17 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 /// <summary>
 /// Response writer that is used to return a given response as JSON.
 /// </summary>
-internal class JsonResponseWriter : IResponseWriter, ISingletonService
+internal class JsonResponseWriter : BaseBodyResponseWriter, ISingletonService
 {
     /// <inheritdoc />
-    public int Priority => 0;
+    protected override string GetContentType() => Constants.JsonMime;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
-    {
-        if (stub.Response?.Json == null)
-        {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
-        }
+    protected override string GetBodyFromStub(StubModel stub) => stub.Response?.Json;
 
-        var jsonBody = stub.Response.Json;
-        response.Body = Encoding.UTF8.GetBytes(jsonBody);
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.JsonMime, false);
+    /// <inheritdoc />
+    protected override string GetWriterName() => GetType().Name;
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
-    }
+    /// <inheritdoc />
+    public override int Priority => 0;
 }

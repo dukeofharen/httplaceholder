@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -46,7 +47,6 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
             var stubRootPaths = await _stubRootPathResolver.GetStubRootPathsAsync(cancellationToken);
             foreach (var path in stubRootPaths)
             {
-
                 var tempPath = Path.Combine(path, stub.Response.File);
                 if (!await _fileService.FileExistsAsync(tempPath, cancellationToken))
                 {
