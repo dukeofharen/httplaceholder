@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -53,8 +54,5 @@ internal class LineEndingResponseWriter : IResponseWriter, ISingletonService
     private static byte[] ReplaceLineEndings(byte[] input, string lineEndingSeparator) =>
         Encoding.UTF8.GetBytes(string.Join(
             lineEndingSeparator,
-            Encoding.UTF8.GetString(input).Split(
-                new[] {"\r\n", "\r", "\n"},
-                StringSplitOptions.None
-            )));
+            Encoding.UTF8.GetString(input).SplitNewlines()));
 }

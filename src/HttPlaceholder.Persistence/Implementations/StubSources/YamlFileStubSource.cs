@@ -145,7 +145,7 @@ internal class YamlFileStubSource : IStubSource
     private static string StripIllegalCharacters(string input) => input.Replace("\"", string.Empty);
 
     private static bool YamlIsArray(string yaml) => yaml
-        .Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None)
+        .SplitNewlines()
         .Any(l => l.StartsWith("-"));
 
     private async Task<List<string>> GetYamlFileLocationsAsync(CancellationToken cancellationToken)

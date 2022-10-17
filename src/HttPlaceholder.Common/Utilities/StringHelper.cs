@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace HttPlaceholder.Common.Utilities;
@@ -65,4 +66,12 @@ public static class StringHelper
     /// <returns>The number of instances where the string is neither null or whitespace.</returns>
     public static int CountNumberOfNonWhitespaceStrings(params string[] strings) =>
         strings.AsQueryable().Count(s => !string.IsNullOrWhiteSpace(s));
+
+    /// <summary>
+    /// Splits a string on newline characters.
+    /// </summary>
+    /// <param name="input">The input.</param>
+    /// <returns>The input, divided by newline characters.</returns>
+    public static string[] SplitNewlines(this string input) =>
+        input.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None);
 }
