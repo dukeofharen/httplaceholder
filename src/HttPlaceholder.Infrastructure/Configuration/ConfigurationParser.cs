@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Interfaces.Configuration;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure.Implementations;
@@ -20,19 +19,16 @@ public class ConfigurationParser
 {
     private readonly IEnvService _envService;
     private readonly IFileService _fileService;
-    private readonly IConfigurationHelper _configurationHelper;
 
     /// <summary>
     /// Constructs a <see cref="ConfigurationParser"/> instance.
     /// </summary>
     internal ConfigurationParser(
         IEnvService envService,
-        IFileService fileService,
-        IConfigurationHelper configurationHelper)
+        IFileService fileService)
     {
         _envService = envService;
         _fileService = fileService;
-        _configurationHelper = configurationHelper;
     }
 
     /// <summary>
@@ -40,8 +36,7 @@ public class ConfigurationParser
     /// </summary>
     public ConfigurationParser() : this(
         new EnvService(),
-        new FileService(),
-        new ConfigurationHelper())
+        new FileService())
     {
     }
 
@@ -52,7 +47,7 @@ public class ConfigurationParser
     /// <returns>The parsed dictionary.</returns>
     public IDictionary<string, string> ParseConfiguration(IEnumerable<string> args)
     {
-        var configMetadata = _configurationHelper.GetConfigKeyMetadata();
+        var configMetadata = ConfigKeys.GetConfigMetadata().ToArray();
         var envResult = ParseEnvironment(configMetadata);
         var argsResult = args.Parse();
         var configFileResult = ParseConfigFile(envResult, argsResult);
@@ -114,7 +109,7 @@ public class ConfigurationParser
         IDictionary<string, string> envResult,
         IDictionary<string, string> argsResult,
         IDictionary<string, string> configFileResult,
-        IList<ConfigMetadataModel> configMetadata)
+        ConfigMetadataModel[] configMetadata)
     {
         var result = new Dictionary<string, string>();
         foreach (var constant in configMetadata)
@@ -144,7 +139,7 @@ public class ConfigurationParser
                 value = "true";
             }
 
-            result.Add(constant.Key, value);
+            result.Add(constant.Key.ToLower(), value);
         }
 
         EnsureDefaultValuesAreAdded(result);

@@ -150,8 +150,7 @@ public static class ProgramUtilities
         builder.AppendLine(ManPage.ExplanationHeader);
         builder.AppendLine();
 
-        var configurationHelper = new ConfigurationHelper();
-        var metadata = configurationHelper.GetConfigKeyMetadata();
+        var metadata = ConfigKeys.GetConfigMetadata();
         var configKeyTypes = ConfigKeys.GetConfigKeyTypes();
         var groupedMetadata = metadata
             .Select(m => (Type: configKeyTypes[m.ConfigKeyType], ConfigMetadataModel: m))

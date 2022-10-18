@@ -41,8 +41,7 @@ public class ConfigurationParserFacts
     public void Initialize() =>
         _parser = new ConfigurationParser(
             _envServiceMock.Object,
-            _fileServiceMock.Object,
-            new ConfigurationHelper());
+            _fileServiceMock.Object);
 
     [TestCleanup]
     public void Cleanup()
