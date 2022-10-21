@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
 /// <summary>
-/// A stub source that is used to store and read data from memory.
+///     A stub source that is used to store and read data from memory.
 /// </summary>
 internal class InMemoryStubSource : IWritableStubSource
 {
@@ -18,12 +18,12 @@ internal class InMemoryStubSource : IWritableStubSource
 
     private readonly SettingsModel _settings;
 
+    internal readonly IDictionary<RequestResultModel, ResponseModel> RequestResponseMap =
+        new Dictionary<RequestResultModel, ResponseModel>();
+
     internal readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
     internal readonly IList<StubModel> StubModels = new List<StubModel>();
     internal readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
-
-    internal readonly IDictionary<RequestResultModel, ResponseModel> RequestResponseMap =
-        new Dictionary<RequestResultModel, ResponseModel>();
 
     public InMemoryStubSource(IOptions<SettingsModel> options)
     {

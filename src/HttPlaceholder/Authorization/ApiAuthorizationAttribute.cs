@@ -13,7 +13,7 @@ using Microsoft.Extensions.Options;
 namespace HttPlaceholder.Authorization;
 
 /// <summary>
-/// An attribute that is used to check the authentication and authorization for all API requests.
+///     An attribute that is used to check the authentication and authorization for all API requests.
 /// </summary>
 public class ApiAuthorizationAttribute : ActionFilterAttribute
 {

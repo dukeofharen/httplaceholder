@@ -16,12 +16,12 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 [TestClass]
 public class StubResponseGeneratorFacts
 {
-    private readonly Mock<IRequestLogger> _requestLoggerMock = new();
+    private readonly AutoMocker _mocker = new();
     private readonly Mock<IRequestLoggerFactory> _requestLoggerFactoryMock = new();
+    private readonly Mock<IRequestLogger> _requestLoggerMock = new();
     private readonly Mock<IResponseWriter> _responseWriterMock1 = new();
     private readonly Mock<IResponseWriter> _responseWriterMock2 = new();
     private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
-    private readonly AutoMocker _mocker = new();
 
     [TestInitialize]
     public void Initialize()

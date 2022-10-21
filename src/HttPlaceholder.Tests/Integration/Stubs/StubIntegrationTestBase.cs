@@ -23,14 +23,14 @@ namespace HttPlaceholder.Tests.Integration.Stubs;
 public abstract class StubIntegrationTestBase : IntegrationTestBase
 {
     private const string InputFilePath = @"D:\tmp\input.yml";
-    protected Mock<IClientDataResolver> ClientDataResolverMock;
-    protected Mock<IFileService> FileServiceMock;
-    private YamlFileStubSource _stubSource;
-    private Mock<IWritableStubSource> _writableStubSourceMock;
-    protected Mock<IDateTime> DateTimeMock;
-    protected MockHttpMessageHandler MockHttp;
     protected readonly IList<RequestResultModel> Requests = new List<RequestResultModel>();
     protected readonly IList<ResponseModel> Responses = new List<ResponseModel>();
+    private YamlFileStubSource _stubSource;
+    private Mock<IWritableStubSource> _writableStubSourceMock;
+    protected Mock<IClientDataResolver> ClientDataResolverMock;
+    protected Mock<IDateTime> DateTimeMock;
+    protected Mock<IFileService> FileServiceMock;
+    protected MockHttpMessageHandler MockHttp;
 
     protected void InitializeStubIntegrationTest(string yamlFileName)
     {
@@ -64,7 +64,8 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             new Mock<IStubModelValidator>().Object);
         _writableStubSourceMock = new Mock<IWritableStubSource>();
         _writableStubSourceMock
-            .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>(), It.IsAny<ResponseModel>(), It.IsAny<CancellationToken>()))
+            .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>(), It.IsAny<ResponseModel>(),
+                It.IsAny<CancellationToken>()))
             .Callback<RequestResultModel, ResponseModel, CancellationToken>((req, res, _) =>
             {
                 Requests.Add(req);

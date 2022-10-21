@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// A controller that is used for manually calling a scheduled job.
+///     A controller that is used for manually calling a scheduled job.
 /// </summary>
 [Route("ph-api/scheduledJob")]
 [ApiAuthorization]
@@ -24,7 +24,7 @@ public class ScheduledJobController : BaseApiController
     private readonly IEnumerable<ICustomHostedService> _hostedServices;
 
     /// <summary>
-    /// Constructs a <see cref="ScheduledJobController"/> instance.
+    ///     Constructs a <see cref="ScheduledJobController" /> instance.
     /// </summary>
     public ScheduledJobController(IEnumerable<ICustomHostedService> hostedServices)
     {
@@ -32,7 +32,7 @@ public class ScheduledJobController : BaseApiController
     }
 
     /// <summary>
-    /// Runs a specified scheduled job.
+    ///     Runs a specified scheduled job.
     /// </summary>
     /// <param name="jobName">The name of the scheduled job to run.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -62,7 +62,7 @@ public class ScheduledJobController : BaseApiController
     }
 
     /// <summary>
-    /// An endpoint for retrieving all the scheduled job names that can can be executed.
+    ///     An endpoint for retrieving all the scheduled job names that can can be executed.
     /// </summary>
     /// <returns>A list of scheduled job names.</returns>
     [HttpGet]

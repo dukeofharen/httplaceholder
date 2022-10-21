@@ -10,13 +10,14 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert a given URL encoded query parameter in the response.
+///     Response variable parsing handler that is used to insert a given URL encoded query parameter in the response.
 /// </summary>
 internal class EncodedQueryStringResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
-    public EncodedQueryStringResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) : base(fileService)
+    public EncodedQueryStringResponseVariableParsingHandler(IHttpContextService httpContextService,
+        IFileService fileService) : base(fileService)
     {
         _httpContextService = httpContextService;
     }

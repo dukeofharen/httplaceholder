@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -9,13 +8,14 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert the posted request body in the response.
+///     Response variable parsing handler that is used to insert the posted request body in the response.
 /// </summary>
 internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
-    public RequestBodyResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) : base(fileService)
+    public RequestBodyResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) :
+        base(fileService)
     {
         _httpContextService = httpContextService;
     }

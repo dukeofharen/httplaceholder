@@ -1,12 +1,11 @@
-﻿
-using System.Data;
+﻿using System.Data;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
 
 namespace HttPlaceholder.Persistence.Db.Implementations;
 
 /// <summary>
-/// A class for creating MySQL DB connections.
+///     A class for creating MySQL DB connections.
 /// </summary>
 internal class MysqlDbConnectionFactory : IDbConnectionFactory
 {
@@ -19,5 +18,6 @@ internal class MysqlDbConnectionFactory : IDbConnectionFactory
     }
 
     /// <inheritdoc />
-    public IDbConnection GetConnection() => new MySqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
+    public IDbConnection GetConnection() =>
+        new MySqlConnection(_configuration.GetConnectionString(ConnectionStringKey));
 }

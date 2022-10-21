@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
 /// <summary>
-/// Tests whether the "simple" (high priority) condition checkers get executed before the more complex ones.
+///     Tests whether the "simple" (high priority) condition checkers get executed before the more complex ones.
 /// </summary>
 [TestClass]
 public class StubConditionCheckerPriorityTests : StubIntegrationTestBase

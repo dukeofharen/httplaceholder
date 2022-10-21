@@ -4,12 +4,12 @@ using MediatR;
 namespace HttPlaceholder.Application.Users.Queries.GetUserData;
 
 /// <summary>
-/// A query for retrieving user data of a specific user.
+///     A query for retrieving user data of a specific user.
 /// </summary>
 public class GetUserDataQuery : IRequest<UserModel>
 {
     /// <summary>
-    /// Constructs a <see cref="GetUserDataQuery"/>
+    ///     Constructs a <see cref="GetUserDataQuery" />
     /// </summary>
     /// <param name="username">The username.</param>
     public GetUserDataQuery(string username)
@@ -18,7 +18,7 @@ public class GetUserDataQuery : IRequest<UserModel>
     }
 
     /// <summary>
-    /// Gets the username.
+    ///     Gets the username.
     /// </summary>
     public string Username { get; }
 }

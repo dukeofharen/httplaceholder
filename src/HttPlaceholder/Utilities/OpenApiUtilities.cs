@@ -9,12 +9,12 @@ using NSwag;
 namespace HttPlaceholder.Utilities;
 
 /// <summary>
-/// A utility class that contains several OpenAPI related utility methods.
+///     A utility class that contains several OpenAPI related utility methods.
 /// </summary>
 public static class OpenApiUtilities
 {
     /// <summary>
-    /// Handles custom logic and updates the given OpenAPI document.
+    ///     Handles custom logic and updates the given OpenAPI document.
     /// </summary>
     /// <param name="document">The OpenAPI document.</param>
     public static void PostProcessOpenApiDocument(OpenApiDocument document)
@@ -55,9 +55,8 @@ public static class OpenApiUtilities
     {
         var isPrimitiveOrString = IsPrimitiveOrString(oneOfType);
         var schemaIsNew = !document.Components.Schemas.ContainsKey(oneOfType.Name);
-        var oneOfTypeSchema = schemaIsNew ?
-            JsonSchema.FromType(oneOfType) :
-            document.Components.Schemas[oneOfType.Name];
+        var oneOfTypeSchema =
+            schemaIsNew ? JsonSchema.FromType(oneOfType) : document.Components.Schemas[oneOfType.Name];
 
         if (!isPrimitiveOrString && schemaIsNew)
         {
@@ -78,7 +77,7 @@ public static class OpenApiUtilities
         {
             if (schemaProp.Value.Type.HasFlag(JsonObjectType.Null))
             {
-                schemaProp.Value.Type = (JsonObjectType) (schemaProp.Value.Type - JsonObjectType.Null);
+                schemaProp.Value.Type = (JsonObjectType)(schemaProp.Value.Type - JsonObjectType.Null);
             }
         }
     }

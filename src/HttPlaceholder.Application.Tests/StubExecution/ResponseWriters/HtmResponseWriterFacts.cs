@@ -17,13 +17,7 @@ public class HtmlResponseWriterFacts
     public async Task HtmlResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                Html = null
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {Html = null}};
 
         var response = new ResponseModel();
 
@@ -41,13 +35,7 @@ public class HtmlResponseWriterFacts
         // arrange
         const string responseText = "<html>";
         var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                Html = responseText
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {Html = responseText}};
 
         var response = new ResponseModel();
 
@@ -61,18 +49,13 @@ public class HtmlResponseWriterFacts
     }
 
     [TestMethod]
-    public async Task HtmlResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
+    public async Task
+        HtmlResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
     {
         // arrange
         const string responseText = "<html>";
         var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                Html = responseText
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {Html = responseText}};
 
         var response = new ResponseModel();
         response.Headers.Add("Content-Type", Constants.TextMime);

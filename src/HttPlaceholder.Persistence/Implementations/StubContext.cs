@@ -16,9 +16,9 @@ namespace HttPlaceholder.Persistence.Implementations;
 
 internal class StubContext : IStubContext, ISingletonService
 {
-    private readonly IEnumerable<IStubSource> _stubSources;
-    private readonly SettingsModel _settings;
     private readonly IRequestNotify _requestNotify;
+    private readonly SettingsModel _settings;
+    private readonly IEnumerable<IStubSource> _stubSources;
 
     public StubContext(IEnumerable<IStubSource> stubSources, IOptions<SettingsModel> options,
         IRequestNotify requestNotify)
@@ -235,7 +235,6 @@ internal class StubContext : IStubContext, ISingletonService
 
     private async Task<IEnumerable<FullStubModel>> GetStubsAsync(bool readOnly, CancellationToken cancellationToken)
     {
-
         var result = new List<FullStubModel>();
         foreach (var source in readOnly ? GetReadOnlyStubSources() : _stubSources)
         {

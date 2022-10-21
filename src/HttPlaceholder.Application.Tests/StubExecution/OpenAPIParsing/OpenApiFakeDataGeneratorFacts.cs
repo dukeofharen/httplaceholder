@@ -595,10 +595,7 @@ public class OpenApiFakeDataGeneratorFacts
             {
                 {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
             },
-            Schema = new OpenApiSchema
-            {
-                Example = null
-            }
+            Schema = new OpenApiSchema {Example = null}
         };
 
         // Act
@@ -619,10 +616,7 @@ public class OpenApiFakeDataGeneratorFacts
             {
                 {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
             },
-            Schema = new OpenApiSchema
-            {
-                Example = new OpenApiInteger(789)
-            }
+            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
         };
 
         // Act
@@ -643,10 +637,7 @@ public class OpenApiFakeDataGeneratorFacts
             {
                 {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
             },
-            Schema = new OpenApiSchema
-            {
-                Example = new OpenApiInteger(789)
-            }
+            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
         };
 
         // Act
@@ -660,11 +651,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetExampleForHeader_NoExampleFound_ShouldReturnNull()
     {
         // Arrange
-        var input = new OpenApiHeader
-        {
-            Example = null,
-            Examples = null
-        };
+        var input = new OpenApiHeader {Example = null, Examples = null};
 
         // Act
         var result = _generator.GetExampleForHeader(input);
@@ -684,10 +671,7 @@ public class OpenApiFakeDataGeneratorFacts
             {
                 {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
             },
-            Schema = new OpenApiSchema
-            {
-                Example = null
-            }
+            Schema = new OpenApiSchema {Example = null}
         };
 
         // Act
@@ -708,10 +692,7 @@ public class OpenApiFakeDataGeneratorFacts
             {
                 {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
             },
-            Schema = new OpenApiSchema
-            {
-                Example = new OpenApiInteger(789)
-            }
+            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
         };
 
         // Act
@@ -732,10 +713,7 @@ public class OpenApiFakeDataGeneratorFacts
             {
                 {"foo", new OpenApiExample {Value = new OpenApiInteger(123)}}
             },
-            Schema = new OpenApiSchema
-            {
-                Example = new OpenApiInteger(789)
-            }
+            Schema = new OpenApiSchema {Example = new OpenApiInteger(789)}
         };
 
         // Act
@@ -749,11 +727,7 @@ public class OpenApiFakeDataGeneratorFacts
     public void GetExampleForParameter_NoExampleFound_ShouldReturnNull()
     {
         // Arrange
-        var input = new OpenApiParameter
-        {
-            Example = null,
-            Examples = null
-        };
+        var input = new OpenApiParameter {Example = null, Examples = null};
 
         // Act
         var result = _generator.GetExampleForParameter(input);

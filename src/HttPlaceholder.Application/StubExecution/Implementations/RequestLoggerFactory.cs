@@ -17,7 +17,7 @@ internal class RequestLoggerFactory : IRequestLoggerFactory, ISingletonService
         _httpContextService = httpContextService;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IRequestLogger GetRequestLogger()
     {
         const string requestLoggerKey = "requestLogger";

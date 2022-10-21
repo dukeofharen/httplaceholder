@@ -16,9 +16,9 @@ namespace HttPlaceholder.Tests.Middleware;
 [TestClass]
 public class ApiExceptionHandlingMiddlewareFacts
 {
+    private readonly AutoMocker _mocker = new();
     private Exception _exceptionToThrow;
     private bool _nextCalled;
-    private readonly AutoMocker _mocker = new();
 
     [TestInitialize]
     public void Initialize() =>

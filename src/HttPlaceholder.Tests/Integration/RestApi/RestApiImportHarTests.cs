@@ -48,7 +48,8 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.AreEqual("/", ((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
         Assert.AreEqual(14, stub.Conditions.Headers.Count);
-        Assert.AreEqual("no-cache", ((StubConditionStringCheckingModel)stub.Conditions.Headers["cache-control"]).StringEquals);
+        Assert.AreEqual("no-cache",
+            ((StubConditionStringCheckingModel)stub.Conditions.Headers["cache-control"]).StringEquals);
         Assert.AreEqual("ducode.org", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
         Assert.AreEqual(200, stub.Response.StatusCode);
         Assert.AreEqual(Constants.HtmlMime, stub.Response.ContentType);
@@ -59,10 +60,12 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         stub = stubs[1];
         Assert.AreEqual("generated-253d645bd1f454f3890130c1f92f0670", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
-        Assert.AreEqual("/static/style/style.css", ((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals);
+        Assert.AreEqual("/static/style/style.css",
+            ((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
         Assert.AreEqual(13, stub.Conditions.Headers.Count);
-        Assert.AreEqual("no-cache", ((StubConditionStringCheckingModel)stub.Conditions.Headers["cache-control"]).StringEquals);
+        Assert.AreEqual("no-cache",
+            ((StubConditionStringCheckingModel)stub.Conditions.Headers["cache-control"]).StringEquals);
         Assert.AreEqual("ducode.org", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
         Assert.AreEqual(200, stub.Response.StatusCode);
         Assert.AreEqual("text/css", stub.Response.ContentType);
@@ -73,10 +76,12 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         stub = stubs[2];
         Assert.AreEqual("generated-f3e26335427c3cae0e83759da2c0dc62", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
-        Assert.AreEqual("/static/fonts/roboto-mono.woff2", ((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals);
+        Assert.AreEqual("/static/fonts/roboto-mono.woff2",
+            ((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
         Assert.AreEqual(14, stub.Conditions.Headers.Count);
-        Assert.AreEqual("no-cache", ((StubConditionStringCheckingModel)stub.Conditions.Headers["cache-control"]).StringEquals);
+        Assert.AreEqual("no-cache",
+            ((StubConditionStringCheckingModel)stub.Conditions.Headers["cache-control"]).StringEquals);
         Assert.AreEqual("ducode.org", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
         Assert.AreEqual(200, stub.Response.StatusCode);
         Assert.AreEqual("application/octet-stream", stub.Response.ContentType);
@@ -87,10 +92,12 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         stub = stubs[3];
         Assert.AreEqual("generated-e528287dbbfa53c01a6df2ed4621bfcb", stub.Id);
         Assert.AreEqual("GET", stub.Conditions.Method);
-        Assert.AreEqual("/static/favicon.png", ((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals);
+        Assert.AreEqual("/static/favicon.png",
+            ((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
         Assert.AreEqual(13, stub.Conditions.Headers.Count);
-        Assert.AreEqual("no-cache", ((StubConditionStringCheckingModel)stub.Conditions.Headers["cache-control"]).StringEquals);
+        Assert.AreEqual("no-cache",
+            ((StubConditionStringCheckingModel)stub.Conditions.Headers["cache-control"]).StringEquals);
         Assert.AreEqual("ducode.org", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
         Assert.AreEqual(200, stub.Response.StatusCode);
         Assert.AreEqual("image/png", stub.Response.ContentType);
@@ -101,10 +108,12 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         stub = stubs[4];
         Assert.AreEqual("generated-04c192ae9151a6175ab9708f0ac0c8d4", stub.Id);
         Assert.AreEqual("PUT", stub.Conditions.Method);
-        Assert.AreEqual("/api/v1/admin/users/123", ((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals);
+        Assert.AreEqual("/api/v1/admin/users/123",
+            ((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals);
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
         Assert.AreEqual(15, stub.Conditions.Headers.Count);
-        Assert.AreEqual("keep-alive", ((StubConditionStringCheckingModel)stub.Conditions.Headers["Connection"]).StringEquals);
+        Assert.AreEqual("keep-alive",
+            ((StubConditionStringCheckingModel)stub.Conditions.Headers["Connection"]).StringEquals);
         Assert.AreEqual("api.site.com", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
         Assert.AreEqual("Dukeofharen", ((JObject)stub.Conditions.Json)["firstName"].ToString());
         Assert.AreEqual(204, stub.Response.StatusCode);

@@ -33,7 +33,8 @@ public class SetScenarioStateResponseWriterFacts
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("SetScenarioStateResponseWriter", result.ResponseWriterName);
         scenarioServiceMock.Verify(m => m.GetScenario(It.IsAny<string>()), Times.Never);
-        scenarioServiceMock.Verify(m => m.SetScenarioAsync(It.IsAny<string>(), It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
+        scenarioServiceMock.Verify(
+            m => m.SetScenarioAsync(It.IsAny<string>(), It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
@@ -52,7 +53,8 @@ public class SetScenarioStateResponseWriterFacts
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("SetScenarioStateResponseWriter", result.ResponseWriterName);
         scenarioServiceMock.Verify(m => m.GetScenario(It.IsAny<string>()), Times.Never);
-        scenarioServiceMock.Verify(m => m.SetScenarioAsync(It.IsAny<string>(), It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
+        scenarioServiceMock.Verify(
+            m => m.SetScenarioAsync(It.IsAny<string>(), It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 

@@ -4,12 +4,12 @@ using MediatR;
 namespace HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
 
 /// <summary>
-/// A command for updating a stub.
+///     A command for updating a stub.
 /// </summary>
 public class UpdateStubCommand : IRequest
 {
     /// <summary>
-    /// Constructs an <see cref="UpdateStubCommand"/> instance.
+    ///     Constructs an <see cref="UpdateStubCommand" /> instance.
     /// </summary>
     /// <param name="stubId">The stub ID to update.</param>
     /// <param name="stub">The stub to update.</param>
@@ -20,12 +20,12 @@ public class UpdateStubCommand : IRequest
     }
 
     /// <summary>
-    /// Gets the stub ID to update.
+    ///     Gets the stub ID to update.
     /// </summary>
     public string StubId { get; }
 
     /// <summary>
-    /// Gets the stub to update.
+    ///     Gets the stub to update.
     /// </summary>
     public StubModel Stub { get; }
 }

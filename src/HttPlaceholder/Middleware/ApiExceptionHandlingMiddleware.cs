@@ -11,15 +11,15 @@ using Newtonsoft.Json;
 namespace HttPlaceholder.Middleware;
 
 /// <summary>
-/// A piece of middleware for handling exceptions.
+///     A piece of middleware for handling exceptions.
 /// </summary>
 public class ApiExceptionHandlingMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly IHttpContextService _httpContextService;
+    private readonly RequestDelegate _next;
 
     /// <summary>
-    /// Constructs an <see cref="ApiExceptionHandlingMiddleware"/> instance.
+    ///     Constructs an <see cref="ApiExceptionHandlingMiddleware" /> instance.
     /// </summary>
     /// <param name="next"></param>
     /// <param name="httpContextService"></param>
@@ -30,7 +30,7 @@ public class ApiExceptionHandlingMiddleware
     }
 
     /// <summary>
-    /// Handles the middleware.
+    ///     Handles the middleware.
     /// </summary>
     public async Task Invoke(HttpContext context)
     {
@@ -68,7 +68,8 @@ public class ApiExceptionHandlingMiddleware
         }
     }
 
-    private async Task WriteResponseBody(object body, HttpStatusCode httpStatusCode, CancellationToken cancellationToken)
+    private async Task WriteResponseBody(object body, HttpStatusCode httpStatusCode,
+        CancellationToken cancellationToken)
     {
         _httpContextService.SetStatusCode(httpStatusCode);
         _httpContextService.AddHeader("Content-Type", Constants.JsonMime);

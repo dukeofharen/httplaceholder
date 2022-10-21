@@ -4,12 +4,12 @@ using System.Linq;
 namespace HttPlaceholder.Common.Utilities;
 
 /// <summary>
-/// A utility class that is used to parse command line arguments.
+///     A utility class that is used to parse command line arguments.
 /// </summary>
 public static class ArgsHelper
 {
     /// <summary>
-    /// A method used to parse incoming command line arguments and parse it to a dictionary.
+    ///     A method used to parse incoming command line arguments and parse it to a dictionary.
     /// </summary>
     /// <param name="args">The array of command line parameters.</param>
     /// <returns>The parsed dictionary.</returns>
@@ -39,7 +39,7 @@ public static class ArgsHelper
     }
 
     /// <summary>
-    /// Adds an entry to the dictionary if it does not exist yet.
+    ///     Adds an entry to the dictionary if it does not exist yet.
     /// </summary>
     /// <param name="args">The dictionary with command line arguments.</param>
     /// <param name="key">The key to check.</param>

@@ -10,13 +10,13 @@ using Microsoft.Extensions.Logging;
 namespace HttPlaceholder.Persistence.Db.Implementations;
 
 /// <summary>
-/// A class that is used to perform database migrations.
+///     A class that is used to perform database migrations.
 /// </summary>
 internal class RelationalDbMigrator : IRelationalDbMigrator
 {
+    private readonly IAssemblyService _assemblyService;
     private readonly IConfiguration _configuration;
     private readonly IFileService _fileService;
-    private readonly IAssemblyService _assemblyService;
     private readonly ILogger<RelationalDbMigrator> _logger;
 
     public RelationalDbMigrator(IConfiguration configuration, IFileService fileService,
@@ -34,7 +34,9 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
         var dbFolder = GetDatabaseMigrationsFolder();
         var migrationsRootFolder = Path.Combine(_assemblyService.GetExecutingAssemblyRootPath(),
             "SqlScripts/Migrations", dbFolder);
-        var migrationFiles = (await _fileService.GetFilesAsync(migrationsRootFolder, "*.migration.sql", cancellationToken)).OrderBy(f => f);
+        var migrationFiles =
+            (await _fileService.GetFilesAsync(migrationsRootFolder, "*.migration.sql", cancellationToken)).OrderBy(f =>
+                f);
         foreach (var file in migrationFiles)
         {
             var fileBaseName = Path.GetFileName(file).Split('.').First();

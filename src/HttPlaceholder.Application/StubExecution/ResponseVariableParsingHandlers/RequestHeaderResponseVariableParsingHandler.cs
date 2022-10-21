@@ -10,13 +10,14 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert a request header in the response.
+///     Response variable parsing handler that is used to insert a request header in the response.
 /// </summary>
 internal class RequestHeaderResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
-    public RequestHeaderResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) : base(fileService)
+    public RequestHeaderResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService)
+        : base(fileService)
     {
         _httpContextService = httpContextService;
     }

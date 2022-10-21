@@ -1,7 +1,7 @@
 ﻿namespace HttPlaceholder.Persistence.Db.Implementations;
 
 /// <summary>
-/// A store that contains queries for working with MySQL.
+///     A store that contains queries for working with MySQL.
 /// </summary>
 internal class MysqlQueryStore : IQueryStore
 {

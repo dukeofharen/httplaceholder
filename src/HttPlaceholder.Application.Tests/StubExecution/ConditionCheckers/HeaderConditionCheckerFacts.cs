@@ -28,7 +28,8 @@ public class HeaderConditionCheckerFacts
         var checker = _mocker.CreateInstance<HeaderConditionChecker>();
 
         // act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -58,7 +59,8 @@ public class HeaderConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -91,7 +93,8 @@ public class HeaderConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -124,7 +127,8 @@ public class HeaderConditionCheckerFacts
             .Returns(true);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -195,9 +199,12 @@ public class HeaderConditionCheckerFacts
 
         // Act
         var result =
-            await checker.ValidateAsync(new StubModel {Conditions = new StubConditionsModel {Headers = headerConditions}}, CancellationToken.None);
+            await checker.ValidateAsync(
+                new StubModel {Conditions = new StubConditionsModel {Headers = headerConditions}},
+                CancellationToken.None);
 
         // Assert
-        Assert.AreEqual(shouldSucceed ? ConditionValidationType.Valid : ConditionValidationType.Invalid, result.ConditionValidation);
+        Assert.AreEqual(shouldSucceed ? ConditionValidationType.Valid : ConditionValidationType.Invalid,
+            result.ConditionValidation);
     }
 }

@@ -181,7 +181,8 @@ public class RelationalDbStubCacheFacts
             .Returns(dbStubModels);
 
         // Act
-        var result = (await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object, CancellationToken.None)).ToArray();
+        var result =
+            (await cache.GetOrUpdateStubCacheAsync(mockDatabaseContext.Object, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -390,6 +391,7 @@ public class RelationalDbStubCacheFacts
         // Assert
         Assert.IsTrue(cache.StubCache.Values.Contains(stub));
         Assert.AreEqual(trackingId, cache.StubUpdateTrackingId);
-        mockDatabaseContext.Verify(m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<object>()), Times.Never);
+        mockDatabaseContext.Verify(
+            m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<object>()), Times.Never);
     }
 }

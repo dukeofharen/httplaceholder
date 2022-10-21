@@ -34,13 +34,7 @@ public class FileResponseWriterFacts
     public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                File = null
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {File = null}};
 
         var response = new ResponseModel();
 
@@ -56,14 +50,8 @@ public class FileResponseWriterFacts
     public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileFoundDirectly()
     {
         // arrange
-        var body = new byte[] { 1, 2, 3 };
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                File = @"C:\tmp\image.png"
-            }
-        };
+        var body = new byte[] {1, 2, 3};
+        var stub = new StubModel {Response = new StubResponseModel {File = @"C:\tmp\image.png"}};
 
         var response = new ResponseModel();
 
@@ -90,14 +78,8 @@ public class FileResponseWriterFacts
         var stubRootPaths = new[] {"/var/stubs1", "/var/stubs2"};
         const string file = "image.png";
         var expectedFolder = Path.Combine(stubRootPaths[1], file);
-        var body = new byte[] { 1, 2, 3 };
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                File = file
-            }
-        };
+        var body = new byte[] {1, 2, 3};
+        var stub = new StubModel {Response = new StubResponseModel {File = file}};
 
         var response = new ResponseModel();
 
@@ -126,19 +108,14 @@ public class FileResponseWriterFacts
     }
 
     [TestMethod]
-    public async Task FileResponseWriter_WriteToResponseAsync_FileNotFoundDirectly_AlsoNotFoundInStubFolder_ShouldReturnNoBody()
+    public async Task
+        FileResponseWriter_WriteToResponseAsync_FileNotFoundDirectly_AlsoNotFoundInStubFolder_ShouldReturnNoBody()
     {
         // arrange
         const string file = "image.png";
         var stubRootPaths = new[] {"/var/stubs1", "/var/stubs2"};
         var expectedFolder = Path.Combine(stubRootPaths[0], file);
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                File = file
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {File = file}};
 
         var response = new ResponseModel();
 

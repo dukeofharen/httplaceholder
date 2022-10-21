@@ -47,10 +47,7 @@ public class ReverseProxyResponseWriterFacts
         // Arrange
         var stub = new StubModel
         {
-            Response = new StubResponseModel
-            {
-                ReverseProxy = new StubResponseReverseProxyModel {Url = string.Empty}
-            }
+            Response = new StubResponseModel {ReverseProxy = new StubResponseReverseProxyModel {Url = string.Empty}}
         };
 
         // Act

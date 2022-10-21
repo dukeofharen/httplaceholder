@@ -5,12 +5,12 @@ using MediatR;
 namespace HttPlaceholder.Application.Import.Commands.CreateHarStub;
 
 /// <summary>
-/// A command for creating stubs based on HTTP archive (HAR).
+///     A command for creating stubs based on HTTP archive (HAR).
 /// </summary>
 public class CreateHarStubCommand : IRequest<IEnumerable<FullStubModel>>
 {
     /// <summary>
-    /// Constructs a <see cref="CreateHarStubCommand"/> instance.
+    ///     Constructs a <see cref="CreateHarStubCommand" /> instance.
     /// </summary>
     /// <param name="har">The HAR.</param>
     /// <param name="doNotCreateStub">Whether or not to create stubs.</param>
@@ -23,17 +23,17 @@ public class CreateHarStubCommand : IRequest<IEnumerable<FullStubModel>>
     }
 
     /// <summary>
-    /// Gets the HTTP archive.
+    ///     Gets the HTTP archive.
     /// </summary>
     public string Har { get; }
 
     /// <summary>
-    /// Gets whether to create stubs or not.
+    ///     Gets whether to create stubs or not.
     /// </summary>
     public bool DoNotCreateStub { get; }
 
     /// <summary>
-    /// Gets the stub tenant.
+    ///     Gets the stub tenant.
     /// </summary>
     public string Tenant { get; }
 }

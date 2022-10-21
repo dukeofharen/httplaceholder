@@ -7,12 +7,13 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
 /// <summary>
-/// "Request to stub conditions handler" that is used to create a request body condition.
+///     "Request to stub conditions handler" that is used to create a request body condition.
 /// </summary>
 internal class BodyHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
+        CancellationToken cancellationToken)
     {
         if (conditions.Json != null)
         {

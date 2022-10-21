@@ -23,8 +23,9 @@ internal class HttpRequestToConditionsService : IHttpRequestToConditionsService,
         _logger = logger;
     }
 
-    /// <inheritdoc/>
-    public async Task<StubConditionsModel> ConvertToConditionsAsync(HttpRequestModel request, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<StubConditionsModel> ConvertToConditionsAsync(HttpRequestModel request,
+        CancellationToken cancellationToken)
     {
         var conditions = new StubConditionsModel();
         foreach (var handler in _handlers.OrderByDescending(w => w.Priority))

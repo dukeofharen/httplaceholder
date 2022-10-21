@@ -17,8 +17,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations;
 public class InMemoryStubSourceFacts
 {
     private static readonly Faker _faker = new();
-    private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
     private readonly AutoMocker _mocker = new();
+    private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
 
     [TestInitialize]
     public void Initialize() => _mocker.Use(Options.Create(_settings));

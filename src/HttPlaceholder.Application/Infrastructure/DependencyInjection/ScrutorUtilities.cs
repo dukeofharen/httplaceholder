@@ -3,12 +3,12 @@
 namespace HttPlaceholder.Application.Infrastructure.DependencyInjection;
 
 /// <summary>
-/// A static class used for working with Scrutor.
+///     A static class used for working with Scrutor.
 /// </summary>
 public static class ScrutorUtilities
 {
     /// <summary>
-    /// A method for registering all singleton dependencies.
+    ///     A method for registering all singleton dependencies.
     /// </summary>
     /// <param name="selector">The implementation type selector.</param>
     public static IImplementationTypeSelector RegisterSingletons(this IImplementationTypeSelector selector) =>
@@ -17,7 +17,7 @@ public static class ScrutorUtilities
             .WithSingletonLifetime();
 
     /// <summary>
-    /// A method for registering all transient dependencies.
+    ///     A method for registering all transient dependencies.
     /// </summary>
     /// <param name="selector">The implementation type selector.</param>
     public static IImplementationTypeSelector RegisterTransients(this IImplementationTypeSelector selector) =>
@@ -26,7 +26,7 @@ public static class ScrutorUtilities
             .WithTransientLifetime();
 
     /// <summary>
-    /// A method for registering all dependencies in an assembly.
+    ///     A method for registering all dependencies in an assembly.
     /// </summary>
     /// <param name="selector">The implementation type selector.</param>
     public static IImplementationTypeSelector RegisterDependencies(this IImplementationTypeSelector selector) =>

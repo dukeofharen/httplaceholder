@@ -17,29 +17,30 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Middleware;
 
 /// <summary>
-/// A piece of middleware for matching requests against stubs.
+///     A piece of middleware for matching requests against stubs.
 /// </summary>
 public class StubHandlingMiddleware
 {
+    private const string CorrelationHeaderKey = "X-HttPlaceholder-Correlation";
+    private const string ExecutedStubHeaderKey = "X-HttPlaceholder-ExecutedStub";
+
     private static readonly string[] _segmentsToIgnore =
     {
         "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub"
     };
 
-    private const string CorrelationHeaderKey = "X-HttPlaceholder-Correlation";
-    private const string ExecutedStubHeaderKey = "X-HttPlaceholder-ExecutedStub";
-    private readonly RequestDelegate _next;
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextService _httpContextService;
     private readonly ILogger<StubHandlingMiddleware> _logger;
+    private readonly RequestDelegate _next;
     private readonly IRequestLoggerFactory _requestLoggerFactory;
+    private readonly IResourcesService _resourcesService;
+    private readonly SettingsModel _settings;
     private readonly IStubContext _stubContext;
     private readonly IStubRequestExecutor _stubRequestExecutor;
-    private readonly SettingsModel _settings;
-    private readonly IResourcesService _resourcesService;
 
     /// <summary>
-    /// Constructs a <see cref="StubHandlingMiddleware"/> instance.
+    ///     Constructs a <see cref="StubHandlingMiddleware" /> instance.
     /// </summary>
     public StubHandlingMiddleware(
         RequestDelegate next,
@@ -64,7 +65,7 @@ public class StubHandlingMiddleware
     }
 
     /// <summary>
-    /// Handles the middleware.
+    ///     Handles the middleware.
     /// </summary>
     public async Task Invoke(HttpContext context)
     {

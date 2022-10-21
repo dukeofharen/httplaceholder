@@ -9,7 +9,7 @@ using MediatR;
 namespace HttPlaceholder.Application.Stubs.Commands.AddStub;
 
 /// <summary>
-/// A command handler for adding a stub.
+///     A command handler for adding a stub.
 /// </summary>
 public class AddStubCommandHandler : IRequestHandler<AddStubCommand, FullStubModel>
 {
@@ -17,7 +17,7 @@ public class AddStubCommandHandler : IRequestHandler<AddStubCommand, FullStubMod
     private readonly IStubModelValidator _stubModelValidator;
 
     /// <summary>
-    /// Constructs an <see cref="AddStubCommandHandler"/> instance.
+    ///     Constructs an <see cref="AddStubCommandHandler" /> instance.
     /// </summary>
     /// <param name="stubContext"></param>
     /// <param name="stubModelValidator"></param>

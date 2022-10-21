@@ -12,43 +12,51 @@ namespace HttPlaceholder.Infrastructure.Implementations;
 internal class FileService : IFileService, ISingletonService
 {
     /// <inheritdoc />
-    public Task<byte[]> ReadAllBytesAsync(string path, CancellationToken cancellationToken) => File.ReadAllBytesAsync(path, cancellationToken);
+    public Task<byte[]> ReadAllBytesAsync(string path, CancellationToken cancellationToken) =>
+        File.ReadAllBytesAsync(path, cancellationToken);
 
     /// <inheritdoc />
     public string ReadAllText(string path) => File.ReadAllText(path);
 
     /// <inheritdoc />
-    public Task<string> ReadAllTextAsync(string path, CancellationToken cancellationToken) => File.ReadAllTextAsync(path, cancellationToken);
+    public Task<string> ReadAllTextAsync(string path, CancellationToken cancellationToken) =>
+        File.ReadAllTextAsync(path, cancellationToken);
 
     /// <inheritdoc />
-    public Task WriteAllBytesAsync(string path, byte[] contents, CancellationToken cancellationToken) => File.WriteAllBytesAsync(path, contents, cancellationToken);
+    public Task WriteAllBytesAsync(string path, byte[] contents, CancellationToken cancellationToken) =>
+        File.WriteAllBytesAsync(path, contents, cancellationToken);
 
     /// <inheritdoc />
     public void WriteAllText(string path, string contents) => File.WriteAllText(path, contents);
 
     /// <inheritdoc />
-    public Task WriteAllTextAsync(string path, string contents, CancellationToken cancellationToken) => File.WriteAllTextAsync(path, contents, cancellationToken);
+    public Task WriteAllTextAsync(string path, string contents, CancellationToken cancellationToken) =>
+        File.WriteAllTextAsync(path, contents, cancellationToken);
 
     /// <inheritdoc />
     public bool FileExists(string path) => File.Exists(path);
 
     /// <inheritdoc />
-    public Task<bool> FileExistsAsync(string path, CancellationToken cancellationToken) => Task.Run(() => FileExists(path), cancellationToken);
+    public Task<bool> FileExistsAsync(string path, CancellationToken cancellationToken) =>
+        Task.Run(() => FileExists(path), cancellationToken);
 
     /// <inheritdoc />
     public bool DirectoryExists(string path) => Directory.Exists(path);
 
     /// <inheritdoc />
-    public Task<bool> DirectoryExistsAsync(string path, CancellationToken cancellationToken) => Task.Run(() => DirectoryExists(path), cancellationToken);
+    public Task<bool> DirectoryExistsAsync(string path, CancellationToken cancellationToken) =>
+        Task.Run(() => DirectoryExists(path), cancellationToken);
 
     /// <inheritdoc />
-    public Task CreateDirectoryAsync(string path, CancellationToken cancellationToken) => Task.Run(() => Directory.CreateDirectory(path), cancellationToken);
+    public Task CreateDirectoryAsync(string path, CancellationToken cancellationToken) =>
+        Task.Run(() => Directory.CreateDirectory(path), cancellationToken);
 
     /// <inheritdoc />
     public string GetTempPath() => Path.GetTempPath();
 
     /// <inheritdoc />
-    public Task DeleteFileAsync(string path, CancellationToken cancellationToken) => Task.Run(() => File.Delete(path), cancellationToken);
+    public Task DeleteFileAsync(string path, CancellationToken cancellationToken) =>
+        Task.Run(() => File.Delete(path), cancellationToken);
 
     /// <inheritdoc />
     public DateTime GetLastWriteTime(string path) => File.GetLastWriteTime(path);
@@ -65,7 +73,8 @@ internal class FileService : IFileService, ISingletonService
         Task.Run(() => GetFiles(path, searchPattern), cancellationToken);
 
     /// <inheritdoc />
-    public Task<string[]> GetFilesAsync(string path, IEnumerable<string> allowedFileExtensions, CancellationToken cancellationToken) =>
+    public Task<string[]> GetFilesAsync(string path, IEnumerable<string> allowedFileExtensions,
+        CancellationToken cancellationToken) =>
         Task.Run(() => Directory.GetFiles(path)
             .Where(f => allowedFileExtensions.Any(e => f.ToLower().EndsWith(e)))
             .ToArray(), cancellationToken);

@@ -12,18 +12,24 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// Controller for importing data in HttPlaceholder.
+///     Controller for importing data in HttPlaceholder.
 /// </summary>
 [Route("ph-api/import")]
 [ApiAuthorization]
 public class ImportController : BaseApiController
 {
     /// <summary>
-    /// An endpoint that is used for creating a stub (or multiple stubs) based on cURL command(s).
+    ///     An endpoint that is used for creating a stub (or multiple stubs) based on cURL command(s).
     /// </summary>
     /// <param name="input">The data which should be added.</param>
-    /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
-    /// <param name="tenant">The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name will be generated.</param>
+    /// <param name="doNotCreateStub">
+    ///     Whether to add the stub to the data source. If set to false, the stub is only returned
+    ///     but not added.
+    /// </param>
+    /// <param name="tenant">
+    ///     The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name
+    ///     will be generated.
+    /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with the generated stubs.</returns>
     [HttpPost("curl")]
@@ -37,11 +43,17 @@ public class ImportController : BaseApiController
             await Mediator.Send(new CreateCurlStubCommand(input, doNotCreateStub, tenant), cancellationToken)));
 
     /// <summary>
-    /// An endpoint that is used for creating stubs based on a HAR file (HTTP Archive).
+    ///     An endpoint that is used for creating stubs based on a HAR file (HTTP Archive).
     /// </summary>
     /// <param name="input">The raw HAR JSON input.</param>
-    /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
-    /// <param name="tenant">The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name will be generated.</param>
+    /// <param name="doNotCreateStub">
+    ///     Whether to add the stub to the data source. If set to false, the stub is only returned
+    ///     but not added.
+    /// </param>
+    /// <param name="tenant">
+    ///     The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name
+    ///     will be generated.
+    /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with the generated stubs.</returns>
     [HttpPost("har")]
@@ -55,12 +67,18 @@ public class ImportController : BaseApiController
             await Mediator.Send(new CreateHarStubCommand(input, doNotCreateStub, tenant), cancellationToken)));
 
     /// <summary>
-    /// An endpoint that is used for creating stubs based on a OpenAPI definition.
-    /// You can specify both a JSON or YAML file.
+    ///     An endpoint that is used for creating stubs based on a OpenAPI definition.
+    ///     You can specify both a JSON or YAML file.
     /// </summary>
     /// <param name="input">The raw OpenAPI JSON or YAML input.</param>
-    /// <param name="doNotCreateStub">Whether to add the stub to the data source. If set to false, the stub is only returned but not added.</param>
-    /// <param name="tenant">The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name will be generated.</param>
+    /// <param name="doNotCreateStub">
+    ///     Whether to add the stub to the data source. If set to false, the stub is only returned
+    ///     but not added.
+    /// </param>
+    /// <param name="tenant">
+    ///     The tenant (category) the stubs should be added under. If no tenant is provided, a tenant name
+    ///     will be generated.
+    /// </param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with the generated stubs.</returns>
     [HttpPost("openapi")]

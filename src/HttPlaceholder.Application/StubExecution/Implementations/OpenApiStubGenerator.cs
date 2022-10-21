@@ -14,10 +14,10 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 internal class OpenApiStubGenerator : IOpenApiStubGenerator, ISingletonService
 {
-    private readonly IStubContext _stubContext;
+    private readonly ILogger<OpenApiStubGenerator> _logger;
     private readonly IOpenApiParser _openApiParser;
     private readonly IOpenApiToStubConverter _openApiToStubConverter;
-    private readonly ILogger<OpenApiStubGenerator> _logger;
+    private readonly IStubContext _stubContext;
 
     public OpenApiStubGenerator(
         IStubContext stubContext,
@@ -32,7 +32,8 @@ internal class OpenApiStubGenerator : IOpenApiStubGenerator, ISingletonService
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateOpenApiStubsAsync(string input, bool doNotCreateStub, string tenant, CancellationToken cancellationToken)
+    public async Task<IEnumerable<FullStubModel>> GenerateOpenApiStubsAsync(string input, bool doNotCreateStub,
+        string tenant, CancellationToken cancellationToken)
     {
         try
         {
@@ -52,7 +53,8 @@ internal class OpenApiStubGenerator : IOpenApiStubGenerator, ISingletonService
         }
     }
 
-    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, OpenApiServer server, OpenApiLine line, string tenant, CancellationToken cancellationToken)
+    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, OpenApiServer server, OpenApiLine line,
+        string tenant, CancellationToken cancellationToken)
     {
         var stub = await _openApiToStubConverter.ConvertToStubAsync(server, line, tenant, cancellationToken);
         if (doNotCreateStub)

@@ -20,14 +20,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// The stub controller.
+///     The stub controller.
 /// </summary>
 [Route("ph-api/stubs")]
 [ApiAuthorization]
 public class StubController : BaseApiController
 {
     /// <summary>
-    /// Adds a new stub.
+    ///     Adds a new stub.
     /// </summary>
     /// <param name="stub">The posted stub.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -37,10 +37,11 @@ public class StubController : BaseApiController
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<ActionResult<FullStubDto>> Add([FromBody] StubDto stub, CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<FullStubDto>(await Mediator.Send(new AddStubCommand(Mapper.Map<StubModel>(stub)), cancellationToken)));
+        Ok(Mapper.Map<FullStubDto>(await Mediator.Send(new AddStubCommand(Mapper.Map<StubModel>(stub)),
+            cancellationToken)));
 
     /// <summary>
-    /// Adds multiple new stubs.
+    ///     Adds multiple new stubs.
     /// </summary>
     /// <param name="stubs">The posted stubs.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -48,12 +49,13 @@ public class StubController : BaseApiController
     [HttpPost("multiple")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<IEnumerable<FullStubDto>>> AddMultiple([FromBody] IEnumerable<StubDto> stubs, CancellationToken cancellationToken) =>
+    public async Task<ActionResult<IEnumerable<FullStubDto>>> AddMultiple([FromBody] IEnumerable<StubDto> stubs,
+        CancellationToken cancellationToken) =>
         Ok(Mapper.Map<IEnumerable<FullStubDto>>(
             await Mediator.Send(new AddStubsCommand(Mapper.Map<IEnumerable<StubModel>>(stubs)), cancellationToken)));
 
     /// <summary>
-    /// Updates a given stub.
+    ///     Updates a given stub.
     /// </summary>
     /// <param name="stub">The posted stub.</param>
     /// <param name="stubId">The stub ID.</param>
@@ -71,7 +73,7 @@ public class StubController : BaseApiController
     }
 
     /// <summary>
-    /// Get all stubs.
+    ///     Get all stubs.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>All stubs.</returns>
@@ -81,17 +83,19 @@ public class StubController : BaseApiController
         Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(new GetAllStubsQuery(), cancellationToken)));
 
     /// <summary>
-    /// Get stub overview.
+    ///     Get stub overview.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>All stubs.</returns>
     [HttpGet("overview")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<FullStubOverviewDto>>> GetOverview(CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<IEnumerable<FullStubOverviewDto>>(await Mediator.Send(new GetStubsOverviewQuery(), cancellationToken)));
+    public async Task<ActionResult<IEnumerable<FullStubOverviewDto>>>
+        GetOverview(CancellationToken cancellationToken) =>
+        Ok(Mapper.Map<IEnumerable<FullStubOverviewDto>>(await Mediator.Send(new GetStubsOverviewQuery(),
+            cancellationToken)));
 
     /// <summary>
-    /// Get requests for the given stub ID.
+    ///     Get requests for the given stub ID.
     /// </summary>
     /// <param name="stubId">The stub ID.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -99,11 +103,13 @@ public class StubController : BaseApiController
     [HttpGet]
     [Route("{stubId}/requests")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetRequestsByStubId([FromRoute] string stubId, CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(new GetByStubIdQuery(stubId), cancellationToken)));
+    public async Task<ActionResult<IEnumerable<RequestResultDto>>> GetRequestsByStubId([FromRoute] string stubId,
+        CancellationToken cancellationToken) =>
+        Ok(Mapper.Map<IEnumerable<RequestResultDto>>(await Mediator.Send(new GetByStubIdQuery(stubId),
+            cancellationToken)));
 
     /// <summary>
-    /// Get a specific stub by stub identifier.
+    ///     Get a specific stub by stub identifier.
     /// </summary>
     /// <param name="stubId">The stub ID.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -117,7 +123,7 @@ public class StubController : BaseApiController
         Ok(Mapper.Map<FullStubDto>(await Mediator.Send(new GetStubQuery(stubId), cancellationToken)));
 
     /// <summary>
-    /// Delete a specific stub by stub identifier.
+    ///     Delete a specific stub by stub identifier.
     /// </summary>
     /// <param name="stubId">The stub ID.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -133,7 +139,7 @@ public class StubController : BaseApiController
     }
 
     /// <summary>
-    /// Delete ALL stubs. Be careful.
+    ///     Delete ALL stubs. Be careful.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, but not content</returns>

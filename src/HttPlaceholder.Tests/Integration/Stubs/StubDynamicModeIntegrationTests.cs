@@ -82,8 +82,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         {
             Content = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                { "formval1", "Value 1!" },
-                { "formval2", "Value 2!" }
+                {"formval1", "Value 1!"}, {"formval2", "Value 2!"}
             })
         };
 
@@ -105,10 +104,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}dynamic-request-body.txt";
         const string body = "Test123";
 
-        var request = new HttpRequestMessage(HttpMethod.Post, url)
-        {
-            Content = new StringContent(body)
-        };
+        var request = new HttpRequestMessage(HttpMethod.Post, url) {Content = new StringContent(body)};
 
         // Act / Assert
         using var response = await Client.SendAsync(request);
@@ -260,10 +256,7 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     ]
 }";
 
-        var request = new HttpRequestMessage(HttpMethod.Post, url)
-        {
-            Content = new StringContent(body)
-        };
+        var request = new HttpRequestMessage(HttpMethod.Post, url) {Content = new StringContent(body)};
 
         // Act / Assert
         using var response = await Client.SendAsync(request);

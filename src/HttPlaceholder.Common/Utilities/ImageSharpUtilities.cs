@@ -8,15 +8,15 @@ using SixLabors.ImageSharp.Processing;
 namespace HttPlaceholder.Common.Utilities;
 
 /// <summary>
-/// A utility class for working with ImageSharp.
+///     A utility class for working with ImageSharp.
 /// </summary>
 public static class ImageSharpUtilities
 {
     /// <summary>
-    /// Inverts a given color.
+    ///     Inverts a given color.
     /// </summary>
     /// <param name="input">The color.</param>
-    /// <returns>The inverted <see cref="Color"/>.</returns>
+    /// <returns>The inverted <see cref="Color" />.</returns>
     public static Color InvertColor(this Color input)
     {
         var pixel = input.ToPixel<Rgba32>();
@@ -24,7 +24,7 @@ public static class ImageSharpUtilities
     }
 
     /// <summary>
-    /// Applies a watermark to a given image.
+    ///     Applies a watermark to a given image.
     /// </summary>
     /// <param name="processingContext">The image processing context.</param>
     /// <param name="font">The font the watermark should be in.</param>
@@ -32,7 +32,7 @@ public static class ImageSharpUtilities
     /// <param name="color">The HTML encoded color (e.g. '#123456').</param>
     /// <param name="padding">The padding in pixels.</param>
     /// <param name="wordwrap">True if the words should be wrapped.</param>
-    /// <returns>The input <see cref="IImageProcessingContext"/>.</returns>
+    /// <returns>The input <see cref="IImageProcessingContext" />.</returns>
     public static IImageProcessingContext ApplyScalingWaterMark(this IImageProcessingContext processingContext,
         Font font,
         string text,
@@ -65,8 +65,7 @@ public static class ImageSharpUtilities
         {
             TextOptions =
             {
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
+                HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center
             }
         };
         return processingContext.DrawText(textGraphicOptions, text, scaledFont, color, center);

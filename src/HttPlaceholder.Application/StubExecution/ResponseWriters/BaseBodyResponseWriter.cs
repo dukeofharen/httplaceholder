@@ -7,29 +7,10 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// An abstract class that is used to return the response body in a specific format.
+///     An abstract class that is used to return the response body in a specific format.
 /// </summary>
 public abstract class BaseBodyResponseWriter : IResponseWriter
 {
-    /// <summary>
-    /// Retrieves the content type.
-    /// </summary>
-    /// <returns>The content type.</returns>
-    protected abstract string GetContentType();
-
-    /// <summary>
-    /// Retrieves the response body from the stub.
-    /// </summary>
-    /// <param name="stub">The stub.</param>
-    /// <returns>The response body.</returns>
-    protected abstract string GetBodyFromStub(StubModel stub);
-
-    /// <summary>
-    /// Retrieves the name from the response writer.
-    /// </summary>
-    /// <returns>The name of the response writer.</returns>
-    protected abstract string GetWriterName();
-
     /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(
         StubModel stub,
@@ -51,4 +32,23 @@ public abstract class BaseBodyResponseWriter : IResponseWriter
 
     /// <inheritdoc />
     public abstract int Priority { get; }
+
+    /// <summary>
+    ///     Retrieves the content type.
+    /// </summary>
+    /// <returns>The content type.</returns>
+    protected abstract string GetContentType();
+
+    /// <summary>
+    ///     Retrieves the response body from the stub.
+    /// </summary>
+    /// <param name="stub">The stub.</param>
+    /// <returns>The response body.</returns>
+    protected abstract string GetBodyFromStub(StubModel stub);
+
+    /// <summary>
+    ///     Retrieves the name from the response writer.
+    /// </summary>
+    /// <returns>The name of the response writer.</returns>
+    protected abstract string GetWriterName();
 }

@@ -4,10 +4,13 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to return the given response as plain text.
+///     Response writer that is used to return the given response as plain text.
 /// </summary>
 internal class TextResponseWriter : BaseBodyResponseWriter, ISingletonService
 {
+    /// <inheritdoc />
+    public override int Priority => 0;
+
     /// <inheritdoc />
     protected override string GetContentType() => Constants.TextMime;
 
@@ -16,7 +19,4 @@ internal class TextResponseWriter : BaseBodyResponseWriter, ISingletonService
 
     /// <inheritdoc />
     protected override string GetWriterName() => GetType().Name;
-
-    /// <inheritdoc />
-    public override int Priority => 0;
 }

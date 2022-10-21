@@ -8,12 +8,12 @@ using HttPlaceholder.Application.Interfaces.Mappings;
 namespace HttPlaceholder.Application.Infrastructure.AutoMapper;
 
 /// <summary>
-/// A helper class for initializing the AutoMapper profile.
+///     A helper class for initializing the AutoMapper profile.
 /// </summary>
 public static class MapperProfileHelper
 {
     /// <summary>
-    /// A method for searching for mappings in the application and registering them to the AutoMapper profile.
+    ///     A method for searching for mappings in the application and registering them to the AutoMapper profile.
     /// </summary>
     /// <param name="profile">The AutoMapper profile.</param>
     /// <param name="assembly">The assembly to search for types in.</param>

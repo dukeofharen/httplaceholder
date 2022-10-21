@@ -4,12 +4,12 @@ using MediatR;
 namespace HttPlaceholder.Application.Scenarios.Queries.GetScenario;
 
 /// <summary>
-/// A query for retrieving a scenario.
+///     A query for retrieving a scenario.
 /// </summary>
 public class GetScenarioQuery : IRequest<ScenarioStateModel>
 {
     /// <summary>
-    /// Constructs a <see cref="GetScenarioQuery"/> instance.
+    ///     Constructs a <see cref="GetScenarioQuery" /> instance.
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
     public GetScenarioQuery(string scenario)
@@ -18,7 +18,7 @@ public class GetScenarioQuery : IRequest<ScenarioStateModel>
     }
 
     /// <summary>
-    /// Gets the scenario name.
+    ///     Gets the scenario name.
     /// </summary>
     public string Scenario { get; }
 }

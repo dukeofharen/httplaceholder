@@ -8,12 +8,12 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert fake data.
+///     Response variable parsing handler that is used to insert fake data.
 /// </summary>
 internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly Lazy<string[]> _exampleLazy;
     private readonly Lazy<string> _descriptionLazy;
+    private readonly Lazy<string[]> _exampleLazy;
     private readonly IFakerService _fakerService;
 
     public FakeDataVariableParsingHandler(IFileService fileService, IFakerService fakerService) : base(fileService)

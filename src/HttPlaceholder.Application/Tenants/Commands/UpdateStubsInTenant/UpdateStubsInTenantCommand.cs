@@ -5,12 +5,12 @@ using MediatR;
 namespace HttPlaceholder.Application.Tenants.Commands.UpdateStubsInTenant;
 
 /// <summary>
-/// A command for updating all stubs belonging to a tenant.
+///     A command for updating all stubs belonging to a tenant.
 /// </summary>
 public class UpdateStubsInTenantCommand : IRequest
 {
     /// <summary>
-    /// Constructs an <see cref="UpdateStubsInTenantCommand"/> instance.
+    ///     Constructs an <see cref="UpdateStubsInTenantCommand" /> instance.
     /// </summary>
     /// <param name="stubs">The stubs that should be updated.</param>
     /// <param name="tenant">The tenant.</param>
@@ -21,12 +21,12 @@ public class UpdateStubsInTenantCommand : IRequest
     }
 
     /// <summary>
-    /// Gets the stubs that should be updated.
+    ///     Gets the stubs that should be updated.
     /// </summary>
     public IEnumerable<StubModel> Stubs { get; }
 
     /// <summary>
-    /// Gets the tenant.
+    ///     Gets the tenant.
     /// </summary>
     public string Tenant { get; }
 }

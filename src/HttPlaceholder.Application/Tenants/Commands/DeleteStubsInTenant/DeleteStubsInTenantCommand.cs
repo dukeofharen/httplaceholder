@@ -3,12 +3,12 @@
 namespace HttPlaceholder.Application.Tenants.Commands.DeleteStubsInTenant;
 
 /// <summary>
-/// A command for deleting all stubs belonging to a specific tenant.
+///     A command for deleting all stubs belonging to a specific tenant.
 /// </summary>
 public class DeleteStubsInTenantCommand : IRequest
 {
     /// <summary>
-    /// Constructs a <see cref="DeleteStubsInTenantCommand"/> instance.
+    ///     Constructs a <see cref="DeleteStubsInTenantCommand" /> instance.
     /// </summary>
     /// <param name="tenant">The tenant.</param>
     public DeleteStubsInTenantCommand(string tenant)
@@ -17,7 +17,7 @@ public class DeleteStubsInTenantCommand : IRequest
     }
 
     /// <summary>
-    /// Gets the tenant.
+    ///     Gets the tenant.
     /// </summary>
     public string Tenant { get; }
 }

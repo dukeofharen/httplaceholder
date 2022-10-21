@@ -10,7 +10,7 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker for validating the query strings.
+///     Condition checker for validating the query strings.
 /// </summary>
 public class QueryStringConditionChecker : IConditionChecker, ISingletonService
 {
@@ -18,7 +18,7 @@ public class QueryStringConditionChecker : IConditionChecker, ISingletonService
     private readonly IStringChecker _stringChecker;
 
     /// <summary>
-    /// Constructs a <see cref="QueryStringConditionChecker"/> instance.
+    ///     Constructs a <see cref="QueryStringConditionChecker" /> instance.
     /// </summary>
     public QueryStringConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {

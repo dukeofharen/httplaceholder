@@ -1,7 +1,7 @@
 ﻿namespace HttPlaceholder.Persistence.Db.Implementations;
 
 /// <summary>
-/// A store that contains queries for working with SQLite.
+///     A store that contains queries for working with SQLite.
 /// </summary>
 internal class SqliteQueryStore : IQueryStore
 {

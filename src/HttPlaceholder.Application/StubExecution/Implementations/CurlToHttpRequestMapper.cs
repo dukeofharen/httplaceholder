@@ -26,7 +26,7 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
         _logger = logger;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IEnumerable<HttpRequestModel> MapCurlCommandsToHttpRequest(string commands)
     {
         void SetMethod(HttpRequestModel httpRequestModel)
@@ -46,7 +46,7 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
                 return result;
             }
 
-            var parts = commands.Trim().Split(new[] { " ", "\r\n", "\n" }, StringSplitOptions.None);
+            var parts = commands.Trim().Split(new[] {" ", "\r\n", "\n"}, StringSplitOptions.None);
             if (!IsCurl(parts[0]))
             {
                 _logger.LogDebug("Command is not a cURL command, so not extracting request.");
@@ -98,7 +98,8 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
                     switch (part)
                     {
                         case "-F" or "--form":
-                            request.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.MultipartFormDataMime);
+                            request.Headers.AddOrReplaceCaseInsensitive("Content-Type",
+                                Constants.MultipartFormDataMime);
                             break;
                         case "-d" or "--data":
                             request.Headers.AddOrReplaceCaseInsensitive("Content-Type",
@@ -240,13 +241,18 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
 
         var escapedBoundaryCharacter = $@"\{boundaryCharacter}";
 
-        bool PartStartsWithBoundaryChar(string part) =>
-            !string.IsNullOrWhiteSpace(part) && part[0] == boundaryCharacter &&
-            !part.StartsWith(escapedBoundaryCharacter);
+        bool PartStartsWithBoundaryChar(string part)
+        {
+            return !string.IsNullOrWhiteSpace(part) && part[0] == boundaryCharacter &&
+                   !part.StartsWith(escapedBoundaryCharacter);
+        }
 
-        bool PartEndsWithBoundaryChar(string part) => !string.IsNullOrWhiteSpace(part) &&
-                                                      part[^1] == boundaryCharacter &&
-                                                      !part.EndsWith(escapedBoundaryCharacter);
+        bool PartEndsWithBoundaryChar(string part)
+        {
+            return !string.IsNullOrWhiteSpace(part) &&
+                   part[^1] == boundaryCharacter &&
+                   !part.EndsWith(escapedBoundaryCharacter);
+        }
 
         var bodyBuilder = new StringBuilder(); // Hah nice
         var counter = 0;

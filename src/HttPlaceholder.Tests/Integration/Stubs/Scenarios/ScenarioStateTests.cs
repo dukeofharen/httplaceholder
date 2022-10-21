@@ -19,10 +19,8 @@ public class ScenarioStateTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}scenario-state";
         var expectedResponses = new[]
         {
-            "Ok, scenario is now set to state-1",
-            "Ok, scenario is now set to state-2",
-            "Ok, scenario is set to its original state",
-            "Ok, scenario is now set to state-1"
+            "Ok, scenario is now set to state-1", "Ok, scenario is now set to state-2",
+            "Ok, scenario is set to its original state", "Ok, scenario is now set to state-1"
         };
         foreach (var expectedResponse in expectedResponses)
         {

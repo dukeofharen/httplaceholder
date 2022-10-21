@@ -14,18 +14,18 @@ using Newtonsoft.Json;
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
 /// <summary>
-/// A stub source that is used to store and read data from a relational database.
+///     A stub source that is used to store and read data from a relational database.
 /// </summary>
 internal class RelationalDbStubSource : IWritableStubSource
 {
     // TODO move to separate constants class.
     private const string StubJsonType = "json";
+    private readonly IDatabaseContextFactory _databaseContextFactory;
+    private readonly IQueryStore _queryStore;
+    private readonly IRelationalDbMigrator _relationalDbMigrator;
+    private readonly IRelationalDbStubCache _relationalDbStubCache;
 
     private readonly SettingsModel _settings;
-    private readonly IQueryStore _queryStore;
-    private readonly IDatabaseContextFactory _databaseContextFactory;
-    private readonly IRelationalDbStubCache _relationalDbStubCache;
-    private readonly IRelationalDbMigrator _relationalDbMigrator;
 
     public RelationalDbStubSource(
         IOptions<SettingsModel> options,
@@ -42,7 +42,8 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel, CancellationToken cancellationToken)
+    public async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
+        CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var hasResponse = responseModel != null;
@@ -89,7 +90,8 @@ internal class RelationalDbStubSource : IWritableStubSource
     public async Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
-        var updatedRows = await ctx.ExecuteAsync(_queryStore.DeleteRequestQuery, cancellationToken, new {CorrelationId = correlationId});
+        var updatedRows = await ctx.ExecuteAsync(_queryStore.DeleteRequestQuery, cancellationToken,
+            new {CorrelationId = correlationId});
         return updatedRows > 0;
     }
 
@@ -103,7 +105,8 @@ internal class RelationalDbStubSource : IWritableStubSource
 
     /// <inheritdoc />
     // TODO This method is not optimized right now.
-    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(CancellationToken cancellationToken) =>
+    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
+        CancellationToken cancellationToken) =>
         (await GetRequestResultsAsync(cancellationToken))
         .Select(r => new RequestOverviewModel
         {

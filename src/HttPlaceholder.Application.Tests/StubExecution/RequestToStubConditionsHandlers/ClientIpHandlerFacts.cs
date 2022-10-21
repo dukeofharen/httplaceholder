@@ -17,7 +17,7 @@ public class ClientIpHandlerFacts
     {
         // Arrange
         const string ip = "11.22.33.44";
-        var request = new HttpRequestModel { ClientIp = ip };
+        var request = new HttpRequestModel {ClientIp = ip};
         var conditions = new StubConditionsModel();
 
         // Act

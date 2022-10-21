@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
-using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert a given posted form value in the response.
+///     Response variable parsing handler that is used to insert a given posted form value in the response.
 /// </summary>
 internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {

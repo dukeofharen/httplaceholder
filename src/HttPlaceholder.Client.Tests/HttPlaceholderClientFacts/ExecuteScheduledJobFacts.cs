@@ -26,7 +26,8 @@ public class ExecuteScheduledJobFacts : BaseClientTest
 
         // Act
         var exception =
-            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.ExecuteScheduledJobAsync(jobName));
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
+                client.ExecuteScheduledJobAsync(jobName));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",

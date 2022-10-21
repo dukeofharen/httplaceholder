@@ -12,7 +12,7 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that is used to validate a posted form.
+///     Condition checker that is used to validate a posted form.
 /// </summary>
 public class FormValueConditionChecker : IConditionChecker, ISingletonService
 {
@@ -20,7 +20,7 @@ public class FormValueConditionChecker : IConditionChecker, ISingletonService
     private readonly IStringChecker _stringChecker;
 
     /// <summary>
-    /// Constructs a <see cref="FormValueConditionChecker"/> instance.
+    ///     Constructs a <see cref="FormValueConditionChecker" /> instance.
     /// </summary>
     public FormValueConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {

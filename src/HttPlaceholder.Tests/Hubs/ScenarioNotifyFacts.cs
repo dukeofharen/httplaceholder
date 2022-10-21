@@ -16,8 +16,8 @@ namespace HttPlaceholder.Tests.Hubs;
 [TestClass]
 public class ScenarioNotifyFacts
 {
-    private Mock<IClientProxy> _clientProxyMock;
     private readonly AutoMocker _mocker = new();
+    private Mock<IClientProxy> _clientProxyMock;
 
     [TestInitialize]
     public void Initialize()
@@ -63,7 +63,8 @@ public class ScenarioNotifyFacts
         await notify.ScenarioDeletedAsync(scenarioName, CancellationToken.None);
 
         // Assert
-        _clientProxyMock.Verify(m => m.SendCoreAsync("ScenarioDeleted", It.Is<object[]>(o => (string)o.Single() == scenarioName),
+        _clientProxyMock.Verify(m => m.SendCoreAsync("ScenarioDeleted",
+            It.Is<object[]>(o => (string)o.Single() == scenarioName),
             It.IsAny<CancellationToken>()));
     }
 

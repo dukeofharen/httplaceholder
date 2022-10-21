@@ -9,14 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// The user controller.
+///     The user controller.
 /// </summary>
 [Route("ph-api/users")]
 [ApiAuthorization]
 public class UserController : BaseApiController
 {
     /// <summary>
-    /// Get the user for the given username.
+    ///     Get the user for the given username.
     /// </summary>
     /// <param name="username">The username.</param>
     /// <param name="cancellationToken">The cancellation token.</param>

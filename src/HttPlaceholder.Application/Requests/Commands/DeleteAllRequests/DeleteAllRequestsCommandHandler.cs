@@ -6,14 +6,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Requests.Commands.DeleteAllRequests;
 
 /// <summary>
-/// A command handler for deleting all requests.
+///     A command handler for deleting all requests.
 /// </summary>
 public class DeleteAllRequestsCommandHandler : IRequestHandler<DeleteAllRequestsCommand>
 {
     private readonly IStubContext _stubContext;
 
     /// <summary>
-    /// Constructs a <see cref="DeleteAllRequestsCommandHandler"/> instance.
+    ///     Constructs a <see cref="DeleteAllRequestsCommandHandler" /> instance.
     /// </summary>
     public DeleteAllRequestsCommandHandler(IStubContext stubContext)
     {

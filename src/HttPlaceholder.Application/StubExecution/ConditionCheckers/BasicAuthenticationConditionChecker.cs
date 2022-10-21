@@ -10,14 +10,14 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that is used to verify incoming basic authentication credentials.
+///     Condition checker that is used to verify incoming basic authentication credentials.
 /// </summary>
 public class BasicAuthenticationConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
     /// <summary>
-    /// Constructs a <see cref="BasicAuthenticationConditionChecker"/> instance.
+    ///     Constructs a <see cref="BasicAuthenticationConditionChecker" /> instance.
     /// </summary>
     public BasicAuthenticationConditionChecker(IHttpContextService httpContextService)
     {

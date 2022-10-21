@@ -17,13 +17,7 @@ public class XmlResponseWriterFacts
     public async Task XmlResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                Xml = null
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {Xml = null}};
 
         var response = new ResponseModel();
 
@@ -41,13 +35,7 @@ public class XmlResponseWriterFacts
         // arrange
         const string responseText = "<xml>";
         var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                Xml = responseText
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {Xml = responseText}};
 
         var response = new ResponseModel();
 
@@ -61,18 +49,13 @@ public class XmlResponseWriterFacts
     }
 
     [TestMethod]
-    public async Task XmlResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
+    public async Task
+        XmlResponseWriter_WriteToResponseAsync_HappyFlow_ContentTypeHeaderAlreadySet_HeaderShouldBeRespected()
     {
         // arrange
         const string responseText = "<xml>";
         var expectedResponseBytes = Encoding.UTF8.GetBytes(responseText);
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                Xml = responseText
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {Xml = responseText}};
 
         var response = new ResponseModel();
         response.Headers.Add("Content-Type", Constants.TextMime);

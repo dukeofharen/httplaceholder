@@ -212,10 +212,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         ClientDataResolverMock
             .Setup(m => m.GetHost())
             .Returns("httplaceholder.com");
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get, RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -232,10 +229,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         ClientDataResolverMock
             .Setup(m => m.GetHost())
             .Returns("httplaceholder.net");
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get, RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // act / assert
         using var response = await Client.SendAsync(request);

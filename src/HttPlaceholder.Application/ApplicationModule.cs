@@ -6,12 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace HttPlaceholder.Application;
 
 /// <summary>
-/// A class for registering all classes in the Application project.
+///     A class for registering all classes in the Application project.
 /// </summary>
 public static class ApplicationModule
 {
     /// <summary>
-    /// Register all classes in the Application project.
+    ///     Register all classes in the Application project.
     /// </summary>
     /// <param name="services">The service collection.</param>
     public static IServiceCollection AddApplicationModule(this IServiceCollection services)

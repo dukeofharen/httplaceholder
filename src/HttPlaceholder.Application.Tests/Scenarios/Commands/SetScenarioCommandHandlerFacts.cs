@@ -29,6 +29,7 @@ public class SetScenarioCommandHandlerFacts
         await handler.Handle(request, CancellationToken.None);
 
         // Assert
-        scenarioServiceMock.Verify(m => m.SetScenarioAsync(request.ScenarioName, request.ScenarioStateModel, It.IsAny<CancellationToken>()));
+        scenarioServiceMock.Verify(m =>
+            m.SetScenarioAsync(request.ScenarioName, request.ScenarioStateModel, It.IsAny<CancellationToken>()));
     }
 }

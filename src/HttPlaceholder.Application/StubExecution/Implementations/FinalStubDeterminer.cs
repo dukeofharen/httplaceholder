@@ -9,11 +9,12 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 internal class FinalStubDeterminer : IFinalStubDeterminer, ISingletonService
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public StubModel DetermineFinalStub(IEnumerable<(StubModel, IEnumerable<ConditionCheckResultModel>)> matchedStubs)
     {
         StubModel finalStub;
-        var matchedStubsArray = matchedStubs as (StubModel, IEnumerable<ConditionCheckResultModel>)[] ?? matchedStubs.ToArray();
+        var matchedStubsArray = matchedStubs as (StubModel, IEnumerable<ConditionCheckResultModel>)[] ??
+                                matchedStubs.ToArray();
         switch (matchedStubsArray.Length)
         {
             case 0:

@@ -33,7 +33,8 @@ public class ScenarioServiceFacts
 
         // Assert
         scenarioStateStoreMock.Verify(m => m.GetScenarioLock(It.IsAny<string>()), Times.Never());
-        scenarioNotifyMock.Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Never);
+        scenarioNotifyMock.Verify(
+            m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [TestMethod]
@@ -70,7 +71,8 @@ public class ScenarioServiceFacts
     }
 
     [TestMethod]
-    public async Task IncreaseHitCountAsync_ScenarioIsNotEmpty_ScenarioIsNotFound_ShouldCreateScenarioAndIncreaseHitCount()
+    public async Task
+        IncreaseHitCountAsync_ScenarioIsNotEmpty_ScenarioIsNotFound_ShouldCreateScenarioAndIncreaseHitCount()
     {
         // Arrange
         var scenarioStateStoreMock = _mocker.GetMock<IScenarioStateStore>();
@@ -110,7 +112,8 @@ public class ScenarioServiceFacts
         Assert.AreEqual(1, capturedScenarioStateModel.HitCount);
         Assert.AreEqual("Start", capturedScenarioStateModel.State);
         Assert.AreEqual(scenario.ToLower(), capturedScenarioStateModel.Scenario);
-        scenarioNotifyMock.Verify(m => m.ScenarioSetAsync(capturedScenarioStateModel, It.IsAny<CancellationToken>()), Times.Once);
+        scenarioNotifyMock.Verify(m => m.ScenarioSetAsync(capturedScenarioStateModel, It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     [TestMethod]
@@ -231,7 +234,9 @@ public class ScenarioServiceFacts
         await service.SetScenarioAsync(string.Empty, null, CancellationToken.None);
 
         scenarioStateStoreMock.Verify(m => m.GetScenarioLock(It.IsAny<string>()), Times.Never);
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Never);
+        _mocker.GetMock<IScenarioNotify>()
+            .Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
+                Times.Never);
     }
 
     [TestMethod]
@@ -245,7 +250,9 @@ public class ScenarioServiceFacts
         await service.SetScenarioAsync("scenario-1", null, CancellationToken.None);
 
         scenarioStateStoreMock.Verify(m => m.GetScenarioLock(It.IsAny<string>()), Times.Never);
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Never);
+        _mocker.GetMock<IScenarioNotify>()
+            .Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()),
+                Times.Never);
     }
 
     [TestMethod]
@@ -272,7 +279,8 @@ public class ScenarioServiceFacts
         // Assert
         scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input));
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input), Times.Never);
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Once);
+        _mocker.GetMock<IScenarioNotify>()
+            .Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -298,9 +306,11 @@ public class ScenarioServiceFacts
 
         // Assert
         scenarioStateStoreMock.Verify(m =>
-            m.AddScenario(scenarioName, It.Is<ScenarioStateModel>(model => model.State == Constants.DefaultScenarioState)));
+            m.AddScenario(scenarioName,
+                It.Is<ScenarioStateModel>(model => model.State == Constants.DefaultScenarioState)));
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input), Times.Never);
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Once);
+        _mocker.GetMock<IScenarioNotify>()
+            .Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -327,7 +337,8 @@ public class ScenarioServiceFacts
         // Assert
         scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input), Times.Never);
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input));
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Once);
+        _mocker.GetMock<IScenarioNotify>()
+            .Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -356,7 +367,8 @@ public class ScenarioServiceFacts
         scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input), Times.Never);
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input));
         Assert.AreEqual(11, input.HitCount);
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Once);
+        _mocker.GetMock<IScenarioNotify>()
+            .Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -385,7 +397,8 @@ public class ScenarioServiceFacts
         scenarioStateStoreMock.Verify(m => m.AddScenario(scenarioName, input), Times.Never);
         scenarioStateStoreMock.Verify(m => m.UpdateScenario(scenarioName, input));
         Assert.AreEqual("current-state", input.State);
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Once);
+        _mocker.GetMock<IScenarioNotify>()
+            .Verify(m => m.ScenarioSetAsync(It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -401,7 +414,8 @@ public class ScenarioServiceFacts
         // Assert
         Assert.IsFalse(result);
         scenarioStateStoreMock.Verify(m => m.GetScenarioLock(It.IsAny<string>()), Times.Never);
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioDeletedAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        _mocker.GetMock<IScenarioNotify>()
+            .Verify(m => m.ScenarioDeletedAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [TestMethod]
@@ -425,7 +439,8 @@ public class ScenarioServiceFacts
 
         // Assert
         Assert.IsTrue(result);
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.ScenarioDeletedAsync(scenarioName, It.IsAny<CancellationToken>()), Times.Once);
+        _mocker.GetMock<IScenarioNotify>()
+            .Verify(m => m.ScenarioDeletedAsync(scenarioName, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -440,6 +455,7 @@ public class ScenarioServiceFacts
 
         // Assert
         scenarioStateStoreMock.Verify(m => m.DeleteAllScenarios());
-        _mocker.GetMock<IScenarioNotify>().Verify(m => m.AllScenariosDeletedAsync(It.IsAny<CancellationToken>()), Times.Once);
+        _mocker.GetMock<IScenarioNotify>()
+            .Verify(m => m.AllScenariosDeletedAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }

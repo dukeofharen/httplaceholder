@@ -7,7 +7,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to setup a temporary or permanent redirect.
+///     Response writer that is used to setup a temporary or permanent redirect.
 /// </summary>
 internal class RedirectResponseWriter : IResponseWriter, ISingletonService
 {

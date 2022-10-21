@@ -20,11 +20,7 @@ public class StubQueryStringIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}query-string-presence-check?q1=val1&q2=val2";
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -38,11 +34,7 @@ public class StubQueryStringIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}query-string-presence-check?q1=val1&q2=val22";
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // act / assert
         using var response = await Client.SendAsync(request);

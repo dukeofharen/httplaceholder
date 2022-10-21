@@ -8,7 +8,7 @@ using MediatR;
 namespace HttPlaceholder.Application.Requests.Queries.GetRequestsOverview;
 
 /// <summary>
-/// A query handler for retrieving a list of overview requests.
+///     A query handler for retrieving a list of overview requests.
 /// </summary>
 public class
     GetRequestsOverviewQueryHandler : IRequestHandler<GetRequestsOverviewQuery, IEnumerable<RequestOverviewModel>>
@@ -16,7 +16,7 @@ public class
     private readonly IStubContext _stubContext;
 
     /// <summary>
-    /// Constructs a <see cref="GetRequestsOverviewQueryHandler"/> instance.
+    ///     Constructs a <see cref="GetRequestsOverviewQueryHandler" /> instance.
     /// </summary>
     /// <param name="stubContext"></param>
     public GetRequestsOverviewQueryHandler(IStubContext stubContext)

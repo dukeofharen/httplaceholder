@@ -5,12 +5,12 @@ using System.Text.RegularExpressions;
 namespace HttPlaceholder.Common.Utilities;
 
 /// <summary>
-/// A utility class for working with strings.
+///     A utility class for working with strings.
 /// </summary>
 public static class StringHelper
 {
     /// <summary>
-    /// Checks whether a given input either contains a given substring or matches a regex.
+    ///     Checks whether a given input either contains a given substring or matches a regex.
     /// </summary>
     /// <param name="fullString">The string to check.</param>
     /// <param name="subStringOrRegex">The substring OR regex expression.</param>
@@ -28,7 +28,7 @@ public static class StringHelper
     }
 
     /// <summary>
-    /// Ensures that a string ends with a given string.
+    ///     Ensures that a string ends with a given string.
     /// </summary>
     /// <param name="input">The input string.</param>
     /// <param name="append">A piece of text the input should end with.</param>
@@ -44,7 +44,7 @@ public static class StringHelper
     }
 
     /// <summary>
-    /// Ensures that a string starts with a given string.
+    ///     Ensures that a string starts with a given string.
     /// </summary>
     /// <param name="input">The input string.</param>
     /// <param name="append">A piece of text the input should start with.</param>
@@ -60,7 +60,7 @@ public static class StringHelper
     }
 
     /// <summary>
-    /// A method which receives a list of strings and returns the number of strings which are neither null or whitespace.
+    ///     A method which receives a list of strings and returns the number of strings which are neither null or whitespace.
     /// </summary>
     /// <param name="strings">The list of strings.</param>
     /// <returns>The number of instances where the string is neither null or whitespace.</returns>
@@ -68,7 +68,7 @@ public static class StringHelper
         strings.AsQueryable().Count(s => !string.IsNullOrWhiteSpace(s));
 
     /// <summary>
-    /// Splits a string on newline characters.
+    ///     Splits a string on newline characters.
     /// </summary>
     /// <param name="input">The input.</param>
     /// <returns>The input, divided by newline characters.</returns>

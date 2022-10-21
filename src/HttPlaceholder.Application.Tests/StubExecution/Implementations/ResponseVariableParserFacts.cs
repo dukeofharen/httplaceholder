@@ -19,11 +19,7 @@ public class ResponseVariableParserFacts
     [TestInitialize]
     public void Initialize()
     {
-        _parser = new ResponseVariableParser(new[]
-        {
-            _handler1.Object,
-            _handler2.Object
-        });
+        _parser = new ResponseVariableParser(new[] {_handler1.Object, _handler2.Object});
 
         _handler1
             .Setup(m => m.Name)
@@ -51,11 +47,16 @@ public class ResponseVariableParserFacts
         var stub = new StubModel();
         _handler1
             .Setup(m =>
-                m.Parse(input, It.Is<IEnumerable<Match>>(matches => matches.Any(match => match.Groups[2].Value == "value1" || match.Groups[2].Value == "bla")), stub))
+                m.Parse(input,
+                    It.Is<IEnumerable<Match>>(matches =>
+                        matches.Any(match => match.Groups[2].Value == "value1" || match.Groups[2].Value == "bla")),
+                    stub))
             .Returns<string, IEnumerable<Match>, StubModel>((r, _, _) => r);
         _handler2
             .Setup(m =>
-                m.Parse(input, It.Is<IEnumerable<Match>>(matches => matches.Any(match => string.IsNullOrWhiteSpace(match.Groups[2].Value))), stub))
+                m.Parse(input,
+                    It.Is<IEnumerable<Match>>(matches =>
+                        matches.Any(match => string.IsNullOrWhiteSpace(match.Groups[2].Value))), stub))
             .Returns<string, IEnumerable<Match>, StubModel>((r, _, _) => r);
 
         // act

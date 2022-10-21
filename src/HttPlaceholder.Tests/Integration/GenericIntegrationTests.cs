@@ -19,7 +19,7 @@ public class GenericIntegrationTests : IntegrationTestBase
     public void Initialize()
     {
         _stubSource = new InMemoryStubSource(Options);
-        InitializeIntegrationTest(new (Type, object)[] { (typeof(IStubSource), _stubSource) });
+        InitializeIntegrationTest(new (Type, object)[] {(typeof(IStubSource), _stubSource)});
     }
 
     [TestCleanup]
@@ -31,7 +31,7 @@ public class GenericIntegrationTests : IntegrationTestBase
         // Arrange
         var url = $"{TestServer.BaseAddress}swagger/index.html";
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // Act / Assert
         using var response = await Client.SendAsync(request);
@@ -44,7 +44,7 @@ public class GenericIntegrationTests : IntegrationTestBase
         // Arrange
         var url = $"{TestServer.BaseAddress}swagger/v1/swagger.json";
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // Act
         using var response = await Client.SendAsync(request);
@@ -114,7 +114,7 @@ public class GenericIntegrationTests : IntegrationTestBase
         // Arrange
         var url = $"{TestServer.BaseAddress}ph-ui";
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // Act / Assert
         using var response = await Client.SendAsync(request);

@@ -19,7 +19,7 @@ public class HeaderHandlerFacts
     public async Task HeaderHandler_HandleStubGenerationAsync_NoHeadersSet_ShouldReturnFalse()
     {
         // Arrange
-        var request = new HttpRequestModel { Headers = new Dictionary<string, string>() };
+        var request = new HttpRequestModel {Headers = new Dictionary<string, string>()};
         var conditions = new StubConditionsModel();
 
         // Act
@@ -38,10 +38,10 @@ public class HeaderHandlerFacts
         {
             Headers = new Dictionary<string, string>
             {
-                { "Postman-Token", Guid.NewGuid().ToString() },
-                { "Host", "httplaceholder.com" },
-                { "X-Api-Key", "123" },
-                { "X-Bla", "bla" }
+                {"Postman-Token", Guid.NewGuid().ToString()},
+                {"Host", "httplaceholder.com"},
+                {"X-Api-Key", "123"},
+                {"X-Bla", "bla"}
             }
         };
         var stub = new StubConditionsModel();

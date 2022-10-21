@@ -8,7 +8,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler for generating a random UUID and putting it in the response.
+///     Response variable parsing handler for generating a random UUID and putting it in the response.
 /// </summary>
 internal class UuidResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {

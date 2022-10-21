@@ -25,7 +25,7 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
         _settings = options.Value;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IEnumerable<string> ValidateStubModel(StubModel stub)
     {
         var validationResults = _modelValidator.ValidateModel(stub);

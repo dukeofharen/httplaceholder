@@ -19,12 +19,12 @@ namespace HttPlaceholder.Persistence.FileSystem.Implementations;
 internal class FileSystemStubCache : IFileSystemStubCache
 {
     private static readonly object _cacheUpdateLock = new();
-    internal string StubUpdateTrackingId;
-    internal readonly ConcurrentDictionary<string, StubModel> StubCache = new();
+    private readonly IFileService _fileService;
 
     private readonly ILogger<FileSystemStubCache> _logger;
-    private readonly IFileService _fileService;
     private readonly SettingsModel _settings;
+    internal readonly ConcurrentDictionary<string, StubModel> StubCache = new();
+    internal string StubUpdateTrackingId;
 
     public FileSystemStubCache(
         ILogger<FileSystemStubCache> logger,
@@ -131,7 +131,8 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
     private string GetMetadataPath()
     {
-        var rootPath = _settings.Storage?.FileStorageLocation ?? throw new InvalidOperationException("FileStorageLocation unexpectedly null.");
+        var rootPath = _settings.Storage?.FileStorageLocation ??
+                       throw new InvalidOperationException("FileStorageLocation unexpectedly null.");
         var path = Path.Combine(rootPath, Constants.MetadataFileName);
         return path;
     }

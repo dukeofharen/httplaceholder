@@ -8,12 +8,13 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 
 /// <summary>
-/// This handler is being used for setting the content type.
+///     This handler is being used for setting the content type.
 /// </summary>
 internal class ContentTypeHandler : IResponseToStubResponseHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel, CancellationToken cancellationToken)
+    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel,
+        CancellationToken cancellationToken)
     {
         var header = response.Headers.CaseInsensitiveSearchPair("content-type");
         if (string.IsNullOrWhiteSpace(header.Value))

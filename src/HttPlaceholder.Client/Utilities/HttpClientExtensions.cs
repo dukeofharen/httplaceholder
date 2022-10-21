@@ -6,7 +6,7 @@ using HttPlaceholder.Client.Configuration;
 namespace HttPlaceholder.Client.Utilities;
 
 /// <summary>
-/// Static class for providing extra functionality for <see cref="HttpClient"/>.
+///     Static class for providing extra functionality for <see cref="HttpClient" />.
 /// </summary>
 internal static class HttpClientExtensions
 {

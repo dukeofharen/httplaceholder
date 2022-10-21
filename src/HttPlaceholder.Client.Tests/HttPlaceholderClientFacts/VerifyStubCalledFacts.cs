@@ -42,7 +42,8 @@ public class VerifyStubCalledFacts : BaseClientTest
             .Respond("application/json", JsonConvert.SerializeObject(requestResults))));
 
         // Act
-        var ex = await Assert.ThrowsExceptionAsync<StubVerificationFailedException>(() => client.VerifyStubCalledAsyncInternal(stubId, Exactly(2), DateTime.UtcNow.AddMinutes(-1)));
+        var ex = await Assert.ThrowsExceptionAsync<StubVerificationFailedException>(() =>
+            client.VerifyStubCalledAsyncInternal(stubId, Exactly(2), DateTime.UtcNow.AddMinutes(-1)));
         var result = ex.VerificationResultModel;
 
         // Assert
@@ -78,7 +79,8 @@ public class VerifyStubCalledFacts : BaseClientTest
             .Respond("application/json", JsonConvert.SerializeObject(requestResults))));
 
         // Act
-        var ex = await Assert.ThrowsExceptionAsync<StubVerificationFailedException>(() => client.VerifyStubCalledAsyncInternal(stubId, AtLeast(3), DateTime.UtcNow.AddSeconds(-1)));
+        var ex = await Assert.ThrowsExceptionAsync<StubVerificationFailedException>(() =>
+            client.VerifyStubCalledAsyncInternal(stubId, AtLeast(3), DateTime.UtcNow.AddSeconds(-1)));
         var result = ex.VerificationResultModel;
 
         // Assert
@@ -114,7 +116,8 @@ public class VerifyStubCalledFacts : BaseClientTest
             .Respond("application/json", JsonConvert.SerializeObject(requestResults))));
 
         // Act
-        var ex = await Assert.ThrowsExceptionAsync<StubVerificationFailedException>(() => client.VerifyStubCalledAsyncInternal(stubId, AtMost(1), DateTime.UtcNow.AddSeconds(-1)));
+        var ex = await Assert.ThrowsExceptionAsync<StubVerificationFailedException>(() =>
+            client.VerifyStubCalledAsyncInternal(stubId, AtMost(1), DateTime.UtcNow.AddSeconds(-1)));
         var result = ex.VerificationResultModel;
 
         // Assert
@@ -150,7 +153,8 @@ public class VerifyStubCalledFacts : BaseClientTest
             .Respond("application/json", JsonConvert.SerializeObject(requestResults))));
 
         // Act
-        var ex = await Assert.ThrowsExceptionAsync<StubVerificationFailedException>(() => client.VerifyStubCalledAsyncInternal(stubId, Between(2, 4), DateTime.UtcNow.AddSeconds(-1)));
+        var ex = await Assert.ThrowsExceptionAsync<StubVerificationFailedException>(() =>
+            client.VerifyStubCalledAsyncInternal(stubId, Between(2, 4), DateTime.UtcNow.AddSeconds(-1)));
         var result = ex.VerificationResultModel;
 
         // Assert
@@ -169,7 +173,8 @@ public class VerifyStubCalledFacts : BaseClientTest
             .Respond("application/json", JsonConvert.SerializeObject(requestResults))));
 
         // Act
-        var ex = await Assert.ThrowsExceptionAsync<StubVerificationFailedException>(() => client.VerifyStubCalledAsyncInternal(stubId, Between(2, 4), DateTime.UtcNow.AddSeconds(-1)));
+        var ex = await Assert.ThrowsExceptionAsync<StubVerificationFailedException>(() =>
+            client.VerifyStubCalledAsyncInternal(stubId, Between(2, 4), DateTime.UtcNow.AddSeconds(-1)));
         var result = ex.VerificationResultModel;
 
         // Assert

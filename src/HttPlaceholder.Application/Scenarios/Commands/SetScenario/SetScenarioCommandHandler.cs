@@ -6,14 +6,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 
 /// <summary>
-/// A command handler for setting a scenario.
+///     A command handler for setting a scenario.
 /// </summary>
 public class SetScenarioCommandHandler : IRequestHandler<SetScenarioCommand>
 {
     private readonly IScenarioService _scenarioService;
 
     /// <summary>
-    /// Constructs a <see cref="SetScenarioCommandHandler"/> instance.
+    ///     Constructs a <see cref="SetScenarioCommandHandler" /> instance.
     /// </summary>
     public SetScenarioCommandHandler(IScenarioService scenarioService)
     {

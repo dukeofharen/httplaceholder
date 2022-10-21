@@ -9,7 +9,7 @@ using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Configuration;
 using HttPlaceholder.Resources;
- using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -18,7 +18,7 @@ using Serilog;
 namespace HttPlaceholder.Utilities;
 
 /// <summary>
-/// A utility class for handling the starting of HttPlaceholder.
+///     A utility class for handling the starting of HttPlaceholder.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public static class ProgramUtilities
@@ -28,7 +28,7 @@ public static class ProgramUtilities
     private static readonly string[] _helpArgs = {"-h", "--help", "-?"};
 
     /// <summary>
-    /// Configure the logging.
+    ///     Configure the logging.
     /// </summary>
     /// <param name="args">The command line arguments.</param>
     public static void ConfigureLogging(IEnumerable<string> args)
@@ -47,7 +47,7 @@ public static class ProgramUtilities
     }
 
     /// <summary>
-    /// Handle several commands.
+    ///     Handle several commands.
     /// </summary>
     /// <param name="args">The command line arguments.</param>
     public static void HandleCommands(IEnumerable<string> args)
@@ -61,7 +61,7 @@ public static class ProgramUtilities
     }
 
     /// <summary>
-    /// Builds the web host for starting the application.
+    ///     Builds the web host for starting the application.
     /// </summary>
     /// <param name="args">The command line arguments.</param>
     /// <returns>The web host.</returns>
@@ -161,7 +161,8 @@ public static class ProgramUtilities
             builder.AppendLine($"{group.Key}:");
             foreach (var constant in group)
             {
-                builder.AppendLine($"--{constant.ConfigMetadataModel.DisplayKey}: {constant.ConfigMetadataModel.Description} (e.g. {constant.ConfigMetadataModel.Example})");
+                builder.AppendLine(
+                    $"--{constant.ConfigMetadataModel.DisplayKey}: {constant.ConfigMetadataModel.Description} (e.g. {constant.ConfigMetadataModel.Example})");
             }
 
             builder.AppendLine();

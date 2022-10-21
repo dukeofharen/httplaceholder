@@ -9,14 +9,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Requests.Queries.GetResponse;
 
 /// <summary>
-/// A query handler for retrieving a response.
+///     A query handler for retrieving a response.
 /// </summary>
 public class GetResponseQueryHandler : IRequestHandler<GetResponseQuery, ResponseModel>
 {
     private readonly IStubContext _stubContext;
 
     /// <summary>
-    /// Constructs a <see cref="GetResponseQueryHandler"/> instance.
+    ///     Constructs a <see cref="GetResponseQueryHandler" /> instance.
     /// </summary>
     public GetResponseQueryHandler(IStubContext stubContext)
     {

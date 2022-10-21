@@ -17,18 +17,18 @@ using Constants = HttPlaceholder.Domain.Constants;
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
 /// <summary>
-/// A stub source that is used to read data from one or several YAML files, from possibly multiple locations.
+///     A stub source that is used to read data from one or several YAML files, from possibly multiple locations.
 /// </summary>
 internal class YamlFileStubSource : IStubSource
 {
     private static readonly string[] _extensions = {".yml", ".yaml"};
-
-    private IEnumerable<StubModel> _stubs;
-    private DateTime _stubLoadDateTime;
-    private readonly ILogger<YamlFileStubSource> _logger;
     private readonly IFileService _fileService;
+    private readonly ILogger<YamlFileStubSource> _logger;
     private readonly SettingsModel _settings;
     private readonly IStubModelValidator _stubModelValidator;
+    private DateTime _stubLoadDateTime;
+
+    private IEnumerable<StubModel> _stubs;
 
     public YamlFileStubSource(
         IFileService fileService,

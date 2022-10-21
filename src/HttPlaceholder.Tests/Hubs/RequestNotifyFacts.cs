@@ -16,8 +16,8 @@ namespace HttPlaceholder.Tests.Hubs;
 [TestClass]
 public class RequestNotifyFacts
 {
-    private Mock<IClientProxy> _clientProxyMock;
     private readonly AutoMocker _mocker = new();
+    private Mock<IClientProxy> _clientProxyMock;
 
     [TestInitialize]
     public void Initialize()

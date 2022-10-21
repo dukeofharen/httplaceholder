@@ -18,11 +18,11 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
     private const string StubYamlType = "yaml";
 
     private static readonly object _cacheUpdateLock = new();
-    internal string StubUpdateTrackingId;
-    internal readonly ConcurrentDictionary<string, StubModel> StubCache = new();
+    private readonly ILogger<RelationalDbStubCache> _logger;
 
     private readonly IQueryStore _queryStore;
-    private readonly ILogger<RelationalDbStubCache> _logger;
+    internal readonly ConcurrentDictionary<string, StubModel> StubCache = new();
+    internal string StubUpdateTrackingId;
 
     public RelationalDbStubCache(IQueryStore queryStore, ILogger<RelationalDbStubCache> logger)
     {
@@ -31,7 +31,8 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
     }
 
     /// <inheritdoc />
-    public async Task AddOrReplaceStubAsync(IDatabaseContext ctx, StubModel stubModel, CancellationToken cancellationToken)
+    public async Task AddOrReplaceStubAsync(IDatabaseContext ctx, StubModel stubModel,
+        CancellationToken cancellationToken)
     {
         var item = StubCache.ContainsKey(stubModel.Id) ? StubCache[stubModel.Id] : null;
         if (item != null)
@@ -59,7 +60,8 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(IDatabaseContext ctx, CancellationToken cancellationToken)
+    public async Task<IEnumerable<StubModel>> GetOrUpdateStubCacheAsync(IDatabaseContext ctx,
+        CancellationToken cancellationToken)
     {
         var shouldUpdateCache = false;
 
@@ -137,7 +139,8 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
     private async Task<string> UpdateTrackingIdAsync(IDatabaseContext ctx, CancellationToken cancellationToken)
     {
         var newId = Guid.NewGuid().ToString();
-        await ctx.ExecuteAsync(_queryStore.UpdateStubUpdateTrackingIdQuery, cancellationToken, new {StubUpdateTrackingId = newId});
+        await ctx.ExecuteAsync(_queryStore.UpdateStubUpdateTrackingIdQuery, cancellationToken,
+            new {StubUpdateTrackingId = newId});
         return newId;
     }
 }

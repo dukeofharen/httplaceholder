@@ -13,8 +13,8 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 [TestClass]
 public class RequestLoggerFacts
 {
-    private readonly DateTime _utcNow = DateTime.UtcNow;
     private readonly Mock<IDateTime> _dateTimeMock = new();
+    private readonly DateTime _utcNow = DateTime.UtcNow;
     private RequestLogger _logger;
 
     [TestInitialize]

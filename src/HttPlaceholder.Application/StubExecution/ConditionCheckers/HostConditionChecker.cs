@@ -8,7 +8,7 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that is used to verify the hostname.
+///     Condition checker that is used to verify the hostname.
 /// </summary>
 public class HostConditionChecker : IConditionChecker, ISingletonService
 {
@@ -16,7 +16,7 @@ public class HostConditionChecker : IConditionChecker, ISingletonService
     private readonly IStringChecker _stringChecker;
 
     /// <summary>
-    /// Constructs a <see cref="HostConditionChecker"/> instance.
+    ///     Constructs a <see cref="HostConditionChecker" /> instance.
     /// </summary>
     public HostConditionChecker(IClientDataResolver clientDataResolver, IStringChecker stringChecker)
     {

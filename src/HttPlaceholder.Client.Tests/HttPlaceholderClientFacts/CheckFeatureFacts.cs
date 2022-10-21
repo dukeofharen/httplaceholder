@@ -26,7 +26,8 @@ public class CheckFeatureFacts : BaseClientTest
 
         // Act
         var exception =
-            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.CheckFeatureAsync(FeatureFlagType.Authentication));
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
+                client.CheckFeatureAsync(FeatureFlagType.Authentication));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",

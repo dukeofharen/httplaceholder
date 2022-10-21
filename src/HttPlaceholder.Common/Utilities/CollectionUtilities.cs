@@ -5,17 +5,21 @@ using System.Linq;
 namespace HttPlaceholder.Common.Utilities;
 
 /// <summary>
-/// A utility class that contains several collection related methods.
+///     A utility class that contains several collection related methods.
 /// </summary>
 public static class CollectionUtilities
 {
     /// <summary>
-    /// Looks for a given value in a dictionary in a case insensitive way and adds the value if it has not been found or updates the value if it has been found.
+    ///     Looks for a given value in a dictionary in a case insensitive way and adds the value if it has not been found or
+    ///     updates the value if it has been found.
     /// </summary>
     /// <param name="dict">The dictionary to mutate.</param>
     /// <param name="key">The key to look for.</param>
     /// <param name="value">The value to add.</param>
-    /// <param name="replaceIfExists">If set to true, updates the key if it has been found. If set to false, does nothing if the key has been found.</param>
+    /// <param name="replaceIfExists">
+    ///     If set to true, updates the key if it has been found. If set to false, does nothing if
+    ///     the key has been found.
+    /// </param>
     public static void AddOrReplaceCaseInsensitive(
         this IDictionary<string, string> dict,
         string key,
@@ -37,7 +41,7 @@ public static class CollectionUtilities
     }
 
     /// <summary>
-    /// Looks for a key-value pair in a dictionary in a case insensitive way.
+    ///     Looks for a key-value pair in a dictionary in a case insensitive way.
     /// </summary>
     /// <param name="dict">The dictionary to look in.</param>
     /// <param name="key">The key to look for.</param>
@@ -47,7 +51,7 @@ public static class CollectionUtilities
         dict.FirstOrDefault(h => string.Equals(key, h.Key, StringComparison.OrdinalIgnoreCase));
 
     /// <summary>
-    /// Looks for a string value in a dictionary in a case insensitive way.
+    ///     Looks for a string value in a dictionary in a case insensitive way.
     /// </summary>
     /// <param name="dict">The dictionary to look in.</param>
     /// <param name="key">The key to look for.</param>
@@ -59,7 +63,7 @@ public static class CollectionUtilities
     }
 
     /// <summary>
-    /// Looks for a string value in a dictionary in a case insensitive way.
+    ///     Looks for a string value in a dictionary in a case insensitive way.
     /// </summary>
     /// <param name="dict">The dictionary to look in.</param>
     /// <param name="key">The key to look for.</param>
@@ -79,11 +83,10 @@ public static class CollectionUtilities
 
         value = foundValue;
         return true;
-
     }
 
     /// <summary>
-    /// Checks if a key exists in a dictionary in a case insensitive way.
+    ///     Checks if a key exists in a dictionary in a case insensitive way.
     /// </summary>
     /// <param name="dict">The dictionary to look in.</param>
     /// <param name="key">The key to look for.</param>

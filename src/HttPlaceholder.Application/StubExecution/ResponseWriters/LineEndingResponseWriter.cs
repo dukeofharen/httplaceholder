@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -10,12 +9,13 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to enforce the response to use specific line endings (Windows or UNIX).
+///     Response writer that is used to enforce the response to use specific line endings (Windows or UNIX).
 /// </summary>
 internal class LineEndingResponseWriter : IResponseWriter, ISingletonService
 {
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
+        CancellationToken cancellationToken)
     {
         var lineEndings = stub.Response.LineEndings;
         if (lineEndings is null or LineEndingType.NotSet)

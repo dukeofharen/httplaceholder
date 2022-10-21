@@ -49,16 +49,19 @@ public class CurlStubGeneratorFacts
 
         var fullStub1 = new FullStubModel();
         stubContextMock
-            .Setup(m => m.AddStubAsync(It.Is<StubModel>(s => s.Conditions == conditions1), It.IsAny<CancellationToken>()))
+            .Setup(m => m.AddStubAsync(It.Is<StubModel>(s => s.Conditions == conditions1),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(fullStub1);
 
         var fullStub2 = new FullStubModel();
         stubContextMock
-            .Setup(m => m.AddStubAsync(It.Is<StubModel>(s => s.Conditions == conditions2), It.IsAny<CancellationToken>()))
+            .Setup(m => m.AddStubAsync(It.Is<StubModel>(s => s.Conditions == conditions2),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(fullStub2);
 
         // Act
-        var result = (await generator.GenerateCurlStubsAsync(input, false, string.Empty, CancellationToken.None)).ToArray();
+        var result = (await generator.GenerateCurlStubsAsync(input, false, string.Empty, CancellationToken.None))
+            .ToArray();
 
         // Assert
         Assert.AreEqual(fullStub1, result[0]);

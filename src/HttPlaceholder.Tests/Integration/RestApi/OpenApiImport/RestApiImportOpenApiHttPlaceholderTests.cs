@@ -46,13 +46,16 @@ public class RestApiImportOpenApiHttPlaceholderTests : RestApiIntegrationTestBas
 
         var stub = stubs[20];
         Assert.IsTrue(stub.Id.StartsWith("generated-"));
-        Assert.AreEqual("An endpoint which accepts the correlation ID of a request made earlier.\nHttPlaceholder will create a stub based on this request for you to tweak later on.", stub.Description);
+        Assert.AreEqual(
+            "An endpoint which accepts the correlation ID of a request made earlier.\nHttPlaceholder will create a stub based on this request for you to tweak later on.",
+            stub.Description);
         Assert.AreEqual("POST", stub.Conditions.Method);
         Assert.AreEqual("tenant1", stub.Tenant);
 
         var pathRegex = new Regex(@"^\/requests\/(.*)\/stubs$", RegexOptions.Compiled);
         Assert.IsTrue(pathRegex.IsMatch(((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals));
-        Assert.AreEqual(Constants.JsonMime, ((StubConditionStringCheckingModel)stub.Conditions.Headers["content-type"]).StringEquals);
+        Assert.AreEqual(Constants.JsonMime,
+            ((StubConditionStringCheckingModel)stub.Conditions.Headers["content-type"]).StringEquals);
         Assert.AreEqual("localhost", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
 
         Assert.AreEqual(200, stub.Response.StatusCode);

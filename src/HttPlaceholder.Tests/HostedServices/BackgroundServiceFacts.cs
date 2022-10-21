@@ -14,8 +14,8 @@ namespace HttPlaceholder.Tests.HostedServices;
 [TestClass]
 public class BackgroundServiceFacts
 {
-    private readonly AutoMocker _mocker = new();
     private readonly MockLogger<BackgroundService> _loggerMock = new();
+    private readonly AutoMocker _mocker = new();
 
     [TestInitialize]
     public void Initialize() => _mocker.Use<ILogger<BackgroundService>>(_loggerMock);

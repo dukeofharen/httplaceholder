@@ -10,11 +10,6 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 internal class ResponseVariableParser : IResponseVariableParser, ISingletonService
 {
-    public static Regex VarRegex { get; } = new(
-        @"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)",
-        RegexOptions.Compiled,
-        TimeSpan.FromSeconds(10));
-
     private readonly IEnumerable<IResponseVariableParsingHandler> _handlers;
 
     public ResponseVariableParser(IEnumerable<IResponseVariableParsingHandler> handlers)
@@ -22,7 +17,12 @@ internal class ResponseVariableParser : IResponseVariableParser, ISingletonServi
         _handlers = handlers;
     }
 
-    /// <inheritdoc/>
+    public static Regex VarRegex { get; } = new(
+        @"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)",
+        RegexOptions.Compiled,
+        TimeSpan.FromSeconds(10));
+
+    /// <inheritdoc />
     public string Parse(string input, StubModel stub)
     {
         var matches = VarRegex.Matches(input).ToArray();

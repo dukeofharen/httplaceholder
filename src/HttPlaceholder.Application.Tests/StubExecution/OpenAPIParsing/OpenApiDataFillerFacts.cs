@@ -494,7 +494,8 @@ public class OpenApiDataFillerFacts
         var result = filler.BuildRelativeRequestPath(operation, basePath);
 
         // Assert
-        const string expectedPath = "/api/users/user1/orders/123?filter=filterval&anotherquery=filterval2&arraykey=arrayvalue";
+        const string expectedPath =
+            "/api/users/user1/orders/123?filter=filterval&anotherquery=filterval2&arraykey=arrayvalue";
         Assert.AreEqual(expectedPath, result);
     }
 

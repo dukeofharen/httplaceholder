@@ -16,8 +16,8 @@ namespace HttPlaceholder.Persistence.Implementations;
 internal class StubRootPathResolver : IStubRootPathResolver, ISingletonService
 {
     private readonly IAssemblyService _assemblyService;
-    private readonly SettingsModel _settings;
     private readonly IFileService _fileService;
+    private readonly SettingsModel _settings;
 
     public StubRootPathResolver(
         IAssemblyService assemblyService,

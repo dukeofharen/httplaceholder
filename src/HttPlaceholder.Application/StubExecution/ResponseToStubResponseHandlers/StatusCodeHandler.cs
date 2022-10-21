@@ -7,12 +7,13 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 
 /// <summary>
-/// This handler is used for setting the HTTP status code.
+///     This handler is used for setting the HTTP status code.
 /// </summary>
 internal class StatusCodeHandler : IResponseToStubResponseHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel, CancellationToken cancellationToken)
+    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel,
+        CancellationToken cancellationToken)
     {
         if (response.StatusCode <= 0)
         {

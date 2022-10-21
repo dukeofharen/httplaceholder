@@ -10,7 +10,8 @@ namespace HttPlaceholder.Tests.Integration;
 
 public static class TestStartup
 {
-    public static void ConfigureServices(Startup startup, IServiceCollection services, (Type, object)[] servicesToReplace, IEnumerable<IStubSource> stubSources)
+    public static void ConfigureServices(Startup startup, IServiceCollection services,
+        (Type, object)[] servicesToReplace, IEnumerable<IStubSource> stubSources)
     {
         startup.ConfigureServices(services);
 

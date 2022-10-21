@@ -57,12 +57,13 @@ public class ImageResponseWriterFacts
     public async Task WriteToResponseAsync_FileIsCached_ShouldReturnCachedFile()
     {
         // Arrange
-        var stub = new StubModel {Response = new StubResponseModel {Image = new StubResponseImageModel
+        var stub = new StubModel
         {
-            Type = ResponseImageType.Jpeg,
-            Height = 512,
-            Width = 512
-        }}};
+            Response = new StubResponseModel
+            {
+                Image = new StubResponseImageModel {Type = ResponseImageType.Jpeg, Height = 512, Width = 512}
+            }
+        };
         var response = new ResponseModel();
 
         var cachedBytes = new byte[] {1, 2, 3, 4};
@@ -91,12 +92,13 @@ public class ImageResponseWriterFacts
     public async Task WriteToResponseAsync_AllFileTypes(ResponseImageType? type, string expectedContentType)
     {
         // Arrange
-        var stub = new StubModel {Response = new StubResponseModel {Image = new StubResponseImageModel
+        var stub = new StubModel
         {
-            Type = type,
-            Height = 512,
-            Width = 512
-        }}};
+            Response = new StubResponseModel
+            {
+                Image = new StubResponseImageModel {Type = type, Height = 512, Width = 512}
+            }
+        };
         var response = new ResponseModel();
 
         _mockAssemblyService
@@ -120,6 +122,7 @@ public class ImageResponseWriterFacts
         Assert.AreEqual(stub.Response.Image.Width, image.Width);
         Assert.AreEqual(expectedContentType, response.Headers["Content-Type"]);
         _mockFileService
-            .Verify(m => m.WriteAllBytesAsync(expectedCachePath, response.Body, It.IsAny<CancellationToken>()), Times.Once);
+            .Verify(m => m.WriteAllBytesAsync(expectedCachePath, response.Body, It.IsAny<CancellationToken>()),
+                Times.Once);
     }
 }

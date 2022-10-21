@@ -8,7 +8,7 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that validates the request path (relative path without the query string).
+///     Condition checker that validates the request path (relative path without the query string).
 /// </summary>
 public class PathConditionChecker : IConditionChecker, ISingletonService
 {
@@ -16,7 +16,7 @@ public class PathConditionChecker : IConditionChecker, ISingletonService
     private readonly IStringChecker _stringChecker;
 
     /// <summary>
-    /// Constructs a <see cref="PathConditionChecker"/> instance.
+    ///     Constructs a <see cref="PathConditionChecker" /> instance.
     /// </summary>
     public PathConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {

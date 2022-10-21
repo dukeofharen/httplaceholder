@@ -26,13 +26,7 @@ public class ExtraDurationResponseWriterFacts
     public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                ExtraDuration = null
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {ExtraDuration = null}};
 
         var response = new ResponseModel();
 
@@ -51,13 +45,7 @@ public class ExtraDurationResponseWriterFacts
     public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow(object input, int valuePassedToDelay)
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                ExtraDuration = input
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {ExtraDuration = input}};
 
         var response = new ResponseModel();
 
@@ -75,14 +63,7 @@ public class ExtraDurationResponseWriterFacts
         // arrange
         var stub = new StubModel
         {
-            Response = new StubResponseModel
-            {
-                ExtraDuration = new StubExtraDurationModel
-                {
-                    Min = 10000,
-                    Max = 20000
-                }
-            }
+            Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel {Min = 10000, Max = 20000}}
         };
 
         var response = new ResponseModel();
@@ -107,13 +88,7 @@ public class ExtraDurationResponseWriterFacts
         // arrange
         var stub = new StubModel
         {
-            Response = new StubResponseModel
-            {
-                ExtraDuration = new StubExtraDurationModel
-                {
-                    Max = 20000
-                }
-            }
+            Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel {Max = 20000}}
         };
 
         var response = new ResponseModel();
@@ -138,13 +113,7 @@ public class ExtraDurationResponseWriterFacts
         // arrange
         var stub = new StubModel
         {
-            Response = new StubResponseModel
-            {
-                ExtraDuration = new StubExtraDurationModel
-                {
-                    Min = 15000
-                }
-            }
+            Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel {Min = 15000}}
         };
 
         var response = new ResponseModel();

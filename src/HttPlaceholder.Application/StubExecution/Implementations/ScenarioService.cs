@@ -10,8 +10,8 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 internal class ScenarioService : IScenarioService, ISingletonService
 {
-    private readonly IScenarioStateStore _scenarioStateStore;
     private readonly IScenarioNotify _scenarioNotify;
+    private readonly IScenarioStateStore _scenarioStateStore;
 
     public ScenarioService(IScenarioStateStore scenarioStateStore, IScenarioNotify scenarioNotify)
     {
@@ -68,7 +68,8 @@ internal class ScenarioService : IScenarioService, ISingletonService
     public ScenarioStateModel GetScenario(string scenario) => _scenarioStateStore.GetScenario(scenario);
 
     /// <inheritdoc />
-    public async Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState, CancellationToken cancellationToken)
+    public async Task SetScenarioAsync(string scenario, ScenarioStateModel scenarioState,
+        CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(scenario) || scenarioState == null)
         {

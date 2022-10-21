@@ -65,11 +65,11 @@ public class UpdateStubCommandHandlerFacts
             .Returns(Array.Empty<string>());
         mockStubContext
             .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync((FullStubModel) null);
+            .ReturnsAsync((FullStubModel)null);
 
         // Act / Assert
         await Assert.ThrowsExceptionAsync<NotFoundException>(() =>
-                handler.Handle(request, CancellationToken.None));
+            handler.Handle(request, CancellationToken.None));
     }
 
     [TestMethod]
@@ -87,18 +87,12 @@ public class UpdateStubCommandHandlerFacts
             .Setup(m => m.ValidateStubModel(stub))
             .Returns(Array.Empty<string>());
 
-        var oldStub = new FullStubModel
-        {
-            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}
-        };
+        var oldStub = new FullStubModel {Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}};
         mockStubContext
             .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(oldStub);
 
-        var newStub = new FullStubModel
-        {
-            Stub = stub, Metadata = new StubMetadataModel {ReadOnly = true}
-        };
+        var newStub = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = true}};
         mockStubContext
             .Setup(m => m.GetStubAsync(stub.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(newStub);
@@ -129,10 +123,7 @@ public class UpdateStubCommandHandlerFacts
             .Setup(m => m.ValidateStubModel(stub))
             .Returns(Array.Empty<string>());
 
-        var oldStub = new FullStubModel
-        {
-            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = true}
-        };
+        var oldStub = new FullStubModel {Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = true}};
         mockStubContext
             .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(oldStub);
@@ -145,7 +136,8 @@ public class UpdateStubCommandHandlerFacts
         // Assert
         var errors = exception.ValidationErrors.ToArray();
         Assert.AreEqual(1, errors.Length);
-        Assert.AreEqual("Stub with ID 'new-stub-id' is read-only; it can not be updated through the API.", errors.Single());
+        Assert.AreEqual("Stub with ID 'new-stub-id' is read-only; it can not be updated through the API.",
+            errors.Single());
     }
 
     [TestMethod]

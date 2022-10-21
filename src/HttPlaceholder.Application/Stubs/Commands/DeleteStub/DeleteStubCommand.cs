@@ -3,12 +3,12 @@
 namespace HttPlaceholder.Application.Stubs.Commands.DeleteStub;
 
 /// <summary>
-/// A command for deleting a stub.
+///     A command for deleting a stub.
 /// </summary>
 public class DeleteStubCommand : IRequest
 {
     /// <summary>
-    /// Constructs a <see cref="DeleteStubCommand"/> instance.
+    ///     Constructs a <see cref="DeleteStubCommand" /> instance.
     /// </summary>
     /// <param name="stubId">The stub ID.</param>
     public DeleteStubCommand(string stubId)
@@ -17,7 +17,7 @@ public class DeleteStubCommand : IRequest
     }
 
     /// <summary>
-    /// Gets the stub ID.
+    ///     Gets the stub ID.
     /// </summary>
     public string StubId { get; }
 }

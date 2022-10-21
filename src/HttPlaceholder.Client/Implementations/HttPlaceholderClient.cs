@@ -22,11 +22,12 @@ using Newtonsoft.Json;
 namespace HttPlaceholder.Client.Implementations;
 
 /// <summary>
-/// Describes a class that is used to communicate with HttPlaceholder.
+///     Describes a class that is used to communicate with HttPlaceholder.
 /// </summary>
 /// <example>
-/// When you've initialized the client, you can call the HttPlaceholder API endpoints. Here is an example for how you add a simple stub.
-/// <code>
+///     When you've initialized the client, you can call the HttPlaceholder API endpoints. Here is an example for how you
+///     add a simple stub.
+///     <code>
 /// ...
 /// var createdStub = await client.CreateStubAsync(new StubDto
 /// {
@@ -47,9 +48,11 @@ namespace HttPlaceholder.Client.Implementations;
 /// });
 /// ...
 /// </code>
-///
-/// This method will create the stub and will also return the created stub. Because this way of adding stubs can get very verbose very quick, another way of adding stubs with the client has been added: the StubBuilder. This is a fluent builder which can also be used to create new stubs. Here is the same example, but now with using the StubBuilder:
-/// <code>
+///     This method will create the stub and will also return the created stub. Because this way of adding stubs can get
+///     very verbose very quick, another way of adding stubs with the client has been added: the StubBuilder. This is a
+///     fluent builder which can also be used to create new stubs. Here is the same example, but now with using the
+///     StubBuilder:
+///     <code>
 /// ...
 /// var createdStub = await client.CreateStubAsync(StubBuilder.Begin()
 /// .WithId("test-stub-123")
@@ -61,8 +64,7 @@ namespace HttPlaceholder.Client.Implementations;
 /// .WithJsonBody(new {key1 = "val1", key2 = "val2"})));
 /// ...
 /// </code>
-///
-/// This method is a bit shorter and is more readable.
+///     This method is a bit shorter and is more readable.
 /// </example>
 public class HttPlaceholderClient : IHttPlaceholderClient
 {
@@ -70,9 +72,9 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     private const string TextContentType = "text/plain";
 
     /// <summary>
-    /// Creates a <see cref="HttPlaceholderClient"/> instance.
+    ///     Creates a <see cref="HttPlaceholderClient" /> instance.
     /// </summary>
-    /// <param name="httpClient">A <see cref="HttpClient"/> instance.</param>
+    /// <param name="httpClient">A <see cref="HttpClient" /> instance.</param>
     public HttPlaceholderClient(HttpClient httpClient)
     {
         HttpClient = httpClient;
@@ -268,7 +270,8 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     {
         using var response =
             await HttpClient.PutAsync($"/ph-api/stubs/{stubId}",
-                new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, JsonContentType), cancellationToken);
+                new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, JsonContentType),
+                cancellationToken);
         if (!response.IsSuccessStatusCode)
         {
             var content = await response.Content.ReadAsStringAsync();

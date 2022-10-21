@@ -7,7 +7,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to return response headers.
+///     Response writer that is used to return response headers.
 /// </summary>
 internal class HeadersResponseWriter : IResponseWriter, ISingletonService
 {
@@ -15,7 +15,8 @@ internal class HeadersResponseWriter : IResponseWriter, ISingletonService
     public int Priority => 0;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
+        CancellationToken cancellationToken)
     {
         var stubResponseHeaders = stub.Response?.Headers;
         if (stubResponseHeaders == null || stubResponseHeaders.Any() != true)

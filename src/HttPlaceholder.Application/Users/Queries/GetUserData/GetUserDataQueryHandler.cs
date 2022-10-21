@@ -10,14 +10,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Users.Queries.GetUserData;
 
 /// <summary>
-/// A query handler for retrieving user data of a specific user.
+///     A query handler for retrieving user data of a specific user.
 /// </summary>
 public class GetUserDataQueryHandler : IRequestHandler<GetUserDataQuery, UserModel>
 {
     private readonly IUserContext _userContext;
 
     /// <summary>
-    /// Constructs a <see cref="GetUserDataQueryHandler"/> instance.
+    ///     Constructs a <see cref="GetUserDataQueryHandler" /> instance.
     /// </summary>
     public GetUserDataQueryHandler(IUserContext userContext)
     {
@@ -33,9 +33,6 @@ public class GetUserDataQueryHandler : IRequestHandler<GetUserDataQuery, UserMod
             throw new ForbiddenException();
         }
 
-        return Task.FromResult(new UserModel
-        {
-            Username = request.Username
-        });
+        return Task.FromResult(new UserModel {Username = request.Username});
     }
 }

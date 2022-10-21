@@ -10,14 +10,14 @@ using Microsoft.Extensions.Configuration;
 namespace HttPlaceholder.Application.Configuration.Queries.GetConfiguration;
 
 /// <summary>
-/// A handler for retrieving the configuration.
+///     A handler for retrieving the configuration.
 /// </summary>
 public class GetConfigurationQueryHandler : IRequestHandler<GetConfigurationQuery, IEnumerable<ConfigurationModel>>
 {
     private readonly IConfiguration _configuration;
 
     /// <summary>
-    /// Constructs a <see cref="GetConfigurationQueryHandler"/> instance.
+    ///     Constructs a <see cref="GetConfigurationQueryHandler" /> instance.
     /// </summary>
     public GetConfigurationQueryHandler(IConfiguration configuration)
     {

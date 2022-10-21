@@ -10,12 +10,13 @@ using Microsoft.AspNetCore.WebUtilities;
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
 /// <summary>
-/// "Request to stub conditions handler" that is used to create form conditions.
+///     "Request to stub conditions handler" that is used to create form conditions.
 /// </summary>
 internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
+        CancellationToken cancellationToken)
     {
         var pair = request.Headers.FirstOrDefault(p =>
             p.Key.Equals("Content-Type", StringComparison.OrdinalIgnoreCase));

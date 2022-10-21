@@ -1,27 +1,27 @@
 ﻿namespace HttPlaceholder.Client.Dto.Enums;
 
 /// <summary>
-/// An enum for specifying the result of a condition checker.
+///     An enum for specifying the result of a condition checker.
 /// </summary>
 public enum ConditionValidationType
 {
     /// <summary>
-    /// Not set.
+    ///     Not set.
     /// </summary>
     NotSet,
 
     /// <summary>
-    /// Condition is valid.
+    ///     Condition is valid.
     /// </summary>
     Valid,
 
     /// <summary>
-    /// Condition is invalid.
+    ///     Condition is invalid.
     /// </summary>
     Invalid,
 
     /// <summary>
-    /// Condition is not executed.
+    ///     Condition is not executed.
     /// </summary>
     NotExecuted
 }

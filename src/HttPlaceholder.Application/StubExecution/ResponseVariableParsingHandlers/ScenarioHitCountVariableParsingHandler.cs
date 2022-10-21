@@ -7,7 +7,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable handler that is used to insert the hit count of a specific scenario in the response
+///     Response variable handler that is used to insert the hit count of a specific scenario in the response
 /// </summary>
 internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {

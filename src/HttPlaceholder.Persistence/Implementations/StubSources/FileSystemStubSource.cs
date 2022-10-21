@@ -15,13 +15,13 @@ using Newtonsoft.Json;
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
 /// <summary>
-/// A stub source that is used to store and read data on the file system.
+///     A stub source that is used to store and read data on the file system.
 /// </summary>
 internal class FileSystemStubSource : IWritableStubSource
 {
     private readonly IFileService _fileService;
-    private readonly SettingsModel _settings;
     private readonly IFileSystemStubCache _fileSystemStubCache;
+    private readonly SettingsModel _settings;
 
     public FileSystemStubSource(
         IFileService fileService,
@@ -34,7 +34,8 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel, CancellationToken cancellationToken)
+    public async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
+        CancellationToken cancellationToken)
     {
         var requestsFolder = GetRequestsFolder();
         var responsesFolder = GetResponsesFolder();

@@ -1,17 +1,16 @@
 ﻿using HttPlaceholder.Application.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HttPlaceholder.HostedServices;
 
 /// <summary>
-/// A class for registering all hosted services.
+///     A class for registering all hosted services.
 /// </summary>
 public static class HostedServiceModule
 {
     /// <summary>
-    /// A method for registering all hosted services.
+    ///     A method for registering all hosted services.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The configuration.</param>

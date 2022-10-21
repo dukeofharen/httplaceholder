@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -13,7 +12,8 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to query the posted JSON string based on a JSONPath expression. The result is put in the response.
+///     Response variable parsing handler that is used to query the posted JSON string based on a JSONPath expression. The
+///     result is put in the response.
 /// </summary>
 internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {

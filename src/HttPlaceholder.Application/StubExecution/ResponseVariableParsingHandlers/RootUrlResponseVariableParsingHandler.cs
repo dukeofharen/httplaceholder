@@ -8,7 +8,8 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert the root URL (so the URL without path + query string) in the response.
+///     Response variable parsing handler that is used to insert the root URL (so the URL without path + query string) in
+///     the response.
 /// </summary>
 internal class RootUrlResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {

@@ -24,10 +24,7 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}client-ip-1";
-        var request = new HttpRequestMessage
-        {
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {RequestUri = new Uri(url)};
         request.Headers.Add("X-Forwarded-Host", "httplaceholder.com");
         ClientDataResolverMock
             .Setup(m => m.GetClientIp())

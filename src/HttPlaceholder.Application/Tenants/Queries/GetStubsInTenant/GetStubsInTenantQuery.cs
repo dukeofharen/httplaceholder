@@ -5,12 +5,12 @@ using MediatR;
 namespace HttPlaceholder.Application.Tenants.Queries.GetStubsInTenant;
 
 /// <summary>
-/// A query for retrieving all stubs belonging to a tenant.
+///     A query for retrieving all stubs belonging to a tenant.
 /// </summary>
 public class GetStubsInTenantQuery : IRequest<IEnumerable<FullStubModel>>
 {
     /// <summary>
-    /// Constructs a <see cref="GetStubsInTenantQuery"/> instance.
+    ///     Constructs a <see cref="GetStubsInTenantQuery" /> instance.
     /// </summary>
     /// <param name="tenant">The tenant.</param>
     public GetStubsInTenantQuery(string tenant)
@@ -19,7 +19,7 @@ public class GetStubsInTenantQuery : IRequest<IEnumerable<FullStubModel>>
     }
 
     /// <summary>
-    /// Gets the tenant.
+    ///     Gets the tenant.
     /// </summary>
     public string Tenant { get; }
 }

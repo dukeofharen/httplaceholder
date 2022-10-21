@@ -13,7 +13,7 @@ using static HttPlaceholder.Domain.Constants;
 namespace HttPlaceholder.Infrastructure.Configuration;
 
 /// <summary>
-/// A class that is used to convert a list of command line arguments to a dictionary.
+///     A class that is used to convert a list of command line arguments to a dictionary.
 /// </summary>
 public class ConfigurationParser
 {
@@ -21,7 +21,7 @@ public class ConfigurationParser
     private readonly IFileService _fileService;
 
     /// <summary>
-    /// Constructs a <see cref="ConfigurationParser"/> instance.
+    ///     Constructs a <see cref="ConfigurationParser" /> instance.
     /// </summary>
     internal ConfigurationParser(
         IEnvService envService,
@@ -32,7 +32,7 @@ public class ConfigurationParser
     }
 
     /// <summary>
-    /// Constructs a <see cref="ConfigurationParser"/> instance.
+    ///     Constructs a <see cref="ConfigurationParser" /> instance.
     /// </summary>
     public ConfigurationParser() : this(
         new EnvService(),
@@ -41,7 +41,7 @@ public class ConfigurationParser
     }
 
     /// <summary>
-    /// Converts a string array of command line arguments into a dictionary.
+    ///     Converts a string array of command line arguments into a dictionary.
     /// </summary>
     /// <param name="args">The command line arguments.</param>
     /// <returns>The parsed dictionary.</returns>

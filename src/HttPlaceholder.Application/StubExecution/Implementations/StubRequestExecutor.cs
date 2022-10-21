@@ -18,9 +18,9 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
     private readonly IFinalStubDeterminer _finalStubDeterminer;
     private readonly ILogger<StubRequestExecutor> _logger;
     private readonly IRequestLoggerFactory _requestLoggerFactory;
+    private readonly IScenarioService _scenarioService;
     private readonly IStubContext _stubContext;
     private readonly IStubResponseGenerator _stubResponseGenerator;
-    private readonly IScenarioService _scenarioService;
 
     public StubRequestExecutor(
         IEnumerable<IConditionChecker> conditionCheckers,
@@ -40,7 +40,7 @@ internal class StubRequestExecutor : IStubRequestExecutor, ISingletonService
         _scenarioService = scenarioService;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<ResponseModel> ExecuteRequestAsync(CancellationToken cancellationToken)
     {
         var requestLogger = _requestLoggerFactory.GetRequestLogger();

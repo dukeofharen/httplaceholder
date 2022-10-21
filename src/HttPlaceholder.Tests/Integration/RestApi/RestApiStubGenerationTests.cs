@@ -55,8 +55,10 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         var addedStub = StubSource.StubModels.Single();
         Assert.AreEqual("/test123", ((StubConditionStringCheckingModel)addedStub.Conditions.Url.Path).StringEquals);
 
-        Assert.AreEqual("val1", ((StubConditionStringCheckingModel)addedStub.Conditions.Url.Query["query1"]).StringEquals);
-        Assert.AreEqual("val2", ((StubConditionStringCheckingModel)addedStub.Conditions.Url.Query["query2"]).StringEquals);
+        Assert.AreEqual("val1",
+            ((StubConditionStringCheckingModel)addedStub.Conditions.Url.Query["query1"]).StringEquals);
+        Assert.AreEqual("val2",
+            ((StubConditionStringCheckingModel)addedStub.Conditions.Url.Query["query2"]).StringEquals);
 
         Assert.AreEqual("POST", addedStub.Conditions.Method);
 
@@ -64,11 +66,12 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         Assert.AreEqual("val1", ((StubConditionStringCheckingModel)formDict["form1"]).StringEquals);
         Assert.AreEqual("val2", ((StubConditionStringCheckingModel)formDict["form2"]).StringEquals);
 
-        Assert.AreEqual("abc123", ((StubConditionStringCheckingModel)addedStub.Conditions.Headers["X-Api-Key"]).StringEquals);
+        Assert.AreEqual("abc123",
+            ((StubConditionStringCheckingModel)addedStub.Conditions.Headers["X-Api-Key"]).StringEquals);
 
         Assert.AreEqual("127.0.0.1", addedStub.Conditions.ClientIp);
 
-        Assert.IsFalse(addedStub.Conditions.Url.IsHttps.HasValue &&addedStub.Conditions.Url.IsHttps.Value);
+        Assert.IsFalse(addedStub.Conditions.Url.IsHttps.HasValue && addedStub.Conditions.Url.IsHttps.Value);
 
         Assert.AreEqual("localhost", ((StubConditionStringCheckingModel)addedStub.Conditions.Host).StringEquals);
 
@@ -98,7 +101,9 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent(JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}), Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent(
+                JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}),
+                Encoding.UTF8, Constants.JsonMime)
         };
         response = await Client.SendAsync(apiRequest);
         response.EnsureSuccessStatusCode();

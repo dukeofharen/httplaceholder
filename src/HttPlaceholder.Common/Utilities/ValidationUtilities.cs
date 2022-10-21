@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 namespace HttPlaceholder.Common.Utilities;
 
 /// <summary>
-/// A static class that contains several validation utilities.
+///     A static class that contains several validation utilities.
 /// </summary>
 public static class ValidationUtilities
 {
     /// <summary>
-    /// A method that executes a given action if the passed task returns a null value.
+    ///     A method that executes a given action if the passed task returns a null value.
     /// </summary>
     /// <param name="task">The task to be executed.</param>
     /// <param name="action">The action to be executed if the task returns null.</param>
@@ -27,7 +27,7 @@ public static class ValidationUtilities
     }
 
     /// <summary>
-    /// A method that executes a given action if the passed value is null.
+    ///     A method that executes a given action if the passed value is null.
     /// </summary>
     /// <param name="value">The value to check.</param>
     /// <param name="action">The action to be executed if the task returns null.</param>

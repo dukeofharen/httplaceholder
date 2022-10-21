@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace HttPlaceholder.Controllers;
 
 /// <summary>
-/// Default base api controller
+///     Default base api controller
 /// </summary>
 [ProducesResponseType(StatusCodes.Status401Unauthorized)]
 [ApiController]
@@ -17,12 +17,12 @@ public abstract class BaseApiController : Controller
     private IMediator _mediator;
 
     /// <summary>
-    /// Gets the AutoMapper instance.
+    ///     Gets the AutoMapper instance.
     /// </summary>
     protected IMapper Mapper => _mapper ??= HttpContext.RequestServices.GetRequiredService<IMapper>();
 
     /// <summary>
-    /// Gets the Mediator instance.
+    ///     Gets the Mediator instance.
     /// </summary>
     protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
 }

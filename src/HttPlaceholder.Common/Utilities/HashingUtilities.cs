@@ -5,12 +5,12 @@ using System.Text;
 namespace HttPlaceholder.Common.Utilities;
 
 /// <summary>
-/// A utility class that contains hashing methods.
+///     A utility class that contains hashing methods.
 /// </summary>
 public static class HashingUtilities
 {
     /// <summary>
-    /// Calculates an MD5 string from a specific input.
+    ///     Calculates an MD5 string from a specific input.
     /// </summary>
     /// <param name="input">The input.</param>
     /// <returns>The hashed MD5 string.</returns>
@@ -28,7 +28,7 @@ public static class HashingUtilities
     }
 
     /// <summary>
-    /// Calculates an SHA1 string from a specific input.
+    ///     Calculates an SHA1 string from a specific input.
     /// </summary>
     /// <param name="input">The input.</param>
     /// <returns>The hashed SHA1 string.</returns>

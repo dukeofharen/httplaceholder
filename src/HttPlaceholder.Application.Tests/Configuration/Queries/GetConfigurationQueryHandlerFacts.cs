@@ -22,7 +22,10 @@ public class GetConfigurationQueryHandlerFacts
     public async Task Handle_HappyFlow()
     {
         // Arrange
-        var testConfig = new Dictionary<string, string> {{"Authentication:ApiUsername", "value1"}, {"Authentication:ApiPassword", "value2"}};
+        var testConfig = new Dictionary<string, string>
+        {
+            {"Authentication:ApiUsername", "value1"}, {"Authentication:ApiPassword", "value2"}
+        };
         var configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(testConfig)
             .Build();

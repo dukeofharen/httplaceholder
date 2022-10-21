@@ -12,8 +12,8 @@ namespace HttPlaceholder.Persistence.Tests;
 [TestClass]
 public class PersistenceModuleFacts
 {
-    private readonly IServiceCollection _services = new ServiceCollection();
     private readonly IDictionary<string, string> _args = new Dictionary<string, string>();
+    private readonly IServiceCollection _services = new ServiceCollection();
 
     [TestMethod]
     public void

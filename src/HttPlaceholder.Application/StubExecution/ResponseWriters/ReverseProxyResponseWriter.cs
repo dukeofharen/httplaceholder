@@ -14,7 +14,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to setup a reverse proxy to another URL.
+///     Response writer that is used to setup a reverse proxy to another URL.
 /// </summary>
 internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
 {

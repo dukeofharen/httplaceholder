@@ -24,12 +24,13 @@ internal class HttpContextService : IHttpContextService, ISingletonService
         Constants.MultipartFormDataMime, Constants.UrlEncodedFormMime
     };
 
-    private readonly ILogger<HttpContextService> _logger;
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    private readonly ILogger<HttpContextService> _logger;
+
     /// <summary>
-    /// Constructs a <see cref="HttpContextService"/> instance.
+    ///     Constructs a <see cref="HttpContextService" /> instance.
     /// </summary>
     public HttpContextService(
         IClientDataResolver clientDataResolver,

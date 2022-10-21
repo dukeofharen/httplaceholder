@@ -4,12 +4,12 @@ using AutoMapper;
 namespace HttPlaceholder.Common.Utilities;
 
 /// <summary>
-/// A utility class with AutoMapper helper methods.
+///     A utility class with AutoMapper helper methods.
 /// </summary>
 public static class AutoMapperExtensions
 {
     /// <summary>
-    /// Maps an object to another object and gives an option to mutate the mapped object right after mapping.
+    ///     Maps an object to another object and gives an option to mutate the mapped object right after mapping.
     /// </summary>
     /// <param name="mapper">The AutoMapper instance.</param>
     /// <param name="source">The source object.</param>

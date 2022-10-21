@@ -83,8 +83,10 @@ public class OpenApiStubGeneratorFacts
         Assert.AreEqual(stub1, result[0].Stub);
         Assert.AreEqual(stub2, result[1].Stub);
 
-        stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never());
-        stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()), Times.Never());
+        stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Never());
+        stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()),
+            Times.Never());
     }
 
     [TestMethod]
@@ -125,7 +127,8 @@ public class OpenApiStubGeneratorFacts
             .ReturnsAsync(new FullStubModel {Stub = addedStub2});
 
         // Act
-        var result = (await generator.GenerateOpenApiStubsAsync(input, false, tenant, CancellationToken.None)).ToArray();
+        var result = (await generator.GenerateOpenApiStubsAsync(input, false, tenant, CancellationToken.None))
+            .ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);

@@ -20,8 +20,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations;
 public class StubContextFacts
 {
     private readonly AutoMocker _mocker = new();
-    private readonly IList<IStubSource> _stubSources = new List<IStubSource>();
     private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
+    private readonly IList<IStubSource> _stubSources = new List<IStubSource>();
 
     [TestInitialize]
     public void Initialize()
@@ -153,7 +153,8 @@ public class StubContextFacts
         var context = _mocker.CreateInstance<StubContext>();
 
         // act / assert
-        await Assert.ThrowsExceptionAsync<ConflictException>(() => context.AddStubAsync(stubToBeAdded, CancellationToken.None));
+        await Assert.ThrowsExceptionAsync<ConflictException>(() =>
+            context.AddStubAsync(stubToBeAdded, CancellationToken.None));
     }
 
     [TestMethod]
@@ -599,9 +600,12 @@ public class StubContextFacts
         stubSource.Verify(m => m.DeleteStubAsync(stub2.Id, It.IsAny<CancellationToken>()), Times.Once);
         stubSource.Verify(m => m.DeleteStubAsync(stub3.Id, It.IsAny<CancellationToken>()), Times.Once);
 
-        stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub1.Id), It.IsAny<CancellationToken>()), Times.Never);
-        stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub2.Id), It.IsAny<CancellationToken>()), Times.Once);
-        stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub3.Id), It.IsAny<CancellationToken>()), Times.Once);
+        stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub1.Id), It.IsAny<CancellationToken>()),
+            Times.Never);
+        stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub2.Id), It.IsAny<CancellationToken>()),
+            Times.Once);
+        stubSource.Verify(m => m.AddStubAsync(It.Is<StubModel>(s => s.Id == stub3.Id), It.IsAny<CancellationToken>()),
+            Times.Once);
 
         Assert.IsTrue(newStubs.All(s => s.Tenant == tenant1));
     }

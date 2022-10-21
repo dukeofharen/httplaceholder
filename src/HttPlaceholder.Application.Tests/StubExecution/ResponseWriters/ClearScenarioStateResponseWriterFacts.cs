@@ -31,7 +31,8 @@ public class ClearScenarioStateResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("ClearScenarioStateResponseWriter", result.ResponseWriterName);
-        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 
     [TestMethod]
@@ -48,7 +49,8 @@ public class ClearScenarioStateResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("ClearScenarioStateResponseWriter", result.ResponseWriterName);
-        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 
     [TestMethod]
@@ -65,7 +67,8 @@ public class ClearScenarioStateResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.AreEqual("ClearScenarioStateResponseWriter", result.ResponseWriterName);
-        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 
     [TestMethod]
@@ -90,9 +93,6 @@ public class ClearScenarioStateResponseWriterFacts
         new()
         {
             Scenario = scenario,
-            Response = new StubResponseModel
-            {
-                Scenario = new StubResponseScenarioModel {ClearState = clearState}
-            }
+            Response = new StubResponseModel {Scenario = new StubResponseScenarioModel {ClearState = clearState}}
         };
 }

@@ -61,7 +61,8 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual(14, request.Headers.Count);
 
         var headers = request.Headers;
-        Assert.AreEqual("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/94.0", headers["User-Agent"]);
+        Assert.AreEqual("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/94.0",
+            headers["User-Agent"]);
         Assert.AreEqual("application/json, text/plain, */*", headers["Accept"]);
         Assert.AreEqual("en-US,en;q=0.5", headers["Accept-Language"]);
         Assert.AreEqual("application/json;charset=utf-8", headers["Content-Type"]);
@@ -93,11 +94,14 @@ public class CurlToHttpRequestMapperFacts
         var request = result[0];
         Assert.AreEqual("PUT", request.Method);
         Assert.AreEqual("https://api.site.com/api/v1/users", request.Url);
-        Assert.AreEqual(@"{""id"":1,""created"":""2015-10-21T14:39:55"",""updated"":""2021-11-26T22:10:52"",""userName"":""d"",""firstName"":""d'"",""lastName"":""h h"",""street"":""Road"",""number"":""6"",""postalCode"":""1234AB"",""city"":""Amsterdam"",""phone"":""0612345678"",""email"":""info@example.com"",""placeId"":1,""newsletter"":false,""driversLicenseNumber"":""112233"",""emailRepeat"":""info@example.com""}", request.Body);
+        Assert.AreEqual(
+            @"{""id"":1,""created"":""2015-10-21T14:39:55"",""updated"":""2021-11-26T22:10:52"",""userName"":""d"",""firstName"":""d'"",""lastName"":""h h"",""street"":""Road"",""number"":""6"",""postalCode"":""1234AB"",""city"":""Amsterdam"",""phone"":""0612345678"",""email"":""info@example.com"",""placeId"":1,""newsletter"":false,""driversLicenseNumber"":""112233"",""emailRepeat"":""info@example.com""}",
+            request.Body);
         Assert.AreEqual(14, request.Headers.Count);
 
         var headers = request.Headers;
-        Assert.AreEqual("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/94.0", headers["User-Agent"]);
+        Assert.AreEqual("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/94.0",
+            headers["User-Agent"]);
         Assert.AreEqual("application/json, text/plain, */*", headers["Accept"]);
         Assert.AreEqual("en-US,en;q=0.5", headers["Accept-Language"]);
         Assert.AreEqual("application/json;charset=utf-8", headers["Content-Type"]);
@@ -134,12 +138,15 @@ public class CurlToHttpRequestMapperFacts
 
         var headers = request.Headers;
         Assert.AreEqual("api.site.com", headers["authority"]);
-        Assert.AreEqual(@""" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""", headers["sec-ch-ua"]);
+        Assert.AreEqual(@""" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""",
+            headers["sec-ch-ua"]);
         Assert.AreEqual("application/json, text/plain, */*", headers["accept"]);
         Assert.AreEqual("application/json;charset=UTF-8", headers["content-type"]);
         Assert.AreEqual("Basic dXNlcjpwYXNz", headers["authorization"]);
         Assert.AreEqual("?0", headers["sec-ch-ua-mobile"]);
-        Assert.AreEqual("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36", headers["user-agent"]);
+        Assert.AreEqual(
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
+            headers["user-agent"]);
         Assert.AreEqual(@"""Linux""", headers["sec-ch-ua-platform"]);
         Assert.AreEqual("https://site.com", headers["origin"]);
         Assert.AreEqual("same-site", headers["sec-fetch-site"]);
@@ -165,17 +172,22 @@ public class CurlToHttpRequestMapperFacts
         var request = result[0];
         Assert.AreEqual("PUT", request.Method);
         Assert.AreEqual("https://api.site.com/api/v1/users", request.Url);
-        Assert.AreEqual(@"{""id"":1,""created"":""2015-10-21T14:39:55"",""updated"":""2021-11-26T22:10:52"",""userName"":""d"",""firstName"":""d'"",""lastName"":""h"",""street"":""Road"",""number"":""6"",""postalCode"":""1234AB"",""city"":""Amsterdam"",""phone"":""0612345678"",""email"":""info@example.com"",""placeId"":1,""newsletter"":false,""driversLicenseNumber"":""112233"",""emailRepeat"":""info@example.com""}", request.Body);
+        Assert.AreEqual(
+            @"{""id"":1,""created"":""2015-10-21T14:39:55"",""updated"":""2021-11-26T22:10:52"",""userName"":""d"",""firstName"":""d'"",""lastName"":""h"",""street"":""Road"",""number"":""6"",""postalCode"":""1234AB"",""city"":""Amsterdam"",""phone"":""0612345678"",""email"":""info@example.com"",""placeId"":1,""newsletter"":false,""driversLicenseNumber"":""112233"",""emailRepeat"":""info@example.com""}",
+            request.Body);
         Assert.AreEqual(14, request.Headers.Count);
 
         var headers = request.Headers;
         Assert.AreEqual("api.site.com", headers["authority"]);
-        Assert.AreEqual(@""" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""", headers["sec-ch-ua"]);
+        Assert.AreEqual(@""" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""",
+            headers["sec-ch-ua"]);
         Assert.AreEqual("application/json, text/plain, */*", headers["accept"]);
         Assert.AreEqual("application/json;charset=UTF-8", headers["content-type"]);
         Assert.AreEqual("Bearer VERYLONGSTRING", headers["authorization"]);
         Assert.AreEqual("?0", headers["sec-ch-ua-mobile"]);
-        Assert.AreEqual("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36", headers["user-agent"]);
+        Assert.AreEqual(
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
+            headers["user-agent"]);
         Assert.AreEqual(@"""Linux""", headers["sec-ch-ua-platform"]);
         Assert.AreEqual("https://site.com", headers["origin"]);
         Assert.AreEqual("same-site", headers["sec-fetch-site"]);

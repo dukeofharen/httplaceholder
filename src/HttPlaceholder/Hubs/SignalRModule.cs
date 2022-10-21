@@ -8,12 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace HttPlaceholder.Hubs;
 
 /// <summary>
-/// A class for registering SignalR related classes on the service collection.
+///     A class for registering SignalR related classes on the service collection.
 /// </summary>
 public static class SignalRModule
 {
     /// <summary>
-    /// Registers SignalR related classes on the service collection.
+    ///     Registers SignalR related classes on the service collection.
     /// </summary>
     /// <param name="services">The service collection.</param>
     public static IServiceCollection AddSignalRHubs(this IServiceCollection services)
@@ -28,7 +28,7 @@ public static class SignalRModule
     }
 
     /// <summary>
-    /// Configures SignalR.
+    ///     Configures SignalR.
     /// </summary>
     /// <param name="options">The endpoint route builder options.</param>
     public static IEndpointRouteBuilder ConfigureSignalR(this IEndpointRouteBuilder options)

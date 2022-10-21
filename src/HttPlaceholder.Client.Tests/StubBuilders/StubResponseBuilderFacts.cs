@@ -199,7 +199,7 @@ public class StubResponseBuilderFacts
     {
         // Act
         var response = StubResponseBuilder.Begin()
-            .WithExtraDuration(new StubExtraDurationDto{Min = 10000, Max = 15000})
+            .WithExtraDuration(new StubExtraDurationDto {Min = 10000, Max = 15000})
             .Build();
 
         // Assert

@@ -10,7 +10,7 @@ using MediatR;
 namespace HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
 
 /// <summary>
-/// A command handler for updating a stub.
+///     A command handler for updating a stub.
 /// </summary>
 public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
 {
@@ -18,7 +18,7 @@ public class UpdateStubCommandHandler : IRequestHandler<UpdateStubCommand>
     private readonly IStubModelValidator _stubModelValidator;
 
     /// <summary>
-    /// Constructs an <see cref="UpdateStubCommandHandler"/> instance.
+    ///     Constructs an <see cref="UpdateStubCommandHandler" /> instance.
     /// </summary>
     public UpdateStubCommandHandler(IStubContext stubContext, IStubModelValidator stubModelValidator)
     {

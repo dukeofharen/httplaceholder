@@ -11,9 +11,10 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
 /// <summary>
-/// This handler is used to check whether the request contains JSON.
-/// The content type should be JSON, the JSON should be correct and no request body should have been set for the stub yet.
-/// JSON objects and arrays are supported as root node.
+///     This handler is used to check whether the request contains JSON.
+///     The content type should be JSON, the JSON should be correct and no request body should have been set for the stub
+///     yet.
+///     JSON objects and arrays are supported as root node.
 /// </summary>
 internal class JsonHandler : IRequestToStubConditionsHandler, ISingletonService
 {
@@ -25,7 +26,8 @@ internal class JsonHandler : IRequestToStubConditionsHandler, ISingletonService
     }
 
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
+        CancellationToken cancellationToken)
     {
         var pair = request.Headers.FirstOrDefault(p =>
             p.Key.Equals("Content-Type", StringComparison.OrdinalIgnoreCase));

@@ -11,14 +11,14 @@ using NetTools;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that verifies the client IP address. IP address can be both a single IP or an IP range.
+///     Condition checker that verifies the client IP address. IP address can be both a single IP or an IP range.
 /// </summary>
 public class ClientIpConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IClientDataResolver _clientDataResolver;
 
     /// <summary>
-    /// Constructs a <see cref="ClientIpConditionChecker"/> instance.
+    ///     Constructs a <see cref="ClientIpConditionChecker" /> instance.
     /// </summary>
     public ClientIpConditionChecker(IClientDataResolver clientDataResolver)
     {

@@ -7,7 +7,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable handler that is used to insert the state of a specific scenario in the response
+///     Response variable handler that is used to insert the state of a specific scenario in the response
 /// </summary>
 internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {

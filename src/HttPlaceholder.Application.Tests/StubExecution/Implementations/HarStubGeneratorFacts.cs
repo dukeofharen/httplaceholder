@@ -31,7 +31,8 @@ public class HarStubGeneratorFacts
         var generator = _mocker.CreateInstance<HarStubGenerator>();
 
         // Act
-        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
+        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() =>
+            generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("The HAR was invalid."));
@@ -45,7 +46,8 @@ public class HarStubGeneratorFacts
         var generator = _mocker.CreateInstance<HarStubGenerator>();
 
         // Act
-        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
+        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() =>
+            generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("har.log is not set."));
@@ -59,7 +61,8 @@ public class HarStubGeneratorFacts
         var generator = _mocker.CreateInstance<HarStubGenerator>();
 
         // Act
-        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
+        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() =>
+            generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("No entries set in HAR."));
@@ -73,7 +76,8 @@ public class HarStubGeneratorFacts
         var generator = _mocker.CreateInstance<HarStubGenerator>();
 
         // Act
-        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
+        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() =>
+            generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("No entries set in HAR."));
@@ -157,8 +161,10 @@ public class HarStubGeneratorFacts
         Assert.AreEqual(11, res3.Headers.Count);
         Assert.AreEqual("h2", res3.Headers["X-Firefox-Spdy"]);
 
-        stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Exactly(3));
-        stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()), Times.Exactly(3));
+        stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(3));
+        stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()),
+            Times.Exactly(3));
     }
 
     [TestMethod]
@@ -174,11 +180,7 @@ public class HarStubGeneratorFacts
 
         httpRequestToConditionsServiceMock
             .Setup(m => m.ConvertToConditionsAsync(It.IsAny<HttpRequestModel>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new StubConditionsModel
-            {
-                Method = "GET",
-                Url = new StubUrlConditionModel{Path = "/path1"}
-            });
+            .ReturnsAsync(new StubConditionsModel {Method = "GET", Url = new StubUrlConditionModel {Path = "/path1"}});
 
         httpResponseToStubResponseServiceMock
             .Setup(m => m.ConvertToResponseAsync(It.IsAny<HttpResponseModel>(), It.IsAny<CancellationToken>()))

@@ -10,11 +10,11 @@ namespace HttPlaceholder.Resources.Implementations;
 
 internal class ResourcesService : IResourcesService, ISingletonService
 {
-    private readonly ConcurrentDictionary<string, Lazy<string>> _resources = new();
     private readonly IFileService _fileService;
+    private readonly ConcurrentDictionary<string, Lazy<string>> _resources = new();
 
     /// <summary>
-    /// Constructs a <see cref="ResourcesService"/> instance.
+    ///     Constructs a <see cref="ResourcesService" /> instance.
     /// </summary>
     public ResourcesService(IFileService fileService)
     {

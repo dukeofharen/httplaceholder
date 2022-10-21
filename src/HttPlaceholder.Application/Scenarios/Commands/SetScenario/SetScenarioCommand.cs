@@ -4,12 +4,12 @@ using MediatR;
 namespace HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 
 /// <summary>
-/// A command for setting a scenario.
+///     A command for setting a scenario.
 /// </summary>
 public class SetScenarioCommand : IRequest
 {
     /// <summary>
-    /// Constructs a <see cref="SetScenarioCommand"/> instance
+    ///     Constructs a <see cref="SetScenarioCommand" /> instance
     /// </summary>
     /// <param name="scenarioStateModel">The scenario.</param>
     /// <param name="scenarioName">The scenario name.</param>
@@ -20,12 +20,12 @@ public class SetScenarioCommand : IRequest
     }
 
     /// <summary>
-    /// Gets the scenario.
+    ///     Gets the scenario.
     /// </summary>
     public ScenarioStateModel ScenarioStateModel { get; }
 
     /// <summary>
-    /// Gets the scenario name.
+    ///     Gets the scenario name.
     /// </summary>
     public string ScenarioName { get; }
 }

@@ -7,14 +7,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Tenants.Queries.GetTenantNames;
 
 /// <summary>
-/// A query handler for retrieving all tenant names.
+///     A query handler for retrieving all tenant names.
 /// </summary>
 public class GetTenantNamesQueryHandler : IRequestHandler<GetTenantNamesQuery, IEnumerable<string>>
 {
     private readonly IStubContext _stubContext;
 
     /// <summary>
-    /// Constructs a <see cref="GetTenantNamesQueryHandler"/> instance.
+    ///     Constructs a <see cref="GetTenantNamesQueryHandler" /> instance.
     /// </summary>
     /// <param name="stubContext"></param>
     public GetTenantNamesQueryHandler(IStubContext stubContext)

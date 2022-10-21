@@ -26,14 +26,16 @@ internal class OpenApiToStubConverter : IOpenApiToStubConverter, ISingletonServi
     }
 
     /// <inheritdoc />
-    public async Task<StubModel> ConvertToStubAsync(OpenApiServer server, OpenApiLine line, string tenant, CancellationToken cancellationToken)
+    public async Task<StubModel> ConvertToStubAsync(OpenApiServer server, OpenApiLine line, string tenant,
+        CancellationToken cancellationToken)
     {
         var request = new HttpRequestModel
         {
             Body = _openApiDataFiller.BuildRequestBody(line.Operation),
             Headers = _openApiDataFiller.BuildRequestHeaders(line.Operation),
             Method = line.OperationType.ToString().ToUpper(),
-            Url = $"{_openApiDataFiller.BuildServerUrl(server)}{_openApiDataFiller.BuildRelativeRequestPath(line.Operation, line.PathKey)}"
+            Url =
+                $"{_openApiDataFiller.BuildServerUrl(server)}{_openApiDataFiller.BuildRelativeRequestPath(line.Operation, line.PathKey)}"
         };
         var response = new HttpResponseModel
         {

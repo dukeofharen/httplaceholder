@@ -8,15 +8,15 @@ using YamlDotNet.Serialization;
 namespace HttPlaceholder.Formatters;
 
 /// <summary>
-/// An output formatter that is used to handle YAML output.
-/// Source: https://github.com/fiyazbinhasan/CoreFormatters
+///     An output formatter that is used to handle YAML output.
+///     Source: https://github.com/fiyazbinhasan/CoreFormatters
 /// </summary>
 public class YamlOutputFormatter : TextOutputFormatter
 {
     private readonly ISerializer _serializer;
 
     /// <summary>
-    /// Constructs a <see cref="YamlOutputFormatter"/> instance.
+    ///     Constructs a <see cref="YamlOutputFormatter" /> instance.
     /// </summary>
     /// <param name="serializer"></param>
     public YamlOutputFormatter(ISerializer serializer)

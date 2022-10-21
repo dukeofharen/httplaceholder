@@ -11,8 +11,8 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 internal class CurlStubGenerator : ICurlStubGenerator, ISingletonService
 {
     private readonly ICurlToHttpRequestMapper _curlToHttpRequestMapper;
-    private readonly ILogger<CurlStubGenerator> _logger;
     private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
+    private readonly ILogger<CurlStubGenerator> _logger;
     private readonly IStubContext _stubContext;
 
     public CurlStubGenerator(
@@ -56,7 +56,8 @@ internal class CurlStubGenerator : ICurlStubGenerator, ISingletonService
         return results;
     }
 
-    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, StubModel stub, CancellationToken cancellationToken)
+    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, StubModel stub,
+        CancellationToken cancellationToken)
     {
         if (doNotCreateStub)
         {

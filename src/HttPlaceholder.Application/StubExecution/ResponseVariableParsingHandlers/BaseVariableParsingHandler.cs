@@ -10,8 +10,8 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Describes a class that is used to read a response body and parse the variables.
-/// A variable in the response body can be in the form of "((variable))" or "((variable:parameter))".
+///     Describes a class that is used to read a response body and parse the variables.
+///     A variable in the response body can be in the form of "((variable))" or "((variable:parameter))".
 /// </summary>
 internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHandler
 {
@@ -21,7 +21,8 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
     {
         _loadedDescription = new Lazy<string>(() =>
         {
-            var path = Path.Combine(AssemblyHelper.GetExecutingAssemblyRootPath(), "Files", "VarParser", $"{Name}-description.md");
+            var path = Path.Combine(AssemblyHelper.GetExecutingAssemblyRootPath(), "Files", "VarParser",
+                $"{Name}-description.md");
             return fileService.ReadAllText(path);
         });
     }
@@ -51,7 +52,7 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
     }
 
     /// <summary>
-    /// Inserts the given matches inside the given input.
+    ///     Inserts the given matches inside the given input.
     /// </summary>
     /// <param name="input">The response body.</param>
     /// <param name="matches">The regex matches that have been found for this variable.</param>

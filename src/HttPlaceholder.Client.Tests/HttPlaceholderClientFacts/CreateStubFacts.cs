@@ -49,7 +49,8 @@ public class CreateStubFacts : BaseClientTest
 
         // Act
         var exception =
-            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.CreateStubAsync(new StubDto()));
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(
+                () => client.CreateStubAsync(new StubDto()));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",

@@ -1,7 +1,7 @@
 ﻿namespace HttPlaceholder.Persistence.Db.Implementations;
 
 /// <summary>
-/// A store that contains queries for working with MS SQL Server.
+///     A store that contains queries for working with MS SQL Server.
 /// </summary>
 internal class SqlServerQueryStore : IQueryStore
 {

@@ -9,14 +9,14 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker to validate the HTTP method.
+///     Condition checker to validate the HTTP method.
 /// </summary>
 public class MethodConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
     /// <summary>
-    /// Constructs a <see cref="MethodConditionChecker"/> instance.
+    ///     Constructs a <see cref="MethodConditionChecker" /> instance.
     /// </summary>
     public MethodConditionChecker(IHttpContextService httpContextService)
     {

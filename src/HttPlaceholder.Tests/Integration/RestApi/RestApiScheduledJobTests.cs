@@ -23,7 +23,8 @@ public class RestApiScheduledJobTests : RestApiIntegrationTestBase
     public async Task RestApiIntegration_ScheduledJobs_ScheduledJobNotFound_ShouldReturn404()
     {
         // Run a non-existent job.
-        using var scheduledJobResponse = await Client.PostAsync($"{BaseAddress}ph-api/scheduledJob/NotExists", new StringContent(string.Empty));
+        using var scheduledJobResponse = await Client.PostAsync($"{BaseAddress}ph-api/scheduledJob/NotExists",
+            new StringContent(string.Empty));
         Assert.AreEqual(HttpStatusCode.NotFound, scheduledJobResponse.StatusCode);
     }
 

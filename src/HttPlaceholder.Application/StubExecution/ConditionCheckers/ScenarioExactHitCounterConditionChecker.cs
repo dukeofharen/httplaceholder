@@ -7,14 +7,14 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker for validating whether the stub scenario has an exact number of hits.
+///     Condition checker for validating whether the stub scenario has an exact number of hits.
 /// </summary>
 public class ScenarioExactHitCounterConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IScenarioService _scenarioService;
 
     /// <summary>
-    /// Constructs a <see cref="ScenarioExactHitCounterConditionChecker"/> instance.
+    ///     Constructs a <see cref="ScenarioExactHitCounterConditionChecker" /> instance.
     /// </summary>
     public ScenarioExactHitCounterConditionChecker(IScenarioService scenarioService)
     {
@@ -33,7 +33,9 @@ public class ScenarioExactHitCounterConditionChecker : IConditionChecker, ISingl
 
         var scenario = stub.Scenario;
         var rawHitCount = await _scenarioService.GetHitCountAsync(scenario, cancellationToken);
-        var actualHitCount = rawHitCount + 1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
+        var actualHitCount =
+            rawHitCount +
+            1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
         if (actualHitCount == null)
         {
             result.Log = "No hit count could be found.";

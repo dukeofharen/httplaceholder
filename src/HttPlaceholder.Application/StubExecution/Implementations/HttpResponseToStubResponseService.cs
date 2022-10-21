@@ -24,7 +24,8 @@ internal class HttpResponseToStubResponseService : IHttpResponseToStubResponseSe
     }
 
     /// <inheritdoc />
-    public async Task<StubResponseModel> ConvertToResponseAsync(HttpResponseModel response, CancellationToken cancellationToken)
+    public async Task<StubResponseModel> ConvertToResponseAsync(HttpResponseModel response,
+        CancellationToken cancellationToken)
     {
         var stubResponse = new StubResponseModel();
         foreach (var handler in _handlers.OrderByDescending(h => h.Priority))

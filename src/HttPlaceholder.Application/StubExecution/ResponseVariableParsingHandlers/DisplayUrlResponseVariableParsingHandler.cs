@@ -8,7 +8,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert the display URL (so the full URL) in the response.
+///     Response variable parsing handler that is used to insert the display URL (so the full URL) in the response.
 /// </summary>
 internal class DisplayUrlResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {

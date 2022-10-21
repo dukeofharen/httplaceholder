@@ -68,6 +68,30 @@ public class MockHttpContext : HttpContext
 
     public override IFeatureCollection Features => FeatureCollectionMock.Object;
 
+    public override HttpRequest Request => HttpRequestMock.Object;
+
+    public override HttpResponse Response => HttpResponseMock.Object;
+
+    public override ConnectionInfo Connection => ConnectionInfoMock.Object;
+
+    public override WebSocketManager WebSockets { get; }
+
+    public override ClaimsPrincipal User { get; set; }
+
+    public sealed override IDictionary<object, object> Items { get; set; }
+
+    public override IServiceProvider RequestServices
+    {
+        get => ServiceProviderMock.Object;
+        set => throw new NotImplementedException();
+    }
+
+    public override CancellationToken RequestAborted { get; set; }
+
+    public override string TraceIdentifier { get; set; }
+
+    public sealed override ISession Session { get; set; }
+
     public int GetStatusCode() => _statusCode;
 
     public string GetRedirectUrl() => _actualRedirectUrl;
@@ -139,28 +163,4 @@ public class MockHttpContext : HttpContext
             .Returns(new QueryCollection(query));
 
     public override void Abort() => AbortCalled = true;
-
-    public override HttpRequest Request => HttpRequestMock.Object;
-
-    public override HttpResponse Response => HttpResponseMock.Object;
-
-    public override ConnectionInfo Connection => ConnectionInfoMock.Object;
-
-    public override WebSocketManager WebSockets { get; }
-
-    public override ClaimsPrincipal User { get; set; }
-
-    public sealed override IDictionary<object, object> Items { get; set; }
-
-    public override IServiceProvider RequestServices
-    {
-        get => ServiceProviderMock.Object;
-        set => throw new NotImplementedException();
-    }
-
-    public override CancellationToken RequestAborted { get; set; }
-
-    public override string TraceIdentifier { get; set; }
-
-    public sealed override ISession Session { get; set; }
 }

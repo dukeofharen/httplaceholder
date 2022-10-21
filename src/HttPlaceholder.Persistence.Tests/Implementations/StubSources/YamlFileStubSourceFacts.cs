@@ -21,8 +21,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
 public class YamlFileStubSourceFacts
 {
     private readonly AutoMocker _mocker = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
     private readonly MockLogger<YamlFileStubSource> _mockLogger = new();
+    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
 
     [TestInitialize]
     public void Initialize()
@@ -86,7 +86,8 @@ public class YamlFileStubSourceFacts
             .Returns(currentDirectory);
 
         fileServiceMock
-            .Setup(m => m.GetFilesAsync(currentDirectory, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"), It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetFilesAsync(currentDirectory, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<string>());
 
         // Act
@@ -173,7 +174,8 @@ public class YamlFileStubSourceFacts
         var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
 
         fileServiceMock
-            .Setup(m => m.GetFilesAsync(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"), It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetFilesAsync(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(files);
 
         fileServiceMock
@@ -213,7 +215,8 @@ public class YamlFileStubSourceFacts
         var files = new[] {@"C:\stubs\file3.yml"};
 
         fileServiceMock
-            .Setup(m => m.GetFilesAsync(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"), It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetFilesAsync(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(files);
 
         fileServiceMock
@@ -249,7 +252,8 @@ public class YamlFileStubSourceFacts
         var files = new[] {@"C:\stubs\file4.yml"};
 
         fileServiceMock
-            .Setup(m => m.GetFilesAsync(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"), It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetFilesAsync(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(files);
 
         fileServiceMock

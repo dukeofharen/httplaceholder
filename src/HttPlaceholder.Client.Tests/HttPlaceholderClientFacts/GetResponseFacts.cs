@@ -30,7 +30,8 @@ public class GetResponseFacts : BaseClientTest
 
         // Act
         var exception =
-            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.GetResponseAsync(correlationId));
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
+                client.GetResponseAsync(correlationId));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",

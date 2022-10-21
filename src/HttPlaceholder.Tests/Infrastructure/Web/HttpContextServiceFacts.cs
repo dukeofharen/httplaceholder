@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
-using System.Text;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Web;

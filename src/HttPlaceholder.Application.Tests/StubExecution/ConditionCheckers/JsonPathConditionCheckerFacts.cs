@@ -29,7 +29,8 @@ public class JsonPathConditionCheckerFacts
         var conditions = new StubConditionsModel {JsonPath = null};
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -44,7 +45,8 @@ public class JsonPathConditionCheckerFacts
         var conditions = new StubConditionsModel {JsonPath = Array.Empty<object>()};
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -75,7 +77,8 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -106,7 +109,8 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -123,10 +127,7 @@ public class JsonPathConditionCheckerFacts
         {
             JsonPath = new object[]
             {
-                new Dictionary<object, object>
-                {
-                    {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
-                },
+                new Dictionary<object, object> {{"query", "$.people[0].firstName"}, {"expectedValue", "John"}},
                 "$.people[0].achievements[?(@.name=='Man of the year')]"
             }
         };
@@ -144,7 +145,8 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -161,10 +163,7 @@ public class JsonPathConditionCheckerFacts
         {
             JsonPath = new object[]
             {
-                new Dictionary<object, object>
-                {
-                    {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
-                },
+                new Dictionary<object, object> {{"query", "$.people[0].firstName"}, {"expectedValue", "John"}},
                 "$.people[0].achievements[?(@.name=='Man of the year')]"
             }
         };
@@ -182,7 +181,8 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -199,10 +199,7 @@ public class JsonPathConditionCheckerFacts
         {
             JsonPath = new object[]
             {
-                new Dictionary<object, object>
-                {
-                    {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
-                },
+                new Dictionary<object, object> {{"query", "$.people[0].firstName"}, {"expectedValue", "John"}},
                 "$.people[0].achievements[?(@.name=='Man of the year')]"
             }
         };
@@ -220,7 +217,8 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -237,10 +235,7 @@ public class JsonPathConditionCheckerFacts
         {
             JsonPath = new object[]
             {
-                new Dictionary<object, object>
-                {
-                    {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
-                },
+                new Dictionary<object, object> {{"query", "$.people[0].firstName"}, {"expectedValue", "John"}},
                 new Dictionary<object, object>
                 {
                     {"query", "$.people[0].achievements[0].name"}, {"expectedValue", "Man of the year"}
@@ -263,7 +258,8 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -280,10 +276,7 @@ public class JsonPathConditionCheckerFacts
         {
             JsonPath = new object[]
             {
-                new Dictionary<object, object>
-                {
-                    {"query", "$.people[0].firstName"}, {"expectedValue", "John"}
-                },
+                new Dictionary<object, object> {{"query", "$.people[0].firstName"}, {"expectedValue", "John"}},
                 new Dictionary<object, object>
                 {
                     {"query", "$.people[0].achievements[0].name"}, {"expectedValue", "Man of the year"}
@@ -306,7 +299,8 @@ public class JsonPathConditionCheckerFacts
             .Returns(json);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);

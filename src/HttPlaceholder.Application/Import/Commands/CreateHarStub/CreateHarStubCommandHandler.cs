@@ -9,14 +9,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Import.Commands.CreateHarStub;
 
 /// <summary>
-/// A command handler for creating stubs based on HTTP archive (HAR).
+///     A command handler for creating stubs based on HTTP archive (HAR).
 /// </summary>
 public class CreateHarStubCommandHandler : IRequestHandler<CreateHarStubCommand, IEnumerable<FullStubModel>>
 {
     private readonly IHarStubGenerator _harStubGenerator;
 
     /// <summary>
-    /// Constructs a <see cref="CreateHarStubCommandHandler"/> instance.
+    ///     Constructs a <see cref="CreateHarStubCommandHandler" /> instance.
     /// </summary>
     /// <param name="harStubGenerator"></param>
     public CreateHarStubCommandHandler(IHarStubGenerator harStubGenerator)
@@ -31,6 +31,7 @@ public class CreateHarStubCommandHandler : IRequestHandler<CreateHarStubCommand,
         var tenant = string.IsNullOrWhiteSpace(request.Tenant)
             ? $"har-import-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}"
             : request.Tenant;
-        return await _harStubGenerator.GenerateHarStubsAsync(request.Har, request.DoNotCreateStub, tenant, cancellationToken);
+        return await _harStubGenerator.GenerateHarStubsAsync(request.Har, request.DoNotCreateStub, tenant,
+            cancellationToken);
     }
 }

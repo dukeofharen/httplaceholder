@@ -17,7 +17,8 @@ using SixLabors.ImageSharp.Processing;
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to generate a random image (BMP, GIF, JPEG or PNG) with parameters (like quality, size etc.) and return it to the client.
+///     Response writer that is used to generate a random image (BMP, GIF, JPEG or PNG) with parameters (like quality, size
+///     etc.) and return it to the client.
 /// </summary>
 internal class ImageResponseWriter : IResponseWriter, ISingletonService
 {
@@ -75,16 +76,17 @@ internal class ImageResponseWriter : IResponseWriter, ISingletonService
             switch (stubImage.Type)
             {
                 case ResponseImageType.Bmp:
-                    await image.SaveAsBmpAsync(ms, cancellationToken: cancellationToken);
+                    await image.SaveAsBmpAsync(ms, cancellationToken);
                     break;
                 case ResponseImageType.Gif:
-                    await image.SaveAsGifAsync(ms, cancellationToken: cancellationToken);
+                    await image.SaveAsGifAsync(ms, cancellationToken);
                     break;
                 case ResponseImageType.Jpeg:
-                    await image.SaveAsJpegAsync(ms, new JpegEncoder {Quality = stubImage.JpegQuality}, cancellationToken: cancellationToken);
+                    await image.SaveAsJpegAsync(ms, new JpegEncoder {Quality = stubImage.JpegQuality},
+                        cancellationToken);
                     break;
                 default:
-                    await image.SaveAsPngAsync(ms, cancellationToken: cancellationToken);
+                    await image.SaveAsPngAsync(ms, cancellationToken);
                     break;
             }
 

@@ -15,7 +15,7 @@ public class ScenarioNotify : IScenarioNotify
     private readonly IMapper _mapper;
 
     /// <summary>
-    /// Constructs a <see cref="ScenarioNotify"/> instance.
+    ///     Constructs a <see cref="ScenarioNotify" /> instance.
     /// </summary>
     public ScenarioNotify(IHubContext<ScenarioHub> hubContext, IMapper mapper)
     {
@@ -35,5 +35,6 @@ public class ScenarioNotify : IScenarioNotify
         await _hubContext.Clients.All.SendAsync("ScenarioDeleted", scenarioName, cancellationToken);
 
     /// <inheritdoc />
-    public async Task AllScenariosDeletedAsync(CancellationToken cancellationToken) => await _hubContext.Clients.All.SendAsync("AllScenariosDeleted", cancellationToken);
+    public async Task AllScenariosDeletedAsync(CancellationToken cancellationToken) =>
+        await _hubContext.Clients.All.SendAsync("AllScenariosDeleted", cancellationToken);
 }

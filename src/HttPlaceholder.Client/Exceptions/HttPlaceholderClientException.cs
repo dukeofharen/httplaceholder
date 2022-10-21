@@ -4,12 +4,12 @@ using System.Net;
 namespace HttPlaceholder.Client.Exceptions;
 
 /// <summary>
-/// An exception that is thrown when something went wrong when calling HttPlaceholder.
+///     An exception that is thrown when something went wrong when calling HttPlaceholder.
 /// </summary>
 public class HttPlaceholderClientException : Exception
 {
     /// <summary>
-    /// Creates a <see cref="HttPlaceholderClientException"/> instance.
+    ///     Creates a <see cref="HttPlaceholderClientException" /> instance.
     /// </summary>
     /// <param name="statusCode">The HTTP status code.</param>
     /// <param name="content">The returned content.</param>

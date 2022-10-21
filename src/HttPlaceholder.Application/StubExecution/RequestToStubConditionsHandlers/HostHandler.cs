@@ -8,12 +8,13 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
 /// <summary>
-/// "Request to stub conditions handler" that is used to create a hostname header condition.
+///     "Request to stub conditions handler" that is used to create a hostname header condition.
 /// </summary>
 internal class HostHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
+        CancellationToken cancellationToken)
     {
         var uri = new Uri(request.Url);
         var host = uri.Host;
@@ -22,7 +23,7 @@ internal class HostHandler : IRequestToStubConditionsHandler, ISingletonService
             host += $":{uri.Port}";
         }
 
-        conditions.Host = new StubConditionStringCheckingModel{StringEquals = host};
+        conditions.Host = new StubConditionStringCheckingModel {StringEquals = host};
         return Task.FromResult(true);
     }
 

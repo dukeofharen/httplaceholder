@@ -27,7 +27,8 @@ public class FullPathConditionCheckerFacts
         var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {FullPath = null}};
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -55,7 +56,8 @@ public class FullPathConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -83,7 +85,8 @@ public class FullPathConditionCheckerFacts
             .Returns(true);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

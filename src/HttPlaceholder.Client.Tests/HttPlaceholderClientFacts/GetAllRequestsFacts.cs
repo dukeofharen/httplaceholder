@@ -76,7 +76,6 @@ public class GetAllRequestsFacts : BaseClientTest
 ]";
 
 
-
     [TestMethod]
     public async Task GetAllRequestsAsync_ExceptionInRequest_ShouldThrowHttPlaceholderClientException()
     {

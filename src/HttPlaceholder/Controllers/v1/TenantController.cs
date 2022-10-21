@@ -14,14 +14,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// The tenant controller.
+///     The tenant controller.
 /// </summary>
 [Route("ph-api/tenants")]
 [ApiAuthorization]
 public class TenantController : BaseApiController
 {
     /// <summary>
-    /// Gets all available tenant names.
+    ///     Gets all available tenant names.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>All available tenant names.</returns>
@@ -32,7 +32,7 @@ public class TenantController : BaseApiController
         Ok(await Mediator.Send(new GetTenantNamesQuery(), cancellationToken));
 
     /// <summary>
-    /// Gets all stubs in a specific tenant.
+    ///     Gets all stubs in a specific tenant.
     /// </summary>
     /// <param name="tenant">The tenant.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -40,11 +40,13 @@ public class TenantController : BaseApiController
     [HttpGet]
     [Route("{tenant}/stubs")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll([FromRoute] string tenant, CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(new GetStubsInTenantQuery(tenant), cancellationToken)));
+    public async Task<ActionResult<IEnumerable<FullStubDto>>> GetAll([FromRoute] string tenant,
+        CancellationToken cancellationToken) =>
+        Ok(Mapper.Map<IEnumerable<FullStubDto>>(await Mediator.Send(new GetStubsInTenantQuery(tenant),
+            cancellationToken)));
 
     /// <summary>
-    /// Deletes all stubs in a specific tenant.
+    ///     Deletes all stubs in a specific tenant.
     /// </summary>
     /// <param name="tenant">The tenant.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -60,8 +62,8 @@ public class TenantController : BaseApiController
     }
 
     /// <summary>
-    /// Updates the stubs in a specific tenant with the posted values.
-    /// If a stub that is currently available in a tenant isn't sent in the request, it will be deleted.
+    ///     Updates the stubs in a specific tenant with the posted values.
+    ///     If a stub that is currently available in a tenant isn't sent in the request, it will be deleted.
     /// </summary>
     /// <param name="tenant">The tenant.</param>
     /// <param name="stubs">The stubs to update.</param>
@@ -71,9 +73,11 @@ public class TenantController : BaseApiController
     [Route("{tenant}/stubs")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> UpdateAll([FromRoute] string tenant, [FromBody] IEnumerable<StubDto> stubs, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateAll([FromRoute] string tenant, [FromBody] IEnumerable<StubDto> stubs,
+        CancellationToken cancellationToken)
     {
-        await Mediator.Send(new UpdateStubsInTenantCommand(Mapper.Map<IEnumerable<StubModel>>(stubs), tenant), cancellationToken);
+        await Mediator.Send(new UpdateStubsInTenantCommand(Mapper.Map<IEnumerable<StubModel>>(stubs), tenant),
+            cancellationToken);
         return NoContent();
     }
 }

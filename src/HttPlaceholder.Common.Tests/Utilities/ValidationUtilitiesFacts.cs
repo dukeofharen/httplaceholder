@@ -28,7 +28,8 @@ public class ValidationUtilitiesFacts
         var task = Task.FromResult((string)null);
 
         // Act / Assert
-        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() => task.IfNull(() => throw new InvalidOperationException()));
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+            task.IfNull(() => throw new InvalidOperationException()));
     }
 
     [TestMethod]
@@ -51,6 +52,7 @@ public class ValidationUtilitiesFacts
         string value = null;
 
         // Act / Assert
-        Assert.ThrowsException<InvalidOperationException>(() => value.IfNull(() => throw new InvalidOperationException()));
+        Assert.ThrowsException<InvalidOperationException>(() =>
+            value.IfNull(() => throw new InvalidOperationException()));
     }
 }

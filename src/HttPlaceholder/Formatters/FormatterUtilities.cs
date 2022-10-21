@@ -4,14 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Formatters;
 
 /// <summary>
-/// A class for adding several formatters to .NET.
+///     A class for adding several formatters to .NET.
 /// </summary>
 public static class FormatterUtilities
 {
     /// <summary>
-    /// Adds YAML formatting.
+    ///     Adds YAML formatting.
     /// </summary>
-    /// <param name="options">The <see cref="MvcOptions"/>.</param>
+    /// <param name="options">The <see cref="MvcOptions" />.</param>
     public static MvcOptions AddYamlFormatting(this MvcOptions options)
     {
         options.InputFormatters.Add(new YamlInputFormatter(YamlUtilities.BuildDeserializer()));
@@ -21,9 +21,9 @@ public static class FormatterUtilities
     }
 
     /// <summary>
-    /// Adds plain text formatting.
+    ///     Adds plain text formatting.
     /// </summary>
-    /// <param name="options">The <see cref="MvcOptions"/>.</param>
+    /// <param name="options">The <see cref="MvcOptions" />.</param>
     public static MvcOptions AddPlainTextFormatting(this MvcOptions options)
     {
         options.InputFormatters.Add(new PlainTextInputFormatter());

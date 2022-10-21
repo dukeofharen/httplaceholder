@@ -7,12 +7,13 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 
 /// <summary>
-/// Handler that is being used for setting the response body.
+///     Handler that is being used for setting the response body.
 /// </summary>
 internal class ResponseBodyHandler : IResponseToStubResponseHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel, CancellationToken cancellationToken)
+    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel,
+        CancellationToken cancellationToken)
     {
         if (response.ContentIsBase64)
         {

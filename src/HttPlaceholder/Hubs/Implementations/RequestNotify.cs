@@ -15,7 +15,7 @@ public class RequestNotify : IRequestNotify
     private readonly IMapper _mapper;
 
     /// <summary>
-    /// Constructs a <see cref="RequestNotify"/> instance.
+    ///     Constructs a <see cref="RequestNotify" /> instance.
     /// </summary>
     public RequestNotify(IHubContext<RequestHub> hubContext, IMapper mapper)
     {

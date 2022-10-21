@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -9,7 +8,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert the client IP in the response.
+///     Response variable parsing handler that is used to insert the client IP in the response.
 /// </summary>
 internal class ClientIpResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {

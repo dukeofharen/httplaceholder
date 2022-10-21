@@ -17,7 +17,8 @@ public class FinalStubDeterminerFacts
     public void FinalStubDeterminer_DetermineFinalStub_NoStubsFound_ShouldThrowValidationException()
     {
         // Act
-        var exception = Assert.ThrowsException<ValidationException>(() => _determiner.DetermineFinalStub(Array.Empty<(StubModel, IEnumerable<ConditionCheckResultModel>)>()));
+        var exception = Assert.ThrowsException<ValidationException>(() =>
+            _determiner.DetermineFinalStub(Array.Empty<(StubModel, IEnumerable<ConditionCheckResultModel>)>()));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("No stub found."));
@@ -30,10 +31,7 @@ public class FinalStubDeterminerFacts
         var matchedStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>
         {
             (new StubModel {Priority = 1},
-                new[]
-                {
-                    new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid}
-                })
+                new[] {new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid}})
         };
 
         // Act
@@ -44,7 +42,8 @@ public class FinalStubDeterminerFacts
     }
 
     [TestMethod]
-    public void FinalStubDeterminer_DetermineFinalStub_MultipleStubsWithHighestPriority_ShouldPickOneWithMostValidConditions()
+    public void
+        FinalStubDeterminer_DetermineFinalStub_MultipleStubsWithHighestPriority_ShouldPickOneWithMostValidConditions()
     {
         // Arrange
         var matchedStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>
@@ -80,7 +79,8 @@ public class FinalStubDeterminerFacts
     }
 
     [TestMethod]
-    public void FinalStubDeterminer_DetermineFinalStub_MultipleStubsFound_OnlyOneWithHighestPriority_ShouldReturnStubWithHighestPriority()
+    public void
+        FinalStubDeterminer_DetermineFinalStub_MultipleStubsFound_OnlyOneWithHighestPriority_ShouldReturnStubWithHighestPriority()
     {
         // Arrange
         var matchedStubs = new List<(StubModel, IEnumerable<ConditionCheckResultModel>)>

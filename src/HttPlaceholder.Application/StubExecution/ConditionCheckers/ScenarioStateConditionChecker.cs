@@ -9,14 +9,14 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker for validating whether the stub scenario is in a specific state.
+///     Condition checker for validating whether the stub scenario is in a specific state.
 /// </summary>
 public class ScenarioStateConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IScenarioService _scenarioService;
 
     /// <summary>
-    /// Constructs a <see cref="ScenarioStateConditionChecker"/> instance.
+    ///     Constructs a <see cref="ScenarioStateConditionChecker" /> instance.
     /// </summary>
     public ScenarioStateConditionChecker(IScenarioService scenarioService)
     {

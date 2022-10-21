@@ -16,9 +16,9 @@ namespace HttPlaceholder.Persistence.Tests.Implementations;
 [TestClass]
 public class StubRootPathResolverFacts
 {
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
     private readonly Mock<IAssemblyService> _assemblyServiceMock = new();
     private readonly Mock<IFileService> _fileServiceMock = new();
+    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
     private StubRootPathResolver _resolver;
 
     [TestInitialize]
@@ -36,7 +36,8 @@ public class StubRootPathResolverFacts
     }
 
     [TestMethod]
-    public async Task StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
+    public async Task
+        StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
     {
         // arrange
         const string inputFile = @"C:\stubs";
@@ -55,7 +56,8 @@ public class StubRootPathResolverFacts
     }
 
     [TestMethod]
-    public async Task StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
+    public async Task
+        StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
     {
         // arrange
         var inputFilePath =
@@ -79,7 +81,8 @@ public class StubRootPathResolverFacts
     [DataTestMethod]
     [DataRow(",")]
     [DataRow("%%")]
-    public async Task StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths(string separator)
+    public async Task StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths(
+        string separator)
     {
         // arrange
         var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);

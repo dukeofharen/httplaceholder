@@ -16,13 +16,7 @@ public class HeadersResponseWriterFacts
     public async Task HeadersResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                Headers = null
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {Headers = null}};
 
         var response = new ResponseModel();
 
@@ -42,11 +36,7 @@ public class HeadersResponseWriterFacts
         {
             Response = new StubResponseModel
             {
-                Headers = new Dictionary<string, string>
-                {
-                    { "X-Api-Key", "1223" },
-                    { "X-User-Secret", "abc" }
-                }
+                Headers = new Dictionary<string, string> {{"X-Api-Key", "1223"}, {"X-User-Secret", "abc"}}
             }
         };
 

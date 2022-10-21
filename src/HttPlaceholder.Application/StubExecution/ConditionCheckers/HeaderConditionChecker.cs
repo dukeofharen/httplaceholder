@@ -11,7 +11,7 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that is used to validate the request headers.
+///     Condition checker that is used to validate the request headers.
 /// </summary>
 public class HeaderConditionChecker : IConditionChecker, ISingletonService
 {
@@ -19,7 +19,7 @@ public class HeaderConditionChecker : IConditionChecker, ISingletonService
     private readonly IStringChecker _stringChecker;
 
     /// <summary>
-    /// Constructs a <see cref="HeaderConditionChecker"/> instance.
+    ///     Constructs a <see cref="HeaderConditionChecker" /> instance.
     /// </summary>
     public HeaderConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {

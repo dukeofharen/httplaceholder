@@ -170,7 +170,8 @@ public class FileSystemStubCacheFacts
 
         // Act / Assert
         Assert.IsTrue(
-            (await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)).SequenceEqual(await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)));
+            (await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)).SequenceEqual(
+                await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)));
     }
 
     [TestMethod]

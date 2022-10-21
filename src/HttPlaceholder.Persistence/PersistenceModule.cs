@@ -12,12 +12,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace HttPlaceholder.Persistence;
 
 /// <summary>
-/// A class that is used to register all classes in the Persistence module on the service collection.
+///     A class that is used to register all classes in the Persistence module on the service collection.
 /// </summary>
 public static class PersistenceModule
 {
     /// <summary>
-    /// Register all classes in the Persistence module on the service collection.
+    ///     Register all classes in the Persistence module on the service collection.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The configuration.</param>
@@ -29,7 +29,7 @@ public static class PersistenceModule
             .AddStubSources(configuration);
 
     /// <summary>
-    /// Register specific stub sources on the service collection based on the configuration.
+    ///     Register specific stub sources on the service collection based on the configuration.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The configuration.</param>
@@ -41,17 +41,20 @@ public static class PersistenceModule
             // User specifically wants to use the in memory stub source.
             services.AddSingleton<IStubSource, InMemoryStubSource>();
         }
-        else if (!string.IsNullOrWhiteSpace(configuration.GetConnectionString(MysqlDbConnectionFactory.ConnectionStringKey)))
+        else if (!string.IsNullOrWhiteSpace(
+                     configuration.GetConnectionString(MysqlDbConnectionFactory.ConnectionStringKey)))
         {
             // If "mysqlConnectionString" is set, the application should connect with a MySQL database instance and store its stuff there.
             services.RegisterConnectionFactory<MysqlDbConnectionFactory, MysqlQueryStore>();
         }
-        else if (!string.IsNullOrWhiteSpace(configuration.GetConnectionString(SqliteDbConnectionFactory.ConnectionStringKey)))
+        else if (!string.IsNullOrWhiteSpace(
+                     configuration.GetConnectionString(SqliteDbConnectionFactory.ConnectionStringKey)))
         {
             // If "sqliteConnectionString" is set, the application should connect with a SQLite database instance and store its stuff there.
             services.RegisterConnectionFactory<SqliteDbConnectionFactory, SqliteQueryStore>();
         }
-        else if (!string.IsNullOrWhiteSpace(configuration.GetConnectionString(SqlServerDbConnectionFactory.ConnectionStringKey)))
+        else if (!string.IsNullOrWhiteSpace(
+                     configuration.GetConnectionString(SqlServerDbConnectionFactory.ConnectionStringKey)))
         {
             // If "sqlServerConnectionString" is set, the application should connect with a MS SQL Server database instance and store its stuff there.
             services.RegisterConnectionFactory<SqlServerDbConnectionFactory, SqlServerQueryStore>();
@@ -72,7 +75,8 @@ public static class PersistenceModule
         return services.AddSingleton<IStubSource, YamlFileStubSource>();
     }
 
-    private static IServiceCollection RegisterConnectionFactory<TConnectionFactory, TQueryStore>(this IServiceCollection services)
+    private static IServiceCollection RegisterConnectionFactory<TConnectionFactory, TQueryStore>(
+        this IServiceCollection services)
         where TConnectionFactory : class, IDbConnectionFactory where TQueryStore : class, IQueryStore =>
         services
             .AddSingleton<IQueryStore, TQueryStore>()

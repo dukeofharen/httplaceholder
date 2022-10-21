@@ -70,7 +70,6 @@ public class ScenarioExactHitCounterConditionCheckerFacts
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
         Assert.AreEqual("Scenario 'exact-hits' should have exactly '3' hits, but '4' hits were counted.", result.Log);
-
     }
 
     [TestMethod]

@@ -34,7 +34,8 @@ public class PathUtilitiesFacts
         {
             var resultParts = SplitPath(result);
             var expectedOutputParts = SplitPath(expectedOutput);
-            Assert.IsTrue(resultParts.SequenceEqual(expectedOutputParts), $"Expected output is {expectedOutput} but actual output is {result}.");
+            Assert.IsTrue(resultParts.SequenceEqual(expectedOutputParts),
+                $"Expected output is {expectedOutput} but actual output is {result}.");
         }
     }
 

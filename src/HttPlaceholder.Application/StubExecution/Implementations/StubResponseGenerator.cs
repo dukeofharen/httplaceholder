@@ -21,7 +21,7 @@ internal class StubResponseGenerator : IStubResponseGenerator, ISingletonService
         _responseWriters = responseWriters;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public async Task<ResponseModel> GenerateResponseAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var requestLogger = _requestLoggerFactory.GetRequestLogger();

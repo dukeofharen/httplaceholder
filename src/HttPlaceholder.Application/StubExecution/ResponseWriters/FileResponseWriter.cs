@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -10,7 +9,7 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to search for a file on the OS and return that file to the client.
+///     Response writer that is used to search for a file on the OS and return that file to the client.
 /// </summary>
 internal class FileResponseWriter : IResponseWriter, ISingletonService
 {
@@ -29,7 +28,8 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
     public int Priority => 0;
 
     /// <inheritdoc />
-    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response, CancellationToken cancellationToken)
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
+        CancellationToken cancellationToken)
     {
         if (stub.Response?.File == null)
         {
@@ -37,7 +37,7 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
         }
 
         string finalFilePath = null;
-        if (await  _fileService.FileExistsAsync(stub.Response.File, cancellationToken))
+        if (await _fileService.FileExistsAsync(stub.Response.File, cancellationToken))
         {
             finalFilePath = stub.Response.File;
         }

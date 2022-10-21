@@ -13,14 +13,14 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that validates the incoming JSON request body against a list of JSONPath expressions.
+///     Condition checker that validates the incoming JSON request body against a list of JSONPath expressions.
 /// </summary>
 public class JsonPathConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
     /// <summary>
-    /// Constructs a <see cref="JsonPathConditionChecker"/> instance.
+    ///     Constructs a <see cref="JsonPathConditionChecker" /> instance.
     /// </summary>
     public JsonPathConditionChecker(IHttpContextService httpContextService)
     {
@@ -95,10 +95,14 @@ public class JsonPathConditionChecker : IConditionChecker, ISingletonService
         return Task.FromResult(result);
     }
 
+    /// <inheritdoc />
+    public int Priority => 0;
+
     internal static StubJsonPathModel ConvertJsonPathCondition(string stubId, object condition)
     {
-        static StubJsonPathModel ParseDict(IReadOnlyDictionary<object, object> conditionDict) =>
-            new()
+        static StubJsonPathModel ParseDict(IReadOnlyDictionary<object, object> conditionDict)
+        {
+            return new()
             {
                 Query = conditionDict.ContainsKey("query")
                     ? conditionDict["query"].ToString()
@@ -107,6 +111,7 @@ public class JsonPathConditionChecker : IConditionChecker, ISingletonService
                     ? conditionDict["expectedValue"].ToString()
                     : string.Empty
             };
+        }
 
         var jsonPathCondition = condition switch
         {
@@ -125,7 +130,4 @@ public class JsonPathConditionChecker : IConditionChecker, ISingletonService
 
         return jsonPathCondition;
     }
-
-    /// <inheritdoc />
-    public int Priority => 0;
 }

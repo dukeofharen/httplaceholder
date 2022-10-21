@@ -8,14 +8,14 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that verifies if a request is done over HTTP or HTTPS.
+///     Condition checker that verifies if a request is done over HTTP or HTTPS.
 /// </summary>
 public class IsHttpsConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IClientDataResolver _clientDataResolver;
 
     /// <summary>
-    /// Constructs a <see cref="IsHttpsConditionChecker"/> instance.
+    ///     Constructs a <see cref="IsHttpsConditionChecker" /> instance.
     /// </summary>
     public IsHttpsConditionChecker(IClientDataResolver clientDataResolver)
     {

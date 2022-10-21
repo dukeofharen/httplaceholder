@@ -10,8 +10,8 @@ namespace HttPlaceholder.Persistence.Implementations;
 
 internal class ScenarioStateStore : IScenarioStateStore, ISingletonService
 {
-    internal readonly ConcurrentDictionary<string, ScenarioStateModel> Scenarios = new();
     internal readonly ConcurrentDictionary<string, object> ScenarioLocks = new();
+    internal readonly ConcurrentDictionary<string, ScenarioStateModel> Scenarios = new();
 
     /// <inheritdoc />
     public ScenarioStateModel GetScenario(string scenario)

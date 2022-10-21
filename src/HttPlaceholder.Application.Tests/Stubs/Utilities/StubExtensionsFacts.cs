@@ -28,17 +28,8 @@ public class StubExtensionsFacts
         var stub = new StubModel
         {
             Id = null,
-            Conditions = new StubConditionsModel
-            {
-                Url = new StubUrlConditionModel
-                {
-                    Path = "/path"
-                }
-            },
-            Response = new StubResponseModel
-            {
-                Text = "OK!!"
-            }
+            Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = "/path"}},
+            Response = new StubResponseModel {Text = "OK!!"}
         };
 
         // Act

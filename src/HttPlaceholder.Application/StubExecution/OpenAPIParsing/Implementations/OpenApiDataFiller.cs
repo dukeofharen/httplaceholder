@@ -114,7 +114,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
         string GetUrlValue(OpenApiParameter parameter)
         {
             var example = _openApiFakeDataGenerator.GetExampleForParameter(parameter);
-            if(example != null)
+            if (example != null)
             {
                 return example.ToString();
             }

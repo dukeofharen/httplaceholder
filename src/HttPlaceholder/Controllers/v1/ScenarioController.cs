@@ -16,36 +16,39 @@ using Microsoft.AspNetCore.Mvc;
 namespace HttPlaceholder.Controllers.v1;
 
 /// <summary>
-/// Controller for the scenarios.
+///     Controller for the scenarios.
 /// </summary>
 [Route("ph-api/scenarios")]
 [ApiAuthorization]
 public class ScenarioController : BaseApiController
 {
     /// <summary>
-    /// Gets all scenarios.
+    ///     Gets all scenarios.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>OK, with all scenarios.</returns>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ScenarioStateDto>>> GetAllScenarioStates(CancellationToken cancellationToken) =>
-        Ok(Mapper.Map<IEnumerable<ScenarioStateDto>>(await Mediator.Send(new GetAllScenariosQuery(), cancellationToken)));
+    public async Task<ActionResult<IEnumerable<ScenarioStateDto>>> GetAllScenarioStates(
+        CancellationToken cancellationToken) =>
+        Ok(Mapper.Map<IEnumerable<ScenarioStateDto>>(await Mediator.Send(new GetAllScenariosQuery(),
+            cancellationToken)));
 
     /// <summary>
-    /// Gets a specific scenario.
+    ///     Gets a specific scenario.
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>The <see cref="ScenarioStateDto"/>.</returns>
+    /// <returns>The <see cref="ScenarioStateDto" />.</returns>
     [HttpGet("{scenario}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ScenarioStateDto>> GetScenario([FromRoute] string scenario, CancellationToken cancellationToken) =>
+    public async Task<ActionResult<ScenarioStateDto>> GetScenario([FromRoute] string scenario,
+        CancellationToken cancellationToken) =>
         Ok(Mapper.Map<ScenarioStateDto>(await Mediator.Send(new GetScenarioQuery(scenario), cancellationToken)));
 
     /// <summary>
-    /// Sets the scenario state to a new value.
+    ///     Sets the scenario state to a new value.
     /// </summary>
     /// <param name="scenarioState">The new scenario state.</param>
     /// <param name="scenario">The scenario name.</param>
@@ -63,7 +66,7 @@ public class ScenarioController : BaseApiController
     }
 
     /// <summary>
-    /// Deletes / clears a scenario.
+    ///     Deletes / clears a scenario.
     /// </summary>
     /// <param name="scenario">The scenario name.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
@@ -78,7 +81,7 @@ public class ScenarioController : BaseApiController
     }
 
     /// <summary>
-    /// Deletes all scenarios.
+    ///     Deletes all scenarios.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>No content.</returns>

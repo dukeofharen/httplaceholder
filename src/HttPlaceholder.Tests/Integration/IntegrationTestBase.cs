@@ -16,11 +16,11 @@ public abstract class IntegrationTestBase
 {
     protected readonly IOptions<SettingsModel> Options = MockSettingsFactory.GetOptions();
 
-    protected SettingsModel Settings => Options.Value;
-
     protected HttpClient Client;
 
     protected TestServer TestServer;
+
+    protected SettingsModel Settings => Options.Value;
 
     protected string BaseAddress => TestServer.BaseAddress.ToString();
 

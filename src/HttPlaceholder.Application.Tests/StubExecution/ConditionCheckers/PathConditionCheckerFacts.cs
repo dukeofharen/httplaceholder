@@ -23,16 +23,11 @@ public class PathConditionCheckerFacts
     {
         // arrange
         var checker = _mocker.CreateInstance<PathConditionChecker>();
-        var conditions = new StubConditionsModel
-        {
-            Url = new StubUrlConditionModel
-            {
-                Path = null
-            }
-        };
+        var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = null}};
 
         // act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -50,10 +45,7 @@ public class PathConditionCheckerFacts
 
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel
-            {
-                Path = @"\blocatieserver\/v3\/suggest\b"
-            }
+            Url = new StubUrlConditionModel {Path = @"\blocatieserver\/v3\/suggest\b"}
         };
 
         httpContextServiceMock
@@ -66,7 +58,8 @@ public class PathConditionCheckerFacts
             .Returns(false);
 
         // act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -84,10 +77,7 @@ public class PathConditionCheckerFacts
 
         var conditions = new StubConditionsModel
         {
-            Url = new StubUrlConditionModel
-            {
-                Path = @"/locatieserver/v3/suggest"
-            }
+            Url = new StubUrlConditionModel {Path = @"/locatieserver/v3/suggest"}
         };
 
         httpContextServiceMock
@@ -100,7 +90,8 @@ public class PathConditionCheckerFacts
             .Returns(true);
 
         // act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions}, CancellationToken.None);
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

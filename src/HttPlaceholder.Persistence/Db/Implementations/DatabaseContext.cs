@@ -27,12 +27,16 @@ internal class DatabaseContext : IDatabaseContext
     public int Execute(string sql, object param = null) => _dbConnection.Execute(sql, param);
 
     /// <inheritdoc />
-    public async Task<TResult> QueryFirstOrDefaultAsync<TResult>(string sql, CancellationToken cancellationToken, object param = null) =>
-        await _dbConnection.QueryFirstOrDefaultAsync<TResult>(new CommandDefinition(sql, param, cancellationToken: cancellationToken));
+    public async Task<TResult> QueryFirstOrDefaultAsync<TResult>(string sql, CancellationToken cancellationToken,
+        object param = null) =>
+        await _dbConnection.QueryFirstOrDefaultAsync<TResult>(new CommandDefinition(sql, param,
+            cancellationToken: cancellationToken));
 
     /// <inheritdoc />
-    public async Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, CancellationToken cancellationToken, object param = null) =>
-        await _dbConnection.QueryAsync<TResult>(new CommandDefinition(sql, param, cancellationToken: cancellationToken));
+    public async Task<IEnumerable<TResult>> QueryAsync<TResult>(string sql, CancellationToken cancellationToken,
+        object param = null) =>
+        await _dbConnection.QueryAsync<TResult>(new CommandDefinition(sql, param,
+            cancellationToken: cancellationToken));
 
     /// <inheritdoc />
     public IEnumerable<TResult> Query<TResult>(string sql, object param = null) =>

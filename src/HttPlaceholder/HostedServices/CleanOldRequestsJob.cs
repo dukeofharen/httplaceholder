@@ -7,14 +7,14 @@ using Microsoft.Extensions.Logging;
 namespace HttPlaceholder.HostedServices;
 
 /// <summary>
-/// A background that is used to clean old requests
+///     A background that is used to clean old requests
 /// </summary>
 public class CleanOldRequestsJob : BackgroundService
 {
     private readonly IStubContext _stubContext;
 
     /// <summary>
-    /// Constructs a <see cref="CleanOldRequestsJob"/> instance.
+    ///     Constructs a <see cref="CleanOldRequestsJob" /> instance.
     /// </summary>
     public CleanOldRequestsJob(ILogger<BackgroundService> logger, IDateTime dateTime, IAsyncService asyncService,
         IStubContext stubContext) :

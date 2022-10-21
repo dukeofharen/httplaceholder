@@ -131,7 +131,9 @@ public class AddStubsCommandHandlerFacts
             .ReturnsAsync(new[] {new FullStubModel {Stub = new StubModel {Id = stub2.Id.ToUpper()}}});
 
         // Act
-        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => handler.Handle(request, CancellationToken.None));
+        var exception =
+            await Assert.ThrowsExceptionAsync<ValidationException>(
+                () => handler.Handle(request, CancellationToken.None));
 
         // Assert
         Assert.AreEqual("Validation failed:\nStub with ID already exists: STUB2", exception.Message);

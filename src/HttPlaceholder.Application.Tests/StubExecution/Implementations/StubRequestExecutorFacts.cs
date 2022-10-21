@@ -22,23 +22,21 @@ public class StubRequestExecutorFacts
     private readonly Mock<IConditionChecker> _conditionCheckerMock2 = new();
     private readonly AutoMocker _mocker = new();
 
-    private readonly FullStubModel _stub1 = new() { Stub = new StubModel(), Metadata = new StubMetadataModel() };
+    private readonly FullStubModel _stub1 = new() {Stub = new StubModel(), Metadata = new StubMetadataModel()};
 
-    private readonly FullStubModel _stub2 = new() { Stub = new StubModel(), Metadata = new StubMetadataModel() };
+    private readonly FullStubModel _stub2 = new() {Stub = new StubModel(), Metadata = new StubMetadataModel()};
 
     [TestInitialize]
     public void Initialize()
     {
-        _mocker.Use<IEnumerable<IConditionChecker>>(new[]
-        {
-            _conditionCheckerMock1.Object, _conditionCheckerMock2.Object
-        });
+        _mocker.Use<IEnumerable<IConditionChecker>>(
+            new[] {_conditionCheckerMock1.Object, _conditionCheckerMock2.Object});
         _mocker.Use(TestObjectFactory.GetRequestLoggerFactory());
 
         var stubContextMock = _mocker.GetMock<IStubContext>();
         stubContextMock
             .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new[] { _stub1, _stub2 });
+            .ReturnsAsync(new[] {_stub1, _stub2});
     }
 
     [TestCleanup]
@@ -50,16 +48,17 @@ public class StubRequestExecutorFacts
         // arrange
         _conditionCheckerMock1
             .Setup(m => m.ValidateAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
+            .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Invalid});
         _conditionCheckerMock2
             .Setup(m => m.ValidateAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
+            .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Invalid});
 
         var executor = _mocker.CreateInstance<StubRequestExecutor>();
 
         // act
         var exception =
-            await Assert.ThrowsExceptionAsync<RequestValidationException>(() => executor.ExecuteRequestAsync(CancellationToken.None));
+            await Assert.ThrowsExceptionAsync<RequestValidationException>(() =>
+                executor.ExecuteRequestAsync(CancellationToken.None));
 
         // assert
         Assert.IsTrue(exception.Message.Contains("and the request did not pass"));
@@ -74,11 +73,11 @@ public class StubRequestExecutorFacts
         _conditionCheckerMock1
             .Setup(m => m.ValidateAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(
-                () => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.NotExecuted });
+                () => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.NotExecuted});
         _conditionCheckerMock2
             .Setup(m => m.ValidateAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(
-                () => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.NotExecuted });
+                () => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.NotExecuted});
 
         var finalStubDeterminerMock = _mocker.GetMock<IFinalStubDeterminer>();
         finalStubDeterminerMock
@@ -109,17 +108,17 @@ public class StubRequestExecutorFacts
 
         _conditionCheckerMock1
             .Setup(m => m.ValidateAsync(_stub1.Stub, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
+            .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
         _conditionCheckerMock2
             .Setup(m => m.ValidateAsync(_stub1.Stub, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
+            .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
 
         _conditionCheckerMock1
             .Setup(m => m.ValidateAsync(_stub2.Stub, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
+            .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
         _conditionCheckerMock2
             .Setup(m => m.ValidateAsync(_stub2.Stub, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
+            .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
 
         var finalStubDeterminerMock = _mocker.GetMock<IFinalStubDeterminer>();
         finalStubDeterminerMock
@@ -149,17 +148,17 @@ public class StubRequestExecutorFacts
         var expectedResponseModel = new ResponseModel();
         _conditionCheckerMock1
             .Setup(m => m.ValidateAsync(_stub1.Stub, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
+            .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Invalid});
         _conditionCheckerMock2
             .Setup(m => m.ValidateAsync(_stub1.Stub, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Invalid });
+            .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Invalid});
 
         _conditionCheckerMock1
             .Setup(m => m.ValidateAsync(_stub2.Stub, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
+            .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
         _conditionCheckerMock2
             .Setup(m => m.ValidateAsync(_stub2.Stub, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(() => new ConditionCheckResultModel { ConditionValidation = ConditionValidationType.Valid });
+            .ReturnsAsync(() => new ConditionCheckResultModel {ConditionValidation = ConditionValidationType.Valid});
 
         var finalStubDeterminerMock = _mocker.GetMock<IFinalStubDeterminer>();
         finalStubDeterminerMock
@@ -181,6 +180,7 @@ public class StubRequestExecutorFacts
         // assert
         Assert.AreEqual(expectedResponseModel, response);
 
-        _mocker.GetMock<IScenarioService>().Verify(m => m.IncreaseHitCountAsync(_stub2.Stub.Scenario, It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IScenarioService>()
+            .Verify(m => m.IncreaseHitCountAsync(_stub2.Stub.Scenario, It.IsAny<CancellationToken>()));
     }
 }

@@ -12,8 +12,8 @@ namespace HttPlaceholder.Tests.Middleware;
 [TestClass]
 public class ApiHeadersMiddlewareFacts
 {
-    private bool _nextCalled;
     private readonly AutoMocker _mocker = new();
+    private bool _nextCalled;
 
     [TestInitialize]
     public void Initialize() =>

@@ -4,12 +4,12 @@ using MediatR;
 namespace HttPlaceholder.Application.Requests.Queries.GetResponse;
 
 /// <summary>
-/// A query for retrieving a response.
+///     A query for retrieving a response.
 /// </summary>
 public class GetResponseQuery : IRequest<ResponseModel>
 {
     /// <summary>
-    /// Constructs a <see cref="GetResponseQuery"/> instance.
+    ///     Constructs a <see cref="GetResponseQuery" /> instance.
     /// </summary>
     /// <param name="correlationId">The request correlation ID.</param>
     public GetResponseQuery(string correlationId)
@@ -18,7 +18,7 @@ public class GetResponseQuery : IRequest<ResponseModel>
     }
 
     /// <summary>
-    /// Gets the request correlation ID.
+    ///     Gets the request correlation ID.
     /// </summary>
     public string CorrelationId { get; }
 }

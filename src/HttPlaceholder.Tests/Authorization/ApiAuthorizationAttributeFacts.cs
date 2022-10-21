@@ -23,10 +23,10 @@ namespace HttPlaceholder.Tests.Authorization;
 public class ApiAuthorizationAttributeFacts
 {
     private readonly ApiAuthorizationAttribute _attribute = new();
-    private readonly SettingsModel _settings = new() {Authentication = new AuthenticationSettingsModel()};
+    private readonly Mock<IHttpContextService> _mockHttpContextService = new();
     private readonly MockLogger<ApiAuthorizationAttribute> _mockLogger = new();
     private readonly Mock<ILoginService> _mockLoginService = new();
-    private readonly Mock<IHttpContextService> _mockHttpContextService = new();
+    private readonly SettingsModel _settings = new() {Authentication = new AuthenticationSettingsModel()};
 
     [TestMethod]
     public void OnActionExecuting_LoginCookieSet_ShouldAddUserContext()
@@ -79,10 +79,7 @@ public class ApiAuthorizationAttributeFacts
         _mockLoginService
             .Setup(m => m.CheckLoginCookie())
             .Returns(false);
-        SetHeaders(new Dictionary<string, string>
-        {
-            {"Authorization", "Basic dXNlcjpwYXNzOm9uemlu"}
-        });
+        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjpwYXNzOm9uemlu"}});
 
         // Act
         _attribute.OnActionExecuting(context);
@@ -102,10 +99,7 @@ public class ApiAuthorizationAttributeFacts
             .Returns(false);
         _settings.Authentication.ApiUsername = "user";
         _settings.Authentication.ApiPassword = "pass";
-        SetHeaders(new Dictionary<string, string>
-        {
-            {"Authorization", "Basic dXNlcjE6cGFzczE="}
-        });
+        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjE6cGFzczE="}});
 
         // Act
         _attribute.OnActionExecuting(context);
@@ -123,10 +117,7 @@ public class ApiAuthorizationAttributeFacts
         _mockLoginService
             .Setup(m => m.CheckLoginCookie())
             .Returns(false);
-        SetHeaders(new Dictionary<string, string>
-        {
-            {"Authorization", "Basic ()*&"}
-        });
+        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic ()*&"}});
 
         // Act
         _attribute.OnActionExecuting(context);
@@ -147,10 +138,7 @@ public class ApiAuthorizationAttributeFacts
             .Returns(false);
         _settings.Authentication.ApiUsername = "user";
         _settings.Authentication.ApiPassword = "pass";
-        SetHeaders(new Dictionary<string, string>
-        {
-            {"Authorization", "Basic dXNlcjpwYXNz"}
-        });
+        SetHeaders(new Dictionary<string, string> {{"Authorization", "Basic dXNlcjpwYXNz"}});
 
         ClaimsPrincipal capturedClaimsPrincipal = null;
         _mockHttpContextService

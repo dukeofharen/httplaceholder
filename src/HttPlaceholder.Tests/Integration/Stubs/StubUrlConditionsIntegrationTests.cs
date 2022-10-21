@@ -22,11 +22,7 @@ public class StubUrlConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}index.php?success=true";
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -41,11 +37,7 @@ public class StubUrlConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}index.php?success=false";
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // act / assert
         using var response = await Client.SendAsync(request);

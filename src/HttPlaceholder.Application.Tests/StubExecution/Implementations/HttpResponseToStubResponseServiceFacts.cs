@@ -13,16 +13,13 @@ namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 [TestClass]
 public class HttpResponseToStubResponseServiceFacts
 {
-    private readonly AutoMocker _mocker = new();
     private readonly Mock<IResponseToStubResponseHandler> _handlerMock1 = new();
     private readonly Mock<IResponseToStubResponseHandler> _handlerMock2 = new();
+    private readonly AutoMocker _mocker = new();
 
     [TestInitialize]
     public void Initialize() =>
-        _mocker.Use<IEnumerable<IResponseToStubResponseHandler>>(new[]
-        {
-            _handlerMock1.Object, _handlerMock2.Object
-        });
+        _mocker.Use<IEnumerable<IResponseToStubResponseHandler>>(new[] {_handlerMock1.Object, _handlerMock2.Object});
 
     [TestMethod]
     public async Task ConvertToResponseAsync_HappyFlow()

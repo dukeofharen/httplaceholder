@@ -10,14 +10,15 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
 /// <summary>
-/// "Request to stub conditions handler" that is used to request header conditions.
+///     "Request to stub conditions handler" that is used to request header conditions.
 /// </summary>
 internal class HeaderHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     private static readonly IEnumerable<string> _headersToStrip = new[] {"Postman-Token", "Host"};
 
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
+        CancellationToken cancellationToken)
     {
         if (!request.Headers.Any())
         {

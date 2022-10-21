@@ -6,14 +6,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios;
 
 /// <summary>
-/// A command handler for deleting all scenarios.
+///     A command handler for deleting all scenarios.
 /// </summary>
 public class DeleteAllScenariosCommandHandler : IRequestHandler<DeleteAllScenariosCommand>
 {
     private readonly IScenarioService _scenarioService;
 
     /// <summary>
-    /// Constructs a <see cref="DeleteAllScenariosCommandHandler"/> instance.
+    ///     Constructs a <see cref="DeleteAllScenariosCommandHandler" /> instance.
     /// </summary>
     public DeleteAllScenariosCommandHandler(IScenarioService scenarioService)
     {

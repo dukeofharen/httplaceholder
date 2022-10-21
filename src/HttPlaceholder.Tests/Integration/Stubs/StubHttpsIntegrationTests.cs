@@ -21,10 +21,7 @@ public class StubHttpsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ishttps-ok";
-        var request = new HttpRequestMessage
-        {
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {RequestUri = new Uri(url)};
         ClientDataResolverMock
             .Setup(m => m.GetClientIp())
             .Returns("127.0.0.1");
@@ -45,10 +42,7 @@ public class StubHttpsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ishttps-ok";
-        var request = new HttpRequestMessage
-        {
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {RequestUri = new Uri(url)};
         request.Headers.Add("X-Forwarded-Proto", "http");
 
         // act / assert

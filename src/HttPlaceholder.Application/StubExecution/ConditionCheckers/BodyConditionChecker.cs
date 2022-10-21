@@ -9,7 +9,7 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that verifies the incoming request body.
+///     Condition checker that verifies the incoming request body.
 /// </summary>
 public class BodyConditionChecker : IConditionChecker, ISingletonService
 {
@@ -17,7 +17,7 @@ public class BodyConditionChecker : IConditionChecker, ISingletonService
     private readonly IStringChecker _stringChecker;
 
     /// <summary>
-    /// Constructs a <see cref="BodyConditionChecker"/> instance.
+    ///     Constructs a <see cref="BodyConditionChecker" /> instance.
     /// </summary>
     public BodyConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {

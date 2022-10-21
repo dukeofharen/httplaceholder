@@ -10,16 +10,18 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
 /// <summary>
-/// "Request to stub conditions handler" that is used to create a basic authentication condition.
+///     "Request to stub conditions handler" that is used to create a basic authentication condition.
 /// </summary>
 internal class BasicAuthenticationHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions, CancellationToken cancellationToken)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
+        CancellationToken cancellationToken)
     {
         var pair = request.Headers.FirstOrDefault(p =>
             p.Key.Equals("Authorization", StringComparison.OrdinalIgnoreCase));
-        if (string.IsNullOrWhiteSpace(pair.Value) || !pair.Value.Trim().ToLower().StartsWith("Basic", StringComparison.OrdinalIgnoreCase))
+        if (string.IsNullOrWhiteSpace(pair.Value) ||
+            !pair.Value.Trim().ToLower().StartsWith("Basic", StringComparison.OrdinalIgnoreCase))
         {
             return Task.FromResult(false);
         }
@@ -33,11 +35,7 @@ internal class BasicAuthenticationHandler : IRequestToStubConditionsHandler, ISi
             return Task.FromResult(false);
         }
 
-        conditions.BasicAuthentication = new StubBasicAuthenticationModel
-        {
-            Username = parts[0],
-            Password = parts[1]
-        };
+        conditions.BasicAuthentication = new StubBasicAuthenticationModel {Username = parts[0], Password = parts[1]};
 
         // Make sure the original Authorization header is removed here.
         conditions.Headers = conditions.Headers

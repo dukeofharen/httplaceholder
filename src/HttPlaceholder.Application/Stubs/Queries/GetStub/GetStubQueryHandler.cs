@@ -9,14 +9,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Stubs.Queries.GetStub;
 
 /// <summary>
-/// A query handler for retrieving a specific stub.
+///     A query handler for retrieving a specific stub.
 /// </summary>
 public class GetStubQueryHandler : IRequestHandler<GetStubQuery, FullStubModel>
 {
     private readonly IStubContext _stubContext;
 
     /// <summary>
-    /// Constructs a <see cref="GetStubQueryHandler"/> instance.
+    ///     Constructs a <see cref="GetStubQueryHandler" /> instance.
     /// </summary>
     public GetStubQueryHandler(IStubContext stubContext)
     {

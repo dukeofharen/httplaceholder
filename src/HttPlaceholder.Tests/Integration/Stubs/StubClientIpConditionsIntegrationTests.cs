@@ -20,10 +20,7 @@ public class StubClientIpConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}client-ip-1";
-        var request = new HttpRequestMessage
-        {
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {RequestUri = new Uri(url)};
 
         ClientDataResolverMock
             .Setup(m => m.GetClientIp())
@@ -41,10 +38,7 @@ public class StubClientIpConditionsIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}client-ip-2";
-        var request = new HttpRequestMessage
-        {
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {RequestUri = new Uri(url)};
 
         ClientDataResolverMock
             .Setup(m => m.GetClientIp())

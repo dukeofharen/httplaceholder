@@ -7,22 +7,22 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Dto.v1.Requests;
 
 /// <summary>
-/// A model for storing a condition check result.
+///     A model for storing a condition check result.
 /// </summary>
 public class ConditionCheckResultDto : IHaveCustomMapping
 {
     /// <summary>
-    /// Gets or sets the name of the checker.
+    ///     Gets or sets the name of the checker.
     /// </summary>
     public string CheckerName { get; set; }
 
     /// <summary>
-    /// Gets or sets the condition validation.
+    ///     Gets or sets the condition validation.
     /// </summary>
     public string ConditionValidation { get; set; }
 
     /// <summary>
-    /// Gets or sets the log.
+    ///     Gets or sets the log.
     /// </summary>
     public string Log { get; set; }
 
@@ -34,6 +34,7 @@ public class ConditionCheckResultDto : IHaveCustomMapping
             .ForMember(dto => dto.ConditionValidation, opt => opt.MapFrom(m => m.ConditionValidation.ToString()));
         configuration
             .CreateMap<ConditionCheckResultDto, ConditionCheckResultModel>()
-            .ForMember(model => model.ConditionValidation, opt => opt.MapFrom(m => Enum.Parse<ConditionValidationType>(m.ConditionValidation)));
+            .ForMember(model => model.ConditionValidation,
+                opt => opt.MapFrom(m => Enum.Parse<ConditionValidationType>(m.ConditionValidation)));
     }
 }
