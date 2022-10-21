@@ -59,21 +59,23 @@ internal class FileSystemStubCache : IFileSystemStubCache
             shouldUpdateCache = true;
         }
 
-        if (shouldUpdateCache)
+        if (!shouldUpdateCache)
         {
-            var path = GetStubsFolder();
-            var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
-            StubCache.Clear();
-            var newCache = (await Task.WhenAll(files
-                    .Select(filePath => _fileService
-                        .ReadAllTextAsync(filePath, cancellationToken))))
-                .Select(JsonConvert.DeserializeObject<StubModel>);
-            foreach (var item in newCache)
+            return StubCache.Values;
+        }
+
+        var path = GetStubsFolder();
+        var files = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
+        StubCache.Clear();
+        var newCache = (await Task.WhenAll(files
+                .Select(filePath => _fileService
+                    .ReadAllTextAsync(filePath, cancellationToken))))
+            .Select(JsonConvert.DeserializeObject<StubModel>);
+        foreach (var item in newCache)
+        {
+            if (!StubCache.TryAdd(item.Id, item))
             {
-                if (!StubCache.TryAdd(item.Id, item))
-                {
-                    _logger.LogWarning($"Could not add stub with ID '{item.Id}' to cache.");
-                }
+                _logger.LogWarning($"Could not add stub with ID '{item.Id}' to cache.");
             }
         }
 
@@ -129,7 +131,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
     private string GetMetadataPath()
     {
-        var rootPath = _settings.Storage?.FileStorageLocation;
+        var rootPath = _settings.Storage?.FileStorageLocation ?? throw new InvalidOperationException("FileStorageLocation unexpectedly null.");
         var path = Path.Combine(rootPath, Constants.MetadataFileName);
         return path;
     }
