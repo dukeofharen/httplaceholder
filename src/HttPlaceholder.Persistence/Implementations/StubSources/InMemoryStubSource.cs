@@ -31,7 +31,8 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel, CancellationToken cancellationToken)
+    public Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
+        CancellationToken cancellationToken)
     {
         lock (_lock)
         {
@@ -58,10 +59,9 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(CancellationToken cancellationToken)
-    {
-        var requests = await GetRequestResultsAsync(cancellationToken);
-        return requests.Select(r => new RequestOverviewModel
+    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
+        CancellationToken cancellationToken) =>
+        (await GetRequestResultsAsync(cancellationToken)).Select(r => new RequestOverviewModel
         {
             Method = r.RequestParameters?.Method,
             Url = r.RequestParameters?.Url,
@@ -71,8 +71,7 @@ internal class InMemoryStubSource : IWritableStubSource
             RequestBeginTime = r.RequestBeginTime,
             RequestEndTime = r.RequestEndTime,
             HasResponse = r.HasResponse
-        }).ToArray();
-    }
+        });
 
     /// <inheritdoc />
     public Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken)

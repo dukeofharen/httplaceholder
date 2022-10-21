@@ -102,11 +102,10 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(CancellationToken cancellationToken)
-    {
-        // TODO This method is not optimized right now.
-        var requests = await GetRequestResultsAsync(cancellationToken);
-        return requests.Select(r => new RequestOverviewModel
+    // TODO This method is not optimized right now.
+    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(CancellationToken cancellationToken) =>
+        (await GetRequestResultsAsync(cancellationToken))
+        .Select(r => new RequestOverviewModel
         {
             Method = r.RequestParameters.Method,
             Url = r.RequestParameters.Url,
@@ -116,8 +115,7 @@ internal class RelationalDbStubSource : IWritableStubSource
             RequestBeginTime = r.RequestBeginTime,
             RequestEndTime = r.RequestEndTime,
             HasResponse = r.HasResponse
-        }).ToArray();
-    }
+        });
 
     /// <inheritdoc />
     public async Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken)
@@ -187,8 +185,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     /// <inheritdoc />
     public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken) =>
         (await GetStubsAsync(cancellationToken))
-        .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
-        .ToArray();
+        .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled});
 
     /// <inheritdoc />
     public async Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken)
