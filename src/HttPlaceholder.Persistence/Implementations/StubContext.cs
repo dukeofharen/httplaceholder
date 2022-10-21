@@ -38,12 +38,9 @@ internal class StubContext : IStubContext, ISingletonService
         await GetStubsAsync(true, cancellationToken);
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant, CancellationToken cancellationToken)
-    {
-        var stubs = await GetStubsAsync(false, cancellationToken);
-        return stubs
-            .Where(s => string.Equals(s.Stub.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
-    }
+    public async Task<IEnumerable<FullStubModel>> GetStubsAsync(string tenant, CancellationToken cancellationToken) =>
+        (await GetStubsAsync(false, cancellationToken))
+        .Where(s => string.Equals(s.Stub.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
 
     /// <inheritdoc />
     public async Task<IEnumerable<FullStubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken)
@@ -52,11 +49,11 @@ internal class StubContext : IStubContext, ISingletonService
         foreach (var source in _stubSources)
         {
             var stubSourceIsReadOnly = source is not IWritableStubSource;
-            var stubs = await source.GetStubsOverviewAsync(cancellationToken);
-            var fullStubModels = stubs.Select(s => new FullStubOverviewModel
-            {
-                Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
-            });
+            var fullStubModels = (await source.GetStubsOverviewAsync(cancellationToken))
+                .Select(s => new FullStubOverviewModel
+                {
+                    Stub = s, Metadata = new StubMetadataModel {ReadOnly = stubSourceIsReadOnly}
+                });
             result.AddRange(fullStubModels);
         }
 
@@ -87,8 +84,7 @@ internal class StubContext : IStubContext, ISingletonService
     {
         var source = GetWritableStubSource();
         var stubs = (await source.GetStubsAsync(cancellationToken))
-            .Where(s => string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase))
-            .ToArray();
+            .Where(s => string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
         foreach (var stub in stubs)
         {
             await source.DeleteStubAsync(stub.Id, cancellationToken);
@@ -99,7 +95,7 @@ internal class StubContext : IStubContext, ISingletonService
     public async Task DeleteAllStubsAsync(CancellationToken cancellationToken)
     {
         var source = GetWritableStubSource();
-        var stubs = (await source.GetStubsAsync(cancellationToken)).ToArray();
+        var stubs = await source.GetStubsAsync(cancellationToken);
         foreach (var stub in stubs)
         {
             await source.DeleteStubAsync(stub.Id, cancellationToken);
@@ -116,8 +112,7 @@ internal class StubContext : IStubContext, ISingletonService
             .Distinct();
         var existingStubs = (await source.GetStubsAsync(cancellationToken))
             .Where(s => stubIds.Any(sid => string.Equals(sid, s.Id, StringComparison.OrdinalIgnoreCase)) ||
-                        string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase))
-            .ToArray();
+                        string.Equals(s.Tenant, tenant, StringComparison.OrdinalIgnoreCase));
 
         // First, delete the existing stubs.
         foreach (var stub in existingStubs)
@@ -156,7 +151,8 @@ internal class StubContext : IStubContext, ISingletonService
     }
 
     /// <inheritdoc />
-    public async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel response, CancellationToken cancellationToken)
+    public async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel response,
+        CancellationToken cancellationToken)
     {
         var source = GetWritableStubSource();
 
@@ -170,7 +166,8 @@ internal class StubContext : IStubContext, ISingletonService
             ? await GetStubAsync(requestResult.ExecutingStubId, cancellationToken)
             : null;
         requestResult.StubTenant = stub?.Stub?.Tenant;
-        await source.AddRequestResultAsync(requestResult, _settings.Storage?.StoreResponses == true ? response : null, cancellationToken);
+        await source.AddRequestResultAsync(requestResult, _settings.Storage?.StoreResponses == true ? response : null,
+            cancellationToken);
         await _requestNotify.NewRequestReceivedAsync(requestResult, cancellationToken);
     }
 
@@ -180,12 +177,14 @@ internal class StubContext : IStubContext, ISingletonService
         .OrderByDescending(s => s.RequestBeginTime);
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(CancellationToken cancellationToken) =>
+    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
+        CancellationToken cancellationToken) =>
         (await GetWritableStubSource().GetRequestResultsOverviewAsync(cancellationToken))
         .OrderByDescending(s => s.RequestEndTime);
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId, CancellationToken cancellationToken)
+    public async Task<IEnumerable<RequestResultModel>> GetRequestResultsByStubIdAsync(string stubId,
+        CancellationToken cancellationToken)
     {
         var source = GetWritableStubSource();
         var results = await source.GetRequestResultsAsync(cancellationToken);
@@ -196,39 +195,25 @@ internal class StubContext : IStubContext, ISingletonService
     }
 
     /// <inheritdoc />
-    public async Task<RequestResultModel> GetRequestResultAsync(string correlationId, CancellationToken cancellationToken)
-    {
-        var source = GetWritableStubSource();
-        return await source.GetRequestAsync(correlationId, cancellationToken);
-    }
+    public async Task<RequestResultModel> GetRequestResultAsync(string correlationId,
+        CancellationToken cancellationToken) =>
+        await GetWritableStubSource().GetRequestAsync(correlationId, cancellationToken);
 
     /// <inheritdoc />
-    public async Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken)
-    {
-        var source = GetWritableStubSource();
-        return await source.GetResponseAsync(correlationId, cancellationToken);
-    }
+    public async Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken) =>
+        await GetWritableStubSource().GetResponseAsync(correlationId, cancellationToken);
 
     /// <inheritdoc />
-    public async Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken)
-    {
-        var source = GetWritableStubSource();
-        await source.DeleteAllRequestResultsAsync(cancellationToken);
-    }
+    public async Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken) =>
+        await GetWritableStubSource().DeleteAllRequestResultsAsync(cancellationToken);
 
     /// <inheritdoc />
-    public async Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken)
-    {
-        var source = GetWritableStubSource();
-        return await source.DeleteRequestAsync(correlationId, cancellationToken);
-    }
+    public async Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken) =>
+        await GetWritableStubSource().DeleteRequestAsync(correlationId, cancellationToken);
 
     /// <inheritdoc />
-    public async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken)
-    {
-        var source = GetWritableStubSource();
-        await source.CleanOldRequestResultsAsync(cancellationToken);
-    }
+    public async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken) =>
+        await GetWritableStubSource().CleanOldRequestResultsAsync(cancellationToken);
 
     /// <inheritdoc />
     public async Task<IEnumerable<string>> GetTenantNamesAsync(CancellationToken cancellationToken) =>
@@ -239,14 +224,8 @@ internal class StubContext : IStubContext, ISingletonService
         .Distinct();
 
     /// <inheritdoc />
-    public async Task PrepareAsync(CancellationToken cancellationToken)
-    {
-        foreach (var source in _stubSources)
-        {
-            // Call PrepareStubSourceAsync on all stub sources for letting them prepare their own setup (e.g. create tables, folders etc.).
-            await source.PrepareStubSourceAsync(cancellationToken);
-        }
-    }
+    public async Task PrepareAsync(CancellationToken cancellationToken) =>
+        await Task.WhenAll(_stubSources.Select(s => s.PrepareStubSourceAsync(cancellationToken)));
 
     private IWritableStubSource GetWritableStubSource() =>
         (IWritableStubSource)_stubSources.Single(s => s is IWritableStubSource);
@@ -256,6 +235,7 @@ internal class StubContext : IStubContext, ISingletonService
 
     private async Task<IEnumerable<FullStubModel>> GetStubsAsync(bool readOnly, CancellationToken cancellationToken)
     {
+
         var result = new List<FullStubModel>();
         foreach (var source in readOnly ? GetReadOnlyStubSources() : _stubSources)
         {

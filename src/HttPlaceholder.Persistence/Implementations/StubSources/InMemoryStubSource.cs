@@ -157,7 +157,8 @@ internal class InMemoryStubSource : IWritableStubSource
     {
         lock (_lock)
         {
-            return Task.FromResult(StubModels.AsEnumerable());
+            // We need to convert the list to an array here, or else we can get errors when deleting the stubs.
+            return Task.FromResult(StubModels.ToArray().AsEnumerable());
         }
     }
 
