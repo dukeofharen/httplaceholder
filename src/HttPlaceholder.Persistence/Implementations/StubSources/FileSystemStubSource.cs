@@ -38,14 +38,7 @@ internal class FileSystemStubSource : IWritableStubSource
     {
         var requestsFolder = GetRequestsFolder();
         var responsesFolder = GetResponsesFolder();
-        if (responseModel != null)
-        {
-            requestResult.HasResponse = true;
-            var responseFilePath =
-                Path.Combine(responsesFolder, ConstructResponseFilename(requestResult.CorrelationId));
-            var responseContents = JsonConvert.SerializeObject(responseModel);
-            await _fileService.WriteAllTextAsync(responseFilePath, responseContents, cancellationToken);
-        }
+        await StoreResponseAsync(requestResult, responseModel, cancellationToken, responsesFolder);
 
         var requestFilePath = Path.Combine(requestsFolder, ConstructRequestFilename(requestResult.CorrelationId));
         var requestContents = JsonConvert.SerializeObject(requestResult);
@@ -63,11 +56,10 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(CancellationToken cancellationToken)
-    {
-        // This method is not optimized right now.
-        var requests = await GetRequestResultsAsync(cancellationToken);
-        return requests.Select(r => new RequestOverviewModel
+    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
+        CancellationToken cancellationToken) =>
+        (await GetRequestResultsAsync(cancellationToken))
+        .Select(r => new RequestOverviewModel
         {
             Method = r.RequestParameters.Method,
             Url = r.RequestParameters.Url,
@@ -77,8 +69,7 @@ internal class FileSystemStubSource : IWritableStubSource
             RequestBeginTime = r.RequestBeginTime,
             RequestEndTime = r.RequestEndTime,
             HasResponse = r.HasResponse
-        }).ToArray();
-    }
+        });
 
     /// <inheritdoc />
     public async Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken)
@@ -124,19 +115,13 @@ internal class FileSystemStubSource : IWritableStubSource
     public async Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken)
     {
         var requestsPath = GetRequestsFolder();
-        var responsesPath = GetResponsesFolder();
         var requestFilePath = Path.Combine(requestsPath, ConstructRequestFilename(correlationId));
         if (!await _fileService.FileExistsAsync(requestFilePath, cancellationToken))
         {
             return false;
         }
 
-        var responseFilePath = Path.Combine(responsesPath, ConstructResponseFilename(correlationId));
-        if (await _fileService.FileExistsAsync(responseFilePath, cancellationToken))
-        {
-            await _fileService.DeleteFileAsync(responseFilePath, cancellationToken);
-        }
-
+        await DeleteResponseAsync(ConstructResponseFilename(correlationId), cancellationToken);
         await _fileService.DeleteFileAsync(requestFilePath, cancellationToken);
         return true;
     }
@@ -207,30 +192,10 @@ internal class FileSystemStubSource : IWritableStubSource
     /// <inheritdoc />
     public async Task PrepareStubSourceAsync(CancellationToken cancellationToken)
     {
-        var rootFolder = GetRootFolder();
-        if (!await _fileService.DirectoryExistsAsync(rootFolder, cancellationToken))
-        {
-            await _fileService.CreateDirectoryAsync(rootFolder, cancellationToken);
-        }
-
-        var requestsFolder = GetRequestsFolder();
-        if (!await _fileService.DirectoryExistsAsync(requestsFolder, cancellationToken))
-        {
-            await _fileService.CreateDirectoryAsync(requestsFolder, cancellationToken);
-        }
-
-        var responsesFolder = GetResponsesFolder();
-        if (!await _fileService.DirectoryExistsAsync(responsesFolder, cancellationToken))
-        {
-            await _fileService.CreateDirectoryAsync(responsesFolder, cancellationToken);
-        }
-
-        var stubsFolder = GetStubsFolder();
-        if (!await _fileService.DirectoryExistsAsync(stubsFolder, cancellationToken))
-        {
-            await _fileService.CreateDirectoryAsync(stubsFolder, cancellationToken);
-        }
-
+        await CreateDirectoryIfNotExistsAsync(GetRootFolder(), cancellationToken);
+        await CreateDirectoryIfNotExistsAsync(GetRequestsFolder(), cancellationToken);
+        await CreateDirectoryIfNotExistsAsync(GetResponsesFolder(), cancellationToken);
+        await CreateDirectoryIfNotExistsAsync(GetStubsFolder(), cancellationToken);
         await _fileSystemStubCache.GetOrUpdateStubCacheAsync(cancellationToken);
     }
 
@@ -262,6 +227,30 @@ internal class FileSystemStubSource : IWritableStubSource
         if (await _fileService.FileExistsAsync(responseFilePath, cancellationToken))
         {
             await _fileService.DeleteFileAsync(responseFilePath, cancellationToken);
+        }
+    }
+
+    private async Task StoreResponseAsync(
+        RequestResultModel requestResult,
+        ResponseModel responseModel,
+        CancellationToken cancellationToken,
+        string responsesFolder)
+    {
+        if (responseModel != null)
+        {
+            requestResult.HasResponse = true;
+            var responseFilePath =
+                Path.Combine(responsesFolder, ConstructResponseFilename(requestResult.CorrelationId));
+            var responseContents = JsonConvert.SerializeObject(responseModel);
+            await _fileService.WriteAllTextAsync(responseFilePath, responseContents, cancellationToken);
+        }
+    }
+
+    private async Task CreateDirectoryIfNotExistsAsync(string path, CancellationToken cancellationToken)
+    {
+        if (!await _fileService.DirectoryExistsAsync(path, cancellationToken))
+        {
+            await _fileService.CreateDirectoryAsync(path, cancellationToken);
         }
     }
 
