@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -29,7 +30,7 @@ internal class StubRootPathResolver : IStubRootPathResolver, ISingletonService
     }
 
     /// <inheritdoc />
-    public async Task<string[]> GetStubRootPathsAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<string>> GetStubRootPathsAsync(CancellationToken cancellationToken)
     {
         // First, check the "inputFile" configuration property and extract the directory of this folder.
         var inputFile = _settings.Storage?.InputFile;
@@ -39,10 +40,9 @@ internal class StubRootPathResolver : IStubRootPathResolver, ISingletonService
             return new[] {_assemblyService.GetEntryAssemblyRootPath()};
         }
 
-        var tasks = inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
-            .Select(f => GetDirectoryAsync(f, cancellationToken))
-            .ToArray();
-        return await Task.WhenAll(tasks);
+        return await Task.WhenAll(
+            inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
+                .Select(f => GetDirectoryAsync(f, cancellationToken)));
     }
 
     private async Task<string> GetDirectoryAsync(string filename, CancellationToken cancellationToken) =>

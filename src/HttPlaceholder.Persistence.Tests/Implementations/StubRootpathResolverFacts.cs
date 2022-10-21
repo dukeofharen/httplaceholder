@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ public class StubRootPathResolverFacts
             .ReturnsAsync(true);
 
         // act
-        var result = await _resolver.GetStubRootPathsAsync(CancellationToken.None);
+        var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
         // assert
         Assert.AreEqual(1, result.Length);
@@ -68,7 +69,7 @@ public class StubRootPathResolverFacts
             .ReturnsAsync(false);
 
         // act
-        var result = await _resolver.GetStubRootPathsAsync(CancellationToken.None);
+        var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
         // assert
         Assert.AreEqual(1, result.Length);
@@ -96,7 +97,7 @@ public class StubRootPathResolverFacts
             .ReturnsAsync(false);
 
         // act
-        var result = await _resolver.GetStubRootPathsAsync(CancellationToken.None);
+        var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
         // assert
         Assert.AreEqual(2, result.Length);
@@ -115,7 +116,7 @@ public class StubRootPathResolverFacts
             .Returns(assemblyPath);
 
         // act
-        var result = await _resolver.GetStubRootPathsAsync(CancellationToken.None);
+        var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
         // assert
         Assert.AreEqual(1, result.Length);

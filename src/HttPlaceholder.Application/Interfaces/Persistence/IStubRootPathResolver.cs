@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HttPlaceholder.Application.Interfaces.Persistence;
@@ -13,5 +14,5 @@ public interface IStubRootPathResolver
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The stub root paths.</returns>
-    Task<string[]> GetStubRootPathsAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<string>> GetStubRootPathsAsync(CancellationToken cancellationToken);
 }
