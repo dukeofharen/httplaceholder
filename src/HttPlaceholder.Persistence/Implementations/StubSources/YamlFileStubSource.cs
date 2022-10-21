@@ -45,8 +45,8 @@ internal class YamlFileStubSource : IStubSource
     /// <inheritdoc />
     public async Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken)
     {
-        var fileLocations = await GetYamlFileLocationsAsync(cancellationToken);
-        if (fileLocations.Count == 0)
+        var fileLocations = (await GetYamlFileLocationsAsync(cancellationToken)).ToArray();
+        if (fileLocations.Length == 0)
         {
             _logger.LogInformation("No .yml input files found.");
             return Array.Empty<StubModel>().AsEnumerable();
@@ -54,24 +54,9 @@ internal class YamlFileStubSource : IStubSource
 
         if (_stubs == null || GetLastStubFileModificationDateTime(fileLocations) > _stubLoadDateTime)
         {
-            var result = new List<StubModel>();
-            foreach (var file in fileLocations)
-            {
-                // Load the stubs.
-                var input = await _fileService.ReadAllTextAsync(file, cancellationToken);
-                _logger.LogInformation($"Parsing .yml file '{file}'.");
-                try
-                {
-                    result.AddRange(ParseAndValidateStubs(input, file));
-                    _stubLoadDateTime = DateTime.Now;
-                }
-                catch (YamlException ex)
-                {
-                    _logger.LogWarning(ex, $"Error occurred while parsing YAML file '{file}'");
-                }
-            }
-
-            _stubs = result;
+            _stubs =
+                (await Task.WhenAll(fileLocations.Select(l => LoadStubsAsync(l, cancellationToken))))
+                .SelectMany(s => s);
         }
         else
         {
@@ -98,6 +83,25 @@ internal class YamlFileStubSource : IStubSource
 
     private DateTime GetLastStubFileModificationDateTime(IEnumerable<string> files) =>
         files.Max(f => _fileService.GetLastWriteTime(f));
+
+    private async Task<IEnumerable<StubModel>> LoadStubsAsync(string file, CancellationToken cancellationToken)
+    {
+        // Load the stubs.
+        var input = await _fileService.ReadAllTextAsync(file, cancellationToken);
+        _logger.LogInformation($"Parsing .yml file '{file}'.");
+        try
+        {
+            var stubs = ParseAndValidateStubs(input, file);
+            _stubLoadDateTime = DateTime.Now;
+            return stubs;
+        }
+        catch (YamlException ex)
+        {
+            _logger.LogWarning(ex, $"Error occurred while parsing YAML file '{file}'");
+        }
+
+        return Array.Empty<StubModel>();
+    }
 
     private IEnumerable<StubModel> ParseAndValidateStubs(string input, string file)
     {
@@ -148,39 +152,33 @@ internal class YamlFileStubSource : IStubSource
         .SplitNewlines()
         .Any(l => l.StartsWith("-"));
 
-    private async Task<List<string>> GetYamlFileLocationsAsync(CancellationToken cancellationToken)
+    private async Task<IEnumerable<string>> GetYamlFileLocationsAsync(CancellationToken cancellationToken)
     {
         var inputFileLocation = _settings.Storage?.InputFile;
-        var fileLocations = new List<string>();
         if (string.IsNullOrEmpty(inputFileLocation))
         {
             // If the input file location is not set, try looking in the current directory for .yml files.
             var currentDirectory = _fileService.GetCurrentDirectory();
-            var yamlFiles = await _fileService.GetFilesAsync(currentDirectory, _extensions, cancellationToken);
-            fileLocations.AddRange(yamlFiles);
-        }
-        else
-        {
-            // Split file path: it is possible to supply multiple locations.
-            var parts = inputFileLocation.Split(Constants.InputFileSeparators,
-                StringSplitOptions.RemoveEmptyEntries);
-            parts = parts.Select(StripIllegalCharacters).ToArray();
-            foreach (var part in parts)
-            {
-                var location = part.Trim();
-                _logger.LogInformation($"Reading location '{location}'.");
-                if (await _fileService.IsDirectoryAsync(location, cancellationToken))
-                {
-                    var yamlFiles = await _fileService.GetFilesAsync(location, _extensions, cancellationToken);
-                    fileLocations.AddRange(yamlFiles);
-                }
-                else
-                {
-                    fileLocations.Add(location);
-                }
-            }
+            return await _fileService.GetFilesAsync(currentDirectory, _extensions, cancellationToken);
         }
 
-        return fileLocations;
+        // Split file path: it is possible to supply multiple locations.
+        var locations = inputFileLocation
+            .Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
+            .Select(StripIllegalCharacters);
+        return (await Task.WhenAll(locations.Select(l => ParseFileLocationsAsync(l, cancellationToken))))
+            .SelectMany(p => p);
+    }
+
+    private async Task<IEnumerable<string>> ParseFileLocationsAsync(string part, CancellationToken cancellationToken)
+    {
+        var location = part.Trim();
+        _logger.LogInformation($"Reading location '{location}'.");
+        if (await _fileService.IsDirectoryAsync(location, cancellationToken))
+        {
+            return await _fileService.GetFilesAsync(location, _extensions, cancellationToken);
+        }
+
+        return new[] {location};
     }
 }
