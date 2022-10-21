@@ -100,24 +100,26 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
             }
         }
 
-        if (shouldUpdateCache)
+        if (!shouldUpdateCache)
         {
-            var queryResults = ctx.Query<DbStubModel>(_queryStore.GetStubsQuery);
-            StubCache.Clear();
-            foreach (var queryResult in queryResults)
-            {
-                var stub = queryResult.StubType switch
-                {
-                    StubJsonType => JsonConvert.DeserializeObject<StubModel>(queryResult.Stub),
-                    StubYamlType => YamlUtilities.Parse<StubModel>(queryResult.Stub),
-                    _ => throw new NotImplementedException(
-                        $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.")
-                };
+            return StubCache.Values;
+        }
 
-                if (!StubCache.TryAdd(stub.Id, stub))
-                {
-                    _logger.LogWarning($"Could not add stub with ID '{stub.Id}' to cache.");
-                }
+        var queryResults = ctx.Query<DbStubModel>(_queryStore.GetStubsQuery);
+        StubCache.Clear();
+        foreach (var queryResult in queryResults)
+        {
+            var stub = queryResult.StubType switch
+            {
+                StubJsonType => JsonConvert.DeserializeObject<StubModel>(queryResult.Stub),
+                StubYamlType => YamlUtilities.Parse<StubModel>(queryResult.Stub),
+                _ => throw new NotImplementedException(
+                    $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.")
+            };
+
+            if (!StubCache.TryAdd(stub.Id, stub))
+            {
+                _logger.LogWarning($"Could not add stub with ID '{stub.Id}' to cache.");
             }
         }
 
