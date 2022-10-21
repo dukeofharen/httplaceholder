@@ -45,20 +45,7 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
                 throw new InvalidOperationException($"Could not find file {checkFilePath}");
             }
 
-            // The check script will be loaded. It is expected that the script returns an 1 or higher if the migration should NOT be executed and a "0" if the migration SHOULD be executed.
-            var checkScript = await _fileService.ReadAllTextAsync(checkFilePath, cancellationToken);
-            _logger.LogDebug($"Checking file {checkFileName}.");
-            var checkResult = await ctx.ExecuteScalarAsync<int>(checkScript, cancellationToken);
-            if (checkResult > 0)
-            {
-                _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration will not be executed.");
-            }
-            else
-            {
-                _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration {file} will be executed.");
-                var migrationScript = await _fileService.ReadAllTextAsync(file, cancellationToken);
-                await ctx.ExecuteAsync(migrationScript, cancellationToken);
-            }
+            await ExecuteMigrationAsync(ctx, cancellationToken, checkFilePath, checkFileName, file);
         }
     }
 
@@ -83,5 +70,28 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
         }
 
         throw new InvalidOperationException("Could not determine migrations folder for relational DB.");
+    }
+
+    private async Task ExecuteMigrationAsync(
+        IDatabaseContext ctx,
+        CancellationToken cancellationToken,
+        string checkFilePath,
+        string checkFileName,
+        string file)
+    {
+        // The check script will be loaded. It is expected that the script returns an 1 or higher if the migration should NOT be executed and a "0" if the migration SHOULD be executed.
+        var checkScript = await _fileService.ReadAllTextAsync(checkFilePath, cancellationToken);
+        _logger.LogDebug($"Checking file {checkFileName}.");
+        var checkResult = await ctx.ExecuteScalarAsync<int>(checkScript, cancellationToken);
+        if (checkResult > 0)
+        {
+            _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration will not be executed.");
+        }
+        else
+        {
+            _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration {file} will be executed.");
+            var migrationScript = await _fileService.ReadAllTextAsync(file, cancellationToken);
+            await ctx.ExecuteAsync(migrationScript, cancellationToken);
+        }
     }
 }
