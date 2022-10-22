@@ -1,23 +1,16 @@
 ﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Hubs.Implementations;
-using HttPlaceholder.TestUtilities;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Hubs;
 
 [TestClass]
 public class RequestNotifyFacts
 {
-    private Mock<IClientProxy> _clientProxyMock;
     private readonly AutoMocker _mocker = new();
+    private Mock<IClientProxy> _clientProxyMock;
 
     [TestInitialize]
     public void Initialize()
@@ -44,7 +37,7 @@ public class RequestNotifyFacts
             .Returns(mappedDto);
 
         // Act
-        await notify.NewRequestReceivedAsync(input);
+        await notify.NewRequestReceivedAsync(input, CancellationToken.None);
 
         // Assert
         _clientProxyMock.Verify(m => m.SendCoreAsync("RequestReceived", It.Is<object[]>(o => o.Single() == mappedDto),

@@ -6,14 +6,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Stubs.Commands.DeleteAllStubs;
 
 /// <summary>
-/// A command handler for deleting all stubs.
+///     A command handler for deleting all stubs.
 /// </summary>
 public class DeleteAllStubsCommandHandler : IRequestHandler<DeleteAllStubsCommand>
 {
     private readonly IStubContext _stubContext;
 
     /// <summary>
-    /// Constructs a <see cref="DeleteAllStubsCommandHandler"/> instance.
+    ///     Constructs a <see cref="DeleteAllStubsCommandHandler" /> instance.
     /// </summary>
     /// <param name="stubContext"></param>
     public DeleteAllStubsCommandHandler(IStubContext stubContext)
@@ -24,7 +24,7 @@ public class DeleteAllStubsCommandHandler : IRequestHandler<DeleteAllStubsComman
     /// <inheritdoc />
     public async Task<Unit> Handle(DeleteAllStubsCommand request, CancellationToken cancellationToken)
     {
-        await _stubContext.DeleteAllStubsAsync();
+        await _stubContext.DeleteAllStubsAsync(cancellationToken);
         return Unit.Value;
     }
 }

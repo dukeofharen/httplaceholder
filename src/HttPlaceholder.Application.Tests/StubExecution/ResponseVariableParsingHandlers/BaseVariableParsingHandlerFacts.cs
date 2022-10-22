@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Match = System.Text.RegularExpressions.Match;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
@@ -22,7 +18,7 @@ public class BaseVariableParsingHandlerFacts
         const string description = "the description";
         fileServiceMock
             .Setup(m => m.ReadAllText(It.Is<string>(p =>
-                p.EndsWith(Path.Combine("Files", "Markdown", "TestVariableParsingHandler-description.md")))))
+                p.EndsWith(Path.Combine("Files", "VarParser", "TestVariableParsingHandler-description.md")))))
             .Returns(description);
 
         // Act
@@ -48,6 +44,8 @@ public class BaseVariableParsingHandlerFacts
         public override string Name => "TestVariableParsingHandler";
         public override string FullName { get; }
         public override string[] Examples { get; }
-        public override string Parse(string input, IEnumerable<Match> matches, StubModel stub) => throw new System.NotImplementedException();
+
+        protected override string InsertVariables(string input, Match[] matches, StubModel stub) =>
+            throw new NotImplementedException();
     }
 }

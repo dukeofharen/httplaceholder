@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -26,6 +24,6 @@ public class StubContentTypeIntegrationTest : StubIntegrationTestBase
         response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
         Assert.IsFalse(string.IsNullOrWhiteSpace(content));
-        Assert.AreEqual("text/csv", response.Content.Headers.Single(h => h.Key == "Content-Type").Value.Single());
+        Assert.AreEqual("text/csv", response.Content.Headers.Single(h => h.Key == Constants.ContentType).Value.Single());
     }
 }

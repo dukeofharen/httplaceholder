@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using HttPlaceholder.Common.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Common.Tests.Utilities;
 

@@ -8757,7 +8757,7 @@
 													"    // Request",
 													"    pm.expect(stub.conditions.method).to.eql(\"POST\");",
 													"    pm.expect(stub.conditions.url.path.equals).to.match(/^\\/requests\\/(.*)\\/stubs$/);",
-													"    pm.expect(stub.conditions.headers[\"content-type\"].equals).to.eql(\"application/json\");",
+													"    pm.expect(stub.conditions.headers[\"Content-Type\"].equals).to.eql(\"application/json\");",
 													"    pm.expect(stub.conditions.host.equals).to.eql(\"localhost\");",
 													"",
 													"    // Response",

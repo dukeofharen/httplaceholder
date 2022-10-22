@@ -1,6 +1,4 @@
 ﻿using HttPlaceholder.Application.Stubs.Utilities;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Utilities;
 
@@ -28,17 +26,8 @@ public class StubExtensionsFacts
         var stub = new StubModel
         {
             Id = null,
-            Conditions = new StubConditionsModel
-            {
-                Url = new StubUrlConditionModel
-                {
-                    Path = "/path"
-                }
-            },
-            Response = new StubResponseModel
-            {
-                Text = "OK!!"
-            }
+            Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = "/path"}},
+            Response = new StubResponseModel {Text = "OK!!"}
         };
 
         // Act

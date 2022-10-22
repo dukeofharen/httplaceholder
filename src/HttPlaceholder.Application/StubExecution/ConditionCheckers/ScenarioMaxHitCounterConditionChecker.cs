@@ -1,18 +1,20 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker for validating whether the stub scenario has a maximum (exclusive) number of hits.
+///     Condition checker for validating whether the stub scenario has a maximum (exclusive) number of hits.
 /// </summary>
-public class ScenarioMaxHitCounterConditionChecker : IConditionChecker
+public class ScenarioMaxHitCounterConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IScenarioService _scenarioService;
 
     /// <summary>
-    /// Constructs a <see cref="ScenarioMaxHitCounterConditionChecker"/> instance.
+    ///     Constructs a <see cref="ScenarioMaxHitCounterConditionChecker" /> instance.
     /// </summary>
     public ScenarioMaxHitCounterConditionChecker(IScenarioService scenarioService)
     {
@@ -20,7 +22,7 @@ public class ScenarioMaxHitCounterConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var maxHits = stub.Conditions?.Scenario?.MaxHits;
@@ -30,8 +32,10 @@ public class ScenarioMaxHitCounterConditionChecker : IConditionChecker
         }
 
         var scenario = stub.Scenario;
-        var rawHitCount = await _scenarioService.GetHitCountAsync(scenario);
-        var actualHitCount = rawHitCount + 1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
+        var rawHitCount = await _scenarioService.GetHitCountAsync(scenario, cancellationToken);
+        var actualHitCount =
+            rawHitCount +
+            1; // Add +1 because the scenario is being hit right now but hit count has not been increased yet.
         if (actualHitCount == null)
         {
             result.Log = "No hit count could be found.";

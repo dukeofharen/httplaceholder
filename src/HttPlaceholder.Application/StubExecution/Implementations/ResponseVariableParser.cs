@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class ResponseVariableParser : IResponseVariableParser
+internal class ResponseVariableParser : IResponseVariableParser, ISingletonService
 {
-    public static Regex VarRegex { get; } = new(
-        @"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)",
-        RegexOptions.Compiled,
-        TimeSpan.FromSeconds(10));
-
     private readonly IEnumerable<IResponseVariableParsingHandler> _handlers;
 
     public ResponseVariableParser(IEnumerable<IResponseVariableParsingHandler> handlers)
@@ -22,7 +17,12 @@ internal class ResponseVariableParser : IResponseVariableParser
         _handlers = handlers;
     }
 
-    /// <inheritdoc/>
+    public static Regex VarRegex { get; } = new(
+        @"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)",
+        RegexOptions.Compiled,
+        TimeSpan.FromSeconds(10));
+
+    /// <inheritdoc />
     public string Parse(string input, StubModel stub)
     {
         var matches = VarRegex.Matches(input).ToArray();

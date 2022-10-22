@@ -1,21 +1,19 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Implementations;
-using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations;
 
 [TestClass]
 public class StubRootPathResolverFacts
 {
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
     private readonly Mock<IAssemblyService> _assemblyServiceMock = new();
     private readonly Mock<IFileService> _fileServiceMock = new();
+    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
     private StubRootPathResolver _resolver;
 
     [TestInitialize]
@@ -33,18 +31,19 @@ public class StubRootPathResolverFacts
     }
 
     [TestMethod]
-    public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
+    public async Task
+        StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
     {
         // arrange
         const string inputFile = @"C:\stubs";
         _options.Value.Storage.InputFile = inputFile;
 
         _fileServiceMock
-            .Setup(m => m.IsDirectory(inputFile))
-            .Returns(true);
+            .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
 
         // act
-        var result = _resolver.GetStubRootPaths();
+        var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
         // assert
         Assert.AreEqual(1, result.Length);
@@ -52,7 +51,8 @@ public class StubRootPathResolverFacts
     }
 
     [TestMethod]
-    public void StubRootPathResolver_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
+    public async Task
+        StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
     {
         // arrange
         var inputFilePath =
@@ -62,11 +62,11 @@ public class StubRootPathResolverFacts
         _options.Value.Storage.InputFile = inputFile;
 
         _fileServiceMock
-            .Setup(m => m.IsDirectory(inputFile))
-            .Returns(false);
+            .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
 
         // act
-        var result = _resolver.GetStubRootPaths();
+        var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
         // assert
         Assert.AreEqual(1, result.Length);
@@ -76,7 +76,8 @@ public class StubRootPathResolverFacts
     [DataTestMethod]
     [DataRow(",")]
     [DataRow("%%")]
-    public void StubRootPathResolver_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths(string separator)
+    public async Task StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths(
+        string separator)
     {
         // arrange
         var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
@@ -87,14 +88,14 @@ public class StubRootPathResolverFacts
         _options.Value.Storage.InputFile = inputFilePath;
 
         _fileServiceMock
-            .Setup(m => m.IsDirectory(path1))
-            .Returns(true);
+            .Setup(m => m.IsDirectoryAsync(path1, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
         _fileServiceMock
-            .Setup(m => m.IsDirectory(path2))
-            .Returns(false);
+            .Setup(m => m.IsDirectoryAsync(path2, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
 
         // act
-        var result = _resolver.GetStubRootPaths();
+        var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
         // assert
         Assert.AreEqual(2, result.Length);
@@ -103,7 +104,7 @@ public class StubRootPathResolverFacts
     }
 
     [TestMethod]
-    public void StubRootPathResolver_GetStubRootPath_InputFileNotSet_ShouldReturnAssemblyPath()
+    public async Task StubRootPathResolverAsync_GetStubRootPath_InputFileNotSet_ShouldReturnAssemblyPath()
     {
         // arrange
         var assemblyPath = Path.Combine(@"C:\stubs\bin");
@@ -113,7 +114,7 @@ public class StubRootPathResolverFacts
             .Returns(assemblyPath);
 
         // act
-        var result = _resolver.GetStubRootPaths();
+        var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
         // assert
         Assert.AreEqual(1, result.Length);

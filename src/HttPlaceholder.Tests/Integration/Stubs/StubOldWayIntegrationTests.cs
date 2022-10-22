@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -212,10 +209,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         ClientDataResolverMock
             .Setup(m => m.GetHost())
             .Returns("httplaceholder.com");
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get, RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -232,10 +226,7 @@ public class StubOldWayIntegrationTests : StubIntegrationTestBase
         ClientDataResolverMock
             .Setup(m => m.GetHost())
             .Returns("httplaceholder.net");
-        var request = new HttpRequestMessage
-        {
-            Method = HttpMethod.Get, RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // act / assert
         using var response = await Client.SendAsync(request);

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -6,14 +8,15 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 
 /// <summary>
-/// This handler is being used for setting the content type.
+///     This handler is being used for setting the content type.
 /// </summary>
-internal class ContentTypeHandler : IResponseToStubResponseHandler
+internal class ContentTypeHandler : IResponseToStubResponseHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel)
+    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel,
+        CancellationToken cancellationToken)
     {
-        var header = response.Headers.CaseInsensitiveSearchPair("content-type");
+        var header = response.Headers.CaseInsensitiveSearchPair(Constants.ContentType);
         if (string.IsNullOrWhiteSpace(header.Value))
         {
             return Task.FromResult(false);

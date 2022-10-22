@@ -1,18 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class FinalStubDeterminer : IFinalStubDeterminer
+internal class FinalStubDeterminer : IFinalStubDeterminer, ISingletonService
 {
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public StubModel DetermineFinalStub(IEnumerable<(StubModel, IEnumerable<ConditionCheckResultModel>)> matchedStubs)
     {
         StubModel finalStub;
-        var matchedStubsArray = matchedStubs as (StubModel, IEnumerable<ConditionCheckResultModel>)[] ?? matchedStubs.ToArray();
+        var matchedStubsArray = matchedStubs as (StubModel, IEnumerable<ConditionCheckResultModel>)[] ??
+                                matchedStubs.ToArray();
+        switch (matchedStubsArray.Length)
+        {
+            case 0:
+                throw new ValidationException("No stub found.");
+            case 1:
+                return matchedStubsArray[0].Item1;
+        }
+
         var highestPriority = matchedStubsArray.Max(s => s.Item1.Priority);
         if (matchedStubsArray.Count(s => s.Item1.Priority == highestPriority) > 1)
         {

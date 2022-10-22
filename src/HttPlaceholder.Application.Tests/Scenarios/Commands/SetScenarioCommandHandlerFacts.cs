@@ -1,10 +1,6 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Scenarios.Commands.SetScenario;
+﻿using HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain.Entities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Scenarios.Commands;
 
@@ -28,6 +24,7 @@ public class SetScenarioCommandHandlerFacts
         await handler.Handle(request, CancellationToken.None);
 
         // Assert
-        scenarioServiceMock.Verify(m => m.SetScenarioAsync(request.ScenarioName, request.ScenarioStateModel));
+        scenarioServiceMock.Verify(m =>
+            m.SetScenarioAsync(request.ScenarioName, request.ScenarioStateModel, It.IsAny<CancellationToken>()));
     }
 }

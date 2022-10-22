@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -6,14 +8,14 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that verifies if a request is done over HTTP or HTTPS.
+///     Condition checker that verifies if a request is done over HTTP or HTTPS.
 /// </summary>
-public class IsHttpsConditionChecker : IConditionChecker
+public class IsHttpsConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IClientDataResolver _clientDataResolver;
 
     /// <summary>
-    /// Constructs a <see cref="IsHttpsConditionChecker"/> instance.
+    ///     Constructs a <see cref="IsHttpsConditionChecker" /> instance.
     /// </summary>
     public IsHttpsConditionChecker(IClientDataResolver clientDataResolver)
     {
@@ -21,7 +23,7 @@ public class IsHttpsConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var condition = stub.Conditions?.Url?.IsHttps;

@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace HttPlaceholder.Tests.Integration.Stubs.Scenarios;
+﻿namespace HttPlaceholder.Tests.Integration.Stubs.Scenarios;
 
 [TestClass]
 public class HitCounterTests : StubIntegrationTestBase
@@ -19,8 +16,8 @@ public class HitCounterTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}scenario-min-max-hits";
         var expectedResponses = new[]
         {
-            "Ok, hits are increased", "Ok, hit goal is reached :)",
-            "Ok, hit goal is reached :)", "Ok, hits are increased"
+            "Ok, hits are increased", "Ok, hit goal is reached :)", "Ok, hit goal is reached :)",
+            "Ok, hits are increased"
         };
         foreach (var expectedResponse in expectedResponses)
         {
@@ -38,8 +35,8 @@ public class HitCounterTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}scenario-exact-hits";
         var expectedResponses = new[]
         {
-            "Ok, hits are increased", "Ok, exact hit goal is reached :)",
-            "Ok, hits are increased", "Ok, hits are increased"
+            "Ok, hits are increased", "Ok, exact hit goal is reached :)", "Ok, hits are increased",
+            "Ok, hits are increased"
         };
         foreach (var expectedResponse in expectedResponses)
         {

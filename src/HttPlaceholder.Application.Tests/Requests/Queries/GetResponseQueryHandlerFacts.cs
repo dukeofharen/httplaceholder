@@ -1,13 +1,6 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Exceptions;
+﻿using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Requests.Queries.GetResponse;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Requests.Queries;
 
@@ -30,7 +23,7 @@ public class GetResponseQueryHandlerFacts
         var query = new GetResponseQuery(correlationId);
 
         mockStubContext
-            .Setup(m => m.GetResponseAsync(correlationId))
+            .Setup(m => m.GetResponseAsync(correlationId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((ResponseModel)null);
 
         // Act / Assert
@@ -49,7 +42,7 @@ public class GetResponseQueryHandlerFacts
 
         var expectedResult = new ResponseModel();
         mockStubContext
-            .Setup(m => m.GetResponseAsync(correlationId))
+            .Setup(m => m.GetResponseAsync(correlationId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);
 
         // Act

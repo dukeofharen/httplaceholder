@@ -1,8 +1,6 @@
 ﻿using System.Net;
-using System.Threading.Tasks;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.Implementations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
@@ -30,7 +28,8 @@ public class GetResponseFacts : BaseClientTest
 
         // Act
         var exception =
-            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.GetResponseAsync(correlationId));
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
+                client.GetResponseAsync(correlationId));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",

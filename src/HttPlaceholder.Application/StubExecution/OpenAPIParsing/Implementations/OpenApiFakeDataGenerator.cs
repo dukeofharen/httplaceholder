@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Bogus;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -13,8 +14,7 @@ using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
-/// <inheritdoc />
-internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator
+internal class OpenApiFakeDataGenerator : IOpenApiFakeDataGenerator, ISingletonService
 {
     private static readonly Faker _faker = new();
 

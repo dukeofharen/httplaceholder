@@ -6,23 +6,22 @@ using HttPlaceholder.Client.Utilities;
 namespace HttPlaceholder.Client;
 
 /// <summary>
-/// A class for creating instances of <see cref="HttPlaceholderClient"/>.
-/// Useful for projects that do not use .NET Core or the .NET Core DI container.
+///     A class for creating instances of <see cref="HttPlaceholderClient" />.
+///     Useful for projects that do not use .NET Core or the .NET Core DI container.
 /// </summary>
 /// <example>
-/// If you do not use .NET Core or the .NET Core dependency container, use this method to create a new client.
-///
-/// <code>
-///...
-/// var config = new HttPlaceholderClientConfiguration
-/// {
-/// RootUrl = "http://localhost:5000", // The HttPlaceholder root URL.
-/// Username = "username", // Optionally set the authentication.
-/// Password = "password"
-/// };
-/// var client = HttPlaceholderClientFactory.CreateHttPlaceholderClient(config);
+///     If you do not use .NET Core or the .NET Core dependency container, use this method to create a new client.
+///     <code>
 /// ...
-/// </code>
+///  var config = new HttPlaceholderClientConfiguration
+///  {
+///  RootUrl = "http://localhost:5000", // The HttPlaceholder root URL.
+///  Username = "username", // Optionally set the authentication.
+///  Password = "password"
+///  };
+///  var client = HttPlaceholderClientFactory.CreateHttPlaceholderClient(config);
+///  ...
+///  </code>
 /// </example>
 public static class HttPlaceholderClientFactory
 {
@@ -30,10 +29,10 @@ public static class HttPlaceholderClientFactory
     private static HttpClient _httpClient;
 
     /// <summary>
-    /// Method for creating the <see cref="IHttPlaceholderClient"/>.
+    ///     Method for creating the <see cref="IHttPlaceholderClient" />.
     /// </summary>
     /// <param name="config">The configuration of the client.</param>
-    /// <returns>The <see cref="IHttPlaceholderClient"/>.</returns>
+    /// <returns>The <see cref="IHttPlaceholderClient" />.</returns>
     public static IHttPlaceholderClient CreateHttPlaceholderClient(HttPlaceholderClientConfiguration config)
     {
         config.Validate();

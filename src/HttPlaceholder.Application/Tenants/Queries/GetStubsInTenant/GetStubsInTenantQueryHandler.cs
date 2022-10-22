@@ -8,14 +8,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Tenants.Queries.GetStubsInTenant;
 
 /// <summary>
-/// A query handler for retrieving all stubs belonging to a tenant.
+///     A query handler for retrieving all stubs belonging to a tenant.
 /// </summary>
 public class GetStubsInTenantQueryHandler : IRequestHandler<GetStubsInTenantQuery, IEnumerable<FullStubModel>>
 {
     private readonly IStubContext _stubContext;
 
     /// <summary>
-    /// Constructs a <see cref="GetStubsInTenantQueryHandler"/> instance.
+    ///     Constructs a <see cref="GetStubsInTenantQueryHandler" /> instance.
     /// </summary>
     public GetStubsInTenantQueryHandler(IStubContext stubContext)
     {
@@ -23,6 +23,7 @@ public class GetStubsInTenantQueryHandler : IRequestHandler<GetStubsInTenantQuer
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> Handle(GetStubsInTenantQuery request, CancellationToken cancellationToken) =>
-        await _stubContext.GetStubsAsync(request.Tenant);
+    public async Task<IEnumerable<FullStubModel>> Handle(GetStubsInTenantQuery request,
+        CancellationToken cancellationToken) =>
+        await _stubContext.GetStubsAsync(request.Tenant, cancellationToken);
 }

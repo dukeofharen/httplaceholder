@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HttPlaceholder.Application.StubExecution.Utilities;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Utilities;
@@ -54,11 +51,10 @@ public class ConversionUtilitiesFacts
     }
 
     [TestMethod]
-    public void Convert_ConditionIsUnrecognized_ShouldThrowInvalidOperationException()
-    {
+    public void Convert_ConditionIsUnrecognized_ShouldThrowInvalidOperationException() =>
         // Act / Assert
-        Assert.ThrowsException<InvalidOperationException>(() => ConversionUtilities.Convert<StubConditionStringCheckingModel>(1234));
-    }
+        Assert.ThrowsException<InvalidOperationException>(() =>
+            ConversionUtilities.Convert<StubConditionStringCheckingModel>(1234));
 
     [DataTestMethod]
     [DataRow(3, 3)]

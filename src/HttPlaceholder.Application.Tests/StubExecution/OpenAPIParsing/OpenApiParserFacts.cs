@@ -1,8 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.OpenAPIParsing;
 

@@ -3,7 +3,6 @@ using System.Linq;
 using HttPlaceholder.HostedServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.HostedServices;
 

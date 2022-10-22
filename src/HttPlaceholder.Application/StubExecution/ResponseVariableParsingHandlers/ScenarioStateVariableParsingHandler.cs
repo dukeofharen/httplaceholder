@@ -1,19 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable handler that is used to insert the state of a specific scenario in the response
+///     Response variable handler that is used to insert the state of a specific scenario in the response
 /// </summary>
-internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler
+internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IScenarioStateStore _scenarioStateStore;
 
-    public ScenarioStateVariableParsingHandler(IScenarioStateStore scenarioStateStore, IFileService fileService) : base(fileService)
+    public ScenarioStateVariableParsingHandler(IScenarioStateStore scenarioStateStore, IFileService fileService) :
+        base(fileService)
     {
         _scenarioStateStore = scenarioStateStore;
     }
@@ -28,33 +29,27 @@ internal class ScenarioStateVariableParsingHandler : BaseVariableParsingHandler
     public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub) =>
+        matches
+            .Where(match => match.Groups.Count >= 2)
+            .Aggregate(input, (current, match) => InsertState(current, match, stub));
+
+    private string InsertState(string current, Match match, StubModel stub)
     {
-        var enumerable = matches as Match[] ?? matches.ToArray();
-        if (!enumerable.Any())
+        string state;
+        var scenarioName = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value)
+            ? match.Groups[2].Value
+            : stub.Scenario ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(scenarioName))
         {
-            return input;
+            state = string.Empty;
+        }
+        else
+        {
+            var scenario = _scenarioStateStore.GetScenario(scenarioName);
+            state = scenario?.State;
         }
 
-        foreach (var match in enumerable)
-        {
-            string state;
-            var scenarioName = match.Groups.Count == 3 && !string.IsNullOrWhiteSpace(match.Groups[2].Value)
-                ? match.Groups[2].Value
-                : stub.Scenario ?? string.Empty;
-            if (string.IsNullOrWhiteSpace(scenarioName))
-            {
-                state = string.Empty;
-            }
-            else
-            {
-                var scenario = _scenarioStateStore.GetScenario(scenarioName);
-                state = scenario?.State;
-            }
-
-            input = input.Replace(match.Value, state);
-        }
-
-        return input;
+        return current.Replace(match.Value, state);
     }
 }

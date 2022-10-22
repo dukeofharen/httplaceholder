@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -10,14 +12,15 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker for validating whether the XML in the request body corresponds to a given list of XPath expressions.
+///     Condition checker for validating whether the XML in the request body corresponds to a given list of XPath
+///     expressions.
 /// </summary>
-public class XPathConditionChecker : IConditionChecker
+public class XPathConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
     /// <summary>
-    /// Constructs a <see cref="BasicAuthenticationConditionChecker"/> instance.
+    ///     Constructs a <see cref="BasicAuthenticationConditionChecker" /> instance.
     /// </summary>
     public XPathConditionChecker(IHttpContextService httpContextService)
     {
@@ -25,7 +28,7 @@ public class XPathConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var xpathConditions = stub.Conditions?.Xpath?.ToArray() ?? Array.Empty<StubXpathModel>();

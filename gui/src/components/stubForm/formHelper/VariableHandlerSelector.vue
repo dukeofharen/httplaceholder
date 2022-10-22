@@ -59,8 +59,8 @@ export default defineComponent({
     },
   },
   emits: {
-    exampleSelected() {
-      return true;
+    exampleSelected(input: string) {
+      return !!input;
     },
   },
   setup(props, { emit }) {

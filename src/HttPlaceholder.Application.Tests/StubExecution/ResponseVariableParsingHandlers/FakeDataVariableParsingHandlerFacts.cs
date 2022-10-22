@@ -1,15 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 using Match = System.Text.RegularExpressions.Match;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
@@ -67,7 +62,7 @@ public class FakeDataVariableParsingHandlerFacts
 
         fileServiceMock
             .Setup(m => m.ReadAllText(It.Is<string>(p =>
-                p.EndsWith(Path.Combine("Files", "Markdown", "fake_data-description.md")))))
+                p.EndsWith(Path.Combine("Files", "VarParser", "fake_data-description.md")))))
             .Returns(description);
 
         fakerServiceMock

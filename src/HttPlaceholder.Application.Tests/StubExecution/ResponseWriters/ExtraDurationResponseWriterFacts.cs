@@ -1,9 +1,5 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.ResponseWriters;
+﻿using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -25,22 +21,16 @@ public class ExtraDurationResponseWriterFacts
     public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                ExtraDuration = null
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {ExtraDuration = null}};
 
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);
-        _asyncServiceMock.Verify(m => m.DelayAsync(It.IsAny<int>()), Times.Never);
+        _asyncServiceMock.Verify(m => m.DelayAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [DataTestMethod]
@@ -50,22 +40,16 @@ public class ExtraDurationResponseWriterFacts
     public async Task ExtraDurationResponseWriter_WriteToResponseAsync_HappyFlow(object input, int valuePassedToDelay)
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                ExtraDuration = input
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {ExtraDuration = input}};
 
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
-        _asyncServiceMock.Verify(m => m.DelayAsync(valuePassedToDelay), Times.Once);
+        _asyncServiceMock.Verify(m => m.DelayAsync(valuePassedToDelay, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -74,25 +58,18 @@ public class ExtraDurationResponseWriterFacts
         // arrange
         var stub = new StubModel
         {
-            Response = new StubResponseModel
-            {
-                ExtraDuration = new StubExtraDurationModel
-                {
-                    Min = 10000,
-                    Max = 20000
-                }
-            }
+            Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel {Min = 10000, Max = 20000}}
         };
 
         var response = new ResponseModel();
         int? capturedDuration = null;
         _asyncServiceMock
-            .Setup(m => m.DelayAsync(It.IsAny<int>()))
-            .Callback<int>(d => capturedDuration = d)
+            .Setup(m => m.DelayAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Callback<int, CancellationToken>((d, _) => capturedDuration = d)
             .Returns(Task.CompletedTask);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -106,24 +83,18 @@ public class ExtraDurationResponseWriterFacts
         // arrange
         var stub = new StubModel
         {
-            Response = new StubResponseModel
-            {
-                ExtraDuration = new StubExtraDurationModel
-                {
-                    Max = 20000
-                }
-            }
+            Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel {Max = 20000}}
         };
 
         var response = new ResponseModel();
         int? capturedDuration = null;
         _asyncServiceMock
-            .Setup(m => m.DelayAsync(It.IsAny<int>()))
-            .Callback<int>(d => capturedDuration = d)
+            .Setup(m => m.DelayAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Callback<int, CancellationToken>((d, _) => capturedDuration = d)
             .Returns(Task.CompletedTask);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -137,24 +108,18 @@ public class ExtraDurationResponseWriterFacts
         // arrange
         var stub = new StubModel
         {
-            Response = new StubResponseModel
-            {
-                ExtraDuration = new StubExtraDurationModel
-                {
-                    Min = 15000
-                }
-            }
+            Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel {Min = 15000}}
         };
 
         var response = new ResponseModel();
         int? capturedDuration = null;
         _asyncServiceMock
-            .Setup(m => m.DelayAsync(It.IsAny<int>()))
-            .Callback<int>(d => capturedDuration = d)
+            .Setup(m => m.DelayAsync(It.IsAny<int>(), It.IsAny<CancellationToken>()))
+            .Callback<int, CancellationToken>((d, _) => capturedDuration = d)
             .Returns(Task.CompletedTask);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);

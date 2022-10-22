@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Db.Implementations;
 using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations;
 
@@ -42,7 +37,7 @@ public class RelationalDbMigratorFacts
         // Act
         var exception =
             await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
-                migrator.MigrateAsync(_mockDatabaseContext.Object));
+                migrator.MigrateAsync(_mockDatabaseContext.Object, CancellationToken.None));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("Could not find file"));
@@ -64,10 +59,11 @@ public class RelationalDbMigratorFacts
         var migrator = _mocker.CreateInstance<RelationalDbMigrator>();
 
         // Act
-        await migrator.MigrateAsync(_mockDatabaseContext.Object);
+        await migrator.MigrateAsync(_mockDatabaseContext.Object, CancellationToken.None);
 
         // Assert
-        _mockDatabaseContext.Verify(m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+        _mockDatabaseContext.Verify(
+            m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<object>()), Times.Once);
     }
 
     [DataTestMethod]
@@ -113,31 +109,39 @@ public class RelationalDbMigratorFacts
             filesList.Add(migrationFilePath);
             var checkFilePath = Path.Join(rootFolder, $"{input.Key}.check.sql");
             mockFileService
-                .Setup(m => m.FileExists(checkFilePath))
-                .Returns(input.CheckFileFound);
-            if (input.CheckFileFound)
+                .Setup(m => m.FileExistsAsync(checkFilePath, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(input.CheckFileFound);
+            if (!input.CheckFileFound)
+            {
+                continue;
+            }
+
             {
                 var checkScript = Guid.NewGuid().ToString();
                 mockFileService
-                    .Setup(m => m.ReadAllText(checkFilePath))
-                    .Returns(checkScript);
+                    .Setup(m => m.ReadAllTextAsync(checkFilePath, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(checkScript);
                 _mockDatabaseContext
-                    .Setup(m => m.ExecuteScalarAsync<int>(checkScript, It.IsAny<object>()))
+                    .Setup(m => m.ExecuteScalarAsync<int>(checkScript, It.IsAny<CancellationToken>(),
+                        It.IsAny<object>()))
                     .ReturnsAsync(input.CheckResult);
-                if (input.CheckResult == 0)
+                if (input.CheckResult != 0)
                 {
-                    var migrationScript = Guid.NewGuid().ToString();
-                    mockFileService
-                        .Setup(m => m.ReadAllText(migrationFilePath))
-                        .Returns(migrationScript);
-                    _mockDatabaseContext.Setup(m => m.ExecuteAsync(migrationScript, It.IsAny<object>()));
+                    continue;
                 }
+
+                var migrationScript = Guid.NewGuid().ToString();
+                mockFileService
+                    .Setup(m => m.ReadAllTextAsync(migrationFilePath, It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(migrationScript);
+                _mockDatabaseContext.Setup(m =>
+                    m.ExecuteAsync(migrationScript, It.IsAny<CancellationToken>(), It.IsAny<object>()));
             }
         }
 
         mockFileService
-            .Setup(m => m.GetFiles(rootFolder, "*.migration.sql"))
-            .Returns(filesList.ToArray);
+            .Setup(m => m.GetFilesAsync(rootFolder, "*.migration.sql", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(filesList.ToArray);
     }
 
     private void SetupConfig(string connectionStringKey)

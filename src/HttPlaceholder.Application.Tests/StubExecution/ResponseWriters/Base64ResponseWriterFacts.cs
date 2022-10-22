@@ -1,9 +1,6 @@
 ﻿using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -16,18 +13,12 @@ public class Base64ResponseWriterFacts
     public async Task Base64ResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                Base64 = null
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {Base64 = null}};
 
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);
@@ -40,18 +31,12 @@ public class Base64ResponseWriterFacts
         // arrange
         var expectedBytes = Encoding.UTF8.GetBytes("TEST!!1!");
 
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                Base64 = "VEVTVCEhMSE="
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {Base64 = "VEVTVCEhMSE="}};
 
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);

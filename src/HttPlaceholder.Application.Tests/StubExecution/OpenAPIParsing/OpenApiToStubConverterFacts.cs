@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
-using HttPlaceholder.Domain;
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.OpenAPIParsing;
 
@@ -79,19 +74,19 @@ public class OpenApiToStubConverterFacts
         var conditions = new StubConditionsModel();
         HttpRequestModel capturedRequest = null;
         httpRequestToConditionsServiceMock
-            .Setup(m => m.ConvertToConditionsAsync(It.IsAny<HttpRequestModel>()))
-            .Callback<HttpRequestModel>(_ => capturedRequest = _)
+            .Setup(m => m.ConvertToConditionsAsync(It.IsAny<HttpRequestModel>(), It.IsAny<CancellationToken>()))
+            .Callback<HttpRequestModel, CancellationToken>((r, _) => capturedRequest = r)
             .ReturnsAsync(conditions);
 
         var stubResponse = new StubResponseModel();
         HttpResponseModel capturedResponse = null;
         httpResponseToStubResponseServiceMock
-            .Setup(m => m.ConvertToResponseAsync(It.IsAny<HttpResponseModel>()))
-            .Callback<HttpResponseModel>(_ => capturedResponse = _)
+            .Setup(m => m.ConvertToResponseAsync(It.IsAny<HttpResponseModel>(), It.IsAny<CancellationToken>()))
+            .Callback<HttpResponseModel, CancellationToken>((r, _) => capturedResponse = r)
             .ReturnsAsync(stubResponse);
 
         // Act
-        var result = await converter.ConvertToStubAsync(server, line, tenant);
+        var result = await converter.ConvertToStubAsync(server, line, tenant, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);

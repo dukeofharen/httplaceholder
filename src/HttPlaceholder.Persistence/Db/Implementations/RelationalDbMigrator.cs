@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Common;
 using Microsoft.Extensions.Configuration;
@@ -9,13 +10,13 @@ using Microsoft.Extensions.Logging;
 namespace HttPlaceholder.Persistence.Db.Implementations;
 
 /// <summary>
-/// A class that is used to perform database migrations.
+///     A class that is used to perform database migrations.
 /// </summary>
 internal class RelationalDbMigrator : IRelationalDbMigrator
 {
+    private readonly IAssemblyService _assemblyService;
     private readonly IConfiguration _configuration;
     private readonly IFileService _fileService;
-    private readonly IAssemblyService _assemblyService;
     private readonly ILogger<RelationalDbMigrator> _logger;
 
     public RelationalDbMigrator(IConfiguration configuration, IFileService fileService,
@@ -28,36 +29,25 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
     }
 
     /// <inheritdoc />
-    public async Task MigrateAsync(IDatabaseContext ctx)
+    public async Task MigrateAsync(IDatabaseContext ctx, CancellationToken cancellationToken)
     {
         var dbFolder = GetDatabaseMigrationsFolder();
         var migrationsRootFolder = Path.Combine(_assemblyService.GetExecutingAssemblyRootPath(),
             "SqlScripts/Migrations", dbFolder);
-        var migrationFiles = _fileService.GetFiles(migrationsRootFolder, "*.migration.sql").OrderBy(f => f);
+        var migrationFiles =
+            (await _fileService.GetFilesAsync(migrationsRootFolder, "*.migration.sql", cancellationToken)).OrderBy(f =>
+                f);
         foreach (var file in migrationFiles)
         {
             var fileBaseName = Path.GetFileName(file).Split('.').First();
             var checkFileName = $"{fileBaseName}.check.sql";
             var checkFilePath = Path.Combine(migrationsRootFolder, checkFileName);
-            if (!_fileService.FileExists(checkFilePath))
+            if (!await _fileService.FileExistsAsync(checkFilePath, cancellationToken))
             {
                 throw new InvalidOperationException($"Could not find file {checkFilePath}");
             }
 
-            // The check script will be loaded. It is expected that the script returns an 1 or higher if the migration should NOT be executed and a "0" if the migration SHOULD be executed.
-            var checkScript = _fileService.ReadAllText(checkFilePath);
-            _logger.LogDebug($"Checking file {checkFileName}.");
-            var checkResult = await ctx.ExecuteScalarAsync<int>(checkScript);
-            if (checkResult > 0)
-            {
-                _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration will not be executed.");
-            }
-            else
-            {
-                _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration {file} will be executed.");
-                var migrationScript = _fileService.ReadAllText(file);
-                await ctx.ExecuteAsync(migrationScript);
-            }
+            await ExecuteMigrationAsync(ctx, cancellationToken, checkFilePath, checkFileName, file);
         }
     }
 
@@ -82,5 +72,28 @@ internal class RelationalDbMigrator : IRelationalDbMigrator
         }
 
         throw new InvalidOperationException("Could not determine migrations folder for relational DB.");
+    }
+
+    private async Task ExecuteMigrationAsync(
+        IDatabaseContext ctx,
+        CancellationToken cancellationToken,
+        string checkFilePath,
+        string checkFileName,
+        string file)
+    {
+        // The check script will be loaded. It is expected that the script returns an 1 or higher if the migration should NOT be executed and a "0" if the migration SHOULD be executed.
+        var checkScript = await _fileService.ReadAllTextAsync(checkFilePath, cancellationToken);
+        _logger.LogDebug($"Checking file {checkFileName}.");
+        var checkResult = await ctx.ExecuteScalarAsync<int>(checkScript, cancellationToken);
+        if (checkResult > 0)
+        {
+            _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration will not be executed.");
+        }
+        else
+        {
+            _logger.LogDebug($"Result of {checkFileName} is {checkResult}, so migration {file} will be executed.");
+            var migrationScript = await _fileService.ReadAllTextAsync(file, cancellationToken);
+            await ctx.ExecuteAsync(migrationScript, cancellationToken);
+        }
     }
 }

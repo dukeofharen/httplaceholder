@@ -1,16 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
-using HttPlaceholder.Domain;
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
@@ -38,7 +32,7 @@ public class OpenApiStubGeneratorFacts
         // Act
         var exception =
             await Assert.ThrowsExceptionAsync<ValidationException>(() =>
-                generator.GenerateOpenApiStubsAsync(input, true, null));
+                generator.GenerateOpenApiStubsAsync(input, true, null, CancellationToken.None));
 
         // Assert
         Assert.AreEqual("Validation failed:\nException occurred while trying to parse OpenAPI definition: ERROR!",
@@ -66,24 +60,26 @@ public class OpenApiStubGeneratorFacts
 
         var stub1 = new StubModel {Id = "stub1"};
         openApiToStubConverterMock
-            .Setup(m => m.ConvertToStubAsync(server, lines[0], tenant))
+            .Setup(m => m.ConvertToStubAsync(server, lines[0], tenant, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub1);
 
         var stub2 = new StubModel {Id = "stub2"};
         openApiToStubConverterMock
-            .Setup(m => m.ConvertToStubAsync(server, lines[1], tenant))
+            .Setup(m => m.ConvertToStubAsync(server, lines[1], tenant, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub2);
 
         // Act
-        var result = (await generator.GenerateOpenApiStubsAsync(input, true, tenant)).ToArray();
+        var result = (await generator.GenerateOpenApiStubsAsync(input, true, tenant, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
         Assert.AreEqual(stub1, result[0].Stub);
         Assert.AreEqual(stub2, result[1].Stub);
 
-        stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>()), Times.Never());
-        stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>()), Times.Never());
+        stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Never());
+        stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()),
+            Times.Never());
     }
 
     [TestMethod]
@@ -107,33 +103,34 @@ public class OpenApiStubGeneratorFacts
 
         var stub1 = new StubModel {Id = "stub1"};
         openApiToStubConverterMock
-            .Setup(m => m.ConvertToStubAsync(server, lines[0], tenant))
+            .Setup(m => m.ConvertToStubAsync(server, lines[0], tenant, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub1);
         var addedStub1 = new StubModel {Id = "stub1"};
         stubContextMock
-            .Setup(m => m.AddStubAsync(stub1))
+            .Setup(m => m.AddStubAsync(stub1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new FullStubModel {Stub = addedStub1});
 
         var stub2 = new StubModel {Id = "stub2"};
         openApiToStubConverterMock
-            .Setup(m => m.ConvertToStubAsync(server, lines[1], tenant))
+            .Setup(m => m.ConvertToStubAsync(server, lines[1], tenant, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stub2);
         var addedStub2 = new StubModel {Id = "stub2"};
         stubContextMock
-            .Setup(m => m.AddStubAsync(stub2))
+            .Setup(m => m.AddStubAsync(stub2, It.IsAny<CancellationToken>()))
             .ReturnsAsync(new FullStubModel {Stub = addedStub2});
 
         // Act
-        var result = (await generator.GenerateOpenApiStubsAsync(input, false, tenant)).ToArray();
+        var result = (await generator.GenerateOpenApiStubsAsync(input, false, tenant, CancellationToken.None))
+            .ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
         Assert.AreEqual(addedStub1, result[0].Stub);
         Assert.AreEqual(addedStub2, result[1].Stub);
 
-        stubContextMock.Verify(m => m.DeleteStubAsync("stub1"));
-        stubContextMock.Verify(m => m.AddStubAsync(stub1));
-        stubContextMock.Verify(m => m.DeleteStubAsync("stub2"));
-        stubContextMock.Verify(m => m.AddStubAsync(stub2));
+        stubContextMock.Verify(m => m.DeleteStubAsync("stub1", It.IsAny<CancellationToken>()));
+        stubContextMock.Verify(m => m.AddStubAsync(stub1, It.IsAny<CancellationToken>()));
+        stubContextMock.Verify(m => m.DeleteStubAsync("stub2", It.IsAny<CancellationToken>()));
+        stubContextMock.Verify(m => m.AddStubAsync(stub2, It.IsAny<CancellationToken>()));
     }
 }

@@ -1,12 +1,6 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Requests.Queries.GetRequest;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Application.Tests.Requests.Queries;
 
@@ -30,7 +24,7 @@ public class GetRequestQueryHandlerFacts
         var query = new GetRequestQuery {CorrelationId = correlationId};
 
         _mockStubContext
-            .Setup(m => m.GetRequestResultAsync(correlationId))
+            .Setup(m => m.GetRequestResultAsync(correlationId, It.IsAny<CancellationToken>()))
             .ReturnsAsync((RequestResultModel)null);
 
         // Act / Assert
@@ -46,7 +40,7 @@ public class GetRequestQueryHandlerFacts
 
         var expectedResult = new RequestResultModel {CorrelationId = correlationId};
         _mockStubContext
-            .Setup(m => m.GetRequestResultAsync(correlationId))
+            .Setup(m => m.GetRequestResultAsync(correlationId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);
 
         // Act

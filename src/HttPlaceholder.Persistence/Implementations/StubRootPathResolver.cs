@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -9,12 +13,11 @@ using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Implementations;
 
-/// <inheritdoc />
-internal class StubRootPathResolver : IStubRootPathResolver
+internal class StubRootPathResolver : IStubRootPathResolver, ISingletonService
 {
     private readonly IAssemblyService _assemblyService;
-    private readonly SettingsModel _settings;
     private readonly IFileService _fileService;
+    private readonly SettingsModel _settings;
 
     public StubRootPathResolver(
         IAssemblyService assemblyService,
@@ -27,18 +30,21 @@ internal class StubRootPathResolver : IStubRootPathResolver
     }
 
     /// <inheritdoc />
-    public string[] GetStubRootPaths()
+    public async Task<IEnumerable<string>> GetStubRootPathsAsync(CancellationToken cancellationToken)
     {
         // First, check the "inputFile" configuration property and extract the directory of this folder.
         var inputFile = _settings.Storage?.InputFile;
-        if (inputFile != null)
+        if (inputFile == null)
         {
-            return inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
-                .Select(f => _fileService.IsDirectory(f) ? f : Path.GetDirectoryName(f))
-                .ToArray();
+            // If no input file was provided, return the assembly path instead.
+            return new[] {_assemblyService.GetEntryAssemblyRootPath()};
         }
 
-        // If no input file was provided, return the assembly path instead.
-        return new[] {_assemblyService.GetEntryAssemblyRootPath()};
+        return await Task.WhenAll(
+            inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
+                .Select(f => GetDirectoryAsync(f, cancellationToken)));
     }
+
+    private async Task<string> GetDirectoryAsync(string filename, CancellationToken cancellationToken) =>
+        await _fileService.IsDirectoryAsync(filename, cancellationToken) ? filename : Path.GetDirectoryName(filename);
 }

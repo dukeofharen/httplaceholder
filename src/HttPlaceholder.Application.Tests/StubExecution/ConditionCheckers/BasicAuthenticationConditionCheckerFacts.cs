@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
@@ -31,7 +27,8 @@ public class BasicAuthenticationConditionCheckerFacts
         var conditions = new StubConditionsModel {BasicAuthentication = null};
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -48,7 +45,8 @@ public class BasicAuthenticationConditionCheckerFacts
         };
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -60,10 +58,7 @@ public class BasicAuthenticationConditionCheckerFacts
         // arrange
         var conditions = new StubConditionsModel
         {
-            BasicAuthentication = new StubBasicAuthenticationModel
-            {
-                Username = "username", Password = "password"
-            }
+            BasicAuthentication = new StubBasicAuthenticationModel {Username = "username", Password = "password"}
         };
 
         var headers = new Dictionary<string, string> {{"X-Api-Key", "1"}};
@@ -73,22 +68,21 @@ public class BasicAuthenticationConditionCheckerFacts
             .Returns(headers);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public async Task BasicAuthenticationConditionChecker_ValidateAsync_BasicAuthenticationIncorrect_ShouldReturnInvalid()
+    public async Task
+        BasicAuthenticationConditionChecker_ValidateAsync_BasicAuthenticationIncorrect_ShouldReturnInvalid()
     {
         // arrange
         var conditions = new StubConditionsModel
         {
-            BasicAuthentication = new StubBasicAuthenticationModel
-            {
-                Username = "username", Password = "password"
-            }
+            BasicAuthentication = new StubBasicAuthenticationModel {Username = "username", Password = "password"}
         };
 
         var headers = new Dictionary<string, string> {{"Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmRk"}};
@@ -98,7 +92,8 @@ public class BasicAuthenticationConditionCheckerFacts
             .Returns(headers);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -110,10 +105,7 @@ public class BasicAuthenticationConditionCheckerFacts
         // arrange
         var conditions = new StubConditionsModel
         {
-            BasicAuthentication = new StubBasicAuthenticationModel
-            {
-                Username = "username", Password = "password"
-            }
+            BasicAuthentication = new StubBasicAuthenticationModel {Username = "username", Password = "password"}
         };
 
         var headers = new Dictionary<string, string> {{"Authorization", "Basic dXNlcm5hbWU6cGFzc3dvcmQ="}};
@@ -123,7 +115,8 @@ public class BasicAuthenticationConditionCheckerFacts
             .Returns(headers);
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

@@ -1,7 +1,5 @@
 ﻿using System.Net.Http;
-using System.Threading.Tasks;
 using HttPlaceholder.Dto.v1.Requests;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;
@@ -33,7 +31,8 @@ public class RestApiCleanOldRequestsTests : RestApiIntegrationTestBase
         Assert.AreEqual(45, requests.Length);
 
         // Run the cleaning job.
-        using var scheduledJobResponse = await Client.PostAsync($"{BaseAddress}ph-api/scheduledJob/CleanOldRequestsJob", new StringContent(string.Empty));
+        using var scheduledJobResponse = await Client.PostAsync($"{BaseAddress}ph-api/scheduledJob/CleanOldRequestsJob",
+            new StringContent(string.Empty));
         scheduledJobResponse.EnsureSuccessStatusCode();
 
         // Verify the number of performed requests.

@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -23,7 +21,7 @@ public class StubRedirectionIntegrationTests : StubIntegrationTestBase
         // act / assert
         using var response = await Client.GetAsync(url);
         Assert.AreEqual(HttpStatusCode.TemporaryRedirect, response.StatusCode);
-        Assert.AreEqual("https://google.com/", response.Headers.Single(h => h.Key == "Location").Value.Single());
+        Assert.AreEqual("https://google.com/", response.Headers.Single(h => h.Key == Constants.Location).Value.Single());
     }
 
     [TestMethod]
@@ -35,6 +33,6 @@ public class StubRedirectionIntegrationTests : StubIntegrationTestBase
         // act / assert
         using var response = await Client.GetAsync(url);
         Assert.AreEqual(HttpStatusCode.MovedPermanently, response.StatusCode);
-        Assert.AreEqual("https://reddit.com/", response.Headers.Single(h => h.Key == "Location").Value.Single());
+        Assert.AreEqual("https://reddit.com/", response.Headers.Single(h => h.Key == Constants.Location).Value.Single());
     }
 }

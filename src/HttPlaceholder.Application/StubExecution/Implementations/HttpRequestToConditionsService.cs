@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 using HttPlaceholder.Domain;
@@ -8,8 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class HttpRequestToConditionsService : IHttpRequestToConditionsService
+internal class HttpRequestToConditionsService : IHttpRequestToConditionsService, ISingletonService
 {
     private readonly IEnumerable<IRequestToStubConditionsHandler> _handlers;
     private readonly ILogger<HttpRequestToConditionsService> _logger;
@@ -22,16 +23,17 @@ internal class HttpRequestToConditionsService : IHttpRequestToConditionsService
         _logger = logger;
     }
 
-    /// <inheritdoc/>
-    public async Task<StubConditionsModel> ConvertToConditionsAsync(HttpRequestModel request)
+    /// <inheritdoc />
+    public async Task<StubConditionsModel> ConvertToConditionsAsync(HttpRequestModel request,
+        CancellationToken cancellationToken)
     {
         var conditions = new StubConditionsModel();
         foreach (var handler in _handlers.OrderByDescending(w => w.Priority))
         {
             var executed =
-                await handler.HandleStubGenerationAsync(request, conditions);
+                await handler.HandleStubGenerationAsync(request, conditions, cancellationToken);
             _logger.LogDebug(
-                $"Handler '{handler.GetType().Name}' " + (executed ? "executed" : "not executed") + ".");
+                $"Handler '{handler.GetType().Name}' {(executed ? "executed" : "not executed")}.");
         }
 
         return conditions;

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
 using HttPlaceholder.Domain;
@@ -10,13 +12,12 @@ using Microsoft.OpenApi.Models;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class OpenApiStubGenerator : IOpenApiStubGenerator
+internal class OpenApiStubGenerator : IOpenApiStubGenerator, ISingletonService
 {
-    private readonly IStubContext _stubContext;
+    private readonly ILogger<OpenApiStubGenerator> _logger;
     private readonly IOpenApiParser _openApiParser;
     private readonly IOpenApiToStubConverter _openApiToStubConverter;
-    private readonly ILogger<OpenApiStubGenerator> _logger;
+    private readonly IStubContext _stubContext;
 
     public OpenApiStubGenerator(
         IStubContext stubContext,
@@ -31,7 +32,8 @@ internal class OpenApiStubGenerator : IOpenApiStubGenerator
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateOpenApiStubsAsync(string input, bool doNotCreateStub, string tenant)
+    public async Task<IEnumerable<FullStubModel>> GenerateOpenApiStubsAsync(string input, bool doNotCreateStub,
+        string tenant, CancellationToken cancellationToken)
     {
         try
         {
@@ -39,7 +41,7 @@ internal class OpenApiStubGenerator : IOpenApiStubGenerator
             var openApiResult = _openApiParser.ParseOpenApiDefinition(input);
             foreach (var line in openApiResult.Lines)
             {
-                stubs.Add(await CreateStub(doNotCreateStub, openApiResult.Server, line, tenant));
+                stubs.Add(await CreateStub(doNotCreateStub, openApiResult.Server, line, tenant, cancellationToken));
             }
 
             return stubs;
@@ -51,15 +53,16 @@ internal class OpenApiStubGenerator : IOpenApiStubGenerator
         }
     }
 
-    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, OpenApiServer server, OpenApiLine line, string tenant)
+    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, OpenApiServer server, OpenApiLine line,
+        string tenant, CancellationToken cancellationToken)
     {
-        var stub = await _openApiToStubConverter.ConvertToStubAsync(server, line, tenant);
+        var stub = await _openApiToStubConverter.ConvertToStubAsync(server, line, tenant, cancellationToken);
         if (doNotCreateStub)
         {
             return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
         }
 
-        await _stubContext.DeleteStubAsync(stub.Id);
-        return await _stubContext.AddStubAsync(stub);
+        await _stubContext.DeleteStubAsync(stub.Id, cancellationToken);
+        return await _stubContext.AddStubAsync(stub, cancellationToken);
     }
 }

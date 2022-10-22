@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace HttPlaceholder.Application.Metadata.Queries.GetMetadata;
 
 /// <summary>
-/// A query handler for retrieving metadata about the currently running instance of HttPlaceholder.
+///     A query handler for retrieving metadata about the currently running instance of HttPlaceholder.
 /// </summary>
 public class GetMetadataQueryHandler : IRequestHandler<GetMetadataQuery, MetadataModel>
 {
@@ -19,7 +19,7 @@ public class GetMetadataQueryHandler : IRequestHandler<GetMetadataQuery, Metadat
     private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
-    /// Constructs a <see cref="GetMetadataQueryHandler"/> instance.
+    ///     Constructs a <see cref="GetMetadataQueryHandler" /> instance.
     /// </summary>
     public GetMetadataQueryHandler(
         IAssemblyService assemblyService,

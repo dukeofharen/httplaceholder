@@ -1,38 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Middleware;
-using HttPlaceholder.TestUtilities.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Middleware;
 
 [TestClass]
 public class StubHandlingMiddlewareFacts
 {
-    private bool _nextCalled;
+    private readonly AutoMocker _mocker = new();
+    private readonly MockLogger<StubHandlingMiddleware> _mockLogger = new();
+    private readonly Mock<IRequestLoggerFactory> _requestLoggerFactoryMock = new();
+    private readonly Mock<IRequestLogger> _requestLoggerMock = new();
 
     private readonly SettingsModel _settings = new()
     {
         Stub = new StubSettingsModel(), Storage = new StorageSettingsModel(), Gui = new GuiSettingsModel()
     };
 
-    private readonly AutoMocker _mocker = new();
-    private readonly MockLogger<StubHandlingMiddleware> _mockLogger = new();
-    private readonly Mock<IRequestLogger> _requestLoggerMock = new();
-    private readonly Mock<IRequestLoggerFactory> _requestLoggerFactoryMock = new();
+    private bool _nextCalled;
 
     [TestInitialize]
     public void Initialize()
@@ -71,7 +65,7 @@ public class StubHandlingMiddlewareFacts
 
         // Assert
         Assert.IsFalse(_nextCalled);
-        httpContextServiceMock.Verify(m => m.WriteAsync("OK"));
+        httpContextServiceMock.Verify(m => m.WriteAsync("OK", It.IsAny<CancellationToken>()));
     }
 
     [DataTestMethod]
@@ -146,7 +140,7 @@ public class StubHandlingMiddlewareFacts
             BodyIsBinary = true
         };
         stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync())
+            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResponse);
 
         var requestResultModel = new RequestResultModel {ExecutingStubId = "stub123"};
@@ -161,13 +155,15 @@ public class StubHandlingMiddlewareFacts
         Assert.IsFalse(_nextCalled);
         httpContextServiceMock.Verify(m => m.EnableRewind());
         httpContextServiceMock.Verify(m => m.ClearResponse());
-        httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-Correlation", It.IsAny<StringValues>()));
-        httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-ExecutedStub", requestResultModel.ExecutingStubId));
+        httpContextServiceMock.Verify(m => m.TryAddHeader(Constants.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m =>
+            m.TryAddHeader(Constants.XHttPlaceholderExecutedStub, requestResultModel.ExecutingStubId));
         httpContextServiceMock.Verify(m => m.SetStatusCode(stubResponse.StatusCode));
         httpContextServiceMock.Verify(m => m.AddHeader("X-Header1", "val1"));
         httpContextServiceMock.Verify(m => m.AddHeader("X-Header2", "val2"));
-        httpContextServiceMock.Verify(m => m.WriteAsync(stubResponse.Body));
-        stubContextMock.Verify(m => m.AddRequestResultAsync(requestResultModel, stubResponse));
+        httpContextServiceMock.Verify(m => m.WriteAsync(stubResponse.Body, It.IsAny<CancellationToken>()));
+        stubContextMock.Verify(m =>
+            m.AddRequestResultAsync(requestResultModel, stubResponse, It.IsAny<CancellationToken>()));
         Assert.IsFalse(_mockLogger.Contains(LogLevel.Information, "Request: "));
     }
 
@@ -183,12 +179,9 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.Path)
             .Returns("/path");
 
-        var stubResponse = new ResponseModel
-        {
-            AbortConnection = true
-        };
+        var stubResponse = new ResponseModel {AbortConnection = true};
         stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync())
+            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResponse);
 
         var requestResultModel = new RequestResultModel();
@@ -220,7 +213,7 @@ public class StubHandlingMiddlewareFacts
 
         var stubResponse = new ResponseModel();
         stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync())
+            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResponse);
 
         httpContextServiceMock
@@ -237,7 +230,8 @@ public class StubHandlingMiddlewareFacts
 
         // Assert
         Assert.IsFalse(_nextCalled);
-        httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>()), Times.Never());
+        httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Never());
     }
 
     [TestMethod]
@@ -257,7 +251,7 @@ public class StubHandlingMiddlewareFacts
 
         var stubResponse = new ResponseModel();
         stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync())
+            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResponse);
 
         var requestResultModel = new RequestResultModel();
@@ -283,6 +277,7 @@ public class StubHandlingMiddlewareFacts
         var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
         var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
         var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+        var resourcesServiceMock = _mocker.GetMock<IResourcesService>();
 
         const string requestPath = "/stub-path";
 
@@ -291,8 +286,13 @@ public class StubHandlingMiddlewareFacts
             .Returns(requestPath);
 
         stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync())
+            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
             .ThrowsAsync(new RequestValidationException("ERROR!"));
+
+        const string page501 = "Not implemented [ROOT_URL]";
+        resourcesServiceMock
+            .Setup(m => m.ReadAsString("Files/StubNotConfigured.html"))
+            .Returns(page501);
 
         var requestResultModel = new RequestResultModel();
         _requestLoggerMock
@@ -305,11 +305,45 @@ public class StubHandlingMiddlewareFacts
         // Assert
         Assert.IsFalse(_nextCalled);
         httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.NotImplemented));
-        httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-Correlation", It.IsAny<StringValues>()));
-        httpContextServiceMock.Verify(m => m.AddHeader("Content-Type", Constants.HtmlMime));
+        httpContextServiceMock.Verify(m => m.TryAddHeader(Constants.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m => m.AddHeader(Constants.ContentType, Constants.HtmlMime));
         httpContextServiceMock.Verify(m =>
-            m.WriteAsync(It.Is<string>(b => b.Contains("HttPlaceholder - no stub configured"))));
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Information, "Request validation exception thrown:"));
+            m.WriteAsync(It.Is<string>(b => b.Contains("Not implemented")), It.IsAny<CancellationToken>()));
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown:"));
+    }
+
+    [TestMethod]
+    public async Task
+        Invoke_ExecuteStub_UiEnabled_TaskCanceledExceptionWhenExecutingStub_ShouldReturn501WithHtmlPage()
+    {
+        // Arrange
+        _settings.Storage.EnableRequestLogging = true;
+        _settings.Gui.EnableUserInterface = true;
+        var middleware = _mocker.CreateInstance<StubHandlingMiddleware>();
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var stubRequestExecutorMock = _mocker.GetMock<IStubRequestExecutor>();
+
+        const string requestPath = "/stub-path";
+
+        httpContextServiceMock
+            .Setup(m => m.Path)
+            .Returns(requestPath);
+
+        stubRequestExecutorMock
+            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
+            .ThrowsAsync(new TaskCanceledException("Cancelled"));
+
+        var requestResultModel = new RequestResultModel();
+        _requestLoggerMock
+            .Setup(m => m.GetResult())
+            .Returns(requestResultModel);
+
+        // Act
+        await middleware.Invoke(null);
+
+        // Assert
+        Assert.IsFalse(_nextCalled);
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request was cancelled."));
     }
 
     [TestMethod]
@@ -330,7 +364,7 @@ public class StubHandlingMiddlewareFacts
             .Returns(requestPath);
 
         stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync())
+            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
             .ThrowsAsync(new RequestValidationException("ERROR!"));
 
         var requestResultModel = new RequestResultModel();
@@ -344,10 +378,11 @@ public class StubHandlingMiddlewareFacts
         // Assert
         Assert.IsFalse(_nextCalled);
         httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.NotImplemented));
-        httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-Correlation", It.IsAny<StringValues>()));
-        httpContextServiceMock.Verify(m => m.AddHeader("Content-Type", Constants.HtmlMime), Times.Never);
-        httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>()), Times.Never);
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Information, "Request validation exception thrown:"));
+        httpContextServiceMock.Verify(m => m.TryAddHeader(Constants.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m => m.AddHeader(Constants.ContentType, Constants.HtmlMime), Times.Never);
+        httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Never);
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown:"));
     }
 
     [TestMethod]
@@ -366,7 +401,7 @@ public class StubHandlingMiddlewareFacts
             .Returns(requestPath);
 
         stubRequestExecutorMock
-            .Setup(m => m.ExecuteRequestAsync())
+            .Setup(m => m.ExecuteRequestAsync(It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("ERROR!"));
 
         var requestResultModel = new RequestResultModel();
@@ -380,8 +415,9 @@ public class StubHandlingMiddlewareFacts
         // Assert
         Assert.IsFalse(_nextCalled);
         httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.InternalServerError));
-        httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-Correlation", It.IsAny<StringValues>()));
-        httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>()), Times.Never);
+        httpContextServiceMock.Verify(m => m.TryAddHeader(Constants.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
+            Times.Never);
         Assert.IsTrue(_mockLogger.Contains(LogLevel.Warning, "Unexpected exception thrown:"));
     }
 }

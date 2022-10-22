@@ -2,21 +2,22 @@
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Drawing.Processing.Processors.Text;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
 namespace HttPlaceholder.Common.Utilities;
 
 /// <summary>
-/// A utility class for working with ImageSharp.
+///     A utility class for working with ImageSharp.
 /// </summary>
 public static class ImageSharpUtilities
 {
     /// <summary>
-    /// Inverts a given color.
+    ///     Inverts a given color.
     /// </summary>
     /// <param name="input">The color.</param>
-    /// <returns>The inverted <see cref="Color"/>.</returns>
+    /// <returns>The inverted <see cref="Color" />.</returns>
     public static Color InvertColor(this Color input)
     {
         var pixel = input.ToPixel<Rgba32>();
@@ -24,7 +25,7 @@ public static class ImageSharpUtilities
     }
 
     /// <summary>
-    /// Applies a watermark to a given image.
+    ///     Applies a watermark to a given image.
     /// </summary>
     /// <param name="processingContext">The image processing context.</param>
     /// <param name="font">The font the watermark should be in.</param>
@@ -32,7 +33,7 @@ public static class ImageSharpUtilities
     /// <param name="color">The HTML encoded color (e.g. '#123456').</param>
     /// <param name="padding">The padding in pixels.</param>
     /// <param name="wordwrap">True if the words should be wrapped.</param>
-    /// <returns>The input <see cref="IImageProcessingContext"/>.</returns>
+    /// <returns>The input <see cref="IImageProcessingContext" />.</returns>
     public static IImageProcessingContext ApplyScalingWaterMark(this IImageProcessingContext processingContext,
         Font font,
         string text,
@@ -41,19 +42,18 @@ public static class ImageSharpUtilities
         bool wordwrap) =>
         wordwrap
             ? processingContext.ApplyScalingWaterMarkWordWrap(font, text, color, padding)
-            : processingContext.ApplyScalingWaterMarkSimple(font, text, color, padding);
+            : processingContext.ApplyScalingWaterMarkSimple(font, text, color);
 
     private static IImageProcessingContext ApplyScalingWaterMarkSimple(
         this IImageProcessingContext processingContext,
         Font font,
         string text,
-        Color color,
-        float padding)
+        Color color)
     {
         var (width, height) = processingContext.GetCurrentSize();
 
         // measure the text size
-        var size = TextMeasurer.Measure(text, new RendererOptions(font));
+        var size = TextMeasurer.Measure(text, new TextOptions(font));
 
         //find out how much we need to scale the text to fill the space (up or down)
         var scalingFactor = Math.Min(width / size.Width, height / size.Height);
@@ -62,15 +62,17 @@ public static class ImageSharpUtilities
         var scaledFont = new Font(font, scalingFactor * font.Size);
 
         var center = new PointF(width / 2, height / 2);
-        var textGraphicOptions = new TextGraphicsOptions
+        var textOptions = new TextOptions(scaledFont)
         {
-            TextOptions =
-            {
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            }
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            Origin = center
         };
-        return processingContext.DrawText(textGraphicOptions, text, scaledFont, color, center);
+        // return processingContext.DrawText(textOptions, text, color);
+        // return processingContext.DrawText(text, scaledFont, color, center);
+        return processingContext.DrawText(textOptions, text, color);
+        // processingContext.ApplyProcessor(new DrawTextProcessor(processingContext.GetDrawingOptions(), textOptions, text,
+            // brush, pen));
     }
 
     private static IImageProcessingContext ApplyScalingWaterMarkWordWrap(
@@ -128,19 +130,17 @@ public static class ImageSharpUtilities
 
             trapCount--;
 
-            s = TextMeasurer.Measure(text, new RendererOptions(scaledFont) {WrappingWidth = targetWidth});
+            s = TextMeasurer.Measure(text, new TextOptions(scaledFont) {WrappingLength = targetWidth});
         }
 
         var center = new PointF(padding, height / 2);
-        var textGraphicOptions = new TextGraphicsOptions
+        var textOptions = new TextOptions(scaledFont)
         {
-            TextOptions =
-            {
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Center,
-                WrapTextWidth = targetWidth
-            }
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center,
+            WrappingLength = targetWidth,
+            Origin = center
         };
-        return processingContext.DrawText(textGraphicOptions, text, scaledFont, color, center);
+        return processingContext.DrawText(textOptions, text, color);
     }
 }

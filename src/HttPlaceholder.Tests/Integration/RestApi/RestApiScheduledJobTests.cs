@@ -1,7 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;
@@ -23,7 +21,8 @@ public class RestApiScheduledJobTests : RestApiIntegrationTestBase
     public async Task RestApiIntegration_ScheduledJobs_ScheduledJobNotFound_ShouldReturn404()
     {
         // Run a non-existent job.
-        using var scheduledJobResponse = await Client.PostAsync($"{BaseAddress}ph-api/scheduledJob/NotExists", new StringContent(string.Empty));
+        using var scheduledJobResponse = await Client.PostAsync($"{BaseAddress}ph-api/scheduledJob/NotExists",
+            new StringContent(string.Empty));
         Assert.AreEqual(HttpStatusCode.NotFound, scheduledJobResponse.StatusCode);
     }
 

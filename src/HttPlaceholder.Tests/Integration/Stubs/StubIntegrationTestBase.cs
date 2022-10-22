@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Scenarios;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Logging;
-using Moq;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
 
@@ -22,14 +18,14 @@ namespace HttPlaceholder.Tests.Integration.Stubs;
 public abstract class StubIntegrationTestBase : IntegrationTestBase
 {
     private const string InputFilePath = @"D:\tmp\input.yml";
-    protected Mock<IClientDataResolver> ClientDataResolverMock;
-    protected Mock<IFileService> FileServiceMock;
-    private YamlFileStubSource _stubSource;
-    private Mock<IWritableStubSource> _writableStubSourceMock;
-    protected Mock<IDateTime> DateTimeMock;
-    protected MockHttpMessageHandler MockHttp;
     protected readonly IList<RequestResultModel> Requests = new List<RequestResultModel>();
     protected readonly IList<ResponseModel> Responses = new List<ResponseModel>();
+    private YamlFileStubSource _stubSource;
+    private Mock<IWritableStubSource> _writableStubSourceMock;
+    protected Mock<IClientDataResolver> ClientDataResolverMock;
+    protected Mock<IDateTime> DateTimeMock;
+    protected Mock<IFileService> FileServiceMock;
+    protected MockHttpMessageHandler MockHttp;
 
     protected void InitializeStubIntegrationTest(string yamlFileName)
     {
@@ -39,11 +35,11 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
 
         FileServiceMock = new Mock<IFileService>();
         FileServiceMock
-            .Setup(m => m.ReadAllText(InputFilePath))
-            .Returns(integrationYml);
+            .Setup(m => m.ReadAllTextAsync(InputFilePath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(integrationYml);
         FileServiceMock
-            .Setup(m => m.FileExists(InputFilePath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(InputFilePath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
 
         DateTimeMock = new Mock<IDateTime>();
         DateTimeMock
@@ -63,8 +59,9 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
             new Mock<IStubModelValidator>().Object);
         _writableStubSourceMock = new Mock<IWritableStubSource>();
         _writableStubSourceMock
-            .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>(), It.IsAny<ResponseModel>()))
-            .Callback<RequestResultModel, ResponseModel>((req, res) =>
+            .Setup(s => s.AddRequestResultAsync(It.IsAny<RequestResultModel>(), It.IsAny<ResponseModel>(),
+                It.IsAny<CancellationToken>()))
+            .Callback<RequestResultModel, ResponseModel, CancellationToken>((req, res, _) =>
             {
                 Requests.Add(req);
                 Responses.Add(res);

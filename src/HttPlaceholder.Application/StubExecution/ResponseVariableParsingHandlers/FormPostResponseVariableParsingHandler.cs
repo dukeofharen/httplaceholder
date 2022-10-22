@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
-using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert a given posted form value in the response.
+///     Response variable parsing handler that is used to insert a given posted form value in the response.
 /// </summary>
-internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandler
+internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
-    public FormPostResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) : base(fileService)
+    public FormPostResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) :
+        base(fileService)
     {
         _httpContextService = httpContextService;
     }
@@ -31,36 +31,24 @@ internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}:form_key))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
-        var enumerable = matches as Match[] ?? matches.ToArray();
-        if (!enumerable.Any())
-        {
-            return input;
-        }
-
-        ValueTuple<string, StringValues>[] formValues;
-        try
-        {
-            // We don't care about any exceptions here.
-            formValues = _httpContextService.GetFormValues();
-        }
-        catch
-        {
-            formValues = Array.Empty<(string, StringValues)>();
-        }
-
+        var formValues = _httpContextService.GetFormValues();
         // TODO there can be multiple form values, so this should be fixed in the future.
         var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
+        return matches
+            .Where(match => match.Groups.Count >= 3)
+            .Aggregate(input, (current, match) => InsertFormValue(current, match, formDict));
+    }
 
-        foreach (var match in enumerable)
+    private static string InsertFormValue(string current, Match match, IDictionary<string, string> formDict)
+    {
+        var formValueName = match.Groups[2].Value;
+        if (!formDict.TryGetValue(formValueName, out var replaceValue))
         {
-            var formValueName = match.Groups[2].Value;
-            formDict.TryGetValue(formValueName, out var replaceValue);
-
-            input = input.Replace(match.Value, replaceValue);
+            replaceValue = string.Empty;
         }
 
-        return input;
+        return current.Replace(match.Value, replaceValue);
     }
 }

@@ -1,17 +1,20 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
 /// <summary>
-/// "Request to stub conditions handler" that is used to create an HTTP method condition
+///     "Request to stub conditions handler" that is used to create an HTTP method condition
 /// </summary>
-internal class MethodHandler : IRequestToStubConditionsHandler
+internal class MethodHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
+        CancellationToken cancellationToken)
     {
         if (string.IsNullOrWhiteSpace(request.Method))
         {

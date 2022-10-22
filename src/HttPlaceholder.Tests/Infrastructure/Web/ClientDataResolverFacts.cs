@@ -1,10 +1,7 @@
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Infrastructure.Web;
-using HttPlaceholder.TestUtilities.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Infrastructure.Web;
 
@@ -12,8 +9,8 @@ namespace HttPlaceholder.Tests.Infrastructure.Web;
 public class ClientIpResolverFacts
 {
     private readonly AutoMocker _mocker = new();
-    private readonly SettingsModel _settings = new() {Web = new WebSettingsModel()};
     private readonly MockHttpContext _mockHttpContext = new();
+    private readonly SettingsModel _settings = new() {Web = new WebSettingsModel()};
 
     [TestInitialize]
     public void Initialize()

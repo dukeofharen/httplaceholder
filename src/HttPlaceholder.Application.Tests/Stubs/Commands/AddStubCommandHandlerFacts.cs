@@ -1,13 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.Stubs.Commands.AddStub;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Commands;
 
@@ -49,8 +43,8 @@ public class AddStubCommandHandlerFacts
 
         // Assert
         Assert.AreEqual(errors.Single(), exception.ValidationErrors.Single());
-        _mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id), Times.Never);
-        _mockStubContext.Verify(m => m.AddStubAsync(stub), Times.Never);
+        _mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id, It.IsAny<CancellationToken>()), Times.Never);
+        _mockStubContext.Verify(m => m.AddStubAsync(stub, It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [TestMethod]
@@ -68,7 +62,7 @@ public class AddStubCommandHandlerFacts
 
         var fullStub = new FullStubModel();
         _mockStubContext
-            .Setup(m => m.AddStubAsync(stub))
+            .Setup(m => m.AddStubAsync(stub, It.IsAny<CancellationToken>()))
             .ReturnsAsync(fullStub);
 
         // Act
@@ -76,7 +70,7 @@ public class AddStubCommandHandlerFacts
 
         // Assert
         Assert.AreEqual(fullStub, result);
-        _mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id), Times.Once);
-        _mockStubContext.Verify(m => m.AddStubAsync(stub), Times.Once);
+        _mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id, It.IsAny<CancellationToken>()), Times.Once);
+        _mockStubContext.Verify(m => m.AddStubAsync(stub, It.IsAny<CancellationToken>()), Times.Once);
     }
 }

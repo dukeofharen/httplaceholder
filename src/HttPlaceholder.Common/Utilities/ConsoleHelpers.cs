@@ -3,12 +3,12 @@
 namespace HttPlaceholder.Common.Utilities;
 
 /// <summary>
-/// A utility class that contains several console helper methods.
+///     A utility class that contains several console helper methods.
 /// </summary>
 public static class ConsoleHelpers
 {
     /// <summary>
-    /// Writes a line to the console in a specific color.
+    ///     Writes a line to the console in a specific color.
     /// </summary>
     /// <param name="message">The message to write.</param>
     /// <param name="backgroundColor">The background color.</param>

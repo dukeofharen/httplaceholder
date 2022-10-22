@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -25,14 +22,15 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}test";
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
 
         // Act
         using var response = await Client.SendAsync(request);
 
         // Assert
         Assert.IsTrue(response.IsSuccessStatusCode);
-        Assert.AreEqual("test-stub", response.Headers.Single(h => h.Key == "X-HttPlaceholder-ExecutedStub").Value.Single());
+        Assert.AreEqual("test-stub",
+            response.Headers.Single(h => h.Key == Constants.XHttPlaceholderExecutedStub).Value.Single());
     }
 
     [TestMethod]
@@ -41,10 +39,15 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
         // arrange
         var url = $"{TestServer.BaseAddress}bla";
 
+        const string page501 = "<html><body>NOT IMPLEMENTED</body></html>";
+        FileServiceMock
+            .Setup(m => m.ReadAllText(It.Is<string>(p => p.Contains("StubNotConfigured.html"))))
+            .Returns(page501);
+
         // act / assert
         using var response = await Client.GetAsync(url);
         Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
-        var header = response.Headers.First(h => h.Key == "X-HttPlaceholder-Correlation").Value.ToArray();
+        var header = response.Headers.First(h => h.Key == Constants.XHttPlaceholderCorrelation).Value.ToArray();
         Assert.AreEqual(1, header.Length);
         Assert.IsFalse(string.IsNullOrWhiteSpace(header.First()));
     }
@@ -54,6 +57,11 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}locatieserver/v3/suggest?q=9752EX";
+
+        const string page501 = "<html><body>NOT IMPLEMENTED</body></html>";
+        FileServiceMock
+            .Setup(m => m.ReadAllText(It.Is<string>(p => p.Contains("StubNotConfigured.html"))))
+            .Returns(page501);
 
         // act / assert
         using var response = await Client.GetAsync(url);

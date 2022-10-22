@@ -1,12 +1,12 @@
 ﻿using System.Linq;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
 using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
-/// <inheritdoc />
-internal class OpenApiParser : IOpenApiParser
+internal class OpenApiParser : IOpenApiParser, ISingletonService
 {
     /// <inheritdoc />
     public OpenApiResult ParseOpenApiDefinition(string input)

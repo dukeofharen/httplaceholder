@@ -1,9 +1,5 @@
-using System;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.RequestToStubConditionsHandlers;
 
@@ -16,12 +12,12 @@ public class MethodHandlerFacts
     public async Task MethodHandler_HandleStubGenerationAsync_MethodNotSet_ShouldThrowInvalidOperationException()
     {
         // Arrange
-        var request = new HttpRequestModel { Method = string.Empty };
+        var request = new HttpRequestModel {Method = string.Empty};
         var conditions = new StubConditionsModel();
 
         // Act / Assert
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
-            _handler.HandleStubGenerationAsync(request, conditions));
+            _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None));
     }
 
     [TestMethod]
@@ -29,11 +25,11 @@ public class MethodHandlerFacts
     {
         // Arrange
         const string method = "GET";
-        var request = new HttpRequestModel { Method = method };
+        var request = new HttpRequestModel {Method = method};
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

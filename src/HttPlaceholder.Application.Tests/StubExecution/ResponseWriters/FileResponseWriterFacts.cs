@@ -1,11 +1,7 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -33,18 +29,12 @@ public class FileResponseWriterFacts
     public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                File = null
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {File = null}};
 
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);
@@ -55,27 +45,21 @@ public class FileResponseWriterFacts
     public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileFoundDirectly()
     {
         // arrange
-        var body = new byte[] { 1, 2, 3 };
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                File = @"C:\tmp\image.png"
-            }
-        };
+        var body = new byte[] {1, 2, 3};
+        var stub = new StubModel {Response = new StubResponseModel {File = @"C:\tmp\image.png"}};
 
         var response = new ResponseModel();
 
         _fileServiceMock
-            .Setup(m => m.FileExists(stub.Response.File))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(stub.Response.File, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
 
         _fileServiceMock
-            .Setup(m => m.ReadAllBytes(stub.Response.File))
-            .Returns(body);
+            .Setup(m => m.ReadAllBytesAsync(stub.Response.File, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -89,35 +73,29 @@ public class FileResponseWriterFacts
         var stubRootPaths = new[] {"/var/stubs1", "/var/stubs2"};
         const string file = "image.png";
         var expectedFolder = Path.Combine(stubRootPaths[1], file);
-        var body = new byte[] { 1, 2, 3 };
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                File = file
-            }
-        };
+        var body = new byte[] {1, 2, 3};
+        var stub = new StubModel {Response = new StubResponseModel {File = file}};
 
         var response = new ResponseModel();
 
         _stubRootPathResolverMock
-            .Setup(m => m.GetStubRootPaths())
-            .Returns(stubRootPaths);
+            .Setup(m => m.GetStubRootPathsAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(stubRootPaths);
 
         _fileServiceMock
-            .Setup(m => m.FileExists(stub.Response.File))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(stub.Response.File, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
 
         _fileServiceMock
-            .Setup(m => m.FileExists(expectedFolder))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(expectedFolder, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
 
         _fileServiceMock
-            .Setup(m => m.ReadAllBytes(expectedFolder))
-            .Returns(body);
+            .Setup(m => m.ReadAllBytesAsync(expectedFolder, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
@@ -125,36 +103,31 @@ public class FileResponseWriterFacts
     }
 
     [TestMethod]
-    public async Task FileResponseWriter_WriteToResponseAsync_FileNotFoundDirectly_AlsoNotFoundInStubFolder_ShouldReturnNoBody()
+    public async Task
+        FileResponseWriter_WriteToResponseAsync_FileNotFoundDirectly_AlsoNotFoundInStubFolder_ShouldReturnNoBody()
     {
         // arrange
         const string file = "image.png";
         var stubRootPaths = new[] {"/var/stubs1", "/var/stubs2"};
         var expectedFolder = Path.Combine(stubRootPaths[0], file);
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                File = file
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {File = file}};
 
         var response = new ResponseModel();
 
         _stubRootPathResolverMock
-            .Setup(m => m.GetStubRootPaths())
-            .Returns(stubRootPaths);
+            .Setup(m => m.GetStubRootPathsAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(stubRootPaths);
 
         _fileServiceMock
-            .Setup(m => m.FileExists(stub.Response.File))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(stub.Response.File, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
 
         _fileServiceMock
-            .Setup(m => m.FileExists(expectedFolder))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(expectedFolder, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);

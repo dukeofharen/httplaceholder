@@ -1,30 +1,22 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-using HttPlaceholder.Common.Utilities;
+﻿using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to return a given response as JSON.
+///     Response writer that is used to return a given response as JSON.
 /// </summary>
-internal class JsonResponseWriter : IResponseWriter
+internal class JsonResponseWriter : BaseBodyResponseWriter, ISingletonService
 {
     /// <inheritdoc />
-    public int Priority => 0;
+    public override int Priority => 0;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
-    {
-        if (stub.Response?.Json == null)
-        {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
-        }
+    protected override string GetContentType() => Constants.JsonMime;
 
-        var jsonBody = stub.Response.Json;
-        response.Body = Encoding.UTF8.GetBytes(jsonBody);
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.JsonMime, false);
+    /// <inheritdoc />
+    protected override string GetBodyFromStub(StubModel stub) => stub.Response?.Json;
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
-    }
+    /// <inheritdoc />
+    protected override string GetWriterName() => GetType().Name;
 }

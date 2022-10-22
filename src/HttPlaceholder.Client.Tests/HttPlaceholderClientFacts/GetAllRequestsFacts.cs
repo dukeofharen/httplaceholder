@@ -1,9 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.Implementations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
@@ -74,7 +72,6 @@ public class GetAllRequestsFacts : BaseClientTest
         ""requestEndTime"": ""2021-05-13T10:45:35.8635415Z""
     }
 ]";
-
 
 
     [TestMethod]

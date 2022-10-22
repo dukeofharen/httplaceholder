@@ -1,35 +1,40 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.Interfaces.Persistence;
 
 /// <summary>
-/// Describes a class that is used to implement a stub source type.
+///     Describes a class that is used to implement a stub source type.
 /// </summary>
 public interface IStubSource
 {
     /// <summary>
-    /// Gets a list of <see cref="StubModel"/>.
+    ///     Gets a list of <see cref="StubModel" />.
     /// </summary>
-    /// <returns>A list of <see cref="StubModel"/>.</returns>
-    Task<IEnumerable<StubModel>> GetStubsAsync();
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A list of <see cref="StubModel" />.</returns>
+    Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken);
 
     /// <summary>
-    /// Gets an overview list of <see cref="StubOverviewModel"/>.
+    ///     Gets an overview list of <see cref="StubOverviewModel" />.
     /// </summary>
-    /// <returns>An overview list of <see cref="StubOverviewModel"/>.</returns>
-    Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync();
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>An overview list of <see cref="StubOverviewModel" />.</returns>
+    Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken);
 
     /// <summary>
-    /// Gets a <see cref="StubModel"/> by ID.
+    ///     Gets a <see cref="StubModel" /> by ID.
     /// </summary>
     /// <param name="stubId">The stub ID.</param>
-    /// <returns>A <see cref="StubModel"/>.</returns>
-    Task<StubModel> GetStubAsync(string stubId);
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A <see cref="StubModel" />.</returns>
+    Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken);
 
     /// <summary>
-    /// Prepares a stub source (e.g. setup tables, create folders etc.).
+    ///     Prepares a stub source (e.g. setup tables, create folders etc.).
     /// </summary>
-    Task PrepareStubSourceAsync();
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task PrepareStubSourceAsync(CancellationToken cancellationToken);
 }

@@ -1,14 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Commands;
 
@@ -44,9 +37,9 @@ public class UpdateStubCommandHandlerFacts
 
         // Assert
         Assert.AreEqual(errors.Single(), exception.ValidationErrors.Single());
-        mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id), Times.Never);
-        mockStubContext.Verify(m => m.DeleteStubAsync(request.StubId), Times.Never);
-        mockStubContext.Verify(m => m.AddStubAsync(stub), Times.Never);
+        mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id, It.IsAny<CancellationToken>()), Times.Never);
+        mockStubContext.Verify(m => m.DeleteStubAsync(request.StubId, It.IsAny<CancellationToken>()), Times.Never);
+        mockStubContext.Verify(m => m.AddStubAsync(stub, It.IsAny<CancellationToken>()), Times.Never);
     }
 
     [TestMethod]
@@ -64,12 +57,12 @@ public class UpdateStubCommandHandlerFacts
             .Setup(m => m.ValidateStubModel(stub))
             .Returns(Array.Empty<string>());
         mockStubContext
-            .Setup(m => m.GetStubAsync(request.StubId))
-            .ReturnsAsync((FullStubModel) null);
+            .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((FullStubModel)null);
 
         // Act / Assert
         await Assert.ThrowsExceptionAsync<NotFoundException>(() =>
-                handler.Handle(request, CancellationToken.None));
+            handler.Handle(request, CancellationToken.None));
     }
 
     [TestMethod]
@@ -87,20 +80,14 @@ public class UpdateStubCommandHandlerFacts
             .Setup(m => m.ValidateStubModel(stub))
             .Returns(Array.Empty<string>());
 
-        var oldStub = new FullStubModel
-        {
-            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}
-        };
+        var oldStub = new FullStubModel {Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}};
         mockStubContext
-            .Setup(m => m.GetStubAsync(request.StubId))
+            .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(oldStub);
 
-        var newStub = new FullStubModel
-        {
-            Stub = stub, Metadata = new StubMetadataModel {ReadOnly = true}
-        };
+        var newStub = new FullStubModel {Stub = stub, Metadata = new StubMetadataModel {ReadOnly = true}};
         mockStubContext
-            .Setup(m => m.GetStubAsync(stub.Id))
+            .Setup(m => m.GetStubAsync(stub.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(newStub);
 
         // Act
@@ -129,12 +116,9 @@ public class UpdateStubCommandHandlerFacts
             .Setup(m => m.ValidateStubModel(stub))
             .Returns(Array.Empty<string>());
 
-        var oldStub = new FullStubModel
-        {
-            Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = true}
-        };
+        var oldStub = new FullStubModel {Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = true}};
         mockStubContext
-            .Setup(m => m.GetStubAsync(request.StubId))
+            .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(oldStub);
 
         // Act
@@ -145,7 +129,8 @@ public class UpdateStubCommandHandlerFacts
         // Assert
         var errors = exception.ValidationErrors.ToArray();
         Assert.AreEqual(1, errors.Length);
-        Assert.AreEqual("Stub with ID 'new-stub-id' is read-only; it can not be updated through the API.", errors.Single());
+        Assert.AreEqual("Stub with ID 'new-stub-id' is read-only; it can not be updated through the API.",
+            errors.Single());
     }
 
     [TestMethod]
@@ -168,7 +153,7 @@ public class UpdateStubCommandHandlerFacts
             Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}
         };
         mockStubContext
-            .Setup(m => m.GetStubAsync(request.StubId))
+            .Setup(m => m.GetStubAsync(request.StubId, It.IsAny<CancellationToken>()))
             .ReturnsAsync(previousStub);
 
         var existingStub = new FullStubModel
@@ -176,15 +161,15 @@ public class UpdateStubCommandHandlerFacts
             Stub = new StubModel(), Metadata = new StubMetadataModel {ReadOnly = false}
         };
         mockStubContext
-            .Setup(m => m.GetStubAsync(stub.Id))
+            .Setup(m => m.GetStubAsync(stub.Id, It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingStub);
 
         // Act
         await handler.Handle(request, CancellationToken.None);
 
         // Assert
-        mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id), Times.Once);
-        mockStubContext.Verify(m => m.DeleteStubAsync(request.StubId), Times.Once);
-        mockStubContext.Verify(m => m.AddStubAsync(stub), Times.Once);
+        mockStubContext.Verify(m => m.DeleteStubAsync(stub.Id, It.IsAny<CancellationToken>()), Times.Once);
+        mockStubContext.Verify(m => m.DeleteStubAsync(request.StubId, It.IsAny<CancellationToken>()), Times.Once);
+        mockStubContext.Verify(m => m.AddStubAsync(stub, It.IsAny<CancellationToken>()), Times.Once);
     }
 }

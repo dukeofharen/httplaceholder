@@ -9,14 +9,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Import.Commands.CreateOpenApiStub;
 
 /// <summary>
-/// A command handler for creating stubs based on OpenAPI definitions.
+///     A command handler for creating stubs based on OpenAPI definitions.
 /// </summary>
 public class CreateOpenApiStubCommandHandler : IRequestHandler<CreateOpenApiStubCommand, IEnumerable<FullStubModel>>
 {
     private readonly IOpenApiStubGenerator _openApiStubGenerator;
 
     /// <summary>
-    /// Constructs a <see cref="CreateOpenApiStubCommandHandler"/> instance.
+    ///     Constructs a <see cref="CreateOpenApiStubCommandHandler" /> instance.
     /// </summary>
     public CreateOpenApiStubCommandHandler(IOpenApiStubGenerator openApiStubGenerator)
     {
@@ -31,6 +31,7 @@ public class CreateOpenApiStubCommandHandler : IRequestHandler<CreateOpenApiStub
         var tenant = string.IsNullOrWhiteSpace(request.Tenant)
             ? $"openapi-import-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}"
             : request.Tenant;
-        return await _openApiStubGenerator.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, tenant);
+        return await _openApiStubGenerator.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, tenant,
+            cancellationToken);
     }
 }

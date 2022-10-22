@@ -1,5 +1,4 @@
 ﻿using HttPlaceholder.Common.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Common.Tests.Utilities;
 
@@ -25,7 +24,8 @@ public class HashingUtilitiesFacts
     {
         // Arrange
         const string input = "test 123";
-        const string expectedOutput = "RNiw9ZCfWvIt1SyjF8exd7hnDQHw8KK1iVcbqV+fyPt6yij3RnZkJS1SsuEmtxH4jjllJO4f3HK3Rjp0hKIcbw==";
+        const string expectedOutput =
+            "RNiw9ZCfWvIt1SyjF8exd7hnDQHw8KK1iVcbqV+fyPt6yij3RnZkJS1SsuEmtxH4jjllJO4f3HK3Rjp0hKIcbw==";
 
         // Act
         var result = HashingUtilities.GetSha512String(input);

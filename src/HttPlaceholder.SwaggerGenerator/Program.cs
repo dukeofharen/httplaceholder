@@ -42,7 +42,8 @@ internal static class Program
         using var response = await client.GetAsync("swagger/v1/swagger.json");
         if (!response.IsSuccessStatusCode)
         {
-            throw new InvalidOperationException($"The call to the swagger.json URL failed with an HTTP '{response.StatusCode}'.");
+            throw new InvalidOperationException(
+                $"The call to the swagger.json URL failed with an HTTP '{response.StatusCode}'.");
         }
 
         var content = await response.Content.ReadAsStringAsync();

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.FileSystem.Implementations;
 using HttPlaceholder.Persistence.FileSystem.Models;
-using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Tests.FileSystem;
@@ -92,7 +86,7 @@ public class FileSystemStubCacheFacts
     }
 
     [TestMethod]
-    public void GetOrUpdateStubCache_StubCacheIsNull_ShouldInitializeCache()
+    public async Task GetOrUpdateStubCacheAsync_StubCacheIsNull_ShouldInitializeCache()
     {
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
@@ -102,7 +96,7 @@ public class FileSystemStubCacheFacts
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
         // Act
-        var result = cache.GetOrUpdateStubCache();
+        var result = await cache.GetOrUpdateStubCacheAsync(CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -111,7 +105,7 @@ public class FileSystemStubCacheFacts
     }
 
     [TestMethod]
-    public void GetOrUpdateStubCache_TrackingIdHasChanged_ShouldInitializeCache()
+    public async Task GetOrUpdateStubCacheAsync_TrackingIdHasChanged_ShouldInitializeCache()
     {
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
@@ -123,7 +117,7 @@ public class FileSystemStubCacheFacts
         cache.StubUpdateTrackingId = Guid.NewGuid().ToString();
 
         // Act
-        var result = cache.GetOrUpdateStubCache();
+        var result = await cache.GetOrUpdateStubCacheAsync(CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -132,7 +126,7 @@ public class FileSystemStubCacheFacts
     }
 
     [TestMethod]
-    public void GetOrUpdateStubCache_CheckDeserializationOfStubs()
+    public async Task GetOrUpdateStubCacheAsync_CheckDeserializationOfStubs()
     {
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
@@ -145,7 +139,7 @@ public class FileSystemStubCacheFacts
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
         // Act
-        var result = cache.GetOrUpdateStubCache().ToArray();
+        var result = (await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -154,7 +148,7 @@ public class FileSystemStubCacheFacts
     }
 
     [TestMethod]
-    public void GetOrUpdateStubCache_CallTwice_ShouldReturnSameStubCache()
+    public async Task GetOrUpdateStubCacheAsync_CallTwice_ShouldReturnSameStubCache()
     {
         // Arrange
         var trackingId = Guid.NewGuid().ToString();
@@ -168,7 +162,8 @@ public class FileSystemStubCacheFacts
 
         // Act / Assert
         Assert.IsTrue(
-            cache.GetOrUpdateStubCache().SequenceEqual(cache.GetOrUpdateStubCache()));
+            (await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)).SequenceEqual(
+                await cache.GetOrUpdateStubCacheAsync(CancellationToken.None)));
     }
 
     [TestMethod]
@@ -317,13 +312,13 @@ public class FileSystemStubCacheFacts
             var filePath = $"stub{counter}.json";
             filePaths.Add(filePath);
             mockFileService
-                .Setup(m => m.ReadAllText(filePath))
-                .Returns(JsonConvert.SerializeObject(stub));
+                .Setup(m => m.ReadAllTextAsync(filePath, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(JsonConvert.SerializeObject(stub));
             counter++;
         }
 
         mockFileService
-            .Setup(m => m.GetFiles(expectedPath, "*.json"))
-            .Returns(filePaths.ToArray());
+            .Setup(m => m.GetFilesAsync(expectedPath, "*.json", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(filePaths.ToArray());
     }
 }

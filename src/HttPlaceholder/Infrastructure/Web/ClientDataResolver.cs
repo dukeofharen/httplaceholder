@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
@@ -11,23 +12,19 @@ using NetTools;
 
 namespace HttPlaceholder.Infrastructure.Web;
 
-/// <inheritdoc />
-public class ClientDataResolver : IClientDataResolver
+internal class ClientDataResolver : IClientDataResolver, ISingletonService
 {
     private const string ForwardedHeaderKey = "X-Forwarded-For";
     private const string ForwardedHostKey = "X-Forwarded-Host";
     private const string ForwardedProtoKey = "X-Forwarded-Proto";
-
-    // I've seen Nginx use this IP when reverse proxying. .NET loopback check doesn't recognize this IP as loopback IP.
-    private static IPAddress NginxProxyIp { get; } = IPAddress.Parse("::ffff:127.0.0.1");
-    private bool _parsedProxyIpsInitialized;
-    private readonly List<IPAddress> _parsedProxyIps = new();
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<ClientDataResolver> _logger;
+    private readonly List<IPAddress> _parsedProxyIps = new();
     private readonly SettingsModel _settings;
+    private bool _parsedProxyIpsInitialized;
 
     /// <summary>
-    /// Constructs a <see cref="ClientDataResolver"/> instance.
+    ///     Constructs a <see cref="ClientDataResolver" /> instance.
     /// </summary>
     public ClientDataResolver(
         IHttpContextAccessor httpContextAccessor,
@@ -38,6 +35,9 @@ public class ClientDataResolver : IClientDataResolver
         _logger = logger;
         _settings = options.Value;
     }
+
+    // I've seen Nginx use this IP when reverse proxying. .NET loopback check doesn't recognize this IP as loopback IP.
+    private static IPAddress NginxProxyIp { get; } = IPAddress.Parse("::ffff:127.0.0.1");
 
     /// <inheritdoc />
     public string GetClientIp() =>
@@ -90,7 +90,7 @@ public class ClientDataResolver : IClientDataResolver
                                Array.Empty<string>();
             foreach (var proxyIp in safeProxyIps)
             {
-                if (proxyIp.Contains("/"))
+                if (proxyIp.Contains('/'))
                 {
                     // Input is probably a CIDR, so parse it to a range.
                     if (IPAddressRange.TryParse(proxyIp, out var range))

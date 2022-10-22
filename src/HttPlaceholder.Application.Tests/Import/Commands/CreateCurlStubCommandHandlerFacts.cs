@@ -1,11 +1,5 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Import.Commands.CreateCurlStub;
+﻿using HttPlaceholder.Application.Import.Commands.CreateCurlStub;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Import.Commands;
 
@@ -28,7 +22,8 @@ public class CreateCurlStubCommandHandlerFacts
         var request = new CreateCurlStubCommand("curl bladibla", true, tenant);
         var expectedResult = new[] {new FullStubModel()};
         curlStubGeneratorMock
-            .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, tenant))
+            .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, tenant,
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);
 
         // Act
@@ -49,8 +44,9 @@ public class CreateCurlStubCommandHandlerFacts
         var expectedResult = new[] {new FullStubModel()};
         string capturedTenant = null;
         curlStubGeneratorMock
-            .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, It.IsAny<string>()))
-            .Callback<string, bool, string>((_, _, tenant) => capturedTenant = tenant)
+            .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, It.IsAny<string>(),
+                It.IsAny<CancellationToken>()))
+            .Callback<string, bool, string, CancellationToken>((_, _, tenant, _) => capturedTenant = tenant)
             .ReturnsAsync(expectedResult);
 
         // Act

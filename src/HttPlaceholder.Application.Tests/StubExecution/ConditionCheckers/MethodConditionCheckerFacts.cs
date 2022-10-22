@@ -1,10 +1,6 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.Interfaces.Http;
+﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
@@ -26,13 +22,11 @@ public class MethodConditionCheckerFacts
     public async Task MethodConditionChecker_ValidateAsync_StubsFound_ButNoMethodConditions_ShouldReturnNotExecuted()
     {
         // arrange
-        var conditions = new StubConditionsModel
-        {
-            Method = null
-        };
+        var conditions = new StubConditionsModel {Method = null};
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -42,17 +36,15 @@ public class MethodConditionCheckerFacts
     public async Task MethodConditionChecker_ValidateAsync_StubsFound_WrongMethod_ShouldReturnInvalid()
     {
         // arrange
-        var conditions = new StubConditionsModel
-        {
-            Method = "POST"
-        };
+        var conditions = new StubConditionsModel {Method = "POST"};
 
         _httpContextServiceMock
             .Setup(m => m.Method)
             .Returns("GET");
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -62,17 +54,15 @@ public class MethodConditionCheckerFacts
     public async Task MethodConditionChecker_ValidateAsync_StubsFound_HappyFlow()
     {
         // arrange
-        var conditions = new StubConditionsModel
-        {
-            Method = "GET"
-        };
+        var conditions = new StubConditionsModel {Method = "GET"};
 
         _httpContextServiceMock
             .Setup(m => m.Method)
             .Returns("GET");
 
         // act
-        var result = await _checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await _checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

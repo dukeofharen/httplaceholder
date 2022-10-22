@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -11,8 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
+internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonService
 {
     private static readonly Regex _urlRegex =
         new(
@@ -26,7 +26,7 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
         _logger = logger;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IEnumerable<HttpRequestModel> MapCurlCommandsToHttpRequest(string commands)
     {
         void SetMethod(HttpRequestModel httpRequestModel)
@@ -46,7 +46,7 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
                 return result;
             }
 
-            var parts = commands.Trim().Split(new[] { " ", "\r\n", "\n" }, StringSplitOptions.None);
+            var parts = commands.Trim().Split(new[] {" ", "\r\n", "\n"}, StringSplitOptions.None);
             if (!IsCurl(parts[0]))
             {
                 _logger.LogDebug("Command is not a cURL command, so not extracting request.");
@@ -98,10 +98,11 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
                     switch (part)
                     {
                         case "-F" or "--form":
-                            request.Headers.AddOrReplaceCaseInsensitive("Content-Type", Constants.MultipartFormDataMime);
+                            request.Headers.AddOrReplaceCaseInsensitive(Constants.ContentType,
+                                Constants.MultipartFormDataMime);
                             break;
                         case "-d" or "--data":
-                            request.Headers.AddOrReplaceCaseInsensitive("Content-Type",
+                            request.Headers.AddOrReplaceCaseInsensitive(Constants.ContentType,
                                 Constants.UrlEncodedFormMime);
                             break;
                     }
@@ -123,21 +124,23 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
 
                 if (part == "--compressed")
                 {
-                    if (string.IsNullOrWhiteSpace(request.Headers.CaseInsensitiveSearch("Accept-Encoding")))
+                    if (string.IsNullOrWhiteSpace(request.Headers.CaseInsensitiveSearch(Constants.AcceptEncoding)))
                     {
-                        request.Headers.Add("Accept-Encoding", "deflate, gzip, br");
+                        request.Headers.Add(Constants.AcceptEncoding, "deflate, gzip, br");
                     }
 
                     continue;
                 }
 
-                if (string.IsNullOrWhiteSpace(request.Url) && _urlRegex.IsMatch(part))
+                if (!string.IsNullOrWhiteSpace(request.Url) || !_urlRegex.IsMatch(part))
                 {
-                    var matches = _urlRegex.Matches(part).ToArray();
-                    if (matches.Length == 1)
-                    {
-                        request.Url = matches[0].Value;
-                    }
+                    continue;
+                }
+
+                var matches = _urlRegex.Matches(part).ToArray();
+                if (matches.Length == 1)
+                {
+                    request.Url = matches[0].Value;
                 }
             }
 
@@ -238,13 +241,18 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper
 
         var escapedBoundaryCharacter = $@"\{boundaryCharacter}";
 
-        bool PartStartsWithBoundaryChar(string part) =>
-            !string.IsNullOrWhiteSpace(part) && part[0] == boundaryCharacter &&
-            !part.StartsWith(escapedBoundaryCharacter);
+        bool PartStartsWithBoundaryChar(string part)
+        {
+            return !string.IsNullOrWhiteSpace(part) && part[0] == boundaryCharacter &&
+                   !part.StartsWith(escapedBoundaryCharacter);
+        }
 
-        bool PartEndsWithBoundaryChar(string part) => !string.IsNullOrWhiteSpace(part) &&
-                                                      part[^1] == boundaryCharacter &&
-                                                      !part.EndsWith(escapedBoundaryCharacter);
+        bool PartEndsWithBoundaryChar(string part)
+        {
+            return !string.IsNullOrWhiteSpace(part) &&
+                   part[^1] == boundaryCharacter &&
+                   !part.EndsWith(escapedBoundaryCharacter);
+        }
 
         var bodyBuilder = new StringBuilder(); // Hah nice
         var counter = 0;

@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.RequestToStubConditionsHandlers;
 
@@ -18,11 +14,11 @@ public class HeaderHandlerFacts
     public async Task HeaderHandler_HandleStubGenerationAsync_NoHeadersSet_ShouldReturnFalse()
     {
         // Arrange
-        var request = new HttpRequestModel { Headers = new Dictionary<string, string>() };
+        var request = new HttpRequestModel {Headers = new Dictionary<string, string>()};
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -37,16 +33,16 @@ public class HeaderHandlerFacts
         {
             Headers = new Dictionary<string, string>
             {
-                { "Postman-Token", Guid.NewGuid().ToString() },
-                { "Host", "httplaceholder.com" },
-                { "X-Api-Key", "123" },
-                { "X-Bla", "bla" }
+                {Constants.PostmanToken, Guid.NewGuid().ToString()},
+                {Constants.Host, "httplaceholder.com"},
+                {"X-Api-Key", "123"},
+                {"X-Bla", "bla"}
             }
         };
         var stub = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, stub);
+        var result = await _handler.HandleStubGenerationAsync(request, stub, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

@@ -1,10 +1,6 @@
-using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
@@ -23,10 +19,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}todoitems/todos/1";
-        var request = new HttpRequestMessage
-        {
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {RequestUri = new Uri(url)};
 
         MockHttp
             .When(HttpMethod.Get, "https://jsonplaceholder.typicode.com/todos/1")
@@ -45,10 +38,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
     {
         // Arrange
         var url = $"{TestServer.BaseAddress}todoitems/todos/1?key=val&key2=val2";
-        var request = new HttpRequestMessage
-        {
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {RequestUri = new Uri(url)};
 
         MockHttp
             .When(HttpMethod.Get, "https://jsonplaceholder.typicode.com/todos/1?key=val&key2=val2")

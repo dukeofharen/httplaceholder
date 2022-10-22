@@ -1,13 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using SixLabors.ImageSharp;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
@@ -44,7 +39,7 @@ public class ImageResponseWriterFacts
         var response = new ResponseModel();
 
         // Act
-        var result = await _responseWriter.WriteToResponseAsync(stub, response);
+        var result = await _responseWriter.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result.Executed);
@@ -56,25 +51,26 @@ public class ImageResponseWriterFacts
     public async Task WriteToResponseAsync_FileIsCached_ShouldReturnCachedFile()
     {
         // Arrange
-        var stub = new StubModel {Response = new StubResponseModel {Image = new StubResponseImageModel
+        var stub = new StubModel
         {
-            Type = ResponseImageType.Jpeg,
-            Height = 512,
-            Width = 512
-        }}};
+            Response = new StubResponseModel
+            {
+                Image = new StubResponseImageModel {Type = ResponseImageType.Jpeg, Height = 512, Width = 512}
+            }
+        };
         var response = new ResponseModel();
 
         var cachedBytes = new byte[] {1, 2, 3, 4};
         var expectedCachePath = Path.Combine(_tempFolder, $"{stub.Response.Image.Hash}.bin");
         _mockFileService
-            .Setup(m => m.FileExists(expectedCachePath))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync(expectedCachePath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
         _mockFileService
-            .Setup(m => m.ReadAllBytes(expectedCachePath))
-            .Returns(cachedBytes);
+            .Setup(m => m.ReadAllBytesAsync(expectedCachePath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(cachedBytes);
 
         // Act
-        var result = await _responseWriter.WriteToResponseAsync(stub, response);
+        var result = await _responseWriter.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);
@@ -90,12 +86,13 @@ public class ImageResponseWriterFacts
     public async Task WriteToResponseAsync_AllFileTypes(ResponseImageType? type, string expectedContentType)
     {
         // Arrange
-        var stub = new StubModel {Response = new StubResponseModel {Image = new StubResponseImageModel
+        var stub = new StubModel
         {
-            Type = type,
-            Height = 512,
-            Width = 512
-        }}};
+            Response = new StubResponseModel
+            {
+                Image = new StubResponseImageModel {Type = type, Height = 512, Width = 512}
+            }
+        };
         var response = new ResponseModel();
 
         _mockAssemblyService
@@ -104,11 +101,11 @@ public class ImageResponseWriterFacts
 
         var expectedCachePath = Path.Combine(_tempFolder, $"{stub.Response.Image.Hash}.bin");
         _mockFileService
-            .Setup(m => m.FileExists(expectedCachePath))
-            .Returns(false);
+            .Setup(m => m.FileExistsAsync(expectedCachePath, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
 
         // Act
-        var result = await _responseWriter.WriteToResponseAsync(stub, response);
+        var result = await _responseWriter.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);
@@ -117,8 +114,9 @@ public class ImageResponseWriterFacts
         using var image = await Image.LoadAsync(ms);
         Assert.AreEqual(stub.Response.Image.Height, image.Height);
         Assert.AreEqual(stub.Response.Image.Width, image.Width);
-        Assert.AreEqual(expectedContentType, response.Headers["Content-Type"]);
+        Assert.AreEqual(expectedContentType, response.Headers[Constants.ContentType]);
         _mockFileService
-            .Verify(m => m.WriteAllBytes(expectedCachePath, response.Body), Times.Once);
+            .Verify(m => m.WriteAllBytesAsync(expectedCachePath, response.Body, It.IsAny<CancellationToken>()),
+                Times.Once);
     }
 }

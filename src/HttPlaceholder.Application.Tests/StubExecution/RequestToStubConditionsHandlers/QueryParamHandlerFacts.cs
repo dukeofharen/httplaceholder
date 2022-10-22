@@ -1,9 +1,6 @@
 using System.Linq;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.RequestToStubConditionsHandlers;
 
@@ -17,11 +14,11 @@ public class QueryParamHandlerFacts
     {
         // Arrange
         const string url = "https://httplaceholder.com/A/Path";
-        var request = new HttpRequestModel { Url = url };
+        var request = new HttpRequestModel {Url = url};
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -33,11 +30,11 @@ public class QueryParamHandlerFacts
     {
         // Arrange
         const string url = "https://httplaceholder.com/A/Path?query1=val1&query2=val2";
-        var request = new HttpRequestModel { Url = url };
+        var request = new HttpRequestModel {Url = url};
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

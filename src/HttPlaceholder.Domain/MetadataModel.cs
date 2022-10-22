@@ -3,17 +3,17 @@
 namespace HttPlaceholder.Domain;
 
 /// <summary>
-/// A model for storing the HttPlaceholder metadata.
+///     A model for storing the HttPlaceholder metadata.
 /// </summary>
 public class MetadataModel
 {
     /// <summary>
-    /// Gets or sets the version.
+    ///     Gets or sets the version.
     /// </summary>
     public string Version { get; set; }
 
     /// <summary>
-    /// Gets or sets the available variable handlers.
+    ///     Gets or sets the available variable handlers.
     /// </summary>
     public IEnumerable<VariableHandlerModel> VariableHandlers { get; set; }
 }

@@ -5,15 +5,14 @@ using HttPlaceholder.Persistence.FileSystem.Implementations;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Persistence.Tests;
 
 [TestClass]
 public class PersistenceModuleFacts
 {
-    private readonly IServiceCollection _services = new ServiceCollection();
     private readonly IDictionary<string, string> _args = new Dictionary<string, string>();
+    private readonly IServiceCollection _services = new ServiceCollection();
 
     [TestMethod]
     public void

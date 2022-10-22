@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -8,9 +8,9 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert the client IP in the response.
+///     Response variable parsing handler that is used to insert the client IP in the response.
 /// </summary>
-internal class ClientIpResponseVariableParsingHandler : BaseVariableParsingHandler
+internal class ClientIpResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IClientDataResolver _clientDataResolver;
 
@@ -30,16 +30,10 @@ internal class ClientIpResponseVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
-        var enumerable = matches as Match[] ?? matches.ToArray();
-        if (!enumerable.Any())
-        {
-            return input;
-        }
-
         var ip = _clientDataResolver.GetClientIp();
-        return enumerable
+        return matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input, (current, match) => current.Replace(match.Value, ip));
     }

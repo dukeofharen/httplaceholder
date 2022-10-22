@@ -1,14 +1,16 @@
 ﻿using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to run the "response variable parsing handlers" for manipulating the response.
+///     Response writer that is used to run the "response variable parsing handlers" for manipulating the response.
 /// </summary>
-internal class DynamicResponseWriter : IResponseWriter
+internal class DynamicResponseWriter : IResponseWriter, ISingletonService
 {
     private readonly IResponseVariableParser _responseVariableParser;
 
@@ -21,13 +23,13 @@ internal class DynamicResponseWriter : IResponseWriter
     public int Priority => -10;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
+        CancellationToken cancellationToken)
     {
         if (stub.Response.EnableDynamicMode != true)
         {
             return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
         }
-
 
         // Try to parse and replace the variables in the body.
         if (!response.BodyIsBinary && response.Body != null)

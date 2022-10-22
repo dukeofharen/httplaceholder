@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -20,8 +14,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
 [TestClass]
 public class RelationalDbStubSourceFacts
 {
-    private readonly AutoMocker _mocker = new();
     private readonly Mock<IDatabaseContext> _mockDatabaseContext = new();
+    private readonly AutoMocker _mocker = new();
 
     private readonly SettingsModel _settings = new()
     {
@@ -55,8 +49,8 @@ public class RelationalDbStubSourceFacts
 
         object capturedParam = null;
         _mockDatabaseContext
-            .Setup(m => m.ExecuteAsync(query, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedParam = param)
+            .Setup(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
             .ReturnsAsync(1);
 
         var requestResult = new RequestResultModel
@@ -68,7 +62,7 @@ public class RelationalDbStubSourceFacts
         };
 
         // Act
-        await stubSource.AddRequestResultAsync(requestResult, null);
+        await stubSource.AddRequestResultAsync(requestResult, null, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(capturedParam);
@@ -79,7 +73,8 @@ public class RelationalDbStubSourceFacts
         Assert.AreEqual(requestResult.RequestEndTime, DateTime.Parse(parsedParam["RequestEndTime"].ToString()));
         Assert.AreEqual(JsonConvert.SerializeObject(requestResult), parsedParam["Json"].ToString());
 
-        _mockDatabaseContext.Verify(m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>()), Times.Once());
+        _mockDatabaseContext.Verify(
+            m => m.ExecuteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>(), It.IsAny<object>()), Times.Once());
     }
 
     [TestMethod]
@@ -101,15 +96,13 @@ public class RelationalDbStubSourceFacts
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
-        object capturedAddRequestParam = null;
         object capturedAddResponseParam = null;
         _mockDatabaseContext
-            .Setup(m => m.ExecuteAsync(addRequestQuery, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedAddRequestParam = param)
+            .Setup(m => m.ExecuteAsync(addRequestQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))
             .ReturnsAsync(1);
         _mockDatabaseContext
-            .Setup(m => m.ExecuteAsync(addResponseQuery, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedAddResponseParam = param)
+            .Setup(m => m.ExecuteAsync(addResponseQuery, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedAddResponseParam = param)
             .ReturnsAsync(1);
 
         var requestResult = new RequestResultModel
@@ -122,13 +115,13 @@ public class RelationalDbStubSourceFacts
         var responseModel = new ResponseModel
         {
             Body = new byte[] {1, 2, 3},
-            Headers = {{"Content-Type", "text/plain"}},
+            Headers = {{Constants.ContentType, "text/plain"}},
             StatusCode = 200,
             BodyIsBinary = true
         };
 
         // Act
-        await stubSource.AddRequestResultAsync(requestResult, responseModel);
+        await stubSource.AddRequestResultAsync(requestResult, responseModel, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(capturedAddResponseParam);
@@ -155,14 +148,14 @@ public class RelationalDbStubSourceFacts
 
         object capturedParam = null;
         _mockDatabaseContext
-            .Setup(m => m.ExecuteAsync(query, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedParam = param)
+            .Setup(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
             .ReturnsAsync(1);
 
         var stub = new StubModel {Id = "stub-id"};
 
         // Act
-        await stubSource.AddStubAsync(stub);
+        await stubSource.AddStubAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(capturedParam);
@@ -172,7 +165,7 @@ public class RelationalDbStubSourceFacts
         Assert.AreEqual("json", parsedParam["StubType"].ToString());
 
         _mocker.GetMock<IRelationalDbStubCache>()
-            .Verify(m => m.AddOrReplaceStubAsync(_mockDatabaseContext.Object, stub));
+            .Verify(m => m.AddOrReplaceStubAsync(_mockDatabaseContext.Object, stub, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -189,12 +182,12 @@ public class RelationalDbStubSourceFacts
 
         object capturedParam = null;
         _mockDatabaseContext
-            .Setup(m => m.ExecuteAsync(query, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedParam = param)
+            .Setup(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
             .ReturnsAsync(1);
 
         // Act
-        await stubSource.CleanOldRequestResultsAsync();
+        await stubSource.CleanOldRequestResultsAsync(CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(capturedParam);
@@ -226,11 +219,11 @@ public class RelationalDbStubSourceFacts
         };
         var requests = new[] {new DbRequestModel {Json = JsonConvert.SerializeObject(request1)}};
         _mockDatabaseContext
-            .Setup(m => m.QueryAsync<DbRequestModel>(query, null))
+            .Setup(m => m.QueryAsync<DbRequestModel>(query, It.IsAny<CancellationToken>(), null))
             .ReturnsAsync(requests);
 
         // Act
-        var result = (await stubSource.GetRequestResultsOverviewAsync()).ToArray();
+        var result = (await stubSource.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
@@ -261,12 +254,13 @@ public class RelationalDbStubSourceFacts
         var request = new DbRequestModel {Json = $@"{{""CorrelationId"": ""{correlationIdInput}""}}"};
         object capturedParam = null;
         _mockDatabaseContext
-            .Setup(m => m.QueryFirstOrDefaultAsync<DbRequestModel>(query, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedParam = param)
+            .Setup(m => m.QueryFirstOrDefaultAsync<DbRequestModel>(query, It.IsAny<CancellationToken>(),
+                It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
             .ReturnsAsync(request);
 
         // Act
-        var result = await stubSource.GetRequestAsync(correlationIdInput);
+        var result = await stubSource.GetRequestAsync(correlationIdInput, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(correlationIdInput, result.CorrelationId);
@@ -290,12 +284,13 @@ public class RelationalDbStubSourceFacts
         var correlationIdInput = Guid.NewGuid().ToString();
         object capturedParam = null;
         _mockDatabaseContext
-            .Setup(m => m.QueryFirstOrDefaultAsync<DbRequestModel>(query, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedParam = param)
+            .Setup(m => m.QueryFirstOrDefaultAsync<DbRequestModel>(query, It.IsAny<CancellationToken>(),
+                It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
             .ReturnsAsync((DbRequestModel)null);
 
         // Act
-        var result = await stubSource.GetRequestAsync(correlationIdInput);
+        var result = await stubSource.GetRequestAsync(correlationIdInput, CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
@@ -315,13 +310,14 @@ public class RelationalDbStubSourceFacts
             .Returns(query);
 
         _mockDatabaseContext
-            .Setup(m => m.QueryFirstOrDefaultAsync<DbResponseModel>(query, It.IsAny<object>()))
+            .Setup(m => m.QueryFirstOrDefaultAsync<DbResponseModel>(query, It.IsAny<CancellationToken>(),
+                It.IsAny<object>()))
             .ReturnsAsync((DbResponseModel)null);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetResponseAsync("123");
+        var result = await stubSource.GetResponseAsync("123", CancellationToken.None);
 
         // Assert
         Assert.IsNull(result);
@@ -341,21 +337,22 @@ public class RelationalDbStubSourceFacts
         {
             Id = 1,
             Body = Convert.ToBase64String(Encoding.UTF8.GetBytes("555")),
-            Headers = JsonConvert.SerializeObject(new Dictionary<string, string> {{"Content-Type", "text/plain"}}),
+            Headers = JsonConvert.SerializeObject(new Dictionary<string, string> {{Constants.ContentType, "text/plain"}}),
             StatusCode = 200,
             BodyIsBinary = false
         };
 
         object capturedParam = null;
         _mockDatabaseContext
-            .Setup(m => m.QueryFirstOrDefaultAsync<DbResponseModel>(query, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedParam = param)
+            .Setup(m => m.QueryFirstOrDefaultAsync<DbResponseModel>(query, It.IsAny<CancellationToken>(),
+                It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
             .ReturnsAsync(expectedResponse);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetResponseAsync("123");
+        var result = await stubSource.GetResponseAsync("123", CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -366,7 +363,7 @@ public class RelationalDbStubSourceFacts
 
         Assert.AreEqual(expectedResponse.StatusCode, result.StatusCode);
         Assert.AreEqual(1, result.Headers.Count);
-        Assert.AreEqual("text/plain", result.Headers["Content-Type"]);
+        Assert.AreEqual("text/plain", result.Headers[Constants.ContentType]);
         Assert.IsFalse(result.BodyIsBinary);
         Assert.AreEqual("555", Encoding.UTF8.GetString(result.Body));
     }
@@ -384,10 +381,10 @@ public class RelationalDbStubSourceFacts
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        await stubSource.DeleteAllRequestResultsAsync();
+        await stubSource.DeleteAllRequestResultsAsync(CancellationToken.None);
 
         // Assert
-        _mockDatabaseContext.Verify(m => m.ExecuteAsync(query, null));
+        _mockDatabaseContext.Verify(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(), null));
     }
 
     [TestMethod]
@@ -405,12 +402,12 @@ public class RelationalDbStubSourceFacts
 
         object capturedParam = null;
         _mockDatabaseContext
-            .Setup(m => m.ExecuteAsync(query, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedParam = param)
+            .Setup(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
             .ReturnsAsync(0);
 
         // Act
-        var result = await stubSource.DeleteRequestAsync(correlationId);
+        var result = await stubSource.DeleteRequestAsync(correlationId, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -434,12 +431,12 @@ public class RelationalDbStubSourceFacts
 
         object capturedParam = null;
         _mockDatabaseContext
-            .Setup(m => m.ExecuteAsync(query, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedParam = param)
+            .Setup(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
             .ReturnsAsync(1);
 
         // Act
-        var result = await stubSource.DeleteRequestAsync(correlationId);
+        var result = await stubSource.DeleteRequestAsync(correlationId, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -464,14 +461,14 @@ public class RelationalDbStubSourceFacts
 
         object capturedParam = null;
         _mockDatabaseContext
-            .Setup(m => m.ExecuteAsync(query, It.IsAny<object>()))
-            .Callback<string, object>((_, param) => capturedParam = param)
+            .Setup(m => m.ExecuteAsync(query, It.IsAny<CancellationToken>(), It.IsAny<object>()))
+            .Callback<string, CancellationToken, object>((_, _, param) => capturedParam = param)
             .ReturnsAsync(numberOfRecordsUpdated);
 
         const string stubId = "stub";
 
         // Act
-        var result = await stubSource.DeleteStubAsync(stubId);
+        var result = await stubSource.DeleteStubAsync(stubId, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedResult, result);
@@ -480,7 +477,7 @@ public class RelationalDbStubSourceFacts
         Assert.AreEqual(stubId, parsedParam["StubId"].ToString());
 
         _mocker.GetMock<IRelationalDbStubCache>()
-            .Verify(m => m.DeleteStubAsync(_mockDatabaseContext.Object, stubId));
+            .Verify(m => m.DeleteStubAsync(_mockDatabaseContext.Object, stubId, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -508,11 +505,11 @@ public class RelationalDbStubSourceFacts
             }
         };
         _mockDatabaseContext
-            .Setup(m => m.QueryAsync<DbRequestModel>(query, null))
+            .Setup(m => m.QueryAsync<DbRequestModel>(query, It.IsAny<CancellationToken>(), null))
             .ReturnsAsync(requests);
 
         // Act
-        var result = (await stubSource.GetRequestResultsAsync()).ToArray();
+        var result = (await stubSource.GetRequestResultsAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);
@@ -527,13 +524,13 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetStubsAsync();
+        var result = await stubSource.GetStubsAsync(CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs, result);
@@ -551,13 +548,13 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = (await stubSource.GetStubsOverviewAsync()).ToArray();
+        var result = (await stubSource.GetStubsOverviewAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -580,13 +577,13 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(cachedStubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetStubAsync(stubId);
+        var result = await stubSource.GetStubAsync(stubId, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(cachedStubs[1], result);
@@ -600,13 +597,13 @@ public class RelationalDbStubSourceFacts
 
         var mockRelationalDbStubCache = _mocker.GetMock<IRelationalDbStubCache>();
         mockRelationalDbStubCache
-            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object))
+            .Setup(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        var result = await stubSource.GetStubsAsync();
+        var result = await stubSource.GetStubsAsync(CancellationToken.None);
 
         // Assert
         Assert.AreEqual(stubs, result);
@@ -619,10 +616,12 @@ public class RelationalDbStubSourceFacts
         var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
 
         // Act
-        await stubSource.PrepareStubSourceAsync();
+        await stubSource.PrepareStubSourceAsync(CancellationToken.None);
 
         // Assert
-        _mocker.GetMock<IRelationalDbMigrator>().Verify(m => m.MigrateAsync(_mockDatabaseContext.Object));
-        _mocker.GetMock<IRelationalDbStubCache>().Verify(m => m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object));
+        _mocker.GetMock<IRelationalDbMigrator>()
+            .Verify(m => m.MigrateAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()));
+        _mocker.GetMock<IRelationalDbStubCache>().Verify(m =>
+            m.GetOrUpdateStubCacheAsync(_mockDatabaseContext.Object, It.IsAny<CancellationToken>()));
     }
 }

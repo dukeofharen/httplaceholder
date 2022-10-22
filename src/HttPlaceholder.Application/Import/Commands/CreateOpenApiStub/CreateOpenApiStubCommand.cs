@@ -5,12 +5,12 @@ using MediatR;
 namespace HttPlaceholder.Application.Import.Commands.CreateOpenApiStub;
 
 /// <summary>
-/// A command for creating stubs based on OpenAPI definitions.
+///     A command for creating stubs based on OpenAPI definitions.
 /// </summary>
 public class CreateOpenApiStubCommand : IRequest<IEnumerable<FullStubModel>>
 {
     /// <summary>
-    /// Constructs a <see cref="CreateOpenApiStubCommand"/> instance.
+    ///     Constructs a <see cref="CreateOpenApiStubCommand" /> instance.
     /// </summary>
     /// <param name="openApi">The OpenAPI definition.</param>
     /// <param name="doNotCreateStub">Whether or not to create stubs.</param>
@@ -23,17 +23,17 @@ public class CreateOpenApiStubCommand : IRequest<IEnumerable<FullStubModel>>
     }
 
     /// <summary>
-    /// Gets the OpenAPI definition.
+    ///     Gets the OpenAPI definition.
     /// </summary>
     public string OpenApi { get; }
 
     /// <summary>
-    /// Gets whether to create stubs or not.
+    ///     Gets whether to create stubs or not.
     /// </summary>
     public bool DoNotCreateStub { get; }
 
     /// <summary>
-    /// Gets the stub tenant.
+    ///     Gets the stub tenant.
     /// </summary>
     public string Tenant { get; }
 }

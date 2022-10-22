@@ -1,10 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Dto.v1.Metadata;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Infrastructure.Implementations;
 
-/// <inheritdoc />
-internal class ModelValidator : IModelValidator
+internal class ModelValidator : IModelValidator, ISingletonService
 {
     /// <inheritdoc />
     public IEnumerable<ValidationResult> ValidateModel(object model)

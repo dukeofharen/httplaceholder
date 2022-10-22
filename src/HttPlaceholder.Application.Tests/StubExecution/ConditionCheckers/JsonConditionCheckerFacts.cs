@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
@@ -57,7 +53,8 @@ public class JsonConditionCheckerFacts
         var conditions = new StubConditionsModel {Json = null};
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -77,22 +74,21 @@ public class JsonConditionCheckerFacts
             .Returns(PostedObjectJson);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
         Assert.IsTrue(string.IsNullOrWhiteSpace(result.Log));
     }
 
-    [TestMethod] public async Task ValidateAsync_ConditionsObject_BooleanConditionIsRegex_ShouldReturnValid()
+    [TestMethod]
+    public async Task ValidateAsync_ConditionsObject_BooleanConditionIsRegex_ShouldReturnValid()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonConditionChecker>();
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
-        var jsonConditions = new Dictionary<object, object>
-        {
-            {"boolValue", "^(true|false)$"}
-        };
+        var jsonConditions = new Dictionary<object, object> {{"boolValue", "^(true|false)$"}};
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
         mockHttpContextService
@@ -100,7 +96,8 @@ public class JsonConditionCheckerFacts
             .Returns(@"{""boolValue"": true}");
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -124,11 +121,13 @@ public class JsonConditionCheckerFacts
             .Returns("JSON IS CORRUPT!!!");
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
-        Assert.AreEqual("Unexpected character encountered while parsing value: J. Path '', line 0, position 0.", result.Log);
+        Assert.AreEqual("Unexpected character encountered while parsing value: J. Path '', line 0, position 0.",
+            result.Log);
     }
 
     [TestMethod]
@@ -148,7 +147,8 @@ public class JsonConditionCheckerFacts
             .Returns(PostedObjectJson);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -169,7 +169,8 @@ public class JsonConditionCheckerFacts
             .Returns(PostedArrayJson);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -193,14 +194,15 @@ public class JsonConditionCheckerFacts
             .Returns(PostedArrayJson);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel{Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public async Task ConvertJsonConditions_InputIsNull_ShouldReturnNull()
+    public void ConvertJsonConditions_InputIsNull_ShouldReturnNull()
     {
         // Act
         var result = JsonConditionChecker.ConvertJsonConditions(null);
@@ -210,7 +212,7 @@ public class JsonConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonConditions_InputIsDictionary_ShouldReturnInputAsIs()
+    public void ConvertJsonConditions_InputIsDictionary_ShouldReturnInputAsIs()
     {
         // Arrange
         var input = new Dictionary<object, object>();
@@ -223,7 +225,7 @@ public class JsonConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonConditions_InputIsList_ShouldReturnInputAsIs()
+    public void ConvertJsonConditions_InputIsList_ShouldReturnInputAsIs()
     {
         // Arrange
         var input = new List<object>();
@@ -236,7 +238,7 @@ public class JsonConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonConditions_InputIsString_ShouldReturnInputAsIs()
+    public void ConvertJsonConditions_InputIsString_ShouldReturnInputAsIs()
     {
         // Arrange
         const string input = "input";
@@ -249,7 +251,7 @@ public class JsonConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonConditions_InputIsJArray_ShouldConvertCorrectly()
+    public void ConvertJsonConditions_InputIsJArray_ShouldConvertCorrectly()
     {
         // Arrange
         var jArray = JArray.Parse("[1, 2, 3]");
@@ -266,7 +268,7 @@ public class JsonConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonConditions_InputIsJObject_ShouldConvertCorrectly()
+    public void ConvertJsonConditions_InputIsJObject_ShouldConvertCorrectly()
     {
         // Arrange
         var jObject = JObject.Parse(@"{""key1"": ""val1"", ""key2"": ""val2""}");
@@ -283,7 +285,7 @@ public class JsonConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task ConvertJsonConditions_InputIsSomethingElse_ShouldConvertToString()
+    public void ConvertJsonConditions_InputIsSomethingElse_ShouldConvertToString()
     {
         // Arrange
         const int input = 123;
@@ -297,7 +299,7 @@ public class JsonConditionCheckerFacts
     }
 
     [TestMethod]
-    public async Task CheckSubmittedJson_InputNotSupported_ShouldReturnFalse()
+    public void CheckSubmittedJson_InputNotSupported_ShouldReturnFalse()
     {
         // Arrange
         var checker = _mocker.CreateInstance<JsonConditionChecker>();

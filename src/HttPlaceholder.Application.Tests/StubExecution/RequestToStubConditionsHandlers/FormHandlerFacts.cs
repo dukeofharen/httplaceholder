@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.RequestToStubConditionsHandlers;
 
@@ -17,11 +14,11 @@ public class FormHandlerFacts
     public async Task FormHandler_HandleStubGenerationAsync_NoContentTypeSet_ShouldReturnFalse()
     {
         // Arrange
-        var request = new HttpRequestModel { Headers = new Dictionary<string, string>() };
+        var request = new HttpRequestModel {Headers = new Dictionary<string, string>()};
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -34,12 +31,12 @@ public class FormHandlerFacts
         // Arrange
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> { { "Content-Type", Constants.JsonMime } }
+            Headers = new Dictionary<string, string> {{Constants.ContentType, Constants.JsonMime}}
         };
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -55,12 +52,12 @@ public class FormHandlerFacts
         // Arrange
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> { { "Content-Type", Constants.UrlEncodedFormMime } }, Body = body
+            Headers = new Dictionary<string, string> {{Constants.ContentType, Constants.UrlEncodedFormMime}}, Body = body
         };
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -73,12 +70,13 @@ public class FormHandlerFacts
         // Arrange
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> { { "Content-Type", Constants.UrlEncodedFormMime } }, Body = "invalid form body"
+            Headers = new Dictionary<string, string> {{Constants.ContentType, Constants.UrlEncodedFormMime}},
+            Body = "invalid form body"
         };
         var conditions = new StubConditionsModel {Body = new[] {"body1", "body2"}};
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -96,12 +94,12 @@ public class FormHandlerFacts
         const string form = "form1=val1&form2=val2";
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> { { "Content-Type", contentType } }, Body = form
+            Headers = new Dictionary<string, string> {{Constants.ContentType, contentType}}, Body = form
         };
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

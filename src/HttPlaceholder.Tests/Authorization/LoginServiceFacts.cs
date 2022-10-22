@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Authorization.Implementations;
-using HttPlaceholder.TestUtilities.Http;
-using HttPlaceholder.TestUtilities.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Tests.Authorization;
 
@@ -64,7 +60,7 @@ public class LoginServiceFacts
         // Arrange
         _options.Value.Authentication.ApiUsername = "user";
         _options.Value.Authentication.ApiPassword = "pass";
-        _cookies.Add(CookieKeys.LoginCookieKey, "INCORRECT");
+        _cookies.Add("HttPlaceholderLoggedin", "INCORRECT");
 
         // Act
         var result = _service.CheckLoginCookie();
@@ -79,7 +75,8 @@ public class LoginServiceFacts
         // Arrange
         _options.Value.Authentication.ApiUsername = "user";
         _options.Value.Authentication.ApiPassword = "pass";
-        _cookies.Add(CookieKeys.LoginCookieKey, "qkUYd4wTaLeznD/nN1v9ei9/5XUekWt1hyOctq3bQZ9DMhSk7FJz+l1ILk++kyYlu+VguxVcuEC9R4Ryk763GA==");
+        _cookies.Add("HttPlaceholderLoggedin",
+            "qkUYd4wTaLeznD/nN1v9ei9/5XUekWt1hyOctq3bQZ9DMhSk7FJz+l1ILk++kyYlu+VguxVcuEC9R4Ryk763GA==");
 
         // Act
         var result = _service.CheckLoginCookie();

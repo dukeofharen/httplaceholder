@@ -11,7 +11,7 @@ using MediatR;
 namespace HttPlaceholder.Application.Stubs.Commands.AddStubs;
 
 /// <summary>
-/// A command handler for adding multiple stubs.
+///     A command handler for adding multiple stubs.
 /// </summary>
 public class AddStubsCommandHandler : IRequestHandler<AddStubsCommand, IEnumerable<FullStubModel>>
 {
@@ -19,7 +19,7 @@ public class AddStubsCommandHandler : IRequestHandler<AddStubsCommand, IEnumerab
     private readonly IStubModelValidator _stubModelValidator;
 
     /// <summary>
-    /// Constructs an <see cref="AddStubsCommandHandler"/> instance.
+    ///     Constructs an <see cref="AddStubsCommandHandler" /> instance.
     /// </summary>
     public AddStubsCommandHandler(IStubContext stubContext, IStubModelValidator stubModelValidator)
     {
@@ -40,13 +40,7 @@ public class AddStubsCommandHandler : IRequestHandler<AddStubsCommand, IEnumerab
         // Validate posted stubs.
         var stubsToAdd = request.Stubs.ToArray();
         var validationResults = stubsToAdd
-            .SelectMany(s =>
-            {
-                var validation = _stubModelValidator.ValidateStubModel(s);
-                return !string.IsNullOrWhiteSpace(s.Id)
-                    ? validation.Select(v => $"{s.Id}: {v}")
-                    : validation;
-            })
+            .SelectMany(Validate)
             .ToArray();
         if (validationResults.Any())
         {
@@ -67,7 +61,7 @@ public class AddStubsCommandHandler : IRequestHandler<AddStubsCommand, IEnumerab
         }
 
         // Validated that no stubs with the same ID exist in readonly stub sources.
-        var stubsFromReadonlySource = await _stubContext.GetStubsFromReadOnlySourcesAsync();
+        var stubsFromReadonlySource = await _stubContext.GetStubsFromReadOnlySourcesAsync(cancellationToken);
         var duplicateStubs = stubsFromReadonlySource.Where(r =>
             stubsToAdd.Any(s => string.Equals(s.Id, r.Stub.Id, StringComparison.OrdinalIgnoreCase))).ToArray();
         if (duplicateStubs.Any())
@@ -80,10 +74,18 @@ public class AddStubsCommandHandler : IRequestHandler<AddStubsCommand, IEnumerab
         foreach (var stub in stubsToAdd)
         {
             // First, delete existing stub with same ID.
-            await _stubContext.DeleteStubAsync(stub.Id);
-            result.Add(await _stubContext.AddStubAsync(stub));
+            await _stubContext.DeleteStubAsync(stub.Id, cancellationToken);
+            result.Add(await _stubContext.AddStubAsync(stub, cancellationToken));
         }
 
         return result;
+    }
+
+    private IEnumerable<string> Validate(StubModel s)
+    {
+        var validation = _stubModelValidator.ValidateStubModel(s);
+        return !string.IsNullOrWhiteSpace(s.Id)
+            ? validation.Select(v => $"{s.Id}: {v}")
+            : validation;
     }
 }

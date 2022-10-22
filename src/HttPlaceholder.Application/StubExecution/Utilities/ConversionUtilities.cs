@@ -7,12 +7,12 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Application.StubExecution.Utilities;
 
 /// <summary>
-/// A static class that is used to convert a deserialized JSON or YAML object to a DTO.
+///     A static class that is used to convert a deserialized JSON or YAML object to a DTO.
 /// </summary>
 public static class ConversionUtilities
 {
     /// <summary>
-    /// Converts the given input to T.
+    ///     Converts the given input to T.
     /// </summary>
     /// <param name="input">The input that should be converted.</param>
     /// <typeparam name="T">The type the input should be converted to.</typeparam>
@@ -38,7 +38,7 @@ public static class ConversionUtilities
     }
 
     /// <summary>
-    /// Accepts an object as input and parsed it to a nullable int.
+    ///     Accepts an object as input and parsed it to a nullable int.
     /// </summary>
     /// <param name="input">The object to be converted.</param>
     /// <returns>The parsed int, or null if it could not be parsed.</returns>

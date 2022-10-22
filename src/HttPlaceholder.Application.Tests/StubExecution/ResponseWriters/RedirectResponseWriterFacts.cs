@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -16,17 +13,13 @@ public class RedirectResponseWriterFacts
         // arrange
         var stub = new StubModel
         {
-            Response = new StubResponseModel
-            {
-                PermanentRedirect = null,
-                TemporaryRedirect = null
-            }
+            Response = new StubResponseModel {PermanentRedirect = null, TemporaryRedirect = null}
         };
 
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);
@@ -37,45 +30,33 @@ public class RedirectResponseWriterFacts
     public async Task RedirectResponseWriter_WriteToResponseAsync_TempRedirect()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                TemporaryRedirect = "https://google.com"
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {TemporaryRedirect = "https://google.com"}};
 
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(307, response.StatusCode);
-        Assert.AreEqual("https://google.com", response.Headers["Location"]);
+        Assert.AreEqual("https://google.com", response.Headers[Constants.Location]);
     }
 
     [TestMethod]
     public async Task RedirectResponseWriter_WriteToResponseAsync_PermanentRedirect()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                PermanentRedirect = "https://google.com"
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {PermanentRedirect = "https://google.com"}};
 
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(301, response.StatusCode);
-        Assert.AreEqual("https://google.com", response.Headers["Location"]);
+        Assert.AreEqual("https://google.com", response.Headers[Constants.Location]);
     }
 }

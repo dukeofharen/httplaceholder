@@ -1,21 +1,15 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using HttPlaceholder.Common;
 using HttPlaceholder.HostedServices;
-using HttPlaceholder.TestUtilities.Logging;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.HostedServices;
 
 [TestClass]
 public class BackgroundServiceFacts
 {
-    private readonly AutoMocker _mocker = new();
     private readonly MockLogger<BackgroundService> _loggerMock = new();
+    private readonly AutoMocker _mocker = new();
 
     [TestInitialize]
     public void Initialize() => _mocker.Use<ILogger<BackgroundService>>(_loggerMock);
@@ -139,7 +133,7 @@ public class BackgroundServiceFacts
 
         public override string Description => "A succeeding background job.";
 
-        public override Task ProcessAsync()
+        public override Task ProcessAsync(CancellationToken cancellationToken)
         {
             ProcessCalled = true;
             return Task.CompletedTask;
@@ -163,7 +157,7 @@ public class BackgroundServiceFacts
 
         public override string Description => "A failing background job.";
 
-        public override Task ProcessAsync()
+        public override Task ProcessAsync(CancellationToken cancellationToken)
         {
             ProcessCalled = true;
             throw new InvalidOperationException("PROCESSING WENT WRONG!");

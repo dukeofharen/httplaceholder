@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using Microsoft.Extensions.Logging;
@@ -6,14 +7,14 @@ using Microsoft.Extensions.Logging;
 namespace HttPlaceholder.HostedServices;
 
 /// <summary>
-/// A background that is used to clean old requests
+///     A background that is used to clean old requests
 /// </summary>
 public class CleanOldRequestsJob : BackgroundService
 {
     private readonly IStubContext _stubContext;
 
     /// <summary>
-    /// Constructs a <see cref="CleanOldRequestsJob"/> instance.
+    ///     Constructs a <see cref="CleanOldRequestsJob" /> instance.
     /// </summary>
     public CleanOldRequestsJob(ILogger<BackgroundService> logger, IDateTime dateTime, IAsyncService asyncService,
         IStubContext stubContext) :
@@ -32,9 +33,9 @@ public class CleanOldRequestsJob : BackgroundService
     public override string Description => "A job for cleaning old requests.";
 
     /// <inheritdoc />
-    public override async Task ProcessAsync()
+    public override async Task ProcessAsync(CancellationToken cancellationToken)
     {
         Logger.LogDebug("Cleaning old requests.");
-        await _stubContext.CleanOldRequestResultsAsync();
+        await _stubContext.CleanOldRequestResultsAsync(cancellationToken);
     }
 }

@@ -1,3 +1,13 @@
+[vnext]
+- Updated loading of stubs from .yml files. An 'id' field should now ALWAYS be set, whereas it was automatically generated beforehand if it was not set (which caused some non stub files to get parsed as stub with weird behavior) (https://github.com/dukeofharen/httplaceholder/pull/284).
+- Added CancellationToken support to .NET client (https://github.com/dukeofharen/httplaceholder/pull/284).
+- Detect light or dark theme from the users browser when opening the user interface (https://github.com/dukeofharen/httplaceholder/pull/284).
+- Lots of refactorings in the C# code base (https://github.com/dukeofharen/httplaceholder/pull/284).
+- The loading ring in the UI is now visible in both light and dark themes in the UI (https://github.com/dukeofharen/httplaceholder/pull/284).
+
+# BREAKING CHANGES
+- Stubs defined in a .yml file should ALWAYS have an id field defined, whereas it was automatically generated beforehand if it was not set (which caused some non stub files to get parsed as stub with weird behavior).
+
 [2022.10.4]
 - Fixed bug where passing "extraDuration" as integer in JSON would throw an exception (https://github.com/dukeofharen/httplaceholder/issues/281).
 

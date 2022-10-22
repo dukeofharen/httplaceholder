@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.Models.HAR;
 using HttPlaceholder.Application.Stubs.Utilities;
@@ -11,10 +13,9 @@ using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class HarStubGenerator : IHarStubGenerator
+internal class HarStubGenerator : IHarStubGenerator, ISingletonService
 {
-    private static string[] _responseHeadersToStrip = {"content-length", "content-encoding"};
+    private static readonly string[] _responseHeadersToStrip = {"content-length", "content-encoding"};
 
     private readonly IHttpRequestToConditionsService _httpRequestToConditionsService;
     private readonly IHttpResponseToStubResponseService _httpResponseToStubResponseService;
@@ -32,20 +33,19 @@ internal class HarStubGenerator : IHarStubGenerator
 
     /// <inheritdoc />
     public async Task<IEnumerable<FullStubModel>> GenerateHarStubsAsync(string input, bool doNotCreateStub,
-        string tenant)
+        string tenant, CancellationToken cancellationToken)
     {
         try
         {
             var har = JsonConvert.DeserializeObject<Har>(input);
             ValidateHar(har);
-            var stubs = har.Log.Entries
+            var stubs = await Task.WhenAll(har.Log.Entries
                 .Select(e => (req: MapRequest(e), res: MapResponse(e)))
-                .Select(t => MapStub(t.req, t.res, tenant))
-                .Select(r => r.Result);
+                .Select(t => MapStub(t.req, t.res, tenant, cancellationToken)));
             var result = new List<FullStubModel>();
             foreach (var stub in stubs)
             {
-                result.Add(await CreateStub(doNotCreateStub, stub));
+                result.Add(await CreateStub(doNotCreateStub, stub, cancellationToken));
             }
 
             return result;
@@ -56,15 +56,16 @@ internal class HarStubGenerator : IHarStubGenerator
         }
     }
 
-    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, StubModel stub)
+    private async Task<FullStubModel> CreateStub(bool doNotCreateStub, StubModel stub,
+        CancellationToken cancellationToken)
     {
         if (doNotCreateStub)
         {
             return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};
         }
 
-        await _stubContext.DeleteStubAsync(stub.Id);
-        return await _stubContext.AddStubAsync(stub);
+        await _stubContext.DeleteStubAsync(stub.Id, cancellationToken);
+        return await _stubContext.AddStubAsync(stub, cancellationToken);
     }
 
     private static HttpRequestModel MapRequest(Entry entry) => new()
@@ -88,10 +89,11 @@ internal class HarStubGenerator : IHarStubGenerator
             .ToDictionary(h => h.Name, h => h.Value)
     };
 
-    private async Task<StubModel> MapStub(HttpRequestModel req, HttpResponseModel res, string tenant)
+    private async Task<StubModel> MapStub(HttpRequestModel req, HttpResponseModel res, string tenant,
+        CancellationToken cancellationToken)
     {
-        var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(req);
-        var response = await _httpResponseToStubResponseService.ConvertToResponseAsync(res);
+        var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(req, cancellationToken);
+        var response = await _httpResponseToStubResponseService.ConvertToResponseAsync(res, cancellationToken);
         var stub = new StubModel
         {
             Tenant = tenant,

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
@@ -29,9 +25,9 @@ public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
             Content = new StringContent(body),
             Headers =
             {
-                { "X-Api-Key", "123abc" },
-                { "X-Another-Secret", "sjaaaaaak 123" },
-                { "X-Another-Code", "Two Memories" }
+                {"X-Api-Key", "123abc"},
+                {"X-Another-Secret", "sjaaaaaak 123"},
+                {"X-Another-Code", "Two Memories"}
             },
             Method = HttpMethod.Post,
             RequestUri = new Uri(url)
@@ -55,11 +51,7 @@ public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
         var request = new HttpRequestMessage
         {
             Content = new StringContent(body),
-            Headers =
-            {
-                { "X-Api-Key", "123abc" },
-                { "X-Another-Secret", "sjaaaaaak 123" }
-            },
+            Headers = {{"X-Api-Key", "123abc"}, {"X-Another-Secret", "sjaaaaaak 123"}},
             Method = HttpMethod.Post,
             RequestUri = new Uri(url)
         };

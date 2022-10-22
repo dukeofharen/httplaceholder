@@ -1,5 +1,4 @@
 ﻿using HttPlaceholder.Common.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Common.Tests.Utilities;
 
@@ -76,5 +75,22 @@ public class StringHelperFacts
 
         // Assert
         Assert.AreEqual(2, result);
+    }
+
+    [DataTestMethod]
+    [DataRow("split\nthis\ntext")]
+    [DataRow("split\r\nthis\r\ntext")]
+    [DataRow("split\rthis\rtext")]
+    [DataRow("split\nthis\r\ntext")]
+    public void SplitNewlines_HappyFlow(string input)
+    {
+        // Act
+        var result = input.SplitNewlines();
+
+        // Assert
+        Assert.AreEqual(3, result.Length);
+        Assert.AreEqual("split", result[0]);
+        Assert.AreEqual("this", result[1]);
+        Assert.AreEqual("text", result[2]);
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 

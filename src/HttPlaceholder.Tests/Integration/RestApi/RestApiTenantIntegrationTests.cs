@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Stubs;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 
@@ -44,7 +40,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
             Tenant = tenant
         });
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
         // act / assert
@@ -80,7 +76,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
             Tenant = tenant
         });
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
 
         // act / assert
@@ -146,14 +142,14 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
             new StubDto
             {
                 Id = "test-123",
-                Conditions = new StubConditionsDto { Method = "GET" },
-                Response = new StubResponseDto { Text = "OK" }
+                Conditions = new StubConditionsDto {Method = "GET"},
+                Response = new StubResponseDto {Text = "OK"}
             },
             new StubDto
             {
                 Id = "test-789",
-                Conditions = new StubConditionsDto { Method = "POST" },
-                Response = new StubResponseDto { Text = "OK" }
+                Conditions = new StubConditionsDto {Method = "POST"},
+                Response = new StubResponseDto {Text = "OK"}
             }
         };
 
@@ -194,7 +190,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
             Tenant = "tenant1"
         });
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
 
         // act / assert

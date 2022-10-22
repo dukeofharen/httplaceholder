@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 using HttPlaceholder.Domain;
@@ -8,8 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class HttpResponseToStubResponseService : IHttpResponseToStubResponseService
+internal class HttpResponseToStubResponseService : IHttpResponseToStubResponseService, ISingletonService
 {
     private readonly IEnumerable<IResponseToStubResponseHandler> _handlers;
     private readonly ILogger<HttpResponseToStubResponseService> _logger;
@@ -23,13 +24,14 @@ internal class HttpResponseToStubResponseService : IHttpResponseToStubResponseSe
     }
 
     /// <inheritdoc />
-    public async Task<StubResponseModel> ConvertToResponseAsync(HttpResponseModel response)
+    public async Task<StubResponseModel> ConvertToResponseAsync(HttpResponseModel response,
+        CancellationToken cancellationToken)
     {
         var stubResponse = new StubResponseModel();
         foreach (var handler in _handlers.OrderByDescending(h => h.Priority))
         {
             var executed =
-                await handler.HandleStubGenerationAsync(response, stubResponse);
+                await handler.HandleStubGenerationAsync(response, stubResponse, cancellationToken);
             _logger.LogDebug(
                 $"Handler '{handler.GetType().Name}' " + (executed ? "executed" : "not executed") + ".");
         }

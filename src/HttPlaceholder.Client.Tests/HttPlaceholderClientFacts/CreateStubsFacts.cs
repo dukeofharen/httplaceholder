@@ -2,12 +2,10 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.Implementations;
 using HttPlaceholder.Client.StubBuilders;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;
@@ -74,7 +72,8 @@ public class CreateStubsFacts : BaseClientTest
 
         // Act
         var exception =
-            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() => client.CreateStubsAsync(new StubDto()));
+            await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
+                client.CreateStubsAsync(new StubDto()));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -101,8 +100,7 @@ public class CreateStubsFacts : BaseClientTest
                     Method = "GET",
                     Url = new StubUrlConditionDto
                     {
-                        Path = "/testtesttest",
-                        Query = new Dictionary<string, object> {{"id", "13"}}
+                        Path = "/testtesttest", Query = new Dictionary<string, object> {{"id", "13"}}
                     }
                 },
                 Response = new StubResponseDto {StatusCode = 200, Text = "OK my dude!"}
@@ -116,8 +114,7 @@ public class CreateStubsFacts : BaseClientTest
                     Method = "GET",
                     Url = new StubUrlConditionDto
                     {
-                        Path = "/testtesttest",
-                        Query = new Dictionary<string, object> {{"id", "13"}}
+                        Path = "/testtesttest", Query = new Dictionary<string, object> {{"id", "13"}}
                     }
                 },
                 Response = new StubResponseDto {StatusCode = 200, Text = "OK my dude!"}

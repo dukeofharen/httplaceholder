@@ -1,21 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
 /// <summary>
-/// "Request to stub conditions handler" that is used to request header conditions.
+///     "Request to stub conditions handler" that is used to request header conditions.
 /// </summary>
-internal class HeaderHandler : IRequestToStubConditionsHandler
+internal class HeaderHandler : IRequestToStubConditionsHandler, ISingletonService
 {
-    private static readonly IEnumerable<string> _headersToStrip = new[] {"Postman-Token", "Host"};
+    private static readonly IEnumerable<string> _headersToStrip = new[] {Constants.PostmanToken, Constants.Host};
 
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
+        CancellationToken cancellationToken)
     {
         if (!request.Headers.Any())
         {

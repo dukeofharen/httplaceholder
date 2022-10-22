@@ -1,19 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Middleware;
 using Microsoft.AspNetCore.Http;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Middleware;
 
 [TestClass]
 public class ApiHeadersMiddlewareFacts
 {
-    private bool _nextCalled;
     private readonly AutoMocker _mocker = new();
+    private bool _nextCalled;
 
     [TestInitialize]
     public void Initialize() =>

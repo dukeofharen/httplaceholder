@@ -1,9 +1,5 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios;
+﻿using HttPlaceholder.Application.Scenarios.Commands.DeleteAllScenarios;
 using HttPlaceholder.Application.StubExecution;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Scenarios.Commands;
 
@@ -26,6 +22,6 @@ public class DeleteAllScenariosCommandHandlerFacts
         await handler.Handle(new DeleteAllScenariosCommand(), CancellationToken.None);
 
         // Assert
-        scenarioServiceMock.Verify(m => m.DeleteAllScenariosAsync());
+        scenarioServiceMock.Verify(m => m.DeleteAllScenariosAsync(It.IsAny<CancellationToken>()));
     }
 }

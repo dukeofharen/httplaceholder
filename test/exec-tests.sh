@@ -18,7 +18,8 @@ function assert-test-ok() {
 
 # Starting up database containers.
 DEVENV_SCRIPT_PATH="$DIR/../scripts/dev/docker-compose.yml"
-sudo docker-compose -f "$DEVENV_SCRIPT_PATH" up -d
+docker-compose -f "$DEVENV_SCRIPT_PATH" down -v
+docker-compose -f "$DEVENV_SCRIPT_PATH" up -d
 
 # Run HttPlaceholder tests for in memory configuration.
 echo "Testing HttPlaceholder with in memory configuration"
@@ -55,11 +56,27 @@ newman run $POSTMAN_PATH --insecure > $DIR/logs/test-sqlite.txt
 assert-test-ok
 sudo killall HttPlaceholder
 
-# Run HttPlaceholder tests for in MySQL configuration.
-echo "Testing HttPlaceholder with in MySQL configuration"
-dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mysql.txt 2>&1 &
+# Run HttPlaceholder tests for in MySQL 5 configuration.
+echo "Testing HttPlaceholder with in MySQL 5 configuration"
+dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mysql5.txt 2>&1 &
 sleep 5
-newman run $POSTMAN_PATH --insecure > $DIR/logs/test-mysql.txt
+newman run $POSTMAN_PATH --insecure > $DIR/logs/test-mysql5.txt
+assert-test-ok
+sudo killall HttPlaceholder
+
+# Run HttPlaceholder tests for in MySQL 8 configuration.
+echo "Testing HttPlaceholder with in MySQL 8 configuration"
+dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost,3307;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mysql8.txt 2>&1 &
+sleep 5
+newman run $POSTMAN_PATH --insecure > $DIR/logs/test-mysql8.txt
+assert-test-ok
+sudo killall HttPlaceholder
+
+# Run HttPlaceholder tests for in MariaDB configuration.
+echo "Testing HttPlaceholder with in MariaDB configuration"
+dotnet run --project $HTTPL_ROOT_DIR --mysqlConnectionString "Server=localhost,3308;Database=httplaceholder;Uid=root;Pwd=root;Allow User Variables=true" --storeResponses > $DIR/logs/httplaceholder-mariadb.txt 2>&1 &
+sleep 5
+newman run $POSTMAN_PATH --insecure > $DIR/logs/test-mariadb.txt
 assert-test-ok
 sudo killall HttPlaceholder
 
@@ -72,4 +89,4 @@ assert-test-ok
 sudo killall HttPlaceholder
 
 # Stop the Docker containers.
-sudo docker-compose -f "$DEVENV_SCRIPT_PATH" down
+docker-compose -f "$DEVENV_SCRIPT_PATH" down

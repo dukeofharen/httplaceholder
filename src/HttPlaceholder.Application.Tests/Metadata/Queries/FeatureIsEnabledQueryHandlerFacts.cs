@@ -1,11 +1,7 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
+﻿using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Metadata.Queries.FeatureIsEnabled;
 using HttPlaceholder.Domain.Enums;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.Metadata.Queries;
 

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
@@ -12,9 +12,10 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to query the posted JSON string based on a JSONPath expression. The result is put in the response.
+///     Response variable parsing handler that is used to query the posted JSON string based on a JSONPath expression. The
+///     result is put in the response.
 /// </summary>
-internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandler
+internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
     private readonly ILogger<JsonPathResponseVariableParsingHandler> _logger;
@@ -38,29 +39,28 @@ internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}:$.values[1].title))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
-        var matchArray = matches as Match[] ?? matches.ToArray();
-        if (!matchArray.Any())
-        {
-            return input;
-        }
-
         var body = _httpContextService.GetBody();
-        JObject jsonObject = null;
+        var json = ParseJson(body);
+        return matches
+            .Where(match => match.Groups.Count >= 2)
+            .Aggregate(input,
+                (current, match) => current.Replace(match.Value, GetJsonPathValue(match, json)));
+    }
+
+    private JObject ParseJson(string body)
+    {
         try
         {
-            jsonObject = JObject.Parse(body);
+            return JObject.Parse(body);
         }
         catch (JsonException je)
         {
             _logger.LogInformation($"Exception occurred while trying to parse response body as JSON: {je}");
         }
 
-        return matchArray
-            .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input,
-                (current, match) => current.Replace(match.Value, GetJsonPathValue(match, jsonObject)));
+        return null;
     }
 
     private static string GetJsonPathValue(Match match, JToken token)

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -12,14 +14,14 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that validates if a JSON request body corresponds to a given set of properties.
+///     Condition checker that validates if a JSON request body corresponds to a given set of properties.
 /// </summary>
-public class JsonConditionChecker : IConditionChecker
+public class JsonConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
     /// <summary>
-    /// Constructs a <see cref="JsonConditionChecker"/> instance.
+    ///     Constructs a <see cref="JsonConditionChecker" /> instance.
     /// </summary>
     public JsonConditionChecker(IHttpContextService httpContextService)
     {
@@ -27,7 +29,7 @@ public class JsonConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         if (stub.Conditions?.Json == null)
@@ -216,8 +218,10 @@ public class JsonConditionChecker : IConditionChecker
     }
 
     /// <summary>
-    /// Sadly, this method is needed, because YamlDotNet and Newtonsoft.Json both deserialize the JSON condition to another data types.
-    /// By calling this method, we are sure that the data is always in the correct format when running this condition checker.
+    ///     Sadly, this method is needed, because YamlDotNet and Newtonsoft.Json both deserialize the JSON condition to another
+    ///     data types.
+    ///     By calling this method, we are sure that the data is always in the correct format when running this condition
+    ///     checker.
     /// </summary>
     /// <returns>The converted JSON conditions.</returns>
     internal static object ConvertJsonConditions(object conditions)
@@ -237,7 +241,8 @@ public class JsonConditionChecker : IConditionChecker
             case JObject jObject:
             {
                 var dict = jObject.ToObject<Dictionary<object, object>>();
-                return dict.ToDictionary<KeyValuePair<object, object>, object, object>(pair => pair.Key.ToString(), pair => ConvertJsonConditions(pair.Value));
+                return dict.ToDictionary<KeyValuePair<object, object>, object, object>(pair => pair.Key.ToString(),
+                    pair => ConvertJsonConditions(pair.Value));
             }
             default:
                 return conditions.ToString();

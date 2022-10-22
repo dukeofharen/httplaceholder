@@ -1,8 +1,5 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.Models;
+﻿using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseToStubResponseHandlers;
 
@@ -19,7 +16,7 @@ public class ResponseBodyHandlerFacts
         var stubResponse = new StubResponseModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(response, stubResponse);
+        var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -35,13 +32,10 @@ public class ResponseBodyHandlerFacts
     {
         // Arrange
         var response = new HttpResponseModel {Content = "{}"};
-        var stubResponse = new StubResponseModel
-        {
-            ContentType = Constants.JsonMime
-        };
+        var stubResponse = new StubResponseModel {ContentType = Constants.JsonMime};
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(response, stubResponse);
+        var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -57,13 +51,10 @@ public class ResponseBodyHandlerFacts
     {
         // Arrange
         var response = new HttpResponseModel {Content = "<html>"};
-        var stubResponse = new StubResponseModel
-        {
-            ContentType = Constants.HtmlMime
-        };
+        var stubResponse = new StubResponseModel {ContentType = Constants.HtmlMime};
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(response, stubResponse);
+        var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -81,13 +72,10 @@ public class ResponseBodyHandlerFacts
     {
         // Arrange
         var response = new HttpResponseModel {Content = "<xml>"};
-        var stubResponse = new StubResponseModel
-        {
-            ContentType = mimeType
-        };
+        var stubResponse = new StubResponseModel {ContentType = mimeType};
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(response, stubResponse);
+        var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);
@@ -106,13 +94,10 @@ public class ResponseBodyHandlerFacts
     {
         // Arrange
         var response = new HttpResponseModel {Content = "plain text"};
-        var stubResponse = new StubResponseModel
-        {
-            ContentType = mimeType
-        };
+        var stubResponse = new StubResponseModel {ContentType = mimeType};
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(response, stubResponse);
+        var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

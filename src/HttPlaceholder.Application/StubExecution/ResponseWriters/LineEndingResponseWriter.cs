@@ -1,18 +1,21 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to enforce the response to use specific line endings (Windows or UNIX).
+///     Response writer that is used to enforce the response to use specific line endings (Windows or UNIX).
 /// </summary>
-internal class LineEndingResponseWriter : IResponseWriter
+internal class LineEndingResponseWriter : IResponseWriter, ISingletonService
 {
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
+        CancellationToken cancellationToken)
     {
         var lineEndings = stub.Response.LineEndings;
         if (lineEndings is null or LineEndingType.NotSet)
@@ -51,8 +54,5 @@ internal class LineEndingResponseWriter : IResponseWriter
     private static byte[] ReplaceLineEndings(byte[] input, string lineEndingSeparator) =>
         Encoding.UTF8.GetBytes(string.Join(
             lineEndingSeparator,
-            Encoding.UTF8.GetString(input).Split(
-                new[] {"\r\n", "\r", "\n"},
-                StringSplitOptions.None
-            )));
+            Encoding.UTF8.GetString(input).SplitNewlines()));
 }

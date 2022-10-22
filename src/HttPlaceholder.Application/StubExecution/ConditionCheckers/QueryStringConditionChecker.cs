@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
@@ -8,15 +10,15 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker for validating the query strings.
+///     Condition checker for validating the query strings.
 /// </summary>
-public class QueryStringConditionChecker : IConditionChecker
+public class QueryStringConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
     private readonly IStringChecker _stringChecker;
 
     /// <summary>
-    /// Constructs a <see cref="QueryStringConditionChecker"/> instance.
+    ///     Constructs a <see cref="QueryStringConditionChecker" /> instance.
     /// </summary>
     public QueryStringConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {
@@ -25,7 +27,7 @@ public class QueryStringConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var queryStringConditions = stub.Conditions?.Url?.Query;

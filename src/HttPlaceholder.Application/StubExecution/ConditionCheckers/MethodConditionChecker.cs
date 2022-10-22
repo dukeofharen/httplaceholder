@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -7,14 +9,14 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker to validate the HTTP method.
+///     Condition checker to validate the HTTP method.
 /// </summary>
-public class MethodConditionChecker : IConditionChecker
+public class MethodConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
     /// <summary>
-    /// Constructs a <see cref="MethodConditionChecker"/> instance.
+    ///     Constructs a <see cref="MethodConditionChecker" /> instance.
     /// </summary>
     public MethodConditionChecker(IHttpContextService httpContextService)
     {
@@ -22,7 +24,7 @@ public class MethodConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var methodCondition = stub.Conditions?.Method;

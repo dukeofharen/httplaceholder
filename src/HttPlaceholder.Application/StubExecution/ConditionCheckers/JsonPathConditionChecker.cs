@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -11,14 +13,14 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that validates the incoming JSON request body against a list of JSONPath expressions.
+///     Condition checker that validates the incoming JSON request body against a list of JSONPath expressions.
 /// </summary>
-public class JsonPathConditionChecker : IConditionChecker
+public class JsonPathConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
     /// <summary>
-    /// Constructs a <see cref="JsonPathConditionChecker"/> instance.
+    ///     Constructs a <see cref="JsonPathConditionChecker" /> instance.
     /// </summary>
     public JsonPathConditionChecker(IHttpContextService httpContextService)
     {
@@ -26,7 +28,7 @@ public class JsonPathConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var jsonPathConditions = stub.Conditions?.JsonPath?.ToArray();
@@ -93,10 +95,14 @@ public class JsonPathConditionChecker : IConditionChecker
         return Task.FromResult(result);
     }
 
+    /// <inheritdoc />
+    public int Priority => 0;
+
     internal static StubJsonPathModel ConvertJsonPathCondition(string stubId, object condition)
     {
-        static StubJsonPathModel ParseDict(IReadOnlyDictionary<object, object> conditionDict) =>
-            new()
+        static StubJsonPathModel ParseDict(IReadOnlyDictionary<object, object> conditionDict)
+        {
+            return new()
             {
                 Query = conditionDict.ContainsKey("query")
                     ? conditionDict["query"].ToString()
@@ -105,6 +111,7 @@ public class JsonPathConditionChecker : IConditionChecker
                     ? conditionDict["expectedValue"].ToString()
                     : string.Empty
             };
+        }
 
         var jsonPathCondition = condition switch
         {
@@ -123,7 +130,4 @@ public class JsonPathConditionChecker : IConditionChecker
 
         return jsonPathCondition;
     }
-
-    /// <inheritdoc />
-    public int Priority => 0;
 }

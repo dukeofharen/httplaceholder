@@ -9,15 +9,15 @@ using YamlDotNet.Serialization;
 namespace HttPlaceholder.Formatters;
 
 /// <summary>
-/// An input formatter that is used to handle YAML input.
-/// Source: https://github.com/fiyazbinhasan/CoreFormatters
+///     An input formatter that is used to handle YAML input.
+///     Source: https://github.com/fiyazbinhasan/CoreFormatters
 /// </summary>
 public class YamlInputFormatter : TextInputFormatter
 {
     private readonly IDeserializer _deserializer;
 
     /// <summary>
-    /// Constructs a <see cref="YamlInputFormatter"/> instance.
+    ///     Constructs a <see cref="YamlInputFormatter" /> instance.
     /// </summary>
     /// <param name="deserializer"></param>
     public YamlInputFormatter(IDeserializer deserializer)
@@ -31,7 +31,8 @@ public class YamlInputFormatter : TextInputFormatter
     }
 
     /// <inheritdoc />
-    public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context, Encoding encoding)
+    public override async Task<InputFormatterResult> ReadRequestBodyAsync(InputFormatterContext context,
+        Encoding encoding)
     {
         if (context == null)
         {

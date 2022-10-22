@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -21,21 +17,24 @@ public class QueryStringConditionCheckerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_ButNoQueryStringConditions_ShouldReturnNotExecuted()
+    public async Task
+        QueryStringConditionChecker_ValidateAsync_StubsFound_ButNoQueryStringConditions_ShouldReturnNotExecuted()
     {
         // Arrange
         var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
         var conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Query = null}};
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
     }
 
     [TestMethod]
-    public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_NoMatchingQueryStringKeys_ShouldReturnInvalid()
+    public async Task
+        QueryStringConditionChecker_ValidateAsync_StubsFound_NoMatchingQueryStringKeys_ShouldReturnInvalid()
     {
         // Arrange
         var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
@@ -51,14 +50,16 @@ public class QueryStringConditionCheckerFacts
             .Returns(query);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_AllQueryStringsIncorrect_ShouldReturnInvalid()
+    public async Task
+        QueryStringConditionChecker_ValidateAsync_StubsFound_AllQueryStringsIncorrect_ShouldReturnInvalid()
     {
         // Arrange
         var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
@@ -81,14 +82,16 @@ public class QueryStringConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_OneQueryStringValueMissing_ShouldReturnInvalid()
+    public async Task
+        QueryStringConditionChecker_ValidateAsync_StubsFound_OneQueryStringValueMissing_ShouldReturnInvalid()
     {
         // Arrange
         var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
@@ -111,14 +114,16 @@ public class QueryStringConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
     }
 
     [TestMethod]
-    public async Task QueryStringConditionChecker_ValidateAsync_StubsFound_OnlyOneQueryStringCorrect_ShouldReturnInvalid()
+    public async Task
+        QueryStringConditionChecker_ValidateAsync_StubsFound_OnlyOneQueryStringCorrect_ShouldReturnInvalid()
     {
         // Arrange
         var checker = _mocker.CreateInstance<QueryStringConditionChecker>();
@@ -144,7 +149,8 @@ public class QueryStringConditionCheckerFacts
             .Returns(false);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -177,7 +183,8 @@ public class QueryStringConditionCheckerFacts
             .Returns(true);
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -208,7 +215,8 @@ public class QueryStringConditionCheckerFacts
         };
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -239,7 +247,8 @@ public class QueryStringConditionCheckerFacts
         };
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -270,7 +279,8 @@ public class QueryStringConditionCheckerFacts
         };
 
         // Act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

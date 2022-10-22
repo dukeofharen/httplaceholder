@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
-using AutoMapper;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Application.Interfaces.Signalling;
+using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Resources;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -18,25 +17,27 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Middleware;
 
 /// <summary>
-/// A piece of middleware for matching requests against stubs.
+///     A piece of middleware for matching requests against stubs.
 /// </summary>
 public class StubHandlingMiddleware
 {
-    private static readonly string[] _segmentsToIgnore = {"/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub"};
+    private static readonly string[] _segmentsToIgnore =
+    {
+        "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub"
+    };
 
-    private const string CorrelationHeaderKey = "X-HttPlaceholder-Correlation";
-    private const string ExecutedStubHeaderKey = "X-HttPlaceholder-ExecutedStub";
-    private readonly RequestDelegate _next;
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextService _httpContextService;
     private readonly ILogger<StubHandlingMiddleware> _logger;
+    private readonly RequestDelegate _next;
     private readonly IRequestLoggerFactory _requestLoggerFactory;
+    private readonly IResourcesService _resourcesService;
+    private readonly SettingsModel _settings;
     private readonly IStubContext _stubContext;
     private readonly IStubRequestExecutor _stubRequestExecutor;
-    private readonly SettingsModel _settings;
 
     /// <summary>
-    /// Constructs a <see cref="StubHandlingMiddleware"/> instance.
+    ///     Constructs a <see cref="StubHandlingMiddleware" /> instance.
     /// </summary>
     public StubHandlingMiddleware(
         RequestDelegate next,
@@ -46,7 +47,8 @@ public class StubHandlingMiddleware
         IRequestLoggerFactory requestLoggerFactory,
         IStubContext stubContext,
         IStubRequestExecutor stubRequestExecutor,
-        IOptions<SettingsModel> options)
+        IOptions<SettingsModel> options,
+        IResourcesService resourcesService)
     {
         _next = next;
         _clientDataResolver = clientDataResolver;
@@ -55,19 +57,21 @@ public class StubHandlingMiddleware
         _requestLoggerFactory = requestLoggerFactory;
         _stubContext = stubContext;
         _stubRequestExecutor = stubRequestExecutor;
+        _resourcesService = resourcesService;
         _settings = options.Value;
     }
 
     /// <summary>
-    /// Handles the middleware.
+    ///     Handles the middleware.
     /// </summary>
     public async Task Invoke(HttpContext context)
     {
+        var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
         var path = _httpContextService.Path;
         if (_settings?.Stub?.HealthcheckOnRootUrl == true && path == "/")
         {
             _httpContextService.SetStatusCode(HttpStatusCode.OK);
-            await _httpContextService.WriteAsync("OK");
+            await _httpContextService.WriteAsync("OK", cancellationToken);
             return;
         }
 
@@ -83,11 +87,15 @@ public class StubHandlingMiddleware
         ResponseModel response = null;
         try
         {
-            response = await HandleRequest(correlationId);
+            response = await HandleRequest(correlationId, cancellationToken);
         }
         catch (RequestValidationException e)
         {
-            await HandleRequestValidationException(correlationId, e);
+            await HandleRequestValidationException(correlationId, e, cancellationToken);
+        }
+        catch (TaskCanceledException e)
+        {
+            _logger.LogDebug(e, "Request was cancelled.");
         }
         catch (Exception e)
         {
@@ -95,39 +103,39 @@ public class StubHandlingMiddleware
         }
 
         var loggingResult = requestLogger.GetResult();
-        var jsonLoggingResult = JObject.FromObject(loggingResult);
         var enableRequestLogging = _settings?.Storage?.EnableRequestLogging ?? false;
         if (enableRequestLogging)
         {
-            _logger.LogInformation($"Request: {jsonLoggingResult}");
+            _logger.LogInformation($"Request: {JObject.FromObject(loggingResult)}");
         }
 
-        await _stubContext.AddRequestResultAsync(loggingResult, response);
+        await _stubContext.AddRequestResultAsync(loggingResult, response, cancellationToken);
     }
 
     private void HandleException(string correlationId, Exception e)
     {
         _httpContextService.SetStatusCode(HttpStatusCode.InternalServerError);
-        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlationId);
+        _httpContextService.TryAddHeader(Constants.XHttPlaceholderCorrelation, correlationId);
         _logger.LogWarning($"Unexpected exception thrown: {e}");
     }
 
-    private async Task HandleRequestValidationException(string correlation, RequestValidationException e)
+    private async Task HandleRequestValidationException(string correlation, RequestValidationException e,
+        CancellationToken cancellationToken)
     {
         _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
-        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
+        _httpContextService.TryAddHeader(Constants.XHttPlaceholderCorrelation, correlation);
         if (_settings?.Gui?.EnableUserInterface == true)
         {
-            var pageContents =
-                StaticResources.stub_not_configured_html_page.Replace("[ROOT_URL]", _httpContextService.RootUrl);
-            _httpContextService.AddHeader("Content-Type", Constants.HtmlMime);
-            await _httpContextService.WriteAsync(pageContents);
+            var pageContents = _resourcesService.ReadAsString("Files/StubNotConfigured.html")
+                .Replace("[ROOT_URL]", _httpContextService.RootUrl);
+            _httpContextService.AddHeader(Constants.ContentType, Constants.HtmlMime);
+            await _httpContextService.WriteAsync(pageContents, cancellationToken);
         }
 
-        _logger.LogInformation($"Request validation exception thrown: {e.Message}");
+        _logger.LogDebug($"Request validation exception thrown: {e.Message}");
     }
 
-    private async Task<ResponseModel> HandleRequest(string correlation)
+    private async Task<ResponseModel> HandleRequest(string correlation, CancellationToken cancellationToken)
     {
         var requestLogger = _requestLoggerFactory.GetRequestLogger();
         // Enable rewind here to be able to read the posted body multiple times.
@@ -142,18 +150,18 @@ public class StubHandlingMiddleware
             _httpContextService.GetHeaders());
 
         _httpContextService.ClearResponse();
-        var response = await _stubRequestExecutor.ExecuteRequestAsync();
+        var response = await _stubRequestExecutor.ExecuteRequestAsync(cancellationToken);
         if (response.AbortConnection)
         {
             _httpContextService.AbortConnection();
             return response;
         }
 
-        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
+        _httpContextService.TryAddHeader(Constants.XHttPlaceholderCorrelation, correlation);
         var requestResult = requestLogger.GetResult();
         if (!string.IsNullOrWhiteSpace(requestResult.ExecutingStubId))
         {
-            _httpContextService.TryAddHeader(ExecutedStubHeaderKey, requestResult.ExecutingStubId);
+            _httpContextService.TryAddHeader(Constants.XHttPlaceholderExecutedStub, requestResult.ExecutingStubId);
         }
 
         _httpContextService.SetStatusCode(response.StatusCode);
@@ -164,7 +172,7 @@ public class StubHandlingMiddleware
 
         if (response.Body != null)
         {
-            await _httpContextService.WriteAsync(response.Body);
+            await _httpContextService.WriteAsync(response.Body, cancellationToken);
         }
 
         return response;

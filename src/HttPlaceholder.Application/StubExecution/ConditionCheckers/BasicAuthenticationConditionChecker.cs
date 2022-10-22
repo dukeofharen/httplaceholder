@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -8,14 +10,14 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that is used to verify incoming basic authentication credentials.
+///     Condition checker that is used to verify incoming basic authentication credentials.
 /// </summary>
-public class BasicAuthenticationConditionChecker : IConditionChecker
+public class BasicAuthenticationConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
     /// <summary>
-    /// Constructs a <see cref="BasicAuthenticationConditionChecker"/> instance.
+    ///     Constructs a <see cref="BasicAuthenticationConditionChecker" /> instance.
     /// </summary>
     public BasicAuthenticationConditionChecker(IHttpContextService httpContextService)
     {
@@ -23,7 +25,7 @@ public class BasicAuthenticationConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var basicAuthenticationCondition = stub.Conditions?.BasicAuthentication;

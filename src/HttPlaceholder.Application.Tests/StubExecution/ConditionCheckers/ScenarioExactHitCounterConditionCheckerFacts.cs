@@ -1,11 +1,6 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution;
+﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
@@ -25,7 +20,7 @@ public class ScenarioExactHitCounterConditionCheckerFacts
         var checker = _mocker.CreateInstance<ScenarioExactHitCounterConditionChecker>();
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -40,11 +35,11 @@ public class ScenarioExactHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync((int?)null);
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -60,16 +55,15 @@ public class ScenarioExactHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(3);
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
         Assert.AreEqual("Scenario 'exact-hits' should have exactly '3' hits, but '4' hits were counted.", result.Log);
-
     }
 
     [TestMethod]
@@ -81,11 +75,11 @@ public class ScenarioExactHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(2);
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

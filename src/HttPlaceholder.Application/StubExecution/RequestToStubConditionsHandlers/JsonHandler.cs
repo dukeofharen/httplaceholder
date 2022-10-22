@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 using Microsoft.Extensions.Logging;
@@ -9,11 +11,12 @@ using Newtonsoft.Json.Linq;
 namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
 
 /// <summary>
-/// This handler is used to check whether the request contains JSON.
-/// The content type should be JSON, the JSON should be correct and no request body should have been set for the stub yet.
-/// JSON objects and arrays are supported as root node.
+///     This handler is used to check whether the request contains JSON.
+///     The content type should be JSON, the JSON should be correct and no request body should have been set for the stub
+///     yet.
+///     JSON objects and arrays are supported as root node.
 /// </summary>
-internal class JsonHandler : IRequestToStubConditionsHandler
+internal class JsonHandler : IRequestToStubConditionsHandler, ISingletonService
 {
     private readonly ILogger<JsonHandler> _logger;
 
@@ -23,10 +26,11 @@ internal class JsonHandler : IRequestToStubConditionsHandler
     }
 
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions)
+    public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,
+        CancellationToken cancellationToken)
     {
         var pair = request.Headers.FirstOrDefault(p =>
-            p.Key.Equals("Content-Type", StringComparison.OrdinalIgnoreCase));
+            p.Key.Equals(Constants.ContentType, StringComparison.OrdinalIgnoreCase));
         var contentType = pair.Value;
         if (string.IsNullOrWhiteSpace(contentType))
         {

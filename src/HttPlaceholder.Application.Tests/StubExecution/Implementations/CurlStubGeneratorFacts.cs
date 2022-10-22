@@ -1,12 +1,7 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.Models;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
@@ -38,32 +33,35 @@ public class CurlStubGeneratorFacts
 
         var conditions1 = new StubConditionsModel {Host = "host1"};
         httpRequestToConditionsServiceMock
-            .Setup(m => m.ConvertToConditionsAsync(requests[0]))
+            .Setup(m => m.ConvertToConditionsAsync(requests[0], It.IsAny<CancellationToken>()))
             .ReturnsAsync(conditions1);
 
         var conditions2 = new StubConditionsModel {Host = "host2"};
         httpRequestToConditionsServiceMock
-            .Setup(m => m.ConvertToConditionsAsync(requests[1]))
+            .Setup(m => m.ConvertToConditionsAsync(requests[1], It.IsAny<CancellationToken>()))
             .ReturnsAsync(conditions2);
 
         var fullStub1 = new FullStubModel();
         stubContextMock
-            .Setup(m => m.AddStubAsync(It.Is<StubModel>(s => s.Conditions == conditions1)))
+            .Setup(m => m.AddStubAsync(It.Is<StubModel>(s => s.Conditions == conditions1),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(fullStub1);
 
         var fullStub2 = new FullStubModel();
         stubContextMock
-            .Setup(m => m.AddStubAsync(It.Is<StubModel>(s => s.Conditions == conditions2)))
+            .Setup(m => m.AddStubAsync(It.Is<StubModel>(s => s.Conditions == conditions2),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(fullStub2);
 
         // Act
-        var result = (await generator.GenerateCurlStubsAsync(input, false, string.Empty)).ToArray();
+        var result = (await generator.GenerateCurlStubsAsync(input, false, string.Empty, CancellationToken.None))
+            .ToArray();
 
         // Assert
         Assert.AreEqual(fullStub1, result[0]);
         Assert.AreEqual(fullStub2, result[1]);
-        stubContextMock.Verify(m => m.DeleteStubAsync(expectedStubId1));
-        stubContextMock.Verify(m => m.DeleteStubAsync(expectedStubId2));
+        stubContextMock.Verify(m => m.DeleteStubAsync(expectedStubId1, It.IsAny<CancellationToken>()));
+        stubContextMock.Verify(m => m.DeleteStubAsync(expectedStubId2, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -90,7 +88,7 @@ public class CurlStubGeneratorFacts
             Host = "host1", Method = "GET", Url = new StubUrlConditionModel {Path = "/path1"}
         };
         httpRequestToConditionsServiceMock
-            .Setup(m => m.ConvertToConditionsAsync(requests[0]))
+            .Setup(m => m.ConvertToConditionsAsync(requests[0], It.IsAny<CancellationToken>()))
             .ReturnsAsync(conditions1);
 
         var conditions2 = new StubConditionsModel
@@ -98,11 +96,11 @@ public class CurlStubGeneratorFacts
             Host = "host2", Method = "POST", Url = new StubUrlConditionModel {Path = "/path2"}
         };
         httpRequestToConditionsServiceMock
-            .Setup(m => m.ConvertToConditionsAsync(requests[1]))
+            .Setup(m => m.ConvertToConditionsAsync(requests[1], It.IsAny<CancellationToken>()))
             .ReturnsAsync(conditions2);
 
         // Act
-        var result = (await generator.GenerateCurlStubsAsync(input, true, tenant)).ToArray();
+        var result = (await generator.GenerateCurlStubsAsync(input, true, tenant, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -116,7 +114,7 @@ public class CurlStubGeneratorFacts
         Assert.AreEqual(expectedStubId2, result[1].Stub.Id);
         Assert.AreEqual(conditions1, result[0].Stub.Conditions);
         Assert.AreEqual(conditions2, result[1].Stub.Conditions);
-        stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>()), Times.Never);
-        stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>()), Times.Never);
+        stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 }

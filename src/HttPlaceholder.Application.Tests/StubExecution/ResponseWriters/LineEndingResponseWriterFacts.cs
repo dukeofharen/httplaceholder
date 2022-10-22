@@ -1,10 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -21,7 +17,7 @@ public class LineEndingResponseWriterFacts
         var response = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result.Executed);
@@ -35,7 +31,7 @@ public class LineEndingResponseWriterFacts
         var response = new ResponseModel {Body = Encoding.UTF8.GetBytes("the\r\ncontent\r\n")};
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);
@@ -51,7 +47,7 @@ public class LineEndingResponseWriterFacts
         var response = new ResponseModel {Body = Encoding.UTF8.GetBytes("the\ncontent\n")};
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);
@@ -70,7 +66,7 @@ public class LineEndingResponseWriterFacts
         var response = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);
@@ -93,7 +89,7 @@ public class LineEndingResponseWriterFacts
         var response = new ResponseModel {BodyIsBinary = true};
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result.Executed);

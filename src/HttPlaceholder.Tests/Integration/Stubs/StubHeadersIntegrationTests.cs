@@ -1,8 +1,5 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -22,9 +19,7 @@ public class StubHeadersIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}headers-presence-check";
         var request = new HttpRequestMessage
         {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri(url),
-            Headers = { { "Header-1", "somevalue" } }
+            Method = HttpMethod.Get, RequestUri = new Uri(url), Headers = {{"Header-1", "somevalue"}}
         };
 
         // act / assert
@@ -43,7 +38,7 @@ public class StubHeadersIntegrationTests : StubIntegrationTestBase
         {
             Method = HttpMethod.Get,
             RequestUri = new Uri(url),
-            Headers = { { "Header-1", "somevalue" }, { "Header-2", "somevalue" } }
+            Headers = {{"Header-1", "somevalue"}, {"Header-2", "somevalue"}}
         };
 
         // act / assert

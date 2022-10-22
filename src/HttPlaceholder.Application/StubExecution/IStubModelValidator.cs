@@ -4,12 +4,12 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution;
 
 /// <summary>
-/// Describes a class that is used to validate a stub.
+///     Describes a class that is used to validate a stub.
 /// </summary>
 public interface IStubModelValidator
 {
     /// <summary>
-    /// Validates a <see cref="StubModel"/>.
+    ///     Validates a <see cref="StubModel" />.
     /// </summary>
     /// <param name="stub">The stub to validate.</param>
     /// <returns>A list of validation messages.</returns>

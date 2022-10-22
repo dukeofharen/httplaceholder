@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static HttPlaceholder.Client.Utilities.DtoExtensions;
+﻿using static HttPlaceholder.Client.Utilities.DtoExtensions;
 
 namespace HttPlaceholder.Client.Tests.Utilities;
 
@@ -10,7 +9,7 @@ public class DtoExtensionsFacts
     public void StringEquals_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = StringEquals(input);
@@ -23,7 +22,7 @@ public class DtoExtensionsFacts
     public void StringEqualsCaseInsensitive_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = StringEqualsCaseInsensitive(input);
@@ -36,7 +35,7 @@ public class DtoExtensionsFacts
     public void StringNotEquals_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = StringNotEquals(input);
@@ -49,7 +48,7 @@ public class DtoExtensionsFacts
     public void StringNotEqualsCaseInsensitive_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = StringNotEqualsCaseInsensitive(input);
@@ -62,7 +61,7 @@ public class DtoExtensionsFacts
     public void Contains_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = Contains(input);
@@ -75,7 +74,7 @@ public class DtoExtensionsFacts
     public void ContainsCaseInsensitive_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = ContainsCaseInsensitive(input);
@@ -88,7 +87,7 @@ public class DtoExtensionsFacts
     public void NotContains_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = NotContains(input);
@@ -101,7 +100,7 @@ public class DtoExtensionsFacts
     public void NotContainsCaseInsensitive_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = NotContainsCaseInsensitive(input);
@@ -114,7 +113,7 @@ public class DtoExtensionsFacts
     public void StartsWith_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = StartsWith(input);
@@ -127,7 +126,7 @@ public class DtoExtensionsFacts
     public void StartsWithCaseInsensitive_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = StartsWithCaseInsensitive(input);
@@ -140,7 +139,7 @@ public class DtoExtensionsFacts
     public void DoesNotStartWith_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = DoesNotStartWith(input);
@@ -153,7 +152,7 @@ public class DtoExtensionsFacts
     public void DoesNotStartWithCaseInsensitive_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = DoesNotStartWithCaseInsensitive(input);
@@ -166,7 +165,7 @@ public class DtoExtensionsFacts
     public void EndsWith_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = EndsWith(input);
@@ -179,7 +178,7 @@ public class DtoExtensionsFacts
     public void EndsWithCaseInsensitive_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = EndsWithCaseInsensitive(input);
@@ -192,7 +191,7 @@ public class DtoExtensionsFacts
     public void DoesNotEndWith_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = DoesNotEndWith(input);
@@ -205,7 +204,7 @@ public class DtoExtensionsFacts
     public void DoesNotEndWithCaseInsensitive_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = DoesNotEndWithCaseInsensitive(input);
@@ -218,7 +217,7 @@ public class DtoExtensionsFacts
     public void Regex_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = Regex(input);
@@ -231,7 +230,7 @@ public class DtoExtensionsFacts
     public void RegexNoMatches_HappyFlow()
     {
         // Arrange
-        var input = "input";
+        const string input = "input";
 
         // Act
         var result = RegexNoMatches(input);
@@ -244,7 +243,7 @@ public class DtoExtensionsFacts
     public void MinLength_HappyFlow()
     {
         // Arrange
-        var input = 2;
+        const int input = 2;
 
         // Act
         var result = MinLength(input);
@@ -257,7 +256,7 @@ public class DtoExtensionsFacts
     public void MaxLength_HappyFlow()
     {
         // Arrange
-        var input = 2;
+        const int input = 2;
 
         // Act
         var result = MaxLength(input);
@@ -270,7 +269,7 @@ public class DtoExtensionsFacts
     public void ExactLength_HappyFlow()
     {
         // Arrange
-        var input = 2;
+        const int input = 2;
 
         // Act
         var result = ExactLength(input);

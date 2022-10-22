@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Security.Claims;
+using System.Text;
 using System.Threading;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Primitives;
 using Moq;
 
 namespace HttPlaceholder.TestUtilities.Http;
@@ -65,6 +68,30 @@ public class MockHttpContext : HttpContext
 
     public override IFeatureCollection Features => FeatureCollectionMock.Object;
 
+    public override HttpRequest Request => HttpRequestMock.Object;
+
+    public override HttpResponse Response => HttpResponseMock.Object;
+
+    public override ConnectionInfo Connection => ConnectionInfoMock.Object;
+
+    public override WebSocketManager WebSockets { get; }
+
+    public override ClaimsPrincipal User { get; set; }
+
+    public sealed override IDictionary<object, object> Items { get; set; }
+
+    public override IServiceProvider RequestServices
+    {
+        get => ServiceProviderMock.Object;
+        set => throw new NotImplementedException();
+    }
+
+    public override CancellationToken RequestAborted { get; set; }
+
+    public override string TraceIdentifier { get; set; }
+
+    public sealed override ISession Session { get; set; }
+
     public int GetStatusCode() => _statusCode;
 
     public string GetRedirectUrl() => _actualRedirectUrl;
@@ -107,29 +134,33 @@ public class MockHttpContext : HttpContext
             .Setup(m => m.IsHttps)
             .Returns(isHttps);
 
+    public void SetRequestHeaders(Dictionary<string, StringValues> headers) =>
+        HttpRequestMock
+            .Setup(m => m.Headers)
+            .Returns(new HeaderDictionary(headers));
+
+    public void SetRequestHeader(string key, string value) =>
+        HttpRequestMock
+            .Object
+            .Headers.Add(key, value);
+
+    public void SetForm(Dictionary<string, StringValues> form) =>
+        HttpRequestMock
+            .Setup(m => m.Form)
+            .Returns(new FormCollection(form));
+
+    public void SetBody(string body) =>
+        SetBody(Encoding.UTF8.GetBytes(body));
+
+    public void SetBody(byte[] body) =>
+        HttpRequestMock
+            .Setup(m => m.Body)
+            .Returns(new MemoryStream(body));
+
+    public void SetQuery(Dictionary<string, StringValues> query) =>
+        HttpRequestMock
+            .Setup(m => m.Query)
+            .Returns(new QueryCollection(query));
+
     public override void Abort() => AbortCalled = true;
-
-    public override HttpRequest Request => HttpRequestMock.Object;
-
-    public override HttpResponse Response => HttpResponseMock.Object;
-
-    public override ConnectionInfo Connection => ConnectionInfoMock.Object;
-
-    public override WebSocketManager WebSockets { get; }
-
-    public override ClaimsPrincipal User { get; set; }
-
-    public sealed override IDictionary<object, object> Items { get; set; }
-
-    public override IServiceProvider RequestServices
-    {
-        get => ServiceProviderMock.Object;
-        set => throw new NotImplementedException();
-    }
-
-    public override CancellationToken RequestAborted { get; set; }
-
-    public override string TraceIdentifier { get; set; }
-
-    public sealed override ISession Session { get; set; }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using HttPlaceholder.Application.StubExecution.Implementations;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

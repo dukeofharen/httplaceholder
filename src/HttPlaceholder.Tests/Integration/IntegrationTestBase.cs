@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
-using HttPlaceholder.TestUtilities.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
@@ -16,11 +14,11 @@ public abstract class IntegrationTestBase
 {
     protected readonly IOptions<SettingsModel> Options = MockSettingsFactory.GetOptions();
 
-    protected SettingsModel Settings => Options.Value;
-
     protected HttpClient Client;
 
     protected TestServer TestServer;
+
+    protected SettingsModel Settings => Options.Value;
 
     protected string BaseAddress => TestServer.BaseAddress.ToString();
 

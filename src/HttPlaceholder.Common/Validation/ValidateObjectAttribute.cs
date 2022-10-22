@@ -6,7 +6,8 @@ namespace HttPlaceholder.Common.Validation;
 
 // Source: http://www.technofattie.com/2011/10/05/recursive-validation-using-dataannotations.html
 /// <summary>
-/// A validation attribute that can be used to validate properties other than primitive types (so also arrays, lists, classes etc.).
+///     A validation attribute that can be used to validate properties other than primitive types (so also arrays, lists,
+///     classes etc.).
 /// </summary>
 public class ValidateObjectAttribute : ValidationAttribute
 {
@@ -36,39 +37,39 @@ public class ValidateObjectAttribute : ValidationAttribute
             }
         }
 
-        if (results.Count != 0)
+        if (results.Count == 0)
         {
-            var compositeResults =
-                new CompositeValidationResult($"Validation for {validationContext.DisplayName} failed!");
-            results.ForEach(compositeResults.AddResult);
-
-            return compositeResults;
+            return ValidationResult.Success;
         }
 
-        return ValidationResult.Success;
+        var compositeResults =
+            new CompositeValidationResult($"Validation for {validationContext.DisplayName} failed!");
+        results.ForEach(compositeResults.AddResult);
+
+        return compositeResults;
     }
 }
 
 /// <summary>
-/// A class that contains multiple validation results.
+///     A class that contains multiple validation results.
 /// </summary>
 public class CompositeValidationResult : ValidationResult
 {
     private readonly List<ValidationResult> _results = new();
 
     /// <summary>
-    /// Gets the validation results.
-    /// </summary>
-    public IEnumerable<ValidationResult> Results => _results;
-
-    /// <summary>
-    /// Constructs a <see cref="CompositeValidationResult"/>.
+    ///     Constructs a <see cref="CompositeValidationResult" />.
     /// </summary>
     /// <param name="errorMessage"></param>
     public CompositeValidationResult(string errorMessage) : base(errorMessage) { }
 
     /// <summary>
-    /// Adds a validation result to the list.
+    ///     Gets the validation results.
+    /// </summary>
+    public IEnumerable<ValidationResult> Results => _results;
+
+    /// <summary>
+    ///     Adds a validation result to the list.
     /// </summary>
     /// <param name="validationResult"></param>
     public void AddResult(ValidationResult validationResult) => _results.Add(validationResult);

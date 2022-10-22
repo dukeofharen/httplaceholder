@@ -1,13 +1,8 @@
-﻿using System;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Net;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Middleware;
 using Microsoft.AspNetCore.Http;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Tests.Middleware;
@@ -15,9 +10,9 @@ namespace HttPlaceholder.Tests.Middleware;
 [TestClass]
 public class ApiExceptionHandlingMiddlewareFacts
 {
+    private readonly AutoMocker _mocker = new();
     private Exception _exceptionToThrow;
     private bool _nextCalled;
-    private readonly AutoMocker _mocker = new();
 
     [TestInitialize]
     public void Initialize() =>
@@ -127,8 +122,8 @@ public class ApiExceptionHandlingMiddlewareFacts
 
         string capturedBody = null;
         mockHttpContextService
-            .Setup(m => m.WriteAsync(It.IsAny<string>()))
-            .Callback<string>(b => capturedBody = b)
+            .Setup(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<string, CancellationToken>((b, _) => capturedBody = b)
             .Returns(Task.CompletedTask);
         _exceptionToThrow = new ArgumentException("ERROR!");
 
@@ -157,8 +152,8 @@ public class ApiExceptionHandlingMiddlewareFacts
 
         string capturedBody = null;
         mockHttpContextService
-            .Setup(m => m.WriteAsync(It.IsAny<string>()))
-            .Callback<string>(b => capturedBody = b)
+            .Setup(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            .Callback<string, CancellationToken>((b, _) => capturedBody = b)
             .Returns(Task.CompletedTask);
         _exceptionToThrow = new ValidationException("ERROR!");
 

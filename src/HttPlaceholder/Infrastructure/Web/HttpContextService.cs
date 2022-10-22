@@ -1,31 +1,45 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Common.Utilities;
+using HttPlaceholder.Domain;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Infrastructure.Web;
 
-/// <inheritdoc />
-public class HttpContextService : IHttpContextService
+internal class HttpContextService : IHttpContextService, ISingletonService
 {
+    private static readonly string[] _validFormContentTypes =
+    {
+        Constants.MultipartFormDataMime, Constants.UrlEncodedFormMime
+    };
+
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    private readonly ILogger<HttpContextService> _logger;
+
     /// <summary>
-    /// Constructs a <see cref="HttpContextService"/> instance.
+    ///     Constructs a <see cref="HttpContextService" /> instance.
     /// </summary>
     public HttpContextService(
         IClientDataResolver clientDataResolver,
-        IHttpContextAccessor httpContextAccessor)
+        IHttpContextAccessor httpContextAccessor,
+        ILogger<HttpContextService> logger)
     {
         _clientDataResolver = clientDataResolver;
         _httpContextAccessor = httpContextAccessor;
+        _logger = logger;
     }
 
     /// <inheritdoc />
@@ -115,10 +129,29 @@ public class HttpContextService : IHttpContextService
     /// <inheritdoc />
     public (string, StringValues)[] GetFormValues()
     {
-        var httpContext = _httpContextAccessor.HttpContext;
-        return httpContext.Request.Form
-            .Select(f => (f.Key, f.Value))
-            .ToArray();
+        var contentType = GetHeaders().CaseInsensitiveSearch(Constants.ContentType);
+        if (string.IsNullOrWhiteSpace(contentType))
+        {
+            return Array.Empty<(string, StringValues)>();
+        }
+
+        if (!_validFormContentTypes.Any(ct => contentType.Contains(ct, StringComparison.OrdinalIgnoreCase)))
+        {
+            return Array.Empty<(string, StringValues)>();
+        }
+
+        try
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            return httpContext.Request.Form
+                .Select(f => (f.Key, f.Value))
+                .ToArray();
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogWarning(ex, "Exception thrown while reading form data.");
+            return Array.Empty<(string, StringValues)>();
+        }
     }
 
     /// <inheritdoc />
@@ -166,18 +199,18 @@ public class HttpContextService : IHttpContextService
     }
 
     /// <inheritdoc />
-    public async Task WriteAsync(byte[] body)
+    public async Task WriteAsync(byte[] body, CancellationToken cancellationToken)
     {
         var httpContext = _httpContextAccessor.HttpContext;
-        await httpContext.Response.Body.WriteAsync(body, 0, body.Length);
+        await httpContext.Response.Body.WriteAsync(body, 0, body.Length, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task WriteAsync(string body)
+    public async Task WriteAsync(string body, CancellationToken cancellationToken)
     {
         var httpContext = _httpContextAccessor.HttpContext;
         var bodyBytes = Encoding.UTF8.GetBytes(body);
-        await httpContext.Response.Body.WriteAsync(bodyBytes, 0, bodyBytes.Length);
+        await httpContext.Response.Body.WriteAsync(bodyBytes, 0, bodyBytes.Length, cancellationToken);
     }
 
     /// <inheritdoc />

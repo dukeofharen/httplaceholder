@@ -1,9 +1,5 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.Models;
+﻿using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.RequestToStubConditionsHandlers;
@@ -25,7 +21,7 @@ public class JsonHandlerFacts
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await handler.HandleStubGenerationAsync(request, conditions);
+        var result = await handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -37,11 +33,11 @@ public class JsonHandlerFacts
     {
         // Arrange
         var handler = _mocker.CreateInstance<JsonHandler>();
-        var request = new HttpRequestModel {Headers = {{"Content-Type", Constants.TextMime}}};
+        var request = new HttpRequestModel {Headers = {{Constants.ContentType, Constants.TextMime}}};
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await handler.HandleStubGenerationAsync(request, conditions);
+        var result = await handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -53,15 +49,11 @@ public class JsonHandlerFacts
     {
         // Arrange
         var handler = _mocker.CreateInstance<JsonHandler>();
-        var request = new HttpRequestModel
-        {
-            Headers = {{"Content-Type", Constants.JsonMime}},
-            Body = "INVALID JSON!!"
-        };
+        var request = new HttpRequestModel {Headers = {{Constants.ContentType, Constants.JsonMime}}, Body = "INVALID JSON!!"};
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await handler.HandleStubGenerationAsync(request, conditions);
+        var result = await handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result);
@@ -75,13 +67,13 @@ public class JsonHandlerFacts
         var handler = _mocker.CreateInstance<JsonHandler>();
         var request = new HttpRequestModel
         {
-            Headers = {{"Content-Type", Constants.JsonMime}},
+            Headers = {{Constants.ContentType, Constants.JsonMime}},
             Body = @"[""value1"",44,false,{""key1"":""val1""},[""1"",2]]"
         };
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await handler.HandleStubGenerationAsync(request, conditions);
+        var result = await handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

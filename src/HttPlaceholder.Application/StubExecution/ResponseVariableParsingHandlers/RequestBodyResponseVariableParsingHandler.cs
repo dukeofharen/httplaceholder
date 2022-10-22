@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -8,13 +8,14 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert the posted request body in the response.
+///     Response variable parsing handler that is used to insert the posted request body in the response.
 /// </summary>
-internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHandler
+internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
 
-    public RequestBodyResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) : base(fileService)
+    public RequestBodyResponseVariableParsingHandler(IHttpContextService httpContextService, IFileService fileService) :
+        base(fileService)
     {
         _httpContextService = httpContextService;
     }
@@ -29,17 +30,10 @@ internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHa
     public override string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
     {
-        var matchArray = matches as Match[] ?? matches.ToArray();
-        if (!matchArray.Any())
-        {
-            return input;
-        }
-
         var body = _httpContextService.GetBody();
-
-        return matchArray
+        return matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input, (current, match) => current.Replace(match.Value, body));
     }

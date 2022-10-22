@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -7,9 +9,9 @@ using HttPlaceholder.Domain;
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 /// <summary>
-/// Response writer that is used to search for a file on the OS and return that file to the client.
+///     Response writer that is used to search for a file on the OS and return that file to the client.
 /// </summary>
-internal class FileResponseWriter : IResponseWriter
+internal class FileResponseWriter : IResponseWriter, ISingletonService
 {
     private readonly IFileService _fileService;
     private readonly IStubRootPathResolver _stubRootPathResolver;
@@ -26,42 +28,44 @@ internal class FileResponseWriter : IResponseWriter
     public int Priority => 0;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response)
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
+        CancellationToken cancellationToken)
     {
         if (stub.Response?.File == null)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
         string finalFilePath = null;
-        if (_fileService.FileExists(stub.Response.File))
+        if (await _fileService.FileExistsAsync(stub.Response.File, cancellationToken))
         {
             finalFilePath = stub.Response.File;
         }
         else
         {
             // File doesn't exist, but might exist in the file root folder.
-            var stubRootPaths = _stubRootPathResolver.GetStubRootPaths();
+            var stubRootPaths = await _stubRootPathResolver.GetStubRootPathsAsync(cancellationToken);
             foreach (var path in stubRootPaths)
             {
-
                 var tempPath = Path.Combine(path, stub.Response.File);
-                if (_fileService.FileExists(tempPath))
+                if (!await _fileService.FileExistsAsync(tempPath, cancellationToken))
                 {
-                    finalFilePath = tempPath;
-                    break;
+                    continue;
                 }
+
+                finalFilePath = tempPath;
+                break;
             }
         }
 
         if (finalFilePath == null)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
-        response.Body = _fileService.ReadAllBytes(finalFilePath);
+        response.Body = await _fileService.ReadAllBytesAsync(finalFilePath, cancellationToken);
         response.BodyIsBinary = true;
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
+        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 }

@@ -6,18 +6,16 @@ using Microsoft.AspNetCore.Http;
 namespace HttPlaceholder.Middleware;
 
 /// <summary>
-/// A piece of middleware to add several headers to API responses.
+///     A piece of middleware to add several headers to API responses.
 /// </summary>
 public class ApiHeadersMiddleware
 {
-    private readonly RequestDelegate _next;
     private readonly IHttpContextService _httpContextService;
+    private readonly RequestDelegate _next;
 
     /// <summary>
-    /// Constructs an <see cref="ApiHeadersMiddleware"/> instance.
+    ///     Constructs an <see cref="ApiHeadersMiddleware" /> instance.
     /// </summary>
-    /// <param name="next"></param>
-    /// <param name="httpContextService"></param>
     public ApiHeadersMiddleware(RequestDelegate next, IHttpContextService httpContextService)
     {
         _next = next;
@@ -25,7 +23,7 @@ public class ApiHeadersMiddleware
     }
 
     /// <summary>
-    /// Handles the middleware.
+    ///     Handles the middleware.
     /// </summary>
     public async Task Invoke(HttpContext context)
     {

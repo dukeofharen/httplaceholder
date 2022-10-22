@@ -1,12 +1,5 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution;
+﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.Stubs.Queries.GetAllStubs;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Queries;
 
@@ -27,7 +20,7 @@ public class GetAllStubsQueryHandlerFacts
 
         var stubs = Array.Empty<FullStubModel>();
         mockStubContext
-            .Setup(m => m.GetStubsAsync())
+            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubs);
 
         // Act

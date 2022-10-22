@@ -1,10 +1,6 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -22,10 +18,7 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
     {
         // arrange
         var url = $"{TestServer.BaseAddress}client-ip-1";
-        var request = new HttpRequestMessage
-        {
-            RequestUri = new Uri(url)
-        };
+        var request = new HttpRequestMessage {RequestUri = new Uri(url)};
         request.Headers.Add("X-Forwarded-Host", "httplaceholder.com");
         ClientDataResolverMock
             .Setup(m => m.GetClientIp())
@@ -59,11 +52,11 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
         var url = $"{TestServer.BaseAddress}text.txt";
 
         FileServiceMock
-            .Setup(m => m.FileExists("text.txt"))
-            .Returns(true);
+            .Setup(m => m.FileExistsAsync("text.txt", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
         FileServiceMock
-            .Setup(m => m.ReadAllBytes("text.txt"))
-            .Returns(Encoding.UTF8.GetBytes(fileContents));
+            .Setup(m => m.ReadAllBytesAsync("text.txt", It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Encoding.UTF8.GetBytes(fileContents));
 
         // act / assert
         using var response = await Client.GetAsync(url);

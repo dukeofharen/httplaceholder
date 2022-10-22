@@ -1,8 +1,5 @@
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.RequestToStubConditionsHandlers;
 
@@ -16,11 +13,11 @@ public class ClientIpHandlerFacts
     {
         // Arrange
         const string ip = "11.22.33.44";
-        var request = new HttpRequestModel { ClientIp = ip };
+        var request = new HttpRequestModel {ClientIp = ip};
         var conditions = new StubConditionsModel();
 
         // Act
-        var result = await _handler.HandleStubGenerationAsync(request, conditions);
+        var result = await _handler.HandleStubGenerationAsync(request, conditions, CancellationToken.None);
 
         // Assert
         Assert.IsTrue(result);

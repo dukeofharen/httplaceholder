@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Persistence;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Options;
 namespace HttPlaceholder.Persistence.Implementations.StubSources;
 
 /// <summary>
-/// A stub source that is used to store and read data from memory.
+///     A stub source that is used to store and read data from memory.
 /// </summary>
 internal class InMemoryStubSource : IWritableStubSource
 {
@@ -17,12 +18,12 @@ internal class InMemoryStubSource : IWritableStubSource
 
     private readonly SettingsModel _settings;
 
+    internal readonly IDictionary<RequestResultModel, ResponseModel> RequestResponseMap =
+        new Dictionary<RequestResultModel, ResponseModel>();
+
     internal readonly IList<RequestResultModel> RequestResultModels = new List<RequestResultModel>();
     internal readonly IList<StubModel> StubModels = new List<StubModel>();
     internal readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
-
-    internal readonly IDictionary<RequestResultModel, ResponseModel> RequestResponseMap =
-        new Dictionary<RequestResultModel, ResponseModel>();
 
     public InMemoryStubSource(IOptions<SettingsModel> options)
     {
@@ -30,7 +31,8 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel)
+    public Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
+        CancellationToken cancellationToken)
     {
         lock (_lock)
         {
@@ -47,7 +49,7 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task AddStubAsync(StubModel stub)
+    public Task AddStubAsync(StubModel stub, CancellationToken cancellationToken)
     {
         lock (_lock)
         {
@@ -57,10 +59,9 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync()
-    {
-        var requests = await GetRequestResultsAsync();
-        return requests.Select(r => new RequestOverviewModel
+    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
+        CancellationToken cancellationToken) =>
+        (await GetRequestResultsAsync(cancellationToken)).Select(r => new RequestOverviewModel
         {
             Method = r.RequestParameters?.Method,
             Url = r.RequestParameters?.Url,
@@ -70,11 +71,10 @@ internal class InMemoryStubSource : IWritableStubSource
             RequestBeginTime = r.RequestBeginTime,
             RequestEndTime = r.RequestEndTime,
             HasResponse = r.HasResponse
-        }).ToArray();
-    }
+        });
 
     /// <inheritdoc />
-    public Task<RequestResultModel> GetRequestAsync(string correlationId)
+    public Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken)
     {
         lock (_lock)
         {
@@ -83,7 +83,7 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task<ResponseModel> GetResponseAsync(string correlationId)
+    public Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken)
     {
         lock (_lock)
         {
@@ -99,7 +99,7 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task DeleteAllRequestResultsAsync()
+    public Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken)
     {
         lock (_lock)
         {
@@ -111,7 +111,7 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task<bool> DeleteRequestAsync(string correlationId)
+    public Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken)
     {
         lock (_lock)
         {
@@ -128,7 +128,7 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task<bool> DeleteStubAsync(string stubId)
+    public Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken)
     {
         lock (_lock)
         {
@@ -144,7 +144,7 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync()
+    public Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken)
     {
         lock (_lock)
         {
@@ -153,26 +153,27 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task<IEnumerable<StubModel>> GetStubsAsync()
+    public Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken)
     {
         lock (_lock)
         {
-            return Task.FromResult(StubModels.AsEnumerable());
+            // We need to convert the list to an array here, or else we can get errors when deleting the stubs.
+            return Task.FromResult(StubModels.ToArray().AsEnumerable());
         }
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync() =>
-        (await GetStubsAsync())
+    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken) =>
+        (await GetStubsAsync(cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled})
         .ToArray();
 
     /// <inheritdoc />
-    public Task<StubModel> GetStubAsync(string stubId) =>
+    public Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken) =>
         Task.FromResult(StubModels.FirstOrDefault(s => s.Id == stubId));
 
     /// <inheritdoc />
-    public Task CleanOldRequestResultsAsync()
+    public Task CleanOldRequestResultsAsync(CancellationToken cancellationToken)
     {
         lock (_lock)
         {
@@ -191,16 +192,18 @@ internal class InMemoryStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public Task PrepareStubSourceAsync() => Task.CompletedTask;
+    public Task PrepareStubSourceAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 
     private void RemoveResponse(RequestResultModel request)
     {
-        if (RequestResponseMap.ContainsKey(request))
+        if (!RequestResponseMap.ContainsKey(request))
         {
-            var response = RequestResponseMap[request];
-            StubResponses.Remove(response);
-            RequestResponseMap.Remove(request);
+            return;
         }
+
+        var response = RequestResponseMap[request];
+        StubResponses.Remove(response);
+        RequestResponseMap.Remove(request);
     }
 
     private RequestResultModel GetRequest(string correlationId) =>

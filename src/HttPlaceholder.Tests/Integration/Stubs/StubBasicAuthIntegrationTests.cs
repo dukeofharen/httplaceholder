@@ -1,8 +1,5 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -24,7 +21,7 @@ public class StubBasicAuthIntegrationTests : StubIntegrationTestBase
         {
             Method = HttpMethod.Get,
             RequestUri = new Uri(url),
-            Headers = { { "Authorization", "Basic ZHVjbzpnZWhlaW0=" } }
+            Headers = {{"Authorization", "Basic ZHVjbzpnZWhlaW0="}}
         };
 
         // act / assert
@@ -44,7 +41,7 @@ public class StubBasicAuthIntegrationTests : StubIntegrationTestBase
         {
             Method = HttpMethod.Get,
             RequestUri = new Uri(url),
-            Headers = { { "Authorization", "Basic ZHVjbzpnZWhlaW0x" } }
+            Headers = {{"Authorization", "Basic ZHVjbzpnZWhlaW0x"}}
         };
 
         // act / assert

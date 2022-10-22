@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class StringChecker : IStringChecker
+internal class StringChecker : IStringChecker, ISingletonService
 {
     /// <inheritdoc />
     public bool CheckString(string input, object condition, out string outputForLogging)

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 using Microsoft.OpenApi.Models;
 
 namespace HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 
-/// <inheritdoc />
-internal class OpenApiDataFiller : IOpenApiDataFiller
+internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
 {
     private static readonly Regex _statusCodeRegex = new("^[1-5]{1}[0-9]{2}$", RegexOptions.Compiled);
 
@@ -78,7 +78,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
         var contentType = response.Content.FirstOrDefault().Key;
         if (!string.IsNullOrWhiteSpace(contentType))
         {
-            result.AddOrReplaceCaseInsensitive("content-type", contentType);
+            result.AddOrReplaceCaseInsensitive(Constants.ContentType, contentType);
         }
 
         return result;
@@ -114,7 +114,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
         string GetUrlValue(OpenApiParameter parameter)
         {
             var example = _openApiFakeDataGenerator.GetExampleForParameter(parameter);
-            if(example != null)
+            if (example != null)
             {
                 return example.ToString();
             }
@@ -174,7 +174,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller
         if (operation.RequestBody?.Content != null && operation.RequestBody.Content.Any())
         {
             var requestBody = operation.RequestBody.Content.First();
-            result.AddOrReplaceCaseInsensitive("content-type", requestBody.Key);
+            result.AddOrReplaceCaseInsensitive(Constants.ContentType, requestBody.Key);
         }
 
         return result;

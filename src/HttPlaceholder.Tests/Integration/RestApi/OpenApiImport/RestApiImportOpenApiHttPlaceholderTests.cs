@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi.OpenApiImport;
@@ -46,13 +42,16 @@ public class RestApiImportOpenApiHttPlaceholderTests : RestApiIntegrationTestBas
 
         var stub = stubs[20];
         Assert.IsTrue(stub.Id.StartsWith("generated-"));
-        Assert.AreEqual("An endpoint which accepts the correlation ID of a request made earlier.\nHttPlaceholder will create a stub based on this request for you to tweak later on.", stub.Description);
+        Assert.AreEqual(
+            "An endpoint which accepts the correlation ID of a request made earlier.\nHttPlaceholder will create a stub based on this request for you to tweak later on.",
+            stub.Description);
         Assert.AreEqual("POST", stub.Conditions.Method);
         Assert.AreEqual("tenant1", stub.Tenant);
 
         var pathRegex = new Regex(@"^\/requests\/(.*)\/stubs$", RegexOptions.Compiled);
         Assert.IsTrue(pathRegex.IsMatch(((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals));
-        Assert.AreEqual(Constants.JsonMime, ((StubConditionStringCheckingModel)stub.Conditions.Headers["content-type"]).StringEquals);
+        Assert.AreEqual(Constants.JsonMime,
+            ((StubConditionStringCheckingModel)stub.Conditions.Headers[Constants.ContentType]).StringEquals);
         Assert.AreEqual("localhost", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
 
         Assert.AreEqual(200, stub.Response.StatusCode);

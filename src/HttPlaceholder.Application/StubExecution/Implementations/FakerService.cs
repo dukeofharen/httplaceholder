@@ -3,13 +3,13 @@ using System.Collections.Concurrent;
 using System.Globalization;
 using System.Linq;
 using Bogus;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc />
-internal class FakerService : IFakerService
+internal class FakerService : IFakerService, ISingletonService
 {
     private const string DefaultDatetimeFormat = "yyyy-MM-dd HH:mm:ss";
 

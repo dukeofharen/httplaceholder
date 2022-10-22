@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 
 /// <summary>
-/// Response variable parsing handler that is used to insert fake data.
+///     Response variable parsing handler that is used to insert fake data.
 /// </summary>
-internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
+internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISingletonService
 {
-    private readonly Lazy<string[]> _exampleLazy;
     private readonly Lazy<string> _descriptionLazy;
+    private readonly Lazy<string[]> _exampleLazy;
     private readonly IFakerService _fakerService;
 
     public FakeDataVariableParsingHandler(IFileService fileService, IFakerService fakerService) : base(fileService)
@@ -35,23 +35,17 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
     public override string GetDescription() => _descriptionLazy.Value;
 
     /// <inheritdoc />
-    public override string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    protected override string InsertVariables(string input, Match[] matches, StubModel stub) =>
+        matches
+            .Where(match => match.Groups.Count >= 3)
+            .Aggregate(input, InsertFakeData);
+
+    private string InsertFakeData(string current, Match match)
     {
-        var enumerable = matches as Match[] ?? matches.ToArray();
-        if (!enumerable.Any())
-        {
-            return input;
-        }
-
-        foreach (var match in enumerable)
-        {
-            var fakeDataInput = ParseFakeDataInput(match.Groups[2].Value);
-            input = input.Replace(match.Value,
-                _fakerService.GenerateFakeData(fakeDataInput.generator, fakeDataInput.locale,
-                    fakeDataInput.formatting));
-        }
-
-        return input;
+        var fakeDataInput = ParseFakeDataInput(match.Groups[2].Value);
+        return current.Replace(match.Value,
+            _fakerService.GenerateFakeData(fakeDataInput.generator, fakeDataInput.locale,
+                fakeDataInput.formatting));
     }
 
     internal (string locale, string generator, string formatting) ParseFakeDataInput(string input)
@@ -95,12 +89,9 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler
 
     private string[] InitializeExamples()
     {
-        var result = new List<string>();
-        foreach (var locale in _fakerService.GetLocales())
-        {
-            result.Add($"(({Name}:{locale}:first_name))");
-        }
-
+        var result = _fakerService.GetLocales()
+            .Select(locale => $"(({Name}:{locale}:first_name))")
+            .ToList();
         foreach (var generator in _fakerService.GetGenerators())
         {
             result.Add($"(({Name}:{generator.Name}))");

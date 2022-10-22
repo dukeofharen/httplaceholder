@@ -1,11 +1,11 @@
 ﻿using System.Security.Claims;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Authorization.Implementations;
 
-/// <inheritdoc />
-internal class UserContext : IUserContext
+internal class UserContext : IUserContext, ITransientService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 

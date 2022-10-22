@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly:InternalsVisibleTo("HttPlaceholder.Client.Tests")]
+[assembly: InternalsVisibleTo("HttPlaceholder.Client.Tests")]

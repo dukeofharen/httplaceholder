@@ -1,14 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.Stubs.Commands.AddStubs;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Commands;
 
@@ -127,11 +120,13 @@ public class AddStubsCommandHandlerFacts
             .Returns(Array.Empty<string>());
 
         stubContextMock
-            .Setup(m => m.GetStubsFromReadOnlySourcesAsync())
+            .Setup(m => m.GetStubsFromReadOnlySourcesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(new[] {new FullStubModel {Stub = new StubModel {Id = stub2.Id.ToUpper()}}});
 
         // Act
-        var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() => handler.Handle(request, CancellationToken.None));
+        var exception =
+            await Assert.ThrowsExceptionAsync<ValidationException>(
+                () => handler.Handle(request, CancellationToken.None));
 
         // Assert
         Assert.AreEqual("Validation failed:\nStub with ID already exists: STUB2", exception.Message);
@@ -153,10 +148,10 @@ public class AddStubsCommandHandlerFacts
         var stubResult2 = new FullStubModel();
 
         stubContextMock
-            .Setup(m => m.AddStubAsync(stub1))
+            .Setup(m => m.AddStubAsync(stub1, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResult1);
         stubContextMock
-            .Setup(m => m.AddStubAsync(stub2))
+            .Setup(m => m.AddStubAsync(stub2, It.IsAny<CancellationToken>()))
             .ReturnsAsync(stubResult2);
 
         stubModelValidatorMock
@@ -170,7 +165,7 @@ public class AddStubsCommandHandlerFacts
         Assert.AreEqual(2, result.Length);
         Assert.AreEqual(stubResult1, result[0]);
         Assert.AreEqual(stubResult2, result[1]);
-        stubContextMock.Verify(m => m.DeleteStubAsync(stub1.Id));
-        stubContextMock.Verify(m => m.DeleteStubAsync(stub2.Id));
+        stubContextMock.Verify(m => m.DeleteStubAsync(stub1.Id, It.IsAny<CancellationToken>()));
+        stubContextMock.Verify(m => m.DeleteStubAsync(stub2.Id, It.IsAny<CancellationToken>()));
     }
 }

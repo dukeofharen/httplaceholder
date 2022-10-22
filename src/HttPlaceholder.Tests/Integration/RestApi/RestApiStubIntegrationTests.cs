@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Stubs;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 
@@ -196,12 +191,12 @@ response:
     public async Task RestApiIntegration_Stub_Add_Json_StubIdAlreadyExistsInReadOnlySource_ShouldReturn409()
     {
         // arrange
-        var stub = new StubDto { Id = "situation-01", Response = new StubResponseDto() };
+        var stub = new StubDto {Id = "situation-01", Response = new StubResponseDto()};
 
-        var existingStub = new StubModel { Id = "situation-01" };
+        var existingStub = new StubModel {Id = "situation-01"};
         ReadOnlyStubSource
-            .Setup(m => m.GetStubsAsync())
-            .ReturnsAsync(new[] { existingStub });
+            .Setup(m => m.GetStubsAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new[] {existingStub});
 
         // Act
         var request = new HttpRequestMessage(HttpMethod.Post, $"{TestServer.BaseAddress}ph-api/stubs")
@@ -224,7 +219,7 @@ response:
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
         // act / assert
@@ -249,7 +244,7 @@ response:
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
 
         // act / assert
@@ -272,7 +267,7 @@ response:
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
 
         // act / assert
@@ -295,7 +290,7 @@ response:
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-yaml"));
 
         // act / assert
@@ -319,7 +314,7 @@ response:
             Id = "test-123", Conditions = new StubConditionsModel(), Response = new StubResponseModel()
         });
 
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
 
         // act / assert
@@ -384,7 +379,7 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        var request = new HttpRequestMessage { Method = HttpMethod.Get, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
 
         // act / assert
@@ -404,7 +399,7 @@ response:
     {
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        var request = new HttpRequestMessage { Method = HttpMethod.Options, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Options, RequestUri = new Uri(url)};
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
         request.Headers.Add("Origin", "http://localhost:8080");
 
@@ -587,7 +582,7 @@ response:
         });
 
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
-        var request = new HttpRequestMessage { Method = HttpMethod.Delete, RequestUri = new Uri(url) };
+        var request = new HttpRequestMessage {Method = HttpMethod.Delete, RequestUri = new Uri(url)};
 
         // Act / Assert
         using var response = await Client.SendAsync(request);

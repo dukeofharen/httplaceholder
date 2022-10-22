@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using AutoMapper;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain;
@@ -14,7 +15,7 @@ public class RequestNotify : IRequestNotify
     private readonly IMapper _mapper;
 
     /// <summary>
-    /// Constructs a <see cref="RequestNotify"/> instance.
+    ///     Constructs a <see cref="RequestNotify" /> instance.
     /// </summary>
     public RequestNotify(IHubContext<RequestHub> hubContext, IMapper mapper)
     {
@@ -23,9 +24,9 @@ public class RequestNotify : IRequestNotify
     }
 
     /// <inheritdoc />
-    public async Task NewRequestReceivedAsync(RequestResultModel request)
+    public async Task NewRequestReceivedAsync(RequestResultModel request, CancellationToken cancellationToken)
     {
         var input = _mapper.Map<RequestOverviewDto>(request);
-        await _hubContext.Clients.All.SendAsync("RequestReceived", input);
+        await _hubContext.Clients.All.SendAsync("RequestReceived", input, cancellationToken);
     }
 }

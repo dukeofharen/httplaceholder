@@ -1,11 +1,6 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Exceptions;
+﻿using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
 using HttPlaceholder.Application.StubExecution;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Scenarios.Commands;
 
@@ -26,7 +21,7 @@ public class DeleteScenarioCommandHandlerFacts
 
         const string scenarioName = "scenario-1";
         scenarioServiceMock
-            .Setup(m => m.DeleteScenarioAsync(scenarioName))
+            .Setup(m => m.DeleteScenarioAsync(scenarioName, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         // Act / Assert
@@ -35,7 +30,7 @@ public class DeleteScenarioCommandHandlerFacts
     }
 
     [TestMethod]
-    public async Task Handle_ScenarioFound_ShoulDeleteScenario()
+    public async Task Handle_ScenarioFound_ShouldDeleteScenario()
     {
         // Arrange
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
@@ -43,13 +38,13 @@ public class DeleteScenarioCommandHandlerFacts
 
         const string scenarioName = "scenario-1";
         scenarioServiceMock
-            .Setup(m => m.DeleteScenarioAsync(scenarioName))
+            .Setup(m => m.DeleteScenarioAsync(scenarioName, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
         await handler.Handle(new DeleteScenarioCommand(scenarioName), CancellationToken.None);
 
         // Assert
-        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(scenarioName));
+        scenarioServiceMock.Verify(m => m.DeleteScenarioAsync(scenarioName, It.IsAny<CancellationToken>()));
     }
 }

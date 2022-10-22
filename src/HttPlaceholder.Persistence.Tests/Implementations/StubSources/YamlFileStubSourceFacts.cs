@@ -1,18 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.Implementations.StubSources;
-using HttPlaceholder.TestUtilities.Logging;
-using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
 
@@ -20,8 +12,8 @@ namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
 public class YamlFileStubSourceFacts
 {
     private readonly AutoMocker _mocker = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
     private readonly MockLogger<YamlFileStubSource> _mockLogger = new();
+    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
 
     [TestInitialize]
     public void Initialize()
@@ -48,20 +40,20 @@ public class YamlFileStubSourceFacts
             .Returns(currentDirectory);
 
         fileServiceMock
-            .Setup(m => m.GetFiles(currentDirectory,
-                It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
-            .Returns(files);
+            .Setup(m => m.GetFilesAsync(currentDirectory,
+                It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(files);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[1]))
-            .Returns(TestResources.YamlFile2);
+            .Setup(m => m.ReadAllTextAsync(files[1], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile2);
 
         // Act
-        var result = await source.GetStubsAsync();
+        var result = await source.GetStubsAsync(CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -85,11 +77,12 @@ public class YamlFileStubSourceFacts
             .Returns(currentDirectory);
 
         fileServiceMock
-            .Setup(m => m.GetFiles(currentDirectory, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
-            .Returns(Array.Empty<string>());
+            .Setup(m => m.GetFilesAsync(currentDirectory, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Array.Empty<string>());
 
         // Act
-        var result = await source.GetStubsAsync();
+        var result = await source.GetStubsAsync(CancellationToken.None);
 
         // Assert
         Assert.AreEqual(0, result.Count());
@@ -110,15 +103,15 @@ public class YamlFileStubSourceFacts
         _options.Value.Storage.InputFile = string.Join(separator, files);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[1]))
-            .Returns(TestResources.YamlFile2);
+            .Setup(m => m.ReadAllTextAsync(files[1], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile2);
 
         // Act
-        var result = await source.GetStubsAsync();
+        var result = await source.GetStubsAsync(CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -140,15 +133,15 @@ public class YamlFileStubSourceFacts
         _options.Value.Storage.InputFile = string.Join(",", files);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[1]))
-            .Returns("THIS IS INVALID YAML!");
+            .Setup(m => m.ReadAllTextAsync(files[1], It.IsAny<CancellationToken>()))
+            .ReturnsAsync("THIS IS INVALID YAML!");
 
         // Act
-        var result = await source.GetStubsAsync();
+        var result = await source.GetStubsAsync(CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -172,23 +165,24 @@ public class YamlFileStubSourceFacts
         var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
 
         fileServiceMock
-            .Setup(m => m.GetFiles(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
-            .Returns(files);
+            .Setup(m => m.GetFilesAsync(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(files);
 
         fileServiceMock
-            .Setup(m => m.IsDirectory(inputFile))
-            .Returns(true);
+            .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[1]))
-            .Returns(TestResources.YamlFile2);
+            .Setup(m => m.ReadAllTextAsync(files[1], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile2);
 
         // Act
-        var result = await source.GetStubsAsync();
+        var result = await source.GetStubsAsync(CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -200,7 +194,7 @@ public class YamlFileStubSourceFacts
     }
 
     [TestMethod]
-    public async Task YamlFileStubSource_GetStubsAsync_StubsHaveNoId_IdShouldBeCalculated()
+    public async Task YamlFileStubSource_GetStubsAsync_StubsHaveNoId_ShouldLogWarnings()
     {
         // Arrange
         var source = _mocker.CreateInstance<YamlFileStubSource>();
@@ -212,25 +206,28 @@ public class YamlFileStubSourceFacts
         var files = new[] {@"C:\stubs\file3.yml"};
 
         fileServiceMock
-            .Setup(m => m.GetFiles(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
-            .Returns(files);
+            .Setup(m => m.GetFilesAsync(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(files);
 
         fileServiceMock
-            .Setup(m => m.IsDirectory(inputFile))
-            .Returns(true);
+            .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile3);
+            .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile3);
 
         // Act
-        var result = await source.GetStubsAsync();
+        var result = await source.GetStubsAsync(CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
-        Assert.AreEqual("generated-7c8d3f2482be14cc60f5f764b4c3415d", ids[0]);
-        Assert.AreEqual("generated-0539e62e2cc798d5a9aa74909fb531c6", ids[1]);
-        AssertNoWarningsOrErrors();
+        Assert.AreEqual(0, ids.Length);
+        Assert.AreEqual(2, _mockLogger
+            .Entries
+            .Count(e => e.LogLevel == LogLevel.Warning &&
+                        e.State == $"Stub in file '{files[0]}' has no 'id' field defined, so is not a valid stub."));
     }
 
     [TestMethod]
@@ -246,19 +243,20 @@ public class YamlFileStubSourceFacts
         var files = new[] {@"C:\stubs\file4.yml"};
 
         fileServiceMock
-            .Setup(m => m.GetFiles(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml")))
-            .Returns(files);
+            .Setup(m => m.GetFilesAsync(inputFile, It.Is<string[]>(e => e[0] == ".yml" && e[1] == ".yaml"),
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(files);
 
         fileServiceMock
-            .Setup(m => m.IsDirectory(inputFile))
-            .Returns(true);
+            .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(files[0]))
-            .Returns(TestResources.YamlFile4);
+            .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile4);
 
         // Act
-        var result = await source.GetStubsAsync();
+        var result = await source.GetStubsAsync(CancellationToken.None);
 
         // Assert
         var ids = result.Select(s => s.Id).ToArray();
@@ -278,15 +276,15 @@ public class YamlFileStubSourceFacts
         _options.Value.Storage.InputFile = inputFile;
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(inputFile))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(inputFile, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         stubModelValidatorMock
             .Setup(m => m.ValidateStubModel(It.IsAny<StubModel>()))
             .Returns(new[] {"validation error"});
 
         // Act
-        var result = (await source.GetStubsAsync()).ToArray();
+        var result = (await source.GetStubsAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
@@ -311,11 +309,11 @@ public class YamlFileStubSourceFacts
         _options.Value.Storage.InputFile = inputFile;
 
         fileServiceMock
-            .Setup(m => m.ReadAllText(inputFile))
-            .Returns(TestResources.YamlFile1);
+            .Setup(m => m.ReadAllTextAsync(inputFile, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(TestResources.YamlFile1);
 
         // Act
-        var result = (await source.GetStubsOverviewAsync()).ToArray();
+        var result = (await source.GetStubsOverviewAsync(CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);

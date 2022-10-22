@@ -1,12 +1,7 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution;
+﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
@@ -27,7 +22,7 @@ public class ScenarioStateConditionCheckerFacts
         var checker = _mocker.CreateInstance<ScenarioStateConditionChecker>();
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -42,7 +37,7 @@ public class ScenarioStateConditionCheckerFacts
         var checker = _mocker.CreateInstance<ScenarioStateConditionChecker>();
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -63,11 +58,12 @@ public class ScenarioStateConditionCheckerFacts
             .Returns((ScenarioStateModel)null);
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
-        scenarioServiceMock.Verify(m => m.SetScenarioAsync(scenario, It.IsAny<ScenarioStateModel>()));
+        scenarioServiceMock.Verify(m =>
+            m.SetScenarioAsync(scenario, It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -85,12 +81,13 @@ public class ScenarioStateConditionCheckerFacts
             .Returns((ScenarioStateModel)null);
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
         Assert.AreEqual("Scenario 'scenario-1' is in state 'Start', but 'state-1' was expected.", result.Log);
-        scenarioServiceMock.Verify(m => m.SetScenarioAsync(scenario, It.IsAny<ScenarioStateModel>()));
+        scenarioServiceMock.Verify(m =>
+            m.SetScenarioAsync(scenario, It.IsAny<ScenarioStateModel>(), It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -105,13 +102,10 @@ public class ScenarioStateConditionCheckerFacts
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
             .Setup(m => m.GetScenario(scenario))
-            .Returns(new ScenarioStateModel
-            {
-                State = "state-2"
-            });
+            .Returns(new ScenarioStateModel {State = "state-2"});
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -136,13 +130,10 @@ public class ScenarioStateConditionCheckerFacts
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
             .Setup(m => m.GetScenario(scenario))
-            .Returns(new ScenarioStateModel
-            {
-                State = currentState
-            });
+            .Returns(new ScenarioStateModel {State = currentState});
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);
@@ -152,9 +143,6 @@ public class ScenarioStateConditionCheckerFacts
         new()
         {
             Scenario = scenario,
-            Conditions = new StubConditionsModel
-            {
-                Scenario = new StubConditionScenarioModel {ScenarioState = state}
-            }
+            Conditions = new StubConditionsModel {Scenario = new StubConditionScenarioModel {ScenarioState = state}}
         };
 }

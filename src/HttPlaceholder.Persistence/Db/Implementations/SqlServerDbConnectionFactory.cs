@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 namespace HttPlaceholder.Persistence.Db.Implementations;
 
 /// <summary>
-/// A class for creating MS SQL Server DB connections.
+///     A class for creating MS SQL Server DB connections.
 /// </summary>
 internal class SqlServerDbConnectionFactory : IDbConnectionFactory
 {

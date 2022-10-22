@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
-using HttPlaceholder.Domain;
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.OpenAPIParsing;
 
@@ -205,7 +202,7 @@ public class OpenApiDataFillerFacts
 
         // Assert
         Assert.AreEqual(2, result.Count);
-        Assert.AreEqual(Constants.JsonMime, result["content-type"]);
+        Assert.AreEqual(Constants.JsonMime, result[Constants.ContentType]);
         Assert.AreEqual(randomString, result["x-api-key"]);
     }
 
@@ -494,7 +491,8 @@ public class OpenApiDataFillerFacts
         var result = filler.BuildRelativeRequestPath(operation, basePath);
 
         // Assert
-        const string expectedPath = "/api/users/user1/orders/123?filter=filterval&anotherquery=filterval2&arraykey=arrayvalue";
+        const string expectedPath =
+            "/api/users/user1/orders/123?filter=filterval&anotherquery=filterval2&arraykey=arrayvalue";
         Assert.AreEqual(expectedPath, result);
     }
 
@@ -503,7 +501,6 @@ public class OpenApiDataFillerFacts
     {
         // Arrange
         var filler = _mocker.CreateInstance<OpenApiDataFiller>();
-        var generatorMock = _mocker.GetMock<IOpenApiFakeDataGenerator>();
 
         const string basePath = "/api/users";
         var operation = new OpenApiOperation();
@@ -558,7 +555,7 @@ public class OpenApiDataFillerFacts
         // Assert
         Assert.AreEqual(2, result.Count);
         Assert.AreEqual(headerValue, result["x-header-1"]);
-        Assert.AreEqual(Constants.TextMime, result["content-type"]);
+        Assert.AreEqual(Constants.TextMime, result[Constants.ContentType]);
     }
 
     [TestMethod]

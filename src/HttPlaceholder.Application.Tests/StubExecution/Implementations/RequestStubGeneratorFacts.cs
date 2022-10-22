@@ -1,14 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.Models;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
@@ -25,12 +19,12 @@ public class RequestStubGeneratorFacts
         var generator = _mocker.CreateInstance<RequestStubGenerator>();
 
         stubContextMock
-            .Setup(m => m.GetRequestResultsAsync())
+            .Setup(m => m.GetRequestResultsAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Array.Empty<RequestResultModel>());
 
         // Act / Assert
         await Assert.ThrowsExceptionAsync<NotFoundException>(() =>
-            generator.GenerateStubBasedOnRequestAsync("1", false));
+            generator.GenerateStubBasedOnRequestAsync("1", false, CancellationToken.None));
     }
 
     [TestMethod]
@@ -45,10 +39,10 @@ public class RequestStubGeneratorFacts
         const string expectedStubId = "generated-faf4a0a7e15cd24a43e87a441815b63b";
 
         var request =
-            new RequestResultModel { CorrelationId = "2", RequestParameters = new RequestParametersModel() };
+            new RequestResultModel {CorrelationId = "2", RequestParameters = new RequestParametersModel()};
 
         stubContextMock
-            .Setup(m => m.GetRequestResultAsync("2"))
+            .Setup(m => m.GetRequestResultAsync("2", It.IsAny<CancellationToken>()))
             .ReturnsAsync(request);
 
         var mappedRequest = new HttpRequestModel();
@@ -58,20 +52,20 @@ public class RequestStubGeneratorFacts
 
         var conditions = new StubConditionsModel();
         httpRequestToConditionsServiceMock
-            .Setup(m => m.ConvertToConditionsAsync(mappedRequest))
+            .Setup(m => m.ConvertToConditionsAsync(mappedRequest, It.IsAny<CancellationToken>()))
             .ReturnsAsync(conditions);
 
         var fullStub = new FullStubModel();
         stubContextMock
-            .Setup(m => m.AddStubAsync(It.IsAny<StubModel>()))
+            .Setup(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(fullStub);
 
         // Act
-        var result = await generator.GenerateStubBasedOnRequestAsync("2", false);
+        var result = await generator.GenerateStubBasedOnRequestAsync("2", false, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(fullStub, result);
-        stubContextMock.Verify(m => m.DeleteStubAsync(expectedStubId));
+        stubContextMock.Verify(m => m.DeleteStubAsync(expectedStubId, It.IsAny<CancellationToken>()));
     }
 
     [TestMethod]
@@ -86,10 +80,10 @@ public class RequestStubGeneratorFacts
         const string expectedStubId = "generated-faf4a0a7e15cd24a43e87a441815b63b";
 
         var request =
-            new RequestResultModel { CorrelationId = "2", RequestParameters = new RequestParametersModel() };
+            new RequestResultModel {CorrelationId = "2", RequestParameters = new RequestParametersModel()};
 
         stubContextMock
-            .Setup(m => m.GetRequestResultAsync("2"))
+            .Setup(m => m.GetRequestResultAsync("2", It.IsAny<CancellationToken>()))
             .ReturnsAsync(request);
 
         var mappedRequest = new HttpRequestModel();
@@ -99,11 +93,11 @@ public class RequestStubGeneratorFacts
 
         var conditions = new StubConditionsModel();
         httpRequestToConditionsServiceMock
-            .Setup(m => m.ConvertToConditionsAsync(mappedRequest))
+            .Setup(m => m.ConvertToConditionsAsync(mappedRequest, It.IsAny<CancellationToken>()))
             .ReturnsAsync(conditions);
 
         // Act
-        var result = await generator.GenerateStubBasedOnRequestAsync("2", true);
+        var result = await generator.GenerateStubBasedOnRequestAsync("2", true, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result.Metadata);
@@ -111,7 +105,7 @@ public class RequestStubGeneratorFacts
         Assert.AreEqual(expectedStubId, result.Stub.Id);
         Assert.AreEqual(conditions, result.Stub.Conditions);
 
-        stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>()), Times.Never);
-        stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>()), Times.Never);
+        stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
+        stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()), Times.Never);
     }
 }

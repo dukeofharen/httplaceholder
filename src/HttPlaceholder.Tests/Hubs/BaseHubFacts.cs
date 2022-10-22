@@ -1,9 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Interfaces.Authentication;
+﻿using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Hubs.Implementations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Hubs;
 

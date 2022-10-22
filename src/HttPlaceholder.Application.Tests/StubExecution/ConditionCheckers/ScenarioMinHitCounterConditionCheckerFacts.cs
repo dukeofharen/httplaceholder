@@ -1,11 +1,6 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution;
+﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
@@ -25,7 +20,7 @@ public class ScenarioMinHitCounterConditionCheckerFacts
         var checker = _mocker.CreateInstance<ScenarioMinHitCounterConditionChecker>();
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -40,11 +35,11 @@ public class ScenarioMinHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync((int?)null);
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -60,11 +55,11 @@ public class ScenarioMinHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(1);
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -81,11 +76,11 @@ public class ScenarioMinHitCounterConditionCheckerFacts
 
         var scenarioServiceMock = _mocker.GetMock<IScenarioService>();
         scenarioServiceMock
-            .Setup(m => m.GetHitCountAsync(stub.Scenario))
+            .Setup(m => m.GetHitCountAsync(stub.Scenario, It.IsAny<CancellationToken>()))
             .ReturnsAsync(2);
 
         // Act
-        var result = await checker.ValidateAsync(stub);
+        var result = await checker.ValidateAsync(stub, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

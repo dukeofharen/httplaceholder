@@ -7,14 +7,14 @@ using MediatR;
 namespace HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
 
 /// <summary>
-/// A command handler for deleting a scenario.
+///     A command handler for deleting a scenario.
 /// </summary>
 public class DeleteScenarioCommandHandler : IRequestHandler<DeleteScenarioCommand>
 {
     private readonly IScenarioService _scenarioService;
 
     /// <summary>
-    /// Constructs a <see cref="DeleteScenarioCommandHandler"/> instance.
+    ///     Constructs a <see cref="DeleteScenarioCommandHandler" /> instance.
     /// </summary>
     public DeleteScenarioCommandHandler(IScenarioService scenarioService)
     {
@@ -24,7 +24,7 @@ public class DeleteScenarioCommandHandler : IRequestHandler<DeleteScenarioComman
     /// <inheritdoc />
     public async Task<Unit> Handle(DeleteScenarioCommand request, CancellationToken cancellationToken)
     {
-        if (!await _scenarioService.DeleteScenarioAsync(request.ScenarioName))
+        if (!await _scenarioService.DeleteScenarioAsync(request.ScenarioName, cancellationToken))
         {
             throw new NotFoundException($"Scenario '{request.ScenarioName}' not found.");
         }

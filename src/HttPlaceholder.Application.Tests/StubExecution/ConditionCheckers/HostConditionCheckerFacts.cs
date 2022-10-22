@@ -1,11 +1,7 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.Interfaces.Http;
+﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 
@@ -26,7 +22,8 @@ public class HostConditionCheckerFacts
         var conditions = new StubConditionsModel {Host = null};
 
         // act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.NotExecuted, result.ConditionValidation);
@@ -52,7 +49,8 @@ public class HostConditionCheckerFacts
             .Returns(false);
 
         // act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Invalid, result.ConditionValidation);
@@ -78,7 +76,8 @@ public class HostConditionCheckerFacts
             .Returns(true);
 
         // act
-        var result = await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions});
+        var result =
+            await checker.ValidateAsync(new StubModel {Id = "id", Conditions = conditions}, CancellationToken.None);
 
         // assert
         Assert.AreEqual(ConditionValidationType.Valid, result.ConditionValidation);

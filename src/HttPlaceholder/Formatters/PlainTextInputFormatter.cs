@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 namespace HttPlaceholder.Formatters;
 
 /// <summary>
-/// An input formatter that is used to handle plain text input.
+///     An input formatter that is used to handle plain text input.
 /// </summary>
 public class PlainTextInputFormatter : TextInputFormatter
 {
     /// <summary>
-    /// Constructs a <see cref="PlainTextInputFormatter"/> instance.
+    ///     Constructs a <see cref="PlainTextInputFormatter" /> instance.
     /// </summary>
     public PlainTextInputFormatter()
     {

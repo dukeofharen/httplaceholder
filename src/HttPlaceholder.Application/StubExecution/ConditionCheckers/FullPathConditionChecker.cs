@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -6,15 +8,15 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that is used to validate the full path (so the relative path + query string).
+///     Condition checker that is used to validate the full path (so the relative path + query string).
 /// </summary>
-public class FullPathConditionChecker : IConditionChecker
+public class FullPathConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
     private readonly IStringChecker _stringChecker;
 
     /// <summary>
-    /// Constructs a <see cref="BasicAuthenticationConditionChecker"/> instance.
+    ///     Constructs a <see cref="BasicAuthenticationConditionChecker" /> instance.
     /// </summary>
     public FullPathConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {
@@ -23,7 +25,7 @@ public class FullPathConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var fullPathCondition = stub.Conditions?.Url?.FullPath;

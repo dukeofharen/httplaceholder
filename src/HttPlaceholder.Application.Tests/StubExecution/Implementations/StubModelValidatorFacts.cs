@@ -1,12 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Infrastructure.Implementations;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
@@ -101,15 +98,16 @@ public class StubModelValidatorFacts
     [DataRow(10, 10, 11, "Value for 'ExtraDuration.Max' cannot be higher than '10'.")]
     [DataRow(10, 11, 12, "Value for 'ExtraDuration.Min' cannot be higher than '10'.")]
     [DataRow(10, 9, 8, "ExtraDuration.Min should be lower than or equal to ExtraDuration.Max.")]
-    public void ValidateStubModel_ValidateExtraDurationMillis_Model(int configuredMillis, int? min, int? max, string expectedError)
+    public void ValidateStubModel_ValidateExtraDurationMillis_Model(int configuredMillis, int? min, int? max,
+        string expectedError)
     {
         // Arrange
         _settings.Stub.MaximumExtraDurationMillis = configuredMillis;
-        var model = new StubModel {Id = "stub-1", Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel
+        var model = new StubModel
         {
-            Min = min,
-            Max = max
-        }}};
+            Id = "stub-1",
+            Response = new StubResponseModel {ExtraDuration = new StubExtraDurationModel {Min = min, Max = max}}
+        };
 
         // Act
         var result = _validator.ValidateStubModel(model).ToArray();
@@ -353,12 +351,7 @@ public class StubModelValidatorFacts
         // Arrange
         var model = new StubModel
         {
-            Id = "stub",
-            Response = new StubResponseModel
-            {
-                StatusCode = statusCode,
-                Text = "Some response"
-            }
+            Id = "stub", Response = new StubResponseModel {StatusCode = statusCode, Text = "Some response"}
         };
 
         // Act

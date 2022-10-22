@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace HttPlaceholder.Tests.Integration.Stubs;
+﻿namespace HttPlaceholder.Tests.Integration.Stubs;
 
 [TestClass]
 public class StubResponseAbortConnectionIntegrationTests : StubIntegrationTestBase

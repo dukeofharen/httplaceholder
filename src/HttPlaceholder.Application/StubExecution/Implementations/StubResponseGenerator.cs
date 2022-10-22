@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class StubResponseGenerator : IStubResponseGenerator
+internal class StubResponseGenerator : IStubResponseGenerator, ISingletonService
 {
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IEnumerable<IResponseWriter> _responseWriters;
@@ -20,14 +21,14 @@ internal class StubResponseGenerator : IStubResponseGenerator
         _responseWriters = responseWriters;
     }
 
-    /// <inheritdoc/>
-    public async Task<ResponseModel> GenerateResponseAsync(StubModel stub)
+    /// <inheritdoc />
+    public async Task<ResponseModel> GenerateResponseAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var requestLogger = _requestLoggerFactory.GetRequestLogger();
         var response = new ResponseModel();
         foreach (var writer in _responseWriters.OrderByDescending(w => w.Priority))
         {
-            var result = await writer.WriteToResponseAsync(stub, response);
+            var result = await writer.WriteToResponseAsync(stub, response, cancellationToken);
             if (result?.Executed == true)
             {
                 requestLogger.SetResponseWriterResult(result);

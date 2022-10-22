@@ -8,7 +8,7 @@ using MediatR;
 namespace HttPlaceholder.Application.Stubs.Queries.GetStubsOverview;
 
 /// <summary>
-/// A query handler for retrieving a stub overview.
+///     A query handler for retrieving a stub overview.
 /// </summary>
 public class
     GetStubsOverviewQueryHandler : IRequestHandler<GetStubsOverviewQuery, IEnumerable<FullStubOverviewModel>>
@@ -16,7 +16,7 @@ public class
     private readonly IStubContext _stubContext;
 
     /// <summary>
-    /// Constructs a <see cref="GetStubsOverviewQueryHandler"/> instance.
+    ///     Constructs a <see cref="GetStubsOverviewQueryHandler" /> instance.
     /// </summary>
     public GetStubsOverviewQueryHandler(IStubContext stubContext)
     {
@@ -27,5 +27,5 @@ public class
     public async Task<IEnumerable<FullStubOverviewModel>> Handle(
         GetStubsOverviewQuery request,
         CancellationToken cancellationToken) =>
-        await _stubContext.GetStubsOverviewAsync();
+        await _stubContext.GetStubsOverviewAsync(cancellationToken);
 }

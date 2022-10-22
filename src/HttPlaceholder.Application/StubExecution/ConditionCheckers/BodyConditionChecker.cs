@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
@@ -7,15 +9,15 @@ using HttPlaceholder.Domain.Enums;
 namespace HttPlaceholder.Application.StubExecution.ConditionCheckers;
 
 /// <summary>
-/// Condition checker that verifies the incoming request body.
+///     Condition checker that verifies the incoming request body.
 /// </summary>
-public class BodyConditionChecker : IConditionChecker
+public class BodyConditionChecker : IConditionChecker, ISingletonService
 {
     private readonly IHttpContextService _httpContextService;
     private readonly IStringChecker _stringChecker;
 
     /// <summary>
-    /// Constructs a <see cref="BodyConditionChecker"/> instance.
+    ///     Constructs a <see cref="BodyConditionChecker" /> instance.
     /// </summary>
     public BodyConditionChecker(IHttpContextService httpContextService, IStringChecker stringChecker)
     {
@@ -24,7 +26,7 @@ public class BodyConditionChecker : IConditionChecker
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub)
+    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var bodyConditions = stub.Conditions?.Body?.ToArray();

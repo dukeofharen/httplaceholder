@@ -1,26 +1,21 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Domain;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
 [TestClass]
 public class StubResponseGeneratorFacts
 {
-    private readonly Mock<IRequestLogger> _requestLoggerMock = new();
+    private readonly AutoMocker _mocker = new();
     private readonly Mock<IRequestLoggerFactory> _requestLoggerFactoryMock = new();
+    private readonly Mock<IRequestLogger> _requestLoggerMock = new();
     private readonly Mock<IResponseWriter> _responseWriterMock1 = new();
     private readonly Mock<IResponseWriter> _responseWriterMock2 = new();
     private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
-    private readonly AutoMocker _mocker = new();
 
     [TestInitialize]
     public void Initialize()
@@ -44,20 +39,20 @@ public class StubResponseGeneratorFacts
 
         var writeResult1 = StubResponseWriterResultModel.IsExecuted(GetType().Name);
         _responseWriterMock1
-            .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
-            .Callback<StubModel, ResponseModel>((_, r) => r.StatusCode = 401)
+            .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>(), It.IsAny<CancellationToken>()))
+            .Callback<StubModel, ResponseModel, CancellationToken>((_, r, _) => r.StatusCode = 401)
             .ReturnsAsync(writeResult1);
 
         var writeResult2 = StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         _responseWriterMock2
-            .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
-            .Callback<StubModel, ResponseModel>((_, r) => r.Headers.Add("X-Api-Key", "12345"))
+            .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>(), It.IsAny<CancellationToken>()))
+            .Callback<StubModel, ResponseModel, CancellationToken>((_, r, _) => r.Headers.Add("X-Api-Key", "12345"))
             .ReturnsAsync(writeResult2);
 
         var generator = _mocker.CreateInstance<StubResponseGenerator>();
 
         // act
-        var result = await generator.GenerateResponseAsync(stub);
+        var result = await generator.GenerateResponseAsync(stub, CancellationToken.None);
 
         // assert
         Assert.AreEqual(401, result.StatusCode);
@@ -74,16 +69,16 @@ public class StubResponseGeneratorFacts
         var stub = new StubModel();
 
         _responseWriterMock1
-            .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
-            .Callback<StubModel, ResponseModel>((_, r) => r.StatusCode = 401)
+            .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>(), It.IsAny<CancellationToken>()))
+            .Callback<StubModel, ResponseModel, CancellationToken>((_, r, _) => r.StatusCode = 401)
             .ReturnsAsync(StubResponseWriterResultModel.IsExecuted(GetType().Name));
         _responseWriterMock1
             .Setup(m => m.Priority)
             .Returns(10);
 
         _responseWriterMock2
-            .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>()))
-            .Callback<StubModel, ResponseModel>((_, r) => r.StatusCode = 404)
+            .Setup(m => m.WriteToResponseAsync(stub, It.IsAny<ResponseModel>(), It.IsAny<CancellationToken>()))
+            .Callback<StubModel, ResponseModel, CancellationToken>((_, r, _) => r.StatusCode = 404)
             .ReturnsAsync(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
         _responseWriterMock2
             .Setup(m => m.Priority)
@@ -92,7 +87,7 @@ public class StubResponseGeneratorFacts
         var generator = _mocker.CreateInstance<StubResponseGenerator>();
 
         // act
-        var result = await generator.GenerateResponseAsync(stub);
+        var result = await generator.GenerateResponseAsync(stub, CancellationToken.None);
 
         // assert
         Assert.AreEqual(404, result.StatusCode);

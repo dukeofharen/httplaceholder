@@ -1,10 +1,10 @@
-﻿using HttPlaceholder.Application.Interfaces.Http;
+﻿using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
 
 namespace HttPlaceholder.Application.StubExecution.Implementations;
 
-/// <inheritdoc/>
-internal class RequestLoggerFactory : IRequestLoggerFactory
+internal class RequestLoggerFactory : IRequestLoggerFactory, ISingletonService
 {
     private readonly IDateTime _dateTime;
     private readonly IHttpContextService _httpContextService;
@@ -17,7 +17,7 @@ internal class RequestLoggerFactory : IRequestLoggerFactory
         _httpContextService = httpContextService;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IRequestLogger GetRequestLogger()
     {
         const string requestLoggerKey = "requestLogger";

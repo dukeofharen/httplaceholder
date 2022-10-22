@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { getSettings, setSettings } from "@/utils/session";
+import { browserUsesDarkTheme } from "@/utils/theme";
 import type { SettingsModel } from "@/domain/settings-model";
 
 type GeneralState = {
@@ -7,7 +8,7 @@ type GeneralState = {
 };
 
 const savedSettings: SettingsModel = getSettings() || {
-  darkTheme: false,
+  darkTheme: browserUsesDarkTheme(),
   saveSearchFilters: true,
 };
 export const useSettingsStore = defineStore({

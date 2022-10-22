@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -15,18 +12,12 @@ public class HeadersResponseWriterFacts
     public async Task HeadersResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
         // arrange
-        var stub = new StubModel
-        {
-            Response = new StubResponseModel
-            {
-                Headers = null
-            }
-        };
+        var stub = new StubModel {Response = new StubResponseModel {Headers = null}};
 
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsFalse(result.Executed);
@@ -41,18 +32,14 @@ public class HeadersResponseWriterFacts
         {
             Response = new StubResponseModel
             {
-                Headers = new Dictionary<string, string>
-                {
-                    { "X-Api-Key", "1223" },
-                    { "X-User-Secret", "abc" }
-                }
+                Headers = new Dictionary<string, string> {{"X-Api-Key", "1223"}, {"X-User-Secret", "abc"}}
             }
         };
 
         var response = new ResponseModel();
 
         // act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // assert
         Assert.IsTrue(result.Executed);

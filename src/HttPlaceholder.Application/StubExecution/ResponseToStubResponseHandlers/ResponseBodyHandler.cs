@@ -1,16 +1,19 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseToStubResponseHandlers;
 
 /// <summary>
-/// Handler that is being used for setting the response body.
+///     Handler that is being used for setting the response body.
 /// </summary>
-internal class ResponseBodyHandler : IResponseToStubResponseHandler
+internal class ResponseBodyHandler : IResponseToStubResponseHandler, ISingletonService
 {
     /// <inheritdoc />
-    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel)
+    public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel,
+        CancellationToken cancellationToken)
     {
         if (response.ContentIsBase64)
         {

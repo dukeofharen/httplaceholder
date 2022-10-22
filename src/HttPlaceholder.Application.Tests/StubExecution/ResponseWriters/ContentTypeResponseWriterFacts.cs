@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using HttPlaceholder.Application.StubExecution.ResponseWriters;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -15,15 +12,15 @@ public class ContentTypeResponseWriterFacts
     {
         // Arrange
         var response = new ResponseModel();
-        response.Headers.Add("Content-Type", Constants.TextMime);
+        response.Headers.Add(Constants.ContentType, Constants.TextMime);
         var stub = new StubModel {Response = new StubResponseModel {ContentType = string.Empty}};
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Arrange
         Assert.IsFalse(result.Executed);
-        Assert.AreEqual(Constants.TextMime, response.Headers["Content-Type"]);
+        Assert.AreEqual(Constants.TextMime, response.Headers[Constants.ContentType]);
     }
 
     [TestMethod]
@@ -31,14 +28,14 @@ public class ContentTypeResponseWriterFacts
     {
         // Arrange
         var response = new ResponseModel();
-        response.Headers.Add("content-Type", Constants.TextMime);
+        response.Headers.Add(Constants.ContentType, Constants.TextMime);
         var stub = new StubModel {Response = new StubResponseModel {ContentType = "text/csv"}};
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, response);
+        var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
         // Arrange
         Assert.IsTrue(result.Executed);
-        Assert.AreEqual("text/csv", response.Headers["Content-Type"]);
+        Assert.AreEqual("text/csv", response.Headers[Constants.ContentType]);
     }
 }
