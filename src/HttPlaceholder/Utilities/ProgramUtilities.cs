@@ -36,8 +36,8 @@ public static class ProgramUtilities
         var verbose = IsVerbose(args);
         var loggingConfig = new LoggerConfiguration();
         loggingConfig = verbose
-            ? loggingConfig.MinimumLevel.Information()
-            : loggingConfig.MinimumLevel.Warning();
+            ? loggingConfig.MinimumLevel.Debug()
+            : loggingConfig.MinimumLevel.Information();
         Log.Logger = loggingConfig
             .Enrich.FromLogContext()
             .WriteTo.Console(
