@@ -1,12 +1,6 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution;
+﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;
 

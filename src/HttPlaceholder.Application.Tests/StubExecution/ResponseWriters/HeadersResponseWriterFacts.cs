@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 

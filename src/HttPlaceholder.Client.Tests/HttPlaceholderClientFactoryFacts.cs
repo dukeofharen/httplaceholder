@@ -1,6 +1,5 @@
 ﻿using HttPlaceholder.Client.Configuration;
 using HttPlaceholder.Client.Implementations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Client.Tests;
 

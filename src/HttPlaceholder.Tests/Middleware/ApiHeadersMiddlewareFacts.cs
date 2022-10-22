@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Middleware;
 using Microsoft.AspNetCore.Http;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Middleware;
 

@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace HttPlaceholder.Tests.Integration.Stubs.Scenarios;
+﻿namespace HttPlaceholder.Tests.Integration.Stubs.Scenarios;
 
 [TestClass]
 public class ScenarioStateTests : StubIntegrationTestBase

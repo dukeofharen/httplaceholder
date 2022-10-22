@@ -1,10 +1,5 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution.Models;
+﻿using HttPlaceholder.Application.StubExecution.Models;
 using HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandlers;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.RequestToStubConditionsHandlers;

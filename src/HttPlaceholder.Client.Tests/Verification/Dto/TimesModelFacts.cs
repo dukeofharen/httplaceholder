@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static HttPlaceholder.Client.Verification.Dto.TimesModel;
+﻿using static HttPlaceholder.Client.Verification.Dto.TimesModel;
 
 namespace HttPlaceholder.Client.Tests.Verification.Dto;
 

@@ -5,7 +5,6 @@ using HttPlaceholder.Persistence.FileSystem.Implementations;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Persistence.Tests;
 

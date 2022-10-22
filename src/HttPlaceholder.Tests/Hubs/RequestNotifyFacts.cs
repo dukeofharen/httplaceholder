@@ -1,15 +1,8 @@
 ﻿using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using AutoMapper;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Hubs.Implementations;
-using HttPlaceholder.TestUtilities;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Hubs;
 

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Implementations;
 using HttPlaceholder.Client.Verification.Exceptions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
 using static HttPlaceholder.Client.Verification.Dto.TimesModel;

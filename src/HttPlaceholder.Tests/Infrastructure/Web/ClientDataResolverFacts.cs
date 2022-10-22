@@ -1,10 +1,7 @@
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Infrastructure.Web;
-using HttPlaceholder.TestUtilities.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Infrastructure.Web;
 

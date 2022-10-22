@@ -1,12 +1,9 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
+using Match = System.Text.RegularExpressions.Match;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseVariableParsingHandlers;
 

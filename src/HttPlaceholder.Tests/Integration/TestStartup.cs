@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using Microsoft.AspNetCore.Builder;

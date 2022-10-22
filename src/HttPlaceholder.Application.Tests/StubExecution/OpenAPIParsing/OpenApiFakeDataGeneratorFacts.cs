@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.OpenAPIParsing;

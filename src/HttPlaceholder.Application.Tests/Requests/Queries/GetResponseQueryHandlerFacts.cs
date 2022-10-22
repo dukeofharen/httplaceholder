@@ -1,13 +1,6 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Exceptions;
+﻿using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Requests.Queries.GetResponse;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Requests.Queries;
 

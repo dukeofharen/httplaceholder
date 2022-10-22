@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 

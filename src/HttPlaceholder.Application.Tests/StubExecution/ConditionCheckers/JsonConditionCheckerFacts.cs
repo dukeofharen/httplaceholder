@@ -1,12 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ConditionCheckers;

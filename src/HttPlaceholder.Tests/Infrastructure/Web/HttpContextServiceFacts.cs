@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Infrastructure.Web;
-using HttPlaceholder.TestUtilities.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.Infrastructure.Web;
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using static HttPlaceholder.Client.Utilities.DtoExtensions;
+﻿using static HttPlaceholder.Client.Utilities.DtoExtensions;
 
 namespace HttPlaceholder.Client.Tests.Utilities;
 

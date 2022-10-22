@@ -1,12 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Infrastructure.Implementations;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 

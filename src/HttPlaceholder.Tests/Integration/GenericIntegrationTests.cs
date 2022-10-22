@@ -1,12 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.OpenApi.Readers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Tests.Integration;
 

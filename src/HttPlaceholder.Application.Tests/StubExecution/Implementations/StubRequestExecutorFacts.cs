@@ -1,17 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ConditionCheckers;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using HttPlaceholder.TestUtilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 

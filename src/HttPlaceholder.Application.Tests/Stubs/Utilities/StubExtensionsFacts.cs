@@ -1,6 +1,4 @@
 ﻿using HttPlaceholder.Application.Stubs.Utilities;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Utilities;
 

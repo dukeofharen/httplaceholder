@@ -1,9 +1,7 @@
 ﻿using System.Net;
-using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.Implementations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;

@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.Implementations;
 using HttPlaceholder.Client.StubBuilders;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Implementations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations;
 

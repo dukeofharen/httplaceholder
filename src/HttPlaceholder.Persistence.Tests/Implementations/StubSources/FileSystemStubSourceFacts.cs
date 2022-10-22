@@ -1,18 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.FileSystem;
 using HttPlaceholder.Persistence.Implementations.StubSources;
-using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;

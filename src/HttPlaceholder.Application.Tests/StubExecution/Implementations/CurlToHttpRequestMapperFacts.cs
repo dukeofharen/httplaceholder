@@ -1,9 +1,6 @@
 ﻿using System.IO;
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 

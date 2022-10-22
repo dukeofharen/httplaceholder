@@ -1,11 +1,6 @@
 ﻿using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 

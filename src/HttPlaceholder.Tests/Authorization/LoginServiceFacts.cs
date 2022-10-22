@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Authorization.Implementations;
-using HttPlaceholder.TestUtilities.Http;
-using HttPlaceholder.TestUtilities.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Tests.Authorization;
 

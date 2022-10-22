@@ -3,13 +3,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;

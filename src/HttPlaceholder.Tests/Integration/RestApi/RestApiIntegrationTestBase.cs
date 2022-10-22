@@ -1,8 +1,6 @@
-﻿using System;
-using HttPlaceholder.Application.Interfaces.Http;
+﻿using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Persistence.Implementations.StubSources;
-using Moq;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;
 

@@ -1,11 +1,5 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Import.Commands.CreateCurlStub;
+﻿using HttPlaceholder.Application.Import.Commands.CreateCurlStub;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Import.Commands;
 

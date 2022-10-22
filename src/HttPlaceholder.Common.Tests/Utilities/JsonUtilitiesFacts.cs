@@ -1,6 +1,4 @@
-﻿using System;
-using HttPlaceholder.Common.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using HttPlaceholder.Common.Utilities;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Common.Tests.Utilities;

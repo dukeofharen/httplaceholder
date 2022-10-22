@@ -1,13 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using HttPlaceholder.Common;
 using HttPlaceholder.HostedServices;
-using HttPlaceholder.TestUtilities.Logging;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Tests.HostedServices;
 

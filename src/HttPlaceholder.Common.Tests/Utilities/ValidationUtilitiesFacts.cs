@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using HttPlaceholder.Common.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using HttPlaceholder.Common.Utilities;
 
 namespace HttPlaceholder.Common.Tests.Utilities;
 

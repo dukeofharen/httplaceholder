@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Dto.v1.Scenarios;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Logging;
-using Moq;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
 

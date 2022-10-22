@@ -1,11 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Text;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 

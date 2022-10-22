@@ -1,17 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Models;
-using HttPlaceholder.Domain;
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 

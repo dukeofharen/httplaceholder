@@ -2,9 +2,6 @@
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Match = System.Text.RegularExpressions.Match;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;

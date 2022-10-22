@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Net.Http;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;

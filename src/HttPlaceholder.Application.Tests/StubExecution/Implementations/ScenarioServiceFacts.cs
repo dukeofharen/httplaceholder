@@ -1,14 +1,7 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Interfaces.Signalling;
+﻿using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 

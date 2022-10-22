@@ -1,5 +1,4 @@
 ﻿using HttPlaceholder.Common.Validation;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Common.Tests.Validation;
 

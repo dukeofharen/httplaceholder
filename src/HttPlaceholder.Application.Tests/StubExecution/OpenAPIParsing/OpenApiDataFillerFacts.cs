@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing;
 using HttPlaceholder.Application.StubExecution.OpenAPIParsing.Implementations;
-using HttPlaceholder.Domain;
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.OpenAPIParsing;
 

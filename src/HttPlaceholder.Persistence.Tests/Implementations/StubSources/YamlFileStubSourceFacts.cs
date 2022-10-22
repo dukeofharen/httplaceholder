@@ -1,19 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Common;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.Implementations.StubSources;
-using HttPlaceholder.TestUtilities.Logging;
-using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
 

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Requests.Commands.DeleteRequest;
+﻿using HttPlaceholder.Application.Requests.Commands.DeleteRequest;
 using HttPlaceholder.Application.StubExecution;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Application.Tests.Requests.Commands;
 

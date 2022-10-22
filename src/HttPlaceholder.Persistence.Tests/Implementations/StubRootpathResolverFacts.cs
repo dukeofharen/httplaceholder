@@ -1,15 +1,10 @@
 ﻿using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.Implementations;
-using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations;
 

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.StubExecution.Implementations;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 

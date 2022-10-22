@@ -1,12 +1,5 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.StubExecution;
+﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.Stubs.Queries.GetStubsOverview;
-using HttPlaceholder.Domain;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Stubs.Queries;
 

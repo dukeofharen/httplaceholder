@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Text;
 using HttPlaceholder.Client.Configuration;
 using HttPlaceholder.Client.Utilities;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Client.Tests.Utilities;
 

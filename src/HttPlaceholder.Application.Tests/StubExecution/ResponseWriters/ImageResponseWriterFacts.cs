@@ -1,14 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.IO;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using SixLabors.ImageSharp;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;

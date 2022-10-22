@@ -1,6 +1,4 @@
-﻿using System;
-using HttPlaceholder.Client.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using HttPlaceholder.Client.Configuration;
 
 namespace HttPlaceholder.Client.Tests.Configuration;
 

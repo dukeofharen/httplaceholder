@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net.Http;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.StubBuilders;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Client.Tests.StubBuilders;
 

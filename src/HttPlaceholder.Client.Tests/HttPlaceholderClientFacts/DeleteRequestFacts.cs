@@ -1,10 +1,7 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.Implementations;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RichardSzalay.MockHttp;
 
 namespace HttPlaceholder.Client.Tests.HttPlaceholderClientFacts;

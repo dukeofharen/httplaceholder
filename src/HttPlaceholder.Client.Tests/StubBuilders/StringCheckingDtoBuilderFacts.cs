@@ -1,5 +1,4 @@
 ﻿using HttPlaceholder.Client.StubBuilders;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HttPlaceholder.Client.Tests.StubBuilders;
 

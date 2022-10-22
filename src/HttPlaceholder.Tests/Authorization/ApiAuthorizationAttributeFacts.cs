@@ -5,8 +5,6 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Authorization;
-using HttPlaceholder.TestUtilities.Http;
-using HttPlaceholder.TestUtilities.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,8 +12,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace HttPlaceholder.Tests.Authorization;
 

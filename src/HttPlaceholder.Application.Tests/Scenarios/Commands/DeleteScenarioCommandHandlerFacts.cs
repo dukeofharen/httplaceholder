@@ -1,11 +1,6 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Exceptions;
+﻿using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
 using HttPlaceholder.Application.StubExecution;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Application.Tests.Scenarios.Commands;
 

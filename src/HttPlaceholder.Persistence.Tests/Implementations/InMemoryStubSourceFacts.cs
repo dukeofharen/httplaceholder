@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Bogus;
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Domain;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq.AutoMock;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations;
 
