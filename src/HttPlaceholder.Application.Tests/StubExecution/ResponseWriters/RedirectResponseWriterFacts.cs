@@ -40,7 +40,7 @@ public class RedirectResponseWriterFacts
         // assert
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(307, response.StatusCode);
-        Assert.AreEqual("https://google.com", response.Headers["Location"]);
+        Assert.AreEqual("https://google.com", response.Headers[Constants.Location]);
     }
 
     [TestMethod]
@@ -57,6 +57,6 @@ public class RedirectResponseWriterFacts
         // assert
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(301, response.StatusCode);
-        Assert.AreEqual("https://google.com", response.Headers["Location"]);
+        Assert.AreEqual("https://google.com", response.Headers[Constants.Location]);
     }
 }

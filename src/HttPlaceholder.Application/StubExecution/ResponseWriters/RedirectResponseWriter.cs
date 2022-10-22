@@ -29,7 +29,7 @@ internal class RedirectResponseWriter : IResponseWriter, ISingletonService
         }
 
         response.StatusCode = (int)httpStatusCode;
-        response.Headers.Add("Location", url);
+        response.Headers.Add(Constants.Location, url);
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 }

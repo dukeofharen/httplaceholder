@@ -183,4 +183,9 @@ public static class Constants
     ///     The Postman token header key.
     /// </summary>
     public const string PostmanToken = "Postman-Token";
+
+    /// <summary>
+    ///     The location header key.
+    /// </summary>
+    public const string Location = "Location";
 }
