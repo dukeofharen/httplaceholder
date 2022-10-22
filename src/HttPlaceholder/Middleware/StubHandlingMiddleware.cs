@@ -98,7 +98,7 @@ public class StubHandlingMiddleware
         }
         catch (TaskCanceledException e)
         {
-            _logger.LogInformation(e, "Request was cancelled.");
+            _logger.LogDebug(e, "Request was cancelled.");
         }
         catch (Exception e)
         {
@@ -135,7 +135,7 @@ public class StubHandlingMiddleware
             await _httpContextService.WriteAsync(pageContents, cancellationToken);
         }
 
-        _logger.LogInformation($"Request validation exception thrown: {e.Message}");
+        _logger.LogDebug($"Request validation exception thrown: {e.Message}");
     }
 
     private async Task<ResponseModel> HandleRequest(string correlation, CancellationToken cancellationToken)

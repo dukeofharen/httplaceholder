@@ -60,7 +60,7 @@ internal class RequestStubGenerator : IRequestStubGenerator, ISingletonService
             result = await _stubContext.AddStubAsync(stub, cancellationToken);
         }
 
-        _logger.LogInformation($"Stub with ID '{stub.Id}' generated!");
+        _logger.LogDebug($"Stub with ID '{stub.Id}' generated!");
 
         return result;
     }

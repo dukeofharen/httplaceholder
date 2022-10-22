@@ -60,7 +60,7 @@ internal class YamlFileStubSource : IStubSource
         }
         else
         {
-            _logger.LogInformation("No stub file contents changed in the meanwhile.");
+            _logger.LogDebug("No stub file contents changed in the meanwhile.");
         }
 
         return _stubs;

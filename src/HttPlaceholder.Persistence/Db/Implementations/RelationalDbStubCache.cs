@@ -73,7 +73,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
             lock (_cacheUpdateLock)
             {
                 // ID doesn't exist yet. Create one and persist it.
-                _logger.LogInformation("Initializing the cache, because there is no tracking ID in the database yet.");
+                _logger.LogDebug("Initializing the cache, because there is no tracking ID in the database yet.");
                 var newId = Guid.NewGuid().ToString();
                 StubUpdateTrackingId = newId;
                 ctx.Execute(
@@ -85,7 +85,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
         else if (StubUpdateTrackingId == null)
         {
             // The local cache hasn't been initialized yet. Do that now.
-            _logger.LogInformation(
+            _logger.LogDebug(
                 "Initializing the cache, because either the local stub cache or tracking ID is not set yet.");
             StubUpdateTrackingId = stubUpdateTrackingId;
             shouldUpdateCache = true;
@@ -95,7 +95,7 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
             lock (_cacheUpdateLock)
             {
                 // ID has been changed. Update the stub cache.
-                _logger.LogInformation(
+                _logger.LogDebug(
                     "Initializing the cache, because the tracking ID in the database has been changed.");
                 StubUpdateTrackingId = stubUpdateTrackingId;
                 shouldUpdateCache = true;

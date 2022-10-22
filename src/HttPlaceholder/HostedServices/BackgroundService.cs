@@ -40,7 +40,7 @@ public abstract class BackgroundService : ICustomHostedService
         _dateTime = dateTime;
         _asyncService = asyncService;
         NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
-        Logger.LogInformation(
+        Logger.LogDebug(
             $"New hosted service with name '{GetType().Name}' and schedule '{Schedule}' and the next occurrence will be on '{NextRunDateTime}'");
     }
 
@@ -97,7 +97,7 @@ public abstract class BackgroundService : ICustomHostedService
         {
             if (_dateTime.Now > NextRunDateTime)
             {
-                Logger.LogInformation(
+                Logger.LogDebug(
                     $"Executing hosted service with name '{GetType().Name}' and schedule '{Schedule}'");
                 try
                 {
@@ -109,7 +109,7 @@ public abstract class BackgroundService : ICustomHostedService
                 }
 
                 NextRunDateTime = _schedule.GetNextOccurrence(_dateTime.Now);
-                Logger.LogDebug($"Next run time of hosted service '{GetType().Name}': {NextRunDateTime}");
+                Logger.LogInformation($"Next run time of hosted service '{GetType().Name}': {NextRunDateTime}");
             }
 
             await _asyncService.DelayAsync(5000, stoppingToken);

@@ -46,7 +46,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
         if (StubUpdateTrackingId == null)
         {
             // The local cache hasn't been initialized yet. Do that now.
-            _logger.LogInformation(
+            _logger.LogDebug(
                 "Initializing the cache, because either the local stub cache or tracking ID is not set yet.");
             UpdateLocalStubUpdateTrackingId(metadata?.StubUpdateTrackingId ?? Guid.NewGuid().ToString());
             shouldUpdateCache = true;
@@ -54,7 +54,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
         else if (StubUpdateTrackingId != metadata.StubUpdateTrackingId)
         {
             // ID has been changed. Update the stub cache.
-            _logger.LogInformation("Initializing the cache, because the tracking ID on disk has been changed.");
+            _logger.LogDebug("Initializing the cache, because the tracking ID on disk has been changed.");
             UpdateLocalStubUpdateTrackingId(metadata.StubUpdateTrackingId);
             shouldUpdateCache = true;
         }
