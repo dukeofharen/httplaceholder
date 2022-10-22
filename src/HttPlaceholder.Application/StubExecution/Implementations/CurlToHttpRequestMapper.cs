@@ -124,9 +124,9 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
 
                 if (part == "--compressed")
                 {
-                    if (string.IsNullOrWhiteSpace(request.Headers.CaseInsensitiveSearch("Accept-Encoding")))
+                    if (string.IsNullOrWhiteSpace(request.Headers.CaseInsensitiveSearch(Constants.AcceptEncoding)))
                     {
-                        request.Headers.Add("Accept-Encoding", "deflate, gzip, br");
+                        request.Headers.Add(Constants.AcceptEncoding, "deflate, gzip, br");
                     }
 
                     continue;

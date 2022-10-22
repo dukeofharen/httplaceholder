@@ -151,11 +151,11 @@ public class ReverseProxyResponseWriterFacts
         var headers = new Dictionary<string, string>
         {
             {Constants.ContentType, Constants.JsonMime},
-            {"Content-Length", "111"},
-            {"Host", "localhost:5000"},
+            {Constants.ContentLength, "111"},
+            {Constants.Host, "localhost:5000"},
             {"X-Api-Key", "abc123"},
             {"Connection", "keep-alive"},
-            {"Accept-Encoding", "utf-8"},
+            {Constants.AcceptEncoding, "utf-8"},
             {"Accept", Constants.JsonMime}
         };
         _mockHttpContextService
@@ -215,9 +215,9 @@ public class ReverseProxyResponseWriterFacts
         {
             {"Token", "abc123"},
             {"Some-Date", "2020-08-16"},
-            {"X-HttPlaceholder-Correlation", "correlation"},
-            {"X-HttPlaceholder-ExecutedStub", "stub-id"},
-            {"Transfer-Encoding", "chunked"}
+            {Constants.XHttPlaceholderCorrelation, "correlation"},
+            {Constants.XHttPlaceholderExecutedStub, "stub-id"},
+            {Constants.TransferEncoding, "chunked"}
         };
         mockHttp
             .When("http://example.com")

@@ -65,14 +65,14 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("application/json;charset=utf-8", headers[Constants.ContentType]);
         Assert.AreEqual("Basic ZHVjbzpibGFkaWJsYQ==", headers["Authorization"]);
         Assert.AreEqual("https://site.com", headers["Origin"]);
-        Assert.AreEqual("keep-alive", headers["Connection"]);
+        Assert.AreEqual("keep-alive", headers[Constants.Connection]);
         Assert.AreEqual("empty", headers["Sec-Fetch-Dest"]);
         Assert.AreEqual("cors", headers["Sec-Fetch-Mode"]);
         Assert.AreEqual("same-site", headers["Sec-Fetch-Site"]);
         Assert.AreEqual("1", headers["DNT"]);
         Assert.AreEqual("1", headers["Sec-GPC"]);
         Assert.AreEqual("trailers", headers["TE"]);
-        Assert.AreEqual("deflate, gzip, br", headers["Accept-Encoding"]);
+        Assert.AreEqual("deflate, gzip, br", headers[Constants.AcceptEncoding]);
     }
 
     [TestMethod]
@@ -104,14 +104,14 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("application/json;charset=utf-8", headers[Constants.ContentType]);
         Assert.AreEqual("Bearer VERYLONGSTRING", headers["Authorization"]);
         Assert.AreEqual("https://site.com", headers["Origin"]);
-        Assert.AreEqual("keep-alive", headers["Connection"]);
+        Assert.AreEqual("keep-alive", headers[Constants.Connection]);
         Assert.AreEqual("empty", headers["Sec-Fetch-Dest"]);
         Assert.AreEqual("cors", headers["Sec-Fetch-Mode"]);
         Assert.AreEqual("same-site", headers["Sec-Fetch-Site"]);
         Assert.AreEqual("1", headers["DNT"]);
         Assert.AreEqual("1", headers["Sec-GPC"]);
         Assert.AreEqual("trailers", headers["TE"]);
-        Assert.AreEqual("deflate, gzip, br", headers["Accept-Encoding"]);
+        Assert.AreEqual("deflate, gzip, br", headers[Constants.AcceptEncoding]);
     }
 
     [TestMethod]
@@ -150,7 +150,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("cors", headers["sec-fetch-mode"]);
         Assert.AreEqual("empty", headers["sec-fetch-dest"]);
         Assert.AreEqual("en-US,en;q=0.9,nl;q=0.8", headers["accept-language"]);
-        Assert.AreEqual("deflate, gzip, br", headers["Accept-Encoding"]);
+        Assert.AreEqual("deflate, gzip, br", headers[Constants.AcceptEncoding]);
     }
 
     [TestMethod]
@@ -191,7 +191,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("cors", headers["sec-fetch-mode"]);
         Assert.AreEqual("empty", headers["sec-fetch-dest"]);
         Assert.AreEqual("en-US,en;q=0.9,nl;q=0.8", headers["accept-language"]);
-        Assert.AreEqual("deflate, gzip, br", headers["Accept-Encoding"]);
+        Assert.AreEqual("deflate, gzip, br", headers[Constants.AcceptEncoding]);
     }
 
     [TestMethod]
@@ -214,7 +214,7 @@ public class CurlToHttpRequestMapperFacts
         var headers1 = req1.Headers;
         Assert.AreEqual(2, headers1.Count);
         Assert.AreEqual("https://site.com", headers1["Origin"]);
-        Assert.AreEqual("deflate, gzip, br", headers1["Accept-Encoding"]);
+        Assert.AreEqual("deflate, gzip, br", headers1[Constants.AcceptEncoding]);
 
         var req2 = result[1];
         Assert.AreEqual("GET", req2.Method);
@@ -225,7 +225,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("site.com", headers2["authority"]);
         Assert.AreEqual("en-US,en;q=0.9,nl;q=0.8", headers2["accept-language"]);
         Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=", headers2["cookie"]);
-        Assert.AreEqual("deflate, gzip, br", headers2["Accept-Encoding"]);
+        Assert.AreEqual("deflate, gzip, br", headers2[Constants.AcceptEncoding]);
 
         var req3 = result[2];
         Assert.AreEqual("GET", req3.Method);
@@ -235,7 +235,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual(3, headers3.Count);
         Assert.AreEqual("site.com", headers3["authority"]);
         Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=", headers3["cookie"]);
-        Assert.AreEqual("deflate, gzip, br", headers3["Accept-Encoding"]);
+        Assert.AreEqual("deflate, gzip, br", headers3[Constants.AcceptEncoding]);
     }
 
     [TestMethod]
@@ -256,8 +256,8 @@ public class CurlToHttpRequestMapperFacts
 
         var headers = request.Headers;
         Assert.AreEqual(2, headers.Count);
-        Assert.AreEqual("keep-alive", headers["Connection"]);
-        Assert.AreEqual("deflate, gzip, br", headers["Accept-Encoding"]);
+        Assert.AreEqual("keep-alive", headers[Constants.Connection]);
+        Assert.AreEqual("deflate, gzip, br", headers[Constants.AcceptEncoding]);
     }
 
     [TestMethod]

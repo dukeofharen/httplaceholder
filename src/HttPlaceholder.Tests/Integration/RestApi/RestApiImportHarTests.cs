@@ -109,7 +109,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         Assert.IsTrue(stub.Conditions.Url.IsHttps);
         Assert.AreEqual(15, stub.Conditions.Headers.Count);
         Assert.AreEqual("keep-alive",
-            ((StubConditionStringCheckingModel)stub.Conditions.Headers["Connection"]).StringEquals);
+            ((StubConditionStringCheckingModel)stub.Conditions.Headers[Constants.Connection]).StringEquals);
         Assert.AreEqual("api.site.com", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
         Assert.AreEqual("Dukeofharen", ((JObject)stub.Conditions.Json)["firstName"].ToString());
         Assert.AreEqual(204, stub.Response.StatusCode);

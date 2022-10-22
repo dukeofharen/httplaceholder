@@ -21,9 +21,6 @@ namespace HttPlaceholder.Middleware;
 /// </summary>
 public class StubHandlingMiddleware
 {
-    private const string CorrelationHeaderKey = "X-HttPlaceholder-Correlation";
-    private const string ExecutedStubHeaderKey = "X-HttPlaceholder-ExecutedStub";
-
     private static readonly string[] _segmentsToIgnore =
     {
         "/ph-api", "/ph-ui", "/ph-static", "swagger", "/requestHub", "/scenarioHub"
@@ -118,7 +115,7 @@ public class StubHandlingMiddleware
     private void HandleException(string correlationId, Exception e)
     {
         _httpContextService.SetStatusCode(HttpStatusCode.InternalServerError);
-        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlationId);
+        _httpContextService.TryAddHeader(Constants.XHttPlaceholderCorrelation, correlationId);
         _logger.LogWarning($"Unexpected exception thrown: {e}");
     }
 
@@ -126,7 +123,7 @@ public class StubHandlingMiddleware
         CancellationToken cancellationToken)
     {
         _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
-        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
+        _httpContextService.TryAddHeader(Constants.XHttPlaceholderCorrelation, correlation);
         if (_settings?.Gui?.EnableUserInterface == true)
         {
             var pageContents = _resourcesService.ReadAsString("Files/StubNotConfigured.html")
@@ -160,11 +157,11 @@ public class StubHandlingMiddleware
             return response;
         }
 
-        _httpContextService.TryAddHeader(CorrelationHeaderKey, correlation);
+        _httpContextService.TryAddHeader(Constants.XHttPlaceholderCorrelation, correlation);
         var requestResult = requestLogger.GetResult();
         if (!string.IsNullOrWhiteSpace(requestResult.ExecutingStubId))
         {
-            _httpContextService.TryAddHeader(ExecutedStubHeaderKey, requestResult.ExecutingStubId);
+            _httpContextService.TryAddHeader(Constants.XHttPlaceholderExecutedStub, requestResult.ExecutingStubId);
         }
 
         _httpContextService.SetStatusCode(response.StatusCode);

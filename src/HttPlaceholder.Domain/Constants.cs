@@ -143,4 +143,44 @@ public static class Constants
     ///     The content type header key.
     /// </summary>
     public const string ContentType = "Content-Type";
+
+    /// <summary>
+    ///     The content length header key.
+    /// </summary>
+    public const string ContentLength = "Content-Length";
+
+    /// <summary>
+    ///     The host header key.
+    /// </summary>
+    public const string Host = "Host";
+
+    /// <summary>
+    ///     The connection header key.
+    /// </summary>
+    public const string Connection = "Connection";
+
+    /// <summary>
+    ///     The accept encoding header key.
+    /// </summary>
+    public const string AcceptEncoding = "Accept-Encoding";
+
+    /// <summary>
+    ///     The transfer encoding header key.
+    /// </summary>
+    public const string TransferEncoding = "Transfer-Encoding";
+
+    /// <summary>
+    ///     The HttPlaceholder correlation header key.
+    /// </summary>
+    public const string XHttPlaceholderCorrelation = "X-HttPlaceholder-Correlation";
+
+    /// <summary>
+    ///     The HttPlaceholder executed stub header key.
+    /// </summary>
+    public const string XHttPlaceholderExecutedStub = "X-HttPlaceholder-ExecutedStub";
+
+    /// <summary>
+    ///     The Postman token header key.
+    /// </summary>
+    public const string PostmanToken = "Postman-Token";
 }

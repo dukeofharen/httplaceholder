@@ -20,12 +20,12 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
 {
     private static readonly string[] _excludedRequestHeaderNames =
     {
-        Constants.ContentType, "content-length", "host", "connection", "accept-encoding"
+        Constants.ContentType, Constants.ContentLength, Constants.Host, Constants.Connection, Constants.AcceptEncoding
     };
 
     private static readonly string[] _excludedResponseHeaderNames =
     {
-        "x-httplaceholder-correlation", "x-httplaceholder-executedstub", "transfer-encoding", "content-length"
+        Constants.XHttPlaceholderCorrelation, Constants.XHttPlaceholderExecutedStub, Constants.TransferEncoding, Constants.ContentLength
     };
 
     private readonly IHttpClientFactory _httpClientFactory;
