@@ -50,8 +50,8 @@ export default defineComponent({
     };
     const loadTextFromFile = (ev: any) => {
       const files: File[] = Array.from(ev.target.files);
-      for (let file of files) {
-        let reader = new FileReader();
+      for (const file of files) {
+        const reader = new FileReader();
         reader.onload = (e: any) => {
           const uploadedFile: FileUploadedModel = {
             filename: file.name,

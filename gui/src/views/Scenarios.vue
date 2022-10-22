@@ -88,7 +88,7 @@ export default defineComponent({
 
     // Computed
     const sortedScenarios = computed(() => {
-      let scenariosResult = scenarios.value;
+      const scenariosResult = scenarios.value;
       const compare = (a: ScenarioModel, b: ScenarioModel) => {
         if (a.scenario < b.scenario) return -1;
         if (a.scenario > b.scenario) return 1;
