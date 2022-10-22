@@ -27,6 +27,14 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.light-theme .loading {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.dark-theme .loading {
+  background: rgba(255, 255, 255, 0.5);
+}
+
 .loading {
   position: fixed;
   padding: 0;
@@ -37,7 +45,6 @@ export default defineComponent({
 
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.5);
   z-index: 99999;
 }
 
