@@ -138,4 +138,9 @@ public static class Constants
     ///     An array of separator characters for providing multiple input file paths.
     /// </summary>
     public static readonly string[] InputFileSeparators = {"%%", ","};
+
+    /// <summary>
+    ///     The content type header key.
+    /// </summary>
+    public const string ContentType = "Content-Type";
 }

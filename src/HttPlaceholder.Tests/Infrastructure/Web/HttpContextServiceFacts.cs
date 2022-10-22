@@ -232,7 +232,7 @@ public class HttpContextServiceFacts
     {
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
-        _mockHttpContext.SetRequestHeader("Content-Type", Constants.MultipartFormDataMime);
+        _mockHttpContext.SetRequestHeader(Constants.ContentType, Constants.MultipartFormDataMime);
         _mockHttpContext
             .HttpRequestMock
             .Setup(m => m.Form)
@@ -257,7 +257,7 @@ public class HttpContextServiceFacts
         // Arrange
         var formDict = new Dictionary<string, StringValues> {{"key1", "val1"}, {"key2", "val2"}};
         _mockHttpContext.SetForm(formDict);
-        _mockHttpContext.SetRequestHeader("Content-Type", contentType);
+        _mockHttpContext.SetRequestHeader(Constants.ContentType, contentType);
 
         var service = _mocker.CreateInstance<HttpContextService>();
 

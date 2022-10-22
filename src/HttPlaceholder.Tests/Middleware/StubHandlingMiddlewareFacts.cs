@@ -306,10 +306,10 @@ public class StubHandlingMiddlewareFacts
         Assert.IsFalse(_nextCalled);
         httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.NotImplemented));
         httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-Correlation", It.IsAny<StringValues>()));
-        httpContextServiceMock.Verify(m => m.AddHeader("Content-Type", Constants.HtmlMime));
+        httpContextServiceMock.Verify(m => m.AddHeader(Constants.ContentType, Constants.HtmlMime));
         httpContextServiceMock.Verify(m =>
             m.WriteAsync(It.Is<string>(b => b.Contains("Not implemented")), It.IsAny<CancellationToken>()));
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Information, "Request validation exception thrown:"));
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown:"));
     }
 
     [TestMethod]
@@ -343,7 +343,7 @@ public class StubHandlingMiddlewareFacts
 
         // Assert
         Assert.IsFalse(_nextCalled);
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Information, "Request was cancelled."));
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request was cancelled."));
     }
 
     [TestMethod]
@@ -379,10 +379,10 @@ public class StubHandlingMiddlewareFacts
         Assert.IsFalse(_nextCalled);
         httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.NotImplemented));
         httpContextServiceMock.Verify(m => m.TryAddHeader("X-HttPlaceholder-Correlation", It.IsAny<StringValues>()));
-        httpContextServiceMock.Verify(m => m.AddHeader("Content-Type", Constants.HtmlMime), Times.Never);
+        httpContextServiceMock.Verify(m => m.AddHeader(Constants.ContentType, Constants.HtmlMime), Times.Never);
         httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Never);
-        Assert.IsTrue(_mockLogger.Contains(LogLevel.Information, "Request validation exception thrown:"));
+        Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown:"));
     }
 
     [TestMethod]

@@ -25,7 +25,7 @@ public abstract class BaseBodyResponseWriter : IResponseWriter
 
         response.BodyIsBinary = false;
         response.Body = Encoding.UTF8.GetBytes(body);
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", GetContentType(), false);
+        response.Headers.AddOrReplaceCaseInsensitive(Constants.ContentType, GetContentType(), false);
 
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetWriterName()));
     }

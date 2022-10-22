@@ -98,11 +98,11 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
                     switch (part)
                     {
                         case "-F" or "--form":
-                            request.Headers.AddOrReplaceCaseInsensitive("Content-Type",
+                            request.Headers.AddOrReplaceCaseInsensitive(Constants.ContentType,
                                 Constants.MultipartFormDataMime);
                             break;
                         case "-d" or "--data":
-                            request.Headers.AddOrReplaceCaseInsensitive("Content-Type",
+                            request.Headers.AddOrReplaceCaseInsensitive(Constants.ContentType,
                                 Constants.UrlEncodedFormMime);
                             break;
                     }

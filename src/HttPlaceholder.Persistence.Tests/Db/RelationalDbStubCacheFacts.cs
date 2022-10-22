@@ -60,7 +60,7 @@ public class RelationalDbStubCacheFacts
         Assert.IsFalse(string.IsNullOrWhiteSpace(cache.StubUpdateTrackingId));
         Assert.IsNotNull(result);
         Assert.IsNotNull(cache.StubCache);
-        Assert.IsTrue(_mockLogger.ContainsWithExactText(LogLevel.Information,
+        Assert.IsTrue(_mockLogger.ContainsWithExactText(LogLevel.Debug,
             "Initializing the cache, because there is no tracking ID in the database yet."));
     }
 
@@ -89,7 +89,7 @@ public class RelationalDbStubCacheFacts
         Assert.AreEqual(trackingId, cache.StubUpdateTrackingId);
         Assert.IsNotNull(result);
         Assert.IsNotNull(cache.StubCache);
-        Assert.IsTrue(_mockLogger.ContainsWithExactText(LogLevel.Information,
+        Assert.IsTrue(_mockLogger.ContainsWithExactText(LogLevel.Debug,
             "Initializing the cache, because either the local stub cache or tracking ID is not set yet."));
     }
 
@@ -121,7 +121,7 @@ public class RelationalDbStubCacheFacts
         Assert.AreEqual(newTrackingId, cache.StubUpdateTrackingId);
         Assert.IsNotNull(result);
         Assert.IsNotNull(cache.StubCache);
-        Assert.IsTrue(_mockLogger.ContainsWithExactText(LogLevel.Information,
+        Assert.IsTrue(_mockLogger.ContainsWithExactText(LogLevel.Debug,
             "Initializing the cache, because the tracking ID in the database has been changed."));
     }
 

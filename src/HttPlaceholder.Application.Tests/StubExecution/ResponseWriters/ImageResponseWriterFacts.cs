@@ -114,7 +114,7 @@ public class ImageResponseWriterFacts
         using var image = await Image.LoadAsync(ms);
         Assert.AreEqual(stub.Response.Image.Height, image.Height);
         Assert.AreEqual(stub.Response.Image.Width, image.Width);
-        Assert.AreEqual(expectedContentType, response.Headers["Content-Type"]);
+        Assert.AreEqual(expectedContentType, response.Headers[Constants.ContentType]);
         _mockFileService
             .Verify(m => m.WriteAllBytesAsync(expectedCachePath, response.Body, It.IsAny<CancellationToken>()),
                 Times.Once);

@@ -20,7 +20,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
 {
     private static readonly string[] _excludedRequestHeaderNames =
     {
-        "content-type", "content-length", "host", "connection", "accept-encoding"
+        Constants.ContentType, "content-length", "host", "connection", "accept-encoding"
     };
 
     private static readonly string[] _excludedResponseHeaderNames =
@@ -144,10 +144,10 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
         }
 
         request.Content = new ByteArrayContent(requestBody);
-        var contentTypeHeader = originalHeaders.CaseInsensitiveSearchPair("Content-Type");
+        var contentTypeHeader = originalHeaders.CaseInsensitiveSearchPair(Constants.ContentType);
         if (!string.IsNullOrWhiteSpace(contentTypeHeader.Value))
         {
-            request.Content.Headers.Add("Content-Type", contentTypeHeader.Value);
+            request.Content.Headers.Add(Constants.ContentType, contentTypeHeader.Value);
         }
     }
 

@@ -20,7 +20,7 @@ public class ContentTypeResponseWriter : IResponseWriter, ISingletonService
             return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
         }
 
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", stub.Response.ContentType);
+        response.Headers.AddOrReplaceCaseInsensitive(Constants.ContentType, stub.Response.ContentType);
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
     }
 

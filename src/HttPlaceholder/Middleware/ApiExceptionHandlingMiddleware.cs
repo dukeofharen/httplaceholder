@@ -72,7 +72,7 @@ public class ApiExceptionHandlingMiddleware
         CancellationToken cancellationToken)
     {
         _httpContextService.SetStatusCode(httpStatusCode);
-        _httpContextService.AddHeader("Content-Type", Constants.JsonMime);
+        _httpContextService.AddHeader(Constants.ContentType, Constants.JsonMime);
         await _httpContextService.WriteAsync(JsonConvert.SerializeObject(body), cancellationToken);
     }
 }

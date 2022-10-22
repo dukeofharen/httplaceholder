@@ -62,7 +62,7 @@ public class CurlToHttpRequestMapperFacts
             headers["User-Agent"]);
         Assert.AreEqual("application/json, text/plain, */*", headers["Accept"]);
         Assert.AreEqual("en-US,en;q=0.5", headers["Accept-Language"]);
-        Assert.AreEqual("application/json;charset=utf-8", headers["Content-Type"]);
+        Assert.AreEqual("application/json;charset=utf-8", headers[Constants.ContentType]);
         Assert.AreEqual("Basic ZHVjbzpibGFkaWJsYQ==", headers["Authorization"]);
         Assert.AreEqual("https://site.com", headers["Origin"]);
         Assert.AreEqual("keep-alive", headers["Connection"]);
@@ -101,7 +101,7 @@ public class CurlToHttpRequestMapperFacts
             headers["User-Agent"]);
         Assert.AreEqual("application/json, text/plain, */*", headers["Accept"]);
         Assert.AreEqual("en-US,en;q=0.5", headers["Accept-Language"]);
-        Assert.AreEqual("application/json;charset=utf-8", headers["Content-Type"]);
+        Assert.AreEqual("application/json;charset=utf-8", headers[Constants.ContentType]);
         Assert.AreEqual("Bearer VERYLONGSTRING", headers["Authorization"]);
         Assert.AreEqual("https://site.com", headers["Origin"]);
         Assert.AreEqual("keep-alive", headers["Connection"]);
@@ -138,7 +138,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual(@""" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""",
             headers["sec-ch-ua"]);
         Assert.AreEqual("application/json, text/plain, */*", headers["accept"]);
-        Assert.AreEqual("application/json;charset=UTF-8", headers["content-type"]);
+        Assert.AreEqual("application/json;charset=UTF-8", headers[Constants.ContentType.ToLower()]);
         Assert.AreEqual("Basic dXNlcjpwYXNz", headers["authorization"]);
         Assert.AreEqual("?0", headers["sec-ch-ua-mobile"]);
         Assert.AreEqual(
@@ -179,7 +179,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual(@""" Not A;Brand"";v=""99"", ""Chromium"";v=""96"", ""Google Chrome"";v=""96""",
             headers["sec-ch-ua"]);
         Assert.AreEqual("application/json, text/plain, */*", headers["accept"]);
-        Assert.AreEqual("application/json;charset=UTF-8", headers["content-type"]);
+        Assert.AreEqual("application/json;charset=UTF-8", headers[Constants.ContentType.ToLower()]);
         Assert.AreEqual("Bearer VERYLONGSTRING", headers["authorization"]);
         Assert.AreEqual("?0", headers["sec-ch-ua-mobile"]);
         Assert.AreEqual(
@@ -279,7 +279,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("param1=value1&param2=value2", req1.Body);
 
         var headers1 = req1.Headers;
-        Assert.AreEqual(Constants.MultipartFormDataMime, headers1["Content-Type"]);
+        Assert.AreEqual(Constants.MultipartFormDataMime, headers1[Constants.ContentType]);
 
         var req2 = result[1];
         Assert.AreEqual("POST", req2.Method);
@@ -287,7 +287,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("param1=value1&param2=value2", req2.Body);
 
         var headers2 = req2.Headers;
-        Assert.AreEqual(Constants.UrlEncodedFormMime, headers2["Content-Type"]);
+        Assert.AreEqual(Constants.UrlEncodedFormMime, headers2[Constants.ContentType]);
     }
 
     [TestMethod]

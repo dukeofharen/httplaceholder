@@ -42,7 +42,7 @@ internal class ImageResponseWriter : IResponseWriter, ISingletonService
         }
 
         var stubImage = stub.Response.Image;
-        response.Headers.AddOrReplaceCaseInsensitive("Content-Type", stubImage.ContentTypeHeaderValue);
+        response.Headers.AddOrReplaceCaseInsensitive(Constants.ContentType, stubImage.ContentTypeHeaderValue);
 
         var cacheFilePath = Path.Combine(_fileService.GetTempPath(), $"{stubImage.Hash}.bin");
         byte[] bytes;

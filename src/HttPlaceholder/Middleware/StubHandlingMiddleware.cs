@@ -131,7 +131,7 @@ public class StubHandlingMiddleware
         {
             var pageContents = _resourcesService.ReadAsString("Files/StubNotConfigured.html")
                 .Replace("[ROOT_URL]", _httpContextService.RootUrl);
-            _httpContextService.AddHeader("Content-Type", Constants.HtmlMime);
+            _httpContextService.AddHeader(Constants.ContentType, Constants.HtmlMime);
             await _httpContextService.WriteAsync(pageContents, cancellationToken);
         }
 

@@ -19,7 +19,7 @@ internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
         CancellationToken cancellationToken)
     {
         var pair = request.Headers.FirstOrDefault(p =>
-            p.Key.Equals("Content-Type", StringComparison.OrdinalIgnoreCase));
+            p.Key.Equals(Constants.ContentType, StringComparison.OrdinalIgnoreCase));
         var contentType = pair.Value;
         if (string.IsNullOrWhiteSpace(contentType))
         {

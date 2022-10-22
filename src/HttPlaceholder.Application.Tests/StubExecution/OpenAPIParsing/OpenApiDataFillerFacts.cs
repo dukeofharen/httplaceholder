@@ -202,7 +202,7 @@ public class OpenApiDataFillerFacts
 
         // Assert
         Assert.AreEqual(2, result.Count);
-        Assert.AreEqual(Constants.JsonMime, result["content-type"]);
+        Assert.AreEqual(Constants.JsonMime, result[Constants.ContentType]);
         Assert.AreEqual(randomString, result["x-api-key"]);
     }
 
@@ -555,7 +555,7 @@ public class OpenApiDataFillerFacts
         // Assert
         Assert.AreEqual(2, result.Count);
         Assert.AreEqual(headerValue, result["x-header-1"]);
-        Assert.AreEqual(Constants.TextMime, result["content-type"]);
+        Assert.AreEqual(Constants.TextMime, result[Constants.ContentType]);
     }
 
     [TestMethod]
