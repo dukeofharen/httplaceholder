@@ -53,10 +53,10 @@ internal class ImageResponseWriter : IResponseWriter, ISingletonService
         else
         {
             var collection = new FontCollection();
-            collection.Install(Path.Combine(_assemblyService.GetExecutingAssemblyRootPath(),
+            collection.Add(Path.Combine(_assemblyService.GetExecutingAssemblyRootPath(),
                 "Files", "Manrope-Regular.ttf"));
             const string fontFamilyName = "Manrope";
-            if (!collection.TryFind(fontFamilyName, out var family))
+            if (!collection.TryGet(fontFamilyName, out var family))
             {
                 throw new RequestValidationException($"Font family '{fontFamilyName}' not found!");
             }

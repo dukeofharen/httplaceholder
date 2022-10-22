@@ -2,6 +2,7 @@
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.Drawing.Processing.Processors.Text;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
@@ -52,7 +53,7 @@ public static class ImageSharpUtilities
         var (width, height) = processingContext.GetCurrentSize();
 
         // measure the text size
-        var size = TextMeasurer.Measure(text, new RendererOptions(font));
+        var size = TextMeasurer.Measure(text, new TextOptions(font));
 
         //find out how much we need to scale the text to fill the space (up or down)
         var scalingFactor = Math.Min(width / size.Width, height / size.Height);
@@ -61,14 +62,17 @@ public static class ImageSharpUtilities
         var scaledFont = new Font(font, scalingFactor * font.Size);
 
         var center = new PointF(width / 2, height / 2);
-        var textGraphicOptions = new TextGraphicsOptions
+        var textOptions = new TextOptions(scaledFont)
         {
-            TextOptions =
-            {
-                HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center
-            }
+            HorizontalAlignment = HorizontalAlignment.Center,
+            VerticalAlignment = VerticalAlignment.Center,
+            Origin = center
         };
-        return processingContext.DrawText(textGraphicOptions, text, scaledFont, color, center);
+        // return processingContext.DrawText(textOptions, text, color);
+        // return processingContext.DrawText(text, scaledFont, color, center);
+        return processingContext.DrawText(textOptions, text, color);
+        // processingContext.ApplyProcessor(new DrawTextProcessor(processingContext.GetDrawingOptions(), textOptions, text,
+            // brush, pen));
     }
 
     private static IImageProcessingContext ApplyScalingWaterMarkWordWrap(
@@ -126,19 +130,17 @@ public static class ImageSharpUtilities
 
             trapCount--;
 
-            s = TextMeasurer.Measure(text, new RendererOptions(scaledFont) {WrappingWidth = targetWidth});
+            s = TextMeasurer.Measure(text, new TextOptions(scaledFont) {WrappingLength = targetWidth});
         }
 
         var center = new PointF(padding, height / 2);
-        var textGraphicOptions = new TextGraphicsOptions
+        var textOptions = new TextOptions(scaledFont)
         {
-            TextOptions =
-            {
-                HorizontalAlignment = HorizontalAlignment.Left,
-                VerticalAlignment = VerticalAlignment.Center,
-                WrapTextWidth = targetWidth
-            }
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center,
+            WrappingLength = targetWidth,
+            Origin = center
         };
-        return processingContext.DrawText(textGraphicOptions, text, scaledFont, color, center);
+        return processingContext.DrawText(textOptions, text, color);
     }
 }
