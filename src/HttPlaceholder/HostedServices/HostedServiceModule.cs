@@ -19,6 +19,7 @@ public static class HostedServiceModule
         IConfiguration configuration)
     {
         var settings = configuration.Get<SettingsModel>();
+        services.AddHostedService<LifetimeEventsHostedService>();
         if (settings?.Storage?.CleanOldRequestsInBackgroundJob == true)
         {
             services.RegisterCustomHostedService<CleanOldRequestsJob>();

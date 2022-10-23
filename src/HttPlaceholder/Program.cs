@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using HttPlaceholder.Resources;
 using Microsoft.Extensions.Hosting;
@@ -10,8 +11,11 @@ namespace HttPlaceholder;
 [ExcludeFromCodeCoverage]
 internal static class Program
 {
+    internal static Stopwatch StartupWatch = new();
+
     public static int Main(string[] args)
     {
+        StartupWatch.Start();
         ConfigureLogging(args);
         HandleCommands(args);
         try
@@ -30,5 +34,11 @@ internal static class Program
         }
 
         return 0;
+    }
+
+    public static long GetStartupMillis()
+    {
+        StartupWatch.Stop();
+        return StartupWatch.ElapsedMilliseconds;
     }
 }
