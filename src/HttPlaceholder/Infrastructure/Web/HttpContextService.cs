@@ -129,7 +129,7 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     /// <inheritdoc />
     public (string, StringValues)[] GetFormValues()
     {
-        var contentType = GetHeaders().CaseInsensitiveSearch(Constants.ContentType);
+        var contentType = GetHeaders().CaseInsensitiveSearch(HeaderKeys.ContentType);
         if (string.IsNullOrWhiteSpace(contentType))
         {
             return Array.Empty<(string, StringValues)>();

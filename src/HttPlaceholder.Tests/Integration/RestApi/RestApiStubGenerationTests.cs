@@ -30,7 +30,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
 
         // Do a call to a non-existent stub
         var response = await Client.SendAsync(CreateTestStubRequest());
-        var correlationId = response.Headers.Single(h => h.Key == Constants.XHttPlaceholderCorrelation).Value.Single();
+        var correlationId = response.Headers.Single(h => h.Key == HeaderKeys.XHttPlaceholderCorrelation).Value.Single();
 
         // Register a new stub for the failed request
         var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
@@ -89,7 +89,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
 
         // Do a call to a non-existent stub
         var response = await Client.SendAsync(CreateTestStubRequest());
-        var correlationId = response.Headers.Single(h => h.Key == Constants.XHttPlaceholderCorrelation).Value.Single();
+        var correlationId = response.Headers.Single(h => h.Key == HeaderKeys.XHttPlaceholderCorrelation).Value.Single();
 
         // Register a new stub for the failed request
         var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";

@@ -16,7 +16,7 @@ internal class ContentTypeHandler : IResponseToStubResponseHandler, ISingletonSe
     public Task<bool> HandleStubGenerationAsync(HttpResponseModel response, StubResponseModel stubResponseModel,
         CancellationToken cancellationToken)
     {
-        var header = response.Headers.CaseInsensitiveSearchPair(Constants.ContentType);
+        var header = response.Headers.CaseInsensitiveSearchPair(HeaderKeys.ContentType);
         if (string.IsNullOrWhiteSpace(header.Value))
         {
             return Task.FromResult(false);

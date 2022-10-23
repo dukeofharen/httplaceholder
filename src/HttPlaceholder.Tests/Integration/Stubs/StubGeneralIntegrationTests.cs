@@ -30,7 +30,7 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
         // Assert
         Assert.IsTrue(response.IsSuccessStatusCode);
         Assert.AreEqual("test-stub",
-            response.Headers.Single(h => h.Key == Constants.XHttPlaceholderExecutedStub).Value.Single());
+            response.Headers.Single(h => h.Key == HeaderKeys.XHttPlaceholderExecutedStub).Value.Single());
     }
 
     [TestMethod]
@@ -47,7 +47,7 @@ public class StubGeneralIntegrationTests : StubIntegrationTestBase
         // act / assert
         using var response = await Client.GetAsync(url);
         Assert.AreEqual(HttpStatusCode.NotImplemented, response.StatusCode);
-        var header = response.Headers.First(h => h.Key == Constants.XHttPlaceholderCorrelation).Value.ToArray();
+        var header = response.Headers.First(h => h.Key == HeaderKeys.XHttPlaceholderCorrelation).Value.ToArray();
         Assert.AreEqual(1, header.Length);
         Assert.IsFalse(string.IsNullOrWhiteSpace(header.First()));
     }

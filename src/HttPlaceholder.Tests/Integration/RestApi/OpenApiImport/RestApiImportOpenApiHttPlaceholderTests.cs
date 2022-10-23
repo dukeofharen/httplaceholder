@@ -51,7 +51,7 @@ public class RestApiImportOpenApiHttPlaceholderTests : RestApiIntegrationTestBas
         var pathRegex = new Regex(@"^\/requests\/(.*)\/stubs$", RegexOptions.Compiled);
         Assert.IsTrue(pathRegex.IsMatch(((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals));
         Assert.AreEqual(Constants.JsonMime,
-            ((StubConditionStringCheckingModel)stub.Conditions.Headers[Constants.ContentType]).StringEquals);
+            ((StubConditionStringCheckingModel)stub.Conditions.Headers[HeaderKeys.ContentType]).StringEquals);
         Assert.AreEqual("localhost", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
 
         Assert.AreEqual(200, stub.Response.StatusCode);

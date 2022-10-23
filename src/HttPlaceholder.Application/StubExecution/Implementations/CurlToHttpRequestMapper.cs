@@ -98,11 +98,11 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
                     switch (part)
                     {
                         case "-F" or "--form":
-                            request.Headers.AddOrReplaceCaseInsensitive(Constants.ContentType,
+                            request.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType,
                                 Constants.MultipartFormDataMime);
                             break;
                         case "-d" or "--data":
-                            request.Headers.AddOrReplaceCaseInsensitive(Constants.ContentType,
+                            request.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType,
                                 Constants.UrlEncodedFormMime);
                             break;
                     }
@@ -124,9 +124,9 @@ internal class CurlToHttpRequestMapper : ICurlToHttpRequestMapper, ISingletonSer
 
                 if (part == "--compressed")
                 {
-                    if (string.IsNullOrWhiteSpace(request.Headers.CaseInsensitiveSearch(Constants.AcceptEncoding)))
+                    if (string.IsNullOrWhiteSpace(request.Headers.CaseInsensitiveSearch(HeaderKeys.AcceptEncoding)))
                     {
-                        request.Headers.Add(Constants.AcceptEncoding, "deflate, gzip, br");
+                        request.Headers.Add(HeaderKeys.AcceptEncoding, "deflate, gzip, br");
                     }
 
                     continue;

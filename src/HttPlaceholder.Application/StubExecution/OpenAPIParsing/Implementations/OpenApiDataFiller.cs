@@ -78,7 +78,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
         var contentType = response.Content.FirstOrDefault().Key;
         if (!string.IsNullOrWhiteSpace(contentType))
         {
-            result.AddOrReplaceCaseInsensitive(Constants.ContentType, contentType);
+            result.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, contentType);
         }
 
         return result;
@@ -174,7 +174,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
         if (operation.RequestBody?.Content != null && operation.RequestBody.Content.Any())
         {
             var requestBody = operation.RequestBody.Content.First();
-            result.AddOrReplaceCaseInsensitive(Constants.ContentType, requestBody.Key);
+            result.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, requestBody.Key);
         }
 
         return result;

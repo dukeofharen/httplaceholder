@@ -14,7 +14,7 @@ namespace HttPlaceholder.Application.StubExecution.RequestToStubConditionsHandle
 /// </summary>
 internal class HeaderHandler : IRequestToStubConditionsHandler, ISingletonService
 {
-    private static readonly IEnumerable<string> _headersToStrip = new[] {Constants.PostmanToken, Constants.Host};
+    private static readonly IEnumerable<string> _headersToStrip = new[] {HeaderKeys.PostmanToken, HeaderKeys.Host};
 
     /// <inheritdoc />
     public Task<bool> HandleStubGenerationAsync(HttpRequestModel request, StubConditionsModel conditions,

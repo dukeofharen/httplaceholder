@@ -10,56 +10,56 @@ public class CollectionUtilitiesFacts
     public void AddOrReplaceCaseInsensitive_AddEntryWithSameCasing()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{Constants.ContentType, Constants.JsonMime}};
+        var dictionary = new Dictionary<string, string> {{HeaderKeys.ContentType, Constants.JsonMime}};
 
         // Act
-        dictionary.AddOrReplaceCaseInsensitive(Constants.ContentType, Constants.TextMime);
+        dictionary.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, Constants.TextMime);
 
         // Assert
         Assert.AreEqual(1, dictionary.Count);
-        Assert.AreEqual(Constants.TextMime, dictionary[Constants.ContentType]);
+        Assert.AreEqual(Constants.TextMime, dictionary[HeaderKeys.ContentType]);
     }
 
     [TestMethod]
     public void AddOrReplaceCaseInsensitive_AddEntryWithDifferentCasing()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{Constants.ContentType, Constants.JsonMime}};
+        var dictionary = new Dictionary<string, string> {{HeaderKeys.ContentType, Constants.JsonMime}};
 
         // Act
-        dictionary.AddOrReplaceCaseInsensitive(Constants.ContentType, Constants.TextMime);
+        dictionary.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, Constants.TextMime);
 
         // Assert
         Assert.AreEqual(1, dictionary.Count);
-        Assert.AreEqual(Constants.TextMime, dictionary[Constants.ContentType]);
+        Assert.AreEqual(Constants.TextMime, dictionary[HeaderKeys.ContentType]);
     }
 
     [TestMethod]
     public void AddOrReplaceCaseInsensitive_AddEntryWithDifferentCasing_DoNotReplaceExistingValue()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{Constants.ContentType, Constants.JsonMime}};
+        var dictionary = new Dictionary<string, string> {{HeaderKeys.ContentType, Constants.JsonMime}};
 
         // Act
-        dictionary.AddOrReplaceCaseInsensitive(Constants.ContentType, Constants.TextMime, false);
+        dictionary.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, Constants.TextMime, false);
 
         // Assert
         Assert.AreEqual(1, dictionary.Count);
-        Assert.AreEqual(Constants.JsonMime, dictionary[Constants.ContentType]);
+        Assert.AreEqual(Constants.JsonMime, dictionary[HeaderKeys.ContentType]);
     }
 
     [TestMethod]
     public void AddOrReplaceCaseInsensitive_AddNewEntry()
     {
         // Arrange
-        var dictionary = new Dictionary<string, string> {{Constants.ContentType, Constants.JsonMime}};
+        var dictionary = new Dictionary<string, string> {{HeaderKeys.ContentType, Constants.JsonMime}};
 
         // Act
         dictionary.AddOrReplaceCaseInsensitive("Accept", Constants.XmlTextMime);
 
         // Assert
         Assert.AreEqual(2, dictionary.Count);
-        Assert.AreEqual(Constants.JsonMime, dictionary[Constants.ContentType]);
+        Assert.AreEqual(Constants.JsonMime, dictionary[HeaderKeys.ContentType]);
         Assert.AreEqual(Constants.XmlTextMime, dictionary["Accept"]);
     }
 

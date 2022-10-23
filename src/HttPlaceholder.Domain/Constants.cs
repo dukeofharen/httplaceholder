@@ -138,7 +138,13 @@ public static class Constants
     ///     An array of separator characters for providing multiple input file paths.
     /// </summary>
     public static readonly string[] InputFileSeparators = {"%%", ","};
+}
 
+/// <summary>
+///     A class containing the HTTP header keys.
+/// </summary>
+public static class HeaderKeys
+{
     /// <summary>
     ///     The content type header key.
     /// </summary>
