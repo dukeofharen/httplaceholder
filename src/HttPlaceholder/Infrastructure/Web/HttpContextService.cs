@@ -89,11 +89,15 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     }
 
     /// <inheritdoc />
-    public byte[] GetBodyAsBytes()
+    public async Task<string> GetBodyAsync(CancellationToken cancellationToken) =>
+        Encoding.UTF8.GetString(await GetBodyAsBytesAsync(cancellationToken));
+
+    /// <inheritdoc />
+    public async Task<byte[]> GetBodyAsBytesAsync(CancellationToken cancellationToken)
     {
         var context = _httpContextAccessor.HttpContext;
         using var ms = new MemoryStream();
-        context.Request.Body.CopyTo(ms);
+        await context.Request.Body.CopyToAsync(ms, cancellationToken);
         context.Request.Body.Position = 0;
         return ms.ToArray();
     }

@@ -275,8 +275,8 @@ public class ReverseProxyResponseWriterFacts
 
         const string body = "{\"key\": \"val\"}";
         _mockHttpContextService
-            .Setup(m => m.GetBodyAsBytes())
-            .Returns(Encoding.UTF8.GetBytes(body));
+            .Setup(m => m.GetBodyAsBytesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Encoding.UTF8.GetBytes(body));
 
         _mockHttpContextService
             .Setup(m => m.GetHeaders())
@@ -327,8 +327,8 @@ public class ReverseProxyResponseWriterFacts
 
         const string body = "{\"key\": \"val\"}";
         _mockHttpContextService
-            .Setup(m => m.GetBodyAsBytes())
-            .Returns(Encoding.UTF8.GetBytes(body));
+            .Setup(m => m.GetBodyAsBytesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Encoding.UTF8.GetBytes(body));
 
         _mockHttpContextService
             .Setup(m => m.GetHeaders())
