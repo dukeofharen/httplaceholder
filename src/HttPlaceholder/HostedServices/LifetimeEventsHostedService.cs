@@ -14,19 +14,16 @@ public class LifetimeEventsHostedService : IHostedService
 {
     private readonly IHostApplicationLifetime _hostApplicationLifetime;
     private readonly ILogger<LifetimeEventsHostedService> _logger;
-    private readonly IDateTime _dateTime;
 
     /// <summary>
     ///     Constructs a <see cref="LifetimeEventsHostedService"/> instance.
     /// </summary>
     public LifetimeEventsHostedService(
         IHostApplicationLifetime hostApplicationLifetime,
-        ILogger<LifetimeEventsHostedService> logger,
-        IDateTime dateTime)
+        ILogger<LifetimeEventsHostedService> logger)
     {
         _hostApplicationLifetime = hostApplicationLifetime;
         _logger = logger;
-        _dateTime = dateTime;
     }
 
     /// <inheritdoc />
