@@ -14,7 +14,7 @@ public class EncodedQueryStringResponseVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void EncodedQueryStringHandlerFacts_Parse_HappyFlow()
+    public async Task EncodedQueryStringHandlerFacts_Parse_HappyFlow()
     {
         // Arrange
         var parsingHandler = _mocker.CreateInstance<EncodedQueryStringResponseVariableParsingHandler>();
@@ -30,7 +30,7 @@ public class EncodedQueryStringResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = parsingHandler.Parse(input, matches, new StubModel());
+        var result = await parsingHandler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedResult, result);

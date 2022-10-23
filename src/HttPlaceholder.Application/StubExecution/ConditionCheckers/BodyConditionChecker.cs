@@ -26,16 +26,16 @@ public class BodyConditionChecker : IConditionChecker, ISingletonService
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var bodyConditions = stub.Conditions?.Body?.ToArray();
         if (bodyConditions == null || bodyConditions?.Any() != true)
         {
-            return Task.FromResult(result);
+            return result;
         }
 
-        var body = _httpContextService.GetBody();
+        var body = await _httpContextService.GetBodyAsync(cancellationToken);
 
         var validBodyConditions = 0;
         foreach (var condition in bodyConditions)
@@ -56,7 +56,7 @@ public class BodyConditionChecker : IConditionChecker, ISingletonService
             ? ConditionValidationType.Valid
             : ConditionValidationType.Invalid;
 
-        return Task.FromResult(result);
+        return result;
     }
 
     /// <inheritdoc />

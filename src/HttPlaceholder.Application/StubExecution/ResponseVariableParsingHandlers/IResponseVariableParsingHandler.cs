@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
@@ -36,6 +38,7 @@ public interface IResponseVariableParsingHandler
     /// <param name="input">The response body.</param>
     /// <param name="matches">The regex matches that have been found for this variable.</param>
     /// <param name="stub">The matched stub.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The parsed response body.</returns>
-    string Parse(string input, IEnumerable<Match> matches, StubModel stub);
+    Task<string> ParseAsync(string input, IEnumerable<Match> matches, StubModel stub, CancellationToken cancellationToken);
 }

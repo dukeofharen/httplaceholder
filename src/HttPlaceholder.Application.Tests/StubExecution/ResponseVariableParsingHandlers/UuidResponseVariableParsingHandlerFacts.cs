@@ -13,7 +13,7 @@ public class UuidResponseVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void UuidVariableHandler_Parse_HappyFlow()
+    public async Task UuidVariableHandler_Parse_HappyFlow()
     {
         // arrange
         const string input = "((uuid)) ((uuid:nonsense))";
@@ -22,7 +22,7 @@ public class UuidResponseVariableParsingHandlerFacts
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // assert
         var parts = result.Split(' ');

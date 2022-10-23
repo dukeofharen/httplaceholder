@@ -10,7 +10,7 @@ public class JsonPathResponseVariableParsingHandlerFacts
     private readonly AutoMocker _mocker = new();
 
     [TestMethod]
-    public void Parse_NoMatches_ShouldReturnInputAsIs()
+    public async Task Parse_NoMatches_ShouldReturnInputAsIs()
     {
         // Arrange
         const string input = "input";
@@ -18,43 +18,43 @@ public class JsonPathResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // Assert
         Assert.AreEqual(input, result);
     }
 
     [TestMethod]
-    public void Parse_HasMatches_JsonIsCorrupt_ShouldReplaceVariablesWithEmptyString()
+    public async Task Parse_HasMatches_JsonIsCorrupt_ShouldReplaceVariablesWithEmptyString()
     {
         // Arrange
         const string input = "((jsonpath:$.values[0].title)) ((jsonpath:$.values[1].title))";
 
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
         mockHttpContextService
-            .Setup(m => m.GetBody())
-            .Returns("wrong json");
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync("wrong json");
 
         var handler = _mocker.CreateInstance<JsonPathResponseVariableParsingHandler>();
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // Assert
         Assert.AreEqual(" ", result);
     }
 
     [TestMethod]
-    public void Parse_HasMatches_JsonIsOk_ShouldParseInput()
+    public async Task Parse_HasMatches_JsonIsOk_ShouldParseInput()
     {
         // Arrange
         const string input = "((jsonpath:$.values[1].title)) ((jsonpath:$.values[0].title))";
 
         var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
         mockHttpContextService
-            .Setup(m => m.GetBody())
-            .Returns(@"{
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(@"{
     ""values"": [
         {
             ""title"": ""Value1""
@@ -69,7 +69,7 @@ public class JsonPathResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // Assert
         Assert.AreEqual("Value2 Value1", result);

@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
@@ -39,9 +41,9 @@ internal class JsonPathResponseVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}:$.values[1].title))"};
 
     /// <inheritdoc />
-    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
+    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub, CancellationToken cancellationToken)
     {
-        var body = _httpContextService.GetBody();
+        var body = await _httpContextService.GetBodyAsync(cancellationToken);
         var json = ParseJson(body);
         return matches
             .Where(match => match.Groups.Count >= 2)

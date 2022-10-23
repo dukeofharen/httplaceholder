@@ -16,21 +16,21 @@ public class ScenarioStateVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void Parse_NoMatches_ShouldReturnInputAsIs()
+    public async Task Parse_NoMatches_ShouldReturnInputAsIs()
     {
         // Arrange
         var handler = _mocker.CreateInstance<ScenarioStateVariableParsingHandler>();
         const string input = "the input";
 
         // Act
-        var result = handler.Parse(input, Array.Empty<Match>(), new StubModel());
+        var result = await handler.ParseAsync(input, Array.Empty<Match>(), new StubModel(), CancellationToken.None);
 
         // Assert
         Assert.AreEqual(input, result);
     }
 
     [TestMethod]
-    public void Parse_Matches_ShouldParseState()
+    public async Task Parse_Matches_ShouldParseState()
     {
         // Arrange
         var handler = _mocker.CreateInstance<ScenarioStateVariableParsingHandler>();
@@ -53,7 +53,7 @@ public class ScenarioStateVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, stubModel);
+        var result = await handler.ParseAsync(input, matches, stubModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedResult, result);

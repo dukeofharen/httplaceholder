@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
@@ -31,14 +33,14 @@ internal class FormPostResponseVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}:form_key))"};
 
     /// <inheritdoc />
-    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
+    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub, CancellationToken cancellationToken)
     {
         var formValues = _httpContextService.GetFormValues();
         // TODO there can be multiple form values, so this should be fixed in the future.
         var formDict = formValues.ToDictionary(f => f.Item1, f => f.Item2.First());
-        return matches
+        return Task.FromResult(matches
             .Where(match => match.Groups.Count >= 3)
-            .Aggregate(input, (current, match) => InsertFormValue(current, match, formDict));
+            .Aggregate(input, (current, match) => InsertFormValue(current, match, formDict)));
     }
 
     private static string InsertFormValue(string current, Match match, IDictionary<string, string> formDict)

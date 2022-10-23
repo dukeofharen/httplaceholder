@@ -13,7 +13,7 @@ public class RootUrlResponseVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void RequestBodyVariableHandler_Parse_HappyFlow()
+    public async Task RequestBodyVariableHandler_Parse_HappyFlow()
     {
         // arrange
         const string input = "URL: ((root_url))";
@@ -30,7 +30,7 @@ public class RootUrlResponseVariableParsingHandlerFacts
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // assert
         Assert.AreEqual(expectedResult, result);

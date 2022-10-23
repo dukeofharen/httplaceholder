@@ -23,18 +23,18 @@ internal class DynamicResponseWriter : IResponseWriter, ISingletonService
     public int Priority => -10;
 
     /// <inheritdoc />
-    public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
+    public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
         CancellationToken cancellationToken)
     {
         if (stub.Response.EnableDynamicMode != true)
         {
-            return Task.FromResult(StubResponseWriterResultModel.IsNotExecuted(GetType().Name));
+            return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
         // Try to parse and replace the variables in the body.
         if (!response.BodyIsBinary && response.Body != null)
         {
-            var parsedBody = _responseVariableParser.Parse(Encoding.UTF8.GetString(response.Body), stub);
+            var parsedBody = await _responseVariableParser.ParseAsync(Encoding.UTF8.GetString(response.Body), stub, cancellationToken);
             response.Body = Encoding.UTF8.GetBytes(parsedBody);
         }
 
@@ -42,9 +42,9 @@ internal class DynamicResponseWriter : IResponseWriter, ISingletonService
         var keys = response.Headers.Keys.ToArray();
         foreach (var key in keys)
         {
-            response.Headers[key] = _responseVariableParser.Parse(response.Headers[key], stub);
+            response.Headers[key] = await _responseVariableParser.ParseAsync(response.Headers[key], stub, cancellationToken);
         }
 
-        return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
+        return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 }

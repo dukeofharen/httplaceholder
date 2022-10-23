@@ -44,8 +44,6 @@ public class BaseVariableParsingHandlerFacts
         public override string Name => "TestVariableParsingHandler";
         public override string FullName { get; }
         public override string[] Examples { get; }
-
-        protected override string InsertVariables(string input, Match[] matches, StubModel stub) =>
-            throw new NotImplementedException();
+        protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub, CancellationToken cancellationToken) => throw new NotImplementedException();
     }
 }
