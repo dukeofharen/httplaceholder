@@ -40,12 +40,6 @@ public interface IHttpContextService
     /// <summary>
     ///     Gets the posted body as string.
     /// </summary>
-    /// <returns>The posted body as string.</returns>
-    string GetBody();
-
-    /// <summary>
-    ///     Gets the posted body as string.
-    /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The posted body as string.</returns>
     Task<string> GetBodyAsync(CancellationToken cancellationToken);

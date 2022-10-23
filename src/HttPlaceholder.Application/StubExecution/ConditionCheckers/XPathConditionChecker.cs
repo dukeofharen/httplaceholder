@@ -28,17 +28,17 @@ public class XPathConditionChecker : IConditionChecker, ISingletonService
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var xpathConditions = stub.Conditions?.Xpath?.ToArray() ?? Array.Empty<StubXpathModel>();
         if (!xpathConditions.Any())
         {
-            return Task.FromResult(result);
+            return result;
         }
 
         var validXpaths = 0;
-        var body = _httpContextService.GetBody();
+        var body = await _httpContextService.GetBodyAsync(cancellationToken);
         try
         {
             var doc = new XmlDocument();
@@ -83,7 +83,7 @@ public class XPathConditionChecker : IConditionChecker, ISingletonService
             result.Log = ex.Message;
         }
 
-        return Task.FromResult(result);
+        return result;
     }
 
     /// <inheritdoc />

@@ -119,8 +119,8 @@ public class StubHandlingMiddlewareFacts
 
         const string requestBody = "posted body";
         httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(requestBody);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(requestBody);
 
         const string ip = "1.2.3.4";
         clientDataResolverMock
@@ -217,8 +217,8 @@ public class StubHandlingMiddlewareFacts
             .ReturnsAsync(stubResponse);
 
         httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns((string)null);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync((string)null);
 
         var requestResultModel = new RequestResultModel();
         _requestLoggerMock

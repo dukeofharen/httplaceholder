@@ -29,17 +29,17 @@ public class JsonConditionChecker : IConditionChecker, ISingletonService
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         if (stub.Conditions?.Json == null)
         {
-            return Task.FromResult(result);
+            return result;
         }
 
         var convertedJsonConditions = ConvertJsonConditions(stub.Conditions.Json);
 
-        var body = _httpContextService.GetBody();
+        var body = await _httpContextService.GetBodyAsync(cancellationToken);
         try
         {
             var jToken = JToken.Parse(body);
@@ -55,7 +55,7 @@ public class JsonConditionChecker : IConditionChecker, ISingletonService
             result.Log = ex.Message;
         }
 
-        return Task.FromResult(result);
+        return result;
     }
 
     /// <inheritdoc />

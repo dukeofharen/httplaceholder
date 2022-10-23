@@ -67,8 +67,8 @@ public class JsonPathConditionCheckerFacts
   ]
 }]}";
         httpMock
-            .Setup(m => m.GetBody())
-            .Returns(json);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(json);
 
         // Act
         var result =
@@ -99,8 +99,8 @@ public class JsonPathConditionCheckerFacts
   ]
 }]}";
         httpMock
-            .Setup(m => m.GetBody())
-            .Returns(json);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(json);
 
         // Act
         var result =
@@ -135,8 +135,8 @@ public class JsonPathConditionCheckerFacts
   ]
 }]}";
         httpMock
-            .Setup(m => m.GetBody())
-            .Returns(json);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(json);
 
         // Act
         var result =
@@ -171,8 +171,8 @@ public class JsonPathConditionCheckerFacts
   ]
 }]}";
         httpMock
-            .Setup(m => m.GetBody())
-            .Returns(json);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(json);
 
         // Act
         var result =
@@ -207,8 +207,8 @@ public class JsonPathConditionCheckerFacts
   ]
 }]}";
         httpMock
-            .Setup(m => m.GetBody())
-            .Returns(json);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(json);
 
         // Act
         var result =
@@ -248,8 +248,8 @@ public class JsonPathConditionCheckerFacts
   ]
 }]}";
         httpMock
-            .Setup(m => m.GetBody())
-            .Returns(json);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(json);
 
         // Act
         var result =
@@ -289,8 +289,8 @@ public class JsonPathConditionCheckerFacts
   ]
 }]}";
         httpMock
-            .Setup(m => m.GetBody())
-            .Returns(json);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(json);
 
         // Act
         var result =

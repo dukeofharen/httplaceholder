@@ -118,7 +118,7 @@ public class HttpContextServiceFacts
     }
 
     [TestMethod]
-    public void GetBody_HappyFlow()
+    public async Task GetBody_HappyFlow()
     {
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
@@ -127,7 +127,7 @@ public class HttpContextServiceFacts
         _mockHttpContext.SetBody(body);
 
         // Act
-        var result = service.GetBody();
+        var result = await service.GetBodyAsync(CancellationToken.None);
 
         // Assert
         Assert.AreEqual(body, result);

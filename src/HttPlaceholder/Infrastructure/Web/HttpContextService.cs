@@ -74,21 +74,6 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     }
 
     /// <inheritdoc />
-    public string GetBody()
-    {
-        var context = _httpContextAccessor.HttpContext;
-        using var reader = new StreamReader(
-            context.Request.Body,
-            Encoding.UTF8,
-            false,
-            1024,
-            true);
-        var body = reader.ReadToEnd();
-        context.Request.Body.Position = 0;
-        return body;
-    }
-
-    /// <inheritdoc />
     public async Task<string> GetBodyAsync(CancellationToken cancellationToken) =>
         Encoding.UTF8.GetString(await GetBodyAsBytesAsync(cancellationToken));
 
