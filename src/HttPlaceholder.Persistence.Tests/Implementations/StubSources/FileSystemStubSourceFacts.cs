@@ -32,8 +32,8 @@ public class FileSystemStubSourceFacts
     public async Task AddRequestResultAsync_HappyFlow_NoResponse()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
-        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var request = new RequestResultModel {CorrelationId = "bla123"};
         var requestFilePath = Path.Combine(requestsFolder, $"{request.CorrelationId}.json");
         var responseFilePath = Path.Combine(responsesFolder, $"{request.CorrelationId}.json");
@@ -57,8 +57,8 @@ public class FileSystemStubSourceFacts
     public async Task AddRequestResultAsync_HappyFlow_WithResponse()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
-        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var request = new RequestResultModel {CorrelationId = "bla123"};
         var response = new ResponseModel {StatusCode = 200};
         var requestFilePath = Path.Combine(requestsFolder, $"{request.CorrelationId}.json");
@@ -83,7 +83,7 @@ public class FileSystemStubSourceFacts
     public async Task AddStubAsync_HappyFlow()
     {
         // Arrange
-        var stubsFolder = Path.Combine(StorageFolder, Constants.StubsFolderName);
+        var stubsFolder = Path.Combine(StorageFolder, FileNames.StubsFolderName);
         var stub = new StubModel {Id = "situation-01"};
         var filePath = Path.Combine(stubsFolder, $"{stub.Id}.json");
 
@@ -105,7 +105,7 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var expectedPath = Path.Combine(requestsFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -127,7 +127,7 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var expectedPath = Path.Combine(requestsFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -152,7 +152,7 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var expectedPath = Path.Combine(responsesFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -174,7 +174,7 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var expectedPath = Path.Combine(responsesFolder, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -198,8 +198,8 @@ public class FileSystemStubSourceFacts
     public async Task DeleteAllRequestResultsAsync_HappyFlow()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
-        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -240,7 +240,7 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, Constants.RequestsFolderName);
+        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, FileNames.RequestsFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -263,8 +263,8 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, Constants.RequestsFolderName);
-        var responsesPath = Path.Combine(_options.Value.Storage.FileStorageLocation, Constants.ResponsesFolderName);
+        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, FileNames.RequestsFolderName);
+        var responsesPath = Path.Combine(_options.Value.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
         var expectedResponsePath = Path.Combine(responsesPath, $"{correlationId}.json");
 
@@ -293,8 +293,8 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, Constants.RequestsFolderName);
-        var responsesPath = Path.Combine(_options.Value.Storage.FileStorageLocation, Constants.ResponsesFolderName);
+        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, FileNames.RequestsFolderName);
+        var responsesPath = Path.Combine(_options.Value.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
         var expectedResponsePath = Path.Combine(responsesPath, $"{correlationId}.json");
 
@@ -321,7 +321,7 @@ public class FileSystemStubSourceFacts
     public async Task DeleteStubAsync_StubDoesntExist_ShouldReturnFalse()
     {
         // Arrange
-        var stubsFolder = Path.Combine(StorageFolder, Constants.StubsFolderName);
+        var stubsFolder = Path.Combine(StorageFolder, FileNames.StubsFolderName);
         const string stubId = "situation-01";
         var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
 
@@ -345,7 +345,7 @@ public class FileSystemStubSourceFacts
     public async Task DeleteStubAsync_RequestExist_ShouldDeleteRequestAndReturnTrue()
     {
         // Arrange
-        var stubsFolder = Path.Combine(StorageFolder, Constants.StubsFolderName);
+        var stubsFolder = Path.Combine(StorageFolder, FileNames.StubsFolderName);
         const string stubId = "situation-01";
         var filePath = Path.Combine(stubsFolder, $"{stubId}.json");
 
@@ -395,7 +395,7 @@ public class FileSystemStubSourceFacts
     public async Task GetRequestResultsAsync_HappyFlow()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -436,7 +436,7 @@ public class FileSystemStubSourceFacts
     public async Task GetRequestResultsOverviewAsync_HappyFlow()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
@@ -487,8 +487,8 @@ public class FileSystemStubSourceFacts
     public async Task CleanOldRequestResultsAsync_HappyFlow()
     {
         // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, Constants.RequestsFolderName);
-        var responsesFolder = Path.Combine(StorageFolder, Constants.ResponsesFolderName);
+        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
+        var responsesFolder = Path.Combine(StorageFolder, FileNames.ResponsesFolderName);
         var files = new[]
         {
             Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json"),

@@ -133,7 +133,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
     {
         var rootPath = _settings.Storage?.FileStorageLocation ??
                        throw new InvalidOperationException("FileStorageLocation unexpectedly null.");
-        var path = Path.Combine(rootPath, Constants.MetadataFileName);
+        var path = Path.Combine(rootPath, FileNames.MetadataFileName);
         return path;
     }
 
@@ -158,5 +158,5 @@ internal class FileSystemStubCache : IFileSystemStubCache
     }
 
     private string GetStubsFolder() =>
-        Path.Combine(_settings.Storage?.FileStorageLocation, Constants.StubsFolderName);
+        Path.Combine(_settings.Storage?.FileStorageLocation, FileNames.StubsFolderName);
 }

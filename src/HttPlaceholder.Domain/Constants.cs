@@ -1,9 +1,9 @@
 ﻿namespace HttPlaceholder.Domain;
 
 /// <summary>
-///     A class that contains several constants for use in HttPlaceholder.
+///     A static class containing file and folder names.
 /// </summary>
-public static class Constants
+public static class FileNames
 {
     // File storage folder and file names.
     /// <summary>
@@ -25,7 +25,13 @@ public static class Constants
     ///     The metadata file name.
     /// </summary>
     public const string MetadataFileName = "metadata.json";
+}
 
+/// <summary>
+///     A class that contains several constants for use in HttPlaceholder.
+/// </summary>
+public static class Constants
+{
     // Default config values
     /// <summary>
     ///     The default HTTP port.

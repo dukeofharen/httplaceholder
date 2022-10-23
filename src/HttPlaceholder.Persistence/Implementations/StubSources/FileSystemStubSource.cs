@@ -212,13 +212,13 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     private string GetStubsFolder() =>
-        Path.Combine(GetRootFolder(), Constants.StubsFolderName);
+        Path.Combine(GetRootFolder(), FileNames.StubsFolderName);
 
     private string GetRequestsFolder() =>
-        Path.Combine(GetRootFolder(), Constants.RequestsFolderName);
+        Path.Combine(GetRootFolder(), FileNames.RequestsFolderName);
 
     private string GetResponsesFolder() =>
-        Path.Combine(GetRootFolder(), Constants.ResponsesFolderName);
+        Path.Combine(GetRootFolder(), FileNames.ResponsesFolderName);
 
     private async Task DeleteResponseAsync(string filePath, CancellationToken cancellationToken)
     {
