@@ -17,6 +17,22 @@ public static class Constants
 }
 
 /// <summary>
+///     A class that contains several stub types.
+/// </summary>
+public static class StubTypes
+{
+    /// <summary>
+    ///     The JSON stub type.
+    /// </summary>
+    public const string StubJsonType = "json";
+
+    /// <summary>
+    ///     The YAML stub type.
+    /// </summary>
+    public const string StubYamlType = "yaml";
+}
+
+/// <summary>
 ///     A class containing file and folder names.
 /// </summary>
 public static class FileNames

@@ -18,8 +18,6 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 /// </summary>
 internal class RelationalDbStubSource : IWritableStubSource
 {
-    // TODO move to separate constants class.
-    private const string StubJsonType = "json";
     private readonly IDatabaseContextFactory _databaseContextFactory;
     private readonly IQueryStore _queryStore;
     private readonly IRelationalDbMigrator _relationalDbMigrator;
@@ -82,7 +80,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         var json = JsonConvert.SerializeObject(stub);
         await ctx.ExecuteAsync(_queryStore.AddStubQuery,
             cancellationToken,
-            new {StubId = stub.Id, Stub = json, StubType = StubJsonType});
+            new {StubId = stub.Id, Stub = json, StubType = StubTypes.StubJsonType});
         await _relationalDbStubCache.AddOrReplaceStubAsync(ctx, stub, cancellationToken);
     }
 
