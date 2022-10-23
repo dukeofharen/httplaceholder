@@ -49,7 +49,10 @@ public class JsonHandlerFacts
     {
         // Arrange
         var handler = _mocker.CreateInstance<JsonHandler>();
-        var request = new HttpRequestModel {Headers = {{HeaderKeys.ContentType, MimeTypes.JsonMime}}, Body = "INVALID JSON!!"};
+        var request = new HttpRequestModel
+        {
+            Headers = {{HeaderKeys.ContentType, MimeTypes.JsonMime}}, Body = "INVALID JSON!!"
+        };
         var conditions = new StubConditionsModel();
 
         // Act

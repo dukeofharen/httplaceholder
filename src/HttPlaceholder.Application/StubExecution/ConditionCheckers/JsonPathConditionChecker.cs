@@ -101,7 +101,7 @@ public class JsonPathConditionChecker : IConditionChecker, ISingletonService
     {
         static StubJsonPathModel ParseDict(IReadOnlyDictionary<object, object> conditionDict)
         {
-            return new()
+            return new StubJsonPathModel
             {
                 Query = conditionDict.ContainsKey("query")
                     ? conditionDict["query"].ToString()

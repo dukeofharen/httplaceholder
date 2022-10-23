@@ -337,7 +337,8 @@ public class RelationalDbStubSourceFacts
         {
             Id = 1,
             Body = Convert.ToBase64String(Encoding.UTF8.GetBytes("555")),
-            Headers = JsonConvert.SerializeObject(new Dictionary<string, string> {{HeaderKeys.ContentType, "text/plain"}}),
+            Headers = JsonConvert.SerializeObject(
+                new Dictionary<string, string> {{HeaderKeys.ContentType, "text/plain"}}),
             StatusCode = 200,
             BodyIsBinary = false
         };

@@ -30,7 +30,8 @@ internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub, CancellationToken cancellationToken) =>
+    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken) =>
         Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input, (current, match) => InsertHitCount(current, match, stub)));

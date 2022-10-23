@@ -34,7 +34,9 @@ internal class DynamicResponseWriter : IResponseWriter, ISingletonService
         // Try to parse and replace the variables in the body.
         if (!response.BodyIsBinary && response.Body != null)
         {
-            var parsedBody = await _responseVariableParser.ParseAsync(Encoding.UTF8.GetString(response.Body), stub, cancellationToken);
+            var parsedBody =
+                await _responseVariableParser.ParseAsync(Encoding.UTF8.GetString(response.Body), stub,
+                    cancellationToken);
             response.Body = Encoding.UTF8.GetBytes(parsedBody);
         }
 
@@ -42,7 +44,8 @@ internal class DynamicResponseWriter : IResponseWriter, ISingletonService
         var keys = response.Headers.Keys.ToArray();
         foreach (var key in keys)
         {
-            response.Headers[key] = await _responseVariableParser.ParseAsync(response.Headers[key], stub, cancellationToken);
+            response.Headers[key] =
+                await _responseVariableParser.ParseAsync(response.Headers[key], stub, cancellationToken);
         }
 
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);

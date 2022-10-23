@@ -33,7 +33,8 @@ internal class QueryStringResponseVariableParsingHandler : BaseVariableParsingHa
     public override string[] Examples => new[] {$"(({Name}:query_string_key))"};
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub, CancellationToken cancellationToken)
+    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
     {
         var queryDict = _httpContextService.GetQueryStringDictionary();
         return Task.FromResult(matches

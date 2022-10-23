@@ -32,7 +32,8 @@ internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHa
     public override string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
-    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub, CancellationToken cancellationToken)
+    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
     {
         var body = await _httpContextService.GetBodyAsync(cancellationToken);
         return matches

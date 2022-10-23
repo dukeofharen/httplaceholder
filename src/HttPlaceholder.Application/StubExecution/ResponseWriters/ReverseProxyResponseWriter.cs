@@ -20,12 +20,14 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
 {
     private static readonly string[] _excludedRequestHeaderNames =
     {
-        HeaderKeys.ContentType, HeaderKeys.ContentLength, HeaderKeys.Host, HeaderKeys.Connection, HeaderKeys.AcceptEncoding
+        HeaderKeys.ContentType, HeaderKeys.ContentLength, HeaderKeys.Host, HeaderKeys.Connection,
+        HeaderKeys.AcceptEncoding
     };
 
     private static readonly string[] _excludedResponseHeaderNames =
     {
-        HeaderKeys.XHttPlaceholderCorrelation, HeaderKeys.XHttPlaceholderExecutedStub, HeaderKeys.TransferEncoding, HeaderKeys.ContentLength
+        HeaderKeys.XHttPlaceholderCorrelation, HeaderKeys.XHttPlaceholderExecutedStub, HeaderKeys.TransferEncoding,
+        HeaderKeys.ContentLength
     };
 
     private readonly IHttpClientFactory _httpClientFactory;
@@ -135,7 +137,8 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
             .ToDictionary(h => h.Key, h => h.Value.Replace(rootUrl, httPlaceholderRootUrl)));
     }
 
-    private async Task AddRequestBodyAsync(HttpRequestMessage request, IDictionary<string, string> originalHeaders, CancellationToken cancellationToken)
+    private async Task AddRequestBodyAsync(HttpRequestMessage request, IDictionary<string, string> originalHeaders,
+        CancellationToken cancellationToken)
     {
         var requestBody = await _httpContextService.GetBodyAsBytesAsync(cancellationToken);
         if (!requestBody.Any())

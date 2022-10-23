@@ -34,7 +34,8 @@ internal class RequestHeaderResponseVariableParsingHandler : BaseVariableParsing
     public override string[] Examples => new[] {$"(({Name}:X-Api-Key))"};
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub, CancellationToken cancellationToken)
+    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
     {
         var headers = _httpContextService.GetHeaders();
         return Task.FromResult(matches

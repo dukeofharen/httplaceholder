@@ -42,7 +42,8 @@ public class DynamicResponseWriterFacts
 
         // assert
         Assert.IsTrue(result.Executed);
-        _variableParserMock.Verify(m => m.ParseAsync(It.IsAny<string>(), stub, It.IsAny<CancellationToken>()), Times.Never);
+        _variableParserMock.Verify(m => m.ParseAsync(It.IsAny<string>(), stub, It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 
     [TestMethod]
@@ -77,7 +78,8 @@ public class DynamicResponseWriterFacts
 
         // assert
         Assert.IsTrue(result.Executed);
-        _variableParserMock.Verify(m => m.ParseAsync(It.IsAny<string>(), stub, It.IsAny<CancellationToken>()), Times.Never);
+        _variableParserMock.Verify(m => m.ParseAsync(It.IsAny<string>(), stub, It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 
     [TestMethod]

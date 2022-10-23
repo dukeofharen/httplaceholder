@@ -52,7 +52,8 @@ public class FormHandlerFacts
         // Arrange
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.UrlEncodedFormMime}}, Body = body
+            Headers = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.UrlEncodedFormMime}},
+            Body = body
         };
         var conditions = new StubConditionsModel();
 

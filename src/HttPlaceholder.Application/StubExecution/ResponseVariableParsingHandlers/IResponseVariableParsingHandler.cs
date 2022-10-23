@@ -40,5 +40,6 @@ public interface IResponseVariableParsingHandler
     /// <param name="stub">The matched stub.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The parsed response body.</returns>
-    Task<string> ParseAsync(string input, IEnumerable<Match> matches, StubModel stub, CancellationToken cancellationToken);
+    Task<string> ParseAsync(string input, IEnumerable<Match> matches, StubModel stub,
+        CancellationToken cancellationToken);
 }

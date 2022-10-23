@@ -30,7 +30,8 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Assert.AreEqual("image/jpeg", response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
+        Assert.AreEqual("image/jpeg",
+            response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
         using var image = await Image.LoadAsync(ms);
         Assert.AreEqual(1024, image.Width);
@@ -48,7 +49,8 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Assert.AreEqual("image/png", response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
+        Assert.AreEqual("image/png",
+            response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
         using var image = await Image.LoadAsync(ms);
         Assert.AreEqual(1024, image.Width);
@@ -66,7 +68,8 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Assert.AreEqual("image/bmp", response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
+        Assert.AreEqual("image/bmp",
+            response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
         using var image = await Image.LoadAsync(ms);
         Assert.AreEqual(1024, image.Width);
@@ -84,7 +87,8 @@ public class StubImageIntegrationTests : StubIntegrationTestBase
 
         // Assert
         response.EnsureSuccessStatusCode();
-        Assert.AreEqual("image/gif", response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
+        Assert.AreEqual("image/gif",
+            response.Content.Headers.Single(h => h.Key == HeaderKeys.ContentType).Value.Single());
         await using var ms = new MemoryStream(await response.Content.ReadAsByteArrayAsync());
         using var image = await Image.LoadAsync(ms);
         Assert.AreEqual(1024, image.Width);

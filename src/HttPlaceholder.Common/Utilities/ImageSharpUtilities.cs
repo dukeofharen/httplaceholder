@@ -2,7 +2,6 @@
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.Drawing.Processing.Processors.Text;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 
@@ -72,7 +71,7 @@ public static class ImageSharpUtilities
         // return processingContext.DrawText(text, scaledFont, color, center);
         return processingContext.DrawText(textOptions, text, color);
         // processingContext.ApplyProcessor(new DrawTextProcessor(processingContext.GetDrawingOptions(), textOptions, text,
-            // brush, pen));
+        // brush, pen));
     }
 
     private static IImageProcessingContext ApplyScalingWaterMarkWordWrap(

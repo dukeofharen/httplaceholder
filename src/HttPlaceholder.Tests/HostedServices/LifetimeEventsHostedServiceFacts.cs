@@ -8,8 +8,8 @@ namespace HttPlaceholder.Tests.HostedServices;
 [TestClass]
 public class LifetimeEventsHostedServiceFacts
 {
-    private readonly AutoMocker _mocker = new();
     private readonly MockLogger<LifetimeEventsHostedService> _logger = new();
+    private readonly AutoMocker _mocker = new();
 
     [TestInitialize]
     public void Initialize() => _mocker.Use<ILogger<LifetimeEventsHostedService>>(_logger);

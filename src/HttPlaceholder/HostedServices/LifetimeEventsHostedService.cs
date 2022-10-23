@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Common;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -16,7 +14,7 @@ public class LifetimeEventsHostedService : IHostedService
     private readonly ILogger<LifetimeEventsHostedService> _logger;
 
     /// <summary>
-    ///     Constructs a <see cref="LifetimeEventsHostedService"/> instance.
+    ///     Constructs a <see cref="LifetimeEventsHostedService" /> instance.
     /// </summary>
     public LifetimeEventsHostedService(
         IHostApplicationLifetime hostApplicationLifetime,
@@ -29,7 +27,8 @@ public class LifetimeEventsHostedService : IHostedService
     /// <inheritdoc />
     public Task StartAsync(CancellationToken cancellationToken)
     {
-        _hostApplicationLifetime.ApplicationStarted.Register(() => _logger.LogInformation($"Starting the application took {Program.GetStartupMillis()} ms."));
+        _hostApplicationLifetime.ApplicationStarted.Register(() =>
+            _logger.LogInformation($"Starting the application took {Program.GetStartupMillis()} ms."));
         return Task.CompletedTask;
     }
 

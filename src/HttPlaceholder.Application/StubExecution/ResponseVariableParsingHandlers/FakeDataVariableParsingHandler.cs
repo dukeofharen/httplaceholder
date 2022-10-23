@@ -37,7 +37,8 @@ internal class FakeDataVariableParsingHandler : BaseVariableParsingHandler, ISin
     public override string GetDescription() => _descriptionLazy.Value;
 
     /// <inheritdoc />
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub, CancellationToken cancellationToken) =>
+    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken) =>
         Task.FromResult(matches
             .Where(match => match.Groups.Count >= 3)
             .Aggregate(input, InsertFakeData));

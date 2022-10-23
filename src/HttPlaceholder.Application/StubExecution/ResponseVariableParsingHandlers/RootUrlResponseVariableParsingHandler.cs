@@ -32,7 +32,8 @@ internal class RootUrlResponseVariableParsingHandler : BaseVariableParsingHandle
     /// <inheritdoc />
     public override string[] Examples => new[] {$"(({Name}))"};
 
-    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub, CancellationToken cancellationToken)
+    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
     {
         var url = _httpContextService.RootUrl;
         return Task.FromResult(matches

@@ -21,7 +21,8 @@ public class StubRedirectionIntegrationTests : StubIntegrationTestBase
         // act / assert
         using var response = await Client.GetAsync(url);
         Assert.AreEqual(HttpStatusCode.TemporaryRedirect, response.StatusCode);
-        Assert.AreEqual("https://google.com/", response.Headers.Single(h => h.Key == HeaderKeys.Location).Value.Single());
+        Assert.AreEqual("https://google.com/",
+            response.Headers.Single(h => h.Key == HeaderKeys.Location).Value.Single());
     }
 
     [TestMethod]
@@ -33,6 +34,7 @@ public class StubRedirectionIntegrationTests : StubIntegrationTestBase
         // act / assert
         using var response = await Client.GetAsync(url);
         Assert.AreEqual(HttpStatusCode.MovedPermanently, response.StatusCode);
-        Assert.AreEqual("https://reddit.com/", response.Headers.Single(h => h.Key == HeaderKeys.Location).Value.Single());
+        Assert.AreEqual("https://reddit.com/",
+            response.Headers.Single(h => h.Key == HeaderKeys.Location).Value.Single());
     }
 }
