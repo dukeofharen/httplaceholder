@@ -33,7 +33,7 @@ public class JsonHandlerFacts
     {
         // Arrange
         var handler = _mocker.CreateInstance<JsonHandler>();
-        var request = new HttpRequestModel {Headers = {{HeaderKeys.ContentType, Constants.TextMime}}};
+        var request = new HttpRequestModel {Headers = {{HeaderKeys.ContentType, MimeTypes.TextMime}}};
         var conditions = new StubConditionsModel();
 
         // Act
@@ -49,7 +49,7 @@ public class JsonHandlerFacts
     {
         // Arrange
         var handler = _mocker.CreateInstance<JsonHandler>();
-        var request = new HttpRequestModel {Headers = {{HeaderKeys.ContentType, Constants.JsonMime}}, Body = "INVALID JSON!!"};
+        var request = new HttpRequestModel {Headers = {{HeaderKeys.ContentType, MimeTypes.JsonMime}}, Body = "INVALID JSON!!"};
         var conditions = new StubConditionsModel();
 
         // Act
@@ -67,7 +67,7 @@ public class JsonHandlerFacts
         var handler = _mocker.CreateInstance<JsonHandler>();
         var request = new HttpRequestModel
         {
-            Headers = {{HeaderKeys.ContentType, Constants.JsonMime}},
+            Headers = {{HeaderKeys.ContentType, MimeTypes.JsonMime}},
             Body = @"[""value1"",44,false,{""key1"":""val1""},[""1"",2]]"
         };
         var conditions = new StubConditionsModel();

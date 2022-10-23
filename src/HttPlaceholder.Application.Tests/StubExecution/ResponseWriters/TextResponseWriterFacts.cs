@@ -41,7 +41,7 @@ public class TextResponseWriterFacts
         // assert
         Assert.IsTrue(result.Executed);
         Assert.IsTrue(expectedBody.SequenceEqual(response.Body));
-        Assert.AreEqual(Constants.TextMime, response.Headers[HeaderKeys.ContentType]);
+        Assert.AreEqual(MimeTypes.TextMime, response.Headers[HeaderKeys.ContentType]);
     }
 
     [TestMethod]
@@ -54,7 +54,7 @@ public class TextResponseWriterFacts
         var stub = new StubModel {Response = new StubResponseModel {Text = text}};
 
         var response = new ResponseModel();
-        response.Headers.Add(HeaderKeys.ContentType, Constants.XmlTextMime);
+        response.Headers.Add(HeaderKeys.ContentType, MimeTypes.XmlTextMime);
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
@@ -62,6 +62,6 @@ public class TextResponseWriterFacts
         // assert
         Assert.IsTrue(result.Executed);
         Assert.IsTrue(expectedBody.SequenceEqual(response.Body));
-        Assert.AreEqual(Constants.XmlTextMime, response.Headers[HeaderKeys.ContentType]);
+        Assert.AreEqual(MimeTypes.XmlTextMime, response.Headers[HeaderKeys.ContentType]);
     }
 }

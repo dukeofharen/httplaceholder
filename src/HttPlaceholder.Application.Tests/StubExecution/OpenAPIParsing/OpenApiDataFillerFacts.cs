@@ -112,7 +112,7 @@ public class OpenApiDataFillerFacts
         var filler = _mocker.CreateInstance<OpenApiDataFiller>();
         var response = new OpenApiResponse
         {
-            Content = new Dictionary<string, OpenApiMediaType> {{Constants.TextMime, new OpenApiMediaType()}}
+            Content = new Dictionary<string, OpenApiMediaType> {{MimeTypes.TextMime, new OpenApiMediaType()}}
         };
 
         // Act
@@ -133,7 +133,7 @@ public class OpenApiDataFillerFacts
         var mediaType = new OpenApiMediaType {Schema = schema};
         var response = new OpenApiResponse
         {
-            Content = new Dictionary<string, OpenApiMediaType> {{Constants.JsonMime, mediaType}}
+            Content = new Dictionary<string, OpenApiMediaType> {{MimeTypes.JsonMime, mediaType}}
         };
 
         const string example = "JSON EXAMPLE";
@@ -165,7 +165,7 @@ public class OpenApiDataFillerFacts
         {
             Content = new Dictionary<string, OpenApiMediaType>
             {
-                {Constants.JsonMime, new OpenApiMediaType {Schema = schema}}
+                {MimeTypes.JsonMime, new OpenApiMediaType {Schema = schema}}
             }
         };
 
@@ -186,7 +186,7 @@ public class OpenApiDataFillerFacts
         var headerSchema = new OpenApiSchema();
         var response = new OpenApiResponse
         {
-            Content = new Dictionary<string, OpenApiMediaType> {{Constants.JsonMime, new OpenApiMediaType()}},
+            Content = new Dictionary<string, OpenApiMediaType> {{MimeTypes.JsonMime, new OpenApiMediaType()}},
             Headers = new Dictionary<string, OpenApiHeader>
             {
                 {"x-api-key", new OpenApiHeader {Schema = headerSchema}}
@@ -202,7 +202,7 @@ public class OpenApiDataFillerFacts
 
         // Assert
         Assert.AreEqual(2, result.Count);
-        Assert.AreEqual(Constants.JsonMime, result[HeaderKeys.ContentType]);
+        Assert.AreEqual(MimeTypes.JsonMime, result[HeaderKeys.ContentType]);
         Assert.AreEqual(randomString, result["x-api-key"]);
     }
 
@@ -306,7 +306,7 @@ public class OpenApiDataFillerFacts
             {
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
-                    {Constants.TextMime, new OpenApiMediaType()}
+                    {MimeTypes.TextMime, new OpenApiMediaType()}
                 }
             }
         };
@@ -337,7 +337,7 @@ public class OpenApiDataFillerFacts
             {
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
-                    {Constants.JsonMime, new OpenApiMediaType {Schema = schema}}
+                    {MimeTypes.JsonMime, new OpenApiMediaType {Schema = schema}}
                 }
             }
         };
@@ -362,7 +362,7 @@ public class OpenApiDataFillerFacts
         {
             RequestBody = new OpenApiRequestBody
             {
-                Content = new Dictionary<string, OpenApiMediaType> {{Constants.JsonMime, mediaType}}
+                Content = new Dictionary<string, OpenApiMediaType> {{MimeTypes.JsonMime, mediaType}}
             }
         };
 
@@ -539,7 +539,7 @@ public class OpenApiDataFillerFacts
             {
                 Content = new Dictionary<string, OpenApiMediaType>
                 {
-                    {Constants.TextMime, new OpenApiMediaType()}
+                    {MimeTypes.TextMime, new OpenApiMediaType()}
                 }
             }
         };
@@ -555,7 +555,7 @@ public class OpenApiDataFillerFacts
         // Assert
         Assert.AreEqual(2, result.Count);
         Assert.AreEqual(headerValue, result["x-header-1"]);
-        Assert.AreEqual(Constants.TextMime, result[HeaderKeys.ContentType]);
+        Assert.AreEqual(MimeTypes.TextMime, result[HeaderKeys.ContentType]);
     }
 
     [TestMethod]

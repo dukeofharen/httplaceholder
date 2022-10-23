@@ -27,7 +27,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent(content, Encoding.UTF8, Constants.TextMime)
+            Content = new StringContent(content, Encoding.UTF8, MimeTypes.TextMime)
         };
         var harResponse = await Client.SendAsync(apiRequest);
         harResponse.EnsureSuccessStatusCode();
@@ -48,7 +48,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
             ((StubConditionStringCheckingModel)stub.Conditions.Headers["cache-control"]).StringEquals);
         Assert.AreEqual("ducode.org", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
         Assert.AreEqual(200, stub.Response.StatusCode);
-        Assert.AreEqual(Constants.HtmlMime, stub.Response.ContentType);
+        Assert.AreEqual(MimeTypes.HtmlMime, stub.Response.ContentType);
         Assert.AreEqual(4, stub.Response.Headers.Count);
         Assert.AreEqual("nginx", stub.Response.Headers["server"]);
         Assert.IsTrue(stub.Response.Html.Contains("<!DOCTYPE html>"));
@@ -130,7 +130,7 @@ public class RestApiImportHarTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent(content, Encoding.UTF8, Constants.TextMime)
+            Content = new StringContent(content, Encoding.UTF8, MimeTypes.TextMime)
         };
         var harResponse = await Client.SendAsync(apiRequest);
         harResponse.EnsureSuccessStatusCode();

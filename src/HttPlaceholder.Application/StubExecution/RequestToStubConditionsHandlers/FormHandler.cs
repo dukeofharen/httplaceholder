@@ -26,9 +26,8 @@ internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
             return Task.FromResult(false);
         }
 
-        var supportedContentTypes = new[] {Constants.UrlEncodedFormMime, Constants.MultipartFormDataMime};
         if (
-            !supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)) ||
+            !MimeTypes.FormMimeTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)) ||
             string.IsNullOrWhiteSpace(request.Body))
         {
             return Task.FromResult(false);

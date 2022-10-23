@@ -32,7 +32,7 @@ public class ResponseBodyHandlerFacts
     {
         // Arrange
         var response = new HttpResponseModel {Content = "{}"};
-        var stubResponse = new StubResponseModel {ContentType = Constants.JsonMime};
+        var stubResponse = new StubResponseModel {ContentType = MimeTypes.JsonMime};
 
         // Act
         var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
@@ -51,7 +51,7 @@ public class ResponseBodyHandlerFacts
     {
         // Arrange
         var response = new HttpResponseModel {Content = "<html>"};
-        var stubResponse = new StubResponseModel {ContentType = Constants.HtmlMime};
+        var stubResponse = new StubResponseModel {ContentType = MimeTypes.HtmlMime};
 
         // Act
         var result = await _handler.HandleStubGenerationAsync(response, stubResponse, CancellationToken.None);
@@ -66,8 +66,8 @@ public class ResponseBodyHandlerFacts
     }
 
     [DataTestMethod]
-    [DataRow(Constants.XmlApplicationMime)]
-    [DataRow(Constants.XmlTextMime)]
+    [DataRow(MimeTypes.XmlApplicationMime)]
+    [DataRow(MimeTypes.XmlTextMime)]
     public async Task HandleStubGenerationAsync_Xml(string mimeType)
     {
         // Arrange
@@ -87,7 +87,7 @@ public class ResponseBodyHandlerFacts
     }
 
     [DataTestMethod]
-    [DataRow(Constants.TextMime)]
+    [DataRow(MimeTypes.TextMime)]
     [DataRow("application/vnd.ms-excel")]
     [DataRow(null)]
     public async Task HandleStubGenerationAsync_Text(string mimeType)

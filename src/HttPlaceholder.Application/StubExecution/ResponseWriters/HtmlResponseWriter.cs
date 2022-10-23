@@ -12,7 +12,7 @@ internal class HtmlResponseWriter : BaseBodyResponseWriter, ISingletonService
     public override int Priority => 0;
 
     /// <inheritdoc />
-    protected override string GetContentType() => Constants.HtmlMime;
+    protected override string GetContentType() => MimeTypes.HtmlMime;
 
     /// <inheritdoc />
     protected override string GetBodyFromStub(StubModel stub) => stub.Response?.Html;

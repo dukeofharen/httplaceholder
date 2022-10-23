@@ -1,6 +1,22 @@
 ﻿namespace HttPlaceholder.Domain;
 
 /// <summary>
+///     A class that contains several constants for use in HttPlaceholder.
+/// </summary>
+public static class Constants
+{
+    /// <summary>
+    ///     The default scenario state.
+    /// </summary>
+    public const string DefaultScenarioState = "Start";
+
+    /// <summary>
+    ///     An array of separator characters for providing multiple input file paths.
+    /// </summary>
+    public static readonly string[] InputFileSeparators = {"%%", ","};
+}
+
+/// <summary>
 ///     A class containing file and folder names.
 /// </summary>
 public static class FileNames
@@ -89,17 +105,10 @@ public static class DefaultConfiguration
 }
 
 /// <summary>
-///     A class that contains several constants for use in HttPlaceholder.
+///     A class containing several mime types.
 /// </summary>
-public static class Constants
+public static class MimeTypes
 {
-    // Scenario values.
-    /// <summary>
-    ///     The default scenario state.
-    /// </summary>
-    public const string DefaultScenarioState = "Start";
-
-    // Mime types.
     /// <summary>
     ///     The JSON mime type.
     /// </summary>
@@ -146,9 +155,9 @@ public static class Constants
     public const string MultipartFormDataMime = "multipart/form-data";
 
     /// <summary>
-    ///     An array of separator characters for providing multiple input file paths.
+    ///     A list of mime types that are valid for posted HTTP forms.
     /// </summary>
-    public static readonly string[] InputFileSeparators = {"%%", ","};
+    public static string[] FormMimeTypes => new[] {UrlEncodedFormMime, MultipartFormDataMime};
 }
 
 /// <summary>

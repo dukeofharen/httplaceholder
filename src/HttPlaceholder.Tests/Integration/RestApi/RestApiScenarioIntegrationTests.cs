@@ -124,7 +124,7 @@ public class RestApiScenarioIntegrationTests : RestApiIntegrationTestBase
         {
             Method = HttpMethod.Put,
             RequestUri = new Uri($"{BaseAddress}ph-api/scenarios/{scenario}"),
-            Content = new StringContent(JsonConvert.SerializeObject(input), Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent(JsonConvert.SerializeObject(input), Encoding.UTF8, MimeTypes.JsonMime)
         };
         return await Client.SendAsync(request);
     }

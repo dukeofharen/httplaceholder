@@ -21,7 +21,7 @@ public class RestApiMetadataIntegrationTests : RestApiIntegrationTestBase
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Get, "/ph-api/metadata")
         {
-            Headers = {{"Accept", Constants.JsonMime}}
+            Headers = {{"Accept", MimeTypes.JsonMime}}
         };
 
         // Act
@@ -40,7 +40,7 @@ public class RestApiMetadataIntegrationTests : RestApiIntegrationTestBase
         // Arrange
         var request = new HttpRequestMessage(HttpMethod.Get, "/ph-api/metadata/features/authentication")
         {
-            Headers = {{"Accept", Constants.JsonMime}}
+            Headers = {{"Accept", MimeTypes.JsonMime}}
         };
 
         // Act

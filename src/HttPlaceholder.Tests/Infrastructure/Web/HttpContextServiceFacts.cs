@@ -232,7 +232,7 @@ public class HttpContextServiceFacts
     {
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
-        _mockHttpContext.SetRequestHeader(HeaderKeys.ContentType, Constants.MultipartFormDataMime);
+        _mockHttpContext.SetRequestHeader(HeaderKeys.ContentType, MimeTypes.MultipartFormDataMime);
         _mockHttpContext
             .HttpRequestMock
             .Setup(m => m.Form)

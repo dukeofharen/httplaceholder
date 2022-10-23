@@ -19,11 +19,6 @@ namespace HttPlaceholder.Infrastructure.Web;
 
 internal class HttpContextService : IHttpContextService, ISingletonService
 {
-    private static readonly string[] _validFormContentTypes =
-    {
-        Constants.MultipartFormDataMime, Constants.UrlEncodedFormMime
-    };
-
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -135,7 +130,7 @@ internal class HttpContextService : IHttpContextService, ISingletonService
             return Array.Empty<(string, StringValues)>();
         }
 
-        if (!_validFormContentTypes.Any(ct => contentType.Contains(ct, StringComparison.OrdinalIgnoreCase)))
+        if (!MimeTypes.FormMimeTypes.Any(ct => contentType.Contains(ct, StringComparison.OrdinalIgnoreCase)))
         {
             return Array.Empty<(string, StringValues)>();
         }

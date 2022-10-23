@@ -52,7 +52,7 @@ public class RestApiAuthorizationTests : RestApiIntegrationTestBase
         request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
         if (parsedHttpMethod == HttpMethod.Post || parsedHttpMethod == HttpMethod.Put)
         {
-            request.Content = new StringContent(postArray ? "[]" : "{}", Encoding.UTF8, Constants.JsonMime);
+            request.Content = new StringContent(postArray ? "[]" : "{}", Encoding.UTF8, MimeTypes.JsonMime);
         }
 
         using var response = await Client.SendAsync(request);
@@ -109,7 +109,7 @@ public class RestApiAuthorizationTests : RestApiIntegrationTestBase
         request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("correct", "correct"));
         if (parsedHttpMethod == HttpMethod.Post || parsedHttpMethod == HttpMethod.Put)
         {
-            request.Content = new StringContent("{}", Encoding.UTF8, Constants.JsonMime);
+            request.Content = new StringContent("{}", Encoding.UTF8, MimeTypes.JsonMime);
         }
 
         using var response = await Client.SendAsync(request);

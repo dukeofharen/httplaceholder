@@ -40,7 +40,7 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
 }";
         var request = new HttpRequestMessage
         {
-            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime),
+            Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime),
             Method = HttpMethod.Put,
             RequestUri = new Uri(url)
         };
@@ -79,7 +79,7 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
 }";
         var request = new HttpRequestMessage
         {
-            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime),
+            Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime),
             Method = HttpMethod.Put,
             RequestUri = new Uri(url)
         };
@@ -105,7 +105,7 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
 }]}";
         var request = new HttpRequestMessage
         {
-            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime),
+            Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime),
             Method = HttpMethod.Put,
             RequestUri = new Uri(url)
         };
@@ -133,7 +133,7 @@ public class StubJsonPathConditionsIntegrationTests : StubIntegrationTestBase
 }]}";
         var request = new HttpRequestMessage
         {
-            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime),
+            Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime),
             Method = HttpMethod.Put,
             RequestUri = new Uri(url)
         };

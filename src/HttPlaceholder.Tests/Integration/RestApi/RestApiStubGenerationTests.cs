@@ -38,7 +38,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent("{}", Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent("{}", Encoding.UTF8, MimeTypes.JsonMime)
         };
         response = await Client.SendAsync(apiRequest);
         response.EnsureSuccessStatusCode();
@@ -99,7 +99,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
             Method = HttpMethod.Post,
             Content = new StringContent(
                 JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}),
-                Encoding.UTF8, Constants.JsonMime)
+                Encoding.UTF8, MimeTypes.JsonMime)
         };
         response = await Client.SendAsync(apiRequest);
         response.EnsureSuccessStatusCode();

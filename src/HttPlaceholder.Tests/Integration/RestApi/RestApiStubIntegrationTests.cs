@@ -87,7 +87,7 @@ response:
         {
             Method = HttpMethod.Post,
             RequestUri = new Uri(url),
-            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime)
         };
 
         // act / assert
@@ -142,7 +142,7 @@ response:
         {
             Method = HttpMethod.Post,
             RequestUri = new Uri(url),
-            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime)
         };
 
         // act / assert
@@ -174,7 +174,7 @@ response:
         {
             Method = HttpMethod.Post,
             RequestUri = new Uri(url),
-            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime)
         };
 
         // act / assert
@@ -201,7 +201,7 @@ response:
         // Act
         var request = new HttpRequestMessage(HttpMethod.Post, $"{TestServer.BaseAddress}ph-api/stubs")
         {
-            Content = new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent(JsonConvert.SerializeObject(stub), Encoding.UTF8, MimeTypes.JsonMime)
         };
         using var response = await Client.SendAsync(request);
 
@@ -245,7 +245,7 @@ response:
         });
 
         var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -268,7 +268,7 @@ response:
         });
 
         var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -315,7 +315,7 @@ response:
         });
 
         var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -380,7 +380,7 @@ response:
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
         var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -400,7 +400,7 @@ response:
         // arrange
         var url = $"{TestServer.BaseAddress}ph-api/stubs";
         var request = new HttpRequestMessage {Method = HttpMethod.Options, RequestUri = new Uri(url)};
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
         request.Headers.Add("Origin", "http://localhost:8080");
 
         // act / assert
@@ -518,7 +518,7 @@ response:
         {
             Method = HttpMethod.Post,
             RequestUri = new Uri(url),
-            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime)
         };
 
         // act / assert
@@ -556,7 +556,7 @@ response:
         {
             Method = HttpMethod.Put,
             RequestUri = new Uri(url),
-            Content = new StringContent(body, Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent(body, Encoding.UTF8, MimeTypes.JsonMime)
         };
 
         // act / assert

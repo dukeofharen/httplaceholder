@@ -48,7 +48,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
         }
 
         var content = response.Content
-            .FirstOrDefault(c => string.Equals(c.Key, Constants.JsonMime, StringComparison.OrdinalIgnoreCase));
+            .FirstOrDefault(c => string.Equals(c.Key, MimeTypes.JsonMime, StringComparison.OrdinalIgnoreCase));
 
         // If the content has any examples assigned to it, create a response based on that instead of randomly generating a response.
         var example = _openApiFakeDataGenerator.GetJsonExample(content.Value);
@@ -94,7 +94,7 @@ internal class OpenApiDataFiller : IOpenApiDataFiller, ISingletonService
         }
 
         var definition = requestBodyDefinitions.Content
-            .FirstOrDefault(c => string.Equals(c.Key, Constants.JsonMime, StringComparison.OrdinalIgnoreCase));
+            .FirstOrDefault(c => string.Equals(c.Key, MimeTypes.JsonMime, StringComparison.OrdinalIgnoreCase));
 
         // If the content has any examples assigned to it, create a response based on that instead of randomly generating a response.
         var example = _openApiFakeDataGenerator.GetJsonExample(definition.Value);

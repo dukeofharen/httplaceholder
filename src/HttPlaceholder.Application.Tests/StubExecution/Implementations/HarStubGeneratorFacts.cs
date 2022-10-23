@@ -122,7 +122,7 @@ public class HarStubGeneratorFacts
         Assert.AreEqual(5, res1.Headers.Count);
         Assert.IsFalse(res1.Headers.Any(h => h.Key.Equals(HeaderKeys.ContentLength.ToLower(), StringComparison.OrdinalIgnoreCase)));
         Assert.IsFalse(res1.Headers.Any(h => h.Key.Equals("content-encoding", StringComparison.OrdinalIgnoreCase)));
-        Assert.AreEqual(Constants.HtmlMime, res1.Headers[HeaderKeys.ContentType.ToLower()]);
+        Assert.AreEqual(MimeTypes.HtmlMime, res1.Headers[HeaderKeys.ContentType.ToLower()]);
 
         var req2 = requests[1];
         Assert.AreEqual("GET", req2.Method);

@@ -77,7 +77,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
         });
 
         var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
 
         // act / assert
         using var response = await Client.SendAsync(request);
@@ -160,7 +160,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
                 Content = new StringContent(
                     JsonConvert.SerializeObject(stubs),
                     Encoding.UTF8,
-                    Constants.JsonMime)
+                    MimeTypes.JsonMime)
             };
         using var response = await Client.SendAsync(request);
 
@@ -191,7 +191,7 @@ public class RestApiTenantIntegrationTests : RestApiIntegrationTestBase
         });
 
         var request = new HttpRequestMessage {Method = HttpMethod.Get, RequestUri = new Uri(url)};
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(Constants.JsonMime));
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeTypes.JsonMime));
 
         // act / assert
         using var response = await Client.SendAsync(request);

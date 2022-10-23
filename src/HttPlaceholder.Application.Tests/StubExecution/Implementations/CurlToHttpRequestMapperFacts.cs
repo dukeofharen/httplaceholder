@@ -279,7 +279,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("param1=value1&param2=value2", req1.Body);
 
         var headers1 = req1.Headers;
-        Assert.AreEqual(Constants.MultipartFormDataMime, headers1[HeaderKeys.ContentType]);
+        Assert.AreEqual(MimeTypes.MultipartFormDataMime, headers1[HeaderKeys.ContentType]);
 
         var req2 = result[1];
         Assert.AreEqual("POST", req2.Method);
@@ -287,7 +287,7 @@ public class CurlToHttpRequestMapperFacts
         Assert.AreEqual("param1=value1&param2=value2", req2.Body);
 
         var headers2 = req2.Headers;
-        Assert.AreEqual(Constants.UrlEncodedFormMime, headers2[HeaderKeys.ContentType]);
+        Assert.AreEqual(MimeTypes.UrlEncodedFormMime, headers2[HeaderKeys.ContentType]);
     }
 
     [TestMethod]

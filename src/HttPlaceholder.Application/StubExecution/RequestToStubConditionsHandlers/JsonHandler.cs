@@ -37,7 +37,7 @@ internal class JsonHandler : IRequestToStubConditionsHandler, ISingletonService
             return Task.FromResult(false);
         }
 
-        var supportedContentTypes = new[] {Constants.JsonMime};
+        var supportedContentTypes = new[] {MimeTypes.JsonMime};
         if (!supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)))
         {
             return Task.FromResult(false);
