@@ -1,7 +1,7 @@
 ﻿namespace HttPlaceholder.Domain;
 
 /// <summary>
-///     A static class containing file and folder names.
+///     A class containing file and folder names.
 /// </summary>
 public static class FileNames
 {
@@ -28,11 +28,10 @@ public static class FileNames
 }
 
 /// <summary>
-///     A class that contains several constants for use in HttPlaceholder.
+///     A class containing default configuration values.
 /// </summary>
-public static class Constants
+public static class DefaultConfiguration
 {
-    // Default config values
     /// <summary>
     ///     The default HTTP port.
     /// </summary>
@@ -87,7 +86,13 @@ public static class Constants
     ///     The default maximum "extra duration" milliseconds.
     /// </summary>
     public const int DefaultMaximumExtraDuration = 60000;
+}
 
+/// <summary>
+///     A class that contains several constants for use in HttPlaceholder.
+/// </summary>
+public static class Constants
+{
     // Scenario values.
     /// <summary>
     ///     The default scenario state.
