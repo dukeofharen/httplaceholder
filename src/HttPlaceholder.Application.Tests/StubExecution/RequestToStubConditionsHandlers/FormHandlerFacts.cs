@@ -31,7 +31,7 @@ public class FormHandlerFacts
         // Arrange
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> {{Constants.ContentType, Constants.JsonMime}}
+            Headers = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.JsonMime}}
         };
         var conditions = new StubConditionsModel();
 
@@ -52,7 +52,8 @@ public class FormHandlerFacts
         // Arrange
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> {{Constants.ContentType, Constants.UrlEncodedFormMime}}, Body = body
+            Headers = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.UrlEncodedFormMime}},
+            Body = body
         };
         var conditions = new StubConditionsModel();
 
@@ -70,7 +71,7 @@ public class FormHandlerFacts
         // Arrange
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> {{Constants.ContentType, Constants.UrlEncodedFormMime}},
+            Headers = new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.UrlEncodedFormMime}},
             Body = "invalid form body"
         };
         var conditions = new StubConditionsModel {Body = new[] {"body1", "body2"}};
@@ -84,17 +85,17 @@ public class FormHandlerFacts
     }
 
     [DataTestMethod]
-    [DataRow(Constants.UrlEncodedFormMime)]
-    [DataRow($"{Constants.UrlEncodedFormMime}; charset=UTF-8")]
-    [DataRow(Constants.MultipartFormDataMime)]
-    [DataRow($"{Constants.MultipartFormDataMime}; charset=UTF-8")]
+    [DataRow(MimeTypes.UrlEncodedFormMime)]
+    [DataRow($"{MimeTypes.UrlEncodedFormMime}; charset=UTF-8")]
+    [DataRow(MimeTypes.MultipartFormDataMime)]
+    [DataRow($"{MimeTypes.MultipartFormDataMime}; charset=UTF-8")]
     public async Task FormHandler_HandleStubGenerationAsync_HappyFlow(string contentType)
     {
         // Arrange
         const string form = "form1=val1&form2=val2";
         var request = new HttpRequestModel
         {
-            Headers = new Dictionary<string, string> {{Constants.ContentType, contentType}}, Body = form
+            Headers = new Dictionary<string, string> {{HeaderKeys.ContentType, contentType}}, Body = form
         };
         var conditions = new StubConditionsModel();
 

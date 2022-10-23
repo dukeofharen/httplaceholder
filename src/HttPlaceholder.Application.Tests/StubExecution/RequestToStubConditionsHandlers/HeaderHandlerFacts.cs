@@ -33,8 +33,8 @@ public class HeaderHandlerFacts
         {
             Headers = new Dictionary<string, string>
             {
-                {Constants.PostmanToken, Guid.NewGuid().ToString()},
-                {Constants.Host, "httplaceholder.com"},
+                {HeaderKeys.PostmanToken, Guid.NewGuid().ToString()},
+                {HeaderKeys.Host, "httplaceholder.com"},
                 {"X-Api-Key", "123"},
                 {"X-Bla", "bla"}
             }

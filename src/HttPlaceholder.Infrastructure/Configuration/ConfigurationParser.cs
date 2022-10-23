@@ -8,7 +8,7 @@ using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure.Implementations;
 using Newtonsoft.Json;
-using static HttPlaceholder.Domain.Constants;
+using static HttPlaceholder.Domain.DefaultConfiguration;
 
 namespace HttPlaceholder.Infrastructure.Configuration;
 

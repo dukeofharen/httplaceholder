@@ -115,7 +115,7 @@ public class RelationalDbStubSourceFacts
         var responseModel = new ResponseModel
         {
             Body = new byte[] {1, 2, 3},
-            Headers = {{Constants.ContentType, "text/plain"}},
+            Headers = {{HeaderKeys.ContentType, "text/plain"}},
             StatusCode = 200,
             BodyIsBinary = true
         };
@@ -337,7 +337,8 @@ public class RelationalDbStubSourceFacts
         {
             Id = 1,
             Body = Convert.ToBase64String(Encoding.UTF8.GetBytes("555")),
-            Headers = JsonConvert.SerializeObject(new Dictionary<string, string> {{Constants.ContentType, "text/plain"}}),
+            Headers = JsonConvert.SerializeObject(
+                new Dictionary<string, string> {{HeaderKeys.ContentType, "text/plain"}}),
             StatusCode = 200,
             BodyIsBinary = false
         };
@@ -363,7 +364,7 @@ public class RelationalDbStubSourceFacts
 
         Assert.AreEqual(expectedResponse.StatusCode, result.StatusCode);
         Assert.AreEqual(1, result.Headers.Count);
-        Assert.AreEqual("text/plain", result.Headers[Constants.ContentType]);
+        Assert.AreEqual("text/plain", result.Headers[HeaderKeys.ContentType]);
         Assert.IsFalse(result.BodyIsBinary);
         Assert.AreEqual("555", Encoding.UTF8.GetString(result.Body));
     }

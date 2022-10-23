@@ -34,7 +34,7 @@ public class ResponseVariableParserFacts
     }
 
     [TestMethod]
-    public void VariableParser_Parse_HappyFlow()
+    public async Task VariableParser_Parse_HappyFlow()
     {
         // arrange
         const string input = @"((handler1:value1)) ((handler2))
@@ -44,24 +44,28 @@ public class ResponseVariableParserFacts
         var stub = new StubModel();
         _handler1
             .Setup(m =>
-                m.Parse(input,
+                m.ParseAsync(input,
                     It.Is<IEnumerable<Match>>(matches =>
                         matches.Any(match => match.Groups[2].Value == "value1" || match.Groups[2].Value == "bla")),
-                    stub))
-            .Returns<string, IEnumerable<Match>, StubModel>((r, _, _) => r);
+                    stub,
+                    It.IsAny<CancellationToken>()))
+            .Returns<string, IEnumerable<Match>, StubModel, CancellationToken>((r, _, _, _) => Task.FromResult(r));
         _handler2
             .Setup(m =>
-                m.Parse(input,
+                m.ParseAsync(input,
                     It.Is<IEnumerable<Match>>(matches =>
-                        matches.Any(match => string.IsNullOrWhiteSpace(match.Groups[2].Value))), stub))
-            .Returns<string, IEnumerable<Match>, StubModel>((r, _, _) => r);
+                        matches.Any(match => string.IsNullOrWhiteSpace(match.Groups[2].Value))), stub,
+                    It.IsAny<CancellationToken>()))
+            .Returns<string, IEnumerable<Match>, StubModel, CancellationToken>((r, _, _, _) => Task.FromResult(r));
 
         // act
-        var result = _parser.Parse(input, stub);
+        var result = await _parser.ParseAsync(input, stub, CancellationToken.None);
 
         // assert
         Assert.AreEqual(input, result);
-        _handler1.Verify(m => m.Parse(input, It.IsAny<IEnumerable<Match>>(), stub), Times.Once);
-        _handler2.Verify(m => m.Parse(input, It.IsAny<IEnumerable<Match>>(), stub), Times.Once);
+        _handler1.Verify(m => m.ParseAsync(input, It.IsAny<IEnumerable<Match>>(), stub, It.IsAny<CancellationToken>()),
+            Times.Once);
+        _handler2.Verify(m => m.ParseAsync(input, It.IsAny<IEnumerable<Match>>(), stub, It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 }

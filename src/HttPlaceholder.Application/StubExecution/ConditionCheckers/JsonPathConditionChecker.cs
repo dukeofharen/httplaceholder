@@ -28,17 +28,17 @@ public class JsonPathConditionChecker : IConditionChecker, ISingletonService
     }
 
     /// <inheritdoc />
-    public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
+    public async Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
         var jsonPathConditions = stub.Conditions?.JsonPath?.ToArray();
         if (jsonPathConditions == null || jsonPathConditions?.Any() != true)
         {
-            return Task.FromResult(result);
+            return result;
         }
 
         var validJsonPaths = 0;
-        var body = _httpContextService.GetBody();
+        var body = await _httpContextService.GetBodyAsync(cancellationToken);
         var jsonObject = JObject.Parse(body);
         foreach (var condition in jsonPathConditions)
         {
@@ -91,8 +91,7 @@ public class JsonPathConditionChecker : IConditionChecker, ISingletonService
         result.ConditionValidation = validJsonPaths == jsonPathConditions.Length
             ? ConditionValidationType.Valid
             : ConditionValidationType.Invalid;
-
-        return Task.FromResult(result);
+        return result;
     }
 
     /// <inheritdoc />
@@ -102,7 +101,7 @@ public class JsonPathConditionChecker : IConditionChecker, ISingletonService
     {
         static StubJsonPathModel ParseDict(IReadOnlyDictionary<object, object> conditionDict)
         {
-            return new()
+            return new StubJsonPathModel
             {
                 Query = conditionDict.ContainsKey("query")
                     ? conditionDict["query"].ToString()

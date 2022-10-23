@@ -20,12 +20,14 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
 {
     private static readonly string[] _excludedRequestHeaderNames =
     {
-        Constants.ContentType, Constants.ContentLength, Constants.Host, Constants.Connection, Constants.AcceptEncoding
+        HeaderKeys.ContentType, HeaderKeys.ContentLength, HeaderKeys.Host, HeaderKeys.Connection,
+        HeaderKeys.AcceptEncoding
     };
 
     private static readonly string[] _excludedResponseHeaderNames =
     {
-        Constants.XHttPlaceholderCorrelation, Constants.XHttPlaceholderExecutedStub, Constants.TransferEncoding, Constants.ContentLength
+        HeaderKeys.XHttPlaceholderCorrelation, HeaderKeys.XHttPlaceholderExecutedStub, HeaderKeys.TransferEncoding,
+        HeaderKeys.ContentLength
     };
 
     private readonly IHttpClientFactory _httpClientFactory;
@@ -75,7 +77,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
 
         if (method != HttpMethod.Get)
         {
-            AddRequestBody(request, originalHeaders);
+            await AddRequestBodyAsync(request, originalHeaders, cancellationToken);
         }
 
         using var httpClient = _httpClientFactory.CreateClient("proxy");
@@ -135,19 +137,20 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
             .ToDictionary(h => h.Key, h => h.Value.Replace(rootUrl, httPlaceholderRootUrl)));
     }
 
-    private void AddRequestBody(HttpRequestMessage request, IDictionary<string, string> originalHeaders)
+    private async Task AddRequestBodyAsync(HttpRequestMessage request, IDictionary<string, string> originalHeaders,
+        CancellationToken cancellationToken)
     {
-        var requestBody = _httpContextService.GetBodyAsBytes();
+        var requestBody = await _httpContextService.GetBodyAsBytesAsync(cancellationToken);
         if (!requestBody.Any())
         {
             return;
         }
 
         request.Content = new ByteArrayContent(requestBody);
-        var contentTypeHeader = originalHeaders.CaseInsensitiveSearchPair(Constants.ContentType);
+        var contentTypeHeader = originalHeaders.CaseInsensitiveSearchPair(HeaderKeys.ContentType);
         if (!string.IsNullOrWhiteSpace(contentTypeHeader.Value))
         {
-            request.Content.Headers.Add(Constants.ContentType, contentTypeHeader.Value);
+            request.Content.Headers.Add(HeaderKeys.ContentType, contentTypeHeader.Value);
         }
     }
 

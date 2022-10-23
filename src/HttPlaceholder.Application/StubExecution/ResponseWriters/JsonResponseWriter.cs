@@ -12,7 +12,7 @@ internal class JsonResponseWriter : BaseBodyResponseWriter, ISingletonService
     public override int Priority => 0;
 
     /// <inheritdoc />
-    protected override string GetContentType() => Constants.JsonMime;
+    protected override string GetContentType() => MimeTypes.JsonMime;
 
     /// <inheritdoc />
     protected override string GetBodyFromStub(StubModel stub) => stub.Response?.Json;

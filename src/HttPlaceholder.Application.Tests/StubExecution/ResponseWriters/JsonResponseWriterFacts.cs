@@ -41,7 +41,7 @@ public class JsonResponseWriterFacts
         // assert
         Assert.IsTrue(result.Executed);
         Assert.IsTrue(expectedResponseBytes.SequenceEqual(expectedResponseBytes));
-        Assert.AreEqual(Constants.JsonMime, response.Headers[Constants.ContentType]);
+        Assert.AreEqual(MimeTypes.JsonMime, response.Headers[HeaderKeys.ContentType]);
     }
 
     [TestMethod]
@@ -54,7 +54,7 @@ public class JsonResponseWriterFacts
         var stub = new StubModel {Response = new StubResponseModel {Json = responseText}};
 
         var response = new ResponseModel();
-        response.Headers.Add(Constants.ContentType, Constants.TextMime);
+        response.Headers.Add(HeaderKeys.ContentType, MimeTypes.TextMime);
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
@@ -62,6 +62,6 @@ public class JsonResponseWriterFacts
         // assert
         Assert.IsTrue(result.Executed);
         Assert.IsTrue(expectedResponseBytes.SequenceEqual(expectedResponseBytes));
-        Assert.AreEqual(Constants.TextMime, response.Headers[Constants.ContentType]);
+        Assert.AreEqual(MimeTypes.TextMime, response.Headers[HeaderKeys.ContentType]);
     }
 }

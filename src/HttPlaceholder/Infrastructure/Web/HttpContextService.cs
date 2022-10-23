@@ -19,11 +19,6 @@ namespace HttPlaceholder.Infrastructure.Web;
 
 internal class HttpContextService : IHttpContextService, ISingletonService
 {
-    private static readonly string[] _validFormContentTypes =
-    {
-        Constants.MultipartFormDataMime, Constants.UrlEncodedFormMime
-    };
-
     private readonly IClientDataResolver _clientDataResolver;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -79,26 +74,15 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     }
 
     /// <inheritdoc />
-    public string GetBody()
-    {
-        var context = _httpContextAccessor.HttpContext;
-        using var reader = new StreamReader(
-            context.Request.Body,
-            Encoding.UTF8,
-            false,
-            1024,
-            true);
-        var body = reader.ReadToEnd();
-        context.Request.Body.Position = 0;
-        return body;
-    }
+    public async Task<string> GetBodyAsync(CancellationToken cancellationToken) =>
+        Encoding.UTF8.GetString(await GetBodyAsBytesAsync(cancellationToken));
 
     /// <inheritdoc />
-    public byte[] GetBodyAsBytes()
+    public async Task<byte[]> GetBodyAsBytesAsync(CancellationToken cancellationToken)
     {
         var context = _httpContextAccessor.HttpContext;
         using var ms = new MemoryStream();
-        context.Request.Body.CopyTo(ms);
+        await context.Request.Body.CopyToAsync(ms, cancellationToken);
         context.Request.Body.Position = 0;
         return ms.ToArray();
     }
@@ -129,13 +113,13 @@ internal class HttpContextService : IHttpContextService, ISingletonService
     /// <inheritdoc />
     public (string, StringValues)[] GetFormValues()
     {
-        var contentType = GetHeaders().CaseInsensitiveSearch(Constants.ContentType);
+        var contentType = GetHeaders().CaseInsensitiveSearch(HeaderKeys.ContentType);
         if (string.IsNullOrWhiteSpace(contentType))
         {
             return Array.Empty<(string, StringValues)>();
         }
 
-        if (!_validFormContentTypes.Any(ct => contentType.Contains(ct, StringComparison.OrdinalIgnoreCase)))
+        if (!MimeTypes.FormMimeTypes.Any(ct => contentType.Contains(ct, StringComparison.OrdinalIgnoreCase)))
         {
             return Array.Empty<(string, StringValues)>();
         }

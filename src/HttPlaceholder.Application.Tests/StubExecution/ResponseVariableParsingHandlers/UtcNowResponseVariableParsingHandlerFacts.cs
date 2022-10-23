@@ -15,7 +15,7 @@ public class UtcNowResponseVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void UtcNowVariableHandler_Parse_HappyFlow_FormatSet()
+    public async Task UtcNowVariableHandler_Parse_HappyFlow_FormatSet()
     {
         // Arrange
         const string input = "((utcnow:dd-MM-yyyy HH:mm:ss))";
@@ -29,14 +29,14 @@ public class UtcNowResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // Assert
         Assert.AreEqual("21-08-2019 20:29:17", result);
     }
 
     [TestMethod]
-    public void UtcNowVariableHandler_Parse_HappyFlow_NoFormatSet()
+    public async Task UtcNowVariableHandler_Parse_HappyFlow_NoFormatSet()
     {
         // Arrange
         const string input = "((utcnow))";
@@ -50,7 +50,7 @@ public class UtcNowResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // Assert
         Assert.AreEqual(_now.ToString(CultureInfo.InvariantCulture), result);

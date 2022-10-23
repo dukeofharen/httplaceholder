@@ -26,7 +26,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent(content, Encoding.UTF8, Constants.TextMime)
+            Content = new StringContent(content, Encoding.UTF8, MimeTypes.TextMime)
         };
         var curlResponse = await Client.SendAsync(apiRequest);
         curlResponse.EnsureSuccessStatusCode();
@@ -46,7 +46,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
         Assert.AreEqual(2, headers1.Count);
         Assert.AreEqual("https://site.com", ((StubConditionStringCheckingModel)headers1["Origin"]).StringEquals);
         Assert.AreEqual("deflate, gzip, br",
-            ((StubConditionStringCheckingModel)headers1[Constants.AcceptEncoding]).StringEquals);
+            ((StubConditionStringCheckingModel)headers1[HeaderKeys.AcceptEncoding]).StringEquals);
 
         var stub2 = stubs[1];
         Assert.AreEqual("generated-b19dfae4c2040bb2035c5b285a7f3232", stub2.Id);
@@ -61,7 +61,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
         Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=",
             ((StubConditionStringCheckingModel)headers2["cookie"]).StringEquals);
         Assert.AreEqual("deflate, gzip, br",
-            ((StubConditionStringCheckingModel)headers2[Constants.AcceptEncoding]).StringEquals);
+            ((StubConditionStringCheckingModel)headers2[HeaderKeys.AcceptEncoding]).StringEquals);
 
         var stub3 = stubs[2];
         Assert.AreEqual("generated-ded44f6ed44a83fc6086ee0ee0e7ce4b", stub3.Id);
@@ -74,6 +74,6 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
         Assert.AreEqual("Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=",
             ((StubConditionStringCheckingModel)headers3["cookie"]).StringEquals);
         Assert.AreEqual("deflate, gzip, br",
-            ((StubConditionStringCheckingModel)headers3[Constants.AcceptEncoding]).StringEquals);
+            ((StubConditionStringCheckingModel)headers3[HeaderKeys.AcceptEncoding]).StringEquals);
     }
 }

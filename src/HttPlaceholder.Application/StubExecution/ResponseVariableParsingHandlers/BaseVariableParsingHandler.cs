@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
@@ -40,7 +42,8 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
     public abstract string[] Examples { get; }
 
     /// <inheritdoc />
-    public string Parse(string input, IEnumerable<Match> matches, StubModel stub)
+    public async Task<string> ParseAsync(string input, IEnumerable<Match> matches, StubModel stub,
+        CancellationToken cancellationToken)
     {
         var enumerable = matches as Match[] ?? matches.ToArray();
         if (!enumerable.Any())
@@ -48,7 +51,7 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
             return input;
         }
 
-        return InsertVariables(input, enumerable, stub);
+        return await InsertVariablesAsync(input, enumerable, stub, cancellationToken);
     }
 
     /// <summary>
@@ -57,6 +60,8 @@ internal abstract class BaseVariableParsingHandler : IResponseVariableParsingHan
     /// <param name="input">The response body.</param>
     /// <param name="matches">The regex matches that have been found for this variable.</param>
     /// <param name="stub">The matched stub.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The parsed response body.</returns>
-    protected abstract string InsertVariables(string input, Match[] matches, StubModel stub);
+    protected abstract Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken);
 }

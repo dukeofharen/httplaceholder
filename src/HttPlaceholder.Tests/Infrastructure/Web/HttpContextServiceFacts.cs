@@ -118,7 +118,7 @@ public class HttpContextServiceFacts
     }
 
     [TestMethod]
-    public void GetBody_HappyFlow()
+    public async Task GetBody_HappyFlow()
     {
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
@@ -127,14 +127,14 @@ public class HttpContextServiceFacts
         _mockHttpContext.SetBody(body);
 
         // Act
-        var result = service.GetBody();
+        var result = await service.GetBodyAsync(CancellationToken.None);
 
         // Assert
         Assert.AreEqual(body, result);
     }
 
     [TestMethod]
-    public void GetBodyAsBytes_HappyFlow()
+    public async Task GetBodyAsBytesAsync_HappyFlow()
     {
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
@@ -143,7 +143,7 @@ public class HttpContextServiceFacts
         _mockHttpContext.SetBody(body);
 
         // Act
-        var result = service.GetBodyAsBytes();
+        var result = await service.GetBodyAsBytesAsync(CancellationToken.None);
 
         // Assert
         CollectionAssert.AreEqual(body, result);
@@ -232,7 +232,7 @@ public class HttpContextServiceFacts
     {
         // Arrange
         var service = _mocker.CreateInstance<HttpContextService>();
-        _mockHttpContext.SetRequestHeader(Constants.ContentType, Constants.MultipartFormDataMime);
+        _mockHttpContext.SetRequestHeader(HeaderKeys.ContentType, MimeTypes.MultipartFormDataMime);
         _mockHttpContext
             .HttpRequestMock
             .Setup(m => m.Form)
@@ -257,7 +257,7 @@ public class HttpContextServiceFacts
         // Arrange
         var formDict = new Dictionary<string, StringValues> {{"key1", "val1"}, {"key2", "val2"}};
         _mockHttpContext.SetForm(formDict);
-        _mockHttpContext.SetRequestHeader(Constants.ContentType, contentType);
+        _mockHttpContext.SetRequestHeader(HeaderKeys.ContentType, contentType);
 
         var service = _mocker.CreateInstance<HttpContextService>();
 

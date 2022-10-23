@@ -14,9 +14,6 @@ namespace HttPlaceholder.Persistence.Db.Implementations;
 /// <inheritdoc />
 internal class RelationalDbStubCache : IRelationalDbStubCache
 {
-    private const string StubJsonType = "json";
-    private const string StubYamlType = "yaml";
-
     private static readonly object _cacheUpdateLock = new();
     private readonly ILogger<RelationalDbStubCache> _logger;
 
@@ -113,8 +110,8 @@ internal class RelationalDbStubCache : IRelationalDbStubCache
         {
             var stub = queryResult.StubType switch
             {
-                StubJsonType => JsonConvert.DeserializeObject<StubModel>(queryResult.Stub),
-                StubYamlType => YamlUtilities.Parse<StubModel>(queryResult.Stub),
+                StubTypes.StubJsonType => JsonConvert.DeserializeObject<StubModel>(queryResult.Stub),
+                StubTypes.StubYamlType => YamlUtilities.Parse<StubModel>(queryResult.Stub),
                 _ => throw new NotImplementedException(
                     $"StubType '{queryResult.StubType}' not supported: stub '{queryResult.StubId}'.")
             };

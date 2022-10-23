@@ -28,7 +28,7 @@ public class RestApiImportOpenApiPetStoreTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent(content, Encoding.UTF8, Constants.TextMime)
+            Content = new StringContent(content, Encoding.UTF8, MimeTypes.TextMime)
         };
         var response = await Client.SendAsync(apiRequest);
         response.EnsureSuccessStatusCode();
@@ -50,7 +50,7 @@ public class RestApiImportOpenApiPetStoreTests : RestApiIntegrationTestBase
         Assert.AreEqual("petstore.swagger.io", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
 
         Assert.AreEqual(200, stub.Response.StatusCode);
-        Assert.AreEqual(Constants.JsonMime, stub.Response.ContentType);
+        Assert.AreEqual(MimeTypes.JsonMime, stub.Response.ContentType);
         Assert.AreEqual(1, stub.Response.Headers.Count);
         Assert.AreEqual("http://petstore.swagger.io/v1/pets/42", stub.Response.Headers["x-next"]);
 

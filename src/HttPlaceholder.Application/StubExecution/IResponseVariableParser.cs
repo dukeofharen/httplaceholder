@@ -1,4 +1,6 @@
-﻿using HttPlaceholder.Domain;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution;
 
@@ -13,6 +15,7 @@ public interface IResponseVariableParser
     /// </summary>
     /// <param name="input">The response body.</param>
     /// <param name="stub">The matched stub.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The parsed response body.</returns>
-    string Parse(string input, StubModel stub);
+    Task<string> ParseAsync(string input, StubModel stub, CancellationToken cancellationToken);
 }

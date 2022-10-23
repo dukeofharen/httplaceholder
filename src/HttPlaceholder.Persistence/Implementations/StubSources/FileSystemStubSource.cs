@@ -175,7 +175,6 @@ internal class FileSystemStubSource : IWritableStubSource
     /// <inheritdoc />
     public async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken)
     {
-        // TODO make this thread safe. What if multiple instances of HttPlaceholder are running?
         var path = GetRequestsFolder();
         var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
         var filePaths = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
@@ -212,13 +211,13 @@ internal class FileSystemStubSource : IWritableStubSource
     }
 
     private string GetStubsFolder() =>
-        Path.Combine(GetRootFolder(), Constants.StubsFolderName);
+        Path.Combine(GetRootFolder(), FileNames.StubsFolderName);
 
     private string GetRequestsFolder() =>
-        Path.Combine(GetRootFolder(), Constants.RequestsFolderName);
+        Path.Combine(GetRootFolder(), FileNames.RequestsFolderName);
 
     private string GetResponsesFolder() =>
-        Path.Combine(GetRootFolder(), Constants.ResponsesFolderName);
+        Path.Combine(GetRootFolder(), FileNames.ResponsesFolderName);
 
     private async Task DeleteResponseAsync(string filePath, CancellationToken cancellationToken)
     {

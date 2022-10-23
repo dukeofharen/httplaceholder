@@ -83,7 +83,7 @@ public class StubPostBodyConditionsIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("form-ok OK", content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual(Constants.TextMime, response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(MimeTypes.TextMime, response.Content.Headers.ContentType.ToString());
     }
 
     [TestMethod]

@@ -196,7 +196,7 @@ public static class ProgramUtilities
         var httpsPortsResult = new List<int>();
 
         var httpPorts = ParsePorts(settings.Web.HttpPort);
-        if (httpPorts.Length == 1 && httpPorts[0] == Constants.DefaultHttpPort &&
+        if (httpPorts.Length == 1 && httpPorts[0] == DefaultConfiguration.DefaultHttpPort &&
             TcpUtilities.PortIsTaken(httpPorts[0]))
         {
             httpPortsResult.Add(TcpUtilities.GetNextFreeTcpPort());
@@ -210,7 +210,7 @@ public static class ProgramUtilities
             !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
         {
             var httpsPorts = ParsePorts(settings.Web.HttpsPort);
-            if (httpsPorts.Length == 1 && httpsPorts[0] == Constants.DefaultHttpsPort &&
+            if (httpsPorts.Length == 1 && httpsPorts[0] == DefaultConfiguration.DefaultHttpsPort &&
                 TcpUtilities.PortIsTaken(httpsPorts[0]))
             {
                 httpsPortsResult.Add(TcpUtilities.GetNextFreeTcpPort());

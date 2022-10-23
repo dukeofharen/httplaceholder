@@ -40,7 +40,7 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("<result>OK</result>", content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual(Constants.XmlTextMime, response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(MimeTypes.XmlTextMime, response.Content.Headers.ContentType.ToString());
     }
 
     [TestMethod]
@@ -70,7 +70,7 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("<result>OK</result>", content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual(Constants.XmlTextMime, response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(MimeTypes.XmlTextMime, response.Content.Headers.ContentType.ToString());
     }
 
     [TestMethod]
@@ -122,7 +122,7 @@ public class StubXpathConditionsIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         Assert.AreEqual("<result>OK</result>", content);
-        Assert.AreEqual(Constants.XmlTextMime, response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(MimeTypes.XmlTextMime, response.Content.Headers.ContentType.ToString());
     }
 
     [TestMethod]

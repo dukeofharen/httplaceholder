@@ -41,8 +41,8 @@ public class BodyConditionCheckerFacts
         var conditions = new StubConditionsModel {Body = new[] {@"\bthat\b", @"\btree\b"}};
 
         httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         // act
         var result =
@@ -65,8 +65,8 @@ public class BodyConditionCheckerFacts
         var conditions = new StubConditionsModel {Body = new[] {@"\bthis\b", @"\btree\b"}};
 
         httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         string outputForLogging;
         stringCheckerMock
@@ -97,8 +97,8 @@ public class BodyConditionCheckerFacts
         var conditions = new StubConditionsModel {Body = new[] {"this is a test"}};
 
         httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         string outputForLogging;
         stringCheckerMock

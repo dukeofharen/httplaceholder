@@ -29,7 +29,7 @@ public class RestApiImportOpenApiHttPlaceholderTests : RestApiIntegrationTestBas
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent(content, Encoding.UTF8, Constants.TextMime)
+            Content = new StringContent(content, Encoding.UTF8, MimeTypes.TextMime)
         };
         var response = await Client.SendAsync(apiRequest);
         response.EnsureSuccessStatusCode();
@@ -50,12 +50,12 @@ public class RestApiImportOpenApiHttPlaceholderTests : RestApiIntegrationTestBas
 
         var pathRegex = new Regex(@"^\/requests\/(.*)\/stubs$", RegexOptions.Compiled);
         Assert.IsTrue(pathRegex.IsMatch(((StubConditionStringCheckingModel)stub.Conditions.Url.Path).StringEquals));
-        Assert.AreEqual(Constants.JsonMime,
-            ((StubConditionStringCheckingModel)stub.Conditions.Headers[Constants.ContentType]).StringEquals);
+        Assert.AreEqual(MimeTypes.JsonMime,
+            ((StubConditionStringCheckingModel)stub.Conditions.Headers[HeaderKeys.ContentType]).StringEquals);
         Assert.AreEqual("localhost", ((StubConditionStringCheckingModel)stub.Conditions.Host).StringEquals);
 
         Assert.AreEqual(200, stub.Response.StatusCode);
-        Assert.AreEqual(Constants.JsonMime, stub.Response.ContentType);
+        Assert.AreEqual(MimeTypes.JsonMime, stub.Response.ContentType);
         Assert.AreEqual(0, stub.Response.Headers.Count);
 
         var responseBody = JsonConvert.DeserializeObject<Dictionary<string, object>>(stub.Response.Json);

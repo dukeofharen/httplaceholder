@@ -65,8 +65,8 @@ public class XPathConditionCheckerFacts
         };
 
         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         // act
         var result =
@@ -119,8 +119,8 @@ public class XPathConditionCheckerFacts
         };
 
         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         // act
         var result =
@@ -173,8 +173,8 @@ public class XPathConditionCheckerFacts
         };
 
         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         // act
         var result =
@@ -227,8 +227,8 @@ public class XPathConditionCheckerFacts
         };
 
         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         // act
         var result =
@@ -271,8 +271,8 @@ public class XPathConditionCheckerFacts
         };
 
         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         // act
         var result =
@@ -301,8 +301,8 @@ public class XPathConditionCheckerFacts
         };
 
         _httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         // act
         var result =

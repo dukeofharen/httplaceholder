@@ -56,7 +56,7 @@ public class RestApiImportOpenApiTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent(content, Encoding.UTF8, Constants.TextMime)
+            Content = new StringContent(content, Encoding.UTF8, MimeTypes.TextMime)
         };
         var response = await Client.SendAsync(apiRequest);
         if (!response.IsSuccessStatusCode)

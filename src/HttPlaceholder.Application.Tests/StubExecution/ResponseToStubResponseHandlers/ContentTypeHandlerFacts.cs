@@ -33,7 +33,7 @@ public class ContentTypeHandlerFacts
         // Arrange
         var response = new HttpResponseModel
         {
-            Headers = {{"x-api-key", "1223"}, {headerKey, $"{Constants.JsonMime}; charset=UTF-8"}}
+            Headers = {{"x-api-key", "1223"}, {headerKey, $"{MimeTypes.JsonMime}; charset=UTF-8"}}
         };
         var stubResponse = new StubResponseModel();
 
@@ -42,7 +42,7 @@ public class ContentTypeHandlerFacts
 
         // Assert
         Assert.IsTrue(result);
-        Assert.AreEqual($"{Constants.JsonMime}; charset=UTF-8", stubResponse.ContentType);
+        Assert.AreEqual($"{MimeTypes.JsonMime}; charset=UTF-8", stubResponse.ContentType);
         Assert.AreEqual(1, response.Headers.Count);
         Assert.IsFalse(response.Headers.Any(h => h.Key == headerKey));
     }

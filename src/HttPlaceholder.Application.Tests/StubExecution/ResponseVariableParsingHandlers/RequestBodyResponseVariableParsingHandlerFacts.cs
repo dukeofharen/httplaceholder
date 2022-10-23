@@ -13,7 +13,7 @@ public class RequestBodyResponseVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void RequestBodyVariableHandler_Parse_HappyFlow()
+    public async Task RequestBodyVariableHandler_Parse_HappyFlow()
     {
         // arrange
         const string input = "Posted content: ((request_body))";
@@ -25,12 +25,12 @@ public class RequestBodyResponseVariableParsingHandlerFacts
         var handler = _mocker.CreateInstance<RequestBodyResponseVariableParsingHandler>();
 
         httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(body);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(body);
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // assert
         Assert.AreEqual(expectedResult, result);

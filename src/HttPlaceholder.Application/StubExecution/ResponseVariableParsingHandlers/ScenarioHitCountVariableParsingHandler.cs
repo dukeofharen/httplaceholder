@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -28,10 +30,11 @@ internal class ScenarioHitCountVariableParsingHandler : BaseVariableParsingHandl
     public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:scenario name))"};
 
     /// <inheritdoc />
-    protected override string InsertVariables(string input, Match[] matches, StubModel stub) =>
-        matches
+    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken) =>
+        Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => InsertHitCount(current, match, stub));
+            .Aggregate(input, (current, match) => InsertHitCount(current, match, stub)));
 
     private string InsertHitCount(string current, Match match, StubModel stub)
     {

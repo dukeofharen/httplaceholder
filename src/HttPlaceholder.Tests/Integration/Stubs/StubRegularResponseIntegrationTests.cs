@@ -76,6 +76,6 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.IsTrue(content.Contains("Test page in HttPlaceholder"));
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual(Constants.HtmlMime, response.Content.Headers.ContentType.ToString());
+        Assert.AreEqual(MimeTypes.HtmlMime, response.Content.Headers.ContentType.ToString());
     }
 }

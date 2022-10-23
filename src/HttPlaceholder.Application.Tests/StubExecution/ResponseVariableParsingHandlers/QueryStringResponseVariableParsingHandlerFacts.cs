@@ -14,7 +14,7 @@ public class QueryStringResponseVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void QueryStringHandlerFacts_Parse_HappyFlow()
+    public async Task QueryStringHandlerFacts_Parse_HappyFlow()
     {
         // arrange
         const string input = "Query var 1: ((query:var1)), query var 2: ((query:var2)), query var 3: ((query:var3))";
@@ -30,14 +30,14 @@ public class QueryStringResponseVariableParsingHandlerFacts
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // assert
         Assert.AreEqual(expectedResult, result);
     }
 
     [TestMethod]
-    public void QueryStringHandlerFacts_Parse_NumberOfMatchesIncorrect_ShouldReplaceWithEmptyString()
+    public async Task QueryStringHandlerFacts_Parse_NumberOfMatchesIncorrect_ShouldReplaceWithEmptyString()
     {
         // arrange
         const string input = "Query var 1: ((query)), query var 2: ((query)), query var 3: ((query))";
@@ -53,7 +53,7 @@ public class QueryStringResponseVariableParsingHandlerFacts
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // assert
         Assert.AreEqual(expectedResult, result);

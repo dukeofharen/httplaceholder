@@ -88,7 +88,7 @@ public abstract class StubIntegrationTestBase : IntegrationTestBase
         {
             Method = HttpMethod.Put,
             RequestUri = new Uri($"{BaseAddress}ph-api/scenarios/{scenarioName}"),
-            Content = new StringContent(JsonConvert.SerializeObject(scenario), Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent(JsonConvert.SerializeObject(scenario), Encoding.UTF8, MimeTypes.JsonMime)
         };
         var response = await Client.SendAsync(request);
         response.EnsureSuccessStatusCode();

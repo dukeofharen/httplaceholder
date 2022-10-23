@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
@@ -30,9 +32,10 @@ internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHa
     public override string[] Examples => new[] {$"(({Name}))"};
 
     /// <inheritdoc />
-    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
+    protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
     {
-        var body = _httpContextService.GetBody();
+        var body = await _httpContextService.GetBodyAsync(cancellationToken);
         return matches
             .Where(match => match.Groups.Count >= 2)
             .Aggregate(input, (current, match) => current.Replace(match.Value, body));

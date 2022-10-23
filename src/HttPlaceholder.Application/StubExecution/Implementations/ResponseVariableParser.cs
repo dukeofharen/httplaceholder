@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Domain;
@@ -23,7 +25,7 @@ internal class ResponseVariableParser : IResponseVariableParser, ISingletonServi
         TimeSpan.FromSeconds(10));
 
     /// <inheritdoc />
-    public string Parse(string input, StubModel stub)
+    public async Task<string> ParseAsync(string input, StubModel stub, CancellationToken cancellationToken)
     {
         var matches = VarRegex.Matches(input).ToArray();
         foreach (var handler in _handlers)
@@ -31,7 +33,7 @@ internal class ResponseVariableParser : IResponseVariableParser, ISingletonServi
             var handlerMatches = matches
                 .Where(m => m.Groups.Count > 1 && string.Equals(m.Groups[1].Value, handler.Name,
                     StringComparison.OrdinalIgnoreCase));
-            input = handler.Parse(input, handlerMatches, stub);
+            input = await handler.ParseAsync(input, handlerMatches, stub, cancellationToken);
         }
 
         return input;

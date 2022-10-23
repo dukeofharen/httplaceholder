@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
@@ -32,12 +34,13 @@ internal class RequestHeaderResponseVariableParsingHandler : BaseVariableParsing
     public override string[] Examples => new[] {$"(({Name}:X-Api-Key))"};
 
     /// <inheritdoc />
-    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
+    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
     {
         var headers = _httpContextService.GetHeaders();
-        return matches
+        return Task.FromResult(matches
             .Where(match => match.Groups.Count >= 3)
-            .Aggregate(input, (current, match) => InsertHeader(current, match, headers));
+            .Aggregate(input, (current, match) => InsertHeader(current, match, headers)));
     }
 
     private static string InsertHeader(string current, Match match, IDictionary<string, string> headers)

@@ -115,7 +115,7 @@ public class StubHandlingMiddleware
     private void HandleException(string correlationId, Exception e)
     {
         _httpContextService.SetStatusCode(HttpStatusCode.InternalServerError);
-        _httpContextService.TryAddHeader(Constants.XHttPlaceholderCorrelation, correlationId);
+        _httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, correlationId);
         _logger.LogWarning($"Unexpected exception thrown: {e}");
     }
 
@@ -123,12 +123,12 @@ public class StubHandlingMiddleware
         CancellationToken cancellationToken)
     {
         _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
-        _httpContextService.TryAddHeader(Constants.XHttPlaceholderCorrelation, correlation);
+        _httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, correlation);
         if (_settings?.Gui?.EnableUserInterface == true)
         {
             var pageContents = _resourcesService.ReadAsString("Files/StubNotConfigured.html")
                 .Replace("[ROOT_URL]", _httpContextService.RootUrl);
-            _httpContextService.AddHeader(Constants.ContentType, Constants.HtmlMime);
+            _httpContextService.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime);
             await _httpContextService.WriteAsync(pageContents, cancellationToken);
         }
 
@@ -145,7 +145,7 @@ public class StubHandlingMiddleware
         requestLogger.LogRequestParameters(
             _httpContextService.Method,
             _httpContextService.DisplayUrl,
-            _httpContextService.GetBody(),
+            await _httpContextService.GetBodyAsync(cancellationToken),
             _clientDataResolver.GetClientIp(),
             _httpContextService.GetHeaders());
 
@@ -157,11 +157,11 @@ public class StubHandlingMiddleware
             return response;
         }
 
-        _httpContextService.TryAddHeader(Constants.XHttPlaceholderCorrelation, correlation);
+        _httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, correlation);
         var requestResult = requestLogger.GetResult();
         if (!string.IsNullOrWhiteSpace(requestResult.ExecutingStubId))
         {
-            _httpContextService.TryAddHeader(Constants.XHttPlaceholderExecutedStub, requestResult.ExecutingStubId);
+            _httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderExecutedStub, requestResult.ExecutingStubId);
         }
 
         _httpContextService.SetStatusCode(response.StatusCode);

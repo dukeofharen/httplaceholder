@@ -70,8 +70,8 @@ public class JsonConditionCheckerFacts
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
         mockHttpContextService
-            .Setup(m => m.GetBody())
-            .Returns(PostedObjectJson);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(PostedObjectJson);
 
         // Act
         var result =
@@ -92,8 +92,8 @@ public class JsonConditionCheckerFacts
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
         mockHttpContextService
-            .Setup(m => m.GetBody())
-            .Returns(@"{""boolValue"": true}");
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(@"{""boolValue"": true}");
 
         // Act
         var result =
@@ -117,8 +117,8 @@ public class JsonConditionCheckerFacts
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
         mockHttpContextService
-            .Setup(m => m.GetBody())
-            .Returns("JSON IS CORRUPT!!!");
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync("JSON IS CORRUPT!!!");
 
         // Act
         var result =
@@ -143,8 +143,8 @@ public class JsonConditionCheckerFacts
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
         mockHttpContextService
-            .Setup(m => m.GetBody())
-            .Returns(PostedObjectJson);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(PostedObjectJson);
 
         // Act
         var result =
@@ -165,8 +165,8 @@ public class JsonConditionCheckerFacts
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
         mockHttpContextService
-            .Setup(m => m.GetBody())
-            .Returns(PostedArrayJson);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(PostedArrayJson);
 
         // Act
         var result =
@@ -190,8 +190,8 @@ public class JsonConditionCheckerFacts
         var conditions = new StubConditionsModel {Json = jsonConditions};
 
         mockHttpContextService
-            .Setup(m => m.GetBody())
-            .Returns(PostedArrayJson);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(PostedArrayJson);
 
         // Act
         var result =

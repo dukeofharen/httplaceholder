@@ -119,8 +119,8 @@ public class StubHandlingMiddlewareFacts
 
         const string requestBody = "posted body";
         httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns(requestBody);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(requestBody);
 
         const string ip = "1.2.3.4";
         clientDataResolverMock
@@ -155,9 +155,10 @@ public class StubHandlingMiddlewareFacts
         Assert.IsFalse(_nextCalled);
         httpContextServiceMock.Verify(m => m.EnableRewind());
         httpContextServiceMock.Verify(m => m.ClearResponse());
-        httpContextServiceMock.Verify(m => m.TryAddHeader(Constants.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
         httpContextServiceMock.Verify(m =>
-            m.TryAddHeader(Constants.XHttPlaceholderExecutedStub, requestResultModel.ExecutingStubId));
+            m.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m =>
+            m.TryAddHeader(HeaderKeys.XHttPlaceholderExecutedStub, requestResultModel.ExecutingStubId));
         httpContextServiceMock.Verify(m => m.SetStatusCode(stubResponse.StatusCode));
         httpContextServiceMock.Verify(m => m.AddHeader("X-Header1", "val1"));
         httpContextServiceMock.Verify(m => m.AddHeader("X-Header2", "val2"));
@@ -217,8 +218,8 @@ public class StubHandlingMiddlewareFacts
             .ReturnsAsync(stubResponse);
 
         httpContextServiceMock
-            .Setup(m => m.GetBody())
-            .Returns((string)null);
+            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync((string)null);
 
         var requestResultModel = new RequestResultModel();
         _requestLoggerMock
@@ -305,8 +306,9 @@ public class StubHandlingMiddlewareFacts
         // Assert
         Assert.IsFalse(_nextCalled);
         httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.NotImplemented));
-        httpContextServiceMock.Verify(m => m.TryAddHeader(Constants.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
-        httpContextServiceMock.Verify(m => m.AddHeader(Constants.ContentType, Constants.HtmlMime));
+        httpContextServiceMock.Verify(m =>
+            m.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime));
         httpContextServiceMock.Verify(m =>
             m.WriteAsync(It.Is<string>(b => b.Contains("Not implemented")), It.IsAny<CancellationToken>()));
         Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown:"));
@@ -378,8 +380,9 @@ public class StubHandlingMiddlewareFacts
         // Assert
         Assert.IsFalse(_nextCalled);
         httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.NotImplemented));
-        httpContextServiceMock.Verify(m => m.TryAddHeader(Constants.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
-        httpContextServiceMock.Verify(m => m.AddHeader(Constants.ContentType, Constants.HtmlMime), Times.Never);
+        httpContextServiceMock.Verify(m =>
+            m.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m => m.AddHeader(HeaderKeys.ContentType, MimeTypes.HtmlMime), Times.Never);
         httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Never);
         Assert.IsTrue(_mockLogger.Contains(LogLevel.Debug, "Request validation exception thrown:"));
@@ -415,7 +418,8 @@ public class StubHandlingMiddlewareFacts
         // Assert
         Assert.IsFalse(_nextCalled);
         httpContextServiceMock.Verify(m => m.SetStatusCode(HttpStatusCode.InternalServerError));
-        httpContextServiceMock.Verify(m => m.TryAddHeader(Constants.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
+        httpContextServiceMock.Verify(m =>
+            m.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, It.IsAny<StringValues>()));
         httpContextServiceMock.Verify(m => m.WriteAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()),
             Times.Never);
         Assert.IsTrue(_mockLogger.Contains(LogLevel.Warning, "Unexpected exception thrown:"));

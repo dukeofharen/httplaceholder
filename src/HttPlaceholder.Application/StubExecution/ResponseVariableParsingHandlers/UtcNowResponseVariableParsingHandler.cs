@@ -2,6 +2,8 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
@@ -32,12 +34,13 @@ internal class UtcNowResponseVariableParsingHandler : BaseVariableParsingHandler
     public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:yyyy-MM-dd HH:mm:ss))"};
 
     /// <inheritdoc />
-    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
+    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
     {
         var now = _dateTime.UtcNow;
-        return matches
+        return Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => InsertDateTime(current, match, now));
+            .Aggregate(input, (current, match) => InsertDateTime(current, match, now)));
     }
 
     private static string InsertDateTime(string current, Match match, DateTime now)

@@ -26,14 +26,14 @@ internal class ResponseBodyHandler : IResponseToStubResponseHandler, ISingletonS
             : stubResponseModel.ContentType.Split(';')[0].ToLower();
         switch (contentType)
         {
-            case Constants.HtmlMime:
+            case MimeTypes.HtmlMime:
                 stubResponseModel.Html = response.Content;
                 break;
-            case Constants.JsonMime:
+            case MimeTypes.JsonMime:
                 stubResponseModel.Json = response.Content;
                 break;
-            case Constants.XmlTextMime:
-            case Constants.XmlApplicationMime:
+            case MimeTypes.XmlTextMime:
+            case MimeTypes.XmlApplicationMime:
                 stubResponseModel.Xml = response.Content;
                 break;
             default:

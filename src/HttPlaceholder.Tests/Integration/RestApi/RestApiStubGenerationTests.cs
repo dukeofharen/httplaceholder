@@ -30,7 +30,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
 
         // Do a call to a non-existent stub
         var response = await Client.SendAsync(CreateTestStubRequest());
-        var correlationId = response.Headers.Single(h => h.Key == Constants.XHttPlaceholderCorrelation).Value.Single();
+        var correlationId = response.Headers.Single(h => h.Key == HeaderKeys.XHttPlaceholderCorrelation).Value.Single();
 
         // Register a new stub for the failed request
         var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
@@ -38,7 +38,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
         {
             RequestUri = new Uri(url),
             Method = HttpMethod.Post,
-            Content = new StringContent("{}", Encoding.UTF8, Constants.JsonMime)
+            Content = new StringContent("{}", Encoding.UTF8, MimeTypes.JsonMime)
         };
         response = await Client.SendAsync(apiRequest);
         response.EnsureSuccessStatusCode();
@@ -89,7 +89,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
 
         // Do a call to a non-existent stub
         var response = await Client.SendAsync(CreateTestStubRequest());
-        var correlationId = response.Headers.Single(h => h.Key == Constants.XHttPlaceholderCorrelation).Value.Single();
+        var correlationId = response.Headers.Single(h => h.Key == HeaderKeys.XHttPlaceholderCorrelation).Value.Single();
 
         // Register a new stub for the failed request
         var url = $"{BaseAddress}ph-api/requests/{correlationId}/stubs";
@@ -99,7 +99,7 @@ public class RestApiStubGenerationTests : RestApiIntegrationTestBase
             Method = HttpMethod.Post,
             Content = new StringContent(
                 JsonConvert.SerializeObject(new CreateStubForRequestInputDto {DoNotCreateStub = true}),
-                Encoding.UTF8, Constants.JsonMime)
+                Encoding.UTF8, MimeTypes.JsonMime)
         };
         response = await Client.SendAsync(apiRequest);
         response.EnsureSuccessStatusCode();

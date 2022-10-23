@@ -5,6 +5,38 @@
 /// </summary>
 public static class Constants
 {
+    /// <summary>
+    ///     The default scenario state.
+    /// </summary>
+    public const string DefaultScenarioState = "Start";
+
+    /// <summary>
+    ///     An array of separator characters for providing multiple input file paths.
+    /// </summary>
+    public static readonly string[] InputFileSeparators = {"%%", ","};
+}
+
+/// <summary>
+///     A class that contains several stub types.
+/// </summary>
+public static class StubTypes
+{
+    /// <summary>
+    ///     The JSON stub type.
+    /// </summary>
+    public const string StubJsonType = "json";
+
+    /// <summary>
+    ///     The YAML stub type.
+    /// </summary>
+    public const string StubYamlType = "yaml";
+}
+
+/// <summary>
+///     A class containing file and folder names.
+/// </summary>
+public static class FileNames
+{
     // File storage folder and file names.
     /// <summary>
     ///     The stubs folder name.
@@ -25,8 +57,13 @@ public static class Constants
     ///     The metadata file name.
     /// </summary>
     public const string MetadataFileName = "metadata.json";
+}
 
-    // Default config values
+/// <summary>
+///     A class containing default configuration values.
+/// </summary>
+public static class DefaultConfiguration
+{
     /// <summary>
     ///     The default HTTP port.
     /// </summary>
@@ -81,14 +118,13 @@ public static class Constants
     ///     The default maximum "extra duration" milliseconds.
     /// </summary>
     public const int DefaultMaximumExtraDuration = 60000;
+}
 
-    // Scenario values.
-    /// <summary>
-    ///     The default scenario state.
-    /// </summary>
-    public const string DefaultScenarioState = "Start";
-
-    // Mime types.
+/// <summary>
+///     A class containing several mime types.
+/// </summary>
+public static class MimeTypes
+{
     /// <summary>
     ///     The JSON mime type.
     /// </summary>
@@ -135,10 +171,16 @@ public static class Constants
     public const string MultipartFormDataMime = "multipart/form-data";
 
     /// <summary>
-    ///     An array of separator characters for providing multiple input file paths.
+    ///     A list of mime types that are valid for posted HTTP forms.
     /// </summary>
-    public static readonly string[] InputFileSeparators = {"%%", ","};
+    public static string[] FormMimeTypes => new[] {UrlEncodedFormMime, MultipartFormDataMime};
+}
 
+/// <summary>
+///     A class containing the HTTP header keys.
+/// </summary>
+public static class HeaderKeys
+{
     /// <summary>
     ///     The content type header key.
     /// </summary>

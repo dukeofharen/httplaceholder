@@ -14,7 +14,7 @@ public class RequestHeaderResponseVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void RequestHeaderVariableHandler_Parse_HappyFlow()
+    public async Task RequestHeaderVariableHandler_Parse_HappyFlow()
     {
         // arrange
         const string input =
@@ -35,7 +35,7 @@ public class RequestHeaderResponseVariableParsingHandlerFacts
 
         // act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, new StubModel());
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // assert
         Assert.AreEqual(expectedResult, result);

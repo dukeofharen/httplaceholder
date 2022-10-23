@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using HttPlaceholder.Application.StubExecution;
+﻿using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseVariableParsingHandlers;
 using HttPlaceholder.Domain.Entities;
@@ -16,21 +15,21 @@ public class ScenarioHitCountVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void Parse_NoMatches_ShouldReturnInputAsIs()
+    public async Task Parse_NoMatches_ShouldReturnInputAsIs()
     {
         // Arrange
         var handler = _mocker.CreateInstance<ScenarioHitCountVariableParsingHandler>();
         const string input = "the input";
 
         // Act
-        var result = handler.Parse(input, Array.Empty<Match>(), new StubModel());
+        var result = await handler.ParseAsync(input, Array.Empty<Match>(), new StubModel(), CancellationToken.None);
 
         // Assert
         Assert.AreEqual(input, result);
     }
 
     [TestMethod]
-    public void Parse_Matches_ShouldParseHitCount()
+    public async Task Parse_Matches_ShouldParseHitCount()
     {
         // Arrange
         var handler = _mocker.CreateInstance<ScenarioHitCountVariableParsingHandler>();
@@ -53,7 +52,7 @@ public class ScenarioHitCountVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = handler.Parse(input, matches, stubModel);
+        var result = await handler.ParseAsync(input, matches, stubModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedResult, result);

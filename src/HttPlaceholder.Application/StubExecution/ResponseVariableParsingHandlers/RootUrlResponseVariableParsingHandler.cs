@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Common;
@@ -30,11 +32,12 @@ internal class RootUrlResponseVariableParsingHandler : BaseVariableParsingHandle
     /// <inheritdoc />
     public override string[] Examples => new[] {$"(({Name}))"};
 
-    protected override string InsertVariables(string input, Match[] matches, StubModel stub)
+    protected override Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
+        CancellationToken cancellationToken)
     {
         var url = _httpContextService.RootUrl;
-        return matches
+        return Task.FromResult(matches
             .Where(match => match.Groups.Count >= 2)
-            .Aggregate(input, (current, match) => current.Replace(match.Value, url));
+            .Aggregate(input, (current, match) => current.Replace(match.Value, url)));
     }
 }

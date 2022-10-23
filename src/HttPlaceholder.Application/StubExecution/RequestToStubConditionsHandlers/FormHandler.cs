@@ -19,16 +19,15 @@ internal class FormHandler : IRequestToStubConditionsHandler, ISingletonService
         CancellationToken cancellationToken)
     {
         var pair = request.Headers.FirstOrDefault(p =>
-            p.Key.Equals(Constants.ContentType, StringComparison.OrdinalIgnoreCase));
+            p.Key.Equals(HeaderKeys.ContentType, StringComparison.OrdinalIgnoreCase));
         var contentType = pair.Value;
         if (string.IsNullOrWhiteSpace(contentType))
         {
             return Task.FromResult(false);
         }
 
-        var supportedContentTypes = new[] {Constants.UrlEncodedFormMime, Constants.MultipartFormDataMime};
         if (
-            !supportedContentTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)) ||
+            !MimeTypes.FormMimeTypes.Any(sc => contentType.StartsWith(sc, StringComparison.OrdinalIgnoreCase)) ||
             string.IsNullOrWhiteSpace(request.Body))
         {
             return Task.FromResult(false);

@@ -31,7 +31,7 @@ public class FileSystemStubCacheFacts
     public void EnsureAndGetMetadata_MetadataDoesntExistYet_ShouldCreateMetadata()
     {
         // Arrange
-        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
+        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, FileNames.MetadataFileName);
 
         var mockFileService = _mocker.GetMock<IFileService>();
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
@@ -67,7 +67,7 @@ public class FileSystemStubCacheFacts
         var mockFileService = _mocker.GetMock<IFileService>();
         var cache = _mocker.CreateInstance<FileSystemStubCache>();
 
-        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
+        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, FileNames.MetadataFileName);
         mockFileService
             .Setup(m => m.FileExists(expectedPath))
             .Returns(true);
@@ -214,7 +214,7 @@ public class FileSystemStubCacheFacts
         var trackingId = Guid.NewGuid().ToString();
         cache.StubUpdateTrackingId = trackingId;
 
-        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
+        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, FileNames.MetadataFileName);
         string capturedMetadata = null;
         mockFileService
             .Setup(m => m.WriteAllText(expectedPath, It.IsAny<string>()))
@@ -243,7 +243,7 @@ public class FileSystemStubCacheFacts
         var stub = new StubModel {Id = "stub1"};
         Assert.IsTrue(cache.StubCache.TryAdd(stub.Id, stub));
 
-        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
+        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, FileNames.MetadataFileName);
         string capturedMetadata = null;
         mockFileService
             .Setup(m => m.WriteAllText(expectedPath, It.IsAny<string>()))
@@ -285,7 +285,7 @@ public class FileSystemStubCacheFacts
 
     private void SetupMetadata(string trackingId)
     {
-        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, Constants.MetadataFileName);
+        var expectedPath = Path.Join(_settings.Storage.FileStorageLocation, FileNames.MetadataFileName);
 
         var mockFileService = _mocker.GetMock<IFileService>();
 
@@ -301,7 +301,7 @@ public class FileSystemStubCacheFacts
 
     private void SetupStubs(params StubModel[] stubs)
     {
-        var expectedPath = Path.Combine(_settings.Storage?.FileStorageLocation, Constants.StubsFolderName);
+        var expectedPath = Path.Combine(_settings.Storage?.FileStorageLocation, FileNames.StubsFolderName);
 
         var mockFileService = _mocker.GetMock<IFileService>();
 

@@ -12,7 +12,7 @@ public class HeaderHandlerFacts
     public async Task HandleStubGenerationAsync_HappyFlow()
     {
         // Arrange
-        var response = new HttpResponseModel {Headers = {{Constants.ContentType, Constants.JsonMime}}};
+        var response = new HttpResponseModel {Headers = {{HeaderKeys.ContentType, MimeTypes.JsonMime}}};
         var stubResponse = new StubResponseModel();
 
         // Act

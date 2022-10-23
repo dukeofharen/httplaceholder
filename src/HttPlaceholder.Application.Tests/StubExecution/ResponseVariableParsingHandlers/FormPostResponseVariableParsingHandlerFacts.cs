@@ -14,7 +14,7 @@ public class FormPostResponseVariableParsingHandlerFacts
     public void Cleanup() => _mocker.VerifyAll();
 
     [TestMethod]
-    public void FormPostVariableHandler_Parse_HappyFlow()
+    public async Task FormPostVariableHandler_Parse_HappyFlow()
     {
         // Arrange
         var parsingHandler = _mocker.CreateInstance<FormPostResponseVariableParsingHandler>();
@@ -33,7 +33,7 @@ public class FormPostResponseVariableParsingHandlerFacts
 
         // Act
         var matches = ResponseVariableParser.VarRegex.Matches(input);
-        var result = parsingHandler.Parse(input, matches, new StubModel());
+        var result = await parsingHandler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedResult, result);
