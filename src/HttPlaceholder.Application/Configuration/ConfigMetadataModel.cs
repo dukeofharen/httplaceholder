@@ -48,6 +48,11 @@ public class ConfigMetadataModel
     public bool? IsSecretValue { get; private set; }
 
     /// <summary>
+    ///     Indicates whether the configuration value can be mutated after application launch.
+    /// </summary>
+    public bool? CanBeMutated { get; private set; }
+
+    /// <summary>
     ///     Creates a new <see cref="ConfigMetadataModel" /> instance
     /// </summary>
     /// <param name="key">The key.</param>
@@ -57,6 +62,7 @@ public class ConfigMetadataModel
     /// <param name="configKeyType">The config key type.</param>
     /// <param name="isBoolValue">Whether the value is a bool.</param>
     /// <param name="isSecretValue">Whether the value is a secret.</param>
+    /// <param name="canBeMutated">Whether the value can be mutated.</param>
     /// <returns>The <see cref="ConfigMetadataModel" />.</returns>
     public static ConfigMetadataModel Create(
         string key,
@@ -65,7 +71,8 @@ public class ConfigMetadataModel
         string path,
         ConfigKeyType configKeyType,
         bool? isBoolValue,
-        bool? isSecretValue) =>
+        bool? isSecretValue,
+        bool? canBeMutated) =>
         new()
         {
             Key = key,
@@ -75,6 +82,7 @@ public class ConfigMetadataModel
             ConfigKeyType = configKeyType,
             DisplayKey = key.ToLower(),
             IsBoolValue = isBoolValue,
-            IsSecretValue = isSecretValue
+            IsSecretValue = isSecretValue,
+            CanBeMutated = canBeMutated
         };
 }
