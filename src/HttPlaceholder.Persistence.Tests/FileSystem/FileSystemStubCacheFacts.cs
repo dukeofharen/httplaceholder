@@ -21,7 +21,7 @@ public class FileSystemStubCacheFacts
     public void Initialize()
     {
         _settings.Storage.FileStorageLocation = FileStorageLocation;
-        _mocker.Use(Options.Create(_settings));
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
     }
 
     [TestCleanup]

@@ -15,7 +15,7 @@ public class InMemoryStubSourceFacts
     private readonly SettingsModel _settings = new() {Storage = new StorageSettingsModel()};
 
     [TestInitialize]
-    public void Initialize() => _mocker.Use(Options.Create(_settings));
+    public void Initialize() => _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
 
     [TestCleanup]
     public void Cleanup() => _mocker.VerifyAll();

@@ -29,7 +29,7 @@ public class RelationalDbStubSourceFacts
         mockDatabaseContextFactory
             .Setup(m => m.CreateDatabaseContext())
             .Returns(_mockDatabaseContext.Object);
-        _mocker.Use(Options.Create(_settings));
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
     }
 
     [TestCleanup]

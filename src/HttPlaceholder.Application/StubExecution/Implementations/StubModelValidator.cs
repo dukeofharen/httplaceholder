@@ -19,10 +19,10 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
 
     public StubModelValidator(
         IModelValidator modelValidator,
-        IOptions<SettingsModel> options)
+        IOptionsMonitor<SettingsModel> options)
     {
         _modelValidator = modelValidator;
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     /// <inheritdoc />

@@ -17,10 +17,10 @@ internal class LoginService : ILoginService, ITransientService
 
     public LoginService(
         IHttpContextAccessor httpContextAccessor,
-        IOptions<SettingsModel> options)
+        IOptionsMonitor<SettingsModel> options)
     {
         _httpContextAccessor = httpContextAccessor;
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     /// <inheritdoc />

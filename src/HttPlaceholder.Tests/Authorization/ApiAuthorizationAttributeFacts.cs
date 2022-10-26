@@ -161,8 +161,8 @@ public class ApiAuthorizationAttributeFacts
             .Setup(m => m.GetService(typeof(ILoginService)))
             .Returns(_mockLoginService.Object);
         httpContext.ServiceProviderMock
-            .Setup(m => m.GetService(typeof(IOptions<SettingsModel>)))
-            .Returns(Options.Create(_settings));
+            .Setup(m => m.GetService(typeof(IOptionsMonitor<SettingsModel>)))
+            .Returns(MockSettingsFactory.GetOptionsMonitor(_settings));
         httpContext.ServiceProviderMock
             .Setup(m => m.GetService(typeof(ILogger<ApiAuthorizationAttribute>)))
             .Returns(_mockLogger);

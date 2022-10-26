@@ -47,7 +47,7 @@ public class StubHandlingMiddleware
         IRequestLoggerFactory requestLoggerFactory,
         IStubContext stubContext,
         IStubRequestExecutor stubRequestExecutor,
-        IOptions<SettingsModel> options,
+        IOptionsMonitor<SettingsModel> options,
         IResourcesService resourcesService)
     {
         _next = next;
@@ -58,7 +58,7 @@ public class StubHandlingMiddleware
         _stubContext = stubContext;
         _stubRequestExecutor = stubRequestExecutor;
         _resourcesService = resourcesService;
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     /// <summary>

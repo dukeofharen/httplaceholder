@@ -32,7 +32,7 @@ public class StubHandlingMiddlewareFacts
     public void Initialize()
     {
         _mocker.Use<ILogger<StubHandlingMiddleware>>(_mockLogger);
-        _mocker.Use(Options.Create(_settings));
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
         _mocker.Use<RequestDelegate>(_ =>
         {
             _nextCalled = true;

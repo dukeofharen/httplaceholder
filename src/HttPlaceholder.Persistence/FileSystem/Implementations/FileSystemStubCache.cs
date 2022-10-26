@@ -29,11 +29,11 @@ internal class FileSystemStubCache : IFileSystemStubCache
     public FileSystemStubCache(
         ILogger<FileSystemStubCache> logger,
         IFileService fileService,
-        IOptions<SettingsModel> options)
+        IOptionsMonitor<SettingsModel> options)
     {
         _logger = logger;
         _fileService = fileService;
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     /// <inheritdoc />

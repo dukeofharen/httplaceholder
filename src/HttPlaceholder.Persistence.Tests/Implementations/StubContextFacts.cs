@@ -20,7 +20,7 @@ public class StubContextFacts
     public void Initialize()
     {
         _mocker.Use<IEnumerable<IStubSource>>(_stubSources);
-        _mocker.Use(Options.Create(_settings));
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
     }
 
     [TestCleanup]

@@ -19,9 +19,9 @@ public class FeatureIsEnabledQueryHandler : IRequestHandler<FeatureIsEnabledQuer
     /// <summary>
     ///     Constructs a <see cref="FeatureIsEnabledQueryHandler" /> instance.
     /// </summary>
-    public FeatureIsEnabledQueryHandler(IOptions<SettingsModel> options)
+    public FeatureIsEnabledQueryHandler(IOptionsMonitor<SettingsModel> options)
     {
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     /// <inheritdoc />

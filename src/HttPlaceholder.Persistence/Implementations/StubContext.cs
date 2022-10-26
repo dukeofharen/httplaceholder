@@ -20,12 +20,12 @@ internal class StubContext : IStubContext, ISingletonService
     private readonly SettingsModel _settings;
     private readonly IEnumerable<IStubSource> _stubSources;
 
-    public StubContext(IEnumerable<IStubSource> stubSources, IOptions<SettingsModel> options,
+    public StubContext(IEnumerable<IStubSource> stubSources, IOptionsMonitor<SettingsModel> options,
         IRequestNotify requestNotify)
     {
         _stubSources = stubSources;
         _requestNotify = requestNotify;
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     /// <inheritdoc />

@@ -25,9 +25,9 @@ internal class InMemoryStubSource : IWritableStubSource
     internal readonly IList<StubModel> StubModels = new List<StubModel>();
     internal readonly IList<ResponseModel> StubResponses = new List<ResponseModel>();
 
-    public InMemoryStubSource(IOptions<SettingsModel> options)
+    public InMemoryStubSource(IOptionsMonitor<SettingsModel> options)
     {
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     /// <inheritdoc />

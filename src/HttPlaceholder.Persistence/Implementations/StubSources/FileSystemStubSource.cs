@@ -25,12 +25,12 @@ internal class FileSystemStubSource : IWritableStubSource
 
     public FileSystemStubSource(
         IFileService fileService,
-        IOptions<SettingsModel> options,
+        IOptionsMonitor<SettingsModel> options,
         IFileSystemStubCache fileSystemStubCache)
     {
         _fileService = fileService;
         _fileSystemStubCache = fileSystemStubCache;
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     /// <inheritdoc />

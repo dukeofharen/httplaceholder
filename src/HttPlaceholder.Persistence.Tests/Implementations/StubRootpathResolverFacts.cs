@@ -13,7 +13,7 @@ public class StubRootPathResolverFacts
 {
     private readonly Mock<IAssemblyService> _assemblyServiceMock = new();
     private readonly Mock<IFileService> _fileServiceMock = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
+    private readonly IOptionsMonitor<SettingsModel> _options = MockSettingsFactory.GetOptionsMonitor();
     private StubRootPathResolver _resolver;
 
     [TestInitialize]
@@ -36,7 +36,7 @@ public class StubRootPathResolverFacts
     {
         // arrange
         const string inputFile = @"C:\stubs";
-        _options.Value.Storage.InputFile = inputFile;
+        _options.CurrentValue.Storage.InputFile = inputFile;
 
         _fileServiceMock
             .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
@@ -59,7 +59,7 @@ public class StubRootPathResolverFacts
             RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs" : "/opt/httplaceholder";
 
         var inputFile = Path.Combine($@"{inputFilePath}", "stubs.yml");
-        _options.Value.Storage.InputFile = inputFile;
+        _options.CurrentValue.Storage.InputFile = inputFile;
 
         _fileServiceMock
             .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
@@ -85,7 +85,7 @@ public class StubRootPathResolverFacts
         var path2 = isWindows ? @"C:\stubs2\stub.yml" : "/opt/httplaceholder/stubs2/stub.yml";
         var inputFilePath = $"{path1}{separator}{path2}";
 
-        _options.Value.Storage.InputFile = inputFilePath;
+        _options.CurrentValue.Storage.InputFile = inputFilePath;
 
         _fileServiceMock
             .Setup(m => m.IsDirectoryAsync(path1, It.IsAny<CancellationToken>()))

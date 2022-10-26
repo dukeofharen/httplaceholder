@@ -22,11 +22,11 @@ internal class StubRootPathResolver : IStubRootPathResolver, ISingletonService
     public StubRootPathResolver(
         IAssemblyService assemblyService,
         IFileService fileService,
-        IOptions<SettingsModel> options)
+        IOptionsMonitor<SettingsModel> options)
     {
         _assemblyService = assemblyService;
         _fileService = fileService;
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     /// <inheritdoc />

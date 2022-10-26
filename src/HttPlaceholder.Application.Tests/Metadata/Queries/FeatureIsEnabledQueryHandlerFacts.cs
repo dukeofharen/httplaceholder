@@ -1,6 +1,7 @@
 ﻿using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Metadata.Queries.FeatureIsEnabled;
 using HttPlaceholder.Domain.Enums;
+using HttPlaceholder.TestUtilities.Options;
 using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.Tests.Metadata.Queries;
@@ -13,7 +14,7 @@ public class FeatureIsEnabledQueryHandlerFacts
 
     [TestInitialize]
     public void Initialize() =>
-        _handler = new FeatureIsEnabledQueryHandler(Options.Create(_settings));
+        _handler = new FeatureIsEnabledQueryHandler(MockSettingsFactory.GetOptionsMonitor(_settings));
 
     [TestMethod]
     public async Task Handle_UnknownFeatureFlag_ShouldThrowNotImplementedException()

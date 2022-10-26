@@ -15,7 +15,7 @@ public class ClientIpResolverFacts
     [TestInitialize]
     public void Initialize()
     {
-        _mocker.Use(Options.Create(_settings));
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
         var httpContextAccessorMock = _mocker.GetMock<IHttpContextAccessor>();
         httpContextAccessorMock
             .Setup(m => m.HttpContext)

@@ -28,12 +28,12 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
     /// </summary>
     public ClientDataResolver(
         IHttpContextAccessor httpContextAccessor,
-        IOptions<SettingsModel> options,
+        IOptionsMonitor<SettingsModel> options,
         ILogger<ClientDataResolver> logger)
     {
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     // I've seen Nginx use this IP when reverse proxying. .NET loopback check doesn't recognize this IP as loopback IP.

@@ -15,13 +15,13 @@ public class FileSystemStubSourceFacts
     private const string StorageFolder = @"C:\storage";
 
     private readonly AutoMocker _mocker = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
+    private readonly IOptionsMonitor<SettingsModel> _options = MockSettingsFactory.GetOptionsMonitor();
 
     [TestInitialize]
     public void Initialize()
     {
-        _options.Value.Storage.FileStorageLocation = StorageFolder;
-        _options.Value.Storage.OldRequestsQueueLength = 2;
+        _options.CurrentValue.Storage.FileStorageLocation = StorageFolder;
+        _options.CurrentValue.Storage.OldRequestsQueueLength = 2;
         _mocker.Use(_options);
     }
 
@@ -240,7 +240,7 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, FileNames.RequestsFolderName);
+        var requestsPath = Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -263,8 +263,8 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, FileNames.RequestsFolderName);
-        var responsesPath = Path.Combine(_options.Value.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
+        var requestsPath = Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
+        var responsesPath = Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
         var expectedResponsePath = Path.Combine(responsesPath, $"{correlationId}.json");
 
@@ -293,8 +293,8 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath = Path.Combine(_options.Value.Storage.FileStorageLocation, FileNames.RequestsFolderName);
-        var responsesPath = Path.Combine(_options.Value.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
+        var requestsPath = Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
+        var responsesPath = Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
         var expectedResponsePath = Path.Combine(responsesPath, $"{correlationId}.json");
 
@@ -644,7 +644,7 @@ public class FileSystemStubSourceFacts
     public async Task PrepareStubSourceAsync_FileStorageLocationNotSet_ShouldThrowInvalidOperationException()
     {
         // Arrange
-        _options.Value.Storage.FileStorageLocation = null;
+        _options.CurrentValue.Storage.FileStorageLocation = null;
         var source = _mocker.CreateInstance<FileSystemStubSource>();
 
         // Act

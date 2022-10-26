@@ -26,13 +26,13 @@ internal class RelationalDbStubSource : IWritableStubSource
     private readonly SettingsModel _settings;
 
     public RelationalDbStubSource(
-        IOptions<SettingsModel> options,
+        IOptionsMonitor<SettingsModel> options,
         IQueryStore queryStore,
         IDatabaseContextFactory databaseContextFactory,
         IRelationalDbStubCache relationalDbStubCache,
         IRelationalDbMigrator relationalDbMigrator)
     {
-        _settings = options.Value;
+        _settings = options.CurrentValue;
         _queryStore = queryStore;
         _databaseContextFactory = databaseContextFactory;
         _relationalDbStubCache = relationalDbStubCache;

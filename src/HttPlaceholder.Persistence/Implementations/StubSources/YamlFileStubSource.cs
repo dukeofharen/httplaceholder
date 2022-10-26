@@ -33,13 +33,13 @@ internal class YamlFileStubSource : IStubSource
     public YamlFileStubSource(
         IFileService fileService,
         ILogger<YamlFileStubSource> logger,
-        IOptions<SettingsModel> options,
+        IOptionsMonitor<SettingsModel> options,
         IStubModelValidator stubModelValidator)
     {
         _fileService = fileService;
         _logger = logger;
         _stubModelValidator = stubModelValidator;
-        _settings = options.Value;
+        _settings = options.CurrentValue;
     }
 
     /// <inheritdoc />
