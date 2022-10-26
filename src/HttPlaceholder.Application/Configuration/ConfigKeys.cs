@@ -189,7 +189,7 @@ public static class ConfigKeys
             ConfigKeyType.Storage,
             true,
             null,
-            null),
+            true),
         Create(
             CleanOldRequestsInBackgroundJob,
             "whether the cleaning of old requests should be done in a background job. If set to true, will delete old requests in a background job that runs once in 5 minutes. If set to false, will clean old requests every time a request is handled. Default: true.",

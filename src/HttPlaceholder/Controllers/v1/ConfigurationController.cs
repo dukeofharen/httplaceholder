@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Commands.UpdateConfigurationValue;
 using HttPlaceholder.Application.Configuration.Provider;
 using HttPlaceholder.Application.Configuration.Queries.GetConfiguration;
 using HttPlaceholder.Authorization;
@@ -22,18 +23,6 @@ namespace HttPlaceholder.Controllers.v1;
 [ApiAuthorization]
 public class ConfigurationController : BaseApiController
 {
-    private readonly SettingsModel _settings;
-    private readonly IConfigurationRoot _configuration;
-
-    /// <summary>
-    ///
-    /// </summary>
-    public ConfigurationController(IConfiguration configuration, IOptionsMonitor<SettingsModel> options)
-    {
-        _configuration = (IConfigurationRoot)configuration;
-        _settings = options.CurrentValue;
-    }
-
     /// <summary>
     ///     An endpoint that is used to retrieve the configuration of the currently running instance of HttPlaceholder.
     /// </summary>
@@ -47,15 +36,16 @@ public class ConfigurationController : BaseApiController
             await Mediator.Send(new GetConfigurationQuery(), cancellationToken)));
 
     /// <summary>
-    /// moimoi
+    ///     An endpoint that is used to update a configuration value at runtime.
     /// </summary>
-    /// <returns></returns>
-    [HttpGet("bla")]
-    public ActionResult<string> Moi()
+    /// <returns>No content.</returns>
+    [HttpPatch]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult> UpdateConfigurationValue([FromBody]UpdateConfigurationValueInputDto input)
     {
-        var provider = _configuration.Providers.FirstOrDefault(p => p.GetType() == typeof(HttPlaceholderConfigurationProvider));
-        provider.Set("Stub:MaximumExtraDurationMillis", "1020");
-        provider.Load();
-        return Ok("mooooi");
+        await Mediator.Send(new UpdateConfigurationValueCommand(input.ConfigurationKey, input.NewValue));
+        return NoContent();
     }
 }
