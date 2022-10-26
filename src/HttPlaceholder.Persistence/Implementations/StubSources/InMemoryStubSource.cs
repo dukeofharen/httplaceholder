@@ -16,7 +16,7 @@ internal class InMemoryStubSource : IWritableStubSource
 {
     private static readonly object _lock = new();
 
-    private readonly SettingsModel _settings;
+    private readonly IOptionsMonitor<SettingsModel> _options;
 
     internal readonly IDictionary<RequestResultModel, ResponseModel> RequestResponseMap =
         new Dictionary<RequestResultModel, ResponseModel>();
@@ -27,7 +27,7 @@ internal class InMemoryStubSource : IWritableStubSource
 
     public InMemoryStubSource(IOptionsMonitor<SettingsModel> options)
     {
-        _settings = options.CurrentValue;
+        _options = options;
     }
 
     /// <inheritdoc />
@@ -177,7 +177,7 @@ internal class InMemoryStubSource : IWritableStubSource
     {
         lock (_lock)
         {
-            var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
+            var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
             var requests = RequestResultModels
                 .OrderByDescending(r => r.RequestEndTime)
                 .Skip(maxLength);

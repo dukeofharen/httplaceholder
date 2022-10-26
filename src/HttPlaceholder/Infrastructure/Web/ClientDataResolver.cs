@@ -20,7 +20,7 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<ClientDataResolver> _logger;
     private readonly List<IPAddress> _parsedProxyIps = new();
-    private readonly SettingsModel _settings;
+    private readonly IOptionsMonitor<SettingsModel> _options;
     private bool _parsedProxyIpsInitialized;
 
     /// <summary>
@@ -33,7 +33,7 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
     {
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
-        _settings = options.CurrentValue;
+        _options = options;
     }
 
     // I've seen Nginx use this IP when reverse proxying. .NET loopback check doesn't recognize this IP as loopback IP.
@@ -64,7 +64,8 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
         Func<string[], T> parseResultFunc)
     {
         var httpContext = _httpContextAccessor.HttpContext;
-        if (_settings.Web?.ReadProxyHeaders == false)
+        var settings = _options.CurrentValue;
+        if (settings.Web?.ReadProxyHeaders == false)
         {
             return getDefaultValueFunc(httpContext);
         }
@@ -86,7 +87,8 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
     {
         if (!_parsedProxyIpsInitialized)
         {
-            var safeProxyIps = _settings.Web?.SafeProxyIps?.Split(",", StringSplitOptions.TrimEntries) ??
+            var settings = _options.CurrentValue;
+            var safeProxyIps = settings.Web?.SafeProxyIps?.Split(",", StringSplitOptions.TrimEntries) ??
                                Array.Empty<string>();
             foreach (var proxyIp in safeProxyIps)
             {

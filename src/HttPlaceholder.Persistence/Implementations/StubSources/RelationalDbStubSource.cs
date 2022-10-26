@@ -23,7 +23,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     private readonly IRelationalDbMigrator _relationalDbMigrator;
     private readonly IRelationalDbStubCache _relationalDbStubCache;
 
-    private readonly SettingsModel _settings;
+    private readonly IOptionsMonitor<SettingsModel> _options;
 
     public RelationalDbStubSource(
         IOptionsMonitor<SettingsModel> options,
@@ -32,7 +32,7 @@ internal class RelationalDbStubSource : IWritableStubSource
         IRelationalDbStubCache relationalDbStubCache,
         IRelationalDbMigrator relationalDbMigrator)
     {
-        _settings = options.CurrentValue;
+        _options = options;
         _queryStore = queryStore;
         _databaseContextFactory = databaseContextFactory;
         _relationalDbStubCache = relationalDbStubCache;
@@ -96,7 +96,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     /// <inheritdoc />
     public async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken)
     {
-        var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
+        var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         await ctx.ExecuteAsync(_queryStore.CleanOldRequestsQuery, cancellationToken, new {Limit = maxLength});
     }

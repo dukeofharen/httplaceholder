@@ -32,7 +32,7 @@ public class StubHandlingMiddleware
     private readonly RequestDelegate _next;
     private readonly IRequestLoggerFactory _requestLoggerFactory;
     private readonly IResourcesService _resourcesService;
-    private readonly SettingsModel _settings;
+    private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IStubContext _stubContext;
     private readonly IStubRequestExecutor _stubRequestExecutor;
 
@@ -58,7 +58,7 @@ public class StubHandlingMiddleware
         _stubContext = stubContext;
         _stubRequestExecutor = stubRequestExecutor;
         _resourcesService = resourcesService;
-        _settings = options.CurrentValue;
+        _options = options;
     }
 
     /// <summary>
@@ -68,7 +68,8 @@ public class StubHandlingMiddleware
     {
         var cancellationToken = context?.RequestAborted ?? CancellationToken.None;
         var path = _httpContextService.Path;
-        if (_settings?.Stub?.HealthcheckOnRootUrl == true && path == "/")
+        var settings = _options.CurrentValue;
+        if (settings?.Stub?.HealthcheckOnRootUrl == true && path == "/")
         {
             _httpContextService.SetStatusCode(HttpStatusCode.OK);
             await _httpContextService.WriteAsync("OK", cancellationToken);
@@ -91,7 +92,7 @@ public class StubHandlingMiddleware
         }
         catch (RequestValidationException e)
         {
-            await HandleRequestValidationException(correlationId, e, cancellationToken);
+            await HandleRequestValidationException(correlationId, e, settings, cancellationToken);
         }
         catch (TaskCanceledException e)
         {
@@ -103,7 +104,7 @@ public class StubHandlingMiddleware
         }
 
         var loggingResult = requestLogger.GetResult();
-        var enableRequestLogging = _settings?.Storage?.EnableRequestLogging ?? false;
+        var enableRequestLogging = settings?.Storage?.EnableRequestLogging ?? false;
         if (enableRequestLogging)
         {
             _logger.LogInformation($"Request: {JObject.FromObject(loggingResult)}");
@@ -120,11 +121,11 @@ public class StubHandlingMiddleware
     }
 
     private async Task HandleRequestValidationException(string correlation, RequestValidationException e,
-        CancellationToken cancellationToken)
+        SettingsModel settings, CancellationToken cancellationToken)
     {
         _httpContextService.SetStatusCode(HttpStatusCode.NotImplemented);
         _httpContextService.TryAddHeader(HeaderKeys.XHttPlaceholderCorrelation, correlation);
-        if (_settings?.Gui?.EnableUserInterface == true)
+        if (settings?.Gui?.EnableUserInterface == true)
         {
             var pageContents = _resourcesService.ReadAsString("Files/StubNotConfigured.html")
                 .Replace("[ROOT_URL]", _httpContextService.RootUrl);

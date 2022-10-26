@@ -14,23 +14,26 @@ namespace HttPlaceholder.Application.Metadata.Queries.FeatureIsEnabled;
 /// </summary>
 public class FeatureIsEnabledQueryHandler : IRequestHandler<FeatureIsEnabledQuery, FeatureResultModel>
 {
-    private readonly SettingsModel _settings;
+    private readonly IOptionsMonitor<SettingsModel> _options;
 
     /// <summary>
     ///     Constructs a <see cref="FeatureIsEnabledQueryHandler" /> instance.
     /// </summary>
     public FeatureIsEnabledQueryHandler(IOptionsMonitor<SettingsModel> options)
     {
-        _settings = options.CurrentValue;
+        _options = options;
     }
 
     /// <inheritdoc />
-    public Task<FeatureResultModel> Handle(FeatureIsEnabledQuery request, CancellationToken cancellationToken) =>
-        request.FeatureFlag switch
+    public Task<FeatureResultModel> Handle(FeatureIsEnabledQuery request, CancellationToken cancellationToken)
+    {
+        var settings = _options.CurrentValue;
+        return request.FeatureFlag switch
         {
             FeatureFlagType.Authentication => Task.FromResult(new FeatureResultModel(request.FeatureFlag,
-                _settings.Authentication != null && !string.IsNullOrWhiteSpace(_settings.Authentication.ApiUsername) &&
-                !string.IsNullOrWhiteSpace(_settings.Authentication.ApiPassword))),
+                settings.Authentication != null && !string.IsNullOrWhiteSpace(settings.Authentication.ApiUsername) &&
+                !string.IsNullOrWhiteSpace(settings.Authentication.ApiPassword))),
             _ => throw new NotImplementedException($"Feature flag '{request.FeatureFlag}' not supported.")
         };
+    }
 }
