@@ -78,6 +78,7 @@ import { useSettingsStore } from "@/store/settings";
 import type { SettingsModel } from "@/domain/settings-model";
 import { useConfigurationStore } from "@/store/configuration";
 import type { ConfigurationModel } from "@/domain/stub/configuration-model";
+import { handleHttpError } from "@/utils/error";
 
 export default defineComponent({
   name: "Settings",
@@ -88,6 +89,15 @@ export default defineComponent({
     // Data
     const settings = ref<SettingsModel>(generalStore.getSettings);
     const config = ref<ConfigurationModel[]>([]);
+
+    // Functions
+    const loadConfig = async () => {
+      try {
+        config.value = await configurationStore.getConfiguration();
+      } catch (e) {
+        handleHttpError(e);
+      }
+    };
 
     // Methods
     const saveSettings = () => generalStore.storeSettings(settings.value);
@@ -106,17 +116,20 @@ export default defineComponent({
         return configValue.value.toLowerCase() === "true";
       },
       set: async (value) => {
-        await configurationStore.updateConfigurationValue({
-          configurationKey: storeResponsesKey,
-          newValue: value ? "true" : "false",
-        });
+        try {
+          await configurationStore.updateConfigurationValue({
+            configurationKey: storeResponsesKey,
+            newValue: value ? "true" : "false",
+          });
+          await loadConfig();
+        } catch (e) {
+          handleHttpError(e);
+        }
       },
     });
 
     // Lifecycle
-    onMounted(async () => {
-      config.value = await configurationStore.getConfiguration();
-    });
+    onMounted(async () => await loadConfig());
 
     return { settings, saveSettings, config, storeResponses };
   },
