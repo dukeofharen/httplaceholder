@@ -35,7 +35,7 @@
         <div class="accordion">
           <RequestHeaders :request="request" />
           <QueryParams v-if="showQueryParameters" :request="request" />
-          <RequestResponse v-if="request.hasResponse" :request="request" />
+          <RequestResponse :request="request" />
         </div>
       </div>
       <div class="col-md-12 mb-3" v-if="showRequestBody">

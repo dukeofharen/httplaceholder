@@ -5,6 +5,8 @@
 - Lots of refactorings in the C# code base (https://github.com/dukeofharen/httplaceholder/pull/284).
 - The loading ring in the UI is now visible in both light and dark themes in the UI (https://github.com/dukeofharen/httplaceholder/pull/284).
 - Log application startup time (https://github.com/dukeofharen/httplaceholder/pull/285).
+- Make it possible to update settings through API (only "storeResponses" for now) (https://github.com/dukeofharen/httplaceholder/pull/286).
+- Added option to set "storeResponses" in UI (https://github.com/dukeofharen/httplaceholder/pull/286).
 
 # BREAKING CHANGES
 - Stubs defined in a .yml file should ALWAYS have an id field defined, whereas it was automatically generated beforehand if it was not set (which caused some non stub files to get parsed as stub with weird behavior).
