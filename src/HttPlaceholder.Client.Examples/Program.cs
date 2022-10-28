@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HttPlaceholder.Client.Dto.Configuration;
 using HttPlaceholder.Client.Dto.Enums;
 using HttPlaceholder.Client.Dto.Scenarios;
 using HttPlaceholder.Client.Dto.Stubs;
@@ -188,6 +189,9 @@ curl 'https://site.com/_nuxt/1d6c3a9.js' \
 
             // Get a list of scheduled job names.
             var scheduledJobNames = await client.GetScheduledJobNamesAsync();
+
+            // Update configuration
+            await client.UpdateConfigurationValueAsync(new UpdateConfigurationValueInputDto{ConfigurationKey = "storeResponses", NewValue = "false"});
 
             // Retrieve the configuration.
             var config = await client.GetConfigurationAsync();
