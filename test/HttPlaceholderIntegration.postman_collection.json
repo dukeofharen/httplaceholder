@@ -9019,9 +9019,151 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Your test name\", function () {",
+													"pm.test(\"Test configuration\", function () {",
 													"    var jsonData = pm.response.json();",
 													"    pm.expect(jsonData.length).to.be.above(0);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/configuration",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"configuration"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Set storeResponses to false Copy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"configurationKey\": \"storeResponses\",\n    \"newValue\": \"false\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/configuration",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"configuration"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check config value",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Test storeResponses value\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    const storeResponses = jsonData.find(c => c.key === \"storeResponses\");",
+													"    pm.expect(storeResponses.value).to.eql(\"false\")",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/configuration",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"configuration"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Set storeResponses to true",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {",
+													"    pm.response.to.have.status(204);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"configurationKey\": \"storeResponses\",\n    \"newValue\": \"true\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/configuration",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"configuration"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Check config value",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Test storeResponses value\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    const storeResponses = jsonData.find(c => c.key === \"storeResponses\");",
+													"    pm.expect(storeResponses.value).to.eql(\"true\")",
 													"});"
 												],
 												"type": "text/javascript"
