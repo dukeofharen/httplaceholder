@@ -16,8 +16,8 @@ namespace HttPlaceholder.Persistence.Implementations;
 
 internal class StubContext : IStubContext, ISingletonService
 {
-    private readonly IRequestNotify _requestNotify;
     private readonly IOptionsMonitor<SettingsModel> _options;
+    private readonly IRequestNotify _requestNotify;
     private readonly IEnumerable<IStubSource> _stubSources;
 
     public StubContext(IEnumerable<IStubSource> stubSources, IOptionsMonitor<SettingsModel> options,

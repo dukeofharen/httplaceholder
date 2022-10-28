@@ -3,7 +3,6 @@ using System.Linq;
 using Bogus;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Persistence.Implementations.StubSources;
-using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations;
 

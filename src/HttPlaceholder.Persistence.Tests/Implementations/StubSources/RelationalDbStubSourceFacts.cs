@@ -5,7 +5,6 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Implementations.StubSources;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 

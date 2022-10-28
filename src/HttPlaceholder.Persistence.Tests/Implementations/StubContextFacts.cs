@@ -5,7 +5,6 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Persistence.Implementations;
-using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations;
 

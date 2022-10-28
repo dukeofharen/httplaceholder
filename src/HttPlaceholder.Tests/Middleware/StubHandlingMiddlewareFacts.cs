@@ -8,7 +8,6 @@ using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Middleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
 namespace HttPlaceholder.Tests.Middleware;

@@ -18,7 +18,7 @@ public class UpdateConfigurationValueCommandHandler : IRequestHandler<UpdateConf
     private readonly IConfigurationRoot _configuration;
 
     /// <summary>
-    ///     Constructs a <see cref="UpdateConfigurationValueCommandHandler"/> object.
+    ///     Constructs a <see cref="UpdateConfigurationValueCommandHandler" /> object.
     /// </summary>
     /// <param name="configuration"></param>
     public UpdateConfigurationValueCommandHandler(IConfiguration configuration)

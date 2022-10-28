@@ -2,7 +2,6 @@
 using HttPlaceholder.Application.Metadata.Queries.FeatureIsEnabled;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.TestUtilities.Options;
-using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.Tests.Metadata.Queries;
 

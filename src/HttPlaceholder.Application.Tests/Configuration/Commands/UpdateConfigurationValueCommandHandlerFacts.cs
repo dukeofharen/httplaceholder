@@ -9,9 +9,9 @@ namespace HttPlaceholder.Application.Tests.Configuration.Commands;
 [TestClass]
 public class UpdateConfigurationValueCommandHandlerFacts
 {
-    private readonly HttPlaceholderConfigurationProvider _provider = new(new MemoryConfigurationSource());
     private readonly Mock<IConfigurationRoot> _configurationRootMock = new();
     private readonly AutoMocker _mocker = new();
+    private readonly HttPlaceholderConfigurationProvider _provider = new(new MemoryConfigurationSource());
 
     [TestInitialize]
     public void Initialize() => _mocker.Use<IConfiguration>(_configurationRootMock.Object);

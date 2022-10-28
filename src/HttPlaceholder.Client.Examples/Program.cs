@@ -191,7 +191,8 @@ curl 'https://site.com/_nuxt/1d6c3a9.js' \
             var scheduledJobNames = await client.GetScheduledJobNamesAsync();
 
             // Update configuration
-            await client.UpdateConfigurationValueAsync(new UpdateConfigurationValueInputDto{ConfigurationKey = "storeResponses", NewValue = "false"});
+            await client.UpdateConfigurationValueAsync(
+                new UpdateConfigurationValueInputDto {ConfigurationKey = "storeResponses", NewValue = "false"});
 
             // Retrieve the configuration.
             var config = await client.GetConfigurationAsync();

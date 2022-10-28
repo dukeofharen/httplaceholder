@@ -19,11 +19,11 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 internal class RelationalDbStubSource : IWritableStubSource
 {
     private readonly IDatabaseContextFactory _databaseContextFactory;
+
+    private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IQueryStore _queryStore;
     private readonly IRelationalDbMigrator _relationalDbMigrator;
     private readonly IRelationalDbStubCache _relationalDbStubCache;
-
-    private readonly IOptionsMonitor<SettingsModel> _options;
 
     public RelationalDbStubSource(
         IOptionsMonitor<SettingsModel> options,

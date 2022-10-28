@@ -5,7 +5,6 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.FileSystem.Implementations;
 using HttPlaceholder.Persistence.FileSystem.Models;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Tests.FileSystem;

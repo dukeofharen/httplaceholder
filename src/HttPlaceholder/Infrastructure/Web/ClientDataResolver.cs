@@ -19,8 +19,8 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
     private const string ForwardedProtoKey = "X-Forwarded-Proto";
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<ClientDataResolver> _logger;
-    private readonly List<IPAddress> _parsedProxyIps = new();
     private readonly IOptionsMonitor<SettingsModel> _options;
+    private readonly List<IPAddress> _parsedProxyIps = new();
     private bool _parsedProxyIpsInitialized;
 
     /// <summary>

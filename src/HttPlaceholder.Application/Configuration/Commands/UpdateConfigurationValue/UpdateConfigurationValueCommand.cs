@@ -8,7 +8,7 @@ namespace HttPlaceholder.Application.Configuration.Commands.UpdateConfigurationV
 public class UpdateConfigurationValueCommand : IRequest
 {
     /// <summary>
-    /// Constructs a <see cref="UpdateConfigurationValueCommand"/> object.
+    ///     Constructs a <see cref="UpdateConfigurationValueCommand" /> object.
     /// </summary>
     public UpdateConfigurationValueCommand(string configurationKey, string newValue)
     {

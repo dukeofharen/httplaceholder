@@ -1,18 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Commands.UpdateConfigurationValue;
-using HttPlaceholder.Application.Configuration.Provider;
 using HttPlaceholder.Application.Configuration.Queries.GetConfiguration;
 using HttPlaceholder.Authorization;
 using HttPlaceholder.Dto.v1.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.Memory;
-using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Controllers.v1;
 
@@ -43,7 +37,7 @@ public class ConfigurationController : BaseApiController
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> UpdateConfigurationValue([FromBody]UpdateConfigurationValueInputDto input)
+    public async Task<ActionResult> UpdateConfigurationValue([FromBody] UpdateConfigurationValueInputDto input)
     {
         await Mediator.Send(new UpdateConfigurationValueCommand(input.ConfigurationKey, input.NewValue));
         return NoContent();

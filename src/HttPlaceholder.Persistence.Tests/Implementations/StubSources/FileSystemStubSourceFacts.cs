@@ -240,7 +240,8 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath = Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
+        var requestsPath =
+            Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
 
         var fileServiceMock = _mocker.GetMock<IFileService>();
@@ -263,8 +264,10 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath = Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
-        var responsesPath = Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
+        var requestsPath =
+            Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
+        var responsesPath =
+            Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
         var expectedResponsePath = Path.Combine(responsesPath, $"{correlationId}.json");
 
@@ -293,8 +296,10 @@ public class FileSystemStubSourceFacts
     {
         // Arrange
         var correlationId = Guid.NewGuid().ToString();
-        var requestsPath = Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
-        var responsesPath = Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
+        var requestsPath =
+            Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.RequestsFolderName);
+        var responsesPath =
+            Path.Combine(_options.CurrentValue.Storage.FileStorageLocation, FileNames.ResponsesFolderName);
         var expectedRequestPath = Path.Combine(requestsPath, $"{correlationId}.json");
         var expectedResponsePath = Path.Combine(responsesPath, $"{correlationId}.json");
 

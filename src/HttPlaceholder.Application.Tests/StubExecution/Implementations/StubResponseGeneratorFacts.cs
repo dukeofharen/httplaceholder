@@ -4,7 +4,6 @@ using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.TestUtilities.Options;
-using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
