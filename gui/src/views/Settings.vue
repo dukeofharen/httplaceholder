@@ -41,6 +41,12 @@
           <label class="form-check-label" for="storeResponses"
             >Store response for request</label
           >
+          <p>
+            <strong>Note</strong>: this setting will be reset to its original
+            value after restarting HttPlaceholder. To persist the setting, take
+            a look at
+            <a :href="configDocsLink" target="_blank">the documentation</a>.
+          </p>
         </div>
       </div>
     </div>
@@ -79,6 +85,7 @@ import type { SettingsModel } from "@/domain/settings-model";
 import { useConfigurationStore } from "@/store/configuration";
 import type { ConfigurationModel } from "@/domain/stub/configuration-model";
 import { handleHttpError } from "@/utils/error";
+import { renderDocLink } from "@/constants/resources";
 
 export default defineComponent({
   name: "Settings",
@@ -127,11 +134,12 @@ export default defineComponent({
         }
       },
     });
+    const configDocsLink = renderDocLink("configuration");
 
     // Lifecycle
     onMounted(async () => await loadConfig());
 
-    return { settings, saveSettings, config, storeResponses };
+    return { settings, saveSettings, config, storeResponses, configDocsLink };
   },
 });
 </script>
