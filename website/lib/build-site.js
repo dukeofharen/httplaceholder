@@ -56,6 +56,7 @@ const changelogPageTitle = "HttPlaceholder - changelog";
         const changelog = await parseChangelog();
         await renderPage(distPath, rootUrl, "changelog.html", "changelog.html", changelogPageTitle, {changelog});
         await render(distPath, rootUrl, "sitemap.xml", "sitemap.xml", {posts});
+        await render(distPath, rootUrl, "feed.xml", "feed.xml", {posts});
     } catch (e) {
         console.error(e);
         process.exit(1);

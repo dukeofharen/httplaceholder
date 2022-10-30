@@ -1,0 +1,20 @@
+$ http "localhost:5000/users?id=12&filter=first_name"
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sun, 30 Oct 2022 19:40:00 GMT
+Transfer-Encoding: chunked
+X-HttPlaceholder-Correlation: 960708fc-fdd8-4b9f-9938-0e052e38d519
+X-HttPlaceholder-ExecutedStub: situation-01
+
+{
+    "first_name": "John"
+}
+
+
+
+
+
+
+
+
+

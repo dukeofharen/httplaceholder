@@ -1,0 +1,14 @@
+$ httplaceholder
+HttPlaceholder 2022.10.30.1 - (c) 2022 Ducode
+Run this application with argument '-h' or '--help' to get more info about the command line arguments.
+When running in to trouble, or just see what's going on, run this application with argument '-V' or '--verbose' to print the configuration variables.
+You can also set the "verbose" environment variable (without quotes) to "true" to enable verbose logging.
+Visit https://httplaceholder.org/
+2022-10-30 20:53:41.424 +01:00 [INF] User profile is available. Using '/home/httpl/.local/share/ASP.NET/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2022-10-30 20:53:41.666 +01:00 [INF] Reading location '/home/httpl/Desktop'.
+2022-10-30 20:53:41.675 +01:00 [INF] Parsing .yml file '/home/httpl/Desktop/stub.yml'.
+2022-10-30 20:53:41.948 +01:00 [INF] Now listening on: http://0.0.0.0:5000
+2022-10-30 20:53:41.948 +01:00 [INF] Now listening on: https://0.0.0.0:5050
+2022-10-30 20:53:41.950 +01:00 [INF] Starting the application took 724 ms.
+2022-10-30 20:53:41.950 +01:00 [INF] Application started. Press Ctrl+C to shut down.
+2022-10-30 20:53:41.950 +01:00 [INF] Hosting environment: Production

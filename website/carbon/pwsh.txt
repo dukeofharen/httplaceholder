@@ -1,0 +1,20 @@
+PS C:\Users\httpl> iwr "http://localhost:5000/users?id=12&filter=first_name"
+StatusCode        : 200
+StatusDescription : OK
+Content           : {
+                      "first_name": "John"
+                    }
+                    
+RawContent        : HTTP/1.1 200 OK
+                    Date: Sun, 30 Oct 2022 19:32:29 GMT
+                    Transfer-Encoding: chunked
+                    X-HttPlaceholder-Correlation: 57a3f4d4-a5e3-48ec-be02-857944436b99
+                    X-HttPlaceholder-ExecutedStub: situation-01
+                    Content-Ty…
+Headers           : {[Date, System.String[]], [Transfer-Encoding, System.String[]], [X-HttPlaceholder-Correlation, System.String[]], 
+                    [X-HttPlaceholder-ExecutedStub, System.String[]]…}
+Images            : {}
+InputFields       : {}
+Links             : {}
+RawContentLength  : 27
+RelationLink      : {}
