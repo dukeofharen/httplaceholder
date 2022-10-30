@@ -11,11 +11,11 @@ namespace HttPlaceholder;
 [ExcludeFromCodeCoverage]
 internal static class Program
 {
-    internal static Stopwatch StartupWatch = new();
+    private static readonly Stopwatch _startupWatch = new();
 
     public static int Main(string[] args)
     {
-        StartupWatch.Start();
+        _startupWatch.Start();
         ConfigureLogging(args);
         HandleCommands(args);
         try
@@ -38,7 +38,7 @@ internal static class Program
 
     public static long GetStartupMillis()
     {
-        StartupWatch.Stop();
-        return StartupWatch.ElapsedMilliseconds;
+        _startupWatch.Stop();
+        return _startupWatch.ElapsedMilliseconds;
     }
 }

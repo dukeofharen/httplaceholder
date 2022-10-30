@@ -84,7 +84,7 @@ export function get(url: string, options?: RequestOptions): Promise<any> {
     headers: {},
   };
   const request = <RequestInit>{
-    method: "get",
+    method: "GET",
     headers: options.headers || {},
   };
   handleBeforeSend(url, request);
@@ -98,7 +98,7 @@ export function del(url: string, options?: RequestOptions): Promise<any> {
     headers: {},
   };
   const request = <RequestInit>{
-    method: "delete",
+    method: "DELETE",
     headers: options.headers || {},
   };
   handleBeforeSend(url, request);
@@ -121,7 +121,7 @@ export function put(
     options.headers || {}
   );
   const request = {
-    method: "put",
+    method: "PUT",
     headers,
     body: preparedRequest.body,
   };
@@ -145,7 +145,31 @@ export function post(
     options.headers || {}
   );
   const request = {
-    method: "post",
+    method: "POST",
+    headers,
+    body: preparedRequest.body,
+  };
+  handleBeforeSend(url, request);
+  const httpSore = useHttpStore();
+  httpSore.increaseNumberOfCurrentHttpCalls();
+  return fetch(url, request).then(handleResponse).catch(handleError);
+}
+
+export function patch(
+  url: string,
+  body: any,
+  options?: RequestOptions
+): Promise<any> {
+  const preparedRequest = prepareRequest(body);
+  options = options || {
+    headers: {},
+  };
+  const headers = Object.assign(
+    { "content-type": preparedRequest.contentType },
+    options.headers || {}
+  );
+  const request = {
+    method: "PATCH",
     headers,
     body: preparedRequest.body,
   };

@@ -19,8 +19,8 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
     private const string ForwardedProtoKey = "X-Forwarded-Proto";
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<ClientDataResolver> _logger;
+    private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly List<IPAddress> _parsedProxyIps = new();
-    private readonly SettingsModel _settings;
     private bool _parsedProxyIpsInitialized;
 
     /// <summary>
@@ -28,12 +28,12 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
     /// </summary>
     public ClientDataResolver(
         IHttpContextAccessor httpContextAccessor,
-        IOptions<SettingsModel> options,
+        IOptionsMonitor<SettingsModel> options,
         ILogger<ClientDataResolver> logger)
     {
         _httpContextAccessor = httpContextAccessor;
         _logger = logger;
-        _settings = options.Value;
+        _options = options;
     }
 
     // I've seen Nginx use this IP when reverse proxying. .NET loopback check doesn't recognize this IP as loopback IP.
@@ -64,7 +64,8 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
         Func<string[], T> parseResultFunc)
     {
         var httpContext = _httpContextAccessor.HttpContext;
-        if (_settings.Web?.ReadProxyHeaders == false)
+        var settings = _options.CurrentValue;
+        if (settings.Web?.ReadProxyHeaders == false)
         {
             return getDefaultValueFunc(httpContext);
         }
@@ -86,7 +87,8 @@ internal class ClientDataResolver : IClientDataResolver, ISingletonService
     {
         if (!_parsedProxyIpsInitialized)
         {
-            var safeProxyIps = _settings.Web?.SafeProxyIps?.Split(",", StringSplitOptions.TrimEntries) ??
+            var settings = _options.CurrentValue;
+            var safeProxyIps = settings.Web?.SafeProxyIps?.Split(",", StringSplitOptions.TrimEntries) ??
                                Array.Empty<string>();
             foreach (var proxyIp in safeProxyIps)
             {

@@ -13,7 +13,7 @@ public class YamlFileStubSourceFacts
 {
     private readonly AutoMocker _mocker = new();
     private readonly MockLogger<YamlFileStubSource> _mockLogger = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
+    private readonly IOptionsMonitor<SettingsModel> _options = MockSettingsFactory.GetOptionsMonitor();
 
     [TestInitialize]
     public void Initialize()
@@ -100,7 +100,7 @@ public class YamlFileStubSourceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
         var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
-        _options.Value.Storage.InputFile = string.Join(separator, files);
+        _options.CurrentValue.Storage.InputFile = string.Join(separator, files);
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
@@ -130,7 +130,7 @@ public class YamlFileStubSourceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
         var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
-        _options.Value.Storage.InputFile = string.Join(",", files);
+        _options.CurrentValue.Storage.InputFile = string.Join(",", files);
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(files[0], It.IsAny<CancellationToken>()))
@@ -160,7 +160,7 @@ public class YamlFileStubSourceFacts
         var stubModelValidatorMock = _mocker.GetMock<IStubModelValidator>();
 
         const string inputFile = @"C:\stubs";
-        _options.Value.Storage.InputFile = inputFile;
+        _options.CurrentValue.Storage.InputFile = inputFile;
 
         var files = new[] {@"C:\stubs\file1.yml", @"C:\stubs\file2.yml"};
 
@@ -201,7 +201,7 @@ public class YamlFileStubSourceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
         const string inputFile = @"C:\stubs";
-        _options.Value.Storage.InputFile = inputFile;
+        _options.CurrentValue.Storage.InputFile = inputFile;
 
         var files = new[] {@"C:\stubs\file3.yml"};
 
@@ -238,7 +238,7 @@ public class YamlFileStubSourceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
         const string inputFile = @"C:\stubs";
-        _options.Value.Storage.InputFile = inputFile;
+        _options.CurrentValue.Storage.InputFile = inputFile;
 
         var files = new[] {@"C:\stubs\file4.yml"};
 
@@ -273,7 +273,7 @@ public class YamlFileStubSourceFacts
         var stubModelValidatorMock = _mocker.GetMock<IStubModelValidator>();
 
         const string inputFile = @"C:\stubs\file1.yml";
-        _options.Value.Storage.InputFile = inputFile;
+        _options.CurrentValue.Storage.InputFile = inputFile;
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(inputFile, It.IsAny<CancellationToken>()))
@@ -306,7 +306,7 @@ public class YamlFileStubSourceFacts
         var fileServiceMock = _mocker.GetMock<IFileService>();
 
         const string inputFile = @"C:\stubs\file1.yml";
-        _options.Value.Storage.InputFile = inputFile;
+        _options.CurrentValue.Storage.InputFile = inputFile;
 
         fileServiceMock
             .Setup(m => m.ReadAllTextAsync(inputFile, It.IsAny<CancellationToken>()))

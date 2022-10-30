@@ -3,7 +3,7 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Domain.Enums;
 using HttPlaceholder.Infrastructure.Implementations;
-using Microsoft.Extensions.Options;
+using HttPlaceholder.TestUtilities.Options;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
@@ -16,7 +16,7 @@ public class StubModelValidatorFacts
 
     [TestInitialize]
     public void Initialize() =>
-        _validator = new StubModelValidator(new ModelValidator(), Options.Create(_settings));
+        _validator = new StubModelValidator(new ModelValidator(), MockSettingsFactory.GetOptionsMonitor(_settings));
 
     [TestMethod]
     public void ValidateStubModel_IdNotSet_ShouldReturnError()

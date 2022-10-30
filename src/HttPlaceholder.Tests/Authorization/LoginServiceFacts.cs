@@ -11,7 +11,7 @@ public class LoginServiceFacts
 {
     private readonly Dictionary<string, string> _cookies = new();
     private readonly MockHttpContext _mockHttpContext = new();
-    private readonly IOptions<SettingsModel> _options = MockSettingsFactory.GetOptions();
+    private readonly IOptionsMonitor<SettingsModel> _options = MockSettingsFactory.GetOptionsMonitor();
     private LoginService _service;
 
     [TestInitialize]
@@ -44,8 +44,8 @@ public class LoginServiceFacts
     public void LoginService_CheckLoginCookie_UsernameAndPasswordSet_NoCookieSet_ShouldReturnFalse()
     {
         // Arrange
-        _options.Value.Authentication.ApiUsername = "user";
-        _options.Value.Authentication.ApiPassword = "pass";
+        _options.CurrentValue.Authentication.ApiUsername = "user";
+        _options.CurrentValue.Authentication.ApiPassword = "pass";
 
         // Act
         var result = _service.CheckLoginCookie();
@@ -58,8 +58,8 @@ public class LoginServiceFacts
     public void LoginService_CheckLoginCookie_UsernameAndPasswordSet_HashIncorrect_ShouldReturnFalse()
     {
         // Arrange
-        _options.Value.Authentication.ApiUsername = "user";
-        _options.Value.Authentication.ApiPassword = "pass";
+        _options.CurrentValue.Authentication.ApiUsername = "user";
+        _options.CurrentValue.Authentication.ApiPassword = "pass";
         _cookies.Add("HttPlaceholderLoggedin", "INCORRECT");
 
         // Act
@@ -73,8 +73,8 @@ public class LoginServiceFacts
     public void LoginService_CheckLoginCookie_UsernameAndPasswordSet_HashCorrect_ShouldReturnTrue()
     {
         // Arrange
-        _options.Value.Authentication.ApiUsername = "user";
-        _options.Value.Authentication.ApiPassword = "pass";
+        _options.CurrentValue.Authentication.ApiUsername = "user";
+        _options.CurrentValue.Authentication.ApiPassword = "pass";
         _cookies.Add("HttPlaceholderLoggedin",
             "qkUYd4wTaLeznD/nN1v9ei9/5XUekWt1hyOctq3bQZ9DMhSk7FJz+l1ILk++kyYlu+VguxVcuEC9R4Ryk763GA==");
 

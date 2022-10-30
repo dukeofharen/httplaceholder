@@ -16,16 +16,16 @@ namespace HttPlaceholder.Persistence.Implementations;
 
 internal class StubContext : IStubContext, ISingletonService
 {
+    private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IRequestNotify _requestNotify;
-    private readonly SettingsModel _settings;
     private readonly IEnumerable<IStubSource> _stubSources;
 
-    public StubContext(IEnumerable<IStubSource> stubSources, IOptions<SettingsModel> options,
+    public StubContext(IEnumerable<IStubSource> stubSources, IOptionsMonitor<SettingsModel> options,
         IRequestNotify requestNotify)
     {
         _stubSources = stubSources;
         _requestNotify = requestNotify;
-        _settings = options.Value;
+        _options = options;
     }
 
     /// <inheritdoc />
@@ -156,7 +156,8 @@ internal class StubContext : IStubContext, ISingletonService
     {
         var source = GetWritableStubSource();
 
-        if (_settings.Storage?.CleanOldRequestsInBackgroundJob == false)
+        var settings = _options.CurrentValue;
+        if (settings.Storage?.CleanOldRequestsInBackgroundJob == false)
         {
             // Clean up old requests here.
             await source.CleanOldRequestResultsAsync(cancellationToken);
@@ -166,7 +167,7 @@ internal class StubContext : IStubContext, ISingletonService
             ? await GetStubAsync(requestResult.ExecutingStubId, cancellationToken)
             : null;
         requestResult.StubTenant = stub?.Stub?.Tenant;
-        await source.AddRequestResultAsync(requestResult, _settings.Storage?.StoreResponses == true ? response : null,
+        await source.AddRequestResultAsync(requestResult, settings.Storage?.StoreResponses == true ? response : null,
             cancellationToken);
         await _requestNotify.NewRequestReceivedAsync(requestResult, cancellationToken);
     }

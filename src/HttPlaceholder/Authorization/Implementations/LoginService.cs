@@ -13,21 +13,22 @@ internal class LoginService : ILoginService, ITransientService
     private const string LoginCookieKey = "HttPlaceholderLoggedin";
     private const string Salt = "83b2737f-7d85-4a0a-8113-b98ed4a255a1";
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly SettingsModel _settings;
+    private readonly IOptionsMonitor<SettingsModel> _options;
 
     public LoginService(
         IHttpContextAccessor httpContextAccessor,
-        IOptions<SettingsModel> options)
+        IOptionsMonitor<SettingsModel> options)
     {
         _httpContextAccessor = httpContextAccessor;
-        _settings = options.Value;
+        _options = options;
     }
 
     /// <inheritdoc />
     public bool CheckLoginCookie()
     {
-        var username = _settings.Authentication?.ApiUsername ?? string.Empty;
-        var password = _settings.Authentication?.ApiPassword ?? string.Empty;
+        var settings = _options.CurrentValue;
+        var username = settings.Authentication?.ApiUsername ?? string.Empty;
+        var password = settings.Authentication?.ApiPassword ?? string.Empty;
         if (string.IsNullOrWhiteSpace(username) && string.IsNullOrWhiteSpace(password))
         {
             return true;

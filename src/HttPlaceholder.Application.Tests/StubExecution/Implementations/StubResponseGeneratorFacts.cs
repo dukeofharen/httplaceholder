@@ -3,7 +3,7 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.StubExecution;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
-using Microsoft.Extensions.Options;
+using HttPlaceholder.TestUtilities.Options;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Implementations;
 
@@ -25,7 +25,7 @@ public class StubResponseGeneratorFacts
             .Returns(_requestLoggerMock.Object);
         _mocker.Use(_requestLoggerFactoryMock.Object);
         _mocker.Use<IEnumerable<IResponseWriter>>(new[] {_responseWriterMock1.Object, _responseWriterMock2.Object});
-        _mocker.Use(Options.Create(_settings));
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
     }
 
     [TestCleanup]

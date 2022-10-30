@@ -24,7 +24,7 @@ internal class YamlFileStubSource : IStubSource
     private static readonly string[] _extensions = {".yml", ".yaml"};
     private readonly IFileService _fileService;
     private readonly ILogger<YamlFileStubSource> _logger;
-    private readonly SettingsModel _settings;
+    private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly IStubModelValidator _stubModelValidator;
     private DateTime _stubLoadDateTime;
 
@@ -33,13 +33,13 @@ internal class YamlFileStubSource : IStubSource
     public YamlFileStubSource(
         IFileService fileService,
         ILogger<YamlFileStubSource> logger,
-        IOptions<SettingsModel> options,
+        IOptionsMonitor<SettingsModel> options,
         IStubModelValidator stubModelValidator)
     {
         _fileService = fileService;
         _logger = logger;
         _stubModelValidator = stubModelValidator;
-        _settings = options.Value;
+        _options = options;
     }
 
     /// <inheritdoc />
@@ -154,7 +154,7 @@ internal class YamlFileStubSource : IStubSource
 
     private async Task<IEnumerable<string>> GetYamlFileLocationsAsync(CancellationToken cancellationToken)
     {
-        var inputFileLocation = _settings.Storage?.InputFile;
+        var inputFileLocation = _options.CurrentValue.Storage?.InputFile;
         if (string.IsNullOrEmpty(inputFileLocation))
         {
             // If the input file location is not set, try looking in the current directory for .yml files.

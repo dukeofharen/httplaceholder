@@ -2894,6 +2894,35 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "PATCH update value",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"configurationKey\": \"storeResponses\",\n    \"newValue\": \"true\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{rootUrl}}ph-api/configuration",
+									"host": [
+										"{{rootUrl}}ph-api"
+									],
+									"path": [
+										"configuration"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}

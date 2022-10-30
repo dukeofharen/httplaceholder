@@ -10,7 +10,7 @@ public class RestApiCleanOldRequestsTests : RestApiIntegrationTestBase
     [TestInitialize]
     public void Initialize()
     {
-        Options.Value.Storage.CleanOldRequestsInBackgroundJob = true;
+        Options.CurrentValue.Storage.CleanOldRequestsInBackgroundJob = true;
         InitializeRestApiIntegrationTest();
     }
 

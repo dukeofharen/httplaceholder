@@ -143,6 +143,7 @@ public static class ConfigKeys
             "Authentication:ApiUsername",
             ConfigKeyType.Authentication,
             null,
+            null,
             null),
         Create(
             ApiPasswordKey,
@@ -151,13 +152,15 @@ public static class ConfigKeys
             "Authentication:ApiPassword",
             ConfigKeyType.Authentication,
             null,
-            true),
+            true,
+            null),
         Create(
             HttpsPortKey,
             "the port HttPlaceholder should run under when HTTPS is enabled. Listen on multiple ports by separating ports with comma.",
             "5050",
             "Web:HttpsPort",
             ConfigKeyType.Web,
+            null,
             null,
             null),
         Create(
@@ -167,6 +170,7 @@ public static class ConfigKeys
             "Storage:InputFile",
             ConfigKeyType.Storage,
             null,
+            null,
             null),
         Create(
             OldRequestsQueueLengthKey,
@@ -174,6 +178,7 @@ public static class ConfigKeys
             "100",
             "Storage:OldRequestsQueueLength",
             ConfigKeyType.Storage,
+            null,
             null,
             null),
         Create(
@@ -183,7 +188,8 @@ public static class ConfigKeys
             "Storage:StoreResponses",
             ConfigKeyType.Storage,
             true,
-            null),
+            null,
+            true),
         Create(
             CleanOldRequestsInBackgroundJob,
             "whether the cleaning of old requests should be done in a background job. If set to true, will delete old requests in a background job that runs once in 5 minutes. If set to false, will clean old requests every time a request is handled. Default: true.",
@@ -191,6 +197,7 @@ public static class ConfigKeys
             "Storage:CleanOldRequestsInBackgroundJob",
             ConfigKeyType.Storage,
             true,
+            null,
             null),
         Create(
             PfxPasswordKey,
@@ -199,7 +206,8 @@ public static class ConfigKeys
             "Web:PfxPassword",
             ConfigKeyType.Web,
             null,
-            true),
+            true,
+            null),
         Create(
             ReadProxyHeaders,
             "whether the proxy headers 'X-Forwarded-For', 'X-Forwarded-Host' and 'X-Forwarded-Proto' should be taken into account when determining the IP, hostname and protocol",
@@ -207,6 +215,7 @@ public static class ConfigKeys
             "Web:ReadProxyHeaders",
             ConfigKeyType.Web,
             true,
+            null,
             null),
         Create(
             SafeProxyIps,
@@ -214,6 +223,7 @@ public static class ConfigKeys
             "1.1.1.1,2.2.2.2",
             "Web:SafeProxyIps",
             ConfigKeyType.Web,
+            null,
             null,
             null),
         Create(
@@ -223,6 +233,7 @@ public static class ConfigKeys
             "Web:PfxPath",
             ConfigKeyType.Web,
             null,
+            null,
             null),
         Create(
             PortKey,
@@ -230,6 +241,7 @@ public static class ConfigKeys
             "5000",
             "Web:HttpPort",
             ConfigKeyType.Web,
+            null,
             null,
             null),
         Create(
@@ -239,6 +251,7 @@ public static class ConfigKeys
             "Web:UseHttps",
             ConfigKeyType.Web,
             true,
+            null,
             null),
         Create(
             EnableRequestLoggingKey,
@@ -247,6 +260,7 @@ public static class ConfigKeys
             "Storage:EnableRequestLogging",
             ConfigKeyType.Storage,
             true,
+            null,
             null),
         Create(
             FileStorageLocationKey,
@@ -254,6 +268,7 @@ public static class ConfigKeys
             @"C:\httplaceholder_storage",
             "Storage:FileStorageLocation",
             ConfigKeyType.Storage,
+            null,
             null,
             null),
         Create(
@@ -263,6 +278,7 @@ public static class ConfigKeys
             "Storage:UseInMemoryStorage",
             ConfigKeyType.Storage,
             true,
+            null,
             null),
         Create(
             MysqlConnectionStringKey,
@@ -271,13 +287,15 @@ public static class ConfigKeys
             "ConnectionStrings:MySql",
             ConfigKeyType.Storage,
             null,
-            true),
+            true,
+            null),
         Create(
             SqliteConnectionStringKey,
             "a connection string that needs to be filled in if you want to use SQLite",
             @"Data Source=C:\tmp\httplaceholder.db",
             "ConnectionStrings:Sqlite",
             ConfigKeyType.Storage,
+            null,
             null,
             null),
         Create(
@@ -287,7 +305,8 @@ public static class ConfigKeys
             "ConnectionStrings:SqlServer",
             ConfigKeyType.Storage,
             null,
-            true),
+            true,
+            null),
         Create(
             EnableUserInterface,
             "whether the user interface should be enabled or not. The user interface is, if enabled, located at http://localhost:PORT/ph-ui.",
@@ -295,6 +314,7 @@ public static class ConfigKeys
             "Gui:EnableUserInterface",
             ConfigKeyType.Gui,
             true,
+            null,
             null),
         Create(
             MaximumExtraDurationMillisKey,
@@ -302,6 +322,7 @@ public static class ConfigKeys
             "60000",
             "Stub:MaximumExtraDurationMillis",
             ConfigKeyType.Stub,
+            null,
             null,
             null),
         Create(
@@ -311,6 +332,7 @@ public static class ConfigKeys
             "Stub:HealthcheckOnRootUrl",
             ConfigKeyType.Stub,
             true,
+            null,
             null),
         Create(
             ConfigJsonLocationKey,
@@ -318,6 +340,7 @@ public static class ConfigKeys
             @"F:\httplaceholder\config.json",
             null,
             ConfigKeyType.Configuration,
+            null,
             null,
             null)
     };

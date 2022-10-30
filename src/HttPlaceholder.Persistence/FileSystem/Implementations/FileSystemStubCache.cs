@@ -22,18 +22,18 @@ internal class FileSystemStubCache : IFileSystemStubCache
     private readonly IFileService _fileService;
 
     private readonly ILogger<FileSystemStubCache> _logger;
-    private readonly SettingsModel _settings;
+    private readonly IOptionsMonitor<SettingsModel> _options;
     internal readonly ConcurrentDictionary<string, StubModel> StubCache = new();
     internal string StubUpdateTrackingId;
 
     public FileSystemStubCache(
         ILogger<FileSystemStubCache> logger,
         IFileService fileService,
-        IOptions<SettingsModel> options)
+        IOptionsMonitor<SettingsModel> options)
     {
         _logger = logger;
         _fileService = fileService;
-        _settings = options.Value;
+        _options = options;
     }
 
     /// <inheritdoc />
@@ -131,7 +131,7 @@ internal class FileSystemStubCache : IFileSystemStubCache
 
     private string GetMetadataPath()
     {
-        var rootPath = _settings.Storage?.FileStorageLocation ??
+        var rootPath = _options.CurrentValue.Storage?.FileStorageLocation ??
                        throw new InvalidOperationException("FileStorageLocation unexpectedly null.");
         var path = Path.Combine(rootPath, FileNames.MetadataFileName);
         return path;
@@ -158,5 +158,5 @@ internal class FileSystemStubCache : IFileSystemStubCache
     }
 
     private string GetStubsFolder() =>
-        Path.Combine(_settings.Storage?.FileStorageLocation, FileNames.StubsFolderName);
+        Path.Combine(_options?.CurrentValue?.Storage?.FileStorageLocation, FileNames.StubsFolderName);
 }

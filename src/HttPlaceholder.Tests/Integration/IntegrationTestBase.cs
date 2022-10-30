@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Application.Configuration.Provider;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -12,13 +13,13 @@ namespace HttPlaceholder.Tests.Integration;
 
 public abstract class IntegrationTestBase
 {
-    protected readonly IOptions<SettingsModel> Options = MockSettingsFactory.GetOptions();
+    protected readonly IOptionsMonitor<SettingsModel> Options = MockSettingsFactory.GetOptionsMonitor();
 
     protected HttpClient Client;
 
     protected TestServer TestServer;
 
-    protected SettingsModel Settings => Options.Value;
+    protected SettingsModel Settings => Options.CurrentValue;
 
     protected string BaseAddress => TestServer.BaseAddress.ToString();
 
@@ -28,14 +29,14 @@ public abstract class IntegrationTestBase
         servicesToReplace ??= Array.Empty<(Type, object)>();
         stubSources ??= Array.Empty<IStubSource>();
         var config = new ConfigurationBuilder()
-            .AddInMemoryCollection(new Dictionary<string, string>
+            .AddCustomInMemoryCollection(new Dictionary<string, string>
             {
                 {"Storage:InputFile", @"C:\tmp"}, {"Storage:CleanOldRequestsInBackgroundJob", "true"}
             })
             .Build();
         servicesToReplace = servicesToReplace.Concat(new (Type, object)[]
         {
-            (typeof(IOptions<SettingsModel>), Options), (typeof(IConfiguration), config)
+            (typeof(IOptionsMonitor<SettingsModel>), Options), (typeof(IConfiguration), config)
         }).ToArray();
         var startup = new Startup(config);
         TestServer = new TestServer(new WebHostBuilder()

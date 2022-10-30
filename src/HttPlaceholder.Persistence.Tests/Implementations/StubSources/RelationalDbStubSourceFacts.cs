@@ -5,7 +5,6 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
 using HttPlaceholder.Persistence.Implementations.StubSources;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -29,7 +28,7 @@ public class RelationalDbStubSourceFacts
         mockDatabaseContextFactory
             .Setup(m => m.CreateDatabaseContext())
             .Returns(_mockDatabaseContext.Object);
-        _mocker.Use(Options.Create(_settings));
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
     }
 
     [TestCleanup]

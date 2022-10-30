@@ -370,6 +370,14 @@ public interface IHttPlaceholderClient
     Task<IEnumerable<ConfigurationDto>> GetConfigurationAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
+    ///     Updates a given configuration value.
+    /// </summary>
+    /// <param name="input">The configuration input/</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    Task UpdateConfigurationValueAsync(UpdateConfigurationValueInputDto input,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     ///     Verifies that a stub with the specified stubId has been called.
     /// </summary>
     /// <param name="stubId">The stub ID.</param>

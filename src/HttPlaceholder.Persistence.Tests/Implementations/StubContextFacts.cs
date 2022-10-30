@@ -5,7 +5,6 @@ using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Persistence.Implementations;
-using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Persistence.Tests.Implementations;
 
@@ -20,7 +19,7 @@ public class StubContextFacts
     public void Initialize()
     {
         _mocker.Use<IEnumerable<IStubSource>>(_stubSources);
-        _mocker.Use(Options.Create(_settings));
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
     }
 
     [TestCleanup]

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -17,6 +18,7 @@ public class RestApiAuthorizationTests : RestApiIntegrationTestBase
     [DataRow("ph-api/metadata", "GET", false, false)]
     [DataRow("ph-api/requests", "GET", true, false)]
     [DataRow("ph-api/configuration", "GET", true, false)]
+    [DataRow("ph-api/configuration", "PATCH", true, false)]
     [DataRow("ph-api/requests/3b392b80-b35f-4a4d-be01-e95d2d42d869", "GET", true, false)]
     [DataRow("ph-api/requests/overview", "GET", true, false)]
     [DataRow("ph-api/requests", "DELETE", true, false)]
@@ -50,7 +52,8 @@ public class RestApiAuthorizationTests : RestApiIntegrationTestBase
         var request =
             new HttpRequestMessage(parsedHttpMethod, $"{TestServer.BaseAddress}{relativeUrl}");
         request.Headers.Add("Authorization", HttpUtilities.GetBasicAuthHeaderValue("wrong", "wrong"));
-        if (parsedHttpMethod == HttpMethod.Post || parsedHttpMethod == HttpMethod.Put)
+        var methodsToCheck = new[] {HttpMethod.Patch, HttpMethod.Post, HttpMethod.Put};
+        if (methodsToCheck.Contains(parsedHttpMethod))
         {
             request.Content = new StringContent(postArray ? "[]" : "{}", Encoding.UTF8, MimeTypes.JsonMime);
         }

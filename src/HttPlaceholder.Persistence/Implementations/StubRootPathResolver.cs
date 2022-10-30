@@ -17,23 +17,23 @@ internal class StubRootPathResolver : IStubRootPathResolver, ISingletonService
 {
     private readonly IAssemblyService _assemblyService;
     private readonly IFileService _fileService;
-    private readonly SettingsModel _settings;
+    private readonly IOptionsMonitor<SettingsModel> _options;
 
     public StubRootPathResolver(
         IAssemblyService assemblyService,
         IFileService fileService,
-        IOptions<SettingsModel> options)
+        IOptionsMonitor<SettingsModel> options)
     {
         _assemblyService = assemblyService;
         _fileService = fileService;
-        _settings = options.Value;
+        _options = options;
     }
 
     /// <inheritdoc />
     public async Task<IEnumerable<string>> GetStubRootPathsAsync(CancellationToken cancellationToken)
     {
         // First, check the "inputFile" configuration property and extract the directory of this folder.
-        var inputFile = _settings.Storage?.InputFile;
+        var inputFile = _options.CurrentValue.Storage?.InputFile;
         if (inputFile == null)
         {
             // If no input file was provided, return the assembly path instead.

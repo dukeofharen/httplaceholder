@@ -5,7 +5,6 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
 using HttPlaceholder.Persistence.FileSystem.Implementations;
 using HttPlaceholder.Persistence.FileSystem.Models;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Persistence.Tests.FileSystem;
@@ -21,7 +20,7 @@ public class FileSystemStubCacheFacts
     public void Initialize()
     {
         _settings.Storage.FileStorageLocation = FileStorageLocation;
-        _mocker.Use(Options.Create(_settings));
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
     }
 
     [TestCleanup]

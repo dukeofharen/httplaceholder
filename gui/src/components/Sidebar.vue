@@ -30,6 +30,7 @@ import { computed, defineComponent } from "vue";
 import router from "@/router";
 import { useUsersStore } from "@/store/users";
 import { useMetadataStore } from "@/store/metadata";
+import { renderDocLink } from "@/constants/resources";
 
 export default defineComponent({
   name: "Sidebar",
@@ -73,7 +74,7 @@ export default defineComponent({
       {
         title: "Docs",
         icon: "file-earmark-text",
-        url: "docs/index.html",
+        url: renderDocLink(),
         targetBlank: true,
         onlyShowWhenLoggedInAndAuthEnabled: false,
       },

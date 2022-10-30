@@ -21,16 +21,16 @@ internal class FileSystemStubSource : IWritableStubSource
 {
     private readonly IFileService _fileService;
     private readonly IFileSystemStubCache _fileSystemStubCache;
-    private readonly SettingsModel _settings;
+    private readonly IOptionsMonitor<SettingsModel> _options;
 
     public FileSystemStubSource(
         IFileService fileService,
-        IOptions<SettingsModel> options,
+        IOptionsMonitor<SettingsModel> options,
         IFileSystemStubCache fileSystemStubCache)
     {
         _fileService = fileService;
         _fileSystemStubCache = fileSystemStubCache;
-        _settings = options.Value;
+        _options = options;
     }
 
     /// <inheritdoc />
@@ -176,7 +176,7 @@ internal class FileSystemStubSource : IWritableStubSource
     public async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken)
     {
         var path = GetRequestsFolder();
-        var maxLength = _settings.Storage?.OldRequestsQueueLength ?? 40;
+        var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
         var filePaths = await _fileService.GetFilesAsync(path, "*.json", cancellationToken);
         var filePathsAndDates = filePaths
             .Select(p => (path: p, lastWriteTime: _fileService.GetLastWriteTime(p)))
@@ -201,7 +201,7 @@ internal class FileSystemStubSource : IWritableStubSource
 
     private string GetRootFolder()
     {
-        var folder = _settings.Storage?.FileStorageLocation;
+        var folder = _options.CurrentValue.Storage?.FileStorageLocation;
         if (string.IsNullOrWhiteSpace(folder))
         {
             throw new InvalidOperationException("File storage location unexpectedly not set.");

@@ -1,7 +1,6 @@
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Infrastructure.Web;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Tests.Infrastructure.Web;
 
@@ -15,7 +14,7 @@ public class ClientIpResolverFacts
     [TestInitialize]
     public void Initialize()
     {
-        _mocker.Use(Options.Create(_settings));
+        _mocker.Use(MockSettingsFactory.GetOptionsMonitor(_settings));
         var httpContextAccessorMock = _mocker.GetMock<IHttpContextAccessor>();
         httpContextAccessorMock
             .Setup(m => m.HttpContext)

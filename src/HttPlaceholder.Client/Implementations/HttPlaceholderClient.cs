@@ -589,6 +589,25 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     }
 
     /// <inheritdoc />
+    public async Task UpdateConfigurationValueAsync(UpdateConfigurationValueInputDto input,
+        CancellationToken cancellationToken = default)
+    {
+        var request = new HttpRequestMessage(new HttpMethod("PATCH"),
+            "/ph-api/configuration")
+        {
+            Content = new StringContent(JsonConvert.SerializeObject(input),
+                Encoding.UTF8,
+                JsonContentType)
+        };
+        using var response = await HttpClient.SendAsync(request, cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            throw new HttPlaceholderClientException(response.StatusCode, content);
+        }
+    }
+
+    /// <inheritdoc />
     public Task<VerificationResultModel> VerifyStubCalledAsync(string stubId,
         CancellationToken cancellationToken = default) =>
         VerifyStubCalledAsyncInternal(stubId, null, null, cancellationToken);
