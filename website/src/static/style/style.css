@@ -83,9 +83,11 @@ html[data-theme="light"] .home-logo.dark {
 }
 
 html[data-theme="dark"] #stub-call-selector {
-    background-color: #333;
+    background-color: #eee6e0;
+    color: #415462 !important;
 }
 
 html[data-theme="light"] #stub-call-selector {
-    background-color: #eee;
+    background-color: #000;
+    color: #bbc6ce !important;
 }
