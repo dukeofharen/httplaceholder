@@ -1,0 +1,20 @@
+$ curl "http://localhost:5000/users?id=12&filter=first_name" -D-
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Sun, 30 Oct 2022 19:34:47 GMT
+Transfer-Encoding: chunked
+X-HttPlaceholder-Correlation: 4a297767-2c3b-4324-87fa-f6d2cbbc1a23
+X-HttPlaceholder-ExecutedStub: situation-01
+
+{
+  "first_name": "John"
+}
+
+
+
+
+
+
+
+
+
