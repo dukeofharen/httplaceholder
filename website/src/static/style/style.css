@@ -28,7 +28,8 @@ html[data-theme="light"] .home-logo.dark {
 }
 
 .footer {
-    text-align: center;
+    margin-top: 20px;
+    opacity: 0.6;
 }
 
 .mt-1 {
