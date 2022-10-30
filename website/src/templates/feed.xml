@@ -13,7 +13,7 @@
         {{#posts}}
         <item>
             <title>{{title}}</title>
-            <link>{{rootUrl}}/posts/{{postKey}}</link>
+            <link>https://httplaceholder.org/posts/{{postKey}}</link>
             <description>{{description}}</description>
             <pubDate>{{formattedDateRss}}</pubDate>
         </item>
