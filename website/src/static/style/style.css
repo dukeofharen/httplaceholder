@@ -6,28 +6,20 @@ h1, h2 {
     max-height: 64px;
 }
 
-.home-logo {
+html[data-theme="dark"] .home-logo.light {
     display: none;
 }
 
-html[data-theme="dark"] .home-logo.dark {
-    display: block;
-}
-
-html[data-theme="light"] .home-logo.light {
-    display: block;
-}
-
-.request-in-ui {
+html[data-theme="light"] .home-logo.dark {
     display: none;
 }
 
-html[data-theme="dark"] .request-in-ui.dark {
-    display: block;
+html[data-theme="dark"] .request-in-ui.light {
+    display: none;
 }
 
-html[data-theme="light"] .request-in-ui.light {
-    display: block;
+html[data-theme="light"] .request-in-ui.dark {
+    display: none;
 }
 
 .theme-switch {
