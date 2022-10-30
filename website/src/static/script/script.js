@@ -72,6 +72,29 @@ function setupCopyableScripts() {
     }
 }
 
+function setupStubCallSelector() {
+    const element = document.getElementById("stub-call-selector");
+
+    function showStubCall(value) {
+        const stubCalls = document.getElementsByClassName("call");
+        for (let i = 0, max = stubCalls.length; i < max; i++) {
+            const stubCall = stubCalls[i];
+            stubCall.style.display = "none";
+        }
+
+        if (value) {
+            const stubCall = document.getElementsByClassName("call-" + value)[0];
+            stubCall.style.display = "block";
+        }
+    }
+
+    element.addEventListener("change", function () {
+        showStubCall(element.value);
+    });
+
+    showStubCall(element.value);
+}
+
 window.addEventListener('DOMContentLoaded', function () {
     let theme = localStorage.theme ? localStorage.theme : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? themeType.dark : themeType.light;
     switchTheme(theme);
@@ -82,4 +105,5 @@ window.addEventListener('DOMContentLoaded', function () {
     });
 
     setupCopyableScripts();
+    setupStubCallSelector();
 });

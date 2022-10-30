@@ -2,6 +2,11 @@ h1, h2 {
     margin-bottom: 10px !important;
 }
 
+h2 {
+    margin-top: 5px !important;
+    font-size: 1.5em !important;
+}
+
 .logo {
     max-height: 64px;
 }
@@ -11,14 +16,6 @@ html[data-theme="dark"] .home-logo.light {
 }
 
 html[data-theme="light"] .home-logo.dark {
-    display: none;
-}
-
-html[data-theme="dark"] .request-in-ui.light {
-    display: none;
-}
-
-html[data-theme="light"] .request-in-ui.dark {
     display: none;
 }
 
@@ -73,4 +70,22 @@ html[data-theme="light"] .request-in-ui.dark {
 .blog-items ul li {
     list-style: none;
     font-size: 1.2em;
+}
+
+.call {
+    display: none;
+}
+
+#stub-call-selector {
+    border: 0 !important;
+    margin-bottom: 25px !important;
+    max-width: 300px !important;
+}
+
+html[data-theme="dark"] #stub-call-selector {
+    background-color: #333;
+}
+
+html[data-theme="light"] #stub-call-selector {
+    background-color: #eee;
 }
