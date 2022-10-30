@@ -72,10 +72,6 @@ html[data-theme="light"] .home-logo.dark {
     font-size: 1.2em;
 }
 
-.call {
-    display: none;
-}
-
 #stub-call-selector {
     border: 0 !important;
     margin-bottom: 25px !important;

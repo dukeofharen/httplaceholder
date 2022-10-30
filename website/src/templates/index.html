@@ -81,9 +81,10 @@
         <p>Perform a specific HTTP call to HttPlaceholder so your provided response will be returned.</p>
 
         <select id="stub-call-selector">
-            <option value="curl">cURL (Mac / Linux)</option>
-            <option value="pwsh">PowerShell (Windows)</option>
-            <option value="httpie">httpie (cross platform)</option>
+            <option value="curl">cURL</option>
+            <option value="wget">wget</option>
+            <option value="pwsh">PowerShell</option>
+            <option value="httpie">httpie</option>
         </select>
 
         <div class="call call-curl">
@@ -93,6 +94,15 @@
                 <pre><code>curl "http://localhost:5000/users?id=12&filter=first_name" -D-</code></pre>
             </div>
             <img src="{{{rootUrl}}}/img/curl_result.png" alt="cURL call result"/>
+        </div>
+
+        <div class="call call-wget">
+            <div class="copyable-script">
+                <img class="copy-icon" src="{{rootUrl}}/img/clipboard.svg" title="Copy script"
+                     alt="Copy script"/>
+                <pre><code>wget -qSO - "http://localhost:5000/users?id=12&filter=first_name"</code></pre>
+            </div>
+            <img src="{{{rootUrl}}}/img/wget_result.png" alt="wget call result"/>
         </div>
 
         <div class="call call-pwsh">
