@@ -7,6 +7,7 @@
 - Log application startup time (https://github.com/dukeofharen/httplaceholder/pull/285).
 - Make it possible to update settings through API (only "storeResponses" for now) (https://github.com/dukeofharen/httplaceholder/pull/286).
 - Added option to set "storeResponses" in UI (https://github.com/dukeofharen/httplaceholder/pull/286).
+- Fixed bug where a lot of file watches were placed which were not necessary (https://github.com/dukeofharen/httplaceholder/pull/289).
 
 # BREAKING CHANGES
 - Stubs defined in a .yml file should ALWAYS have an id field defined, whereas it was automatically generated beforehand if it was not set (which caused some non stub files to get parsed as stub with weird behavior).
