@@ -7,20 +7,21 @@ using Microsoft.Extensions.Logging.EventLog;
 namespace HttPlaceholder.Utilities;
 
 /// <summary>
-/// TODO
+///     A class that contains methods for creating a host builder.
 /// </summary>
 public static class HostBuilderUtilities
 {
     /// <summary>
-    /// TODO
+    ///     Creates a <see cref="IHostBuilder"/> specifically for HttPlaceholder.
+    ///     One of the problems we had is that when using the default host builder,
+    ///     .NET creates a lot of unnecessary Inotify watches.
     /// </summary>
-    /// <returns></returns>
     public static IHostBuilder CreateHostBuilder()
     {
         var builder = new HostBuilder();
         builder.UseContentRoot(Directory.GetCurrentDirectory());
         builder
-            .ConfigureLogging((hostingContext, logging) =>
+            .ConfigureLogging((_, logging) =>
             {
                 var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
                 if (isWindows)
