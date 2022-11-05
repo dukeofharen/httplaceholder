@@ -77,7 +77,7 @@ public static class ProgramUtilities
             Console.WriteLine(GetVerbosePage(argsDictionary, args));
         }
 
-        return Host.CreateDefaultBuilder(args)
+        return HostBuilderUtilities.CreateHostBuilder()
             .UseSerilog()
             .ConfigureAppConfiguration((_, config) => config.AddCustomInMemoryCollection(argsDictionary))
             .ConfigureWebHostDefaults(webBuilder =>
