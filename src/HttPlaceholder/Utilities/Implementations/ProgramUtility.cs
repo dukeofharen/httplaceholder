@@ -45,6 +45,7 @@ public class ProgramUtility : IProgramUtility
         else
         {
             httpPortsResult.AddRange(httpPorts);
+            EnsureNoPortsAreTaken(httpPorts);
         }
 
         if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) &&
@@ -59,6 +60,7 @@ public class ProgramUtility : IProgramUtility
             else
             {
                 httpsPortsResult.AddRange(httpsPorts);
+                EnsureNoPortsAreTaken(httpsPorts);
             }
         }
 
@@ -80,5 +82,14 @@ public class ProgramUtility : IProgramUtility
         }
 
         return result.ToArray();
+    }
+
+    private void EnsureNoPortsAreTaken(IEnumerable<int> ports)
+    {
+        var portsTaken = ports.Where(p => _tcpService.PortIsTaken(p)).ToArray();
+        if (portsTaken.Any())
+        {
+            throw new ArgumentException($"The following ports are already taken: {string.Join(", ", portsTaken)}");
+        }
     }
 }

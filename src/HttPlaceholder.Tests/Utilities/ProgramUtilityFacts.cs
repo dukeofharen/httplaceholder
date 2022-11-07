@@ -56,12 +56,15 @@ public class ProgramUtilityFacts
         _mockTcp
             .Setup(m => m.PortIsTaken(7000))
             .Returns(true);
+        _mockTcp
+            .Setup(m => m.PortIsTaken(7001))
+            .Returns(true);
 
         // Act
         var exception = Assert.ThrowsException<ArgumentException>(() => _utility.GetPorts(_settings));
 
         // Assert
-        Assert.AreEqual("Port '7000' is already taken.", exception.Message);
+        Assert.AreEqual("The following ports are already taken: 7000, 7001", exception.Message);
     }
 
     [TestMethod]
@@ -116,12 +119,15 @@ public class ProgramUtilityFacts
         _mockTcp
             .Setup(m => m.PortIsTaken(7000))
             .Returns(true);
+        _mockTcp
+            .Setup(m => m.PortIsTaken(7001))
+            .Returns(true);
 
         // Act
         var exception = Assert.ThrowsException<ArgumentException>(() => _utility.GetPorts(_settings));
 
         // Assert
-        Assert.AreEqual("Port '7000' is already taken.", exception.Message);
+        Assert.AreEqual("The following ports are already taken: 7000, 7001", exception.Message);
     }
 
     [TestMethod]
