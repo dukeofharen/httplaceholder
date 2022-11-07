@@ -48,6 +48,9 @@ public class ProgramUtility : IProgramUtility
     {
         var result = new List<int>();
         var ports = ParsePorts(portInput);
+
+        // If no specific port is configured, the default port will be used.
+        // If that port happens to be taken, look for the next free TCP port.
         if (ports.Length == 1 && ports[0] == defaultPort &&
             _tcpService.PortIsTaken(ports[0]))
         {
