@@ -25,7 +25,7 @@ public class ProgramUtility : IProgramUtility
     /// <summary>
     ///     Constructs a <see cref="ProgramUtility"/> instance.
     /// </summary>
-    private ProgramUtility(ITcpService tcpService)
+    internal ProgramUtility(ITcpService tcpService)
     {
         _tcpService = tcpService;
     }
@@ -36,7 +36,6 @@ public class ProgramUtility : IProgramUtility
         var httpPortsResult = new List<int>();
         var httpsPortsResult = new List<int>();
 
-        // TODO combine these 2 blocks?
         var httpPorts = ParsePorts(settings.Web.HttpPort);
         if (httpPorts.Length == 1 && httpPorts[0] == DefaultConfiguration.DefaultHttpPort &&
             _tcpService.PortIsTaken(httpPorts[0]))
