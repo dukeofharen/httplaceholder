@@ -33,38 +33,33 @@ public class ProgramUtility : IProgramUtility
     /// <inheritdoc />
     public (IEnumerable<int> httpPorts, IEnumerable<int> httpsPorts) GetPorts(SettingsModel settings)
     {
-        var httpPortsResult = new List<int>();
-        var httpsPortsResult = new List<int>();
-
-        var httpPorts = ParsePorts(settings.Web.HttpPort);
-        if (httpPorts.Length == 1 && httpPorts[0] == DefaultConfiguration.DefaultHttpPort &&
-            _tcpService.PortIsTaken(httpPorts[0]))
-        {
-            httpPortsResult.Add(_tcpService.GetNextFreeTcpPort());
-        }
-        else
-        {
-            httpPortsResult.AddRange(httpPorts);
-            EnsureNoPortsAreTaken(httpPorts);
-        }
-
+        IEnumerable<int> httpsPortsResult = Array.Empty<int>();
+        IEnumerable<int> httpPortsResult = HandlePorts(settings.Web.HttpPort, DefaultConfiguration.DefaultHttpPort);
         if (settings.Web.UseHttps && !string.IsNullOrWhiteSpace(settings.Web.PfxPath) &&
             !string.IsNullOrWhiteSpace(settings.Web.PfxPassword))
         {
-            var httpsPorts = ParsePorts(settings.Web.HttpsPort);
-            if (httpsPorts.Length == 1 && httpsPorts[0] == DefaultConfiguration.DefaultHttpsPort &&
-                _tcpService.PortIsTaken(httpsPorts[0]))
-            {
-                httpsPortsResult.Add(_tcpService.GetNextFreeTcpPort());
-            }
-            else
-            {
-                httpsPortsResult.AddRange(httpsPorts);
-                EnsureNoPortsAreTaken(httpsPorts);
-            }
+            httpsPortsResult = HandlePorts(settings.Web.HttpsPort, DefaultConfiguration.DefaultHttpsPort);
         }
 
         return (httpPortsResult, httpsPortsResult);
+    }
+
+    private IList<int> HandlePorts(string portInput, int defaultPort)
+    {
+        var result = new List<int>();
+        var ports = ParsePorts(portInput);
+        if (ports.Length == 1 && ports[0] == defaultPort &&
+            _tcpService.PortIsTaken(ports[0]))
+        {
+            result.Add(_tcpService.GetNextFreeTcpPort());
+        }
+        else
+        {
+            EnsureNoPortsAreTaken(ports);
+            result.AddRange(ports);
+        }
+
+        return result;
     }
 
     private static int[] ParsePorts(string input)
