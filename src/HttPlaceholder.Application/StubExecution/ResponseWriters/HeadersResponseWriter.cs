@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -12,7 +13,7 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 internal class HeadersResponseWriter : IResponseWriter, ISingletonService
 {
     /// <inheritdoc />
-    public int Priority => 0;
+    public int Priority => -11;
 
     /// <inheritdoc />
     public Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,
@@ -26,7 +27,7 @@ internal class HeadersResponseWriter : IResponseWriter, ISingletonService
 
         foreach (var header in stubResponseHeaders)
         {
-            response.Headers.Add(header.Key, header.Value);
+            response.Headers.AddOrReplaceCaseInsensitive(header.Key, header.Value);
         }
 
         return Task.FromResult(StubResponseWriterResultModel.IsExecuted(GetType().Name));
