@@ -681,6 +681,8 @@
       path:
         startswith: /todoitems
   response:
+    headers:
+      X-Header: value-from-stub
     reverseProxy:
       url: https://jsonplaceholder.typicode.com
       appendPath: true

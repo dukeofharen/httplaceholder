@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -23,7 +25,8 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
 
         MockHttp
             .When(HttpMethod.Get, "https://jsonplaceholder.typicode.com/todos/1")
-            .Respond(MimeTypes.TextMime, "OK from Proxy");
+            .Respond(HttpStatusCode.OK, new Dictionary<string, string> {{"X-Header", "value-from-proxy"}},
+                MimeTypes.TextMime, "OK from Proxy");
 
         // Act / Assert
         using var response = await Client.SendAsync(request);
@@ -31,6 +34,7 @@ public class StubProxyIntegrationTests : StubIntegrationTestBase
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual("OK from Proxy", content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual("value-from-stub", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
     }
 
     [TestMethod]
