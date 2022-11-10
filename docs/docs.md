@@ -2060,6 +2060,8 @@ Also, the variable `appendQueryString` is set to true (which is by default false
 
 Finally, there is also a reverse proxy setting called `replaceRootUrl` (which is by default false). If this is set to true, any reference of `https://jsonplaceholder.typicode.com` (so the **root** URL of your reverse proxy URL) will be replaced by the root URL of HttPlaceholder (e.g. `http://localhost:5000`). The replacing will be done in the reverse proxy response body and response headers.
 
+Whenever the call to the proxied URL goes wrong (e.g. "connection reset"), HTTP status code `502 Bad Gateway` will be returned.
+
 ## Abort connection
 
 There might be situations where you want to check how your application reacts when the connection was reset / aborted. In this case, you can add "abortConnection" to the response to simulate this behavior.
