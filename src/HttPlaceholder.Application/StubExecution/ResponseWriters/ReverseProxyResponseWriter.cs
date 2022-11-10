@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -10,6 +11,7 @@ using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using Microsoft.Extensions.Logging;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -32,13 +34,16 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
 
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly IHttpContextService _httpContextService;
+    private readonly ILogger<ReverseProxyResponseWriter> _logger;
 
     public ReverseProxyResponseWriter(
         IHttpClientFactory httpClientFactory,
-        IHttpContextService httpContextService)
+        IHttpContextService httpContextService,
+        ILogger<ReverseProxyResponseWriter> logger)
     {
         _httpClientFactory = httpClientFactory;
         _httpContextService = httpContextService;
+        _logger = logger;
     }
 
     /// <inheritdoc />
@@ -67,7 +72,8 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
 
         var method = new HttpMethod(_httpContextService.Method);
         var request = new HttpRequestMessage(method, proxyUrl);
-        var log = $"Performing {method} request to URL {proxyUrl}";
+        var log = new StringBuilder();
+        log.AppendLine($"Performing {method} request to URL {proxyUrl}");
         var originalHeaders = _httpContextService.GetHeaders();
         var headers = CleanHeaders(originalHeaders);
         foreach (var header in headers)
@@ -81,28 +87,40 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
         }
 
         using var httpClient = _httpClientFactory.CreateClient("proxy");
-        using var responseMessage = await httpClient.SendAsync(request, cancellationToken);
-        var content = responseMessage.Content != null
-            ? await responseMessage.Content.ReadAsByteArrayAsync()
-            : Array.Empty<byte>();
-        var rawResponseHeaders = responseMessage.Headers
-            .ToDictionary(h => h.Key, h => h.Value.First());
-        if (stub.Response.ReverseProxy.ReplaceRootUrl == true)
+        try
         {
-            var replacedContent = Content(stub, content, proxyUrl, appendPath, rawResponseHeaders);
-            content = replacedContent.Content;
-            rawResponseHeaders = replacedContent.RawResponseHeaders;
+            using var responseMessage = await httpClient.SendAsync(request, cancellationToken);
+            var content = responseMessage.Content != null
+                ? await responseMessage.Content.ReadAsByteArrayAsync()
+                : Array.Empty<byte>();
+            var rawResponseHeaders = responseMessage.Headers
+                .ToDictionary(h => h.Key, h => h.Value.First());
+            if (stub.Response.ReverseProxy.ReplaceRootUrl == true)
+            {
+                var replacedContent = Content(stub, content, proxyUrl, appendPath, rawResponseHeaders);
+                content = replacedContent.Content;
+                rawResponseHeaders = replacedContent.RawResponseHeaders;
+            }
+
+            response.Body = content;
+            var responseHeaders = GetResponseHeaders(responseMessage, rawResponseHeaders);
+            foreach (var header in responseHeaders)
+            {
+                response.Headers.AddOrReplaceCaseInsensitive(header.Key, header.Value);
+            }
+
+            response.StatusCode = (int)responseMessage.StatusCode;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogInformation(ex, $"Exception occurred while calling URL {proxyUrl}");
+            log.AppendLine($"Exception occurred while calling URL {proxyUrl}: {ex.Message}");
+            response.Body = Encoding.UTF8.GetBytes("502 Bad Gateway");
+            response.StatusCode = (int)HttpStatusCode.BadGateway;
+            response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, MimeTypes.TextMime);
         }
 
-        response.Body = content;
-        var responseHeaders = GetResponseHeaders(responseMessage, rawResponseHeaders);
-        foreach (var header in responseHeaders)
-        {
-            response.Headers.AddOrReplaceCaseInsensitive(header.Key, header.Value);
-        }
-
-        response.StatusCode = (int)responseMessage.StatusCode;
-        return StubResponseWriterResultModel.IsExecuted(GetType().Name, log);
+        return StubResponseWriterResultModel.IsExecuted(GetType().Name, log.ToString());
     }
 
     private static IDictionary<string, string> GetResponseHeaders(HttpResponseMessage responseMessage,
@@ -178,6 +196,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
         return proxyUrl;
     }
 
+    // TODO unit test this
     private static string GetPath(StubModel stub)
     {
         var pathModel = stub.Conditions?.Url?.Path;

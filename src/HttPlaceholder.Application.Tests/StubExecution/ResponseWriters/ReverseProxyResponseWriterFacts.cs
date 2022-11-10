@@ -12,25 +12,17 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 [TestClass]
 public class ReverseProxyResponseWriterFacts
 {
-    private readonly Mock<IHttpClientFactory> _mockHttpClientFactory = new();
-    private readonly Mock<IHttpContextService> _mockHttpContextService = new();
-    private ReverseProxyResponseWriter _writer;
-
-    [TestInitialize]
-    public void Initialize() =>
-        _writer = new ReverseProxyResponseWriter(_mockHttpClientFactory.Object, _mockHttpContextService.Object);
-
-    [TestCleanup]
-    public void Cleanup() => _mockHttpClientFactory.VerifyAll();
+    private readonly AutoMocker _mocker = new();
 
     [TestMethod]
     public async Task WriteToResponseAsync_NoProxySet_ShouldReturnFalse()
     {
         // Arrange
+        var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
         var stub = new StubModel {Response = new StubResponseModel {ReverseProxy = null}};
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, null, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, null, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result.Executed);
@@ -40,13 +32,14 @@ public class ReverseProxyResponseWriterFacts
     public async Task WriteToResponseAsync_NoProxyUrlSet_ShouldReturnFalse()
     {
         // Arrange
+        var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
         var stub = new StubModel
         {
             Response = new StubResponseModel {ReverseProxy = new StubResponseReverseProxyModel {Url = string.Empty}}
         };
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, null, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, null, CancellationToken.None);
 
         // Assert
         Assert.IsFalse(result.Executed);
@@ -87,6 +80,9 @@ public class ReverseProxyResponseWriterFacts
         string expectedRequestUrl)
     {
         // Arrange
+        var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
         var stub = new StubModel
         {
             Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = pathCondition}},
@@ -98,16 +94,16 @@ public class ReverseProxyResponseWriterFacts
                 }
             }
         };
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.Path)
             .Returns(path);
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.Method)
             .Returns("GET");
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetQueryString())
             .Returns(queryString);
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetHeaders())
             .Returns(new Dictionary<string, string>());
 
@@ -115,14 +111,14 @@ public class ReverseProxyResponseWriterFacts
         mockHttp
             .When(HttpMethod.Get, expectedRequestUrl)
             .Respond(MimeTypes.TextMime, "OK");
-        _mockHttpClientFactory
+        mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
 
         var responseModel = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
@@ -134,6 +130,9 @@ public class ReverseProxyResponseWriterFacts
     public async Task WriteToResponseAsync_RequestHeadersShouldBeSetCorrectly()
     {
         // Arrange
+        var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
         var stub = new StubModel
         {
             Response = new StubResponseModel
@@ -144,7 +143,7 @@ public class ReverseProxyResponseWriterFacts
                 }
             }
         };
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.Method)
             .Returns("GET");
 
@@ -158,7 +157,7 @@ public class ReverseProxyResponseWriterFacts
             {HeaderKeys.AcceptEncoding, "utf-8"},
             {"Accept", MimeTypes.JsonMime}
         };
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetHeaders())
             .Returns(headers);
 
@@ -173,14 +172,14 @@ public class ReverseProxyResponseWriterFacts
                        proxyHeaders["Accept"] == MimeTypes.JsonMime;
             })
             .Respond(MimeTypes.TextMime, "OK");
-        _mockHttpClientFactory
+        mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
 
         var responseModel = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
@@ -192,6 +191,9 @@ public class ReverseProxyResponseWriterFacts
     public async Task WriteToResponseAsync_ResponseHeadersShouldBeSetCorrectly()
     {
         // Arrange
+        var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
         var stub = new StubModel
         {
             Response = new StubResponseModel
@@ -202,11 +204,11 @@ public class ReverseProxyResponseWriterFacts
                 }
             }
         };
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.Method)
             .Returns("GET");
 
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetHeaders())
             .Returns(new Dictionary<string, string>());
 
@@ -234,7 +236,7 @@ public class ReverseProxyResponseWriterFacts
 
                 return msg;
             });
-        _mockHttpClientFactory
+        mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
 
@@ -242,7 +244,7 @@ public class ReverseProxyResponseWriterFacts
         responseModel.Headers.Add("Some-Date", "2020-08-11");
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
@@ -259,6 +261,9 @@ public class ReverseProxyResponseWriterFacts
     public async Task WriteToResponseAsync_PostData_ShouldSendContentAndContentTypeCorrectly()
     {
         // Arrange
+        var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
         var stub = new StubModel
         {
             Response = new StubResponseModel
@@ -269,16 +274,16 @@ public class ReverseProxyResponseWriterFacts
                 }
             }
         };
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.Method)
             .Returns("POST");
 
         const string body = "{\"key\": \"val\"}";
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetBodyAsBytesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Encoding.UTF8.GetBytes(body));
 
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetHeaders())
             .Returns(new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.JsonMime}});
 
@@ -292,14 +297,14 @@ public class ReverseProxyResponseWriterFacts
                        contentHeaders[HeaderKeys.ContentType] == MimeTypes.JsonMime;
             })
             .Respond(MimeTypes.TextMime, "OK");
-        _mockHttpClientFactory
+        mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
 
         var responseModel = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
@@ -311,6 +316,9 @@ public class ReverseProxyResponseWriterFacts
     public async Task WriteToResponseAsync_ShouldReplaceRootUrlInContent()
     {
         // Arrange
+        var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
         var stub = new StubModel
         {
             Response = new StubResponseModel
@@ -321,16 +329,16 @@ public class ReverseProxyResponseWriterFacts
                 }
             }
         };
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.Method)
             .Returns("POST");
 
         const string body = "{\"key\": \"val\"}";
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetBodyAsBytesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(Encoding.UTF8.GetBytes(body));
 
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetHeaders())
             .Returns(new Dictionary<string, string> {{HeaderKeys.ContentType, MimeTypes.JsonMime}});
 
@@ -344,14 +352,14 @@ public class ReverseProxyResponseWriterFacts
                        contentHeaders[HeaderKeys.ContentType] == MimeTypes.JsonMime;
             })
             .Respond(MimeTypes.TextMime, "OK");
-        _mockHttpClientFactory
+        mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
 
         var responseModel = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
@@ -380,6 +388,9 @@ public class ReverseProxyResponseWriterFacts
         string expectedReplacementUrl)
     {
         // Arrange
+        var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
         var stub = new StubModel
         {
             Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = pathCondition}},
@@ -394,16 +405,16 @@ public class ReverseProxyResponseWriterFacts
                 }
             }
         };
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.Path)
             .Returns(path);
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.Method)
             .Returns("GET");
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.GetHeaders())
             .Returns(new Dictionary<string, string>());
-        _mockHttpContextService
+        mockHttpContextService
             .Setup(m => m.RootUrl)
             .Returns("http://localhost:5000");
 
@@ -416,19 +427,80 @@ public class ReverseProxyResponseWriterFacts
                 MimeTypes.TextMime,
                 proxyUrl);
 
-        _mockHttpClientFactory
+        mockHttpClientFactory
             .Setup(m => m.CreateClient("proxy"))
             .Returns(mockHttp.ToHttpClient());
 
         var responseModel = new ResponseModel();
 
         // Act
-        var result = await _writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
+        var result = await writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
 
         // Assert
         Assert.AreEqual(expectedReplacementUrl, Encoding.UTF8.GetString(responseModel.Body));
         Assert.AreEqual(expectedReplacementUrl, responseModel.Headers["X-Url"]);
         Assert.AreEqual(200, responseModel.StatusCode);
         Assert.IsTrue(result.Executed);
+    }
+
+    [TestMethod]
+    public async Task WriteToResponseAsync_ErrorWhenCallingHttpClient_ShouldReturn502()
+    {
+        // Arrange
+        var writer = _mocker.CreateInstance<ReverseProxyResponseWriter>();
+        var mockHttpContextService = _mocker.GetMock<IHttpContextService>();
+        var mockHttpClientFactory = _mocker.GetMock<IHttpClientFactory>();
+
+        const string proxyUrl = "https://ducode.org";
+        const string path = "/todoitems/todos/1";
+        var stub = new StubModel
+        {
+            Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = "/proxy"}},
+            Response = new StubResponseModel
+            {
+                ReverseProxy = new StubResponseReverseProxyModel
+                {
+                    AppendPath = true,
+                    AppendQueryString = false,
+                    Url = proxyUrl,
+                    ReplaceRootUrl = true
+                }
+            }
+        };
+        mockHttpContextService
+            .Setup(m => m.Path)
+            .Returns(path);
+        mockHttpContextService
+            .Setup(m => m.Method)
+            .Returns("GET");
+        mockHttpContextService
+            .Setup(m => m.GetHeaders())
+            .Returns(new Dictionary<string, string>());
+        mockHttpContextService
+            .Setup(m => m.RootUrl)
+            .Returns("http://localhost:5000");
+
+        var client = new HttpClient(new ErrorHttpMessageHandler());
+        mockHttpClientFactory
+            .Setup(m => m.CreateClient("proxy"))
+            .Returns(client);
+
+        var responseModel = new ResponseModel();
+
+        // Act
+        var result = await writer.WriteToResponseAsync(stub, responseModel, CancellationToken.None);
+
+        // Assert
+        Assert.IsTrue(result.Log.Contains("ERROR!"));
+        Assert.AreEqual((int)HttpStatusCode.BadGateway, responseModel.StatusCode);
+        Assert.AreEqual("502 Bad Gateway", Encoding.UTF8.GetString(responseModel.Body));
+        Assert.AreEqual(MimeTypes.TextMime, responseModel.Headers["Content-Type"]);
+    }
+
+    private class ErrorHttpMessageHandler : HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+            CancellationToken cancellationToken) =>
+            throw new Exception("ERROR!");
     }
 }
