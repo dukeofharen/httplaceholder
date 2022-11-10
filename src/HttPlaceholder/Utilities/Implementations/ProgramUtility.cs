@@ -16,14 +16,14 @@ public class ProgramUtility : IProgramUtility
     private readonly ITcpService _tcpService;
 
     /// <summary>
-    ///     Constructs a <see cref="ProgramUtility"/> instance.
+    ///     Constructs a <see cref="ProgramUtility" /> instance.
     /// </summary>
     public ProgramUtility() : this(new TcpService())
     {
     }
 
     /// <summary>
-    ///     Constructs a <see cref="ProgramUtility"/> instance.
+    ///     Constructs a <see cref="ProgramUtility" /> instance.
     /// </summary>
     internal ProgramUtility(ITcpService tcpService)
     {

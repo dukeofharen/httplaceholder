@@ -36,7 +36,7 @@ public class HeadersResponseWriterFacts
             }
         };
 
-        var response = new ResponseModel();
+        var response = new ResponseModel {Headers = new Dictionary<string, string> {{"X-User-Secret", "3422"}}};
 
         // act
         var result = await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);

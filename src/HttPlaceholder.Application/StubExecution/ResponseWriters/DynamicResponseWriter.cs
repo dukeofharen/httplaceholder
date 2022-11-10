@@ -20,7 +20,7 @@ internal class DynamicResponseWriter : IResponseWriter, ISingletonService
     }
 
     /// <inheritdoc />
-    public int Priority => -10;
+    public int Priority => -12;
 
     /// <inheritdoc />
     public async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response,

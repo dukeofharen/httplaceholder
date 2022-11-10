@@ -12,7 +12,7 @@ namespace HttPlaceholder.Utilities;
 public static class HostBuilderUtilities
 {
     /// <summary>
-    ///     Creates a <see cref="IHostBuilder"/> specifically for HttPlaceholder.
+    ///     Creates a <see cref="IHostBuilder" /> specifically for HttPlaceholder.
     ///     One of the problems we had is that when using the default host builder,
     ///     .NET creates a lot of unnecessary Inotify watches.
     /// </summary>
