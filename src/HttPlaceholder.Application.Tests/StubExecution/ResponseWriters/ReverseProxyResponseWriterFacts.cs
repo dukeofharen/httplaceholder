@@ -494,6 +494,7 @@ public class ReverseProxyResponseWriterFacts
         Assert.IsTrue(result.Log.Contains("ERROR!"));
         Assert.AreEqual((int)HttpStatusCode.BadGateway, responseModel.StatusCode);
         Assert.AreEqual("502 Bad Gateway", Encoding.UTF8.GetString(responseModel.Body));
+        Assert.AreEqual(MimeTypes.TextMime, responseModel.Headers["Content-Type"]);
     }
 
     private class ErrorHttpMessageHandler : HttpMessageHandler

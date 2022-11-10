@@ -117,6 +117,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
             log.AppendLine($"Exception occurred while calling URL {proxyUrl}: {ex.Message}");
             response.Body = Encoding.UTF8.GetBytes("502 Bad Gateway");
             response.StatusCode = (int)HttpStatusCode.BadGateway;
+            response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, MimeTypes.TextMime);
         }
 
         return StubResponseWriterResultModel.IsExecuted(GetType().Name, log.ToString());
