@@ -197,7 +197,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
     }
 
     // TODO unit test this
-    private static string GetPath(StubModel stub)
+    internal static string GetPath(StubModel stub)
     {
         var pathModel = stub.Conditions?.Url?.Path;
         switch (pathModel)

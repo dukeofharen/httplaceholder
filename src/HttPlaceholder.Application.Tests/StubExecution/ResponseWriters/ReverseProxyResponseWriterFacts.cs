@@ -460,10 +460,7 @@ public class ReverseProxyResponseWriterFacts
             {
                 ReverseProxy = new StubResponseReverseProxyModel
                 {
-                    AppendPath = true,
-                    AppendQueryString = false,
-                    Url = proxyUrl,
-                    ReplaceRootUrl = true
+                    AppendPath = true, AppendQueryString = false, Url = proxyUrl, ReplaceRootUrl = true
                 }
             }
         };
@@ -495,6 +492,88 @@ public class ReverseProxyResponseWriterFacts
         Assert.AreEqual((int)HttpStatusCode.BadGateway, responseModel.StatusCode);
         Assert.AreEqual("502 Bad Gateway", Encoding.UTF8.GetString(responseModel.Body));
         Assert.AreEqual(MimeTypes.TextMime, responseModel.Headers["Content-Type"]);
+    }
+
+    [TestMethod]
+    public void GetPath_PathIsNull_ShouldReturnNull()
+    {
+        // Arrange
+        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = null}}};
+
+        // Act
+        var result = ReverseProxyResponseWriter.GetPath(stub);
+
+        // Assert
+        Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    public void GetPath_PathIsString_ShouldReturnPath()
+    {
+        // Arrange
+        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = "/path"}}};
+
+        // Act
+        var result = ReverseProxyResponseWriter.GetPath(stub);
+
+        // Assert
+        Assert.AreEqual("/path", result);
+    }
+
+    [TestMethod]
+    public void GetPath_PathIsModel_StringEquals()
+    {
+        // Arrange
+        var path = new StubConditionStringCheckingModel {StringEquals = "/path"};
+        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = path}}};
+
+        // Act
+        var result = ReverseProxyResponseWriter.GetPath(stub);
+
+        // Assert
+        Assert.AreEqual("/path", result);
+    }
+
+    [TestMethod]
+    public void GetPath_PathIsModel_StringEqualsCi()
+    {
+        // Arrange
+        var path = new StubConditionStringCheckingModel {StringEqualsCi = "/path"};
+        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = path}}};
+
+        // Act
+        var result = ReverseProxyResponseWriter.GetPath(stub);
+
+        // Assert
+        Assert.AreEqual("/path", result);
+    }
+
+    [TestMethod]
+    public void GetPath_PathIsModel_StartsWith()
+    {
+        // Arrange
+        var path = new StubConditionStringCheckingModel {StartsWith = "/path"};
+        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = path}}};
+
+        // Act
+        var result = ReverseProxyResponseWriter.GetPath(stub);
+
+        // Assert
+        Assert.AreEqual("/path", result);
+    }
+
+    [TestMethod]
+    public void GetPath_PathIsModel_StartsWithCi()
+    {
+        // Arrange
+        var path = new StubConditionStringCheckingModel {StartsWithCi = "/path"};
+        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = path}}};
+
+        // Act
+        var result = ReverseProxyResponseWriter.GetPath(stub);
+
+        // Assert
+        Assert.AreEqual("/path", result);
     }
 
     private class ErrorHttpMessageHandler : HttpMessageHandler
