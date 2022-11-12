@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -14,6 +16,11 @@ namespace HttPlaceholder.Application.StubExecution.Implementations;
 
 internal class StubModelValidator : IStubModelValidator, ISingletonService
 {
+    private static readonly string[] _illegalHeaders =
+    {
+        "X-HttPlaceholder-Correlation", "X-HttPlaceholder-ExecutedStub"
+    };
+
     private readonly IModelValidator _modelValidator;
     private readonly IOptionsMonitor<SettingsModel> _options;
 
@@ -31,10 +38,10 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
         var validationResults = _modelValidator.ValidateModel(stub);
         var result = new List<string>();
         HandleValidationResult(result, validationResults);
-
         ValidateExtraDuration(stub, result);
         ValidateScenarioVariables(stub, result);
         ValidateResponseBody(stub, result);
+        ValidateResponseHeaders(stub, result);
         return result;
     }
 
@@ -148,5 +155,18 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
                     "Only one of the response body fields (text, json, xml, html, base64, file) can be set");
                 break;
         }
+    }
+
+    private static void ValidateResponseHeaders(StubModel stub, List<string> validationErrors)
+    {
+        var headers = stub.Response.Headers;
+        if (headers == null || !headers.Any())
+        {
+            return;
+        }
+
+        validationErrors.AddRange(headers
+            .Where(h => _illegalHeaders.Contains(h.Key, StringComparer.OrdinalIgnoreCase))
+            .Select(h => $"Header '${h.Key}' can't be used as response header."));
     }
 }

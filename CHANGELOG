@@ -13,6 +13,7 @@
 - Fixed small bug where form helper would not close correctly in "Add request / response value" menu (https://github.com/dukeofharen/httplaceholder/pull/292).
 - Fixed small bug in reverse proxy response writer where root URL would be replaced incorrectly (https://github.com/dukeofharen/httplaceholder/pull/292).
 - When using the reverse proxy response writer, take a look at the response and determine if it is binary or not (https://github.com/dukeofharen/httplaceholder/pull/292).
+- Added stub validation on response headers (https://github.com/dukeofharen/httplaceholder/pull/292).
 
 # BREAKING CHANGES
 - Stubs defined in a .yml file should ALWAYS have an id field defined, whereas it was automatically generated beforehand if it was not set (which caused some non stub files to get parsed as stub with weird behavior).
