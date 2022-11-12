@@ -70,6 +70,14 @@ public class ReverseProxyResponseWriterFacts
         true,
         false,
         "https://jsonplaceholder.typicode.com/todos/1?key=val")]
+    [DataRow(
+        "https://ducode.org/",
+        "/ducode",
+        "",
+        "/ducode",
+        true,
+        true,
+        "https://ducode.org/")]
     public async Task WriteToResponseAsync_RequestUrlShouldBeSetCorrectly(
         string proxyUrl,
         string pathCondition,
@@ -364,6 +372,7 @@ public class ReverseProxyResponseWriterFacts
         // Assert
         Assert.AreEqual("OK", Encoding.UTF8.GetString(responseModel.Body));
         Assert.AreEqual(200, responseModel.StatusCode);
+        Assert.IsFalse(responseModel.BodyIsBinary);
         Assert.IsTrue(result.Executed);
     }
 
@@ -492,6 +501,7 @@ public class ReverseProxyResponseWriterFacts
         Assert.AreEqual((int)HttpStatusCode.BadGateway, responseModel.StatusCode);
         Assert.AreEqual("502 Bad Gateway", Encoding.UTF8.GetString(responseModel.Body));
         Assert.AreEqual(MimeTypes.TextMime, responseModel.Headers["Content-Type"]);
+        Assert.IsFalse(responseModel.BodyIsBinary);
     }
 
     [TestMethod]

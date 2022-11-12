@@ -103,6 +103,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
             }
 
             response.Body = content;
+            response.BodyIsBinary = !content.IsValidAscii();
             var responseHeaders = GetResponseHeaders(responseMessage, rawResponseHeaders);
             foreach (var header in responseHeaders)
             {
@@ -118,6 +119,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
             response.Body = Encoding.UTF8.GetBytes("502 Bad Gateway");
             response.StatusCode = (int)HttpStatusCode.BadGateway;
             response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, MimeTypes.TextMime);
+            response.BodyIsBinary = false;
         }
 
         return StubResponseWriterResultModel.IsExecuted(GetType().Name, log.ToString());
@@ -187,7 +189,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
         }
 
         // If the path condition is set, make sure the configured path is stripped from the proxy URL
-        var index = proxyUrl.IndexOf(path, StringComparison.OrdinalIgnoreCase);
+        var index = proxyUrl.LastIndexOf(path, StringComparison.OrdinalIgnoreCase);
         if (index > -1)
         {
             proxyUrl = proxyUrl.Remove(index, path.Length);
@@ -196,7 +198,6 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
         return proxyUrl;
     }
 
-    // TODO unit test this
     internal static string GetPath(StubModel stub)
     {
         var pathModel = stub.Conditions?.Url?.Path;
