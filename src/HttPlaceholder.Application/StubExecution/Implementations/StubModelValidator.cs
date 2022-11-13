@@ -159,7 +159,7 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
 
     private static void ValidateResponseHeaders(StubModel stub, List<string> validationErrors)
     {
-        var headers = stub.Response.Headers;
+        var headers = stub?.Response?.Headers;
         if (headers == null || !headers.Any())
         {
             return;
