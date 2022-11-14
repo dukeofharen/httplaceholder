@@ -1,10 +1,12 @@
 ﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain;
+using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 
@@ -15,13 +17,16 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
 {
     private readonly IFileService _fileService;
     private readonly IStubRootPathResolver _stubRootPathResolver;
+    private readonly IOptionsMonitor<SettingsModel> _options;
 
     public FileResponseWriter(
         IFileService fileService,
-        IStubRootPathResolver stubRootPathResolver)
+        IStubRootPathResolver stubRootPathResolver,
+        IOptionsMonitor<SettingsModel> options)
     {
         _fileService = fileService;
         _stubRootPathResolver = stubRootPathResolver;
+        _options = options;
     }
 
     /// <inheritdoc />

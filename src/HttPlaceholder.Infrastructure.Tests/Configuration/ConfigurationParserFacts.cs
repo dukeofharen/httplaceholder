@@ -85,7 +85,7 @@ public class ConfigurationParserFacts
         var result = _parser.ParseConfiguration(Array.Empty<string>());
 
         // Assert
-        Assert.AreEqual(11, result.Count);
+        Assert.AreEqual(12, result.Count);
         Assert.AreEqual("5000", result["Web:HttpPort"]);
         Assert.IsFalse(string.IsNullOrWhiteSpace(result["Web:PfxPath"]));
         Assert.AreEqual("1234", result["Web:PfxPassword"]);
@@ -97,6 +97,7 @@ public class ConfigurationParserFacts
         Assert.AreEqual("True", result["Storage:CleanOldRequestsInBackgroundJob"]);
         Assert.AreEqual("False", result["Storage:StoreResponses"]);
         Assert.AreEqual("True", result["Web:ReadProxyHeaders"]);
+        Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
     }
 
     [DataTestMethod]
