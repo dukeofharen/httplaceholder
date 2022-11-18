@@ -24,24 +24,49 @@ public class FileResponseWriterFacts
     [TestMethod]
     public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
     {
-        // arrange
+        // Arrange
         var writer = _mocker.CreateInstance<FileResponseWriter>();
         var stub = new StubModel {Response = new StubResponseModel {File = null}};
 
         var response = new ResponseModel();
 
-        // act
+        // Act
         var result = await writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
-        // assert
+        // Assert
         Assert.IsFalse(result.Executed);
         Assert.IsNull(response.Body);
     }
 
     [TestMethod]
+    public async Task FileResponseWriter_WriteToResponseAsync_FileFoundDirectly_NotAllowed()
+    {
+        // Arrange
+        _settings.Stub.AllowGlobalFileSearch = false;
+        var fileServiceMock = _mocker.GetMock<IFileService>();
+        var writer = _mocker.CreateInstance<FileResponseWriter>();
+
+        var stub = new StubModel {Response = new StubResponseModel {File = @"C:\tmp\image.png"}};
+
+        var response = new ResponseModel();
+
+        fileServiceMock
+            .Setup(m => m.FileExistsAsync(stub.Response.File, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+
+        // Act
+        var exception = await Assert.ThrowsExceptionAsync<InvalidOperationException>(() =>
+            writer.WriteToResponseAsync(stub, response, CancellationToken.None));
+
+        // Assert
+        Assert.AreEqual("Path 'C:\\tmp\\image.png' found, but can't be used because setting 'allowGlobalFileSearch' is turned off. Turn it on with caution.", exception.Message);
+    }
+
+    [TestMethod]
     public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileFoundDirectly()
     {
-        // arrange
+        // Arrange
+        _settings.Stub.AllowGlobalFileSearch = true;
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var writer = _mocker.CreateInstance<FileResponseWriter>();
 
@@ -58,25 +83,27 @@ public class FileResponseWriterFacts
             .Setup(m => m.ReadAllBytesAsync(stub.Response.File, It.IsAny<CancellationToken>()))
             .ReturnsAsync(body);
 
-        // act
+        // Act
         var result = await writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
-        // assert
+        // Assert
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(body, response.Body);
     }
 
-    [TestMethod]
-    public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileNotFoundDirectly_ButFoundInStubFolder()
+    [DataTestMethod]
+    [DataRow("image.png", "image.png")]
+    [DataRow("../image.png", "image.png")]
+    [DataRow("../../image.png", "image.png")]
+    public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileNotFoundDirectly_ButFoundInStubFolder(string file, string actualFile)
     {
-        // arrange
+        // Arrange
         var stubRootPathResolverMock = _mocker.GetMock<IStubRootPathResolver>();
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var writer = _mocker.CreateInstance<FileResponseWriter>();
 
         var stubRootPaths = new[] {"/var/stubs1", "/var/stubs2"};
-        const string file = "image.png";
-        var expectedFolder = Path.Combine(stubRootPaths[1], file);
+        var expectedPath = Path.Combine(stubRootPaths[1], actualFile);
         var body = new byte[] {1, 2, 3};
         var stub = new StubModel {Response = new StubResponseModel {File = file}};
 
@@ -87,21 +114,21 @@ public class FileResponseWriterFacts
             .ReturnsAsync(stubRootPaths);
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(stub.Response.File, It.IsAny<CancellationToken>()))
+            .Setup(m => m.FileExistsAsync(file, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(expectedFolder, It.IsAny<CancellationToken>()))
+            .Setup(m => m.FileExistsAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         fileServiceMock
-            .Setup(m => m.ReadAllBytesAsync(expectedFolder, It.IsAny<CancellationToken>()))
+            .Setup(m => m.ReadAllBytesAsync(expectedPath, It.IsAny<CancellationToken>()))
             .ReturnsAsync(body);
 
-        // act
+        // Act
         var result = await writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
-        // assert
+        // Assert
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(body, response.Body);
     }
@@ -110,7 +137,7 @@ public class FileResponseWriterFacts
     public async Task
         FileResponseWriter_WriteToResponseAsync_FileNotFoundDirectly_AlsoNotFoundInStubFolder_ShouldReturnNoBody()
     {
-        // arrange
+        // Arrange
         var stubRootPathResolverMock = _mocker.GetMock<IStubRootPathResolver>();
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var writer = _mocker.CreateInstance<FileResponseWriter>();
@@ -134,10 +161,10 @@ public class FileResponseWriterFacts
             .Setup(m => m.FileExistsAsync(expectedFolder, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
-        // act
+        // Act
         var result = await writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
-        // assert
+        // Assert
         Assert.IsFalse(result.Executed);
         Assert.IsNull(response.Body);
     }
