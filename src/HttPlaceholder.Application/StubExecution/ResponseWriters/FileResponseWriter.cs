@@ -8,6 +8,7 @@ using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Common;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
@@ -20,15 +21,18 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
     private readonly IFileService _fileService;
     private readonly IStubRootPathResolver _stubRootPathResolver;
     private readonly IOptionsMonitor<SettingsModel> _options;
+    private readonly ILogger<FileResponseWriter> _logger;
 
     public FileResponseWriter(
         IFileService fileService,
         IStubRootPathResolver stubRootPathResolver,
-        IOptionsMonitor<SettingsModel> options)
+        IOptionsMonitor<SettingsModel> options,
+        ILogger<FileResponseWriter> logger)
     {
         _fileService = fileService;
         _stubRootPathResolver = stubRootPathResolver;
         _options = options;
+        _logger = logger;
     }
 
     /// <inheritdoc />
@@ -63,9 +67,11 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
                 var tempPath = Path.Combine(path, PathUtilities.CleanPath(stub.Response.File));
                 if (!await _fileService.FileExistsAsync(tempPath, cancellationToken))
                 {
+                    _logger.LogInformation($"Path '{tempPath}' not found.");
                     continue;
                 }
 
+                _logger.LogInformation($"Path '{tempPath}' found.");
                 finalFilePath = tempPath;
                 break;
             }
