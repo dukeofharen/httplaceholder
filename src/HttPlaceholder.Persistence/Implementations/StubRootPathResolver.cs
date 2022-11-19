@@ -35,19 +35,22 @@ internal class StubRootPathResolver : IStubRootPathResolver, ISingletonService
         var settings = _options.CurrentValue;
 
         // First, check the "inputFile" configuration property and extract the directory of this folder.
-        var inputFile = settings.Storage?.InputFile;
-        if (inputFile == null)
+        var inputFile = settings.Storage?.InputFile ?? "";
+        var fileStorageLocation = settings.Storage?.FileStorageLocation ?? "";
+        if (string.IsNullOrWhiteSpace(inputFile) && string.IsNullOrWhiteSpace(fileStorageLocation))
         {
             // If no input file was provided, return the assembly path instead.
             return new[] {_assemblyService.GetEntryAssemblyRootPath()};
         }
 
-        var result = await Task.WhenAll(
-            inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
-                .Select(f => GetDirectoryAsync(f, cancellationToken)));
-        if (!string.IsNullOrWhiteSpace(settings.Storage?.FileStorageLocation))
+        IEnumerable<string> result = !string.IsNullOrWhiteSpace(inputFile)
+            ? await Task.WhenAll(
+                inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(f => GetDirectoryAsync(f, cancellationToken)))
+            : Array.Empty<string>();
+        if (!string.IsNullOrWhiteSpace(fileStorageLocation))
         {
-            result = result.Concat(new[] {settings.Storage.FileStorageLocation}).ToArray();
+            result = result.Concat(new[] {fileStorageLocation});
         }
 
         return result;

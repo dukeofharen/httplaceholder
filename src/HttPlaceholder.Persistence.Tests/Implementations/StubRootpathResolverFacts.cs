@@ -78,26 +78,15 @@ public class StubRootPathResolverFacts
         StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_FileStorageLocationIsSet_ShouldAlsoReturnFileStorageLocation()
     {
         // Arrange
-        var inputFilePath =
-            RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs" : "/opt/httplaceholder";
-
-        var inputFile = Path.Combine($@"{inputFilePath}", "stubs.yml");
-        _options.CurrentValue.Storage.InputFile = inputFile;
-
-        var fileStorageLocation = "/home/httpl/.httplaceholder";
+        const string fileStorageLocation = "/home/httpl/.httplaceholder";
         _options.CurrentValue.Storage.FileStorageLocation = fileStorageLocation;
-
-        _fileServiceMock
-            .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(false);
 
         // Act
         var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
         // Assert
-        Assert.AreEqual(2, result.Length);
-        Assert.AreEqual(inputFilePath, result[0]);
-        Assert.AreEqual(fileStorageLocation, result[1]);
+        Assert.AreEqual(1, result.Length);
+        Assert.AreEqual(fileStorageLocation, result[0]);
     }
 
     [DataTestMethod]
