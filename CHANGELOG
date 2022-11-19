@@ -14,9 +14,11 @@
 - Fixed small bug in reverse proxy response writer where root URL would be replaced incorrectly (https://github.com/dukeofharen/httplaceholder/pull/292).
 - When using the reverse proxy response writer, take a look at the response and determine if it is binary or not (https://github.com/dukeofharen/httplaceholder/pull/292).
 - Added stub validation on response headers (https://github.com/dukeofharen/httplaceholder/pull/292).
+- Added configuration value for "allowGlobalFileSearch" which enables or disables whether users can use the "file response writer" to look for files in the whole OS or only for files relative to the stub .yml files or the file storage location (https://github.com/dukeofharen/httplaceholder/pull/292).
 
 # BREAKING CHANGES
 - Stubs defined in a .yml file should ALWAYS have an id field defined, whereas it was automatically generated beforehand if it was not set (which caused some non stub files to get parsed as stub with weird behavior).
+- At first, you could, by default, use the "file response writer" to specify a file anywhere on the OS. Right now, by default, HttPlaceholder will only look relative to the stub .yml files and the file storage location. This configuration value is set to "false" by default for all versions of HttPlaceholder, except for the Docker container. 
 
 [2022.10.4]
 - Fixed bug where passing "extraDuration" as integer in JSON would throw an exception (https://github.com/dukeofharen/httplaceholder/issues/281).
