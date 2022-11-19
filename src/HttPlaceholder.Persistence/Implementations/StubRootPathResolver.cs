@@ -32,17 +32,25 @@ internal class StubRootPathResolver : IStubRootPathResolver, ISingletonService
     /// <inheritdoc />
     public async Task<IEnumerable<string>> GetStubRootPathsAsync(CancellationToken cancellationToken)
     {
+        var settings = _options.CurrentValue;
+
         // First, check the "inputFile" configuration property and extract the directory of this folder.
-        var inputFile = _options.CurrentValue.Storage?.InputFile;
+        var inputFile = settings.Storage?.InputFile;
         if (inputFile == null)
         {
             // If no input file was provided, return the assembly path instead.
             return new[] {_assemblyService.GetEntryAssemblyRootPath()};
         }
 
-        return await Task.WhenAll(
+        var result = await Task.WhenAll(
             inputFile.Split(Constants.InputFileSeparators, StringSplitOptions.RemoveEmptyEntries)
                 .Select(f => GetDirectoryAsync(f, cancellationToken)));
+        if (!string.IsNullOrWhiteSpace(settings.Storage?.FileStorageLocation))
+        {
+            result = result.Concat(new[] {settings.Storage.FileStorageLocation}).ToArray();
+        }
+
+        return result;
     }
 
     private async Task<string> GetDirectoryAsync(string filename, CancellationToken cancellationToken) =>
