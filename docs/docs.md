@@ -1344,7 +1344,20 @@ The following properties can be set for the `image` response writer:
 
 ### File
 
-To return a file from disk, use the "file" response writer. There are two ways in which you can use this response writer.
+To return a file from disk, use the "file" response writer. There are two ways in which you can use this response writer. When using the file response writer, by default, it is only possible to specify a file that is relative to the [stub .yml files](#input-file-optional) or the [file storage location](#file-store-optional). To enable searching for files on the whole OS, take a look at ["Allow global file search"](#allow-global-file-search-optional).
+
+```
+...
+- stubs/
+-- stub1.yml
+-- stub2.yml
+-- cat_file.jpg
+-- files/
+--- file1.txt
+--- file2.txt
+```
+
+When stub files `stub1.yml` and `stub2.yml` are loaded by HttPlaceholder, values `cat_file.jpg`, `files/file1.txt` and `files/file2.txt` can be used as value for the `file` value of the response element in the stub.
 
 #### Scenario 1
 
@@ -2374,6 +2387,16 @@ httplaceholder --maximumExtraDurationMillisKey 10000
 ```
 
 This property can be used to configure how many milliseconds the "extraDuration" response writer (see [responses](#extra-duration)) can take. The default value is 60.000 (so 1 minute).
+
+### Allow global file search (optional)
+
+```bash
+httplaceholder --allowGlobalFileSearch true
+```
+
+To read more about this, see [file response writer](#file). The default value is "false". In short, the file response writer can be used to return the contents of a specific file on the OS. Putting this value to "true" makes it possible to specify any file on the OS for the stub to return. This should be used with caution.
+
+By default, the file response writer only looks for files relative to the path where the .yml stub files are located or relative to the [file storage location path](#file-store-optional).
 
 ## Config JSON file
 
