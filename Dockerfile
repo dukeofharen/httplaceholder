@@ -25,5 +25,6 @@ COPY --from=build-env /app/out .
 COPY --from=gui-build-env /app/gui/dist ./gui
 COPY --from=doc-build-env /app/site/. ./gui/docs
 ENV inputFile=/var/httplaceholder
+ENV allowGlobalFileSearch=true
 RUN mkdir /var/httplaceholder
 ENTRYPOINT ["dotnet", "HttPlaceholder.dll"]
