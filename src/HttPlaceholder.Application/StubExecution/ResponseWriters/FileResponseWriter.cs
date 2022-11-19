@@ -57,6 +57,8 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
                 throw new InvalidOperationException(
                     $"Path '{finalFilePath}' found, but can't be used because setting '{ConfigKeys.AllowGlobalFileSearch}' is turned off. Turn it on with caution. Use paths relative to the .yml stub files or the file storage location as specified in the configuration.");
             }
+
+            _logger.LogInformation($"Path '{finalFilePath}' found.");
         }
         else
         {
