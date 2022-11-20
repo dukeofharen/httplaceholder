@@ -50,6 +50,7 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
         // arrange
         const string fileContents = "File contents yo!";
         var url = $"{TestServer.BaseAddress}text.txt";
+        Options.CurrentValue.Stub.AllowGlobalFileSearch = true;
 
         FileServiceMock
             .Setup(m => m.FileExistsAsync("text.txt", It.IsAny<CancellationToken>()))
@@ -60,6 +61,7 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
 
         // act / assert
         using var response = await Client.GetAsync(url);
+        response.EnsureSuccessStatusCode();
         var content = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(fileContents, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);

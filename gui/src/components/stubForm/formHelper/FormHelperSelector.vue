@@ -178,6 +178,7 @@ export default defineComponent({
     const onFormHelperItemClick = (item: StubFormHelper) => {
       if (item.defaultValueMutation) {
         item.defaultValueMutation(stubFormStore);
+        stubFormStore.closeFormHelper();
       } else if (item.formHelperToOpen) {
         stubFormStore.openFormHelper(item.formHelperToOpen);
       }

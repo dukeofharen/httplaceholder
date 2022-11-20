@@ -90,6 +90,11 @@ public static class DefaultConfiguration
     public const bool ReadProxyHeaders = true;
 
     /// <summary>
+    ///     Whether to allow global file search for the file response writer.
+    /// </summary>
+    public const bool AllowGlobalFileSearch = false;
+
+    /// <summary>
     ///     Whether HTTPS is enabled by default.
     /// </summary>
     public const bool UseHttps = true;

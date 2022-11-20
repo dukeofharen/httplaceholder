@@ -120,6 +120,11 @@ public static class ConfigKeys
     public const string HealthcheckOnRootUrl = "healthcheckOnRootUrl";
 
     /// <summary>
+    ///     Constant for allowGlobalFileSearch.
+    /// </summary>
+    public const string AllowGlobalFileSearch = "allowGlobalFileSearch";
+
+    /// <summary>
     ///     Constant for configJsonLocation.
     /// </summary>
     public const string ConfigJsonLocationKey = "configJsonLocation";
@@ -330,6 +335,15 @@ public static class ConfigKeys
             @"whether the root URL of HttPlaceholder (so ""/"") can be configured as stub or always returns 200 OK. Defaults to false.",
             "true",
             "Stub:HealthcheckOnRootUrl",
+            ConfigKeyType.Stub,
+            true,
+            null,
+            null),
+        Create(
+            AllowGlobalFileSearch,
+            "whether HttPlaceholder is able to accept any path for the 'file response writer'. If set to false, HttPlaceholder is only allowed to look for files relative to the .yml stub files or the file storage location. 'false' by default and not recommended to set to 'true' if you are running HttPlaceholder outside of a Docker container.",
+            "false",
+            "Stub:AllowGlobalFileSearch",
             ConfigKeyType.Stub,
             true,
             null,

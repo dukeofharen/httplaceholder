@@ -68,7 +68,7 @@ public class ConfigurationParserFacts
         var result = _parser.ParseConfiguration(args);
 
         // Assert
-        Assert.AreEqual(12, result.Count);
+        Assert.AreEqual(13, result.Count);
         Assert.AreEqual("true", result["Web:UseHttps"]);
         Assert.AreEqual("8080", result["Web:HttpPort"]);
         Assert.AreEqual("4430", result["Web:HttpsPort"]);
@@ -76,6 +76,7 @@ public class ConfigurationParserFacts
         Assert.AreEqual("100", result["Storage:OldRequestsQueueLength"]);
         Assert.AreEqual("true", result["Gui:EnableUserInterface"]);
         Assert.AreEqual("false", result["Storage:StoreResponses"]);
+        Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
     }
 
     [TestMethod]
@@ -85,7 +86,7 @@ public class ConfigurationParserFacts
         var result = _parser.ParseConfiguration(Array.Empty<string>());
 
         // Assert
-        Assert.AreEqual(11, result.Count);
+        Assert.AreEqual(12, result.Count);
         Assert.AreEqual("5000", result["Web:HttpPort"]);
         Assert.IsFalse(string.IsNullOrWhiteSpace(result["Web:PfxPath"]));
         Assert.AreEqual("1234", result["Web:PfxPassword"]);
@@ -97,6 +98,7 @@ public class ConfigurationParserFacts
         Assert.AreEqual("True", result["Storage:CleanOldRequestsInBackgroundJob"]);
         Assert.AreEqual("False", result["Storage:StoreResponses"]);
         Assert.AreEqual("True", result["Web:ReadProxyHeaders"]);
+        Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
     }
 
     [DataTestMethod]
