@@ -68,7 +68,7 @@ public class ConfigurationParserFacts
         var result = _parser.ParseConfiguration(args);
 
         // Assert
-        Assert.AreEqual(12, result.Count);
+        Assert.AreEqual(13, result.Count);
         Assert.AreEqual("true", result["Web:UseHttps"]);
         Assert.AreEqual("8080", result["Web:HttpPort"]);
         Assert.AreEqual("4430", result["Web:HttpsPort"]);
@@ -76,6 +76,7 @@ public class ConfigurationParserFacts
         Assert.AreEqual("100", result["Storage:OldRequestsQueueLength"]);
         Assert.AreEqual("true", result["Gui:EnableUserInterface"]);
         Assert.AreEqual("false", result["Storage:StoreResponses"]);
+        Assert.AreEqual("False", result["Stub:AllowGlobalFileSearch"]);
     }
 
     [TestMethod]
