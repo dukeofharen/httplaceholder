@@ -53,7 +53,7 @@ internal class StubRootPathResolver : IStubRootPathResolver, ISingletonService
             result = result.Concat(new[] {fileStorageLocation});
         }
 
-        return result;
+        return result.Distinct();
     }
 
     private async Task<string> GetDirectoryAsync(string filename, CancellationToken cancellationToken) =>
