@@ -34,7 +34,7 @@ public class StubRootPathResolverFacts
     public async Task
         StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_InputFileIsDirectory_ShouldReturnInputFileAsIs()
     {
-        // arrange
+        // Arrange
         const string inputFile = @"C:\stubs";
         _options.CurrentValue.Storage.InputFile = inputFile;
 
@@ -42,10 +42,10 @@ public class StubRootPathResolverFacts
             .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
-        // act
+        // Act
         var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
-        // assert
+        // Assert
         Assert.AreEqual(1, result.Length);
         Assert.AreEqual(inputFile, result[0]);
     }
@@ -54,7 +54,7 @@ public class StubRootPathResolverFacts
     public async Task
         StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_InputFileIsFile_ShouldReturnInputFileFolder()
     {
-        // arrange
+        // Arrange
         var inputFilePath =
             RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\stubs" : "/opt/httplaceholder";
 
@@ -65,12 +65,28 @@ public class StubRootPathResolverFacts
             .Setup(m => m.IsDirectoryAsync(inputFile, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
-        // act
+        // Act
         var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
-        // assert
+        // Assert
         Assert.AreEqual(1, result.Length);
         Assert.AreEqual(inputFilePath, result[0]);
+    }
+
+    [TestMethod]
+    public async Task
+        StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_FileStorageLocationIsSet_ShouldAlsoReturnFileStorageLocation()
+    {
+        // Arrange
+        const string fileStorageLocation = "/home/httpl/.httplaceholder";
+        _options.CurrentValue.Storage.FileStorageLocation = fileStorageLocation;
+
+        // Act
+        var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
+
+        // Assert
+        Assert.AreEqual(1, result.Length);
+        Assert.AreEqual(fileStorageLocation, result[0]);
     }
 
     [DataTestMethod]
@@ -79,7 +95,7 @@ public class StubRootPathResolverFacts
     public async Task StubRootPathResolverAsync_GetStubRootPaths_InputFileSet_MultiplePaths_ShouldReturnMultiplePaths(
         string separator)
     {
-        // arrange
+        // Arrange
         var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
         var path1 = isWindows ? @"C:\stubs1" : "/opt/httplaceholder/stubs1";
         var path2 = isWindows ? @"C:\stubs2\stub.yml" : "/opt/httplaceholder/stubs2/stub.yml";
@@ -94,10 +110,39 @@ public class StubRootPathResolverFacts
             .Setup(m => m.IsDirectoryAsync(path2, It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 
-        // act
+        // Act
         var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
-        // assert
+        // Assert
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual(path1, result[0]);
+        Assert.AreEqual(Path.GetDirectoryName(path2), result[1]);
+    }
+
+    [TestMethod]
+    public async Task StubRootPathResolverAsync_GetStubRootPaths_MultiplePathsWithSameName_ShouldNotReturnDuplicates()
+    {
+        // Arrange
+        var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        var path1 = isWindows ? @"C:\stubs1" : "/opt/httplaceholder/stubs1";
+        var path2 = isWindows ? @"C:\stubs2\stub.yml" : "/opt/httplaceholder/stubs2/stub.yml";
+        var path3 = isWindows ? @"C:\stubs2\stub1.yml" : "/opt/httplaceholder/stubs2/stub1.yml";
+        var path4 = isWindows ? @"C:\stubs2\stub2.yml" : "/opt/httplaceholder/stubs2/stub2.yml";
+        var inputFilePath = $"{path1},{path2},{path3},{path4}";
+
+        _options.CurrentValue.Storage.InputFile = inputFilePath;
+
+        _fileServiceMock
+            .Setup(m => m.IsDirectoryAsync(path1, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(true);
+        _fileServiceMock
+            .Setup(m => m.IsDirectoryAsync(path2, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(false);
+
+        // Act
+        var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
+
+        // Assert
         Assert.AreEqual(2, result.Length);
         Assert.AreEqual(path1, result[0]);
         Assert.AreEqual(Path.GetDirectoryName(path2), result[1]);
@@ -106,17 +151,17 @@ public class StubRootPathResolverFacts
     [TestMethod]
     public async Task StubRootPathResolverAsync_GetStubRootPath_InputFileNotSet_ShouldReturnAssemblyPath()
     {
-        // arrange
+        // Arrange
         var assemblyPath = Path.Combine(@"C:\stubs\bin");
 
         _assemblyServiceMock
             .Setup(m => m.GetEntryAssemblyRootPath())
             .Returns(assemblyPath);
 
-        // act
+        // Act
         var result = (await _resolver.GetStubRootPathsAsync(CancellationToken.None)).ToArray();
 
-        // assert
+        // Assert
         Assert.AreEqual(1, result.Length);
         Assert.AreEqual(assemblyPath, result[0]);
     }

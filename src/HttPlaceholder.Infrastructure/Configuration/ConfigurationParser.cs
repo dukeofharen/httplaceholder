@@ -171,6 +171,7 @@ public class ConfigurationParser
         configDictionary.EnsureEntryExists(ConfigKeys.CleanOldRequestsInBackgroundJob, CleanOldRequestsInBackgroundJob);
         configDictionary.EnsureEntryExists(ConfigKeys.StoreResponses, StoreResponses);
         configDictionary.EnsureEntryExists(ConfigKeys.ReadProxyHeaders, ReadProxyHeaders);
+        configDictionary.EnsureEntryExists(ConfigKeys.AllowGlobalFileSearch, AllowGlobalFileSearch);
 
         // Determine and set file storage location.
         SetDefaultFileStorageLocation(configDictionary);

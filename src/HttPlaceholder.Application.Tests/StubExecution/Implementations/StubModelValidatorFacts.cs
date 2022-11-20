@@ -369,4 +369,40 @@ public class StubModelValidatorFacts
             Assert.IsFalse(result.Any(r => r == errorToCheck));
         }
     }
+
+    [DataTestMethod]
+    [DataRow("X-HttPlaceholder-Correlation,X-HttPlaceholder-ExecutedStub", true)]
+    [DataRow("X-HttPlaceholder-Correlation", true)]
+    [DataRow("X-HttPlaceholder-ExecutedStub", true)]
+    [DataRow("x-httplaceholder-correlation,x-httplaceholder-executedstub", true)]
+    [DataRow("x-httplaceholder-correlation", true)]
+    [DataRow("x-httplaceholder-executedstub", true)]
+    [DataRow("X-HttPlaceholder-Correlation,Content-Type", true)]
+    [DataRow("Etag,Content-Type", false)]
+    public void ValidateStubModel_IllegalResponseHeaders(string headers, bool shouldReturnError)
+    {
+        // Arrange
+        var model = new StubModel
+        {
+            Id = "stub", Response = new StubResponseModel
+            {
+                Text = "Some response",
+                Headers = headers.Split(',').ToDictionary(h => h, h => "headerValue")
+            }
+        };
+
+        // Act
+        var result = _validator.ValidateStubModel(model);
+
+        // Assert
+        const string errorToCheck = "can't be used as response header.";
+        if (shouldReturnError)
+        {
+            Assert.IsTrue(result.Any(r => r.Contains(errorToCheck)));
+        }
+        else
+        {
+            Assert.IsFalse(result.Any(r => r.Contains(errorToCheck)));
+        }
+    }
 }
