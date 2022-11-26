@@ -93,7 +93,7 @@ public class RequestVerificationTest
         // Start a HttPlaceholder Docker container.
         // Make sure you can execute Docker on your system without sudo, or else the container can't start.
         return new TestcontainersBuilder<TestcontainersContainer>()
-            .WithImage("dukeofharen/httplaceholder:2022.9.3.59")
+            .WithImage("dukeofharen/httplaceholder:2022.11.20.108")
             .WithName("httplaceholder")
             .WithPortBinding(1337, 5000)
             .WithExposedPort(5000)

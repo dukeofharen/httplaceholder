@@ -9,7 +9,7 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="12.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="Scrutor" Version="4.2.0" />
         <PackageReference Include="SixLabors.ImageSharp" Version="2.1.3" />

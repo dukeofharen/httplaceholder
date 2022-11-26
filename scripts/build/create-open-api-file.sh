@@ -14,4 +14,4 @@ fi
 # Run OpenAPI tool
 cd $SWAGGER_GEN_DIR
 dotnet run -c Release
-cp $SWAGGER_GEN_DIR/bin/Release/net6.0/swagger.json $DIST_DIR
+cp $SWAGGER_GEN_DIR/bin/Release/net7.0/swagger.json $DIST_DIR

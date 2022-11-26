@@ -1,3 +1,9 @@
+[vnext]
+- Upgraded to .NET 7 (https://github.com/dukeofharen/httplaceholder/pull/293).
+
+# BREAKING CHANGES
+- If you use any of the pre-built binaries of HttPlaceholder, you won't notice anything with upgrading. If you use the .NET tool version of HttPlaceholder, you need to have [.NET 7](https://dotnet.microsoft.com/en-us/) installed from now on.
+
 [2022.11.20]
 - Updated loading of stubs from .yml files. An 'id' field should now ALWAYS be set, whereas it was automatically generated beforehand if it was not set (which caused some non stub files to get parsed as stub with weird behavior) (https://github.com/dukeofharen/httplaceholder/pull/284).
 - Added CancellationToken support to .NET client (https://github.com/dukeofharen/httplaceholder/pull/284).
