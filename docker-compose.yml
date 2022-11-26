@@ -5,6 +5,7 @@ services:
     environment:
       fileStorageLocation: /var/stubs
       oldRequestsQueueLength: 300
+      verbose: true
     volumes:
       - stubs:/var/stubs
     ports:
