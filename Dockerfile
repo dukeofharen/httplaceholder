@@ -19,7 +19,7 @@ COPY . ./
 RUN cd docs/httpl-docs && pip install mkdocs && python sync.py && mkdocs build && cp -r site /app
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build-env /app/out .
 COPY --from=gui-build-env /app/gui/dist ./gui
