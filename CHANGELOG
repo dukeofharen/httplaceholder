@@ -1,5 +1,6 @@
 [vnext]
 - Upgraded to .NET 7 (https://github.com/dukeofharen/httplaceholder/pull/293).
+- Added "show more" button to request body for when the request body is very long (https://github.com/dukeofharen/httplaceholder/pull/294)
 
 # BREAKING CHANGES
 - If you use any of the pre-built binaries of HttPlaceholder, you won't notice anything with upgrading. If you use the .NET tool version of HttPlaceholder, you need to have [.NET 7](https://dotnet.microsoft.com/en-us/) installed from now on.
