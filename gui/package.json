@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "npm run parse-stub-examples && vite --host 0.0.0.0 --port 10001",
-    "build": "npm run parse-stub-examples && npm run lint && npm run typecheck && vue-tsc --noEmit && vite build",
+    "build": "npm run parse-stub-examples && npm run lint && npm run typecheck && npm run test:unit:run && vue-tsc --noEmit && vite build",
     "preview": "vite preview --port 5050",
     "test:unit": "vitest --environment jsdom",
+    "test:unit:run": "vitest --environment jsdom --run",
     "typecheck": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "parse-stub-examples": "node scripts/example-parsing/parse-examples.js",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
