@@ -36,3 +36,8 @@ export function base64ToBlob(input: string): Blob {
 
   return new Blob(byteArrays);
 }
+
+// Source: https://stackoverflow.com/questions/8488729/how-to-count-the-number-of-lines-of-a-string-in-javascript
+export function countNewlineCharacters(input: string): number {
+  return (input.match(/\n/g) || "").length + 1;
+}
