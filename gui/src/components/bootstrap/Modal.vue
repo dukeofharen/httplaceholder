@@ -15,10 +15,18 @@
           <p>{{ bodyText }}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="onNoClick">
+          <button
+            type="button"
+            class="btn btn-secondary no-button"
+            @click="onNoClick"
+          >
             {{ noText }}
           </button>
-          <button type="button" class="btn btn-primary" @click="onYesClick">
+          <button
+            type="button"
+            class="btn btn-primary yes-button"
+            @click="onYesClick"
+          >
             {{ yesText }}
           </button>
         </div>
@@ -28,9 +36,9 @@
 </template>
 
 <script lang="ts">
-import { Modal } from "bootstrap";
 import { onMounted, ref, watch } from "vue";
 import { defineComponent } from "vue";
+import { getOrCreateInstance } from "@/utils/bootstrap";
 
 export default defineComponent({
   name: "Modal",
@@ -68,13 +76,13 @@ export default defineComponent({
     // Functions
     const showModal = () => {
       if (modal.value) {
-        const currentModal = Modal.getOrCreateInstance(modal.value);
+        const currentModal = getOrCreateInstance(modal.value);
         currentModal.show();
       }
     };
     const hideModal = () => {
       if (modal.value) {
-        const currentModal = Modal.getOrCreateInstance(modal.value);
+        const currentModal = getOrCreateInstance(modal.value);
         currentModal.hide();
       }
     };
