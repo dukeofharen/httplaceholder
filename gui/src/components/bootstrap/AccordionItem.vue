@@ -28,7 +28,7 @@ export default defineComponent({
   name: "AccordionItem",
   props: {
     opened: {
-      type: Boolean,
+      type: null,
       default: null,
     },
   },
