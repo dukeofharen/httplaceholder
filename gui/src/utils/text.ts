@@ -19,7 +19,7 @@ export function toBase64(input: string): string | undefined {
 // Source: https://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
 export function base64ToBlob(input: string): Blob {
   const sliceSize = 512;
-  const byteCharacters = atob(input);
+  const byteCharacters = window.atob(input);
   const byteArrays = [];
 
   for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
