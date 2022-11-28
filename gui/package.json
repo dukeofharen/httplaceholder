@@ -31,6 +31,7 @@
     "xml-formatter": "^2.6.1"
   },
   "devDependencies": {
+    "@pinia/testing": "^0.0.14",
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/bootstrap": "^5.2.5",
     "@types/codemirror": "^5.60.5",
