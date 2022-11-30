@@ -1409,6 +1409,7 @@ You can use the `textFile` response writer to enforce HttPlaceholder to read the
   response:
     statusCode: 200
     textFile: C:\files\text.txt
+    enableDynamicMode: true
     headers:
       Content-Type: text/plain
 ```
