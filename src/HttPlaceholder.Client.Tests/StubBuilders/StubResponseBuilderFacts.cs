@@ -141,6 +141,18 @@ public class StubResponseBuilderFacts
     }
 
     [TestMethod]
+    public void WithTextFile()
+    {
+        // Act
+        var response = StubResponseBuilder.Begin()
+            .WithTextFile("/var/file.txt")
+            .Build();
+
+        // Assert
+        Assert.AreEqual("/var/file.txt", response.TextFile);
+    }
+
+    [TestMethod]
     public void WithResponseHeader()
     {
         // Act

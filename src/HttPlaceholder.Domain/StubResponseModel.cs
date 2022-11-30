@@ -48,6 +48,12 @@ public class StubResponseModel
     public string File { get; set; }
 
     /// <summary>
+    ///     Gets or sets the text file.
+    /// </summary>
+    [YamlMember(Alias = "textFile")]
+    public string TextFile { get; set; }
+
+    /// <summary>
     ///     Gets or sets the headers.
     /// </summary>
     [YamlMember(Alias = "headers")]

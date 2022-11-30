@@ -1395,6 +1395,25 @@ You can also use the full path to a file.
       Content-Type: image/jpeg
 ```
 
+#### Scenario 3
+
+You can use the `textFile` response writer to enforce HttPlaceholder to read the file as text file. When you use the "text file" respone writer, you can use variable parsers in the text file (read more about it [here](#dynamic-mode)).
+
+```yml
+- id: text-file
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /text.txt
+  response:
+    statusCode: 200
+    textFile: C:\files\text.txt
+    enableDynamicMode: true
+    headers:
+      Content-Type: text/plain
+```
+
 ## Extra duration
 
 Whenever you want to simulate a busy web service, you can use the "extraDuration" response writer. You can set the number of extra milliseconds HttPlaceholder should wait and the request will actually take that much time to complete.
@@ -2706,7 +2725,6 @@ On the settings page you can configure all kinds of settings for HttPlaceholder 
 
 There is a NuGet package available for HttPlaceholder. You can find this client
 here: <https://www.nuget.org/packages/HttPlaceholder.Client/>.
-
 
 ### General
 

@@ -855,7 +855,20 @@
   response:
     abortConnection: true
 
-- id: file
+- id: file-binary
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /text-binary.bin
+  response:
+    statusCode: 200
+    headers:
+      Content-Type: text/plain
+    enableDynamicMode: true
+    file: text.bin
+
+- id: file-text
   conditions:
     method: GET
     url:
@@ -865,7 +878,8 @@
     statusCode: 200
     headers:
       Content-Type: text/plain
-    file: text.txt
+    enableDynamicMode: true
+    textFile: text.txt
 
 - id: base64-image
   conditions:

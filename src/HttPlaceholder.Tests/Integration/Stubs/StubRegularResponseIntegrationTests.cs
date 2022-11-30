@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Net.Http;
-using System.Text;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 
@@ -41,29 +40,6 @@ public class StubRegularResponseIntegrationTests : StubIntegrationTestBase
         using var response = await Client.GetAsync(url);
         var content = await response.Content.ReadAsByteArrayAsync();
         Assert.AreEqual(632, content.Length);
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-    }
-
-    [TestMethod]
-    public async Task StubIntegration_RegularGet_File_HappyFlow()
-    {
-        // arrange
-        const string fileContents = "File contents yo!";
-        var url = $"{TestServer.BaseAddress}text.txt";
-        Options.CurrentValue.Stub.AllowGlobalFileSearch = true;
-
-        FileServiceMock
-            .Setup(m => m.FileExistsAsync("text.txt", It.IsAny<CancellationToken>()))
-            .ReturnsAsync(true);
-        FileServiceMock
-            .Setup(m => m.ReadAllBytesAsync("text.txt", It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Encoding.UTF8.GetBytes(fileContents));
-
-        // act / assert
-        using var response = await Client.GetAsync(url);
-        response.EnsureSuccessStatusCode();
-        var content = await response.Content.ReadAsStringAsync();
-        Assert.AreEqual(fileContents, content);
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
     }
 
