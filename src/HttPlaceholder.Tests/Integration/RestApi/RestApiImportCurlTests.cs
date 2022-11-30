@@ -38,7 +38,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
         Assert.AreEqual(3, stubs.Length);
 
         var stub1 = stubs[0];
-        Assert.AreEqual("generated-9a9df959f3df979a2337b3d1e4829816", stub1.Id);
+        Assert.AreEqual("generated-1c4a143458af651db485a35e5f961de4", stub1.Id);
         Assert.AreEqual("GET", stub1.Conditions.Method);
         Assert.AreEqual("/_nuxt/fonts/fa-solid-900.3eb06c7.woff2",
             ((StubConditionStringCheckingModel)stub1.Conditions.Url.Path).StringEquals);
@@ -49,7 +49,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
             ((StubConditionStringCheckingModel)headers1[HeaderKeys.AcceptEncoding]).StringEquals);
 
         var stub2 = stubs[1];
-        Assert.AreEqual("generated-b19dfae4c2040bb2035c5b285a7f3232", stub2.Id);
+        Assert.AreEqual("generated-9a5aa07b457a7c7ae9430ce9b133619e", stub2.Id);
         Assert.AreEqual("GET", stub2.Conditions.Method);
         Assert.AreEqual("/_nuxt/css/4cda201.css",
             ((StubConditionStringCheckingModel)stub2.Conditions.Url.Path).StringEquals);
@@ -64,7 +64,7 @@ public class RestApiImportCurlTests : RestApiIntegrationTestBase
             ((StubConditionStringCheckingModel)headers2[HeaderKeys.AcceptEncoding]).StringEquals);
 
         var stub3 = stubs[2];
-        Assert.AreEqual("generated-ded44f6ed44a83fc6086ee0ee0e7ce4b", stub3.Id);
+        Assert.AreEqual("generated-f401bc7b301cace2dfa4e9efe7f6d854", stub3.Id);
         Assert.AreEqual("GET", stub3.Conditions.Method);
         Assert.AreEqual("/_nuxt/1d6c3a9.js",
             ((StubConditionStringCheckingModel)stub3.Conditions.Url.Path).StringEquals);

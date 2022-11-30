@@ -2707,7 +2707,6 @@ On the settings page you can configure all kinds of settings for HttPlaceholder 
 There is a NuGet package available for HttPlaceholder. You can find this client
 here: <https://www.nuget.org/packages/HttPlaceholder.Client/>.
 
-
 ### General
 
 This client was built from the ground up. It exposes methods for easily adding the HttPlaceholder client to
