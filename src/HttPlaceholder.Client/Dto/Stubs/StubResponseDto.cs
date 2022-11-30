@@ -39,6 +39,11 @@ public class StubResponseDto
     public string File { get; set; }
 
     /// <summary>
+    ///     Gets or sets the text file.
+    /// </summary>
+    public string TextFile { get; set; }
+
+    /// <summary>
     ///     Gets or sets the headers.
     /// </summary>
     public IDictionary<string, string> Headers { get; set; }
