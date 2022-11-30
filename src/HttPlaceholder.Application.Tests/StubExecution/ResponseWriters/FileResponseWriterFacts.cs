@@ -21,12 +21,22 @@ public class FileResponseWriterFacts
     [TestCleanup]
     public void Cleanup() => _mocker.VerifyAll();
 
-    [TestMethod]
-    public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_NoValueSetInStub(bool textFile)
     {
         // Arrange
         var writer = _mocker.CreateInstance<FileResponseWriter>();
-        var stub = new StubModel {Response = new StubResponseModel {File = null}};
+        var stub = new StubModel {Response = new StubResponseModel()};
+        if (textFile)
+        {
+            stub.Response.TextFile = null;
+        }
+        else
+        {
+            stub.Response.File = null;
+        }
 
         var response = new ResponseModel();
 
@@ -36,22 +46,34 @@ public class FileResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.IsNull(response.Body);
+        Assert.IsFalse(response.BodyIsBinary);
     }
 
-    [TestMethod]
-    public async Task FileResponseWriter_WriteToResponseAsync_FileFoundDirectly_NotAllowed()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task FileResponseWriter_WriteToResponseAsync_FileFoundDirectly_NotAllowed(bool textFile)
     {
         // Arrange
         _settings.Stub.AllowGlobalFileSearch = false;
         var fileServiceMock = _mocker.GetMock<IFileService>();
         var writer = _mocker.CreateInstance<FileResponseWriter>();
 
-        var stub = new StubModel {Response = new StubResponseModel {File = @"C:\tmp\image.png"}};
+        const string path = @"C:\tmp\image.png";
+        var stub = new StubModel {Response = new StubResponseModel()};
+        if (textFile)
+        {
+            stub.Response.TextFile = path;
+        }
+        else
+        {
+            stub.Response.File = path;
+        }
 
         var response = new ResponseModel();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(stub.Response.File, It.IsAny<CancellationToken>()))
+            .Setup(m => m.FileExistsAsync(path, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         // Act
@@ -62,8 +84,10 @@ public class FileResponseWriterFacts
         Assert.AreEqual("Path 'C:\\tmp\\image.png' found, but can't be used because setting 'allowGlobalFileSearch' is turned off. Turn it on with caution. Use paths relative to the .yml stub files or the file storage location as specified in the configuration.", exception.Message);
     }
 
-    [TestMethod]
-    public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileFoundDirectly()
+    [DataTestMethod]
+    [DataRow(true)]
+    [DataRow(false)]
+    public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileFoundDirectly(bool textFile)
     {
         // Arrange
         _settings.Stub.AllowGlobalFileSearch = true;
@@ -71,16 +95,25 @@ public class FileResponseWriterFacts
         var writer = _mocker.CreateInstance<FileResponseWriter>();
 
         var body = new byte[] {1, 2, 3};
-        var stub = new StubModel {Response = new StubResponseModel {File = @"C:\tmp\image.png"}};
+        const string path = @"C:\tmp\image.png";
+        var stub = new StubModel {Response = new StubResponseModel()};
+        if (textFile)
+        {
+            stub.Response.TextFile = path;
+        }
+        else
+        {
+            stub.Response.File = path;
+        }
 
         var response = new ResponseModel();
 
         fileServiceMock
-            .Setup(m => m.FileExistsAsync(stub.Response.File, It.IsAny<CancellationToken>()))
+            .Setup(m => m.FileExistsAsync(path, It.IsAny<CancellationToken>()))
             .ReturnsAsync(true);
 
         fileServiceMock
-            .Setup(m => m.ReadAllBytesAsync(stub.Response.File, It.IsAny<CancellationToken>()))
+            .Setup(m => m.ReadAllBytesAsync(path, It.IsAny<CancellationToken>()))
             .ReturnsAsync(body);
 
         // Act
@@ -89,13 +122,17 @@ public class FileResponseWriterFacts
         // Assert
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(body, response.Body);
+        Assert.AreEqual(response.BodyIsBinary, !textFile);
     }
 
     [DataTestMethod]
-    [DataRow("image.png", "image.png")]
-    [DataRow("../image.png", "image.png")]
-    [DataRow("../../image.png", "image.png")]
-    public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileNotFoundDirectly_ButFoundInStubFolder(string file, string actualFile)
+    [DataRow(true, "image.png", "image.png")]
+    [DataRow(true, "../image.png", "image.png")]
+    [DataRow(true, "../../image.png", "image.png")]
+    [DataRow(false, "image.png", "image.png")]
+    [DataRow(false, "../image.png", "image.png")]
+    [DataRow(false, "../../image.png", "image.png")]
+    public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileNotFoundDirectly_ButFoundInStubFolder(bool textFile, string file, string actualFile)
     {
         // Arrange
         var stubRootPathResolverMock = _mocker.GetMock<IStubRootPathResolver>();
@@ -105,7 +142,15 @@ public class FileResponseWriterFacts
         var stubRootPaths = new[] {"/var/stubs1", "/var/stubs2"};
         var expectedPath = Path.Combine(stubRootPaths[1], actualFile);
         var body = new byte[] {1, 2, 3};
-        var stub = new StubModel {Response = new StubResponseModel {File = file}};
+        var stub = new StubModel {Response = new StubResponseModel()};
+        if (textFile)
+        {
+            stub.Response.TextFile = file;
+        }
+        else
+        {
+            stub.Response.File = file;
+        }
 
         var response = new ResponseModel();
 
@@ -131,6 +176,7 @@ public class FileResponseWriterFacts
         // Assert
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(body, response.Body);
+        Assert.AreEqual(response.BodyIsBinary, !textFile);
     }
 
     [TestMethod]
@@ -167,5 +213,6 @@ public class FileResponseWriterFacts
         // Assert
         Assert.IsFalse(result.Executed);
         Assert.IsNull(response.Body);
+        Assert.IsFalse(response.BodyIsBinary);
     }
 }

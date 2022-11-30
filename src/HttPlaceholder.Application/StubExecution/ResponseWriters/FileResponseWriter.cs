@@ -43,15 +43,16 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
         CancellationToken cancellationToken)
     {
         var settings = _options.CurrentValue;
-        if (stub.Response?.File == null)
+        if (stub.Response?.File == null && stub.Response?.TextFile == null)
         {
             return StubResponseWriterResultModel.IsNotExecuted(GetType().Name);
         }
 
+        var file = stub.Response?.File ?? stub.Response?.TextFile;
         string finalFilePath = null;
-        if (await _fileService.FileExistsAsync(stub.Response.File, cancellationToken))
+        if (await _fileService.FileExistsAsync(file, cancellationToken))
         {
-            finalFilePath = stub.Response.File;
+            finalFilePath = file;
             if (settings.Stub?.AllowGlobalFileSearch == false)
             {
                 throw new InvalidOperationException(
@@ -66,7 +67,7 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
             var stubRootPaths = await _stubRootPathResolver.GetStubRootPathsAsync(cancellationToken);
             foreach (var path in stubRootPaths)
             {
-                var tempPath = Path.Combine(path, PathUtilities.CleanPath(stub.Response.File));
+                var tempPath = Path.Combine(path, PathUtilities.CleanPath(file));
                 if (!await _fileService.FileExistsAsync(tempPath, cancellationToken))
                 {
                     _logger.LogInformation($"Path '{tempPath}' not found.");
@@ -85,8 +86,7 @@ internal class FileResponseWriter : IResponseWriter, ISingletonService
         }
 
         response.Body = await _fileService.ReadAllBytesAsync(finalFilePath, cancellationToken);
-        response.BodyIsBinary = true;
-
+        response.BodyIsBinary = string.IsNullOrWhiteSpace(stub.Response.TextFile);
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 }
