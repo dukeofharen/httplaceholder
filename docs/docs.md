@@ -181,7 +181,7 @@ IIS, Nginx and Apache (and a lot of other web servers) have the option to run an
 
 - `X-Forwarded-For`: contains all IP addresses of the calling client and all proxy servers in between the client and HttPlaceholder. Used to determine the IP of the calling client.
 - `X-Forwarded-Proto`: contains the protocol of the original call to the proxying web server (`http` or `https`).
-- `X-Forwarded-Host`: contains the hostname of the original call to the proxying web server(e.g. `httplaceholder.com`).
+- `X-Forwarded-Host`: contains the hostname of the original call to the proxying web server(e.g. `httplaceholder.org`).
 
 These headers are, right now, only used instead of the "real" values if the actual IP address of the proxy server is the loopback IP (e.g. `127.0.0.1`, `::1` etc.).
 
@@ -1075,7 +1075,7 @@ It is possible to check if a hostname in a request is correct. The condition can
   conditions:
     method: GET
     host:
-      equals: httplaceholder.com
+      equals: httplaceholder.org
   response:
     statusCode: 200
     text: OK

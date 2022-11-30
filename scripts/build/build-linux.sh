@@ -23,6 +23,7 @@ fi
 # Publish application
 cd $ROOT_DIR/src/HttPlaceholder
 dotnet publish --configuration=release \
+    --self-contained \
     --runtime=linux-x64 \
     /p:Version=$VERSION \
     /p:AssemblyVersion=$VERSION \

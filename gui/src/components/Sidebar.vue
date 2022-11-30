@@ -2,7 +2,7 @@
   <div class="col-2 col-sm-3 col-md-2 col-xl-2 col-lg-2 px-md-2 px-0 bg-dark">
     <div class="d-flex flex-column flex-shrink-0 min-vh-100">
       <a
-        href="https://httplaceholder.com"
+        href="https://httplaceholder.org"
         target="_blank"
         class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none justify-content-center mt-1"
       >
