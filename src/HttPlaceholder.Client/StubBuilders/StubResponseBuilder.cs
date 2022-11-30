@@ -146,6 +146,17 @@ public sealed class StubResponseBuilder
     }
 
     /// <summary>
+    ///     Sets a text file path to return to the response definition.
+    /// </summary>
+    /// <param name="filePath">The text file path of the file to return.</param>
+    /// <returns>The current <see cref="StubResponseBuilder" />.</returns>
+    public StubResponseBuilder WithTextFile(string filePath)
+    {
+        _response.TextFile = filePath;
+        return this;
+    }
+
+    /// <summary>
     ///     Sets a response header to be returned to the response definition.
     ///     This method can be called multiple times to add multiple response headers to be returned.
     /// </summary>
