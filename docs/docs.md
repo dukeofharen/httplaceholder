@@ -1734,7 +1734,7 @@ The request body parser makes it possible to write the complete posted body to t
   priority: 0
 ```
 
-Let's say you make the request `http://localhost:5000dynamic-request-body.txt` with the following data:
+Let's say you make the request `http://localhost:5000/dynamic-request-body.txt` with the following data:
 
 **Posted body**
 ```
