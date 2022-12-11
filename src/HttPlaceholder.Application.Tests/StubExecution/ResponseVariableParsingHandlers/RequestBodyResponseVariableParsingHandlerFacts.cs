@@ -40,7 +40,7 @@ public class RequestBodyResponseVariableParsingHandlerFacts
     public async Task RequestBodyVariableHandler_Parse_RegexSingleLine_HappyFlow()
     {
         // arrange
-        const string input = "Posted content: ((request_body:key=([a-z]*)))";
+        const string input = "Posted content: ((request_body:'key=([a-z]*)'))";
         const string body = "key=value";
 
         const string expectedResult = "Posted content: value";
@@ -64,7 +64,7 @@ public class RequestBodyResponseVariableParsingHandlerFacts
     public async Task RequestBodyVariableHandler_Parse_RegexMultiLine_HappyFlow()
     {
         // arrange
-        const string input = "Posted content: ((request_body:key2=([a-z0-9]*)))";
+        const string input = "Posted content: ((request_body:'key2=([a-z0-9]*)'))";
         const string body = @"key1=value1
 key2=value2
 key3=value3";
