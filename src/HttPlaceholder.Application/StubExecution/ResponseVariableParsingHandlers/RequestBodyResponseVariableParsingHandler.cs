@@ -31,10 +31,10 @@ internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHa
     public override string Name => "request_body";
 
     /// <inheritdoc />
-    public override string FullName => "Full request body";
+    public override string FullName => "Request body";
 
     /// <inheritdoc />
-    public override string[] Examples => new[] {$"(({Name}))"}; // TODO add regex example
+    public override string[] Examples => new[] {$"(({Name}))", $"(({Name}:'key2=([a-z0-9]*)'))'"};
 
     /// <inheritdoc />
     protected override async Task<string> InsertVariablesAsync(string input, Match[] matches, StubModel stub,
