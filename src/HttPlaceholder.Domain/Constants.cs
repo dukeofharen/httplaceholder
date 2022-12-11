@@ -14,6 +14,11 @@ public static class Constants
     ///     An array of separator characters for providing multiple input file paths.
     /// </summary>
     public static readonly string[] InputFileSeparators = {"%%", ","};
+
+    /// <summary>
+    ///     The number of seconds a regex can execute before timing out.
+    /// </summary>
+    public static readonly int RegexTimeoutSeconds = 10;
 }
 
 /// <summary>

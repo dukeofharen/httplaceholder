@@ -63,7 +63,7 @@ internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHa
             try
             {
                 var regex = new Regex(regexValue, RegexOptions.Multiline,
-                    TimeSpan.FromSeconds(10)); // TODO move this to a constant.
+                    TimeSpan.FromSeconds(Constants.RegexTimeoutSeconds));
                 var matches = regex.Matches(body).ToArray();
                 if (matches.Length >= 1 && matches[0].Groups.Count > 1)
                 {
