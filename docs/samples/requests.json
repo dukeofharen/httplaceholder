@@ -801,6 +801,25 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
+									"raw": "key1=value1\nkey2=value2\nkey3=value3"
+								},
+								"url": {
+									"raw": "{{rootUrl}}dynamic-request-body-regex.txt",
+									"host": [
+										"{{rootUrl}}dynamic-request-body-regex",
+										"txt"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Regex",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
 									"raw": "TEST VALUE"
 								},
 								"url": {
