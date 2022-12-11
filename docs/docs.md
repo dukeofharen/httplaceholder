@@ -1717,7 +1717,7 @@ formval1=value1&formval2=value2
 
 ### Request body parser
 
-The request body parser makes it possible to write the complete posted body to the response.
+The request body parser makes it possible to write the complete posted body to the response. It is also possible to provide a regular expression to only parse a part of the request body in the response body of the stub. When providing a regular expression, you might want to surround the regex with single quotes (see example below) because else the regex might not be parsed correctly.
 
 ```yml
 - id: dynamic-request-body-example
@@ -1734,7 +1734,7 @@ The request body parser makes it possible to write the complete posted body to t
   priority: 0
 ```
 
-Let's say you make the request `http://localhost:5000dynamic-request-body.txt` with the following data:
+Let's say you make the request `http://localhost:5000/dynamic-request-body.txt` with the following data:
 
 **Posted body**
 ```
@@ -1742,6 +1742,33 @@ Test123
 ```
 
 `((request_body))` will be replaced with `Test123`.
+
+```yml
+- id: dynamic-request-body-example-regex
+  tenant: 14-dynamic
+  conditions:
+    method: POST
+    url:
+      path:
+        equals: /dynamic-request-body-regex.txt
+  response:
+    enableDynamicMode: true
+    text: "Posted: ((request_body:'key2=([a-z0-9]*)'))"
+    headers:
+      X-Header: "((request_body:'key3=([a-z0-9]*)'))"
+  priority: 0
+```
+
+Let's say you make the request `http://localhost:5000/dynamic-request-body-regex.txt` with the following data:
+
+**Posted body**
+```
+key1=value1
+key2=value2
+key3=value3
+```
+
+`((request_body:'key2=([a-z0-9]*)'))` will be replaced with `value2` and `((request_body:'key3=([a-z0-9]*)'))` will be replaced with `value3`.
 
 ### Display URL
 

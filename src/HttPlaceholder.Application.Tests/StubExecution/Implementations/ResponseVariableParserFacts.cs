@@ -26,13 +26,6 @@ public class ResponseVariableParserFacts
             .Returns("handler2");
     }
 
-    [TestCleanup]
-    public void Cleanup()
-    {
-        _handler1.VerifyAll();
-        _handler2.VerifyAll();
-    }
-
     [TestMethod]
     public async Task VariableParser_Parse_HappyFlow()
     {
@@ -67,5 +60,36 @@ public class ResponseVariableParserFacts
             Times.Once);
         _handler2.Verify(m => m.ParseAsync(input, It.IsAny<IEnumerable<Match>>(), stub, It.IsAny<CancellationToken>()),
             Times.Once);
+    }
+
+    [TestMethod]
+    public void VariableParser_VarRegex_HappyFlow()
+    {
+        // Arrange
+        const string input = @"Query var 1: ((query:value)), query var 2: ((query)), query var 3: ((query))
+((request_body:'key2=([a-z0-9]*)')) ((request_body:key2=([a-z0-9]*) ))((request_body:key2=([a-z0-9]*) ))";
+        var expectedResults = new (string, string, string)[]
+        {
+            ("((query:value))", "query", "value"),
+            ("((query))", "query", string.Empty),
+            ("((query))", "query", string.Empty),
+            ("((request_body:'key2=([a-z0-9]*)'))", "request_body", "key2=([a-z0-9]*)"),
+            ("((request_body:key2=([a-z0-9]*) ))", "request_body", "key2=([a-z0-9]*)"),
+            ("((request_body:key2=([a-z0-9]*) ))", "request_body", "key2=([a-z0-9]*)")
+        };
+
+        // Act
+        var matches = ResponseVariableParser.VarRegex.Matches(input).ToArray();
+
+        // Assert
+        Assert.AreEqual(6, matches.Length);
+        for (var i = 0; i < matches.Length; i++)
+        {
+            var expectedResult = expectedResults[i];
+            var match = matches[i];
+            Assert.AreEqual(expectedResult.Item1, match.Groups[0].Value);
+            Assert.AreEqual(expectedResult.Item2, match.Groups[1].Value);
+            Assert.AreEqual(expectedResult.Item3, match.Groups[2].Value);
+        }
     }
 }

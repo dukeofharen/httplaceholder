@@ -20,9 +20,9 @@ internal class ResponseVariableParser : IResponseVariableParser, ISingletonServi
     }
 
     public static Regex VarRegex { get; } = new(
-        @"\(\(([a-zA-Z0-9_]*)\:? ?([^)]*)?\)\)",
+        @"\(\(([a-zA-Z0-9_]*)\:? ?'?(.*?)?'? ?\)\)",
         RegexOptions.Compiled,
-        TimeSpan.FromSeconds(10));
+        TimeSpan.FromSeconds(Constants.RegexTimeoutSeconds));
 
     /// <inheritdoc />
     public async Task<string> ParseAsync(string input, StubModel stub, CancellationToken cancellationToken)

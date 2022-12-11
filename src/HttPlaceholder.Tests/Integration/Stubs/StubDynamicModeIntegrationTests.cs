@@ -113,6 +113,29 @@ public class StubDynamicModeIntegrationTests : StubIntegrationTestBase
     }
 
     [TestMethod]
+    public async Task StubIntegration_RegularPost_Dynamic_RequestBodyRegex()
+    {
+        // Arrange
+        const string expectedResult = "Posted: value2";
+        var url = $"{TestServer.BaseAddress}dynamic-request-body-regex.txt";
+        const string body = @"key1=value1
+key2=value2
+key3=value3";
+
+        var request = new HttpRequestMessage(HttpMethod.Post, url) {Content = new StringContent(body)};
+
+        // Act / Assert
+        using var response = await Client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual(expectedResult, content);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual(MimeTypes.TextMime, response.Content.Headers.ContentType.ToString());
+
+        Assert.AreEqual("value3", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
+    }
+
+    [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_DisplayUrl()
     {
         // Arrange
