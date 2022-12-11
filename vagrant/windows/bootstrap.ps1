@@ -42,13 +42,13 @@ Enable-WindowsOptionalFeature -Online -FeatureName IIS-HttpRedirect
 Enable-WindowsOptionalFeature -Online -FeatureName IIS-ApplicationDevelopment
 
 # Install dependencies
-& choco install dotnet-windowshosting --version=6.0.8 -y
-& choco install dotnet-sdk --version=6.0.400 -y
-& choco install nodejs --version=16.17.0 -y
-& choco install python --version=3.10.6 -y
+& choco install dotnet-windowshosting --version=7.0.0 -y
+& choco install dotnet-sdk --version=7.0.100 -y
+& choco install nodejs --version=18.12.1 -y
+& choco install python --version=3.11.0 -y
 
 # Set correct path
-$env:PATH = "C:\Python310;C:\Python310\scripts;C:\Program Files\nodejs;C:\Program Files\dotnet;$($env:PATH)"
+$env:PATH = "C:\Python311;C:\Python311\scripts;C:\Program Files\nodejs;C:\Program Files\dotnet;$($env:PATH)"
 
 # For some inexplicable reason, the NuGet source is not added when the SDK is installed, so we do it here.
 Write-Host "Adding Nuget source"
