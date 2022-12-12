@@ -12,3 +12,17 @@
     headers:
       X-Header: ((display_url))
   priority: 0
+
+# The display URL of the current request is parsed with a regular expression and the result of the regex is written to the response.
+- id: dynamic-display-url-regex-example
+  conditions:
+    method: GET
+    url:
+      path:
+        regex: /dynamic-display-url-regex/users/(.*)/orders
+  response:
+    enableDynamicMode: true
+    text: "User ID: ((display_url:'\/users\/([0-9]{3})\/orders'))"
+    headers:
+      X-Header: "((display_url:'\/users\/([0-9]{3})\/orders'))"
+  priority: 0
