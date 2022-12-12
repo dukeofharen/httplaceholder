@@ -3,6 +3,7 @@
 - Added "show more" button to request body for when the request body is very long (https://github.com/dukeofharen/httplaceholder/pull/294).
 - Added text file response writer (https://github.com/dukeofharen/httplaceholder/pull/295).
 - Updated request body variable parser to also support regular expressions to insert part of request body in the response body (https://github.com/dukeofharen/httplaceholder/pull/296).
+- An option was added to user the display URL variable parser with a regular expression, to parse only a part of the URL as part of your response (https://github.com/dukeofharen/httplaceholder/pull/297).
 
 # BREAKING CHANGES
 - If you use any of the pre-built binaries of HttPlaceholder, you won't notice anything with upgrading. If you use the .NET tool version of HttPlaceholder, you need to have [.NET 7](https://dotnet.microsoft.com/en-us/) installed from now on.
