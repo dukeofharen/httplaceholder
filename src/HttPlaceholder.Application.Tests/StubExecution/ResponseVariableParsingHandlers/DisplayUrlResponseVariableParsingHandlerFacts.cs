@@ -35,4 +35,52 @@ public class DisplayUrlResponseVariableParsingHandlerFacts
         // assert
         Assert.AreEqual(expectedResult, result);
     }
+
+    [TestMethod]
+    public async Task RequestBodyVariableHandler_Parse_Regex_HappyFlow()
+    {
+        // arrange
+        const string input = @"User ID: ((display_url:'\/users\/([0-9]{3})\/orders'))";
+        const string url = "http://localhost:5000/users/123/orders?key=value123";
+
+        const string expectedResult = "User ID: 123";
+
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var handler = _mocker.CreateInstance<DisplayUrlResponseVariableParsingHandler>();
+
+        httpContextServiceMock
+            .Setup(m => m.DisplayUrl)
+            .Returns(url);
+
+        // act
+        var matches = ResponseVariableParser.VarRegex.Matches(input);
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
+
+        // assert
+        Assert.AreEqual(expectedResult, result);
+    }
+
+    [TestMethod]
+    public async Task RequestBodyVariableHandler_Parse_Regex_NoResultFound_HappyFlow()
+    {
+        // arrange
+        const string input = @"User ID: ((display_url:'\/users\/([A-Z]{3})\/orders'))";
+        const string url = "http://localhost:5000/users/123/orders?key=value123";
+
+        const string expectedResult = "User ID: ";
+
+        var httpContextServiceMock = _mocker.GetMock<IHttpContextService>();
+        var handler = _mocker.CreateInstance<DisplayUrlResponseVariableParsingHandler>();
+
+        httpContextServiceMock
+            .Setup(m => m.DisplayUrl)
+            .Returns(url);
+
+        // act
+        var matches = ResponseVariableParser.VarRegex.Matches(input);
+        var result = await handler.ParseAsync(input, matches, new StubModel(), CancellationToken.None);
+
+        // assert
+        Assert.AreEqual(expectedResult, result);
+    }
 }

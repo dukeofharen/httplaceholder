@@ -160,6 +160,30 @@ key3=value3";
     }
 
     [TestMethod]
+    public async Task StubIntegration_RegularGet_Dynamic_DisplayUrl_Regex()
+    {
+        // Arrange
+        var url = $"{TestServer.BaseAddress}dynamic-display-url-regex/users/123/orders?key=val";
+        const string expectedResult = "User ID: 123";
+
+        ClientDataResolverMock
+            .Setup(m => m.GetHost())
+            .Returns("localhost");
+
+        var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+        // Act / Assert
+        using var response = await Client.SendAsync(request);
+        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync();
+        Assert.AreEqual(expectedResult, content);
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.AreEqual(MimeTypes.TextMime, response.Content.Headers.ContentType.ToString());
+
+        Assert.AreEqual("123", response.Headers.Single(h => h.Key == "X-Header").Value.Single());
+    }
+
+    [TestMethod]
     public async Task StubIntegration_RegularGet_Dynamic_RootUrl()
     {
         // Arrange
