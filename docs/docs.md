@@ -1772,7 +1772,7 @@ key3=value3
 
 ### Display URL
 
-The display URL body parser makes it possible to write the complete URL to the response.
+The display URL body parser makes it possible to write the complete URL to the response. It is also possible to provide a regular expression to only parse a part of the display URL in the response body of the stub. When providing a regular expression, you might want to surround the regex with single quotes (see example below) because else the regex might not be parsed correctly.
 
 ```yml
 - id: dynamic-display-url-example
@@ -1794,6 +1794,25 @@ Let's say you do the following GET request: `http://localhost:5000/dynamic-displ
 ```
 URL: http://localhost:5000/dynamic-display-url.txt?var1=value&var2=value2
 ```
+
+```yml
+- id: dynamic-display-url-regex-example
+  conditions:
+    method: GET
+    url:
+      path:
+        regex: /dynamic-display-url-regex/users/(.*)/orders
+  response:
+    enableDynamicMode: true
+    text: "User ID: ((display_url:'\/users\/([0-9]{3})\/orders'))"
+    headers:
+      X-Header: "((display_url:'\/users\/([0-9]{3})\/orders'))"
+  priority: 0
+```
+
+Let's say you make the request `http://localhost:5000/dynamic-display-url-regex/users/123/orders`.
+
+`((display_url:'\/users\/([0-9]{3})\/orders'))` will be replaced with `123`.
 
 ### Root URL
 
