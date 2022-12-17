@@ -445,6 +445,19 @@
       X-Header: ((display_url))
   priority: 0
 
+- id: dynamic-display-url-regex-example
+  conditions:
+    method: GET
+    url:
+      path:
+        equals: /dynamic-display-url-regex/users/123/orders
+  response:
+    enableDynamicMode: true
+    text: "User ID: ((display_url:'\/users\/([0-9]{3})\/orders'))"
+    headers:
+      X-Header: "((display_url:'\/users\/([0-9]{3})\/orders'))"
+  priority: 0
+
 - id: dynamic-root-url-example
   conditions:
     method: GET

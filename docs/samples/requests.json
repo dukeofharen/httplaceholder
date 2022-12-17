@@ -857,6 +857,25 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Regex",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{rootUrl}}dynamic-display-url-regex/users/451/orders",
+									"host": [
+										"{{rootUrl}}dynamic-display-url-regex"
+									],
+									"path": [
+										"users",
+										"451",
+										"orders"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
