@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using HttPlaceholder.Application.StubExecution.Utilities;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Utilities;
@@ -55,6 +57,41 @@ public class ConversionUtilitiesFacts
         // Act / Assert
         Assert.ThrowsException<InvalidOperationException>(() =>
             ConversionUtilities.Convert<StubConditionStringCheckingModel>(1234));
+
+    [TestMethod]
+    public void ConvertEnumerable_InputIsJArray_ShouldConvert()
+    {
+        // Arrange
+        var input = JArray.Parse(@"[""string1"", ""string2""]");
+
+        // Act
+        var result = ConversionUtilities.ConvertEnumerable<string>(input).ToArray();
+
+        // Assert
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual("string1", result[0]);
+        Assert.AreEqual("string2", result[1]);
+    }
+
+    [TestMethod]
+    public void ConvertEnumerable_InputIsObjectList_ShouldConvert()
+    {
+        // Arrange
+        var input = new List<object> {"string1", "string2"};
+
+        // Act
+        var result = ConversionUtilities.ConvertEnumerable<string>(input).ToArray();
+
+        // Assert
+        Assert.AreEqual(2, result.Length);
+        Assert.AreEqual("string1", result[0]);
+        Assert.AreEqual("string2", result[1]);
+    }
+
+    [TestMethod]
+    public void ConvertEnumerable_InputIsUnrecognized_ShouldThrowInvalidOperationException() =>
+        // Act / Assert
+        Assert.ThrowsException<InvalidOperationException>(() => ConversionUtilities.Convert<string>(123));
 
     [DataTestMethod]
     [DataRow(3, 3)]
