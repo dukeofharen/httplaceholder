@@ -6,6 +6,17 @@
   response:
     text: OK TEST
 
+- id: multiple-methods
+  conditions:
+    method:
+      - GET
+      - POST
+    url:
+      path:
+        equals: /multiple-methods
+  response:
+    text: OK MULTIPLE METHODS
+
 - id: postcode-eelde
   conditions:
     method: GET
