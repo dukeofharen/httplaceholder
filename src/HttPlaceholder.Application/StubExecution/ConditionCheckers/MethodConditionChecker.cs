@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Application.StubExecution.Utilities;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Enums;
 
@@ -27,21 +29,25 @@ public class MethodConditionChecker : IConditionChecker, ISingletonService
     public Task<ConditionCheckResultModel> ValidateAsync(StubModel stub, CancellationToken cancellationToken)
     {
         var result = new ConditionCheckResultModel();
-        var methodCondition = stub.Conditions?.Method;
-        if (string.IsNullOrEmpty(methodCondition))
+        var condition = stub.Conditions?.Method;
+        if (condition == null)
         {
             return Task.FromResult(result);
         }
 
         var method = _httpContextService.Method;
-        if (string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase))
+        if ((condition is string methodCondition &&
+             string.Equals(methodCondition, method, StringComparison.OrdinalIgnoreCase)) || (condition is not string &&
+                ConversionUtilities
+                    .ConvertEnumerable<string>(condition)
+                    .Any(mc => string.Equals(mc, method, StringComparison.OrdinalIgnoreCase))))
         {
-            // The path matches the provided regex. Add the stub ID to the resulting list.
+            // The path matches the provided condition. Add the stub ID to the resulting list.
             result.ConditionValidation = ConditionValidationType.Valid;
         }
         else
         {
-            result.Log = $"Condition '{methodCondition}' did not pass for request.";
+            result.Log = $"Condition '{condition}' did not pass for request.";
             result.ConditionValidation = ConditionValidationType.Invalid;
         }
 
