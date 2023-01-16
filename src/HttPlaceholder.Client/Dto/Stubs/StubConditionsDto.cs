@@ -10,7 +10,7 @@ public class StubConditionsDto
     /// <summary>
     ///     Gets or sets the method.
     /// </summary>
-    public string Method { get; set; }
+    public object Method { get; set; }
 
     /// <summary>
     ///     Gets or sets the URL.
