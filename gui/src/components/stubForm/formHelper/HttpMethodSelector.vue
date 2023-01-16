@@ -1,6 +1,12 @@
 <template>
   <div class="list-group">
     <button
+      class="list-group-item list-group-item-action fw-bold"
+      @click="multipleMethods"
+    >
+      Multiple methods
+    </button>
+    <button
       v-for="(method, index) of httpMethods"
       :key="index"
       class="list-group-item list-group-item-action fw-bold"
@@ -15,6 +21,7 @@
 import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
 import { httpMethods } from "@/domain/stubForm/http-methods";
+import { defaultValues } from "@/domain/stubForm/default-values";
 
 export default defineComponent({
   name: "HttpMethodSelector",
@@ -26,8 +33,12 @@ export default defineComponent({
       stubFormStore.setMethod(method);
       stubFormStore.closeFormHelper();
     };
+    const multipleMethods = () => {
+      stubFormStore.setMethod(defaultValues.methods);
+      stubFormStore.closeFormHelper();
+    };
 
-    return { httpMethods, methodSelected };
+    return { httpMethods, methodSelected, multipleMethods };
   },
 });
 </script>

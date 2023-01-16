@@ -435,7 +435,7 @@ export const useStubFormStore = defineStore({
         }
       });
     },
-    setMethod(method: string): void {
+    setMethod(method: string | string[]): void {
       handle(() => {
         const parsed = parseInput(this.input);
         if (parsed) {
