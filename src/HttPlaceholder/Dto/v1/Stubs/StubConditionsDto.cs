@@ -16,7 +16,8 @@ public class StubConditionsDto : IMapFrom<StubConditionsModel>, IMapTo<StubCondi
     ///     Gets or sets the method.
     /// </summary>
     [YamlMember(Alias = "method")]
-    public string Method { get; set; }
+    [OneOf(Types = new[] {typeof(string), typeof(string[])})]
+    public object Method { get; set; }
 
     /// <summary>
     ///     Gets or sets the URL.
