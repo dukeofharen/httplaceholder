@@ -5,7 +5,7 @@ import type { StubBasicAuthenticationModel } from "@/domain/stub/stub-basic-auth
 import type { StubConditionsScenarioModel } from "@/domain/stub/stub-conditions-scenario-model";
 
 export interface StubConditionsModel {
-  method?: string;
+  method?: string | string[];
   url?: StubUrlConditionModel;
   body?: any[];
   form?: StubFormModel[];

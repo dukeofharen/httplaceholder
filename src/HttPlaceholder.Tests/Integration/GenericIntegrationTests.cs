@@ -101,6 +101,10 @@ public class GenericIntegrationTests : IntegrationTestBase
         var hostSchema = stubConditionsDtoSchema.Properties["host"];
         Assert.AreEqual("string", hostSchema.OneOf[0].Type);
         Assert.AreEqual("StubConditionStringCheckingDto", hostSchema.OneOf[1].Title);
+
+        var methodSchema = stubConditionsDtoSchema.Properties["method"];
+        Assert.AreEqual("string", methodSchema.OneOf[0].Type);
+        Assert.AreEqual("String[]", methodSchema.OneOf[1].Title);
     }
 
     [TestMethod]

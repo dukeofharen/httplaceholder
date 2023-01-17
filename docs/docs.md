@@ -663,6 +663,19 @@ This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE et
     text: OK
 ```
 
+It is also possible to specify multiple HTTP methods. A request with any of these HTTP requests will then succeed.
+
+```yml
+- id: situation-01
+  conditions:
+    method:
+      - GET
+      - POST
+  response:
+    statusCode: 200
+    text: OK
+```
+
 **Correct request**
 - Method: GET
 - URL: http://localhost:5000/anyPath

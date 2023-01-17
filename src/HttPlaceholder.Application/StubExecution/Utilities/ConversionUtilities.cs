@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HttPlaceholder.Domain;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -33,7 +33,27 @@ public static class ConversionUtilities
                 return model;
             default:
                 throw new InvalidOperationException(
-                    $"Object of type '{input.GetType()}' not supported for serializing to '{typeof(StubConditionStringCheckingModel)}'.");
+                    $"Object of type '{input.GetType()}' not supported for serializing to '{typeof(T)}'.");
+        }
+    }
+
+    /// <summary>
+    ///     Converts the given input to an enumerable of type T.
+    /// </summary>
+    /// <param name="input">The input.</param>
+    /// <typeparam name="T">The type the input should be converted to.</typeparam>
+    /// <returns>The converted input.</returns>
+    public static IEnumerable<T> ConvertEnumerable<T>(object input)
+    {
+        switch (input)
+        {
+            case JArray jArray:
+                return jArray.ToObject<T[]>();
+            case IList<object> list:
+                return list.Select(i => (T)i);
+            default:
+                throw new InvalidOperationException(
+                    $"Object of type '{input.GetType()}' not supported for serializing to '{typeof(T)}'.");
         }
     }
 

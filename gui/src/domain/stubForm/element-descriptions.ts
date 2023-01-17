@@ -11,7 +11,7 @@ export const elementDescriptions = {
   disable:
     "By setting 'enabled' to false, the stub will not be used when determining which stub should be executed for a request.",
   httpMethod:
-    "This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.).",
+    "This condition checker can check the HTTP method (e.g. GET, POST, PUT, DELETE etc.). You can also provide an array of multiple HTTP methods; a request with any of these HTTP methods will then succeed.",
   urlPath:
     "The path condition is used to check a part of the URL path (so the part after http://... and before the query string). The condition can both check on substring and regular expressions.",
   queryString:

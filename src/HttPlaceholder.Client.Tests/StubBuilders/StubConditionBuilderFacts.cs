@@ -34,6 +34,36 @@ public class StubConditionBuilderFacts
     }
 
     [TestMethod]
+    public void WithHttpMethodsAsStringArray()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithHttpMethods("GET", "POST")
+            .Build();
+
+        // Assert
+        var methods = (string[])conditions.Method;
+        Assert.AreEqual(2, methods.Length);
+        Assert.AreEqual("GET", methods[0]);
+        Assert.AreEqual("POST", methods[1]);
+    }
+
+    [TestMethod]
+    public void WithHttpMethodsAsHttpMethodArray()
+    {
+        // Act
+        var conditions = StubConditionBuilder.Begin()
+            .WithHttpMethods(HttpMethod.Get, HttpMethod.Post)
+            .Build();
+
+        // Assert
+        var methods = (string[])conditions.Method;
+        Assert.AreEqual(2, methods.Length);
+        Assert.AreEqual("GET", methods[0]);
+        Assert.AreEqual("POST", methods[1]);
+    }
+
+    [TestMethod]
     public void WithPath()
     {
         // Act

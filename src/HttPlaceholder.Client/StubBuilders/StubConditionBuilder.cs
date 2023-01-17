@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using HttPlaceholder.Client.Dto.Stubs;
 
@@ -40,6 +41,28 @@ public sealed class StubConditionBuilder
     public StubConditionBuilder WithHttpMethod(HttpMethod method)
     {
         _conditions.Method = method.Method;
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets the HTTP method for the request definition.
+    /// </summary>
+    /// <param name="methods">The HTTP methods as string array (parameters).</param>
+    /// <returns>The current <see cref="StubConditionBuilder" />.</returns>
+    public StubConditionBuilder WithHttpMethods(params string[] methods)
+    {
+        _conditions.Method = methods;
+        return this;
+    }
+
+    /// <summary>
+    ///     Sets the HTTP method for the request definition.
+    /// </summary>
+    /// <param name="methods">The HTTP methods as <see cref="HttpMethod"/> array (parameters).</param>
+    /// <returns>The current <see cref="StubConditionBuilder" />.</returns>
+    public StubConditionBuilder WithHttpMethods(params HttpMethod[] methods)
+    {
+        _conditions.Method = methods.Select(m => m.Method).ToArray();
         return this;
     }
 

@@ -83,3 +83,15 @@
     text: 😻
     headers:
       Content-Type: text/plain; charset=utf8
+
+# You can also provide multiple methods, so your stub can react to any of the provided HTTP methods.
+- id: multiple-methods
+  conditions:
+    url:
+      path:
+        equals: /multiple-methods
+    method:
+      - GET
+      - POST
+  response:
+    text: OK GET or POST

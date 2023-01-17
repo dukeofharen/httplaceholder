@@ -4,6 +4,7 @@ import { ResponseImageType } from "@/domain/stub/enums/response-image-type";
 
 export const defaultValues = {
   description: "A description for the stub.",
+  methods: ["GET", "POST"],
   priority: 1,
   urlPath: "/path",
   fullPath: "/path?query=val1",
