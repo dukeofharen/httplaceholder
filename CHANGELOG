@@ -5,6 +5,7 @@
 - Updated request body variable parser to also support regular expressions to insert part of request body in the response body (https://github.com/dukeofharen/httplaceholder/pull/296).
 - An option was added to user the display URL variable parser with a regular expression, to parse only a part of the URL as part of your response (https://github.com/dukeofharen/httplaceholder/pull/297).
 - Updated the HTTP method condition checker so it is now possible to provide multiple HTTP methods if needed (https://github.com/dukeofharen/httplaceholder/issues/298).
+- Pressing "Cmd + S" now saves the stub form, instead of calling the browser save functionality (https://github.com/dukeofharen/httplaceholder/pull/300).
 
 # BREAKING CHANGES
 - If you use any of the pre-built binaries of HttPlaceholder, you won't notice anything with upgrading. If you use the .NET tool version of HttPlaceholder, you need to have [.NET 7](https://dotnet.microsoft.com/en-us/) installed from now on.
