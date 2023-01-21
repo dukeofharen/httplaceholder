@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using HttPlaceholder.Application.Infrastructure.AutoMapper;
-using HttPlaceholder.Infrastructure.AutoMapper;
+using HttPlaceholder.Web.Shared.Infrastructure.AutoMapper;
 
-namespace HttPlaceholder.Tests.Infrastructure;
+namespace HttPlaceholder.Web.Shared.Tests.Infrastructure;
 
 [TestClass]
 public class AutoMapperFacts

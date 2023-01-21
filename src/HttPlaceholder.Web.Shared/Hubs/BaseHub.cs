@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using HttPlaceholder.Application.Interfaces.Authentication;
+﻿using HttPlaceholder.Application.Interfaces.Authentication;
 using Microsoft.AspNetCore.SignalR;
 
-namespace HttPlaceholder.Hubs.Implementations;
+namespace HttPlaceholder.Web.Shared.Hubs;
 
 /// <summary>
 ///     An abstract class for SignalR hubs.

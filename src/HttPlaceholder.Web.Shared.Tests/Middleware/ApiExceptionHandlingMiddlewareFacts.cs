@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Middleware;
+using HttPlaceholder.Web.Shared.Middleware;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json.Linq;
 
-namespace HttPlaceholder.Tests.Middleware;
+namespace HttPlaceholder.Web.Shared.Tests.Middleware;
 
 [TestClass]
 public class ApiExceptionHandlingMiddlewareFacts

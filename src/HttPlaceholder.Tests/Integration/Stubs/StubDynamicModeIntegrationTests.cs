@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using HttPlaceholder.Dto.v1.Scenarios;
+using HttPlaceholder.Web.Shared.Dto.v1.Scenarios;
 
 namespace HttPlaceholder.Tests.Integration.Stubs;
 

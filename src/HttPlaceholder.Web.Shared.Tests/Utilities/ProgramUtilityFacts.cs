@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using HttPlaceholder.Application.Configuration;
+﻿using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Common;
-using HttPlaceholder.Utilities.Implementations;
+using HttPlaceholder.Web.Shared.Utilities.Implementations;
 
-namespace HttPlaceholder.Tests.Utilities;
+namespace HttPlaceholder.Web.Shared.Tests.Utilities;
 
 [TestClass]
 public class ProgramUtilityFacts

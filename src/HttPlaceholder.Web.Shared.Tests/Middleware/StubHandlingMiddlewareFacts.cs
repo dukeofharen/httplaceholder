@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
 using HttPlaceholder.Application.Interfaces.Resources;
 using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.Middleware;
+using HttPlaceholder.Web.Shared.Middleware;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Primitives;
 
-namespace HttPlaceholder.Tests.Middleware;
+namespace HttPlaceholder.Web.Shared.Tests.Middleware;
 
 [TestClass]
 public class StubHandlingMiddlewareFacts

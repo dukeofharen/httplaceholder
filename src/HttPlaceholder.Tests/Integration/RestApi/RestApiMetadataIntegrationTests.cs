@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Net.Http;
 using HttPlaceholder.Domain.Enums;
-using HttPlaceholder.Dto.v1.Metadata;
+using HttPlaceholder.Web.Shared.Dto.v1.Metadata;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;

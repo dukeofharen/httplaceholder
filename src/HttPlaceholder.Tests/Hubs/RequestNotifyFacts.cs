@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using AutoMapper;
-using HttPlaceholder.Dto.v1.Requests;
 using HttPlaceholder.Hubs.Implementations;
+using HttPlaceholder.Web.Shared.Dto.v1.Requests;
 using Microsoft.AspNetCore.SignalR;
 
 namespace HttPlaceholder.Tests.Hubs;

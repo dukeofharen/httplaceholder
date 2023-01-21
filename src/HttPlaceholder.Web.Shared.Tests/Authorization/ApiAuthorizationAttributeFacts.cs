@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Interfaces.Authentication;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Authorization;
+using HttPlaceholder.Web.Shared.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -13,7 +11,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.Tests.Authorization;
+namespace HttPlaceholder.Web.Shared.Tests.Authorization;
 
 [TestClass]
 public class ApiAuthorizationAttributeFacts

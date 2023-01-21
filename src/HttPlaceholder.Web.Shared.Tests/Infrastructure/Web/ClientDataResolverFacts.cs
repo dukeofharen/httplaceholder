@@ -1,8 +1,8 @@
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Infrastructure.Web;
+using HttPlaceholder.Web.Shared.Infrastructure.Web;
 using Microsoft.AspNetCore.Http;
 
-namespace HttPlaceholder.Tests.Infrastructure.Web;
+namespace HttPlaceholder.Web.Shared.Tests.Infrastructure.Web;
 
 [TestClass]
 public class ClientIpResolverFacts

@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using HttPlaceholder.Common;
-using HttPlaceholder.HostedServices;
+﻿using HttPlaceholder.Common;
+using HttPlaceholder.Web.Shared.HostedServices;
 using Microsoft.Extensions.Logging;
 
-namespace HttPlaceholder.Tests.HostedServices;
+namespace HttPlaceholder.Web.Shared.Tests.HostedServices;
 
 [TestClass]
 public class BackgroundServiceFacts

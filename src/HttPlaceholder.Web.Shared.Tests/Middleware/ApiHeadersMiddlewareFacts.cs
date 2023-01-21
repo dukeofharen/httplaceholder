@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Middleware;
+﻿using HttPlaceholder.Application.Interfaces.Http;
+using HttPlaceholder.Web.Shared.Middleware;
 using Microsoft.AspNetCore.Http;
 
-namespace HttPlaceholder.Tests.Middleware;
+namespace HttPlaceholder.Web.Shared.Tests.Middleware;
 
 [TestClass]
 public class ApiHeadersMiddlewareFacts

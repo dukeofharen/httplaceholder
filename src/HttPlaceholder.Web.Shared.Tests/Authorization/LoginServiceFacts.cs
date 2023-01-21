@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Authorization.Implementations;
+﻿using HttPlaceholder.Application.Configuration;
+using HttPlaceholder.Web.Shared.Authorization.Implementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 
-namespace HttPlaceholder.Tests.Authorization;
+namespace HttPlaceholder.Web.Shared.Tests.Authorization;
 
 [TestClass]
 public class LoginServiceFacts

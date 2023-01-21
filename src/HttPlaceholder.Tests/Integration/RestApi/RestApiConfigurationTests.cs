@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using HttPlaceholder.Dto.v1.Configuration;
+using HttPlaceholder.Web.Shared.Dto.v1.Configuration;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;

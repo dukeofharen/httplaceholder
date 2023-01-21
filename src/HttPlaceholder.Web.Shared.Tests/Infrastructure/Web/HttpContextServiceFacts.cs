@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Security.Claims;
 using HttPlaceholder.Application.Interfaces.Http;
-using HttPlaceholder.Infrastructure.Web;
+using HttPlaceholder.Web.Shared.Infrastructure.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Primitives;
 
-namespace HttPlaceholder.Tests.Infrastructure.Web;
+namespace HttPlaceholder.Web.Shared.Tests.Infrastructure.Web;
 
 [TestClass]
 public class HttpContextServiceFacts

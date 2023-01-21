@@ -1,7 +1,7 @@
 ﻿using HttPlaceholder.Application.Interfaces.Authentication;
-using HttPlaceholder.Hubs.Implementations;
+using HttPlaceholder.Web.Shared.Hubs;
 
-namespace HttPlaceholder.Tests.Hubs;
+namespace HttPlaceholder.Web.Shared.Tests.Hubs;
 
 [TestClass]
 public class BaseHubFacts
@@ -39,7 +39,7 @@ public class BaseHubFacts
         await hub.OnConnectedAsync();
     }
 
-    public class TestHub : BaseHub
+    private class TestHub : BaseHub
     {
         public TestHub(ILoginService loginService) : base(loginService)
         {

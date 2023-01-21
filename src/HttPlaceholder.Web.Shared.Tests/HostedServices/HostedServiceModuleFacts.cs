@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using HttPlaceholder.HostedServices;
+﻿using HttPlaceholder.Web.Shared.HostedServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace HttPlaceholder.Tests.HostedServices;
+namespace HttPlaceholder.Web.Shared.Tests.HostedServices;
 
 [TestClass]
 public class HostedServiceModuleFacts

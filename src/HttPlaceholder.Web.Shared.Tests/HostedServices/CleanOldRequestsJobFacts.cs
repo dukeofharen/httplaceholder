@@ -1,7 +1,7 @@
 ﻿using HttPlaceholder.Application.StubExecution;
-using HttPlaceholder.HostedServices;
+using HttPlaceholder.Web.Shared.HostedServices;
 
-namespace HttPlaceholder.Tests.HostedServices;
+namespace HttPlaceholder.Web.Shared.Tests.HostedServices;
 
 [TestClass]
 public class CleanOldRequestsJobFacts
