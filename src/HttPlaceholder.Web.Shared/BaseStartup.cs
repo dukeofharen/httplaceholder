@@ -44,7 +44,7 @@ public static class BaseStartup
                 o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 o.SerializerSettings.Converters.Add(new StringEnumConverter());
             })
-            .AddApplicationPart(Assembly.GetExecutingAssembly());
+            .AddApplicationPart(typeof(TStartup).Assembly);
         services.Configure<MvcOptions>(o =>
         {
             o.RespectBrowserAcceptHeader = true;
