@@ -5,9 +5,9 @@ using HttPlaceholder.Application.Tenants.Commands.DeleteStubsInTenant;
 using HttPlaceholder.Application.Tenants.Commands.UpdateStubsInTenant;
 using HttPlaceholder.Application.Tenants.Queries.GetStubsInTenant;
 using HttPlaceholder.Application.Tenants.Queries.GetTenantNames;
-using HttPlaceholder.Authorization;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Dto.v1.Stubs;
+using HttPlaceholder.Web.Shared.Authorization;
+using HttPlaceholder.Web.Shared.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

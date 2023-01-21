@@ -6,10 +6,10 @@ using HttPlaceholder.Application.Scenarios.Commands.DeleteScenario;
 using HttPlaceholder.Application.Scenarios.Commands.SetScenario;
 using HttPlaceholder.Application.Scenarios.Queries.GetAllScenarios;
 using HttPlaceholder.Application.Scenarios.Queries.GetScenario;
-using HttPlaceholder.Authorization;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain.Entities;
-using HttPlaceholder.Dto.v1.Scenarios;
+using HttPlaceholder.Web.Shared.Authorization;
+using HttPlaceholder.Web.Shared.Dto.v1.Scenarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

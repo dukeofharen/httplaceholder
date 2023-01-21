@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Users.Queries.GetUserData;
-using HttPlaceholder.Authorization;
-using HttPlaceholder.Dto.v1.Users;
+using HttPlaceholder.Web.Shared.Authorization;
+using HttPlaceholder.Web.Shared.Dto.v1.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

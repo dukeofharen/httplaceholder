@@ -1,15 +1,11 @@
-﻿using System.Reflection;
-using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Formatters;
+﻿using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Hubs;
-using HttPlaceholder.Utilities;
+using HttPlaceholder.Web.Shared;
+using HttPlaceholder.Web.Shared.HostedServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace HttPlaceholder;
 
@@ -51,14 +47,7 @@ public class Startup
     /// <param name="preloadStubs">Whether to preload the stubs or not.</param>
     /// <param name="settings">The HttPlaceholder settings.</param>
     public static void ConfigureStatic(IApplicationBuilder app, bool preloadStubs, SettingsModel settings) =>
-        app
-            .UseHttPlaceholder()
-            .UseCustomOpenApi()
-            .UseSwaggerUi3()
-            .UseGui(settings?.Gui?.EnableUserInterface == true)
-            .UsePhStatic()
-            .PreloadStubs(preloadStubs)
-            .UseRouting()
+        app.Configure(preloadStubs, settings)
             .UseEndpoints(options => options
                 .ConfigureSignalR()
                 .MapControllers());
@@ -68,28 +57,8 @@ public class Startup
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The configuration.</param>
-    public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration)
-    {
-        services
-            .AddMvc()
-            .AddNewtonsoftJson(o =>
-            {
-                o.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                o.SerializerSettings.Converters.Add(new StringEnumConverter());
-            })
-            .AddApplicationPart(Assembly.GetExecutingAssembly());
-        services.Configure<MvcOptions>(o =>
-        {
-            o.RespectBrowserAcceptHeader = true;
-            o.ReturnHttpNotAcceptable = true;
-            o
-                .AddYamlFormatting()
-                .AddPlainTextFormatting();
-        });
-        services
-            .AddHttPlaceholder(configuration)
-            .AddHttpContextAccessor()
-            .AddLogging()
-            .AddOpenApiDocument(c => c.Title = "HttPlaceholder API");
-    }
+    public static void ConfigureServicesStatic(IServiceCollection services, IConfiguration configuration) =>
+        services.ConfigureServices<Startup>(configuration)
+            .AddSignalRHubs()
+            .AddHostedServices(configuration);
 }

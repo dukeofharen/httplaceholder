@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HttPlaceholder.Application.Interfaces.Signalling;
 using HttPlaceholder.Domain.Entities;
-using HttPlaceholder.Dto.v1.Scenarios;
+using HttPlaceholder.Web.Shared.Dto.v1.Scenarios;
 using Microsoft.AspNetCore.SignalR;
 
 namespace HttPlaceholder.Hubs.Implementations;
