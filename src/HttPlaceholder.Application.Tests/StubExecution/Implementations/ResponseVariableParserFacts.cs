@@ -68,10 +68,9 @@ public class ResponseVariableParserFacts
         // Arrange
         const string input = @"Query var 1: ((query:value)), query var 2: ((query)), query var 3: ((query))
 ((request_body:'key2=([a-z0-9]*)')) ((request_body:key2=([a-z0-9]*) ))((request_body:key2=([a-z0-9]*) ))";
-        var expectedResults = new (string, string, string)[]
+        var expectedResults = new[]
         {
-            ("((query:value))", "query", "value"),
-            ("((query))", "query", string.Empty),
+            ("((query:value))", "query", "value"), ("((query))", "query", string.Empty),
             ("((query))", "query", string.Empty),
             ("((request_body:'key2=([a-z0-9]*)'))", "request_body", "key2=([a-z0-9]*)"),
             ("((request_body:key2=([a-z0-9]*) ))", "request_body", "key2=([a-z0-9]*)"),

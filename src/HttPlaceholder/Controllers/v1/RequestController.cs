@@ -8,9 +8,9 @@ using HttPlaceholder.Application.Requests.Queries.GetAllRequests;
 using HttPlaceholder.Application.Requests.Queries.GetRequest;
 using HttPlaceholder.Application.Requests.Queries.GetRequestsOverview;
 using HttPlaceholder.Application.Requests.Queries.GetResponse;
-using HttPlaceholder.Authorization;
-using HttPlaceholder.Dto.v1.Requests;
-using HttPlaceholder.Dto.v1.Stubs;
+using HttPlaceholder.Web.Shared.Authorization;
+using HttPlaceholder.Web.Shared.Dto.v1.Requests;
+using HttPlaceholder.Web.Shared.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

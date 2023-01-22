@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Net;
-using HttPlaceholder.Dto.v1.Requests;
+using HttPlaceholder.Web.Shared.Dto.v1.Requests;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;

@@ -29,22 +29,10 @@
         <None Include="../media/logo.png" Pack="true" Visible="false" PackagePath="" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.0" />
-        <PackageReference Include="ncrontab" Version="3.3.1" />
-        <PackageReference Include="NSwag.AspNetCore" Version="13.18.0" />
-        <PackageReference Include="Serilog" Version="2.12.0" />
-        <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
-        <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
-        <PackageReference Include="YamlDotNet" Version="12.0.2" />
+        
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
-        <ProjectReference Include="..\HttPlaceholder.Common\HttPlaceholder.Common.csproj" />
-        <ProjectReference Include="..\HttPlaceholder.Infrastructure\HttPlaceholder.Infrastructure.csproj" />
-        <ProjectReference Include="..\HttPlaceholder.Persistence\HttPlaceholder.Persistence.csproj" />
-        <ProjectReference Include="..\HttPlaceholder.Resources\HttPlaceholder.Resources.csproj" />
+        <ProjectReference Include="..\HttPlaceholder.Web.Shared\HttPlaceholder.Web.Shared.csproj" />
     </ItemGroup>
     <ItemGroup Condition="'$(Configuration)|$(Platform)'!='Tool|AnyCPU'">
         <Content Update="_config.json">
@@ -55,27 +43,11 @@
         <None Update="gui\**\*.*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <Content Include="ph-static\**\*.*">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
         <None Remove="gui\.gitkeep" />
     </ItemGroup>
     <ItemGroup>
         <None Update="key.pfx">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-    </ItemGroup>
-    <ItemGroup>
-        <EmbeddedResource Update="Resources\ManPage.resx">
-            <Generator>ResXFileCodeGenerator</Generator>
-            <LastGenOutput>ManPage.Designer.cs</LastGenOutput>
-        </EmbeddedResource>
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Update="Resources\ManPage.Designer.cs">
-            <DesignTime>True</DesignTime>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>ManPage.resx</DependentUpon>
-        </Compile>
     </ItemGroup>
 </Project>

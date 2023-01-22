@@ -4,7 +4,6 @@ using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Application.StubExecution.ResponseWriters;
 using HttPlaceholder.Common;
 using HttPlaceholder.TestUtilities.Options;
-using Microsoft.Extensions.Options;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 
@@ -81,7 +80,9 @@ public class FileResponseWriterFacts
             writer.WriteToResponseAsync(stub, response, CancellationToken.None));
 
         // Assert
-        Assert.AreEqual("Path 'C:\\tmp\\image.png' found, but can't be used because setting 'allowGlobalFileSearch' is turned off. Turn it on with caution. Use paths relative to the .yml stub files or the file storage location as specified in the configuration.", exception.Message);
+        Assert.AreEqual(
+            "Path 'C:\\tmp\\image.png' found, but can't be used because setting 'allowGlobalFileSearch' is turned off. Turn it on with caution. Use paths relative to the .yml stub files or the file storage location as specified in the configuration.",
+            exception.Message);
     }
 
     [DataTestMethod]
@@ -132,7 +133,8 @@ public class FileResponseWriterFacts
     [DataRow(false, "image.png", "image.png")]
     [DataRow(false, "../image.png", "image.png")]
     [DataRow(false, "../../image.png", "image.png")]
-    public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileNotFoundDirectly_ButFoundInStubFolder(bool textFile, string file, string actualFile)
+    public async Task FileResponseWriter_WriteToResponseAsync_HappyFlow_FileNotFoundDirectly_ButFoundInStubFolder(
+        bool textFile, string file, string actualFile)
     {
         // Arrange
         var stubRootPathResolverMock = _mocker.GetMock<IStubRootPathResolver>();

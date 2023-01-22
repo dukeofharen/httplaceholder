@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Text;
-using HttPlaceholder.Dto.v1.Scenarios;
+using HttPlaceholder.Web.Shared.Dto.v1.Scenarios;
 using Newtonsoft.Json;
 
 namespace HttPlaceholder.Tests.Integration.RestApi;

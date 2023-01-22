@@ -1,27 +1,24 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using HttPlaceholder.Resources;
+using HttPlaceholder.Web.Shared.Resources;
+using HttPlaceholder.Web.Shared.Utilities;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using static HttPlaceholder.Utilities.ProgramUtilities;
 
 namespace HttPlaceholder;
 
 [ExcludeFromCodeCoverage]
 internal static class Program
 {
-    private static readonly Stopwatch _startupWatch = new();
-
     public static int Main(string[] args)
     {
-        _startupWatch.Start();
-        ConfigureLogging(args);
-        HandleCommands(args);
+        ProgramUtilities.StartStartupTimer();
+        ProgramUtilities.ConfigureLogging(args);
+        ProgramUtilities.HandleCommands(args);
         try
         {
-            Console.WriteLine(ManPage.ExplanationHeader);
-            BuildWebHost(args).Run();
+            Console.WriteLine(StringResources.ExplanationHeader);
+            ProgramUtilities.BuildWebHost<Startup>(args).Run();
         }
         catch (Exception e)
         {
@@ -34,11 +31,5 @@ internal static class Program
         }
 
         return 0;
-    }
-
-    public static long GetStartupMillis()
-    {
-        _startupWatch.Stop();
-        return _startupWatch.ElapsedMilliseconds;
     }
 }

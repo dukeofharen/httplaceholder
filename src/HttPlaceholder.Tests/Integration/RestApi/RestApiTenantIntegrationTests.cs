@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using HttPlaceholder.Dto.v1.Stubs;
+using HttPlaceholder.Web.Shared.Dto.v1.Stubs;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 

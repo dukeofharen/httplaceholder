@@ -1,4 +1,5 @@
 ﻿using HttPlaceholder.Application.Interfaces.Authentication;
+using HttPlaceholder.Web.Shared.Hubs;
 
 namespace HttPlaceholder.Hubs.Implementations;
 

@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using HttPlaceholder.Application.Import.Commands.CreateCurlStub;
 using HttPlaceholder.Application.Import.Commands.CreateHarStub;
 using HttPlaceholder.Application.Import.Commands.CreateOpenApiStub;
-using HttPlaceholder.Authorization;
-using HttPlaceholder.Dto.v1.Stubs;
+using HttPlaceholder.Web.Shared.Authorization;
+using HttPlaceholder.Web.Shared.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

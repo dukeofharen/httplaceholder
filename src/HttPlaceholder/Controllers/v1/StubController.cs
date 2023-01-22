@@ -10,10 +10,10 @@ using HttPlaceholder.Application.Stubs.Commands.UpdateStubCommand;
 using HttPlaceholder.Application.Stubs.Queries.GetAllStubs;
 using HttPlaceholder.Application.Stubs.Queries.GetStub;
 using HttPlaceholder.Application.Stubs.Queries.GetStubsOverview;
-using HttPlaceholder.Authorization;
 using HttPlaceholder.Domain;
-using HttPlaceholder.Dto.v1.Requests;
-using HttPlaceholder.Dto.v1.Stubs;
+using HttPlaceholder.Web.Shared.Authorization;
+using HttPlaceholder.Web.Shared.Dto.v1.Requests;
+using HttPlaceholder.Web.Shared.Dto.v1.Stubs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

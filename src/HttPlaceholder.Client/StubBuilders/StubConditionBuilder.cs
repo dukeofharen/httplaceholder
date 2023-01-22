@@ -58,7 +58,7 @@ public sealed class StubConditionBuilder
     /// <summary>
     ///     Sets the HTTP method for the request definition.
     /// </summary>
-    /// <param name="methods">The HTTP methods as <see cref="HttpMethod"/> array (parameters).</param>
+    /// <param name="methods">The HTTP methods as <see cref="HttpMethod" /> array (parameters).</param>
     /// <returns>The current <see cref="StubConditionBuilder" />.</returns>
     public StubConditionBuilder WithHttpMethods(params HttpMethod[] methods)
     {

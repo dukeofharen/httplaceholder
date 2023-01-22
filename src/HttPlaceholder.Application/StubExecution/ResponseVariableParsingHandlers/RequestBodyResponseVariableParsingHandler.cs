@@ -51,7 +51,8 @@ internal class RequestBodyResponseVariableParsingHandler : BaseVariableParsingHa
         var result = string.Empty;
         if (match.Groups.Count != 3)
         {
-            _logger.LogWarning($"Number of regex matches for variable parser {GetType().Name} was {match.Groups.Count}, which should be 3.");
+            _logger.LogWarning(
+                $"Number of regex matches for variable parser {GetType().Name} was {match.Groups.Count}, which should be 3.");
         }
         else if (string.IsNullOrWhiteSpace(match.Groups[2].Value))
         {

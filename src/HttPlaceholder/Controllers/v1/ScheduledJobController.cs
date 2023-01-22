@@ -5,10 +5,10 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
-using HttPlaceholder.Authorization;
 using HttPlaceholder.Common.Utilities;
-using HttPlaceholder.Dto.v1.ScheduledJobs;
-using HttPlaceholder.HostedServices;
+using HttPlaceholder.Web.Shared.Authorization;
+using HttPlaceholder.Web.Shared.Dto.v1.ScheduledJobs;
+using HttPlaceholder.Web.Shared.HostedServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

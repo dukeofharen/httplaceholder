@@ -521,7 +521,10 @@ public class ReverseProxyResponseWriterFacts
     public void GetPath_PathIsString_ShouldReturnPath()
     {
         // Arrange
-        var stub = new StubModel {Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = "/path"}}};
+        var stub = new StubModel
+        {
+            Conditions = new StubConditionsModel {Url = new StubUrlConditionModel {Path = "/path"}}
+        };
 
         // Act
         var result = ReverseProxyResponseWriter.GetPath(stub);
