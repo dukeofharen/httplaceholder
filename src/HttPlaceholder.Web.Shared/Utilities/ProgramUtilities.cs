@@ -6,7 +6,6 @@ using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Configuration.Provider;
 using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Infrastructure.Configuration;
-using HttPlaceholder.Resources;
 using HttPlaceholder.Web.Shared.Resources;
 using HttPlaceholder.Web.Shared.Utilities.Implementations;
 using Microsoft.AspNetCore.Server.Kestrel.Core;

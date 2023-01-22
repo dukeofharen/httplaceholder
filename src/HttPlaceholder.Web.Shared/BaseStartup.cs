@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using HttPlaceholder.Application.Configuration;
+﻿using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Web.Shared.Formatters;
 using HttPlaceholder.Web.Shared.Utilities;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +34,8 @@ public static class BaseStartup
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <param name="configuration">The configuration.</param>
-    public static IServiceCollection ConfigureServices<TStartup>(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection ConfigureServices<TStartup>(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services
             .AddMvc()

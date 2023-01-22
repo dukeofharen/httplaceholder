@@ -384,10 +384,10 @@ public class StubModelValidatorFacts
         // Arrange
         var model = new StubModel
         {
-            Id = "stub", Response = new StubResponseModel
+            Id = "stub",
+            Response = new StubResponseModel
             {
-                Text = "Some response",
-                Headers = headers.Split(',').ToDictionary(h => h, h => "headerValue")
+                Text = "Some response", Headers = headers.Split(',').ToDictionary(h => h, h => "headerValue")
             }
         };
 

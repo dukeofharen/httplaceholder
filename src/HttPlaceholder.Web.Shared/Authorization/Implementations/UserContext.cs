@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
 using HttPlaceholder.Application.Interfaces.Authentication;
-using Microsoft.AspNetCore.Http;
 
 namespace HttPlaceholder.Web.Shared.Authorization.Implementations;
 

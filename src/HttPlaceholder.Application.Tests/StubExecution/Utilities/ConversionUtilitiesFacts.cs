@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using HttPlaceholder.Application.StubExecution.Utilities;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace HttPlaceholder.Application.Tests.StubExecution.Utilities;

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using HttPlaceholder.Resources;
 using HttPlaceholder.Web.Shared.Resources;
 using HttPlaceholder.Web.Shared.Utilities;
 using Microsoft.Extensions.Hosting;

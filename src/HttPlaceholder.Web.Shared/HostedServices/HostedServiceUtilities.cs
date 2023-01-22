@@ -7,7 +7,8 @@ public static class HostedServiceUtilities
 {
     /// <summary>
     ///     A method for registering a hosted service.
-    ///     It also registers an additional "transient" dependency on the service container so they can be used in the REST API.
+    ///     It also registers an additional "transient" dependency on the service container so they can be used in the REST
+    ///     API.
     /// </summary>
     /// <param name="services">The service collection.</param>
     /// <typeparam name="THostedService">The type of the hosted service.</typeparam>

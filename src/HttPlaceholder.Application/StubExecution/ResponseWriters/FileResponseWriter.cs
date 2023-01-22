@@ -19,9 +19,9 @@ namespace HttPlaceholder.Application.StubExecution.ResponseWriters;
 internal class FileResponseWriter : IResponseWriter, ISingletonService
 {
     private readonly IFileService _fileService;
-    private readonly IStubRootPathResolver _stubRootPathResolver;
-    private readonly IOptionsMonitor<SettingsModel> _options;
     private readonly ILogger<FileResponseWriter> _logger;
+    private readonly IOptionsMonitor<SettingsModel> _options;
+    private readonly IStubRootPathResolver _stubRootPathResolver;
 
     public FileResponseWriter(
         IFileService fileService,
