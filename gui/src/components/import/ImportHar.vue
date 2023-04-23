@@ -60,6 +60,14 @@
       />
     </div>
     <div class="mb-2">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Fill in a stub ID prefix here if desired... (every stub ID will be prefixed with this text)"
+        v-model="stubIdPrefix"
+      />
+    </div>
+    <div class="mb-2">
       <textarea class="form-control" v-model="input"></textarea>
     </div>
     <div class="mb-2">
@@ -113,10 +121,21 @@ export default defineComponent({
     const howToOpen = ref(false);
     const stubsYaml = ref("");
     const tenant = ref("");
+    const stubIdPrefix = ref("");
 
     // Computed
     const importButtonEnabled = computed(() => !!input.value);
     const stubsPreviewOpened = computed(() => !!stubsYaml.value);
+
+    // Functions
+    const buildInputModel = (doNotCreateStub: boolean): ImportInputModel => {
+      return {
+        doNotCreateStub: doNotCreateStub,
+        tenant: tenant.value,
+        input: input.value,
+        stubIdPrefix: stubIdPrefix.value,
+      };
+    };
 
     // Methods
     const insertExample = () => {
@@ -125,11 +144,7 @@ export default defineComponent({
     };
     const importHar = async () => {
       try {
-        const importInput: ImportInputModel = {
-          input: input.value,
-          doNotCreateStub: true,
-          tenant: tenant.value,
-        };
+        const importInput = buildInputModel(true);
         const result = await importStore.importHar(importInput);
 
         const filteredResult = result.map((r) => r.stub);
@@ -140,11 +155,7 @@ export default defineComponent({
     };
     const saveStubs = async () => {
       try {
-        const importInput: ImportInputModel = {
-          input: input.value,
-          doNotCreateStub: false,
-          tenant: tenant.value,
-        };
+        const importInput = buildInputModel(false);
         await importStore.importHar(importInput);
         success(resources.stubsAddedSuccessfully);
         await router.push({ name: "Stubs" });
@@ -196,6 +207,7 @@ export default defineComponent({
       onUploaded,
       tenant,
       stubsPreviewOpened,
+      stubIdPrefix,
     };
   },
 });

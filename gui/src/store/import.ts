@@ -6,6 +6,7 @@ export interface ImportInputModel {
   input: string;
   doNotCreateStub: boolean;
   tenant: string;
+  stubIdPrefix: string;
 }
 
 export const useImportStore = defineStore({
@@ -16,26 +17,32 @@ export const useImportStore = defineStore({
     async importCurlCommands(
       input: ImportInputModel
     ): Promise<FullStubModel[]> {
-      return post(
-        `/ph-api/import/curl?doNotCreateStub=${input.doNotCreateStub}&tenant=${input.tenant}`,
-        input.input
-      )
+      let url = `/ph-api/import/curl?doNotCreateStub=${input.doNotCreateStub}&tenant=${input.tenant}`;
+      if (input.stubIdPrefix) {
+        url += `&stubIdPrefix=${input.stubIdPrefix}`;
+      }
+
+      return post(url, input.input)
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },
     async importHar(input: ImportInputModel): Promise<FullStubModel[]> {
-      return post(
-        `/ph-api/import/har?doNotCreateStub=${input.doNotCreateStub}&tenant=${input.tenant}`,
-        input.input
-      )
+      let url = `/ph-api/import/har?doNotCreateStub=${input.doNotCreateStub}&tenant=${input.tenant}`;
+      if (input.stubIdPrefix) {
+        url += `&stubIdPrefix=${input.stubIdPrefix}`;
+      }
+
+      return post(url, input.input)
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },
     importOpenApi(input: ImportInputModel): Promise<FullStubModel[]> {
-      return post(
-        `/ph-api/import/openapi?doNotCreateStub=${input.doNotCreateStub}&tenant=${input.tenant}`,
-        input.input
-      )
+      let url = `/ph-api/import/openapi?doNotCreateStub=${input.doNotCreateStub}&tenant=${input.tenant}`;
+      if (input.stubIdPrefix) {
+        url += `&stubIdPrefix=${input.stubIdPrefix}`;
+      }
+
+      return post(url, input.input)
         .then((response) => Promise.resolve(response))
         .catch((error) => Promise.reject(error));
     },
