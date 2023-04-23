@@ -26,7 +26,7 @@ internal class OpenApiToStubConverter : IOpenApiToStubConverter, ISingletonServi
     }
 
     /// <inheritdoc />
-    public async Task<StubModel> ConvertToStubAsync(OpenApiServer server, OpenApiLine line, string tenant,
+    public async Task<StubModel> ConvertToStubAsync(OpenApiServer server, OpenApiLine line, string tenant, string stubIdPrefix,
         CancellationToken cancellationToken)
     {
         var request = new HttpRequestModel
@@ -50,7 +50,7 @@ internal class OpenApiToStubConverter : IOpenApiToStubConverter, ISingletonServi
             Conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(request, cancellationToken),
             Response = await _httpResponseToStubResponseService.ConvertToResponseAsync(response, cancellationToken)
         };
-        stub.EnsureStubId();
+        stub.EnsureStubId(stubIdPrefix);
         return stub;
     }
 }

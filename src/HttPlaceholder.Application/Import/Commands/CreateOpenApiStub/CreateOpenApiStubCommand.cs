@@ -7,33 +7,32 @@ namespace HttPlaceholder.Application.Import.Commands.CreateOpenApiStub;
 /// <summary>
 ///     A command for creating stubs based on OpenAPI definitions.
 /// </summary>
-public class CreateOpenApiStubCommand : IRequest<IEnumerable<FullStubModel>>
+public class CreateOpenApiStubCommand : IRequest<IEnumerable<FullStubModel>>, IImportStubsCommand
 {
     /// <summary>
     ///     Constructs a <see cref="CreateOpenApiStubCommand" /> instance.
     /// </summary>
-    /// <param name="openApi">The OpenAPI definition.</param>
+    /// <param name="input">The import input.</param>
     /// <param name="doNotCreateStub">Whether or not to create stubs.</param>
     /// <param name="tenant">The stub tenant.</param>
-    public CreateOpenApiStubCommand(string openApi, bool doNotCreateStub, string tenant)
+    /// <param name="stubIdPrefix">A prefix that is put before the stub ID.</param>
+    public CreateOpenApiStubCommand(string input, bool doNotCreateStub, string tenant, string stubIdPrefix)
     {
-        OpenApi = openApi;
+        Input = input;
         DoNotCreateStub = doNotCreateStub;
         Tenant = tenant;
+        StubIdPrefix = stubIdPrefix;
     }
 
-    /// <summary>
-    ///     Gets the OpenAPI definition.
-    /// </summary>
-    public string OpenApi { get; }
+    /// <inheritdoc />
+    public string Input { get; }
 
-    /// <summary>
-    ///     Gets whether to create stubs or not.
-    /// </summary>
+    /// <inheritdoc />
     public bool DoNotCreateStub { get; }
 
-    /// <summary>
-    ///     Gets the stub tenant.
-    /// </summary>
+    /// <inheritdoc />
     public string Tenant { get; }
+
+    /// <inheritdoc />
+    public string StubIdPrefix { get; }
 }

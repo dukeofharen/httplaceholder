@@ -20,9 +20,9 @@ public class CreateOpenApiStubCommandHandlerFacts
 
         const string tenant = "tenant1";
         var expectedResult = Array.Empty<FullStubModel>();
-        var request = new CreateOpenApiStubCommand("open api input", true, tenant);
+        var request = new CreateOpenApiStubCommand("open api input", true, tenant, "prefix");
         openApiStubGeneratorMock
-            .Setup(m => m.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, tenant,
+            .Setup(m => m.GenerateStubsAsync(request.Input, request.DoNotCreateStub, tenant, "prefix",
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);
 
@@ -41,12 +41,12 @@ public class CreateOpenApiStubCommandHandlerFacts
         var handler = _mocker.CreateInstance<CreateOpenApiStubCommandHandler>();
 
         var expectedResult = Array.Empty<FullStubModel>();
-        var request = new CreateOpenApiStubCommand("open api input", true, null);
+        var request = new CreateOpenApiStubCommand("open api input", true, null, "prefix");
         string capturedTenant = null;
         openApiStubGeneratorMock
-            .Setup(m => m.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, It.IsAny<string>(),
+            .Setup(m => m.GenerateStubsAsync(request.Input, request.DoNotCreateStub, It.IsAny<string>(), "prefix",
                 It.IsAny<CancellationToken>()))
-            .Callback<string, bool, string, CancellationToken>((_, _, tenant, _) => capturedTenant = tenant)
+            .Callback<string, bool, string, string, CancellationToken>((_, _, tenant, _, _) => capturedTenant = tenant)
             .ReturnsAsync(expectedResult);
 
         // Act

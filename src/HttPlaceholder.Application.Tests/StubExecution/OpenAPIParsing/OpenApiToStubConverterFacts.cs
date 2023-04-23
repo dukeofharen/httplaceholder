@@ -36,6 +36,7 @@ public class OpenApiToStubConverterFacts
         const string serverUrl = "http://localhost";
         var server = new OpenApiServer {Url = serverUrl};
         const string tenant = "tenant1";
+        const string prefix = "prefix";
 
         openApiDataFillerMock
             .Setup(m => m.BuildServerUrl(server))
@@ -86,7 +87,7 @@ public class OpenApiToStubConverterFacts
             .ReturnsAsync(stubResponse);
 
         // Act
-        var result = await converter.ConvertToStubAsync(server, line, tenant, CancellationToken.None);
+        var result = await converter.ConvertToStubAsync(server, line, tenant, prefix, CancellationToken.None);
 
         // Assert
         Assert.IsNotNull(result);
@@ -94,7 +95,7 @@ public class OpenApiToStubConverterFacts
         Assert.AreEqual(stubResponse, result.Response);
         Assert.AreEqual(tenant, result.Tenant);
         Assert.AreEqual("API to get users", result.Description);
-        Assert.AreEqual("generated-10beced6f421e77a254aec44c1e51d95", result.Id);
+        Assert.AreEqual("prefixgenerated-10beced6f421e77a254aec44c1e51d95", result.Id);
 
         Assert.IsNotNull(capturedRequest);
         Assert.AreEqual(requestBody, capturedRequest.Body);

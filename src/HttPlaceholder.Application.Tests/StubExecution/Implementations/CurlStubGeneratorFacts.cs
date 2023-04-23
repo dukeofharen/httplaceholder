@@ -23,8 +23,9 @@ public class CurlStubGeneratorFacts
         var generator = _mocker.CreateInstance<CurlStubGenerator>();
 
         const string input = "curl commands";
-        const string expectedStubId1 = "generated-9be66c6da831096bc33dd2a341ba75bc";
-        const string expectedStubId2 = "generated-00d626b467a81f70e505aad67f9bb59c";
+        const string prefix = "prefix";
+        const string expectedStubId1 = "prefixgenerated-9be66c6da831096bc33dd2a341ba75bc";
+        const string expectedStubId2 = "prefixgenerated-00d626b467a81f70e505aad67f9bb59c";
 
         var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
         curlToHttpRequestMapperMock
@@ -54,7 +55,7 @@ public class CurlStubGeneratorFacts
             .ReturnsAsync(fullStub2);
 
         // Act
-        var result = (await generator.GenerateCurlStubsAsync(input, false, string.Empty, CancellationToken.None))
+        var result = (await generator.GenerateStubsAsync(input, false, string.Empty, prefix, CancellationToken.None))
             .ToArray();
 
         // Assert
@@ -75,8 +76,9 @@ public class CurlStubGeneratorFacts
 
         const string input = "curl commands";
         const string tenant = "tenant1";
-        const string expectedStubId1 = "generated-170e262f39dde6918c05b02cf018cbff";
-        const string expectedStubId2 = "generated-349817420719656356dec724404e0eda";
+        const string prefix = "prefix";
+        const string expectedStubId1 = "prefixgenerated-170e262f39dde6918c05b02cf018cbff";
+        const string expectedStubId2 = "prefixgenerated-349817420719656356dec724404e0eda";
 
         var requests = new[] {new HttpRequestModel(), new HttpRequestModel()};
         curlToHttpRequestMapperMock
@@ -100,7 +102,7 @@ public class CurlStubGeneratorFacts
             .ReturnsAsync(conditions2);
 
         // Act
-        var result = (await generator.GenerateCurlStubsAsync(input, true, tenant, CancellationToken.None)).ToArray();
+        var result = (await generator.GenerateStubsAsync(input, true, tenant, prefix, CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);
