@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Net.Http;
+using HttPlaceholder.Client.Dto.Import;
 using HttPlaceholder.Client.Exceptions;
 using HttPlaceholder.Client.Implementations;
 using RichardSzalay.MockHttp;
@@ -67,12 +68,13 @@ public class CreateCurlStubsFacts : BaseClientTest
             .When(HttpMethod.Post, $"{BaseUrl}ph-api/import/curl")
             .WithQueryString("doNotCreateStub", "False")
             .WithQueryString("tenant", "tenant1")
+            .WithQueryString("stubIdPrefix", "prefix-")
             .Respond(HttpStatusCode.BadRequest, "text/plain", "Error occurred!")));
 
         // Act
         var exception =
             await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                client.CreateCurlStubsAsync(commands, false, "tenant1"));
+                client.CreateCurlStubsAsync(new ImportStubsModel(commands){DoNotCreateStub = false, Tenant = "tenant1", StubIdPrefix = "prefix-"}));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -90,11 +92,12 @@ public class CreateCurlStubsFacts : BaseClientTest
             .When(HttpMethod.Post, $"{BaseUrl}ph-api/import/curl")
             .WithQueryString("doNotCreateStub", doNotCreateStub.ToString())
             .WithQueryString("tenant", "tenant1")
+            .WithQueryString("stubIdPrefix", "prefix-")
             .WithContent(commands)
             .Respond("application/json", CreateCurlStubsResult)));
 
         // Act
-        var result = (await client.CreateCurlStubsAsync(commands, doNotCreateStub, "tenant1")).ToArray();
+        var result = (await client.CreateCurlStubsAsync(new ImportStubsModel(commands){DoNotCreateStub = doNotCreateStub, Tenant = "tenant1", StubIdPrefix = "prefix-"})).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);

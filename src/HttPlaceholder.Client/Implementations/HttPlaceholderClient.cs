@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Configuration;
 using HttPlaceholder.Client.Dto.Enums;
+using HttPlaceholder.Client.Dto.Import;
 using HttPlaceholder.Client.Dto.Metadata;
 using HttPlaceholder.Client.Dto.Requests;
 using HttPlaceholder.Client.Dto.Scenarios;
@@ -493,12 +494,12 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(string input, bool doNotCreateStub,
-        string tenant = "", CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<FullStubDto>> CreateCurlStubsAsync(ImportStubsModel model,
+        CancellationToken cancellationToken = default)
     {
         using var response = await HttpClient.PostAsync(
-            $"/ph-api/import/curl?doNotCreateStub={doNotCreateStub}&tenant={tenant}",
-            new StringContent(input,
+            PrependImportQueryString("/ph-api/import/curl", model),
+            new StringContent(model.Input,
                 Encoding.UTF8,
                 TextContentType), cancellationToken);
         var content = await response.Content.ReadAsStringAsync();
@@ -511,12 +512,12 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(string input, bool doNotCreateStub,
-        string tenant = "", CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<FullStubDto>> CreateHarStubsAsync(ImportStubsModel model,
+        CancellationToken cancellationToken = default)
     {
         using var response = await HttpClient.PostAsync(
-            $"/ph-api/import/har?doNotCreateStub={doNotCreateStub}&tenant={tenant}",
-            new StringContent(input,
+            PrependImportQueryString("/ph-api/import/har", model),
+            new StringContent(model.Input,
                 Encoding.UTF8,
                 TextContentType), cancellationToken);
         var content = await response.Content.ReadAsStringAsync();
@@ -529,12 +530,12 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(string input, bool doNotCreateStub,
-        string tenant = "", CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<FullStubDto>> CreateOpenApiStubsAsync(ImportStubsModel model,
+        CancellationToken cancellationToken = default)
     {
         using var response = await HttpClient.PostAsync(
-            $"/ph-api/import/openapi?doNotCreateStub={doNotCreateStub}&tenant={tenant}",
-            new StringContent(input,
+            PrependImportQueryString("/ph-api/import/openapi", model),
+            new StringContent(model.Input,
                 Encoding.UTF8,
                 TextContentType), cancellationToken);
         var content = await response.Content.ReadAsStringAsync();
@@ -544,6 +545,23 @@ public class HttPlaceholderClient : IHttPlaceholderClient
         }
 
         return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
+    }
+
+    internal static string PrependImportQueryString(string url, ImportStubsModel model)
+    {
+        var builder = new StringBuilder(url);
+        builder.Append($"?doNotCreateStub={model.DoNotCreateStub}");
+        if (!string.IsNullOrWhiteSpace(model.Tenant))
+        {
+            builder.Append($"&tenant={model.Tenant}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(model.StubIdPrefix))
+        {
+            builder.Append($"&stubIdPrefix={model.StubIdPrefix}");
+        }
+
+        return builder.ToString();
     }
 
     /// <inheritdoc />
