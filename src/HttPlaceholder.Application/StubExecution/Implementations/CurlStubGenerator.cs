@@ -28,10 +28,7 @@ internal class CurlStubGenerator : ICurlStubGenerator, ISingletonService
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateCurlStubsAsync(
-        string input,
-        bool doNotCreateStub,
-        string tenant,
+    public async Task<IEnumerable<FullStubModel>> GenerateStubsAsync(string input, bool doNotCreateStub, string tenant, string stubIdPrefix,
         CancellationToken cancellationToken)
     {
         _logger.LogDebug($"Creating stubs based on cURL command {input}.");
@@ -49,7 +46,7 @@ internal class CurlStubGenerator : ICurlStubGenerator, ISingletonService
             };
 
             // Generate an ID based on the created stub.
-            stub.EnsureStubId();
+            stub.EnsureStubId(stubIdPrefix);
             results.Add(await CreateStub(doNotCreateStub, stub, cancellationToken));
         }
 

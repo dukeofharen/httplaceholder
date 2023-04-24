@@ -23,7 +23,7 @@ public class RestApiImportOpenApiPetStoreTests : RestApiIntegrationTestBase
         var content = await File.ReadAllTextAsync("Resources/openapi/3.0/petstore.yaml");
 
         // Post OpenAPI string to API.
-        var url = $"{BaseAddress}ph-api/import/openapi?doNotCreateStub=false&tenant=tenant1";
+        var url = $"{BaseAddress}ph-api/import/openapi?doNotCreateStub=false&tenant=tenant1&stubIdPrefix=prefix-";
         var apiRequest = new HttpRequestMessage
         {
             RequestUri = new Uri(url),
@@ -40,7 +40,7 @@ public class RestApiImportOpenApiPetStoreTests : RestApiIntegrationTestBase
         Assert.AreEqual(6, stubs.Length);
 
         var stub = stubs[0];
-        Assert.IsTrue(stub.Id.StartsWith("generated-"));
+        Assert.IsTrue(stub.Id.StartsWith("prefix-generated-"));
         Assert.AreEqual("List all pets", stub.Description);
 
         Assert.AreEqual("GET", stub.Conditions.Method);

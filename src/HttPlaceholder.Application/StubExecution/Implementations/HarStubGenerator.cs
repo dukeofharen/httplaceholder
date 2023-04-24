@@ -32,8 +32,8 @@ internal class HarStubGenerator : IHarStubGenerator, ISingletonService
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateHarStubsAsync(string input, bool doNotCreateStub,
-        string tenant, CancellationToken cancellationToken)
+    public async Task<IEnumerable<FullStubModel>> GenerateStubsAsync(string input, bool doNotCreateStub, string tenant, string stubIdPrefix,
+        CancellationToken cancellationToken)
     {
         try
         {
@@ -41,7 +41,7 @@ internal class HarStubGenerator : IHarStubGenerator, ISingletonService
             ValidateHar(har);
             var stubs = await Task.WhenAll(har.Log.Entries
                 .Select(e => (req: MapRequest(e), res: MapResponse(e)))
-                .Select(t => MapStub(t.req, t.res, tenant, cancellationToken)));
+                .Select(t => MapStub(t.req, t.res, tenant, stubIdPrefix, cancellationToken)));
             var result = new List<FullStubModel>();
             foreach (var stub in stubs)
             {
@@ -89,7 +89,7 @@ internal class HarStubGenerator : IHarStubGenerator, ISingletonService
             .ToDictionary(h => h.Name, h => h.Value)
     };
 
-    private async Task<StubModel> MapStub(HttpRequestModel req, HttpResponseModel res, string tenant,
+    private async Task<StubModel> MapStub(HttpRequestModel req, HttpResponseModel res, string tenant, string stubIdPrefix,
         CancellationToken cancellationToken)
     {
         var conditions = await _httpRequestToConditionsService.ConvertToConditionsAsync(req, cancellationToken);
@@ -101,7 +101,7 @@ internal class HarStubGenerator : IHarStubGenerator, ISingletonService
             Conditions = conditions,
             Response = response
         };
-        stub.EnsureStubId();
+        stub.EnsureStubId(stubIdPrefix);
         return stub;
     }
 

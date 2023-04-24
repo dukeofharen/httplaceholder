@@ -6,9 +6,11 @@
 - An option was added to user the display URL variable parser with a regular expression, to parse only a part of the URL as part of your response (https://github.com/dukeofharen/httplaceholder/pull/297).
 - Updated the HTTP method condition checker so it is now possible to provide multiple HTTP methods if needed (https://github.com/dukeofharen/httplaceholder/issues/298).
 - Pressing "Cmd + S" now saves the stub form, instead of calling the browser save functionality (https://github.com/dukeofharen/httplaceholder/pull/300).
+- It is now possible, when importing a stub through the UI or the API, to also provide a stub ID prefix. All stubs imported in this batch will have this ID prefixed with the string you've provided (https://github.com/dukeofharen/httplaceholder/pull/302).
 
 # BREAKING CHANGES
 - If you use any of the pre-built binaries of HttPlaceholder, you won't notice anything with upgrading. If you use the .NET tool version of HttPlaceholder, you need to have [.NET 7](https://dotnet.microsoft.com/en-us/) installed from now on.
+- The interface of the import methods (`CreateCurlStubsAsync`, `CreateHarStubsAsync` and `CreateOpenApiStubsAsync`) changed. Instead of providing the parameters separately, you now need to pass a model. Updating the client will break the current calls to this method.
 
 [2022.11.20]
 - Updated loading of stubs from .yml files. An 'id' field should now ALWAYS be set, whereas it was automatically generated beforehand if it was not set (which caused some non stub files to get parsed as stub with weird behavior) (https://github.com/dukeofharen/httplaceholder/pull/284).

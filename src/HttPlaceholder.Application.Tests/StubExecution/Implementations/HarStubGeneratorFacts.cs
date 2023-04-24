@@ -25,7 +25,7 @@ public class HarStubGeneratorFacts
 
         // Act
         var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() =>
-            generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
+            generator.GenerateStubsAsync(input, false, null, null, CancellationToken.None));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("The HAR was invalid."));
@@ -40,7 +40,7 @@ public class HarStubGeneratorFacts
 
         // Act
         var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() =>
-            generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
+            generator.GenerateStubsAsync(input, false, null, null, CancellationToken.None));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("har.log is not set."));
@@ -55,7 +55,7 @@ public class HarStubGeneratorFacts
 
         // Act
         var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() =>
-            generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
+            generator.GenerateStubsAsync(input, false, null, null, CancellationToken.None));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("No entries set in HAR."));
@@ -70,7 +70,7 @@ public class HarStubGeneratorFacts
 
         // Act
         var exception = await Assert.ThrowsExceptionAsync<ValidationException>(() =>
-            generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None));
+            generator.GenerateStubsAsync(input, false, null, null, CancellationToken.None));
 
         // Assert
         Assert.IsTrue(exception.Message.Contains("No entries set in HAR."));
@@ -100,7 +100,7 @@ public class HarStubGeneratorFacts
             .ReturnsAsync(new StubResponseModel());
 
         // Act
-        var result = (await generator.GenerateHarStubsAsync(input, false, null, CancellationToken.None)).ToArray();
+        var result = (await generator.GenerateStubsAsync(input, false, null, "prefix", CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(3, result.Length);
@@ -183,7 +183,7 @@ public class HarStubGeneratorFacts
         const string tenant = "tenant1";
 
         // Act
-        var result = (await generator.GenerateHarStubsAsync(input, true, tenant, CancellationToken.None)).ToArray();
+        var result = (await generator.GenerateStubsAsync(input, true, tenant, "prefix", CancellationToken.None)).ToArray();
 
         // Assert
         Assert.AreEqual(3, result.Length);
@@ -193,8 +193,8 @@ public class HarStubGeneratorFacts
         stubContextMock.Verify(m => m.DeleteStubAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never);
         stubContextMock.Verify(m => m.AddStubAsync(It.IsAny<StubModel>(), It.IsAny<CancellationToken>()), Times.Never);
 
-        Assert.AreEqual("generated-eb1b9a461a7efe703bcd5d61c3b4e7f8", result[0].Stub.Id);
-        Assert.AreEqual("generated-eb1b9a461a7efe703bcd5d61c3b4e7f8", result[1].Stub.Id);
-        Assert.AreEqual("generated-eb1b9a461a7efe703bcd5d61c3b4e7f8", result[2].Stub.Id);
+        Assert.AreEqual("prefixgenerated-eb1b9a461a7efe703bcd5d61c3b4e7f8", result[0].Stub.Id);
+        Assert.AreEqual("prefixgenerated-eb1b9a461a7efe703bcd5d61c3b4e7f8", result[1].Stub.Id);
+        Assert.AreEqual("prefixgenerated-eb1b9a461a7efe703bcd5d61c3b4e7f8", result[2].Stub.Id);
     }
 }

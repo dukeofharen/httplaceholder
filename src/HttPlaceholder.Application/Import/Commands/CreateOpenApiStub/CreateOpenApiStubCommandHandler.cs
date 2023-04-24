@@ -31,7 +31,7 @@ public class CreateOpenApiStubCommandHandler : IRequestHandler<CreateOpenApiStub
         var tenant = string.IsNullOrWhiteSpace(request.Tenant)
             ? $"openapi-import-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}"
             : request.Tenant;
-        return await _openApiStubGenerator.GenerateOpenApiStubsAsync(request.OpenApi, request.DoNotCreateStub, tenant,
+        return await _openApiStubGenerator.GenerateStubsAsync(request.Input, request.DoNotCreateStub, tenant, request.StubIdPrefix,
             cancellationToken);
     }
 }

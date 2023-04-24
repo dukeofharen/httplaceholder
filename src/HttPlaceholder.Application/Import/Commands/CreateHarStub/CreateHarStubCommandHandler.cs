@@ -31,7 +31,7 @@ public class CreateHarStubCommandHandler : IRequestHandler<CreateHarStubCommand,
         var tenant = string.IsNullOrWhiteSpace(request.Tenant)
             ? $"har-import-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}"
             : request.Tenant;
-        return await _harStubGenerator.GenerateHarStubsAsync(request.Har, request.DoNotCreateStub, tenant,
+        return await _harStubGenerator.GenerateStubsAsync(request.Input, request.DoNotCreateStub, tenant, request.StubIdPrefix,
             cancellationToken);
     }
 }

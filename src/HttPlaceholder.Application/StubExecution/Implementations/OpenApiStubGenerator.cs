@@ -32,8 +32,8 @@ internal class OpenApiStubGenerator : IOpenApiStubGenerator, ISingletonService
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<FullStubModel>> GenerateOpenApiStubsAsync(string input, bool doNotCreateStub,
-        string tenant, CancellationToken cancellationToken)
+    public async Task<IEnumerable<FullStubModel>> GenerateStubsAsync(string input, bool doNotCreateStub, string tenant, string stubIdPrefix,
+        CancellationToken cancellationToken)
     {
         try
         {
@@ -41,7 +41,7 @@ internal class OpenApiStubGenerator : IOpenApiStubGenerator, ISingletonService
             var openApiResult = _openApiParser.ParseOpenApiDefinition(input);
             foreach (var line in openApiResult.Lines)
             {
-                stubs.Add(await CreateStub(doNotCreateStub, openApiResult.Server, line, tenant, cancellationToken));
+                stubs.Add(await CreateStub(doNotCreateStub, openApiResult.Server, line, tenant, stubIdPrefix, cancellationToken));
             }
 
             return stubs;
@@ -54,9 +54,9 @@ internal class OpenApiStubGenerator : IOpenApiStubGenerator, ISingletonService
     }
 
     private async Task<FullStubModel> CreateStub(bool doNotCreateStub, OpenApiServer server, OpenApiLine line,
-        string tenant, CancellationToken cancellationToken)
+        string tenant, string stubIdPrefix, CancellationToken cancellationToken)
     {
-        var stub = await _openApiToStubConverter.ConvertToStubAsync(server, line, tenant, cancellationToken);
+        var stub = await _openApiToStubConverter.ConvertToStubAsync(server, line, tenant, stubIdPrefix, cancellationToken);
         if (doNotCreateStub)
         {
             return new FullStubModel {Stub = stub, Metadata = new StubMetadataModel()};

@@ -16,10 +16,10 @@ public class CreateHarStubCommandHandlerFacts
         var handler = _mocker.CreateInstance<CreateHarStubCommandHandler>();
 
         const string tenant = "tenant1";
-        var command = new CreateHarStubCommand("har contents", true, tenant);
+        var command = new CreateHarStubCommand("har contents", true, tenant, "prefix");
         var expectedResult = Array.Empty<FullStubModel>();
         generatorMock
-            .Setup(m => m.GenerateHarStubsAsync(command.Har, command.DoNotCreateStub, tenant,
+            .Setup(m => m.GenerateStubsAsync(command.Input, command.DoNotCreateStub, tenant, "prefix",
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);
 
@@ -37,13 +37,13 @@ public class CreateHarStubCommandHandlerFacts
         var generatorMock = _mocker.GetMock<IHarStubGenerator>();
         var handler = _mocker.CreateInstance<CreateHarStubCommandHandler>();
 
-        var command = new CreateHarStubCommand("har contents", true, null);
+        var command = new CreateHarStubCommand("har contents", true, null, "prefix");
         var expectedResult = Array.Empty<FullStubModel>();
         string capturedTenant = null;
         generatorMock
-            .Setup(m => m.GenerateHarStubsAsync(command.Har, command.DoNotCreateStub, It.IsAny<string>(),
+            .Setup(m => m.GenerateStubsAsync(command.Input, command.DoNotCreateStub, It.IsAny<string>(), "prefix",
                 It.IsAny<CancellationToken>()))
-            .Callback<string, bool, string, CancellationToken>((_, _, tenant, _) => capturedTenant = tenant)
+            .Callback<string, bool, string, string, CancellationToken>((_, _, tenant, _, _) => capturedTenant = tenant)
             .ReturnsAsync(expectedResult);
 
         // Act

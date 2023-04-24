@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using HttPlaceholder.Client.Dto.Configuration;
 using HttPlaceholder.Client.Dto.Enums;
+using HttPlaceholder.Client.Dto.Import;
 using HttPlaceholder.Client.Dto.Scenarios;
 using HttPlaceholder.Client.Dto.Stubs;
 using HttPlaceholder.Client.StubBuilders;
@@ -174,15 +175,15 @@ curl 'https://site.com/_nuxt/1d6c3a9.js' \
   -H 'accept-language: en-US,en;q=0.9,nl;q=0.8' \
   -H 'cookie: Consent=eyJhbmFseXRpY2FsIjpmYWxzZX0=' \
   --compressed";
-            var curlCommandResult = await client.CreateCurlStubsAsync(commands, false);
+            var curlCommandResult = await client.CreateCurlStubsAsync(new ImportStubsModel(commands));
 
             // Create stubs based on HTTP archive (HAR).
             var har = await File.ReadAllTextAsync("har.json");
-            var harResult = await client.CreateHarStubsAsync(har, false);
+            var harResult = await client.CreateHarStubsAsync(new ImportStubsModel(har));
 
             // Create stubs based on OpenAPI definition.
             var openapi = await File.ReadAllTextAsync("petstore.yaml");
-            var openApiResult = await client.CreateOpenApiStubsAsync(openapi, false);
+            var openApiResult = await client.CreateOpenApiStubsAsync(new ImportStubsModel(openapi));
 
             // Execute a scheduled job.
             var scheduledJobResult = await client.ExecuteScheduledJobAsync("CleanOldRequestsJob");

@@ -19,10 +19,10 @@ public class CreateCurlStubCommandHandlerFacts
         var handler = _mocker.CreateInstance<CreateCurlStubCommandHandler>();
 
         const string tenant = "tenant1";
-        var request = new CreateCurlStubCommand("curl bladibla", true, tenant);
+        var request = new CreateCurlStubCommand("curl bladibla", true, tenant, "prefix");
         var expectedResult = new[] {new FullStubModel()};
         curlStubGeneratorMock
-            .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, tenant,
+            .Setup(m => m.GenerateStubsAsync(request.Input, request.DoNotCreateStub, tenant, "prefix",
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(expectedResult);
 
@@ -40,13 +40,13 @@ public class CreateCurlStubCommandHandlerFacts
         var curlStubGeneratorMock = _mocker.GetMock<ICurlStubGenerator>();
         var handler = _mocker.CreateInstance<CreateCurlStubCommandHandler>();
 
-        var request = new CreateCurlStubCommand("curl bladibla", true, null);
+        var request = new CreateCurlStubCommand("curl bladibla", true, null, "prefix");
         var expectedResult = new[] {new FullStubModel()};
         string capturedTenant = null;
         curlStubGeneratorMock
-            .Setup(m => m.GenerateCurlStubsAsync(request.CurlCommand, request.DoNotCreateStub, It.IsAny<string>(),
+            .Setup(m => m.GenerateStubsAsync(request.Input, request.DoNotCreateStub, It.IsAny<string>(), "prefix",
                 It.IsAny<CancellationToken>()))
-            .Callback<string, bool, string, CancellationToken>((_, _, tenant, _) => capturedTenant = tenant)
+            .Callback<string, bool, string, string, CancellationToken>((_, _, tenant, _, _) => capturedTenant = tenant)
             .ReturnsAsync(expectedResult);
 
         // Act

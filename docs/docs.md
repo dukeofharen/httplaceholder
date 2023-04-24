@@ -2644,6 +2644,8 @@ On this page, you can create new stubs based on cURL commands. You can, for exam
 
 You can optionally fill in a tenant. All stubs that are created, will be created under this tenant. This is so you can easily see which stubs were imported together. If you do not provide a tenant, a tenant name will be automatically generated.
 
+You can also fill in a stub ID prefix. This is optional. If you fill it in, all stub IDs in the same batch will be prefixed with this string.
+
 ![](img/ui/stub_curl_form.png)
 _On this form, you can import one or multiple cURL commands. You can also upload a file with the cURL commands in it._
 
@@ -2682,6 +2684,8 @@ On this page, you can import an HTTP archive (or HAR for short) to create stubs 
 
 You can optionally fill in a tenant. All stubs that are created, will be created under this tenant. This is so you can easily see which stubs were imported together. If you do not provide a tenant, a tenant name will be automatically generated.
 
+You can also fill in a stub ID prefix. This is optional. If you fill it in, all stub IDs in the same batch will be prefixed with this string.
+
 ![](img/ui/stub_har_form.png)
 _On this form, you can import a HAR file by pasting the contents of the HAR. You can also upload a HAR file._
 
@@ -2714,6 +2718,8 @@ On this page, you can import an [OpenAPI](https://www.openapis.org/) definition.
 You can find some OpenAPI examples here: <https://github.com/OAI/OpenAPI-Specification/tree/main/examples>
 
 You can optionally fill in a tenant. All stubs that are created, will be created under this tenant. This is so you can easily see which stubs were imported together. If you do not provide a tenant, a tenant name will be automatically generated.
+
+You can also fill in a stub ID prefix. This is optional. If you fill it in, all stub IDs in the same batch will be prefixed with this string.
 
 ![](img/ui/stub_openapi_form.png)
 _On this form, you can import an OpenAPI file by pasting the contents of the HAR. You can also upload an OpenAPI file._
