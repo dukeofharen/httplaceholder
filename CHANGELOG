@@ -1,4 +1,4 @@
-[vnext]
+[2023.4.25]
 - Upgraded to .NET 7 (https://github.com/dukeofharen/httplaceholder/pull/293).
 - Added "show more" button to request body for when the request body is very long (https://github.com/dukeofharen/httplaceholder/pull/294).
 - Added text file response writer (https://github.com/dukeofharen/httplaceholder/pull/295).
