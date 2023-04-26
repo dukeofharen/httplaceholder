@@ -361,3 +361,4 @@ dist/
 .sonarqube
 !**/sonar-scanner-*/bin/
 version.txt
+.build/
