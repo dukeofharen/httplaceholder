@@ -18,55 +18,55 @@ chmod -R +x "$BUILDSCRIPTS_FOLDER"
 
 echo "Building HttPlaceholder"
 
-## Ensure .build folder
-#if [ ! -d "$BUILD_METADATA_PATH" ]; then
-#  echo "Creating directory $BUILD_METADATA_PATH"
-#  mkdir "$BUILD_METADATA_PATH"  
-#fi
-#
-## Ensure dist folder
-#if [ -d "$DIST_PATH" ]; then
-#  echo "Deleting directory $DIST_PATH"
-#  rm -rf "$DIST_PATH"  
-#fi
-#
-#echo "Creating directory $DIST_PATH"
-#mkdir "$DIST_PATH"
-#
-## Setup publish variables
-#bash "$BUILDSCRIPTS_FOLDER/setup-publish-variables.sh" "$ROOT_PATH"
-#
-## Ensure software
-#sudo apt update
-#sudo apt install zip -y
-#
-## Get and set version
-#bash "$BUILDSCRIPTS_FOLDER/set-version.sh" "$ROOT_PATH"
+# Ensure .build folder
+if [ ! -d "$BUILD_METADATA_PATH" ]; then
+  echo "Creating directory $BUILD_METADATA_PATH"
+  mkdir "$BUILD_METADATA_PATH"  
+fi
+
+# Ensure dist folder
+if [ -d "$DIST_PATH" ]; then
+  echo "Deleting directory $DIST_PATH"
+  rm -rf "$DIST_PATH"  
+fi
+
+echo "Creating directory $DIST_PATH"
+mkdir "$DIST_PATH"
+
+# Setup publish variables
+bash "$BUILDSCRIPTS_FOLDER/setup-publish-variables.sh" "$ROOT_PATH"
+
+# Ensure software
+sudo apt update
+sudo apt install zip -y
+
+# Get and set version
+bash "$BUILDSCRIPTS_FOLDER/set-version.sh" "$ROOT_PATH"
 VERSION=$(cat $ROOT_PATH/version.txt)
-#
-## Run unit tests of .NET project
-#bash "$BUILDSCRIPTS_FOLDER/run-tests.sh" "$ROOT_PATH"
-#
-## Build docs
-#bash "$BUILDSCRIPTS_FOLDER/build-docs.sh" "$ROOT_PATH"
-#
-## Build UI
-#bash "$BUILDSCRIPTS_FOLDER/build-ui.sh" "$ROOT_PATH"
-#
-## Build all packages
-#bash "$BUILDSCRIPTS_FOLDER/build-linux.sh" "$VERSION" "$ROOT_PATH"
-#bash "$BUILDSCRIPTS_FOLDER/build-nuget-client.sh" "$VERSION" "$ROOT_PATH"
-#bash "$BUILDSCRIPTS_FOLDER/build-osx.sh" "$VERSION" "$ROOT_PATH"
-#bash "$BUILDSCRIPTS_FOLDER/build-tool.sh" "$VERSION" "$ROOT_PATH"
-#bash "$BUILDSCRIPTS_FOLDER/build-windows.sh" "$VERSION" "$ROOT_PATH"
-#bash "$BUILDSCRIPTS_FOLDER/create-open-api-file.sh" "$ROOT_PATH"
-#
-## Run HttPlaceholder integration tests
-#npm install newman --global
-#bash "$ROOT_PATH/test/exec-tests.sh"
-#
-## Run pre publish check
-#bash "$BUILDSCRIPTS_FOLDER/pre-publish-check.sh"
+
+# Run unit tests of .NET project
+bash "$BUILDSCRIPTS_FOLDER/run-tests.sh" "$ROOT_PATH"
+
+# Build docs
+bash "$BUILDSCRIPTS_FOLDER/build-docs.sh" "$ROOT_PATH"
+
+# Build UI
+bash "$BUILDSCRIPTS_FOLDER/build-ui.sh" "$ROOT_PATH"
+
+# Build all packages
+bash "$BUILDSCRIPTS_FOLDER/build-linux.sh" "$VERSION" "$ROOT_PATH"
+bash "$BUILDSCRIPTS_FOLDER/build-nuget-client.sh" "$VERSION" "$ROOT_PATH"
+bash "$BUILDSCRIPTS_FOLDER/build-osx.sh" "$VERSION" "$ROOT_PATH"
+bash "$BUILDSCRIPTS_FOLDER/build-tool.sh" "$VERSION" "$ROOT_PATH"
+bash "$BUILDSCRIPTS_FOLDER/build-windows.sh" "$VERSION" "$ROOT_PATH"
+bash "$BUILDSCRIPTS_FOLDER/create-open-api-file.sh" "$ROOT_PATH"
+
+# Run HttPlaceholder integration tests
+npm install newman --global
+bash "$ROOT_PATH/test/exec-tests.sh"
+
+# Run pre publish check
+bash "$BUILDSCRIPTS_FOLDER/pre-publish-check.sh"
 
 # Publish
 echo "Type y to publish to GitHub releases."

@@ -18,4 +18,4 @@ cd "$ROOT_PATH/docs/httpl-docs"
 python sync.py
 mkdocs build
 tar -czvf docs.tar.gz site
-cp docs.tar.gz $DIST_FOLDER
+mv docs.tar.gz $DIST_FOLDER
