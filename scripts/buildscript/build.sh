@@ -3,7 +3,6 @@ set -e
 set -u
 
 # TODO build UI in one big JS file
-# TODO NuGet and NPM version upgrades
 
 ROOT_PATH="$1"
 if [ "$ROOT_PATH" = "" ]; then
