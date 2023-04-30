@@ -2,8 +2,6 @@
 set -e
 set -u
 
-# TODO build UI in one big JS file
-
 ROOT_PATH="$1"
 if [ "$ROOT_PATH" = "" ]; then
   echo "ROOT_PATH variable not set"
