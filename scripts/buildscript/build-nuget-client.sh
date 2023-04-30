@@ -9,8 +9,7 @@ set -u
 
 # Set vars
 VERSION=$1
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-ROOT_DIR=$DIR/../..
+ROOT_DIR=$2
 DIST_DIR=$ROOT_DIR/dist
 
 # Create dist dir

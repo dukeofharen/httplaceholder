@@ -2,8 +2,7 @@
 set -e
 set -u
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-ROOT_DIR=$DIR/../..
+ROOT_DIR=$1
 DIST_DIR=$ROOT_DIR/dist
 SWAGGER_GEN_DIR=$ROOT_DIR/src/HttPlaceholder.SwaggerGenerator
 

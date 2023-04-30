@@ -2,7 +2,12 @@
 set -e
 set -u
 
-ROOT_PATH=$(pwd)
+ROOT_PATH="$1"
+if [ "$ROOT_PATH" = "" ]; then
+  echo "ROOT_PATH variable not set"
+  exit 1  
+fi
+
 GUI_PATH="$ROOT_PATH/gui"
 GUI_PUBLIC_PATH="$GUI_PATH/public"
 GUI_DOCS_PATH="$GUI_PUBLIC_PATH/docs"

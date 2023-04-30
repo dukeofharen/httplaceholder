@@ -9,11 +9,10 @@ set -u
 
 # Set vars
 VERSION=$1
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-ROOT_DIR=$DIR/../..
+ROOT_DIR=$2
 DIST_DIR=$ROOT_DIR/dist
 BIN_DIR=$ROOT_DIR/bin
-INSTALL_SCRIPT_DIR=$DIR/installscripts/linux
+INSTALL_SCRIPT_DIR=$ROOT_DIR/scripts/buildscript/installscripts/linux
 
 # Create dist dir
 if [ ! -d "$DIST_DIR" ]; then

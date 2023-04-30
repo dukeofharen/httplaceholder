@@ -4,7 +4,7 @@ ROOT_FOLDER="$DIR/../.."
 CHANGELOG_PATH="$ROOT_FOLDER/CHANGELOG"
 BASE_VERSION=$(head -n 1 $CHANGELOG_PATH | sed 's/\[//' | sed 's/\]//')
 if [ "$BASE_VERSION" = "vnext" ]; then
-  echo "Version as set in $CHANGELOG_PATH is still 'vnext'. Please change it to a correct version"
+  echo "Version as set in $CHANGELOG_PATH is still 'vnext', so HttPlaceholder is not ready for release."
   exit 1
 fi
 
