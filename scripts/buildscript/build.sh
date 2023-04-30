@@ -76,3 +76,18 @@ if [ "$TYPE" = "y" ]; then
   COMMIT_HASH=$(git rev-parse HEAD)
   pwsh "$BUILDSCRIPTS_FOLDER/publish-to-github.ps1" -apiKey "$GITHUB_API_KEY" -distFolder "$DIST_PATH" -version "$VERSION" -commitHash "$COMMIT_HASH"
 fi
+
+echo "Type y to publish to Nuget."
+read TYPE
+if [ "$TYPE" = "y" ]; then
+  GITHUB_API_KEY=$(cat $BUILD_METADATA_PATH/nugetkey)
+  bash "$BUILDSCRIPTS_FOLDER/publish-nuget.sh" "$VERSION" "$GITHUB_API_KEY"
+fi
+
+echo "Type y to publish to Docker Hub."
+read TYPE
+if [ "$TYPE" = "y" ]; then
+  DOCKER_USERNAME=$(cat $BUILD_METADATA_PATH/dockerusername)
+  DOCKER_PASSWORD=$(cat $BUILD_METADATA_PATH/dockerpassword)
+  bash "$BUILDSCRIPTS_FOLDER/publish-docker.sh" "$VERSION" "$DOCKER_USERNAME" "$DOCKER_PASSWORD"
+fi
