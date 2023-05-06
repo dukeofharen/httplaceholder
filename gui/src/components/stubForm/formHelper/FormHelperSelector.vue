@@ -1,8 +1,29 @@
 <template>
   <div class="row mt-3" v-if="!showFormHelperItems">
     <div class="col-md-12">
-      <button class="btn btn-outline-primary" @click="openFormHelperList">
-        Add request / response value
+      <button
+        class="form-helper-button btn btn-outline-primary me-2 mt-2 mt-md-0"
+        @click="openFormHelperList"
+      >
+        Add example
+      </button>
+      <button
+        class="form-helper-button btn btn-outline-primary me-2 mt-2 mt-md-0"
+        @click="openFormHelperList"
+      >
+        Add general stub info
+      </button>
+      <button
+        class="form-helper-button btn btn-outline-primary me-2 mt-2 mt-md-0"
+        @click="openFormHelperList"
+      >
+        Add request condition
+      </button>
+      <button
+        class="form-helper-button btn btn-outline-primary me-2 mt-2 mt-md-0"
+        @click="openFormHelperList"
+      >
+        Add response
       </button>
     </div>
   </div>
@@ -261,7 +282,9 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "@/style/bootstrap.scss";
+
 label {
   display: block;
   cursor: pointer;
@@ -269,5 +292,11 @@ label {
 
 .subtitle {
   font-size: 0.9em;
+}
+
+@include media-breakpoint-down(md) {
+  .form-helper-button {
+    width: 100%;
+  }
 }
 </style>
