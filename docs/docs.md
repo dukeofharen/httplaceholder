@@ -584,6 +584,7 @@ This condition checker looks a lot like the path checker, but this checker also 
 ```
 
 **Correct request**
+
 - Method: GET
 - URL: http://localhost:5000/users?filter=first_name
 
@@ -607,6 +608,7 @@ This condition checker can check the query string in a name-value collection lik
 ```
 
 **Correct request**
+
 - Method: GET
 - URL: http://localhost:5000/anyPath?id=14&filter=last_name
 
@@ -647,6 +649,7 @@ This condition checker can be used to verify if a request uses HTTPS or not. To 
 ```
 
 **Correct request**
+
 - Method: GET
 - URL: https://localhost:5050/anyPath
 
@@ -677,6 +680,7 @@ It is also possible to specify multiple HTTP methods. A request with any of thes
 ```
 
 **Correct request**
+
 - Method: GET
 - URL: http://localhost:5000/anyPath
 
@@ -699,6 +703,7 @@ This condition checker can check whether the sent basic authentication matches w
 ```
 
 **Correct request**
+
 - Method: GET
 - URL: http://localhost:5000/anyPath
 - Headers:
@@ -721,6 +726,7 @@ This condition checker can check whether the sent headers match with the headers
 ```
 
 **Correct request**
+
 - Method: GET
 - URL: http://localhost:5000/anyPath
 - Headers:
@@ -768,6 +774,7 @@ This condition checker can check whether the posted body corresponds to the give
 ```
 
 **Correct request**
+
 - Method: POST
 - URL: http://localhost:5000/users
 - Headers:
@@ -803,6 +810,7 @@ The form value condition checker can check whether the posted form values corres
 ```
 
 **Correct request**
+
 - Method: POST
 - URL: http://localhost:5000/form
 - Body:
@@ -973,6 +981,7 @@ Both JSONPath condition types can be combined.
 ```
 
 **Correct request**
+
 - Method: PUT
 - URL: http://localhost:5000/users
 - Body:
@@ -1037,6 +1046,7 @@ It is also possible to (pre)-set the XML namespaces of a posted XML body. If no 
 ```
 
 **Correct request**
+
 - Method: POST
 - URL: http://localhost:5000/xpath-test
 - Headers:
