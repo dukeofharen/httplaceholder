@@ -3,6 +3,7 @@
     <div class="col-md-12">
       <button
         v-for="button of formHelperButtons"
+        :key="button.category"
         class="form-helper-button btn btn-outline-primary me-2 mt-2 mt-md-0"
         @click="openFormHelperList(button.category)"
       >
