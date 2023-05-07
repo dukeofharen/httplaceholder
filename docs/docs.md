@@ -2751,7 +2751,7 @@ You can add a single stub here or you can provide multiple stubs in YAML format.
 
 ![](img/ui/stub_add_yaml_helpers.png)
 
-You can also click on "Add request / response value" so you can see what kind of values you can use in your request conditions and response definitions and insert them.
+You can also click on any of the 4 buttons so you can see what kind of values you can use in your request conditions and response definitions and insert them.
 
 Besides this, you can also choose between using the "Advanced editor" (based on [CodeMirror](https://codemirror.net/)) and "Simple editor". A simple editor was added because CodeMirror is not really suited for updating large stubs.
 
