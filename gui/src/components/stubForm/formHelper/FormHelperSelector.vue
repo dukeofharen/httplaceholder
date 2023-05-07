@@ -2,28 +2,11 @@
   <div class="row mt-3" v-if="!showFormHelperItems">
     <div class="col-md-12">
       <button
+        v-for="button of formHelperButtons"
         class="form-helper-button btn btn-outline-primary me-2 mt-2 mt-md-0"
-        @click="openFormHelperList"
+        @click="openFormHelperList(button.category)"
       >
-        Add example
-      </button>
-      <button
-        class="form-helper-button btn btn-outline-primary me-2 mt-2 mt-md-0"
-        @click="openFormHelperList"
-      >
-        Add general stub info
-      </button>
-      <button
-        class="form-helper-button btn btn-outline-primary me-2 mt-2 mt-md-0"
-        @click="openFormHelperList"
-      >
-        Add request condition
-      </button>
-      <button
-        class="form-helper-button btn btn-outline-primary me-2 mt-2 mt-md-0"
-        @click="openFormHelperList"
-      >
-        Add response
+        {{ button.title }}
       </button>
     </div>
   </div>
@@ -48,11 +31,7 @@
       </div>
       <div class="list-group">
         <template v-for="(item, index) in filteredStubFormHelpers" :key="index">
-          <div v-if="item.isMainItem" class="list-group-item fw-bold fs-3">
-            {{ item.title }}
-          </div>
           <button
-            v-else
             class="list-group-item list-group-item-action"
             @click="onFormHelperItemClick(item)"
           >
@@ -153,6 +132,7 @@ import { useStubFormStore } from "@/store/stubForm";
 import { defineComponent } from "vue";
 import {
   type StubFormHelper,
+  StubFormHelperCategory,
   stubFormHelpers,
 } from "@/domain/stubForm/stub-form-helpers";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
@@ -193,6 +173,22 @@ export default defineComponent({
 
     // Data
     const showFormHelperItems = ref(false);
+    const formHelperButtons = [
+      { title: "Add example", category: StubFormHelperCategory.Examples },
+      {
+        title: "Add general stub info",
+        category: StubFormHelperCategory.GeneralInfo,
+      },
+      {
+        title: "Add request condition",
+        category: StubFormHelperCategory.RequestCondition,
+      },
+      {
+        title: "Add response",
+        category: StubFormHelperCategory.ResponseDefinition,
+      },
+    ];
+    const selectedFormHelperCategory = ref<StubFormHelperCategory>();
     const formHelperItems = ref();
 
     // Methods
@@ -207,13 +203,21 @@ export default defineComponent({
       showFormHelperItems.value = false;
       formHelperFilter.value = "";
     };
-    const openFormHelperList = () => {
+    const openFormHelperList = (category: StubFormHelperCategory) => {
       showFormHelperItems.value = true;
-      setTimeout(() => {
-        if (formHelperFilterInput.value) {
-          formHelperFilterInput.value.focus();
-        }
-      }, 10);
+      selectedFormHelperCategory.value = category;
+      const formHelpers = stubFormHelpers.filter(
+        (h) => h.stubFormHelperCategory === category
+      );
+      if (formHelpers.length === 1) {
+        onFormHelperItemClick(formHelpers[0]);
+      } else {
+        setTimeout(() => {
+          if (formHelperFilterInput.value) {
+            formHelperFilterInput.value.focus();
+          }
+        }, 10);
+      }
     };
     const closeFormHelperAndList = () => {
       formHelperFilter.value = "";
@@ -226,14 +230,18 @@ export default defineComponent({
       () => stubFormStore.getCurrentSelectedFormHelper
     );
     const filteredStubFormHelpers = computed(() => {
-      if (!formHelperFilter.value) {
-        return stubFormHelpers;
+      let result = stubFormHelpers;
+      if (selectedFormHelperCategory.value) {
+        result = result.filter(
+          (r) => r.stubFormHelperCategory === selectedFormHelperCategory.value
+        );
       }
-      return stubFormHelpers.filter((h) => {
-        if (h.isMainItem) {
-          return true;
-        }
 
+      if (!formHelperFilter.value) {
+        return result;
+      }
+
+      return result.filter((h) => {
         return h.title
           .toLowerCase()
           .includes(formHelperFilter.value.toLowerCase());
@@ -277,6 +285,8 @@ export default defineComponent({
       closeFormHelperAndList,
       FormHelperKey,
       ResponseBodyType,
+      formHelperButtons,
+      selectedFormHelperCategory,
     };
   },
 });
