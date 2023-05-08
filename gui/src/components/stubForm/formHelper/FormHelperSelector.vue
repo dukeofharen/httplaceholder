@@ -11,42 +11,47 @@
       </button>
     </div>
   </div>
-  <div class="row mt-3" v-if="showFormHelperItems">
-    <div class="col-md-12">
-      <div class="mb-3">
-        <button
-          class="btn btn-danger btn-mobile full-width"
-          @click="closeFormHelperAndList"
-        >
-          Close list
-        </button>
-      </div>
-      <div class="input-group mb-3">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Filter form helpers (press 'Escape' to close)..."
-          v-model="formHelperFilter"
-          ref="formHelperFilterInput"
-        />
-      </div>
-      <div class="list-group stub-form-helpers">
-        <template v-for="(item, index) in filteredStubFormHelpers" :key="index">
-          <h2 v-if="item.isHeading" class="list-group-item">
-            {{ item.title }}
-          </h2>
+  <slide-up-down v-model="showFormHelperItems" :duration="300">
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="mb-3">
           <button
-            v-else
-            class="list-group-item list-group-item-action"
-            @click="onFormHelperItemClick(item)"
+            class="btn btn-danger btn-mobile full-width"
+            @click="closeFormHelperAndList"
           >
-            <label class="fw-bold">{{ item.title }}</label>
-            <span class="subtitle">{{ item.subTitle }}</span>
+            Close list
           </button>
-        </template>
+        </div>
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Filter form helpers (press 'Escape' to close)..."
+            v-model="formHelperFilter"
+            ref="formHelperFilterInput"
+          />
+        </div>
+        <div class="list-group stub-form-helpers">
+          <template
+            v-for="(item, index) in filteredStubFormHelpers"
+            :key="index"
+          >
+            <h2 v-if="item.isHeading" class="list-group-item">
+              {{ item.title }}
+            </h2>
+            <button
+              v-else
+              class="list-group-item list-group-item-action"
+              @click="onFormHelperItemClick(item)"
+            >
+              <label class="fw-bold">{{ item.title }}</label>
+              <span class="subtitle">{{ item.subTitle }}</span>
+            </button>
+          </template>
+        </div>
       </div>
     </div>
-  </div>
+  </slide-up-down>
   <div v-if="currentSelectedFormHelper" class="row mt-3">
     <div class="col-md-12">
       <div class="card">
