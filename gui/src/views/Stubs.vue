@@ -203,14 +203,14 @@ export default defineComponent({
       selectedTenantName: "",
     };
     if (saveSearchFilters) {
-      savedFilter = getStubFilterForm() || {};
+      savedFilter = getStubFilterForm();
     }
 
     const filter = ref({
       stubFilter:
-        (route.query.filter as string) || savedFilter.stubFilter || "",
+        (route.query.filter as string) || savedFilter?.stubFilter || "",
       selectedTenantName:
-        (route.query.tenant as string) || savedFilter.selectedTenantName || "",
+        (route.query.tenant as string) || savedFilter?.selectedTenantName || "",
     });
 
     // Functions

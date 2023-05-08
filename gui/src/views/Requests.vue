@@ -125,14 +125,14 @@ export default defineComponent({
       selectedTenantName: "",
     };
     if (saveSearchFilters) {
-      savedFilter = getRequestFilterForm() || {};
+      savedFilter = getRequestFilterForm();
     }
 
     const filter = ref<RequestSavedFilterModel>({
       urlStubIdFilter:
-        (route.query.filter as string) || savedFilter.urlStubIdFilter || "",
+        (route.query.filter as string) || savedFilter?.urlStubIdFilter || "",
       selectedTenantName:
-        (route.query.tenant as string) || savedFilter.selectedTenantName || "",
+        (route.query.tenant as string) || savedFilter?.selectedTenantName || "",
     });
 
     // Functions

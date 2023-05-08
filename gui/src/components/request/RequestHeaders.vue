@@ -29,9 +29,7 @@ export default defineComponent({
   },
   setup(props) {
     // Computed
-    const requestParams = computed(
-      () => props.request?.requestParameters || {}
-    );
+    const requestParams = computed(() => props.request?.requestParameters);
 
     return { requestParams };
   },

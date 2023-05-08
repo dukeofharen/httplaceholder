@@ -30,6 +30,7 @@
     "xml-formatter": "^3.3.2"
   },
   "devDependencies": {
+    "@babel/types": "^7.21.5",
     "@pinia/testing": "^0.1.0",
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/bootstrap": "^5.2.6",

@@ -1,4 +1,8 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  type RouteRecordRaw,
+} from "vue-router";
 import { useUsersStore } from "@/store/users";
 import { useMetadataStore } from "@/store/metadata";
 
@@ -58,7 +62,7 @@ const routes = [
         /* webpackChunkName: "scenarioForm" */ "../views/ScenarioForm.vue"
       ),
   },
-];
+] as RouteRecordRaw[];
 
 const router = createRouter({
   history: createWebHashHistory(),

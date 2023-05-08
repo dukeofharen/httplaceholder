@@ -1,8 +1,10 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.json"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
     "composite": true,
     "baseUrl": ".",
     "types": [
