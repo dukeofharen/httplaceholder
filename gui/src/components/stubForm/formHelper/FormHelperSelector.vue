@@ -1,5 +1,5 @@
 <template>
-  <div class="row mt-3" v-if="!showFormHelperItems">
+  <div class="row mt-3">
     <div class="col-md-12">
       <button
         v-for="button of formHelperButtons"
@@ -30,9 +30,13 @@
           ref="formHelperFilterInput"
         />
       </div>
-      <div class="list-group">
+      <div class="list-group stub-form-helpers">
         <template v-for="(item, index) in filteredStubFormHelpers" :key="index">
+          <h2 v-if="item.isHeading" class="list-group-item">
+            {{ item.title }}
+          </h2>
           <button
+            v-else
             class="list-group-item list-group-item-action"
             @click="onFormHelperItemClick(item)"
           >
@@ -243,9 +247,10 @@ export default defineComponent({
       }
 
       return result.filter((h) => {
-        return h.title
-          .toLowerCase()
-          .includes(formHelperFilter.value.toLowerCase());
+        return (
+          !h.isHeading &&
+          h.title.toLowerCase().includes(formHelperFilter.value.toLowerCase())
+        );
       });
     });
     const formHelperFilter = computed({
@@ -303,6 +308,12 @@ label {
 
 .subtitle {
   font-size: 0.9em;
+}
+
+.stub-form-helpers {
+  h2 {
+    margin: 0;
+  }
 }
 
 @include media-breakpoint-down(md) {

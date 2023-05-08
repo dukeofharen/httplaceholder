@@ -10,6 +10,7 @@ export enum StubFormHelperCategory {
 
 export interface StubFormHelper {
   title: string;
+  isHeading?: boolean;
   subTitle?: string;
   defaultValueMutation?: (store: any) => void;
   formHelperToOpen?: FormHelperKey;
@@ -60,6 +61,11 @@ export const stubFormHelpers = [
     formHelperToOpen: FormHelperKey.HttpMethod,
   },
   {
+    title: "URI",
+    isHeading: true,
+    stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
+  },
+  {
     title: "URL path",
     subTitle: elementDescriptions.urlPath,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
@@ -84,6 +90,11 @@ export const stubFormHelpers = [
     defaultValueMutation: (store: any) => store.setDefaultIsHttps(),
   },
   {
+    title: "Headers",
+    isHeading: true,
+    stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
+  },
+  {
     title: "Basic authentication",
     subTitle: elementDescriptions.basicAuthentication,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
@@ -94,6 +105,11 @@ export const stubFormHelpers = [
     subTitle: elementDescriptions.headers,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
     formHelperToOpen: FormHelperKey.Header,
+  },
+  {
+    title: "Request body",
+    isHeading: true,
+    stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
   },
   {
     title: "Request body",
@@ -108,6 +124,11 @@ export const stubFormHelpers = [
     formHelperToOpen: FormHelperKey.Form,
   },
   {
+    title: "Host",
+    isHeading: true,
+    stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
+  },
+  {
     title: "Client IP",
     subTitle: elementDescriptions.clientIp,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
@@ -118,6 +139,11 @@ export const stubFormHelpers = [
     subTitle: elementDescriptions.hostname,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
     formHelperToOpen: FormHelperKey.Host,
+  },
+  {
+    title: "JSON",
+    isHeading: true,
+    stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
   },
   {
     title: "JSONPath",
@@ -138,10 +164,20 @@ export const stubFormHelpers = [
     defaultValueMutation: (store: any) => store.setDefaultJsonArray(),
   },
   {
+    title: "XML",
+    isHeading: true,
+    stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
+  },
+  {
     title: "XPath",
     subTitle: elementDescriptions.xpath,
     stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
     defaultValueMutation: (store: any) => store.setDefaultXPath(),
+  },
+  {
+    title: "Scenario",
+    isHeading: true,
+    stubFormHelperCategory: StubFormHelperCategory.RequestCondition,
   },
   {
     title: "Scenario min hit counter",
@@ -172,6 +208,11 @@ export const stubFormHelpers = [
     subTitle: elementDescriptions.statusCode,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
     formHelperToOpen: FormHelperKey.StatusCode,
+  },
+  {
+    title: "Response body",
+    isHeading: true,
+    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
   },
   {
     title: "Response body",
@@ -216,6 +257,23 @@ export const stubFormHelpers = [
     formHelperToOpen: FormHelperKey.DynamicMode,
   },
   {
+    title: "Line endings",
+    subTitle: elementDescriptions.lineEndings,
+    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
+    formHelperToOpen: FormHelperKey.LineEndings,
+  },
+  {
+    title: "Image",
+    subTitle: elementDescriptions.image,
+    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
+    defaultValueMutation: (store: any) => store.setDefaultImage(),
+  },
+  {
+    title: "Headers",
+    isHeading: true,
+    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
+  },
+  {
     title: "Response headers",
     subTitle: elementDescriptions.responseHeaders,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
@@ -228,28 +286,32 @@ export const stubFormHelpers = [
     defaultValueMutation: (store: any) => store.setDefaultResponseContentType(),
   },
   {
-    title: "Extra duration",
-    subTitle: elementDescriptions.extraDuration,
-    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultExtraDuration(),
-  },
-  {
-    title: "Image",
-    subTitle: elementDescriptions.image,
-    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultImage(),
-  },
-  {
     title: "Redirect",
     subTitle: elementDescriptions.redirect,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
     formHelperToOpen: FormHelperKey.Redirect,
   },
   {
-    title: "Line endings",
-    subTitle: elementDescriptions.lineEndings,
+    title: "Scenario",
+    isHeading: true,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    formHelperToOpen: FormHelperKey.LineEndings,
+  },
+  {
+    title: "Clear scenario state",
+    subTitle: elementDescriptions.clearState,
+    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
+    defaultValueMutation: (store: any) => store.setClearState(),
+  },
+  {
+    title: "Set new scenario state",
+    subTitle: elementDescriptions.newScenarioState,
+    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
+    defaultValueMutation: (store: any) => store.setDefaultNewScenarioState(),
+  },
+  {
+    title: "Other",
+    isHeading: true,
+    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
   },
   {
     title: "Reverse proxy",
@@ -264,15 +326,9 @@ export const stubFormHelpers = [
     defaultValueMutation: (store: any) => store.setAbortConnection(),
   },
   {
-    title: "Clear scenario state",
-    subTitle: elementDescriptions.clearState,
+    title: "Extra duration",
+    subTitle: elementDescriptions.extraDuration,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setClearState(),
-  },
-  {
-    title: "Set new scenario state",
-    subTitle: elementDescriptions.newScenarioState,
-    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
-    defaultValueMutation: (store: any) => store.setDefaultNewScenarioState(),
+    defaultValueMutation: (store: any) => store.setDefaultExtraDuration(),
   },
 ] as StubFormHelper[];
