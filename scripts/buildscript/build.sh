@@ -11,6 +11,7 @@ fi
 BUILDSCRIPTS_FOLDER="$ROOT_PATH/scripts/buildscript"
 BUILD_METADATA_PATH="$ROOT_PATH/.build"
 DIST_PATH="$ROOT_PATH/dist"
+DOCKER_REPO_NAME="dukeofharen/httplaceholder"
 chmod -R +x "$BUILDSCRIPTS_FOLDER"
 
 echo "Building HttPlaceholder"
@@ -32,6 +33,10 @@ mkdir "$DIST_PATH"
 
 # Setup publish variables
 bash "$BUILDSCRIPTS_FOLDER/setup-publish-variables.sh" "$ROOT_PATH"
+NUGET_KEY=$(cat $BUILD_METADATA_PATH/nugetkey)
+DOCKER_USERNAME=$(cat $BUILD_METADATA_PATH/dockerusername)
+DOCKER_PASSWORD=$(cat $BUILD_METADATA_PATH/dockerpassword)
+GITHUB_API_KEY=$(cat $BUILD_METADATA_PATH/githubkey)
 
 # Ensure software
 sudo apt update
@@ -57,6 +62,7 @@ bash "$BUILDSCRIPTS_FOLDER/build-osx.sh" "$VERSION" "$ROOT_PATH"
 bash "$BUILDSCRIPTS_FOLDER/build-tool.sh" "$VERSION" "$ROOT_PATH"
 bash "$BUILDSCRIPTS_FOLDER/build-windows.sh" "$VERSION" "$ROOT_PATH"
 bash "$BUILDSCRIPTS_FOLDER/create-open-api-file.sh" "$ROOT_PATH"
+bash "$BUILDSCRIPTS_FOLDER/build-docker.sh" "$VERSION" "$DOCKER_REPO_NAME"
 
 # Run HttPlaceholder integration tests
 npm install newman --global
@@ -69,22 +75,24 @@ bash "$BUILDSCRIPTS_FOLDER/pre-publish-check.sh"
 echo "Type y to publish to GitHub releases."
 read TYPE
 if [ "$TYPE" = "y" ]; then
-  GITHUB_API_KEY=$(cat $BUILD_METADATA_PATH/githubkey)
   COMMIT_HASH=$(git rev-parse HEAD)
   pwsh "$BUILDSCRIPTS_FOLDER/publish-to-github.ps1" -apiKey "$GITHUB_API_KEY" -distFolder "$DIST_PATH" -version "$VERSION" -commitHash "$COMMIT_HASH"
 fi
 
-echo "Type y to publish to Nuget."
+echo "Type y to publish the .NET client to Nuget."
 read TYPE
 if [ "$TYPE" = "y" ]; then
-  GITHUB_API_KEY=$(cat $BUILD_METADATA_PATH/nugetkey)
-  bash "$BUILDSCRIPTS_FOLDER/publish-nuget.sh" "$VERSION" "$GITHUB_API_KEY"
+  bash "$BUILDSCRIPTS_FOLDER/publish-nuget.sh" "$VERSION" "$NUGET_KEY" HttPlaceholder.Client
+fi
+
+echo "Type y to publish the .NET tool to Nuget."
+read TYPE
+if [ "$TYPE" = "y" ]; then
+  bash "$BUILDSCRIPTS_FOLDER/publish-nuget.sh" "$VERSION" "$NUGET_KEY" HttPlaceholder
 fi
 
 echo "Type y to publish to Docker Hub."
 read TYPE
 if [ "$TYPE" = "y" ]; then
-  DOCKER_USERNAME=$(cat $BUILD_METADATA_PATH/dockerusername)
-  DOCKER_PASSWORD=$(cat $BUILD_METADATA_PATH/dockerpassword)
   bash "$BUILDSCRIPTS_FOLDER/publish-docker.sh" "$VERSION" "$DOCKER_USERNAME" "$DOCKER_PASSWORD"
 fi

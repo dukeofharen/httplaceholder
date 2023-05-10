@@ -17,10 +17,13 @@ if [ "$DOCKER_PASSWORD" = "" ]; then
   exit 1
 fi
 
+DOCKER_REPO_NAME="$4"
+if [ "$DOCKER_REPO_NAME" = "" ]; then
+  echo "Docker repo name not set"
+  exit 1
+fi
+
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-REPO_NAME="dukeofharen/httplaceholder"
-docker build -t ${REPO_NAME}:${VERSION} .
-docker tag ${REPO_NAME}:${VERSION} ${REPO_NAME}:latest
-docker push ${REPO_NAME}:${VERSION}
-docker push ${REPO_NAME}:latest
+docker push ${DOCKER_REPO_NAME}:${VERSION}
+docker push ${DOCKER_REPO_NAME}:latest
