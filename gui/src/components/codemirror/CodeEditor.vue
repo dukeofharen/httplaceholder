@@ -1,13 +1,13 @@
 <template>
-  <codemirror v-model="code" :extensions="extensions" />
+  <codemirror v-model="code" :extensions="extensions" @ready="handleReady" />
 </template>
 
 <script lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, ref, shallowRef, watch } from "vue";
 import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
 import { Codemirror } from "vue-codemirror";
-import { language, StreamLanguage } from "@codemirror/language";
+import { StreamLanguage } from "@codemirror/language";
 import { yaml } from "@codemirror/legacy-modes/mode/yaml";
 import { oneDark } from "@/plugins/codemirror/material-one-dark.js";
 import { html } from "@codemirror/lang-html";
@@ -36,6 +36,7 @@ export default defineComponent({
 
     // Data
     const code = ref(props.modelValue);
+    const view = shallowRef();
 
     // Computed
     const extensions = computed(() => {
@@ -62,21 +63,34 @@ export default defineComponent({
       return result;
     });
 
+    // Events
+    const handleReady = (payload) => {
+      view.value = payload.view;
+    };
+
     // Watch
     watch(
       () => props.modelValue,
       (newModelValue) => (code.value = newModelValue)
     );
     watch(code, (newCode) => emit("update:modelValue", newCode));
-    // watch(
-    //   () => props.language,
-    //   (newLang) => {
-    //     console.log(newLang);
-    //     extensions.value = buildExtensions();
-    //   }
-    // );
 
-    return { code, extensions };
+    // Methods
+    const replaceSelection = (replacement: string) => {
+      const state = view.value.state;
+      const ranges = state.selection.ranges;
+      const range = ranges.length ? ranges[0] : null;
+      const from = range ? range.from : 0;
+      const to = range ? range.to : 0;
+      const newCode = code.value;
+      code.value = [
+        newCode.slice(0, from),
+        replacement,
+        newCode.slice(to),
+      ].join("");
+    };
+
+    return { code, extensions, replaceSelection, handleReady };
     // // Methods
     // const initializeCodemirror = () => {
     //   if (editor.value) {
@@ -105,30 +119,6 @@ export default defineComponent({
     //     });
     //   }
     // };
-    // const replaceSelection = (replacement: string, selection: string) => {
-    //   if (cmInstance) {
-    //     cmInstance.replaceSelection(replacement, selection);
-    //   }
-    // };
-    //
-    // // Watch
-    // watch(
-    //   () => props.options,
-    //   () => {
-    //     if (cmInstance && props.options) {
-    //       const cleanOptions = JSON.parse(JSON.stringify(props.options));
-    //       for (const key of Object.keys(cleanOptions)) {
-    //         (cmInstance as any).setOption(key, cleanOptions[key]);
-    //       }
-    //     }
-    //   },
-    //   { deep: true }
-    // );
-    //
-    // // Lifecycle
-    // onMounted(() => initializeCodemirror());
-    //
-    // return { contents, editor, replaceSelection };
   },
 });
 </script>

@@ -177,7 +177,7 @@ export default defineComponent({
       showBase64TextInput.value = false;
     };
     const insertVariableHandlerExample = (example: string) => {
-      if (codeEditor.value && codeEditor.value.replaceSelection && example) {
+      if (example && codeEditor.value && codeEditor.value.replaceSelection) {
         codeEditor.value.replaceSelection(example);
       }
     };
