@@ -32,15 +32,14 @@ export default defineComponent({
     const generalStore = useSettingsStore();
 
     // Data
-    const code = ref("");
+    const code = ref(props.modelValue);
 
     // Watch
     watch(
       () => props.modelValue,
-      (newModelValue) => {
-        code.value = newModelValue;
-      }
+      (newModelValue) => (code.value = newModelValue)
     );
+    watch(code, (newCode) => emit("update:modelValue", newCode));
 
     // Functions
     const buildExtensions = () => {
