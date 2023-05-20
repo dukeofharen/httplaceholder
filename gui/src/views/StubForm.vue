@@ -38,7 +38,7 @@
 
     <div class="row mt-3">
       <div class="col-md-12" v-if="editorType === editorTypes.codemirror">
-        <codemirror v-model="input" :options="cmOptions" />
+        <code-editor v-model="input" language="yaml" />
       </div>
       <div class="col-md-12" v-if="editorType === editorTypes.simple">
         <simple-editor v-model="input" />
