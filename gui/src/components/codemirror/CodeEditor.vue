@@ -3,13 +3,16 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useSettingsStore } from "@/store/settings";
 import { defineComponent } from "vue";
 import { Codemirror } from "vue-codemirror";
-import { StreamLanguage } from "@codemirror/language";
+import { language, StreamLanguage } from "@codemirror/language";
 import { yaml } from "@codemirror/legacy-modes/mode/yaml";
 import { oneDark } from "@/plugins/codemirror/material-one-dark.js";
+import { html } from "@codemirror/lang-html";
+import { xml } from "@codemirror/lang-xml";
+import { json } from "@codemirror/lang-json";
 
 export default defineComponent({
   name: "CodeEditor",
@@ -34,30 +37,46 @@ export default defineComponent({
     // Data
     const code = ref(props.modelValue);
 
+    // Computed
+    const extensions = computed(() => {
+      const result = [];
+      switch (props.language) {
+        case "yaml":
+          result.push(StreamLanguage.define(yaml));
+          break;
+        case "html":
+          result.push(html());
+          break;
+        case "xml":
+          result.push(xml());
+          break;
+        case "json":
+          result.push(json());
+          break;
+      }
+
+      if (generalStore.getDarkTheme) {
+        result.push(oneDark);
+      }
+
+      return result;
+    });
+
     // Watch
     watch(
       () => props.modelValue,
       (newModelValue) => (code.value = newModelValue)
     );
     watch(code, (newCode) => emit("update:modelValue", newCode));
+    // watch(
+    //   () => props.language,
+    //   (newLang) => {
+    //     console.log(newLang);
+    //     extensions.value = buildExtensions();
+    //   }
+    // );
 
-    // Functions
-    const buildExtensions = () => {
-      const extensions = [];
-      switch (props.language) {
-        case "yaml":
-          extensions.push(StreamLanguage.define(yaml));
-          break;
-      }
-
-      if (generalStore.getDarkTheme) {
-        extensions.push(oneDark);
-      }
-
-      return extensions;
-    };
-
-    return { code, extensions: buildExtensions() };
+    return { code, extensions };
     // // Methods
     // const initializeCodemirror = () => {
     //   if (editor.value) {
@@ -84,9 +103,6 @@ export default defineComponent({
     //         }
     //       },
     //     });
-    //     if (generalStore.getDarkTheme) {
-    //       cmInstance.setOption("theme", "material-darker");
-    //     }
     //   }
     // };
     // const replaceSelection = (replacement: string, selection: string) => {
