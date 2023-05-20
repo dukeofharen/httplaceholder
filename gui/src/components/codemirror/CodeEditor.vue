@@ -13,6 +13,7 @@ import { oneDark } from "@/plugins/codemirror/material-one-dark.js";
 import { html } from "@codemirror/lang-html";
 import { xml } from "@codemirror/lang-xml";
 import { json } from "@codemirror/lang-json";
+import type { EditorView } from "@codemirror/view";
 
 export default defineComponent({
   name: "CodeEditor",
@@ -36,7 +37,7 @@ export default defineComponent({
 
     // Data
     const code = ref(props.modelValue);
-    const view = shallowRef();
+    const view = shallowRef<EditorView>();
 
     // Computed
     const extensions = computed(() => {
@@ -66,6 +67,7 @@ export default defineComponent({
     // Events
     const handleReady = (payload) => {
       view.value = payload.view;
+      console.log(view.value);
     };
 
     // Watch
@@ -77,7 +79,11 @@ export default defineComponent({
 
     // Methods
     const replaceSelection = (replacement: string) => {
-      const state = view.value.state;
+      const state = view.value?.state;
+      if (!state) {
+        return;
+      }
+
       const ranges = state.selection.ranges;
       const range = ranges.length ? ranges[0] : null;
       const from = range ? range.from : 0;
@@ -91,34 +97,6 @@ export default defineComponent({
     };
 
     return { code, extensions, replaceSelection, handleReady };
-    // // Methods
-    // const initializeCodemirror = () => {
-    //   if (editor.value) {
-    //     cmInstance = CodeMirror.fromTextArea(editor.value, props.options);
-    //     cmInstance.on("change", () => {
-    //       if (props.modelValue !== cmInstance.getValue()) {
-    //         emit("update:modelValue", cmInstance.getValue());
-    //       }
-    //     });
-    //     cmInstance.setOption("extraKeys", {
-    //       Tab: (cm) => {
-    //         if (cm.somethingSelected()) {
-    //           cm.indentSelection("add");
-    //         } else {
-    //           // Make sure inserts spaces instead of tabs.
-    //           const currentIndent = cm.getOption("indentUnit") || 0;
-    //           const spaces = Array(currentIndent + 1).join(" ");
-    //           cm.replaceSelection(spaces);
-    //         }
-    //       },
-    //       "Shift-Tab": (cm) => {
-    //         if (cm.somethingSelected()) {
-    //           cm.indentSelection("subtract");
-    //         }
-    //       },
-    //     });
-    //   }
-    // };
   },
 });
 </script>
