@@ -9,7 +9,7 @@ import { defineComponent } from "vue";
 import { Codemirror } from "vue-codemirror";
 import { StreamLanguage } from "@codemirror/language";
 import { yaml } from "@codemirror/legacy-modes/mode/yaml";
-import { oneDark } from "@/plugins/codemirror/material-one-dark.js";
+import { oneDark } from "@/plugins/codemirror/material-one-dark";
 import { html } from "@codemirror/lang-html";
 import { xml } from "@codemirror/lang-xml";
 import { json } from "@codemirror/lang-json";
@@ -65,9 +65,8 @@ export default defineComponent({
     });
 
     // Events
-    const handleReady = (payload) => {
+    const handleReady = (payload: any) => {
       view.value = payload.view;
-      console.log(view.value);
     };
 
     // Watch
