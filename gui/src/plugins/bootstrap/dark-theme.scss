@@ -73,3 +73,8 @@
   border-color: $gray-700;
   overflow: hidden;
 }
+
+// Other
+.dark-theme .divider {
+  border-bottom: 1px solid $gray-400;
+}

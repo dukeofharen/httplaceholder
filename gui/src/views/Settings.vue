@@ -59,20 +59,15 @@
           HttPlaceholder was started with the following settings. The settings
           are read-only and can only be set when starting the application.
         </p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Setting</th>
-              <th scope="col">Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item of config" :key="item.key">
-              <td :title="item.description">{{ item.key }}</td>
-              <td>{{ item.value }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <template v-for="item of config" :key="item.key">
+          <div class="row setting">
+            <div class="col-md-6">
+              <strong>{{ item.key }}</strong>
+            </div>
+            <div class="col-md-6">{{ item.value }}</div>
+          </div>
+          <div class="divider mt-2 mb-2"></div>
+        </template>
       </div>
     </div>
   </div>
@@ -144,4 +139,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.setting > div {
+  word-break: break-word;
+}
+</style>
