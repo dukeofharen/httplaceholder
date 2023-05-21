@@ -3,78 +3,81 @@
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
 
-// General
-.dark-theme .main-body {
-  background-color: $gray-900;
-  color: $gray-400;
-}
+.dark-theme {
+  // General
+  .main-body {
+    background-color: $gray-900;
+    color: $gray-400;
+  }
 
-.dark-theme .btn {
-  color: $gray-400;
-}
+  .btn {
+    color: $gray-400;
+  }
 
-// Forms
-.dark-theme input.form-control, .dark-theme select.form-select, .dark-theme textarea.form-control {
-  background-color: $gray-900;
-  color: $gray-400;
-  border-color: $gray-700;
-}
-.dark-theme input.form-check-input {
-  background-color: $gray-900;
-  border-color: $gray-700;
-}
+  // Forms
+  input.form-control, select.form-select, textarea.form-control {
+    background-color: $gray-900;
+    color: $gray-400;
+    border-color: $gray-700;
+  }
 
-.dark-theme input.form-control::placeholder {
-  color: $gray-400;
-}
+  input.form-check-input {
+    background-color: $gray-900;
+    border-color: $gray-700;
+  }
 
-// Accordion
-.dark-theme .accordion-item, .dark-theme .accordion-button {
-  background-color: $gray-900;
-  color: $gray-400;
-  border-color: $gray-700;
-}
+  input.form-control::placeholder {
+    color: $gray-400;
+  }
 
-.dark-theme .accordion-button {
-  box-shadow: none;
-}
+  // Accordion
+  .accordion-item, .accordion-button {
+    background-color: $gray-900;
+    color: $gray-400;
+    border-color: $gray-700;
+  }
 
-// Lists
-.dark-theme .list-group .list-group-item {
-  background-color: $gray-900;
-  color: $gray-400;
-  border-color: $gray-700;
-}
+  .accordion-button {
+    box-shadow: none;
+  }
 
-// Table
-.dark-theme .table {
-  color: $gray-400;
-}
+  // Lists
+  .list-group .list-group-item {
+    background-color: $gray-900;
+    color: $gray-400;
+    border-color: $gray-700;
+  }
 
-.dark-theme .table tr {
-  border-color: $gray-700;
-}
+  // Table
+  .table {
+    color: $gray-400;
 
-// Modals
-.dark-theme .modal-content {
-  background-color: $gray-900;
-}
+    tr {
+      border-color: $gray-700;
+    }
+  }
 
-.dark-theme .modal-content .btn.btn-secondary {
-  color: $gray-900;
-}
+  // Modals
+  .modal-content {
+    background-color: $gray-900;
 
-// Cards
-.dark-theme .card-body {
-  background-color: $gray-900;
-}
+    .btn.btn-secondary {
+      color: $gray-900;
+    }
+  }
 
-.dark-theme .card {
-  border-color: $gray-700;
-  overflow: hidden;
-}
+  // Cards
+  .card-body {
+    background-color: $gray-900;
+  }
 
-// Other
-.dark-theme .divider {
-  border-bottom: 1px solid $gray-400;
+  .card {
+    border-color: $gray-700;
+    overflow: hidden;
+  }
+
+  // Other
+  .divider {
+    border-bottom: 1px solid $gray-400;
+  }
 }
