@@ -1,8 +1,5 @@
 <template>
-  <button
-    class="btn btn-primary mt-2 mb-2"
-    @click="showHandlersList = !showHandlersList"
-  >
+  <button class="btn btn-primary mt-2 mb-2" @click="switchHandlers">
     Insert variable handler
   </button>
   <slide-up-down
@@ -13,6 +10,15 @@
     <span class="list-group-item list-group-item-action fw-bold"
       >Select a variable handler to insert in the response...</span
     >
+    <div class="list-group-item list-group-item-action fw-bold">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Filter handlers..."
+        v-model="handlerFilter"
+        ref="handlerFilterInput"
+      />
+    </div>
     <button
       v-for="item of sortedVariableParserItems"
       :key="item.name"
@@ -75,12 +81,14 @@ export default defineComponent({
 
     // Refs
     const exampleFilterInput = ref<HTMLInputElement>();
+    const handlerFilterInput = ref<HTMLInputElement>();
 
     // Data
     const examples = ref([] as string[]);
     const showHandlersList = ref(false);
     const showExamplesList = ref(false);
     const selectedHandler = ref<VariableHandlerModel | null>();
+    const handlerFilter = ref("");
     const exampleFilter = ref("");
 
     // Computed
@@ -89,7 +97,13 @@ export default defineComponent({
         return [];
       }
 
-      const result = props.variableParserItems;
+      let result = props.variableParserItems;
+      if (handlerFilter.value) {
+        result = result.filter((h) =>
+          h.fullName.toLowerCase().includes(handlerFilter.value.toLowerCase())
+        );
+      }
+
       result.sort((a, b) => {
         if (a.fullName > b.fullName) return 1;
         if (a.fullName < b.fullName) return -1;
@@ -123,6 +137,7 @@ export default defineComponent({
         }, 10);
       }
 
+      handlerFilter.value = "";
       showHandlersList.value = false;
     };
     const exampleSelected = (example: string) => {
@@ -132,9 +147,21 @@ export default defineComponent({
       stubFormStore.setDynamicMode(true);
       selectedHandler.value = null;
       exampleFilter.value = "";
+      handlerFilter.value = "";
     };
     const parseMarkdown = (input: string) => {
       return marked.parse(input);
+    };
+
+    const switchHandlers = () => {
+      showHandlersList.value = !showHandlersList.value;
+      if (showHandlersList.value) {
+        setTimeout(() => {
+          if (handlerFilterInput.value) {
+            handlerFilterInput.value?.focus();
+          }
+        }, 10);
+      }
     };
 
     return {
@@ -149,6 +176,9 @@ export default defineComponent({
       exampleFilter,
       exampleFilterInput,
       filteredExamples,
+      handlerFilter,
+      handlerFilterInput,
+      switchHandlers,
     };
   },
 });
