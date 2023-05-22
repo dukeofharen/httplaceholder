@@ -194,7 +194,7 @@ export default defineComponent({
         category: StubFormHelperCategory.RequestCondition,
       },
       {
-        title: "Add response",
+        title: "Add response writer",
         category: StubFormHelperCategory.ResponseDefinition,
       },
     ];
