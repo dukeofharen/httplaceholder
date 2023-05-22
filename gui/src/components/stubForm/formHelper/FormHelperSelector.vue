@@ -223,8 +223,7 @@ export default defineComponent({
     };
     const openFormHelperList = (category: StubFormHelperCategory) => {
       if (selectedFormHelperCategory.value === category) {
-        showFormHelperItems.value = false;
-        selectedFormHelperCategory.value = StubFormHelperCategory.None;
+        closeFormHelperAndList();
         return;
       }
 
@@ -247,6 +246,7 @@ export default defineComponent({
       formHelperFilter.value = "";
       stubFormStore.closeFormHelper();
       showFormHelperItems.value = false;
+      selectedFormHelperCategory.value = StubFormHelperCategory.None;
     };
 
     // Computed

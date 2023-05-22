@@ -1,8 +1,15 @@
 <template>
-  <button class="btn btn-primary mt-2 mb-2" @click="showHandlersList = true">
+  <button
+    class="btn btn-primary mt-2 mb-2"
+    @click="showHandlersList = !showHandlersList"
+  >
     Insert variable handler
   </button>
-  <div class="list-group mt-2" v-if="showHandlersList">
+  <slide-up-down
+    v-model="showHandlersList"
+    :duration="300"
+    class="list-group mt-2"
+  >
     <span class="list-group-item list-group-item-action fw-bold"
       >Select a variable handler to insert in the response...</span
     >
@@ -16,7 +23,7 @@
       ><br />
       <small v-if="item.description" v-html="parseMarkdown(item.description)" />
     </button>
-  </div>
+  </slide-up-down>
   <div class="list-group mt-2" v-if="showExamplesList">
     <small
       v-if="selectedHandler"
