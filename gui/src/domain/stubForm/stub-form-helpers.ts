@@ -2,6 +2,7 @@ import { elementDescriptions } from "@/domain/stubForm/element-descriptions";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
 
 export enum StubFormHelperCategory {
+  None = "None",
   Examples = "Examples",
   GeneralInfo = "GeneralInfo",
   RequestCondition = "RequestCondition",

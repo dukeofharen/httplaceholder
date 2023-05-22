@@ -125,7 +125,14 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+} from "vue";
 import HttpMethodSelector from "@/components/stubForm/formHelper/HttpMethodSelector.vue";
 import TenantSelector from "@/components/stubForm/formHelper/TenantSelector.vue";
 import HttpStatusCodeSelector from "@/components/stubForm/formHelper/HttpStatusCodeSelector.vue";
@@ -139,7 +146,6 @@ import SetFullPath from "@/components/stubForm/formHelper/SetFullPath.vue";
 import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
 import { useStubFormStore } from "@/store/stubForm";
-import { defineComponent } from "vue";
 import {
   type StubFormHelper,
   StubFormHelperCategory,
@@ -198,7 +204,9 @@ export default defineComponent({
         category: StubFormHelperCategory.ResponseDefinition,
       },
     ];
-    const selectedFormHelperCategory = ref<StubFormHelperCategory>();
+    const selectedFormHelperCategory = ref<StubFormHelperCategory>(
+      StubFormHelperCategory.None
+    );
     const formHelperItems = ref();
 
     // Methods
@@ -214,6 +222,12 @@ export default defineComponent({
       formHelperFilter.value = "";
     };
     const openFormHelperList = (category: StubFormHelperCategory) => {
+      if (selectedFormHelperCategory.value === category) {
+        showFormHelperItems.value = false;
+        selectedFormHelperCategory.value = StubFormHelperCategory.None;
+        return;
+      }
+
       showFormHelperItems.value = true;
       selectedFormHelperCategory.value = category;
       const formHelpers = stubFormHelpers.filter(
