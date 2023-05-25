@@ -4,9 +4,6 @@ sudo apt update
 sudo apt install nginx -y
 
 # Install .NET Core
-wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
-rm packages-microsoft-prod.deb
 sudo apt update
 sudo apt install -y dotnet-sdk-7.0
 
@@ -14,7 +11,7 @@ sudo apt install -y dotnet-sdk-7.0
 sudo apt install -y python3-pip
 
 # Install Node.js
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 . "$HOME/.nvm/nvm.sh"
 nvm install --lts
 nvm use --lts
@@ -42,7 +39,7 @@ rsync -av --progress /httplaceholder/. $NEW_SOURCE_PATH --exclude bin --exclude 
 
 # Build HttPlaceholder
 PROJECT_PATH=$NEW_SOURCE_PATH/src/HttPlaceholder/HttPlaceholder.csproj
-sudo dotnet publish $PROJECT_PATH -c Release --runtime linux-x64 -o $INSTALL_PATH --no-self-contained
+sudo dotnet publish $PROJECT_PATH -c Release --runtime linux-x64 -o $INSTALL_PATH --self-contained
 
 # Build HttPlaceholder GUI
 GUI_PROJECT_PATH=$NEW_SOURCE_PATH/gui
