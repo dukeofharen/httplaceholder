@@ -55,6 +55,7 @@ bash "$BUILDSCRIPTS_FOLDER/build-docs.sh" "$ROOT_PATH"
 # Build UI
 bash "$BUILDSCRIPTS_FOLDER/build-ui.sh" "$ROOT_PATH"
 
+# TODO call build Docker container here somewhere
 # Build all packages
 bash "$BUILDSCRIPTS_FOLDER/build-linux.sh" "$VERSION" "$ROOT_PATH"
 bash "$BUILDSCRIPTS_FOLDER/build-nuget-client.sh" "$VERSION" "$ROOT_PATH"

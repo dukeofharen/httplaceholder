@@ -2,5 +2,5 @@
 **/obj/**
 **/dist/**
 **/node_modules/**
-**/media/**
 **/vagrant/**
+dist/
