@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using HttPlaceholder.Application.StubExecution.Implementations;
 using HttPlaceholder.Common;
 using HttPlaceholder.Domain.Enums;
@@ -39,7 +40,7 @@ public class RequestLoggerFacts
         // arrange
         const string method = "POST";
         const string url = "https://google.com";
-        const string body = "HACKING GOOGLE!";
+        var body = Encoding.UTF8.GetBytes("HACKING GOOGLE!");
         const string clientIp = "127.0.0.1";
         var headers = new Dictionary<string, string>();
 
@@ -50,7 +51,7 @@ public class RequestLoggerFacts
         // assert
         Assert.AreEqual(method, result.RequestParameters.Method);
         Assert.AreEqual(url, result.RequestParameters.Url);
-        Assert.AreEqual(body, result.RequestParameters.Body);
+        Assert.AreEqual(body, result.RequestParameters.BinaryBody);
         Assert.AreEqual(clientIp, result.RequestParameters.ClientIp);
         Assert.AreEqual(headers, result.RequestParameters.Headers);
     }
