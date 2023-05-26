@@ -67,11 +67,7 @@ public static class ImageSharpUtilities
             VerticalAlignment = VerticalAlignment.Center,
             Origin = center
         };
-        // return processingContext.DrawText(textOptions, text, color);
-        // return processingContext.DrawText(text, scaledFont, color, center);
         return processingContext.DrawText(textOptions, text, color);
-        // processingContext.ApplyProcessor(new DrawTextProcessor(processingContext.GetDrawingOptions(), textOptions, text,
-        // brush, pen));
     }
 
     private static IImageProcessingContext ApplyScalingWaterMarkWordWrap(

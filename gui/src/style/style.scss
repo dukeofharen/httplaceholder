@@ -1,3 +1,8 @@
+// Required
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
 body {
   margin: 0;
   padding: 0;
@@ -12,4 +17,8 @@ body {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.divider {
+  border-bottom: 1px solid $gray-900;
 }

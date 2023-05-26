@@ -1,47 +1,57 @@
 <template>
-  <div class="row mt-3" v-if="!showFormHelperItems">
+  <div class="row mt-3">
     <div class="col-md-12">
-      <button class="btn btn-outline-primary" @click="openFormHelperList">
-        Add request / response value
+      <button
+        v-for="button of formHelperButtons"
+        :key="button.category"
+        class="form-helper-button btn btn-outline-primary me-2 mt-2 mt-md-0"
+        @click="openFormHelperList(button.category)"
+      >
+        {{ button.title }}
       </button>
     </div>
   </div>
-  <div class="row mt-3" v-if="showFormHelperItems">
-    <div class="col-md-12">
-      <div class="mb-3">
-        <button
-          class="btn btn-danger btn-mobile full-width"
-          @click="closeFormHelperAndList"
-        >
-          Close list
-        </button>
-      </div>
-      <div class="input-group mb-3">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Filter form helpers (press 'Escape' to close)..."
-          v-model="formHelperFilter"
-          ref="formHelperFilterInput"
-        />
-      </div>
-      <div class="list-group">
-        <template v-for="(item, index) in filteredStubFormHelpers" :key="index">
-          <div v-if="item.isMainItem" class="list-group-item fw-bold fs-3">
-            {{ item.title }}
-          </div>
+  <slide-up-down v-model="showFormHelperItems" :duration="300">
+    <div class="row mt-3">
+      <div class="col-md-12">
+        <div class="mb-3">
           <button
-            v-else
-            class="list-group-item list-group-item-action"
-            @click="onFormHelperItemClick(item)"
+            class="btn btn-danger btn-mobile full-width"
+            @click="closeFormHelperAndList"
           >
-            <label class="fw-bold">{{ item.title }}</label>
-            <span class="subtitle">{{ item.subTitle }}</span>
+            Close list
           </button>
-        </template>
+        </div>
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Filter form helpers (press 'Escape' to close)..."
+            v-model="formHelperFilter"
+            ref="formHelperFilterInput"
+          />
+        </div>
+        <div class="list-group stub-form-helpers">
+          <template
+            v-for="(item, index) in filteredStubFormHelpers"
+            :key="index"
+          >
+            <h2 v-if="item.isHeading" class="list-group-item">
+              {{ item.title }}
+            </h2>
+            <button
+              v-else
+              class="list-group-item list-group-item-action"
+              @click="onFormHelperItemClick(item)"
+            >
+              <label class="fw-bold">{{ item.title }}</label>
+              <span class="subtitle">{{ item.subTitle }}</span>
+            </button>
+          </template>
+        </div>
       </div>
     </div>
-  </div>
+  </slide-up-down>
   <div v-if="currentSelectedFormHelper" class="row mt-3">
     <div class="col-md-12">
       <div class="card">
@@ -115,7 +125,14 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, onUnmounted, ref, watch } from "vue";
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+} from "vue";
 import HttpMethodSelector from "@/components/stubForm/formHelper/HttpMethodSelector.vue";
 import TenantSelector from "@/components/stubForm/formHelper/TenantSelector.vue";
 import HttpStatusCodeSelector from "@/components/stubForm/formHelper/HttpStatusCodeSelector.vue";
@@ -129,9 +146,9 @@ import SetFullPath from "@/components/stubForm/formHelper/SetFullPath.vue";
 import { useRoute } from "vue-router";
 import { escapePressed } from "@/utils/event";
 import { useStubFormStore } from "@/store/stubForm";
-import { defineComponent } from "vue";
 import {
   type StubFormHelper,
+  StubFormHelperCategory,
   stubFormHelpers,
 } from "@/domain/stubForm/stub-form-helpers";
 import { FormHelperKey } from "@/domain/stubForm/form-helper-key";
@@ -172,6 +189,24 @@ export default defineComponent({
 
     // Data
     const showFormHelperItems = ref(false);
+    const formHelperButtons = [
+      { title: "Add example", category: StubFormHelperCategory.Examples },
+      {
+        title: "Add general stub info",
+        category: StubFormHelperCategory.GeneralInfo,
+      },
+      {
+        title: "Add request condition",
+        category: StubFormHelperCategory.RequestCondition,
+      },
+      {
+        title: "Add response writer",
+        category: StubFormHelperCategory.ResponseDefinition,
+      },
+    ];
+    const selectedFormHelperCategory = ref<StubFormHelperCategory>(
+      StubFormHelperCategory.None
+    );
     const formHelperItems = ref();
 
     // Methods
@@ -186,18 +221,32 @@ export default defineComponent({
       showFormHelperItems.value = false;
       formHelperFilter.value = "";
     };
-    const openFormHelperList = () => {
+    const openFormHelperList = (category: StubFormHelperCategory) => {
+      if (selectedFormHelperCategory.value === category) {
+        closeFormHelperAndList();
+        return;
+      }
+
       showFormHelperItems.value = true;
-      setTimeout(() => {
-        if (formHelperFilterInput.value) {
-          formHelperFilterInput.value.focus();
-        }
-      }, 10);
+      selectedFormHelperCategory.value = category;
+      const formHelpers = stubFormHelpers.filter(
+        (h) => h.stubFormHelperCategory === category
+      );
+      if (formHelpers.length === 1) {
+        onFormHelperItemClick(formHelpers[0]);
+      } else {
+        setTimeout(() => {
+          if (formHelperFilterInput.value) {
+            formHelperFilterInput.value.focus();
+          }
+        }, 10);
+      }
     };
     const closeFormHelperAndList = () => {
       formHelperFilter.value = "";
       stubFormStore.closeFormHelper();
       showFormHelperItems.value = false;
+      selectedFormHelperCategory.value = StubFormHelperCategory.None;
     };
 
     // Computed
@@ -205,17 +254,22 @@ export default defineComponent({
       () => stubFormStore.getCurrentSelectedFormHelper
     );
     const filteredStubFormHelpers = computed(() => {
-      if (!formHelperFilter.value) {
-        return stubFormHelpers;
+      let result = stubFormHelpers;
+      if (selectedFormHelperCategory.value) {
+        result = result.filter(
+          (r) => r.stubFormHelperCategory === selectedFormHelperCategory.value
+        );
       }
-      return stubFormHelpers.filter((h) => {
-        if (h.isMainItem) {
-          return true;
-        }
 
-        return h.title
-          .toLowerCase()
-          .includes(formHelperFilter.value.toLowerCase());
+      if (!formHelperFilter.value) {
+        return result;
+      }
+
+      return result.filter((h) => {
+        return (
+          !h.isHeading &&
+          h.title.toLowerCase().includes(formHelperFilter.value.toLowerCase())
+        );
       });
     });
     const formHelperFilter = computed({
@@ -256,12 +310,16 @@ export default defineComponent({
       closeFormHelperAndList,
       FormHelperKey,
       ResponseBodyType,
+      formHelperButtons,
+      selectedFormHelperCategory,
     };
   },
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "@/style/bootstrap.scss";
+
 label {
   display: block;
   cursor: pointer;
@@ -269,5 +327,17 @@ label {
 
 .subtitle {
   font-size: 0.9em;
+}
+
+.stub-form-helpers {
+  h2 {
+    margin: 0;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .form-helper-button {
+    width: 100%;
+  }
 }
 </style>

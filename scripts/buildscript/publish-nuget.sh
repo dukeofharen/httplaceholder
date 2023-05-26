@@ -11,5 +11,10 @@ if [ "$NUGET_API_KEY" = "" ]; then
   exit 1
 fi
 
-dotnet nuget push dist/HttPlaceholder.$VERSION.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
-dotnet nuget push dist/HttPlaceholder.Client.$VERSION.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
+PACKAGE="$3"
+if [ "$PACKAGE" = "" ]; then
+  echo "Package not set"
+  exit 1
+fi
+
+dotnet nuget push dist/$PACKAGE.$VERSION.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json

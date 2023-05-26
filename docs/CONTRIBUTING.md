@@ -20,7 +20,7 @@ To set up a development environment, please follow these steps:
 1. In the folder, executed the command `dotnet build`. This will download all NuGet packages and makes sure everything builds as intended.
 1. Go to the folder `src/HttPlaceholder`.
 1. Execute the command `dotnet run`. The HttPlaceholder application will now run and you can interact with it. To learn more about how to start the application with different configurations, go to the page [configuration](docs.md#configuration). The application runs, by default, on addresses <http://localhost:5000> and <https://localhost:5050>.
-1. Ideally, you want to use an IDE or an advanced text editor to make changes to the source code. Any of the following (and probably more) IDEs / text editors are supported and provide fullfledged C#/.NET support:
+1. Ideally, you want to use an IDE or an advanced text editor to make changes to the source code. Any of the following (and probably more) IDEs / text editors are supported and provide full-fledged C#/.NET support:
    - [Visual Studio (Windows only)](https://visualstudio.microsoft.com/)
    - [Visual Studio for Mac](https://visualstudio.microsoft.com/)
    - [Visual Studio Code (cross platform)](https://code.visualstudio.com/)

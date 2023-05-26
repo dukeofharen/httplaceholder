@@ -58,10 +58,10 @@
     </div>
 
     <div v-if="showResponseBody">
-      <codemirror
+      <code-editor
         ref="codeEditor"
+        :language="language"
         v-model="responseBody"
-        :options="cmOptions"
       />
     </div>
 
@@ -133,13 +133,7 @@ export default defineComponent({
     const metadata = ref<MetadataModel>();
     const selectedVariableHandler = ref("");
     const showExamples = ref(false);
-    const cmOptions = ref({
-      tabSize: 4,
-      mode: "" as any,
-      lineNumbers: true,
-      line: true,
-      htmlMode: false,
-    });
+    const language = ref("");
     let setInputTimeout: any;
 
     // Computed
@@ -183,7 +177,7 @@ export default defineComponent({
       showBase64TextInput.value = false;
     };
     const insertVariableHandlerExample = (example: string) => {
-      if (codeEditor.value && codeEditor.value.replaceSelection && example) {
+      if (example && codeEditor.value && codeEditor.value.replaceSelection) {
         codeEditor.value.replaceSelection(example);
       }
     };
@@ -257,19 +251,18 @@ export default defineComponent({
 
     // Watch
     watch(responseBodyType, () => {
-      cmOptions.value.htmlMode = false;
-      cmOptions.value.mode = "";
       switch (responseBodyType.value) {
         case ResponseBodyType.html:
-          cmOptions.value.htmlMode = true;
-          cmOptions.value.mode = "text/html";
+          language.value = "html";
           break;
         case ResponseBodyType.xml:
-          cmOptions.value.htmlMode = false;
-          cmOptions.value.mode = "application/xml";
+          language.value = "xml";
           break;
         case ResponseBodyType.json:
-          cmOptions.value.mode = { name: "javascript", json: true };
+          language.value = "json";
+          break;
+        default:
+          language.value = "";
           break;
       }
 
@@ -298,7 +291,6 @@ export default defineComponent({
       close,
       onUploaded,
       showResponseBodyTypeDropdown,
-      cmOptions,
       codeEditor,
       ResponseBodyType,
       elementDescriptions,
@@ -309,6 +301,7 @@ export default defineComponent({
       minifyXml,
       showExamples,
       insertVariableHandlerExample,
+      language,
     };
   },
 });

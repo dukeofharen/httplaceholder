@@ -11,7 +11,7 @@
 
     <FormHelperSelector v-if="showFormHelperSelector" />
 
-    <div class="row mt-3">
+    <div class="row mt-3" v-if="showEditorTypeButtons">
       <div class="col-md-12">
         <button
           class="btn btn-outline btn-sm me-2"
@@ -38,7 +38,7 @@
 
     <div class="row mt-3">
       <div class="col-md-12" v-if="editorType === editorTypes.codemirror">
-        <codemirror v-model="input" :options="cmOptions" />
+        <code-editor v-model="input" language="yaml" />
       </div>
       <div class="col-md-12" v-if="editorType === editorTypes.simple">
         <simple-editor v-model="input" />
@@ -115,6 +115,12 @@ export default defineComponent({
         ? editorTypes.simple
         : editorTypes.codemirror;
     });
+    const showEditorTypeButtons = computed(() => {
+      return (
+        selectedEditorType.value === editorTypes.simple ||
+        stubFormStore.getInputLength > simpleEditorThreshold
+      );
+    });
 
     // Functions
     const initialize = async () => {
@@ -172,6 +178,7 @@ export default defineComponent({
       selectedEditorType,
       editorType,
       docsUrl,
+      showEditorTypeButtons,
     };
   },
 });
