@@ -140,7 +140,7 @@ public class StubHandlingMiddleware
         requestLogger.LogRequestParameters(
             _httpContextService.Method,
             _httpContextService.DisplayUrl,
-            await _httpContextService.GetBodyAsync(cancellationToken),
+            await _httpContextService.GetBodyAsBytesAsync(cancellationToken),
             _clientDataResolver.GetClientIp(),
             _httpContextService.GetHeaders());
 

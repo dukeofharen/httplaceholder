@@ -18,9 +18,9 @@ public class RequestParametersModel
     public string Url { get; set; }
 
     /// <summary>
-    ///     Gets or sets the body.
+    ///     Gets or sets the binary body.
     /// </summary>
-    public string Body { get; set; }
+    public byte[] BinaryBody { get; set; }
 
     /// <summary>
     ///     Gets or sets the headers.

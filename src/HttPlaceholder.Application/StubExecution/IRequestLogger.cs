@@ -22,7 +22,7 @@ public interface IRequestLogger
     /// <param name="body">The request body.</param>
     /// <param name="clientIp">The IP address of the calling client.</param>
     /// <param name="headers">The request headers.</param>
-    void LogRequestParameters(string method, string url, string body, string clientIp,
+    void LogRequestParameters(string method, string url, byte[] body, string clientIp,
         IDictionary<string, string> headers);
 
     /// <summary>
