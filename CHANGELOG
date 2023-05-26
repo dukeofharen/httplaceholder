@@ -2,6 +2,8 @@
 - Split form helper buttons into 4 separate buttons (https://github.com/dukeofharen/httplaceholder/pull/305).
 - Updated the CodeMirror editor from 5 to 6 (https://github.com/dukeofharen/httplaceholder/pull/305).
 - Added filter for variable handlers in the UI (https://github.com/dukeofharen/httplaceholder/pull/305).
+- Only show "simple editor" button in UI if the stub is very large (https://github.com/dukeofharen/httplaceholder/pull/305).
+- Build HttPlaceholder and all its dependencies in a Docker container (https://github.com/dukeofharen/httplaceholder/pull/305).
 
 [2023.4.25]
 - Upgraded to .NET 7 (https://github.com/dukeofharen/httplaceholder/pull/293).
