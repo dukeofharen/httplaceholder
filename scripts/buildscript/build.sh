@@ -55,7 +55,6 @@ docker remove $CONTAINER_NAME
 bash "$BUILDSCRIPTS_FOLDER/build-docker.sh" "$VERSION" "$DOCKER_REPO_NAME"
 
 # Run HttPlaceholder integration tests
-npm install newman --global
 bash "$ROOT_PATH/test/exec-tests.sh"
 
 # Run pre publish check

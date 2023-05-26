@@ -1,0 +1,13 @@
+{
+  "name": "httplaceholder-integration-tests",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "newman": "newman"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "newman": "^5.3.2"
+  }
+}
