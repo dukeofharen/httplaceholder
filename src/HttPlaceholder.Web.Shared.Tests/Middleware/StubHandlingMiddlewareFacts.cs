@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Text;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Application.Exceptions;
 using HttPlaceholder.Application.Interfaces.Http;
@@ -115,9 +116,9 @@ public class StubHandlingMiddlewareFacts
             .Setup(m => m.DisplayUrl)
             .Returns(requestPath);
 
-        const string requestBody = "posted body";
+        var requestBody = "posted body"u8.ToArray();
         httpContextServiceMock
-            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
+            .Setup(m => m.GetBodyAsBytesAsync(It.IsAny<CancellationToken>()))
             .ReturnsAsync(requestBody);
 
         const string ip = "1.2.3.4";
@@ -216,8 +217,8 @@ public class StubHandlingMiddlewareFacts
             .ReturnsAsync(stubResponse);
 
         httpContextServiceMock
-            .Setup(m => m.GetBodyAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync((string)null);
+            .Setup(m => m.GetBodyAsBytesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync((byte[])null);
 
         var requestResultModel = new RequestResultModel();
         _requestLoggerMock

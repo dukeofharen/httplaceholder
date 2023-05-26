@@ -6,7 +6,7 @@ namespace HttPlaceholder.Web.Shared.Dto.v1.Requests;
 /// <summary>
 ///     A model for storing a request.
 /// </summary>
-public class RequestResultDto : IMapFrom<RequestResultModel>, IMapTo<RequestResultModel>
+public class RequestResultDto : IMapFrom<RequestResultModel>//, IMapTo<RequestResultModel> // TODO niet nodig volgens mij
 {
     /// <summary>
     ///     Gets or sets the correlation identifier.

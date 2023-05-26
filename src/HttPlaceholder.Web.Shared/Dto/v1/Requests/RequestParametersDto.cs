@@ -47,6 +47,7 @@ public class RequestParametersDto : IHaveCustomMapping
         // configuration.CreateMap<RequestParametersDto, RequestParametersModel>(); // TODO nodig? Weet ik zo niet
         configuration.CreateMap<RequestParametersModel, RequestParametersDto>()
             .ForMember(dest => dest.Body, opt => opt.Ignore())
+            .ForMember(dest => dest.BodyIsBinary, opt => opt.Ignore())
             .AfterMap((src, dest, _) =>
             {
                 if (!string.IsNullOrEmpty(src.Body))
