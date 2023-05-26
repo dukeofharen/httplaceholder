@@ -38,31 +38,20 @@ DOCKER_USERNAME=$(cat $BUILD_METADATA_PATH/dockerusername)
 DOCKER_PASSWORD=$(cat $BUILD_METADATA_PATH/dockerpassword)
 GITHUB_API_KEY=$(cat $BUILD_METADATA_PATH/githubkey)
 
-# Ensure software
-sudo apt update
-sudo apt install zip -y
-
 # Get and set version
 bash "$BUILDSCRIPTS_FOLDER/set-version.sh" "$ROOT_PATH"
 VERSION=$(cat $ROOT_PATH/version.txt)
 
-# Run unit tests of .NET project
-bash "$BUILDSCRIPTS_FOLDER/run-tests.sh" "$ROOT_PATH"
+# Build all packages using the Docker Build container
+cd $ROOT_PATH
+TAG_NAME=$VERSION
+CONTAINER_NAME="container-$VERSION"
+docker build -t $VERSION -f Build.dockerfile .
+docker create --name $CONTAINER_NAME $TAG_NAME
+docker cp $CONTAINER_NAME:/app/dist .
+docker remove $CONTAINER_NAME
 
-# Build docs
-bash "$BUILDSCRIPTS_FOLDER/build-docs.sh" "$ROOT_PATH"
-
-# Build UI
-bash "$BUILDSCRIPTS_FOLDER/build-ui.sh" "$ROOT_PATH"
-
-# TODO call build Docker container here somewhere
-# Build all packages
-bash "$BUILDSCRIPTS_FOLDER/build-linux.sh" "$VERSION" "$ROOT_PATH"
-bash "$BUILDSCRIPTS_FOLDER/build-nuget-client.sh" "$VERSION" "$ROOT_PATH"
-bash "$BUILDSCRIPTS_FOLDER/build-osx.sh" "$VERSION" "$ROOT_PATH"
-bash "$BUILDSCRIPTS_FOLDER/build-tool.sh" "$VERSION" "$ROOT_PATH"
-bash "$BUILDSCRIPTS_FOLDER/build-windows.sh" "$VERSION" "$ROOT_PATH"
-bash "$BUILDSCRIPTS_FOLDER/create-open-api-file.sh" "$ROOT_PATH"
+# Build Docker container
 bash "$BUILDSCRIPTS_FOLDER/build-docker.sh" "$VERSION" "$DOCKER_REPO_NAME"
 
 # Run HttPlaceholder integration tests

@@ -151,6 +151,7 @@ COPY --from=windows-app-build-env /app/dist ./windows
 COPY --from=tool-build-env /app/dist ./tool
 COPY --from=dotnet-nuget-build-env /app/dist ./nuget
 COPY --from=swagger-build-env /app/dist ./swagger
+COPY --from=doc-build-env /app/site/. ./docs
 RUN mkdir dist && \
     apt update && \
     apt install zip -y && \
