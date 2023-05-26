@@ -44,11 +44,18 @@ public class RequestParametersDto : IHaveCustomMapping
     /// <inheritdoc />
     public void CreateMappings(Profile configuration)
     {
-        configuration.CreateMap<RequestParametersDto, RequestParametersModel>();
+        // configuration.CreateMap<RequestParametersDto, RequestParametersModel>(); // TODO nodig? Weet ik zo niet
         configuration.CreateMap<RequestParametersModel, RequestParametersDto>()
             .ForMember(dest => dest.Body, opt => opt.Ignore())
             .AfterMap((src, dest, _) =>
             {
+                if (!string.IsNullOrEmpty(src.Body))
+                {
+                    dest.BodyIsBinary = false;
+                    dest.Body = src.Body;
+                    return;
+                }
+
                 var isBinary = !src.BinaryBody.IsValidAscii();
                 dest.BodyIsBinary = isBinary;
                 dest.Body = isBinary ? Convert.ToBase64String(src.BinaryBody) : Encoding.UTF8.GetString(src.BinaryBody);

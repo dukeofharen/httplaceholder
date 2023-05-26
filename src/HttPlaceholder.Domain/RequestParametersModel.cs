@@ -23,6 +23,11 @@ public class RequestParametersModel
     public byte[] BinaryBody { get; set; }
 
     /// <summary>
+    ///     Gets or sets the body. Needed for backwards compatibility.
+    /// </summary>
+    public string Body { get; set; }
+
+    /// <summary>
     ///     Gets or sets the headers.
     /// </summary>
     public IDictionary<string, string> Headers { get; set; }
