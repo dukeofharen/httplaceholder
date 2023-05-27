@@ -23,6 +23,7 @@ import { RequestResultModel } from "@/domain/request/request-result-model";
 import { downloadBlob } from "@/utils/download";
 import { base64ToBlob } from "@/utils/text";
 import { imageMimeTypes } from "@/constants/technical";
+import mime from "mime-types";
 
 const bodyTypes = {
   image: "image",
@@ -71,7 +72,8 @@ export default defineComponent({
 
     // Methods
     const download = () => {
-      downloadBlob("file.bin", base64ToBlob(body.value));
+      const extension = mime.extension(contentType.value) ?? "bin";
+      downloadBlob(`file.${extension}`, base64ToBlob(body.value));
     };
 
     return {
