@@ -26,11 +26,11 @@ internal class RequestLogger : IRequestLogger
     }
 
     /// <inheritdoc />
-    public void LogRequestParameters(string method, string url, string body, string clientIp,
+    public void LogRequestParameters(string method, string url, byte[] body, string clientIp,
         IDictionary<string, string> headers) =>
         _result.RequestParameters = new RequestParametersModel
         {
-            Body = body,
+            BinaryBody = body,
             ClientIp = clientIp,
             Headers = headers,
             Method = method,

@@ -18,7 +18,12 @@ public class RequestParametersModel
     public string Url { get; set; }
 
     /// <summary>
-    ///     Gets or sets the body.
+    ///     Gets or sets the binary body.
+    /// </summary>
+    public byte[] BinaryBody { get; set; }
+
+    /// <summary>
+    ///     Gets or sets the body. Needed for backwards compatibility.
     /// </summary>
     public string Body { get; set; }
 

@@ -23,5 +23,6 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\HttPlaceholder.Application\HttPlaceholder.Application.csproj" />
+        <ProjectReference Include="..\HttPlaceholder.Web.Shared\HttPlaceholder.Web.Shared.csproj" />
     </ItemGroup>
 </Project>

@@ -1,4 +1,7 @@
-﻿using HttPlaceholder.Application.Interfaces.Mappings;
+﻿using System.Text;
+using AutoMapper;
+using HttPlaceholder.Application.Interfaces.Mappings;
+using HttPlaceholder.Common.Utilities;
 using HttPlaceholder.Domain;
 
 namespace HttPlaceholder.Web.Shared.Dto.v1.Requests;
@@ -6,7 +9,7 @@ namespace HttPlaceholder.Web.Shared.Dto.v1.Requests;
 /// <summary>
 ///     A model for storing the request data for a request.
 /// </summary>
-public class RequestParametersDto : IMapFrom<RequestParametersModel>, IMapTo<RequestParametersModel>
+public class RequestParametersDto : IHaveCustomMapping
 {
     /// <summary>
     ///     Gets or sets the method.
@@ -24,6 +27,11 @@ public class RequestParametersDto : IMapFrom<RequestParametersModel>, IMapTo<Req
     public string Body { get; set; }
 
     /// <summary>
+    ///     Gets or sets whether the request body is binary.
+    /// </summary>
+    public bool BodyIsBinary { get; set; }
+
+    /// <summary>
     ///     Gets or sets the headers.
     /// </summary>
     public IDictionary<string, string> Headers { get; set; }
@@ -32,4 +40,26 @@ public class RequestParametersDto : IMapFrom<RequestParametersModel>, IMapTo<Req
     ///     Gets or sets the client ip.
     /// </summary>
     public string ClientIp { get; set; }
+
+    /// <inheritdoc />
+    public void CreateMappings(Profile configuration)
+    {
+        // configuration.CreateMap<RequestParametersDto, RequestParametersModel>(); // TODO nodig? Weet ik zo niet
+        configuration.CreateMap<RequestParametersModel, RequestParametersDto>()
+            .ForMember(dest => dest.Body, opt => opt.Ignore())
+            .ForMember(dest => dest.BodyIsBinary, opt => opt.Ignore())
+            .AfterMap((src, dest, _) =>
+            {
+                if (!string.IsNullOrEmpty(src.Body))
+                {
+                    dest.BodyIsBinary = false;
+                    dest.Body = src.Body;
+                    return;
+                }
+
+                var isBinary = !src.BinaryBody.IsValidAscii();
+                dest.BodyIsBinary = isBinary;
+                dest.Body = isBinary ? Convert.ToBase64String(src.BinaryBody) : Encoding.UTF8.GetString(src.BinaryBody);
+            });
+    }
 }

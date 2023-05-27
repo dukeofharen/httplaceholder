@@ -4,6 +4,9 @@
 - Added filter for variable handlers in the UI (https://github.com/dukeofharen/httplaceholder/pull/305).
 - Only show "simple editor" button in UI if the stub is very large (https://github.com/dukeofharen/httplaceholder/pull/305).
 - Build HttPlaceholder and all its dependencies in a Docker container (https://github.com/dukeofharen/httplaceholder/pull/305).
+- Save binary request body as Base64 string (https://github.com/dukeofharen/httplaceholder/pull/306).
+- Make it possible to download binary request body from the UI (https://github.com/dukeofharen/httplaceholder/pull/306).
+- Render a posted image request body in the UI (https://github.com/dukeofharen/httplaceholder/pull/306).
 
 [2023.4.25]
 - Upgraded to .NET 7 (https://github.com/dukeofharen/httplaceholder/pull/293).
