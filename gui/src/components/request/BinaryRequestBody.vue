@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-12">
-          <button class="btn btn-sm btn-outline-primary" @click="download">
+          <button class="btn btn-sm btn-primary" @click="download">
             Download
           </button>
           <div v-if="bodyType != bodyTypes.other" class="mt-2">

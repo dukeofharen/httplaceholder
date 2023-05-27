@@ -3,6 +3,9 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-12" v-if="bodyType">
+          <button class="btn btn-sm btn-primary me-2" @click="download">
+            Download
+          </button>
           <button
             class="btn btn-sm me-2"
             :class="{
@@ -30,7 +33,7 @@
           <code-highlight :language="language" :code="renderedBody" />
         </div>
         <div class="col-md-12" v-if="!showRenderedBody">
-          <code-highlight :code="rawBody" />
+          <code-highlight :code="body" />
         </div>
         <div v-if="showMore" @click="showMoreClick" class="show-more-button">
           <p class="text-center">
@@ -61,8 +64,10 @@ import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { defineComponent } from "vue";
 import type { RequestResultModel } from "@/domain/request/request-result-model";
-import { countNewlineCharacters } from "@/utils/text";
+import { base64ToBlob, countNewlineCharacters } from "@/utils/text";
 import { requestBodyLineLimit } from "@/constants/technical";
+import mime from "mime-types";
+import { downloadBlob } from "@/utils/download";
 
 const bodyTypes = {
   xml: "XML",
@@ -83,13 +88,12 @@ export default defineComponent({
     const showRenderedBody = ref(false);
     const showMoreClicked = ref(false);
 
-    // Functions
-    const getHeaders = () => props.request.requestParameters.headers;
-    const getBody = () => props.request.requestParameters.body;
-
     // Computed
-    const bodyType = computed(() => {
-      const headers = getHeaders();
+    const body = computed(() => {
+      return props.request.requestParameters.body;
+    });
+    const contentType = computed(() => {
+      const headers = props.request.requestParameters.headers;
       const contentTypeHeaderKey = Object.keys(headers).find(
         (k) => k.toLowerCase() === "content-type"
       );
@@ -97,10 +101,10 @@ export default defineComponent({
         return "";
       }
 
-      const contentType = headers[contentTypeHeaderKey]
-        .toLowerCase()
-        .split(";")[0];
-      switch (contentType) {
+      return headers[contentTypeHeaderKey].toLowerCase().split(";")[0];
+    });
+    const bodyType = computed(() => {
+      switch (contentType.value) {
         case "text/xml":
         case "application/xml":
         case "application/soap+xml":
@@ -115,16 +119,16 @@ export default defineComponent({
     });
     const renderedBody = computed(() => {
       if (bodyType.value === bodyTypes.xml) {
-        return xmlFormatter(getBody());
+        return xmlFormatter(body.value);
       } else if (bodyType.value === bodyTypes.json) {
         try {
-          const json = JSON.parse(getBody());
+          const json = JSON.parse(body.value);
           return JSON.stringify(json, null, 2);
         } catch (e) {
           return "";
         }
       } else if (bodyType.value === bodyTypes.form) {
-        return formFormat(getBody());
+        return formFormat(body.value);
       }
 
       return "";
@@ -139,10 +143,9 @@ export default defineComponent({
           return "";
       }
     });
-    const rawBody = computed(() => getBody());
     const showMoreButtonEnabled = computed(() => {
       const newlineCount = countNewlineCharacters(
-        showRenderedBody.value ? renderedBody.value : rawBody.value
+        showRenderedBody.value ? renderedBody.value : body.value
       );
       return newlineCount >= requestBodyLineLimit;
     });
@@ -156,11 +159,15 @@ export default defineComponent({
     };
     const viewRawBody = () => (showRenderedBody.value = false);
     const copy = () =>
-      copyTextToClipboard(getBody()).then(() =>
+      copyTextToClipboard(body.value).then(() =>
         success(resources.requestBodyCopiedToClipboard)
       );
     const showMoreClick = () => {
       showMoreClicked.value = true;
+    };
+    const download = () => {
+      const extension = mime.extension(contentType.value) ?? "bin";
+      downloadBlob(`file.${extension}`, body.value);
     };
 
     // Lifecycle
@@ -174,12 +181,13 @@ export default defineComponent({
       showRenderedBody,
       viewRenderedBody,
       viewRawBody,
-      rawBody,
+      body,
       copy,
       language,
       showMoreButtonEnabled,
       showMore,
       showMoreClick,
+      download,
     };
   },
 });
@@ -209,6 +217,7 @@ export default defineComponent({
   left: 0;
   cursor: pointer;
 }
+
 .show-more .show-more-button i {
   font-size: 3em;
   text-align: center;
@@ -217,6 +226,7 @@ export default defineComponent({
 .light-theme .show-more .show-more-button {
   background-image: linear-gradient(rgba(255, 0, 0, 0), #fff);
 }
+
 .dark-theme .show-more .show-more-button {
   background-image: linear-gradient(rgba(255, 0, 0, 0), $gray-900);
 }
