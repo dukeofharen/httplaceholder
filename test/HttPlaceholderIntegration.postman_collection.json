@@ -5896,6 +5896,147 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "11. Binary / not binary",
+							"item": [
+								{
+									"name": "Binary request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Get correlation header\", function () {",
+													"    pm.globals.set(\"corrId\", pm.response.headers.get(\"X-HttPlaceholder-Correlation\"));",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "PNG\n\u001a\n���\nIHDR���\u0001���\u0001\b\u0002���wS��\u0001iCCPICC profile��(}=H@\u001c_S\"v\u0010qP] *U(BP+`r\u00174iHR\\\u001c\u0005ׂ\u001fU\u0007\u0017g]\u001d\\\u0005A\u0003IEJ_Sh\u0011q?{ܽ\u0003ZiV8鶙tfU|E�!\u000f29IJs|׻(>U\u0016\u0003|\",3Lxxz68\u0013YAVωL #\u00158\u001b,̰J\u0013|\u001b+m\nF<E\u001cQ5*-Z/\ffe\u001cB\u001cX\u0004\u0011\n*(\u0004\u001bQZuR,$i?\u001fl%r)*c\u0001eh\u001b~?ݭp1 8\u001f@.P:O�3p\u001a0IzE6pqҔ=r\u0007\u0018x2dSnH~B.\u00077e[{\u0007 E]%nC`$O\u001ej3~�Tr5���\tpHYs��.#��.#\u0001x?v���\u0007tIME\u0007\u0005\u000f\u000b\u0011;;i���\u0019tEXtComment�Created with GIMPW\u000e\u0017���\fIDAT\bc```���\u0004�\u0001'4'\n����IENDB`"
+										},
+										"url": {
+											"raw": "{{rootUrl}}binary",
+											"host": [
+												"{{rootUrl}}binary"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get and check request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Check response\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData.requestParameters.bodyIsBinary).to.be.true;",
+													"    pm.expect(jsonData.requestParameters.body).to.eql(\"UE5HChoK77+977+977+9CklIRFLvv73vv73vv70B77+977+977+9AQgC77+977+977+9d1Pvv73vv70BaUNDUElDQyBwcm9maWxl77+977+9KH09SEAcX1MidhBxUF0gKlUoQlArYHIXNGlIUlwcBdeCH1UHF2ddHVwFQQNJRUpfU2gRcT973L0DWmlWOOm2mXRmVXxF77+9IQ8yOUlKc3zXuyg+VRYDfCIsM0x4eHo2OBNZQVbPiUwgIxU4GyzMsEoTfBsrbQpGPEUcUTUqLVrCmi8MZmUcQhxYBBEKKigEG1FadVIsJGk/H2wlcikqYwFlaBt+P92tcDEgOB9ALlA6T++/vTNwGjBJekU2cHHSlD1yBxh4MmRTbkh+Qi4HN2VbewcgRV0lbkNgJE8eajN+77+9VHI177+977+977+9CXBIWXPvv73vv70uI++/ve+/vS4jAXg/du+/ve+/ve+/vQd0SU1FBwUPCxE7O2nvv73vv73vv70ZdEVYdENvbW1lbnTvv71DcmVhdGVkIHdpdGggR0lNUFcOF++/ve+/ve+/vQxJREFUCGNgYGDvv73vv73vv70E77+9ASc0Jwrvv73vv73vv73vv71JRU5EQmA=\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/requests/{{corrId}}",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"requests",
+												"{{corrId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Text request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Get correlation header\", function () {",
+													"    pm.globals.set(\"corrId\", pm.response.headers.get(\"X-HttPlaceholder-Correlation\"));",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "Some text"
+										},
+										"url": {
+											"raw": "{{rootUrl}}text",
+											"host": [
+												"{{rootUrl}}text"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get and check request",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Check response\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData.requestParameters.bodyIsBinary).to.be.false;",
+													"    pm.expect(jsonData.requestParameters.body).to.eql(\"Some text\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}ph-api/requests/{{corrId}}",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"requests",
+												"{{corrId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				},
