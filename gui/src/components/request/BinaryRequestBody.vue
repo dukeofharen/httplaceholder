@@ -3,11 +3,13 @@
     <div class="card-body">
       <div class="row">
         <div class="col-md-12">
-          <button class="btn btn-sm btn-outline-primary mb-2" @click="download">
+          <button class="btn btn-sm btn-outline-primary" @click="download">
             Download
           </button>
-          <div v-if="bodyType === bodyTypes.image">
-            <img :src="'data:' + contentType + ';base64,' + body" />
+          <div v-if="bodyType != bodyTypes.other" class="mt-2">
+            <div v-if="bodyType === bodyTypes.image">
+              <img :src="imageUrl" />
+            </div>
           </div>
         </div>
       </div>
@@ -20,11 +22,10 @@ import { computed, defineComponent, PropType } from "vue";
 import { RequestResultModel } from "@/domain/request/request-result-model";
 import { downloadBlob } from "@/utils/download";
 import { base64ToBlob } from "@/utils/text";
-import { imageMimeTypes, pdfMimeType } from "@/constants/technical";
+import { imageMimeTypes } from "@/constants/technical";
 
 const bodyTypes = {
   image: "image",
-  pdf: "pdf",
   other: "other",
 };
 
@@ -62,11 +63,10 @@ export default defineComponent({
         return bodyTypes.image;
       }
 
-      if (type.includes(pdfMimeType)) {
-        return bodyTypes.pdf;
-      }
-
       return bodyTypes.other;
+    });
+    const imageUrl = computed(() => {
+      return `data:${contentType.value};base64,${body.value}`;
     });
 
     // Methods
@@ -74,7 +74,14 @@ export default defineComponent({
       downloadBlob("file.bin", base64ToBlob(body.value));
     };
 
-    return { download, bodyType, bodyTypes, contentType, body };
+    return {
+      download,
+      bodyType,
+      bodyTypes,
+      contentType,
+      body,
+      imageUrl,
+    };
   },
 });
 </script>
