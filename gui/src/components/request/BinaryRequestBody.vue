@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType } from "vue";
-import { RequestResultModel } from "@/domain/request/request-result-model";
+import { computed, defineComponent, type PropType } from "vue";
+import { type RequestResultModel } from "@/domain/request/request-result-model";
 import { downloadBlob } from "@/utils/download";
 import { base64ToBlob } from "@/utils/text";
 import { imageMimeTypes } from "@/constants/technical";

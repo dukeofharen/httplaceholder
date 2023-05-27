@@ -18,6 +18,7 @@ export function getDefaultRequestResultModel(): RequestResultModel {
   return {
     requestParameters: {
       body: "",
+      bodyIsBinary: false,
       url: "",
       clientIp: "",
       headers: {},
