@@ -45,6 +45,7 @@ public class ImageResponseWriterFacts
         Assert.IsFalse(result.Executed);
         Assert.AreEqual(0, response.Headers.Count);
         Assert.AreEqual(null, response.Body);
+        Assert.IsFalse(response.BodyIsBinary);
     }
 
     [TestMethod]
@@ -76,6 +77,7 @@ public class ImageResponseWriterFacts
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(1, response.Headers.Count);
         Assert.AreEqual(cachedBytes, response.Body);
+        Assert.IsTrue(response.BodyIsBinary);
     }
 
     [DataTestMethod]
@@ -109,6 +111,7 @@ public class ImageResponseWriterFacts
 
         // Assert
         Assert.IsTrue(result.Executed);
+        Assert.IsTrue(response.BodyIsBinary);
         Assert.AreEqual(1, response.Headers.Count);
         await using var ms = new MemoryStream(response.Body);
         using var image = await Image.LoadAsync(ms);

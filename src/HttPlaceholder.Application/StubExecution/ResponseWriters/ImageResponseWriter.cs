@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Exceptions;
@@ -95,6 +96,7 @@ internal class ImageResponseWriter : IResponseWriter, ISingletonService
         }
 
         response.Body = bytes;
+        response.BodyIsBinary = bytes.Any();
         return StubResponseWriterResultModel.IsExecuted(GetType().Name);
     }
 
