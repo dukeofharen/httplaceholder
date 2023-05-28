@@ -44,10 +44,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-// Required
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+@import "@/style/bootstrap";
 
 .menu-item {
   cursor: pointer;

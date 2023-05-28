@@ -64,7 +64,7 @@ import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { defineComponent } from "vue";
 import type { RequestResultModel } from "@/domain/request/request-result-model";
-import { base64ToBlob, countNewlineCharacters } from "@/utils/text";
+import { countNewlineCharacters } from "@/utils/text";
 import { requestBodyLineLimit } from "@/constants/technical";
 import mime from "mime-types";
 import { downloadBlob } from "@/utils/download";
@@ -76,7 +76,7 @@ const bodyTypes = {
 };
 
 export default defineComponent({
-  name: "RequestBody",
+  name: "TextRequestBody",
   props: {
     request: {
       type: Object as PropType<RequestResultModel>,
@@ -194,9 +194,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+@import "@/style/bootstrap";
 
 .copy {
   font-size: 2em;

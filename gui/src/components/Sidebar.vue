@@ -127,10 +127,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-// Required
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+@import "@/style/bootstrap";
 
 .logo img {
   max-width: 100%;

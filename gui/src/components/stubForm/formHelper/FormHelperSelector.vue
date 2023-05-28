@@ -318,7 +318,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "@/style/bootstrap.scss";
+@import "@/style/bootstrap";
 
 label {
   display: block;
