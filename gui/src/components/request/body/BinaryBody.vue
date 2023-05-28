@@ -31,7 +31,7 @@ const bodyTypes = {
 };
 
 export default defineComponent({
-  name: "BinaryRequestBody",
+  name: "BinaryBody",
   props: {
     request: {
       type: Object as PropType<RequestResultModel>,

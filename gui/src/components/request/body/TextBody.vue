@@ -76,7 +76,7 @@ const bodyTypes = {
 };
 
 export default defineComponent({
-  name: "TextRequestBody",
+  name: "TextBody",
   props: {
     request: {
       type: Object as PropType<RequestResultModel>,

@@ -8,12 +8,13 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import BinaryRequestBody from "@/components/request/body/BinaryRequestBody.vue";
-import TextRequestBody from "@/components/request/body/TextRequestBody.vue";
+import BinaryBody from "@/components/request/body/BinaryBody.vue";
+import TextBody from "@/components/request/body/TextBody.vue";
 import { RequestResultModel } from "@/domain/request/request-result-model";
 
 export default defineComponent({
-  components: { TextRequestBody, BinaryRequestBody },
+  name: "RequestResponseBody",
+  components: { TextRequestBody: TextBody, BinaryRequestBody: BinaryBody },
   props: {
     request: {
       type: Object as PropType<RequestResultModel>,
