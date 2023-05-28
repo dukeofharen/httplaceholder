@@ -73,6 +73,7 @@ export default defineComponent({
     const bodyRenderModel = computed<RequestResponseBodyRenderModel>(() => {
       return {
         body: response.value.body,
+        base64DecodeNotBinary: true,
         bodyIsBinary: response.value.bodyIsBinary,
         headers: response.value.headers,
       };

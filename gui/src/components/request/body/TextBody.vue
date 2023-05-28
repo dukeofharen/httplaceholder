@@ -63,7 +63,7 @@ import { copyTextToClipboard } from "@/utils/clipboard";
 import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { defineComponent } from "vue";
-import { countNewlineCharacters } from "@/utils/text";
+import { countNewlineCharacters, fromBase64 } from "@/utils/text";
 import { requestBodyLineLimit } from "@/constants/technical";
 import mime from "mime-types";
 import { downloadBlob } from "@/utils/download";
@@ -90,7 +90,9 @@ export default defineComponent({
 
     // Computed
     const body = computed(() => {
-      return props.renderModel.body;
+      return props.renderModel.base64DecodeNotBinary
+        ? fromBase64(props.renderModel.body)
+        : props.renderModel.body;
     });
     const contentType = computed(() => {
       const headers = props.renderModel.headers;
