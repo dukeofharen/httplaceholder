@@ -40,11 +40,7 @@
       </div>
       <div class="col-md-12 mb-3" v-if="showRequestBody">
         <label>Request body</label>
-        <TextRequestBody
-          v-if="!request.requestParameters.bodyIsBinary"
-          :request="request"
-        />
-        <BinaryRequestBody v-else :request="request" />
+        <RequestBody :request="request" />
       </div>
       <div v-if="showResults" class="col-md-12">
         <div class="accordion">
@@ -76,10 +72,12 @@ import TextRequestBody from "@/components/request/body/TextRequestBody.vue";
 import { defineComponent } from "vue";
 import type { RequestResultModel } from "@/domain/request/request-result-model";
 import BinaryRequestBody from "@/components/request/body/BinaryRequestBody.vue";
+import RequestBody from "@/components/request/body/RequestBody.vue";
 
 export default defineComponent({
   name: "RequestDetails",
   components: {
+    RequestBody,
     TextRequestBody,
     BinaryRequestBody,
     StubExecutionResults,
