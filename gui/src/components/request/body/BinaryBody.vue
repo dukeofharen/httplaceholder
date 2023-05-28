@@ -19,11 +19,11 @@
 
 <script lang="ts">
 import { computed, defineComponent, type PropType } from "vue";
-import { type RequestResultModel } from "@/domain/request/request-result-model";
 import { downloadBlob } from "@/utils/download";
 import { base64ToBlob } from "@/utils/text";
 import { imageMimeTypes } from "@/constants/technical";
 import mime from "mime-types";
+import type { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
 
 const bodyTypes = {
   image: "image",
@@ -33,18 +33,18 @@ const bodyTypes = {
 export default defineComponent({
   name: "BinaryBody",
   props: {
-    request: {
-      type: Object as PropType<RequestResultModel>,
+    renderModel: {
+      type: Object as PropType<RequestResponseBodyRenderModel>,
       required: true,
     },
   },
   setup(props) {
     // Computed
     const body = computed(() => {
-      return props.request.requestParameters.body;
+      return props.renderModel.body;
     });
     const contentType = computed(() => {
-      const headers = props.request.requestParameters.headers;
+      const headers = props.renderModel.headers;
       const contentTypeHeaderKey = Object.keys(headers).find(
         (k) => k.toLowerCase() === "content-type"
       );

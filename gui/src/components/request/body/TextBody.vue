@@ -63,11 +63,11 @@ import { copyTextToClipboard } from "@/utils/clipboard";
 import { resources } from "@/constants/resources";
 import { success } from "@/utils/toast";
 import { defineComponent } from "vue";
-import type { RequestResultModel } from "@/domain/request/request-result-model";
 import { countNewlineCharacters } from "@/utils/text";
 import { requestBodyLineLimit } from "@/constants/technical";
 import mime from "mime-types";
 import { downloadBlob } from "@/utils/download";
+import type { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
 
 const bodyTypes = {
   xml: "XML",
@@ -78,8 +78,8 @@ const bodyTypes = {
 export default defineComponent({
   name: "TextBody",
   props: {
-    request: {
-      type: Object as PropType<RequestResultModel>,
+    renderModel: {
+      type: Object as PropType<RequestResponseBodyRenderModel>,
       required: true,
     },
   },
@@ -90,10 +90,10 @@ export default defineComponent({
 
     // Computed
     const body = computed(() => {
-      return props.request.requestParameters.body;
+      return props.renderModel.body;
     });
     const contentType = computed(() => {
-      const headers = props.request.requestParameters.headers;
+      const headers = props.renderModel.headers;
       const contentTypeHeaderKey = Object.keys(headers).find(
         (k) => k.toLowerCase() === "content-type"
       );
