@@ -33,6 +33,7 @@
     "toastr": "^2.1.4",
     "vue": "^3.3.4",
     "vue-codemirror": "^6.1.1",
+    "vue-pdf-embed": "^1.1.6",
     "vue-router": "^4.2.1",
     "vue3-slide-up-down": "^2.0.1",
     "xml-formatter": "^3.4.1"

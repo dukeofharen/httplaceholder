@@ -17,15 +17,15 @@
         <label>Executed stub</label>
         <router-link
           :to="{ name: 'Stubs', query: { filter: request?.executingStubId } }"
-          >{{ request?.executingStubId }}</router-link
-        >
+          >{{ request?.executingStubId }}
+        </router-link>
       </div>
       <div class="col-md-12 mb-3">
         <label>Stub tenant (category)</label>
         <router-link
           :to="{ name: 'Stubs', query: { tenant: request?.stubTenant } }"
-          >{{ request?.stubTenant }}</router-link
-        >
+          >{{ request?.stubTenant }}
+        </router-link>
       </div>
       <div class="col-md-12 mb-3">
         <label>Request time</label>
@@ -40,11 +40,7 @@
       </div>
       <div class="col-md-12 mb-3" v-if="showRequestBody">
         <label>Request body</label>
-        <RequestBody
-          v-if="!request.requestParameters.bodyIsBinary"
-          :request="request"
-        />
-        <BinaryRequestBody v-else :request="request" />
+        <RequestResponseBody :render-model="bodyRenderModel" />
       </div>
       <div v-if="showResults" class="col-md-12">
         <div class="accordion">
@@ -72,16 +68,15 @@ import QueryParams from "@/components/request/QueryParams.vue";
 import RequestResponse from "@/components/request/RequestResponse.vue";
 import StubExecutionResults from "@/components/request/StubExecutionResults.vue";
 import ResponseWriterResults from "@/components/request/ResponseWriterResults.vue";
-import RequestBody from "@/components/request/RequestBody.vue";
 import { defineComponent } from "vue";
 import type { RequestResultModel } from "@/domain/request/request-result-model";
-import BinaryRequestBody from "@/components/request/BinaryRequestBody.vue";
+import RequestResponseBody from "@/components/request/body/RequestResponseBody.vue";
+import type { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
 
 export default defineComponent({
   name: "RequestDetails",
   components: {
-    RequestBody,
-    BinaryRequestBody,
+    RequestResponseBody,
     StubExecutionResults,
     RequestHeaders,
     QueryParams,
@@ -124,6 +119,13 @@ export default defineComponent({
       () =>
         showStubExecutionResults.value || showStubResponseWriterResults.value
     );
+    const bodyRenderModel = computed<RequestResponseBodyRenderModel>(() => {
+      return {
+        body: props.request.requestParameters.body,
+        bodyIsBinary: props.request.requestParameters.bodyIsBinary,
+        headers: props.request.requestParameters.headers,
+      };
+    });
 
     return {
       requestParams,
@@ -134,6 +136,7 @@ export default defineComponent({
       showStubResponseWriterResults,
       showResults,
       showRequestBody,
+      bodyRenderModel,
     };
   },
 });

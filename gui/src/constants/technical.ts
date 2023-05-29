@@ -13,6 +13,7 @@ export const imageMimeTypes = [
   "image/png",
   "image/svg+xml",
   "image/webp",
+  "image/bmp",
 ];
 
 export const pdfMimeType = "application/pdf";

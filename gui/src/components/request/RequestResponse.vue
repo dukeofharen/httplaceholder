@@ -18,22 +18,15 @@
             </tbody>
           </table>
         </div>
-        <div class="col-md-12 mb-3" v-if="body">
+        <div class="col-md-12 mb-3" v-if="bodyRenderModel">
           <label>Response body</label>
-          <button
-            class="btn btn-success btn-sm me-2"
-            @click="downloadResponse"
-            title="Download the response"
-          >
-            Download
-          </button>
-          <code-highlight v-if="!bodyIsBinary" :code="body" />
+          <RequestResponseBody :render-model="bodyRenderModel" />
         </div>
       </div>
       <div v-else>
         No response found for this request. Go to
-        <router-link :to="{ name: 'Settings' }">Settings</router-link> to enable
-        "Store response for request".
+        <router-link :to="{ name: 'Settings' }">Settings</router-link>
+        to enable "Store response for request".
       </div>
     </template>
   </accordion-item>
@@ -45,11 +38,12 @@ import type { RequestResultModel } from "@/domain/request/request-result-model";
 import type { ResponseModel } from "@/domain/request/response-model";
 import { useRequestsStore } from "@/store/requests";
 import type { HashMap } from "@/domain/hash-map";
-import { base64ToBlob, fromBase64 } from "@/utils/text";
-import { downloadBlob } from "@/utils/download";
+import RequestResponseBody from "@/components/request/body/RequestResponseBody.vue";
+import { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
 
 export default defineComponent({
   name: "RequestResponse",
+  components: { RequestResponseBody },
   props: {
     request: {
       type: Object as PropType<RequestResultModel>,
@@ -60,37 +54,36 @@ export default defineComponent({
     const requestStore = useRequestsStore();
 
     // Data
-    const response = ref<ResponseModel>();
+    const response = ref<ResponseModel>({
+      body: "",
+      headers: {} as HashMap,
+      statusCode: 0,
+      bodyIsBinary: false,
+    });
 
     // Computed
     const headers = computed(() =>
       response.value ? response.value?.headers : ({} as HashMap)
     );
     const hasHeaders = computed(() => Object.keys(headers.value).length > 0);
-    const bodyIsBinary = computed(() =>
-      response.value ? response.value?.bodyIsBinary : false
-    );
-    const body = computed(() =>
-      response.value ? fromBase64(response.value?.body) : ""
-    );
     const statusCode = computed(() =>
       response.value ? response.value?.statusCode : null
     );
     const hasResponse = computed(() => props.request.hasResponse);
+    const bodyRenderModel = computed<RequestResponseBodyRenderModel>(() => {
+      return {
+        body: response.value.body,
+        base64DecodeNotBinary: true,
+        bodyIsBinary: response.value.bodyIsBinary,
+        headers: response.value.headers,
+      };
+    });
 
     // Methods
     const loadResponse = async () => {
-      if (hasResponse.value && !response.value) {
+      if (hasResponse.value && !response.value.statusCode) {
         response.value = await requestStore.getResponse(
           props.request.correlationId
-        );
-      }
-    };
-    const downloadResponse = () => {
-      if (response.value) {
-        downloadBlob(
-          props.request.correlationId,
-          base64ToBlob(response.value.body)
         );
       }
     };
@@ -100,11 +93,9 @@ export default defineComponent({
       response,
       headers,
       hasHeaders,
-      bodyIsBinary,
-      body,
       statusCode,
-      downloadResponse,
       hasResponse,
+      bodyRenderModel,
     };
   },
 });

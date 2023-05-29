@@ -116,7 +116,7 @@ internal class ReverseProxyResponseWriter : IResponseWriter, ISingletonService
         {
             _logger.LogInformation(ex, $"Exception occurred while calling URL {proxyUrl}");
             log.AppendLine($"Exception occurred while calling URL {proxyUrl}: {ex.Message}");
-            response.Body = Encoding.UTF8.GetBytes("502 Bad Gateway");
+            response.Body = "502 Bad Gateway"u8.ToArray();
             response.StatusCode = (int)HttpStatusCode.BadGateway;
             response.Headers.AddOrReplaceCaseInsensitive(HeaderKeys.ContentType, MimeTypes.TextMime);
             response.BodyIsBinary = false;
