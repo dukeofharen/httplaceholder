@@ -8,7 +8,10 @@
           </button>
           <div v-if="bodyType != bodyTypes.other" class="mt-2">
             <div v-if="bodyType === bodyTypes.image">
-              <img :src="imageUrl" />
+              <img :src="dataUrl" />
+            </div>
+            <div v-if="bodyType === bodyTypes.pdf">
+              <vue-pdf-embed :source="dataUrl" class="pdf-viewer" />
             </div>
           </div>
         </div>
@@ -21,17 +24,20 @@
 import { computed, defineComponent, type PropType } from "vue";
 import { downloadBlob } from "@/utils/download";
 import { base64ToBlob } from "@/utils/text";
-import { imageMimeTypes } from "@/constants/technical";
+import { imageMimeTypes, pdfMimeType } from "@/constants/technical";
 import mime from "mime-types";
 import type { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
+import VuePdfEmbed from "vue-pdf-embed";
 
 const bodyTypes = {
   image: "image",
+  pdf: "pdf",
   other: "other",
 };
 
 export default defineComponent({
   name: "BinaryBody",
+  components: { VuePdfEmbed },
   props: {
     renderModel: {
       type: Object as PropType<RequestResponseBodyRenderModel>,
@@ -64,9 +70,13 @@ export default defineComponent({
         return bodyTypes.image;
       }
 
+      if (type.includes(pdfMimeType)) {
+        return bodyTypes.pdf;
+      }
+
       return bodyTypes.other;
     });
-    const imageUrl = computed(() => {
+    const dataUrl = computed(() => {
       return `data:${contentType.value};base64,${body.value}`;
     });
 
@@ -82,14 +92,27 @@ export default defineComponent({
       bodyTypes,
       contentType,
       body,
-      imageUrl,
+      dataUrl,
     };
   },
 });
 </script>
 
 <style scoped lang="scss">
+@import "@/style/bootstrap";
 img {
   max-width: 100%;
+}
+
+.pdf-viewer {
+  @include media-breakpoint-down(lg) {
+    width: 100%;
+  }
+  @include media-breakpoint-up(xl) {
+    width: 50%;
+  }
+  min-height: 500px;
+  max-height: 1000px;
+  overflow-x: scroll;
 }
 </style>
