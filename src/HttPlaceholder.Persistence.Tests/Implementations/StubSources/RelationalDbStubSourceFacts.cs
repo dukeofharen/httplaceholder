@@ -195,49 +195,6 @@ public class RelationalDbStubSourceFacts
     }
 
     [TestMethod]
-    public async Task GetRequestResultsOverviewAsync_ShouldReturnRequestsSuccessfully()
-    {
-        // Arrange
-        const string query = "GET REQUESTS QUERY";
-        var mockQueryStore = _mocker.GetMock<IQueryStore>();
-        mockQueryStore
-            .Setup(m => m.GetRequestsQuery)
-            .Returns(query);
-
-        var stubSource = _mocker.CreateInstance<RelationalDbStubSource>();
-
-        var request1 = new RequestResultModel
-        {
-            RequestParameters = new RequestParametersModel {Method = "GET", Url = "http://localhost:5000"},
-            CorrelationId = Guid.NewGuid().ToString(),
-            StubTenant = "tenant-name",
-            ExecutingStubId = "stub1",
-            RequestBeginTime = DateTime.Today,
-            RequestEndTime = DateTime.Today.AddSeconds(2),
-            HasResponse = true
-        };
-        var requests = new[] {new DbRequestModel {Json = JsonConvert.SerializeObject(request1)}};
-        _mockDatabaseContext
-            .Setup(m => m.QueryAsync<DbRequestModel>(query, It.IsAny<CancellationToken>(), null))
-            .ReturnsAsync(requests);
-
-        // Act
-        var result = (await stubSource.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
-
-        // Assert
-        Assert.AreEqual(1, result.Length);
-
-        var overviewModel = result.Single();
-        Assert.AreEqual(request1.RequestParameters.Method, overviewModel.Method);
-        Assert.AreEqual(request1.RequestParameters.Url, overviewModel.Url);
-        Assert.AreEqual(request1.CorrelationId, overviewModel.CorrelationId);
-        Assert.AreEqual(request1.StubTenant, overviewModel.StubTenant);
-        Assert.AreEqual(request1.RequestBeginTime, overviewModel.RequestBeginTime);
-        Assert.AreEqual(request1.RequestEndTime, overviewModel.RequestEndTime);
-        Assert.AreEqual(request1.HasResponse, overviewModel.HasResponse);
-    }
-
-    [TestMethod]
     public async Task GetRequestAsync_RequestFound_ShouldReturnRequestSuccessfully()
     {
         // Arrange

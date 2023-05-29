@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Configuration;
-using HttPlaceholder.Application.Interfaces.Persistence;
 using HttPlaceholder.Domain;
 using HttPlaceholder.Domain.Entities;
 using HttPlaceholder.Persistence.Db;
@@ -16,7 +15,7 @@ namespace HttPlaceholder.Persistence.Implementations.StubSources;
 /// <summary>
 ///     A stub source that is used to store and read data from a relational database.
 /// </summary>
-internal class RelationalDbStubSource : IWritableStubSource
+internal class RelationalDbStubSource : BaseWritableStubSource
 {
     private readonly IDatabaseContextFactory _databaseContextFactory;
 
@@ -40,7 +39,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
+    public override async Task AddRequestResultAsync(RequestResultModel requestResult, ResponseModel responseModel,
         CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
@@ -74,7 +73,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task AddStubAsync(StubModel stub, CancellationToken cancellationToken)
+    public override async Task AddStubAsync(StubModel stub, CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var json = JsonConvert.SerializeObject(stub);
@@ -85,7 +84,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken)
+    public override async Task<bool> DeleteRequestAsync(string correlationId, CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var updatedRows = await ctx.ExecuteAsync(_queryStore.DeleteRequestQuery, cancellationToken,
@@ -94,7 +93,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken)
+    public override async Task CleanOldRequestResultsAsync(CancellationToken cancellationToken)
     {
         var maxLength = _options.CurrentValue.Storage?.OldRequestsQueueLength ?? 40;
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
@@ -102,24 +101,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    // TODO This method is not optimized right now.
-    public async Task<IEnumerable<RequestOverviewModel>> GetRequestResultsOverviewAsync(
-        CancellationToken cancellationToken) =>
-        (await GetRequestResultsAsync(cancellationToken))
-        .Select(r => new RequestOverviewModel
-        {
-            Method = r.RequestParameters.Method,
-            Url = r.RequestParameters.Url,
-            CorrelationId = r.CorrelationId,
-            StubTenant = r.StubTenant,
-            ExecutingStubId = r.ExecutingStubId,
-            RequestBeginTime = r.RequestBeginTime,
-            RequestEndTime = r.RequestEndTime,
-            HasResponse = r.HasResponse
-        });
-
-    /// <inheritdoc />
-    public async Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken)
+    public override async Task<RequestResultModel> GetRequestAsync(string correlationId, CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var result = await ctx.QueryFirstOrDefaultAsync<DbRequestModel>(
@@ -130,7 +112,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken)
+    public override async Task<ResponseModel> GetResponseAsync(string correlationId, CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var result = await ctx.QueryFirstOrDefaultAsync<DbResponseModel>(
@@ -152,14 +134,14 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken)
+    public override async Task DeleteAllRequestResultsAsync(CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         await ctx.ExecuteAsync(_queryStore.DeleteAllRequestsQuery, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken)
+    public override async Task<bool> DeleteStubAsync(string stubId, CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var updated = await ctx.ExecuteAsync(_queryStore.DeleteStubQuery, cancellationToken, new {StubId = stubId});
@@ -168,7 +150,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken)
+    public override async Task<IEnumerable<RequestResultModel>> GetRequestResultsAsync(CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var result = await ctx.QueryAsync<DbRequestModel>(_queryStore.GetRequestsQuery, cancellationToken);
@@ -177,19 +159,19 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken)
+    public override async Task<IEnumerable<StubModel>> GetStubsAsync(CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         return await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx, cancellationToken);
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken) =>
+    public override async Task<IEnumerable<StubOverviewModel>> GetStubsOverviewAsync(CancellationToken cancellationToken) =>
         (await GetStubsAsync(cancellationToken))
         .Select(s => new StubOverviewModel {Id = s.Id, Tenant = s.Tenant, Enabled = s.Enabled});
 
     /// <inheritdoc />
-    public async Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken)
+    public override async Task<StubModel> GetStubAsync(string stubId, CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         var stubs = await _relationalDbStubCache.GetOrUpdateStubCacheAsync(ctx, cancellationToken);
@@ -197,7 +179,7 @@ internal class RelationalDbStubSource : IWritableStubSource
     }
 
     /// <inheritdoc />
-    public async Task PrepareStubSourceAsync(CancellationToken cancellationToken)
+    public override async Task PrepareStubSourceAsync(CancellationToken cancellationToken)
     {
         using var ctx = _databaseContextFactory.CreateDatabaseContext();
         await _relationalDbMigrator.MigrateAsync(ctx, cancellationToken);

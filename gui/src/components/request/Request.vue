@@ -2,7 +2,10 @@
   <accordion-item @buttonClicked="showDetails" :opened="accordionOpened">
     <template v-slot:button-text>
       <span class="request-header">
-        <Method :method="overviewRequest.method" />
+        <Method
+          v-if="overviewRequest.method"
+          :method="overviewRequest.method"
+        />
         <span class="ms-sm-1 request-url" :title="overviewRequest.url">{{
           overviewRequest.url
         }}</span>
