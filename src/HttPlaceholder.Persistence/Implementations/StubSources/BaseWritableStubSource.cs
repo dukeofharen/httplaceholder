@@ -58,8 +58,8 @@ public abstract class BaseWritableStubSource : IWritableStubSource
         (await GetRequestResultsAsync(cancellationToken))
         .Select(r => new RequestOverviewModel
         {
-            Method = r.RequestParameters.Method,
-            Url = r.RequestParameters.Url,
+            Method = r.RequestParameters?.Method,
+            Url = r.RequestParameters?.Url,
             CorrelationId = r.CorrelationId,
             StubTenant = r.StubTenant,
             ExecutingStubId = r.ExecutingStubId,

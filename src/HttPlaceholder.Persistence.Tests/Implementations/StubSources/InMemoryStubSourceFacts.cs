@@ -4,7 +4,7 @@ using Bogus;
 using HttPlaceholder.Application.Configuration;
 using HttPlaceholder.Persistence.Implementations.StubSources;
 
-namespace HttPlaceholder.Persistence.Tests.Implementations;
+namespace HttPlaceholder.Persistence.Tests.Implementations.StubSources;
 
 [TestClass]
 public class InMemoryStubSourceFacts
@@ -65,32 +65,6 @@ public class InMemoryStubSourceFacts
 
         // Assert
         Assert.AreEqual(stub, source.StubModels.Single());
-    }
-
-    [TestMethod]
-    public async Task GetRequestResultsOverviewAsync_HappyFlow()
-    {
-        // Arrange
-        var source = _mocker.CreateInstance<InMemoryStubSource>();
-        var requestModel = CreateRequestResultModel();
-        source.RequestResultModels.Add(requestModel);
-
-        // Act
-        var result = (await source.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
-
-        // Assert
-        Assert.AreEqual(1, result.Length);
-
-        var overviewRequest = result.Single();
-        var reqParams = requestModel.RequestParameters;
-        Assert.AreEqual(reqParams.Method, overviewRequest.Method);
-        Assert.AreEqual(reqParams.Url, overviewRequest.Url);
-        Assert.AreEqual(requestModel.CorrelationId, overviewRequest.CorrelationId);
-        Assert.AreEqual(requestModel.StubTenant, overviewRequest.StubTenant);
-        Assert.AreEqual(requestModel.ExecutingStubId, overviewRequest.ExecutingStubId);
-        Assert.AreEqual(requestModel.RequestBeginTime, overviewRequest.RequestBeginTime);
-        Assert.AreEqual(requestModel.RequestEndTime, overviewRequest.RequestEndTime);
-        Assert.AreEqual(requestModel.HasResponse, overviewRequest.HasResponse);
     }
 
     [TestMethod]

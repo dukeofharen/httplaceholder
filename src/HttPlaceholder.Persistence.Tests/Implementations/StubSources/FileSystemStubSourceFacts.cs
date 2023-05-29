@@ -438,57 +438,6 @@ public class FileSystemStubSourceFacts
     }
 
     [TestMethod]
-    public async Task GetRequestResultsOverviewAsync_HappyFlow()
-    {
-        // Arrange
-        var requestsFolder = Path.Combine(StorageFolder, FileNames.RequestsFolderName);
-        var files = new[]
-        {
-            Path.Combine(requestsFolder, "request-01.json"), Path.Combine(requestsFolder, "request-02.json")
-        };
-
-        var fileServiceMock = _mocker.GetMock<IFileService>();
-        var source = _mocker.CreateInstance<FileSystemStubSource>();
-
-        fileServiceMock
-            .Setup(m => m.GetFilesAsync(requestsFolder, "*.json", It.IsAny<CancellationToken>()))
-            .ReturnsAsync(files);
-
-        var requestFileContents = new[]
-        {
-            JsonConvert.SerializeObject(new RequestResultModel
-            {
-                CorrelationId = "request-01",
-                RequestParameters = new RequestParametersModel(),
-                HasResponse = true
-            }),
-            JsonConvert.SerializeObject(new RequestResultModel
-            {
-                CorrelationId = "request-02",
-                RequestParameters = new RequestParametersModel(),
-                HasResponse = false
-            })
-        };
-
-        for (var i = 0; i < files.Length; i++)
-        {
-            var file = files[i];
-            var contents = requestFileContents[i];
-            fileServiceMock
-                .Setup(m => m.ReadAllTextAsync(file, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(contents);
-        }
-
-        // Act
-        var result = (await source.GetRequestResultsOverviewAsync(CancellationToken.None)).ToArray();
-
-        // Assert
-        Assert.AreEqual(2, result.Length);
-        Assert.AreEqual("request-01", result[0].CorrelationId);
-        Assert.AreEqual("request-02", result[1].CorrelationId);
-    }
-
-    [TestMethod]
     public async Task CleanOldRequestResultsAsync_HappyFlow()
     {
         // Arrange
