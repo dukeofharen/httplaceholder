@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,7 +35,7 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
 
     private static string PerformReplace(string body, StubResponseReplaceModel model)
     {
-        // TODO add option to ignore case.
-        return body.Replace(model.Text, model.ReplaceWith);
+        var stringComparison = model.IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+        return body.Replace(model.Text, model.ReplaceWith, stringComparison);
     }
 }

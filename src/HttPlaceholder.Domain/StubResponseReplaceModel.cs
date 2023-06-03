@@ -14,6 +14,11 @@ public class StubResponseReplaceModel
     public string Text { get; set; }
 
     /// <summary>
+    ///     Whether to ignore the casing when looking for <see cref="Text"/>.
+    /// </summary>
+    public bool IgnoreCase { get; set; } = true;
+
+    /// <summary>
     ///     The regex expression to look for. Set either this or text, not both.
     /// </summary>
     [YamlMember(Alias = "regex")]
