@@ -6037,6 +6037,387 @@
 									"response": []
 								}
 							]
+						},
+						{
+							"name": "12. String replace",
+							"item": [
+								{
+									"name": "[Create stub] Add string replace stub",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: string-replace\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /string-replace\nresponse:\n  text: REPLACE THIS\n  replace:\n    - text: REPLACE \n      ignoreCase: false\n      replaceWith: OK\n    - text: THIS\n      ignoreCase: false\n      replaceWith: STRING REPLACE"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Perform and check",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK STRING REPLACE\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}string-replace",
+											"host": [
+												"{{rootUrl}}string-replace"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add string replace ignore case stub",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: string-replace-ignore-case\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /string-replace-ignore-case\nresponse:\n  text: REPLACE THIS\n  replace:\n    - text: replace \n      ignoreCase: true\n      replaceWith: OK\n    - text: this\n      ignoreCase: true\n      replaceWith: STRING REPLACE"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Perform and check",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"OK STRING REPLACE\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}string-replace-ignore-case",
+											"host": [
+												"{{rootUrl}}string-replace-ignore-case"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add dynamic string replace stub",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: string-replace-dynamic\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /string-replace-dynamic\nresponse:\n  enableDynamicMode: true\n  text: REPLACE THIS\n  replace:\n    - text: REPLACE \n      replaceWith: ((query:q1))\n    - text: THIS\n      replaceWith: ((query:q2))"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Perform and check",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"val1 val2\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}string-replace-dynamic?q1=val1&q2=val2",
+											"host": [
+												"{{rootUrl}}string-replace-dynamic"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add string replace proxy base stub",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: string-replace-proxy-base\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /string-replace-proxy-base\nresponse:\n  text: HELLO FROM STRING REPLACE PROXY"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add string replace stub with proxy",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: string-replace-proxy\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /string-replace-proxy\nresponse:\n  text: REPLACE THIS\n  reverseProxy:\n    url: {{rootUrl}}string-replace-proxy-base\n    appendPath: true\n    appendQueryString: true\n    replaceRootUrl: true\n  replace:\n    - text: HELLO \n      replaceWith: BYE"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Perform and check",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"BYE FROM STRING REPLACE PROXY\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}string-replace-proxy",
+											"host": [
+												"{{rootUrl}}string-replace-proxy"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "13. Regex replace",
+							"item": [
+								{
+									"name": "[Create stub] Add regex replace stub",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: regex-replace\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /regex-replace\nresponse:\n  text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n  replace:\n    - regex: '(ipsum|consectetur)'\n      replaceWith: Bassie\n    - regex: '(amet|elit)'\n      replaceWith: Adriaan"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Perform and check",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"Lorem Bassie dolor sit Adriaan, Bassie adipiscing Adriaan.\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}regex-replace",
+											"host": [
+												"{{rootUrl}}regex-replace"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Create stub] Add dynamic string replace stub",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "text/yaml"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "id: regex-replace-dynamic\ntenant: integration\nconditions:\n  method: GET\n  url:\n    path:\n      equals: /regex-replace-dynamic\nresponse:\n  enableDynamicMode: true\n  text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.\n  replace:\n    - regex: '(ipsum|consectetur)'\n      replaceWith: ((query:q1))\n    - regex: '(amet|elit)'\n      replaceWith: ((query:q2))"
+										},
+										"url": {
+											"raw": "{{rootUrl}}ph-api/stubs",
+											"host": [
+												"{{rootUrl}}ph-api"
+											],
+											"path": [
+												"stubs"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Perform and check",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Body is correct\", function () {",
+													"    pm.response.to.have.body(\"Lorem val1 dolor sit val2, val1 adipiscing val2.\");",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{rootUrl}}regex-replace-dynamic?q1=val1&q2=val2",
+											"host": [
+												"{{rootUrl}}regex-replace-dynamic"
+											],
+											"query": [
+												{
+													"key": "q1",
+													"value": "val1"
+												},
+												{
+													"key": "q2",
+													"value": "val2"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				},

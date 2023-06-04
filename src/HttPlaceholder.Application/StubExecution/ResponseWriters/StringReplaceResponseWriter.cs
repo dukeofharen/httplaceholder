@@ -39,7 +39,7 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
         if (!string.IsNullOrWhiteSpace(model.Text))
         {
             var stringComparison = model.IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
-            return body.Replace(model.Text, model.ReplaceWith, stringComparison);
+            body = body.Replace(model.Text, model.ReplaceWith, stringComparison);
         }
 
         if (!string.IsNullOrWhiteSpace(model.Regex))
