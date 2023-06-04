@@ -765,6 +765,46 @@ export const useStubFormStore = defineStore({
         }
       });
     },
+    setDefaultStringReplace(): void {
+      handle(() => {
+        const parsed = parseInput(this.input);
+        if (parsed) {
+          if (!parsed.response) {
+            parsed.response = {};
+          }
+
+          if (!parsed.response.replace) {
+            parsed.response.replace = [];
+          }
+
+          parsed.response.replace = parsed.response.replace.concat(
+            defaultValues.stringReplace
+          );
+
+          this.setInput(yaml.dump(parsed));
+        }
+      });
+    },
+    setDefaultRegexReplace(): void {
+      handle(() => {
+        const parsed = parseInput(this.input);
+        if (parsed) {
+          if (!parsed.response) {
+            parsed.response = {};
+          }
+
+          if (!parsed.response.replace) {
+            parsed.response.replace = [];
+          }
+
+          parsed.response.replace = parsed.response.replace.concat(
+            defaultValues.regexReplace
+          );
+
+          this.setInput(yaml.dump(parsed));
+        }
+      });
+    },
     setClearState(): void {
       handle(() => {
         const parsed = parseInput(this.input);

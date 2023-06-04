@@ -3,6 +3,7 @@ import type { StubResponseReverseProxyModel } from "@/domain/stub/stub-response-
 import type { LineEndingType } from "@/domain/stub/enums/line-ending-type";
 import type { StubResponseImageModel } from "@/domain/stub/stub-response-image-model";
 import type { StubResponseScenarioModel } from "@/domain/stub/stub-response-scenario-model";
+import type { StubResponseReplaceModel } from "@/domain/stub/stub-response-replace-model";
 
 export interface StubResponseModel {
   enableDynamicMode?: boolean;
@@ -23,4 +24,5 @@ export interface StubResponseModel {
   image?: StubResponseImageModel;
   scenario?: StubResponseScenarioModel;
   abortConnection?: boolean;
+  replace?: StubResponseReplaceModel[];
 }

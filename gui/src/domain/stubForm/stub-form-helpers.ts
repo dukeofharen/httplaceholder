@@ -258,6 +258,18 @@ export const stubFormHelpers = [
     formHelperToOpen: FormHelperKey.DynamicMode,
   },
   {
+    title: "String replace in response body",
+    subTitle: elementDescriptions.stringReplace,
+    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
+    defaultValueMutation: (store: any) => store.setDefaultStringReplace(),
+  },
+  {
+    title: "Regex replace in response body",
+    subTitle: elementDescriptions.regexReplace,
+    stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
+    defaultValueMutation: (store: any) => store.setDefaultRegexReplace(),
+  },
+  {
     title: "Line endings",
     subTitle: elementDescriptions.lineEndings,
     stubFormHelperCategory: StubFormHelperCategory.ResponseDefinition,
