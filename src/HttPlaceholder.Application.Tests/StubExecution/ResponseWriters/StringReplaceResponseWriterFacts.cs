@@ -96,9 +96,40 @@ public class StringReplaceResponseWriterFacts
         Assert.AreEqual(expectedBody, Encoding.UTF8.GetString(_response.Body));
     }
 
+    public static IEnumerable<object[]> ProvideRegexReplaceData => new[]
+    {
+        new object[] {new[]
+        {
+            GetRegexModel("\\!", "?"),
+            GetRegexModel("Hello", "Bye")
+        }, "Hello, World!", "Bye, World?"}
+    };
+
+    [TestMethod]
+    [DynamicData(nameof(ProvideRegexReplaceData))]
+    public async Task WriteToResponseAsync_RegexReplace_HappyFlow(
+        IEnumerable<StubResponseReplaceModel> models,
+        string responseBody,
+        string expectedBody)
+    {
+        // Arrange
+        _stub.Response.Replace = models;
+        _response.Body = Encoding.UTF8.GetBytes(responseBody);
+
+        // Act
+        var result = await WriteToResponseAsync(_stub, _response);
+
+        // Assert
+        Assert.IsTrue(result.Executed);
+        Assert.AreEqual(expectedBody, Encoding.UTF8.GetString(_response.Body));
+    }
+
     private async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response) =>
         await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
     private static StubResponseReplaceModel GetModel(string text, string replaceWith, bool ignoreCase) =>
         new() {Text = text, ReplaceWith = replaceWith, IgnoreCase = ignoreCase};
+
+    private static StubResponseReplaceModel GetRegexModel(string regex, string replaceWith) =>
+        new() {Regex = regex, ReplaceWith = replaceWith};
 }

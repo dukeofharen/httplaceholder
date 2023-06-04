@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HttPlaceholder.Application.Infrastructure.DependencyInjection;
@@ -35,7 +36,22 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
 
     private static string PerformReplace(string body, StubResponseReplaceModel model)
     {
-        var stringComparison = model.IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
-        return body.Replace(model.Text, model.ReplaceWith, stringComparison);
+        if (!string.IsNullOrWhiteSpace(model.Text))
+        {
+            var stringComparison = model.IgnoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+            return body.Replace(model.Text, model.ReplaceWith, stringComparison);
+        }
+
+        if (!string.IsNullOrWhiteSpace(model.Regex))
+        {
+            var regex = new Regex(model.Regex);
+            var matches = regex.Matches(body);
+            foreach (var match in matches)
+            {
+                body = body.Replace(match.ToString() ?? string.Empty, model.ReplaceWith);
+            }
+        }
+
+        return body;
     }
 }
