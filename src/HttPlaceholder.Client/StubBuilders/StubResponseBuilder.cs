@@ -383,10 +383,56 @@ public sealed class StubResponseBuilder
     }
 
     /// <summary>
+    ///     Searches for string <paramref name="textToLookFor"/> and replaces it with <paramref name="replaceWith"/> in the response body.
+    /// </summary>
+    /// <param name="textToLookFor">The text in the response to look for.</param>
+    /// <param name="replaceWith">The text to replace the found string with.</param>
+    /// <param name="ignoreCase">If set to true, will search case insensitive. If set to false, will search for string as provided.</param>
+    /// <returns>The current <see cref="StubResponseBuilder" />.</returns>
+    public StubResponseBuilder StringReplace(string textToLookFor, string replaceWith, bool ignoreCase = true)
+    {
+        EnsureReplaceDtos();
+        AddResponseReplaceDto(new StubResponseReplaceDto
+        {
+            Text = textToLookFor,
+            ReplaceWith = replaceWith,
+            IgnoreCase = ignoreCase
+        });
+        return this;
+    }
+
+    /// <summary>
+    ///     Searches for matches with regular expression <paramref name="regex"/> and replaces it with <paramref name="replaceWith"/> in the response body.
+    /// </summary>
+    /// <param name="regex">The regular expression to use.</param>
+    /// <param name="replaceWith">The text to replace the found matches with.</param>
+    /// <returns>The current <see cref="StubResponseBuilder" />.</returns>
+    public StubResponseBuilder RegexReplace(string regex, string replaceWith)
+    {
+        EnsureReplaceDtos();
+        AddResponseReplaceDto(new StubResponseReplaceDto
+        {
+            Regex = regex,
+            ReplaceWith = replaceWith
+        });
+        return this;
+    }
+
+    /// <summary>
     ///     Builds the response definition.
     /// </summary>
     /// <returns>The built <see cref="StubResponseDto" />.</returns>
     public StubResponseDto Build() => _response;
 
+    private void AddResponseReplaceDto(StubResponseReplaceDto dto)
+    {
+        var replace = _response.Replace != null
+            ? (List<StubResponseReplaceDto>)_response.Replace
+            : new List<StubResponseReplaceDto>();
+        replace.Add(dto);
+    }
+
     private void EnsureScenarioDto() => _response.Scenario ??= new StubResponseScenarioDto();
+
+    private void EnsureReplaceDtos() => _response.Replace ??= new List<StubResponseReplaceDto>();
 }
