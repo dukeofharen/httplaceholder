@@ -96,7 +96,6 @@ export const defaultValues = {
   regexReplace: [
     {
       regex: "(ipsum|consectetur)",
-      ignoreCase: true,
       replaceWith: "New value",
     } as StubResponseReplaceModel,
   ],
