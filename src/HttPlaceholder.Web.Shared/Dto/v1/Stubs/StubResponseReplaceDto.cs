@@ -19,7 +19,7 @@ public class StubResponseReplaceDto : IMapFrom<StubResponseReplaceModel>, IMapTo
     ///     Whether to ignore the casing when looking for <see cref="Text"/>.
     /// </summary>
     [YamlMember(Alias = "ignoreCase")]
-    public bool IgnoreCase { get; set; } = true;
+    public bool? IgnoreCase { get; set; }
 
     /// <summary>
     ///     The regex expression to look for. Set either this or text, not both.

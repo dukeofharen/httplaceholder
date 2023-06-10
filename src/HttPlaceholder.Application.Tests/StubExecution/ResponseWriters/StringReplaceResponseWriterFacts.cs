@@ -70,6 +70,7 @@ public class StringReplaceResponseWriterFacts
         new object[] {new[]{GetModel("VALUE1", "VALUE2", false)}, "VALUE1 body", "VALUE2 body"},
         new object[] {new[]{GetModel("value1", "VALUE2", false)}, "VALUE1 body", "VALUE1 body"},
         new object[] {new[]{GetModel("value1", "VALUE2", true)}, "VALUE1 body", "VALUE2 body"},
+        new object[] {new[]{GetModel("value1", "VALUE2", null)}, "VALUE1 body", "VALUE2 body"},
         new object[] {new[]
         {
             GetModel("VALUE1", "VALUE2", false),
@@ -127,7 +128,7 @@ public class StringReplaceResponseWriterFacts
     private async Task<StubResponseWriterResultModel> WriteToResponseAsync(StubModel stub, ResponseModel response) =>
         await _writer.WriteToResponseAsync(stub, response, CancellationToken.None);
 
-    private static StubResponseReplaceModel GetModel(string text, string replaceWith, bool ignoreCase) =>
+    private static StubResponseReplaceModel GetModel(string text, string replaceWith, bool? ignoreCase) =>
         new() {Text = text, ReplaceWith = replaceWith, IgnoreCase = ignoreCase};
 
     private static StubResponseReplaceModel GetRegexModel(string regex, string replaceWith) =>
