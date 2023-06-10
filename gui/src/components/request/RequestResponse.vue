@@ -39,7 +39,7 @@ import type { ResponseModel } from "@/domain/request/response-model";
 import { useRequestsStore } from "@/store/requests";
 import type { HashMap } from "@/domain/hash-map";
 import RequestResponseBody from "@/components/request/body/RequestResponseBody.vue";
-import { RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
+import { type RequestResponseBodyRenderModel } from "@/domain/request/request-response-body-render-model";
 
 export default defineComponent({
   name: "RequestResponse",
