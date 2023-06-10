@@ -42,6 +42,7 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
         result.AddRange(ValidateScenarioVariables(stub));
         result.AddRange(ValidateResponseBody(stub));
         result.AddRange(ValidateResponseHeaders(stub));
+        result.AddRange(ValidateStringRegexReplace(stub));
         return result;
     }
 
@@ -183,8 +184,40 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
         return result;
     }
 
-    private static void ValidateStringRegexReplace(StubModel stub, List<string> validationErrors)
+    private static IEnumerable<string> ValidateStringRegexReplace(StubModel stub)
     {
+        var result = new List<string>();
+        if (stub.Response?.Replace == null)
+        {
+            return result;
+        }
 
+        var i = 0;
+        foreach (var replace in stub.Response.Replace)
+        {
+            if (!string.IsNullOrEmpty(replace.Text) && !string.IsNullOrWhiteSpace(replace.Regex))
+            {
+                result.Add($"Replace [{i}]: 'text' and 'regex' can't both be set.");
+            }
+
+            if (string.IsNullOrEmpty(replace.Text) && string.IsNullOrWhiteSpace(replace.Regex))
+            {
+                result.Add($"Replace [{i}]: either 'text' or 'regex' neets to be set.");
+            }
+
+            if (!string.IsNullOrWhiteSpace(replace.Regex) && replace.IgnoreCase.HasValue)
+            {
+                result.Add($"Replace [{i}]: can't set 'ignoreCase' when using 'regex'. This can only be used with 'text'.");
+            }
+
+            if (replace.ReplaceWith == null)
+            {
+                result.Add($"Replace [{i}]: 'replaceWith' should be set.");
+            }
+
+            i++;
+        }
+
+        return result;
     }
 }
