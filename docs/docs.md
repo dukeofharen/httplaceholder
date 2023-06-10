@@ -2638,6 +2638,7 @@ httplaceholder --inputFile C:\path\to\samples\dir\01-get.yml
 * Set response content type: [.yml](samples/18-content-type.yml)
 * Stub images: [.yml](samples/19-stub-image.yml)
 * Abort connection: [.yml](samples/21-abort-connection.yml)
+* String / regex replace: [.yml](samples/22-string-regex-replace.yml)
 * Dynamic mode:
     * Dynamic mode - query strings: [.yml](samples/14.1-dynamic-mode-query.yml)
     * Dynamic mode - UUIDs: [.yml](samples/14.2-dynamic-mode-uuid.yml)

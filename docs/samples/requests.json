@@ -1446,6 +1446,59 @@
 			]
 		},
 		{
+			"name": "22 String / regex replace",
+			"item": [
+				{
+					"name": "String replace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}string-replace",
+							"host": [
+								"{{rootUrl}}string-replace"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Regex replace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}regex-replace?queryString=Bassie",
+							"host": [
+								"{{rootUrl}}regex-replace"
+							],
+							"query": [
+								{
+									"key": "queryString",
+									"value": "Bassie"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "String and regex replace",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{rootUrl}}string-and-regex-replace",
+							"host": [
+								"{{rootUrl}}string-and-regex-replace"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "REST API",
 			"item": [
 				{
