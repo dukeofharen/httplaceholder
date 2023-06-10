@@ -7,9 +7,30 @@ namespace HttPlaceholder.Application.Tests.StubExecution.ResponseWriters;
 [TestClass]
 public class StringReplaceResponseWriterFacts
 {
-    private readonly StubModel _stub = new() {Response = new StubResponseModel()};
     private readonly ResponseModel _response = new();
+    private readonly StubModel _stub = new() {Response = new StubResponseModel()};
     private readonly StringReplaceResponseWriter _writer = new();
+
+    public static IEnumerable<object[]> ProvideStringReplaceData => new[]
+    {
+        new object[] {new[] {GetModel("VALUE1", "VALUE2", false)}, "VALUE1 body", "VALUE2 body"},
+        new object[] {new[] {GetModel("value1", "VALUE2", false)}, "VALUE1 body", "VALUE1 body"},
+        new object[] {new[] {GetModel("value1", "VALUE2", true)}, "VALUE1 body", "VALUE2 body"},
+        new object[] {new[] {GetModel("value1", "VALUE2", null)}, "VALUE1 body", "VALUE2 body"},
+        new object[]
+        {
+            new[] {GetModel("VALUE1", "VALUE2", false), GetModel("VALUE2", "VALUE3", false)}, "VALUE1 body",
+            "VALUE3 body"
+        }
+    };
+
+    public static IEnumerable<object[]> ProvideRegexReplaceData => new[]
+    {
+        new object[]
+        {
+            new[] {GetRegexModel("\\!", "?"), GetRegexModel("Hello", "Bye")}, "Hello, World!", "Bye, World?"
+        }
+    };
 
     [TestMethod]
     public async Task WriteToResponseAsync_ReplaceIsNull_ShouldReturnNotExecuted()
@@ -65,19 +86,6 @@ public class StringReplaceResponseWriterFacts
         Assert.IsFalse(result.Executed);
     }
 
-    public static IEnumerable<object[]> ProvideStringReplaceData => new[]
-    {
-        new object[] {new[]{GetModel("VALUE1", "VALUE2", false)}, "VALUE1 body", "VALUE2 body"},
-        new object[] {new[]{GetModel("value1", "VALUE2", false)}, "VALUE1 body", "VALUE1 body"},
-        new object[] {new[]{GetModel("value1", "VALUE2", true)}, "VALUE1 body", "VALUE2 body"},
-        new object[] {new[]{GetModel("value1", "VALUE2", null)}, "VALUE1 body", "VALUE2 body"},
-        new object[] {new[]
-        {
-            GetModel("VALUE1", "VALUE2", false),
-            GetModel("VALUE2", "VALUE3", false)
-        }, "VALUE1 body", "VALUE3 body"},
-    };
-
     [TestMethod]
     [DynamicData(nameof(ProvideStringReplaceData))]
     public async Task WriteToResponseAsync_StringReplace_HappyFlow(
@@ -96,15 +104,6 @@ public class StringReplaceResponseWriterFacts
         Assert.IsTrue(result.Executed);
         Assert.AreEqual(expectedBody, Encoding.UTF8.GetString(_response.Body));
     }
-
-    public static IEnumerable<object[]> ProvideRegexReplaceData => new[]
-    {
-        new object[] {new[]
-        {
-            GetRegexModel("\\!", "?"),
-            GetRegexModel("Hello", "Bye")
-        }, "Hello, World!", "Bye, World?"}
-    };
 
     [TestMethod]
     [DynamicData(nameof(ProvideRegexReplaceData))]

@@ -38,7 +38,9 @@ public class StringReplaceResponseWriter : IResponseWriter, ISingletonService
     {
         if (!string.IsNullOrWhiteSpace(model.Text))
         {
-            var stringComparison = !model.IgnoreCase.HasValue || model.IgnoreCase.Value ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+            var stringComparison = !model.IgnoreCase.HasValue || model.IgnoreCase.Value
+                ? StringComparison.OrdinalIgnoreCase
+                : StringComparison.Ordinal;
             body = body.Replace(model.Text, model.ReplaceWith, stringComparison);
         }
 

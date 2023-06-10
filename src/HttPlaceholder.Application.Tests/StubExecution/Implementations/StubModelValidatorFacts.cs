@@ -409,7 +409,8 @@ public class StubModelValidatorFacts
     [DataTestMethod]
     [DataRow("text", "regex", null, "replace", "Replace [0]: 'text' and 'regex' can't both be set.")]
     [DataRow(null, null, null, "replace", "Replace [0]: either 'text' or 'regex' neets to be set.")]
-    [DataRow(null, "regex", true, "replace", "Replace [0]: can't set 'ignoreCase' when using 'regex'. This can only be used with 'text'.")]
+    [DataRow(null, "regex", true, "replace",
+        "Replace [0]: can't set 'ignoreCase' when using 'regex'. This can only be used with 'text'.")]
     [DataRow(null, "regex", null, null, "Replace [0]: 'replaceWith' should be set.")]
     [DataRow(null, "regex", null, "replace", null)]
     [DataRow("text", null, true, "replace", null)]
@@ -422,14 +423,7 @@ public class StubModelValidatorFacts
         {
             Text = text, Regex = regex, IgnoreCase = ignoreCase, ReplaceWith = replaceWith
         };
-        var model = new StubModel
-        {
-            Id = "stub",
-            Response = new StubResponseModel
-            {
-                Replace = new[]{dto}
-            }
-        };
+        var model = new StubModel {Id = "stub", Response = new StubResponseModel {Replace = new[] {dto}}};
 
         // Act
         var result = _validator.ValidateStubModel(model).ToArray();

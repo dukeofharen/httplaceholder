@@ -26,7 +26,8 @@ internal class OpenApiToStubConverter : IOpenApiToStubConverter, ISingletonServi
     }
 
     /// <inheritdoc />
-    public async Task<StubModel> ConvertToStubAsync(OpenApiServer server, OpenApiLine line, string tenant, string stubIdPrefix,
+    public async Task<StubModel> ConvertToStubAsync(OpenApiServer server, OpenApiLine line, string tenant,
+        string stubIdPrefix,
         CancellationToken cancellationToken)
     {
         var request = new HttpRequestModel

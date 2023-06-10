@@ -17,7 +17,9 @@ public static class StubExtensions
     /// <returns>The stub ID.</returns>
     public static string EnsureStubId(this StubModel stub, string stubIdPrefix = "")
     {
-        var id = !string.IsNullOrWhiteSpace(stub.Id) ? stub.Id : $"generated-{HashingUtilities.GetMd5String(JsonConvert.SerializeObject(stub))}";
+        var id = !string.IsNullOrWhiteSpace(stub.Id)
+            ? stub.Id
+            : $"generated-{HashingUtilities.GetMd5String(JsonConvert.SerializeObject(stub))}";
         if (!string.IsNullOrWhiteSpace(stubIdPrefix))
         {
             id = $"{stubIdPrefix}{id}";

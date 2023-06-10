@@ -102,7 +102,8 @@ public class CurlStubGeneratorFacts
             .ReturnsAsync(conditions2);
 
         // Act
-        var result = (await generator.GenerateStubsAsync(input, true, tenant, prefix, CancellationToken.None)).ToArray();
+        var result = (await generator.GenerateStubsAsync(input, true, tenant, prefix, CancellationToken.None))
+            .ToArray();
 
         // Assert
         Assert.AreEqual(2, result.Length);

@@ -74,7 +74,10 @@ public class CreateOpenApiStubsFacts : BaseClientTest
         // Act
         var exception =
             await Assert.ThrowsExceptionAsync<HttPlaceholderClientException>(() =>
-                client.CreateOpenApiStubsAsync(new ImportStubsModel(openApi){DoNotCreateStub = false, Tenant = "tenant1", StubIdPrefix = "prefix-"}));
+                client.CreateOpenApiStubsAsync(new ImportStubsModel(openApi)
+                {
+                    DoNotCreateStub = false, Tenant = "tenant1", StubIdPrefix = "prefix-"
+                }));
 
         // Assert
         Assert.AreEqual("Status code '400' returned by HttPlaceholder with message 'Error occurred!'",
@@ -97,7 +100,10 @@ public class CreateOpenApiStubsFacts : BaseClientTest
             .Respond("application/json", CreateOpenApiStubsResult)));
 
         // Act
-        var result = (await client.CreateOpenApiStubsAsync(new ImportStubsModel(openApi){DoNotCreateStub = doNotCreateStub, Tenant = "tenant1", StubIdPrefix = "prefix-"})).ToArray();
+        var result = (await client.CreateOpenApiStubsAsync(new ImportStubsModel(openApi)
+        {
+            DoNotCreateStub = doNotCreateStub, Tenant = "tenant1", StubIdPrefix = "prefix-"
+        })).ToArray();
 
         // Assert
         Assert.AreEqual(1, result.Length);

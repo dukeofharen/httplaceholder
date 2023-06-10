@@ -207,7 +207,8 @@ internal class StubModelValidator : IStubModelValidator, ISingletonService
 
             if (!string.IsNullOrWhiteSpace(replace.Regex) && replace.IgnoreCase.HasValue)
             {
-                result.Add($"Replace [{i}]: can't set 'ignoreCase' when using 'regex'. This can only be used with 'text'.");
+                result.Add(
+                    $"Replace [{i}]: can't set 'ignoreCase' when using 'regex'. This can only be used with 'text'.");
             }
 
             if (replace.ReplaceWith == null)

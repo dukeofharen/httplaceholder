@@ -38,8 +38,7 @@ public class HttpRequestModel : IHaveCustomMapping
     public string ClientIp { get; set; }
 
     /// <inheritdoc />
-    public void CreateMappings(Profile configuration)
-    {
+    public void CreateMappings(Profile configuration) =>
         configuration.CreateMap<RequestParametersModel, HttpRequestModel>()
             .ForMember(dest => dest.Body, opt => opt.Ignore())
             .AfterMap((src, dest) =>
@@ -53,5 +52,4 @@ public class HttpRequestModel : IHaveCustomMapping
                     dest.Body = Encoding.UTF8.GetString(src.BinaryBody);
                 }
             });
-    }
 }

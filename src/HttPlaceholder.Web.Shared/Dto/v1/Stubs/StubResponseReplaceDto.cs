@@ -16,7 +16,7 @@ public class StubResponseReplaceDto : IMapFrom<StubResponseReplaceModel>, IMapTo
     public string Text { get; set; }
 
     /// <summary>
-    ///     Whether to ignore the casing when looking for <see cref="Text"/>.
+    ///     Whether to ignore the casing when looking for <see cref="Text" />.
     /// </summary>
     [YamlMember(Alias = "ignoreCase")]
     public bool? IgnoreCase { get; set; }

@@ -11,7 +11,7 @@ public class StubResponseReplaceDto
     public string Text { get; set; }
 
     /// <summary>
-    ///     Whether to ignore the casing when looking for <see cref="Text"/>.
+    ///     Whether to ignore the casing when looking for <see cref="Text" />.
     /// </summary>
     public bool? IgnoreCase { get; set; }
 

@@ -547,23 +547,6 @@ public class HttPlaceholderClient : IHttPlaceholderClient
         return JsonConvert.DeserializeObject<IEnumerable<FullStubDto>>(content);
     }
 
-    internal static string PrependImportQueryString(string url, ImportStubsModel model)
-    {
-        var builder = new StringBuilder(url);
-        builder.Append($"?doNotCreateStub={model.DoNotCreateStub}");
-        if (!string.IsNullOrWhiteSpace(model.Tenant))
-        {
-            builder.Append($"&tenant={model.Tenant}");
-        }
-
-        if (!string.IsNullOrWhiteSpace(model.StubIdPrefix))
-        {
-            builder.Append($"&stubIdPrefix={model.StubIdPrefix}");
-        }
-
-        return builder.ToString();
-    }
-
     /// <inheritdoc />
     public async Task<JobExecutionResultDto> ExecuteScheduledJobAsync(string jobName,
         CancellationToken cancellationToken = default)
@@ -644,6 +627,23 @@ public class HttPlaceholderClient : IHttPlaceholderClient
     public Task<VerificationResultModel> VerifyStubCalledAsync(string stubId, DateTime minimumRequestTime,
         CancellationToken cancellationToken = default) =>
         VerifyStubCalledAsyncInternal(stubId, null, minimumRequestTime, cancellationToken);
+
+    internal static string PrependImportQueryString(string url, ImportStubsModel model)
+    {
+        var builder = new StringBuilder(url);
+        builder.Append($"?doNotCreateStub={model.DoNotCreateStub}");
+        if (!string.IsNullOrWhiteSpace(model.Tenant))
+        {
+            builder.Append($"&tenant={model.Tenant}");
+        }
+
+        if (!string.IsNullOrWhiteSpace(model.StubIdPrefix))
+        {
+            builder.Append($"&stubIdPrefix={model.StubIdPrefix}");
+        }
+
+        return builder.ToString();
+    }
 
     internal async Task<VerificationResultModel> VerifyStubCalledAsyncInternal(
         string stubId,
